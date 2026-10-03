@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FlowBoxChild: FlowBoxChild *)
 
+(** The kind of widget that can be added to a [GtkFlowBox].
+
+    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
+    when necessary. *)
+
 type t =
   [ `flow_box_child | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -16,14 +21,14 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_flow_box_child_set_child"
-(** Sets the child widget of @self. *)
+(** Sets the child widget of [self]. *)
 
 external is_selected : t -> bool = "ml_gtk_flow_box_child_is_selected"
-(** Returns whether the @child is currently selected in its
-`GtkFlowBox` container. *)
+(** Returns whether the [child] is currently selected in its [GtkFlowBox]
+    container. *)
 
 external get_index : t -> int = "ml_gtk_flow_box_child_get_index"
-(** Gets the current index of the @child in its `GtkFlowBox` container. *)
+(** Gets the current index of the [child] in its [GtkFlowBox] container. *)
 
 external get_child :
   t ->
@@ -31,28 +36,27 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_flow_box_child_get_child"
-(** Gets the child widget of @self. *)
+(** Gets the child widget of [self]. *)
 
 external changed : t -> unit = "ml_gtk_flow_box_child_changed"
-(** Marks @child as changed, causing any state that depends on this
-to be updated.
+(** Marks [child] as changed, causing any state that depends on this to be
+    updated.
 
-This affects sorting and filtering.
+    This affects sorting and filtering.
 
-Note that calls to this method must be in sync with the data
-used for the sorting and filtering functions. For instance, if
-the list is mirroring some external data set, and *two* children
-changed in the external data set when you call
-gtk_flow_box_child_changed() on the first child, the sort function
-must only read the new data for the first of the two changed
-children, otherwise the resorting of the children will be wrong.
+    Note that calls to this method must be in sync with the data used for the
+    sorting and filtering functions. For instance, if the list is mirroring some
+    external data set, and {i two} children changed in the external data set
+    when you call gtk_flow_box_child_changed() on the first child, the sort
+    function must only read the new data for the first of the two changed
+    children, otherwise the resorting of the children will be wrong.
 
-This generally means that if you don’t fully control the data
-model, you have to duplicate the data that affects the sorting
-and filtering functions into the widgets themselves.
+    This generally means that if you don’t fully control the data model, you
+    have to duplicate the data that affects the sorting and filtering functions
+    into the widgets themselves.
 
-Another alternative is to call [method@Gtk.FlowBox.invalidate_sort]
-on any model change, but that is more expensive. *)
+    Another alternative is to call [Gtk.FlowBox.invalidate_sort] on any model
+    change, but that is more expensive. *)
 
 (* Properties *)
 

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LinearGradientNode: LinearGradientNode *)
 
+(** A render node for a linear gradient. *)
+
 type t = [ `linear_gradient_node | `render_node ] Gobject.obj
 
 external new_ :

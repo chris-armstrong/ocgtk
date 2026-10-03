@@ -1,7 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, artifact cache, per-branch preview
 
-**Status: DRAFT (revised after second plan review; phased for implementation — not
-yet implemented)**
+**Status: Phases 0–2 implemented; Phase 3 partly implemented (per-phase status
+below).** Phase 0 and 1: PR #188 (merged into `m3`) and PR #190 (open, base `m3`).
+Phase 2 and the first part of Phase 3: branch `m3-p2`, stacked on `m3-p1-fix`.
 **Created: 2026-09-08; revised: 2026-09-14 (testable phases added)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
@@ -502,17 +503,48 @@ xvfb-run $(which dune) test ocgtk/    # unchanged bindings, still green
 ### Phase 2 — `Doc_emit` + translator at the *existing* emit sites
 (suppressions stay)
 
+**Status: done** (branch `m3-p2`). Commits: `1d372dc4` (`Doc_emit`),
+`f75c7cde` (constant, enum/bitfield member, method docs), `759d373b` (remove 42
+stale generated files), `351b2720` (record/class entity docs through `Doc_emit`),
+`dca00048` (escape `]`), `c2edb1e2` (remove gtk enum interface copies). Later
+Phase 3 commits are listed under Phase 3. The additions this phase needed beyond
+the original text are recorded below; the original text is kept for reference.
+
 *Goal:* every doc that is *already* emitted now goes through the
 translator; no *new* docs appear. This isolates translator-induced diffs
 from un-suppression-induced diffs (Phase 3).
 
-*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`emit_item_doc` /
-`emit_entity_doc`: assembly prose-first-tags-last on the AST, final-comment
-sanitisation, `@since` append); rewire `constant_code.ml` `emit_doc`,
-`enum_code.ml` **member** docs, `layer1_method.ml` method docs;
+*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`item_doc`: translation,
+tags-last `@since`, final-comment sanitisation, constant version-only
+fallback; `emit_entity_doc` waits for Phase 3); rewire `constant_code.ml`
+`emit_doc`, `enum_code.ml` **member and bitfield flag** docs,
+`layer1_method.ml` method docs, and the class/record entity doc in
+`layer1_main.ml` (already emitted raw before Phase 2; found by the residual
+odoc warnings, so it is routed through `Doc_emit` here as well);
 `test/generate/doc_emit_tests.ml` (comment safety, tag terminality,
 `@since` placement). Regenerate bindings; the diff is confined to
-doc-comment text at these three site kinds; commit it.
+doc-comment text at these site kinds; commit it.
+
+*Placement change (found by testing):* polymorphic-variant member docs must
+follow their tag. Before the tag, odoc silently drops them from the HTML (and
+the compiler warns, warning 50). Member docs are therefore emitted as
+`` | `TAG (** doc *) ``. This is a visible change beyond the "doc text only"
+wording, and it makes enum and bitfield member docs appear on their pages for
+the first time.
+
+*Stale generated files (found by testing):* 42 tracked `.ml`/`.mli` files
+under `ocgtk/src/*/generated/` were never produced by a clean regeneration.
+The generator only writes and never deletes, so these survived relocations
+(e.g. `unix_fd_message.mli`, `gUnix_fd_message.mli`, `tooltip.mli`). They
+were removed in a separate commit. The six gtk `*_enums.mli` copies are not
+produced either; they were removed in a follow-up commit (see residue below).
+
+*Residue, now resolved:* odoc warnings went from 5,237 to 0. The bare `]` in
+prose was a translator gap (the Phase 1 policy wrongly assumed odoc treated it
+as literal text); `]` is now escaped with `[`. The six gtk `*_enums.mli` copies
+the generator no longer writes were removed, and their `modules_without_implementation`
+entry in `gtk/dune` with them, since gtk builds against the enum types in the
+other libraries.
 
 *Acceptance:*
 ```bash
@@ -528,6 +560,21 @@ legitimate comment syntax — any hit is a Phase-2 failure.
 *Goal:* entity docs land; constructors, signals and combined modules carry
 docs. Diffs here are *additive* (previously-doc-less output gains docs) and
 must be reviewed as such.
+
+**Status: partly done.** Item 1 is done for class/interface (`adc30fe6`,
+`742d1a77`); the enum/bitfield type-doc suppression is still in place
+(`bin/gir_gen.ml` ~881, ~885). Items 2–4 are not started. Additional items
+done in this phase, which the original list did not contain:
+
+- *Comment safety for quotes:* OCaml lexes string literals inside comments, and
+  GIR prose can leave one open. `Doc_emit` replaces every `"` in an emitted
+  comment with a typographic quote (`adc30fe6`). This changes rendered quotes
+  in existing docs too.
+- *Module comment placement:* a class description must be a floating module
+  comment, so it needs a blank line after it. Without one, it attaches to the
+  first type, `ocamlformat` keeps it there, and odoc no longer uses it as the
+  module synopsis on parent pages (`742d1a77`). This resolves the "accepted
+  effect" noted below.
 
 *Changes (four commits, each independently revertible, tree clean after
 each):*
@@ -545,7 +592,11 @@ each):*
    val (Interface mode); L2 stays doc-less (deferred).
 
 Accepted effect: `ocamlformat` may reposition module comments onto the
-first declaration — fine (recorded in the inventory above).
+first declaration. Superseded: a blank line after the module comment keeps it
+in place (`742d1a77`); see the status note above.
+
+*Open for Phase 3:* the L2 class-method docs (`class-button/` pages) are
+still undocumented; they are outside this phase's list and need a decision.
 
 *Acceptance (after each commit, and cumulatively):*
 ```bash

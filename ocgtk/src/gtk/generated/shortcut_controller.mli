@@ -1,6 +1,48 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutController: ShortcutController *)
 
+(** Manages keyboard shortcuts and their activation.
+
+    Most common shortcuts are using this controller implicitly, e.g. by adding a
+    mnemonic underline to a [Gtk.Label], or by installing a key binding using
+    [Gtk.WidgetClass.add_binding], or by adding accelerators to global actions
+    using [Gtk.Application.set_accels_for_action].
+
+    But it is possible to create your own shortcut controller, and add shortcuts
+    to it.
+
+    [GtkShortcutController] implements [Gio.ListModel] for querying the
+    shortcuts that have been added to it.
+
+    {b GtkShortcutController as GtkBuildable}
+
+    [GtkShortcutController]s can be created in [Gtk.Builder] ui files, to set up
+    shortcuts in the same place as the widgets.
+
+    An example of a UI definition fragment with [GtkShortcutController]:
+
+    {[
+      <object class='GtkButton'>
+        <child>
+          <object class='GtkShortcutController'>
+            <property name='scope'>managed</property>
+            <child>
+              <object class='GtkShortcut'>
+                <property name='trigger'>&lt;Control&gt;k</property>
+                <property name='action'>activate</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    ]}
+
+    This example creates a [Gtk.ActivateAction] for triggering the [activate]
+    signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
+    syntax for other kinds of [Gtk.ShortcutAction]. See
+    [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
+    triggers. *)
+
 type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
@@ -14,15 +56,14 @@ external new_for_model : Ocgtk_gio.Gio.Wrappers.List_model.t -> t
 
 external set_scope : t -> Gtk_enums.shortcutscope -> unit
   = "ml_gtk_shortcut_controller_set_scope"
-(** Sets the controller to have the given @scope.
+(** Sets the controller to have the given [scope].
 
-The scope allows shortcuts to be activated outside of the normal
-event propagation. In particular, it allows installing global
-keyboard shortcuts that can be activated even when a widget does
-not have focus.
+    The scope allows shortcuts to be activated outside of the normal event
+    propagation. In particular, it allows installing global keyboard shortcuts
+    that can be activated even when a widget does not have focus.
 
-With %GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated
-when the widget has focus. *)
+    With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
+    widget has focus. *)
 
 external set_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit
   = "ml_gtk_shortcut_controller_set_mnemonics_modifiers"
@@ -32,7 +73,7 @@ external set_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit
     allow activation of shortcuts with mnemonics triggers.
 
     GTK normally uses the Alt modifier for mnemonics, except in
-    `GtkPopoverMenu`s, where mnemonics can be triggered without any modifiers.
+    [GtkPopoverMenu]s, where mnemonics can be triggered without any modifiers.
     It should be very rarely necessary to change this, and doing so is likely to
     interfere with other shortcuts.
 
@@ -42,16 +83,16 @@ external set_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit
 
 external remove_shortcut : t -> Shortcut.t -> unit
   = "ml_gtk_shortcut_controller_remove_shortcut"
-(** Removes @shortcut from the list of shortcuts handled by @self.
+(** Removes [shortcut] from the list of shortcuts handled by [self].
 
-If @shortcut had not been added to @controller or this controller
-uses an external shortcut list, this function does nothing. *)
+    If [shortcut] had not been added to [controller] or this controller uses an
+    external shortcut list, this function does nothing. *)
 
 external get_scope : t -> Gtk_enums.shortcutscope
   = "ml_gtk_shortcut_controller_get_scope"
 (** Gets the scope for when this controller activates its shortcuts.
 
-    See [method@Gtk.ShortcutController.set_scope] for details. *)
+    See [Gtk.ShortcutController.set_scope] for details. *)
 
 external get_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype
   = "ml_gtk_shortcut_controller_get_mnemonics_modifiers"
@@ -60,10 +101,10 @@ external get_mnemonics_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype
 
 external add_shortcut : t -> Shortcut.t -> unit
   = "ml_gtk_shortcut_controller_add_shortcut"
-(** Adds @shortcut to the list of shortcuts handled by @self.
+(** Adds [shortcut] to the list of shortcuts handled by [self].
 
-If this controller uses an external shortcut list, this
-function does nothing. *)
+    If this controller uses an external shortcut list, this function does
+    nothing. *)
 
 (* Properties *)
 

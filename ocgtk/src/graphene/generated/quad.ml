@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Quad: Quad *)
 
-type t = [ `quad ] Gobject.obj
 (** A 4 vertex quadrilateral, as represented by four #graphene_point_t.
 
     The contents of a #graphene_quad_t are private and should never be accessed
     directly. *)
+
+type t = [ `quad ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_quad_alloc"
 (** Create a new Quad *)
@@ -32,6 +33,6 @@ external contains : t -> Point.t -> bool = "ml_graphene_quad_contains"
 *)
 
 external bounds : t -> Rect.t = "ml_graphene_quad_bounds"
-(** Computes the bounding rectangle of @q and places it into @r. *)
+(** Computes the bounding rectangle of [q] and places it into [r]. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_graphene_quad_get_type"

@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StrokeNode: StrokeNode *)
 
+(** A render node that will fill the area determined by stroking the the given
+    [Gsk.Path] using the [Gsk.Stroke] attributes. *)
+
 type t = [ `stroke_node | `render_node ] Gobject.obj
 
 external new_ :
@@ -13,12 +16,11 @@ external new_ :
 (* Methods *)
 
 external get_stroke : t -> Stroke.t = "ml_gsk_stroke_node_get_stroke"
-(** Retrieves the stroke attributes used in this @node. *)
+(** Retrieves the stroke attributes used in this [node]. *)
 
 external get_path : t -> Path_and__path_measure_and__path_point.Path.t
   = "ml_gsk_stroke_node_get_path"
-(** Retrieves the path that will be stroked with the contents of
-the @node. *)
+(** Retrieves the path that will be stroked with the contents of the [node]. *)
 
 external get_child : t -> Render_node.t = "ml_gsk_stroke_node_get_child"
-(** Gets the child node that is getting drawn by the given @node. *)
+(** Gets the child node that is getting drawn by the given [node]. *)

@@ -1,6 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooser: ColorChooser *)
 
+(** [GtkColorChooser] is an interface that is implemented by widgets for
+    choosing colors.
+
+    Depending on the situation, colors may be allowed to have alpha
+    (translucency).
+
+    In GTK, the main widgets that implement this interface are
+    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+
 type t = [ `color_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
@@ -32,20 +41,19 @@ external add_palette :
   unit = "ml_gtk_color_chooser_add_palette"
 (** Adds a palette to the color chooser.
 
-If @orientation is horizontal, the colors are grouped in rows,
-with @colors_per_line colors in each row. If @horizontal is %FALSE,
-the colors are grouped in columns instead.
+    If [orientation] is horizontal, the colors are grouped in rows, with
+    [colors_per_line] colors in each row. If [horizontal] is [FALSE], the colors
+    are grouped in columns instead.
 
-The default color palette of [class@Gtk.ColorChooserWidget] has
-45 colors, organized in columns of 5 colors (this includes some
-grays).
+    The default color palette of [Gtk.ColorChooserWidget] has 45 colors,
+    organized in columns of 5 colors (this includes some grays).
 
-The layout of the color chooser widget works best when the
-palettes have 9-10 columns.
+    The layout of the color chooser widget works best when the palettes have
+    9-10 columns.
 
-Calling this function for the first time has the side effect
-of removing the default color palette from the color chooser.
+    Calling this function for the first time has the side effect of removing the
+    default color palette from the color chooser.
 
-If @colors is %NULL, removes all previously added palettes. *)
+    If [colors] is [NULL], removes all previously added palettes. *)
 
 (* Properties *)

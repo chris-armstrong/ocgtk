@@ -1,6 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleAction: SimpleAction *)
 
+(** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
+    interface. This is the easiest way to create an action for purposes of
+    adding it to a [Gio.SimpleActionGroup]. *)
+
 type t = [ `simple_action | `object_ ] Gobject.obj
 
 external new_ : string -> Gvariant_type.t option -> t = "ml_g_simple_action_new"
@@ -22,14 +26,13 @@ external set_state_hint : t -> Gvariant.t option -> unit
 external set_state : t -> Gvariant.t -> unit = "ml_g_simple_action_set_state"
 (** Sets the state of the action.
 
-This directly updates the 'state' property to the given value.
+    This directly updates the 'state' property to the given value.
 
-This should only be called by the implementor of the action.  Users
-of the action should not attempt to directly modify the 'state'
-property.  Instead, they should call g_action_change_state() to
-request the change.
+    This should only be called by the implementor of the action. Users of the
+    action should not attempt to directly modify the 'state' property. Instead,
+    they should call g_action_change_state() to request the change.
 
-If the @value GVariant is floating, it is consumed. *)
+    If the [value] GVariant is floating, it is consumed. *)
 
 external set_enabled : t -> bool -> unit = "ml_g_simple_action_set_enabled"
 (** Sets the action as enabled or not.

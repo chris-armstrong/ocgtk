@@ -1,6 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufAnimation: PixbufAnimation *)
 
+(** An opaque object representing an animation.
+
+    The GdkPixBuf library provides a simple mechanism to load and represent
+    animations. An animation is conceptually a series of frames to be displayed
+    over time.
+
+    The animation may not be represented as a series of frames internally; for
+    example, it may be stored as a sprite and instructions for moving the sprite
+    around a background.
+
+    To display an animation you don't need to understand its representation,
+    however; you just ask [GdkPixbuf] what should be displayed at a given point
+    in time. *)
+
 type t = [ `pixbuf_animation | `object_ ] Gobject.obj
 
 external new_from_file : string -> (t, GError.t) result
@@ -28,7 +42,7 @@ external is_static_image : t -> bool = "ml_gdk_pixbuf_animation_is_static_image"
 (** Checks whether the animation is a static image.
 
     If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-    out to be a plain, unanimated image, then this function will return `TRUE`.
+    out to be a plain, unanimated image, then this function will return [TRUE].
     Use gdk_pixbuf_animation_get_static_image() to retrieve the image. *)
 
 external get_width : t -> int = "ml_gdk_pixbuf_animation_get_width"
@@ -46,7 +60,7 @@ external get_static_image : t -> Pixbuf.t
     something more sophisticated depending on the file format.
 
     If an animation hasn't loaded any frames yet, this function will return
-    `NULL`. *)
+    [NULL]. *)
 
 external get_height : t -> int = "ml_gdk_pixbuf_animation_get_height"
 (** Queries the height of the bounding box of a pixbuf animation. *)

@@ -1,6 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryTextureBuilder: MemoryTextureBuilder *)
 
+(** Constructs [Gdk.Texture] objects from system memory provided via
+    [GLib.Bytes].
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
+    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
+    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
+    texture.
+
+    [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+*)
+
 type t = [ `memory_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_memory_texture_builder_new"
@@ -12,23 +26,22 @@ external set_width : t -> int -> unit
   = "ml_gdk_memory_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling [method@Gdk.MemoryTextureBuilder.build]
-    and conform to size requirements of the provided format. *)
+    The width must be set before calling [Gdk.MemoryTextureBuilder.build] and
+    conform to size requirements of the provided format. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_memory_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture.
 
-    See [method@Gdk.MemoryTextureBuilder.set_update_region] for an explanation.
-*)
+    See [Gdk.MemoryTextureBuilder.set_update_region] for an explanation. *)
 
 external set_update_region :
   t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
   = "ml_gdk_memory_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture.
 
-    Together with [property@Gdk.MemoryTextureBuilder:update-texture], this
-    describes an update of a previous texture.
+    Together with [Gdk.MemoryTextureBuilder:update-texture], this describes an
+    update of a previous texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then
@@ -40,32 +53,31 @@ external set_update_region :
 
 external set_stride_for_plane : t -> int -> Gsize.t -> unit
   = "ml_gdk_memory_texture_builder_set_stride_for_plane"
-(** Sets the stride of the texture for @plane. *)
+(** Sets the stride of the texture for [plane]. *)
 
 external set_stride : t -> Gsize.t -> unit
   = "ml_gdk_memory_texture_builder_set_stride"
 (** Sets the rowstride of the bytes used.
 
-    The rowstride must be set before calling
-    [method@Gdk.MemoryTextureBuilder.build]. *)
+    The rowstride must be set before calling [Gdk.MemoryTextureBuilder.build].
+*)
 
 external set_offset : t -> int -> Gsize.t -> unit
   = "ml_gdk_memory_texture_builder_set_offset"
-(** Sets the offset of the texture for @plane. *)
+(** Sets the offset of the texture for [plane]. *)
 
 external set_height : t -> int -> unit
   = "ml_gdk_memory_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling
-    [method@Gdk.MemoryTextureBuilder.build] and conform to size requirements of
-    the provided format. *)
+    The height must be set before calling [Gdk.MemoryTextureBuilder.build] and
+    conform to size requirements of the provided format. *)
 
 external set_format : t -> Gdk_enums.memoryformat -> unit
   = "ml_gdk_memory_texture_builder_set_format"
 (** Sets the format of the bytes.
 
-    The default is `GDK_MEMORY_R8G8B8A8_PREMULTIPLIED`. *)
+    The default is [GDK_MEMORY_R8G8B8A8_PREMULTIPLIED]. *)
 
 external set_color_state :
   t -> Cicp_params_and__color_state.Color_state.t -> unit
@@ -79,8 +91,7 @@ external set_bytes : t -> Glib_bytes.t option -> unit
   = "ml_gdk_memory_texture_builder_set_bytes"
 (** Sets the data to be shown but the texture.
 
-    The bytes must be set before calling
-    [method@Gdk.MemoryTextureBuilder.build]. *)
+    The bytes must be set before calling [Gdk.MemoryTextureBuilder.build]. *)
 
 external get_width : t -> int = "ml_gdk_memory_texture_builder_get_width"
 (** Gets the width previously set via gdk_memory_texture_builder_set_width() or
@@ -89,12 +100,13 @@ external get_width : t -> int = "ml_gdk_memory_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_memory_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_memory_texture_builder_set_update_texture() or %NULL if none was set. *)
+    gdk_memory_texture_builder_set_update_texture() or [NULL] if none was set.
+*)
 
 external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
   = "ml_gdk_memory_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_memory_texture_builder_set_update_region() or %NULL if none was set. *)
+    gdk_memory_texture_builder_set_update_region() or [NULL] if none was set. *)
 
 external get_stride_for_plane : t -> int -> Gsize.t
   = "ml_gdk_memory_texture_builder_get_stride_for_plane"
@@ -127,10 +139,10 @@ external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
 external get_bytes : t -> Glib_bytes.t option
   = "ml_gdk_memory_texture_builder_get_bytes"
 (** Gets the bytes previously set via gdk_memory_texture_builder_set_bytes() or
-    %NULL if none was set. *)
+    [NULL] if none was set. *)
 
 external build : t -> Texture.t = "ml_gdk_memory_texture_builder_build"
-(** Builds a new `GdkTexture` with the values set up in the builder.
+(** Builds a new [GdkTexture] with the values set up in the builder.
 
     Note that it is a programming error to call this function if any mandatory
     property has not been set.

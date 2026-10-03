@@ -1,6 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FlattenListModel: FlattenListModel *)
 
+(** A list model that concatenates other list models.
+
+    [GtkFlattenListModel] takes a list model containing list models, and
+    flattens it into a single model. Each list model becomes a section in the
+    single model. *)
+
 type t = [ `flatten_list_model | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t

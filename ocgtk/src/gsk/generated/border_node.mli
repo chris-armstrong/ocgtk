@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BorderNode: BorderNode *)
 
+(** A render node for a border. *)
+
 type t = [ `border_node | `render_node ] Gobject.obj
 
 external new_ :

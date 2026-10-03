@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* VolumeButton: VolumeButton *)
 
+(** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
+    control.
+
+    An example GtkVolumeButton *)
+
 type t =
   [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]
   Gobject.obj

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoolFilter: BoolFilter *)
 
+(** Evaluates a boolean expression to determine whether to include items. *)
+
 type t = [ `bool_filter | `filter | `object_ ] Gobject.obj
 
 external new_ : Expression.t option -> t = "ml_gtk_bool_filter_new"
@@ -16,7 +18,7 @@ external set_expression : t -> Expression.t option -> unit
 (** Sets the expression that the filter uses to check if items should be
     filtered.
 
-    The expression must have a value type of `G_TYPE_BOOLEAN`. *)
+    The expression must have a value type of [G_TYPE_BOOLEAN]. *)
 
 external get_invert : t -> bool = "ml_gtk_bool_filter_get_invert"
 (** Returns whether the filter inverts the expression. *)

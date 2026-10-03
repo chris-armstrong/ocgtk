@@ -1,6 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StyleProvider: StyleProvider *)
 
+(** An interface for style information used by [Gtk.StyleContext].
+
+    See [Gtk.StyleContext.add_provider] and
+    [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
+
+    GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
+*)
+
 type t = [ `style_provider ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t

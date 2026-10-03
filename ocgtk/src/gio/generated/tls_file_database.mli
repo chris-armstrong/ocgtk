@@ -1,6 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsFileDatabase: TlsFileDatabase *)
 
+(** [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
+    their certificate information from a file. It is an interface which TLS
+    library specific subtypes implement. *)
+
 type t = [ `tls_file_database ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t

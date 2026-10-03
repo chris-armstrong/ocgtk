@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectManager: DBusObjectManager *)
 
+(** The [GDBusObjectManager] type is the base type for service- and client-side
+    implementations of the standardized [org.freedesktop.DBus.ObjectManager]
+    interface.
+
+    See [Gio.DBusObjectManagerClient] for the client-side implementation and
+    [Gio.DBusObjectManagerServer] for the service-side implementation. *)
+
 type t = [ `d_bus_object_manager ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
@@ -11,16 +18,16 @@ external from_gobject : 'a Gobject.obj -> t
 external get_objects :
   t -> D_bus_interface_and__d_bus_object.D_bus_object.t list
   = "ml_g_dbus_object_manager_get_objects"
-(** Gets all #GDBusObject objects known to @manager. *)
+(** Gets all [GDBusObject] objects known to [manager]. *)
 
 external get_object_path : t -> string
   = "ml_g_dbus_object_manager_get_object_path"
-(** Gets the object path that @manager is for. *)
+(** Gets the object path that [manager] is for. *)
 
 external get_object :
   t -> string -> D_bus_interface_and__d_bus_object.D_bus_object.t option
   = "ml_g_dbus_object_manager_get_object"
-(** Gets the #GDBusObject at @object_path, if any. *)
+(** Gets the [GDBusObject] at [object_path], if any. *)
 
 external get_interface :
   t ->
@@ -28,8 +35,7 @@ external get_interface :
   string ->
   D_bus_interface_and__d_bus_object.D_bus_interface.t option
   = "ml_g_dbus_object_manager_get_interface"
-(** Gets the interface proxy for @interface_name at @object_path, if
-any. *)
+(** Gets the interface proxy for [interface_name] at [object_path], if any. *)
 
 val on_interface_added :
   ?after:bool ->

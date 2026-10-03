@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RepeatingLinearGradientNode: RepeatingLinearGradientNode *)
 
+(** A render node for a repeating linear gradient. *)
+
 type t = [ `repeating_linear_gradient_node | `render_node ] Gobject.obj
 
 external new_ :

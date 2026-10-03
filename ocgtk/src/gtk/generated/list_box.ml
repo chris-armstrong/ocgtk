@@ -1,6 +1,69 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBox: ListBox *)
 
+(** Shows a vertical list.
+
+    An example GtkListBox
+
+    A [GtkListBox] only contains [GtkListBoxRow] children. These rows can by
+    dynamically sorted and filtered, and headers can be added dynamically
+    depending on the row content. It also allows keyboard and mouse navigation
+    and selection like a typical list.
+
+    Using [GtkListBox] is often an alternative to [GtkTreeView], especially when
+    the list contents has a more complicated layout than what is allowed by a
+    [GtkCellRenderer], or when the contents is interactive (i.e. has a button in
+    it).
+
+    Although a [GtkListBox] must have only [GtkListBoxRow] children, you can add
+    any kind of widget to it via [Gtk.ListBox.prepend], [Gtk.ListBox.append] and
+    [Gtk.ListBox.insert] and a [GtkListBoxRow] widget will automatically be
+    inserted between the list and the widget.
+
+    [GtkListBoxRows] can be marked as activatable or selectable. If a row is
+    activatable, [Gtk.ListBox::row-activated] will be emitted for it when the
+    user tries to activate it. If it is selectable, the row will be marked as
+    selected when the user tries to select it.
+
+    {b GtkListBox as GtkBuildable}
+
+    The [GtkListBox] implementation of the [GtkBuildable] interface supports
+    setting a child as the placeholder by specifying “placeholder” as the “type”
+    attribute of a [<child>] element. See [Gtk.ListBox.set_placeholder] for
+    info.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.ListBox::move-cursor]
+    - [Gtk.ListBox::select-all]
+    - [Gtk.ListBox::toggle-cursor-row]
+    - [Gtk.ListBox::unselect-all]
+
+    {b CSS nodes}
+
+    {[
+    list[.separators][.rich-list][.navigation-sidebar][.boxed-list]
+    ╰── row[.activatable]
+    ]}
+
+    [GtkListBox] uses a single CSS node named list. It may carry the .separators
+    style class, when the [Gtk.ListBox:show-separators] property is set. Each
+    [GtkListBoxRow] uses a single CSS node named row. The row nodes get the
+    .activatable style class added when appropriate.
+
+    It may also carry the .boxed-list style class. In this case, the list will
+    be automatically surrounded by a frame and have separators.
+
+    The main list node may also carry style classes to select the style of list
+    presentation: .rich-list, .navigation-sidebar or .data-table.
+
+    {b Accessibility}
+
+    [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
+    uses the [Gtk.AccessibleRole.list_item] role. *)
+
 type t = [ `list_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_list_box_new"
@@ -10,10 +73,10 @@ external new_ : unit -> t = "ml_gtk_list_box_new"
 
 external unselect_row : t -> List_box_row.t -> unit
   = "ml_gtk_list_box_unselect_row"
-(** Unselects a single row of @box, if the selection mode allows it. *)
+(** Unselects a single row of [box], if the selection mode allows it. *)
 
 external unselect_all : t -> unit = "ml_gtk_list_box_unselect_all"
-(** Unselect all children of @box, if the selection mode allows it. *)
+(** Unselect all children of [box], if the selection mode allows it. *)
 
 external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
   = "ml_gtk_list_box_set_tab_behavior"
@@ -40,33 +103,31 @@ external set_placeholder :
 
 external set_adjustment : t -> Adjustment.t option -> unit
   = "ml_gtk_list_box_set_adjustment"
-(** Sets the adjustment (if any) that the widget uses to
-for vertical scrolling.
+(** Sets the adjustment (if any) that the widget uses to for vertical scrolling.
 
-For instance, this is used to get the page size for
-PageUp/Down key handling.
+    For instance, this is used to get the page size for PageUp/Down key
+    handling.
 
-In the normal case when the @box is packed inside
-a `GtkScrolledWindow` the adjustment from that will
-be picked up automatically, so there is no need
-to manually do that. *)
+    In the normal case when the [box] is packed inside a [GtkScrolledWindow] the
+    adjustment from that will be picked up automatically, so there is no need to
+    manually do that. *)
 
 external set_activate_on_single_click : t -> bool -> unit
   = "ml_gtk_list_box_set_activate_on_single_click"
-(** If @single is %TRUE, rows will be activated when you click on them,
-otherwise you need to double-click. *)
+(** If [single] is [TRUE], rows will be activated when you click on them,
+    otherwise you need to double-click. *)
 
 external select_row : t -> List_box_row.t option -> unit
   = "ml_gtk_list_box_select_row"
-(** Make @row the currently selected row. *)
+(** Make [row] the currently selected row. *)
 
 external select_all : t -> unit = "ml_gtk_list_box_select_all"
-(** Select all children of @box, if the selection mode allows it. *)
+(** Select all children of [box], if the selection mode allows it. *)
 
 external remove_all : t -> unit = "ml_gtk_list_box_remove_all"
-(** Removes all rows from @box.
+(** Removes all rows from [box].
 
-This function does nothing if @box is backed by a model. *)
+    This function does nothing if [box] is backed by a model. *)
 
 external remove :
   t ->
@@ -74,7 +135,7 @@ external remove :
   .Widget
   .t ->
   unit = "ml_gtk_list_box_remove"
-(** Removes a child from @box. *)
+(** Removes a child from [box]. *)
 
 external prepend :
   t ->
@@ -90,25 +151,22 @@ external prepend :
 external invalidate_sort : t -> unit = "ml_gtk_list_box_invalidate_sort"
 (** Update the sorting for all rows.
 
-Call this when result
-of the sort function on the @box is changed due
-to an external factor. *)
+    Call this when result of the sort function on the [box] is changed due to an
+    external factor. *)
 
 external invalidate_headers : t -> unit = "ml_gtk_list_box_invalidate_headers"
 (** Update the separators for all rows.
 
-Call this when result
-of the header function on the @box is changed due
-to an external factor. *)
+    Call this when result of the header function on the [box] is changed due to
+    an external factor. *)
 
 external invalidate_filter : t -> unit = "ml_gtk_list_box_invalidate_filter"
 (** Update the filtering for all rows.
 
-Call this when result
-of the filter function on the @box is changed due
-to an external factor. For instance, this would be used
-if the filter function just looked for a specific search
-string and the entry with the search string has changed. *)
+    Call this when result of the filter function on the [box] is changed due to
+    an external factor. For instance, this would be used if the filter function
+    just looked for a specific search string and the entry with the search
+    string has changed. *)
 
 external insert :
   t ->
@@ -117,13 +175,13 @@ external insert :
   .t ->
   int ->
   unit = "ml_gtk_list_box_insert"
-(** Insert the @child into the @box at @position.
+(** Insert the [child] into the [box] at [position].
 
-If a sort function is
-set, the widget will actually be inserted at the calculated position.
+    If a sort function is set, the widget will actually be inserted at the
+    calculated position.
 
-If @position is -1, or larger than the total number of items in the
-@box, then the @child will be appended to the end. *)
+    If [position] is -1, or larger than the total number of items in the [box],
+    then the [child] will be appended to the end. *)
 
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior
   = "ml_gtk_list_box_get_tab_behavior"
@@ -143,21 +201,21 @@ external get_selected_rows : t -> List_box_row.t list
 
 external get_selected_row : t -> List_box_row.t option
   = "ml_gtk_list_box_get_selected_row"
-(** Gets the selected row, or %NULL if no rows are selected.
+(** Gets the selected row, or [NULL] if no rows are selected.
 
     Note that the box may allow multiple selection, in which case you should use
-    [method@Gtk.ListBox.selected_foreach] to find all selected rows. *)
+    [Gtk.ListBox.selected_foreach] to find all selected rows. *)
 
 external get_row_at_y : t -> int -> List_box_row.t option
   = "ml_gtk_list_box_get_row_at_y"
-(** Gets the row at the @y position. *)
+(** Gets the row at the [y] position. *)
 
 external get_row_at_index : t -> int -> List_box_row.t option
   = "ml_gtk_list_box_get_row_at_index"
 (** Gets the n-th child in the list (not counting headers).
 
-If @index_ is negative or larger than the number of items in the
-list, %NULL is returned. *)
+    If [index_] is negative or larger than the number of items in the list,
+    [NULL] is returned. *)
 
 external get_adjustment : t -> Adjustment.t option
   = "ml_gtk_list_box_get_adjustment"
@@ -177,13 +235,13 @@ external drag_highlight_row : t -> List_box_row.t -> unit
   = "ml_gtk_list_box_drag_highlight_row"
 (** Add a drag highlight to a row.
 
-This is a helper function for implementing DnD onto a `GtkListBox`.
-The passed in @row will be highlighted by setting the
-%GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted
-row will be unhighlighted.
+    This is a helper function for implementing DnD onto a [GtkListBox]. The
+    passed in [row] will be highlighted by setting the
+    [GTK_STATE_FLAG_DROP_ACTIVE] state and any previously highlighted row will
+    be unhighlighted.
 
-The row will also be unhighlighted when the widget gets
-a drag leave event. *)
+    The row will also be unhighlighted when the widget gets a drag leave event.
+*)
 
 external append :
   t ->

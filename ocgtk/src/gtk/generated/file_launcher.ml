@@ -1,6 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileLauncher: FileLauncher *)
 
+(** Asynchronous API to open a file with an application.
+
+    [GtkFileLauncher] collects the arguments that are needed to open the file.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.FileLauncher.launch] function.
+
+    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+
 type t = [ `file_launcher | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.File.t option -> t
@@ -26,14 +38,13 @@ external set_always_ask : t -> bool -> unit
 external open_containing_folder_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_open_containing_folder_finish"
-(** Finishes the [method@Gtk.FileLauncher.open_containing_folder] call and
-    returns the result. *)
+(** Finishes the [Gtk.FileLauncher.open_containing_folder] call and returns the
+    result. *)
 
 external launch_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_launch_finish"
-(** Finishes the [method@Gtk.FileLauncher.launch] call and returns the result.
-*)
+(** Finishes the [Gtk.FileLauncher.launch] call and returns the result. *)
 
 external get_writable : t -> bool = "ml_gtk_file_launcher_get_writable"
 (** Returns whether to make the file writable for the handler. *)

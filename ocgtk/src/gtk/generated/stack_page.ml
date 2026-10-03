@@ -1,12 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackPage: StackPage *)
 
+(** An auxiliary class used by [GtkStack]. *)
+
 type t = [ `stack_page | `object_ ] Gobject.obj
 
 (* Methods *)
 
 external set_visible : t -> bool -> unit = "ml_gtk_stack_page_set_visible"
-(** Sets whether @page is visible in its `GtkStack`. *)
+(** Sets whether [page] is visible in its [GtkStack]. *)
 
 external set_use_underline : t -> bool -> unit
   = "ml_gtk_stack_page_set_use_underline"
@@ -26,10 +28,9 @@ external set_icon_name : t -> string -> unit = "ml_gtk_stack_page_set_icon_name"
 (** Sets the icon name of the page. *)
 
 external get_visible : t -> bool = "ml_gtk_stack_page_get_visible"
-(** Returns whether @page is visible in its `GtkStack`.
+(** Returns whether [page] is visible in its [GtkStack].
 
-This is independent from the [property@Gtk.Widget:visible]
-property of its widget. *)
+    This is independent from the [Gtk.Widget:visible] property of its widget. *)
 
 external get_use_underline : t -> bool = "ml_gtk_stack_page_get_use_underline"
 (** Gets whether underlines in the page title indicate mnemonics. *)
@@ -52,6 +53,6 @@ external get_child :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_stack_page_get_child"
-(** Returns the stack child to which @self belongs. *)
+(** Returns the stack child to which [self] belongs. *)
 
 (* Properties *)

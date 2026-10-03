@@ -1,6 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StringSorter: StringSorter *)
 
+(** Sorts items by comparing strings.
+
+    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+
+    It does the comparison in a linguistically correct way using the current
+    locale by normalizing Unicode strings and possibly case-folding them before
+    performing the comparison. *)
+
 type t = [ `string_sorter | `sorter | `object_ ] Gobject.obj
 
 external new_ : Expression.t option -> t = "ml_gtk_string_sorter_new"
@@ -16,7 +24,7 @@ external set_expression : t -> Expression.t option -> unit
   = "ml_gtk_string_sorter_set_expression"
 (** Sets the expression that is evaluated to obtain strings from items.
 
-    The expression must have the type %G_TYPE_STRING. *)
+    The expression must have the type [G_TYPE_STRING]. *)
 
 external set_collation : t -> Gtk_enums.collation -> unit
   = "ml_gtk_string_sorter_set_collation"

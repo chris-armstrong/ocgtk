@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiSorter: MultiSorter *)
 
+(** Combines multiple sorters by trying them in turn.
+
+    If the first sorter compares two items as equal, the second is tried next,
+    and so on. *)
+
 type t = [ `multi_sorter | `sorter | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_multi_sorter_new"
@@ -9,16 +14,16 @@ external new_ : unit -> t = "ml_gtk_multi_sorter_new"
 (* Methods *)
 
 external remove : t -> int -> unit = "ml_gtk_multi_sorter_remove"
-(** Removes the sorter at the given @position from the list of sorter
-used by @self.
+(** Removes the sorter at the given [position] from the list of sorter used by
+    [self].
 
-If @position is larger than the number of sorters, nothing happens. *)
+    If [position] is larger than the number of sorters, nothing happens. *)
 
 external append : t -> Sorter.t -> unit = "ml_gtk_multi_sorter_append"
-(** Add @sorter to @self to use for sorting at the end.
+(** Add [sorter] to [self] to use for sorting at the end.
 
-@self will consult all existing sorters before it will
-sort with the given @sorter. *)
+    [self] will consult all existing sorters before it will sort with the given
+    [sorter]. *)
 
 (* Properties *)
 

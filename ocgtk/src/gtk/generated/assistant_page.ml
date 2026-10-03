@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AssistantPage: AssistantPage *)
 
+(** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
+
 type t = [ `assistant_page | `object_ ] Gobject.obj
 
 (* Methods *)
@@ -10,7 +12,7 @@ external get_child :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_assistant_page_get_child"
-(** Returns the child to which @page belongs. *)
+(** Returns the child to which [page] belongs. *)
 
 (* Properties *)
 

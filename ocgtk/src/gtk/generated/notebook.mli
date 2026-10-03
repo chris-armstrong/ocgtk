@@ -1,6 +1,122 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Notebook: Notebook *)
 
+(** Switches between children using tabs.
+
+    An example GtkNotebook
+
+    There are many configuration options for [GtkNotebook]. Among other things,
+    you can choose on which edge the tabs appear (see
+    [Gtk.Notebook.set_tab_pos]), whether, if there are too many tabs to fit the
+    notebook should be made bigger or scrolling arrows added (see
+    [Gtk.Notebook.set_scrollable]), and whether there will be a popup menu
+    allowing the users to switch pages. (see [Gtk.Notebook.popup_enable]).
+
+    {b GtkNotebook as GtkBuildable}
+
+    The [GtkNotebook] implementation of the [GtkBuildable] interface supports
+    placing children into tabs by specifying “tab” as the “type” attribute of a
+    [<child>] element. Note that the content of the tab must be created before
+    the tab can be filled. A tab child can be specified without specifying a
+    [<child>] type attribute.
+
+    To add a child widget in the notebooks action area, specify “action-start”
+    or “action-end” as the “type” attribute of the [<child>] element.
+
+    An example of a UI definition fragment with [GtkNotebook]:
+
+    {[
+    <object class=”GtkNotebook”>
+      <child>
+        <object class=”GtkLabel” id=”notebook-content”>
+          <property name=”label”>Content</property>
+        </object>
+      </child>
+      <child type=”tab”>
+        <object class=”GtkLabel” id=”notebook-tab”>
+          <property name=”label”>Tab</property>
+        </object>
+      </child>
+    </object>
+    ]}
+
+    {b Shortcuts and Gestures}
+
+    [GtkNotebook] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+    - <kbd>Home</kbd> moves the focus to the first tab.
+    - <kbd>End</kbd> moves the focus to the last tab.
+
+    Additionally, the following signals have default keybindings:
+
+    - [Gtk.Notebook::change-current-page]
+    - [Gtk.Notebook::focus-tab]
+    - [Gtk.Notebook::move-focus-out]
+    - [Gtk.Notebook::reorder-tab]
+    - [Gtk.Notebook::select-page]
+
+    Tabs support drag-and-drop between notebooks sharing the same [group-name],
+    or to new windows by handling the [::create-window] signal.
+
+    {b Actions}
+
+    [GtkNotebook] defines a set of built-in actions:
+
+    - [menu.popup] opens the tabs context menu.
+
+    {b CSS nodes}
+
+    {[
+    notebook
+    ├── header.top
+    │   ├── [<action widget>]
+    │   ├── tabs
+    │   │   ├── [arrow]
+    │   │   ├── tab
+    │   │   │   ╰── <tab label>
+    ┊   ┊   ┊
+    │   │   ├── tab[.reorderable-page]
+    │   │   │   ╰── <tab label>
+    │   │   ╰── [arrow]
+    │   ╰── [<action widget>]
+    │
+    ╰── stack
+        ├── <child>
+        ┊
+        ╰── <child>
+    ]}
+
+    [GtkNotebook] has a main CSS node with name [notebook], a subnode with name
+    [header] and below that a subnode with name [tabs] which contains one
+    subnode per tab with name [tab].
+
+    If action widgets are present, their CSS nodes are placed next to the [tabs]
+    node. If the notebook is scrollable, CSS nodes with name [arrow] are placed
+    as first and last child of the [tabs] node.
+
+    The main node gets the [.frame] style class when the notebook has a border
+    (see [Gtk.Notebook.set_show_border]).
+
+    The header node gets one of the style class [.top], [.bottom], [.left] or
+    [.right], depending on where the tabs are placed. For reorderable pages, the
+    tab node gets the [.reorderable-page] class.
+
+    A [tab] node gets the [.dnd] style class while it is moved with
+    drag-and-drop.
+
+    The nodes are always arranged from left-to-right, regardless of text
+    direction.
+
+    {b Accessibility}
+
+    [GtkNotebook] uses the following roles:
+
+    - [Gtk.AccessibleRole.group] for the notebook widget
+    - [Gtk.AccessibleRole.tab_list] for the list of tabs
+    - [Gtk.AccessibleRole.tab] role for each tab
+    - [Gtk.AccessibleRole.tab_panel] for each page *)
+
 type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_notebook_new"
@@ -28,8 +144,8 @@ external set_tab_label_text :
   .t ->
   string ->
   unit = "ml_gtk_notebook_set_tab_label_text"
-(** Creates a new label and sets it as the tab label for the page
-containing @child. *)
+(** Creates a new label and sets it as the tab label for the page containing
+    [child]. *)
 
 external set_tab_label :
   t ->
@@ -41,10 +157,10 @@ external set_tab_label :
   .t
   option ->
   unit = "ml_gtk_notebook_set_tab_label"
-(** Changes the tab label for @child.
+(** Changes the tab label for [child].
 
-If %NULL is specified for @tab_label, then the page will
-have the label “page N”. *)
+    If [NULL] is specified for [tab_label], then the page will have the label
+    “page N”. *)
 
 external set_tab_detachable :
   t ->
@@ -53,51 +169,50 @@ external set_tab_detachable :
   .t ->
   bool ->
   unit = "ml_gtk_notebook_set_tab_detachable"
-(** Sets whether the tab can be detached from @notebook to another
-notebook or widget.
+(** Sets whether the tab can be detached from [notebook] to another notebook or
+    widget.
 
-Note that two notebooks must share a common group identifier
-(see [method@Gtk.Notebook.set_group_name]) to allow automatic tabs
-interchange between them.
+    Note that two notebooks must share a common group identifier (see
+    [Gtk.Notebook.set_group_name]) to allow automatic tabs interchange between
+    them.
 
-If you want a widget to interact with a notebook through DnD
-(i.e.: accept dragged tabs from it) it must be set as a drop
-destination by adding to it a [class@Gtk.DropTarget] controller that accepts
-the GType `GTK_TYPE_NOTEBOOK_PAGE`. The `:value` of said drop target will be
-preloaded with a [class@Gtk.NotebookPage] object that corresponds to the
-dropped tab, so you can process the value via `::accept` or `::drop` signals.
+    If you want a widget to interact with a notebook through DnD (i.e.: accept
+    dragged tabs from it) it must be set as a drop destination by adding to it a
+    [Gtk.DropTarget] controller that accepts the GType [GTK_TYPE_NOTEBOOK_PAGE].
+    The [:value] of said drop target will be preloaded with a [Gtk.NotebookPage]
+    object that corresponds to the dropped tab, so you can process the value via
+    [::accept] or [::drop] signals.
 
-Note that you should use [method@Gtk.Notebook.detach_tab] instead
-of [method@Gtk.Notebook.remove_page] if you want to remove the tab
-from the source notebook as part of accepting a drop. Otherwise,
-the source notebook will think that the dragged tab was removed
-from underneath the ongoing drag operation, and will initiate a
-drag cancel animation.
+    Note that you should use [Gtk.Notebook.detach_tab] instead of
+    [Gtk.Notebook.remove_page] if you want to remove the tab from the source
+    notebook as part of accepting a drop. Otherwise, the source notebook will
+    think that the dragged tab was removed from underneath the ongoing drag
+    operation, and will initiate a drag cancel animation.
 
-```c
-static void
-on_drag_data_received (GtkWidget        *widget,
-                       GdkDrop          *drop,
-                       GtkSelectionData *data,
-                       guint             time,
-                       gpointer          user_data)
-{
-  GtkDrag *drag;
-  GtkWidget *notebook;
-  GtkWidget **child;
+    {[
+    static void
+    on_drag_data_received (GtkWidget        *widget,
+                           GdkDrop          *drop,
+                           GtkSelectionData *data,
+                           guint             time,
+                           gpointer          user_data)
+    {
+      GtkDrag *drag;
+      GtkWidget *notebook;
+      GtkWidget **child;
 
-  drag = gtk_drop_get_drag (drop);
-  notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
-  child = (void*\) gtk_selection_data_get_data (data);
+      drag = gtk_drop_get_drag (drop);
+      notebook = g_object_get_data (drag, “gtk-notebook-drag-origin”);
+      child = (void*\) gtk_selection_data_get_data (data);
 
-  // process_widget (\*child);
+      // process_widget (\*child);
 
-  gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
-}
-```
+      gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+    }
+    ]}
 
-If you want a notebook to accept drags from other widgets,
-you will have to set your own DnD code to do it. *)
+    If you want a notebook to accept drags from other widgets, you will have to
+    set your own DnD code to do it. *)
 
 external set_show_tabs : t -> bool -> unit = "ml_gtk_notebook_set_show_tabs"
 (** Sets whether to show the tabs for the notebook or not. *)
@@ -118,7 +233,7 @@ external set_menu_label_text :
   .t ->
   string ->
   unit = "ml_gtk_notebook_set_menu_label_text"
-(** Creates a new label and sets it as the menu label of @child. *)
+(** Creates a new label and sets it as the menu label of [child]. *)
 
 external set_menu_label :
   t ->
@@ -130,24 +245,23 @@ external set_menu_label :
   .t
   option ->
   unit = "ml_gtk_notebook_set_menu_label"
-(** Changes the menu label for the page containing @child. *)
+(** Changes the menu label for the page containing [child]. *)
 
 external set_group_name : t -> string option -> unit
   = "ml_gtk_notebook_set_group_name"
-(** Sets a group name for @notebook.
+(** Sets a group name for [notebook].
 
-Notebooks with the same name will be able to exchange tabs
-via drag and drop. A notebook with a %NULL group name will
-not be able to exchange tabs with any other notebook. *)
+    Notebooks with the same name will be able to exchange tabs via drag and
+    drop. A notebook with a [NULL] group name will not be able to exchange tabs
+    with any other notebook. *)
 
 external set_current_page : t -> int -> unit
   = "ml_gtk_notebook_set_current_page"
-(** Switches to the page number @page_num.
+(** Switches to the page number [page_num].
 
-Note that due to historical reasons, GtkNotebook refuses
-to switch to a page unless the child widget is visible.
-Therefore, it is recommended to show child widgets before
-adding them to a notebook. *)
+    Note that due to historical reasons, GtkNotebook refuses to switch to a page
+    unless the child widget is visible. Therefore, it is recommended to show
+    child widgets before adding them to a notebook. *)
 
 external set_action_widget :
   t ->
@@ -156,11 +270,11 @@ external set_action_widget :
   .t ->
   Gtk_enums.packtype ->
   unit = "ml_gtk_notebook_set_action_widget"
-(** Sets @widget as one of the action widgets.
+(** Sets [widget] as one of the action widgets.
 
-Depending on the pack type the widget will be placed before
-or after the tabs. You can use a `GtkBox` if you need to pack
-more than one widget on the same side. *)
+    Depending on the pack type the widget will be placed before or after the
+    tabs. You can use a [GtkBox] if you need to pack more than one widget on the
+    same side. *)
 
 external reorder_child :
   t ->
@@ -169,11 +283,11 @@ external reorder_child :
   .t ->
   int ->
   unit = "ml_gtk_notebook_reorder_child"
-(** Reorders the page containing @child, so that it appears in position
-@position.
+(** Reorders the page containing [child], so that it appears in position
+    [position].
 
-If @position is greater than or equal to the number of children in
-the list or negative, @child will be moved to the end of the list. *)
+    If [position] is greater than or equal to the number of children in the list
+    or negative, [child] will be moved to the end of the list. *)
 
 external remove_page : t -> int -> unit = "ml_gtk_notebook_remove_page"
 (** Removes a page from the notebook given its index in the notebook. *)
@@ -197,8 +311,8 @@ external prepend_page_menu :
   .t
   option ->
   int = "ml_gtk_notebook_prepend_page_menu"
-(** Prepends a page to @notebook, specifying the widget to use as the
-label in the popup menu. *)
+(** Prepends a page to [notebook], specifying the widget to use as the label in
+    the popup menu. *)
 
 external prepend_page :
   t ->
@@ -210,7 +324,7 @@ external prepend_page :
   .t
   option ->
   int = "ml_gtk_notebook_prepend_page"
-(** Prepends a page to @notebook. *)
+(** Prepends a page to [notebook]. *)
 
 external popup_enable : t -> unit = "ml_gtk_notebook_popup_enable"
 (** Enables the popup menu.
@@ -249,8 +363,8 @@ external insert_page_menu :
   option ->
   int ->
   int = "ml_gtk_notebook_insert_page_menu"
-(** Insert a page into @notebook at the given position, specifying
-the widget to use as the label in the popup menu. *)
+(** Insert a page into [notebook] at the given position, specifying the widget
+    to use as the label in the popup menu. *)
 
 external insert_page :
   t ->
@@ -263,7 +377,7 @@ external insert_page :
   option ->
   int ->
   int = "ml_gtk_notebook_insert_page"
-(** Insert a page into @notebook at the given position. *)
+(** Insert a page into [notebook] at the given position. *)
 
 external get_tab_reorderable :
   t ->
@@ -283,8 +397,7 @@ external get_tab_label_text :
   .Widget
   .t ->
   string option = "ml_gtk_notebook_get_tab_label_text"
-(** Retrieves the text of the tab label for the page containing
-@child. *)
+(** Retrieves the text of the tab label for the page containing [child]. *)
 
 external get_tab_label :
   t ->
@@ -295,10 +408,10 @@ external get_tab_label :
   .Widget
   .t
   option = "ml_gtk_notebook_get_tab_label"
-(** Returns the tab label widget for the page @child.
+(** Returns the tab label widget for the page [child].
 
-%NULL is returned if @child is not in @notebook or
-if no tab label has specifically been set for @child. *)
+    [NULL] is returned if [child] is not in [notebook] or if no tab label has
+    specifically been set for [child]. *)
 
 external get_tab_detachable :
   t ->
@@ -306,7 +419,7 @@ external get_tab_detachable :
   .Widget
   .t ->
   bool = "ml_gtk_notebook_get_tab_detachable"
-(** Returns whether the tab contents can be detached from @notebook. *)
+(** Returns whether the tab contents can be detached from [notebook]. *)
 
 external get_show_tabs : t -> bool = "ml_gtk_notebook_get_show_tabs"
 (** Returns whether the tabs of the notebook are shown. *)
@@ -319,11 +432,11 @@ external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
 
 external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
   = "ml_gtk_notebook_get_pages"
-(** Returns a `GListModel` that contains the pages of the notebook.
+(** Returns a [GListModel] that contains the pages of the notebook.
 
     This can be used to keep an up-to-date view. The model also implements
-    [iface@Gtk.SelectionModel] and can be used to track and modify the visible
-    page. *)
+    [Gtk.SelectionModel] and can be used to track and modify the visible page.
+*)
 
 external get_page :
   t ->
@@ -331,7 +444,7 @@ external get_page :
   .Widget
   .t ->
   Notebook_page.t = "ml_gtk_notebook_get_page"
-(** Returns the `GtkNotebookPage` for @child. *)
+(** Returns the [GtkNotebookPage] for [child]. *)
 
 external get_nth_page :
   t ->
@@ -340,7 +453,7 @@ external get_nth_page :
   .Widget
   .t
   option = "ml_gtk_notebook_get_nth_page"
-(** Returns the child widget contained in page number @page_num. *)
+(** Returns the child widget contained in page number [page_num]. *)
 
 external get_n_pages : t -> int = "ml_gtk_notebook_get_n_pages"
 (** Gets the number of pages in a notebook. *)
@@ -351,8 +464,7 @@ external get_menu_label_text :
   .Widget
   .t ->
   string option = "ml_gtk_notebook_get_menu_label_text"
-(** Retrieves the text of the menu label for the page containing
-@child. *)
+(** Retrieves the text of the menu label for the page containing [child]. *)
 
 external get_menu_label :
   t ->
@@ -363,10 +475,10 @@ external get_menu_label :
   .Widget
   .t
   option = "ml_gtk_notebook_get_menu_label"
-(** Retrieves the menu label widget of the page containing @child. *)
+(** Retrieves the menu label widget of the page containing [child]. *)
 
 external get_group_name : t -> string option = "ml_gtk_notebook_get_group_name"
-(** Gets the current group name for @notebook. *)
+(** Gets the current group name for [notebook]. *)
 
 external get_current_page : t -> int = "ml_gtk_notebook_get_current_page"
 (** Returns the page number of the current page. *)
@@ -380,7 +492,7 @@ external get_action_widget :
   option = "ml_gtk_notebook_get_action_widget"
 (** Gets one of the action widgets.
 
-    See [method@Gtk.Notebook.set_action_widget]. *)
+    See [Gtk.Notebook.set_action_widget]. *)
 
 external detach_tab :
   t ->
@@ -390,7 +502,7 @@ external detach_tab :
   unit = "ml_gtk_notebook_detach_tab"
 (** Removes the child from the notebook.
 
-    This function is very similar to [method@Gtk.Notebook.remove_page], but
+    This function is very similar to [Gtk.Notebook.remove_page], but
     additionally informs the notebook that the removal is happening as part of a
     tab DND operation, which should not be cancelled. *)
 
@@ -408,8 +520,8 @@ external append_page_menu :
   .t
   option ->
   int = "ml_gtk_notebook_append_page_menu"
-(** Appends a page to @notebook, specifying the widget to use as the
-label in the popup menu. *)
+(** Appends a page to [notebook], specifying the widget to use as the label in
+    the popup menu. *)
 
 external append_page :
   t ->
@@ -421,7 +533,7 @@ external append_page :
   .t
   option ->
   int = "ml_gtk_notebook_append_page"
-(** Appends a page to @notebook. *)
+(** Appends a page to [notebook]. *)
 
 (* Properties *)
 

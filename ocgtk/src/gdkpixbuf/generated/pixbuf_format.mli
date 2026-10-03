@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufFormat: PixbufFormat *)
 
-type t = [ `pixbuf_format ] Gobject.obj
-(** A `GdkPixbufFormat` contains information about the image format accepted by
+(** A [GdkPixbufFormat] contains information about the image format accepted by
     a module.
 
     Only modules should access the fields directly, applications should use the
-    `gdk_pixbuf_format_*` family of functions. *)
+    [gdk_pixbuf_format_*] family of functions. *)
+
+type t = [ `pixbuf_format ] Gobject.obj
 
 (* Methods *)
 
@@ -31,10 +32,10 @@ external is_scalable : t -> bool = "ml_gdk_pixbuf_format_is_scalable"
 
 external is_save_option_supported : t -> string -> bool
   = "ml_gdk_pixbuf_format_is_save_option_supported"
-(** Returns `TRUE` if the save option specified by @option_key is supported when
-saving a pixbuf using the module implementing @format.
+(** Returns [TRUE] if the save option specified by [option_key] is supported
+    when saving a pixbuf using the module implementing [format].
 
-See gdk_pixbuf_save() for more information about option keys. *)
+    See gdk_pixbuf_save() for more information about option keys. *)
 
 external is_disabled : t -> bool = "ml_gdk_pixbuf_format_is_disabled"
 (** Returns whether this image format is disabled.
@@ -52,7 +53,7 @@ external get_license : t -> string option = "ml_gdk_pixbuf_format_get_license"
 (** Returns information about the license of the image loader for the format.
 
     The returned string should be a shorthand for a well known license, e.g.
-    "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
+    “LGPL”, “GPL”, “QPL”, “GPL/QPL”, or “other” to indicate some other license.
 *)
 
 external get_extensions : t -> string array option

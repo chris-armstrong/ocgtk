@@ -1,6 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontChooser: FontChooser *)
 
+(** [GtkFontChooser] is an interface that can be implemented by widgets for
+    choosing fonts.
+
+    In GTK, the main objects that implement this interface are
+    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
+
 type t = [ `font_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_font_chooser_from_gobject"
@@ -15,7 +21,7 @@ external set_preview_text : t -> string -> unit
   = "ml_gtk_font_chooser_set_preview_text"
 (** Sets the text displayed in the preview area.
 
-The @text is used to show how the selected font looks. *)
+    The [text] is used to show how the selected font looks. *)
 
 external set_level : t -> Gtk_enums.fontchooserlevel -> unit
   = "ml_gtk_font_chooser_set_level"
@@ -32,26 +38,31 @@ external set_font_map :
     A custom font map can be used to present application-specific fonts instead
     of or in addition to the normal system fonts.
 
-    ```c FcConfig *config; PangoFontMap *fontmap;
+    {[
+    FcConfig * config;
+    PangoFontMap * fontmap;
 
-    config = FcInitLoadConfigAndFonts (); FcConfigAppFontAddFile (config,
-    my_app_font_file);
+    config = FcInitLoadConfigAndFonts ();
+    FcConfigAppFontAddFile (config, my_app_font_file);
 
-    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+    fontmap = pango_cairo_font_map_new_for_font_type CAIRO_FONT_TYPE_FT;
+    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP fontmap, config);
 
-    gtk_font_chooser_set_font_map (font_chooser, fontmap); ```
+    gtk_font_chooser_set_font_map (font_chooser, fontmap)
+    ]}
 
     Note that other GTK widgets will only be able to use the
     application-specific font if it is present in the font map they use:
 
-    ```c context = gtk_widget_get_pango_context (label);
-    pango_context_set_font_map (context, fontmap); ``` *)
+    {[
+    context = gtk_widget_get_pango_context label;
+    pango_context_set_font_map (context, fontmap)
+    ]} *)
 
 external set_font_desc :
   t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit
   = "ml_gtk_font_chooser_set_font_desc"
-(** Sets the currently-selected font from @font_desc. *)
+(** Sets the currently-selected font from [font_desc]. *)
 
 external set_font : t -> string -> unit = "ml_gtk_font_chooser_set_font"
 (** Sets the currently-selected font. *)
@@ -75,7 +86,7 @@ external get_font_size : t -> int = "ml_gtk_font_chooser_get_font_size"
 
 external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
   = "ml_gtk_font_chooser_get_font_map"
-(** Gets the custom font map of this font chooser widget, or %NULL if it does
+(** Gets the custom font map of this font chooser widget, or [NULL] if it does
     not have one. *)
 
 external get_font_features : t -> string
@@ -83,23 +94,24 @@ external get_font_features : t -> string
 (** Gets the currently-selected font features.
 
     The format of the returned string is compatible with the
-    [CSS font-feature-settings property](https://www.w3.org/TR/css-fonts-4/#font-rend-desc).
-    It can be passed to [func@Pango.AttrFontFeatures.new]. *)
+    {{:https://www.w3.org/TR/css-fonts-4/#font-rend-desc}CSS
+     font-feature-settings property}. It can be passed to
+    [Pango.AttrFontFeatures.new]. *)
 
 external get_font_family : t -> Ocgtk_pango.Pango.Wrappers.Font_family.t option
   = "ml_gtk_font_chooser_get_font_family"
-(** Gets the `PangoFontFamily` representing the selected font family.
+(** Gets the [PangoFontFamily] representing the selected font family.
 
     Font families are a collection of font faces.
 
-    If the selected font is not installed, returns %NULL. *)
+    If the selected font is not installed, returns [NULL]. *)
 
 external get_font_face : t -> Ocgtk_pango.Pango.Wrappers.Font_face.t option
   = "ml_gtk_font_chooser_get_font_face"
-(** Gets the `PangoFontFace` representing the selected font group details (i.e.
+(** Gets the [PangoFontFace] representing the selected font group details (i.e.
     family, slant, weight, width, etc).
 
-    If the selected font is not installed, returns %NULL. *)
+    If the selected font is not installed, returns [NULL]. *)
 
 external get_font_desc :
   t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option
@@ -107,24 +119,24 @@ external get_font_desc :
 (** Gets the currently-selected font.
 
     Note that this can be a different string than what you set with
-    [method@Gtk.FontChooser.set_font], as the font chooser widget may normalize
-    font names and thus return a string with a different structure. For example,
+    [Gtk.FontChooser.set_font], as the font chooser widget may normalize font
+    names and thus return a string with a different structure. For example,
     “Helvetica Italic Bold 12” could be normalized to “Helvetica Bold Italic
     12”.
 
-    Use [method@Pango.FontDescription.equal] if you want to compare two font
+    Use [Pango.FontDescription.equal] if you want to compare two font
     descriptions. *)
 
 external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
 (** Gets the currently-selected font name.
 
     Note that this can be a different string than what you set with
-    [method@Gtk.FontChooser.set_font], as the font chooser widget may normalize
-    font names and thus return a string with a different structure. For example,
+    [Gtk.FontChooser.set_font], as the font chooser widget may normalize font
+    names and thus return a string with a different structure. For example,
     “Helvetica Italic Bold 12” could be normalized to “Helvetica Bold Italic
     12”.
 
-    Use [method@Pango.FontDescription.equal] if you want to compare two font
+    Use [Pango.FontDescription.equal] if you want to compare two font
     descriptions. *)
 
 (* Properties *)

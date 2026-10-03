@@ -1,6 +1,42 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Assistant: Assistant *)
 
+(** [GtkAssistant] is used to represent a complex as a series of steps.
+
+    An example GtkAssistant
+
+    Each step consists of one or more pages. [GtkAssistant] guides the user
+    through the pages, and controls the page flow to collect the data needed for
+    the operation.
+
+    [GtkAssistant] handles which buttons to show and to make sensitive based on
+    page sequence knowledge and the [Gtk.AssistantPageType] of each page in
+    addition to state information like the {i completed} and {i committed} page
+    statuses.
+
+    If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
+    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
+    buttons yourself.
+
+    [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
+    which holds additional per-child properties. You obtain the
+    [GtkAssistantPage] for a child with [Gtk.Assistant.get_page].
+
+    {b GtkAssistant as GtkBuildable}
+
+    The [GtkAssistant] implementation of the [GtkBuildable] interface exposes
+    the [action_area] as internal children with the name “action_area”.
+
+    To add pages to an assistant in [GtkBuilder], simply add it as a child to
+    the [GtkAssistant] object. If you need to set per-object properties, create
+    a [GtkAssistantPage] object explicitly, and set the child widget as a
+    property on it.
+
+    {b CSS nodes}
+
+    [GtkAssistant] has a single CSS node with the name window and style class
+    .assistant. *)
+
 type t =
   [ `assistant | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -11,15 +47,15 @@ external new_ : unit -> t = "ml_gtk_assistant_new"
 
 external update_buttons_state : t -> unit
   = "ml_gtk_assistant_update_buttons_state"
-(** Forces @assistant to recompute the buttons state.
+(** Forces [assistant] to recompute the buttons state.
 
-GTK automatically takes care of this in most situations,
-e.g. when the user goes to a different page, or when the
-visibility or completeness of a page changes.
+    GTK automatically takes care of this in most situations, e.g. when the user
+    goes to a different page, or when the visibility or completeness of a page
+    changes.
 
-One situation where it can be necessary to call this
-function is when changing a value on the current page
-affects the future page flow of the assistant. *)
+    One situation where it can be necessary to call this function is when
+    changing a value on the current page affects the future page flow of the
+    assistant. *)
 
 external set_page_type :
   t ->
@@ -28,9 +64,9 @@ external set_page_type :
   .t ->
   Gtk_enums.assistantpagetype ->
   unit = "ml_gtk_assistant_set_page_type"
-(** Sets the page type for @page.
+(** Sets the page type for [page].
 
-The page type determines the page behavior in the @assistant. *)
+    The page type determines the page behavior in the [assistant]. *)
 
 external set_page_title :
   t ->
@@ -39,10 +75,10 @@ external set_page_title :
   .t ->
   string ->
   unit = "ml_gtk_assistant_set_page_title"
-(** Sets a title for @page.
+(** Sets a title for [page].
 
-The title is displayed in the header area of the assistant
-when @page is the current page. *)
+    The title is displayed in the header area of the assistant when [page] is
+    the current page. *)
 
 external set_page_complete :
   t ->
@@ -51,21 +87,20 @@ external set_page_complete :
   .t ->
   bool ->
   unit = "ml_gtk_assistant_set_page_complete"
-(** Sets whether @page contents are complete.
+(** Sets whether [page] contents are complete.
 
-This will make @assistant update the buttons state
-to be able to continue the task. *)
+    This will make [assistant] update the buttons state to be able to continue
+    the task. *)
 
 external set_current_page : t -> int -> unit
   = "ml_gtk_assistant_set_current_page"
-(** Switches the page to @page_num.
+(** Switches the page to [page_num].
 
-Note that this will only be necessary in custom buttons,
-as the @assistant flow can be set with
-gtk_assistant_set_forward_page_func(). *)
+    Note that this will only be necessary in custom buttons, as the [assistant]
+    flow can be set with gtk_assistant_set_forward_page_func(). *)
 
 external remove_page : t -> int -> unit = "ml_gtk_assistant_remove_page"
-(** Removes the @page_num’s page from @assistant. *)
+(** Removes the [page_num]’s page from [assistant]. *)
 
 external remove_action_widget :
   t ->
@@ -73,7 +108,7 @@ external remove_action_widget :
   .Widget
   .t ->
   unit = "ml_gtk_assistant_remove_action_widget"
-(** Removes a widget from the action area of a `GtkAssistant`. *)
+(** Removes a widget from the action area of a [GtkAssistant]. *)
 
 external previous_page : t -> unit = "ml_gtk_assistant_previous_page"
 (** Navigate to the previous visited page.
@@ -82,7 +117,7 @@ external previous_page : t -> unit = "ml_gtk_assistant_previous_page"
     available.
 
     This function is for use when creating pages of the
-    %GTK_ASSISTANT_PAGE_CUSTOM type. *)
+    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
 external prepend_page :
   t ->
@@ -90,7 +125,7 @@ external prepend_page :
   .Widget
   .t ->
   int = "ml_gtk_assistant_prepend_page"
-(** Prepends a page to the @assistant. *)
+(** Prepends a page to the [assistant]. *)
 
 external next_page : t -> unit = "ml_gtk_assistant_next_page"
 (** Navigate to the next page.
@@ -98,7 +133,7 @@ external next_page : t -> unit = "ml_gtk_assistant_next_page"
     It is a programming error to call this function when there is no next page.
 
     This function is for use when creating pages of the
-    %GTK_ASSISTANT_PAGE_CUSTOM type. *)
+    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
 external insert_page :
   t ->
@@ -107,7 +142,7 @@ external insert_page :
   .t ->
   int ->
   int = "ml_gtk_assistant_insert_page"
-(** Inserts a page in the @assistant at a given position. *)
+(** Inserts a page in the [assistant] at a given position. *)
 
 external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
   = "ml_gtk_assistant_get_pages"
@@ -119,7 +154,7 @@ external get_page_type :
   .Widget
   .t ->
   Gtk_enums.assistantpagetype = "ml_gtk_assistant_get_page_type"
-(** Gets the page type of @page. *)
+(** Gets the page type of [page]. *)
 
 external get_page_title :
   t ->
@@ -127,7 +162,7 @@ external get_page_title :
   .Widget
   .t ->
   string = "ml_gtk_assistant_get_page_title"
-(** Gets the title for @page. *)
+(** Gets the title for [page]. *)
 
 external get_page_complete :
   t ->
@@ -135,7 +170,7 @@ external get_page_complete :
   .Widget
   .t ->
   bool = "ml_gtk_assistant_get_page_complete"
-(** Gets whether @page is complete. *)
+(** Gets whether [page] is complete. *)
 
 external get_page :
   t ->
@@ -143,7 +178,7 @@ external get_page :
   .Widget
   .t ->
   Assistant_page.t = "ml_gtk_assistant_get_page"
-(** Returns the `GtkAssistantPage` object for @child. *)
+(** Returns the [GtkAssistantPage] object for [child]. *)
 
 external get_nth_page :
   t ->
@@ -152,10 +187,10 @@ external get_nth_page :
   .Widget
   .t
   option = "ml_gtk_assistant_get_nth_page"
-(** Returns the child widget contained in page number @page_num. *)
+(** Returns the child widget contained in page number [page_num]. *)
 
 external get_n_pages : t -> int = "ml_gtk_assistant_get_n_pages"
-(** Returns the number of pages in the @assistant *)
+(** Returns the number of pages in the [assistant] *)
 
 external get_current_page : t -> int = "ml_gtk_assistant_get_current_page"
 (** Returns the page number of the current page. *)
@@ -177,7 +212,7 @@ external append_page :
   .Widget
   .t ->
   int = "ml_gtk_assistant_append_page"
-(** Appends a page to the @assistant. *)
+(** Appends a page to the [assistant]. *)
 
 external add_action_widget :
   t ->
@@ -185,7 +220,7 @@ external add_action_widget :
   .Widget
   .t ->
   unit = "ml_gtk_assistant_add_action_widget"
-(** Adds a widget to the action area of a `GtkAssistant`. *)
+(** Adds a widget to the action area of a [GtkAssistant]. *)
 
 (* Properties *)
 

@@ -94,8 +94,13 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
 
-  (match class_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
+  (* The blank line makes this a floating module comment. Without it, the
+     comment attaches to the first type, odoc no longer shows it as the
+     module's synopsis on parent pages, and ocamlformat keeps it there. *)
+  (match
+     Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member class_doc
+   with
+  | Some comment -> bprintf buf "%s\n\n" comment
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PropertyExpression: PropertyExpression *)
 
+(** A [GObject] property value in a [GtkExpression]. *)
+
 type t = [ `property_expression | `expression ] Gobject.obj
 
 external new_ : Gobject.Type.t -> Expression.t option -> string -> t

@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DtlsServerConnection: DtlsServerConnection *)
 
+(** [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],
+    representing a server-side DTLS connection. *)
+
 type t = [ `dtls_server_connection ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t

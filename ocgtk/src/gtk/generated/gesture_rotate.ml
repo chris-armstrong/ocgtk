@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureRotate: GestureRotate *)
 
+(** Recognizes 2-finger rotation gestures.
+
+    Whenever the angle between both handled sequences changes, the
+    [Gtk.GestureRotate::angle-changed] signal is emitted. *)
+
 type t =
   [ `gesture_rotate | `gesture | `event_controller | `object_ ] Gobject.obj
 
@@ -12,9 +17,9 @@ external new_ : unit -> t = "ml_gtk_gesture_rotate_new"
 external get_angle_delta : t -> float = "ml_gtk_gesture_rotate_get_angle_delta"
 (** Gets the angle delta in radians.
 
-If @gesture is active, this function returns the angle difference
-in radians since the gesture was first recognized. If @gesture is
-not active, 0 is returned. *)
+    If [gesture] is active, this function returns the angle difference in
+    radians since the gesture was first recognized. If [gesture] is not active,
+    0 is returned. *)
 
 let on_angle_changed ?after obj ~callback =
   let closure =

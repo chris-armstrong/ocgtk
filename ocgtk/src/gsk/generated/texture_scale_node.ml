@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureScaleNode: TextureScaleNode *)
 
+(** A render node for a [GdkTexture], with control over scaling. *)
+
 type t = [ `texture_scale_node | `render_node ] Gobject.obj
 
 external new_ :
@@ -14,8 +16,8 @@ external new_ :
 
 external get_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t
   = "ml_gsk_texture_scale_node_get_texture"
-(** Retrieves the `GdkTexture` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)
 
 external get_filter : t -> Gsk_enums.scalingfilter
   = "ml_gsk_texture_scale_node_get_filter"
-(** Retrieves the `GskScalingFilter` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GskScalingFilter] used when creating this [GskRenderNode]. *)

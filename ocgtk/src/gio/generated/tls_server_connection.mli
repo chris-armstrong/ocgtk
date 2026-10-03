@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsServerConnection: TlsServerConnection *)
 
+(** [GTlsServerConnection] is the server-side subclass of [Gio.TlsConnection],
+    representing a server-side TLS connection. *)
+
 type t = [ `tls_server_connection ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t

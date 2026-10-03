@@ -1,6 +1,23 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserDialog: AppChooserDialog *)
 
+(** [GtkAppChooserDialog] shows a [GtkAppChooserWidget] inside a [GtkDialog].
+
+    An example GtkAppChooserDialog
+
+    Note that [GtkAppChooserDialog] does not have any interesting methods of its
+    own. Instead, you should get the embedded [GtkAppChooserWidget] using
+    [Gtk.AppChooserDialog.get_widget] and call its methods if the generic
+    [Gtk.AppChooser] interface is not sufficient for your needs.
+
+    To set the heading that is shown above the [GtkAppChooserWidget], use
+    [Gtk.AppChooserDialog.set_heading].
+
+    {b CSS nodes}
+
+    [GtkAppChooserDialog] has a single CSS node with the name [window] and style
+    class [.appchooser]. *)
+
 type t =
   [ `app_chooser_dialog
   | `dialog
@@ -37,7 +54,7 @@ external get_widget :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_app_chooser_dialog_get_widget"
-(** Returns the `GtkAppChooserWidget` of this dialog. *)
+(** Returns the [GtkAppChooserWidget] of this dialog. *)
 
 external get_heading : t -> string option
   = "ml_gtk_app_chooser_dialog_get_heading"

@@ -1,6 +1,17 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorDialog: ColorDialog *)
 
+(** Asynchronous API to present a color chooser dialog.
+
+    [GtkColorDialog] collects the arguments that are needed to present the
+    dialog to the user, such as a title for the dialog and whether it should be
+    modal.
+
+    The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
+
+    See [Gtk.ColorDialogButton] for a convenient control that uses
+    [GtkColorDialog] and presents the results. *)
+
 type t = [ `color_dialog | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_color_dialog_new"
@@ -34,9 +45,9 @@ external choose_rgba_finish :
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
   (Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t, GError.t) result
   = "ml_gtk_color_dialog_choose_rgba_finish"
-(** Finishes the [method@Gtk.ColorDialog.choose_rgba] call
+(** Finishes the [Gtk.ColorDialog.choose_rgba] call
 
-    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
-    the user cancels the dialog. *)
+    Note that this function returns a [Gtk.DialogError.DISMISSED] error if the
+    user cancels the dialog. *)
 
 (* Properties *)

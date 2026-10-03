@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConicGradientNode: ConicGradientNode *)
 
+(** A render node for a conic gradient. *)
+
 type t = [ `conic_gradient_node | `render_node ] Gobject.obj
 
 external new_ :
@@ -30,7 +32,8 @@ external get_center : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
 (** Retrieves the center pointer for the gradient. *)
 
 external get_angle : t -> float = "ml_gsk_conic_gradient_node_get_angle"
-(** Retrieves the angle for the gradient in radians, normalized in [0, 2 * PI].
+(** Retrieves the angle for the gradient in radians, normalized in \[0, 2 *
+    PI\].
 
     The angle is starting at the top and going clockwise, as expressed in the
     css specification:

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CairoNode: CairoNode *)
 
+(** A render node for a Cairo surface. *)
+
 type t = [ `cairo_node | `render_node ] Gobject.obj
 
 external new_ : Ocgtk_graphene.Graphene.Wrappers.Rect.t -> t
@@ -15,8 +17,8 @@ external get_surface : t -> Ocgtk_cairo.Cairo.Wrappers.Surface.t
 
 external get_draw_context : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t
   = "ml_gsk_cairo_node_get_draw_context"
-(** Creates a Cairo context for drawing using the surface associated
-to the render node.
+(** Creates a Cairo context for drawing using the surface associated to the
+    render node.
 
-If no surface exists yet, a surface will be created optimized for
-rendering to @renderer. *)
+    If no surface exists yet, a surface will be created optimized for rendering
+    to [renderer]. *)

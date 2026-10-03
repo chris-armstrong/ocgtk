@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TouchpadEvent: TouchpadEvent *)
 
+(** An event related to a gesture on a touchpad device.
+
+    Unlike touchscreens, where the windowing system sends basic sequences of
+    begin, update, end events, and leaves gesture recognition to the clients,
+    touchpad gestures are typically processed by the system, resulting in these
+    events. *)
+
 type t = [ `touchpad_event | `event ] Gobject.obj
 
 (* Methods *)

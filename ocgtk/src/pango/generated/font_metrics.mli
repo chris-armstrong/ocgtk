@@ -1,20 +1,19 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontMetrics: FontMetrics *)
 
-type t = [ `font_metrics ] Gobject.obj
-(** A `PangoFontMetrics` structure holds the overall metric information for a
+(** A [PangoFontMetrics] structure holds the overall metric information for a
     font.
 
-    The information in a `PangoFontMetrics` structure may be restricted to a
+    The information in a [PangoFontMetrics] structure may be restricted to a
     script. The fields of this structure are private to implementations of a
     font backend. See the documentation of the corresponding getters for
     documentation of their meaning.
 
     For an overview of the most important metrics, see:
 
-    <picture> <source srcset="fontmetrics-dark.png"
-    media="(prefers-color-scheme: dark)"> <img alt="Font metrics"
-    src="fontmetrics-light.png"> </picture> *)
+    Font metrics *)
+
+type t = [ `font_metrics ] Gobject.obj
 
 (* Methods *)
 
@@ -29,7 +28,7 @@ external get_underline_position : t -> int
   = "ml_pango_font_metrics_get_underline_position"
 (** Gets the suggested position to draw the underline.
 
-    The value returned is the distance *above* the baseline of the top of the
+    The value returned is the distance {i above} the baseline of the top of the
     underline. Since most fonts have underline positions beneath the baseline,
     this value is typically negative. *)
 
@@ -41,7 +40,7 @@ external get_strikethrough_position : t -> int
   = "ml_pango_font_metrics_get_strikethrough_position"
 (** Gets the suggested position to draw the strikethrough.
 
-    The value returned is the distance *above* the baseline of the top of the
+    The value returned is the distance {i above} the baseline of the top of the
     strikethrough. *)
 
 external get_height : t -> int = "ml_pango_font_metrics_get_height"

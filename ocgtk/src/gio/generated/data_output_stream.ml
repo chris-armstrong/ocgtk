@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DataOutputStream: DataOutputStream *)
 
+(** Data output stream implements [Gio.OutputStream] and includes functions for
+    writing data directly to an output stream. *)
+
 type t =
   [ `data_output_stream | `filter_output_stream | `output_stream | `object_ ]
   Gobject.obj
@@ -12,7 +15,7 @@ external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
 
 external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit
   = "ml_g_data_output_stream_set_byte_order"
-(** Sets the byte order of the data output stream to @order. *)
+(** Sets the byte order of the data output stream to [order]. *)
 
 external put_uint64 :
   t -> UInt64.t -> Cancellable.t option -> (bool, GError.t) result

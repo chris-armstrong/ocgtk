@@ -1,6 +1,29 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DirectoryList: DirectoryList *)
 
+(** A list model that wraps [Gio.File.enumerate_children_async].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    Enumeration will start automatically when the [Gtk.DirectoryList:file]
+    property is set.
+
+    While the [GtkDirectoryList] is being filled, the
+    [Gtk.DirectoryList:loading] property will be set to [TRUE]. You can listen
+    to that property if you want to show information like a [GtkSpinner] or a
+    “Loading...” text.
+
+    If loading fails at any point, the [Gtk.DirectoryList:error] property will
+    be set to give more indication about the failure.
+
+    The [GFileInfo]s returned from a [GtkDirectoryList] have the
+    “standard::file” attribute set to the [GFile] they refer to. This way you
+    can get at the file that is referred to in the same way you would via
+    g_file_enumerator_get_child(). This means you do not need access to the
+    [GtkDirectoryList], but can access the [GFile] directly from the [GFileInfo]
+    when operating with a [GtkListView] or similar. *)
+
 type t = [ `directory_list | `object_ ] Gobject.obj
 
 external new_ : string option -> Ocgtk_gio.Gio.Wrappers.File.t option -> t
@@ -24,34 +47,32 @@ external set_io_priority : t -> int -> unit
   = "ml_gtk_directory_list_set_io_priority"
 (** Sets the IO priority to use while loading directories.
 
-Setting the priority while @self is loading will reprioritize the
-ongoing load as soon as possible.
+    Setting the priority while [self] is loading will reprioritize the ongoing
+    load as soon as possible.
 
-The default IO priority is %G_PRIORITY_DEFAULT, which is higher than
-the GTK redraw priority. If you are loading a lot of directories in
-parallel, lowering it to something like %G_PRIORITY_DEFAULT_IDLE
-may increase responsiveness. *)
+    The default IO priority is [G_PRIORITY_DEFAULT], which is higher than the
+    GTK redraw priority. If you are loading a lot of directories in parallel,
+    lowering it to something like [G_PRIORITY_DEFAULT_IDLE] may increase
+    responsiveness. *)
 
 external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
   = "ml_gtk_directory_list_set_file"
-(** Sets the @file to be enumerated and starts the enumeration.
+(** Sets the [file] to be enumerated and starts the enumeration.
 
-If @file is %NULL, the result will be an empty list. *)
+    If [file] is [NULL], the result will be an empty list. *)
 
 external set_attributes : t -> string option -> unit
   = "ml_gtk_directory_list_set_attributes"
-(** Sets the @attributes to be enumerated and starts the enumeration.
+(** Sets the [attributes] to be enumerated and starts the enumeration.
 
-If @attributes is %NULL, the list of file infos will still be created, it will just
-not contain any extra attributes. *)
+    If [attributes] is [NULL], the list of file infos will still be created, it
+    will just not contain any extra attributes. *)
 
 external is_loading : t -> bool = "ml_gtk_directory_list_is_loading"
-(** Returns %TRUE if the children enumeration is currently in
-progress.
+(** Returns [TRUE] if the children enumeration is currently in progress.
 
-Files will be added to @self from time to time while loading is
-going on. The order in which are added is undefined and may change
-in between runs. *)
+    Files will be added to [self] from time to time while loading is going on.
+    The order in which are added is undefined and may change in between runs. *)
 
 external get_monitored : t -> bool = "ml_gtk_directory_list_get_monitored"
 (** Returns whether the directory list is monitoring the directory for changes.

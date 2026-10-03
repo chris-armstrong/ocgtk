@@ -1,6 +1,72 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DmabufTextureBuilder: DmabufTextureBuilder *)
 
+(** Constructs [Gdk.Texture] objects from DMA buffers.
+
+    DMA buffers are commonly called {b _dma-bufs_}.
+
+    DMA buffers are a feature of the Linux kernel to enable efficient buffer and
+    memory sharing between hardware such as codecs, GPUs, displays, cameras and
+    the kernel drivers controlling them. For example, a decoder may want its
+    output to be directly shared with the display server for rendering without a
+    copy.
+
+    Any device driver which participates in DMA buffer sharing, can do so as
+    either the exporter or importer of buffers (or both).
+
+    The memory that is shared via DMA buffers is usually stored in non-system
+    memory (maybe in device's local memory or something else not directly
+    accessible by the CPU), and accessing this memory from the CPU may have
+    higher-than-usual overhead.
+
+    In particular for graphics data, it is not uncommon that data consists of
+    multiple separate blocks of memory, for example one block for each of the
+    red, green and blue channels. These blocks are called {b _planes_}. DMA
+    buffers can have up to four planes. Even if the memory is a single block,
+    the data can be organized in multiple planes, by specifying offsets from the
+    beginning of the data.
+
+    DMA buffers are exposed to user-space as file descriptors allowing to pass
+    them between processes. If a DMA buffer has multiple planes, there is one
+    file descriptor per plane.
+
+    The format of the data (for graphics data, essentially its colorspace) is
+    described by a 32-bit integer. These format identifiers are defined in the
+    header file [drm_fourcc.h] and commonly referred to as {b _fourcc_} values,
+    since they are identified by 4 ASCII characters. Additionally, each DMA
+    buffer has a {b _modifier_}, which is a 64-bit integer that describes
+    driver-specific details of the memory layout, such as tiling or compression.
+
+    For historical reasons, some producers of dma-bufs don't provide an explicit
+    modifier, but instead return [DMA_FORMAT_MOD_INVALID] to indicate that their
+    modifier is {b _implicit_}. GTK tries to accommodate this situation by
+    accepting [DMA_FORMAT_MOD_INVALID] as modifier.
+
+    The operation of [GdkDmabufTextureBuilder] is quite simple: Create a texture
+    builder, set all the necessary properties, and then call
+    [Gdk.DmabufTextureBuilder.build] to create the new texture.
+
+    The required properties for a dma-buf texture are
+
+    - The width and height in pixels
+
+    - The [fourcc] code and [modifier] which identify the format and memory
+      layout of the dma-buf
+
+    - The file descriptor, offset and stride for each of the planes
+
+    [GdkDmabufTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+
+    For further information, see
+
+    - The Linux kernel
+      {{:https://docs.kernel.org/driver-api/dma-buf.html}documentation}
+
+    - The header file
+      {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
+*)
+
 type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_dmabuf_texture_builder_new"
@@ -12,20 +78,19 @@ external set_width : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The width must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture. See
-    [method@Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
+    [Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
 
 external set_update_region :
   t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
-    [property@Gdk.DmabufTextureBuilder:update-texture] this describes an update
-    of a previous texture.
+    [Gdk.DmabufTextureBuilder:update-texture] this describes an update of a
+    previous texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then
@@ -40,7 +105,7 @@ external set_stride : t -> int -> int -> unit
 (** Sets the stride for a plane.
 
     The stride must be set for all planes before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_premultiplied : t -> bool -> unit
   = "ml_gdk_dmabuf_texture_builder_set_premultiplied"
@@ -65,8 +130,7 @@ external set_height : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The height must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fourcc : t -> UInt32.t -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fourcc"
@@ -74,8 +138,7 @@ external set_fourcc : t -> UInt32.t -> unit
 
     The format is specified as a fourcc code.
 
-    The format must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The format must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fd : t -> int -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fd"
@@ -92,7 +155,7 @@ external set_color_state :
   = "ml_gdk_dmabuf_texture_builder_set_color_state"
 (** Sets the color state for the texture.
 
-    By default, the colorstate is `NULL`. In that case, GTK will choose the
+    By default, the colorstate is [NULL]. In that case, GTK will choose the
     correct colorstate based on the format. If you don't know what colorstates
     are, this is probably the right thing. *)
 
@@ -103,12 +166,13 @@ external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_dmabuf_texture_builder_set_update_texture() or %NULL if none was set. *)
+    gdk_dmabuf_texture_builder_set_update_texture() or [NULL] if none was set.
+*)
 
 external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_dmabuf_texture_builder_set_update_region() or %NULL if none was set. *)
+    gdk_dmabuf_texture_builder_set_update_region() or [NULL] if none was set. *)
 
 external get_stride : t -> int -> int
   = "ml_gdk_dmabuf_texture_builder_get_stride"

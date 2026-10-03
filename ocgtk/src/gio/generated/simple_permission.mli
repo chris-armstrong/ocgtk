@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimplePermission: SimplePermission *)
 
+(** [GSimplePermission] is a trivial implementation of [Gio.Permission] that
+    represents a permission that is either always or never allowed. The value is
+    given at construction and doesn’t change.
+
+    Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
+    [GSimplePermission] will result in errors. *)
+
 type t = [ `simple_permission | `permission | `object_ ] Gobject.obj
 
 external new_ : bool -> t = "ml_g_simple_permission_new"

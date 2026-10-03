@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TouchEvent: TouchEvent *)
 
+(** An event related to a touch-based device. *)
+
 type t = [ `touch_event | `event ] Gobject.obj
 
 (* Methods *)

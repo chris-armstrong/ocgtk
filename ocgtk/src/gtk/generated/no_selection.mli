@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NoSelection: NoSelection *)
 
+(** A selection model that does not allow selecting anything.
+
+    This model is meant to be used as a simple wrapper around a [GListModel]
+    when a [GtkSelectionModel] is required.
+
+    [GtkNoSelection] passes through sections from the underlying model. *)
+
 type t = [ `no_selection | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
@@ -11,13 +18,13 @@ external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
 
 external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
   = "ml_gtk_no_selection_set_model"
-(** Sets the model that @self should wrap.
+(** Sets the model that [self] should wrap.
 
-If @model is %NULL, this model will be empty. *)
+    If [model] is [NULL], this model will be empty. *)
 
 external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
   = "ml_gtk_no_selection_get_model"
-(** Gets the model that @self is wrapping. *)
+(** Gets the model that [self] is wrapping. *)
 
 (* Properties *)
 

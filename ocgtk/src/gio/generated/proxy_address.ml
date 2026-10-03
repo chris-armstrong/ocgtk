@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyAddress: ProxyAddress *)
 
+(** A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
+
 type t =
   [ `proxy_address | `inet_socket_address | `socket_address | `object_ ]
   Gobject.obj
@@ -19,32 +21,31 @@ external new_ :
 (* Methods *)
 
 external get_username : t -> string option = "ml_g_proxy_address_get_username"
-(** Gets @proxy's username. *)
+(** Gets [proxy]'s username. *)
 
 external get_uri : t -> string option = "ml_g_proxy_address_get_uri"
-(** Gets the proxy URI that @proxy was constructed from. *)
+(** Gets the proxy URI that [proxy] was constructed from. *)
 
 external get_protocol : t -> string = "ml_g_proxy_address_get_protocol"
-(** Gets @proxy's protocol. eg, "socks" or "http" *)
+(** Gets [proxy]'s protocol. eg, “socks” or “http” *)
 
 external get_password : t -> string option = "ml_g_proxy_address_get_password"
-(** Gets @proxy's password. *)
+(** Gets [proxy]'s password. *)
 
 external get_destination_protocol : t -> string
   = "ml_g_proxy_address_get_destination_protocol"
-(** Gets the protocol that is being spoken to the destination server; eg, "http"
-    or "ftp". *)
+(** Gets the protocol that is being spoken to the destination server; eg, “http”
+    or “ftp”. *)
 
 external get_destination_port : t -> UInt16.t
   = "ml_g_proxy_address_get_destination_port"
-(** Gets @proxy's destination port; that is, the port on the
-destination host that will be connected to via the proxy, not the
-port number of the proxy itself. *)
+(** Gets [proxy]'s destination port; that is, the port on the destination host
+    that will be connected to via the proxy, not the port number of the proxy
+    itself. *)
 
 external get_destination_hostname : t -> string
   = "ml_g_proxy_address_get_destination_hostname"
-(** Gets @proxy's destination hostname; that is, the name of the host
-that will be connected to via the proxy, not the name of the proxy
-itself. *)
+(** Gets [proxy]'s destination hostname; that is, the name of the host that will
+    be connected to via the proxy, not the name of the proxy itself. *)
 
 (* Properties *)

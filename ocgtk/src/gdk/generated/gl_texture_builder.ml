@@ -1,6 +1,19 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLTextureBuilder: GLTextureBuilder *)
 
+(** Constructs [Gdk.Texture] objects from GL textures.
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
+    [Gdk.GLTextureBuilder:width], and [Gdk.GLTextureBuilder:height] are
+    mandatory - and then call [Gdk.GLTextureBuilder.build] to create the new
+    texture.
+
+    [GdkGLTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+*)
+
 type t = [ `gl_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_gl_texture_builder_new"
@@ -11,19 +24,19 @@ external new_ : unit -> t = "ml_gdk_gl_texture_builder_new"
 external set_width : t -> int -> unit = "ml_gdk_gl_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+    The width must be set before calling [Gdk.GLTextureBuilder.build]. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_gl_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture. See
-    [method@Gdk.GLTextureBuilder.set_update_region] for an explanation. *)
+    [Gdk.GLTextureBuilder.set_update_region] for an explanation. *)
 
 external set_update_region :
   t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
   = "ml_gdk_gl_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
-    [property@Gdk.GLTextureBuilder:update-texture] this describes an update of a
-    previous texture.
+    [Gdk.GLTextureBuilder:update-texture] this describes an update of a previous
+    texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then
@@ -35,38 +48,37 @@ external set_update_region :
 
 external set_id : t -> int -> unit = "ml_gdk_gl_texture_builder_set_id"
 (** Sets the texture id of the texture. The texture id must remain unmodified
-    until the texture was finalized. See [method@Gdk.GLTextureBuilder.build] for
-    a longer discussion.
+    until the texture was finalized. See [Gdk.GLTextureBuilder.build] for a
+    longer discussion.
 
-    The id must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+    The id must be set before calling [Gdk.GLTextureBuilder.build]. *)
 
 external set_height : t -> int -> unit = "ml_gdk_gl_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+    The height must be set before calling [Gdk.GLTextureBuilder.build]. *)
 
 external set_has_mipmap : t -> bool -> unit
   = "ml_gdk_gl_texture_builder_set_has_mipmap"
 (** Sets whether the texture has a mipmap. This allows the renderer and other
     users of the generated texture to use a higher quality downscaling.
 
-    Typically, the `glGenerateMipmap` function is used to generate a mimap. *)
+    Typically, the [glGenerateMipmap] function is used to generate a mimap. *)
 
 external set_format : t -> Gdk_enums.memoryformat -> unit
   = "ml_gdk_gl_texture_builder_set_format"
 (** Sets the format of the texture. The default is
-    `GDK_MEMORY_R8G8B8A8_PREMULTIPLIED`.
+    [GDK_MEMORY_R8G8B8A8_PREMULTIPLIED].
 
     The format is the preferred format the texture data should be downloaded to.
     The format must be supported by the GL version of
-    [property@Gdk.GLTextureBuilder:context].
+    [Gdk.GLTextureBuilder:context].
 
     GDK's texture download code assumes that the format corresponds to the
     storage parameters of the GL texture in an obvious way. For example, a
-    format of `GDK_MEMORY_R16G16B16A16_PREMULTIPLIED` is expected to be stored
-    as `GL_RGBA16` texture, and `GDK_MEMORY_G8A8` is expected to be stored as
-    `GL_RG8` texture.
+    format of [GDK_MEMORY_R16G16B16A16_PREMULTIPLIED] is expected to be stored
+    as [GL_RGBA16] texture, and [GDK_MEMORY_G8A8] is expected to be stored as
+    [GL_RG8] texture.
 
     Setting the right format is particularly useful when using high bit depth
     textures to preserve the bit depth, to set the correct value for
@@ -82,8 +94,7 @@ external set_context :
 (** Sets the context to be used for the texture. This is the context that owns
     the texture.
 
-    The context must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+    The context must be set before calling [Gdk.GLTextureBuilder.build]. *)
 
 external set_color_state :
   t -> Cicp_params_and__color_state.Color_state.t -> unit
@@ -100,12 +111,12 @@ external get_width : t -> int = "ml_gdk_gl_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_gl_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_gl_texture_builder_set_update_texture() or %NULL if none was set. *)
+    gdk_gl_texture_builder_set_update_texture() or [NULL] if none was set. *)
 
 external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
   = "ml_gdk_gl_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_gl_texture_builder_set_update_region() or %NULL if none was set. *)
+    gdk_gl_texture_builder_set_update_region() or [NULL] if none was set. *)
 
 external get_id : t -> int = "ml_gdk_gl_texture_builder_get_id"
 (** Gets the texture id previously set via gdk_gl_texture_builder_set_id() or 0
@@ -126,7 +137,7 @@ external get_context :
   t -> App_launch_context_cycle_de440b34.Gl_context.t option
   = "ml_gdk_gl_texture_builder_get_context"
 (** Gets the context previously set via gdk_gl_texture_builder_set_context() or
-    %NULL if none was set. *)
+    [NULL] if none was set. *)
 
 external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
   = "ml_gdk_gl_texture_builder_get_color_state"

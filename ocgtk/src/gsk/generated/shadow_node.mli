@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShadowNode: ShadowNode *)
 
+(** A render node drawing one or more shadows behind its single child node. *)
+
 type t = [ `shadow_node | `render_node ] Gobject.obj
 
 external new_ : Render_node.t -> Shadow.t array -> Gsize.t -> t
@@ -10,10 +12,10 @@ external new_ : Render_node.t -> Shadow.t array -> Gsize.t -> t
 (* Methods *)
 
 external get_shadow : t -> Gsize.t -> Shadow.t = "ml_gsk_shadow_node_get_shadow"
-(** Retrieves the shadow data at the given index @i. *)
+(** Retrieves the shadow data at the given index [i]. *)
 
 external get_n_shadows : t -> Gsize.t = "ml_gsk_shadow_node_get_n_shadows"
-(** Retrieves the number of shadows in the @node. *)
+(** Retrieves the number of shadows in the [node]. *)
 
 external get_child : t -> Render_node.t = "ml_gsk_shadow_node_get_child"
-(** Retrieves the child `GskRenderNode` of the shadow @node. *)
+(** Retrieves the child [GskRenderNode] of the shadow [node]. *)

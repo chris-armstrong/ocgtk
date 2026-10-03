@@ -1,6 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragIcon: DragIcon *)
 
+(** A [GtkRoot] implementation for drag icons.
+
+    A drag icon moves with the pointer during a Drag-and-Drop operation and is
+    destroyed when the drag ends.
+
+    To set up a drag icon and associate it with an ongoing drag operation, use
+    [Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use it
+    like any other widget and use [Gtk.DragIcon.set_child] to set whatever
+    widget should be used for the drag icon.
+
+    Keep in mind that drag icons do not allow user input. *)
+
 type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external get_for_drag : Ocgtk_gdk.Gdk.Wrappers.Drag.t -> t

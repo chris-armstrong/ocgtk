@@ -1,6 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureSwipe: GestureSwipe *)
 
+(** Recognizes swipe gestures.
+
+    After a press/move/.../move/release sequence happens, the
+    [Gtk.GestureSwipe::swipe] signal will be emitted, providing the velocity and
+    directionality of the sequence at the time it was lifted.
+
+    If the velocity is desired in intermediate points,
+    [Gtk.GestureSwipe.get_velocity] can be called in a [Gtk.Gesture::update]
+    handler.
+
+    All velocities are reported in pixels/sec units. *)
+
 type t =
   [ `gesture_swipe | `gesture_single | `gesture | `event_controller | `object_ ]
   Gobject.obj
@@ -14,9 +26,9 @@ external get_velocity : t -> bool * float * float
   = "ml_gtk_gesture_swipe_get_velocity"
 (** Gets the current velocity.
 
-If the gesture is recognized, this function returns %TRUE and fills
-in @velocity_x and @velocity_y with the recorded velocity, as per the
-last events processed. *)
+    If the gesture is recognized, this function returns [TRUE] and fills in
+    [velocity_x] and [velocity_y] with the recorded velocity, as per the last
+    events processed. *)
 
 val on_swipe :
   ?after:bool ->

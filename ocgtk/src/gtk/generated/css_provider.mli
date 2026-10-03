@@ -1,6 +1,33 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CssProvider: CssProvider *)
 
+(** A style provider for CSS.
+
+    It is able to parse CSS-like input in order to style widgets.
+
+    An application can make GTK parse a specific CSS style sheet by calling
+    [Gtk.CssProvider.load_from_file] or [Gtk.CssProvider.load_from_resource] and
+    adding the provider with [Gtk.StyleContext.add_provider] or
+    [Gtk.StyleContext.add_provider_for_display].
+
+    In addition, certain files will be read when GTK is initialized. First, the
+    file [$XDG_CONFIG_HOME/gtk-4.0/gtk.css] is loaded if it exists. Then, GTK
+    loads the first existing file among
+    [XDG_DATA_HOME/themes/THEME/gtk-VERSION/gtk-VARIANT.css],
+    [$HOME/.themes/THEME/gtk-VERSION/gtk-VARIANT.css],
+    [$XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk-VARIANT.css] and
+    [DATADIR/share/themes/THEME/gtk-VERSION/gtk-VARIANT.css], where [THEME] is
+    the name of the current theme (see the [Gtk.Settings:gtk-theme-name]
+    setting), [VARIANT] is the variant to load (see the
+    [Gtk.Settings:gtk-application-prefer-dark-theme] setting), [DATADIR] is the
+    prefix configured when GTK was compiled (unless overridden by the
+    [GTK_DATA_PREFIX] environment variable), and [VERSION] is the GTK version
+    number. If no file is found for the current version, GTK tries older
+    versions all the way back to 4.0.
+
+    To track errors while loading CSS, connect to the
+    [Gtk.CssProvider::parsing-error] signal. *)
+
 type t = [ `css_provider | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_css_provider_new"
@@ -9,13 +36,11 @@ external new_ : unit -> t = "ml_gtk_css_provider_new"
 (* Methods *)
 
 external to_string : t -> string = "ml_gtk_css_provider_to_string"
-(** Converts the @provider into a string representation in CSS
-format.
+(** Converts the [provider] into a string representation in CSS format.
 
-Using [method@Gtk.CssProvider.load_from_string] with the return
-value from this function on a new provider created with
-[ctor@Gtk.CssProvider.new] will basically create a duplicate
-of this @provider. *)
+    Using [Gtk.CssProvider.load_from_string] with the return value from this
+    function on a new provider created with [Gtk.CssProvider.new] will basically
+    create a duplicate of this [provider]. *)
 
 external load_named : t -> string -> string option -> unit
   = "ml_gtk_css_provider_load_named"
@@ -27,40 +52,40 @@ external load_named : t -> string -> string option -> unit
 
 external load_from_string : t -> string -> unit
   = "ml_gtk_css_provider_load_from_string"
-(** Loads @string into @css_provider.
+(** Loads [string] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_resource : t -> string -> unit
   = "ml_gtk_css_provider_load_from_resource"
-(** Loads the data contained in the resource at @resource_path into
-the @css_provider.
+(** Loads the data contained in the resource at [resource_path] into the
+    [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_path : t -> string -> unit
   = "ml_gtk_css_provider_load_from_path"
-(** Loads the data contained in @path into @css_provider.
+(** Loads the data contained in [path] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> unit
   = "ml_gtk_css_provider_load_from_file"
-(** Loads the data contained in @file into @css_provider.
+(** Loads the data contained in [file] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_data : t -> string -> int -> unit
   = "ml_gtk_css_provider_load_from_data"
-(** Loads @data into @css_provider.
+(** Loads [data] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_bytes : t -> Glib_bytes.t -> unit
   = "ml_gtk_css_provider_load_from_bytes"
-(** Loads @data into @css_provider.
+(** Loads [data] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 (* Properties *)
 

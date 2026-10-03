@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureClick: GestureClick *)
 
+(** Recognizes click gestures.
+
+    It is able to recognize multiple clicks on a nearby zone, which can be
+    listened for through the [Gtk.GestureClick::pressed] signal. Whenever time
+    or distance between clicks exceed the GTK defaults,
+    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset. *)
+
 type t =
   [ `gesture_click | `gesture_single | `gesture | `event_controller | `object_ ]
   Gobject.obj
