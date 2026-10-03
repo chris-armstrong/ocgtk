@@ -5,8 +5,8 @@ type t = [ `print_setup ] Gobject.obj
 (** An auxiliary object for printing that allows decoupling the setup from the
     printing.
 
-    A print setup is obtained by calling [method@Gtk.PrintDialog.setup], and can
-    later be passed to print functions such as [method@Gtk.PrintDialog.print].
+    A print setup is obtained by calling [Gtk.PrintDialog.setup], and can later
+    be passed to print functions such as [Gtk.PrintDialog.print].
 
     Print setups can be reused for multiple print calls.
 

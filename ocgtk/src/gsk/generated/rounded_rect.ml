@@ -5,17 +5,17 @@ type t = [ `rounded_rect ] Gobject.obj
 (** A rectangular region with rounded corners.
 
     Application code should normalize rectangles using
-    [method@Gsk.RoundedRect.normalize]; this function will ensure that the
-    bounds of the rectangle are normalized and ensure that the corner values are
-    positive and the corners do not overlap.
+    [Gsk.RoundedRect.normalize]; this function will ensure that the bounds of
+    the rectangle are normalized and ensure that the corner values are positive
+    and the corners do not overlap.
 
-    All functions taking a `GskRoundedRect` as an argument will internally
-    operate on a normalized copy; all functions returning a `GskRoundedRect`
+    All functions taking a [GskRoundedRect] as an argument will internally
+    operate on a normalized copy; all functions returning a [GskRoundedRect]
     will always return a normalized one.
 
     The algorithm used for normalizing corner sizes is described in
-    [the CSS specification](https://drafts.csswg.org/css-backgrounds-3/#border-radius).
-*)
+    {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
+     specification}. *)
 
 (* Methods *)
 

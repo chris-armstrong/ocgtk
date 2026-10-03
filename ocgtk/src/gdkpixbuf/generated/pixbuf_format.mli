@@ -2,11 +2,11 @@
 (* PixbufFormat: PixbufFormat *)
 
 type t = [ `pixbuf_format ] Gobject.obj
-(** A `GdkPixbufFormat` contains information about the image format accepted by
+(** A [GdkPixbufFormat] contains information about the image format accepted by
     a module.
 
     Only modules should access the fields directly, applications should use the
-    `gdk_pixbuf_format_*` family of functions. *)
+    [gdk_pixbuf_format_*] family of functions. *)
 
 (* Methods *)
 

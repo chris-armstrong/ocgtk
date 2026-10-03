@@ -2,7 +2,7 @@
 (* AttrString: AttrString *)
 
 type t = [ `attr_string ] Gobject.obj
-(** The `PangoAttrString` structure is used to represent attributes with a
+(** The [PangoAttrString] structure is used to represent attributes with a
     string value. *)
 
 (* Methods *)

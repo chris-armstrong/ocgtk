@@ -2,7 +2,7 @@
 (* StaticResource: StaticResource *)
 
 type t = [ `static_resource ] Gobject.obj
-(** `GStaticResource` is an opaque data structure and can only be accessed using
+(** [GStaticResource] is an opaque data structure and can only be accessed using
     the following functions. *)
 
 (* Methods *)

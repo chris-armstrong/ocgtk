@@ -2,13 +2,13 @@
 (* BitsetIter: BitsetIter *)
 
 type t = [ `bitset_iter ] Gobject.obj
-(** Iterates over the elements of a [struct@Gtk.Bitset].
+(** Iterates over the elements of a [Gtk.Bitset].
 
     `GtkBitSetIter is an opaque, stack-allocated struct.
 
-    Before a `GtkBitsetIter` can be used, it needs to be initialized with
-    [func@Gtk.BitsetIter.init_first], [func@Gtk.BitsetIter.init_last] or
-    [func@Gtk.BitsetIter.init_at]. *)
+    Before a [GtkBitsetIter] can be used, it needs to be initialized with
+    [Gtk.BitsetIter.init_first], [Gtk.BitsetIter.init_last] or
+    [Gtk.BitsetIter.init_at]. *)
 
 (* Methods *)
 

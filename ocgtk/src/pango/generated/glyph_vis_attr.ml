@@ -2,7 +2,7 @@
 (* GlyphVisAttr: GlyphVisAttr *)
 
 type t = [ `glyph_vis_attr ] Gobject.obj
-(** A `PangoGlyphVisAttr` structure communicates information between the shaping
+(** A [PangoGlyphVisAttr] structure communicates information between the shaping
     and rendering phases.
 
     Currently, it contains cluster start and color information. More attributes

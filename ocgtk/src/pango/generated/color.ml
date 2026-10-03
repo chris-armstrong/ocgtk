@@ -2,7 +2,7 @@
 (* Color: Color *)
 
 type t = [ `color ] Gobject.obj
-(** The `PangoColor` structure is used to represent a color in an uncalibrated
+(** The [PangoColor] structure is used to represent a color in an uncalibrated
     RGB color-space. *)
 
 (* Methods *)

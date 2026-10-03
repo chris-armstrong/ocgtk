@@ -2,9 +2,9 @@
 (* ExpressionWatch: ExpressionWatch *)
 
 type t = [ `expression_watch ] Gobject.obj
-(** An opaque structure representing a watched `GtkExpression`.
+(** An opaque structure representing a watched [GtkExpression].
 
-    The contents of `GtkExpressionWatch` should only be accessed through the
+    The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
 
 (* Methods *)

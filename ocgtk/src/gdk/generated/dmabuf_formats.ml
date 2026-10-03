@@ -5,18 +5,18 @@ type t = [ `dmabuf_formats ] Gobject.obj
 (** Provides information about supported DMA buffer formats.
 
     You can query whether a given format is supported with
-    [method@Gdk.DmabufFormats.contains] and you can iterate over the list of all
-    supported formats with [method@Gdk.DmabufFormats.get_n_formats] and
-    [method@Gdk.DmabufFormats.get_format].
+    [Gdk.DmabufFormats.contains] and you can iterate over the list of all
+    supported formats with [Gdk.DmabufFormats.get_n_formats] and
+    [Gdk.DmabufFormats.get_format].
 
     The list of supported formats is sorted by preference, with the best formats
     coming first.
 
     The list may contains (format, modifier) pairs where the modifier is
-    `DMA_FORMAT_MOD_INVALID`, indicating that **_implicit modifiers_** may be
+    [DMA_FORMAT_MOD_INVALID], indicating that {b _implicit modifiers_} may be
     used with this format.
 
-    See [class@Gdk.DmabufTextureBuilder] for more information about DMA buffers.
+    See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
 
     Note that DMA buffers only exist on Linux. *)
 

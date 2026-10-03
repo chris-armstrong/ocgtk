@@ -3,7 +3,7 @@
 
 type t = [ `tree_row_reference ] Gobject.obj
 (** A GtkTreeRowReference tracks model changes so that it always refers to the
-    same row (a `GtkTreePath` refers to a position, not a fixed row). Create a
+    same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
     new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
 
 external new_ : Tree_model.t -> Tree_path.t -> t

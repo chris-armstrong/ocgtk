@@ -2,12 +2,12 @@
 (* LayoutLine: LayoutLine *)
 
 type t = [ `layout_line ] Gobject.obj
-(** A `PangoLayoutLine` represents one of the lines resulting from laying out a
-    paragraph via `PangoLayout`.
+(** A [PangoLayoutLine] represents one of the lines resulting from laying out a
+    paragraph via [PangoLayout].
 
-    `PangoLayoutLine` structures are obtained by calling
-    [method@Pango.Layout.get_line] and are only valid until the text,
-    attributes, or settings of the parent `PangoLayout` are modified. *)
+    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
+    and are only valid until the text, attributes, or settings of the parent
+    [PangoLayout] are modified. *)
 
 (* Methods *)
 

@@ -4,7 +4,7 @@
 type t = [ `buildable_parse_context ] Gobject.obj
 (** Provides context for parsing GtkBuilder UI files.
 
-    `GtkBuildableParseContext` is an opaque struct. *)
+    [GtkBuildableParseContext] is an opaque struct. *)
 
 (* Methods *)
 

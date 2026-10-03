@@ -5,8 +5,8 @@ type t = [ `toplevel_layout ] Gobject.obj
 (** Contains information that is necessary to present a sovereign window on
     screen.
 
-    The `GdkToplevelLayout` struct is necessary for using
-    [method@Gdk.Toplevel.present].
+    The [GdkToplevelLayout] struct is necessary for using
+    [Gdk.Toplevel.present].
 
     Toplevel surfaces are sovereign windows that can be presented to the user in
     various states (maximized, on all workspaces, etc). *)

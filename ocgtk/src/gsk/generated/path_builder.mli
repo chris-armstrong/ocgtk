@@ -2,44 +2,43 @@
 (* PathBuilder: PathBuilder *)
 
 type t = [ `path_builder ] Gobject.obj
-(** Constructs `GskPath` objects.
+(** Constructs [GskPath] objects.
 
-A path is constructed like this:
+    A path is constructed like this:
 
-```c
-GskPath *
-construct_path (void)
-{
-  GskPathBuilder *builder;
+    {[
+    GskPath *
+    construct_path (void)
+    {
+      GskPathBuilder *builder;
 
-  builder = gsk_path_builder_new ();
+      builder = gsk_path_builder_new ();
 
-  // add contours to the path here
+      // add contours to the path here
 
-  return gsk_path_builder_free_to_path (builder);
-```
+      return gsk_path_builder_free_to_path (builder);
+    ]}
 
-Adding contours to the path can be done in two ways.
-The easiest option is to use the `gsk_path_builder_add_*` group
-of functions that add predefined contours to the current path,
-either common shapes like [method@Gsk.PathBuilder.add_circle]
-or by adding from other paths like [method@Gsk.PathBuilder.add_path].
+    Adding contours to the path can be done in two ways. The easiest option is
+    to use the [gsk_path_builder_add_*] group of functions that add predefined
+    contours to the current path, either common shapes like
+    [Gsk.PathBuilder.add_circle] or by adding from other paths like
+    [Gsk.PathBuilder.add_path].
 
-The `gsk_path_builder_add_*` methods always add complete contours,
-and do not use or modify the current point.
+    The [gsk_path_builder_add_*] methods always add complete contours, and do
+    not use or modify the current point.
 
-The other option is to define each line and curve manually with
-the `gsk_path_builder_*_to` group of functions. You start with
-a call to [method@Gsk.PathBuilder.move_to] to set the starting point
-and then use multiple calls to any of the drawing functions to
-move the pen along the plane. Once you are done, you can call
-[method@Gsk.PathBuilder.close] to close the path by connecting it
-back with a line to the starting point.
+    The other option is to define each line and curve manually with the
+    [gsk_path_builder_*_to] group of functions. You start with a call to
+    [Gsk.PathBuilder.move_to] to set the starting point and then use multiple
+    calls to any of the drawing functions to move the pen along the plane. Once
+    you are done, you can call [Gsk.PathBuilder.close] to close the path by
+    connecting it back with a line to the starting point.
 
-This is similar to how paths are drawn in Cairo.
+    This is similar to how paths are drawn in Cairo.
 
-Note that `GskPathBuilder` will reduce the degree of added Bézier
-curves as much as possible, to simplify rendering. *)
+    Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
+    much as possible, to simplify rendering. *)
 
 external new_ : unit -> t = "ml_gsk_path_builder_new"
 (** Create a new PathBuilder *)
