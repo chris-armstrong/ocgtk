@@ -8,4 +8,6 @@
 val path : unit -> string
 (** [path ()] returns the C compiler path reported by [ocamlopt -config] (the
     [c_compiler:] field). The result is cached for the lifetime of the test run.
-    Raises [Failure] if [ocamlopt -config] cannot be parsed. *)
+    Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    [ocamlopt -config] cannot be parsed. *)
