@@ -75,8 +75,8 @@ val assert_header_guard_format : string -> string -> unit
     the header contains a complete guard (ifndef/define/endif) where the guard
     name ends with [expected_pattern].
 
-    Raises [Alcotest.Test_error]
-      if no matching guard is found or if it's incomplete *)
+    Raises [Alcotest.Test_error] if no matching guard is found or if it's
+    incomplete *)
 
 (** {1 Copy Function Declarations} *)
 
