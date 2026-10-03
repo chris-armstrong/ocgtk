@@ -528,15 +528,15 @@ the first time.
 under `ocgtk/src/*/generated/` were never produced by a clean regeneration.
 The generator only writes and never deletes, so these survived relocations
 (e.g. `unix_fd_message.mli`, `gUnix_fd_message.mli`, `tooltip.mli`). They
-were removed in a separate commit. The six gtk `*_enums.mli` files are not
-produced either, but `gtk/dune` lists them in `modules_without_implementation`,
-so they stay.
+were removed in a separate commit. The six gtk `*_enums.mli` copies are not
+produced either; they were removed in a follow-up commit (see residue below).
 
-*Residue after Phase 2 (open):* odoc warnings went from 5,237 to 53. 49 are
-unpaired `]` in prose: the translator escapes `\[` but leaves a bare `]`,
-which odoc reads as end-of-code. Fix: escape `]` in `Doc_render` prose (changes
-the Phase 1 escape tests). Four are `@GDK_…`/`@PANGO_…` names in the kept gtk enum
-copies, which the generator no longer writes.
+*Residue, now resolved:* odoc warnings went from 5,237 to 0. The bare `]` in
+prose was a translator gap (the Phase 1 policy wrongly assumed odoc treated it
+as literal text); `]` is now escaped with `[`. The six gtk `*_enums.mli` copies
+the generator no longer writes were removed, and their `modules_without_implementation`
+entry in `gtk/dune` with them, since gtk builds against the enum types in the
+other libraries.
 
 *Acceptance:*
 ```bash
