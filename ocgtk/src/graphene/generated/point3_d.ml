@@ -18,11 +18,11 @@ external scale : t -> float -> t = "ml_graphene_point3d_scale"
 
 external normalize_viewport : t -> Rect.t -> float -> float -> t
   = "ml_graphene_point3d_normalize_viewport"
-(** Normalizes the coordinates of a #graphene_point3d_t using the
-given viewport and clipping planes.
+(** Normalizes the coordinates of a #graphene_point3d_t using the given viewport
+    and clipping planes.
 
-The coordinates of the resulting #graphene_point3d_t will be
-in the \[ -1, 1 ] range. *)
+    The coordinates of the resulting #graphene_point3d_t will be in the \[ -1, 1
+    \] range. *)
 
 external normalize : t -> t = "ml_graphene_point3d_normalize"
 (** Computes the normalization of the vector represented by the coordinates of

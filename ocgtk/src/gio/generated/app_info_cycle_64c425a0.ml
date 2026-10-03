@@ -3057,29 +3057,27 @@ and Mount : sig
       [error] will be set to contain the errors and [FALSE] will be returned. *)
 
   external is_shadowed : t -> bool = "ml_g_mount_is_shadowed"
-  (** Determines if [mount] is shadowed. Applications or libraries should
-  avoid displaying [mount] in the user interface if it is shadowed.
+  (** Determines if [mount] is shadowed. Applications or libraries should avoid
+      displaying [mount] in the user interface if it is shadowed.
 
-  A mount is said to be shadowed if there exists one or more user
-  visible objects (currently [GMount] objects) with a root that is
-  inside the root of [mount].
+      A mount is said to be shadowed if there exists one or more user visible
+      objects (currently [GMount] objects) with a root that is inside the root
+      of [mount].
 
-  One application of shadow mounts is when exposing a single file
-  system that is used to address several logical volumes. In this
-  situation, a [GVolumeMonitor] implementation would create two
-  [GVolume] objects (for example, one for the camera functionality of
-  the device and one for a SD card reader on the device) with
-  activation URIs gphoto2://\[usb:001,002]/store1/
-  and gphoto2://\[usb:001,002]/store2/. When the
-  underlying mount (with root
-  gphoto2://\[usb:001,002]/) is mounted, said
-  [GVolumeMonitor] implementation would create two [GMount] objects
-  (each with their root matching the corresponding volume activation
-  root) that would shadow the original mount.
+      One application of shadow mounts is when exposing a single file system
+      that is used to address several logical volumes. In this situation, a
+      [GVolumeMonitor] implementation would create two [GVolume] objects (for
+      example, one for the camera functionality of the device and one for a SD
+      card reader on the device) with activation URIs
+      gphoto2://\[usb:001,002\]/store1/ and gphoto2://\[usb:001,002\]/store2/.
+      When the underlying mount (with root gphoto2://\[usb:001,002\]/) is
+      mounted, said [GVolumeMonitor] implementation would create two [GMount]
+      objects (each with their root matching the corresponding volume activation
+      root) that would shadow the original mount.
 
-  The proxy monitor in GVfs 2.26 and later, automatically creates and
-  manage shadow mounts (and shadows the underlying mount) if the
-  activation root on a [GVolume] is set. *)
+      The proxy monitor in GVfs 2.26 and later, automatically creates and manage
+      shadow mounts (and shadows the underlying mount) if the activation root on
+      a [GVolume] is set. *)
 
   external guess_content_type_sync :
     t -> bool -> Cancellable.t option -> (string array, GError.t) result
@@ -3196,29 +3194,27 @@ end = struct
       [error] will be set to contain the errors and [FALSE] will be returned. *)
 
   external is_shadowed : t -> bool = "ml_g_mount_is_shadowed"
-  (** Determines if [mount] is shadowed. Applications or libraries should
-  avoid displaying [mount] in the user interface if it is shadowed.
+  (** Determines if [mount] is shadowed. Applications or libraries should avoid
+      displaying [mount] in the user interface if it is shadowed.
 
-  A mount is said to be shadowed if there exists one or more user
-  visible objects (currently [GMount] objects) with a root that is
-  inside the root of [mount].
+      A mount is said to be shadowed if there exists one or more user visible
+      objects (currently [GMount] objects) with a root that is inside the root
+      of [mount].
 
-  One application of shadow mounts is when exposing a single file
-  system that is used to address several logical volumes. In this
-  situation, a [GVolumeMonitor] implementation would create two
-  [GVolume] objects (for example, one for the camera functionality of
-  the device and one for a SD card reader on the device) with
-  activation URIs gphoto2://\[usb:001,002]/store1/
-  and gphoto2://\[usb:001,002]/store2/. When the
-  underlying mount (with root
-  gphoto2://\[usb:001,002]/) is mounted, said
-  [GVolumeMonitor] implementation would create two [GMount] objects
-  (each with their root matching the corresponding volume activation
-  root) that would shadow the original mount.
+      One application of shadow mounts is when exposing a single file system
+      that is used to address several logical volumes. In this situation, a
+      [GVolumeMonitor] implementation would create two [GVolume] objects (for
+      example, one for the camera functionality of the device and one for a SD
+      card reader on the device) with activation URIs
+      gphoto2://\[usb:001,002\]/store1/ and gphoto2://\[usb:001,002\]/store2/.
+      When the underlying mount (with root gphoto2://\[usb:001,002\]/) is
+      mounted, said [GVolumeMonitor] implementation would create two [GMount]
+      objects (each with their root matching the corresponding volume activation
+      root) that would shadow the original mount.
 
-  The proxy monitor in GVfs 2.26 and later, automatically creates and
-  manage shadow mounts (and shadows the underlying mount) if the
-  activation root on a [GVolume] is set. *)
+      The proxy monitor in GVfs 2.26 and later, automatically creates and manage
+      shadow mounts (and shadows the underlying mount) if the activation root on
+      a [GVolume] is set. *)
 
   external guess_content_type_sync :
     t -> bool -> Cancellable.t option -> (string array, GError.t) result

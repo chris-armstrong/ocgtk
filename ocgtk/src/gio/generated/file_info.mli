@@ -207,11 +207,11 @@ external get_file_type : t -> Gio_enums.filetype
     [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
 
 external get_etag : t -> string option = "ml_g_file_info_get_etag"
-(** Gets the \[entity tag][Gio.File] for a given
-[GFileInfo]. See [G_FILE_ATTRIBUTE_ETAG_VALUE].
+(** Gets the \[entity tag\][Gio.File] for a given [GFileInfo]. See
+    [G_FILE_ATTRIBUTE_ETAG_VALUE].
 
-It is an error to call this if the [GFileInfo] does not contain
-[G_FILE_ATTRIBUTE_ETAG_VALUE]. *)
+    It is an error to call this if the [GFileInfo] does not contain
+    [G_FILE_ATTRIBUTE_ETAG_VALUE]. *)
 
 external get_edit_name : t -> string = "ml_g_file_info_get_edit_name"
 (** Gets the edit name for a file.

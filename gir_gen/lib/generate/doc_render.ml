@@ -3,15 +3,16 @@
 open Doc_ast
 open Doc_str
 
-(* odoc-special escaping in prose contexts: \{ \} \[ \@ (plan invariant 2).
-   A stray ] is left bare: odoc treats it as literal text (at worst a
-   benign warning, never a misparse), and code spans manage their own ]
-   via the balance fallback. *)
+(* odoc-special escaping in prose contexts: \{ \} \[ \] \@ (plan invariant 2).
+   A bare ] in prose is not literal text to odoc: it closes a code span it
+   never opened, which warns ("Unpaired end of code"). So it is escaped
+   like its opening partner. Code spans manage their own ] via the balance
+   fallback and do not go through here. *)
 let escape_prose buf s =
   String.iter
     (fun c ->
       (match c with
-      | '{' | '}' | '[' | '@' -> Buffer.add_char buf '\\'
+      | '{' | '}' | '[' | ']' | '@' -> Buffer.add_char buf '\\'
       | _ -> ());
       Buffer.add_char buf c)
     s

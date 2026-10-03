@@ -19,7 +19,7 @@
 
    | AST node            | v1 rendering                              | counted |
    |---------------------|-------------------------------------------|---------|
-   | [Text]              | odoc-escaped prose: [\{] [\}] [\[] [\@]   | —       |
+   | [Text]              | odoc-escaped prose: [\{] [\}] [\[] [\]] [\@]  | —       |
    | [Code]              | [[code]] ([Inline_code_unbalanced] when the content contains []] | yes |
    | [Bold] / [Italic]   | [{b ...}] / [{i ...}]                     | —       |
    | [Link] (https only) | [{{:url}text}]                            | —       |
@@ -32,7 +32,7 @@
    | [List]              | odoc shortcut lists ([{- item}] / [{+ item}]) | —    |
    | [Code_block]        | [{[ ... ]}] ([Code_block_verbatim] / [Code_block_stripped] on [}]]) | yes |
 
-   Text escaping is exactly the four odoc specials [\{] [\}] [\[] [\@]
+   Text escaping is exactly the five odoc specials [\{] [\}] [\[] [\]] [\@]
    (plan invariant 2). A stray [] in prose is left bare — odoc treats it as
    literal text (it emits a benign warning at worst, never a misparse), and
    code spans manage their own []] via the balance fallback.

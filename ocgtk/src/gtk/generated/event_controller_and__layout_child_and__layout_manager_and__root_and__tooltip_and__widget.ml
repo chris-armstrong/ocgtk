@@ -1154,9 +1154,9 @@ and Widget : sig
       This information can sometimes be used to avoid doing unnecessary work. *)
 
   external hide : t -> unit = "ml_gtk_widget_hide"
-  (** Reverses the effects of \[method.Gtk.Widget.show].
+  (** Reverses the effects of \[method.Gtk.Widget.show\].
 
-  This is causing the widget to be hidden (invisible to the user). *)
+      This is causing the widget to be hidden (invisible to the user). *)
 
   external has_visible_focus : t -> bool = "ml_gtk_widget_has_visible_focus"
   (** Determines if the widget should show a visible indication that it has the
@@ -2694,9 +2694,9 @@ end = struct
       This information can sometimes be used to avoid doing unnecessary work. *)
 
   external hide : t -> unit = "ml_gtk_widget_hide"
-  (** Reverses the effects of \[method.Gtk.Widget.show].
+  (** Reverses the effects of \[method.Gtk.Widget.show\].
 
-  This is causing the widget to be hidden (invisible to the user). *)
+      This is causing the widget to be hidden (invisible to the user). *)
 
   external has_visible_focus : t -> bool = "ml_gtk_widget_has_visible_focus"
   (** Determines if the widget should show a visible indication that it has the

@@ -169,10 +169,10 @@ external get_active_id : t -> string option = "ml_gtk_combo_box_get_active_id"
 external get_active : t -> int = "ml_gtk_combo_box_get_active"
 (** Returns the index of the currently active item.
 
-If the model is a non-flat treemodel, and the active item is not
-an immediate child of the root of the tree, this function returns
-gtk_tree_path_get_indices (path)\[0], where [path] is the
-[Gtk.TreePath] of the active item. *)
+    If the model is a non-flat treemodel, and the active item is not an
+    immediate child of the root of the tree, this function returns
+    gtk_tree_path_get_indices (path)\[0\], where [path] is the [Gtk.TreePath] of
+    the active item. *)
 
 (* Properties *)
 

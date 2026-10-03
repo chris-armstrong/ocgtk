@@ -16,22 +16,23 @@ external new_ : int -> bool -> t = "ml_pango_tab_array_new"
 external to_string : t -> string = "ml_pango_tab_array_to_string"
 (** Serializes a [PangoTabArray] to a string.
 
-In the resulting string, serialized tabs are separated by newlines or commas.
+    In the resulting string, serialized tabs are separated by newlines or
+    commas.
 
-Individual tabs are serialized to a string of the form
+    Individual tabs are serialized to a string of the form
 
-\[ALIGNMENT:]POSITION\[:DECIMAL_POINT]
+    \[ALIGNMENT:\]POSITION\[:DECIMAL_POINT\]
 
-Where ALIGNMENT is one of _left_, _right_, _center_ or _decimal_, and
-POSITION is the position of the tab, optionally followed by the unit _px_.
-If ALIGNMENT is omitted, it defaults to _left_. If ALIGNMENT is _decimal_,
-the DECIMAL_POINT character may be specified as a Unicode codepoint.
+    Where ALIGNMENT is one of _left_, _right_, _center_ or _decimal_, and
+    POSITION is the position of the tab, optionally followed by the unit _px_.
+    If ALIGNMENT is omitted, it defaults to _left_. If ALIGNMENT is _decimal_,
+    the DECIMAL_POINT character may be specified as a Unicode codepoint.
 
-Note that all tabs in the array must use the same unit.
+    Note that all tabs in the array must use the same unit.
 
-A typical example:
+    A typical example:
 
-100px 200px center:300px right:400px *)
+    100px 200px center:300px right:400px *)
 
 external sort : t -> unit = "ml_pango_tab_array_sort"
 (** Utility function to ensure that the tab stops are in increasing order. *)

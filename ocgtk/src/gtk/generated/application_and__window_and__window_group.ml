@@ -40,17 +40,17 @@ module rec Application : sig
 
   external set_accels_for_action : t -> string -> string array -> unit
     = "ml_gtk_application_set_accels_for_action"
-  (** Sets zero or more keyboard accelerators that will trigger the
-  given action.
+  (** Sets zero or more keyboard accelerators that will trigger the given
+      action.
 
-  The first item in [accels] will be the primary accelerator,
-  which may be displayed in the UI.
+      The first item in [accels] will be the primary accelerator, which may be
+      displayed in the UI.
 
-  To remove all accelerators for an action, use an empty,
-  zero-terminated array for [accels].
+      To remove all accelerators for an action, use an empty, zero-terminated
+      array for [accels].
 
-  For the [detailed_action_name], see [Gio.Action.parse_detailed_name]
-  and \[Gio.Action.print_detailed_name]. *)
+      For the [detailed_action_name], see [Gio.Action.parse_detailed_name] and
+      \[Gio.Action.print_detailed_name\]. *)
 
   external remove_window : t -> Window.t -> unit
     = "ml_gtk_application_remove_window"
@@ -245,17 +245,17 @@ end = struct
 
   external set_accels_for_action : t -> string -> string array -> unit
     = "ml_gtk_application_set_accels_for_action"
-  (** Sets zero or more keyboard accelerators that will trigger the
-  given action.
+  (** Sets zero or more keyboard accelerators that will trigger the given
+      action.
 
-  The first item in [accels] will be the primary accelerator,
-  which may be displayed in the UI.
+      The first item in [accels] will be the primary accelerator, which may be
+      displayed in the UI.
 
-  To remove all accelerators for an action, use an empty,
-  zero-terminated array for [accels].
+      To remove all accelerators for an action, use an empty, zero-terminated
+      array for [accels].
 
-  For the [detailed_action_name], see [Gio.Action.parse_detailed_name]
-  and \[Gio.Action.print_detailed_name]. *)
+      For the [detailed_action_name], see [Gio.Action.parse_detailed_name] and
+      \[Gio.Action.print_detailed_name\]. *)
 
   external remove_window : t -> Window.t -> unit
     = "ml_gtk_application_remove_window"
@@ -889,12 +889,14 @@ and Window : sig
   external get_default_size : t -> int * int = "ml_gtk_window_get_default_size"
   (** Gets the default size of the window.
 
-  A value of 0 for the width or height indicates that a default
-  size has not been explicitly set for that dimension, so the
-  “natural” size of the window will be used.
+      A value of 0 for the width or height indicates that a default size has not
+      been explicitly set for that dimension, so the “natural” size of the
+      window will be used.
 
-  This function is the recommended way for \[saving window state
-  across restarts of applications](https://developer.gnome.org/documentation/tutorials/save-state.html). *)
+      This function is the recommended way for \[saving window state across
+      restarts of
+      applications\](https://developer.gnome.org/documentation/tutorials/save-state.html).
+  *)
 
   external get_decorated : t -> bool = "ml_gtk_window_get_decorated"
   (** Returns whether the window has been set to have decorations. *)
@@ -1445,12 +1447,14 @@ end = struct
   external get_default_size : t -> int * int = "ml_gtk_window_get_default_size"
   (** Gets the default size of the window.
 
-  A value of 0 for the width or height indicates that a default
-  size has not been explicitly set for that dimension, so the
-  “natural” size of the window will be used.
+      A value of 0 for the width or height indicates that a default size has not
+      been explicitly set for that dimension, so the “natural” size of the
+      window will be used.
 
-  This function is the recommended way for \[saving window state
-  across restarts of applications](https://developer.gnome.org/documentation/tutorials/save-state.html). *)
+      This function is the recommended way for \[saving window state across
+      restarts of
+      applications\](https://developer.gnome.org/documentation/tutorials/save-state.html).
+  *)
 
   external get_decorated : t -> bool = "ml_gtk_window_get_decorated"
   (** Returns whether the window has been set to have decorations. *)

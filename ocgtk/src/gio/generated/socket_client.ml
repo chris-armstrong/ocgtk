@@ -238,34 +238,34 @@ external connect_to_host :
   = "ml_g_socket_client_connect_to_host"
 (** This is a helper function for g_socket_client_connect().
 
-Attempts to create a TCP connection to the named host.
+    Attempts to create a TCP connection to the named host.
 
-[host_and_port] may be in any of a number of recognized formats; an IPv6
-address, an IPv4 address, or a domain name (in which case a DNS
-lookup is performed).  Quoting with \[] is supported for all address
-types.  A port override may be specified in the usual way with a
-colon.  Ports may be given as decimal numbers or symbolic names (in
-which case an /etc/services lookup is performed).
+    [host_and_port] may be in any of a number of recognized formats; an IPv6
+    address, an IPv4 address, or a domain name (in which case a DNS lookup is
+    performed). Quoting with \[\] is supported for all address types. A port
+    override may be specified in the usual way with a colon. Ports may be given
+    as decimal numbers or symbolic names (in which case an /etc/services lookup
+    is performed).
 
-If no port override is given in [host_and_port] then [default_port] will be
-used as the port number to connect to.
+    If no port override is given in [host_and_port] then [default_port] will be
+    used as the port number to connect to.
 
-In general, [host_and_port] is expected to be provided by the user (allowing
-them to give the hostname, and a port override if necessary) and
-[default_port] is expected to be provided by the application.
+    In general, [host_and_port] is expected to be provided by the user (allowing
+    them to give the hostname, and a port override if necessary) and
+    [default_port] is expected to be provided by the application.
 
-In the case that an IP address is given, a single connection
-attempt is made.  In the case that a name is given, multiple
-connection attempts may be made, in turn and according to the
-number of address records in DNS, until a connection succeeds.
+    In the case that an IP address is given, a single connection attempt is
+    made. In the case that a name is given, multiple connection attempts may be
+    made, in turn and according to the number of address records in DNS, until a
+    connection succeeds.
 
-Upon a successful connection, a new [GSocketConnection] is constructed
-and returned.  The caller owns this new object and must drop their
-reference to it when finished with it.
+    Upon a successful connection, a new [GSocketConnection] is constructed and
+    returned. The caller owns this new object and must drop their reference to
+    it when finished with it.
 
-In the event of any failure (DNS error, service not found, no hosts
-connectable) [NULL] is returned and [error] (if non-[NULL]) is set
-accordingly. *)
+    In the event of any failure (DNS error, service not found, no hosts
+    connectable) [NULL] is returned and [error] (if non-[NULL]) is set
+    accordingly. *)
 
 external connect_finish :
   t ->

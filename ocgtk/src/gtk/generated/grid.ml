@@ -147,13 +147,13 @@ external attach_next_to :
   = "ml_gtk_grid_attach_next_to_bytecode" "ml_gtk_grid_attach_next_to_native"
 (** Adds a widget to the grid.
 
-The widget is placed next to [sibling], on the side determined by
-[side]. When [sibling] is [NULL], the widget is placed in row (for
-left or right placement) or column 0 (for top or bottom placement),
-at the end indicated by [side].
+    The widget is placed next to [sibling], on the side determined by [side].
+    When [sibling] is [NULL], the widget is placed in row (for left or right
+    placement) or column 0 (for top or bottom placement), at the end indicated
+    by [side].
 
-Attaching widgets labeled \[1], \[2], \[3] with [@sibling == %NULL] and
-[@side == %GTK_POS_LEFT] yields a layout of \[3]\[2]\[1]. *)
+    Attaching widgets labeled \[1\], \[2\], \[3\] with [@sibling == %NULL] and
+    [@side == %GTK_POS_LEFT] yields a layout of \[3\]\[2\]\[1\]. *)
 
 external attach :
   t ->
