@@ -65,6 +65,18 @@ See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for complete build, test, and CI instru
 
 For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./architecture/FFI_GUIDELINES.md).
 
+## Lint: semgrep
+
+CI runs a `Lint (semgrep)` job (`.github/workflows/ci.yml`) that bans partial functions
+(`.semgrep/banned-partials.yml`, per the [code guidelines](./docs/code_guidelines/agent-summary.md)).
+The job is advisory for now and does not fail CI, so check changes before opening a PR:
+
+```bash
+python3 -m pip install semgrep
+semgrep --config .semgrep/banned-partials.yml --error .
+```
+
+Generated bindings (`**/generated/**`) and `_build/`, `_opam/` are excluded via `.semgrepignore`.
 
 ## ocgtk Development Tools
 

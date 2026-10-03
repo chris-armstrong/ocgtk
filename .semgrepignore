@@ -1,6 +1,4 @@
-# Auto-generated GTK bindings — intentionally NOT linted or fixed (decision:
-# generated code is excluded from all lint rules). merlint excludes them via
-# merlint.toml. semgrep therefore only gates hand-written code.
+# Auto-generated GTK bindings are not linted; semgrep only gates hand-written code.
 **/generated/**
 
 # Build artefacts (also in .gitignore; repeated for non-git contexts)
