@@ -2,6 +2,19 @@
 (* SocketListener: SocketListener *)
 
 type t = [ `socket_listener | `object_ ] Gobject.obj
+(** A [GSocketListener] is an object that keeps track of a set of server sockets
+    and helps you accept sockets from any of the socket, either sync or async.
+
+    Add addresses and ports to listen on using [Gio.SocketListener.add_address]
+    and [Gio.SocketListener.add_inet_port]. These will be listened on until
+    [Gio.SocketListener.close] is called. Dropping your final reference to the
+    [GSocketListener] will not cause [Gio.SocketListener.close] to be called
+    implicitly, as some references to the [GSocketListener] may be held
+    internally.
+
+    If you want to implement a network server, also look at [Gio.SocketService]
+    and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
+    that make this even easier. *)
 
 external new_ : unit -> t = "ml_g_socket_listener_new"
 (** Create a new SocketListener *)

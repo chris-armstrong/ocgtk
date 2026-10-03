@@ -31,7 +31,7 @@ module rec Tls_connection : sig
       sometimes omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is
       technically an error, but often done anyway.) You can use
       g_tls_connection_set_require_close_notify() to tell [conn] to allow an
-      "unannounced" connection close, in which case the close will show up as a
+      “unannounced” connection close, in which case the close will show up as a
       0-length read, as in a non-TLS [GSocketConnection], and it is up to the
       application to check that the data has been fully received.
 
@@ -114,7 +114,7 @@ module rec Tls_connection : sig
 
       On the client side, it is never necessary to call this method; although
       the connection needs to perform a handshake after connecting (or after
-      sending a "STARTTLS"-type command), [GTlsConnection] will handle this for
+      sending a “STARTTLS”-type command), [GTlsConnection] will handle this for
       you automatically when you try to send or receive data on the connection.
       You can call g_tls_connection_handshake() manually if you want to know
       whether the initial handshake succeeded or failed (as opposed to just
@@ -265,7 +265,7 @@ end = struct
       sometimes omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is
       technically an error, but often done anyway.) You can use
       g_tls_connection_set_require_close_notify() to tell [conn] to allow an
-      "unannounced" connection close, in which case the close will show up as a
+      “unannounced” connection close, in which case the close will show up as a
       0-length read, as in a non-TLS [GSocketConnection], and it is up to the
       application to check that the data has been fully received.
 
@@ -348,7 +348,7 @@ end = struct
 
       On the client side, it is never necessary to call this method; although
       the connection needs to perform a handshake after connecting (or after
-      sending a "STARTTLS"-type command), [GTlsConnection] will handle this for
+      sending a “STARTTLS”-type command), [GTlsConnection] will handle this for
       you automatically when you try to send or receive data on the connection.
       You can call g_tls_connection_handshake() manually if you want to know
       whether the initial handshake succeeded or failed (as opposed to just

@@ -2,6 +2,20 @@
 (* Native: Native *)
 
 type t = [ `native ] Gobject.obj
+(** An interface for widgets that have their own [Gdk.Surface].
+
+    The obvious example of a [GtkNative] is [GtkWindow].
+
+    Every widget that is not itself a [GtkNative] is contained in one, and you
+    can get it with [Gtk.Widget.get_native].
+
+    To get the surface of a [GtkNative], use [Gtk.Native.get_surface]. It is
+    also possible to find the [GtkNative] to which a surface belongs, with
+    [Gtk.Native.get_for_surface].
+
+    In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
+    for rendering on that surface. To get the renderer, use
+    [Gtk.Native.get_renderer]. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_native_from_gobject"
 

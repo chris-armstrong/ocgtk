@@ -2,6 +2,12 @@
 (* NoSelection: NoSelection *)
 
 type t = [ `no_selection | `object_ ] Gobject.obj
+(** A selection model that does not allow selecting anything.
+
+    This model is meant to be used as a simple wrapper around a [GListModel]
+    when a [GtkSelectionModel] is required.
+
+    [GtkNoSelection] passes through sections from the underlying model. *)
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
   = "ml_gtk_no_selection_new"

@@ -4,6 +4,61 @@
 type t =
   [ `combo_box_text | `combo_box | `widget | `initially_unowned | `object_ ]
   Gobject.obj
+(** A [GtkComboBoxText] is a simple variant of [GtkComboBox] for text-only use
+    cases.
+
+    An example GtkComboBoxText
+
+    [GtkComboBoxText] hides the model-view complexity of [GtkComboBox].
+
+    To create a [GtkComboBoxText], use [Gtk.ComboBoxText.new] or
+    [Gtk.ComboBoxText.new_with_entry].
+
+    You can add items to a [GtkComboBoxText] with
+    [Gtk.ComboBoxText.append_text], [Gtk.ComboBoxText.insert_text] or
+    [Gtk.ComboBoxText.prepend_text] and remove options with
+    [Gtk.ComboBoxText.remove].
+
+    If the [GtkComboBoxText] contains an entry (via the [Gtk.ComboBox:has-entry]
+    property), its contents can be retrieved using
+    [Gtk.ComboBoxText.get_active_text].
+
+    You should not call [Gtk.ComboBox.set_model] or attempt to pack more cells
+    into this combo box via its [Gtk.CellLayout] interface.
+
+    {b GtkComboBoxText as GtkBuildable}
+
+    The [GtkComboBoxText] implementation of the [GtkBuildable] interface
+    supports adding items directly using the [<items>] element and specifying
+    [<item>] elements for each item. Each [<item>] element can specify the “id”
+    corresponding to the appended text and also supports the regular translation
+    attributes “translatable”, “context” and “comments”.
+
+    Here is a UI definition fragment specifying [GtkComboBoxText] items:
+
+    {[
+    <object class=”GtkComboBoxText”>
+      <items>
+        <item translatable=”yes” id=”factory”>Factory</item>
+        <item translatable=”yes” id=”home”>Home</item>
+        <item translatable=”yes” id=”subway”>Subway</item>
+      </items>
+    </object>
+    ]}
+
+    {b CSS nodes}
+
+    {[
+    combobox
+    ╰── box.linked
+        ├── entry.combo
+        ├── button.combo
+        ╰── window.popup
+    ]}
+
+    [GtkComboBoxText] has a single CSS node with name combobox. It adds the
+    style class .combo to the main CSS nodes of its entry and button children,
+    and the .linked class to the node of its internal box. *)
 
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"
 (** Create a new ComboBoxText *)

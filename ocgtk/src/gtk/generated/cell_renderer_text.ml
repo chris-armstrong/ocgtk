@@ -4,6 +4,15 @@
 type t =
   [ `cell_renderer_text | `cell_renderer | `initially_unowned | `object_ ]
   Gobject.obj
+(** Renders text in a cell
+
+    A [GtkCellRendererText] renders a given text in its cell, using the font,
+    color and style information provided by its properties. The text will be
+    ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
+    property allows it.
+
+    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
+    [GtkCellRendererText] allows to edit its text using an entry. *)
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
 (** Create a new CellRendererText *)

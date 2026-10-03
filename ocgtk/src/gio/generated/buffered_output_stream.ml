@@ -4,6 +4,20 @@
 type t =
   [ `buffered_output_stream | `filter_output_stream | `output_stream | `object_ ]
   Gobject.obj
+(** Buffered output stream implements [Gio.FilterOutputStream] and provides for
+    buffered writes.
+
+    By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
+
+    To create a buffered output stream, use [Gio.BufferedOutputStream.new], or
+    [Gio.BufferedOutputStream.new_sized] to specify the buffer's size at
+    construction.
+
+    To get the size of a buffer within a buffered input stream, use
+    [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
+    output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
+    that the buffer's size cannot be reduced below the size of the data within
+    the buffer. *)
 
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
 (** Create a new BufferedOutputStream *)

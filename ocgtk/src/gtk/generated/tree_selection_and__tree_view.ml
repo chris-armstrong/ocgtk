@@ -324,8 +324,8 @@ and Tree_view : sig
   external set_enable_search : t -> bool -> unit
     = "ml_gtk_tree_view_set_enable_search"
   (** If [enable_search] is set, then the user can type in text to search
-      through the tree interactively (this is sometimes called "typeahead
-      find").
+      through the tree interactively (this is sometimes called “typeahead
+      find”).
 
       Note that even if this is [FALSE], the user can still initiate a search
       using the “start-interactive-search” key binding. *)
@@ -892,8 +892,8 @@ end = struct
   external set_enable_search : t -> bool -> unit
     = "ml_gtk_tree_view_set_enable_search"
   (** If [enable_search] is set, then the user can type in text to search
-      through the tree interactively (this is sometimes called "typeahead
-      find").
+      through the tree interactively (this is sometimes called “typeahead
+      find”).
 
       Note that even if this is [FALSE], the user can still initiate a search
       using the “start-interactive-search” key binding. *)

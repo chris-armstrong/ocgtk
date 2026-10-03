@@ -2,6 +2,19 @@
 (* FileOutputStream: FileOutputStream *)
 
 type t = [ `file_output_stream | `output_stream | `object_ ] Gobject.obj
+(** [GFileOutputStream] provides output streams that write their content to a
+    file.
+
+    [GFileOutputStream] implements [Gio.Seekable], which allows the output
+    stream to jump to arbitrary positions in the file and to truncate the file,
+    provided the filesystem of the file supports these operations.
+
+    To find the position of a file output stream, use [Gio.Seekable.tell]. To
+    find out if a file output stream supports seeking, use
+    [Gio.Seekable.can_seek].To position a file output stream, use
+    [Gio.Seekable.seek]. To find out if a file output stream supports
+    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
+    stream, use [Gio.Seekable.truncate]. *)
 
 (* Methods *)
 

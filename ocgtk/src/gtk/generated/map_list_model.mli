@@ -2,6 +2,36 @@
 (* MapListModel: MapListModel *)
 
 type t = [ `map_list_model | `object_ ] Gobject.obj
+(** A list model that maps the items in another model to different items.
+
+    [GtkMapListModel] uses a [Gtk.MapListModelMapFunc].
+
+    Example: Create a list of [GtkEventControllers]
+
+    {[
+    static gpointer
+    map_to_controllers (gpointer widget,
+                        gpointer data)
+    {
+      gpointer result = gtk_widget_observe_controllers (widget);
+      g_object_unref (widget);
+      return result;
+    }
+
+    widgets = gtk_widget_observe_children (widget);
+
+    controllers = gtk_map_list_model_new (widgets,
+                                          map_to_controllers,
+                                          NULL, NULL);
+
+    model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
+                                        controllers);
+    ]}
+
+    [GtkMapListModel] will attempt to discard the mapped objects as soon as they
+    are no longer needed and recreate them if necessary.
+
+    [GtkMapListModel] passes through sections from the underlying model. *)
 
 (* Methods *)
 

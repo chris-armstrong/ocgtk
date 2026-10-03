@@ -2,6 +2,16 @@
 (* ContentDeserializer: ContentDeserializer *)
 
 type t = [ `content_deserializer | `object_ ] Gobject.obj
+(** Deserializes content received via inter-application data transfers.
+
+    The [GdkContentDeserializer] transforms serialized content that is
+    identified by a mime type into an object identified by a GType.
+
+    GTK provides serializers and deserializers for common data types such as
+    text, colors, images or file lists. To register your own deserialization
+    functions, use [content_register_deserializer].
+
+    Also see [Gdk.ContentSerializer]. *)
 
 (* Methods *)
 

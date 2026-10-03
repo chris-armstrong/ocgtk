@@ -2,6 +2,17 @@
 (* UriLauncher: UriLauncher *)
 
 type t = [ `uri_launcher | `object_ ] Gobject.obj
+(** Asynchronous API to open a uri with an application.
+
+    [GtkUriLauncher] collects the arguments that are needed to open the uri.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.UriLauncher.launch] function.
+
+    To launch a file, use [Gtk.FileLauncher]. *)
 
 external new_ : string option -> t = "ml_gtk_uri_launcher_new"
 (** Create a new UriLauncher *)

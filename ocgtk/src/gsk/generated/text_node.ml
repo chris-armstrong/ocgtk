@@ -2,6 +2,7 @@
 (* TextNode: TextNode *)
 
 type t = [ `text_node | `render_node ] Gobject.obj
+(** A render node drawing a set of glyphs. *)
 
 external new_ :
   Ocgtk_pango.Pango.Wrappers.Font.t ->

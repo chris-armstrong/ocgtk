@@ -2,6 +2,11 @@
 (* AlternativeTrigger: AlternativeTrigger *)
 
 type t = [ `alternative_trigger | `shortcut_trigger | `object_ ] Gobject.obj
+(** Combines two shortcut triggers.
+
+    The [GtkAlternativeTrigger] triggers when either of the two trigger.
+
+    This can be cascaded to combine more than two triggers. *)
 
 external new_ : Shortcut_trigger.t -> Shortcut_trigger.t -> t
   = "ml_gtk_alternative_trigger_new"

@@ -2,6 +2,25 @@
 (* Viewport: Viewport *)
 
 type t = [ `viewport | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Implements scrollability for widgets that don't support scrolling on their
+    own.
+
+    Use [GtkViewport] to scroll child widgets such as [GtkGrid], [GtkBox], and
+    so on.
+
+    The [GtkViewport] will start scrolling content only if allocated less than
+    the child widget’s minimum size in a given orientation.
+
+    {b CSS nodes}
+
+    [GtkViewport] has a single CSS node with name [viewport].
+
+    {b Accessibility}
+
+    Until GTK 4.10, [GtkViewport] used the [Gtk.AccessibleRole.group] role.
+
+    Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
+    role. *)
 
 external new_ : Adjustment.t option -> Adjustment.t option -> t
   = "ml_gtk_viewport_new"

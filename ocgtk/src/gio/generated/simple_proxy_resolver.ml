@@ -2,6 +2,14 @@
 (* SimpleProxyResolver: SimpleProxyResolver *)
 
 type t = [ `simple_proxy_resolver | `object_ ] Gobject.obj
+(** [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
+    handles a single default proxy, multiple URI-scheme-specific proxies, and a
+    list of hosts that proxies should not be used for.
+
+    [GSimpleProxyResolver] is never the default proxy resolver, but it can be
+    used as the base class for another proxy resolver implementation, or it can
+    be created and used manually, such as with
+    [Gio.SocketClient.set_proxy_resolver]. *)
 
 (* Methods *)
 
@@ -12,7 +20,7 @@ external set_uri_proxy : t -> string -> string -> unit
     will be proxied via [proxy].
 
     As with [GSimpleProxyResolver:default]-proxy, if [proxy] starts with
-    "socks://", [GSimpleProxyResolver] will treat it as referring to all three
+    “socks://”, [GSimpleProxyResolver] will treat it as referring to all three
     of the socks5, socks4a, and socks4 proxy types. *)
 
 external set_ignore_hosts : t -> string array -> unit
@@ -28,7 +36,7 @@ external set_default_proxy : t -> string option -> unit
     match [GSimpleProxyResolver:ignore]-hosts or a proxy set via
     g_simple_proxy_resolver_set_uri_proxy().
 
-    If [default_proxy] starts with "socks://", [GSimpleProxyResolver] will treat
+    If [default_proxy] starts with “socks://”, [GSimpleProxyResolver] will treat
     it as referring to all three of the socks5, socks4a, and socks4 proxy types.
 *)
 

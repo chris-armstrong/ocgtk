@@ -2,6 +2,45 @@
 (* FileChooser: FileChooser *)
 
 type t = [ `file_chooser ] Gobject.obj
+(** [GtkFileChooser] is an interface that can be implemented by file selection
+    widgets.
+
+    In GTK, the main objects that implement this interface are
+    [Gtk.FileChooserWidget] and [Gtk.FileChooserDialog].
+
+    You do not need to write an object that implements the [GtkFileChooser]
+    interface unless you are trying to adapt an existing file selector to expose
+    a standard programming interface.
+
+    [GtkFileChooser] allows for shortcuts to various places in the filesystem.
+    In the default implementation these are displayed in the left pane. It may
+    be a bit confusing at first that these shortcuts come from various sources
+    and in various flavours, so lets explain the terminology here:
+
+    - Bookmarks: are created by the user, by dragging folders from the right
+      pane to the left pane, or by using the “Add”. Bookmarks can be renamed and
+      deleted by the user.
+
+    - Shortcuts: can be provided by the application. For example, a Paint
+      program may want to add a shortcut for a Clipart folder. Shortcuts cannot
+      be modified by the user.
+
+    - Volumes: are provided by the underlying filesystem abstraction. They are
+      the “roots” of the filesystem.
+
+    {b File Names and Encodings}
+
+    When the user is finished selecting files in a [GtkFileChooser], your
+    program can get the selected filenames as [GFile]s.
+
+    {b Adding options}
+
+    You can add extra widgets to a file chooser to provide options that are not
+    present in the default design, by using [Gtk.FileChooser.add_choice]. Each
+    choice has an identifier and a user visible label; additionally, each choice
+    can have multiple options. If a choice has no option, it will be rendered as
+    a check button with the given label; if a choice has options, it will be
+    rendered as a combo box. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_file_chooser_from_gobject"
 
@@ -59,10 +98,10 @@ external set_file :
 
       if (document_is_new)
         {
-          GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+          GFile *default_file_for_saving = g_file_new_for_path (“./out.txt”);
           // the user just created a new document
           gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
-          gtk_file_chooser_set_current_name (chooser, "Untitled document");
+          gtk_file_chooser_set_current_name (chooser, “Untitled document”);
           g_object_unref (default_file_for_saving);
         }
       else
@@ -105,7 +144,7 @@ external set_choice : t -> string -> string -> unit
 (** Selects an option in a 'choice' that has been added with
     gtk_file_chooser_add_choice().
 
-    For a boolean choice, the possible options are "true" and "false". *)
+    For a boolean choice, the possible options are “true” and “false”. *)
 
 external set_action : t -> Gtk_enums.filechooseraction -> unit
   = "ml_gtk_file_chooser_set_action"

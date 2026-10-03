@@ -55,7 +55,7 @@ val scale : int
     currently 1024, but this may be changed in the future.
 
     When setting font sizes, device units are always considered to be points (as
-    in "12 point font"), rather than pixels. *)
+    in “12 point font”), rather than pixels. *)
 
 val version_major : int
 (** The major component of the version of Pango available at compile-time. *)

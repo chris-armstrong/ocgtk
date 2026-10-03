@@ -2,6 +2,17 @@
 (* ShortcutTrigger: ShortcutTrigger *)
 
 type t = [ `shortcut_trigger | `object_ ] Gobject.obj
+(** Tracks how a [GtkShortcut] can be activated.
+
+    To find out if a [GtkShortcutTrigger] triggers, you can call
+    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+
+    [GtkShortcutTriggers] contain functions that allow easy presentation to end
+    users as well as being printed for debugging.
+
+    All [GtkShortcutTriggers] are immutable, you can only specify their
+    properties during construction. If you want to change a trigger, you have to
+    replace it with a new one. *)
 
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 (** Create a new ShortcutTrigger *)

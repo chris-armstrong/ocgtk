@@ -7,6 +7,11 @@ type t =
   | `output_stream
   | `object_ ]
   Gobject.obj
+(** Converter output stream implements [Gio.OutputStream] and allows conversion
+    of data of various types during reading.
+
+    As of GLib 2.34, [GConverterOutputStream] implements
+    [Gio.PollableOutputStream]. *)
 
 external new_ : Output_stream.t -> Converter.t -> t
   = "ml_g_converter_output_stream_new"

@@ -2,6 +2,10 @@
 (* DBusObjectProxy: DBusObjectProxy *)
 
 type t = [ `d_bus_object_proxy | `object_ ] Gobject.obj
+(** A [GDBusObjectProxy] is an object used to represent a remote object with one
+    or more D-Bus interfaces. Normally, you don’t instantiate a
+    [GDBusObjectProxy] yourself — typically [Gio.DBusObjectManagerClient] is
+    used to obtain it. *)
 
 external new_ : D_bus_connection.t -> string -> t = "ml_g_dbus_object_proxy_new"
 (** Create a new DBusObjectProxy *)

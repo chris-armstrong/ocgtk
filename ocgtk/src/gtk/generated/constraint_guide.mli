@@ -2,6 +2,16 @@
 (* ConstraintGuide: ConstraintGuide *)
 
 type t = [ `constraint_guide | `object_ ] Gobject.obj
+(** An invisible layout element in a [GtkConstraintLayout].
+
+    The [GtkConstraintLayout] treats guides like widgets. They can be used as
+    the source or target of a [GtkConstraint].
+
+    Guides have a minimum, maximum and natural size. Depending on the
+    constraints that are applied, they can act like a guideline that widgets can
+    be aligned to, or like {i flexible space}.
+
+    Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn. *)
 
 external new_ : unit -> t = "ml_gtk_constraint_guide_new"
 (** Create a new ConstraintGuide *)

@@ -2,6 +2,24 @@
 (* Resolver: Resolver *)
 
 type t = [ `resolver | `object_ ] Gobject.obj
+(** The object that handles DNS resolution. Use [Gio.Resolver.get_default] to
+    get the default resolver.
+
+    [GResolver] provides cancellable synchronous and asynchronous DNS
+    resolution, for hostnames ([Gio.Resolver.lookup_by_address],
+    [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
+    records ([Gio.Resolver.lookup_service]).
+
+    [Gio.NetworkAddress] and [Gio.NetworkService] provide wrappers around
+    [GResolver] functionality that also implement [Gio.SocketConnectable],
+    making it easy to connect to a remote host/service.
+
+    The default resolver (see [Gio.Resolver.get_default]) has a timeout of 30s
+    set on it since GLib 2.78. Earlier versions of GLib did not support resolver
+    timeouts.
+
+    This is an abstract type; subclasses of it implement different resolvers for
+    different platforms and situations. *)
 
 (* Methods *)
 
@@ -14,7 +32,7 @@ external set_default : t -> unit = "ml_g_resolver_set_default"
     calls to g_resolver_get_default() will return this resolver.
 
     This can be used if an application wants to perform any sort of DNS caching
-    or "pinning"; it can implement its own [GResolver] that calls the original
+    or “pinning”; it can implement its own [GResolver] that calls the original
     default resolver for DNS operations, and implements its own cache policies
     on top of that, and then set itself as the default resolver for all later
     code to use. *)

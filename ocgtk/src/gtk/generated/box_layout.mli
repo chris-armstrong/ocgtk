@@ -2,6 +2,18 @@
 (* BoxLayout: BoxLayout *)
 
 type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
+(** Arranges children in a single row or column.
+
+    Whether it is a row or column depends on the value of its
+    [Gtk.Orientable:orientation] property. Within the other dimension all
+    children all allocated the same size. The [GtkBoxLayout] will respect the
+    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+
+    If you want all children to be assigned the same size, you can use the
+    [Gtk.BoxLayout:homogeneous] property.
+
+    If you want to specify the amount of space placed between each child, you
+    can use the [Gtk.BoxLayout:spacing] property. *)
 
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"
 (** Create a new BoxLayout *)

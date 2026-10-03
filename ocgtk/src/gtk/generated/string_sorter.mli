@@ -2,6 +2,13 @@
 (* StringSorter: StringSorter *)
 
 type t = [ `string_sorter | `sorter | `object_ ] Gobject.obj
+(** Sorts items by comparing strings.
+
+    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+
+    It does the comparison in a linguistically correct way using the current
+    locale by normalizing Unicode strings and possibly case-folding them before
+    performing the comparison. *)
 
 external new_ : Expression.t option -> t = "ml_gtk_string_sorter_new"
 (** Create a new StringSorter *)

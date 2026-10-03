@@ -2,6 +2,7 @@
 (* KeyEvent: KeyEvent *)
 
 type t = [ `key_event | `event ] Gobject.obj
+(** An event related to a key-based device. *)
 
 (* Methods *)
 

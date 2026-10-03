@@ -2,6 +2,13 @@
 (* DBusMethodInvocation: DBusMethodInvocation *)
 
 type t = [ `d_bus_method_invocation | `object_ ] Gobject.obj
+(** Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
+    method calls. It provides a way to asynchronously return results and errors.
+
+    The normal way to obtain a [GDBusMethodInvocation] object is to receive it
+    as an argument to the [handle_method_call()] function in a
+    [Gio.DBusInterfaceVTable] that was passed to
+    [Gio.DBusConnection.register_object]. *)
 
 (* Methods *)
 
@@ -36,7 +43,7 @@ external return_value : t -> Gvariant.t option -> unit
       g_dbus_method_invocation_return_gerror (invocation, error);
     else
       g_dbus_method_invocation_return_value (invocation,
-                                             g_variant_new ("(s)", result_string));
+                                             g_variant_new (“(s)”, result_string));
 
     // Do not free @invocation here; returning a value does that
     ]}
@@ -127,7 +134,7 @@ external get_interface_name : t -> string option
     handled.
 
     If this method call is a property Get, Set or GetAll call that has been
-    redirected to the method call handler then "org.freedesktop.DBus.Properties"
+    redirected to the method call handler then “org.freedesktop.DBus.Properties”
     will be returned. See [GDBusInterfaceVTable] for more information. *)
 
 external get_connection : t -> D_bus_connection.t

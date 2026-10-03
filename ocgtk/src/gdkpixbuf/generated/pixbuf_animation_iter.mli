@@ -2,6 +2,8 @@
 (* PixbufAnimationIter: PixbufAnimationIter *)
 
 type t = [ `pixbuf_animation_iter | `object_ ] Gobject.obj
+(** An opaque object representing an iterator which points to a certain position
+    in an animation. *)
 
 (* Methods *)
 

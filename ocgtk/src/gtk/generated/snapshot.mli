@@ -2,6 +2,18 @@
 (* Snapshot: Snapshot *)
 
 type t = [ `snapshot | `object_ ] Gobject.obj
+(** Assists in creating [Gsk.RenderNode]s for widgets.
+
+    It functions in a similar way to a cairo context, and maintains a stack of
+    render nodes and their associated transformations.
+
+    The node at the top of the stack is the one that [gtk_snapshot_append_…()]
+    functions operate on. Use the [gtk_snapshot_push_…()] functions and
+    [Snapshot.pop] to change the current node.
+
+    The typical way to obtain a [GtkSnapshot] object is as an argument to the
+    [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
+    use [Gtk.Snapshot.new]. *)
 
 external new_ : unit -> t = "ml_gtk_snapshot_new"
 (** Create a new Snapshot *)

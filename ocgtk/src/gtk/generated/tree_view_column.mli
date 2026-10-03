@@ -2,6 +2,17 @@
 (* TreeViewColumn: TreeViewColumn *)
 
 type t = [ `tree_view_column | `initially_unowned | `object_ ] Gobject.obj
+(** A visible column in a [Gtk.TreeView] widget
+
+    The [GtkTreeViewColumn] object represents a visible column in a
+    [GtkTreeView] widget. It allows to set properties of the column header, and
+    functions as a holding pen for the cell renderers which determine how the
+    data in the column is displayed.
+
+    Please refer to the tree widget conceptual overview for an overview of all
+    the objects and data types related to the tree widget and how they work
+    together, and to the [Gtk.TreeView] documentation for specifics about the
+    CSS node structure for treeviews and their headers. *)
 
 external new_ : unit -> t = "ml_gtk_tree_view_column_new"
 (** Create a new TreeViewColumn *)

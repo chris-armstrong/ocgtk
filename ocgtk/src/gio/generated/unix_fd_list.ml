@@ -2,6 +2,18 @@
 (* UnixFDList: UnixFDList *)
 
 type t = [ `unix_fd_list | `object_ ] Gobject.obj
+(** A [GUnixFDList] contains a list of file descriptors. It owns the file
+    descriptors that it contains, closing them when finalized.
+
+    It may be wrapped in a [GUnixFDMessage] and sent over a [Gio.Socket] in the
+    [G_SOCKET_FAMILY_UNIX] family by using [Gio.Socket.send_message] and
+    received using [Gio.Socket.receive_message].
+
+    Before 2.74, [<gio/gunixfdlist.h>] belonged to the UNIX-specific GIO
+    interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file when
+    using it.
+
+    Since 2.74, the API is available for Windows. *)
 
 external new_ : unit -> t = "ml_g_unix_fd_list_new"
 (** Create a new UnixFDList *)

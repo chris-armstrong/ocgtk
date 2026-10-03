@@ -2,6 +2,80 @@
 (* TextView: TextView *)
 
 type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Displays the contents of a [Gtk.TextBuffer].
+
+    An example GtkTextView
+
+    You may wish to begin by reading the conceptual overview, which gives an
+    overview of all the objects and data types related to the text widget and
+    how they work together.
+
+    {b Shortcuts and Gestures}
+
+    [GtkTextView] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+    - <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes the last modification.
+    - <kbd>Ctrl</kbd>+<kbd>Y</kbd> or
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redoes the last undone
+      modification.
+    - <kbd>Clear</kbd> clears the content.
+
+    Additionally, the following signals have default keybindings:
+
+    - [Gtk.TextView::backspace]
+    - [Gtk.TextView::copy-clipboard]
+    - [Gtk.TextView::cut-clipboard]
+    - [Gtk.TextView::delete-from-cursor]
+    - [Gtk.TextView::insert-emoji]
+    - [Gtk.TextView::move-cursor]
+    - [Gtk.TextView::paste-clipboard]
+    - [Gtk.TextView::select-all]
+    - [Gtk.TextView::toggle-cursor-visible]
+    - [Gtk.TextView::toggle-overwrite]
+
+    {b Actions}
+
+    [GtkTextView] defines a set of built-in actions:
+
+    - [clipboard.copy] copies the contents to the clipboard.
+    - [clipboard.cut] copies the contents to the clipboard and deletes it from
+      the widget.
+    - [clipboard.paste] inserts the contents of the clipboard into the widget.
+    - [menu.popup] opens the context menu.
+    - [misc.insert-emoji] opens the Emoji chooser.
+    - [selection.delete] deletes the current selection.
+    - [selection.select-all] selects all of the widgets content.
+    - [text.redo] redoes the last change to the contents.
+    - [text.undo] undoes the last change to the contents.
+    - [text.clear] clears the content.
+
+    {b CSS nodes}
+
+    {[
+    textview.view
+    ├── border.top
+    ├── border.left
+    ├── text
+    │   ╰── [selection]
+    ├── border.right
+    ├── border.bottom
+    ╰── [window.popup]
+    ]}
+
+    [GtkTextView] has a main css node with name textview and style class .view,
+    and subnodes for each of the border windows, and the main text area, with
+    names border and text, respectively. The border nodes each get one of the
+    style classes .left, .right, .top or .bottom.
+
+    A node representing the selection will appear below the text node.
+
+    If a context menu is opened, the window node will appear as a subnode of the
+    main node.
+
+    {b Accessibility}
+
+    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
 
 external new_ : unit -> t = "ml_gtk_text_view_new"
 (** Create a new TextView *)

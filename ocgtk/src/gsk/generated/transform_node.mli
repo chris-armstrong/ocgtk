@@ -2,6 +2,7 @@
 (* TransformNode: TransformNode *)
 
 type t = [ `transform_node | `render_node ] Gobject.obj
+(** A render node applying a [GskTransform] to its single child node. *)
 
 external new_ : Render_node.t -> Transform.t -> t = "ml_gsk_transform_node_new"
 (** Create a new TransformNode *)

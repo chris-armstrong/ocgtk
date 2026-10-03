@@ -2,6 +2,16 @@
 (* EntryBuffer: EntryBuffer *)
 
 type t = [ `entry_buffer | `object_ ] Gobject.obj
+(** Holds the text that is displayed in a single-line text entry widget.
+
+    A single [GtkEntryBuffer] object can be shared by multiple widgets which
+    will then share the same text content, but not the cursor position,
+    visibility attributes, icon etc.
+
+    [GtkEntryBuffer] may be derived from. Such a derived class might allow text
+    to be stored in an alternate location, such as non-pageable memory, useful
+    in the case of important passwords. Or a derived class could integrate with
+    an application’s concept of undo/redo. *)
 
 external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
 (** Create a new EntryBuffer *)

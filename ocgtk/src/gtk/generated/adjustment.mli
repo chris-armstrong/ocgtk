@@ -2,6 +2,16 @@
 (* Adjustment: Adjustment *)
 
 type t = [ `adjustment | `initially_unowned | `object_ ] Gobject.obj
+(** A model for a numeric value.
+
+    The [GtkAdjustment] has an associated lower and upper bound. It also
+    contains step and page increments, and a page size.
+
+    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
+    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+
+    The [GtkAdjustment] object does not update the value itself. Instead it is
+    left up to the owner of the [GtkAdjustment] to control the value. *)
 
 external new_ : float -> float -> float -> float -> float -> float -> t
   = "ml_gtk_adjustment_new_bytecode" "ml_gtk_adjustment_new_native"

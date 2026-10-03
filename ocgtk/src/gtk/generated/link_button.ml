@@ -4,6 +4,45 @@
 type t =
   [ `link_button | `button | `widget | `initially_unowned | `object_ ]
   Gobject.obj
+(** A button with a hyperlink.
+
+    An example GtkLinkButton
+
+    It is useful to show quick links to resources.
+
+    A link button is created by calling either [Gtk.LinkButton.new] or
+    [Gtk.LinkButton.new_with_label]. If using the former, the URI you pass to
+    the constructor is used as a label for the widget.
+
+    The URI bound to a [GtkLinkButton] can be set specifically using
+    [Gtk.LinkButton.set_uri].
+
+    By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
+    is clicked. This behaviour can be overridden by connecting to the
+    [Gtk.LinkButton::activate-link] signal and returning [TRUE] from the signal
+    handler.
+
+    {b Shortcuts and Gestures}
+
+    [GtkLinkButton] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+
+    {b Actions}
+
+    [GtkLinkButton] defines a set of built-in actions:
+
+    - [clipboard.copy] copies the url to the clipboard.
+    - [menu.popup] opens the context menu.
+
+    {b CSS nodes}
+
+    [GtkLinkButton] has a single CSS node with name button. To differentiate it
+    from a plain [GtkButton], it gets the .link style class.
+
+    {b Accessibility}
+
+    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
 
 external new_ : string -> t = "ml_gtk_link_button_new"
 (** Create a new LinkButton *)

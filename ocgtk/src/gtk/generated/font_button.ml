@@ -2,6 +2,22 @@
 (* FontButton: FontButton *)
 
 type t = [ `font_button | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** The [GtkFontButton] allows to open a font chooser dialog to change the font.
+
+    An example GtkFontButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontButton] has a single CSS node with name fontbutton which contains a
+    button node with the .font style class. *)
 
 external new_ : unit -> t = "ml_gtk_font_button_new"
 (** Create a new FontButton *)

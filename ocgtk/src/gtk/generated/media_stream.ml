@@ -2,6 +2,18 @@
 (* MediaStream: MediaStream *)
 
 type t = [ `media_stream | `object_ ] Gobject.obj
+(** The integration point for media playback inside GTK.
+
+    GTK provides an implementation of the [GtkMediaStream] interface that is
+    called [Gtk.MediaFile].
+
+    Apart from application-facing API for stream playback, [GtkMediaStream] has
+    a number of APIs that are only useful for implementations and should not be
+    used in applications: [Gtk.MediaStream.prepared],
+    [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
+    [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
+    [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
+    [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
 
 (* Methods *)
 

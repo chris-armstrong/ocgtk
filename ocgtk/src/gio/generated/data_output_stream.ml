@@ -4,6 +4,8 @@
 type t =
   [ `data_output_stream | `filter_output_stream | `output_stream | `object_ ]
   Gobject.obj
+(** Data output stream implements [Gio.OutputStream] and includes functions for
+    writing data directly to an output stream. *)
 
 external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
 (** Create a new DataOutputStream *)

@@ -2,6 +2,7 @@
 (* GLShaderNode: GLShaderNode *)
 
 type t = [ `gl_shader_node | `render_node ] Gobject.obj
+(** A render node using a GL shader when drawing its children nodes. *)
 
 external new_ :
   Gl_shader.t ->

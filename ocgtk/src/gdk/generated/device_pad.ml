@@ -2,6 +2,22 @@
 (* DevicePad: DevicePad *)
 
 type t = [ `device_pad ] Gobject.obj
+(** An interface for tablet pad devices.
+
+    It allows querying the features provided by the pad device.
+
+    Tablet pads may contain one or more groups, each containing a subset of the
+    buttons/rings/strips available. [Gdk.DevicePad.get_n_groups] can be used to
+    obtain the number of groups, [Gdk.DevicePad.get_n_features] and
+    [Gdk.DevicePad.get_feature_group] can be combined to find out the number of
+    buttons/rings/strips the device has, and how are they grouped.
+
+    Each of those groups have different modes, which may be used to map each
+    individual pad feature to multiple actions. Only one mode is effective
+    (current) for each given group, different groups may have different current
+    modes. The number of available modes in a group can be found out through
+    [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
+    will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_device_pad_from_gobject"
 

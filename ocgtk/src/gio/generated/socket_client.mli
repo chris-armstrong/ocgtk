@@ -2,6 +2,19 @@
 (* SocketClient: SocketClient *)
 
 type t = [ `socket_client | `object_ ] Gobject.obj
+(** [GSocketClient] is a lightweight high-level utility class for connecting to
+    a network host using a connection oriented socket type.
+
+    You create a [GSocketClient] object, set any options you want, and then call
+    a sync or async connect operation, which returns a [Gio.SocketConnection]
+    subclass on success.
+
+    The type of the [Gio.SocketConnection] object returned depends on the type
+    of the underlying socket that is in use. For instance, for a TCP/IP
+    connection it will be a [Gio.TcpConnection].
+
+    As [GSocketClient] is a lightweight object, you don't need to cache it. You
+    can just create a new one any time you need one. *)
 
 external new_ : unit -> t = "ml_g_socket_client_new"
 (** Create a new SocketClient *)
@@ -173,7 +186,7 @@ external connect_to_uri :
 
     Attempts to create a TCP connection with a network URI.
 
-    [uri] may be any valid URI containing an "authority" (hostname/port)
+    [uri] may be any valid URI containing an “authority” (hostname/port)
     component. If a port is not specified in the URI, [default_port] will be
     used. TLS will be negotiated if [GSocketClient:tls] is [TRUE].
     ([GSocketClient] does not know to automatically assume TLS for certain URI
@@ -208,7 +221,7 @@ external connect_to_service :
   = "ml_g_socket_client_connect_to_service"
 (** Attempts to create a TCP connection to a service.
 
-    This call looks up the SRV record for [service] at [domain] for the "tcp"
+    This call looks up the SRV record for [service] at [domain] for the “tcp”
     protocol. It then attempts to connect, in turn, to each of the hosts
     providing the service until either a connection succeeds or there are no
     hosts remaining.

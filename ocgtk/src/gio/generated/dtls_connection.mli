@@ -2,6 +2,25 @@
 (* DtlsConnection: DtlsConnection *)
 
 type t = [ `dtls_connection ] Gobject.obj
+(** [GDtlsConnection] is the base DTLS connection class type, which wraps a
+    [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
+    subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
+    implement client-side and server-side DTLS, respectively.
+
+    For TLS support, see [Gio.TlsConnection].
+
+    As DTLS is datagram based, [GDtlsConnection] implements [Gio.DatagramBased],
+    presenting a datagram-socket-like API for the encrypted connection. This
+    operates over a base datagram connection, which is also a [GDatagramBased]
+    ([Gio.DtlsConnection:base-socket]).
+
+    To close a DTLS connection, use [Gio.DtlsConnection.close].
+
+    Neither [Gio.DtlsServerConnection] or [Gio.DtlsClientConnection] set the
+    peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
+    is up to the caller to do that if they wish. If they do not, and
+    [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
+    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_dtls_connection_from_gobject"
@@ -48,7 +67,7 @@ external set_require_close_notify : t -> bool -> unit
     application-level data includes a length field, or is somehow
     self-delimiting); in this case, the close notify is redundant and may be
     omitted. You can use g_dtls_connection_set_require_close_notify() to tell
-    [conn] to allow an "unannounced" connection close, in which case the close
+    [conn] to allow an “unannounced” connection close, in which case the close
     will show up as a 0-length read, as in a non-TLS [GDatagramBased], and it is
     up to the application to check that the data has been fully received.
 

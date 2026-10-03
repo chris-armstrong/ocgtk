@@ -2,6 +2,7 @@
 (* StackPage: StackPage *)
 
 type t = [ `stack_page | `object_ ] Gobject.obj
+(** An auxiliary class used by [GtkStack]. *)
 
 (* Methods *)
 

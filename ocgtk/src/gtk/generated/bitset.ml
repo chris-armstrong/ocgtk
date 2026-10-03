@@ -48,11 +48,11 @@ external splice : t -> int -> int -> int -> unit = "ml_gtk_bitset_splice"
 (** This is a support function for [GListModel] handling, by mirroring the
     [GlistModel::items-changed] signal.
 
-    First, it "cuts" the values from [position] to [removed] from the bitset.
+    First, it “cuts” the values from [position] to [removed] from the bitset.
     That is, it removes all those values and shifts all larger values to the
     left by [removed] places.
 
-    Then, it "pastes" new room into the bitset by shifting all values larger
+    Then, it “pastes” new room into the bitset by shifting all values larger
     than [position] by [added] spaces to the right. This frees up space that can
     then be filled. *)
 

@@ -2,6 +2,13 @@
 (* Converter: Converter *)
 
 type t = [ `converter ] Gobject.obj
+(** [GConverter] is an interface for streaming conversions.
+
+    [GConverter] is implemented by objects that convert binary data in various
+    ways. The conversion can be stateful and may fail at any place.
+
+    Some example conversions are: character set conversion, compression,
+    decompression and regular expression replace. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_converter_from_gobject"
 

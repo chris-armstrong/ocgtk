@@ -2,6 +2,37 @@
 (* IconTheme: IconTheme *)
 
 type t = [ `icon_theme | `object_ ] Gobject.obj
+(** Loads themed icons.
+
+    The main reason for using a name rather than simply providing a filename is
+    to allow different icons to be used depending on what “icon theme” is
+    selected by the user. The operation of icon themes on Linux and Unix follows
+    the Icon Theme Specification There is a fallback icon theme, named
+    [hicolor], where applications should install their icons, but additional
+    icon themes can be installed as operating system vendors and users choose.
+
+    In many cases, named themes are used indirectly, via [Gtk.Image] rather than
+    directly, but looking up icons directly is also simple. The [GtkIconTheme]
+    object acts as a database of all the icons in the current theme. You can
+    create new [GtkIconTheme] objects, but it’s much more efficient to use the
+    standard icon theme of the [GtkWidget] so that the icon information is
+    shared with other people looking up icons.
+
+    {[
+    GtkIconTheme *icon_theme;
+    GtkIconPaintable *icon;
+    GdkPaintable *paintable;
+
+    icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display (my_widget));
+    icon = gtk_icon_theme_lookup_icon (icon_theme,
+                                       “my-icon-name”, // icon name
+                                       48, // icon size
+                                       1,  // scale
+                                       0,  // flags);
+    paintable = GDK_PAINTABLE (icon);
+    // Use the paintable
+    g_object_unref (icon);
+    ]} *)
 
 external new_ : unit -> t = "ml_gtk_icon_theme_new"
 (** Create a new IconTheme *)
@@ -66,8 +97,8 @@ external lookup_icon :
     If the available [icon_name] is not available and [fallbacks] are provided,
     they will be tried in order.
 
-    If no matching icon is found, then a paintable that renders the "missing
-    icon" icon is returned. If you need to do something else for missing icons
+    If no matching icon is found, then a paintable that renders the “missing
+    icon” icon is returned. If you need to do something else for missing icons
     you need to use [Gtk.IconTheme.has_icon].
 
     Note that you probably want to listen for icon theme changes and update the

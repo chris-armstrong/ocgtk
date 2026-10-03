@@ -4,6 +4,12 @@
 type t =
   [ `cell_renderer_toggle | `cell_renderer | `initially_unowned | `object_ ]
   Gobject.obj
+(** Renders a toggle button in a cell
+
+    [GtkCellRendererToggle] renders a toggle button in a cell. The button is
+    drawn as a radio or a checkbutton, depending on the
+    [GtkCellRendererToggle:radio] property. When activated, it emits the
+    [GtkCellRendererToggle::toggled] signal. *)
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"
 (** Create a new CellRendererToggle *)

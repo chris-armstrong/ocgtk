@@ -2,6 +2,7 @@
 (* BlurNode: BlurNode *)
 
 type t = [ `blur_node | `render_node ] Gobject.obj
+(** A render node applying a blur effect to its single child. *)
 
 external new_ : Render_node.t -> float -> t = "ml_gsk_blur_node_new"
 (** Create a new BlurNode *)

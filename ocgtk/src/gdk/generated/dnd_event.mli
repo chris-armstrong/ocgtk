@@ -2,6 +2,7 @@
 (* DNDEvent: DNDEvent *)
 
 type t = [ `dnd_event | `event ] Gobject.obj
+(** An event related to drag and drop operations. *)
 
 (* Methods *)
 

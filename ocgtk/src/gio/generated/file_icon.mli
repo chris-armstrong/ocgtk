@@ -2,6 +2,10 @@
 (* FileIcon: FileIcon *)
 
 type t = [ `file_icon | `object_ ] Gobject.obj
+(** [GFileIcon] specifies an icon by pointing to an image file to be used as
+    icon.
+
+    It implements [Gio.LoadableIcon]. *)
 
 external new_ : App_info_cycle_64c425a0.File.t -> t = "ml_g_file_icon_new"
 (** Create a new FileIcon *)

@@ -2,6 +2,16 @@
 (* PrintDialog: PrintDialog *)
 
 type t = [ `print_dialog | `object_ ] Gobject.obj
+(** Asynchronous API to present a print dialog to the user.
+
+    [GtkPrintDialog] collects the arguments that are needed to present the
+    dialog, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with the [Gtk.PrintDialog.setup] function.
+
+    The actual printing can be done with [Gtk.PrintDialog.print] or
+    [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
+    the results can be obtained by calling the corresponding finish methods. *)
 
 external new_ : unit -> t = "ml_gtk_print_dialog_new"
 (** Create a new PrintDialog *)

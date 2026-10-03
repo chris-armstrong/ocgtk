@@ -2,6 +2,90 @@
 (* Entry: Entry *)
 
 type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** A single-line text entry widget.
+
+    An example GtkEntry
+
+    A fairly large set of key bindings are supported by default. If the entered
+    text is longer than the allocation of the widget, the widget will scroll so
+    that the cursor position is visible.
+
+    When using an entry for passwords and other sensitive information, it can be
+    put into “password mode” using [Gtk.Entry.set_visibility]. In this mode,
+    entered text is displayed using a “invisible” character. By default, GTK
+    picks the best invisible character that is available in the current font,
+    but it can be changed with [Gtk.Entry.set_invisible_char].
+
+    [GtkEntry] has the ability to display progress or activity information
+    behind the text. To make an entry display such information, use
+    [Gtk.Entry.set_progress_fraction] or [Gtk.Entry.set_progress_pulse_step].
+
+    Additionally, [GtkEntry] can show icons at either side of the entry. These
+    icons can be activatable by clicking, can be set up as drag source and can
+    have tooltips. To add an icon, use [Gtk.Entry.set_icon_from_gicon] or one of
+    the various other functions that set an icon from an icon name or a
+    paintable. To trigger an action when the user clicks an icon, connect to the
+    [Gtk.Entry::icon-press] signal. To allow DND operations from an icon, use
+    [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use
+    [Gtk.Entry.set_icon_tooltip_text] or the corresponding function for markup.
+
+    Note that functionality or information that is only available by clicking on
+    an icon in an entry may not be accessible at all to users which are not able
+    to use a mouse or other pointing device. It is therefore recommended that
+    any such functionality should also be available by other means, e.g. via the
+    context menu of the entry.
+
+    {b CSS nodes}
+
+    {[
+    entry[.flat][.warning][.error]
+    ├── text[.readonly]
+    ├── image.left
+    ├── image.right
+    ╰── [progress[.pulse]]
+    ]}
+
+    [GtkEntry] has a main node with the name entry. Depending on the properties
+    of the entry, the style classes .read-only and .flat may appear. The style
+    classes .warning and .error may also be used with entries.
+
+    When the entry shows icons, it adds subnodes with the name image and the
+    style class .left or .right, depending on where the icon appears.
+
+    When the entry shows progress, it adds a subnode with the name progress. The
+    node has the style class .pulse when the shown progress is pulsing.
+
+    For all the subnodes added to the text node in various situations, see
+    [Gtk.Text].
+
+    {b GtkEntry as GtkBuildable}
+
+    The [GtkEntry] implementation of the [GtkBuildable] interface supports a
+    custom [<attributes>] element, which supports any number of [<attribute>]
+    elements. The [<attribute>] element has attributes named “name“, “value“,
+    “start“ and “end“ and allows you to specify [PangoAttribute] values for this
+    label.
+
+    An example of a UI definition fragment specifying Pango attributes:
+
+    {[
+    <object class=”GtkEntry”>
+      <attributes>
+        <attribute name=”weight” value=”PANGO_WEIGHT_BOLD”/>
+        <attribute name=”background” value=”red” start=”5” end=”10”/>
+      </attributes>
+    </object>
+    ]}
+
+    The start and end attributes specify the range of characters to which the
+    Pango attribute applies. If start and end are not specified, the attribute
+    is applied to the whole text. Note that specifying ranges does not make much
+    sense with translatable attributes. Use markup embedded in the translatable
+    content instead.
+
+    {b Accessibility}
+
+    [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
 
 external new_ : unit -> t = "ml_gtk_entry_new"
 (** Create a new Entry *)

@@ -2,6 +2,12 @@
 (* EmblemedIcon: EmblemedIcon *)
 
 type t = [ `emblemed_icon | `object_ ] Gobject.obj
+(** [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
+    emblem to an icon. Adding multiple emblems to an icon is ensured via
+    [Gio.EmblemedIcon.add_emblem].
+
+    Note that [GEmblemedIcon] allows no control over the position of the
+    emblems. See also [Gio.Emblem] for more information. *)
 
 external new_ : Icon.t -> Emblem.t option -> t = "ml_g_emblemed_icon_new"
 (** Create a new EmblemedIcon *)

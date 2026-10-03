@@ -2,6 +2,92 @@
 (* Expander: Expander *)
 
 type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Allows the user to reveal or conceal a child widget.
+
+    An example GtkExpander
+
+    This is similar to the triangles used in a [GtkTreeView].
+
+    Normally you use an expander as you would use a frame; you create the child
+    widget and use [Gtk.Expander.set_child] to add it to the expander. When the
+    expander is toggled, it will take care of showing and hiding the child
+    automatically.
+
+    {b Special Usage}
+
+    There are situations in which you may prefer to show and hide the expanded
+    widget yourself, such as when you want to actually create the widget at
+    expansion time. In this case, create a [GtkExpander] but do not add a child
+    to it. The expander widget has an [Gtk.Expander:expanded] property which can
+    be used to monitor its expansion state. You should watch this property with
+    a signal connection as follows:
+
+    {[
+    static void
+    expander_callback (GObject    *object,
+                       GParamSpec *param_spec,
+                       gpointer    user_data)
+    {
+      GtkExpander *expander;
+
+      expander = GTK_EXPANDER (object);
+
+      if (gtk_expander_get_expanded (expander))
+        {
+          // Show or create widgets
+        }
+      else
+        {
+          // Hide or destroy widgets
+        }
+    }
+
+    static void
+    create_expander (void)
+    {
+      GtkWidget *expander = gtk_expander_new_with_mnemonic (“_More Options”);
+      g_signal_connect (expander, “notify::expanded”,
+                        G_CALLBACK (expander_callback), NULL);
+
+      // ...
+    }
+    ]}
+
+    {b GtkExpander as GtkBuildable}
+
+    An example of a UI definition fragment with GtkExpander:
+
+    {[
+    <object class=”GtkExpander”>
+      <property name=”label-widget”>
+        <object class=”GtkLabel” id=”expander-label”/>
+      </property>
+      <property name=”child”>
+        <object class=”GtkEntry” id=”expander-content”/>
+      </property>
+    </object>
+    ]}
+
+    {b CSS nodes}
+
+    {[
+    expander-widget
+    ╰── box
+        ├── title
+        │   ├── expander
+        │   ╰── <label widget>
+        ╰── <child>
+    ]}
+
+    [GtkExpander] has a main node [expander-widget], and subnode [box]
+    containing the title and child widget. The box subnode [title] contains node
+    [expander], i.e. the expand/collapse arrow; then the label widget if any.
+    The arrow of an expander that is showing its child gets the [:checked]
+    pseudoclass set on it.
+
+    {b Accessibility}
+
+    [GtkExpander] uses the [Gtk.AccessibleRole.button] role. *)
 
 external new_ : string option -> t = "ml_gtk_expander_new"
 (** Create a new Expander *)

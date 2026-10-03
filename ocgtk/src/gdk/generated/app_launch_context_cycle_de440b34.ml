@@ -347,7 +347,7 @@ and Device : sig
          vendor = gdk_device_get_vendor_id (device);
          product = gdk_device_get_product_id (device);
 
-         path = g_strdup_printf ("/org/example/app/devices/%s:%s/", vendor, product);
+         path = g_strdup_printf (“/org/example/app/devices/%s:%s/”, vendor, product);
          settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
          g_free (path);
 
@@ -492,7 +492,7 @@ end = struct
          vendor = gdk_device_get_vendor_id (device);
          product = gdk_device_get_product_id (device);
 
-         path = g_strdup_printf ("/org/example/app/devices/%s:%s/", vendor, product);
+         path = g_strdup_printf (“/org/example/app/devices/%s:%s/”, vendor, product);
          settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
          g_free (path);
 
@@ -1994,7 +1994,7 @@ and Monitor : sig
   external get_connector : t -> string option = "ml_gdk_monitor_get_connector"
   (** Gets the name of the monitor's connector, if available.
 
-      These are strings such as "eDP-1", or "HDMI-2". They depend on software
+      These are strings such as “eDP-1”, or “HDMI-2”. They depend on software
       and hardware configuration, and should not be relied on as stable
       identifiers of a specific monitor. *)
 
@@ -2080,7 +2080,7 @@ end = struct
   external get_connector : t -> string option = "ml_gdk_monitor_get_connector"
   (** Gets the name of the monitor's connector, if available.
 
-      These are strings such as "eDP-1", or "HDMI-2". They depend on software
+      These are strings such as “eDP-1”, or “HDMI-2”. They depend on software
       and hardware configuration, and should not be relied on as stable
       identifiers of a specific monitor. *)
 

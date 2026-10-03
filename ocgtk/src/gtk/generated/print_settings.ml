@@ -2,6 +2,17 @@
 (* PrintSettings: PrintSettings *)
 
 type t = [ `print_settings | `object_ ] Gobject.obj
+(** Collects the settings of a print dialog in a system-independent way.
+
+    The main use for this object is that once you’ve printed you can get a
+    settings object that represents the settings the user chose, and the next
+    time you print you can pass that object in so that the user doesn’t have to
+    re-set all his settings.
+
+    Its also possible to enumerate the settings so that you can easily save the
+    settings for the next time your app runs, or even store them in a document.
+    The predefined keys try to use shared values as much as possible so that
+    moving such a document between systems still works. *)
 
 external new_ : unit -> t = "ml_gtk_print_settings_new"
 (** Create a new PrintSettings *)

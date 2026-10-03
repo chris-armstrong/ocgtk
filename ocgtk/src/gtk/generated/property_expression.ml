@@ -2,6 +2,7 @@
 (* PropertyExpression: PropertyExpression *)
 
 type t = [ `property_expression | `expression ] Gobject.obj
+(** A [GObject] property value in a [GtkExpression]. *)
 
 external new_ : Gobject.Type.t -> Expression.t option -> string -> t
   = "ml_gtk_property_expression_new"

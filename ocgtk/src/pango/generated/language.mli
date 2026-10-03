@@ -72,13 +72,13 @@ external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
     If [language] is [NULL], the default language as found by
     [Pango.Language.get_default] is used.
 
-    If Pango does not have a sample string for [language], the classic "The
-    quick brown fox..." is returned. This can be detected by comparing the
+    If Pango does not have a sample string for [language], the classic “The
+    quick brown fox...” is returned. This can be detected by comparing the
     returned pointer value to that returned for (non-existent) language code
-    "xx". That is, compare to:
+    “xx”. That is, compare to:
 
     {[
-    pango_language_get_sample_string (pango_language_from_string "xx")
+    pango_language_get_sample_string (pango_language_from_string (“xx”))
     ]} *)
 
 external get_type : unit -> Gobject.Type.t = "ml_pango_language_get_type"

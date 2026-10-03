@@ -3,6 +3,55 @@
 
 type t =
   [ `window_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Shows window frame controls.
+
+    Typical window frame controls are minimize, maximize and close buttons, and
+    the window icon.
+
+    An example GtkWindowControls
+
+    [GtkWindowControls] only displays start or end side of the controls (see
+    [Gtk.WindowControls:side]), so it's intended to be always used in pair with
+    another [GtkWindowControls] for the opposite side, for example:
+
+    {[
+    <object class=”GtkBox”>
+      <child>
+        <object class=”GtkWindowControls”>
+          <property name=”side”>start</property>
+        </object>
+      </child>
+
+      ...
+
+      <child>
+        <object class=”GtkWindowControls”>
+          <property name=”side”>end</property>
+        </object>
+      </child>
+    </object>
+    ]}
+
+    {b CSS nodes}
+
+    {[
+    windowcontrols
+    ├── [image.icon]
+    ├── [button.minimize]
+    ├── [button.maximize]
+    ╰── [button.close]
+    ]}
+
+    A [GtkWindowControls]' CSS node is called windowcontrols. It contains
+    subnodes corresponding to each title button. Which of the title buttons
+    exist and where they are placed exactly depends on the desktop environment
+    and [Gtk.WindowControls:decoration-layout] value.
+
+    When [Gtk.WindowControls:empty] is true, it gets the .empty style class.
+
+    {b Accessibility}
+
+    [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role. *)
 
 external new_ : Gtk_enums.packtype -> t = "ml_gtk_window_controls_new"
 (** Create a new WindowControls *)
@@ -13,7 +62,7 @@ external set_use_native_controls : t -> bool -> unit
   = "ml_gtk_window_controls_set_use_native_controls"
 (** Sets whether platform native window controls are used.
 
-    This option shows the "stoplight" buttons on macOS. For Linux, this option
+    This option shows the “stoplight” buttons on macOS. For Linux, this option
     has no effect.
 
     See also Using GTK on Apple macOS. *)

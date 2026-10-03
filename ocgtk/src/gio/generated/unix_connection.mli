@@ -3,6 +3,19 @@
 
 type t =
   [ `unix_connection | `socket_connection | `io_stream | `object_ ] Gobject.obj
+(** This is the subclass of [Gio.SocketConnection] that is created for UNIX
+    domain sockets.
+
+    It contains functions to do some of the UNIX socket specific functionality
+    like passing file descriptors.
+
+    Since GLib 2.72, [GUnixConnection] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixconnection.h>] belonged to the UNIX-specific
+    GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
+    when using it. This is no longer necessary since GLib 2.72. *)
 
 (* Methods *)
 

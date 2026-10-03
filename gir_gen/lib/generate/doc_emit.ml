@@ -16,6 +16,28 @@ let prose_of ~context doc fallback =
         Some (String.trim f, true)
     | _ -> None
 
+(* OCaml lexes string literals inside comments, and the lexer's escape rules
+   do not match prose: an even number of double quotes can still leave a
+   string open (e.g. a GIR shell example with backslash-quoted words). So every
+   double quote in an emitted comment becomes a typographic one, opening or
+   closing by its left neighbour. Nothing in a comment can then open a string. *)
+let neutralise_quotes s =
+  let buf = Buffer.create (String.length s + 8) in
+  String.iteri
+    (fun i c ->
+      if c <> '"' then Buffer.add_char buf c
+      else
+        let opening =
+          i = 0
+          ||
+          match s.[i - 1] with
+          | ' ' | '\n' | '\t' | '(' | '[' -> true
+          | _ -> false
+        in
+        Buffer.add_string buf (if opening then "\u{201C}" else "\u{201D}"))
+    s;
+  Buffer.contents buf
+
 let item_doc ~indent ?since ?fallback ~context doc =
   let body =
     match (prose_of ~context doc fallback, since) with
@@ -26,4 +48,6 @@ let item_doc ~indent ?since ?fallback ~context doc =
     | None, Some v -> Some ("@since " ^ v)
     | None, None -> None
   in
-  Option.map (fun b -> "(** " ^ Utils.sanitize_doc b ^ " *)") body
+  Option.map
+    (fun b -> "(** " ^ neutralise_quotes (Utils.sanitize_doc b) ^ " *)")
+    body

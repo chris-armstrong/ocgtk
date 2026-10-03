@@ -2,6 +2,16 @@
 (* Drag: Drag *)
 
 type t = [ `drag | `object_ ] Gobject.obj
+(** Represents the source of an ongoing DND operation.
+
+    A [GdkDrag] is created when a drag is started, and stays alive for duration
+    of the DND operation. After a drag has been started with [Gdk.Drag.begin],
+    the caller gets informed about the status of the ongoing drag operation with
+    signals on the [GdkDrag] object.
+
+    GTK provides a higher level abstraction based on top of these functions, and
+    so they are not normally needed in GTK applications. See the “Drag and Drop”
+    section of the GTK documentation for more information. *)
 
 (* Methods *)
 

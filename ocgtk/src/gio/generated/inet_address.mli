@@ -2,6 +2,15 @@
 (* InetAddress: InetAddress *)
 
 type t = [ `inet_address | `object_ ] Gobject.obj
+(** [GInetAddress] represents an IPv4 or IPv6 internet address. Use
+    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
+    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
+    [GInetAddress].
+
+    To actually connect to a remote host, you will need a
+    [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
+    number). *)
 
 external new_any : Gio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
 (** Create a new InetAddress *)
@@ -61,7 +70,7 @@ external get_is_link_local : t -> bool = "ml_g_inet_address_get_is_link_local"
     host on a local network that is not connected to the Internet). *)
 
 external get_is_any : t -> bool = "ml_g_inet_address_get_is_any"
-(** Tests whether [address] is the "any" address for its family. *)
+(** Tests whether [address] is the “any” address for its family. *)
 
 external get_flowinfo : t -> UInt32.t = "ml_g_inet_address_get_flowinfo"
 (** Gets the value of [Gio.InetAddress:flowinfo]. *)

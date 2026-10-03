@@ -2,6 +2,7 @@
 (* Vfs: Vfs *)
 
 type t = [ `vfs | `object_ ] Gobject.obj
+(** Entry point for using GIO functionality. *)
 
 (* Methods *)
 

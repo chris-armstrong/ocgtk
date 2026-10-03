@@ -2,6 +2,13 @@
 (* Menu: Menu *)
 
 type t = [ `menu | `menu_model | `object_ ] Gobject.obj
+(** [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
+    [GMenu] by adding [Gio.MenuItem] instances to it.
+
+    There are some convenience functions to allow you to directly add items
+    (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
+    [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
+    submenu, use [Gio.Menu.insert_submenu]. *)
 
 external new_ : unit -> t = "ml_g_menu_new"
 (** Create a new Menu *)
@@ -71,7 +78,7 @@ external insert_section :
 external insert_item : t -> int -> Menu_item.t -> unit = "ml_g_menu_insert_item"
 (** Inserts [item] into [menu].
 
-    The "insertion" is actually done by copying all of the attribute and link
+    The “insertion” is actually done by copying all of the attribute and link
     values of [item] and using them to form a new item within [menu]. As such,
     [item] itself is not really inserted, but rather, a menu item that is
     exactly the same as the one presently described by [item].
@@ -84,7 +91,7 @@ external insert_item : t -> int -> Menu_item.t -> unit = "ml_g_menu_insert_item"
 
     There are many convenience functions to take care of common cases. See
     g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
-    as "prepend" and "append" variants of each of these functions. *)
+    as “prepend” and “append” variants of each of these functions. *)
 
 external insert : t -> int -> string option -> string option -> unit
   = "ml_g_menu_insert"

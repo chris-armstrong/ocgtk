@@ -2,6 +2,32 @@
 (* StringList: StringList *)
 
 type t = [ `string_list | `object_ ] Gobject.obj
+(** A list model that wraps an array of strings.
+
+    The objects in the model are of type [Gtk.StringObject] and have a “string”
+    property that can be used inside expressions.
+
+    [GtkStringList] is well-suited for any place where you would typically use a
+    char*\[\], but need a list model.
+
+    {b GtkStringList as GtkBuildable}
+
+    The [GtkStringList] implementation of the [GtkBuildable] interface supports
+    adding items directly using the [<items>] element and specifying [<item>]
+    elements for each item. Each [<item>] element supports the regular
+    translation attributes “translatable”, “context” and “comments”.
+
+    Here is a UI definition fragment specifying a [GtkStringList]
+
+    {[
+    <object class=”GtkStringList”>
+      <items>
+        <item translatable=”yes”>Factory</item>
+        <item translatable=”yes”>Home</item>
+        <item translatable=”yes”>Subway</item>
+      </items>
+    </object>
+    ]} *)
 
 external new_ : string array option -> t = "ml_gtk_string_list_new"
 (** Create a new StringList *)
@@ -15,7 +41,7 @@ external take : t -> string -> unit = "ml_gtk_string_list_take"
     strings:
 
     {[
-    gtk_string_list_take (self, g_strdup_print ("%d dollars", lots))
+    gtk_string_list_take (self, g_strdup_print (“%d dollars”, lots));
     ]} *)
 
 external splice : t -> int -> int -> string array option -> unit

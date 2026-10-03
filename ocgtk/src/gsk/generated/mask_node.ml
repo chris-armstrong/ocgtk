@@ -2,6 +2,7 @@
 (* MaskNode: MaskNode *)
 
 type t = [ `mask_node | `render_node ] Gobject.obj
+(** A render node masking one child node with another. *)
 
 external new_ : Render_node.t -> Render_node.t -> Gsk_enums.maskmode -> t
   = "ml_gsk_mask_node_new"

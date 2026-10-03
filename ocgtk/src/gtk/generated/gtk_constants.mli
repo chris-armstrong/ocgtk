@@ -26,11 +26,11 @@ val accessible_attribute_overline : string
     @since 4.14 *)
 
 val accessible_attribute_overline_none : string
-(** The "none" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
+(** The “none” overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
     @since 4.14 *)
 
 val accessible_attribute_overline_single : string
-(** The "single" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
+(** The “single” overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
     @since 4.14 *)
 
 val accessible_attribute_size : string
@@ -50,39 +50,39 @@ val accessible_attribute_stretch : string
     @since 4.14 *)
 
 val accessible_attribute_stretch_condensed : string
-(** The "condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_expanded : string
-(** The "expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_extra_condensed : string
-(** The "extra condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “extra condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_extra_expanded : string
-(** The "extra expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “extra expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_normal : string
-(** The "normal" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “normal” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_semi_condensed : string
-(** The "semi condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “semi condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_semi_expanded : string
-(** The "semi expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “semi expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_ultra_condensed : string
-(** The "ultra condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “ultra condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_ultra_expanded : string
-(** The "ultra expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The “ultra expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_strikethrough : string
@@ -103,15 +103,15 @@ val accessible_attribute_style : string
     @since 4.14 *)
 
 val accessible_attribute_style_italic : string
-(** The "italic" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The “italic” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_style_normal : string
-(** The "normal" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The “normal” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_style_oblique : string
-(** The "oblique" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The “oblique” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_underline : string
@@ -127,19 +127,19 @@ val accessible_attribute_underline : string
     @since 4.14 *)
 
 val accessible_attribute_underline_double : string
-(** The "double" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The “double” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_error : string
-(** The "error" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The “error” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_none : string
-(** The "none" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The “none” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_single : string
-(** The "single" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The “single” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_variant : string
@@ -157,27 +157,27 @@ val accessible_attribute_variant : string
     @since 4.14 *)
 
 val accessible_attribute_variant_all_petite_caps : string
-(** The "all petite caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “all petite caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_all_small_caps : string
-(** The "all small caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “all small caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_petite_caps : string
-(** The "petite caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “petite caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_small_caps : string
-(** The "small caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “small caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_title_caps : string
-(** The "title caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “title caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_unicase : string
-(** The "unicase" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The “unicase” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_weight : string

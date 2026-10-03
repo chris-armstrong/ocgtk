@@ -2,6 +2,133 @@
 (* Editable: Editable *)
 
 type t = [ `editable ] Gobject.obj
+(** Interface for single-line text editing widgets.
+
+    Typical examples of editable widgets are [Gtk.Entry] and [Gtk.SpinButton].
+    It contains functions for generically manipulating an editable widget, a
+    large number of action signals used for key bindings, and several signals
+    that an application can connect to modify the behavior of a widget.
+
+    As an example of the latter usage, by connecting the following handler to
+    [Gtk.Editable::insert-text], an application can convert all entry into a
+    widget into uppercase.
+
+    {b Forcing entry to uppercase.}
+
+    {[
+    #include <ctype.h>
+
+    void
+    insert_text_handler (GtkEditable *editable,
+                         const char  *text,
+                         int          length,
+                         int         *position,
+                         gpointer     data)
+    {
+      char *result = g_utf8_strup (text, length);
+
+      g_signal_handlers_block_by_func (editable,
+                                   (gpointer) insert_text_handler, data);
+      gtk_editable_insert_text (editable, result, length, position);
+      g_signal_handlers_unblock_by_func (editable,
+                                         (gpointer) insert_text_handler, data);
+
+      g_signal_stop_emission_by_name (editable, “insert_text”);
+
+      g_free (result);
+    }
+    ]}
+
+    {b Implementing GtkEditable}
+
+    The most likely scenario for implementing [GtkEditable] on your own widget
+    is that you will embed a [GtkText] inside a complex widget, and want to
+    delegate the editable functionality to that text widget. [GtkEditable]
+    provides some utility functions to make this easy.
+
+    In your class_init function, call [Gtk.Editable.install_properties], passing
+    the first available property ID:
+
+    {[
+    static void
+    my_class_init (MyClass *class)
+    {
+      ...
+      g_object_class_install_properties (object_class, NUM_PROPERTIES, props);
+      gtk_editable_install_properties (object_clas, NUM_PROPERTIES);
+      ...
+    }
+    ]}
+
+    In your interface_init function for the [GtkEditable] interface, provide an
+    implementation for the get_delegate vfunc that returns your text widget:
+
+    {[
+    GtkEditable *
+    get_editable_delegate (GtkEditable *editable)
+    {
+      return GTK_EDITABLE (MY_WIDGET (editable)->text_widget);
+    }
+
+    static void
+    my_editable_init (GtkEditableInterface *iface)
+    {
+      iface->get_delegate = get_editable_delegate;
+    }
+    ]}
+
+    You don't need to provide any other vfuncs. The default implementations work
+    by forwarding to the delegate that the GtkEditableInterface.get_delegate()
+    vfunc returns.
+
+    In your instance_init function, create your text widget, and then call
+    [Gtk.Editable.init_delegate]:
+
+    {[
+    static void
+    my_widget_init (MyWidget *self)
+    {
+      ...
+      self->text_widget = gtk_text_new ();
+      gtk_editable_init_delegate (GTK_EDITABLE (self));
+      ...
+    }
+    ]}
+
+    In your dispose function, call [Gtk.Editable.finish_delegate] before
+    destroying your text widget:
+
+    {[
+    static void
+    my_widget_dispose (GObject *object)
+    {
+      ...
+      gtk_editable_finish_delegate (GTK_EDITABLE (self));
+      g_clear_pointer (&self->text_widget, gtk_widget_unparent);
+      ...
+    }
+    ]}
+
+    Finally, use [Gtk.Editable.delegate_set_property] in your [set_property]
+    function (and similar for [get_property]), to set the editable properties:
+
+    {[
+      ...
+      if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
+        return;
+
+      switch (prop_id)
+      ...
+    ]}
+
+    It is important to note that if you create a [GtkEditable] that uses a
+    delegate, the low level [Gtk.Editable::insert-text] and
+    [Gtk.Editable::delete-text] signals will be propagated from the “wrapper”
+    editable to the delegate, but they will not be propagated from the delegate
+    to the “wrapper” editable, as they would cause an infinite recursion. If you
+    wish to connect to the [Gtk.Editable::insert-text] and
+    [Gtk.Editable::delete-text] signals, you will need to connect to them on the
+    delegate obtained via [Gtk.Editable.get_delegate]. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_editable_from_gobject"
 

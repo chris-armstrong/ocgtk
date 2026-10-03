@@ -2,6 +2,13 @@
 (* SliceListModel: SliceListModel *)
 
 type t = [ `slice_list_model | `object_ ] Gobject.obj
+(** A list model that presents a slice of another model.
+
+    This is useful when implementing paging by setting the size to the number of
+    elements per page and updating the offset whenever a different page is
+    opened.
+
+    [GtkSliceListModel] passes through sections from the underlying model. *)
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> int -> int -> t
   = "ml_gtk_slice_list_model_new"

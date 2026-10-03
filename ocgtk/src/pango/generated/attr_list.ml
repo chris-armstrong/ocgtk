@@ -62,7 +62,7 @@ external to_string : t -> string = "ml_pango_attr_list_to_string"
 
     Examples:
 
-    0 10 foreground red, 5 15 weight bold, 0 200 font-desc "Sans 10"
+    0 10 foreground red, 5 15 weight bold, 0 200 font-desc “Sans 10”
 
     0 -1 weight 700 0 100 family Times
 

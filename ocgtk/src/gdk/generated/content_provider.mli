@@ -2,6 +2,15 @@
 (* ContentProvider: ContentProvider *)
 
 type t = [ `content_provider | `object_ ] Gobject.obj
+(** Provides content for the clipboard or for drag-and-drop operations in a
+    number of formats.
+
+    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
+    [Gdk.ContentProvider.new_for_bytes].
+
+    GDK knows how to handle common text and image formats out-of-the-box. See
+    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
+    support for application-specific data formats. *)
 
 external new_for_bytes : string -> Glib_bytes.t -> t
   = "ml_gdk_content_provider_new_for_bytes"

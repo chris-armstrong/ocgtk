@@ -2,6 +2,10 @@
 (* InetAddressMask: InetAddressMask *)
 
 type t = [ `inet_address_mask | `object_ ] Gobject.obj
+(** [GInetAddressMask] represents a range of IPv4 or IPv6 addresses described by
+    a base address and a length indicating how many bits of the base address are
+    relevant for matching purposes. These are often given in string form. For
+    example, [10.0.0.0/8], or [fe80::/10]. *)
 
 external new_ : Inet_address.t -> int -> (t, GError.t) result
   = "ml_g_inet_address_mask_new"

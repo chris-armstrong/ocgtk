@@ -2,6 +2,7 @@
 (* DBusInterfaceSkeleton: DBusInterfaceSkeleton *)
 
 type t = [ `d_bus_interface_skeleton | `object_ ] Gobject.obj
+(** Abstract base class for D-Bus interfaces on the service side. *)
 
 (* Methods *)
 

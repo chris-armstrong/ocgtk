@@ -2,6 +2,7 @@
 (* AssistantPage: AssistantPage *)
 
 type t = [ `assistant_page | `object_ ] Gobject.obj
+(** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
 
 (* Methods *)
 

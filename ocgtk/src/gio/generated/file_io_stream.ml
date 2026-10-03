@@ -2,6 +2,24 @@
 (* FileIOStream: FileIOStream *)
 
 type t = [ `file_io_stream | `io_stream | `object_ ] Gobject.obj
+(** [GFileIOStream] provides I/O streams that both read and write to the same
+    file handle.
+
+    [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
+    jump to arbitrary positions in the file and to truncate the file, provided
+    the filesystem of the file supports these operations.
+
+    To find the position of a file I/O stream, use [Gio.Seekable.tell].
+
+    To find out if a file I/O stream supports seeking, use
+    [Gio.Seekable.can_seek]. To position a file I/O stream, use
+    [Gio.Seekable.seek]. To find out if a file I/O stream supports truncating,
+    use [Gio.Seekable.can_truncate]. To truncate a file I/O stream, use
+    [Gio.Seekable.truncate].
+
+    The default implementation of all the [GFileIOStream] operations and the
+    implementation of [Gio.Seekable] just call into the same operations on the
+    output stream. *)
 
 (* Methods *)
 

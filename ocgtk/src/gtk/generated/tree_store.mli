@@ -2,6 +2,37 @@
 (* TreeStore: TreeStore *)
 
 type t = [ `tree_store | `object_ ] Gobject.obj
+(** A tree-like data structure that can be used with the [Gtk.TreeView].
+
+    The [GtkTreeStore] object is a list model for use with a [GtkTreeView]
+    widget. It implements the [Gtk.TreeModel] interface, and consequently, can
+    use all of the methods available there. It also implements the
+    [Gtk.TreeSortable] interface so it can be sorted by the view. Finally, it
+    also implements the tree \[drag\][Gtk.TreeDragSource] and
+    \[drop\][Gtk.TreeDragDest] interfaces.
+
+    [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in newly
+    written code. You should use [Gtk.TreeListModel] for a tree-like model
+    object.
+
+    {b GtkTreeStore as GtkBuildable}
+
+    The GtkTreeStore implementation of the [GtkBuildable] interface allows to
+    specify the model columns with a [<columns>] element that may contain
+    multiple [<column>] elements, each specifying one model column. The “type”
+    attribute specifies the data type for the column.
+
+    An example of a UI Definition fragment for a tree store:
+
+    {[
+    <object class=”GtkTreeStore”>
+      <columns>
+        <column type=”gchararray”/>
+        <column type=”gchararray”/>
+        <column type=”gint”/>
+      </columns>
+    </object>
+    ]} *)
 
 external newv : int -> Gobject.Type.t array -> t = "ml_gtk_tree_store_newv"
 (** Create a new TreeStore *)

@@ -2,6 +2,16 @@
 (* FilterListModel: FilterListModel *)
 
 type t = [ `filter_list_model | `object_ ] Gobject.obj
+(** A list model that filters the elements of another model.
+
+    It hides some elements from the underlying model according to criteria given
+    by a [GtkFilter].
+
+    The model can be set up to do incremental filtering, so that filtering long
+    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
+    details.
+
+    [GtkFilterListModel] passes through sections from the underlying model. *)
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.List_model.t option -> Filter.t option -> t

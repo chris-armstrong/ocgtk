@@ -2,6 +2,97 @@
 (* Popover: Popover *)
 
 type t = [ `popover | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Presents a bubble-like popup.
+
+    An example GtkPopover
+
+    It is primarily meant to provide context-dependent information or options.
+    Popovers are attached to a parent widget. The parent widget must support
+    popover children, as [Gtk.MenuButton] and [Gtk.PopoverMenuBar] do. If you
+    want to make a custom widget that has an attached popover, you need to call
+    [Gtk.Popover.present] in your [Gtk.Widget.size_allocate] vfunc, in order to
+    update the positioning of the popover.
+
+    The position of a popover relative to the widget it is attached to can also
+    be changed with [Gtk.Popover.set_position]. By default, it points to the
+    whole widget area, but it can be made to point to a specific area using
+    [Gtk.Popover.set_pointing_to].
+
+    By default, [GtkPopover] performs a grab, in order to ensure input events
+    get redirected to it while it is shown, and also so the popover is dismissed
+    in the expected situations (clicks outside the popover, or the Escape key
+    being pressed). If no such modal behavior is desired on a popover,
+    [Gtk.Popover.set_autohide] may be called on it to tweak its behavior.
+
+    {b GtkPopover as menu replacement}
+
+    [GtkPopover] is often used to replace menus. The best way to do this is to
+    use the [Gtk.PopoverMenu] subclass which supports being populated from a
+    [GMenuModel] with [Gtk.PopoverMenu.new_from_model].
+
+    {[
+    <section>
+      <attribute name=”display-hint”>horizontal-buttons</attribute>
+      <item>
+        <attribute name=”label”>Cut</attribute>
+        <attribute name=”action”>app.cut</attribute>
+        <attribute name=”verb-icon”>edit-cut-symbolic</attribute>
+      </item>
+      <item>
+        <attribute name=”label”>Copy</attribute>
+        <attribute name=”action”>app.copy</attribute>
+        <attribute name=”verb-icon”>edit-copy-symbolic</attribute>
+      </item>
+      <item>
+        <attribute name=”label”>Paste</attribute>
+        <attribute name=”action”>app.paste</attribute>
+        <attribute name=”verb-icon”>edit-paste-symbolic</attribute>
+      </item>
+    </section>
+    ]}
+
+    {b Shortcuts and Gestures}
+
+    [GtkPopover] supports the following keyboard shortcuts:
+
+    - <kbd>Escape</kbd> closes the popover.
+    - <kbd>Alt</kbd> makes the mnemonics visible.
+
+    The following signals have default keybindings:
+
+    - [Gtk.Popover::activate-default]
+
+    {b CSS nodes}
+
+    {[
+    popover.background[.menu]
+    ├── arrow
+    ╰── contents
+        ╰── <child>
+    ]}
+
+    [GtkPopover] has a main node with name [popover], an arrow with name
+    [arrow], and another node for the content named [contents]. The [popover]
+    node always gets the [.background] style class. It also gets the [.menu]
+    style class if the popover is menu-like, e.g. is a [Gtk.PopoverMenu].
+
+    Particular uses of [GtkPopover], such as touch selection popups or
+    magnifiers in [GtkEntry] or [GtkTextView] get style classes like
+    [.touch-selection] or [.magnifier] to differentiate from plain popovers.
+
+    When styling a popover directly, the [popover] node should usually not have
+    any background. The visible part of the popover can have a shadow. To
+    specify it in CSS, set the box-shadow of the [contents] node.
+
+    Note that, in order to accomplish appropriate arrow visuals, [GtkPopover]
+    uses custom drawing for the [arrow] node. This makes it possible for the
+    arrow to change its shape dynamically, but it also limits the possibilities
+    of styling it using CSS. In particular, the [arrow] gets drawn over the
+    [content] node's border and shadow, so they look like one shape, which means
+    that the border width of the [content] node and the [arrow] node should be
+    the same. The arrow also does not support any border shape other than solid,
+    no border-radius, only one border width (border-bottom-width is used) and no
+    box-shadow. *)
 
 external new_ : unit -> t = "ml_gtk_popover_new"
 (** Create a new Popover *)

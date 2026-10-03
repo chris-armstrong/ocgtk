@@ -2,6 +2,16 @@
 (* ActionMap: ActionMap *)
 
 type t = [ `action_map ] Gobject.obj
+(** [GActionMap] is an interface for action containers.
+
+    The [GActionMap] interface is implemented by [Gio.ActionGroup]
+    implementations that operate by containing a number of named [Gio.Action]
+    instances, such as [Gio.SimpleActionGroup].
+
+    One useful application of this interface is to map the names of actions from
+    various action groups to unique, prefixed names (e.g. by prepending “app.”
+    or “win.”). This is the motivation for the ‘Map’ part of the interface name.
+*)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_map_from_gobject"
 
@@ -14,8 +24,8 @@ external remove_action_entries : t -> Action_entry.t array -> int -> unit
 
     {[
     static const GActionEntry entries[] = {
-        { "quit",         activate_quit              },
-        { "print-string", activate_print_string, "s" }
+        { “quit”,         activate_quit              },
+        { “print-string”, activate_print_string, “s” }
     };
 
     void

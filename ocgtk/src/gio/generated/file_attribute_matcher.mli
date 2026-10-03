@@ -31,11 +31,11 @@ external ref : t -> t = "ml_g_file_attribute_matcher_ref"
 external matches_only : t -> string -> bool
   = "ml_g_file_attribute_matcher_matches_only"
 (** Checks if an attribute matcher only matches a given attribute. Always
-    returns [FALSE] if "*" was used when creating the matcher. *)
+    returns [FALSE] if “*” was used when creating the matcher. *)
 
 external matches : t -> string -> bool = "ml_g_file_attribute_matcher_matches"
 (** Checks if an attribute will be matched by an attribute matcher. If the
-    matcher was created with the "*" matching string, this function will always
+    matcher was created with the “*” matching string, this function will always
     return [TRUE]. *)
 
 external enumerate_next : t -> string option
@@ -47,7 +47,7 @@ external enumerate_namespace : t -> string -> bool
 (** Checks if the matcher will match all of the keys in a given namespace. This
     will always return [TRUE] if a wildcard character is in use (e.g. if matcher
     was created with
-    "standard::{i " and [ns] is "standard", or if matcher was created using "}"
+    “standard::{i “ and [ns] is “standard”, or if matcher was created using “}”
     and namespace is anything.)
 
     TODO: this is awkwardly worded. *)

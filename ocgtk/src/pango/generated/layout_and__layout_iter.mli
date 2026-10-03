@@ -381,7 +381,7 @@ module rec Layout : sig
       a new layout is created and is increased whenever the layout is changed
       using any of the setter functions, or the [PangoContext] it uses has
       changed. The serial may wrap, but will never have the value 0. Since it
-      can wrap, never compare it with "less than", always use "not equals".
+      can wrap, never compare it with “less than”, always use “not equals”.
 
       This can be used to automatically detect changes to a [PangoLayout], and
       is useful for example to decide whether a layout needs redrawing. To force

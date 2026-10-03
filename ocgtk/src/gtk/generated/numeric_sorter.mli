@@ -2,6 +2,10 @@
 (* NumericSorter: NumericSorter *)
 
 type t = [ `numeric_sorter | `sorter | `object_ ] Gobject.obj
+(** Sorts items numerically.
+
+    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
+*)
 
 external new_ : Expression.t option -> t = "ml_gtk_numeric_sorter_new"
 (** Create a new NumericSorter *)

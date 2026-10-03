@@ -2,6 +2,56 @@
 (* SearchEntry: SearchEntry *)
 
 type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** A single-line text entry widget for use as a search entry.
+
+    The main API for interacting with a [GtkSearchEntry] as entry is the
+    [GtkEditable] interface.
+
+    An example GtkSearchEntry
+
+    It will show an inactive symbolic “find” icon when the search entry is
+    empty, and a symbolic “clear” icon when there is text. Clicking on the
+    “clear” icon will empty the search entry.
+
+    To make filtering appear more reactive, it is a good idea to not react to
+    every change in the entry text immediately, but only after a short delay. To
+    support this, [GtkSearchEntry] emits the [Gtk.SearchEntry::search-changed]
+    signal which can be used instead of the [Gtk.Editable::changed] signal.
+
+    The [Gtk.SearchEntry::previous-match], [Gtk.SearchEntry::next-match] and
+    [Gtk.SearchEntry::stop-search] signals can be used to implement moving
+    between search results and ending the search.
+
+    Often, [GtkSearchEntry] will be fed events by means of being placed inside a
+    [Gtk.SearchBar]. If that is not the case, you can use
+    [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input from
+    another widget.
+
+    [GtkSearchEntry] provides only minimal API and should be used with the
+    [Gtk.Editable] API.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.SearchEntry::activate]
+    - [Gtk.SearchEntry::next-match]
+    - [Gtk.SearchEntry::previous-match]
+    - [Gtk.SearchEntry::stop-search]
+
+    {b CSS Nodes}
+
+    {[
+    entry.search
+    ╰── text
+    ]}
+
+    [GtkSearchEntry] has a single CSS node with name entry that carries a
+    [.search] style class, and the text node is a child of that.
+
+    {b Accessibility}
+
+    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
 
 external new_ : unit -> t = "ml_gtk_search_entry_new"
 (** Create a new SearchEntry *)

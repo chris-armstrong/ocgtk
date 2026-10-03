@@ -2,6 +2,10 @@
 (* ListBoxRow: ListBoxRow *)
 
 type t = [ `list_box_row | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** The kind of widget that can be added to a [GtkListBox].
+
+    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
+    necessary. *)
 
 external new_ : unit -> t = "ml_gtk_list_box_row_new"
 (** Create a new ListBoxRow *)

@@ -26,7 +26,7 @@ For reduction, it is equivalent to laying down small tiles and
 integrating over the coverage area. *)
   | `HYPER (** This is the slowest and highest quality
 reconstruction function. It is derived from the hyperbolic filters in
-Wolberg's "Digital Image Warping", and is formally defined as the
+Wolberg's “Digital Image Warping”, and is formally defined as the
 hyperbolic-filter sampling the ideal hyperbolic-filter interpolated
 image (the filter is designed to be idempotent for 1:1 pixel mapping).
 {b Deprecated}: this interpolation filter is deprecated, as in reality

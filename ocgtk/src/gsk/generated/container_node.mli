@@ -2,6 +2,7 @@
 (* ContainerNode: ContainerNode *)
 
 type t = [ `container_node | `render_node ] Gobject.obj
+(** A render node that can contain other render nodes. *)
 
 external new_ : Render_node.t array -> int -> t = "ml_gsk_container_node_new"
 (** Create a new ContainerNode *)

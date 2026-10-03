@@ -2,6 +2,11 @@
 (* IMMulticontext: IMMulticontext *)
 
 type t = [ `im_multicontext | `im_context | `object_ ] Gobject.obj
+(** Supports switching between multiple input methods.
+
+    Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to
+    implement their [im-module] property for switching between different input
+    methods. *)
 
 external new_ : unit -> t = "ml_gtk_im_multicontext_new"
 (** Create a new IMMulticontext *)

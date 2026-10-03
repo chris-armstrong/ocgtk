@@ -2,6 +2,7 @@
 (* TreeDragDest: TreeDragDest *)
 
 type t = [ `tree_drag_dest ] Gobject.obj
+(** Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_tree_drag_dest_from_gobject"

@@ -2,6 +2,40 @@
 (* EntryCompletion: EntryCompletion *)
 
 type t = [ `entry_completion | `object_ ] Gobject.obj
+(** [GtkEntryCompletion] is an auxiliary object to provide completion
+    functionality for [GtkEntry].
+
+    It implements the [Gtk.CellLayout] interface, to allow the user to add extra
+    cells to the [GtkTreeView] with completion matches.
+
+    “Completion functionality” means that when the user modifies the text in the
+    entry, [GtkEntryCompletion] checks which rows in the model match the current
+    content of the entry, and displays a list of matches. By default, the
+    matching is done by comparing the entry text case-insensitively against the
+    text column of the model (see [Gtk.EntryCompletion.set_text_column]), but
+    this can be overridden with a custom match function (see
+    [Gtk.EntryCompletion.set_match_func]).
+
+    When the user selects a completion, the content of the entry is updated. By
+    default, the content of the entry is replaced by the text column of the
+    model, but this can be overridden by connecting to the
+    [Gtk.EntryCompletion::match-selected] signal and updating the entry in the
+    signal handler. Note that you should return [TRUE] from the signal handler
+    to suppress the default behaviour.
+
+    To add completion functionality to an entry, use [Gtk.Entry.set_completion].
+
+    [GtkEntryCompletion] uses a [Gtk.TreeModelFilter] model to represent the
+    subset of the entire model that is currently matching. While the
+    [GtkEntryCompletion] signals [Gtk.EntryCompletion::match-selected] and
+    [Gtk.EntryCompletion::cursor-on-match] take the original model and an iter
+    pointing to that model as arguments, other callbacks and signals (such as
+    [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally
+    take the filter model as argument. As long as you are only calling
+    [Gtk.TreeModel.get], this will make no difference to you. If for some
+    reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
+    Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
+    obtain a matching iter. *)
 
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
 (** Create a new EntryCompletion *)

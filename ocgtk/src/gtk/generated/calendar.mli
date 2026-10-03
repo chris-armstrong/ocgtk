@@ -2,6 +2,56 @@
 (* Calendar: Calendar *)
 
 type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Displays a Gregorian calendar, one month at a time.
+
+    An example GtkCalendar
+
+    A [GtkCalendar] can be created with [Gtk.Calendar.new].
+
+    The selected date can be retrieved from a [GtkCalendar] using
+    [Gtk.Calendar.get_date]. It can be altered with [Gtk.Calendar.set_date].
+
+    To place a visual marker on a particular day, use [Gtk.Calendar.mark_day]
+    and to remove the marker, [Gtk.Calendar.unmark_day]. Alternative, all marks
+    can be cleared with [Gtk.Calendar.clear_marks].
+
+    Users should be aware that, although the Gregorian calendar is the legal
+    calendar in most countries, it was adopted progressively between 1582 and
+    1929. Display before these dates is likely to be historically incorrect.
+
+    {b Shortcuts and Gestures}
+
+    [GtkCalendar] supports the following gestures:
+
+    - Scrolling up or down will switch to the previous or next month.
+    - Date strings can be dropped for setting the current day.
+
+    {b CSS nodes}
+
+    {[
+    calendar.view
+    ├── header
+    │   ├── button
+    │   ├── stack.month
+    │   ├── button
+    │   ├── button
+    │   ├── label.year
+    │   ╰── button
+    ╰── grid
+        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
+    ]}
+
+    [GtkCalendar] has a main node with name calendar. It contains a subnode
+    called header containing the widgets for switching between years and months.
+
+    The grid subnode contains all day labels, including week numbers on the left
+    (marked with the .week-number css class) and day names on top (marked with
+    the .day-name css class).
+
+    Day labels that belong to the previous or next month get the .other-month
+    style class. The label of the current day get the .today style class.
+
+    Marked day labels get the :selected state assigned. *)
 
 external new_ : unit -> t = "ml_gtk_calendar_new"
 (** Create a new Calendar *)

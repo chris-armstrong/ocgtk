@@ -81,7 +81,7 @@ type t = [ `settings_schema ] Gobject.obj
       gint some_value;
 
       settings = plugin_get_settings (self, NULL);
-      some_value = g_settings_get_int (settings, "some-value");
+      some_value = g_settings_get_int (settings, “some-value”);
       …
     }
     ]}
@@ -99,7 +99,7 @@ external ref : t -> t = "ml_g_settings_schema_ref"
 external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
 (** Introspects the list of keys on [schema].
 
-    You should probably not be calling this function from "normal" code (since
+    You should probably not be calling this function from “normal” code (since
     you should already know what keys are in your schema). This function is
     intended for introspection reasons. *)
 

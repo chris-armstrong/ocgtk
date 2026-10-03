@@ -2,6 +2,7 @@
 (* OverlayLayoutChild: OverlayLayoutChild *)
 
 type t = [ `overlay_layout_child | `layout_child | `object_ ] Gobject.obj
+(** [GtkLayoutChild] subclass for children in a [GtkOverlayLayout]. *)
 
 (* Methods *)
 

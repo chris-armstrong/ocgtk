@@ -40,8 +40,8 @@ external parse : t -> string -> bool = "ml_gdk_rgba_parse"
     - A RGB color in the form “rgb(r,g,b)” (In this case the color will have
       full opacity)
     - A RGBA color in the form “rgba(r,g,b,a)”
-    - A HSL color in the form "hsl(hue, saturation, lightness)"
-    - A HSLA color in the form "hsla(hue, saturation, lightness, alpha)"
+    - A HSL color in the form “hsl(hue, saturation, lightness)”
+    - A HSLA color in the form “hsla(hue, saturation, lightness, alpha)”
 
     Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
     color values. In the last two cases, “r”, “g”, and “b” are either integers

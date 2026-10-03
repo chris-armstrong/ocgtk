@@ -2,6 +2,19 @@
 (* StringFilter: StringFilter *)
 
 type t = [ `string_filter | `filter | `object_ ] Gobject.obj
+(** Determines whether to include items by comparing strings to a fixed search
+    term.
+
+    The strings are obtained from the items by evaluating an expression set with
+    [Gtk.StringFilter.set_expression], and they are compared against a search
+    term set with [Gtk.StringFilter.set_search].
+
+    [GtkStringFilter] has several different modes of comparison - it can match
+    the whole string, just a prefix, or any substring. Use
+    [Gtk.StringFilter.set_match_mode] choose a mode.
+
+    It is also possible to make case-insensitive comparisons, with
+    [Gtk.StringFilter.set_ignore_case]. *)
 
 external new_ : Expression.t option -> t = "ml_gtk_string_filter_new"
 (** Create a new StringFilter *)

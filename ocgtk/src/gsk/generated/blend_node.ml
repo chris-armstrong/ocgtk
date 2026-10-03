@@ -2,6 +2,7 @@
 (* BlendNode: BlendNode *)
 
 type t = [ `blend_node | `render_node ] Gobject.obj
+(** A render node applying a blending function between its two child nodes. *)
 
 external new_ : Render_node.t -> Render_node.t -> Gsk_enums.blendmode -> t
   = "ml_gsk_blend_node_new"

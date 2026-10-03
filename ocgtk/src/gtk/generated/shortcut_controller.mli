@@ -2,6 +2,47 @@
 (* ShortcutController: ShortcutController *)
 
 type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
+(** Manages keyboard shortcuts and their activation.
+
+    Most common shortcuts are using this controller implicitly, e.g. by adding a
+    mnemonic underline to a [Gtk.Label], or by installing a key binding using
+    [Gtk.WidgetClass.add_binding], or by adding accelerators to global actions
+    using [Gtk.Application.set_accels_for_action].
+
+    But it is possible to create your own shortcut controller, and add shortcuts
+    to it.
+
+    [GtkShortcutController] implements [Gio.ListModel] for querying the
+    shortcuts that have been added to it.
+
+    {b GtkShortcutController as GtkBuildable}
+
+    [GtkShortcutController]s can be created in [Gtk.Builder] ui files, to set up
+    shortcuts in the same place as the widgets.
+
+    An example of a UI definition fragment with [GtkShortcutController]:
+
+    {[
+      <object class='GtkButton'>
+        <child>
+          <object class='GtkShortcutController'>
+            <property name='scope'>managed</property>
+            <child>
+              <object class='GtkShortcut'>
+                <property name='trigger'>&lt;Control&gt;k</property>
+                <property name='action'>activate</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    ]}
+
+    This example creates a [Gtk.ActivateAction] for triggering the [activate]
+    signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
+    syntax for other kinds of [Gtk.ShortcutAction]. See
+    [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
+    triggers. *)
 
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
 (** Create a new ShortcutController *)

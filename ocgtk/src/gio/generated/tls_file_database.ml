@@ -2,6 +2,9 @@
 (* TlsFileDatabase: TlsFileDatabase *)
 
 type t = [ `tls_file_database ] Gobject.obj
+(** [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
+    their certificate information from a file. It is an interface which TLS
+    library specific subtypes implement. *)
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_tls_file_database_from_gobject"

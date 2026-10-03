@@ -2,6 +2,16 @@
 (* VolumeMonitor: VolumeMonitor *)
 
 type t = [ `volume_monitor | `object_ ] Gobject.obj
+(** [GVolumeMonitor] is for listing the user interesting devices and volumes on
+    the computer. In other words, what a file selector or file manager would
+    show in a sidebar.
+
+    [GVolumeMonitor] is not thread-default-context aware (see
+    [GLib.MainContext.push_thread_default]), and so should not be used other
+    than from the main thread, with no thread-default-context active.
+
+    In order to receive updates about volumes and mounts monitored through GVFS,
+    a main loop must be running. *)
 
 (* Methods *)
 

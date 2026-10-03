@@ -1050,7 +1050,7 @@ and Cell_layout : sig
       [attribute] is the property on [cell] to be set from that value. So for
       example if column 2 of the model contains strings, you could have the
       “text” attribute of a [GtkCellRendererText] get its values from column 2.
-      In this context "attribute" and "property" are used interchangeably. *)
+      In this context “attribute” and “property” are used interchangeably. *)
 end = struct
   type t = [ `cell_layout ] Gobject.obj
 
@@ -1108,5 +1108,5 @@ end = struct
       [attribute] is the property on [cell] to be set from that value. So for
       example if column 2 of the model contains strings, you could have the
       “text” attribute of a [GtkCellRendererText] get its values from column 2.
-      In this context "attribute" and "property" are used interchangeably. *)
+      In this context “attribute” and “property” are used interchangeably. *)
 end

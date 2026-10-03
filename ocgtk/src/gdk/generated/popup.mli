@@ -2,6 +2,12 @@
 (* Popup: Popup *)
 
 type t = [ `popup ] Gobject.obj
+(** A surface that is attached to another surface.
+
+    The [GdkPopup] is positioned relative to its parent surface.
+
+    [GdkPopup]s are typically used to implement menus and similar popups. They
+    can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_popup_from_gobject"
 

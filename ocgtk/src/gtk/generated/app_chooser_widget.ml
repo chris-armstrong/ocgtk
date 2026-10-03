@@ -3,6 +3,26 @@
 
 type t =
   [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** [GtkAppChooserWidget] is a widget for selecting applications.
+
+    It is the main building block for [Gtk.AppChooserDialog]. Most applications
+    only need to use the latter; but you can use this widget as part of a larger
+    widget if you have special needs.
+
+    [GtkAppChooserWidget] offers detailed control over what applications are
+    shown, using the [Gtk.AppChooserWidget:show-default],
+    [Gtk.AppChooserWidget:show-recommended],
+    [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
+    [Gtk.AppChooserWidget:show-all] properties. See the [Gtk.AppChooser]
+    documentation for more information about these groups of applications.
+
+    To keep track of the selected application, use the
+    [Gtk.AppChooserWidget::application-selected] and
+    [Gtk.AppChooserWidget::application-activated] signals.
+
+    {b CSS nodes}
+
+    [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
 
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 (** Create a new AppChooserWidget *)
