@@ -171,7 +171,8 @@ module Value : sig
       owned copy of the boxed data (g_boxed_copy was called). The existing
       gir_record finalizer calls g_boxed_free when the block is collected. The
       caller must ascribe the correct record type at the call site, e.g.
-      [(Gobject.Value.get_boxed v : Gtk.Tree_iter.t)]. Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+      [(Gobject.Value.get_boxed v : Gtk.Tree_iter.t)]. Raises
+      {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
       if the GValue does not hold a boxed type. *)
 
   val set_boxed : t -> 'a obj -> unit
@@ -252,8 +253,9 @@ end
 (** {2 Signals} *)
 
 module Signal : sig
-  type handler_id = int
-  (** Signal handler identifier *)
+  type handler_id
+  (** Signal handler identifier. Abstract so that arbitrary integers cannot be
+      passed where a handler is expected. *)
 
   val connect :
     'a obj -> name:string -> callback:g_closure -> after:bool -> handler_id
