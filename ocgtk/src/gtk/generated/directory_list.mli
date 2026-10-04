@@ -1,28 +1,25 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DirectoryList: DirectoryList *)
 
-(** A list model that wraps [Gio.File.enumerate_children_async].
-
-    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
-    returned from that function.
-
-    Enumeration will start automatically when the [Gtk.DirectoryList:file]
-    property is set.
-
-    While the [GtkDirectoryList] is being filled, the
-    [Gtk.DirectoryList:loading] property will be set to [TRUE]. You can listen
-    to that property if you want to show information like a [GtkSpinner] or a
-    “Loading...” text.
-
-    If loading fails at any point, the [Gtk.DirectoryList:error] property will
-    be set to give more indication about the failure.
-
-    The [GFileInfo]s returned from a [GtkDirectoryList] have the
-    “standard::file” attribute set to the [GFile] they refer to. This way you
-    can get at the file that is referred to in the same way you would via
-    g_file_enumerator_get_child(). This means you do not need access to the
-    [GtkDirectoryList], but can access the [GFile] directly from the [GFileInfo]
-    when operating with a [GtkListView] or similar. *)
+[@@@ocaml.text
+"A list model that wraps [Gio.File.enumerate_children_async].\n\n\
+ It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s\n\
+ returned from that function.\n\n\
+ Enumeration will start automatically when the\n\
+ [Gtk.DirectoryList:file] property is set.\n\n\
+ While the [GtkDirectoryList] is being filled, the\n\
+ [Gtk.DirectoryList:loading] property will be set to [TRUE]. You can\n\
+ listen to that property if you want to show information like a [GtkSpinner]\n\
+ or a \"Loading...\" text.\n\n\
+ If loading fails at any point, the [Gtk.DirectoryList:error]\n\
+ property will be set to give more indication about the failure.\n\n\
+ The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
+ attribute set to the [GFile] they refer to. This way you can get at the file\n\
+ that is referred to in the same way you would via \
+ g_file_enumerator_get_child().\n\
+ This means you do not need access to the [GtkDirectoryList], but can access\n\
+ the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
+ or similar."]
 
 type t = [ `directory_list | `object_ ] Gobject.obj
 

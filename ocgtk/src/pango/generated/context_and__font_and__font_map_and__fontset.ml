@@ -92,18 +92,17 @@ module rec Context : sig
   (** List all families for a context. *)
 
   external get_serial : t -> int = "ml_pango_context_get_serial"
-  (** Returns the current serial number of [context].
-
-      The serial number is initialized to an small number larger than zero when
-      a new context is created and is increased whenever the context is changed
-      using any of the setter functions, or the [PangoFontMap] it uses to find
-      fonts has changed. The serial may wrap, but will never have the value 0.
-      Since it can wrap, never compare it with “less than”, always use “not
-      equals”.
-
-      This can be used to automatically detect changes to a [PangoContext], and
-      is only useful when implementing objects that need update when their
-      [PangoContext] changes, like [PangoLayout]. *)
+  [@@ocaml.doc
+    "Returns the current serial number of [context].\n\n\
+    \  The serial number is initialized to an small number larger than zero\n\
+    \  when a new context is created and is increased whenever the context\n\
+    \  is changed using any of the setter functions, or the [PangoFontMap] it\n\
+    \  uses to find fonts has changed. The serial may wrap, but will never\n\
+    \  have the value 0. Since it can wrap, never compare it with \"less than\",\n\
+    \  always use \"not equals\".\n\n\
+    \  This can be used to automatically detect changes to a [PangoContext],\n\
+    \  and is only useful when implementing objects that need update when their\n\
+    \  [PangoContext] changes, like [PangoLayout]."]
 
   external get_round_glyph_positions : t -> bool
     = "ml_pango_context_get_round_glyph_positions"
@@ -267,18 +266,17 @@ end = struct
   (** List all families for a context. *)
 
   external get_serial : t -> int = "ml_pango_context_get_serial"
-  (** Returns the current serial number of [context].
-
-      The serial number is initialized to an small number larger than zero when
-      a new context is created and is increased whenever the context is changed
-      using any of the setter functions, or the [PangoFontMap] it uses to find
-      fonts has changed. The serial may wrap, but will never have the value 0.
-      Since it can wrap, never compare it with “less than”, always use “not
-      equals”.
-
-      This can be used to automatically detect changes to a [PangoContext], and
-      is only useful when implementing objects that need update when their
-      [PangoContext] changes, like [PangoLayout]. *)
+  [@@ocaml.doc
+    "Returns the current serial number of [context].\n\n\
+    \  The serial number is initialized to an small number larger than zero\n\
+    \  when a new context is created and is increased whenever the context\n\
+    \  is changed using any of the setter functions, or the [PangoFontMap] it\n\
+    \  uses to find fonts has changed. The serial may wrap, but will never\n\
+    \  have the value 0. Since it can wrap, never compare it with \"less than\",\n\
+    \  always use \"not equals\".\n\n\
+    \  This can be used to automatically detect changes to a [PangoContext],\n\
+    \  and is only useful when implementing objects that need update when their\n\
+    \  [PangoContext] changes, like [PangoLayout]."]
 
   external get_round_glyph_positions : t -> bool
     = "ml_pango_context_get_round_glyph_positions"
@@ -553,18 +551,16 @@ and Font_map : sig
       enumerating families. *)
 
   external get_serial : t -> int = "ml_pango_font_map_get_serial"
-  (** Returns the current serial number of [fontmap].
-
-      The serial number is initialized to an small number larger than zero when
-      a new fontmap is created and is increased whenever the fontmap is changed.
-      It may wrap, but will never have the value 0. Since it can wrap, never
-      compare it with “less than”, always use “not equals”.
-
-      The fontmap can only be changed using backend-specific API, like changing
-      fontmap resolution.
-
-      This can be used to automatically detect changes to a [PangoFontMap], like
-      in [PangoContext]. *)
+  [@@ocaml.doc
+    "Returns the current serial number of [fontmap].\n\n\
+    \  The serial number is initialized to an small number larger than zero\n\
+    \  when a new fontmap is created and is increased whenever the fontmap\n\
+    \  is changed. It may wrap, but will never have the value 0. Since it can\n\
+    \  wrap, never compare it with \"less than\", always use \"not equals\".\n\n\
+    \  The fontmap can only be changed using backend-specific API, like changing\n\
+    \  fontmap resolution.\n\n\
+    \  This can be used to automatically detect changes to a [PangoFontMap],\n\
+    \  like in [PangoContext]."]
 
   external get_family :
     t -> string -> Font_face_and__font_family.Font_family.t option
@@ -643,18 +639,16 @@ end = struct
       enumerating families. *)
 
   external get_serial : t -> int = "ml_pango_font_map_get_serial"
-  (** Returns the current serial number of [fontmap].
-
-      The serial number is initialized to an small number larger than zero when
-      a new fontmap is created and is increased whenever the fontmap is changed.
-      It may wrap, but will never have the value 0. Since it can wrap, never
-      compare it with “less than”, always use “not equals”.
-
-      The fontmap can only be changed using backend-specific API, like changing
-      fontmap resolution.
-
-      This can be used to automatically detect changes to a [PangoFontMap], like
-      in [PangoContext]. *)
+  [@@ocaml.doc
+    "Returns the current serial number of [fontmap].\n\n\
+    \  The serial number is initialized to an small number larger than zero\n\
+    \  when a new fontmap is created and is increased whenever the fontmap\n\
+    \  is changed. It may wrap, but will never have the value 0. Since it can\n\
+    \  wrap, never compare it with \"less than\", always use \"not equals\".\n\n\
+    \  The fontmap can only be changed using backend-specific API, like changing\n\
+    \  fontmap resolution.\n\n\
+    \  This can be used to automatically detect changes to a [PangoFontMap],\n\
+    \  like in [PangoContext]."]
 
   external get_family :
     t -> string -> Font_face_and__font_family.Font_family.t option

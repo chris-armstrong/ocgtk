@@ -1,32 +1,28 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StringList: StringList *)
 
-(** A list model that wraps an array of strings.
-
-    The objects in the model are of type [Gtk.StringObject] and have a “string”
-    property that can be used inside expressions.
-
-    [GtkStringList] is well-suited for any place where you would typically use a
-    char*\[\], but need a list model.
-
-    {b GtkStringList as GtkBuildable}
-
-    The [GtkStringList] implementation of the [GtkBuildable] interface supports
-    adding items directly using the [<items>] element and specifying [<item>]
-    elements for each item. Each [<item>] element supports the regular
-    translation attributes “translatable”, “context” and “comments”.
-
-    Here is a UI definition fragment specifying a [GtkStringList]
-
-    {[
-    <object class=”GtkStringList”>
-      <items>
-        <item translatable=”yes”>Factory</item>
-        <item translatable=”yes”>Home</item>
-        <item translatable=”yes”>Subway</item>
-      </items>
-    </object>
-    ]} *)
+[@@@ocaml.text
+"A list model that wraps an array of strings.\n\n\
+ The objects in the model are of type [Gtk.StringObject] and have\n\
+ a \"string\" property that can be used inside expressions.\n\n\
+ [GtkStringList] is well-suited for any place where you would\n\
+ typically use a char*\\[\\], but need a list model.\n\n\
+ {b GtkStringList as GtkBuildable}\n\n\
+ The [GtkStringList] implementation of the [GtkBuildable] interface\n\
+ supports adding items directly using the [<items>] element and\n\
+ specifying [<item>] elements for each item. Each [<item>] element\n\
+ supports the regular translation attributes “translatable”,\n\
+ “context” and “comments”.\n\n\
+ Here is a UI definition fragment specifying a [GtkStringList]\n\n\
+ {[\n\
+ <object class=\"GtkStringList\">\n\
+\  <items>\n\
+\    <item translatable=\"yes\">Factory</item>\n\
+\    <item translatable=\"yes\">Home</item>\n\
+\    <item translatable=\"yes\">Subway</item>\n\
+\  </items>\n\
+ </object>\n\
+ ]}"]
 
 type t = [ `string_list | `object_ ] Gobject.obj
 
@@ -34,16 +30,15 @@ external new_ : string array option -> t = "ml_gtk_string_list_new"
 (** Create a new StringList *)
 
 (* Methods *)
-
 external take : t -> string -> unit = "ml_gtk_string_list_take"
-(** Adds [string] to self at the end, and takes ownership of it.
-
-    This variant of [Gtk.StringList.append] is convenient for formatting
-    strings:
-
-    {[
-    gtk_string_list_take (self, g_strdup_print (“%d dollars”, lots));
-    ]} *)
+[@@ocaml.doc
+  "Adds [string] to self at the end, and takes\n\
+   ownership of it.\n\n\
+   This variant of [Gtk.StringList.append]\n\
+   is convenient for formatting strings:\n\n\
+   {[\n\
+   gtk_string_list_take (self, g_strdup_print (\"%d dollars\", lots));\n\
+   ]}"]
 
 external splice : t -> int -> int -> string array option -> unit
   = "ml_gtk_string_list_splice"

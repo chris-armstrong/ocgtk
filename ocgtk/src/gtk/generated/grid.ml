@@ -1,89 +1,75 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Grid: Grid *)
 
-(** Arranges its child widgets in rows and columns.
-
-    An example GtkGrid
-
-    It supports arbitrary positions and horizontal/vertical spans.
-
-    Children are added using [Gtk.Grid.attach]. They can span multiple rows or
-    columns. It is also possible to add a child next to an existing child, using
-    [Gtk.Grid.attach_next_to]. To remove a child from the grid, use
-    [Gtk.Grid.remove].
-
-    The behaviour of [GtkGrid] when several children occupy the same grid cell
-    is undefined.
-
-    {b GtkGrid as GtkBuildable}
-
-    Every child in a [GtkGrid] has access to a custom [Gtk.Buildable] element,
-    called [<layout>]. It can by used to specify a position in the grid and
-    optionally spans. All properties that can be used in the [<layout>] element
-    are implemented by [Gtk.GridLayoutChild].
-
-    It is implemented by [GtkWidget] using [Gtk.LayoutManager].
-
-    To showcase it, here is a simple example:
-
-    {[
-    <object class=”GtkGrid” id=”my_grid”>
-      <child>
-        <object class=”GtkButton” id=”button1”>
-          <property name=”label”>Button 1</property>
-          <layout>
-            <property name=”column”>0</property>
-            <property name=”row”>0</property>
-          </layout>
-        </object>
-      </child>
-      <child>
-        <object class=”GtkButton” id=”button2”>
-          <property name=”label”>Button 2</property>
-          <layout>
-            <property name=”column”>1</property>
-            <property name=”row”>0</property>
-          </layout>
-        </object>
-      </child>
-      <child>
-        <object class=”GtkButton” id=”button3”>
-          <property name=”label”>Button 3</property>
-          <layout>
-            <property name=”column”>2</property>
-            <property name=”row”>0</property>
-            <property name=”row-span”>2</property>
-          </layout>
-        </object>
-      </child>
-      <child>
-        <object class=”GtkButton” id=”button4”>
-          <property name=”label”>Button 4</property>
-          <layout>
-            <property name=”column”>0</property>
-            <property name=”row”>1</property>
-            <property name=”column-span”>2</property>
-          </layout>
-        </object>
-      </child>
-    </object>
-    ]}
-
-    It organizes the first two buttons side-by-side in one cell each. The third
-    button is in the last column but spans across two rows. This is defined by
-    the [row-span] property. The last button is located in the second row and
-    spans across two columns, which is defined by the [column-span] property.
-
-    {b CSS nodes}
-
-    [GtkGrid] uses a single CSS node with name [grid].
-
-    {b Accessibility}
-
-    Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.
-
-    Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic]
-    role. *)
+[@@@ocaml.text
+"Arranges its child widgets in rows and columns.\n\n\
+ An example GtkGrid\n\n\
+ It supports arbitrary positions and horizontal/vertical spans.\n\n\
+ Children are added using [Gtk.Grid.attach]. They can span multiple\n\
+ rows or columns. It is also possible to add a child next to an existing\n\
+ child, using [Gtk.Grid.attach_next_to]. To remove a child from the\n\
+ grid, use [Gtk.Grid.remove].\n\n\
+ The behaviour of [GtkGrid] when several children occupy the same grid\n\
+ cell is undefined.\n\n\
+ {b GtkGrid as GtkBuildable}\n\n\
+ Every child in a [GtkGrid] has access to a custom [Gtk.Buildable]\n\
+ element, called [<layout>]. It can by used to specify a position in the\n\
+ grid and optionally spans. All properties that can be used in the [<layout>]\n\
+ element are implemented by [Gtk.GridLayoutChild].\n\n\
+ It is implemented by [GtkWidget] using [Gtk.LayoutManager].\n\n\
+ To showcase it, here is a simple example:\n\n\
+ {[\n\
+ <object class=\"GtkGrid\" id=\"my_grid\">\n\
+\  <child>\n\
+\    <object class=\"GtkButton\" id=\"button1\">\n\
+\      <property name=\"label\">Button 1</property>\n\
+\      <layout>\n\
+\        <property name=\"column\">0</property>\n\
+\        <property name=\"row\">0</property>\n\
+\      </layout>\n\
+\    </object>\n\
+\  </child>\n\
+\  <child>\n\
+\    <object class=\"GtkButton\" id=\"button2\">\n\
+\      <property name=\"label\">Button 2</property>\n\
+\      <layout>\n\
+\        <property name=\"column\">1</property>\n\
+\        <property name=\"row\">0</property>\n\
+\      </layout>\n\
+\    </object>\n\
+\  </child>\n\
+\  <child>\n\
+\    <object class=\"GtkButton\" id=\"button3\">\n\
+\      <property name=\"label\">Button 3</property>\n\
+\      <layout>\n\
+\        <property name=\"column\">2</property>\n\
+\        <property name=\"row\">0</property>\n\
+\        <property name=\"row-span\">2</property>\n\
+\      </layout>\n\
+\    </object>\n\
+\  </child>\n\
+\  <child>\n\
+\    <object class=\"GtkButton\" id=\"button4\">\n\
+\      <property name=\"label\">Button 4</property>\n\
+\      <layout>\n\
+\        <property name=\"column\">0</property>\n\
+\        <property name=\"row\">1</property>\n\
+\        <property name=\"column-span\">2</property>\n\
+\      </layout>\n\
+\    </object>\n\
+\  </child>\n\
+ </object>\n\
+ ]}\n\n\
+ It organizes the first two buttons side-by-side in one cell each.\n\
+ The third button is in the last column but spans across two rows.\n\
+ This is defined by the [row-span] property. The last button is\n\
+ located in the second row and spans across two columns, which is\n\
+ defined by the [column-span] property.\n\n\
+ {b CSS nodes}\n\n\
+ [GtkGrid] uses a single CSS node with name [grid].\n\n\
+ {b Accessibility}\n\n\
+ Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
+ Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role."]
 
 type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 

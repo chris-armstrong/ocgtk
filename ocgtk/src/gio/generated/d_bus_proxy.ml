@@ -100,39 +100,35 @@ external set_default_timeout : t -> int -> unit
 
 external set_cached_property : t -> string -> Gvariant.t option -> unit
   = "ml_g_dbus_proxy_set_cached_property"
-(** If [value] is not [NULL], sets the cached value for the property with name
-    [property_name] to the value in [value].
-
-    If [value] is [NULL], then the cached value is removed from the property
-    cache.
-
-    If [proxy] has an expected interface (see [GDBusProxy:g]-interface-info) and
-    [property_name] is referenced by it, then [value] is checked against the
-    type of the property.
-
-    If the [value] [GVariant] is floating, it is consumed. This allows
-    convenient 'inline' use of g_variant_new(), e.g.
-
-    {[
-     g_dbus_proxy_set_cached_property (proxy,
-                                       “SomeProperty”,
-                                       g_variant_new (“(si)”,
-                                                     “A String”,
-                                                     42));
-    ]}
-
-    Normally you will not need to use this method since [proxy] is tracking
-    changes using the [org.freedesktop.DBus.Properties.PropertiesChanged] D-Bus
-    signal. However, for performance reasons an object may decide to not use
-    this signal for some properties and instead use a proprietary out-of-band
-    mechanism to transmit changes.
-
-    As a concrete example, consider an object with a property
-    [ChatroomParticipants] which is an array of strings. Instead of transmitting
-    the same (long) array every time the property changes, it is more efficient
-    to only transmit the delta using e.g. signals
-    [ChatroomParticipantJoined(String name)] and
-    [ChatroomParticipantParted(String name)]. *)
+[@@ocaml.doc
+  "If [value] is not [NULL], sets the cached value for the property with\n\
+   name [property_name] to the value in [value].\n\n\
+   If [value] is [NULL], then the cached value is removed from the\n\
+   property cache.\n\n\
+   If [proxy] has an expected interface (see\n\
+   [GDBusProxy:g]-interface-info) and [property_name] is referenced by\n\
+   it, then [value] is checked against the type of the property.\n\n\
+   If the [value] [GVariant] is floating, it is consumed. This allows\n\
+   convenient 'inline' use of g_variant_new(), e.g.\n\n\
+   {[\n\
+  \ g_dbus_proxy_set_cached_property (proxy,\n\
+  \                                   \"SomeProperty\",\n\
+  \                                   g_variant_new (\"(si)\",\n\
+  \                                                 \"A String\",\n\
+  \                                                 42));\n\
+   ]}\n\n\
+   Normally you will not need to use this method since [proxy]\n\
+   is tracking changes using the\n\
+   [org.freedesktop.DBus.Properties.PropertiesChanged]\n\
+   D-Bus signal. However, for performance reasons an object may\n\
+   decide to not use this signal for some properties and instead\n\
+   use a proprietary out-of-band mechanism to transmit changes.\n\n\
+   As a concrete example, consider an object with a property\n\
+   [ChatroomParticipants] which is an array of strings. Instead of\n\
+   transmitting the same (long) array every time the property changes,\n\
+   it is more efficient to only transmit the delta using e.g. signals\n\
+   [ChatroomParticipantJoined(String name)] and\n\
+   [ChatroomParticipantParted(String name)]."]
 
 external get_object_path : t -> string = "ml_g_dbus_proxy_get_object_path"
 (** Gets the object path [proxy] is for. *)
@@ -194,39 +190,36 @@ external call_sync :
   Cancellable.t option ->
   (Gvariant.t, GError.t) result
   = "ml_g_dbus_proxy_call_sync_bytecode" "ml_g_dbus_proxy_call_sync_native"
-(** Synchronously invokes the [method_name] method on [proxy].
-
-    If [method_name] contains any dots, then [name] is split into interface and
-    method name parts. This allows using [proxy] for invoking methods on other
-    interfaces.
-
-    If the [GDBusConnection] associated with [proxy] is disconnected then the
-    operation will fail with [G_IO_ERROR_CLOSED]. If [cancellable] is canceled,
-    the operation will fail with [G_IO_ERROR_CANCELLED]. If [parameters]
-    contains a value not compatible with the D-Bus protocol, the operation fails
-    with [G_IO_ERROR_INVALID_ARGUMENT].
-
-    If the [parameters] [GVariant] is floating, it is consumed. This allows
-    convenient 'inline' use of g_variant_new(), e.g.:
-
-    {[
-     g_dbus_proxy_call_sync (proxy,
-                             “TwoStrings”,
-                             g_variant_new (“(ss)”,
-                                            “Thing One”,
-                                            “Thing Two”),
-                             G_DBUS_CALL_FLAGS_NONE,
-                             -1,
-                             NULL,
-                             &error);
-    ]}
-
-    The calling thread is blocked until a reply is received. See
-    g_dbus_proxy_call() for the asynchronous version of this method.
-
-    If [proxy] has an expected interface (see [GDBusProxy:g]-interface-info) and
-    [method_name] is referenced by it, then the return value is checked against
-    the return type. *)
+[@@ocaml.doc
+  "Synchronously invokes the [method_name] method on [proxy].\n\n\
+   If [method_name] contains any dots, then [name] is split into interface and\n\
+   method name parts. This allows using [proxy] for invoking methods on\n\
+   other interfaces.\n\n\
+   If the [GDBusConnection] associated with [proxy] is disconnected then\n\
+   the operation will fail with [G_IO_ERROR_CLOSED]. If\n\
+   [cancellable] is canceled, the operation will fail with\n\
+   [G_IO_ERROR_CANCELLED]. If [parameters] contains a value not\n\
+   compatible with the D-Bus protocol, the operation fails with\n\
+   [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   If the [parameters] [GVariant] is floating, it is consumed. This allows\n\
+   convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+   {[\n\
+  \ g_dbus_proxy_call_sync (proxy,\n\
+  \                         \"TwoStrings\",\n\
+  \                         g_variant_new (\"(ss)\",\n\
+  \                                        \"Thing One\",\n\
+  \                                        \"Thing Two\"),\n\
+  \                         G_DBUS_CALL_FLAGS_NONE,\n\
+  \                         -1,\n\
+  \                         NULL,\n\
+  \                         &error);\n\
+   ]}\n\n\
+   The calling thread is blocked until a reply is received. See\n\
+   g_dbus_proxy_call() for the asynchronous version of this\n\
+   method.\n\n\
+   If [proxy] has an expected interface (see\n\
+   [GDBusProxy:g]-interface-info) and [method_name] is referenced by it,\n\
+   then the return value is checked against the return type."]
 
 external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
   = "ml_g_dbus_proxy_call_finish"

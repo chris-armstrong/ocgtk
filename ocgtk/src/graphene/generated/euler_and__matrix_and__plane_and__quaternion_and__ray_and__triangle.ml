@@ -530,20 +530,21 @@ and Matrix : sig
     Vec3_and__vec4.Vec3.t ->
     Vec3_and__vec4.Vec3.t ->
     t = "ml_graphene_matrix_init_look_at"
-  (** Initializes a #graphene_matrix_t so that it positions the “camera” at the
-      given [eye] coordinates towards an object at the [center] coordinates. The
-      top of the camera is aligned to the direction of the [up] vector.
-
-      Before the transform, the camera is assumed to be placed at the origin,
-      looking towards the negative Z axis, with the top side of the camera
-      facing in the direction of the Y axis and the right side in the direction
-      of the X axis.
-
-      In theory, one could use [m] to transform a model of such a camera into
-      world-space. However, it is more common to use the inverse of [m] to
-      transform another object from world coordinates to the view coordinates of
-      the camera. Typically you would then apply the camera projection transform
-      to get from view to screen coordinates. *)
+  [@@ocaml.doc
+    "Initializes a #graphene_matrix_t so that it positions the \"camera\"\n\
+    \  at the given [eye] coordinates towards an object at the [center]\n\
+    \  coordinates. The top of the camera is aligned to the direction\n\
+    \  of the [up] vector.\n\n\
+    \  Before the transform, the camera is assumed to be placed at the\n\
+    \  origin, looking towards the negative Z axis, with the top side of\n\
+    \  the camera facing in the direction of the Y axis and the right\n\
+    \  side in the direction of the X axis.\n\n\
+    \  In theory, one could use [m] to transform a model of such a camera\n\
+    \  into world-space. However, it is more common to use the inverse of\n\
+    \  [m] to transform another object from world coordinates to the view\n\
+    \  coordinates of the camera. Typically you would then apply the\n\
+    \  camera projection transform to get from view to screen\n\
+    \  coordinates."]
 
   external init_identity : t -> t = "ml_graphene_matrix_init_identity"
   (** Initializes a #graphene_matrix_t with the identity matrix. *)
@@ -658,12 +659,13 @@ and Matrix : sig
     * Quaternion.t
     * Vec3_and__vec4.Vec3.t
     * Vec3_and__vec4.Vec4.t = "ml_graphene_matrix_decompose"
-  (** Decomposes a transformation matrix into its component transformations.
-
-      The algorithm for decomposing a matrix is taken from the CSS3 Transforms
-      specification; specifically, the decomposition code is based on the
-      equivalent code published in “Graphics Gems II”, edited by Jim Arvo, and
-      available online. *)
+  [@@ocaml.doc
+    "Decomposes a transformation matrix into its component transformations.\n\n\
+    \  The algorithm for decomposing a matrix is taken from the\n\
+    \  CSS3 Transforms specification;\n\
+    \  specifically, the decomposition code is based on the equivalent code\n\
+    \  published in \"Graphics Gems II\", edited by Jim Arvo, and\n\
+    \  available online."]
 end = struct
   type t = [ `matrix ] Gobject.obj
 
@@ -939,20 +941,21 @@ end = struct
     Vec3_and__vec4.Vec3.t ->
     Vec3_and__vec4.Vec3.t ->
     t = "ml_graphene_matrix_init_look_at"
-  (** Initializes a #graphene_matrix_t so that it positions the “camera” at the
-      given [eye] coordinates towards an object at the [center] coordinates. The
-      top of the camera is aligned to the direction of the [up] vector.
-
-      Before the transform, the camera is assumed to be placed at the origin,
-      looking towards the negative Z axis, with the top side of the camera
-      facing in the direction of the Y axis and the right side in the direction
-      of the X axis.
-
-      In theory, one could use [m] to transform a model of such a camera into
-      world-space. However, it is more common to use the inverse of [m] to
-      transform another object from world coordinates to the view coordinates of
-      the camera. Typically you would then apply the camera projection transform
-      to get from view to screen coordinates. *)
+  [@@ocaml.doc
+    "Initializes a #graphene_matrix_t so that it positions the \"camera\"\n\
+    \  at the given [eye] coordinates towards an object at the [center]\n\
+    \  coordinates. The top of the camera is aligned to the direction\n\
+    \  of the [up] vector.\n\n\
+    \  Before the transform, the camera is assumed to be placed at the\n\
+    \  origin, looking towards the negative Z axis, with the top side of\n\
+    \  the camera facing in the direction of the Y axis and the right\n\
+    \  side in the direction of the X axis.\n\n\
+    \  In theory, one could use [m] to transform a model of such a camera\n\
+    \  into world-space. However, it is more common to use the inverse of\n\
+    \  [m] to transform another object from world coordinates to the view\n\
+    \  coordinates of the camera. Typically you would then apply the\n\
+    \  camera projection transform to get from view to screen\n\
+    \  coordinates."]
 
   external init_identity : t -> t = "ml_graphene_matrix_init_identity"
   (** Initializes a #graphene_matrix_t with the identity matrix. *)
@@ -1067,12 +1070,13 @@ end = struct
     * Quaternion.t
     * Vec3_and__vec4.Vec3.t
     * Vec3_and__vec4.Vec4.t = "ml_graphene_matrix_decompose"
-  (** Decomposes a transformation matrix into its component transformations.
-
-      The algorithm for decomposing a matrix is taken from the CSS3 Transforms
-      specification; specifically, the decomposition code is based on the
-      equivalent code published in “Graphics Gems II”, edited by Jim Arvo, and
-      available online. *)
+  [@@ocaml.doc
+    "Decomposes a transformation matrix into its component transformations.\n\n\
+    \  The algorithm for decomposing a matrix is taken from the\n\
+    \  CSS3 Transforms specification;\n\
+    \  specifically, the decomposition code is based on the equivalent code\n\
+    \  published in \"Graphics Gems II\", edited by Jim Arvo, and\n\
+    \  available online."]
 end
 
 and Plane : sig

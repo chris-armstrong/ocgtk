@@ -38,40 +38,32 @@ external update : t -> int -> int -> int -> unit = "ml_pango_attr_list_update"
     [remove]. *)
 
 external to_string : t -> string = "ml_pango_attr_list_to_string"
-(** Serializes a [PangoAttrList] to a string.
-
-    In the resulting string, serialized attributes are separated by newlines or
-    commas. Individual attributes are serialized to a string of the form
-
-    \[START END\] TYPE VALUE
-
-    Where START and END are the indices (with -1 being accepted in place of
-    MAXUINT), TYPE is the nickname of the attribute value type, e.g. _weight_ or
-    _stretch_, and the value is serialized according to its type:
-
-    Optionally, START and END can be omitted to indicate unlimited extent.
-
-    - enum values as nick or numeric value
-    - boolean values as _true_ or _false_
-    - integers and floats as numbers
-    - strings as string, optionally quoted
-    - font features as quoted string
-    - PangoLanguage as string
-    - PangoFontDescription as serialized by [Pango.FontDescription.to_string],
-      quoted
-    - PangoColor as serialized by [Pango.Color.to_string]
-
-    Examples:
-
-    0 10 foreground red, 5 15 weight bold, 0 200 font-desc “Sans 10”
-
-    0 -1 weight 700 0 100 family Times
-
-    weight bold
-
-    To parse the returned value, use [Pango.AttrList.from_string].
-
-    Note that shape attributes can not be serialized. *)
+[@@ocaml.doc
+  "Serializes a [PangoAttrList] to a string.\n\n\
+   In the resulting string, serialized attributes are separated by newlines or \
+   commas.\n\
+   Individual attributes are serialized to a string of the form\n\n\
+   \\[START END\\] TYPE VALUE\n\n\
+   Where START and END are the indices (with -1 being accepted in place\n\
+   of MAXUINT), TYPE is the nickname of the attribute value type, e.g.\n\
+   _weight_ or _stretch_, and the value is serialized according to its type:\n\n\
+   Optionally, START and END can be omitted to indicate unlimited extent.\n\n\
+   - enum values as nick or numeric value\n\
+   - boolean values as _true_ or _false_\n\
+   - integers and floats as numbers\n\
+   - strings as string, optionally quoted\n\
+   - font features as quoted string\n\
+   - PangoLanguage as string\n\
+   - PangoFontDescription as serialized by [Pango.FontDescription.to_string], \
+   quoted\n\
+   - PangoColor as serialized by [Pango.Color.to_string]\n\n\
+   Examples:\n\n\
+   0 10 foreground red, 5 15 weight bold, 0 200 font-desc \"Sans 10\"\n\n\
+   0 -1 weight 700\n\
+   0 100 family Times\n\n\
+   weight bold\n\n\
+   To parse the returned value, use [Pango.AttrList.from_string].\n\n\
+   Note that shape attributes can not be serialized."]
 
 external splice : t -> t -> int -> int -> unit = "ml_pango_attr_list_splice"
 (** This function opens up a hole in [list], fills it in with attributes from

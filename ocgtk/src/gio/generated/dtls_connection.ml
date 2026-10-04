@@ -56,28 +56,30 @@ external shutdown :
 
 external set_require_close_notify : t -> bool -> unit
   = "ml_g_dtls_connection_set_require_close_notify"
-(** Sets whether or not [conn] expects a proper TLS close notification before
-    the connection is closed. If this is [TRUE] (the default), then [conn] will
-    expect to receive a TLS close notification from its peer before the
-    connection is closed, and will return a [G_TLS_ERROR_EOF] error if the
-    connection is closed without proper notification (since this may indicate a
-    network error, or man-in-the-middle attack).
-
-    In some protocols, the application will know whether or not the connection
-    was closed cleanly based on application-level data (because the
-    application-level data includes a length field, or is somehow
-    self-delimiting); in this case, the close notify is redundant and may be
-    omitted. You can use g_dtls_connection_set_require_close_notify() to tell
-    [conn] to allow an “unannounced” connection close, in which case the close
-    will show up as a 0-length read, as in a non-TLS [GDatagramBased], and it is
-    up to the application to check that the data has been fully received.
-
-    Note that this only affects the behavior when the peer closes the
-    connection; when the application calls g_dtls_connection_close_async() on
-    [conn] itself, this will send a close notification regardless of the setting
-    of this property. If you explicitly want to do an unclean close, you can
-    close [conn]'s [GDtlsConnection:base]-socket rather than closing [conn]
-    itself. *)
+[@@ocaml.doc
+  "Sets whether or not [conn] expects a proper TLS close notification\n\
+   before the connection is closed. If this is [TRUE] (the default),\n\
+   then [conn] will expect to receive a TLS close notification from its\n\
+   peer before the connection is closed, and will return a\n\
+   [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
+   notification (since this may indicate a network error, or\n\
+   man-in-the-middle attack).\n\n\
+   In some protocols, the application will know whether or not the\n\
+   connection was closed cleanly based on application-level data\n\
+   (because the application-level data includes a length field, or is\n\
+   somehow self-delimiting); in this case, the close notify is\n\
+   redundant and may be omitted. You\n\
+   can use g_dtls_connection_set_require_close_notify() to tell [conn]\n\
+   to allow an \"unannounced\" connection close, in which case the close\n\
+   will show up as a 0-length read, as in a non-TLS\n\
+   [GDatagramBased], and it is up to the application to check that\n\
+   the data has been fully received.\n\n\
+   Note that this only affects the behavior when the peer closes the\n\
+   connection; when the application calls g_dtls_connection_close_async() on\n\
+   [conn] itself, this will send a close notification regardless of the\n\
+   setting of this property. If you explicitly want to do an unclean\n\
+   close, you can close [conn]'s [GDtlsConnection:base]-socket rather\n\
+   than closing [conn] itself."]
 
 external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
   = "ml_g_dtls_connection_set_rehandshake_mode"

@@ -16,14 +16,14 @@ external new_ : Input_stream.t -> t = "ml_g_data_input_stream_new"
 (** Create a new DataInputStream *)
 
 (* Methods *)
-
 external set_newline_type : t -> Gio_enums.datastreamnewlinetype -> unit
   = "ml_g_data_input_stream_set_newline_type"
-(** Sets the newline type for the [stream].
-
-    Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
-    chunk ends in “CR” we must read an additional byte to know if this is “CR”
-    or “CR LF”, and this might block if there is no more data available. *)
+[@@ocaml.doc
+  "Sets the newline type for the [stream].\n\n\
+   Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read\n\
+   chunk ends in \"CR\" we must read an additional byte to know if this is \
+   \"CR\" or\n\
+   \"CR LF\", and this might block if there is no more data available."]
 
 external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit
   = "ml_g_data_input_stream_set_byte_order"

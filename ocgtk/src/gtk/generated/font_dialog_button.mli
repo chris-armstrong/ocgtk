@@ -76,22 +76,23 @@ external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t option
 
 external get_font_features : t -> string option
   = "ml_gtk_font_dialog_button_get_font_features"
-(** Returns the font features of the button.
-
-    This function is what should be used to obtain the font features that were
-    chosen by the user. To get informed about changes, listen to
-    “notify::font-features”.
-
-    Note that the button will only let users choose font features if
-    [Gtk.FontDialogButton:level] is set to [GTK_FONT_LEVEL_FEATURES]. *)
+[@@ocaml.doc
+  "Returns the font features of the button.\n\n\
+   This function is what should be used to obtain the font features\n\
+   that were chosen by the user. To get informed about changes, listen\n\
+   to \"notify::font-features\".\n\n\
+   Note that the button will only let users choose font features\n\
+   if [Gtk.FontDialogButton:level] is set to\n\
+   [GTK_FONT_LEVEL_FEATURES]."]
 
 external get_font_desc :
   t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option
   = "ml_gtk_font_dialog_button_get_font_desc"
-(** Returns the font of the button.
-
-    This function is what should be used to obtain the font that was chosen by
-    the user. To get informed about changes, listen to “notify::font-desc”. *)
+[@@ocaml.doc
+  "Returns the font of the button.\n\n\
+   This function is what should be used to obtain\n\
+   the font that was chosen by the user. To get\n\
+   informed about changes, listen to \"notify::font-desc\"."]
 
 external get_dialog : t -> Font_dialog.t option
   = "ml_gtk_font_dialog_button_get_dialog"

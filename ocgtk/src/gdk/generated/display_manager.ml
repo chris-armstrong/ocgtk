@@ -1,48 +1,43 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DisplayManager: DisplayManager *)
 
-(** Offers notification when displays appear or disappear.
-
-    [GdkDisplayManager] is a singleton object.
-
-    You can use [Gdk.DisplayManager.get] to obtain the [GdkDisplayManager]
-    singleton, but that should be rarely necessary. Typically, initializing GTK
-    opens a display that you can work with without ever accessing the
-    [GdkDisplayManager].
-
-    The GDK library can be built with support for multiple backends. The
-    [GdkDisplayManager] object determines which backend is used at runtime.
-
-    In the rare case that you need to influence which of the backends is being
-    used, you can use [Gdk.set_allowed_backends]. Note that you need to call
-    this function before initializing GTK.
-
-    {b Backend-specific code}
-
-    When writing backend-specific code that is supposed to work with multiple
-    GDK backends, you have to consider both compile time and runtime. At compile
-    time, use the [GDK_WINDOWING_X11], [GDK_WINDOWING_WIN32] macros, etc. to
-    find out which backends are present in the GDK library you are building your
-    application against. At runtime, use type-check macros like
-    GDK_IS_X11_DISPLAY() to find out which backend is in use:
-
-    {[
-    #ifdef GDK_WINDOWING_X11
-      if (GDK_IS_X11_DISPLAY (display))
-        {
-          // make X11-specific calls here
-        }
-      else
-    #endif
-    #ifdef GDK_WINDOWING_MACOS
-      if (GDK_IS_MACOS_DISPLAY (display))
-        {
-          // make Quartz-specific calls here
-        }
-      else
-    #endif
-      g_error (“Unsupported GDK backend”);
-    ]} *)
+[@@@ocaml.text
+"Offers notification when displays appear or disappear.\n\n\
+ [GdkDisplayManager] is a singleton object.\n\n\
+ You can use [Gdk.DisplayManager.get] to obtain the [GdkDisplayManager]\n\
+ singleton, but that should be rarely necessary. Typically, initializing\n\
+ GTK opens a display that you can work with without ever accessing the\n\
+ [GdkDisplayManager].\n\n\
+ The GDK library can be built with support for multiple backends.\n\
+ The [GdkDisplayManager] object determines which backend is used\n\
+ at runtime.\n\n\
+ In the rare case that you need to influence which of the backends\n\
+ is being used, you can use [Gdk.set_allowed_backends]. Note\n\
+ that you need to call this function before initializing GTK.\n\n\
+ {b Backend-specific code}\n\n\
+ When writing backend-specific code that is supposed to work with\n\
+ multiple GDK backends, you have to consider both compile time and\n\
+ runtime. At compile time, use the [GDK_WINDOWING_X11], [GDK_WINDOWING_WIN32]\n\
+ macros, etc. to find out which backends are present in the GDK library\n\
+ you are building your application against. At runtime, use type-check\n\
+ macros like GDK_IS_X11_DISPLAY() to find out which backend is in use:\n\n\
+ {[\n\
+ #ifdef GDK_WINDOWING_X11\n\
+\  if (GDK_IS_X11_DISPLAY (display))\n\
+\    {\n\
+\      // make X11-specific calls here\n\
+\    }\n\
+\  else\n\
+ #endif\n\
+ #ifdef GDK_WINDOWING_MACOS\n\
+\  if (GDK_IS_MACOS_DISPLAY (display))\n\
+\    {\n\
+\      // make Quartz-specific calls here\n\
+\    }\n\
+\  else\n\
+ #endif\n\
+\  g_error (\"Unsupported GDK backend\");\n\
+ ]}"]
 
 type t = [ `display_manager | `object_ ] Gobject.obj
 

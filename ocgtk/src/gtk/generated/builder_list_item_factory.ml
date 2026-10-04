@@ -1,38 +1,34 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BuilderListItemFactory: BuilderListItemFactory *)
 
-(** Creates widgets by instantiating [GtkBuilder] UI templates.
-
-    The templates must extend the class that the parent widget expects. For
-    example, a factory provided to [Gtk.ListView:factory] must have a template
-    that extends [Gtk.ListItem].
-
-    Templates typically use [Gtk.Expression] to obtain data from the items in
-    the model.
-
-    Example:
-
-    {[
-      <interface>
-        <template class=”GtkListItem”>
-          <property name=”child”>
-            <object class=”GtkLabel”>
-              <property name=”xalign”>0</property>
-              <binding name=”label”>
-                <lookup name=”name” type=”SettingsKey”>
-                  <lookup name=”item”>GtkListItem</lookup>
-                </lookup>
-              </binding>
-            </object>
-          </property>
-        </template>
-      </interface>
-    ]}
-
-    A common approach is to embed such templates as CDATA marked sections into a
-    surrounding UI file. Note that if you use this approach, extracting
-    translatable strings with xgettext will not work for strings inside the
-    marked section. *)
+[@@@ocaml.text
+"Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
+ The templates must extend the class that the parent widget expects.\n\
+ For example, a factory provided to [Gtk.ListView:factory] must have\n\
+ a template that extends [Gtk.ListItem].\n\n\
+ Templates typically use [Gtk.Expression] to obtain data from the items\n\
+ in the model.\n\n\
+ Example:\n\n\
+ {[\n\
+\  <interface>\n\
+\    <template class=\"GtkListItem\">\n\
+\      <property name=\"child\">\n\
+\        <object class=\"GtkLabel\">\n\
+\          <property name=\"xalign\">0</property>\n\
+\          <binding name=\"label\">\n\
+\            <lookup name=\"name\" type=\"SettingsKey\">\n\
+\              <lookup name=\"item\">GtkListItem</lookup>\n\
+\            </lookup>\n\
+\          </binding>\n\
+\        </object>\n\
+\      </property>\n\
+\    </template>\n\
+\  </interface>\n\
+ ]}\n\n\
+ A common approach is to embed such templates as CDATA marked sections into\n\
+ a surrounding UI file. Note that if you use this approach, extracting\n\
+ translatable strings with xgettext will not work for strings inside the\n\
+ marked section."]
 
 type t =
   [ `builder_list_item_factory | `list_item_factory | `object_ ] Gobject.obj

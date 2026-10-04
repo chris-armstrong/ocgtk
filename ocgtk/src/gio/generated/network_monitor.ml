@@ -21,32 +21,31 @@ external get_network_metered : t -> bool
 
 external get_network_available : t -> bool
   = "ml_g_network_monitor_get_network_available"
-(** Checks if the network is available. “Available” here means that the system
-    has a default route available for at least one of IPv4 or IPv6. It does not
-    necessarily imply that the public Internet is reachable. See
-    [GNetworkMonitor:network]-available for more details. *)
+[@@ocaml.doc
+  "Checks if the network is available. \"Available\" here means that the\n\
+   system has a default route available for at least one of IPv4 or\n\
+   IPv6. It does not necessarily imply that the public Internet is\n\
+   reachable. See [GNetworkMonitor:network]-available for more details."]
 
 external get_connectivity : t -> Gio_enums.networkconnectivity
   = "ml_g_network_monitor_get_connectivity"
-(** Gets a more detailed networking state than
-    g_network_monitor_get_network_available().
-
-    If [GNetworkMonitor:network]-available is [FALSE], then the connectivity
-    state will be [G_NETWORK_CONNECTIVITY_LOCAL].
-
-    If [GNetworkMonitor:network]-available is [TRUE], then the connectivity
-    state will be [G_NETWORK_CONNECTIVITY_FULL] (if there is full Internet
-    connectivity), [G_NETWORK_CONNECTIVITY_LIMITED] (if the host has a default
-    route, but appears to be unable to actually reach the full Internet), or
-    [G_NETWORK_CONNECTIVITY_PORTAL] (if the host is trapped behind a “captive
-    portal” that requires some sort of login or acknowledgement before allowing
-    full Internet access).
-
-    Note that in the case of [G_NETWORK_CONNECTIVITY_LIMITED] and
-    [G_NETWORK_CONNECTIVITY_PORTAL], it is possible that some sites are
-    reachable but others are not. In this case, applications can attempt to
-    connect to remote servers, but should gracefully fall back to their
-    “offline” behavior if the connection attempt fails. *)
+[@@ocaml.doc
+  "Gets a more detailed networking state than\n\
+   g_network_monitor_get_network_available().\n\n\
+   If [GNetworkMonitor:network]-available is [FALSE], then the\n\
+   connectivity state will be [G_NETWORK_CONNECTIVITY_LOCAL].\n\n\
+   If [GNetworkMonitor:network]-available is [TRUE], then the\n\
+   connectivity state will be [G_NETWORK_CONNECTIVITY_FULL] (if there\n\
+   is full Internet connectivity), [G_NETWORK_CONNECTIVITY_LIMITED] (if\n\
+   the host has a default route, but appears to be unable to actually\n\
+   reach the full Internet), or [G_NETWORK_CONNECTIVITY_PORTAL] (if the\n\
+   host is trapped behind a \"captive portal\" that requires some sort\n\
+   of login or acknowledgement before allowing full Internet access).\n\n\
+   Note that in the case of [G_NETWORK_CONNECTIVITY_LIMITED] and\n\
+   [G_NETWORK_CONNECTIVITY_PORTAL], it is possible that some sites are\n\
+   reachable but others are not. In this case, applications can\n\
+   attempt to connect to remote servers, but should gracefully fall\n\
+   back to their \"offline\" behavior if the connection attempt fails."]
 
 external can_reach_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_network_monitor_can_reach_finish"

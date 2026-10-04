@@ -95,7 +95,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   (* The blank line makes this a floating module comment. Without it, the
      comment attaches to the first type, odoc no longer shows it as the
      module's synopsis on parent pages, and ocamlformat keeps it there. *)
-  Option.iter (fun comment -> bprintf buf "%s\n\n" comment)
+  Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
   @@ Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member class_doc;
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind

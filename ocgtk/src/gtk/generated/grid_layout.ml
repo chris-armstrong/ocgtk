@@ -1,19 +1,17 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GridLayout: GridLayout *)
 
-(** Arranges child widgets in rows and columns.
-
-    Children have an “attach point” defined by the horizontal and vertical index
-    of the cell they occupy; children can span multiple rows or columns. The
-    layout properties for setting the attach points and spans are set using the
-    [Gtk.GridLayoutChild] associated to each child widget.
-
-    The behaviour of [GtkGridLayout] when several children occupy the same grid
-    cell is undefined.
-
-    [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are
-    attached to the same row or column; however, if you only ever need a single
-    row or column, you should consider using [GtkBoxLayout]. *)
+[@@@ocaml.text
+"Arranges child widgets in rows and columns.\n\n\
+ Children have an \"attach point\" defined by the horizontal and vertical\n\
+ index of the cell they occupy; children can span multiple rows or columns.\n\
+ The layout properties for setting the attach points and spans are set\n\
+ using the [Gtk.GridLayoutChild] associated to each child widget.\n\n\
+ The behaviour of [GtkGridLayout] when several children occupy the same\n\
+ grid cell is undefined.\n\n\
+ [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\
+ attached to the same row or column; however, if you only ever need a\n\
+ single row or column, you should consider using [GtkBoxLayout]."]
 
 type t = [ `grid_layout | `layout_manager | `object_ ] Gobject.obj
 

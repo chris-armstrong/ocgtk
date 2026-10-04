@@ -1,37 +1,36 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconTheme: IconTheme *)
 
-(** Loads themed icons.
-
-    The main reason for using a name rather than simply providing a filename is
-    to allow different icons to be used depending on what “icon theme” is
-    selected by the user. The operation of icon themes on Linux and Unix follows
-    the Icon Theme Specification There is a fallback icon theme, named
-    [hicolor], where applications should install their icons, but additional
-    icon themes can be installed as operating system vendors and users choose.
-
-    In many cases, named themes are used indirectly, via [Gtk.Image] rather than
-    directly, but looking up icons directly is also simple. The [GtkIconTheme]
-    object acts as a database of all the icons in the current theme. You can
-    create new [GtkIconTheme] objects, but it’s much more efficient to use the
-    standard icon theme of the [GtkWidget] so that the icon information is
-    shared with other people looking up icons.
-
-    {[
-    GtkIconTheme *icon_theme;
-    GtkIconPaintable *icon;
-    GdkPaintable *paintable;
-
-    icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display (my_widget));
-    icon = gtk_icon_theme_lookup_icon (icon_theme,
-                                       “my-icon-name”, // icon name
-                                       48, // icon size
-                                       1,  // scale
-                                       0,  // flags);
-    paintable = GDK_PAINTABLE (icon);
-    // Use the paintable
-    g_object_unref (icon);
-    ]} *)
+[@@@ocaml.text
+"Loads themed icons.\n\n\
+ The main reason for using a name rather than simply providing a filename\n\
+ is to allow different icons to be used depending on what “icon theme” is\n\
+ selected by the user. The operation of icon themes on Linux and Unix\n\
+ follows the Icon Theme Specification\n\
+ There is a fallback icon theme, named [hicolor], where applications\n\
+ should install their icons, but additional icon themes can be installed\n\
+ as operating system vendors and users choose.\n\n\
+ In many cases, named themes are used indirectly, via [Gtk.Image]\n\
+ rather than directly, but looking up icons directly is also simple. The\n\
+ [GtkIconTheme] object acts as a database of all the icons in the current\n\
+ theme. You can create new [GtkIconTheme] objects, but it’s much more\n\
+ efficient to use the standard icon theme of the [GtkWidget] so that the\n\
+ icon information is shared with other people looking up icons.\n\n\
+ {[\n\
+ GtkIconTheme *icon_theme;\n\
+ GtkIconPaintable *icon;\n\
+ GdkPaintable *paintable;\n\n\
+ icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display \
+ (my_widget));\n\
+ icon = gtk_icon_theme_lookup_icon (icon_theme,\n\
+\                                   \"my-icon-name\", // icon name\n\
+\                                   48, // icon size\n\
+\                                   1,  // scale\n\
+\                                   0,  // flags);\n\
+ paintable = GDK_PAINTABLE (icon);\n\
+ // Use the paintable\n\
+ g_object_unref (icon);\n\
+ ]}"]
 
 type t = [ `icon_theme | `object_ ] Gobject.obj
 
@@ -89,22 +88,19 @@ external lookup_icon :
   Icon_paintable.t
   = "ml_gtk_icon_theme_lookup_icon_bytecode"
     "ml_gtk_icon_theme_lookup_icon_native"
-(** Looks up a named icon for a desired size and window scale, returning a
-    [GtkIconPaintable].
-
-    The icon can then be rendered by using it as a [GdkPaintable], or you can
-    get information such as the filename and size.
-
-    If the available [icon_name] is not available and [fallbacks] are provided,
-    they will be tried in order.
-
-    If no matching icon is found, then a paintable that renders the “missing
-    icon” icon is returned. If you need to do something else for missing icons
-    you need to use [Gtk.IconTheme.has_icon].
-
-    Note that you probably want to listen for icon theme changes and update the
-    icon. This is usually done by overriding the GtkWidgetClass.css-changed()
-    function. *)
+[@@ocaml.doc
+  "Looks up a named icon for a desired size and window scale,\n\
+   returning a [GtkIconPaintable].\n\n\
+   The icon can then be rendered by using it as a [GdkPaintable],\n\
+   or you can get information such as the filename and size.\n\n\
+   If the available [icon_name] is not available and [fallbacks] are\n\
+   provided, they will be tried in order.\n\n\
+   If no matching icon is found, then a paintable that renders the\n\
+   \"missing icon\" icon is returned. If you need to do something else\n\
+   for missing icons you need to use [Gtk.IconTheme.has_icon].\n\n\
+   Note that you probably want to listen for icon theme changes and\n\
+   update the icon. This is usually done by overriding the\n\
+   GtkWidgetClass.css-changed() function."]
 
 external lookup_by_gicon :
   t ->

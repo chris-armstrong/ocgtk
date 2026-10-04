@@ -1,37 +1,32 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeStore: TreeStore *)
 
-(** A tree-like data structure that can be used with the [Gtk.TreeView].
-
-    The [GtkTreeStore] object is a list model for use with a [GtkTreeView]
-    widget. It implements the [Gtk.TreeModel] interface, and consequently, can
-    use all of the methods available there. It also implements the
-    [Gtk.TreeSortable] interface so it can be sorted by the view. Finally, it
-    also implements the tree \[drag\][Gtk.TreeDragSource] and
-    \[drop\][Gtk.TreeDragDest] interfaces.
-
-    [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in newly
-    written code. You should use [Gtk.TreeListModel] for a tree-like model
-    object.
-
-    {b GtkTreeStore as GtkBuildable}
-
-    The GtkTreeStore implementation of the [GtkBuildable] interface allows to
-    specify the model columns with a [<columns>] element that may contain
-    multiple [<column>] elements, each specifying one model column. The “type”
-    attribute specifies the data type for the column.
-
-    An example of a UI Definition fragment for a tree store:
-
-    {[
-    <object class=”GtkTreeStore”>
-      <columns>
-        <column type=”gchararray”/>
-        <column type=”gchararray”/>
-        <column type=”gint”/>
-      </columns>
-    </object>
-    ]} *)
+[@@@ocaml.text
+"A tree-like data structure that can be used with the [Gtk.TreeView].\n\n\
+ The [GtkTreeStore] object is a list model for use with a [GtkTreeView]\n\
+ widget. It implements the [Gtk.TreeModel] interface, and consequently,\n\
+ can use all of the methods available there. It also implements the\n\
+ [Gtk.TreeSortable] interface so it can be sorted by the view.\n\
+ Finally, it also implements the tree \\[drag\\][Gtk.TreeDragSource]\n\
+ and \\[drop\\][Gtk.TreeDragDest] interfaces.\n\n\
+ [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in newly\n\
+ written code. You should use [Gtk.TreeListModel] for a tree-like model\n\
+ object.\n\n\
+ {b GtkTreeStore as GtkBuildable}\n\n\
+ The GtkTreeStore implementation of the [GtkBuildable] interface allows\n\
+ to specify the model columns with a [<columns>] element that may contain\n\
+ multiple [<column>] elements, each specifying one model column. The “type”\n\
+ attribute specifies the data type for the column.\n\n\
+ An example of a UI Definition fragment for a tree store:\n\n\
+ {[\n\
+ <object class=\"GtkTreeStore\">\n\
+\  <columns>\n\
+\    <column type=\"gchararray\"/>\n\
+\    <column type=\"gchararray\"/>\n\
+\    <column type=\"gint\"/>\n\
+\  </columns>\n\
+ </object>\n\
+ ]}"]
 
 type t = [ `tree_store | `object_ ] Gobject.obj
 

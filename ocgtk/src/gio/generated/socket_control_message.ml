@@ -34,5 +34,6 @@ external get_msg_type : t -> int = "ml_g_socket_control_message_get_msg_type"
     UNIX fd passing this would be SCM_RIGHTS. *)
 
 external get_level : t -> int = "ml_g_socket_control_message_get_level"
-(** Returns the “level” (i.e. the originating protocol) of the control message.
-    This is often SOL_SOCKET. *)
+[@@ocaml.doc
+  "Returns the \"level\" (i.e. the originating protocol) of the control message.\n\
+   This is often SOL_SOCKET."]

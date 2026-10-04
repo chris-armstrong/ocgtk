@@ -1,147 +1,130 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListStore: ListStore *)
 
-(** A list-like data structure that can be used with the [Gtk.TreeView].
-
-    The [GtkListStore] object is a list model for use with a [GtkTreeView]
-    widget. It implements the [GtkTreeModel] interface, and consequentialy, can
-    use all of the methods available there. It also implements the
-    [GtkTreeSortable] interface so it can be sorted by the view. Finally, it
-    also implements the tree drag and drop interfaces.
-
-    The [GtkListStore] can accept most [GType]s as a column type, though it
-    can’t accept all custom types. Internally, it will keep a copy of data
-    passed in (such as a string or a boxed pointer). Columns that accept
-    [GObject]s are handled a little differently. The [GtkListStore] will keep a
-    reference to the object instead of copying the value. As a result, if the
-    object is modified, it is up to the application writer to call
-    [Gtk.TreeModel.row_changed] to emit the [Gtk.TreeModel::row_changed] signal.
-    This most commonly affects lists with [Gdk.Texture]s stored.
-
-    An example for creating a simple list store:
-
-    {[
-    enum {
-      COLUMN_STRING,
-      COLUMN_INT,
-      COLUMN_BOOLEAN,
-      N_COLUMNS
-    };
-
-    {
-      GtkListStore *list_store;
-      GtkTreePath *path;
-      GtkTreeIter iter;
-      int i;
-
-      list_store = gtk_list_store_new (N_COLUMNS,
-                                       G_TYPE_STRING,
-                                       G_TYPE_INT,
-                                       G_TYPE_BOOLEAN);
-
-      for (i = 0; i < 10; i++)
-        {
-          char *some_data;
-
-          some_data = get_some_data (i);
-
-          // Add a new row to the model
-          gtk_list_store_append (list_store, &iter);
-          gtk_list_store_set (list_store, &iter,
-                              COLUMN_STRING, some_data,
-                              COLUMN_INT, i,
-                              COLUMN_BOOLEAN,  FALSE,
-                              -1);
-
-          // As the store will keep a copy of the string internally,
-          // we free some_data.
-          g_free (some_data);
-        }
-
-      // Modify a particular row
-      path = gtk_tree_path_new_from_string (“4”);
-      gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store),
-                               &iter,
-                               path);
-      gtk_tree_path_free (path);
-      gtk_list_store_set (list_store, &iter,
-                          COLUMN_BOOLEAN, TRUE,
-                          -1);
-    }
-    ]}
-
-    [GtkListStore] is deprecated since GTK 4.10, and should not be used in newly
-    written code. You should use [Gio.ListStore] instead, and the various list
-    models provided by GTK.
-
-    {b Performance Considerations}
-
-    Internally, the [GtkListStore] was originally implemented with a linked list
-    with a tail pointer. As a result, it was fast at data insertion and
-    deletion, and not fast at random data access. The [GtkListStore] sets the
-    [GTK_TREE_MODEL_ITERS_PERSIST] flag, which means that [GtkTreeIter]s can be
-    cached while the row exists. Thus, if access to a particular row is needed
-    often and your code is expected to run on older versions of GTK, it is worth
-    keeping the iter around.
-
-    {b Atomic Operations}
-
-    It is important to note that only the methods
-    gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()
-    are atomic, in the sense that the row is being appended to the store and the
-    values filled in in a single operation with regard to [GtkTreeModel]
-    signaling. In contrast, using e.g. gtk_list_store_append() and then
-    gtk_list_store_set() will first create a row, which triggers the
-    [GtkTreeModel::row-inserted] signal on [GtkListStore]. The row, however, is
-    still empty, and any signal handler connecting to
-    [GtkTreeModel::row-inserted] on this particular store should be prepared for
-    the situation that the row might be empty. This is especially important if
-    you are wrapping the [GtkListStore] inside a [GtkTreeModel]Filter and are
-    using a [GtkTreeModel]FilterVisibleFunc. Using any of the non-atomic
-    operations to append rows to the [GtkListStore] will cause the
-    [GtkTreeModel]FilterVisibleFunc to be visited with an empty row first; the
-    function must be prepared for that.
-
-    {b GtkListStore as GtkBuildable}
-
-    The GtkListStore implementation of the [Gtk.Buildable] interface allows to
-    specify the model columns with a [<columns>] element that may contain
-    multiple [<column>] elements, each specifying one model column. The “type”
-    attribute specifies the data type for the column.
-
-    Additionally, it is possible to specify content for the list store in the UI
-    definition, with the [<data>] element. It can contain multiple [<row>]
-    elements, each specifying to content for one row of the list model. Inside a
-    [<row>], the [<col>] elements specify the content for individual cells.
-
-    Note that it is probably more common to define your models in the code, and
-    one might consider it a layering violation to specify the content of a list
-    store in a UI definition, data, not presentation, and common wisdom is to
-    separate the two, as far as possible.
-
-    An example of a UI Definition fragment for a list store:
-
-    {[
-    <object class=”GtkListStore”>
-      <columns>
-        <column type=”gchararray”/>
-        <column type=”gchararray”/>
-        <column type=”gint”/>
-      </columns>
-      <data>
-        <row>
-          <col id=”0”>John</col>
-          <col id=”1”>Doe</col>
-          <col id=”2”>25</col>
-        </row>
-        <row>
-          <col id=”0”>Johan</col>
-          <col id=”1”>Dahlin</col>
-          <col id=”2”>50</col>
-        </row>
-      </data>
-    </object>
-    ]} *)
+[@@@ocaml.text
+"A list-like data structure that can be used with the [Gtk.TreeView].\n\n\
+ The [GtkListStore] object is a list model for use with a [GtkTreeView]\n\
+ widget.  It implements the [GtkTreeModel] interface, and consequentialy,\n\
+ can use all of the methods available there.  It also implements the\n\
+ [GtkTreeSortable] interface so it can be sorted by the view.\n\
+ Finally, it also implements the tree\n\
+ drag and drop\n\
+ interfaces.\n\n\
+ The [GtkListStore] can accept most [GType]s as a column type, though\n\
+ it can’t accept all custom types.  Internally, it will keep a copy of\n\
+ data passed in (such as a string or a boxed pointer).  Columns that\n\
+ accept [GObject]s are handled a little differently.  The\n\
+ [GtkListStore] will keep a reference to the object instead of copying the\n\
+ value.  As a result, if the object is modified, it is up to the\n\
+ application writer to call [Gtk.TreeModel.row_changed] to emit the\n\
+ [Gtk.TreeModel::row_changed] signal. This most commonly affects lists\n\
+ with [Gdk.Texture]s stored.\n\n\
+ An example for creating a simple list store:\n\n\
+ {[\n\
+ enum {\n\
+\  COLUMN_STRING,\n\
+\  COLUMN_INT,\n\
+\  COLUMN_BOOLEAN,\n\
+\  N_COLUMNS\n\
+ };\n\n\
+ {\n\
+\  GtkListStore *list_store;\n\
+\  GtkTreePath *path;\n\
+\  GtkTreeIter iter;\n\
+\  int i;\n\n\
+\  list_store = gtk_list_store_new (N_COLUMNS,\n\
+\                                   G_TYPE_STRING,\n\
+\                                   G_TYPE_INT,\n\
+\                                   G_TYPE_BOOLEAN);\n\n\
+\  for (i = 0; i < 10; i++)\n\
+\    {\n\
+\      char *some_data;\n\n\
+\      some_data = get_some_data (i);\n\n\
+\      // Add a new row to the model\n\
+\      gtk_list_store_append (list_store, &iter);\n\
+\      gtk_list_store_set (list_store, &iter,\n\
+\                          COLUMN_STRING, some_data,\n\
+\                          COLUMN_INT, i,\n\
+\                          COLUMN_BOOLEAN,  FALSE,\n\
+\                          -1);\n\n\
+\      // As the store will keep a copy of the string internally,\n\
+\      // we free some_data.\n\
+\      g_free (some_data);\n\
+\    }\n\n\
+\  // Modify a particular row\n\
+\  path = gtk_tree_path_new_from_string (\"4\");\n\
+\  gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store),\n\
+\                           &iter,\n\
+\                           path);\n\
+\  gtk_tree_path_free (path);\n\
+\  gtk_list_store_set (list_store, &iter,\n\
+\                      COLUMN_BOOLEAN, TRUE,\n\
+\                      -1);\n\
+ }\n\
+ ]}\n\n\
+ [GtkListStore] is deprecated since GTK 4.10, and should not be used in newly\n\
+ written code. You should use [Gio.ListStore] instead, and the various\n\
+ list models provided by GTK.\n\n\
+ {b Performance Considerations}\n\n\
+ Internally, the [GtkListStore] was originally implemented with a linked list\n\
+ with a tail pointer.  As a result, it was fast at data insertion and deletion,\n\
+ and not fast at random data access.  The [GtkListStore] sets the\n\
+ [GTK_TREE_MODEL_ITERS_PERSIST] flag, which means that [GtkTreeIter]s can be\n\
+ cached while the row exists.  Thus, if access to a particular row is needed\n\
+ often and your code is expected to run on older versions of GTK, it is worth\n\
+ keeping the iter around.\n\n\
+ {b Atomic Operations}\n\n\
+ It is important to note that only the methods\n\
+ gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()\n\
+ are atomic, in the sense that the row is being appended to the store and the\n\
+ values filled in in a single operation with regard to [GtkTreeModel] signaling.\n\
+ In contrast, using e.g. gtk_list_store_append() and then gtk_list_store_set()\n\
+ will first create a row, which triggers the [GtkTreeModel::row-inserted] signal\n\
+ on [GtkListStore]. The row, however, is still empty, and any signal handler\n\
+ connecting to [GtkTreeModel::row-inserted] on this particular store should be \
+ prepared\n\
+ for the situation that the row might be empty. This is especially important\n\
+ if you are wrapping the [GtkListStore] inside a [GtkTreeModel]Filter and are\n\
+ using a [GtkTreeModel]FilterVisibleFunc. Using any of the non-atomic operations\n\
+ to append rows to the [GtkListStore] will cause the\n\
+ [GtkTreeModel]FilterVisibleFunc to be visited with an empty row first; the\n\
+ function must be prepared for that.\n\n\
+ {b GtkListStore as GtkBuildable}\n\n\
+ The GtkListStore implementation of the [Gtk.Buildable] interface allows\n\
+ to specify the model columns with a [<columns>] element that may contain\n\
+ multiple [<column>] elements, each specifying one model column. The “type”\n\
+ attribute specifies the data type for the column.\n\n\
+ Additionally, it is possible to specify content for the list store\n\
+ in the UI definition, with the [<data>] element. It can contain multiple\n\
+ [<row>] elements, each specifying to content for one row of the list model.\n\
+ Inside a [<row>], the [<col>] elements specify the content for individual \
+ cells.\n\n\
+ Note that it is probably more common to define your models in the code,\n\
+ and one might consider it a layering violation to specify the content of\n\
+ a list store in a UI definition, data, not presentation, and common wisdom\n\
+ is to separate the two, as far as possible.\n\n\
+ An example of a UI Definition fragment for a list store:\n\n\
+ {[\n\
+ <object class=\"GtkListStore\">\n\
+\  <columns>\n\
+\    <column type=\"gchararray\"/>\n\
+\    <column type=\"gchararray\"/>\n\
+\    <column type=\"gint\"/>\n\
+\  </columns>\n\
+\  <data>\n\
+\    <row>\n\
+\      <col id=\"0\">John</col>\n\
+\      <col id=\"1\">Doe</col>\n\
+\      <col id=\"2\">25</col>\n\
+\    </row>\n\
+\    <row>\n\
+\      <col id=\"0\">Johan</col>\n\
+\      <col id=\"1\">Dahlin</col>\n\
+\      <col id=\"2\">50</col>\n\
+\    </row>\n\
+\  </data>\n\
+ </object>\n\
+ ]}"]
 
 type t = [ `list_store | `object_ ] Gobject.obj
 

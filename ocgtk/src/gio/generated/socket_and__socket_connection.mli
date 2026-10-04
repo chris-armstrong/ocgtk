@@ -563,33 +563,32 @@ module rec Socket : sig
       g_socket_check_connect_result(). *)
 
   external close : t -> (bool, GError.t) result = "ml_g_socket_close"
-  (** Closes the socket, shutting down any active connection.
-
-      Closing a socket does not wait for all outstanding I/O operations to
-      finish, so the caller should not rely on them to be guaranteed to complete
-      even if the close returns with no error.
-
-      Once the socket is closed, all other operations will return
-      [G_IO_ERROR_CLOSED]. Closing a socket multiple times will not return an
-      error.
-
-      Sockets will be automatically closed when the last reference is dropped,
-      but you might want to call this function to make sure resources are
-      released as early as possible.
-
-      Beware that due to the way that TCP works, it is possible for
-      recently-sent data to be lost if either you close a socket while the
-      [G_IO_IN] condition is set, or else if the remote connection tries to send
-      something to you after you close the socket but before it has finished
-      reading all of the data you sent. There is no easy generic way to avoid
-      this problem; the easiest fix is to design the network protocol such that
-      the client will never send data “out of turn”. Another solution is for the
-      server to half-close the connection by calling g_socket_shutdown() with
-      only the [shutdown_write] flag set, and then wait for the client to notice
-      this and close its side of the connection, after which the server can
-      safely call g_socket_close(). (This is what [GTcpConnection] does if you
-      call g_tcp_connection_set_graceful_disconnect(). But of course, this only
-      works if the client will close its connection after the server does.) *)
+  [@@ocaml.doc
+    "Closes the socket, shutting down any active connection.\n\n\
+    \  Closing a socket does not wait for all outstanding I/O operations\n\
+    \  to finish, so the caller should not rely on them to be guaranteed\n\
+    \  to complete even if the close returns with no error.\n\n\
+    \  Once the socket is closed, all other operations will return\n\
+    \  [G_IO_ERROR_CLOSED]. Closing a socket multiple times will not\n\
+    \  return an error.\n\n\
+    \  Sockets will be automatically closed when the last reference\n\
+    \  is dropped, but you might want to call this function to make sure\n\
+    \  resources are released as early as possible.\n\n\
+    \  Beware that due to the way that TCP works, it is possible for\n\
+    \  recently-sent data to be lost if either you close a socket while the\n\
+    \  [G_IO_IN] condition is set, or else if the remote connection tries to\n\
+    \  send something to you after you close the socket but before it has\n\
+    \  finished reading all of the data you sent. There is no easy generic\n\
+    \  way to avoid this problem; the easiest fix is to design the network\n\
+    \  protocol such that the client will never send data \"out of turn\".\n\
+    \  Another solution is for the server to half-close the connection by\n\
+    \  calling g_socket_shutdown() with only the [shutdown_write] flag set,\n\
+    \  and then wait for the client to notice this and close its side of the\n\
+    \  connection, after which the server can safely call g_socket_close().\n\
+    \  (This is what [GTcpConnection] does if you call\n\
+    \  g_tcp_connection_set_graceful_disconnect(). But of course, this\n\
+    \  only works if the client will close its connection after the server\n\
+    \  does.)"]
 
   external check_connect_result : t -> (bool, GError.t) result
     = "ml_g_socket_check_connect_result"
@@ -667,13 +666,14 @@ and Socket_connection : sig
       .t,
       GError.t )
     result = "ml_g_socket_connection_get_remote_address"
-  (** Try to get the remote address of a socket connection.
-
-      Since GLib 2.40, when used with g_socket_client_connect() or
-      g_socket_client_connect_async(), during emission of
-      [G_SOCKET_CLIENT_CONNECTING], this function will return the remote address
-      that will be used for the connection. This allows applications to print
-      e.g. “Connecting to example.com (10.42.77.3)...”. *)
+  [@@ocaml.doc
+    "Try to get the remote address of a socket connection.\n\n\
+    \  Since GLib 2.40, when used with g_socket_client_connect() or\n\
+    \  g_socket_client_connect_async(), during emission of\n\
+    \  [G_SOCKET_CLIENT_CONNECTING], this function will return the remote\n\
+    \  address that will be used for the connection.  This allows\n\
+    \  applications to print e.g. \"Connecting to example.com\n\
+    \  (10.42.77.3)...\"."]
 
   external get_local_address :
     t ->

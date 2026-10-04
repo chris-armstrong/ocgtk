@@ -1,16 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Drag: Drag *)
 
-(** Represents the source of an ongoing DND operation.
-
-    A [GdkDrag] is created when a drag is started, and stays alive for duration
-    of the DND operation. After a drag has been started with [Gdk.Drag.begin],
-    the caller gets informed about the status of the ongoing drag operation with
-    signals on the [GdkDrag] object.
-
-    GTK provides a higher level abstraction based on top of these functions, and
-    so they are not normally needed in GTK applications. See the “Drag and Drop”
-    section of the GTK documentation for more information. *)
+[@@@ocaml.text
+"Represents the source of an ongoing DND operation.\n\n\
+ A [GdkDrag] is created when a drag is started, and stays alive for duration of\n\
+ the DND operation. After a drag has been started with [Gdk.Drag.begin],\n\
+ the caller gets informed about the status of the ongoing drag operation\n\
+ with signals on the [GdkDrag] object.\n\n\
+ GTK provides a higher level abstraction based on top of these functions,\n\
+ and so they are not normally needed in GTK applications. See the\n\
+ \"Drag and Drop\" section of the GTK documentation for more information."]
 
 type t = [ `drag | `object_ ] Gobject.obj
 

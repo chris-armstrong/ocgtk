@@ -1,66 +1,57 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintOperation: PrintOperation *)
 
-(** High-level, portable printing API.
-
-    It looks a bit different than other GTK dialogs such as the
-    [GtkFileChooser], since some platforms don’t expose enough infrastructure to
-    implement a good print dialog. On such platforms, [GtkPrintOperation] uses
-    the native print dialog. On platforms which do not provide a native print
-    dialog, GTK uses its own, see [Gtk.PrintUnixDialog].
-
-    The typical way to use the high-level printing API is to create a
-    [GtkPrintOperation] object with [Gtk.PrintOperation.new] when the user
-    selects to print. Then you set some properties on it, e.g. the page size,
-    any [Gtk.PrintSettings] from previous print operations, the number of pages,
-    the current page, etc.
-
-    Then you start the print operation by calling [Gtk.PrintOperation.run]. It
-    will then show a dialog, let the user select a printer and options. When the
-    user finished the dialog, various signals will be emitted on the
-    [GtkPrintOperation], the main one being [Gtk.PrintOperation::draw-page],
-    which you are supposed to handle and render the page on the provided
-    [Gtk.PrintContext] using Cairo.
-
-    {b The high-level printing API}
-
-    {[
-    static GtkPrintSettings *settings = NULL;
-
-    static void
-    do_print (void)
-    {
-      GtkPrintOperation *print;
-      GtkPrintOperationResult res;
-
-      print = gtk_print_operation_new ();
-
-      if (settings != NULL)
-        gtk_print_operation_set_print_settings (print, settings);
-
-      g_signal_connect (print, “begin_print”, G_CALLBACK (begin_print), NULL);
-      g_signal_connect (print, “draw_page”, G_CALLBACK (draw_page), NULL);
-
-      res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-                                     GTK_WINDOW (main_window), NULL);
-
-      if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
-        {
-          if (settings != NULL)
-            g_object_unref (settings);
-          settings = g_object_ref (gtk_print_operation_get_print_settings (print));
-        }
-
-      g_object_unref (print);
-    }
-    ]}
-
-    By default [GtkPrintOperation] uses an external application to do print
-    preview. To implement a custom print preview, an application must connect to
-    the preview signal. The functions [Gtk.PrintOperationPreview.render_page],
-    [Gtk.PrintOperationPreview.end_preview] and
-    [Gtk.PrintOperationPreview.is_selected] are useful when implementing a print
-    preview. *)
+[@@@ocaml.text
+"High-level, portable printing API.\n\n\
+ It looks a bit different than other GTK dialogs such as the\n\
+ [GtkFileChooser], since some platforms don’t expose enough\n\
+ infrastructure to implement a good print dialog. On such\n\
+ platforms, [GtkPrintOperation] uses the native print dialog.\n\
+ On platforms which do not provide a native print dialog, GTK\n\
+ uses its own, see [Gtk.PrintUnixDialog].\n\n\
+ The typical way to use the high-level printing API is to create\n\
+ a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
+ when the user selects to print. Then you set some properties on it,\n\
+ e.g. the page size, any [Gtk.PrintSettings] from previous print\n\
+ operations, the number of pages, the current page, etc.\n\n\
+ Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
+ It will then show a dialog, let the user select a printer and options.\n\
+ When the user finished the dialog, various signals will be emitted on\n\
+ the [GtkPrintOperation], the main one being\n\
+ [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
+ and render the page on the provided [Gtk.PrintContext] using Cairo.\n\n\
+ {b The high-level printing API}\n\n\
+ {[\n\
+ static GtkPrintSettings *settings = NULL;\n\n\
+ static void\n\
+ do_print (void)\n\
+ {\n\
+\  GtkPrintOperation *print;\n\
+\  GtkPrintOperationResult res;\n\n\
+\  print = gtk_print_operation_new ();\n\n\
+\  if (settings != NULL)\n\
+\    gtk_print_operation_set_print_settings (print, settings);\n\n\
+\  g_signal_connect (print, \"begin_print\", G_CALLBACK (begin_print), NULL);\n\
+\  g_signal_connect (print, \"draw_page\", G_CALLBACK (draw_page), NULL);\n\n\
+\  res = gtk_print_operation_run (print, \
+ GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,\n\
+\                                 GTK_WINDOW (main_window), NULL);\n\n\
+\  if (res == GTK_PRINT_OPERATION_RESULT_APPLY)\n\
+\    {\n\
+\      if (settings != NULL)\n\
+\        g_object_unref (settings);\n\
+\      settings = g_object_ref (gtk_print_operation_get_print_settings (print));\n\
+\    }\n\n\
+\  g_object_unref (print);\n\
+ }\n\
+ ]}\n\n\
+ By default [GtkPrintOperation] uses an external application to do\n\
+ print preview. To implement a custom print preview, an application\n\
+ must connect to the preview signal. The functions\n\
+ [Gtk.PrintOperationPreview.render_page],\n\
+ [Gtk.PrintOperationPreview.end_preview] and\n\
+ [Gtk.PrintOperationPreview.is_selected]\n\
+ are useful when implementing a print preview."]
 
 type t = [ `print_operation | `object_ ] Gobject.obj
 
@@ -203,61 +194,53 @@ external run :
   Application_and__window_and__window_group.Window.t option ->
   (Gtk_enums.printoperationresult, GError.t) result
   = "ml_gtk_print_operation_run"
-(** Runs the print operation.
-
-    Normally that this function does not return until the rendering of all pages
-    is complete. You can connect to the [Gtk.PrintOperation::status-changed]
-    signal on [op] to obtain some information about the progress of the print
-    operation.
-
-    Furthermore, it may use a recursive mainloop to show the print dialog.
-
-    If you set the \[Gtk.PrintOperation:allow-async\] property, the operation
-    will run asynchronously if this is supported on the platform. The
-    [Gtk.PrintOperation::done] signal will be emitted with the result of the
-    operation when the it is done (i.e. when the dialog is canceled, or when the
-    print succeeds or fails).
-
-    {[
-    if (settings != NULL)
-      gtk_print_operation_set_print_settings (print, settings);
-
-    if (page_setup != NULL)
-      gtk_print_operation_set_default_page_setup (print, page_setup);
-
-    g_signal_connect (print, “begin-print”,
-                      G_CALLBACK (begin_print), &data);
-    g_signal_connect (print, “draw-page”,
-                      G_CALLBACK (draw_page), &data);
-
-    res = gtk_print_operation_run (print,
-                                   GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-                                   parent,
-                                   &error);
-
-    if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
-     {
-       error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
-      			                     GTK_DIALOG_DESTROY_WITH_PARENT,
-    					     GTK_MESSAGE_ERROR,
-    					     GTK_BUTTONS_CLOSE,
-    					     “Error printing file:\n%s”,
-    					     error->message);
-       g_signal_connect (error_dialog, “response”,
-                         G_CALLBACK (gtk_window_destroy), NULL);
-       gtk_window_present (GTK_WINDOW (error_dialog));
-       g_error_free (error);
-     }
-    else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
-     {
-       if (settings != NULL)
-    g_object_unref (settings);
-       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
-     }
-    ]}
-
-    Note that gtk_print_operation_run() can only be called once on a given
-    [GtkPrintOperation]. *)
+[@@ocaml.doc
+  "Runs the print operation.\n\n\
+   Normally that this function does not return until the rendering\n\
+   of all pages is complete. You can connect to the\n\
+   [Gtk.PrintOperation::status-changed] signal on [op] to obtain\n\
+   some information about the progress of the print operation.\n\n\
+   Furthermore, it may use a recursive mainloop to show the print dialog.\n\n\
+   If you set the \\[Gtk.PrintOperation:allow-async\\] property, the operation\n\
+   will run asynchronously if this is supported on the platform. The\n\
+   [Gtk.PrintOperation::done] signal will be emitted with the result\n\
+   of the operation when the it is done (i.e. when the dialog is canceled,\n\
+   or when the print succeeds or fails).\n\n\
+   {[\n\
+   if (settings != NULL)\n\
+  \  gtk_print_operation_set_print_settings (print, settings);\n\n\
+   if (page_setup != NULL)\n\
+  \  gtk_print_operation_set_default_page_setup (print, page_setup);\n\n\
+   g_signal_connect (print, \"begin-print\",\n\
+  \                  G_CALLBACK (begin_print), &data);\n\
+   g_signal_connect (print, \"draw-page\",\n\
+  \                  G_CALLBACK (draw_page), &data);\n\n\
+   res = gtk_print_operation_run (print,\n\
+  \                               GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,\n\
+  \                               parent,\n\
+  \                               &error);\n\n\
+   if (res == GTK_PRINT_OPERATION_RESULT_ERROR)\n\
+  \ {\n\
+  \   error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),\n\
+  \  \t\t\t                     GTK_DIALOG_DESTROY_WITH_PARENT,\n\
+   \t\t\t\t\t     GTK_MESSAGE_ERROR,\n\
+   \t\t\t\t\t     GTK_BUTTONS_CLOSE,\n\
+   \t\t\t\t\t     \"Error printing file:\\n%s\",\n\
+   \t\t\t\t\t     error->message);\n\
+  \   g_signal_connect (error_dialog, \"response\",\n\
+  \                     G_CALLBACK (gtk_window_destroy), NULL);\n\
+  \   gtk_window_present (GTK_WINDOW (error_dialog));\n\
+  \   g_error_free (error);\n\
+  \ }\n\
+   else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)\n\
+  \ {\n\
+  \   if (settings != NULL)\n\
+   g_object_unref (settings);\n\
+  \   settings = g_object_ref (gtk_print_operation_get_print_settings (print));\n\
+  \ }\n\
+   ]}\n\n\
+   Note that gtk_print_operation_run() can only be called once on a\n\
+   given [GtkPrintOperation]."]
 
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
 (** A convenience function to find out if the print operation is finished.

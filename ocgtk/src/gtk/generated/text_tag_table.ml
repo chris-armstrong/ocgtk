@@ -1,27 +1,24 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextTagTable: TextTagTable *)
 
-(** Collects the tags in a [GtkTextBuffer].
-
-    You may wish to begin by reading the text widget conceptual overview, which
-    gives an overview of all the objects and data types related to the text
-    widget and how they work together.
-
-    {b GtkTextTagTables as GtkBuildable}
-
-    The [GtkTextTagTable] implementation of the [GtkBuildable] interface
-    supports adding tags by specifying “tag” as the “type” attribute of a
-    [<child>] element.
-
-    An example of a UI definition fragment specifying tags:
-
-    {[
-    <object class=”GtkTextTagTable”>
-     <child type=”tag”>
-       <object class=”GtkTextTag”/>
-     </child>
-    </object>
-    ]} *)
+[@@@ocaml.text
+"Collects the tags in a [GtkTextBuffer].\n\n\
+ You may wish to begin by reading the\n\
+ text widget conceptual overview,\n\
+ which gives an overview of all the objects and data types\n\
+ related to the text widget and how they work together.\n\n\
+ {b GtkTextTagTables as GtkBuildable}\n\n\
+ The [GtkTextTagTable] implementation of the [GtkBuildable] interface\n\
+ supports adding tags by specifying “tag” as the “type” attribute\n\
+ of a [<child>] element.\n\n\
+ An example of a UI definition fragment specifying tags:\n\n\
+ {[\n\
+ <object class=\"GtkTextTagTable\">\n\
+\ <child type=\"tag\">\n\
+\   <object class=\"GtkTextTag\"/>\n\
+\ </child>\n\
+ </object>\n\
+ ]}"]
 
 type t = [ `text_tag_table | `object_ ] Gobject.obj
 

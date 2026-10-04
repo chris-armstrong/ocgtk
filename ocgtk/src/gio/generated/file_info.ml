@@ -72,12 +72,14 @@ external set_name : t -> string -> unit = "ml_g_file_info_set_name"
     [G_FILE_ATTRIBUTE_STANDARD_NAME]. *)
 
 external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
-(** Sets the “is_symlink” attribute in a [GFileInfo] according to [is_symlink].
-    See [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]. *)
+[@@ocaml.doc
+  "Sets the \"is_symlink\" attribute in a [GFileInfo] according to [is_symlink].\n\
+   See [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]."]
 
 external set_is_hidden : t -> bool -> unit = "ml_g_file_info_set_is_hidden"
-(** Sets the “is_hidden” attribute in a [GFileInfo] according to [is_hidden].
-    See [G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]. *)
+[@@ocaml.doc
+  "Sets the \"is_hidden\" attribute in a [GFileInfo] according to [is_hidden].\n\
+   See [G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]."]
 
 external set_icon : t -> Icon.t -> unit = "ml_g_file_info_set_icon"
 (** Sets the icon for a given [GFileInfo]. See [G_FILE_ATTRIBUTE_STANDARD_ICON].
@@ -337,24 +339,25 @@ external get_attribute_boolean : t -> string -> bool
 
 external get_attribute_as_string : t -> string -> string option
   = "ml_g_file_info_get_attribute_as_string"
-(** Gets the value of an attribute, formatted as a human readable string.
-
-    This escapes things as needed to make the string valid UTF-8 and readable by
-    humans. It’s not meant to be a machine readable or reversible escaping
-    format.
-
-    To format file name attributes of type [Gio.FileAttributeType.BYTE_STRING]
-    for output as UTF-8, use [GLib.filename_to_utf8] instead:
-
-    {[
-    const char *trash_orig_path_byte_string;
-    g_autofree char *trash_orig_path_utf8 = NULL;
-
-    trash_orig_path_byte_string = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
-    trash_orig_path_utf8 = g_filename_to_utf8 (trash_orig_path_byte_string, -1, NULL, NULL, NULL);
-    if (trash_orig_path_utf8 != NULL)
-      g_message (“Some larger UTF-8 string with filename embedded as %s”, trash_orig_path_utf8);
-    ]} *)
+[@@ocaml.doc
+  "Gets the value of an attribute, formatted as a human readable string.\n\n\
+   This escapes things as needed to make the string valid UTF-8 and readable by\n\
+   humans. It’s not meant to be a machine readable or reversible escaping\n\
+   format.\n\n\
+   To format file name attributes of type\n\
+   [Gio.FileAttributeType.BYTE_STRING] for output as UTF-8, use\n\
+   [GLib.filename_to_utf8] instead:\n\n\
+   {[\n\
+   const char *trash_orig_path_byte_string;\n\
+   g_autofree char *trash_orig_path_utf8 = NULL;\n\n\
+   trash_orig_path_byte_string = g_file_info_get_attribute_byte_string (info, \
+   G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);\n\
+   trash_orig_path_utf8 = g_filename_to_utf8 (trash_orig_path_byte_string, -1, \
+   NULL, NULL, NULL);\n\
+   if (trash_orig_path_utf8 != NULL)\n\
+  \  g_message (\"Some larger UTF-8 string with filename embedded as %s\", \
+   trash_orig_path_utf8);\n\
+   ]}"]
 
 external dup : t -> t = "ml_g_file_info_dup"
 (** Duplicates a file info structure. *)

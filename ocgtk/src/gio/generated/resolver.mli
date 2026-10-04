@@ -28,15 +28,15 @@ external set_timeout : t -> int -> unit = "ml_g_resolver_set_timeout"
 (** Set the timeout applied to all resolver lookups. See [GResolver:timeout]. *)
 
 external set_default : t -> unit = "ml_g_resolver_set_default"
-(** Sets [resolver] to be the application's default resolver (reffing
-    [resolver], and unreffing the previous default resolver, if any). Future
-    calls to g_resolver_get_default() will return this resolver.
-
-    This can be used if an application wants to perform any sort of DNS caching
-    or “pinning”; it can implement its own [GResolver] that calls the original
-    default resolver for DNS operations, and implements its own cache policies
-    on top of that, and then set itself as the default resolver for all later
-    code to use. *)
+[@@ocaml.doc
+  "Sets [resolver] to be the application's default resolver (reffing\n\
+   [resolver], and unreffing the previous default resolver, if any).\n\
+   Future calls to g_resolver_get_default() will return this resolver.\n\n\
+   This can be used if an application wants to perform any sort of DNS\n\
+   caching or \"pinning\"; it can implement its own [GResolver] that\n\
+   calls the original default resolver for DNS operations, and\n\
+   implements its own cache policies on top of that, and then set\n\
+   itself as the default resolver for all later code to use."]
 
 external lookup_service_finish :
   t -> Async_result.t -> (Srv_target.t list, GError.t) result

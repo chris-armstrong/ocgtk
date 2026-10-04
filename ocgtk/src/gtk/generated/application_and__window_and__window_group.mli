@@ -432,34 +432,31 @@ and Window : sig
 
   external set_default_size : t -> int -> int -> unit
     = "ml_gtk_window_set_default_size"
-  (** Sets the default size of a window.
-
-      The default size of a window is the size that will be used if no other
-      constraints apply.
-
-      The default size will be updated whenever the window is resized to reflect
-      the new size, unless the window is forced to a size, like when it is
-      maximized or fullscreened.
-
-      If the window’s minimum size request is larger than the default, the
-      default will be ignored.
-
-      Setting the default size to a value <= 0 will cause it to be ignored and
-      the natural size request will be used instead. It is possible to do this
-      while the window is showing to “reset” it to its initial size.
-
-      Unlike [Gtk.Widget.set_size_request], which sets a size request for a
-      widget and thus would keep users from shrinking the window, this function
-      only sets the initial size, just as if the user had resized the window
-      themselves. Users can still shrink the window again as they normally
-      would. Setting a default size of -1 means to use the “natural” default
-      size (the size request of the window).
-
-      If you use this function to reestablish a previously saved window size,
-      note that the appropriate size to save is the one returned by
-      [Gtk.Window.get_default_size]. Using the window allocation directly will
-      not work in all circumstances and can lead to growing or shrinking
-      windows. *)
+  [@@ocaml.doc
+    "Sets the default size of a window.\n\n\
+    \  The default size of a window is the size that will be used\n\
+    \  if no other constraints apply.\n\n\
+    \  The default size will be updated whenever the window is resized\n\
+    \  to reflect the new size, unless the window is forced to a size,\n\
+    \  like when it is maximized or fullscreened.\n\n\
+    \  If the window’s minimum size request is larger than\n\
+    \  the default, the default will be ignored.\n\n\
+    \  Setting the default size to a value <= 0 will cause it to be\n\
+    \  ignored and the natural size request will be used instead. It\n\
+    \  is possible to do this while the window is showing to \"reset\"\n\
+    \  it to its initial size.\n\n\
+    \  Unlike [Gtk.Widget.set_size_request], which sets a size\n\
+    \  request for a widget and thus would keep users from shrinking\n\
+    \  the window, this function only sets the initial size, just as\n\
+    \  if the user had resized the window themselves. Users can still\n\
+    \  shrink the window again as they normally would. Setting a default\n\
+    \  size of -1 means to use the “natural” default size (the size request\n\
+    \  of the window).\n\n\
+    \  If you use this function to reestablish a previously saved window size,\n\
+    \  note that the appropriate size to save is the one returned by\n\
+    \  [Gtk.Window.get_default_size]. Using the window allocation\n\
+    \  directly will not work in all circumstances and can lead to growing\n\
+    \  or shrinking windows."]
 
   external set_decorated : t -> bool -> unit = "ml_gtk_window_set_decorated"
   (** Sets whether the window should be decorated.

@@ -1,83 +1,67 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Paned: Paned *)
 
-(** Arranges its children in two panes, horizontally or vertically.
-
-    An example GtkPaned
-
-    The division between the two panes is adjustable by the user by dragging a
-    handle.
-
-    Child widgets are added to the panes of the widget with
-    [Gtk.Paned.set_start_child] and [Gtk.Paned.set_end_child]. The division
-    between the two children is set by default from the size requests of the
-    children, but it can be adjusted by the user.
-
-    A paned widget draws a separator between the two child widgets and a small
-    handle that the user can drag to adjust the division. It does not draw any
-    relief around the children or around the separator. (The space in which the
-    separator is called the gutter.) Often, it is useful to put each child
-    inside a [Gtk.Frame] so that the gutter appears as a ridge. No separator is
-    drawn if one of the children is missing.
-
-    Each child has two options that can be set, “resize” and “shrink”. If
-    “resize” is true then, when the [GtkPaned] is resized, that child will
-    expand or shrink along with the paned widget. If “shrink” is true, then that
-    child can be made smaller than its requisition by the user. Setting “shrink”
-    to false allows the application to set a minimum size. If “resize” is false
-    for both children, then this is treated as if “resize” is true for both
-    children.
-
-    The application can set the position of the slider as if it were set by the
-    user, by calling [Gtk.Paned.set_position].
-
-    {b Shortcuts and Gestures}
-
-    The following signals have default keybindings:
-
-    - [Gtk.Paned::accept-position]
-    - [Gtk.Paned::cancel-position]
-    - [Gtk.Paned::cycle-child-focus]
-    - [Gtk.Paned::cycle-handle-focus]
-    - [Gtk.Paned::move-handle]
-    - [Gtk.Paned::toggle-handle-focus]
-
-    {b CSS nodes}
-
-    {[
-    paned
-    ├── <child>
-    ├── separator[.wide]
-    ╰── <child>
-    ]}
-
-    [GtkPaned] has a main CSS node with name paned, and a subnode for the
-    separator with name separator. The subnode gets a .wide style class when the
-    paned is supposed to be wide.
-
-    In horizontal orientation, the nodes are arranged based on the text
-    direction, so in left-to-right mode, :first-child will select the leftmost
-    child, while it will select the rightmost child in RTL layouts.
-
-    {b Creating a paned widget with minimum sizes.}
-
-    {[
-    GtkWidget * hpaned = gtk_paned_new GTK_ORIENTATION_HORIZONTAL;
-    GtkWidget * frame1 = gtk_frame_new NULL;
-    GtkWidget * frame2 = gtk_frame_new NULL;
-
-    gtk_widget_set_size_request (hpaned, 200, -1);
-
-    gtk_paned_set_start_child (GTK_PANED hpaned, frame1);
-    gtk_paned_set_resize_start_child (GTK_PANED hpaned, TRUE);
-    gtk_paned_set_shrink_start_child (GTK_PANED hpaned, FALSE);
-    gtk_widget_set_size_request (frame1, 50, -1);
-
-    gtk_paned_set_end_child (GTK_PANED hpaned, frame2);
-    gtk_paned_set_resize_end_child (GTK_PANED hpaned, FALSE);
-    gtk_paned_set_shrink_end_child (GTK_PANED hpaned, FALSE);
-    gtk_widget_set_size_request (frame2, 50, -1)
-    ]} *)
+[@@@ocaml.text
+"Arranges its children in two panes, horizontally or vertically.\n\n\
+ An example GtkPaned\n\n\
+ The division between the two panes is adjustable by the user\n\
+ by dragging a handle.\n\n\
+ Child widgets are added to the panes of the widget with\n\
+ [Gtk.Paned.set_start_child] and [Gtk.Paned.set_end_child].\n\
+ The division between the two children is set by default from the size\n\
+ requests of the children, but it can be adjusted by the user.\n\n\
+ A paned widget draws a separator between the two child widgets and a\n\
+ small handle that the user can drag to adjust the division. It does not\n\
+ draw any relief around the children or around the separator. (The space\n\
+ in which the separator is called the gutter.) Often, it is useful to put\n\
+ each child inside a [Gtk.Frame] so that the gutter appears as a\n\
+ ridge. No separator is drawn if one of the children is missing.\n\n\
+ Each child has two options that can be set, \"resize\" and \"shrink\". If\n\
+ \"resize\" is true then, when the [GtkPaned] is resized, that child will\n\
+ expand or shrink along with the paned widget. If \"shrink\" is true, then\n\
+ that child can be made smaller than its requisition by the user.\n\
+ Setting \"shrink\" to false allows the application to set a minimum size.\n\
+ If \"resize\" is false for both children, then this is treated as if\n\
+ \"resize\" is true for both children.\n\n\
+ The application can set the position of the slider as if it were set\n\
+ by the user, by calling [Gtk.Paned.set_position].\n\n\
+ {b Shortcuts and Gestures}\n\n\
+ The following signals have default keybindings:\n\n\
+ - [Gtk.Paned::accept-position]\n\
+ - [Gtk.Paned::cancel-position]\n\
+ - [Gtk.Paned::cycle-child-focus]\n\
+ - [Gtk.Paned::cycle-handle-focus]\n\
+ - [Gtk.Paned::move-handle]\n\
+ - [Gtk.Paned::toggle-handle-focus]\n\n\
+ {b CSS nodes}\n\n\
+ {[\n\
+ paned\n\
+ ├── <child>\n\
+ ├── separator[.wide]\n\
+ ╰── <child>\n\
+ ]}\n\n\
+ [GtkPaned] has a main CSS node with name paned, and a subnode for\n\
+ the separator with name separator. The subnode gets a .wide style\n\
+ class when the paned is supposed to be wide.\n\n\
+ In horizontal orientation, the nodes are arranged based on the text\n\
+ direction, so in left-to-right mode, :first-child will select the\n\
+ leftmost child, while it will select the rightmost child in\n\
+ RTL layouts.\n\n\
+ {b Creating a paned widget with minimum sizes.}\n\n\
+ {[\n\
+ GtkWidget *hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);\n\
+ GtkWidget *frame1 = gtk_frame_new (NULL);\n\
+ GtkWidget *frame2 = gtk_frame_new (NULL);\n\n\
+ gtk_widget_set_size_request (hpaned, 200, -1);\n\n\
+ gtk_paned_set_start_child (GTK_PANED (hpaned), frame1);\n\
+ gtk_paned_set_resize_start_child (GTK_PANED (hpaned), TRUE);\n\
+ gtk_paned_set_shrink_start_child (GTK_PANED (hpaned), FALSE);\n\
+ gtk_widget_set_size_request (frame1, 50, -1);\n\n\
+ gtk_paned_set_end_child (GTK_PANED (hpaned), frame2);\n\
+ gtk_paned_set_resize_end_child (GTK_PANED (hpaned), FALSE);\n\
+ gtk_paned_set_shrink_end_child (GTK_PANED (hpaned), FALSE);\n\
+ gtk_widget_set_size_request (frame2, 50, -1);\n\
+ ]}"]
 
 type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 

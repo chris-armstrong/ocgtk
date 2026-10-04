@@ -46,16 +46,15 @@ external subtract : t -> t -> unit = "ml_gtk_bitset_subtract"
     be emptied in that case. *)
 
 external splice : t -> int -> int -> int -> unit = "ml_gtk_bitset_splice"
-(** This is a support function for [GListModel] handling, by mirroring the
-    [GlistModel::items-changed] signal.
-
-    First, it “cuts” the values from [position] to [removed] from the bitset.
-    That is, it removes all those values and shifts all larger values to the
-    left by [removed] places.
-
-    Then, it “pastes” new room into the bitset by shifting all values larger
-    than [position] by [added] spaces to the right. This frees up space that can
-    then be filled. *)
+[@@ocaml.doc
+  "This is a support function for [GListModel] handling, by mirroring\n\
+   the [GlistModel::items-changed] signal.\n\n\
+   First, it \"cuts\" the values from [position] to [removed] from\n\
+   the bitset. That is, it removes all those values and shifts\n\
+   all larger values to the left by [removed] places.\n\n\
+   Then, it \"pastes\" new room into the bitset by shifting all values\n\
+   larger than [position] by [added] spaces to the right. This frees\n\
+   up space that can then be filled."]
 
 external shift_right : t -> int -> unit = "ml_gtk_bitset_shift_right"
 (** Shifts all values in [self] to the right by [amount].

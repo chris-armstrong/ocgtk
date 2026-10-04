@@ -43,11 +43,12 @@ external get_path_len : t -> Gsize.t = "ml_g_unix_socket_address_get_path_len"
     For details, see g_unix_socket_address_get_path(). *)
 
 external get_path : t -> string = "ml_g_unix_socket_address_get_path"
-(** Gets [address]'s path, or for abstract sockets the “name”.
-
-    Guaranteed to be zero-terminated, but an abstract socket may contain
-    embedded zeros, and thus you should use g_unix_socket_address_get_path_len()
-    to get the true length of this string. *)
+[@@ocaml.doc
+  "Gets [address]'s path, or for abstract sockets the \"name\".\n\n\
+   Guaranteed to be zero-terminated, but an abstract socket\n\
+   may contain embedded zeros, and thus you should use\n\
+   g_unix_socket_address_get_path_len() to get the true length\n\
+   of this string."]
 
 external get_is_abstract : t -> bool
   = "ml_g_unix_socket_address_get_is_abstract"

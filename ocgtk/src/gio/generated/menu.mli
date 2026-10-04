@@ -77,22 +77,20 @@ external insert_section :
     alternative. *)
 
 external insert_item : t -> int -> Menu_item.t -> unit = "ml_g_menu_insert_item"
-(** Inserts [item] into [menu].
-
-    The “insertion” is actually done by copying all of the attribute and link
-    values of [item] and using them to form a new item within [menu]. As such,
-    [item] itself is not really inserted, but rather, a menu item that is
-    exactly the same as the one presently described by [item].
-
-    This means that [item] is essentially useless after the insertion occurs.
-    Any changes you make to it are ignored unless it is inserted again (at which
-    point its updated values will be copied).
-
-    You should probably just free [item] once you're done.
-
-    There are many convenience functions to take care of common cases. See
-    g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
-    as “prepend” and “append” variants of each of these functions. *)
+[@@ocaml.doc
+  "Inserts [item] into [menu].\n\n\
+   The \"insertion\" is actually done by copying all of the attribute and\n\
+   link values of [item] and using them to form a new item within [menu].\n\
+   As such, [item] itself is not really inserted, but rather, a menu item\n\
+   that is exactly the same as the one presently described by [item].\n\n\
+   This means that [item] is essentially useless after the insertion\n\
+   occurs.  Any changes you make to it are ignored unless it is inserted\n\
+   again (at which point its updated values will be copied).\n\n\
+   You should probably just free [item] once you're done.\n\n\
+   There are many convenience functions to take care of common cases.\n\
+   See g_menu_insert(), g_menu_insert_section() and\n\
+   g_menu_insert_submenu() as well as \"prepend\" and \"append\" variants of\n\
+   each of these functions."]
 
 external insert : t -> int -> string option -> string option -> unit
   = "ml_g_menu_insert"

@@ -132,12 +132,12 @@ is determined by its phase field. *)
 is determined by its phase field. *)
   | `PAD_BUTTON_PRESS (** A tablet pad button press event. *)
   | `PAD_BUTTON_RELEASE (** A tablet pad button release event. *)
-  | `PAD_RING (** A tablet pad axis event from a “ring”. *)
-  | `PAD_STRIP (** A tablet pad axis event from a “strip”. *)
+  | `PAD_RING [@ocaml.doc "A tablet pad axis event from a \"ring\"."]
+  | `PAD_STRIP [@ocaml.doc "A tablet pad axis event from a \"strip\"."]
   | `PAD_GROUP_MODE (** A tablet pad group mode change. *)
   | `TOUCHPAD_HOLD (** A touchpad hold gesture event, the current state is determined by its phase
 field. *)
-  | `PAD_DIAL (** A tablet pad axis event from a “dial”. *)
+  | `PAD_DIAL [@ocaml.doc "A tablet pad axis event from a \"dial\"."]
   | `EVENT_LAST (** marks the end of the GdkEventType enumeration. *)
 ]
 
@@ -194,8 +194,8 @@ as a touchscreen or tablet *)
   | `TOUCHPAD (** the device is an indirect touch device, such
 as a touchpad *)
   | `TRACKPOINT (** the device is a trackpoint *)
-  | `TABLET_PAD (** the device is a “pad”, a collection of buttons,
-rings and strips found in drawing tablets *)
+  | `TABLET_PAD [@ocaml.doc "the device is a \"pad\", a collection of buttons,
+rings and strips found in drawing tablets"]
 ]
 
 val inputsource_of_int : int -> inputsource
@@ -256,55 +256,55 @@ the alpha value. *)
   | `X8R8G8B8 (** 4 bytes; for unused, red, green, blue. *)
   | `R8G8B8X8 (** 4 bytes; for red, green, blue, unused. *)
   | `X8B8G8R8 (** 4 bytes; for unused, blue, green, red. *)
-  | `G8_B8R8_420 (** Multiplane format with 2 planes.
+  | `G8_B8R8_420 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cb followed by Cr.
 Subsampled in both the X and Y direction.
 
-Commonly known by the fourcc “NV12”. *)
-  | `G8_R8B8_420 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV12\"."]
+  | `G8_R8B8_420 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 Subsampled in both the X and Y direction.
 
-Commonly known by the fourcc “NV21”. *)
-  | `G8_B8R8_422 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV21\"."]
+  | `G8_B8R8_422 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cb followed by Cr.
 Subsampled in the X direction.
 
-Commonly known by the fourcc “NV16”. *)
-  | `G8_R8B8_422 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV16\"."]
+  | `G8_R8B8_422 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 Subsampled in the X direction.
 
-Commonly known by the fourcc “NV61”. *)
-  | `G8_B8R8_444 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV61\"."]
+  | `G8_B8R8_444 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cb followed by Cr.
 This format is not subsampled.
 
-Commonly known by the fourcc “NV24”. *)
-  | `G8_R8B8_444 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV24\"."]
+  | `G8_R8B8_444 [@ocaml.doc "Multiplane format with 2 planes.
 
 The first plane contains the first channel, usually containing
 luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 This format is not subsampled.
 
-Commonly known by the fourcc “NV42”. *)
-  | `G10X6_B10X6R10X6_420 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"NV42\"."]
+  | `G10X6_B10X6R10X6_420 [@ocaml.doc "Multiplane format with 2 planes.
 
 Each channel is a 16 bit integer, but only the highest 10 bits are used.
 
@@ -313,8 +313,8 @@ luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 This format is not subsampled.
 
-Commonly known by the fourcc “P010”. *)
-  | `G12X4_B12X4R12X4_420 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"P010\"."]
+  | `G12X4_B12X4R12X4_420 [@ocaml.doc "Multiplane format with 2 planes.
 
 Each channel is a 16 bit integer, but only the highest 10 bits are used.
 
@@ -323,8 +323,8 @@ luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 This format is not subsampled.
 
-Commonly known by the fourcc “P012”. *)
-  | `G16_B16R16_420 (** Multiplane format with 2 planes.
+Commonly known by the fourcc \"P012\"."]
+  | `G16_B16R16_420 [@ocaml.doc "Multiplane format with 2 planes.
 
 Each channel is a 16 bit integer.
 
@@ -333,8 +333,8 @@ luma values.
 The second plane with interleaved chroma values, Cr followed by Cb.
 This format is not subsampled.
 
-Commonly known by the fourcc “P016”. *)
-  | `G8_B8_R8_410 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"P016\"."]
+  | `G8_B8_R8_410 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -349,8 +349,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in both the X and Y direction with 4:1 ratio. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “YUV410”. *)
-  | `G8_R8_B8_410 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YUV410\"."]
+  | `G8_R8_B8_410 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -365,8 +365,8 @@ The third plane usually contains the first chroma channel.
 Subsampled in both the X and Y direction with 4:1 ratio. It is
 mapped into the 3rd channel.
 
-Commonly known by the fourcc “YVU410”. *)
-  | `G8_B8_R8_411 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YVU410\"."]
+  | `G8_B8_R8_411 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -381,8 +381,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in the X direction with 4:1 ratio. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “YUV411”. *)
-  | `G8_R8_B8_411 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YUV411\"."]
+  | `G8_R8_B8_411 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -397,8 +397,8 @@ The third plane usually contains the first chroma channel.
 Subsampled in the X direction with 4:1 ratio. It is
 mapped into the 3rd channel.
 
-Commonly known by the fourcc “YVU411”. *)
-  | `G8_B8_R8_420 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YVU411\"."]
+  | `G8_B8_R8_420 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -413,8 +413,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in both the X and Y direction. It is mapped into the
 1st channel.
 
-Commonly known by the fourcc “YUV420”. *)
-  | `G8_R8_B8_420 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YUV420\"."]
+  | `G8_R8_B8_420 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -429,8 +429,8 @@ The third plane usually contains the first chroma channel.
 Subsampled in both the X and Y direction. It is mapped into the
 3rd channel.
 
-Commonly known by the fourcc “YVU420”. *)
-  | `G8_B8_R8_422 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YVU420\"."]
+  | `G8_B8_R8_422 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -443,8 +443,8 @@ Subsampled in the X direction. It is mapped into the 3rd channel.
 The third plane usually contains the second chroma channel.
 Subsampled in the X direction. It is mapped into the 1st channel.
 
-Commonly known by the fourcc “YUV422”. *)
-  | `G8_R8_B8_422 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YUV422\"."]
+  | `G8_R8_B8_422 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -457,8 +457,8 @@ Subsampled in the X direction. It is mapped into the 1st channel.
 The third plane usually contains the first chroma channel.
 Subsampled in the X direction. It is mapped into the 3rd channel.
 
-Commonly known by the fourcc “YVU422”. *)
-  | `G8_B8_R8_444 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YVU422\"."]
+  | `G8_B8_R8_444 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -471,8 +471,8 @@ mapped into the 3rd channel.
 The third plane usually contains the second chroma channel. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “YUV444”. *)
-  | `G8_R8_B8_444 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"YUV444\"."]
+  | `G8_R8_B8_444 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 8 bit integer.
 
@@ -485,8 +485,8 @@ Subsampled in the X direction. It is mapped into the 1st channel.
 The third plane usually contains the first chroma channel.
 Subsampled in the X direction. It is mapped into the 3rd channel.
 
-Commonly known by the fourcc “YVU444”. *)
-  | `G8B8G8R8_422 (** Packed format with subsampled channels.
+Commonly known by the fourcc \"YVU444\"."]
+  | `G8B8G8R8_422 [@ocaml.doc "Packed format with subsampled channels.
 
 Each channel is a 8 bit integer. The red and blue/chroma channels
 are subsampled and interleaved with the green/luma channel.
@@ -494,8 +494,8 @@ are subsampled and interleaved with the green/luma channel.
 Each block contains 2 pixels, so the width must be a multiple of
 2.
 
-Commonly known by the fourcc “YUYV”. *)
-  | `G8R8G8B8_422 (** Packed format with subsampled channels.
+Commonly known by the fourcc \"YUYV\"."]
+  | `G8R8G8B8_422 [@ocaml.doc "Packed format with subsampled channels.
 
 Each channel is a 8 bit integer. The red and blue/chroma channels
 are subsampled and interleaved with the green/luma channel.
@@ -503,8 +503,8 @@ are subsampled and interleaved with the green/luma channel.
 Each block contains 2 pixels, so the width must be a multiple of
 2.
 
-Commonly known by the fourcc “YVYU”. *)
-  | `R8G8B8G8_422 (** Packed format with subsampled channels.
+Commonly known by the fourcc \"YVYU\"."]
+  | `R8G8B8G8_422 [@ocaml.doc "Packed format with subsampled channels.
 
 Each channel is a 8 bit integer. The red and blue/chroma channels
 are subsampled and interleaved with the green/luma channel.
@@ -512,8 +512,8 @@ are subsampled and interleaved with the green/luma channel.
 Each block contains 2 pixels, so the width must be a multiple of
 2.
 
-Commonly known by the fourcc “VYUY”. *)
-  | `B8G8R8G8_422 (** Packed format with subsampled channels.
+Commonly known by the fourcc \"VYUY\"."]
+  | `B8G8R8G8_422 [@ocaml.doc "Packed format with subsampled channels.
 
 Each channel is a 8 bit integer. The red and blue/chroma channels
 are subsampled and interleaved with the green/luma channel.
@@ -521,8 +521,8 @@ are subsampled and interleaved with the green/luma channel.
 Each block contains 2 pixels, so the width must be a multiple of
 2.
 
-Commonly known by the fourcc “UYVY”. *)
-  | `X6G10_X6B10_X6R10_420 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"UYVY\"."]
+  | `X6G10_X6B10_X6R10_420 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -540,8 +540,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in both the X and Y direction. It is mapped into the
 1st channel.
 
-Commonly known by the fourcc “S010”. *)
-  | `X6G10_X6B10_X6R10_422 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S010\"."]
+  | `X6G10_X6B10_X6R10_422 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -557,8 +557,8 @@ Subsampled in the X direction. It is mapped into the 3rd channel.
 The third plane usually contains the second chroma channel.
 Subsampled in the X direction. It is mapped into the 1st channel.
 
-Commonly known by the fourcc “S210”. *)
-  | `X6G10_X6B10_X6R10_444 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S210\"."]
+  | `X6G10_X6B10_X6R10_444 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -574,8 +574,8 @@ mapped into the 3rd channel.
 The third plane usually contains the second chroma channel. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “S410”. *)
-  | `X4G12_X4B12_X4R12_420 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S410\"."]
+  | `X4G12_X4B12_X4R12_420 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -593,8 +593,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in both the X and Y direction. It is mapped into the
 1st channel.
 
-Commonly known by the fourcc “S012”. *)
-  | `X4G12_X4B12_X4R12_422 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S012\"."]
+  | `X4G12_X4B12_X4R12_422 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -610,8 +610,8 @@ Subsampled in the X direction. It is mapped into the 3rd channel.
 The third plane usually contains the second chroma channel.
 Subsampled in the X direction. It is mapped into the 1st channel.
 
-Commonly known by the fourcc “S212”. *)
-  | `X4G12_X4B12_X4R12_444 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S212\"."]
+  | `X4G12_X4B12_X4R12_444 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -627,8 +627,8 @@ mapped into the 3rd channel.
 The third plane usually contains the second chroma channel. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “S412”. *)
-  | `G16_B16_R16_420 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S412\"."]
+  | `G16_B16_R16_420 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -643,8 +643,8 @@ The third plane usually contains the second chroma channel.
 Subsampled in both the X and Y direction. It is mapped into the
 1st channel.
 
-Commonly known by the fourcc “S016”. *)
-  | `G16_B16_R16_422 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S016\"."]
+  | `G16_B16_R16_422 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -657,8 +657,8 @@ Subsampled in the X direction. It is mapped into the 3rd channel.
 The third plane usually contains the second chroma channel.
 Subsampled in the X direction. It is mapped into the 1st channel.
 
-Commonly known by the fourcc “S216”. *)
-  | `G16_B16_R16_444 (** Multiplane format with 3 planes.
+Commonly known by the fourcc \"S216\"."]
+  | `G16_B16_R16_444 [@ocaml.doc "Multiplane format with 3 planes.
 
 Each channel is a 16 bit integer.
 
@@ -671,7 +671,7 @@ mapped into the 3rd channel.
 The third plane usually contains the second chroma channel. It is
 mapped into the 1st channel.
 
-Commonly known by the fourcc “S416”. *)
+Commonly known by the fourcc \"S416\"."]
   | `N_FORMATS (** The number of formats. This value will change as
 more formats get added, so do not rely on its concrete integer. *)
 ]

@@ -1556,13 +1556,12 @@ and Text_iter : sig
       convert an offset back into an iterator. *)
 
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
-  (** Returns a list of all [GtkTextMark] at this location.
-
-      Because marks are not iterable (they don’t take up any “space” in the
-      buffer, they are just marks in between iterable locations), multiple marks
-      can exist in the same place.
-
-      The returned list is not in any meaningful order. *)
+  [@@ocaml.doc
+    "Returns a list of all [GtkTextMark] at this location.\n\n\
+    \  Because marks are not iterable (they don’t take up any \"space\"\n\
+    \  in the buffer, they are just marks in between iterable locations),\n\
+    \  multiple marks can exist in the same place.\n\n\
+    \  The returned list is not in any meaningful order."]
 
   external get_line_offset : t -> int = "ml_gtk_text_iter_get_line_offset"
   (** Returns the character offset of the iterator, counting from the start of a
@@ -1764,19 +1763,19 @@ and Text_iter : sig
 
   external forward_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_cursor_position"
-  (** Moves [iter] forward by a single cursor position.
-
-      Cursor positions are (unsurprisingly) positions where the cursor can
-      appear. Perhaps surprisingly, there may not be a cursor position between
-      all characters. The most common example for European languages would be a
-      carriage return/newline sequence.
-
-      For some Unicode characters, the equivalent of say the letter “a” with an
-      accent mark will be represented as two characters, first the letter then a
-      “combining mark” that causes the accent to be rendered; so the cursor
-      can’t go between those two characters.
-
-      See also the [Pango.LogAttr] struct and the [Pango.break] function. *)
+  [@@ocaml.doc
+    "Moves [iter] forward by a single cursor position.\n\n\
+    \  Cursor positions are (unsurprisingly) positions where the\n\
+    \  cursor can appear. Perhaps surprisingly, there may not be\n\
+    \  a cursor position between all characters. The most common\n\
+    \  example for European languages would be a carriage return/newline\n\
+    \  sequence.\n\n\
+    \  For some Unicode characters, the equivalent of say the letter “a”\n\
+    \  with an accent mark will be represented as two characters, first\n\
+    \  the letter then a \"combining mark\" that causes the accent to be\n\
+    \  rendered; so the cursor can’t go between those two characters.\n\n\
+    \  See also the [Pango.LogAttr] struct and the [Pango.break]\n\
+    \  function."]
 
   external forward_chars : t -> int -> bool = "ml_gtk_text_iter_forward_chars"
   (** Moves [count] characters if possible.
@@ -2247,13 +2246,12 @@ end = struct
       convert an offset back into an iterator. *)
 
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
-  (** Returns a list of all [GtkTextMark] at this location.
-
-      Because marks are not iterable (they don’t take up any “space” in the
-      buffer, they are just marks in between iterable locations), multiple marks
-      can exist in the same place.
-
-      The returned list is not in any meaningful order. *)
+  [@@ocaml.doc
+    "Returns a list of all [GtkTextMark] at this location.\n\n\
+    \  Because marks are not iterable (they don’t take up any \"space\"\n\
+    \  in the buffer, they are just marks in between iterable locations),\n\
+    \  multiple marks can exist in the same place.\n\n\
+    \  The returned list is not in any meaningful order."]
 
   external get_line_offset : t -> int = "ml_gtk_text_iter_get_line_offset"
   (** Returns the character offset of the iterator, counting from the start of a
@@ -2455,19 +2453,19 @@ end = struct
 
   external forward_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_cursor_position"
-  (** Moves [iter] forward by a single cursor position.
-
-      Cursor positions are (unsurprisingly) positions where the cursor can
-      appear. Perhaps surprisingly, there may not be a cursor position between
-      all characters. The most common example for European languages would be a
-      carriage return/newline sequence.
-
-      For some Unicode characters, the equivalent of say the letter “a” with an
-      accent mark will be represented as two characters, first the letter then a
-      “combining mark” that causes the accent to be rendered; so the cursor
-      can’t go between those two characters.
-
-      See also the [Pango.LogAttr] struct and the [Pango.break] function. *)
+  [@@ocaml.doc
+    "Moves [iter] forward by a single cursor position.\n\n\
+    \  Cursor positions are (unsurprisingly) positions where the\n\
+    \  cursor can appear. Perhaps surprisingly, there may not be\n\
+    \  a cursor position between all characters. The most common\n\
+    \  example for European languages would be a carriage return/newline\n\
+    \  sequence.\n\n\
+    \  For some Unicode characters, the equivalent of say the letter “a”\n\
+    \  with an accent mark will be represented as two characters, first\n\
+    \  the letter then a \"combining mark\" that causes the accent to be\n\
+    \  rendered; so the cursor can’t go between those two characters.\n\n\
+    \  See also the [Pango.LogAttr] struct and the [Pango.break]\n\
+    \  function."]
 
   external forward_chars : t -> int -> bool = "ml_gtk_text_iter_forward_chars"
   (** Moves [count] characters if possible.

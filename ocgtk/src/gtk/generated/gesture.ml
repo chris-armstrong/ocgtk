@@ -1,93 +1,75 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Gesture: Gesture *)
 
-(** The base class for gesture recognition.
-
-    Although [GtkGesture] is quite generalized to serve as a base for
-    multi-touch gestures, it is suitable to implement single-touch and
-    pointer-based gestures (using the special [NULL] [GdkEventSequence] value
-    for these).
-
-    The number of touches that a [GtkGesture] need to be recognized is
-    controlled by the [Gtk.Gesture:n-points] property, if a gesture is keeping
-    track of less or more than that number of sequences, it won't check whether
-    the gesture is recognized.
-
-    As soon as the gesture has the expected number of touches, it will check
-    regularly if it is recognized, the criteria to consider a gesture as
-    “recognized” is left to [GtkGesture] subclasses.
-
-    A recognized gesture will then emit the following signals:
-
-    - [Gtk.Gesture::begin] when the gesture is recognized.
-    - [Gtk.Gesture::update], whenever an input event is processed.
-    - [Gtk.Gesture::end] when the gesture is no longer recognized.
-
-    {b Event propagation}
-
-    In order to receive events, a gesture needs to set a propagation phase
-    through [Gtk.EventController.set_propagation_phase].
-
-    In the capture phase, events are propagated from the toplevel down to the
-    target widget, and gestures that are attached to containers above the widget
-    get a chance to interact with the event before it reaches the target.
-
-    In the bubble phase, events are propagated up from the target widget to the
-    toplevel, and gestures that are attached to containers above the widget get
-    a chance to interact with events that have not been handled yet.
-
-    {b States of a sequence}
-
-    Whenever input interaction happens, a single event may trigger a cascade of
-    [GtkGesture]s, both across the parents of the widget receiving the event and
-    in parallel within an individual widget. It is a responsibility of the
-    widgets using those gestures to set the state of touch sequences accordingly
-    in order to enable cooperation of gestures around the [GdkEventSequence]s
-    triggering those.
-
-    Within a widget, gestures can be grouped through [Gtk.Gesture.group].
-    Grouped gestures synchronize the state of sequences, so calling
-    [Gtk.Gesture.set_state] on one will effectively propagate the state
-    throughout the group.
-
-    By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,
-    sequences in this state trigger the gesture event handler, but event
-    propagation will continue unstopped by gestures.
-
-    If a sequence enters into the [GTK_EVENT_SEQUENCE_DENIED] state, the gesture
-    group will effectively ignore the sequence, letting events go unstopped
-    through the gesture, but the “slot” will still remain occupied while the
-    touch is active.
-
-    If a sequence enters in the [GTK_EVENT_SEQUENCE_CLAIMED] state, the gesture
-    group will grab all interaction on the sequence, by:
-
-    - Setting the same sequence to [GTK_EVENT_SEQUENCE_DENIED] on every other
-      gesture group within the widget, and every gesture on parent widgets in
-      the propagation chain.
-    - Emitting [Gtk.Gesture::cancel] on every gesture in widgets underneath in
-      the propagation chain.
-    - Stopping event propagation after the gesture group handles the event.
-
-    Note: if a sequence is set early to [GTK_EVENT_SEQUENCE_CLAIMED] on
-    [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before
-    reaching the event widget, this implies [GTK_PHASE_CAPTURE]), one similar
-    event will be emulated if the sequence changes to
-    [GTK_EVENT_SEQUENCE_DENIED]. This way event coherence is preserved before
-    event propagation is unstopped again.
-
-    Sequence states can't be changed freely. See [Gtk.Gesture.set_state] to know
-    about the possible lifetimes of a [GdkEventSequence].
-
-    {b Touchpad gestures}
-
-    On the platforms that support it, [GtkGesture] will handle transparently
-    touchpad gesture events. The only precautions users of [GtkGesture] should
-    do to enable this support are:
-
-    - If the gesture has [GTK_PHASE_NONE], ensuring events of type
-      [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the
-      [GtkGesture] *)
+[@@@ocaml.text
+"The base class for gesture recognition.\n\n\
+ Although [GtkGesture] is quite generalized to serve as a base for\n\
+ multi-touch gestures, it is suitable to implement single-touch and\n\
+ pointer-based gestures (using the special [NULL] [GdkEventSequence]\n\
+ value for these).\n\n\
+ The number of touches that a [GtkGesture] need to be recognized is\n\
+ controlled by the [Gtk.Gesture:n-points] property, if a\n\
+ gesture is keeping track of less or more than that number of sequences,\n\
+ it won't check whether the gesture is recognized.\n\n\
+ As soon as the gesture has the expected number of touches, it will check\n\
+ regularly if it is recognized, the criteria to consider a gesture as\n\
+ \"recognized\" is left to [GtkGesture] subclasses.\n\n\
+ A recognized gesture will then emit the following signals:\n\n\
+ - [Gtk.Gesture::begin] when the gesture is recognized.\n\
+ - [Gtk.Gesture::update], whenever an input event is processed.\n\
+ - [Gtk.Gesture::end] when the gesture is no longer recognized.\n\n\
+ {b Event propagation}\n\n\
+ In order to receive events, a gesture needs to set a propagation phase\n\
+ through [Gtk.EventController.set_propagation_phase].\n\n\
+ In the capture phase, events are propagated from the toplevel down\n\
+ to the target widget, and gestures that are attached to containers\n\
+ above the widget get a chance to interact with the event before it\n\
+ reaches the target.\n\n\
+ In the bubble phase, events are propagated up from the target widget\n\
+ to the toplevel, and gestures that are attached to containers above\n\
+ the widget get a chance to interact with events that have not been\n\
+ handled yet.\n\n\
+ {b States of a sequence}\n\n\
+ Whenever input interaction happens, a single event may trigger a cascade\n\
+ of [GtkGesture]s, both across the parents of the widget receiving the\n\
+ event and in parallel within an individual widget. It is a responsibility\n\
+ of the widgets using those gestures to set the state of touch sequences\n\
+ accordingly in order to enable cooperation of gestures around the\n\
+ [GdkEventSequence]s triggering those.\n\n\
+ Within a widget, gestures can be grouped through [Gtk.Gesture.group].\n\
+ Grouped gestures synchronize the state of sequences, so calling\n\
+ [Gtk.Gesture.set_state] on one will effectively propagate\n\
+ the state throughout the group.\n\n\
+ By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,\n\
+ sequences in this state trigger the gesture event handler, but event\n\
+ propagation will continue unstopped by gestures.\n\n\
+ If a sequence enters into the [GTK_EVENT_SEQUENCE_DENIED] state, the gesture\n\
+ group will effectively ignore the sequence, letting events go unstopped\n\
+ through the gesture, but the \"slot\" will still remain occupied while\n\
+ the touch is active.\n\n\
+ If a sequence enters in the [GTK_EVENT_SEQUENCE_CLAIMED] state, the gesture\n\
+ group will grab all interaction on the sequence, by:\n\n\
+ - Setting the same sequence to [GTK_EVENT_SEQUENCE_DENIED] on every other\n\
+ gesture group within the widget, and every gesture on parent widgets\n\
+ in the propagation chain.\n\
+ - Emitting [Gtk.Gesture::cancel] on every gesture in widgets\n\
+ underneath in the propagation chain.\n\
+ - Stopping event propagation after the gesture group handles the event.\n\n\
+ Note: if a sequence is set early to [GTK_EVENT_SEQUENCE_CLAIMED] on\n\
+ [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
+ reaching the event widget, this implies [GTK_PHASE_CAPTURE]), one similar\n\
+ event will be emulated if the sequence changes to [GTK_EVENT_SEQUENCE_DENIED].\n\
+ This way event coherence is preserved before event propagation is unstopped\n\
+ again.\n\n\
+ Sequence states can't be changed freely.\n\
+ See [Gtk.Gesture.set_state] to know about the possible\n\
+ lifetimes of a [GdkEventSequence].\n\n\
+ {b Touchpad gestures}\n\n\
+ On the platforms that support it, [GtkGesture] will handle transparently\n\
+ touchpad gesture events. The only precautions users of [GtkGesture] should\n\
+ do to enable this support are:\n\n\
+ - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
+ [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
 
 type t = [ `gesture | `event_controller | `object_ ] Gobject.obj
 
@@ -209,21 +191,20 @@ external handles_sequence :
     [sequence]. *)
 
 external group : t -> t -> unit = "ml_gtk_gesture_group"
-(** Adds [gesture] to the same group than [group_gesture].
-
-    Gestures are by default isolated in their own groups.
-
-    Both gestures must have been added to the same widget before they can be
-    grouped.
-
-    When gestures are grouped, the state of [GdkEventSequences] is kept in sync
-    for all of those, so calling [Gtk.Gesture.set_sequence_state], on one will
-    transfer the same value to the others.
-
-    Groups also perform an “implicit grabbing” of sequences, if a
-    [GdkEventSequence] state is set to [GTK_EVENT_SEQUENCE_CLAIMED] on one
-    group, every other gesture group attached to the same [GtkWidget] will
-    switch the state for that sequence to [GTK_EVENT_SEQUENCE_DENIED]. *)
+[@@ocaml.doc
+  "Adds [gesture] to the same group than [group_gesture].\n\n\
+   Gestures are by default isolated in their own groups.\n\n\
+   Both gestures must have been added to the same widget before\n\
+   they can be grouped.\n\n\
+   When gestures are grouped, the state of [GdkEventSequences]\n\
+   is kept in sync for all of those, so calling\n\
+   [Gtk.Gesture.set_sequence_state], on one will transfer\n\
+   the same value to the others.\n\n\
+   Groups also perform an \"implicit grabbing\" of sequences, if a\n\
+   [GdkEventSequence] state is set to [GTK_EVENT_SEQUENCE_CLAIMED]\n\
+   on one group, every other gesture group attached to the same\n\
+   [GtkWidget] will switch the state for that sequence to\n\
+   [GTK_EVENT_SEQUENCE_DENIED]."]
 
 external get_sequences : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t list
   = "ml_gtk_gesture_get_sequences"

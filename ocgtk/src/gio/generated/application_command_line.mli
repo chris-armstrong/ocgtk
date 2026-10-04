@@ -1,174 +1,140 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ApplicationCommandLine: ApplicationCommandLine *)
 
-(** [GApplicationCommandLine] represents a command-line invocation of an
-    application.
-
-    It is created by [Gio.Application] and emitted in the
-    [Gio.Application::command-line] signal and virtual function.
-
-    The class contains the list of arguments that the program was invoked with.
-    It is also possible to query if the commandline invocation was local (ie:
-    the current process is running in direct response to the invocation) or
-    remote (ie: some other process forwarded the commandline to this process).
-
-    The [GApplicationCommandLine] object can provide the [argc] and [argv]
-    parameters for use with the [GLib.OptionContext] command-line parsing API,
-    with the [Gio.ApplicationCommandLine.get_arguments] function. See
-    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}
-    for an example.
-
-    The exit status of the originally-invoked process may be set and messages
-    can be printed to stdout or stderr of that process.
-
-    For remote invocation, the originally-invoked process exits when
-    [Gio.ApplicationCommandLine.done] method is called. This method is also
-    automatically called when the object is disposed.
-
-    The main use for [GApplicationCommandLine] (and the
-    [Gio.Application::command-line] signal) is 'Emacs server' like use cases:
-    You can set the [EDITOR] environment variable to have e.g. git use your
-    favourite editor to edit commit messages, and if you already have an
-    instance of the editor running, the editing will happen in the running
-    instance, instead of opening a new one. An important aspect of this use case
-    is that the process that gets started by git does not return until the
-    editing is done.
-
-    Normally, the commandline is completely handled in the
-    [Gio.Application::command-line] handler. The launching instance exits once
-    the signal handler in the primary instance has returned, and the return
-    value of the signal handler becomes the exit status of the launching
-    instance.
-
-    {[
-    static int
-    command_line (GApplication            *application,
-                  GApplicationCommandLine *cmdline)
-    {
-      gchar **argv;
-      gint argc;
-      gint i;
-
-      argv = g_application_command_line_get_arguments (cmdline, &argc);
-
-      g_application_command_line_print (cmdline,
-                                        “This text is written back\n”
-                                        “to stdout of the caller\n”);
-
-      for (i = 0; i < argc; i++)
-        g_print (“argument %d: %s\n”, i, argv[i]);
-
-      g_strfreev (argv);
-
-      return 0;
-    }
-    ]}
-
-    The complete example can be found here:
-    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline.c}gapplication-example-cmdline.c}
-
-    In more complicated cases, the handling of the commandline can be split
-    between the launcher and the primary instance.
-
-    {[
-    static gboolean
-     test_local_cmdline (GApplication   *application,
-                         gchar        ***arguments,
-                         gint           *exit_status)
-    {
-      gint i, j;
-      gchar **argv;
-
-      argv = *arguments;
-
-      if (argv[0] == NULL)
-        {
-          *exit_status = 0;
-          return FALSE;
-        }
-
-      i = 1;
-      while (argv[i])
-        {
-          if (g_str_has_prefix (argv[i], “--local-”))
-            {
-              g_print (“handling argument %s locally\n”, argv[i]);
-              g_free (argv[i]);
-              for (j = i; argv[j]; j++)
-                argv[j] = argv[j + 1];
-            }
-          else
-            {
-              g_print (“not handling argument %s locally\n”, argv[i]);
-              i++;
-            }
-        }
-
-      *exit_status = 0;
-
-      return FALSE;
-    }
-
-    static void
-    test_application_class_init (TestApplicationClass *class)
-    {
-      G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
-
-      ...
-    }
-    ]}
-
-    In this example of split commandline handling, options that start with
-    [--local-] are handled locally, all other options are passed to the
-    [Gio.Application::command-line] handler which runs in the primary instance.
-
-    The complete example can be found here:
-    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c}gapplication-example-cmdline2.c}
-
-    If handling the commandline requires a lot of work, it may be better to
-    defer it.
-
-    {[
-    static gboolean
-    my_cmdline_handler (gpointer data)
-    {
-      GApplicationCommandLine *cmdline = data;
-
-      // do the heavy lifting in an idle
-
-      g_application_command_line_set_exit_status (cmdline, 0);
-      g_object_unref (cmdline); // this releases the application
-
-      return G_SOURCE_REMOVE;
-    }
-
-    static int
-    command_line (GApplication            *application,
-                  GApplicationCommandLine *cmdline)
-    {
-      // keep the application running until we are done with this commandline
-      g_application_hold (application);
-
-      g_object_set_data_full (G_OBJECT (cmdline),
-                              “application”, application,
-                              (GDestroyNotify)g_application_release);
-
-      g_object_ref (cmdline);
-      g_idle_add (my_cmdline_handler, cmdline);
-
-      return 0;
-    }
-    ]}
-
-    In this example the commandline is not completely handled before the
-    [Gio.Application::command-line] handler returns. Instead, we keep a
-    reference to the [GApplicationCommandLine] object and handle it later (in
-    this example, in an idle). Note that it is necessary to hold the application
-    until you are done with the commandline.
-
-    The complete example can be found here:
-    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}
-*)
+[@@@ocaml.text
+"[GApplicationCommandLine] represents a command-line invocation of\n\
+ an application.\n\n\
+ It is created by [Gio.Application] and emitted\n\
+ in the [Gio.Application::command-line] signal and virtual function.\n\n\
+ The class contains the list of arguments that the program was invoked\n\
+ with. It is also possible to query if the commandline invocation was\n\
+ local (ie: the current process is running in direct response to the\n\
+ invocation) or remote (ie: some other process forwarded the\n\
+ commandline to this process).\n\n\
+ The [GApplicationCommandLine] object can provide the [argc] and [argv]\n\
+ parameters for use with the [GLib.OptionContext] command-line parsing API,\n\
+ with the [Gio.ApplicationCommandLine.get_arguments] function. See\n\
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}\n\
+ for an example.\n\n\
+ The exit status of the originally-invoked process may be set and\n\
+ messages can be printed to stdout or stderr of that process.\n\n\
+ For remote invocation, the originally-invoked process exits when\n\
+ [Gio.ApplicationCommandLine.done] method is called. This method is\n\
+ also automatically called when the object is disposed.\n\n\
+ The main use for [GApplicationCommandLine] (and the\n\
+ [Gio.Application::command-line] signal) is 'Emacs server' like use cases:\n\
+ You can set the [EDITOR] environment variable to have e.g. git use\n\
+ your favourite editor to edit commit messages, and if you already\n\
+ have an instance of the editor running, the editing will happen\n\
+ in the running instance, instead of opening a new one. An important\n\
+ aspect of this use case is that the process that gets started by git\n\
+ does not return until the editing is done.\n\n\
+ Normally, the commandline is completely handled in the\n\
+ [Gio.Application::command-line] handler. The launching instance exits\n\
+ once the signal handler in the primary instance has returned, and\n\
+ the return value of the signal handler becomes the exit status\n\
+ of the launching instance.\n\n\
+ {[\n\
+ static int\n\
+ command_line (GApplication            *application,\n\
+\              GApplicationCommandLine *cmdline)\n\
+ {\n\
+\  gchar **argv;\n\
+\  gint argc;\n\
+\  gint i;\n\n\
+\  argv = g_application_command_line_get_arguments (cmdline, &argc);\n\n\
+\  g_application_command_line_print (cmdline,\n\
+\                                    \"This text is written back\\n\"\n\
+\                                    \"to stdout of the caller\\n\");\n\n\
+\  for (i = 0; i < argc; i++)\n\
+\    g_print (\"argument %d: %s\\n\", i, argv[i]);\n\n\
+\  g_strfreev (argv);\n\n\
+\  return 0;\n\
+ }\n\
+ ]}\n\n\
+ The complete example can be found here:\n\
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline.c}gapplication-example-cmdline.c}\n\n\
+ In more complicated cases, the handling of the commandline can be\n\
+ split between the launcher and the primary instance.\n\n\
+ {[\n\
+ static gboolean\n\
+\ test_local_cmdline (GApplication   *application,\n\
+\                     gchar        ***arguments,\n\
+\                     gint           *exit_status)\n\
+ {\n\
+\  gint i, j;\n\
+\  gchar **argv;\n\n\
+\  argv = *arguments;\n\n\
+\  if (argv[0] == NULL)\n\
+\    {\n\
+\      *exit_status = 0;\n\
+\      return FALSE;\n\
+\    }\n\n\
+\  i = 1;\n\
+\  while (argv[i])\n\
+\    {\n\
+\      if (g_str_has_prefix (argv[i], \"--local-\"))\n\
+\        {\n\
+\          g_print (\"handling argument %s locally\\n\", argv[i]);\n\
+\          g_free (argv[i]);\n\
+\          for (j = i; argv[j]; j++)\n\
+\            argv[j] = argv[j + 1];\n\
+\        }\n\
+\      else\n\
+\        {\n\
+\          g_print (\"not handling argument %s locally\\n\", argv[i]);\n\
+\          i++;\n\
+\        }\n\
+\    }\n\n\
+\  *exit_status = 0;\n\n\
+\  return FALSE;\n\
+ }\n\n\
+ static void\n\
+ test_application_class_init (TestApplicationClass *class)\n\
+ {\n\
+\  G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;\n\n\
+\  ...\n\
+ }\n\
+ ]}\n\n\
+ In this example of split commandline handling, options that start\n\
+ with [--local-] are handled locally, all other options are passed\n\
+ to the [Gio.Application::command-line] handler which runs in the primary\n\
+ instance.\n\n\
+ The complete example can be found here:\n\
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c}gapplication-example-cmdline2.c}\n\n\
+ If handling the commandline requires a lot of work, it may be better to defer \
+ it.\n\n\
+ {[\n\
+ static gboolean\n\
+ my_cmdline_handler (gpointer data)\n\
+ {\n\
+\  GApplicationCommandLine *cmdline = data;\n\n\
+\  // do the heavy lifting in an idle\n\n\
+\  g_application_command_line_set_exit_status (cmdline, 0);\n\
+\  g_object_unref (cmdline); // this releases the application\n\n\
+\  return G_SOURCE_REMOVE;\n\
+ }\n\n\
+ static int\n\
+ command_line (GApplication            *application,\n\
+\              GApplicationCommandLine *cmdline)\n\
+ {\n\
+\  // keep the application running until we are done with this commandline\n\
+\  g_application_hold (application);\n\n\
+\  g_object_set_data_full (G_OBJECT (cmdline),\n\
+\                          \"application\", application,\n\
+\                          (GDestroyNotify)g_application_release);\n\n\
+\  g_object_ref (cmdline);\n\
+\  g_idle_add (my_cmdline_handler, cmdline);\n\n\
+\  return 0;\n\
+ }\n\
+ ]}\n\n\
+ In this example the commandline is not completely handled before\n\
+ the [Gio.Application::command-line] handler returns. Instead, we keep\n\
+ a reference to the [GApplicationCommandLine] object and handle it\n\
+ later (in this example, in an idle). Note that it is necessary to\n\
+ hold the application until you are done with the commandline.\n\n\
+ The complete example can be found here:\n\
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}"]
 
 type t = [ `application_command_line | `object_ ] Gobject.obj
 

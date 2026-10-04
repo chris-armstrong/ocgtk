@@ -40,8 +40,8 @@ val credentialstype_to_int : credentialstype -> int
 
 (* DBusError - enumeration *)
 type dbuserror = [
-  | `FAILED (** A generic error; “something went wrong” - see the error message for
-more. *)
+  | `FAILED [@ocaml.doc "A generic error; \"something went wrong\" - see the error message for
+more."]
   | `NO_MEMORY (** There was not enough memory to complete an operation. *)
   | `SERVICE_UNKNOWN (** The bus doesn't know how to launch a service to supply the bus name
 you wanted. *)
@@ -150,9 +150,9 @@ val datastreambyteorder_to_int : datastreambyteorder -> int
 
 (* DataStreamNewlineType - enumeration *)
 type datastreamnewlinetype = [
-  | `LF (** Selects “LF” line endings, common on most modern UNIX platforms. *)
-  | `CR (** Selects “CR” line endings. *)
-  | `CR_LF (** Selects “CR, LF” line ending, common on Microsoft Windows. *)
+  | `LF [@ocaml.doc "Selects \"LF\" line endings, common on most modern UNIX platforms."]
+  | `CR [@ocaml.doc "Selects \"CR\" line endings."]
+  | `CR_LF [@ocaml.doc "Selects \"CR, LF\" line ending, common on Microsoft Windows."]
   | `ANY (** Automatically try to handle any line ending type. *)
 ]
 
@@ -183,7 +183,7 @@ val drivestartstoptype_to_int : drivestartstoptype -> int
 type emblemorigin = [
   | `UNKNOWN (** Emblem of unknown origin *)
   | `DEVICE (** Emblem adds device-specific information *)
-  | `LIVEMETADATA (** Emblem depicts live metadata, such as “readonly” *)
+  | `LIVEMETADATA [@ocaml.doc "Emblem depicts live metadata, such as \"readonly\""]
   | `TAG (** Emblem comes from a user-defined tag, e.g. set by nautilus (in the future) *)
 ]
 
@@ -249,8 +249,8 @@ type filetype = [
   | `DIRECTORY (** File handle represents a directory. *)
   | `SYMBOLIC_LINK (** File handle represents a symbolic link
 (Unix systems). *)
-  | `SPECIAL (** File is a “special” file, such as a socket, fifo,
-block device, or character device. *)
+  | `SPECIAL [@ocaml.doc "File is a \"special\" file, such as a socket, fifo,
+block device, or character device."]
   | `SHORTCUT (** File is a shortcut (Windows systems). *)
   | `MOUNTABLE (** File is a mountable location. *)
 ]
@@ -261,7 +261,7 @@ val filetype_to_int : filetype -> int
 (* FilesystemPreviewType - enumeration *)
 type filesystempreviewtype = [
   | `IF_ALWAYS (** Only preview files if user has explicitly requested it. *)
-  | `IF_LOCAL (** Preview files if user has requested preview of “local” files. *)
+  | `IF_LOCAL [@ocaml.doc "Preview files if user has requested preview of \"local\" files."]
   | `NEVER (** Never preview files. *)
 ]
 
@@ -324,11 +324,11 @@ message so it matches what was received on the wire. Since 2.26. *)
   | `PROXY_NOT_ALLOWED (** Proxy connection is not allowed by ruleset.
 Since 2.26 *)
   | `BROKEN_PIPE (** Broken pipe. Since 2.36 *)
-  | `CONNECTION_CLOSED (** Connection closed by peer. Note that this
+  | `CONNECTION_CLOSED [@ocaml.doc "Connection closed by peer. Note that this
 is the same code as [G_IO_ERROR_BROKEN_PIPE]; before 2.44 some
-“connection closed” errors returned [G_IO_ERROR_BROKEN_PIPE], but others
+\"connection closed\" errors returned [G_IO_ERROR_BROKEN_PIPE], but others
 returned [G_IO_ERROR_FAILED]. Now they should all return the same
-value, which has this more logical name. Since 2.44. *)
+value, which has this more logical name. Since 2.44."]
   | `NOT_CONNECTED (** Transport endpoint is not connected. Since 2.44 *)
   | `MESSAGE_TOO_LARGE (** Message too large. Since 2.48. *)
   | `NO_SUCH_DEVICE (** No such device found. Since 2.74 *)
@@ -1045,16 +1045,16 @@ type filecreateflags_flag = [
   | `NONE (** No flags set. *)
   | `PRIVATE (** Create a file that can only be
 accessed by the current user. *)
-  | `REPLACE_DESTINATION (** Replace the destination
+  | `REPLACE_DESTINATION [@ocaml.doc "Replace the destination
 as if it didn't exist before. Don't try to keep any old
 permissions, replace instead of following links. This
-is generally useful if you're doing a “copy over”
-rather than a “save new version of” replace operation.
-You can think of it as “unlink destination” before
+is generally useful if you're doing a \"copy over\"
+rather than a \"save new version of\" replace operation.
+You can think of it as \"unlink destination\" before
 writing to it, although the implementation may not
 be exactly like that. This flag can only be used with
 g_file_replace() and its variants, including g_file_replace_contents().
-Since 2.20 *)
+Since 2.20"]
 ]
 
 type filecreateflags = filecreateflags_flag list
@@ -1261,10 +1261,10 @@ process (ie: redirect to [/dev/null]). *)
   | `STDERR_MERGE (** merge the stderr of the spawned
 process with whatever the stdout happens to be.  This is a good way
 of directing both streams to a common log file, for example. *)
-  | `INHERIT_FDS (** spawned processes will inherit the
+  | `INHERIT_FDS [@ocaml.doc "spawned processes will inherit the
 file descriptors of their parent, unless those descriptors have
 been explicitly marked as close-on-exec.  This flag has no effect
-over the “standard” file descriptors (stdin, stdout, stderr). *)
+over the \"standard\" file descriptors (stdin, stdout, stderr)."]
   | `SEARCH_PATH_FROM_ENVP (** if path searching is
 needed when spawning the subprocess, use the [PATH] in the launcher
 environment. (Since: 2.72) *)

@@ -71,7 +71,7 @@ external get_is_link_local : t -> bool = "ml_g_inet_address_get_is_link_local"
     host on a local network that is not connected to the Internet). *)
 
 external get_is_any : t -> bool = "ml_g_inet_address_get_is_any"
-(** Tests whether [address] is the “any” address for its family. *)
+[@@ocaml.doc "Tests whether [address] is the \"any\" address for its family."]
 
 external get_flowinfo : t -> UInt32.t = "ml_g_inet_address_get_flowinfo"
 (** Gets the value of [Gio.InetAddress:flowinfo]. *)

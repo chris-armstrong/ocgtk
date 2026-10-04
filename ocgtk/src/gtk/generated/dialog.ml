@@ -1,123 +1,104 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Dialog: Dialog *)
 
-(** Dialogs are a convenient way to prompt the user for a small amount of input.
-
-    An example GtkDialog
-
-    Typical uses are to display a message, ask a question, or anything else that
-    does not require extensive effort on the user’s part.
-
-    The main area of a [GtkDialog] is called the “content area”, and is yours to
-    populate with widgets such a [GtkLabel] or [GtkEntry], to present your
-    information, questions, or tasks to the user.
-
-    In addition, dialogs allow you to add “action widgets”. Most commonly,
-    action widgets are buttons. Depending on the platform, action widgets may be
-    presented in the header bar at the top of the window, or at the bottom of
-    the window. To add action widgets, create your [GtkDialog] using
-    [Gtk.Dialog.new_with_buttons], or use [Gtk.Dialog.add_button],
-    [Gtk.Dialog.add_buttons], or [Gtk.Dialog.add_action_widget].
-
-    [GtkDialogs] uses some heuristics to decide whether to add a close button to
-    the window decorations. If any of the action buttons use the response ID
-    [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the close button is omitted.
-
-    Clicking a button that was added as an action widget will emit the
-    [Gtk.Dialog::response] signal with a response ID that you specified. GTK
-    will never assign a meaning to positive response IDs; these are entirely
-    user-defined. But for convenience, you can use the response IDs in the
-    [Gtk.ResponseType] enumeration (these all have values less than zero). If a
-    dialog receives a delete event, the [Gtk.Dialog::response] signal will be
-    emitted with the [GTK_RESPONSE_DELETE_EVENT] response ID.
-
-    Dialogs are created with a call to [Gtk.Dialog.new] or
-    [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows you to
-    set the dialog title, some convenient flags, and add buttons.
-
-    A “modal” dialog (that is, one which freezes the rest of the application
-    from user input), can be created by calling [Gtk.Window.set_modal] on the
-    dialog. When using [Gtk.Dialog.new_with_buttons], you can also pass the
-    [GTK_DIALOG_MODAL] flag to make a dialog modal.
-
-    For the simple dialog in the following example, a [Gtk.MessageDialog] would
-    save some effort. But you’d need to create the dialog contents manually if
-    you had more than a simple message in the dialog.
-
-    An example for simple [GtkDialog] usage:
-
-    {[
-    // Function to open a dialog box with a message
-    void
-    quick_message (GtkWindow *parent, char *message)
-    {
-     GtkWidget *dialog, *label, *content_area;
-     GtkDialogFlags flags;
-
-     // Create the widgets
-     flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-     dialog = gtk_dialog_new_with_buttons (“Message”,
-                                           parent,
-                                           flags,
-                                           _(“_OK”),
-                                           GTK_RESPONSE_NONE,
-                                           NULL);
-     content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-     label = gtk_label_new (message);
-
-     // Ensure that the dialog box is destroyed when the user responds
-
-     g_signal_connect_swapped (dialog,
-                               “response”,
-                               G_CALLBACK (gtk_window_destroy),
-                               dialog);
-
-     // Add the label, and show everything we’ve added
-
-     gtk_box_append (GTK_BOX (content_area), label);
-     gtk_widget_show (dialog);
-    }
-    ]}
-
-    {b GtkDialog as GtkBuildable}
-
-    The [GtkDialog] implementation of the [GtkBuildable] interface exposes the
-    [content_area] as an internal child with the name “content_area”.
-
-    [GtkDialog] supports a custom [<action-widgets>] element, which can contain
-    multiple [<action-widget>] elements. The “response” attribute specifies a
-    numeric response, and the content of the element is the id of widget (which
-    should be a child of the dialogs [action_area]). To mark a response as
-    default, set the “default” attribute of the [<action-widget>] element to
-    true.
-
-    [GtkDialog] supports adding action widgets by specifying “action” as the
-    “type” attribute of a [<child>] element. The widget will be added either to
-    the action area or the headerbar of the dialog, depending on the
-    “use-header-bar” property. The response id has to be associated with the
-    action widget using the [<action-widgets>] element.
-
-    An example of a [GtkDialog] UI definition fragment:
-
-    {[
-    <object class=”GtkDialog” id=”dialog1”>
-      <child type=”action”>
-        <object class=”GtkButton” id=”button_cancel”/>
-      </child>
-      <child type=”action”>
-        <object class=”GtkButton” id=”button_ok”>
-        </object>
-      </child>
-      <action-widgets>
-        <action-widget response=”cancel”>button_cancel</action-widget>
-        <action-widget response=”ok” default=”true”>button_ok</action-widget>
-      </action-widgets>
-    </object>
-    ]}
-
-    {b Accessibility}
-
-    [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role. *)
+[@@@ocaml.text
+"Dialogs are a convenient way to prompt the user for a small amount\n\
+ of input.\n\n\
+ An example GtkDialog\n\n\
+ Typical uses are to display a message, ask a question, or anything else\n\
+ that does not require extensive effort on the user’s part.\n\n\
+ The main area of a [GtkDialog] is called the \"content area\", and is yours\n\
+ to populate with widgets such a [GtkLabel] or [GtkEntry], to present\n\
+ your information, questions, or tasks to the user.\n\n\
+ In addition, dialogs allow you to add \"action widgets\". Most commonly,\n\
+ action widgets are buttons. Depending on the platform, action widgets may\n\
+ be presented in the header bar at the top of the window, or at the bottom\n\
+ of the window. To add action widgets, create your [GtkDialog] using\n\
+ [Gtk.Dialog.new_with_buttons], or use\n\
+ [Gtk.Dialog.add_button], [Gtk.Dialog.add_buttons],\n\
+ or [Gtk.Dialog.add_action_widget].\n\n\
+ [GtkDialogs] uses some heuristics to decide whether to add a close\n\
+ button to the window decorations. If any of the action buttons use\n\
+ the response ID [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the\n\
+ close button is omitted.\n\n\
+ Clicking a button that was added as an action widget will emit the\n\
+ [Gtk.Dialog::response] signal with a response ID that you specified.\n\
+ GTK will never assign a meaning to positive response IDs; these are\n\
+ entirely user-defined. But for convenience, you can use the response\n\
+ IDs in the [Gtk.ResponseType] enumeration (these all have values\n\
+ less than zero). If a dialog receives a delete event, the\n\
+ [Gtk.Dialog::response] signal will be emitted with the\n\
+ [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
+ Dialogs are created with a call to [Gtk.Dialog.new] or\n\
+ [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows\n\
+ you to set the dialog title, some convenient flags, and add buttons.\n\n\
+ A “modal” dialog (that is, one which freezes the rest of the application\n\
+ from user input), can be created by calling [Gtk.Window.set_modal]\n\
+ on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
+ pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
+ For the simple dialog in the following example, a [Gtk.MessageDialog]\n\
+ would save some effort. But you’d need to create the dialog contents manually\n\
+ if you had more than a simple message in the dialog.\n\n\
+ An example for simple [GtkDialog] usage:\n\n\
+ {[\n\
+ // Function to open a dialog box with a message\n\
+ void\n\
+ quick_message (GtkWindow *parent, char *message)\n\
+ {\n\
+\ GtkWidget *dialog, *label, *content_area;\n\
+\ GtkDialogFlags flags;\n\n\
+\ // Create the widgets\n\
+\ flags = GTK_DIALOG_DESTROY_WITH_PARENT;\n\
+\ dialog = gtk_dialog_new_with_buttons (\"Message\",\n\
+\                                       parent,\n\
+\                                       flags,\n\
+\                                       _(\"_OK\"),\n\
+\                                       GTK_RESPONSE_NONE,\n\
+\                                       NULL);\n\
+\ content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));\n\
+\ label = gtk_label_new (message);\n\n\
+\ // Ensure that the dialog box is destroyed when the user responds\n\n\
+\ g_signal_connect_swapped (dialog,\n\
+\                           \"response\",\n\
+\                           G_CALLBACK (gtk_window_destroy),\n\
+\                           dialog);\n\n\
+\ // Add the label, and show everything we’ve added\n\n\
+\ gtk_box_append (GTK_BOX (content_area), label);\n\
+\ gtk_widget_show (dialog);\n\
+ }\n\
+ ]}\n\n\
+ {b GtkDialog as GtkBuildable}\n\n\
+ The [GtkDialog] implementation of the [GtkBuildable] interface exposes the\n\
+ [content_area] as an internal child with the name “content_area”.\n\n\
+ [GtkDialog] supports a custom [<action-widgets>] element, which can contain\n\
+ multiple [<action-widget>] elements. The “response” attribute specifies a\n\
+ numeric response, and the content of the element is the id of widget\n\
+ (which should be a child of the dialogs [action_area]). To mark a response\n\
+ as default, set the “default” attribute of the [<action-widget>] element\n\
+ to true.\n\n\
+ [GtkDialog] supports adding action widgets by specifying “action” as\n\
+ the “type” attribute of a [<child>] element. The widget will be added\n\
+ either to the action area or the headerbar of the dialog, depending\n\
+ on the “use-header-bar” property. The response id has to be associated\n\
+ with the action widget using the [<action-widgets>] element.\n\n\
+ An example of a [GtkDialog] UI definition fragment:\n\n\
+ {[\n\
+ <object class=\"GtkDialog\" id=\"dialog1\">\n\
+\  <child type=\"action\">\n\
+\    <object class=\"GtkButton\" id=\"button_cancel\"/>\n\
+\  </child>\n\
+\  <child type=\"action\">\n\
+\    <object class=\"GtkButton\" id=\"button_ok\">\n\
+\    </object>\n\
+\  </child>\n\
+\  <action-widgets>\n\
+\    <action-widget response=\"cancel\">button_cancel</action-widget>\n\
+\    <action-widget response=\"ok\" default=\"true\">button_ok</action-widget>\n\
+\  </action-widgets>\n\
+ </object>\n\
+ ]}\n\n\
+ {b Accessibility}\n\n\
+ [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role."]
 
 type t =
   [ `dialog | `window | `widget | `initially_unowned | `object_ ] Gobject.obj

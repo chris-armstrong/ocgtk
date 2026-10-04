@@ -38,10 +38,11 @@ external set_dialog : t -> Color_dialog.t -> unit
 
 external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
   = "ml_gtk_color_dialog_button_get_rgba"
-(** Returns the color of the button.
-
-    This function is what should be used to obtain the color that was chosen by
-    the user. To get informed about changes, listen to “notify::rgba”. *)
+[@@ocaml.doc
+  "Returns the color of the button.\n\n\
+   This function is what should be used to obtain\n\
+   the color that was chosen by the user. To get\n\
+   informed about changes, listen to \"notify::rgba\"."]
 
 external get_dialog : t -> Color_dialog.t option
   = "ml_gtk_color_dialog_button_get_dialog"

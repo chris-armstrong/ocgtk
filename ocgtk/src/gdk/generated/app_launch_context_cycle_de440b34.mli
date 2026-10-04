@@ -173,32 +173,29 @@ and Device : sig
       This is only relevant for keyboard devices. *)
 
   external get_vendor_id : t -> string option = "ml_gdk_device_get_vendor_id"
-  (** Returns the vendor ID of this device.
-
-      This ID is retrieved from the device, and does not change.
-
-      This function, together with [Gdk.Device.get_product_id], can be used to
-      eg. compose [GSettings] paths to store settings for this device.
-
-      {[
-       static GSettings *
-       get_device_settings (GdkDevice *device)
-       {
-         const char *vendor, *product;
-         GSettings *settings;
-         GdkDevice *device;
-         char *path;
-
-         vendor = gdk_device_get_vendor_id (device);
-         product = gdk_device_get_product_id (device);
-
-         path = g_strdup_printf (“/org/example/app/devices/%s:%s/”, vendor, product);
-         settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
-         g_free (path);
-
-         return settings;
-       }
-      ]} *)
+  [@@ocaml.doc
+    "Returns the vendor ID of this device.\n\n\
+    \  This ID is retrieved from the device, and does not change.\n\n\
+    \  This function, together with [Gdk.Device.get_product_id],\n\
+    \  can be used to eg. compose [GSettings] paths to store settings\n\
+    \  for this device.\n\n\
+    \  {[\n\
+    \   static GSettings *\n\
+    \   get_device_settings (GdkDevice *device)\n\
+    \   {\n\
+    \     const char *vendor, *product;\n\
+    \     GSettings *settings;\n\
+    \     GdkDevice *device;\n\
+    \     char *path;\n\n\
+    \     vendor = gdk_device_get_vendor_id (device);\n\
+    \     product = gdk_device_get_product_id (device);\n\n\
+    \     path = g_strdup_printf (\"/org/example/app/devices/%s:%s/\", vendor, \
+     product);\n\
+    \     settings = g_settings_new_with_path (DEVICE_SCHEMA, path);\n\
+    \     g_free (path);\n\n\
+    \     return settings;\n\
+    \   }\n\
+    \  ]}"]
 
   external get_timestamp : t -> UInt32.t = "ml_gdk_device_get_timestamp"
   (** Returns the timestamp of the last activity for this device.
@@ -1026,11 +1023,11 @@ and Monitor : sig
       This can be used to identify a monitor in the UI. *)
 
   external get_connector : t -> string option = "ml_gdk_monitor_get_connector"
-  (** Gets the name of the monitor's connector, if available.
-
-      These are strings such as “eDP-1”, or “HDMI-2”. They depend on software
-      and hardware configuration, and should not be relied on as stable
-      identifiers of a specific monitor. *)
+  [@@ocaml.doc
+    "Gets the name of the monitor's connector, if available.\n\n\
+    \  These are strings such as \"eDP-1\", or \"HDMI-2\". They depend\n\
+    \  on software and hardware configuration, and should not be\n\
+    \  relied on as stable identifiers of a specific monitor."]
 
   (* Properties *)
 

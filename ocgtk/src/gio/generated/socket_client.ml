@@ -183,27 +183,23 @@ external connect_to_uri :
   Cancellable.t option ->
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_uri"
-(** This is a helper function for g_socket_client_connect().
-
-    Attempts to create a TCP connection with a network URI.
-
-    [uri] may be any valid URI containing an “authority” (hostname/port)
-    component. If a port is not specified in the URI, [default_port] will be
-    used. TLS will be negotiated if [GSocketClient:tls] is [TRUE].
-    ([GSocketClient] does not know to automatically assume TLS for certain URI
-    schemes.)
-
-    Using this rather than g_socket_client_connect() or
-    g_socket_client_connect_to_host() allows [GSocketClient] to determine when
-    to use application-specific proxy protocols.
-
-    Upon a successful connection, a new [GSocketConnection] is constructed and
-    returned. The caller owns this new object and must drop their reference to
-    it when finished with it.
-
-    In the event of any failure (DNS error, service not found, no hosts
-    connectable) [NULL] is returned and [error] (if non-[NULL]) is set
-    accordingly. *)
+[@@ocaml.doc
+  "This is a helper function for g_socket_client_connect().\n\n\
+   Attempts to create a TCP connection with a network URI.\n\n\
+   [uri] may be any valid URI containing an \"authority\" (hostname/port)\n\
+   component. If a port is not specified in the URI, [default_port]\n\
+   will be used. TLS will be negotiated if [GSocketClient:tls] is [TRUE].\n\
+   ([GSocketClient] does not know to automatically assume TLS for\n\
+   certain URI schemes.)\n\n\
+   Using this rather than g_socket_client_connect() or\n\
+   g_socket_client_connect_to_host() allows [GSocketClient] to\n\
+   determine when to use application-specific proxy protocols.\n\n\
+   Upon a successful connection, a new [GSocketConnection] is constructed\n\
+   and returned.  The caller owns this new object and must drop their\n\
+   reference to it when finished with it.\n\n\
+   In the event of any failure (DNS error, service not found, no hosts\n\
+   connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+   accordingly."]
 
 external connect_to_service_finish :
   t ->
@@ -220,20 +216,18 @@ external connect_to_service :
   Cancellable.t option ->
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_service"
-(** Attempts to create a TCP connection to a service.
-
-    This call looks up the SRV record for [service] at [domain] for the “tcp”
-    protocol. It then attempts to connect, in turn, to each of the hosts
-    providing the service until either a connection succeeds or there are no
-    hosts remaining.
-
-    Upon a successful connection, a new [GSocketConnection] is constructed and
-    returned. The caller owns this new object and must drop their reference to
-    it when finished with it.
-
-    In the event of any failure (DNS error, service not found, no hosts
-    connectable) [NULL] is returned and [error] (if non-[NULL]) is set
-    accordingly. *)
+[@@ocaml.doc
+  "Attempts to create a TCP connection to a service.\n\n\
+   This call looks up the SRV record for [service] at [domain] for the\n\
+   \"tcp\" protocol.  It then attempts to connect, in turn, to each of\n\
+   the hosts providing the service until either a connection succeeds\n\
+   or there are no hosts remaining.\n\n\
+   Upon a successful connection, a new [GSocketConnection] is constructed\n\
+   and returned.  The caller owns this new object and must drop their\n\
+   reference to it when finished with it.\n\n\
+   In the event of any failure (DNS error, service not found, no hosts\n\
+   connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+   accordingly."]
 
 external connect_to_host_finish :
   t ->

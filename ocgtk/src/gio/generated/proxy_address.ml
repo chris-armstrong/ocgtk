@@ -27,15 +27,16 @@ external get_uri : t -> string option = "ml_g_proxy_address_get_uri"
 (** Gets the proxy URI that [proxy] was constructed from. *)
 
 external get_protocol : t -> string = "ml_g_proxy_address_get_protocol"
-(** Gets [proxy]'s protocol. eg, “socks” or “http” *)
+[@@ocaml.doc "Gets [proxy]'s protocol. eg, \"socks\" or \"http\""]
 
 external get_password : t -> string option = "ml_g_proxy_address_get_password"
 (** Gets [proxy]'s password. *)
 
 external get_destination_protocol : t -> string
   = "ml_g_proxy_address_get_destination_protocol"
-(** Gets the protocol that is being spoken to the destination server; eg, “http”
-    or “ftp”. *)
+[@@ocaml.doc
+  "Gets the protocol that is being spoken to the destination\n\
+   server; eg, \"http\" or \"ftp\"."]
 
 external get_destination_port : t -> UInt16.t
   = "ml_g_proxy_address_get_destination_port"

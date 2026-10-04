@@ -379,41 +379,39 @@ external call_sync :
   (Gvariant.t, GError.t) result
   = "ml_g_dbus_connection_call_sync_bytecode"
     "ml_g_dbus_connection_call_sync_native"
-(** Synchronously invokes the [method_name] method on the [interface_name] D-Bus
-    interface on the remote object at [object_path] owned by [bus_name].
-
-    If [connection] is closed then the operation will fail with
-    [G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the operation will fail
-    with [G_IO_ERROR_CANCELLED]. If [parameters] contains a value not compatible
-    with the D-Bus protocol, the operation fails with
-    [G_IO_ERROR_INVALID_ARGUMENT].
-
-    If [reply_type] is non-[NULL] then the reply will be checked for having this
-    type and an error will be raised if it does not match. Said another way, if
-    you give a [reply_type] then any non-[NULL] return value will be of this
-    type.
-
-    If the [parameters] [GVariant] is floating, it is consumed. This allows
-    convenient 'inline' use of g_variant_new(), e.g.:
-
-    {[
-     g_dbus_connection_call_sync (connection,
-                                  “org.freedesktop.StringThings”,
-                                  “/org/freedesktop/StringThings”,
-                                  “org.freedesktop.StringThings”,
-                                  “TwoStrings”,
-                                  g_variant_new (“(ss)”,
-                                                 “Thing One”,
-                                                 “Thing Two”),
-                                  NULL,
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &error);
-    ]}
-
-    The calling thread is blocked until a reply is received. See
-    g_dbus_connection_call() for the asynchronous version of this method. *)
+[@@ocaml.doc
+  "Synchronously invokes the [method_name] method on the\n\
+   [interface_name] D-Bus interface on the remote object at\n\
+   [object_path] owned by [bus_name].\n\n\
+   If [connection] is closed then the operation will fail with\n\
+   [G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the\n\
+   operation will fail with [G_IO_ERROR_CANCELLED]. If [parameters]\n\
+   contains a value not compatible with the D-Bus protocol, the operation\n\
+   fails with [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   If [reply_type] is non-[NULL] then the reply will be checked for having\n\
+   this type and an error will be raised if it does not match.  Said\n\
+   another way, if you give a [reply_type] then any non-[NULL] return\n\
+   value will be of this type.\n\n\
+   If the [parameters] [GVariant] is floating, it is consumed.\n\
+   This allows convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+   {[\n\
+  \ g_dbus_connection_call_sync (connection,\n\
+  \                              \"org.freedesktop.StringThings\",\n\
+  \                              \"/org/freedesktop/StringThings\",\n\
+  \                              \"org.freedesktop.StringThings\",\n\
+  \                              \"TwoStrings\",\n\
+  \                              g_variant_new (\"(ss)\",\n\
+  \                                             \"Thing One\",\n\
+  \                                             \"Thing Two\"),\n\
+  \                              NULL,\n\
+  \                              G_DBUS_CALL_FLAGS_NONE,\n\
+  \                              -1,\n\
+  \                              NULL,\n\
+  \                              &error);\n\
+   ]}\n\n\
+   The calling thread is blocked until a reply is received. See\n\
+   g_dbus_connection_call() for the asynchronous version of\n\
+   this method."]
 
 external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
   = "ml_g_dbus_connection_call_finish"

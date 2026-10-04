@@ -540,11 +540,11 @@ and Cell_layout : sig
 
   external add_attribute : t -> Cell_renderer.t -> string -> int -> unit
     = "ml_gtk_cell_layout_add_attribute"
-  (** Adds an attribute mapping to the list in [cell_layout].
-
-      The [column] is the column of the model to get a value from, and the
-      [attribute] is the property on [cell] to be set from that value. So for
-      example if column 2 of the model contains strings, you could have the
-      “text” attribute of a [GtkCellRendererText] get its values from column 2.
-      In this context “attribute” and “property” are used interchangeably. *)
+  [@@ocaml.doc
+    "Adds an attribute mapping to the list in [cell_layout].\n\n\
+    \  The [column] is the column of the model to get a value from, and the\n\
+    \  [attribute] is the property on [cell] to be set from that value. So for\n\
+    \  example if column 2 of the model contains strings, you could have the\n\
+    \  “text” attribute of a [GtkCellRendererText] get its values from column 2.\n\
+    \  In this context \"attribute\" and \"property\" are used interchangeably."]
 end

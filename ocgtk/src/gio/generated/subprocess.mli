@@ -114,12 +114,12 @@ external get_term_sig : t -> int = "ml_g_subprocess_get_term_sig"
     g_subprocess_get_if_signaled() returned [TRUE]. *)
 
 external get_successful : t -> bool = "ml_g_subprocess_get_successful"
-(** Checks if the process was “successful”. A process is considered successful
-    if it exited cleanly with an exit status of 0, either by way of the exit()
-    system call or return from main().
-
-    It is an error to call this function before g_subprocess_wait() has
-    returned. *)
+[@@ocaml.doc
+  "Checks if the process was \"successful\".  A process is considered\n\
+   successful if it exited cleanly with an exit status of 0, either by\n\
+   way of the exit() system call or return from main().\n\n\
+   It is an error to call this function before g_subprocess_wait() has\n\
+   returned."]
 
 external get_stdout_pipe : t -> Input_stream.t option
   = "ml_g_subprocess_get_stdout_pipe"

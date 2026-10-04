@@ -323,12 +323,11 @@ and Tree_view : sig
 
   external set_enable_search : t -> bool -> unit
     = "ml_gtk_tree_view_set_enable_search"
-  (** If [enable_search] is set, then the user can type in text to search
-      through the tree interactively (this is sometimes called “typeahead
-      find”).
-
-      Note that even if this is [FALSE], the user can still initiate a search
-      using the “start-interactive-search” key binding. *)
+  [@@ocaml.doc
+    "If [enable_search] is set, then the user can type in text to search through\n\
+    \  the tree interactively (this is sometimes called \"typeahead find\").\n\n\
+    \  Note that even if this is [FALSE], the user can still initiate a search\n\
+    \  using the “start-interactive-search” key binding."]
 
   external set_drag_dest_row :
     t -> Tree_path.t option -> Gtk_enums.treeviewdropposition -> unit
@@ -891,12 +890,11 @@ end = struct
 
   external set_enable_search : t -> bool -> unit
     = "ml_gtk_tree_view_set_enable_search"
-  (** If [enable_search] is set, then the user can type in text to search
-      through the tree interactively (this is sometimes called “typeahead
-      find”).
-
-      Note that even if this is [FALSE], the user can still initiate a search
-      using the “start-interactive-search” key binding. *)
+  [@@ocaml.doc
+    "If [enable_search] is set, then the user can type in text to search through\n\
+    \  the tree interactively (this is sometimes called \"typeahead find\").\n\n\
+    \  Note that even if this is [FALSE], the user can still initiate a search\n\
+    \  using the “start-interactive-search” key binding."]
 
   external set_drag_dest_row :
     t -> Tree_path.t option -> Gtk_enums.treeviewdropposition -> unit

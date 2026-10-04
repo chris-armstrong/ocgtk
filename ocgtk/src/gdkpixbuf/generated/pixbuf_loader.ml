@@ -74,21 +74,18 @@ external set_size : t -> int -> int -> unit = "ml_gdk_pixbuf_loader_set_size"
     ::size-prepared signal. *)
 
 external get_pixbuf : t -> Pixbuf.t option = "ml_gdk_pixbuf_loader_get_pixbuf"
-(** Queries the [GdkPixbuf] that a pixbuf loader is currently creating.
-
-    In general it only makes sense to call this function after the
-    [GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by the
-    loader; this means that enough data has been read to know the size of the
-    image that will be allocated.
-
-    If the loader has not received enough data via gdk_pixbuf_loader_write(),
-    then this function returns [NULL].
-
-    The returned pixbuf will be the same in all future calls to the loader, so
-    if you want to keep using it, you should acquire a reference to it.
-
-    Additionally, if the loader is an animation, it will return the “static
-    image” of the animation (see gdk_pixbuf_animation_get_static_image()). *)
+[@@ocaml.doc
+  "Queries the [GdkPixbuf] that a pixbuf loader is currently creating.\n\n\
+   In general it only makes sense to call this function after the\n\
+   [GdkPixbuf.PixbufLoader::area-prepared] signal has been\n\
+   emitted by the loader; this means that enough data has been read\n\
+   to know the size of the image that will be allocated.\n\n\
+   If the loader has not received enough data via gdk_pixbuf_loader_write(),\n\
+   then this function returns [NULL].\n\n\
+   The returned pixbuf will be the same in all future calls to the loader,\n\
+   so if you want to keep using it, you should acquire a reference to it.\n\n\
+   Additionally, if the loader is an animation, it will return the \"static\n\
+   image\" of the animation (see gdk_pixbuf_animation_get_static_image())."]
 
 external get_format : t -> Pixbuf_format.t option
   = "ml_gdk_pixbuf_loader_get_format"

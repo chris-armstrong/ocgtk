@@ -26,12 +26,14 @@ val accessible_attribute_overline : string
     @since 4.14 *)
 
 val accessible_attribute_overline_none : string
-(** The “none” overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"none\" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_overline_single : string
-(** The “single” overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"single\" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_size : string
 (** An attribute for the font size, expressed in points.
@@ -50,40 +52,49 @@ val accessible_attribute_stretch : string
     @since 4.14 *)
 
 val accessible_attribute_stretch_condensed : string
-(** The “condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_expanded : string
-(** The “expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_extra_condensed : string
-(** The “extra condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"extra condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_extra_expanded : string
-(** The “extra expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"extra expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_normal : string
-(** The “normal” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"normal\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_semi_condensed : string
-(** The “semi condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"semi condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_semi_expanded : string
-(** The “semi expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"semi expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_ultra_condensed : string
-(** The “ultra condensed” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"ultra condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_stretch_ultra_expanded : string
-(** The “ultra expanded” stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"ultra expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_strikethrough : string
 (** An attribute for strikethrough text.
@@ -103,16 +114,19 @@ val accessible_attribute_style : string
     @since 4.14 *)
 
 val accessible_attribute_style_italic : string
-(** The “italic” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"italic\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_style_normal : string
-(** The “normal” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"normal\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_style_oblique : string
-(** The “oblique” style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"oblique\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_underline : string
 (** An attribute for the underline style.
@@ -127,20 +141,24 @@ val accessible_attribute_underline : string
     @since 4.14 *)
 
 val accessible_attribute_underline_double : string
-(** The “double” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"double\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_underline_error : string
-(** The “error” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"error\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_underline_none : string
-(** The “none” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"none\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_underline_single : string
-(** The “single” underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"single\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant : string
 (** An attribute for the font variant.
@@ -157,28 +175,34 @@ val accessible_attribute_variant : string
     @since 4.14 *)
 
 val accessible_attribute_variant_all_petite_caps : string
-(** The “all petite caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"all petite caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant_all_small_caps : string
-(** The “all small caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"all small caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant_petite_caps : string
-(** The “petite caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"petite caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant_small_caps : string
-(** The “small caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"small caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant_title_caps : string
-(** The “title caps” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"title caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_variant_unicase : string
-(** The “unicase” variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
-    @since 4.14 *)
+[@@ocaml.doc
+  "The \"unicase\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  \    @since 4.14"]
 
 val accessible_attribute_weight : string
 (** An attribute for the font weight.

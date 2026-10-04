@@ -53,28 +53,24 @@ external set_dash_offset : t -> float -> unit = "ml_gsk_stroke_set_dash_offset"
 
 external set_dash : t -> float array option -> Gsize.t -> unit
   = "ml_gsk_stroke_set_dash"
-(** Sets the dash pattern to use.
-
-    A dash pattern is specified by an array of alternating non-negative values.
-    Each value provides the length of alternate “on” and “off” portions of the
-    stroke.
-
-    Each “on” segment will have caps applied as if the segment were a separate
-    contour. In particular, it is valid to use an “on” length of 0 with
-    [Gsk.LineCap.round] or [Gsk.LineCap.square] to draw dots or squares along a
-    path.
-
-    If [n_dash] is 0, if all elements in [dash] are 0, or if there are negative
-    values in [dash], then dashing is disabled.
-
-    If [n_dash] is 1, an alternating “on” and “off” pattern with the single dash
-    length provided is assumed.
-
-    If [n_dash] is uneven, the dash array will be used with the first element in
-    [dash] defining an “on” or “off” in alternating passes through the array.
-
-    You can specify a starting offset into the dash with
-    [Gsk.Stroke.set_dash_offset]. *)
+[@@ocaml.doc
+  "Sets the dash pattern to use.\n\n\
+   A dash pattern is specified by an array of alternating non-negative\n\
+   values. Each value provides the length of alternate \"on\" and \"off\"\n\
+   portions of the stroke.\n\n\
+   Each \"on\" segment will have caps applied as if the segment were a\n\
+   separate contour. In particular, it is valid to use an \"on\" length\n\
+   of 0 with [Gsk.LineCap.round] or [Gsk.LineCap.square]\n\
+   to draw dots or squares along a path.\n\n\
+   If [n_dash] is 0, if all elements in [dash] are 0, or if there are\n\
+   negative values in [dash], then dashing is disabled.\n\n\
+   If [n_dash] is 1, an alternating \"on\" and \"off\" pattern with the\n\
+   single dash length provided is assumed.\n\n\
+   If [n_dash] is uneven, the dash array will be used with the first\n\
+   element in [dash] defining an \"on\" or \"off\" in alternating passes\n\
+   through the array.\n\n\
+   You can specify a starting offset into the dash with\n\
+   [Gsk.Stroke.set_dash_offset]."]
 
 external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
 (** Gets the miter limit. *)

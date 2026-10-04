@@ -10,10 +10,10 @@ type t = [ `tls_backend ] Gobject.obj
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_tls_backend_from_gobject"
 
 (* Methods *)
-
 external supports_tls : t -> bool = "ml_g_tls_backend_supports_tls"
-(** Checks if TLS is supported; if this returns [FALSE] for the default
-    [GTlsBackend], it means no “real” TLS backend is available. *)
+[@@ocaml.doc
+  "Checks if TLS is supported; if this returns [FALSE] for the default\n\
+   [GTlsBackend], it means no \"real\" TLS backend is available."]
 
 external supports_dtls : t -> bool = "ml_g_tls_backend_supports_dtls"
 (** Checks if DTLS is supported. DTLS support may not be available even if TLS

@@ -25,36 +25,33 @@ external return_value_with_unix_fd_list :
 
 external return_value : t -> Gvariant.t option -> unit
   = "ml_g_dbus_method_invocation_return_value"
-(** Finishes handling a D-Bus method call by returning [parameters]. If the
-    [parameters] GVariant is floating, it is consumed.
-
-    It is an error if [parameters] is not of the right format: it must be a
-    tuple containing the out-parameters of the D-Bus method. Even if the method
-    has a single out-parameter, it must be contained in a tuple. If the method
-    has no out-parameters, [parameters] may be [NULL] or an empty tuple.
-
-    {[
-    GDBusMethodInvocation *invocation = some_invocation;
-    g_autofree gchar *result_string = NULL;
-    g_autoptr (GError) error = NULL;
-
-    result_string = calculate_result (&error);
-
-    if (error != NULL)
-      g_dbus_method_invocation_return_gerror (invocation, error);
-    else
-      g_dbus_method_invocation_return_value (invocation,
-                                             g_variant_new (“(s)”, result_string));
-
-    // Do not free @invocation here; returning a value does that
-    ]}
-
-    This method will take ownership of [invocation]. See [GDBusInterfaceVTable]
-    for more information about the ownership of [invocation].
-
-    Since 2.48, if the method call requested for a reply not to be sent then
-    this call will sink [parameters] and free [invocation], but otherwise do
-    nothing (as per the recommendations of the D-Bus specification). *)
+[@@ocaml.doc
+  "Finishes handling a D-Bus method call by returning [parameters].\n\
+   If the [parameters] GVariant is floating, it is consumed.\n\n\
+   It is an error if [parameters] is not of the right format: it must be a tuple\n\
+   containing the out-parameters of the D-Bus method. Even if the method has a\n\
+   single out-parameter, it must be contained in a tuple. If the method has no\n\
+   out-parameters, [parameters] may be [NULL] or an empty tuple.\n\n\
+   {[\n\
+   GDBusMethodInvocation *invocation = some_invocation;\n\
+   g_autofree gchar *result_string = NULL;\n\
+   g_autoptr (GError) error = NULL;\n\n\
+   result_string = calculate_result (&error);\n\n\
+   if (error != NULL)\n\
+  \  g_dbus_method_invocation_return_gerror (invocation, error);\n\
+   else\n\
+  \  g_dbus_method_invocation_return_value (invocation,\n\
+  \                                         g_variant_new (\"(s)\", \
+   result_string));\n\n\
+   // Do not free @invocation here; returning a value does that\n\
+   ]}\n\n\
+   This method will take ownership of [invocation]. See\n\
+   [GDBusInterfaceVTable] for more information about the ownership of\n\
+   [invocation].\n\n\
+   Since 2.48, if the method call requested for a reply not to be sent\n\
+   then this call will sink [parameters] and free [invocation], but\n\
+   otherwise do nothing (as per the recommendations of the D-Bus\n\
+   specification)."]
 
 external return_gerror : t -> GError.t -> unit
   = "ml_g_dbus_method_invocation_return_gerror"
@@ -126,17 +123,17 @@ external get_message : t -> D_bus_message.t
 
 external get_interface_name : t -> string option
   = "ml_g_dbus_method_invocation_get_interface_name"
-(** Gets the name of the D-Bus interface the method was invoked on.
-
-    This can be [NULL] if it was not specified by the sender. See
-    [Gio.DBusInterfaceMethodCallFunc] or the
-    {{:https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method}D-Bus
-     Specification} for details on when this can happen and how it should be
-    handled.
-
-    If this method call is a property Get, Set or GetAll call that has been
-    redirected to the method call handler then “org.freedesktop.DBus.Properties”
-    will be returned. See [GDBusInterfaceVTable] for more information. *)
+[@@ocaml.doc
+  "Gets the name of the D-Bus interface the method was invoked on.\n\n\
+   This can be [NULL] if it was not specified by the sender. See\n\
+   [Gio.DBusInterfaceMethodCallFunc] or the\n\
+   {{:https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method}D-Bus \
+   Specification}\n\
+   for details on when this can happen and how it should be handled.\n\n\
+   If this method call is a property Get, Set or GetAll call that has\n\
+   been redirected to the method call handler then\n\
+   \"org.freedesktop.DBus.Properties\" will be returned.  See\n\
+   [GDBusInterfaceVTable] for more information."]
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_method_invocation_get_connection"

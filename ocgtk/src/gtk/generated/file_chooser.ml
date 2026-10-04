@@ -70,48 +70,43 @@ external set_filter : t -> File_filter.t -> unit
 external set_file :
   t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
   = "ml_gtk_file_chooser_set_file"
-(** Sets [file] as the current filename for the file chooser.
-
-    This includes changing to the file’s parent folder and actually selecting
-    the file in list. If the [chooser] is in [GTK_FILE_CHOOSER_ACTION_SAVE]
-    mode, the file’s base name will also appear in the dialog’s file name entry.
-
-    If the file name isn’t in the current folder of [chooser], then the current
-    folder of [chooser] will be changed to the folder containing [file].
-
-    Note that the file must exist, or nothing will be done except for the
-    directory change.
-
-    If you are implementing a save dialog, you should use this function if you
-    already have a file name to which the user may save; for example, when the
-    user opens an existing file and then does “Save As…”. If you don’t have a
-    file name already — for example, if the user just created a new file and is
-    saving it for the first time, do not call this function.
-
-    Instead, use something similar to this:
-
-    {[
-    static void
-    prepare_file_chooser (GtkFileChooser *chooser,
-                          GFile          *existing_file)
-    {
-      gboolean document_is_new = (existing_file == NULL);
-
-      if (document_is_new)
-        {
-          GFile *default_file_for_saving = g_file_new_for_path (“./out.txt”);
-          // the user just created a new document
-          gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
-          gtk_file_chooser_set_current_name (chooser, “Untitled document”);
-          g_object_unref (default_file_for_saving);
-        }
-      else
-        {
-          // the user edited an existing document
-          gtk_file_chooser_set_file (chooser, existing_file, NULL);
-        }
-    }
-    ]} *)
+[@@ocaml.doc
+  "Sets [file] as the current filename for the file chooser.\n\n\
+   This includes changing to the file’s parent folder and actually selecting\n\
+   the file in list. If the [chooser] is in [GTK_FILE_CHOOSER_ACTION_SAVE] mode,\n\
+   the file’s base name will also appear in the dialog’s file name entry.\n\n\
+   If the file name isn’t in the current folder of [chooser], then the current\n\
+   folder of [chooser] will be changed to the folder containing [file].\n\n\
+   Note that the file must exist, or nothing will be done except\n\
+   for the directory change.\n\n\
+   If you are implementing a save dialog, you should use this function if\n\
+   you already have a file name to which the user may save; for example,\n\
+   when the user opens an existing file and then does “Save As…”. If you\n\
+   don’t have a file name already — for example, if the user just created\n\
+   a new file and is saving it for the first time, do not call this function.\n\n\
+   Instead, use something similar to this:\n\n\
+   {[\n\
+   static void\n\
+   prepare_file_chooser (GtkFileChooser *chooser,\n\
+  \                      GFile          *existing_file)\n\
+   {\n\
+  \  gboolean document_is_new = (existing_file == NULL);\n\n\
+  \  if (document_is_new)\n\
+  \    {\n\
+  \      GFile *default_file_for_saving = g_file_new_for_path (\"./out.txt\");\n\
+  \      // the user just created a new document\n\
+  \      gtk_file_chooser_set_current_folder (chooser, \
+   default_file_for_saving, NULL);\n\
+  \      gtk_file_chooser_set_current_name (chooser, \"Untitled document\");\n\
+  \      g_object_unref (default_file_for_saving);\n\
+  \    }\n\
+  \  else\n\
+  \    {\n\
+  \      // the user edited an existing document\n\
+  \      gtk_file_chooser_set_file (chooser, existing_file, NULL);\n\
+  \    }\n\
+   }\n\
+   ]}"]
 
 external set_current_name : t -> string -> unit
   = "ml_gtk_file_chooser_set_current_name"
@@ -142,10 +137,10 @@ external set_create_folders : t -> bool -> unit
 
 external set_choice : t -> string -> string -> unit
   = "ml_gtk_file_chooser_set_choice"
-(** Selects an option in a 'choice' that has been added with
-    gtk_file_chooser_add_choice().
-
-    For a boolean choice, the possible options are “true” and “false”. *)
+[@@ocaml.doc
+  "Selects an option in a 'choice' that has been added with\n\
+   gtk_file_chooser_add_choice().\n\n\
+   For a boolean choice, the possible options are \"true\" and \"false\"."]
 
 external set_action : t -> Gtk_enums.filechooseraction -> unit
   = "ml_gtk_file_chooser_set_action"

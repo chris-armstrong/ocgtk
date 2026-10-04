@@ -29,11 +29,11 @@ external set_touch_only : t -> bool -> unit
 
 external set_exclusive : t -> bool -> unit
   = "ml_gtk_gesture_single_set_exclusive"
-(** Sets whether [gesture] is exclusive.
-
-    An exclusive gesture will only handle pointer and “pointer emulated” touch
-    events, so at any given time, there is only one sequence able to interact
-    with those. *)
+[@@ocaml.doc
+  "Sets whether [gesture] is exclusive.\n\n\
+   An exclusive gesture will only handle pointer and \"pointer emulated\"\n\
+   touch events, so at any given time, there is only one sequence able\n\
+   to interact with those."]
 
 external set_button : t -> int -> unit = "ml_gtk_gesture_single_set_button"
 (** Sets the button number [gesture] listens to.

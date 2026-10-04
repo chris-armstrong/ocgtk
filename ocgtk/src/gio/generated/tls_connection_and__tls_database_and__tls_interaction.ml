@@ -17,31 +17,33 @@ module rec Tls_connection : sig
 
   external set_require_close_notify : t -> bool -> unit
     = "ml_g_tls_connection_set_require_close_notify"
-  (** Sets whether or not [conn] expects a proper TLS close notification before
-      the connection is closed. If this is [TRUE] (the default), then [conn]
-      will expect to receive a TLS close notification from its peer before the
-      connection is closed, and will return a [G_TLS_ERROR_EOF] error if the
-      connection is closed without proper notification (since this may indicate
-      a network error, or man-in-the-middle attack).
-
-      In some protocols, the application will know whether or not the connection
-      was closed cleanly based on application-level data (because the
-      application-level data includes a length field, or is somehow
-      self-delimiting); in this case, the close notify is redundant and
-      sometimes omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is
-      technically an error, but often done anyway.) You can use
-      g_tls_connection_set_require_close_notify() to tell [conn] to allow an
-      “unannounced” connection close, in which case the close will show up as a
-      0-length read, as in a non-TLS [GSocketConnection], and it is up to the
-      application to check that the data has been fully received.
-
-      Note that this only affects the behavior when the peer closes the
-      connection; when the application calls g_io_stream_close() itself on
-      [conn], this will send a close notification regardless of the setting of
-      this property. If you explicitly want to do an unclean close, you can
-      close [conn]'s [GTlsConnection:base]-io-stream rather than closing [conn]
-      itself, but note that this may only be done when no other operations are
-      pending on [conn] or the base I/O stream. *)
+  [@@ocaml.doc
+    "Sets whether or not [conn] expects a proper TLS close notification\n\
+    \  before the connection is closed. If this is [TRUE] (the default),\n\
+    \  then [conn] will expect to receive a TLS close notification from its\n\
+    \  peer before the connection is closed, and will return a\n\
+    \  [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
+    \  notification (since this may indicate a network error, or\n\
+    \  man-in-the-middle attack).\n\n\
+    \  In some protocols, the application will know whether or not the\n\
+    \  connection was closed cleanly based on application-level data\n\
+    \  (because the application-level data includes a length field, or is\n\
+    \  somehow self-delimiting); in this case, the close notify is\n\
+    \  redundant and sometimes omitted. (TLS 1.1 explicitly allows this;\n\
+    \  in TLS 1.0 it is technically an error, but often done anyway.) You\n\
+    \  can use g_tls_connection_set_require_close_notify() to tell [conn]\n\
+    \  to allow an \"unannounced\" connection close, in which case the close\n\
+    \  will show up as a 0-length read, as in a non-TLS\n\
+    \  [GSocketConnection], and it is up to the application to check that\n\
+    \  the data has been fully received.\n\n\
+    \  Note that this only affects the behavior when the peer closes the\n\
+    \  connection; when the application calls g_io_stream_close() itself\n\
+    \  on [conn], this will send a close notification regardless of the\n\
+    \  setting of this property. If you explicitly want to do an unclean\n\
+    \  close, you can close [conn]'s [GTlsConnection:base]-io-stream rather\n\
+    \  than closing [conn] itself, but note that this may only be done when no \
+     other\n\
+    \  operations are pending on [conn] or the base I/O stream."]
 
   external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
     = "ml_g_tls_connection_set_rehandshake_mode"
@@ -110,36 +112,33 @@ module rec Tls_connection : sig
 
   external handshake : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_tls_connection_handshake"
-  (** Attempts a TLS handshake on [conn].
-
-      On the client side, it is never necessary to call this method; although
-      the connection needs to perform a handshake after connecting (or after
-      sending a “STARTTLS”-type command), [GTlsConnection] will handle this for
-      you automatically when you try to send or receive data on the connection.
-      You can call g_tls_connection_handshake() manually if you want to know
-      whether the initial handshake succeeded or failed (as opposed to just
-      immediately trying to use [conn] to read or write, in which case, if it
-      fails, it may not be possible to tell if it failed before or after
-      completing the handshake), but beware that servers may reject client
-      authentication after the handshake has completed, so a successful
-      handshake does not indicate the connection will be usable.
-
-      Likewise, on the server side, although a handshake is necessary at the
-      beginning of the communication, you do not need to call this function
-      explicitly unless you want clearer error reporting.
-
-      Previously, calling g_tls_connection_handshake() after the initial
-      handshake would trigger a rehandshake; however, this usage was deprecated
-      in GLib 2.60 because rehandshaking was removed from the TLS protocol in
-      TLS 1.3. Since GLib 2.64, calling this function after the initial
-      handshake will no longer do anything.
-
-      When using a [GTlsConnection] created by [GSocketClient], the
-      [GSocketClient] performs the initial handshake, so calling this function
-      manually is not recommended.
-
-      [GTlsConnection::accept_certificate] may be emitted during the handshake.
-  *)
+  [@@ocaml.doc
+    "Attempts a TLS handshake on [conn].\n\n\
+    \  On the client side, it is never necessary to call this method;\n\
+    \  although the connection needs to perform a handshake after\n\
+    \  connecting (or after sending a \"STARTTLS\"-type command),\n\
+    \  [GTlsConnection] will handle this for you automatically when you try\n\
+    \  to send or receive data on the connection. You can call\n\
+    \  g_tls_connection_handshake() manually if you want to know whether\n\
+    \  the initial handshake succeeded or failed (as opposed to just\n\
+    \  immediately trying to use [conn] to read or write, in which case,\n\
+    \  if it fails, it may not be possible to tell if it failed before or\n\
+    \  after completing the handshake), but beware that servers may reject\n\
+    \  client authentication after the handshake has completed, so a\n\
+    \  successful handshake does not indicate the connection will be usable.\n\n\
+    \  Likewise, on the server side, although a handshake is necessary at\n\
+    \  the beginning of the communication, you do not need to call this\n\
+    \  function explicitly unless you want clearer error reporting.\n\n\
+    \  Previously, calling g_tls_connection_handshake() after the initial\n\
+    \  handshake would trigger a rehandshake; however, this usage was\n\
+    \  deprecated in GLib 2.60 because rehandshaking was removed from the\n\
+    \  TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after\n\
+    \  the initial handshake will no longer do anything.\n\n\
+    \  When using a [GTlsConnection] created by [GSocketClient], the\n\
+    \  [GSocketClient] performs the initial handshake, so calling this\n\
+    \  function manually is not recommended.\n\n\
+    \  [GTlsConnection::accept_certificate] may be emitted during the\n\
+    \  handshake."]
 
   external get_use_system_certdb : t -> bool
     = "ml_g_tls_connection_get_use_system_certdb"
@@ -251,31 +250,33 @@ end = struct
 
   external set_require_close_notify : t -> bool -> unit
     = "ml_g_tls_connection_set_require_close_notify"
-  (** Sets whether or not [conn] expects a proper TLS close notification before
-      the connection is closed. If this is [TRUE] (the default), then [conn]
-      will expect to receive a TLS close notification from its peer before the
-      connection is closed, and will return a [G_TLS_ERROR_EOF] error if the
-      connection is closed without proper notification (since this may indicate
-      a network error, or man-in-the-middle attack).
-
-      In some protocols, the application will know whether or not the connection
-      was closed cleanly based on application-level data (because the
-      application-level data includes a length field, or is somehow
-      self-delimiting); in this case, the close notify is redundant and
-      sometimes omitted. (TLS 1.1 explicitly allows this; in TLS 1.0 it is
-      technically an error, but often done anyway.) You can use
-      g_tls_connection_set_require_close_notify() to tell [conn] to allow an
-      “unannounced” connection close, in which case the close will show up as a
-      0-length read, as in a non-TLS [GSocketConnection], and it is up to the
-      application to check that the data has been fully received.
-
-      Note that this only affects the behavior when the peer closes the
-      connection; when the application calls g_io_stream_close() itself on
-      [conn], this will send a close notification regardless of the setting of
-      this property. If you explicitly want to do an unclean close, you can
-      close [conn]'s [GTlsConnection:base]-io-stream rather than closing [conn]
-      itself, but note that this may only be done when no other operations are
-      pending on [conn] or the base I/O stream. *)
+  [@@ocaml.doc
+    "Sets whether or not [conn] expects a proper TLS close notification\n\
+    \  before the connection is closed. If this is [TRUE] (the default),\n\
+    \  then [conn] will expect to receive a TLS close notification from its\n\
+    \  peer before the connection is closed, and will return a\n\
+    \  [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
+    \  notification (since this may indicate a network error, or\n\
+    \  man-in-the-middle attack).\n\n\
+    \  In some protocols, the application will know whether or not the\n\
+    \  connection was closed cleanly based on application-level data\n\
+    \  (because the application-level data includes a length field, or is\n\
+    \  somehow self-delimiting); in this case, the close notify is\n\
+    \  redundant and sometimes omitted. (TLS 1.1 explicitly allows this;\n\
+    \  in TLS 1.0 it is technically an error, but often done anyway.) You\n\
+    \  can use g_tls_connection_set_require_close_notify() to tell [conn]\n\
+    \  to allow an \"unannounced\" connection close, in which case the close\n\
+    \  will show up as a 0-length read, as in a non-TLS\n\
+    \  [GSocketConnection], and it is up to the application to check that\n\
+    \  the data has been fully received.\n\n\
+    \  Note that this only affects the behavior when the peer closes the\n\
+    \  connection; when the application calls g_io_stream_close() itself\n\
+    \  on [conn], this will send a close notification regardless of the\n\
+    \  setting of this property. If you explicitly want to do an unclean\n\
+    \  close, you can close [conn]'s [GTlsConnection:base]-io-stream rather\n\
+    \  than closing [conn] itself, but note that this may only be done when no \
+     other\n\
+    \  operations are pending on [conn] or the base I/O stream."]
 
   external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
     = "ml_g_tls_connection_set_rehandshake_mode"
@@ -344,36 +345,33 @@ end = struct
 
   external handshake : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_tls_connection_handshake"
-  (** Attempts a TLS handshake on [conn].
-
-      On the client side, it is never necessary to call this method; although
-      the connection needs to perform a handshake after connecting (or after
-      sending a “STARTTLS”-type command), [GTlsConnection] will handle this for
-      you automatically when you try to send or receive data on the connection.
-      You can call g_tls_connection_handshake() manually if you want to know
-      whether the initial handshake succeeded or failed (as opposed to just
-      immediately trying to use [conn] to read or write, in which case, if it
-      fails, it may not be possible to tell if it failed before or after
-      completing the handshake), but beware that servers may reject client
-      authentication after the handshake has completed, so a successful
-      handshake does not indicate the connection will be usable.
-
-      Likewise, on the server side, although a handshake is necessary at the
-      beginning of the communication, you do not need to call this function
-      explicitly unless you want clearer error reporting.
-
-      Previously, calling g_tls_connection_handshake() after the initial
-      handshake would trigger a rehandshake; however, this usage was deprecated
-      in GLib 2.60 because rehandshaking was removed from the TLS protocol in
-      TLS 1.3. Since GLib 2.64, calling this function after the initial
-      handshake will no longer do anything.
-
-      When using a [GTlsConnection] created by [GSocketClient], the
-      [GSocketClient] performs the initial handshake, so calling this function
-      manually is not recommended.
-
-      [GTlsConnection::accept_certificate] may be emitted during the handshake.
-  *)
+  [@@ocaml.doc
+    "Attempts a TLS handshake on [conn].\n\n\
+    \  On the client side, it is never necessary to call this method;\n\
+    \  although the connection needs to perform a handshake after\n\
+    \  connecting (or after sending a \"STARTTLS\"-type command),\n\
+    \  [GTlsConnection] will handle this for you automatically when you try\n\
+    \  to send or receive data on the connection. You can call\n\
+    \  g_tls_connection_handshake() manually if you want to know whether\n\
+    \  the initial handshake succeeded or failed (as opposed to just\n\
+    \  immediately trying to use [conn] to read or write, in which case,\n\
+    \  if it fails, it may not be possible to tell if it failed before or\n\
+    \  after completing the handshake), but beware that servers may reject\n\
+    \  client authentication after the handshake has completed, so a\n\
+    \  successful handshake does not indicate the connection will be usable.\n\n\
+    \  Likewise, on the server side, although a handshake is necessary at\n\
+    \  the beginning of the communication, you do not need to call this\n\
+    \  function explicitly unless you want clearer error reporting.\n\n\
+    \  Previously, calling g_tls_connection_handshake() after the initial\n\
+    \  handshake would trigger a rehandshake; however, this usage was\n\
+    \  deprecated in GLib 2.60 because rehandshaking was removed from the\n\
+    \  TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after\n\
+    \  the initial handshake will no longer do anything.\n\n\
+    \  When using a [GTlsConnection] created by [GSocketClient], the\n\
+    \  [GSocketClient] performs the initial handshake, so calling this\n\
+    \  function manually is not recommended.\n\n\
+    \  [GTlsConnection::accept_certificate] may be emitted during the\n\
+    \  handshake."]
 
   external get_use_system_certdb : t -> bool
     = "ml_g_tls_connection_get_use_system_certdb"

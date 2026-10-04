@@ -375,17 +375,18 @@ module rec Layout : sig
       See [Pango.Layout.set_single_paragraph_mode]. *)
 
   external get_serial : t -> int = "ml_pango_layout_get_serial"
-  (** Returns the current serial number of [layout].
-
-      The serial number is initialized to an small number larger than zero when
-      a new layout is created and is increased whenever the layout is changed
-      using any of the setter functions, or the [PangoContext] it uses has
-      changed. The serial may wrap, but will never have the value 0. Since it
-      can wrap, never compare it with “less than”, always use “not equals”.
-
-      This can be used to automatically detect changes to a [PangoLayout], and
-      is useful for example to decide whether a layout needs redrawing. To force
-      the serial to be increased, use [Pango.Layout.context_changed]. *)
+  [@@ocaml.doc
+    "Returns the current serial number of [layout].\n\n\
+    \  The serial number is initialized to an small number larger than zero\n\
+    \  when a new layout is created and is increased whenever the layout is\n\
+    \  changed using any of the setter functions, or the [PangoContext] it\n\
+    \  uses has changed. The serial may wrap, but will never have the value 0.\n\
+    \  Since it can wrap, never compare it with \"less than\", always use \
+     \"not equals\".\n\n\
+    \  This can be used to automatically detect changes to a [PangoLayout],\n\
+    \  and is useful for example to decide whether a layout needs redrawing.\n\
+    \  To force the serial to be increased, use\n\
+    \  [Pango.Layout.context_changed]."]
 
   external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
   (** Determines the logical width and height of a [PangoLayout] in device

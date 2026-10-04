@@ -1,79 +1,65 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InfoBar: InfoBar *)
 
-(** [GtkInfoBar] can be used to show messages to the user without a dialog.
-
-    An example GtkInfoBar
-
-    It is often temporarily shown at the top or bottom of a document. In
-    contrast to [Gtk.Dialog], which has an action area at the bottom,
-    [GtkInfoBar] has an action area at the side.
-
-    The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you to add
-    buttons to the action area with [Gtk.InfoBar.add_button] or
-    [Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets can be
-    controlled with [Gtk.InfoBar.set_response_sensitive].
-
-    To add widgets to the main content area of a [GtkInfoBar], use
-    [Gtk.InfoBar.add_child].
-
-    Similar to [Gtk.MessageDialog], the contents of a [GtkInfoBar] can by
-    classified as error message, warning, informational message, etc, by using
-    [Gtk.InfoBar.set_message_type]. GTK may use the message type to determine
-    how the message is displayed.
-
-    A simple example for using a [GtkInfoBar]:
-
-    {[
-    GtkWidget *message_label;
-    GtkWidget *widget;
-    GtkWidget *grid;
-    GtkInfoBar *bar;
-
-    // set up info bar
-    widget = gtk_info_bar_new ();
-    bar = GTK_INFO_BAR (widget);
-    grid = gtk_grid_new ();
-
-    message_label = gtk_label_new (“”);
-    gtk_info_bar_add_child (bar, message_label);
-    gtk_info_bar_add_button (bar,
-                             _(“_OK”),
-                             GTK_RESPONSE_OK);
-    g_signal_connect (bar,
-                      “response”,
-                      G_CALLBACK (gtk_widget_hide),
-                      NULL);
-    gtk_grid_attach (GTK_GRID (grid),
-                     widget,
-                     0, 2, 1, 1);
-
-    // ...
-
-    // show an error message
-    gtk_label_set_text (GTK_LABEL (message_label), “An error occurred!”);
-    gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);
-    gtk_widget_show (bar);
-    ]}
-
-    {b GtkInfoBar as GtkBuildable}
-
-    [GtkInfoBar] supports a custom [<action-widgets>] element, which can contain
-    multiple [<action-widget>] elements. The “response” attribute specifies a
-    numeric response, and the content of the element is the id of widget (which
-    should be a child of the dialogs [action_area]).
-
-    [GtkInfoBar] supports adding action widgets by specifying “action” as the
-    “type” attribute of a [<child>] element. The widget will be added either to
-    the action area. The response id has to be associated with the action widget
-    using the [<action-widgets>] element.
-
-    {b CSS nodes}
-
-    [GtkInfoBar] has a single CSS node with name infobar. The node may get one
-    of the style classes .info, .warning, .error or .question, depending on the
-    message type. If the info bar shows a close button, that button will have
-    the .close style class applied. *)
+[@@@ocaml.text
+"[GtkInfoBar] can be used to show messages to the user without a dialog.\n\n\
+ An example GtkInfoBar\n\n\
+ It is often temporarily shown at the top or bottom of a document.\n\
+ In contrast to [Gtk.Dialog], which has an action area at the\n\
+ bottom, [GtkInfoBar] has an action area at the side.\n\n\
+ The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
+ to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
+ or [Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets\n\
+ can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
+ To add widgets to the main content area of a [GtkInfoBar], use\n\
+ [Gtk.InfoBar.add_child].\n\n\
+ Similar to [Gtk.MessageDialog], the contents of a [GtkInfoBar]\n\
+ can by classified as error message, warning, informational message, etc,\n\
+ by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
+ type to determine how the message is displayed.\n\n\
+ A simple example for using a [GtkInfoBar]:\n\n\
+ {[\n\
+ GtkWidget *message_label;\n\
+ GtkWidget *widget;\n\
+ GtkWidget *grid;\n\
+ GtkInfoBar *bar;\n\n\
+ // set up info bar\n\
+ widget = gtk_info_bar_new ();\n\
+ bar = GTK_INFO_BAR (widget);\n\
+ grid = gtk_grid_new ();\n\n\
+ message_label = gtk_label_new (\"\");\n\
+ gtk_info_bar_add_child (bar, message_label);\n\
+ gtk_info_bar_add_button (bar,\n\
+\                         _(\"_OK\"),\n\
+\                         GTK_RESPONSE_OK);\n\
+ g_signal_connect (bar,\n\
+\                  \"response\",\n\
+\                  G_CALLBACK (gtk_widget_hide),\n\
+\                  NULL);\n\
+ gtk_grid_attach (GTK_GRID (grid),\n\
+\                 widget,\n\
+\                 0, 2, 1, 1);\n\n\
+ // ...\n\n\
+ // show an error message\n\
+ gtk_label_set_text (GTK_LABEL (message_label), \"An error occurred!\");\n\
+ gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);\n\
+ gtk_widget_show (bar);\n\
+ ]}\n\n\
+ {b GtkInfoBar as GtkBuildable}\n\n\
+ [GtkInfoBar] supports a custom [<action-widgets>] element, which can contain\n\
+ multiple [<action-widget>] elements. The “response” attribute specifies a\n\
+ numeric response, and the content of the element is the id of widget\n\
+ (which should be a child of the dialogs [action_area]).\n\n\
+ [GtkInfoBar] supports adding action widgets by specifying “action” as\n\
+ the “type” attribute of a [<child>] element. The widget will be added\n\
+ either to the action area. The response id has to be associated\n\
+ with the action widget using the [<action-widgets>] element.\n\n\
+ {b CSS nodes}\n\n\
+ [GtkInfoBar] has a single CSS node with name infobar. The node may get\n\
+ one of the style classes .info, .warning, .error or .question, depending\n\
+ on the message type.\n\
+ If the info bar shows a close button, that button will have the .close\n\
+ style class applied."]
 
 type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

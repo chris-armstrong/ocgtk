@@ -1,52 +1,44 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Stack: Stack *)
 
-(** Shows one of its children at a time.
-
-    An example GtkStack
-
-    In contrast to [GtkNotebook], [GtkStack] does not provide a means for users
-    to change the visible child. Instead, a separate widget such as
-    [Gtk.StackSwitcher] or [Gtk.StackSidebar] can be used with [GtkStack] to
-    provide this functionality.
-
-    Transitions between pages can be animated as slides or fades. This can be
-    controlled with [Gtk.Stack.set_transition_type]. These animations respect
-    the [Gtk.Settings:gtk-enable-animations] setting.
-
-    [GtkStack] maintains a [Gtk.StackPage] object for each added child, which
-    holds additional per-child properties. You obtain the [GtkStackPage] for a
-    child with [Gtk.Stack.get_page] and you can obtain a [GtkSelectionModel]
-    containing all the pages with [Gtk.Stack.get_pages].
-
-    {b GtkStack as GtkBuildable}
-
-    To set child-specific properties in a .ui file, create [GtkStackPage]
-    objects explicitly, and set the child widget as a property on it:
-
-    {[
-      <object class=”GtkStack” id=”stack”>
-        <child>
-          <object class=”GtkStackPage”>
-            <property name=”name”>page1</property>
-            <property name=”title”>In the beginning…</property>
-            <property name=”child”>
-              <object class=”GtkLabel”>
-                <property name=”label”>It was dark</property>
-              </object>
-            </property>
-          </object>
-        </child>
-    ]}
-
-    {b CSS nodes}
-
-    [GtkStack] has a single CSS node named stack.
-
-    {b Accessibility}
-
-    [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack pages,
-    which are the accessible parent objects of the child widgets. *)
+[@@@ocaml.text
+"Shows one of its children at a time.\n\n\
+ An example GtkStack\n\n\
+ In contrast to [GtkNotebook], [GtkStack] does not provide a means\n\
+ for users to change the visible child. Instead, a separate widget\n\
+ such as [Gtk.StackSwitcher] or [Gtk.StackSidebar] can\n\
+ be used with [GtkStack] to provide this functionality.\n\n\
+ Transitions between pages can be animated as slides or fades. This\n\
+ can be controlled with [Gtk.Stack.set_transition_type].\n\
+ These animations respect the [Gtk.Settings:gtk-enable-animations]\n\
+ setting.\n\n\
+ [GtkStack] maintains a [Gtk.StackPage] object for each added\n\
+ child, which holds additional per-child properties. You\n\
+ obtain the [GtkStackPage] for a child with [Gtk.Stack.get_page]\n\
+ and you can obtain a [GtkSelectionModel] containing all the pages\n\
+ with [Gtk.Stack.get_pages].\n\n\
+ {b GtkStack as GtkBuildable}\n\n\
+ To set child-specific properties in a .ui file, create [GtkStackPage]\n\
+ objects explicitly, and set the child widget as a property on it:\n\n\
+ {[\n\
+\  <object class=\"GtkStack\" id=\"stack\">\n\
+\    <child>\n\
+\      <object class=\"GtkStackPage\">\n\
+\        <property name=\"name\">page1</property>\n\
+\        <property name=\"title\">In the beginning…</property>\n\
+\        <property name=\"child\">\n\
+\          <object class=\"GtkLabel\">\n\
+\            <property name=\"label\">It was dark</property>\n\
+\          </object>\n\
+\        </property>\n\
+\      </object>\n\
+\    </child>\n\
+ ]}\n\n\
+ {b CSS nodes}\n\n\
+ [GtkStack] has a single CSS node named stack.\n\n\
+ {b Accessibility}\n\n\
+ [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack\n\
+ pages, which are the accessible parent objects of the child widgets."]
 
 type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 

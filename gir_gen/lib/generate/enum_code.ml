@@ -63,9 +63,10 @@ let generate_ocaml_enum enum =
       bprintf buf "  | `%s" vname;
       (* Odoc renders a polymorphic-variant member doc only when it follows
          the tag, so the doc goes after it, not before. *)
-      Option.iter (fun comment -> bprintf buf " %s" comment)
-      @@ Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
-           member.member_doc;
+      bprintf buf "%s"
+        (Doc_emit.member_suffix
+           (Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+              member.member_doc));
       if i < List.length enum.members - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     enum.members;
@@ -91,9 +92,10 @@ let generate_ocaml_bitfield bitfield =
     ~f:(fun i flag ->
       let vname = variant_name_of_member flag.flag_name in
       bprintf buf "  | `%s" vname;
-      Option.iter (fun comment -> bprintf buf " %s" comment)
-      @@ Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
-           flag.flag_doc;
+      bprintf buf "%s"
+        (Doc_emit.member_suffix
+           (Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+              flag.flag_doc));
       if i < List.length bitfield.flags - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     bitfield.flags;

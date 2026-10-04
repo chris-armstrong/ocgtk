@@ -29,25 +29,24 @@ external to_string : t -> string = "ml_gdk_rgba_to_string"
     use a different representation. *)
 
 external parse : t -> string -> bool = "ml_gdk_rgba_parse"
-(** Parses a textual representation of a color.
-
-    The string can be either one of:
-
-    - A standard name (Taken from the CSS specification).
-    - A hexadecimal value in the form “#rgb”, “#rrggbb”, “#rrrgggbbb” or
-      ”#rrrrggggbbbb”
-    - A hexadecimal value in the form “#rgba”, “#rrggbbaa”, or
-      ”#rrrrggggbbbbaaaa”
-    - A RGB color in the form “rgb(r,g,b)” (In this case the color will have
-      full opacity)
-    - A RGBA color in the form “rgba(r,g,b,a)”
-    - A HSL color in the form “hsl(hue, saturation, lightness)”
-    - A HSLA color in the form “hsla(hue, saturation, lightness, alpha)”
-
-    Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
-    color values. In the last two cases, “r”, “g”, and “b” are either integers
-    in the range 0 to 255 or percentage values in the range 0% to 100%, and a is
-    a floating point value in the range 0 to 1. *)
+[@@ocaml.doc
+  "Parses a textual representation of a color.\n\n\
+   The string can be either one of:\n\n\
+   - A standard name (Taken from the CSS specification).\n\
+   - A hexadecimal value in the form “#rgb”, “#rrggbb”,\n\
+   “#rrrgggbbb” or ”#rrrrggggbbbb”\n\
+   - A hexadecimal value in the form “#rgba”, “#rrggbbaa”,\n\
+   or ”#rrrrggggbbbbaaaa”\n\
+   - A RGB color in the form “rgb(r,g,b)” (In this case the color\n\
+   will have full opacity)\n\
+   - A RGBA color in the form “rgba(r,g,b,a)”\n\
+   - A HSL color in the form \"hsl(hue, saturation, lightness)\"\n\
+   - A HSLA color in the form \"hsla(hue, saturation, lightness, alpha)\"\n\n\
+   Where “r”, “g”, “b” and “a” are respectively the red, green,\n\
+   blue and alpha color values. In the last two cases, “r”, “g”,\n\
+   and “b” are either integers in the range 0 to 255 or percentage\n\
+   values in the range 0% to 100%, and a is a floating point value\n\
+   in the range 0 to 1."]
 
 external is_opaque : t -> bool = "ml_gdk_rgba_is_opaque"
 (** Checks if an [rgba] value is opaque.

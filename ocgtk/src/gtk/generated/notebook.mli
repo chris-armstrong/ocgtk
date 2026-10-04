@@ -1,121 +1,98 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Notebook: Notebook *)
 
-(** Switches between children using tabs.
-
-    An example GtkNotebook
-
-    There are many configuration options for [GtkNotebook]. Among other things,
-    you can choose on which edge the tabs appear (see
-    [Gtk.Notebook.set_tab_pos]), whether, if there are too many tabs to fit the
-    notebook should be made bigger or scrolling arrows added (see
-    [Gtk.Notebook.set_scrollable]), and whether there will be a popup menu
-    allowing the users to switch pages. (see [Gtk.Notebook.popup_enable]).
-
-    {b GtkNotebook as GtkBuildable}
-
-    The [GtkNotebook] implementation of the [GtkBuildable] interface supports
-    placing children into tabs by specifying “tab” as the “type” attribute of a
-    [<child>] element. Note that the content of the tab must be created before
-    the tab can be filled. A tab child can be specified without specifying a
-    [<child>] type attribute.
-
-    To add a child widget in the notebooks action area, specify “action-start”
-    or “action-end” as the “type” attribute of the [<child>] element.
-
-    An example of a UI definition fragment with [GtkNotebook]:
-
-    {[
-    <object class=”GtkNotebook”>
-      <child>
-        <object class=”GtkLabel” id=”notebook-content”>
-          <property name=”label”>Content</property>
-        </object>
-      </child>
-      <child type=”tab”>
-        <object class=”GtkLabel” id=”notebook-tab”>
-          <property name=”label”>Tab</property>
-        </object>
-      </child>
-    </object>
-    ]}
-
-    {b Shortcuts and Gestures}
-
-    [GtkNotebook] supports the following keyboard shortcuts:
-
-    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
-    - <kbd>Home</kbd> moves the focus to the first tab.
-    - <kbd>End</kbd> moves the focus to the last tab.
-
-    Additionally, the following signals have default keybindings:
-
-    - [Gtk.Notebook::change-current-page]
-    - [Gtk.Notebook::focus-tab]
-    - [Gtk.Notebook::move-focus-out]
-    - [Gtk.Notebook::reorder-tab]
-    - [Gtk.Notebook::select-page]
-
-    Tabs support drag-and-drop between notebooks sharing the same [group-name],
-    or to new windows by handling the [::create-window] signal.
-
-    {b Actions}
-
-    [GtkNotebook] defines a set of built-in actions:
-
-    - [menu.popup] opens the tabs context menu.
-
-    {b CSS nodes}
-
-    {[
-    notebook
-    ├── header.top
-    │   ├── [<action widget>]
-    │   ├── tabs
-    │   │   ├── [arrow]
-    │   │   ├── tab
-    │   │   │   ╰── <tab label>
-    ┊   ┊   ┊
-    │   │   ├── tab[.reorderable-page]
-    │   │   │   ╰── <tab label>
-    │   │   ╰── [arrow]
-    │   ╰── [<action widget>]
-    │
-    ╰── stack
-        ├── <child>
-        ┊
-        ╰── <child>
-    ]}
-
-    [GtkNotebook] has a main CSS node with name [notebook], a subnode with name
-    [header] and below that a subnode with name [tabs] which contains one
-    subnode per tab with name [tab].
-
-    If action widgets are present, their CSS nodes are placed next to the [tabs]
-    node. If the notebook is scrollable, CSS nodes with name [arrow] are placed
-    as first and last child of the [tabs] node.
-
-    The main node gets the [.frame] style class when the notebook has a border
-    (see [Gtk.Notebook.set_show_border]).
-
-    The header node gets one of the style class [.top], [.bottom], [.left] or
-    [.right], depending on where the tabs are placed. For reorderable pages, the
-    tab node gets the [.reorderable-page] class.
-
-    A [tab] node gets the [.dnd] style class while it is moved with
-    drag-and-drop.
-
-    The nodes are always arranged from left-to-right, regardless of text
-    direction.
-
-    {b Accessibility}
-
-    [GtkNotebook] uses the following roles:
-
-    - [Gtk.AccessibleRole.group] for the notebook widget
-    - [Gtk.AccessibleRole.tab_list] for the list of tabs
-    - [Gtk.AccessibleRole.tab] role for each tab
-    - [Gtk.AccessibleRole.tab_panel] for each page *)
+[@@@ocaml.text
+"Switches between children using tabs.\n\n\
+ An example GtkNotebook\n\n\
+ There are many configuration options for [GtkNotebook]. Among\n\
+ other things, you can choose on which edge the tabs appear\n\
+ (see [Gtk.Notebook.set_tab_pos]), whether, if there are\n\
+ too many tabs to fit the notebook should be made bigger or scrolling\n\
+ arrows added (see [Gtk.Notebook.set_scrollable]), and whether\n\
+ there will be a popup menu allowing the users to switch pages.\n\
+ (see [Gtk.Notebook.popup_enable]).\n\n\
+ {b GtkNotebook as GtkBuildable}\n\n\
+ The [GtkNotebook] implementation of the [GtkBuildable] interface\n\
+ supports placing children into tabs by specifying “tab” as the\n\
+ “type” attribute of a [<child>] element. Note that the content\n\
+ of the tab must be created before the tab can be filled.\n\
+ A tab child can be specified without specifying a [<child>]\n\
+ type attribute.\n\n\
+ To add a child widget in the notebooks action area, specify\n\
+ \"action-start\" or “action-end” as the “type” attribute of the\n\
+ [<child>] element.\n\n\
+ An example of a UI definition fragment with [GtkNotebook]:\n\n\
+ {[\n\
+ <object class=\"GtkNotebook\">\n\
+\  <child>\n\
+\    <object class=\"GtkLabel\" id=\"notebook-content\">\n\
+\      <property name=\"label\">Content</property>\n\
+\    </object>\n\
+\  </child>\n\
+\  <child type=\"tab\">\n\
+\    <object class=\"GtkLabel\" id=\"notebook-tab\">\n\
+\      <property name=\"label\">Tab</property>\n\
+\    </object>\n\
+\  </child>\n\
+ </object>\n\
+ ]}\n\n\
+ {b Shortcuts and Gestures}\n\n\
+ [GtkNotebook] supports the following keyboard shortcuts:\n\n\
+ - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.\n\
+ - <kbd>Home</kbd> moves the focus to the first tab.\n\
+ - <kbd>End</kbd> moves the focus to the last tab.\n\n\
+ Additionally, the following signals have default keybindings:\n\n\
+ - [Gtk.Notebook::change-current-page]\n\
+ - [Gtk.Notebook::focus-tab]\n\
+ - [Gtk.Notebook::move-focus-out]\n\
+ - [Gtk.Notebook::reorder-tab]\n\
+ - [Gtk.Notebook::select-page]\n\n\
+ Tabs support drag-and-drop between notebooks sharing the same [group-name],\n\
+ or to new windows by handling the [::create-window] signal.\n\n\
+ {b Actions}\n\n\
+ [GtkNotebook] defines a set of built-in actions:\n\n\
+ - [menu.popup] opens the tabs context menu.\n\n\
+ {b CSS nodes}\n\n\
+ {[\n\
+ notebook\n\
+ ├── header.top\n\
+ │   ├── [<action widget>]\n\
+ │   ├── tabs\n\
+ │   │   ├── [arrow]\n\
+ │   │   ├── tab\n\
+ │   │   │   ╰── <tab label>\n\
+ ┊   ┊   ┊\n\
+ │   │   ├── tab[.reorderable-page]\n\
+ │   │   │   ╰── <tab label>\n\
+ │   │   ╰── [arrow]\n\
+ │   ╰── [<action widget>]\n\
+ │\n\
+ ╰── stack\n\
+\    ├── <child>\n\
+\    ┊\n\
+\    ╰── <child>\n\
+ ]}\n\n\
+ [GtkNotebook] has a main CSS node with name [notebook], a subnode\n\
+ with name [header] and below that a subnode with name [tabs] which\n\
+ contains one subnode per tab with name [tab].\n\n\
+ If action widgets are present, their CSS nodes are placed next\n\
+ to the [tabs] node. If the notebook is scrollable, CSS nodes with\n\
+ name [arrow] are placed as first and last child of the [tabs] node.\n\n\
+ The main node gets the [.frame] style class when the notebook\n\
+ has a border (see [Gtk.Notebook.set_show_border]).\n\n\
+ The header node gets one of the style class [.top], [.bottom],\n\
+ [.left] or [.right], depending on where the tabs are placed. For\n\
+ reorderable pages, the tab node gets the [.reorderable-page] class.\n\n\
+ A [tab] node gets the [.dnd] style class while it is moved with \
+ drag-and-drop.\n\n\
+ The nodes are always arranged from left-to-right, regardless of text \
+ direction.\n\n\
+ {b Accessibility}\n\n\
+ [GtkNotebook] uses the following roles:\n\n\
+ - [Gtk.AccessibleRole.group] for the notebook widget\n\
+ - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
+ - [Gtk.AccessibleRole.tab] role for each tab\n\
+ - [Gtk.AccessibleRole.tab_panel] for each page"]
 
 type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -169,50 +146,45 @@ external set_tab_detachable :
   .t ->
   bool ->
   unit = "ml_gtk_notebook_set_tab_detachable"
-(** Sets whether the tab can be detached from [notebook] to another notebook or
-    widget.
-
-    Note that two notebooks must share a common group identifier (see
-    [Gtk.Notebook.set_group_name]) to allow automatic tabs interchange between
-    them.
-
-    If you want a widget to interact with a notebook through DnD (i.e.: accept
-    dragged tabs from it) it must be set as a drop destination by adding to it a
-    [Gtk.DropTarget] controller that accepts the GType [GTK_TYPE_NOTEBOOK_PAGE].
-    The [:value] of said drop target will be preloaded with a [Gtk.NotebookPage]
-    object that corresponds to the dropped tab, so you can process the value via
-    [::accept] or [::drop] signals.
-
-    Note that you should use [Gtk.Notebook.detach_tab] instead of
-    [Gtk.Notebook.remove_page] if you want to remove the tab from the source
-    notebook as part of accepting a drop. Otherwise, the source notebook will
-    think that the dragged tab was removed from underneath the ongoing drag
-    operation, and will initiate a drag cancel animation.
-
-    {[
-    static void
-    on_drag_data_received (GtkWidget        *widget,
-                           GdkDrop          *drop,
-                           GtkSelectionData *data,
-                           guint             time,
-                           gpointer          user_data)
-    {
-      GtkDrag *drag;
-      GtkWidget *notebook;
-      GtkWidget **child;
-
-      drag = gtk_drop_get_drag (drop);
-      notebook = g_object_get_data (drag, “gtk-notebook-drag-origin”);
-      child = (void*\) gtk_selection_data_get_data (data);
-
-      // process_widget (\*child);
-
-      gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
-    }
-    ]}
-
-    If you want a notebook to accept drags from other widgets, you will have to
-    set your own DnD code to do it. *)
+[@@ocaml.doc
+  "Sets whether the tab can be detached from [notebook] to another\n\
+   notebook or widget.\n\n\
+   Note that two notebooks must share a common group identifier\n\
+   (see [Gtk.Notebook.set_group_name]) to allow automatic tabs\n\
+   interchange between them.\n\n\
+   If you want a widget to interact with a notebook through DnD\n\
+   (i.e.: accept dragged tabs from it) it must be set as a drop\n\
+   destination by adding to it a [Gtk.DropTarget] controller that accepts\n\
+   the GType [GTK_TYPE_NOTEBOOK_PAGE]. The [:value] of said drop target will be\n\
+   preloaded with a [Gtk.NotebookPage] object that corresponds to the\n\
+   dropped tab, so you can process the value via [::accept] or [::drop] \
+   signals.\n\n\
+   Note that you should use [Gtk.Notebook.detach_tab] instead\n\
+   of [Gtk.Notebook.remove_page] if you want to remove the tab\n\
+   from the source notebook as part of accepting a drop. Otherwise,\n\
+   the source notebook will think that the dragged tab was removed\n\
+   from underneath the ongoing drag operation, and will initiate a\n\
+   drag cancel animation.\n\n\
+   {[\n\
+   static void\n\
+   on_drag_data_received (GtkWidget        *widget,\n\
+  \                       GdkDrop          *drop,\n\
+  \                       GtkSelectionData *data,\n\
+  \                       guint             time,\n\
+  \                       gpointer          user_data)\n\
+   {\n\
+  \  GtkDrag *drag;\n\
+  \  GtkWidget *notebook;\n\
+  \  GtkWidget **child;\n\n\
+  \  drag = gtk_drop_get_drag (drop);\n\
+  \  notebook = g_object_get_data (drag, \"gtk-notebook-drag-origin\");\n\
+  \  child = (void*\\) gtk_selection_data_get_data (data);\n\n\
+  \  // process_widget (\\*child);\n\n\
+  \  gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);\n\
+   }\n\
+   ]}\n\n\
+   If you want a notebook to accept drags from other widgets,\n\
+   you will have to set your own DnD code to do it."]
 
 external set_show_tabs : t -> bool -> unit = "ml_gtk_notebook_set_show_tabs"
 (** Sets whether to show the tabs for the notebook or not. *)

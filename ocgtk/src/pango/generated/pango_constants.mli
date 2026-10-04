@@ -48,14 +48,13 @@ val glyph_unknown_flag : int
     Such unknown-character glyphs may be rendered as a 'hex box'. *)
 
 val scale : int
-(** The scale between dimensions used for Pango distances and device units.
-
-    The definition of device units is dependent on the output device; it will
-    typically be pixels for a screen, and points for a printer. [PANGO_SCALE] is
-    currently 1024, but this may be changed in the future.
-
-    When setting font sizes, device units are always considered to be points (as
-    in “12 point font”), rather than pixels. *)
+[@@ocaml.doc
+  "The scale between dimensions used for Pango distances and device units.\n\n\
+   The definition of device units is dependent on the output device; it will\n\
+   typically be pixels for a screen, and points for a printer. [PANGO_SCALE] is\n\
+   currently 1024, but this may be changed in the future.\n\n\
+   When setting font sizes, device units are always considered to be\n\
+   points (as in \"12 point font\"), rather than pixels."]
 
 val version_major : int
 (** The major component of the version of Pango available at compile-time. *)

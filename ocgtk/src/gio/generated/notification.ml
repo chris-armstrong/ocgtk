@@ -70,29 +70,27 @@ external set_icon : t -> Icon.t -> unit = "ml_g_notification_set_icon"
 external set_default_action_and_target_value :
   t -> string -> Gvariant.t option -> unit
   = "ml_g_notification_set_default_action_and_target_value"
-(** Sets the default action of [notification] to [action]. This action is
-    activated when the notification is clicked on. It must be an
-    application-wide action (start with “app.”).
-
-    If [target] is non-[NULL], [action] will be activated with [target] as its
-    parameter. If [target] is floating, it will be consumed.
-
-    When no default action is set, the application that the notification was
-    sent on is activated. *)
+[@@ocaml.doc
+  "Sets the default action of [notification] to [action]. This action is\n\
+   activated when the notification is clicked on. It must be an\n\
+   application-wide action (start with \"app.\").\n\n\
+   If [target] is non-[NULL], [action] will be activated with [target] as\n\
+   its parameter. If [target] is floating, it will be consumed.\n\n\
+   When no default action is set, the application that the notification\n\
+   was sent on is activated."]
 
 external set_default_action : t -> string -> unit
   = "ml_g_notification_set_default_action"
-(** Sets the default action of [notification] to [detailed_action]. This action
-    is activated when the notification is clicked on.
-
-    The action in [detailed_action] must be an application-wide action (it must
-    start with “app.”). If [detailed_action] contains a target, the given action
-    will be activated with that target as its parameter. See
-    g_action_parse_detailed_name() for a description of the format for
-    [detailed_action].
-
-    When no default action is set, the application that the notification was
-    sent on is activated. *)
+[@@ocaml.doc
+  "Sets the default action of [notification] to [detailed_action]. This\n\
+   action is activated when the notification is clicked on.\n\n\
+   The action in [detailed_action] must be an application-wide action (it\n\
+   must start with \"app.\"). If [detailed_action] contains a target, the\n\
+   given action will be activated with that target as its parameter.\n\
+   See g_action_parse_detailed_name() for a description of the format\n\
+   for [detailed_action].\n\n\
+   When no default action is set, the application that the notification\n\
+   was sent on is activated."]
 
 external set_category : t -> string option -> unit
   = "ml_g_notification_set_category"
@@ -111,18 +109,19 @@ external set_body : t -> string option -> unit = "ml_g_notification_set_body"
 external add_button_with_target_value :
   t -> string -> string -> Gvariant.t option -> unit
   = "ml_g_notification_add_button_with_target_value"
-(** Adds a button to [notification] that activates [action] when clicked.
-    [action] must be an application-wide action (it must start with “app.”).
-
-    If [target] is non-[NULL], [action] will be activated with [target] as its
-    parameter. *)
+[@@ocaml.doc
+  "Adds a button to [notification] that activates [action] when clicked.\n\
+   [action] must be an application-wide action (it must start with \"app.\").\n\n\
+   If [target] is non-[NULL], [action] will be activated with [target] as\n\
+   its parameter."]
 
 external add_button : t -> string -> string -> unit
   = "ml_g_notification_add_button"
-(** Adds a button to [notification] that activates the action in
-    [detailed_action] when clicked. That action must be an application-wide
-    action (starting with “app.”). If [detailed_action] contains a target, the
-    action will be activated with that target as its parameter.
-
-    See g_action_parse_detailed_name() for a description of the format for
-    [detailed_action]. *)
+[@@ocaml.doc
+  "Adds a button to [notification] that activates the action in\n\
+   [detailed_action] when clicked. That action must be an\n\
+   application-wide action (starting with \"app.\"). If [detailed_action]\n\
+   contains a target, the action will be activated with that target as\n\
+   its parameter.\n\n\
+   See g_action_parse_detailed_name() for a description of the format\n\
+   for [detailed_action]."]

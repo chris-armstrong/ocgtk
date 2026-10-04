@@ -8,13 +8,13 @@
 type t = [ `buildable_parse_context ] Gobject.obj
 
 (* Methods *)
-
 external get_position : t -> int * int
   = "ml_gtk_buildable_parse_context_get_position"
-(** Retrieves the current line number and the number of the character on that
-    line. Intended for use in error messages; there are no strict semantics for
-    what constitutes the “current” line number other than “the best number we
-    could come up with for error messages.” *)
+[@@ocaml.doc
+  "Retrieves the current line number and the number of the character on\n\
+   that line. Intended for use in error messages; there are no strict\n\
+   semantics for what constitutes the \"current\" line number other than\n\
+   \"the best number we could come up with for error messages.\""]
 
 external get_element_stack : t -> string array
   = "ml_gtk_buildable_parse_context_get_element_stack"

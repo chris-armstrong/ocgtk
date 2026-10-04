@@ -387,19 +387,21 @@ and File : sig
 
   external trash : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_file_trash"
-  (** Sends [file] to the “Trashcan”, if possible. This is similar to deleting
-      it, but the user can recover it before emptying the trashcan. Trashing is
-      disabled for system mounts by default (see
-      g_unix_mount_entry_is_system_internal()), so this call can return the
-      [G_IO_ERROR_NOT_SUPPORTED] error. Since GLib 2.66, the [x-gvfs-notrash]
-      unix mount option can be used to disable g_file_trash() support for
-      particular mounts, the [G_IO_ERROR_NOT_SUPPORTED] error will be returned
-      in that case. Since 2.82, the [x-gvfs-trash] unix mount option can be used
-      to enable g_file_trash() support for particular system mounts.
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
+  [@@ocaml.doc
+    "Sends [file] to the \"Trashcan\", if possible. This is similar to\n\
+    \  deleting it, but the user can recover it before emptying the trashcan.\n\
+    \  Trashing is disabled for system mounts by default (see\n\
+    \  g_unix_mount_entry_is_system_internal()), so this call can return the\n\
+    \  [G_IO_ERROR_NOT_SUPPORTED] error. Since GLib 2.66, the [x-gvfs-notrash] \
+     unix\n\
+    \  mount option can be used to disable g_file_trash() support for particular\n\
+    \  mounts, the [G_IO_ERROR_NOT_SUPPORTED] error will be returned in that \
+     case.\n\
+    \  Since 2.82, the [x-gvfs-trash] unix mount option can be used to enable\n\
+    \  g_file_trash() support for particular system mounts.\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+    \  triggering the cancellable object from another thread. If the operation\n\
+    \  was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   external supports_thread_contexts : t -> bool
     = "ml_g_file_supports_thread_contexts"
@@ -454,18 +456,17 @@ and File : sig
     Gio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
-  (** Tries to set all attributes in the [GFileInfo] on the target values, not
-      stopping on the first error.
-
-      If there is any error during this operation then [error] will be set to
-      the first error. Error on particular fields are flagged by setting the
-      “status” field in the attribute value to
-      [G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING], which means you can also detect
-      further errors.
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
+  [@@ocaml.doc
+    "Tries to set all attributes in the [GFileInfo] on the target\n\
+    \  values, not stopping on the first error.\n\n\
+    \  If there is any error during this operation then [error] will\n\
+    \  be set to the first error. Error on particular fields are flagged\n\
+    \  by setting the \"status\" field in the attribute value to\n\
+    \  [G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING], which means you can\n\
+    \  also detect further errors.\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+    \  triggering the cancellable object from another thread. If the operation\n\
+    \  was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   external set_attribute_uint64 :
     t ->
@@ -661,13 +662,13 @@ and File : sig
   external query_writable_namespaces :
     t -> Cancellable.t option -> (File_attribute_info_list.t, GError.t) result
     = "ml_g_file_query_writable_namespaces"
-  (** Obtain the list of attribute namespaces where new attributes can be
-      created by a user. An example of this is extended attributes (in the
-      “xattr” namespace).
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
+  [@@ocaml.doc
+    "Obtain the list of attribute namespaces where new attributes\n\
+    \  can be created by a user. An example of this is extended\n\
+    \  attributes (in the \"xattr\" namespace).\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+    \  triggering the cancellable object from another thread. If the operation\n\
+    \  was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   external query_settable_attributes :
     t -> Cancellable.t option -> (File_attribute_info_list.t, GError.t) result
@@ -695,48 +696,44 @@ and File : sig
     Gio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (File_info.t, GError.t) result = "ml_g_file_query_info"
-  (** Gets the requested information about specified [file].
-
-      The result is a [Gio.FileInfo] object that contains key-value attributes
-      (such as the type or size of the file).
-
-      The [attributes] value is a string that specifies the file attributes that
-      should be gathered. It is not an error if it’s not possible to read a
-      particular requested attribute from a file — it just won't be set. In
-      particular this means that if a file is inaccessible (due to being in a
-      folder with restrictive permissions), for example, you can expect the
-      returned [Gio.FileInfo] to have very few attributes set. You should check
-      whether an attribute is set using [Gio.FileInfo.has_attribute] before
-      trying to retrieve its value.
-
-      It is guaranteed that if any of the following attributes are listed in
-      [attributes], they will always be set in the returned [Gio.FileInfo], even
-      if the user doesn’t have permissions to access the file:
-
-      - [Gio.FILE_ATTRIBUTE_STANDARD_NAME]
-      - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
-
-      [attributes] should be a comma-separated list of attributes or attribute
-      wildcards. The wildcard [“*”] means all attributes, and a wildcard like
-      [“standard::*”] means all attributes in the standard namespace. An example
-      attribute query might be [“standard::*,owner::user”]. The standard
-      attributes are available as defines, like
-      [Gio.FILE_ATTRIBUTE_STANDARD_NAME].
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be returned.
-
-      For symlinks, normally the information about the target of the symlink is
-      returned, rather than information about the symlink itself. However if you
-      pass [Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS] in [flags] the information
-      about the symlink itself will be returned. Also, for symlinks that point
-      to non-existing files the information about the symlink itself will be
-      returned.
-
-      If the file does not exist, the [Gio.IOErrorEnum.NOT_FOUND] error will be
-      returned. Other errors are possible too, and depend on what kind of file
-      system the file is on. *)
+  [@@ocaml.doc
+    "Gets the requested information about specified [file].\n\n\
+    \  The result is a [Gio.FileInfo] object that contains key-value\n\
+    \  attributes (such as the type or size of the file).\n\n\
+    \  The [attributes] value is a string that specifies the file\n\
+    \  attributes that should be gathered. It is not an error if\n\
+    \  it’s not possible to read a particular requested attribute\n\
+    \  from a file — it just won't be set. In particular this means that if a \
+     file\n\
+    \  is inaccessible (due to being in a folder with restrictive \
+     permissions), for\n\
+    \  example, you can expect the returned [Gio.FileInfo] to have very few\n\
+    \  attributes set. You should check whether an attribute is set using\n\
+    \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
+    \  It is guaranteed that if any of the following attributes are listed in\n\
+    \  [attributes], they will always be set in the returned [Gio.FileInfo],\n\
+    \  even if the user doesn’t have permissions to access the file:\n\n\
+    \  - [Gio.FILE_ATTRIBUTE_STANDARD_NAME]\n\
+    \  - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]\n\n\
+    \  [attributes] should be a comma-separated list of attributes or attribute\n\
+    \  wildcards. The wildcard [\"*\"] means all attributes, and a wildcard like\n\
+    \  [\"standard::*\"] means all attributes in the standard namespace.\n\
+    \  An example attribute query might be [\"standard::*,owner::user\"].\n\
+    \  The standard attributes are available as defines, like\n\
+    \  [Gio.FILE_ATTRIBUTE_STANDARD_NAME].\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled\n\
+    \  by triggering the cancellable object from another thread. If the\n\
+    \  operation was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be\n\
+    \  returned.\n\n\
+    \  For symlinks, normally the information about the target of the\n\
+    \  symlink is returned, rather than information about the symlink\n\
+    \  itself. However if you pass [Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]\n\
+    \  in [flags] the information about the symlink itself will be returned.\n\
+    \  Also, for symlinks that point to non-existing files the information\n\
+    \  about the symlink itself will be returned.\n\n\
+    \  If the file does not exist, the [Gio.IOErrorEnum.NOT_FOUND] error will be\n\
+    \  returned. Other errors are possible too, and depend on what kind of\n\
+    \  file system the file is on."]
 
   external query_filesystem_info_finish :
     t -> Async_result.t -> (File_info.t, GError.t) result
@@ -747,29 +744,30 @@ and File : sig
   external query_filesystem_info :
     t -> string -> Cancellable.t option -> (File_info.t, GError.t) result
     = "ml_g_file_query_filesystem_info"
-  (** Similar to g_file_query_info(), but obtains information about the
-      filesystem the [file] is on, rather than the file itself. For instance the
-      amount of space available and the type of the filesystem.
-
-      The [attributes] value is a string that specifies the attributes that
-      should be gathered. It is not an error if it's not possible to read a
-      particular requested attribute from a file - it just won't be set.
-      [attributes] should be a comma-separated list of attributes or attribute
-      wildcards. The wildcard
-      “{i “ means all attributes, and a wildcard like “filesystem::}” means all
-      attributes in the filesystem namespace. The standard namespace for
-      filesystem attributes is “filesystem”. Common attributes of interest are
-      [G_FILE_ATTRIBUTE_FILESYSTEM_SIZE] (the total size of the filesystem in
-      bytes), [G_FILE_ATTRIBUTE_FILESYSTEM_FREE] (number of bytes available),
-      and [G_FILE_ATTRIBUTE_FILESYSTEM_TYPE] (type of the filesystem).
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
-
-      If the file does not exist, the [G_IO_ERROR_NOT_FOUND] error will be
-      returned. Other errors are possible too, and depend on what kind of
-      filesystem the file is on. *)
+  [@@ocaml.doc
+    "Similar to g_file_query_info(), but obtains information\n\
+    \  about the filesystem the [file] is on, rather than the file itself.\n\
+    \  For instance the amount of space available and the type of\n\
+    \  the filesystem.\n\n\
+    \  The [attributes] value is a string that specifies the attributes\n\
+    \  that should be gathered. It is not an error if it's not possible\n\
+    \  to read a particular requested attribute from a file - it just\n\
+    \  won't be set. [attributes] should be a comma-separated list of\n\
+    \  attributes or attribute wildcards. The wildcard \"{i \" means all\n\
+    \  attributes, and a wildcard like \"filesystem::}\" means all attributes\n\
+    \  in the filesystem namespace. The standard namespace for filesystem\n\
+    \  attributes is \"filesystem\". Common attributes of interest are\n\
+    \  [G_FILE_ATTRIBUTE_FILESYSTEM_SIZE] (the total size of the filesystem\n\
+    \  in bytes), [G_FILE_ATTRIBUTE_FILESYSTEM_FREE] (number of bytes \
+     available),\n\
+    \  and [G_FILE_ATTRIBUTE_FILESYSTEM_TYPE] (type of the filesystem).\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled\n\
+    \  by triggering the cancellable object from another thread. If the\n\
+    \  operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be\n\
+    \  returned.\n\n\
+    \  If the file does not exist, the [G_IO_ERROR_NOT_FOUND] error will\n\
+    \  be returned. Other errors are possible too, and depend on what\n\
+    \  kind of filesystem the file is on."]
 
   external query_file_type :
     t ->
@@ -1002,18 +1000,17 @@ and File : sig
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
   external is_native : t -> bool = "ml_g_file_is_native"
-  (** Checks to see if a file is native to the platform.
-
-      A native file is one expressed in the platform-native filename format,
-      e.g. “C:\Windows” or “/usr/bin/”. This does not mean the file is local, as
-      it might be on a locally mounted remote filesystem.
-
-      On some systems non-native files may be available using the native
-      filesystem via a userspace filesystem (FUSE), in these cases this call
-      will return [FALSE], but g_file_get_path() will still return a native
-      path.
-
-      This call does no blocking I/O. *)
+  [@@ocaml.doc
+    "Checks to see if a file is native to the platform.\n\n\
+    \  A native file is one expressed in the platform-native filename format,\n\
+    \  e.g. \"C:\\Windows\" or \"/usr/bin/\". This does not mean the file is \
+     local,\n\
+    \  as it might be on a locally mounted remote filesystem.\n\n\
+    \  On some systems non-native files may be available using the native\n\
+    \  filesystem via a userspace filesystem (FUSE), in these cases this call\n\
+    \  will return [FALSE], but g_file_get_path() will still return a native \
+     path.\n\n\
+    \  This call does no blocking I/O."]
 
   external hash : t -> int = "ml_g_file_hash"
   (** Creates a hash value for a [GFile].
@@ -1048,19 +1045,17 @@ and File : sig
       [file] is an immediate child of [parent]. *)
 
   external get_uri_scheme : t -> string option = "ml_g_file_get_uri_scheme"
-  (** Gets the URI scheme for a [GFile]. RFC 3986 decodes the scheme as:
-
-      {[
-      URI = scheme “:” hier-part [ “?” query ] [ “#” fragment ]
-      ]}
-
-      Common schemes include “file”, “http”, “ftp”, etc.
-
-      The scheme can be different from the one used to construct the [GFile], in
-      that it might be replaced with one that is logically equivalent to the
-      [GFile].
-
-      This call does no blocking I/O. *)
+  [@@ocaml.doc
+    "Gets the URI scheme for a [GFile].\n\
+    \  RFC 3986 decodes the scheme as:\n\n\
+    \  {[\n\
+    \  URI = scheme \":\" hier-part [ \"?\" query ] [ \"#\" fragment ]\n\
+    \  ]}\n\n\
+    \  Common schemes include \"file\", \"http\", \"ftp\", etc.\n\n\
+    \  The scheme can be different from the one used to construct the [GFile],\n\
+    \  in that it might be replaced with one that is logically equivalent to \
+     the [GFile].\n\n\
+    \  This call does no blocking I/O."]
 
   external get_uri : t -> string = "ml_g_file_get_uri"
   (** Gets the URI for the [file].
@@ -1173,30 +1168,30 @@ and File : sig
     Gio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (File_enumerator.t, GError.t) result = "ml_g_file_enumerate_children"
-  (** Gets the requested information about the files in a directory. The result
-      is a [GFileEnumerator] object that will give out [GFileInfo] objects for
-      all the files in the directory.
-
-      The [attributes] value is a string that specifies the file attributes that
-      should be gathered. It is not an error if it's not possible to read a
-      particular requested attribute from a file - it just won't be set.
-      [attributes] should be a comma-separated list of attributes or attribute
-      wildcards. The wildcard
-      “{i “ means all attributes, and a wildcard like “standard::}” means all
-      attributes in the standard namespace. An example attribute query be
-      “standard::*,owner::user”. The standard attributes are available as
-      defines, like [G_FILE_ATTRIBUTE_STANDARD_NAME].
-      [G_FILE_ATTRIBUTE_STANDARD_NAME] should always be specified if you plan to
-      call g_file_enumerator_get_child() or g_file_enumerator_iterate() on the
-      returned enumerator.
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
-
-      If the file does not exist, the [G_IO_ERROR_NOT_FOUND] error will be
-      returned. If the file is not a directory, the [G_IO_ERROR_NOT_DIRECTORY]
-      error will be returned. Other errors are possible too. *)
+  [@@ocaml.doc
+    "Gets the requested information about the files in a directory.\n\
+    \  The result is a [GFileEnumerator] object that will give out\n\
+    \  [GFileInfo] objects for all the files in the directory.\n\n\
+    \  The [attributes] value is a string that specifies the file\n\
+    \  attributes that should be gathered. It is not an error if\n\
+    \  it's not possible to read a particular requested attribute\n\
+    \  from a file - it just won't be set. [attributes] should\n\
+    \  be a comma-separated list of attributes or attribute wildcards.\n\
+    \  The wildcard \"{i \" means all attributes, and a wildcard like\n\
+    \  \"standard::}\" means all attributes in the standard namespace.\n\
+    \  An example attribute query be \"standard::*,owner::user\".\n\
+    \  The standard attributes are available as defines, like\n\
+    \  [G_FILE_ATTRIBUTE_STANDARD_NAME]. [G_FILE_ATTRIBUTE_STANDARD_NAME] should\n\
+    \  always be specified if you plan to call g_file_enumerator_get_child() or\n\
+    \  g_file_enumerator_iterate() on the returned enumerator.\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled\n\
+    \  by triggering the cancellable object from another thread. If the\n\
+    \  operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be\n\
+    \  returned.\n\n\
+    \  If the file does not exist, the [G_IO_ERROR_NOT_FOUND] error will\n\
+    \  be returned. If the file is not a directory, the \
+     [G_IO_ERROR_NOT_DIRECTORY]\n\
+    \  error will be returned. Other errors are possible too."]
 
   external eject_mountable_with_operation_finish :
     t -> Async_result.t -> (bool, GError.t) result
@@ -1228,29 +1223,29 @@ and File : sig
 
   external delete : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_file_delete"
-  (** Deletes a file. If the [file] is a directory, it will only be deleted if
-      it is empty. This has the same semantics as g_unlink().
-
-      If [file] doesn’t exist, [G_IO_ERROR_NOT_FOUND] will be returned. This
-      allows for deletion to be implemented avoiding
-      {{:https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use}time-of-check
-       to time-of-use races}:
-
-      {[
-      g_autoptr(GError) local_error = NULL;
-      if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-          !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        {
-          // deletion failed for some reason other than the file not existing:
-          // so report the error
-          g_warning (“Failed to delete %s: %s”,
-                     g_file_peek_path (my_file), local_error->message);
-        }
-      ]}
-
-      If [cancellable] is not [NULL], then the operation can be cancelled by
-      triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
+  [@@ocaml.doc
+    "Deletes a file. If the [file] is a directory, it will only be\n\
+    \  deleted if it is empty. This has the same semantics as g_unlink().\n\n\
+    \  If [file] doesn’t exist, [G_IO_ERROR_NOT_FOUND] will be returned. This \
+     allows\n\
+    \  for deletion to be implemented avoiding\n\
+    \  \
+     {{:https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use}time-of-check \
+     to time-of-use races}:\n\n\
+    \  {[\n\
+    \  g_autoptr(GError) local_error = NULL;\n\
+    \  if (!g_file_delete (my_file, my_cancellable, &local_error) &&\n\
+    \      !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))\n\
+    \    {\n\
+    \      // deletion failed for some reason other than the file not existing:\n\
+    \      // so report the error\n\
+    \      g_warning (\"Failed to delete %s: %s\",\n\
+    \                 g_file_peek_path (my_file), local_error->message);\n\
+    \    }\n\
+    \  ]}\n\n\
+    \  If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+    \  triggering the cancellable object from another thread. If the operation\n\
+    \  was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   external create_readwrite_finish :
     t -> Async_result.t -> (File_io_stream.t, GError.t) result
@@ -1558,13 +1553,15 @@ and Mount : sig
   external guess_content_type_sync :
     t -> bool -> Cancellable.t option -> (string array, GError.t) result
     = "ml_g_mount_guess_content_type_sync"
-  (** Tries to guess the type of content stored on [mount]. Returns one or more
-      textual identifiers of well-known content types (typically prefixed with
-      “x-content/”), e.g. x-content/image-dcf for camera memory cards. See the
-      shared-mime-info specification for more on x-content types.
-
-      This is a synchronous operation and as such may block doing IO; see
-      g_mount_guess_content_type() for the asynchronous version. *)
+  [@@ocaml.doc
+    "Tries to guess the type of content stored on [mount]. Returns one or\n\
+    \  more textual identifiers of well-known content types (typically\n\
+    \  prefixed with \"x-content/\"), e.g. x-content/image-dcf for camera\n\
+    \  memory cards. See the\n\
+    \  shared-mime-info\n\
+    \  specification for more on x-content types.\n\n\
+    \  This is a synchronous operation and as such may block doing IO;\n\
+    \  see g_mount_guess_content_type() for the asynchronous version."]
 
   external guess_content_type_finish :
     t -> Async_result.t -> (string array, GError.t) result

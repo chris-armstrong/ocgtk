@@ -62,24 +62,21 @@ external get_scripts : t -> Pango_enums.script array option * int
     values. Callers need to handle unknown values. *)
 
 external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
-(** Get a string that is representative of the characters needed to render a
-    particular language.
-
-    The sample text may be a pangram, but is not necessarily. It is chosen to be
-    demonstrative of normal text in the language, as well as exposing font
-    feature requirements unique to the language. It is suitable for use as
-    sample text in a font selection dialog.
-
-    If [language] is [NULL], the default language as found by
-    [Pango.Language.get_default] is used.
-
-    If Pango does not have a sample string for [language], the classic “The
-    quick brown fox...” is returned. This can be detected by comparing the
-    returned pointer value to that returned for (non-existent) language code
-    “xx”. That is, compare to:
-
-    {[
-    pango_language_get_sample_string (pango_language_from_string (“xx”))
-    ]} *)
+[@@ocaml.doc
+  "Get a string that is representative of the characters needed to\n\
+   render a particular language.\n\n\
+   The sample text may be a pangram, but is not necessarily. It is chosen\n\
+   to be demonstrative of normal text in the language, as well as exposing\n\
+   font feature requirements unique to the language. It is suitable for use\n\
+   as sample text in a font selection dialog.\n\n\
+   If [language] is [NULL], the default language as found by\n\
+   [Pango.Language.get_default] is used.\n\n\
+   If Pango does not have a sample string for [language], the classic\n\
+   \"The quick brown fox...\" is returned.  This can be detected by\n\
+   comparing the returned pointer value to that returned for (non-existent)\n\
+   language code \"xx\".  That is, compare to:\n\n\
+   {[\n\
+   pango_language_get_sample_string (pango_language_from_string (\"xx\"))\n\
+   ]}"]
 
 external get_type : unit -> Gobject.Type.t = "ml_pango_language_get_type"

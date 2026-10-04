@@ -22,15 +22,14 @@ external is_symbolic : t -> bool = "ml_gtk_icon_paintable_is_symbolic"
 
 external get_icon_name : t -> string option
   = "ml_gtk_icon_paintable_get_icon_name"
-(** Get the icon name being used for this icon.
-
-    When an icon looked up in the icon theme was not available, the icon theme
-    may use fallback icons - either those specified to
-    gtk_icon_theme_lookup_icon() or the always-available “image-missing”. The
-    icon chosen is returned by this function.
-
-    If the icon was created without an icon theme, this function returns [NULL].
-*)
+[@@ocaml.doc
+  "Get the icon name being used for this icon.\n\n\
+   When an icon looked up in the icon theme was not available, the\n\
+   icon theme may use fallback icons - either those specified to\n\
+   gtk_icon_theme_lookup_icon() or the always-available\n\
+   \"image-missing\". The icon chosen is returned by this function.\n\n\
+   If the icon was created without an icon theme, this function\n\
+   returns [NULL]."]
 
 external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
   = "ml_gtk_icon_paintable_get_file"

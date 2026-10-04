@@ -1,47 +1,37 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Frame: Frame *)
 
-(** Surrounds its child with a decorative frame and an optional label.
-
-    An example GtkFrame
-
-    If present, the label is drawn inside the top edge of the frame. The
-    horizontal position of the label can be controlled with
-    [Gtk.Frame.set_label_align].
-
-    [GtkFrame] clips its child. You can use this to add rounded corners to
-    widgets, but be aware that it also cuts off shadows.
-
-    {b GtkFrame as GtkBuildable}
-
-    An example of a UI definition fragment with GtkFrame:
-
-    {[
-    <object class=”GtkFrame”>
-      <property name=”label-widget”>
-        <object class=”GtkLabel” id=”frame_label”/>
-      </property>
-      <property name=”child”>
-        <object class=”GtkEntry” id=”frame_content”/>
-      </property>
-    </object>
-    ]}
-
-    {b CSS nodes}
-
-    {[
-    frame
-    ├── <label widget>
-    ╰── <child>
-    ]}
-
-    [GtkFrame] has a main CSS node with name “frame”, which is used to draw the
-    visible border. You can set the appearance of the border using CSS
-    properties like “border-style” on this node.
-
-    {b Accessibility}
-
-    [GtkFrame] uses the [Gtk.AccessibleRole.group] role. *)
+[@@@ocaml.text
+"Surrounds its child with a decorative frame and an optional label.\n\n\
+ An example GtkFrame\n\n\
+ If present, the label is drawn inside the top edge of the frame.\n\
+ The horizontal position of the label can be controlled with\n\
+ [Gtk.Frame.set_label_align].\n\n\
+ [GtkFrame] clips its child. You can use this to add rounded corners\n\
+ to widgets, but be aware that it also cuts off shadows.\n\n\
+ {b GtkFrame as GtkBuildable}\n\n\
+ An example of a UI definition fragment with GtkFrame:\n\n\
+ {[\n\
+ <object class=\"GtkFrame\">\n\
+\  <property name=\"label-widget\">\n\
+\    <object class=\"GtkLabel\" id=\"frame_label\"/>\n\
+\  </property>\n\
+\  <property name=\"child\">\n\
+\    <object class=\"GtkEntry\" id=\"frame_content\"/>\n\
+\  </property>\n\
+ </object>\n\
+ ]}\n\n\
+ {b CSS nodes}\n\n\
+ {[\n\
+ frame\n\
+ ├── <label widget>\n\
+ ╰── <child>\n\
+ ]}\n\n\
+ [GtkFrame] has a main CSS node with name “frame”, which is used to draw the\n\
+ visible border. You can set the appearance of the border using CSS properties\n\
+ like “border-style” on this node.\n\n\
+ {b Accessibility}\n\n\
+ [GtkFrame] uses the [Gtk.AccessibleRole.group] role."]
 
 type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 

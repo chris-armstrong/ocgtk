@@ -12,7 +12,9 @@ open Gir_gen_lib.Generate
 let item_doc = Doc_emit.item_doc
 
 let member ?since ?fallback doc =
-  item_doc ~indent:"" ?since ?fallback ~context:Doc_translate.Member doc
+  Option.map
+    (function Doc_emit.Comment c -> c | Doc_emit.Attribute _ -> "<attribute>")
+    (item_doc ~indent:"" ?since ?fallback ~context:Doc_translate.Member doc)
 
 let count_sub s sub =
   let n = String.length sub in
@@ -44,6 +46,9 @@ let test_doc_with_since_indented () =
   let got =
     item_doc ~indent:"  " ~since:"4.14" ~context:Doc_translate.Member
       (Some "Primary action.")
+    |> Option.map (function
+      | Doc_emit.Comment c -> c
+      | Doc_emit.Attribute _ -> "<attribute>")
   in
   check_opt "@since continuation carries the member indent"
     (Some "(** Primary action.\n      @since 4.14 *)") got
@@ -145,17 +150,91 @@ let test_terminator_in_code_block () =
 
 (* OCaml lexes string literals inside comments, so any ASCII double quote in
    emitted prose could open a string. Every quote becomes typographic. *)
-let test_quotes_typographic () =
-  check_opt "quotes replaced, not left as ASCII"
-    (Some "(** Says \u{201C}hi\u{201D} here. *)")
-    (member (Some "Says \"hi\" here."))
+let attribute_of ?since ?fallback doc =
+  match
+    item_doc ~indent:"" ?since ?fallback ~context:Doc_translate.Member doc
+  with
+  | Some (Doc_emit.Attribute a) -> Some a
+  | Some (Doc_emit.Comment _) | None -> None
 
-let test_no_ascii_quote_survives () =
-  (* An even count of quotes can still leave a string open for the lexer
-     (backslash-quoted words in GIR examples), so no ASCII quote may survive. *)
-  Helpers.expect_some "expected a comment"
-    (member (Some "Example \\\"\"$(dir)/x\"\\ end.")) (fun s ->
-      Alcotest.(check int) "no ASCII quote left" 0 (count_sub s "\""))
+let is_comment ?since ?fallback doc =
+  match
+    item_doc ~indent:"" ?since ?fallback ~context:Doc_translate.Member doc
+  with
+  | Some (Doc_emit.Comment _) -> true
+  | Some (Doc_emit.Attribute _) | None -> false
+
+let test_quotes_use_attribute () =
+  check_opt "a double quote moves the body into an attribute payload"
+    (Some "Says \"hi\" here.")
+    (attribute_of (Some "Says \"hi\" here."))
+
+(* The translator escapes the brace for odoc, but the lexer still sees a
+   quoted-string opener in that text, so the form is chosen on the escaped
+   body. *)
+let test_quoted_string_opener_uses_attribute () =
+  Alcotest.(check bool)
+    "a bare {| would open a quoted string in a comment" true
+    (Option.is_some (attribute_of (Some "Use {| here.")));
+  Alcotest.(check bool)
+    "a named {doc| opener is caught too" true
+    (Option.is_some (attribute_of (Some "Use {doc| here.")))
+
+let test_plain_braces_stay_comment () =
+  Alcotest.(check bool)
+    "markup braces without a pipe stay a comment" true
+    (is_comment (Some "Use {b bold} and {[x]}."))
+
+let test_apostrophe_stays_comment () =
+  Alcotest.(check bool)
+    "an apostrophe alone does not open a string" true
+    (is_comment (Some "Don't stop."))
+
+let test_attribute_payload_escaped () =
+  let rendered =
+    Doc_emit.after_item
+      (item_doc ~indent:"" ~context:Doc_translate.Member (Some "a\\b \"c\""))
+  in
+  Alcotest.(check string)
+    "backslash and quote are escaped in the string literal"
+    "[@@ocaml.doc \"a\\\\b \\\"c\\\"\"]\n\n" rendered
+
+let test_placement_by_form () =
+  let comment =
+    item_doc ~indent:"" ~context:Doc_translate.Member (Some "Plain.")
+  in
+  let attr =
+    item_doc ~indent:"" ~context:Doc_translate.Member (Some "Say \"hi\".")
+  in
+  Alcotest.(check string)
+    "comment goes before" "(** Plain. *)\n"
+    (Doc_emit.before_item comment);
+  Alcotest.(check string)
+    "comment has no after part" ""
+    (Doc_emit.after_item comment);
+  Alcotest.(check string)
+    "attribute has no before part" ""
+    (Doc_emit.before_item attr);
+  Alcotest.(check string)
+    "attribute goes after" "[@@ocaml.doc \"Say \\\"hi\\\".\"]\n\n"
+    (Doc_emit.after_item attr);
+  Alcotest.(check string)
+    "member comment is space-prefixed" " (** Plain. *)"
+    (Doc_emit.member_suffix comment);
+  Alcotest.(check string)
+    "member attribute sits on the tag" " [@ocaml.doc \"Say \\\"hi\\\".\"]"
+    (Doc_emit.member_suffix attr);
+  Alcotest.(check string)
+    "floating attribute is ocaml.text" "[@@@ocaml.text \"Say \\\"hi\\\".\"]"
+    (match attr with Some d -> Doc_emit.floating d | None -> "")
+
+let test_no_ascii_quote_in_comment () =
+  (* A comment never carries an ASCII quote: that is what keeps the lexer out of
+     string mode. Any body with one takes the attribute form instead. *)
+  match member (Some "Plain.") with
+  | Some c ->
+      Alcotest.(check int) "no ASCII quote in comment" 0 (count_sub c "\"")
+  | None -> Alcotest.fail "expected a comment"
 
 (* ---------- suite ----------------------------------------------------- *)
 
@@ -177,6 +256,13 @@ let tests =
     ("terminator in code span", `Quick, test_terminator_in_code_span);
     ("terminator in fallback", `Quick, test_terminator_in_fallback);
     ("terminator in code block", `Quick, test_terminator_in_code_block);
-    ("quotes typographic", `Quick, test_quotes_typographic);
-    ("no ASCII quote survives", `Quick, test_no_ascii_quote_survives);
+    ("quotes use attribute", `Quick, test_quotes_use_attribute);
+    ( "quoted-string opener uses attribute",
+      `Quick,
+      test_quoted_string_opener_uses_attribute );
+    ("plain braces stay comment", `Quick, test_plain_braces_stay_comment);
+    ("apostrophe stays comment", `Quick, test_apostrophe_stays_comment);
+    ("attribute payload escaped", `Quick, test_attribute_payload_escaped);
+    ("placement by form", `Quick, test_placement_by_form);
+    ("comment has no ASCII quote", `Quick, test_no_ascii_quote_in_comment);
   ]

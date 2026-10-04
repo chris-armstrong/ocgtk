@@ -150,37 +150,33 @@ external change_action_state : t -> string -> Gvariant.t -> unit
 
 external activate_action : t -> string -> Gvariant.t option -> unit
   = "ml_g_action_group_activate_action"
-(** Activate the named action within [action_group].
-
-    If the action is expecting a parameter, then the correct type of parameter
-    must be given as [parameter]. If the action is expecting no parameters then
-    [parameter] must be [NULL]. See [Gio.ActionGroup.get_action_parameter_type].
-
-    If the [Gio.ActionGroup] implementation supports asynchronous remote
-    activation over D-Bus, this call may return before the relevant D-Bus
-    traffic has been sent, or any replies have been received. In order to block
-    on such asynchronous activation calls, [Gio.DBusConnection.flush] should be
-    called prior to the code, which depends on the result of the action
-    activation. Without flushing the D-Bus connection, there is no guarantee
-    that the action would have been activated.
-
-    The following code which runs in a remote app instance, shows an example of
-    a ‘quit’ action being activated on the primary app instance over D-Bus. Here
-    [Gio.DBusConnection.flush] is called before [exit()]. Without
-    [g_dbus_connection_flush()], the ‘quit’ action may fail to be activated on
-    the primary instance.
-
-    {[
-    // call ‘quit’ action on primary instance
-    g_action_group_activate_action (G_ACTION_GROUP (app), “quit”, NULL);
-
-    // make sure the action is activated now
-    g_dbus_connection_flush (…);
-
-    g_debug (“Application has been terminated. Exiting.”);
-
-    exit (0);
-    ]} *)
+[@@ocaml.doc
+  "Activate the named action within [action_group].\n\n\
+   If the action is expecting a parameter, then the correct type of\n\
+   parameter must be given as [parameter].  If the action is expecting no\n\
+   parameters then [parameter] must be [NULL].  See\n\
+   [Gio.ActionGroup.get_action_parameter_type].\n\n\
+   If the [Gio.ActionGroup] implementation supports asynchronous remote\n\
+   activation over D-Bus, this call may return before the relevant\n\
+   D-Bus traffic has been sent, or any replies have been received. In\n\
+   order to block on such asynchronous activation calls,\n\
+   [Gio.DBusConnection.flush] should be called prior to the code, which\n\
+   depends on the result of the action activation. Without flushing\n\
+   the D-Bus connection, there is no guarantee that the action would\n\
+   have been activated.\n\n\
+   The following code which runs in a remote app instance, shows an\n\
+   example of a ‘quit’ action being activated on the primary app\n\
+   instance over D-Bus. Here [Gio.DBusConnection.flush] is called\n\
+   before [exit()]. Without [g_dbus_connection_flush()], the ‘quit’ action\n\
+   may fail to be activated on the primary instance.\n\n\
+   {[\n\
+   // call ‘quit’ action on primary instance\n\
+   g_action_group_activate_action (G_ACTION_GROUP (app), \"quit\", NULL);\n\n\
+   // make sure the action is activated now\n\
+   g_dbus_connection_flush (…);\n\n\
+   g_debug (\"Application has been terminated. Exiting.\");\n\n\
+   exit (0);\n\
+   ]}"]
 
 external action_state_changed : t -> string -> Gvariant.t -> unit
   = "ml_g_action_group_action_state_changed"

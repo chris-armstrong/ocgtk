@@ -1,133 +1,111 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Pixbuf: Pixbuf *)
 
-(** A pixel buffer.
-
-    [GdkPixbuf] contains information about an image's pixel data, its color
-    space, bits per sample, width and height, and the rowstride (the number of
-    bytes between the start of one row and the start of the next).
-
-    {b Creating new [GdkPixbuf]}
-
-    The most basic way to create a pixbuf is to wrap an existing pixel buffer
-    with a [GdkPixbuf.Pixbuf] instance. You can use the
-    [GdkPixbuf.Pixbuf.new_from_data] function to do this.
-
-    Every time you create a new [GdkPixbuf] instance for some data, you will
-    need to specify the destroy notification function that will be called when
-    the data buffer needs to be freed; this will happen when a [GdkPixbuf] is
-    finalized by the reference counting functions. If you have a chunk of static
-    data compiled into your application, you can pass in [NULL] as the destroy
-    notification function so that the data will not be freed.
-
-    The [GdkPixbuf.Pixbuf.new] constructor function can be used as a convenience
-    to create a pixbuf with an empty buffer; this is equivalent to allocating a
-    data buffer using [malloc()] and then wrapping it with
-    [gdk_pixbuf_new_from_data()]. The [gdk_pixbuf_new()] function will compute
-    an optimal rowstride so that rendering can be performed with an efficient
-    algorithm.
-
-    You can also copy an existing pixbuf with the [Pixbuf.copy] function. This
-    is not the same as just acquiring a reference to the old pixbuf instance:
-    the copy function will actually duplicate the pixel data in memory and
-    create a new [Pixbuf] instance for it.
-
-    {b Reference counting}
-
-    [GdkPixbuf] structures are reference counted. This means that an application
-    can share a single pixbuf among many parts of the code. When a piece of the
-    program needs to use a pixbuf, it should acquire a reference to it by
-    calling [g_object_ref()]; when it no longer needs the pixbuf, it should
-    release the reference it acquired by calling [g_object_unref()]. The
-    resources associated with a [GdkPixbuf] will be freed when its reference
-    count drops to zero. Newly-created [GdkPixbuf] instances start with a
-    reference count of one.
-
-    {b Image Data}
-
-    Image data in a pixbuf is stored in memory in an uncompressed, packed
-    format. Rows in the image are stored top to bottom, and in each row pixels
-    are stored from left to right.
-
-    There may be padding at the end of a row.
-
-    The “rowstride” value of a pixbuf, as returned by
-    [GdkPixbuf.Pixbuf.get_rowstride], indicates the number of bytes between
-    rows.
-
-    {b NOTE}: If you are copying raw pixbuf data with [memcpy()] note that the
-    last row in the pixbuf may not be as wide as the full rowstride, but rather
-    just as wide as the pixel data needs to be; that is: it is unsafe to do
-    [memcpy (dest, pixels, rowstride * height)] to copy a whole pixbuf. Use
-    [GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the last
-    row as:
-
-    {[
-    last_row = width * (((n_channels * bits_per_sample) + 7) / 8)
-    ]}
-
-    The same rule applies when iterating over each row of a [GdkPixbuf] pixels
-    array.
-
-    The following code illustrates a simple [put_pixel()] function for RGB
-    pixbufs with 8 bits per channel with an alpha channel.
-
-    {[
-    static void
-    put_pixel (GdkPixbuf *pixbuf,
-               int x,
-    	   int y,
-    	   guchar red,
-    	   guchar green,
-    	   guchar blue,
-    	   guchar alpha)
-    {
-      int n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-
-      // Ensure that the pixbuf is valid
-      g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
-      g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
-      g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-      g_assert (n_channels == 4);
-
-      int width = gdk_pixbuf_get_width (pixbuf);
-      int height = gdk_pixbuf_get_height (pixbuf);
-
-      // Ensure that the coordinates are in a valid range
-      g_assert (x >= 0 && x < width);
-      g_assert (y >= 0 && y < height);
-
-      int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-
-      // The pixel buffer in the GdkPixbuf instance
-      guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);
-
-      // The pixel we wish to modify
-      guchar *p = pixels + y * rowstride + x * n_channels;
-      p[0] = red;
-      p[1] = green;
-      p[2] = blue;
-      p[3] = alpha;
-    }
-    ]}
-
-    {b Loading images}
-
-    The [GdkPixBuf] class provides a simple mechanism for loading an image from
-    a file in synchronous and asynchronous fashion.
-
-    For GUI applications, it is recommended to use the asynchronous stream API
-    to avoid blocking the control flow of the application.
-
-    Additionally, [GdkPixbuf] provides the [GdkPixbuf.PixbufLoader`] API for
-    progressive image loading.
-
-    {b Saving images}
-
-    The [GdkPixbuf] class provides methods for saving image data in a number of
-    file formats. The formatted data can be written to a file or to a memory
-    buffer. [GdkPixbuf] can also call a user-defined callback on the data, which
-    allows to e.g. write the image to a socket or store it in a database. *)
+[@@@ocaml.text
+"A pixel buffer.\n\n\
+ [GdkPixbuf] contains information about an image's pixel data,\n\
+ its color space, bits per sample, width and height, and the\n\
+ rowstride (the number of bytes between the start of one row\n\
+ and the start of the next).\n\n\
+ {b Creating new [GdkPixbuf]}\n\n\
+ The most basic way to create a pixbuf is to wrap an existing pixel\n\
+ buffer with a [GdkPixbuf.Pixbuf] instance. You can use the\n\
+ [GdkPixbuf.Pixbuf.new_from_data] function to do this.\n\n\
+ Every time you create a new [GdkPixbuf] instance for some data, you\n\
+ will need to specify the destroy notification function that will be\n\
+ called when the data buffer needs to be freed; this will happen when\n\
+ a [GdkPixbuf] is finalized by the reference counting functions. If\n\
+ you have a chunk of static data compiled into your application, you\n\
+ can pass in [NULL] as the destroy notification function so that the\n\
+ data will not be freed.\n\n\
+ The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
+ as a convenience to create a pixbuf with an empty buffer; this is\n\
+ equivalent to allocating a data buffer using [malloc()] and then\n\
+ wrapping it with [gdk_pixbuf_new_from_data()]. The [gdk_pixbuf_new()]\n\
+ function will compute an optimal rowstride so that rendering can be\n\
+ performed with an efficient algorithm.\n\n\
+ You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
+ function. This is not the same as just acquiring a reference to\n\
+ the old pixbuf instance: the copy function will actually duplicate\n\
+ the pixel data in memory and create a new [Pixbuf] instance\n\
+ for it.\n\n\
+ {b Reference counting}\n\n\
+ [GdkPixbuf] structures are reference counted. This means that an\n\
+ application can share a single pixbuf among many parts of the\n\
+ code. When a piece of the program needs to use a pixbuf, it should\n\
+ acquire a reference to it by calling [g_object_ref()]; when it no\n\
+ longer needs the pixbuf, it should release the reference it acquired\n\
+ by calling [g_object_unref()]. The resources associated with a\n\
+ [GdkPixbuf] will be freed when its reference count drops to zero.\n\
+ Newly-created [GdkPixbuf] instances start with a reference count\n\
+ of one.\n\n\
+ {b Image Data}\n\n\
+ Image data in a pixbuf is stored in memory in an uncompressed,\n\
+ packed format. Rows in the image are stored top to bottom, and\n\
+ in each row pixels are stored from left to right.\n\n\
+ There may be padding at the end of a row.\n\n\
+ The \"rowstride\" value of a pixbuf, as returned by \
+ [GdkPixbuf.Pixbuf.get_rowstride],\n\
+ indicates the number of bytes between rows.\n\n\
+ {b NOTE}: If you are copying raw pixbuf data with [memcpy()] note that the\n\
+ last row in the pixbuf may not be as wide as the full rowstride, but rather\n\
+ just as wide as the pixel data needs to be; that is: it is unsafe to do\n\
+ [memcpy (dest, pixels, rowstride * height)] to copy a whole pixbuf. Use\n\
+ [GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the\n\
+ last row as:\n\n\
+ {[\n\
+ last_row = width * ((n_channels * bits_per_sample + 7) / 8);\n\
+ ]}\n\n\
+ The same rule applies when iterating over each row of a [GdkPixbuf] pixels\n\
+ array.\n\n\
+ The following code illustrates a simple [put_pixel()]\n\
+ function for RGB pixbufs with 8 bits per channel with an alpha\n\
+ channel.\n\n\
+ {[\n\
+ static void\n\
+ put_pixel (GdkPixbuf *pixbuf,\n\
+\           int x,\n\
+ \t   int y,\n\
+ \t   guchar red,\n\
+ \t   guchar green,\n\
+ \t   guchar blue,\n\
+ \t   guchar alpha)\n\
+ {\n\
+\  int n_channels = gdk_pixbuf_get_n_channels (pixbuf);\n\n\
+\  // Ensure that the pixbuf is valid\n\
+\  g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);\n\
+\  g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);\n\
+\  g_assert (gdk_pixbuf_get_has_alpha (pixbuf));\n\
+\  g_assert (n_channels == 4);\n\n\
+\  int width = gdk_pixbuf_get_width (pixbuf);\n\
+\  int height = gdk_pixbuf_get_height (pixbuf);\n\n\
+\  // Ensure that the coordinates are in a valid range\n\
+\  g_assert (x >= 0 && x < width);\n\
+\  g_assert (y >= 0 && y < height);\n\n\
+\  int rowstride = gdk_pixbuf_get_rowstride (pixbuf);\n\n\
+\  // The pixel buffer in the GdkPixbuf instance\n\
+\  guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);\n\n\
+\  // The pixel we wish to modify\n\
+\  guchar *p = pixels + y * rowstride + x * n_channels;\n\
+\  p[0] = red;\n\
+\  p[1] = green;\n\
+\  p[2] = blue;\n\
+\  p[3] = alpha;\n\
+ }\n\
+ ]}\n\n\
+ {b Loading images}\n\n\
+ The [GdkPixBuf] class provides a simple mechanism for loading\n\
+ an image from a file in synchronous and asynchronous fashion.\n\n\
+ For GUI applications, it is recommended to use the asynchronous\n\
+ stream API to avoid blocking the control flow of the application.\n\n\
+ Additionally, [GdkPixbuf] provides the [GdkPixbuf.PixbufLoader`]\n\
+ API for progressive image loading.\n\n\
+ {b Saving images}\n\n\
+ The [GdkPixbuf] class provides methods for saving image data in\n\
+ a number of file formats. The formatted data can be written to a\n\
+ file or to a memory buffer. [GdkPixbuf] can also call a user-defined\n\
+ callback on the data, which allows to e.g. write the image\n\
+ to a socket or store it in a database."]
 
 type t = [ `pixbuf | `object_ ] Gobject.obj
 
@@ -257,14 +235,12 @@ external savev :
   string array option ->
   string array option ->
   (bool, GError.t) result = "ml_gdk_pixbuf_savev"
-(** Vector version of [gdk_pixbuf_save()].
-
-    Saves pixbuf to a file in [type], which is currently “jpeg”, “png”, “tiff”,
-    “ico” or “bmp”.
-
-    If [error] is set, [FALSE] will be returned.
-
-    See [GdkPixbuf.Pixbuf.save] for more details. *)
+[@@ocaml.doc
+  "Vector version of [gdk_pixbuf_save()].\n\n\
+   Saves pixbuf to a file in [type], which is currently \"jpeg\", \"png\", \
+   \"tiff\", \"ico\" or \"bmp\".\n\n\
+   If [error] is set, [FALSE] will be returned.\n\n\
+   See [GdkPixbuf.Pixbuf.save] for more details."]
 
 external save_to_streamv :
   t ->
@@ -276,11 +252,11 @@ external save_to_streamv :
   (bool, GError.t) result
   = "ml_gdk_pixbuf_save_to_streamv_bytecode"
     "ml_gdk_pixbuf_save_to_streamv_native"
-(** Saves [pixbuf] to an output stream.
-
-    Supported file formats are currently “jpeg”, “tiff”, “png”, “ico” or “bmp”.
-
-    See [GdkPixbuf.Pixbuf.save_to_stream] for more details. *)
+[@@ocaml.doc
+  "Saves [pixbuf] to an output stream.\n\n\
+   Supported file formats are currently \"jpeg\", \"tiff\", \"png\", \"ico\" or\n\
+   \"bmp\".\n\n\
+   See [GdkPixbuf.Pixbuf.save_to_stream] for more details."]
 
 external saturate_and_pixelate : t -> t -> float -> bool -> unit
   = "ml_gdk_pixbuf_saturate_and_pixelate"
@@ -335,20 +311,21 @@ external get_rowstride : t -> int = "ml_gdk_pixbuf_get_rowstride"
     start of a row and the start of the next row. *)
 
 external get_option : t -> string -> string option = "ml_gdk_pixbuf_get_option"
-(** Looks up [key] in the list of options that may have been attached to the
-    [pixbuf] when it was loaded, or that may have been attached by another
-    function using gdk_pixbuf_set_option().
-
-    For instance, the ANI loader provides “Title” and “Artist” options. The ICO,
-    XBM, and XPM loaders provide “x_hot” and “y_hot” hot-spot options for cursor
-    definitions. The PNG loader provides the tEXt ancillary chunk key/value
-    pairs as options. Since 2.12, the TIFF and JPEG loaders return an
-    “orientation” option string that corresponds to the embedded TIFF/Exif
-    orientation tag (if present). Since 2.32, the TIFF loader sets the
-    “multipage” option string to “yes” when a multi-page TIFF is loaded. Since
-    2.32 the JPEG and PNG loaders set “x-dpi” and “y-dpi” if the file contains
-    image density information in dots per inch. Since 2.36.6, the JPEG loader
-    sets the “comment” option with the comment EXIF tag. *)
+[@@ocaml.doc
+  "Looks up [key] in the list of options that may have been attached to the\n\
+   [pixbuf] when it was loaded, or that may have been attached by another\n\
+   function using gdk_pixbuf_set_option().\n\n\
+   For instance, the ANI loader provides \"Title\" and \"Artist\" options.\n\
+   The ICO, XBM, and XPM loaders provide \"x_hot\" and \"y_hot\" hot-spot\n\
+   options for cursor definitions. The PNG loader provides the tEXt ancillary\n\
+   chunk key/value pairs as options. Since 2.12, the TIFF and JPEG loaders\n\
+   return an \"orientation\" option string that corresponds to the embedded\n\
+   TIFF/Exif orientation tag (if present). Since 2.32, the TIFF loader sets\n\
+   the \"multipage\" option string to \"yes\" when a multi-page TIFF is loaded.\n\
+   Since 2.32 the JPEG and PNG loaders set \"x-dpi\" and \"y-dpi\" if the file\n\
+   contains image density information in dots per inch.\n\
+   Since 2.36.6, the JPEG loader sets the \"comment\" option with the comment\n\
+   EXIF tag."]
 
 external get_n_channels : t -> int = "ml_gdk_pixbuf_get_n_channels"
 (** Queries the number of channels of a pixbuf. *)
@@ -381,12 +358,12 @@ external fill : t -> UInt32.t -> unit = "ml_gdk_pixbuf_fill"
     channel. *)
 
 external copy_options : t -> t -> bool = "ml_gdk_pixbuf_copy_options"
-(** Copies the key/value pair options attached to a [GdkPixbuf] to another
-    [GdkPixbuf].
-
-    This is useful to keep original metadata after having manipulated a file.
-    However be careful to remove metadata which you've already applied, such as
-    the “orientation” option after rotating the image. *)
+[@@ocaml.doc
+  "Copies the key/value pair options attached to a [GdkPixbuf] to another\n\
+   [GdkPixbuf].\n\n\
+   This is useful to keep original metadata after having manipulated\n\
+   a file. However be careful to remove metadata which you've already\n\
+   applied, such as the \"orientation\" option after rotating the image."]
 
 external copy_area : t -> int -> int -> int -> int -> t -> int -> int -> unit
   = "ml_gdk_pixbuf_copy_area_bytecode" "ml_gdk_pixbuf_copy_area_native"
@@ -480,15 +457,15 @@ external composite :
 
 external apply_embedded_orientation : t -> t option
   = "ml_gdk_pixbuf_apply_embedded_orientation"
-(** Takes an existing pixbuf and checks for the presence of an associated
-    “orientation” option.
-
-    The orientation option may be provided by the JPEG loader (which reads the
-    exif orientation tag) or the TIFF loader (which reads the TIFF orientation
-    tag, and compensates it for the partial transforms performed by libtiff).
-
-    If an orientation option/tag is present, the appropriate transform will be
-    performed so that the pixbuf is oriented correctly. *)
+[@@ocaml.doc
+  "Takes an existing pixbuf and checks for the presence of an\n\
+   associated \"orientation\" option.\n\n\
+   The orientation option may be provided by the JPEG loader (which\n\
+   reads the exif orientation tag) or the TIFF loader (which reads\n\
+   the TIFF orientation tag, and compensates it for the partial\n\
+   transforms performed by libtiff).\n\n\
+   If an orientation option/tag is present, the appropriate transform\n\
+   will be performed so that the pixbuf is oriented correctly."]
 
 (* Properties *)
 
