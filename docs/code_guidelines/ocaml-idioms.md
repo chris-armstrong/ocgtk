@@ -15,8 +15,8 @@ See [core-idioms.md](./core-idioms.md) for the full policy.
 ## Option Matches Use Combinators
 
 Do not match `None` to run a unit effect or supply a default. Use `Option.iter`,
-`Option.map`, `Option.value ~default:` or `Option.fold`, with callbacks passed via
-`@@`. See [core-idioms.md](./core-idioms.md#option-handling-never-match-none-for-unit-or-defaults).
+`Option.map`, `Option.value ~default:` or `Option.fold`, piping the option with `|>`
+and passing the callback via `@@`. See [core-idioms.md](./core-idioms.md#option-handling-never-match-none-for-unit-or-defaults).
 
 ## Nested Pattern Matching
 

@@ -59,12 +59,13 @@ Common type-specific equalities: `String.equal`, `Char.equal`, `Bool.equal`,
 
 Do not write `match x with Some v -> … | None -> ()` or
 `match x with Some v -> … | None -> <value>` when the only job is to run an
-effect or supply a default. Use `Option` combinators. Pass callbacks through
-`@@` so the function and the option read left to right.
+effect or supply a default. Use `Option` combinators. Pipe the option in with
+`|>` and pass the callback with `@@`, so the option reads first, then the
+operation on it.
 
 | Bad | Use Instead |
 |-----|-------------|
-| `match x with Some v -> f v \| None -> ()` | `Option.iter (fun v -> f v) @@ x` |
+| `match x with Some v -> f v \| None -> ()` | `x \|> Option.iter @@ fun v -> f v` |
 | `match x with Some v -> f v \| None -> ""` | `Option.map f x \|> Option.value ~default:""` |
 | `match x with Some v -> f v \| None -> d` | `Option.fold ~none:d ~some:f x` |
 
@@ -76,9 +77,14 @@ begin match Doc_emit.item_doc ~indent:"" cst.constant_doc with
 end;
 
 (* Good *)
-Option.iter (fun comment -> bprintf buf "%s\n" comment)
-@@ Doc_emit.item_doc ~indent:"" cst.constant_doc;
+Doc_emit.item_doc ~indent:"" cst.constant_doc
+|> Option.iter (fun comment -> bprintf buf "%s\n" comment);
 ```
+
+`fun` extends as far right as possible, so a bare `@@ fun …` swallows any
+following `;`-sequenced statements into the lambda body. Parenthesise the
+lambda (as above) unless it is the final expression of its block. When the
+callback is already a named function, use `x |> Option.iter f` with no lambda.
 
 A `match` on an option is acceptable only when both arms do distinct,
 non-trivial work, or when the match destructures a tuple of options and the

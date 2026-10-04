@@ -52,7 +52,7 @@ See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 - Prefer pattern matching over if-else chains.
 - Destructure fields in the pattern itself, not after matching.
 - Use or-patterns for shared handling; avoid deeply nested `match`.
-- Never `match x with Some v -> f v | None -> ()`: use `Option.iter (fun v -> f v) @@ x`.
+- Never `match x with Some v -> f v | None -> ()`: use `x |> Option.iter @@ fun v -> f v` (parenthesise the lambda if more statements follow; `x |> Option.iter f` if `f` is named).
 - Never `match x with Some v -> f v | None -> <default>`: use `Option.map f x |> Option.value ~default:…` or `Option.fold`.
 
 ## Partial Functions — BANNED
