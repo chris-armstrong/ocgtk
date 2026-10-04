@@ -98,6 +98,25 @@ let neutralise_comment_hazards s =
   go 0;
   Buffer.contents buf
 
+(* Writes [content] as the code-block form that cannot end early: plain
+   [{[ ... ]}] when it has no []}], verbatim [{v ... v}] when it does, and
+   stripped to a fallback when it contains both. *)
+let render_code_block buf content : fallback list =
+  match (contains_sub content "]}", contains_sub content "v}") with
+  | false, _ ->
+      if String.equal content "" then Buffer.add_string buf "{[]}"
+      else (
+        Buffer.add_string buf "{[\n";
+        Buffer.add_string buf content;
+        Buffer.add_string buf "\n]}");
+      []
+  | true, false ->
+      Buffer.add_string buf "{v\n";
+      Buffer.add_string buf content;
+      Buffer.add_string buf "\nv}";
+      [ Code_block_verbatim content ]
+  | true, true -> [ Code_block_stripped content ]
+
 let render_with_fallbacks ctx (t : t) : string * fallback list =
   (* Entity heading normalisation: the doc's shallowest markdown level maps
      to {1}, deeper levels keep their offsets, capped at {5}. *)
@@ -136,23 +155,7 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
           if len > 0 && Char.equal (Buffer.nth buf (len - 1)) '\n' then
             Buffer.truncate buf (len - 1);
           fbs
-      | Code_block content ->
-          if contains_sub content "]}" then
-            if contains_sub content "v}" then
-              (* neither {[ ... ]} nor {v ... v} can carry this content *)
-              [ Code_block_stripped content ]
-            else (
-              Buffer.add_string buf "{v\n";
-              Buffer.add_string buf content;
-              Buffer.add_string buf "\nv}";
-              [ Code_block_verbatim content ])
-          else (
-            if String.equal content "" then Buffer.add_string buf "{[]}"
-            else (
-              Buffer.add_string buf "{[\n";
-              Buffer.add_string buf content;
-              Buffer.add_string buf "\n]}");
-            [])
+      | Code_block content -> render_code_block buf content
     in
     (Buffer.contents buf, fbs)
   in
