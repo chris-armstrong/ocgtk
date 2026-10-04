@@ -195,6 +195,13 @@ let entity_generator_by_entity_type =
           generate_c_stub_properties;
         }
 
+(** C name of the from_gobject stub for the interface [class_name] in
+    [namespace_name]. *)
+let from_gobject_stub_name ~namespace_name ~class_name =
+  sprintf "ml_%s_%s_from_gobject"
+    (String.lowercase_ascii namespace_name)
+    (Gir_gen_lib.Utils.to_snake_case class_name)
+
 (** Derives the GType macro name from a [glib:get-type] function name. *)
 let gtype_macro_from_get_type get_type_fn =
   (* Derive the GType macro from the glib:get-type function name.
@@ -236,9 +243,7 @@ let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
            intf.interface_name)
   | Some type_name, get_type_opt ->
       let fn_name =
-        sprintf "ml_%s_%s_from_gobject"
-          (String.lowercase_ascii namespace_name)
-          (Gir_gen_lib.Utils.to_snake_case intf.interface_name)
+        from_gobject_stub_name ~namespace_name ~class_name:intf.interface_name
       in
       (* Prefer deriving the GType macro from glib:get-type (already snake_case)
          to avoid to_snake_case mishandling acronym-heavy names like GDBusInterface *)
@@ -455,9 +460,9 @@ let generate_c_stub ~ctx ~output_dir entity =
                 | Gir_gen_lib.Types.Interface intf
                   when Option.is_some intf.glib_type_name ->
                     let fn_name =
-                      sprintf "ml_%s_%s_from_gobject"
-                        (String.lowercase_ascii ctx.namespace.namespace_name)
-                        (Gir_gen_lib.Utils.to_snake_case entity.name)
+                      from_gobject_stub_name
+                        ~namespace_name:ctx.namespace.namespace_name
+                        ~class_name:entity.name
                     in
                     Buffer.add_string version_buf
                       (sprintf
@@ -657,10 +662,9 @@ let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
         let from_gobject_c_name =
           Option.map
             (fun _ ->
-              Printf.sprintf "ml_%s_%s_from_gobject"
-                (String.lowercase_ascii
-                   ctx.Gir_gen_lib.Types.namespace.namespace_name)
-                (Gir_gen_lib.Utils.to_snake_case intf.interface_name))
+              from_gobject_stub_name
+                ~namespace_name:ctx.Gir_gen_lib.Types.namespace.namespace_name
+                ~class_name:intf.interface_name)
             intf.glib_type_name
         in
         generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain
@@ -777,10 +781,9 @@ let generate_combined_ml_files ~ctx ~output_dir ~module_group
     | Gir_gen_lib.Types.Interface intf ->
         Option.map
           (fun _ ->
-            Printf.sprintf "ml_%s_%s_from_gobject"
-              (String.lowercase_ascii
-                 ctx.Gir_gen_lib.Types.namespace.namespace_name)
-              (Gir_gen_lib.Utils.to_snake_case intf.interface_name))
+            from_gobject_stub_name
+              ~namespace_name:ctx.Gir_gen_lib.Types.namespace.namespace_name
+              ~class_name:intf.interface_name)
           intf.glib_type_name
     | Gir_gen_lib.Types.Class _ | Gir_gen_lib.Types.Record _ -> None
   in
@@ -1732,6 +1735,17 @@ let member_versions_from_docs members get_name get_doc =
       Option.map (fun v -> (get_name m, v)) @@ extract_since_version doc)
     members
 
+(* Pair each entity with the versions its members gained from docs, dropping
+   entities with none. *)
+let entity_member_versions ~get_name ~get_members ~get_member_name
+    ~get_member_doc entities =
+  List.filter_map entities ~f:(fun entity ->
+      let vs =
+        member_versions_from_docs (get_members entity) get_member_name
+          get_member_doc
+      in
+      if List.is_empty vs then None else Some (get_name entity, vs))
+
 (* Generate overrides sexp file from parsed GIR data, merging with any existing file.
    Existing (ignore) entries are always preserved. Version annotations are replaced
    with fresh data extracted from GIR <doc> text. *)
@@ -1817,15 +1831,11 @@ let generate_overrides ~gir_file ~output_file =
 
   (* Merge enum version data with existing enum ignores *)
   let enum_versions =
-    List.filter_map
-      ~f:(fun (enm : gir_enum) ->
-        let vs =
-          member_versions_from_docs enm.members
-            (fun m -> m.member_name)
-            (fun m -> m.member_doc)
-        in
-        if not (List.is_empty vs) then Some (enm.enum_name, vs) else None)
-      enums
+    entity_member_versions enums
+      ~get_name:(fun (e : gir_enum) -> e.enum_name)
+      ~get_members:(fun (e : gir_enum) -> e.members)
+      ~get_member_name:(fun m -> m.member_name)
+      ~get_member_doc:(fun m -> m.member_doc)
   in
   Buffer.add_string buf
     (merge_version_entities ~entity_kind:"enumeration" ~component_kind:"member"
@@ -1837,15 +1847,11 @@ let generate_overrides ~gir_file ~output_file =
 
   (* Merge bitfield version data with existing bitfield ignores *)
   let bitfield_versions =
-    List.filter_map
-      ~f:(fun (bf : gir_bitfield) ->
-        let vs =
-          member_versions_from_docs bf.flags
-            (fun f -> f.flag_name)
-            (fun f -> f.flag_doc)
-        in
-        if not (List.is_empty vs) then Some (bf.bitfield_name, vs) else None)
-      bitfields
+    entity_member_versions bitfields
+      ~get_name:(fun (b : gir_bitfield) -> b.bitfield_name)
+      ~get_members:(fun (b : gir_bitfield) -> b.flags)
+      ~get_member_name:(fun f -> f.flag_name)
+      ~get_member_doc:(fun f -> f.flag_doc)
   in
   Buffer.add_string buf
     (merge_version_entities ~entity_kind:"bitfield" ~component_kind:"member"
@@ -1857,15 +1863,11 @@ let generate_overrides ~gir_file ~output_file =
 
   (* Merge record field version data with existing record ignores *)
   let record_versions =
-    List.filter_map
-      ~f:(fun (rec_ : gir_record) ->
-        let vs =
-          member_versions_from_docs rec_.fields
-            (fun f -> f.field_name)
-            (fun f -> f.field_doc)
-        in
-        if not (List.is_empty vs) then Some (rec_.record_name, vs) else None)
-      records
+    entity_member_versions records
+      ~get_name:(fun (r : gir_record) -> r.record_name)
+      ~get_members:(fun (r : gir_record) -> r.fields)
+      ~get_member_name:(fun f -> f.field_name)
+      ~get_member_doc:(fun f -> f.field_doc)
   in
   Buffer.add_string buf
     (merge_version_entities ~entity_kind:"record" ~component_kind:"field"
