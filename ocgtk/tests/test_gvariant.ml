@@ -109,24 +109,24 @@ let test_int64_roundtrip_large () =
 (** {2 Byte (uint8) Tests} *)
 
 let test_byte_roundtrip () =
-  let v = Gvariant.of_byte 42 in
+  let v = Gvariant.of_byte (UInt8.of_int 42) in
   Alcotest.(check string) "byte type is 'y'" "y" (Gvariant.type_string v);
   let result = Gvariant.to_byte v in
-  Alcotest.(check int) "byte roundtrip" 42 result
+  Alcotest.(check int) "byte roundtrip" 42 (UInt8.to_int result)
 
 let test_byte_bounds () =
-  let v_min = Gvariant.of_byte 0 in
-  let v_max = Gvariant.of_byte 255 in
-  Alcotest.(check int) "byte min" 0 (Gvariant.to_byte v_min);
-  Alcotest.(check int) "byte max" 255 (Gvariant.to_byte v_max)
+  let v_min = Gvariant.of_byte (UInt8.of_int 0) in
+  let v_max = Gvariant.of_byte (UInt8.of_int 255) in
+  Alcotest.(check int) "byte min" 0 (UInt8.to_int (Gvariant.to_byte v_min));
+  Alcotest.(check int) "byte max" 255 (UInt8.to_int (Gvariant.to_byte v_max))
 
 (** {2 Int16 Tests} *)
 
 let test_int16_roundtrip () =
-  let v = Gvariant.of_int16 1000 in
+  let v = Gvariant.of_int16 (Int16.of_int 1000) in
   Alcotest.(check string) "int16 type is 'n'" "n" (Gvariant.type_string v);
   let result = Gvariant.to_int16 v in
-  Alcotest.(check int) "int16 roundtrip" 1000 result
+  Alcotest.(check int) "int16 roundtrip" 1000 (Int16.to_int result)
 
 (** {2 UInt16 Tests} *)
 

@@ -54,7 +54,7 @@ type uint64 = UInt64.t
 type uint16 = UInt16.t
 (** Unsigned 16-bit integer *)
 
-type int16 = int
+type int16 = Int16.t
 (** Signed 16-bit integer - stored as OCaml int *)
 
 (** {2 Opaque GVariant Type} *)
@@ -80,10 +80,10 @@ external to_boolean : t -> bool = "ml_g_variant_get_boolean"
 
 (** {2 Byte (uint8)} *)
 
-external of_byte : int -> t = "ml_g_variant_new_byte"
+external of_byte : UInt8.t -> t = "ml_g_variant_new_byte"
 (** Create a byte variant. *)
 
-external to_byte : t -> int = "ml_g_variant_get_byte"
+external to_byte : t -> UInt8.t = "ml_g_variant_get_byte"
 (** Get the byte value. Raises Failure if the variant is not a byte. *)
 
 (** {2 Signed Integers} *)
@@ -215,15 +215,17 @@ external lookup_boolean : t -> string -> bool option
 (** Lookup a boolean value in a dictionary. Returns [None] if the key is not
     found or the value is not a boolean. *)
 
-external lookup_byte : t -> string -> int option = "ml_g_variant_lookup_byte"
+external lookup_byte : t -> string -> UInt8.t option
+  = "ml_g_variant_lookup_byte"
 (** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is
     not found or the value is not a byte. *)
 
-external lookup_int16 : t -> string -> int option = "ml_g_variant_lookup_int16"
+external lookup_int16 : t -> string -> int16 option
+  = "ml_g_variant_lookup_int16"
 (** Lookup an int16 value in a dictionary. Returns [None] if the key is not
     found or the value is not an int16. *)
 
-external lookup_uint16 : t -> string -> int option
+external lookup_uint16 : t -> string -> uint16 option
   = "ml_g_variant_lookup_uint16"
 (** Lookup a uint16 value in a dictionary. Returns [None] if the key is not
     found or the value is not a uint16. *)
