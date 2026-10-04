@@ -874,18 +874,18 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~combined_module_name ~entity =
 
 (* Wrap C converters in the namespace version guard when the entity is versioned *)
 let guard_converters ~namespace_name version_opt converters =
-  Option.fold ~none:converters
-    ~some:(fun version_str ->
-      match Gir_gen_lib.Version_guard.parse_version version_str with
-      | Error _ -> converters
-      | Ok version -> (
-          match
-            Gir_gen_lib.Version_guard.emit_c_guard namespace_name version
-              ~is_opening:true
-          with
-          | Error _ -> converters
-          | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"))
-    version_opt
+  let ( let* ) = Result.bind in
+  let guarded version_str =
+    let* version = Gir_gen_lib.Version_guard.parse_version version_str in
+    let* guard_if =
+      Gir_gen_lib.Version_guard.emit_c_guard namespace_name version
+        ~is_opening:true
+    in
+    Ok (guard_if ^ "\n" ^ converters ^ "#endif\n\n")
+  in
+  version_opt
+  |> Option.fold ~none:(Ok converters) ~some:guarded
+  |> Result.value ~default:converters
 
 (* Generate enum and bitfield files for a namespace *)
 let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
