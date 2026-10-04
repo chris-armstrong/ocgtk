@@ -104,7 +104,9 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
   let shallowest =
     List.fold_left
       (fun acc blk ->
-        match blk with Heading (l, _) -> Int.min acc l | _ -> acc)
+        match blk with
+        | Heading (l, _) -> Int.min acc l
+        | Para _ | List _ | Code_block _ -> acc)
       7 t.blocks
   in
   let shift = shallowest - 1 in

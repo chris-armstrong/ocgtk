@@ -315,7 +315,7 @@ let generate_c_stub ~ctx ~output_dir entity =
             ~namespace_name:ctx.namespace.namespace_name intf
         in
         Buffer.add_string body_buf stub
-    | _ -> ());
+    | Class _ | Record _ | Interface _ -> ());
 
     (* Append get_type stub for records registered with the GType system *)
     (match entity.kind with
@@ -338,7 +338,7 @@ let generate_c_stub ~ctx ~output_dir entity =
                   }\n"
                  ml_name get_type_func))
         @@ record.glib_get_type
-    | _ -> ());
+    | Class _ | Interface _ -> ());
 
     let body_content = Buffer.contents body_buf in
 
@@ -471,7 +471,7 @@ let generate_c_stub ~ctx ~output_dir entity =
 |}
                          fn_name entity.name version_str);
                     Buffer.add_string version_buf "\n"
-                | _ -> ());
+                | Class _ | Record _ | Interface _ -> ());
 
                 Buffer.add_string version_buf "\n";
                 match
@@ -625,7 +625,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
   let glib_get_type =
     match entity.Gir_gen_lib.Types.kind with
     | Gir_gen_lib.Types.Record record -> record.glib_get_type
-    | _ -> None
+    | Gir_gen_lib.Types.Class _ | Gir_gen_lib.Types.Interface _ -> None
   in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
@@ -1153,8 +1153,10 @@ let generate_bindings filter_file gir_file output_dir reference_files
                   in
                   qualified :: aux p_ns p_name (depth + 1)
                 else qualified :: aux ns p (depth + 1)
-            | Crt_Class { parent = None; _ } -> [ qualified ]
-            | _ -> [ qualified ])
+            | Crt_Class { parent = None; _ }
+            | Crt_Interface | Crt_Record _ | Crt_Enum | Crt_Bitfield
+            | Crt_Constant ->
+                [ qualified ])
           entity
     in
     aux ns name 0
@@ -1176,7 +1178,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
               in
               cross_ns_parent_chain ns pname
             else parent :: aux parent (depth + 1)
-        | _ -> []
+        | Some None | None -> []
     in
     aux (Gir_gen_lib.Utils.normalize_class_name name) 0
   in

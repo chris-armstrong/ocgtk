@@ -45,7 +45,9 @@ let serialize_value ~ocaml_type value =
   | "UInt32.t" -> "UInt32.of_int " ^ value
   | "UInt64.t" -> "UInt64.of_int " ^ value
   | "Gsize.t" -> "Gsize.of_int " ^ value
-  | _ -> value (* unreachable: ocaml_type_of_gir_type_name filters first *)
+  | other ->
+      (* ocaml_type_of_gir_type_name filters to the cases above *)
+      failwith (sprintf "serialize_value: unmapped OCaml type %s" other)
 
 (** Iterate [constants], resolving each one's OCaml type. Calls [emit] for every
     mappable constant. For unmappable types, warns to stderr when

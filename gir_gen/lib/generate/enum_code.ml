@@ -22,20 +22,28 @@ let variant_name_of_member name =
     guard (no trailing newline required) *)
 let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
     ~branch buf =
-  match Version_guard.resolve_guard ~class_version ~member_version with
-  | Error _ | Ok (Version_guard.No_guard | Version_guard.Class_guard _) ->
-      Buffer.add_string buf branch
-  | Ok (Version_guard.Member_guard v) -> (
-      match Version_guard.emit_c_guard namespace v ~is_opening:true with
-      | Error _ -> Buffer.add_string buf branch
-      | Ok guard_if -> (
-          bprintf buf "%s\n%s\n" guard_if branch;
-          Option.iter (fun fb ->
-              bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb)
-          @@ fallback_line;
-          match Version_guard.emit_c_guard namespace v ~is_opening:false with
-          | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
-          | Error _ -> Buffer.add_string buf "#endif\n"))
+  let member_guard =
+    match Version_guard.resolve_guard ~class_version ~member_version with
+    | Ok (Version_guard.Member_guard v) -> Some v
+    | Error _ | Ok (Version_guard.No_guard | Version_guard.Class_guard _) ->
+        None
+  in
+  let opening =
+    Option.bind member_guard (fun v ->
+        Version_guard.emit_c_guard namespace v ~is_opening:true
+        |> Result.to_option
+        |> Option.map (fun guard_if -> (v, guard_if)))
+  in
+  match opening with
+  | None -> Buffer.add_string buf branch
+  | Some (v, guard_if) -> (
+      bprintf buf "%s\n%s\n" guard_if branch;
+      Option.iter (fun fb ->
+          bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb)
+      @@ fallback_line;
+      match Version_guard.emit_c_guard namespace v ~is_opening:false with
+      | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
+      | Error _ -> Buffer.add_string buf "#endif\n")
 
 (* Generate OCaml enum type definition plus val declarations for converters *)
 let generate_ocaml_enum enum =

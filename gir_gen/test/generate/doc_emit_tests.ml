@@ -23,7 +23,8 @@ let count_sub s sub =
   in
   go 0 0
 
-let index_of s sub = Str.search_forward (Str.regexp_string sub) s 0
+(* Raises [Not_found] when [sub] is absent. *)
+let index_of_exn s sub = Str.search_forward (Str.regexp_string sub) s 0
 
 let check_opt msg expected actual =
   Alcotest.(check (option string)) msg expected actual
@@ -108,7 +109,7 @@ let test_tags_come_last () =
       Alcotest.(check int) "no bare upstream @self tag" 0 (count_sub s "@self");
       Alcotest.(check bool)
         "escaped prose precedes the real tag" true
-        (index_of s "\\@Widget" < index_of s "@since");
+        (index_of_exn s "\\@Widget" < index_of_exn s "@since");
       Alcotest.(check int)
         "exactly one real @since tag" 1 (count_sub s "@since"))
 
