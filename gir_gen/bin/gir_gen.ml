@@ -1125,7 +1125,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
     [ ("Object", None); ("InitiallyUnowned", Some "Object") ]
   in
 
-  let cross_ns_parent_chain ns name =
+  let cross_ns_parent_chain ~ns ~name =
     let open Gir_gen_lib.Types in
     let rec aux ns name depth =
       if depth > 100 then []
@@ -1176,7 +1176,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
                 String.sub parent ~pos:(dot + 1)
                   ~len:(String.length parent - dot - 1)
               in
-              cross_ns_parent_chain ns pname
+              cross_ns_parent_chain ~ns ~name:pname
             else parent :: aux parent (depth + 1)
         | Some None | None -> []
     in
@@ -1429,28 +1429,38 @@ let generate_bindings filter_file gir_file output_dir reference_files
   let wrapper_synopsis =
     match namespace.namespace_name with
     | "Cairo" | "cairo" ->
-        "2D vector graphics: drawing contexts, paths, patterns and surfaces."
+        Some
+          "2D vector graphics: drawing contexts, paths, patterns and surfaces."
     | "Gdk" ->
-        "Low-level windowing, displays, input and events that Gtk is built on."
-    | "GdkPixbuf" -> "Image loading, scaling and pixel-buffer manipulation."
+        Some
+          "Low-level windowing, displays, input and events that Gtk is built \
+           on."
+    | "GdkPixbuf" ->
+        Some "Image loading, scaling and pixel-buffer manipulation."
     | "Gio" ->
-        "I/O, files, and the application/networking abstractions from GLib's \
-         application framework."
+        Some
+          "I/O, files, and the application/networking abstractions from GLib's \
+           application framework."
     | "Graphene" ->
-        "Lightweight 3D transform and geometry types (vectors, matrices, \
-         rectangles) used by Gsk and Gtk."
+        Some
+          "Lightweight 3D transform and geometry types (vectors, matrices, \
+           rectangles) used by Gsk and Gtk."
     | "Gsk" ->
-        "The GTK scene graph: render nodes and transforms for drawing widgets."
+        Some
+          "The GTK scene graph: render nodes and transforms for drawing \
+           widgets."
     | "Gtk" ->
-        "The widget toolkit: windows, widgets, layout and the application \
-         model."
-    | "Pango" -> "Text layout and internationalized font rendering."
-    | "PangoCairo" -> "Glue between Pango text layout and Cairo rendering."
-    | _ -> ""
+        Some
+          "The widget toolkit: windows, widgets, layout and the application \
+           model."
+    | "Pango" -> Some "Text layout and internationalized font rendering."
+    | "PangoCairo" -> Some "Glue between Pango text layout and Cairo rendering."
+    | _ -> None
   in
   let wrapper_doc_comment =
-    if String.equal wrapper_synopsis "" then ""
-    else sprintf "(** %s *)\n\n" wrapper_synopsis
+    Option.fold ~none:""
+      ~some:(fun synopsis -> sprintf "(** %s *)\n\n" synopsis)
+      wrapper_synopsis
   in
   let wrapper_content =
     sprintf
@@ -1506,7 +1516,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
   `Ok ()
 
 (* References generation function *)
-let generate_references gir_file output_file overrides_file =
+let generate_references ~gir_file ~output_file ~overrides_file =
   printf "Parsing %s for references...\n" gir_file;
 
   let filter_classes = [] in
@@ -1621,7 +1631,7 @@ let generate_references gir_file output_file overrides_file =
 
 let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
 
-let render_version_component ~kind (name : string) (version : string) =
+let render_version_component ~kind ~name ~version =
   sprintf "    (%s %s (version \"%s\"))" kind name version
 
 (* Render a single component override back to human-friendly sexp. *)
@@ -1639,7 +1649,7 @@ let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
    [ignore_components]: component-level ignores to preserve from the existing file.
    [version_data]: fresh (name, version) pairs from GIR.
    [entity_action]: entity-level ignore to preserve, if any. *)
-let render_enum_entry entity_kind component_kind entity_name entity_action
+let render_enum_entry ~entity_kind ~component_kind ~entity_name entity_action
     ignore_components version_data =
   let buf = Buffer.create 128 in
   bprintf buf "\n  (%s %s\n" entity_kind entity_name;
@@ -1654,7 +1664,7 @@ let render_enum_entry entity_kind component_kind entity_name entity_action
   List.iter
     ~f:(fun (name, version) ->
       bprintf buf "%s\n"
-        (render_version_component ~kind:component_kind name version))
+        (render_version_component ~kind:component_kind ~name ~version))
     version_data;
   bprintf buf "  )";
   Buffer.contents buf
@@ -1695,8 +1705,8 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
         @@ existing_ov
       in
       bprintf buf "%s\n"
-        (render_enum_entry entity_kind component_kind entity_name entity_action
-           ignore_components version_data))
+        (render_enum_entry ~entity_kind ~component_kind ~entity_name
+           entity_action ignore_components version_data))
     gir_versions;
   (* Emit existing entities that had no GIR version data (preserve as-is) *)
   List.iter
@@ -1706,8 +1716,8 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
         let entity_action = get_entity_action e in
         let all_components = get_components e in
         bprintf buf "%s\n"
-          (render_enum_entry entity_kind component_kind name entity_action
-             all_components [])
+          (render_enum_entry ~entity_kind ~component_kind ~entity_name:name
+             entity_action all_components [])
       end)
     existing;
   Buffer.contents buf
@@ -1725,7 +1735,7 @@ let member_versions_from_docs members get_name get_doc =
 (* Generate overrides sexp file from parsed GIR data, merging with any existing file.
    Existing (ignore) entries are always preserved. Version annotations are replaced
    with fresh data extracted from GIR <doc> text. *)
-let generate_overrides gir_file output_file =
+let generate_overrides ~gir_file ~output_file =
   printf "Parsing %s for Since version annotations...\n" gir_file;
 
   let ( _repository,
@@ -1981,8 +1991,9 @@ let overrides_cmd =
   Cmd.v info
     Term.(
       ret
-        (const generate_overrides $ gir_file_arg_overrides
-       $ output_file_arg_overrides))
+        (const (fun gir_file output_file ->
+             generate_overrides ~gir_file ~output_file)
+        $ gir_file_arg_overrides $ output_file_arg_overrides))
 
 (* References subcommand *)
 let references_cmd =
@@ -2007,8 +2018,9 @@ let references_cmd =
   Cmd.v info
     Term.(
       ret
-        (const generate_references $ gir_file_arg_refs $ output_file_arg_refs
-       $ overrides_arg_refs))
+        (const (fun gir_file output_file overrides_file ->
+             generate_references ~gir_file ~output_file ~overrides_file)
+        $ gir_file_arg_refs $ output_file_arg_refs $ overrides_arg_refs))
 
 (* Main command *)
 let gir_gen_cmd =
