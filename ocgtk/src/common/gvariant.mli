@@ -37,7 +37,7 @@
     - m*: maybe (nullable)
     - a*: array
     - () : tuple
-    - {} : dictionary entry
+    - \{\} : dictionary entry
 *)
 
 (** {2 Unsigned Integer Types} *)
@@ -74,7 +74,7 @@ val of_boolean : bool -> t
 
 val to_boolean : t -> bool
 (** Get the boolean value.
-    @raise Failure if the variant is not a boolean. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a boolean. *)
 
 (** {2 Byte (uint8)} *)
 
@@ -83,7 +83,7 @@ val of_byte : int -> t
 
 val to_byte : t -> int
 (** Get the byte value.
-    @raise Failure if the variant is not a byte. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a byte. *)
 
 (** {2 Signed Integers} *)
 
@@ -92,21 +92,21 @@ val of_int16 : int16 -> t
 
 val to_int16 : t -> int16
 (** Get the int16 value.
-    @raise Failure if the variant is not an int16. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int16. *)
 
 val of_int32 : int32 -> t
 (** Create an int32 variant. *)
 
 val to_int32 : t -> int32
 (** Get the int32 value.
-    @raise Failure if the variant is not an int32. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int32. *)
 
 val of_int64 : int64 -> t
 (** Create an int64 variant. *)
 
 val to_int64 : t -> int64
 (** Get the int64 value.
-    @raise Failure if the variant is not an int64. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int64. *)
 
 (** {2 Unsigned Integers} *)
 
@@ -115,21 +115,21 @@ val of_uint16 : uint16 -> t
 
 val to_uint16 : t -> uint16
 (** Get the uint16 value.
-    @raise Failure if the variant is not a uint16. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint16. *)
 
 val of_uint32 : uint32 -> t
 (** Create a uint32 variant. *)
 
 val to_uint32 : t -> uint32
 (** Get the uint32 value.
-    @raise Failure if the variant is not a uint32. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint32. *)
 
 val of_uint64 : uint64 -> t
 (** Create a uint64 variant. *)
 
 val to_uint64 : t -> uint64
 (** Get the uint64 value.
-    @raise Failure if the variant is not a uint64. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint64. *)
 
 (** {2 Floating Point} *)
 
@@ -138,7 +138,7 @@ val of_double : float -> t
 
 val to_double : t -> float
 (** Get the double value.
-    @raise Failure if the variant is not a double. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a double. *)
 
 (** {2 Text Types} *)
 
@@ -147,7 +147,7 @@ val of_string : string -> t
 
 val to_string : t -> string
 (** Get the string value.
-    @raise Failure if the variant is not a string. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a string. *)
 
 val of_object_path : string -> t
 (** D-Bus object path - validated to be a valid object path *)
@@ -162,7 +162,7 @@ val of_handle : int -> t
 
 val to_handle : t -> int
 (** Get the handle value.
-    @raise Failure if the variant is not a handle. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a handle. *)
 
 (** {2 Variant (Boxed Value)} *)
 
@@ -171,7 +171,7 @@ val of_variant : t -> t
 
 val to_variant : t -> t
 (** Unwrap a variant inside a variant.
-    @raise Failure if the variant is not a variant type. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a variant type. *)
 
 (** {2 Maybe (Nullable)} *)
 
@@ -182,7 +182,7 @@ val of_maybe : Gvariant_type.t -> t option -> t
 val to_maybe : t -> t option
 (** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped
     value.
-    @raise Failure if the variant is not a maybe type. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a maybe type. *)
 
 (** {2 Arrays} *)
 
@@ -191,18 +191,18 @@ val of_string_array : string array -> t
 
 val to_string_array : t -> string array
 (** Get the string array value.
-    @raise Failure if the variant is not a string array. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a string array. *)
 
 val of_object_path_array : string array -> t
 (** Create an object path array variant. *)
 
 val to_object_path_array : t -> string array
 (** Get the object path array value.
-    @raise Failure if the variant is not an object path array. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an object path array. *)
 
-(** {2 Dictionary Lookups (a{sv} pattern)}
+(** {2 Dictionary Lookups (a\{sv\} pattern)}
 
-    These functions look up values in a{sv} (string->variant) dictionaries.
+    These functions look up values in a\{sv\} (string->variant) dictionaries.
     They return [None] if the key is not found or if the value is not of the expected type.
 
     For dictionaries with different value types, use [get_child_value] with the appropriate index.

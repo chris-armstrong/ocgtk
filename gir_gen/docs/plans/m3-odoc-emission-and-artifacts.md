@@ -250,11 +250,14 @@ design, recorded as fallbacks for the warnings report): admonitions
 
 | Module | Role |
 |---|---|
-| `gir_gen/lib/generate/doc_translate.ml` / `.mli` | `parse`, `render`, `translate`, the AST types above, fallback/warning collection. |
+| `gir_gen/lib/generate/doc_ast.ml` / `.mli` | The flat AST types (`inline`, `block`, `t`), `context`, the `fallback` event type, and derived equality (`equal_t`). Shared by parse and render. |
+| `gir_gen/lib/generate/doc_parse.ml` / `.mli` | `parse`, `parse_with_fallbacks`: GIR markdown → AST. Parse-time strips (admonitions, tables, pictures, images, quotes). |
+| `gir_gen/lib/generate/doc_render.ml` / `.mli` | `render`, `render_as`, `render_with_fallbacks`: AST → odoc markup; heading policy per context; render-time fallbacks; comment-hazard neutralisation. |
+| `gir_gen/lib/generate/doc_translate.ml` / `.mli` | Composition: `translate`, `translate_with_fallbacks` (= render ∘ parse), re-exports of the AST types, `equal_t`. The entry point emission sites call. |
 | `gir_gen/lib/generate/doc_emit.ml` / `.mli` | `emit_item_doc`, `emit_entity_doc`: assembly, tags-last, final-comment sanitisation, `@since`. |
 | `gir_gen/lib/generate/doc_index.ml` / `.mli` | Per-namespace `index.mld` emit pass — `{!…}` tables grouped by kind; called from the bindings pipeline. |
-| `gir_gen/test/generate/doc_translate_tests.ml`, `doc_emit_tests.ml` | Unit/expect tests per the `constant_code_tests.ml` convention: every render-policy row, every invariant. |
-| `gir_gen/test/corpus/…` smoke test | `parse`+`render` over all ~39,850 bundled `<doc>` elements; asserts comment safety, balance, the wiring property. |
+| `gir_gen/test/generate/doc_parse_tests.ml`, `doc_render_tests.ml`, `doc_translate_tests.ml` (+ `doc_translate_test_helpers.ml`), `doc_emit_tests.ml` (Phase 2) | Unit/expect tests per the `constant_code_tests.ml` convention: every render-policy row, every invariant. |
+| `gir_gen/test/corpus/doc_translate_corpus_tests.ml` | Corpus smoke test (Phase 1): `parse`+`render` over the bundled `<doc>` elements; asserts comment safety, balance, the wiring property. |
 | `scripts/doc_artifacts.ml` | Artifact cache driver (below): `build`/`list`/`extract`/`diff`/`diff-baseline`/`set-baseline`/`warnings` subcommands plus `--force`. Pure `Sys.command` shelling; invoked as `opam exec -- ocaml scripts/doc_artifacts.ml …` (no dune bootstrap needed — it shells out only). |
 | `.github/workflows/doc-preview.yml` + cleanup workflow | As sketched; landing `index.html` step included. |
 

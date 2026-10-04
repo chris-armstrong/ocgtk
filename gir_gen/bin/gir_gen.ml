@@ -1442,7 +1442,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
      package index alongside the other namespace libraries. *)
   let wrapper_synopsis =
     match namespace.namespace_name with
-    | "Cairo" ->
+    | "Cairo" | "cairo" ->
         "2D vector graphics: drawing contexts, paths, patterns and surfaces."
     | "Gdk" ->
         "Low-level windowing, displays, input and events that Gtk is built on."

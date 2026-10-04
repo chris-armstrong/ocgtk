@@ -19,7 +19,7 @@ type t = private int
 
 val of_int : int -> t
 (** [of_int n] converts [n] to an [Int16.t].
-    @raise Invalid_argument if [n < -32768 || n > 32767]. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < -32768 || n > 32767]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)

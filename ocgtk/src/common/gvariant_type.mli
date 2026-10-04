@@ -26,7 +26,7 @@ type t
 (** {2 Constructors} *)
 
 val of_string : string -> t
-(** Create a GVariantType from a type string (e.g., "i", "s", "as", "a{sv}") *)
+(** Create a GVariantType from a type string (e.g., ["i", "s", "as", "a{sv}"]) *)
 
 (** {2 Accessors} *)
 
