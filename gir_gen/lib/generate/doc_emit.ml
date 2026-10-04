@@ -11,10 +11,9 @@ let prose_of ~context ~doc ~fallback =
   in
   if not (String.equal translated "") then Some (translated, false)
   else
-    match fallback with
-    | Some f when not (String.equal (String.trim f) "") ->
-        Some (String.trim f, true)
-    | _ -> None
+    Option.bind fallback (fun f ->
+        let trimmed = String.trim f in
+        if String.equal trimmed "" then None else Some (trimmed, true))
 
 (* OCaml lexes string literals inside comments, and the lexer's escape rules
    do not match prose: an even number of double quotes can still leave a

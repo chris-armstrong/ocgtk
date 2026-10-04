@@ -34,9 +34,9 @@ let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
         |> Result.to_option
         |> Option.map (fun guard_if -> (v, guard_if)))
   in
-  match opening with
-  | None -> Buffer.add_string buf branch
-  | Some (v, guard_if) -> (
+  Option.fold
+    ~none:(Buffer.add_string buf branch)
+    ~some:(fun (v, guard_if) ->
       bprintf buf "%s\n%s\n" guard_if branch;
       Option.iter (fun fb ->
           bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb)
@@ -44,6 +44,7 @@ let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
       match Version_guard.emit_c_guard namespace v ~is_opening:false with
       | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
       | Error _ -> Buffer.add_string buf "#endif\n")
+    opening
 
 (* Generate OCaml enum type definition plus val declarations for converters *)
 let generate_ocaml_enum enum =
