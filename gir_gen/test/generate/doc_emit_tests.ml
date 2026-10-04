@@ -1,7 +1,7 @@
 (* Unit tests for Doc_emit (gir_gen/lib/generate/doc_emit.ml): the single
    assembly point for item doc comments. Covers the exact comment text for
-   each input shape (including the constant version-only fallback, which
-   must stay byte-identical to the historical constant emitter), tags-last,
+   each input shape (including the constant version-only fallback, whose format is
+   fixed), tags-last,
    comment safety on the assembled output, and translation being applied.
 
    Assertions compare exact strings where the format is the contract, and

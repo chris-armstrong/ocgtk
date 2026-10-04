@@ -3,7 +3,7 @@
 open Doc_ast
 open Doc_str
 
-(* odoc-special escaping in prose contexts: \{ \} \[ \] \@ (plan invariant 2).
+(* odoc-special escaping in prose contexts: \{ \} \[ \] \@.
    A bare ] in prose is not literal text to odoc: it closes a code span it
    never opened, which warns ("Unpaired end of code"). So it is escaped
    like its opening partner. Code spans manage their own ] via the balance
@@ -34,7 +34,7 @@ let rec render_inline ins buf fbs =
           fbs'
       | Code s ->
           if String.contains s ']' then (
-            (* balance fallback (plan invariant 3): escaped plain prose *)
+            (* unbalanced code: fall back to escaped plain prose *)
             escape_prose buf s;
             Inline_code_unbalanced s :: fbs')
           else (
@@ -44,12 +44,11 @@ let rec render_inline ins buf fbs =
       | Italic inner -> wrap buf "{i " "}" inner fbs'
       | Link { text; url } -> wrap buf ("{{:" ^ url ^ "}") "}" text fbs'
       | Page_ref { text; path; anchor = _ } ->
-          (* v1: degraded to bare text (upstream-URL leg is a pure rewrite) *)
+          (* degraded to bare text *)
           let f = render_inline text buf fbs' in
           Page_ref_degraded path :: f
       | Sym_ref { endpoint; kind = _; anchor = _ } ->
-          (* v1: degraded to a code span (the §7 resolver leg is a pure
-             rewrite to [Ref]) *)
+          (* degraded to a code span *)
           emit_code_span buf endpoint;
           Sym_ref_degraded endpoint :: fbs'
       | Param_ref name ->
@@ -73,7 +72,7 @@ and wrap buf prefix suffix inner fbs =
   Buffer.add_string buf suffix;
   f
 
-(* The comment-hazard pass (plan invariant 1): insert a backslash between
+(* The comment-hazard pass: insert a backslash between
    the two characters of a star-paren / paren-star sequence, over the whole
    final output — inside code spans and verbatim blocks included. *)
 let neutralise_comment_hazards s =

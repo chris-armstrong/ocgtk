@@ -195,9 +195,7 @@ let entity_generator_by_entity_type =
           generate_c_stub_properties;
         }
 
-(** Generate the from_gobject C function for an interface. Raises [Failure] if
-    [intf.glib_type_name] is [None] — callers must guard with
-    [Option.is_some intf.glib_type_name] before calling. *)
+(** Derives the GType macro name from a [glib:get-type] function name. *)
 let gtype_macro_from_get_type get_type_fn =
   (* Derive the GType macro from the glib:get-type function name.
      e.g. "g_dbus_interface_get_type" -> "G_TYPE_DBUS_INTERFACE"
@@ -226,6 +224,9 @@ let gtype_macro_from_get_type get_type_fn =
       prefix ^ "_TYPE_" ^ rest)
   @@ String.index_opt screaming '_'
 
+(** Generates the from_gobject C function for an interface. Raises [Failure] if
+    [intf.glib_type_name] is [None]; callers must guard with
+    [Option.is_some intf.glib_type_name] first. *)
 let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
   match (intf.glib_type_name, intf.glib_get_type) with
   | None, _ ->
@@ -887,11 +888,8 @@ let guard_converters ~namespace_name version_opt converters =
 let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
   if List.length enums = 0 && List.length bitfields = 0 then ()
   else begin
-    (* Enum- and bitfield-level docs are captured in the AST as of the M3
-       doc-parsing leg but not yet emitted; blanking them here keeps the
-       generated bindings byte-identical until the M3 emission leg wires docs
-       into the page model. Member-level docs were already emitted before M3
-       and are untouched. *)
+    (* Enum and bitfield type-level docs are suppressed so the generated enum
+       files stay stable; member-level docs are still emitted. *)
     let enums =
       List.map ~f:(fun (e : gir_enum) -> { e with enum_doc = None }) enums
     in

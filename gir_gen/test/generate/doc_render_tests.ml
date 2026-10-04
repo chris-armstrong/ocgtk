@@ -85,7 +85,7 @@ let test_empty_blocks () =
 (* ---------- escapes and comment safety -------------------------- *)
 
 let test_prose_escapes () =
-  (* invariant 2 escapes exactly \{ \} \[ \] \@ at render. A lowercase [@word]
+  (* prose escapes exactly \{ \} \[ \] \@ at render. A lowercase [@word]
      is a param sigil, rendered as [word] — not an escape case, so the
      fixture uses uppercase [@F] to exercise the literal-@ escape *)
   let out = E.translate "a {b} c [d] e @F g" in
@@ -112,7 +112,7 @@ let test_comment_hazard_inside_code () =
   lacks "no *) inside code" out "*)"
 
 let test_literal_at_never_a_tag () =
-  (* decision 6: any literal @ in prose is escaped, so a bare @word can
+  (* any literal @ in prose is escaped, so a bare @word can
      never start an odoc tag; and @param sigils become code spans *)
   let out = E.translate "The @self value is like @amount but also plain @x." in
   has "param ref becomes [name]" out "[amount]";
@@ -131,7 +131,7 @@ let test_relative_html_link_degraded () =
   has_fallback "page ref counted" `Page_ref_degraded fbs
 
 let test_http_link_degraded () =
-  (* v1 Link is https-only (plan policy table); http links keep their text *)
+  (* links are https-only; http links keep their text *)
   let out, fbs =
     translate_with_fallbacks Entity "[the spec](http://example.com/x)"
   in
@@ -139,7 +139,7 @@ let test_http_link_degraded () =
   lacks "no https link emitted" out "{{:http";
   has_fallback "http link counted" `Link_degraded fbs
 
-(* ---------- balance / fallback invariants (plan invariant 3) --- *)
+(* ---------- balance / fallback ---------------------------------------- *)
 
 let test_unbalanced_inline_code () =
   let out, fbs = translate_with_fallbacks Entity "Use `a]b` here." in

@@ -1,21 +1,13 @@
 (* Doc_emit — assembles one item doc comment from GIR [<doc>] text.
 
-   Every item-doc emission site goes through [item_doc]. It owns three
-   things the sites should not repeat:
+   Every item-doc emission site goes through [item_doc], which translates the
+   raw GIR text, appends the [@since] tag after the prose so an upstream
+   [@self] or [@group] can never start a tag, and sanitises the assembled
+   comment so no fallback can reintroduce a comment terminator or opener.
 
-   - translation: the raw GIR text goes through [Doc_translate] (raw text
-     only; never translator output — plan invariant 5);
-   - tags last: the real [@since] tag is appended after the prose, on its
-     own line, so an upstream [@self] or [@group] in prose can never start
-     a tag (plan decision 6);
-   - final comment safety: the assembled comment is passed through
-     [Utils.sanitize_doc] once more, so no fallback can reintroduce an
-     unneutralised comment terminator or opener (plan invariant 1).
-
-   Placement is the caller's job. [item_doc] returns the comment text and
-   the site decides whether it goes before the item (vals, externals) or
-   after the tag (polymorphic-variant members: odoc only renders a member
-   doc written after its tag). *)
+   Placement is the caller's job: vals and externals take the comment before
+   the item, while polymorphic-variant members take it after their tag, since
+   odoc only renders a member doc written after its tag. *)
 
 val item_doc :
   indent:string ->
@@ -32,8 +24,6 @@ val item_doc :
     - [fallback] is trusted odoc markup (e.g. a synthetic code span holding a C
       type name). It is not translated, but it is still sanitised.
     - [since] is the native version. With prose it goes on its own line,
-      indented under [indent]; with only a fallback it is appended inline,
-      matching the constant emitter's historical single-line form.
-    - [indent] is the indentation of the line the comment starts on. It applies
-      only to the [@since] continuation line; prose is left as translated, since
-      odoc ignores layout inside comments. *)
+      indented under [indent]; with only a fallback it is appended inline.
+    - [indent] applies only to the [@since] continuation line; prose is left as
+      translated, since odoc ignores layout inside comments. *)

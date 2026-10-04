@@ -52,8 +52,8 @@ let serialize_value ~ocaml_type value =
     [warn_unmappable] is true and otherwise skips silently — the warning is
     emitted by whichever pass runs first (the .mli pass), so the .ml pass passes
     [false] to avoid duplicating it. Sharing this iterator removes the
-    duplicated resolve/type-check/skip logic that previously existed between the
-    .mli and .ml emitters. *)
+    duplicated resolve/type-check/skip logic that the .mli and .ml emitters
+    would otherwise each repeat. *)
 let iter_mappable_constants ~warn_unmappable ~emit constants =
   List.iter
     ~f:(fun (cst : gir_constant) ->
