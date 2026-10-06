@@ -3,12 +3,16 @@ name: Doc preview
 # Renders the odoc HTML for both packages (`dune build @doc`) and publishes it
 # on the `gh-pages` branch. Rendered HTML never lands on a code branch.
 #
-#   pull request  -> <pages>/pr-preview/pr-<n>/  (sticky URL comment on the PR;
-#                    removed again when the PR closes)
+#   pull request  -> <pages>/pr-preview/pr-<n>/  (sticky URL comment on the PR)
 #   push to main  -> <pages>/main/
 #
+# doc-preview-cleanup.yml removes a PR's preview when the PR closes.
+#
 # The preview renders the committed tree as-is. The generated bindings are
-# committed, so this job does not regenerate them.
+# committed, so this workflow does not regenerate them.
+#
+# The build job has a read-only token: it runs opam package builds and dune.
+# Only the deploy job, which runs nothing but pinned deploy actions, can write.
 #
 # One-time repository setup: after the first run creates `gh-pages`, set
 # Settings > Pages > Build and deployment to "Deploy from a branch",
@@ -16,31 +20,31 @@ name: Doc preview
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, closed]
+    types: [opened, reopened, synchronize]
   push:
     branches: [main]
 
-# One run per PR or branch. A newer push cancels a build still in progress,
-# and a close event cancels a pending deploy before removing the preview.
+# One run per PR or branch. A newer push cancels a run still in progress.
+# The PR group name is shared with doc-preview-cleanup.yml, so closing a PR
+# cancels a deploy that has not finished before the preview is removed.
 concurrency:
-  group: doc-preview-${{ github.ref }}
+  group: >-
+    ${{ github.event_name == 'pull_request'
+        && format('doc-preview-pr-{0}', github.event.number)
+        || format('doc-preview-{0}', github.ref) }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  build-and-deploy:
-    name: Build and deploy docs
+  build:
+    name: Build docs
     # Pull requests from forks get a read-only token and cannot deploy.
     if: >-
       github.event_name == 'push' ||
-      (github.event.action != 'closed' &&
-       github.event.pull_request.head.repo.full_name == github.repository)
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    permissions:
-      contents: write        # push to gh-pages
-      pull-requests: write   # preview URL comment
     env:
       HTML_DIR: _build/default/_doc/_html
       # Build exactly the PR head commit (not the merge commit), so the
@@ -52,12 +56,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.BUILD_SHA }}
+          persist-credentials: false
 
+      # No dune cache: dune does not replay the warnings of rules restored
+      # from the cache, so a cached build would under-count odoc warnings.
       - name: Set up OCaml
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 5.4.x
-          dune-cache: true
 
       - name: Install external dependencies
         run: |
@@ -78,7 +84,7 @@ jobs:
         id: doc
         run: |
           set -o pipefail
-          opam exec -- dune build @doc 2>&1 | tee doc-build.log
+          opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
           warnings=$(grep -c '^Warning: ' doc-build.log || true)
           echo "warnings=$warnings" >> "$GITHUB_OUTPUT"
           echo "odoc warnings: $warnings"
@@ -99,10 +105,69 @@ jobs:
           chmod -R u+w site
           bash scripts/doc-preview-landing.sh site
 
+      - name: Upload site
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-site
+          path: site
+          retention-days: 3
+
+      - name: Job summary
+        env:
+          WARNINGS: ${{ steps.doc.outputs.warnings }}
+        run: |
+          {
+            echo "### Doc build"
+            echo "- Commit: \`$BUILD_SHA\`"
+            echo "- odoc warnings: $WARNINGS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload doc build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-build-log
+          path: doc-build.log
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy docs
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # push to gh-pages
+      pull-requests: write   # preview URL comment
+    steps:
+      # The deploy actions work inside a git checkout; they push with the
+      # token they are given, not a persisted credential.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download site
+        uses: actions/download-artifact@v4
+        with:
+          name: doc-site
+          path: site
+
       # .nojekyll at the gh-pages root stops Pages from running Jekyll over
       # thousands of HTML files per preview. The root index.html points at
-      # the previews. The deploy commits only when these files change.
+      # the previews. These change rarely, so they are deployed on pushes to
+      # main, and on any run where gh-pages has no .nojekyll yet.
+      - name: Check gh-pages root files
+        id: root
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ] ||
+             ! gh api "repos/$GITHUB_REPOSITORY/contents/.nojekyll?ref=gh-pages" \
+                 --silent 2>/dev/null; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Prepare gh-pages root files
+        if: steps.root.outputs.deploy == 'true'
         run: |
           mkdir -p pages-root
           touch pages-root/.nojekyll
@@ -125,12 +190,14 @@ jobs:
           EOF
 
       - name: Deploy gh-pages root files
+        if: steps.root.outputs.deploy == 'true'
         uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
         with:
           branch: gh-pages
           folder: pages-root
           clean: false
           force: false
+          attempt-limit: 10
           commit-message: Update gh-pages root files
 
       - name: Deploy PR preview
@@ -152,48 +219,12 @@ jobs:
           folder: site
           target-folder: main
           force: false
+          attempt-limit: 10
           commit-message: Deploy docs for main @ ${{ github.sha }}
 
       - name: Job summary
+        if: steps.preview.outputs.preview-url != ''
         env:
-          WARNINGS: ${{ steps.doc.outputs.warnings }}
           PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
         run: |
-          {
-            echo "### Doc preview"
-            echo "- Commit: \`$BUILD_SHA\`"
-            echo "- odoc warnings: $WARNINGS"
-            if [ -n "$PREVIEW_URL" ]; then
-              echo "- Preview: $PREVIEW_URL"
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload doc build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: doc-build-log
-          path: doc-build.log
-          if-no-files-found: ignore
-
-  remove-preview:
-    name: Remove PR preview
-    if: >-
-      github.event.action == 'closed' &&
-      github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      # The action commits to gh-pages, so it needs a checkout to work in.
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Remove PR preview
-        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
-        with:
-          preview-branch: gh-pages
-          umbrella-dir: pr-preview
-          action: remove
-          qr-code: false
+          echo "Preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"

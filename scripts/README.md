@@ -53,8 +53,8 @@ count of the build. The doc preview workflow
 (`.github/workflows/doc-preview.yml`) runs it before deploying to `gh-pages`.
 
 ```bash
-dune build @doc
-cp -r _build/default/_doc/_html /tmp/site && chmod -R u+w /tmp/site
+opam exec -- dune build @doc
+rm -rf /tmp/site && cp -r _build/default/_doc/_html /tmp/site && chmod -R u+w /tmp/site
 DOC_PREVIEW_REF=main DOC_PREVIEW_SHA=$(git rev-parse HEAD) \
   ./scripts/doc-preview-landing.sh /tmp/site
 ```
