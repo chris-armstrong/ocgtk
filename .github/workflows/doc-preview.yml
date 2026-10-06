@@ -1,0 +1,199 @@
+name: Doc preview
+
+# Renders the odoc HTML for both packages (`dune build @doc`) and publishes it
+# on the `gh-pages` branch. Rendered HTML never lands on a code branch.
+#
+#   pull request  -> <pages>/pr-preview/pr-<n>/  (sticky URL comment on the PR;
+#                    removed again when the PR closes)
+#   push to main  -> <pages>/main/
+#
+# The preview renders the committed tree as-is. The generated bindings are
+# committed, so this job does not regenerate them.
+#
+# One-time repository setup: after the first run creates `gh-pages`, set
+# Settings > Pages > Build and deployment to "Deploy from a branch",
+# branch `gh-pages`, folder `/ (root)`.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+  push:
+    branches: [main]
+
+# One run per PR or branch. A newer push cancels a build still in progress,
+# and a close event cancels a pending deploy before removing the preview.
+concurrency:
+  group: doc-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy docs
+    # Pull requests from forks get a read-only token and cannot deploy.
+    if: >-
+      github.event_name == 'push' ||
+      (github.event.action != 'closed' &&
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # push to gh-pages
+      pull-requests: write   # preview URL comment
+    env:
+      HTML_DIR: _build/default/_doc/_html
+      # Build exactly the PR head commit (not the merge commit), so the
+      # preview matches the commit SHA used by the local artifact cache.
+      BUILD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BUILD_SHA }}
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.4.x
+          dune-cache: true
+
+      - name: Install external dependencies
+        run: |
+          sudo apt-get update &&
+          sudo apt-get install -y libcairo2-dev libgtk-4-dev
+
+      - name: Pin conf-gtk4 package
+        run: opam pin add -n conf-gtk4 conf-gtk4
+
+      # odoc comes in through the `{with-doc}` dependency of both packages.
+      - name: Install OCaml dependencies
+        run: opam install ./ocgtk ./gir_gen --deps-only --with-doc
+
+      # odoc warnings are reported, not fatal (report-only policy). Compiler
+      # warnings ("Warning 50 [...]") are not counted, only odoc's own
+      # "Warning:" lines.
+      - name: Build documentation
+        id: doc
+        run: |
+          set -o pipefail
+          opam exec -- dune build @doc 2>&1 | tee doc-build.log
+          warnings=$(grep -c '^Warning: ' doc-build.log || true)
+          echo "warnings=$warnings" >> "$GITHUB_OUTPUT"
+          echo "odoc warnings: $warnings"
+
+      - name: Write landing page
+        env:
+          DOC_PREVIEW_REF: >-
+            ${{ github.event_name == 'pull_request'
+                && format('PR #{0} ({1})', github.event.number, github.head_ref)
+                || github.ref_name }}
+          DOC_PREVIEW_SHA: ${{ env.BUILD_SHA }}
+          DOC_PREVIEW_SHA_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ env.BUILD_SHA }}
+          DOC_PREVIEW_WARNINGS: ${{ steps.doc.outputs.warnings }}
+        run: |
+          # _build is read-only after dune; copy the tree out before editing.
+          rm -rf site
+          cp -r "$HTML_DIR" site
+          chmod -R u+w site
+          bash scripts/doc-preview-landing.sh site
+
+      # .nojekyll at the gh-pages root stops Pages from running Jekyll over
+      # thousands of HTML files per preview. The root index.html points at
+      # the previews. The deploy commits only when these files change.
+      - name: Prepare gh-pages root files
+        run: |
+          mkdir -p pages-root
+          touch pages-root/.nojekyll
+          cat > pages-root/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8"/>
+              <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+              <title>ocgtk documentation</title>
+            </head>
+            <body>
+              <h1>ocgtk documentation</h1>
+              <ul>
+                <li><a href="main/">main branch</a></li>
+                <li>Pull request previews: <code>pr-preview/pr-&lt;number&gt;/</code></li>
+              </ul>
+            </body>
+          </html>
+          EOF
+
+      - name: Deploy gh-pages root files
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: gh-pages
+          folder: pages-root
+          clean: false
+          force: false
+          commit-message: Update gh-pages root files
+
+      - name: Deploy PR preview
+        id: preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          source-dir: site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: deploy
+          qr-code: false
+
+      - name: Deploy main docs
+        if: github.event_name == 'push'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: gh-pages
+          folder: site
+          target-folder: main
+          force: false
+          commit-message: Deploy docs for main @ ${{ github.sha }}
+
+      - name: Job summary
+        env:
+          WARNINGS: ${{ steps.doc.outputs.warnings }}
+          PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
+        run: |
+          {
+            echo "### Doc preview"
+            echo "- Commit: \`$BUILD_SHA\`"
+            echo "- odoc warnings: $WARNINGS"
+            if [ -n "$PREVIEW_URL" ]; then
+              echo "- Preview: $PREVIEW_URL"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload doc build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-build-log
+          path: doc-build.log
+          if-no-files-found: ignore
+
+  remove-preview:
+    name: Remove PR preview
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # The action commits to gh-pages, so it needs a checkout to work in.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Remove PR preview
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: remove
+          qr-code: false

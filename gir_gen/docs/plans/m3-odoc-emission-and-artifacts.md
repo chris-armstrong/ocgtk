@@ -1,9 +1,10 @@
 # M3 Odoc Translation Slice — emission, wiring, artifact cache, per-branch preview
 
-**Status: Phases 0–2 implemented; Phase 3 onwards not yet started (per-phase
-status below).** Phase 0 and 1: PR #188 (merged into `m3`) and PR #190 (open,
+**Status: Phases 0–2 and 4 implemented; Phase 3 and Phases 5 onwards not
+yet done (per-phase status below).** Phase 0 and 1: PR #188 (merged into `m3`) and PR #190 (open,
 base `m3`). Phase 2 and the start of Phase 5: branch `m3-p2`, stacked on
-`m3-p1-fix`. Phase 3 onwards: branch `m3-p3`, stacked on `m3-p2`, with one
+`m3-p1-fix`. Phase 4: branch `m3-p4`, based on `m3` because Phase 3 has not
+started; the workflow does not use the cache driver. Phase 3 onwards: one
 branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
@@ -37,12 +38,16 @@ auto-managed `gh-pages` branch and in the local cache.
    specified. The earlier "keep committed bindings doc-less" idea is
    superseded: it permanently dirtied the tree and defeated the cache.
 
-2. **Per-branch preview via `rajyan/preview-pages@v1`.** The action deploys a
-   subdirectory per PR/branch/commit onto an auto-managed `gh-pages` branch
-   and comments the preview URL on the PR. HTML never touches code branches.
-   PR previews are removed on close by a cleanup workflow (snippet in the
-   action's README). One preview per PR (`pr-per-commit: false`) keeps the
-   cost down; branch pushes get per-branch directories.
+2. **Per-branch preview via `rossjrw/pr-preview-action`** (revised
+   2026-10-07; the earlier choice, `rajyan/preview-pages`, was archived in
+   January 2026). The action deploys one subdirectory per PR
+   (`pr-preview/pr-<n>/`, overwritten on each push) onto an auto-managed
+   `gh-pages` branch and keeps one sticky comment with the preview URL on the
+   PR. HTML never touches code branches. The same action removes the preview
+   when the PR closes, so no separate cleanup workflow is needed. Pushes to
+   `main` deploy to `main/` with `JamesIves/github-pages-deploy-action`, the
+   deploy action the preview action uses internally. Third-party actions are
+   pinned by commit SHA, because they run with a write token.
 
 3. **Local artifact cache stays** as the rebuild-avoidance and benchmark
    layer (local now, CI later). Reviewer-grade HTML without publishing,
@@ -286,7 +291,8 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `gir_gen/test/generate/doc_parse_tests.ml`, `doc_render_tests.ml`, `doc_translate_tests.ml` (+ `doc_translate_test_helpers.ml`), `doc_emit_tests.ml` (Phase 2) | Unit/expect tests per the `constant_code_tests.ml` convention: every render-policy row, every invariant. |
 | `gir_gen/test/corpus/doc_translate_corpus_tests.ml` | Corpus smoke test (Phase 1): `parse`+`render` over the bundled `<doc>` elements; asserts comment safety, balance, the wiring property. |
 | `scripts/doc_artifacts.ml` | Artifact cache driver (Phase 3; warning classification added in Phase 9): `build`/`list`/`extract`/`diff`/`diff-baseline`/`set-baseline`/`warnings` subcommands plus `--force`. Pure `Sys.command` shelling; invoked as `opam exec -- ocaml scripts/doc_artifacts.ml …` (no dune bootstrap needed — it shells out only). |
-| `.github/workflows/doc-preview.yml` + cleanup workflow | Phase 4. Includes the landing `index.html` step. |
+| `.github/workflows/doc-preview.yml` | Phase 4. Builds `@doc`, deploys PR previews and `main`, removes a PR's preview on close (no separate cleanup workflow). |
+| `scripts/doc-preview-landing.sh` | Phase 4. Writes the landing `index.html` linking the package roots, with build provenance. Runs locally too. |
 
 **Modified:**
 
@@ -425,42 +431,50 @@ provides (`scripts/generate-bindings.sh` semantics) then
 `opam exec -- dune build @doc` from the workspace root, capturing the odoc
 warning log for classification.
 
-## Per-branch preview workflow (sketch)
+## Per-branch preview workflow
 
-```yaml
-# .github/workflows/doc-preview.yml
-on:
-  pull_request:
-  push:
-    branches: [main]
-concurrency:
-  group: preview-pages-${{ github.ref }}
-  cancel-in-progress: true
-permissions:
-  contents: write          # gh-pages deploy with default GITHUB_TOKEN
-  pull-requests: write     # preview URL comment
-jobs:
-  docs:
-    steps:
-      - uses: actions/checkout@v4
-      # opam setup steps (reuse existing CI setup)
-      - run: opam install . --deps-only --with-doc   # odoc rides the {with-doc} dep
-      - run: scripts/generate-bindings.sh            # idempotent: bindings + index.mld committed
-      - run: opam exec -- dune build @doc 2> warnings.log
-      - run: # add static landing index.html linking package roots
-      - uses: rajyan/preview-pages@v1
-        with:
-          source-dir: _build/default/_doc/_html
-          pr-per-commit: false
+Implemented in Phase 4 as `.github/workflows/doc-preview.yml`, with
+`scripts/doc-preview-landing.sh` writing the landing page. The earlier sketch
+used `rajyan/preview-pages` and a separate cleanup workflow; both were
+replaced (decision 2).
+
+`gh-pages` layout:
+
+```
+gh-pages/
+  .nojekyll              # Pages serves files as-is (no Jekyll pass)
+  index.html             # links main/ and explains pr-preview/
+  main/                  # latest push to main
+  pr-preview/pr-<n>/     # one per open PR; removed when the PR closes
 ```
 
-A cleanup workflow on `pull_request: closed` removes `pr-<n>` (snippet in the
-action's README).
+Each deployed tree is `_build/default/_doc/_html`, with dune's root
+`index.html` replaced by the landing page. The landing page links each
+package root and records the ref, commit, odoc warning count and build time.
 
-**One-time repository setup (user action, before Phase 4):** GitHub Pages must
-serve the `gh-pages` branch, which the action creates on first deploy, and the
-workflow's token needs `contents: write` and `pull-requests: write`. These are
-repo settings, not code, so they are not verified by the PR itself.
+Behaviour, and where it differs from the sketch:
+
+- **Triggers:** `pull_request` (`opened`, `reopened`, `synchronize`,
+  `closed`) and `push` to `main`. A `closed` event removes the preview.
+- **No regeneration.** The workflow renders the committed tree. Decision 1
+  makes the committed bindings the source of truth, so regenerating in CI
+  would either be a no-op or publish docs that are not in the PR.
+  Regeneration drift is a separate check, not part of the preview.
+- **The PR head commit is built**, not the merge commit, so a preview
+  matches the SHA that keys the local artifact cache.
+- **Warnings are counted, not fatal:** the count of odoc `Warning:` lines
+  (compiler warnings excluded) goes into the landing page and the job
+  summary, and the full log is uploaded as a workflow artifact
+  (decision 7).
+- **Fork PRs are skipped:** their token is read-only.
+
+**One-time repository setup (user action):** after the first run creates
+`gh-pages`, set Settings > Pages > Build and deployment to "Deploy from a
+branch", branch `gh-pages`, folder `/ (root)`. Workflow permissions are
+declared per job (`contents: write`, `pull-requests: write`). The
+repository's default workflow permission is already `write`, so no change
+is needed there. These are repo settings, not code, so the PR itself does
+not verify them.
 
 ## odoc toolchain prerequisites (leg 0)
 
@@ -634,8 +648,16 @@ Dirty-tree build keys `<sha>-dirty` and is never a baseline candidate.
 *Goal:* every PR from here on gets a rendered-docs preview URL, which is the
 review surface for Phases 5–13.
 
-*Changes:* `.github/workflows/doc-preview.yml` + cleanup workflow per the
-sketch above, including the landing `index.html` step. The landing page links
+**Status: implemented** (branch `m3-p4`). The action changed from
+`rajyan/preview-pages` (archived) to `rossjrw/pr-preview-action`, which also
+removes previews on close, so there is no separate cleanup workflow. See
+decision 2 and the preview workflow section for this and the other
+differences from the sketch. Phase 3 is not done; this phase does not need
+it.
+
+*Changes:* `.github/workflows/doc-preview.yml` per the preview workflow
+section above, with `scripts/doc-preview-landing.sh` for the landing
+`index.html`. The landing page links
 the package roots `@doc` produces; the `index.mld` pages arrive in Phase 8.
 Requires the one-time repository setup described in the preview section.
 
