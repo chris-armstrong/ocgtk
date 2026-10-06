@@ -1,7 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, artifact cache, per-branch preview
 
-**Status: DRAFT (revised after second plan review; phased for implementation — not
-yet implemented)**
+**Status: Phases 0–2 implemented; Phase 3 partly implemented (per-phase status
+below).** Phase 0 and 1: PR #188 (merged into `m3`) and PR #190 (open, base `m3`).
+Phase 2 and the first part of Phase 3: branch `m3-p2`, stacked on `m3-p1-fix`.
 **Created: 2026-09-08; revised: 2026-09-14 (testable phases added)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
@@ -81,6 +82,17 @@ auto-managed `gh-pages` branch and in the local cache.
    fixed at emission (paragraph-on-own-line, nested-tag re-parses), and the
    rest are recorded as TODO counts in the artifact manifest. No CI gate
    this leg; the gate arrives once classification stabilises.
+
+8. **C idioms are translated, not just degraded (added 2026-10-04).** GIR
+   prose and examples are written for C. Two new phases handle them:
+   **Phase 3b** (right after Phase 3) does the trivial, deterministic AST
+   rewrites; **Phase 7** (end of cycle) does code-block translation. Ownership
+   boilerplate (`Free the returned object with g_object_unref()`, `should be
+   freed with g_free()`) is **stripped**: the GC owns every value, so the
+   sentence is actively misleading. Every strip is counted in the warnings
+   manifest. Code-block translation is **layer-aware**: L1 emission uses L1
+   idioms (modules and functions of the `Wrappers` module, `Label.set_text l
+   "x"`), L2 emission uses L2 idioms (classes and methods, `l#set_text "x"`).
 
 ## Translator design: parse → flat AST → render
 
@@ -502,17 +514,48 @@ xvfb-run $(which dune) test ocgtk/    # unchanged bindings, still green
 ### Phase 2 — `Doc_emit` + translator at the *existing* emit sites
 (suppressions stay)
 
+**Status: done** (branch `m3-p2`). Commits: `1d372dc4` (`Doc_emit`),
+`f75c7cde` (constant, enum/bitfield member, method docs), `759d373b` (remove 42
+stale generated files), `351b2720` (record/class entity docs through `Doc_emit`),
+`dca00048` (escape `]`), `c2edb1e2` (remove gtk enum interface copies). Later
+Phase 3 commits are listed under Phase 3. The additions this phase needed beyond
+the original text are recorded below; the original text is kept for reference.
+
 *Goal:* every doc that is *already* emitted now goes through the
 translator; no *new* docs appear. This isolates translator-induced diffs
 from un-suppression-induced diffs (Phase 3).
 
-*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`emit_item_doc` /
-`emit_entity_doc`: assembly prose-first-tags-last on the AST, final-comment
-sanitisation, `@since` append); rewire `constant_code.ml` `emit_doc`,
-`enum_code.ml` **member** docs, `layer1_method.ml` method docs;
+*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`item_doc`: translation,
+tags-last `@since`, final-comment sanitisation, constant version-only
+fallback; `emit_entity_doc` waits for Phase 3); rewire `constant_code.ml`
+`emit_doc`, `enum_code.ml` **member and bitfield flag** docs,
+`layer1_method.ml` method docs, and the class/record entity doc in
+`layer1_main.ml` (already emitted raw before Phase 2; found by the residual
+odoc warnings, so it is routed through `Doc_emit` here as well);
 `test/generate/doc_emit_tests.ml` (comment safety, tag terminality,
 `@since` placement). Regenerate bindings; the diff is confined to
-doc-comment text at these three site kinds; commit it.
+doc-comment text at these site kinds; commit it.
+
+*Placement change (found by testing):* polymorphic-variant member docs must
+follow their tag. Before the tag, odoc silently drops them from the HTML (and
+the compiler warns, warning 50). Member docs are therefore emitted as
+`` | `TAG (** doc *) ``. This is a visible change beyond the "doc text only"
+wording, and it makes enum and bitfield member docs appear on their pages for
+the first time.
+
+*Stale generated files (found by testing):* 42 tracked `.ml`/`.mli` files
+under `ocgtk/src/*/generated/` were never produced by a clean regeneration.
+The generator only writes and never deletes, so these survived relocations
+(e.g. `unix_fd_message.mli`, `gUnix_fd_message.mli`, `tooltip.mli`). They
+were removed in a separate commit. The six gtk `*_enums.mli` copies are not
+produced either; they were removed in a follow-up commit (see residue below).
+
+*Residue, now resolved:* odoc warnings went from 5,237 to 0. The bare `]` in
+prose was a translator gap (the Phase 1 policy wrongly assumed odoc treated it
+as literal text); `]` is now escaped with `[`. The six gtk `*_enums.mli` copies
+the generator no longer writes were removed, and their `modules_without_implementation`
+entry in `gtk/dune` with them, since gtk builds against the enum types in the
+other libraries.
 
 *Acceptance:*
 ```bash
@@ -528,6 +571,21 @@ legitimate comment syntax — any hit is a Phase-2 failure.
 *Goal:* entity docs land; constructors, signals and combined modules carry
 docs. Diffs here are *additive* (previously-doc-less output gains docs) and
 must be reviewed as such.
+
+**Status: partly done.** Item 1 is done for class/interface (`adc30fe6`,
+`742d1a77`); the enum/bitfield type-doc suppression is still in place
+(`bin/gir_gen.ml` ~881, ~885). Items 2–4 are not started. Additional items
+done in this phase, which the original list did not contain:
+
+- *Comment safety for quotes:* OCaml lexes string literals inside comments, and
+  GIR prose can leave one open. `Doc_emit` replaces every `"` in an emitted
+  comment with a typographic quote (`adc30fe6`). This changes rendered quotes
+  in existing docs too.
+- *Module comment placement:* a class description must be a floating module
+  comment, so it needs a blank line after it. Without one, it attaches to the
+  first type, `ocamlformat` keeps it there, and odoc no longer uses it as the
+  module synopsis on parent pages (`742d1a77`). This resolves the "accepted
+  effect" noted below.
 
 *Changes (four commits, each independently revertible, tree clean after
 each):*
@@ -545,7 +603,11 @@ each):*
    val (Interface mode); L2 stays doc-less (deferred).
 
 Accepted effect: `ocamlformat` may reposition module comments onto the
-first declaration — fine (recorded in the inventory above).
+first declaration. Superseded: a blank line after the module comment keeps it
+in place (`742d1a77`); see the status note above.
+
+*Open for Phase 3:* the L2 class-method docs (`class-button/` pages) are
+still undocumented; they are outside this phase's list and need a decision.
 
 *Acceptance (after each commit, and cumulatively):*
 ```bash
@@ -559,6 +621,62 @@ in `button.mli`; `gtk_enums.mli` gains ≥1 enum/bitfield type-level doc; a
 combined cyclic-module file gains one doc comment per `module rec` arm; a
 constructor with real `<doc>` shows GIR-derived text; a signal `on_<sig>`
 val carries its `<doc>`.
+
+### Phase 3b — C-idiom AST rewrites (scalars, primitive types, ownership)
+
+Corpus anchors (sampled over Gtk/Gio/Gdk/Pango/Gsk/GdkPixbuf/cairo/Graphene,
+~39,700 docs): `%TRUE`/`%FALSE`/`%NULL` ≈ 4,200 docs, backticked
+`` `TRUE` ``/`` `NULL` `` ≈ 490, ownership/free sentences ≈ 430, `#gboolean`-style
+primitive sigils ≈ 130. All are context-free or need only the method's
+return shape, so no symbol index is required — this phase does not wait for
+the resolver leg.
+
+*Changes (all pure parse/AST/render; no emission-site changes):*
+
+- **AST:** add `C_lit of c_lit` (`True | False | Null`) to `inline`, and
+  `C_prim of string` (the C primitive name) for `#gint` and friends. `parse`
+  recognises `%TRUE`/`%FALSE`/`%NULL`, backticked bare `TRUE`/`FALSE`/`NULL`,
+  and `#g<primitive>` sigils; they no longer become `Sym_ref {kind=None}`.
+  Guards follow the §3.5 sigil rules (a token inside a `Code` span that is
+  more than the bare literal stays `Code`).
+- **Render (`C_lit`):** `True`/`False` → `[true]`/`[false]`. `Null` is
+  context-dependent (render takes a small `ret_shape` context from the
+  emission site: `Plain | Option | Result`): `[None]` for nullable
+  params/returns; for "…or %NULL on error" on a method that returns
+  `result`, "an [Error] result"; `NULL-terminated` → "null-terminated"
+  (prose, no literal).
+- **Render (`C_prim`):** table lookup — `gboolean`→`bool`;
+  `gint`/`guint`/`gint8..64`/`guint8..64`/`gsize`/`gssize`/`goffset`→`int`;
+  `gdouble`/`gfloat`→`float`; `gchar`/`guchar`→`char`; `utf8`/`gchar*`→
+  `string`; `gpointer`/`gconstpointer`→ dropped. Unlisted names degrade as
+  before (`Sym_ref`).
+- **Ownership stripping:** a sentence-level AST filter drops sentences
+  matching `free(d)? with g_\w+`, `unref(f)?ed with`, `g_object_unref`,
+  `g_free`, `g_strfreev`, `g_list_free\w*` (allowlist, one place, unit-tested).
+  The emptied-paragraph case removes the paragraph. Counted per pattern in
+  the manifest.
+- **Code blocks keep their language:** `Code_block of string` becomes
+  `Code_block of { lang : string option; body : string }`; `parse` records
+  the fence language (`c`, `C`, `xml`, …, or `|[ <!-- language="C" --> ` form)
+  and `render` still emits `{[ … ]}` for now. Phase 7 consumes `lang`.
+
+*Deferred to the resolver leg (need a symbol index, not just a table):*
+`%GTK_FOO` constants → enum constructors, `foo_bar()` function references →
+`Ref`, bare `::signal` / `Type:prop` sigils. They stay `Sym_ref` here.
+
+*Tests:* parse and render unit tests for every row above; the corpus smoke
+test gains counters (`C_lit`, `C_prim`, ownership strips) and a
+**no-residual check**: after Phase 3b, no rendered doc contains `%TRUE`,
+`%FALSE`, `%NULL`, or `g_object_unref`/`g_free` outside a code block.
+
+*Acceptance:*
+```bash
+opam exec -- dune build @all
+opam exec -- dune test gir_gen/ && xvfb-run $(which dune) test ocgtk/
+git status --porcelain     # empty (regenerated bindings committed)
+grep -rE '%(TRUE|FALSE|NULL)\b' ocgtk/src/*/generated/*.mli   # empty
+grep -rE 'g_object_unref|freed with g_free' ocgtk/src/*/generated/*.mli  # only code blocks, if any
+```
 
 ### Phase 4 — `doc_index.ml`: committed, generated `index.mld`s
 
@@ -618,11 +736,81 @@ on the PR, the preview URL comment's page shows (a) the member docs with
 `{b …}` heading lead-ins and (b) the `about_dialog` C-fence page as
 `{[ … ]}`. HTML appears **only** on `gh-pages`.
 
+### Phase 7 — C code-block translation (end of cycle; layer-aware)
+
+Corpus: ~210 fenced C blocks (`c`/`C`/`|[ language="C" ]|`) plus ~66 other
+languages (xml 53, css 4, glsl 4, plain 5). The C blocks range from 2-line
+snippets to whole functions (`connect_to_host`, `bake_cake_thread`), so the
+translator is deliberately conservative: it either translates a block fully
+or leaves it as honestly-labelled C. It never emits wrong OCaml.
+
+**Layer awareness.** The emission site passes `layer : L1 | L2` into the
+translator context. L1 docs (modules/functions of the `Wrappers` module)
+render `Label.new_with_mnemonic "_Hello"` and `Label.set_mnemonic_widget
+label (Some entry)`; L2 docs (classes/methods) render
+`new label ~label:"_Hello" ()` / `label#set_mnemonic_widget (Some entry)`.
+The C → symbol step (below) is layer-independent; only the final rendering
+of each call differs. *Dependency:* L2 docs are not emitted until the
+page-model leg (see out of scope), so the L2 renderer can be built and
+unit-tested here but only becomes visible once L2 emission exists. L1 ships
+first.
+
+**7a — Tier A: label honestly.** `Code_block {lang=Some ("c"|"C")}` that is
+not translated renders as `{v … v}` (verbatim, no OCaml highlighting) with a
+lead-in `C example:`. `xml`/`css`/`glsl`/`plain` render as `{v … v}` too (they
+are real languages applied as-is, e.g. GtkBuilder UI). `{[ … ]}` is reserved
+for translated OCaml. The balance/comment-safety fallbacks (invariant 3)
+still apply. Replaces the plan's "banner deferred" row.
+
+**7b — Tier B: mechanical translation of a restricted C subset.** Input
+subset: sequences of `T *x = fn (args);`, `fn (obj, args);`, `x = fn (args);`,
+`GTK_FOO (x)`/`G_OBJECT (x)` cast macros (dropped), `NULL`/`TRUE`/`FALSE`,
+`GTK_TYPE_*`/`G_TYPE_*` constants, string and numeric literals, and `//`
+comments. Anything outside the subset (control flow, struct/typedef,
+`static`, `->`, `&` out-params, varargs, `g_autoptr`) rejects the whole
+block to Tier A.
+
+Pipeline: C tokenizer → statement parser (subset only) → symbol resolution
+via the generator's C-identifier table (`c:identifier` → namespace, type,
+method, constructor) → signature-driven adaptation (nullable param →
+`Some`/`None`, out/`GError**` → `result` with a `match`, `void` → `unit`
+sequencing, `let … in` chaining) → layer renderer (L1 or L2). Rejection
+reasons are counted in the manifest, so the translated fraction is a tracked
+number. Before building this tier, run a **corpus census** (how many of the
+~210 blocks fit the subset, with the L1 result eyeballed) and record it in
+this plan; if the fraction is small, stop at 7a + 7c.
+
+**7c — Tier C: hand-written overrides for prominent examples.** A new
+override form in the existing s-expression system:
+`(doc-example <gir-entity> <index> (l1 "…ocaml…") (l2 "…ocaml…"))`, which
+replaces the nth code block of that entity's doc (checked: the C block must
+still be the one the override was written against, via a short hash, so a
+GIR update flags stale overrides instead of silently misapplying). Target
+the 10–20 most prominent examples (`GtkEntry` mnemonic, `GtkExpression`,
+`GTask`, `GtkBuilder`, `GtkListView` factory).
+
+*Tests:* tokenizer/parser/translator unit tests per construct; golden tests
+for ~10 real corpus blocks in L1 and L2; a **compile check** for translated
+blocks — extract each emitted `{[ … ]}` OCaml snippet and typecheck it
+against the built `ocgtk` library (translated examples must at least
+typecheck; this is what makes Tier B trustworthy); override staleness test.
+
+*Acceptance:* the compile check is green; no `{[ … ]}` block in generated
+docs contains C tokens (`->`, `;` after a `)` call with `NULL`, `g_`); the
+manifest reports translated / labelled / rejected counts per rejection
+reason; `dune build @doc` shows no new warnings.
+
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
 - 1 → 2 → 3 (translator and emit helper must exist before sites consume
   them; un-suppression must be separable from translation diffs).
+- 3b needs 3 (translated output must already flow through all sites so the
+  diff is only the idiom rewrites). 4–6 do not depend on 3b.
+- 7 is end of cycle: needs 3b (`Code_block.lang`), a stable `@doc` (5) for
+  its warning counts, and — for the L2 renderer to be *visible* — L2 doc
+  emission from the page-model leg. 7a/7b/7c can land independently in that
+  order.
 - 4 needs 0 only (can run parallel to 1–3); 5 needs 0 + a green `@doc`;
   6 needs 4's landing-page semantics conceptually but is authored last —
   `@doc` must be stable for the preview to be meaningful.
@@ -653,6 +841,9 @@ closing checklist on top of them:
 - L2 class-type docs, cyclic shims, alias pages (page model, PRD §11).
 - Property and record-field docs; `@param`/`@return`/`@deprecated` tag
   emission; generalised `@since`.
+- Constants (`%GTK_FOO`), `foo_bar()` function refs and bare `::signal`
+  sigils → resolver leg (need a symbol index; Phase 3b only does the
+  table-driven idioms).
 - Cross-reference resolution (PRD §7) — the `Sym_ref` → `[code]` fallback
   covers it; the resolver leg is a pure AST rewrite.
 - Upstream-URL mapping for relative `.html` links (PRD §6.3) — likewise a

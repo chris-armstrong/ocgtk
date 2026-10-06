@@ -10,7 +10,7 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 
 | Document | Concerns Covered |
 |----------|-----------------|
-| [core-idioms.md](./core-idioms.md) | Bind operators vs pipelines, polymorphic equality ban, naming intermediates, module extraction heuristics |
+| [core-idioms.md](./core-idioms.md) | Bind operators vs pipelines, structural equality ban (except `int`), Option handling, naming intermediates, module extraction heuristics |
 | [nesting-and-control-flow.md](./nesting-and-control-flow.md) | Reducing nesting, bind operators |
 | [error-handling.md](./error-handling.md) | Result vs exceptions, error context |
 | [naming-and-intermediates.md](./naming-and-intermediates.md) | Named values, pipeline clarity |

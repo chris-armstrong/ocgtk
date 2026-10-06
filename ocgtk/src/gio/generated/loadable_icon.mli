@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LoadableIcon: LoadableIcon *)
 
+(** [GLoadableIcon] extends the [Gio.Icon] interface and adds the ability to
+    load icons from streams. *)
+
 type t = [ `loadable_icon ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t

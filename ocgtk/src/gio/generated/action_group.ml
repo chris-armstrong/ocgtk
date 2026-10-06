@@ -1,6 +1,52 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionGroup: ActionGroup *)
 
+(** [GActionGroup] represents a group of actions.
+
+    Actions can be used to expose functionality in a structured way, either from
+    one part of a program to another, or to the outside world. Action groups are
+    often used together with a [Gio.MenuModel] that provides additional
+    representation data for displaying the actions to the user, e.g. in a menu.
+
+    The main way to interact with the actions in a [GActionGroup] is to activate
+    them with [Gio.ActionGroup.activate_action]. Activating an action may
+    require a [GLib.Variant] parameter. The required type of the parameter can
+    be inquired with [Gio.ActionGroup.get_action_parameter_type]. Actions may be
+    disabled, see [Gio.ActionGroup.get_action_enabled]. Activating a disabled
+    action has no effect.
+
+    Actions may optionally have a state in the form of a [GLib.Variant]. The
+    current state of an action can be inquired with
+    [Gio.ActionGroup.get_action_state]. Activating a stateful action may change
+    its state, but it is also possible to set the state by calling
+    [Gio.ActionGroup.change_action_state].
+
+    As typical example, consider a text editing application which has an option
+    to change the current font to ‘bold’. A good way to represent this would be
+    a stateful action, with a boolean state. Activating the action would toggle
+    the state.
+
+    Each action in the group has a unique name (which is a string). All method
+    calls, except [Gio.ActionGroup.list_actions] take the name of an action as
+    an argument.
+
+    The [GActionGroup] API is meant to be the ‘public’ API to the action group.
+    The calls here are exactly the interaction that ‘external forces’ (eg: UI,
+    incoming D-Bus messages, etc.) are supposed to have with actions. ‘Internal’
+    APIs (ie: ones meant only to be accessed by the action group implementation)
+    are found on subclasses. This is why you will find – for example –
+    [Gio.ActionGroup.get_action_enabled] but not an equivalent
+    [set_action_enabled()] method.
+
+    Signals are emitted on the action group in response to state changes on
+    individual actions.
+
+    Implementations of [GActionGroup] should provide implementations for the
+    virtual functions [Gio.ActionGroup.list_actions] and
+    [Gio.ActionGroup.query_action]. The other virtual functions should not be
+    implemented — their ‘wrappers’ are actually implemented with calls to
+    [Gio.ActionGroup.query_action]. *)
+
 type t = [ `action_group ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_group_from_gobject"
@@ -8,160 +54,153 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_group_from_gobject"
 (* Methods *)
 
 external list_actions : t -> string array = "ml_g_action_group_list_actions"
-(** Lists the actions contained within @action_group.
+(** Lists the actions contained within [action_group].
 
-The caller is responsible for freeing the list with [func@GLib.strfreev] when
-it is no longer required. *)
+    The caller is responsible for freeing the list with [GLib.strfreev] when it
+    is no longer required. *)
 
 external has_action : t -> string -> bool = "ml_g_action_group_has_action"
-(** Checks if the named action exists within @action_group. *)
+(** Checks if the named action exists within [action_group]. *)
 
 external get_action_state_type : t -> string -> Gvariant_type.t option
   = "ml_g_action_group_get_action_state_type"
-(** Queries the type of the state of the named action within
-@action_group.
+(** Queries the type of the state of the named action within [action_group].
 
-If the action is stateful then this function returns the
-[type@GLib.VariantType] of the state.  All calls to
-[method@Gio.ActionGroup.change_action_state] must give a [type@GLib.Variant] of this
-type and [method@Gio.ActionGroup.get_action_state] will return a [type@GLib.Variant]
-of the same type.
+    If the action is stateful then this function returns the [GLib.VariantType]
+    of the state. All calls to [Gio.ActionGroup.change_action_state] must give a
+    [GLib.Variant] of this type and [Gio.ActionGroup.get_action_state] will
+    return a [GLib.Variant] of the same type.
 
-If the action is not stateful then this function will return `NULL`.
-In that case, [method@Gio.ActionGroup.get_action_state] will return `NULL`
-and you must not call [method@Gio.ActionGroup.change_action_state].
+    If the action is not stateful then this function will return [NULL]. In that
+    case, [Gio.ActionGroup.get_action_state] will return [NULL] and you must not
+    call [Gio.ActionGroup.change_action_state].
 
-The state type of a particular action will never change but it is
-possible for an action to be removed and for a new action to be added
-with the same name but a different state type. *)
+    The state type of a particular action will never change but it is possible
+    for an action to be removed and for a new action to be added with the same
+    name but a different state type. *)
 
 external get_action_state_hint : t -> string -> Gvariant.t option
   = "ml_g_action_group_get_action_state_hint"
-(** Requests a hint about the valid range of values for the state of the
-named action within @action_group.
+(** Requests a hint about the valid range of values for the state of the named
+    action within [action_group].
 
-If `NULL` is returned it either means that the action is not stateful
-or that there is no hint about the valid range of values for the
-state of the action.
+    If [NULL] is returned it either means that the action is not stateful or
+    that there is no hint about the valid range of values for the state of the
+    action.
 
-If a [type@GLib.Variant] array is returned then each item in the array is a
-possible value for the state.  If a [type@GLib.Variant] pair (ie: two-tuple) is
-returned then the tuple specifies the inclusive lower and upper bound
-of valid values for the state.
+    If a [GLib.Variant] array is returned then each item in the array is a
+    possible value for the state. If a [GLib.Variant] pair (ie: two-tuple) is
+    returned then the tuple specifies the inclusive lower and upper bound of
+    valid values for the state.
 
-In any case, the information is merely a hint.  It may be possible to
-have a state value outside of the hinted range and setting a value
-within the range may fail.
+    In any case, the information is merely a hint. It may be possible to have a
+    state value outside of the hinted range and setting a value within the range
+    may fail.
 
-The return value (if non-`NULL`) should be freed with
-[method@GLib.Variant.unref] when it is no longer required. *)
+    The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+    when it is no longer required. *)
 
 external get_action_state : t -> string -> Gvariant.t option
   = "ml_g_action_group_get_action_state"
-(** Queries the current state of the named action within @action_group.
+(** Queries the current state of the named action within [action_group].
 
-If the action is not stateful then `NULL` will be returned.  If the
-action is stateful then the type of the return value is the type
-given by [method@Gio.ActionGroup.get_action_state_type].
+    If the action is not stateful then [NULL] will be returned. If the action is
+    stateful then the type of the return value is the type given by
+    [Gio.ActionGroup.get_action_state_type].
 
-The return value (if non-`NULL`) should be freed with
-[method@GLib.Variant.unref] when it is no longer required. *)
+    The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+    when it is no longer required. *)
 
 external get_action_parameter_type : t -> string -> Gvariant_type.t option
   = "ml_g_action_group_get_action_parameter_type"
-(** Queries the type of the parameter that must be given when activating
-the named action within @action_group.
+(** Queries the type of the parameter that must be given when activating the
+    named action within [action_group].
 
-When activating the action using [method@Gio.ActionGroup.activate_action],
-the [type@GLib.Variant] given to that function must be of the type returned
-by this function.
+    When activating the action using [Gio.ActionGroup.activate_action], the
+    [GLib.Variant] given to that function must be of the type returned by this
+    function.
 
-In the case that this function returns `NULL`, you must not give any
-[type@GLib.Variant], but `NULL` instead.
+    In the case that this function returns [NULL], you must not give any
+    [GLib.Variant], but [NULL] instead.
 
-The parameter type of a particular action will never change but it is
-possible for an action to be removed and for a new action to be added
-with the same name but a different parameter type. *)
+    The parameter type of a particular action will never change but it is
+    possible for an action to be removed and for a new action to be added with
+    the same name but a different parameter type. *)
 
 external get_action_enabled : t -> string -> bool
   = "ml_g_action_group_get_action_enabled"
-(** Checks if the named action within @action_group is currently enabled.
+(** Checks if the named action within [action_group] is currently enabled.
 
-An action must be enabled in order to be activated or in order to
-have its state changed from outside callers. *)
+    An action must be enabled in order to be activated or in order to have its
+    state changed from outside callers. *)
 
 external change_action_state : t -> string -> Gvariant.t -> unit
   = "ml_g_action_group_change_action_state"
-(** Request for the state of the named action within @action_group to be
-changed to @value.
+(** Request for the state of the named action within [action_group] to be
+    changed to [value].
 
-The action must be stateful and @value must be of the correct type.
-See [method@Gio.ActionGroup.get_action_state_type].
+    The action must be stateful and [value] must be of the correct type. See
+    [Gio.ActionGroup.get_action_state_type].
 
-This call merely requests a change.  The action may refuse to change
-its state or may change its state to something other than @value.
-See [method@Gio.ActionGroup.get_action_state_hint].
+    This call merely requests a change. The action may refuse to change its
+    state or may change its state to something other than [value]. See
+    [Gio.ActionGroup.get_action_state_hint].
 
-If the @value GVariant is floating, it is consumed. *)
+    If the [value] GVariant is floating, it is consumed. *)
 
 external activate_action : t -> string -> Gvariant.t option -> unit
   = "ml_g_action_group_activate_action"
-(** Activate the named action within @action_group.
-
-If the action is expecting a parameter, then the correct type of
-parameter must be given as @parameter.  If the action is expecting no
-parameters then @parameter must be `NULL`.  See
-[method@Gio.ActionGroup.get_action_parameter_type].
-
-If the [type@Gio.ActionGroup] implementation supports asynchronous remote
-activation over D-Bus, this call may return before the relevant
-D-Bus traffic has been sent, or any replies have been received. In
-order to block on such asynchronous activation calls,
-[method@Gio.DBusConnection.flush] should be called prior to the code, which
-depends on the result of the action activation. Without flushing
-the D-Bus connection, there is no guarantee that the action would
-have been activated.
-
-The following code which runs in a remote app instance, shows an
-example of a ‘quit’ action being activated on the primary app
-instance over D-Bus. Here [method@Gio.DBusConnection.flush] is called
-before `exit()`. Without `g_dbus_connection_flush()`, the ‘quit’ action
-may fail to be activated on the primary instance.
-
-```c
-// call ‘quit’ action on primary instance
-g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-
-// make sure the action is activated now
-g_dbus_connection_flush (…);
-
-g_debug ("Application has been terminated. Exiting.");
-
-exit (0);
-``` *)
+[@@ocaml.doc
+  "Activate the named action within [action_group].\n\n\
+   If the action is expecting a parameter, then the correct type of\n\
+   parameter must be given as [parameter].  If the action is expecting no\n\
+   parameters then [parameter] must be [NULL].  See\n\
+   [Gio.ActionGroup.get_action_parameter_type].\n\n\
+   If the [Gio.ActionGroup] implementation supports asynchronous remote\n\
+   activation over D-Bus, this call may return before the relevant\n\
+   D-Bus traffic has been sent, or any replies have been received. In\n\
+   order to block on such asynchronous activation calls,\n\
+   [Gio.DBusConnection.flush] should be called prior to the code, which\n\
+   depends on the result of the action activation. Without flushing\n\
+   the D-Bus connection, there is no guarantee that the action would\n\
+   have been activated.\n\n\
+   The following code which runs in a remote app instance, shows an\n\
+   example of a ‘quit’ action being activated on the primary app\n\
+   instance over D-Bus. Here [Gio.DBusConnection.flush] is called\n\
+   before [exit()]. Without [g_dbus_connection_flush()], the ‘quit’ action\n\
+   may fail to be activated on the primary instance.\n\n\
+   {[\n\
+   // call ‘quit’ action on primary instance\n\
+   g_action_group_activate_action (G_ACTION_GROUP (app), \"quit\", NULL);\n\n\
+   // make sure the action is activated now\n\
+   g_dbus_connection_flush (…);\n\n\
+   g_debug (\"Application has been terminated. Exiting.\");\n\n\
+   exit (0);\n\
+   ]}"]
 
 external action_state_changed : t -> string -> Gvariant.t -> unit
   = "ml_g_action_group_action_state_changed"
-(** Emits the [signal@Gio.ActionGroup::action-state-changed] signal on @action_group.
+(** Emits the [Gio.ActionGroup::action-state-changed] signal on [action_group].
 
-This function should only be called by [type@Gio.ActionGroup] implementations. *)
+    This function should only be called by [Gio.ActionGroup] implementations. *)
 
 external action_removed : t -> string -> unit
   = "ml_g_action_group_action_removed"
-(** Emits the [signal@Gio.ActionGroup::action-removed] signal on @action_group.
+(** Emits the [Gio.ActionGroup::action-removed] signal on [action_group].
 
-This function should only be called by [type@Gio.ActionGroup] implementations. *)
+    This function should only be called by [Gio.ActionGroup] implementations. *)
 
 external action_enabled_changed : t -> string -> bool -> unit
   = "ml_g_action_group_action_enabled_changed"
-(** Emits the [signal@Gio.ActionGroup::action-enabled-changed] signal on @action_group.
+(** Emits the [Gio.ActionGroup::action-enabled-changed] signal on
+    [action_group].
 
-This function should only be called by [type@Gio.ActionGroup] implementations. *)
+    This function should only be called by [Gio.ActionGroup] implementations. *)
 
 external action_added : t -> string -> unit = "ml_g_action_group_action_added"
-(** Emits the [signal@Gio.ActionGroup::action-added] signal on @action_group.
+(** Emits the [Gio.ActionGroup::action-added] signal on [action_group].
 
-This function should only be called by [type@Gio.ActionGroup] implementations. *)
+    This function should only be called by [Gio.ActionGroup] implementations. *)
 
 let on_action_added ?after obj ~callback =
   let closure =

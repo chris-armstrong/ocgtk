@@ -1,13 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Rect: Rect *)
 
-type t = [ `rect ] Gobject.obj
 (** The location and size of a rectangle region.
 
     The width and height of a #graphene_rect_t can be negative; for instance, a
-    #graphene_rect_t with an origin of [ 0, 0 ] and a size of [ 10, 10 ] is
-    equivalent to a #graphene_rect_t with an origin of [ 10, 10 ] and a size of
-    [ -10, -10 ].
+    #graphene_rect_t with an origin of \[ 0, 0 \] and a size of \[ 10, 10 \] is
+    equivalent to a #graphene_rect_t with an origin of \[ 10, 10 \] and a size
+    of \[ -10, -10 \].
 
     Application code can normalize rectangles using graphene_rect_normalize();
     this function will ensure that the width and height of a rectangle are
@@ -15,18 +14,18 @@ type t = [ `rect ] Gobject.obj
     internally operate on a normalized copy; all functions returning a
     #graphene_rect_t will always return a normalized rectangle. *)
 
+type t = [ `rect ] Gobject.obj
+
 (* Methods *)
 
 external union : t -> t -> t = "ml_graphene_rect_union"
 (** Computes the union of the two given rectangles.
 
-    ![](rectangle-union.png)
-
     The union in the image above is the blue outline. *)
 
 external scale : t -> float -> float -> t = "ml_graphene_rect_scale"
-(** Scales the size and origin of a rectangle horizontaly by @s_h,
-and vertically by @s_v. The result @res is normalized. *)
+(** Scales the size and origin of a rectangle horizontaly by [s_h], and
+    vertically by [s_v]. The result [res] is normalized. *)
 
 external round_to_pixel : t -> t = "ml_graphene_rect_round_to_pixel"
 (** Rounds the origin and the size of the given rectangle to their nearest
@@ -38,8 +37,8 @@ external round_extents : t -> t = "ml_graphene_rect_round_extents"
     and recompute the size so that the rectangle is large enough to contain all
     the conrners of the original rectangle.
 
-    This function is the equivalent of calling `floor` on the coordinates of the
-    origin, and recomputing the size calling `ceil` on the bottom-right
+    This function is the equivalent of calling [floor] on the coordinates of the
+    origin, and recomputing the size calling [ceil] on the bottom-right
     coordinates.
 
     If you want to be sure that the rounded rectangle completely covers the area
@@ -59,18 +58,18 @@ external round : t -> t = "ml_graphene_rect_round"
     Use graphene_rect_round_extents() in case you need to round to a rectangle
     that covers fully the original one.
 
-    This function is the equivalent of calling `floor` on the coordinates of the
-    origin, and `ceil` on the size. *)
+    This function is the equivalent of calling [floor] on the coordinates of the
+    origin, and [ceil] on the size. *)
 
 external offset_r : t -> float -> float -> t = "ml_graphene_rect_offset_r"
-(** Offsets the origin of the given rectangle by @d_x and @d_y.
+(** Offsets the origin of the given rectangle by [d_x] and [d_y].
 
-The size of the rectangle is left unchanged. *)
+    The size of the rectangle is left unchanged. *)
 
 external offset : t -> float -> float -> t = "ml_graphene_rect_offset"
-(** Offsets the origin by @d_x and @d_y.
+(** Offsets the origin by [d_x] and [d_y].
 
-The size of the rectangle is unchanged. *)
+    The size of the rectangle is unchanged. *)
 
 external normalize_r : t -> t = "ml_graphene_rect_normalize_r"
 (** Normalizes the passed rectangle.
@@ -87,53 +86,49 @@ external normalize : t -> t = "ml_graphene_rect_normalize"
 external intersection : t -> t -> bool * t = "ml_graphene_rect_intersection"
 (** Computes the intersection of the two given rectangles.
 
-![](rectangle-intersection.png)
+    The intersection in the image above is the blue outline.
 
-The intersection in the image above is the blue outline.
-
-If the two rectangles do not intersect, @res will contain
-a degenerate rectangle with origin in (0, 0) and a size of 0. *)
+    If the two rectangles do not intersect, [res] will contain a degenerate
+    rectangle with origin in (0, 0) and a size of 0. *)
 
 external interpolate : t -> t -> float -> t = "ml_graphene_rect_interpolate"
 (** Linearly interpolates the origin and size of the two given rectangles. *)
 
 external inset_r : t -> float -> float -> t = "ml_graphene_rect_inset_r"
-(** Changes the given rectangle to be smaller, or larger depending on the
-given inset parameters.
+(** Changes the given rectangle to be smaller, or larger depending on the given
+    inset parameters.
 
-To create an inset rectangle, use positive @d_x or @d_y values; to
-create a larger, encompassing rectangle, use negative @d_x or @d_y
-values.
+    To create an inset rectangle, use positive [d_x] or [d_y] values; to create
+    a larger, encompassing rectangle, use negative [d_x] or [d_y] values.
 
-The origin of the rectangle is offset by @d_x and @d_y, while the size
-is adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive
-values, the size of the rectangle is decreased; if @d_x and @d_y are
-negative values, the size of the rectangle is increased.
+    The origin of the rectangle is offset by [d_x] and [d_y], while the size is
+    adjusted by [(2 * @d_x, 2 * @d_y)]. If [d_x] and [d_y] are positive values,
+    the size of the rectangle is decreased; if [d_x] and [d_y] are negative
+    values, the size of the rectangle is increased.
 
-If the size of the resulting inset rectangle has a negative width or
-height then the size will be set to zero. *)
+    If the size of the resulting inset rectangle has a negative width or height
+    then the size will be set to zero. *)
 
 external inset : t -> float -> float -> t = "ml_graphene_rect_inset"
-(** Changes the given rectangle to be smaller, or larger depending on the
-given inset parameters.
+(** Changes the given rectangle to be smaller, or larger depending on the given
+    inset parameters.
 
-To create an inset rectangle, use positive @d_x or @d_y values; to
-create a larger, encompassing rectangle, use negative @d_x or @d_y
-values.
+    To create an inset rectangle, use positive [d_x] or [d_y] values; to create
+    a larger, encompassing rectangle, use negative [d_x] or [d_y] values.
 
-The origin of the rectangle is offset by @d_x and @d_y, while the size
-is adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive
-values, the size of the rectangle is decreased; if @d_x and @d_y are
-negative values, the size of the rectangle is increased.
+    The origin of the rectangle is offset by [d_x] and [d_y], while the size is
+    adjusted by [(2 * @d_x, 2 * @d_y)]. If [d_x] and [d_y] are positive values,
+    the size of the rectangle is decreased; if [d_x] and [d_y] are negative
+    values, the size of the rectangle is increased.
 
-If the size of the resulting inset rectangle has a negative width or
-height then the size will be set to zero. *)
+    If the size of the resulting inset rectangle has a negative width or height
+    then the size will be set to zero. *)
 
 external init_from_rect : t -> t -> t = "ml_graphene_rect_init_from_rect"
-(** Initializes @r using the given @src rectangle.
+(** Initializes [r] using the given [src] rectangle.
 
-This function will implicitly normalize the #graphene_rect_t
-before returning. *)
+    This function will implicitly normalize the #graphene_rect_t before
+    returning. *)
 
 external init : t -> float -> float -> float -> float -> t
   = "ml_graphene_rect_init"

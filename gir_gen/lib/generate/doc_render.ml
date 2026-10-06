@@ -3,15 +3,16 @@
 open Doc_ast
 open Doc_str
 
-(* odoc-special escaping in prose contexts: \{ \} \[ \@ (plan invariant 2).
-   A stray ] is left bare: odoc treats it as literal text (at worst a
-   benign warning, never a misparse), and code spans manage their own ]
-   via the balance fallback. *)
+(* odoc-special escaping in prose contexts: \{ \} \[ \] \@.
+   A bare ] in prose is not literal text to odoc: it closes a code span it
+   never opened, which warns ("Unpaired end of code"). So it is escaped
+   like its opening partner. Code spans manage their own ] via the balance
+   fallback and do not go through here. *)
 let escape_prose buf s =
   String.iter
     (fun c ->
       (match c with
-      | '{' | '}' | '[' | '@' -> Buffer.add_char buf '\\'
+      | '{' | '}' | '[' | ']' | '@' -> Buffer.add_char buf '\\'
       | _ -> ());
       Buffer.add_char buf c)
     s
@@ -33,7 +34,7 @@ let rec render_inline ins buf fbs =
           fbs'
       | Code s ->
           if String.contains s ']' then (
-            (* balance fallback (plan invariant 3): escaped plain prose *)
+            (* unbalanced code: fall back to escaped plain prose *)
             escape_prose buf s;
             Inline_code_unbalanced s :: fbs')
           else (
@@ -43,12 +44,11 @@ let rec render_inline ins buf fbs =
       | Italic inner -> wrap buf "{i " "}" inner fbs'
       | Link { text; url } -> wrap buf ("{{:" ^ url ^ "}") "}" text fbs'
       | Page_ref { text; path; anchor = _ } ->
-          (* v1: degraded to bare text (upstream-URL leg is a pure rewrite) *)
+          (* degraded to bare text *)
           let f = render_inline text buf fbs' in
           Page_ref_degraded path :: f
       | Sym_ref { endpoint; kind = _; anchor = _ } ->
-          (* v1: degraded to a code span (the §7 resolver leg is a pure
-             rewrite to [Ref]) *)
+          (* degraded to a code span *)
           emit_code_span buf endpoint;
           Sym_ref_degraded endpoint :: fbs'
       | Param_ref name ->
@@ -72,7 +72,7 @@ and wrap buf prefix suffix inner fbs =
   Buffer.add_string buf suffix;
   f
 
-(* The comment-hazard pass (plan invariant 1): insert a backslash between
+(* The comment-hazard pass: insert a backslash between
    the two characters of a star-paren / paren-star sequence, over the whole
    final output — inside code spans and verbatim blocks included. *)
 let neutralise_comment_hazards s =
@@ -83,7 +83,8 @@ let neutralise_comment_hazards s =
     else
       let pair =
         i + 1 < n
-        && ((s.[i] = '*' && s.[i + 1] = ')') || (s.[i] = '(' && s.[i + 1] = '*'))
+        && ((Char.equal s.[i] '*' && Char.equal s.[i + 1] ')')
+           || (Char.equal s.[i] '(' && Char.equal s.[i + 1] '*'))
       in
       if pair then (
         Buffer.add_char buf s.[i];
@@ -97,13 +98,34 @@ let neutralise_comment_hazards s =
   go 0;
   Buffer.contents buf
 
+(* Writes [content] as the code-block form that cannot end early: plain
+   [{[ ... ]}] when it has no []}], verbatim [{v ... v}] when it does, and
+   stripped to a fallback when it contains both. *)
+let render_code_block buf content : fallback list =
+  match (contains_sub content "]}", contains_sub content "v}") with
+  | false, _ ->
+      if String.equal content "" then Buffer.add_string buf "{[]}"
+      else (
+        Buffer.add_string buf "{[\n";
+        Buffer.add_string buf content;
+        Buffer.add_string buf "\n]}");
+      []
+  | true, false ->
+      Buffer.add_string buf "{v\n";
+      Buffer.add_string buf content;
+      Buffer.add_string buf "\nv}";
+      [ Code_block_verbatim content ]
+  | true, true -> [ Code_block_stripped content ]
+
 let render_with_fallbacks ctx (t : t) : string * fallback list =
   (* Entity heading normalisation: the doc's shallowest markdown level maps
      to {1}, deeper levels keep their offsets, capped at {5}. *)
   let shallowest =
     List.fold_left
       (fun acc blk ->
-        match blk with Heading (l, _) -> Int.min acc l | _ -> acc)
+        match blk with
+        | Heading (l, _) -> Int.min acc l
+        | Para _ | List _ | Code_block _ -> acc)
       7 t.blocks
   in
   let shift = shallowest - 1 in
@@ -130,26 +152,10 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
               [] items
           in
           let len = Buffer.length buf in
-          if len > 0 && Buffer.nth buf (len - 1) = '\n' then
+          if len > 0 && Char.equal (Buffer.nth buf (len - 1)) '\n' then
             Buffer.truncate buf (len - 1);
           fbs
-      | Code_block content ->
-          if contains_sub content "]}" then
-            if contains_sub content "v}" then
-              (* neither {[ ... ]} nor {v ... v} can carry this content *)
-              [ Code_block_stripped content ]
-            else (
-              Buffer.add_string buf "{v\n";
-              Buffer.add_string buf content;
-              Buffer.add_string buf "\nv}";
-              [ Code_block_verbatim content ])
-          else (
-            if String.equal content "" then Buffer.add_string buf "{[]}"
-            else (
-              Buffer.add_string buf "{[\n";
-              Buffer.add_string buf content;
-              Buffer.add_string buf "\n]}");
-            [])
+      | Code_block content -> render_code_block buf content
     in
     (Buffer.contents buf, fbs)
   in

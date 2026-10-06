@@ -1,6 +1,25 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Spinner: Spinner *)
 
+(** Displays an icon-size spinning animation.
+
+    It is often used as an alternative to a [Gtk.ProgressBar] for displaying
+    indefinite activity, instead of actual progress.
+
+    An example GtkSpinner
+
+    To start the animation, use [Gtk.Spinner.start], to stop it use
+    [Gtk.Spinner.stop].
+
+    {b CSS nodes}
+
+    [GtkSpinner] has a single CSS node with the name spinner. When the animation
+    is active, the :checked pseudoclass is added to this node.
+
+    {b Accessibility}
+
+    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+
 type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_spinner_new"

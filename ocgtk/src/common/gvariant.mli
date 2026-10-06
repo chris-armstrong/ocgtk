@@ -37,8 +37,7 @@
     - m*: maybe (nullable)
     - a*: array
     - () : tuple
-    - \{\} : dictionary entry
-*)
+    - \{\} : dictionary entry *)
 
 (** {2 Unsigned Integer Types} *)
 
@@ -51,7 +50,7 @@ type uint64 = UInt64.t
 type uint16 = UInt16.t
 (** Unsigned 16-bit integer *)
 
-type int16 = int
+type int16 = Int16.t
 (** Signed 16-bit integer - stored as OCaml int *)
 
 (** {2 Opaque GVariant Type} *)
@@ -73,17 +72,19 @@ val of_boolean : bool -> t
 (** Create a boolean variant. *)
 
 val to_boolean : t -> bool
-(** Get the boolean value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a boolean. *)
+(** Get the boolean value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a boolean. *)
 
 (** {2 Byte (uint8)} *)
 
-val of_byte : int -> t
+val of_byte : UInt8.t -> t
 (** Create a byte variant. *)
 
-val to_byte : t -> int
-(** Get the byte value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a byte. *)
+val to_byte : t -> UInt8.t
+(** Get the byte value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a byte. *)
 
 (** {2 Signed Integers} *)
 
@@ -91,22 +92,25 @@ val of_int16 : int16 -> t
 (** Create an int16 variant. *)
 
 val to_int16 : t -> int16
-(** Get the int16 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int16. *)
+(** Get the int16 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not an int16. *)
 
 val of_int32 : int32 -> t
 (** Create an int32 variant. *)
 
 val to_int32 : t -> int32
-(** Get the int32 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int32. *)
+(** Get the int32 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not an int32. *)
 
 val of_int64 : int64 -> t
 (** Create an int64 variant. *)
 
 val to_int64 : t -> int64
-(** Get the int64 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an int64. *)
+(** Get the int64 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not an int64. *)
 
 (** {2 Unsigned Integers} *)
 
@@ -114,22 +118,25 @@ val of_uint16 : uint16 -> t
 (** Create a uint16 variant. *)
 
 val to_uint16 : t -> uint16
-(** Get the uint16 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint16. *)
+(** Get the uint16 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a uint16. *)
 
 val of_uint32 : uint32 -> t
 (** Create a uint32 variant. *)
 
 val to_uint32 : t -> uint32
-(** Get the uint32 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint32. *)
+(** Get the uint32 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a uint32. *)
 
 val of_uint64 : uint64 -> t
 (** Create a uint64 variant. *)
 
 val to_uint64 : t -> uint64
-(** Get the uint64 value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a uint64. *)
+(** Get the uint64 value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a uint64. *)
 
 (** {2 Floating Point} *)
 
@@ -137,8 +144,9 @@ val of_double : float -> t
 (** Create a double variant. *)
 
 val to_double : t -> float
-(** Get the double value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a double. *)
+(** Get the double value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a double. *)
 
 (** {2 Text Types} *)
 
@@ -146,8 +154,9 @@ val of_string : string -> t
 (** Create a string variant. *)
 
 val to_string : t -> string
-(** Get the string value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a string. *)
+(** Get the string value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a string. *)
 
 val of_object_path : string -> t
 (** D-Bus object path - validated to be a valid object path *)
@@ -161,8 +170,9 @@ val of_handle : int -> t
 (** Create a handle (file descriptor) variant. *)
 
 val to_handle : t -> int
-(** Get the handle value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a handle. *)
+(** Get the handle value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a handle. *)
 
 (** {2 Variant (Boxed Value)} *)
 
@@ -170,8 +180,9 @@ val of_variant : t -> t
 (** Create a variant containing another variant (type 'v'). *)
 
 val to_variant : t -> t
-(** Unwrap a variant inside a variant.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a variant type. *)
+(** Unwrap a variant inside a variant. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a variant type. *)
 
 (** {2 Maybe (Nullable)} *)
 
@@ -181,8 +192,9 @@ val of_maybe : Gvariant_type.t -> t option -> t
 
 val to_maybe : t -> t option
 (** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped
-    value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a maybe type. *)
+    value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a maybe type. *)
 
 (** {2 Arrays} *)
 
@@ -190,23 +202,26 @@ val of_string_array : string array -> t
 (** Create a string array variant. *)
 
 val to_string_array : t -> string array
-(** Get the string array value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not a string array. *)
+(** Get the string array value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not a string array. *)
 
 val of_object_path_array : string array -> t
 (** Create an object path array variant. *)
 
 val to_object_path_array : t -> string array
-(** Get the object path array value.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the variant is not an object path array. *)
+(** Get the object path array value. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the variant is not an object path array. *)
 
 (** {2 Dictionary Lookups (a\{sv\} pattern)}
 
     These functions look up values in a\{sv\} (string->variant) dictionaries.
-    They return [None] if the key is not found or if the value is not of the expected type.
+    They return [None] if the key is not found or if the value is not of the
+    expected type.
 
-    For dictionaries with different value types, use [get_child_value] with the appropriate index.
-*)
+    For dictionaries with different value types, use [get_child_value] with the
+    appropriate index. *)
 
 val lookup_string : t -> string -> string option
 (** Lookup a string value in a dictionary. Returns [None] if the key is not
@@ -220,15 +235,15 @@ val lookup_boolean : t -> string -> bool option
 (** Lookup a boolean value in a dictionary. Returns [None] if the key is not
     found or the value is not a boolean. *)
 
-val lookup_byte : t -> string -> int option
+val lookup_byte : t -> string -> UInt8.t option
 (** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is
     not found or the value is not a byte. *)
 
-val lookup_int16 : t -> string -> int option
+val lookup_int16 : t -> string -> int16 option
 (** Lookup an int16 value in a dictionary. Returns [None] if the key is not
     found or the value is not an int16. *)
 
-val lookup_uint16 : t -> string -> int option
+val lookup_uint16 : t -> string -> uint16 option
 (** Lookup a uint16 value in a dictionary. Returns [None] if the key is not
     found or the value is not a uint16. *)
 

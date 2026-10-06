@@ -1,6 +1,22 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Constraint: Constraint *)
 
+(** Describes a constraint between attributes of two widgets, expressed as a
+    linear equation.
+
+    The typical equation for a constraint is:
+
+    {[
+      target.target_attr = source.source_attr × multiplier + constant
+    ]}
+
+    Each [GtkConstraint] is part of a system that will be solved by a
+    [Gtk.ConstraintLayout] in order to allocate and position each child widget
+    or guide.
+
+    The source and target, as well as their attributes, of a [GtkConstraint]
+    instance are immutable after creation. *)
+
 type t = [ `constraint_ | `object_ ] Gobject.obj
 
 external new_ :
@@ -32,11 +48,11 @@ external is_required : t -> bool = "ml_gtk_constraint_is_required"
 
 external is_constant : t -> bool = "ml_gtk_constraint_is_constant"
 (** Checks whether the constraint describes a relation between an attribute on
-    the [property@Gtk.Constraint:target] and a constant value. *)
+    the [Gtk.Constraint:target] and a constant value. *)
 
 external is_attached : t -> bool = "ml_gtk_constraint_is_attached"
-(** Checks whether the constraint is attached to a [class@Gtk.ConstraintLayout],
-    and it is contributing to the layout. *)
+(** Checks whether the constraint is attached to a [Gtk.ConstraintLayout], and
+    it is contributing to the layout. *)
 
 external get_target_attribute : t -> Gtk_enums.constraintattribute
   = "ml_gtk_constraint_get_target_attribute"
@@ -44,11 +60,10 @@ external get_target_attribute : t -> Gtk_enums.constraintattribute
 
 external get_target : t -> Constraint_target.t option
   = "ml_gtk_constraint_get_target"
-(** Retrieves the [iface@Gtk.ConstraintTarget] used as the target for the
-    constraint.
+(** Retrieves the [Gtk.ConstraintTarget] used as the target for the constraint.
 
-    If the targe is set to `NULL` at creation, the constraint will use the
-    widget using the [class@Gtk.ConstraintLayout] as the target. *)
+    If the targe is set to [NULL] at creation, the constraint will use the
+    widget using the [Gtk.ConstraintLayout] as the target. *)
 
 external get_strength : t -> int = "ml_gtk_constraint_get_strength"
 (** Retrieves the strength of the constraint. *)
@@ -59,11 +74,10 @@ external get_source_attribute : t -> Gtk_enums.constraintattribute
 
 external get_source : t -> Constraint_target.t option
   = "ml_gtk_constraint_get_source"
-(** Retrieves the [iface@Gtk.ConstraintTarget] used as the source for the
-    constraint.
+(** Retrieves the [Gtk.ConstraintTarget] used as the source for the constraint.
 
-    If the source is set to `NULL` at creation, the constraint will use the
-    widget using the [class@Gtk.ConstraintLayout] as the source. *)
+    If the source is set to [NULL] at creation, the constraint will use the
+    widget using the [Gtk.ConstraintLayout] as the source. *)
 
 external get_relation : t -> Gtk_enums.constraintrelation
   = "ml_gtk_constraint_get_relation"

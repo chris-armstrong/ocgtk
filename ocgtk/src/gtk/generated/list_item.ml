@@ -1,34 +1,49 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListItem: ListItem *)
 
+(** Used by list widgets to represent items in a [Gio.ListModel].
+
+    [GtkListItem] objects are managed by the list widget (with its factory) and
+    cannot be created by applications, but they need to be populated by
+    application code. This is done by calling [Gtk.ListItem.set_child].
+
+    [GtkListItem] objects exist in 2 stages:
+
+    + The unbound stage where the listitem is not currently connected to an item
+      in the list. In that case, the [Gtk.ListItem:item] property is set to
+      [NULL].
+
+    + The bound stage where the listitem references an item from the list. The
+      [Gtk.ListItem:item] property is not [NULL]. *)
+
 type t = [ `list_item | `object_ ] Gobject.obj
 
 (* Methods *)
 
 external set_selectable : t -> bool -> unit = "ml_gtk_list_item_set_selectable"
-(** Sets @self to be selectable.
+(** Sets [self] to be selectable.
 
-If an item is selectable, clicking on the item or using the keyboard
-will try to select or unselect the item. If this succeeds is up to
-the model to determine, as it is managing the selected state.
+    If an item is selectable, clicking on the item or using the keyboard will
+    try to select or unselect the item. If this succeeds is up to the model to
+    determine, as it is managing the selected state.
 
-Note that this means that making an item non-selectable has no
-influence on the selected state at all. A non-selectable item
-may still be selected.
+    Note that this means that making an item non-selectable has no influence on
+    the selected state at all. A non-selectable item may still be selected.
 
-By default, listitems are selectable. When rebinding them to
-a new item, they will also be reset to be selectable by GTK. *)
+    By default, listitems are selectable. When rebinding them to a new item,
+    they will also be reset to be selectable by GTK. *)
 
 external set_focusable : t -> bool -> unit = "ml_gtk_list_item_set_focusable"
-(** Sets @self to be focusable.
+(** Sets [self] to be focusable.
 
-If an item is focusable, it can be focused using the keyboard.
-This works similar to [method@Gtk.Widget.set_focusable].
+    If an item is focusable, it can be focused using the keyboard. This works
+    similar to [Gtk.Widget.set_focusable].
 
-Note that if items are not focusable, the keyboard cannot be used to activate
-them and selecting only works if one of the listitem's children is focusable.
+    Note that if items are not focusable, the keyboard cannot be used to
+    activate them and selecting only works if one of the listitem's children is
+    focusable.
 
-By default, listitems are focusable. *)
+    By default, listitems are focusable. *)
 
 external set_child :
   t ->
@@ -44,15 +59,14 @@ external set_child :
 
 external set_activatable : t -> bool -> unit
   = "ml_gtk_list_item_set_activatable"
-(** Sets @self to be activatable.
+(** Sets [self] to be activatable.
 
-If an item is activatable, double-clicking on the item, using
-the Return key or calling [method@Gtk.Widget.activate] will activate
-the item. Activating instructs the containing view to handle
-activation. `GtkListView` for example will be emitting the
-[signal@Gtk.ListView::activate] signal.
+    If an item is activatable, double-clicking on the item, using the Return key
+    or calling [Gtk.Widget.activate] will activate the item. Activating
+    instructs the containing view to handle activation. [GtkListView] for
+    example will be emitting the [Gtk.ListView::activate] signal.
 
-By default, listitems are activatable. *)
+    By default, listitems are activatable. *)
 
 external set_accessible_label : t -> string -> unit
   = "ml_gtk_list_item_set_accessible_label"
@@ -74,24 +88,24 @@ external get_selected : t -> bool = "ml_gtk_list_item_get_selected"
 
 external get_selectable : t -> bool = "ml_gtk_list_item_get_selectable"
 (** Checks if a listitem has been set to be selectable via
-    [method@Gtk.ListItem.set_selectable].
+    [Gtk.ListItem.set_selectable].
 
-    Do not confuse this function with [method@Gtk.ListItem.get_selected]. *)
+    Do not confuse this function with [Gtk.ListItem.get_selected]. *)
 
 external get_position : t -> int = "ml_gtk_list_item_get_position"
-(** Gets the position in the model that @self currently displays.
+(** Gets the position in the model that [self] currently displays.
 
-If @self is unbound, `GTK_INVALID_LIST_POSITION` is returned. *)
+    If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
 
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_list_item_get_item"
-(** Gets the model item that associated with @self.
+(** Gets the model item that associated with [self].
 
-If @self is unbound, this function returns `NULL`. *)
+    If [self] is unbound, this function returns [NULL]. *)
 
 external get_focusable : t -> bool = "ml_gtk_list_item_get_focusable"
 (** Checks if a listitem has been set to be focusable via
-    [method@Gtk.ListItem.set_focusable]. *)
+    [Gtk.ListItem.set_focusable]. *)
 
 external get_child :
   t ->
@@ -99,19 +113,19 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_list_item_get_child"
-(** Gets the child previously set via [method@Gtk.ListItem.set_child] or `NULL`
-    if none was set. *)
+(** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if none
+    was set. *)
 
 external get_activatable : t -> bool = "ml_gtk_list_item_get_activatable"
 (** Checks if a listitem has been set to be activatable via
-    [method@Gtk.ListItem.set_activatable]. *)
+    [Gtk.ListItem.set_activatable]. *)
 
 external get_accessible_label : t -> string
   = "ml_gtk_list_item_get_accessible_label"
-(** Gets the accessible label of @self. *)
+(** Gets the accessible label of [self]. *)
 
 external get_accessible_description : t -> string
   = "ml_gtk_list_item_get_accessible_description"
-(** Gets the accessible description of @self. *)
+(** Gets the accessible description of [self]. *)
 
 (* Properties *)

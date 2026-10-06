@@ -3,20 +3,17 @@
 
 (* AccessibleAnnouncementPriority - enumeration *)
 type accessibleannouncementpriority = [
-  (** The announcement is low priority,
-  and might be read only on the user's request. *)
-  | `LOW
-  (** The announcement is of medium
-  priority, and is usually spoken at the next opportunity, such as at the
-  end of speaking the current sentence or when the user pauses typing. *)
-  | `MEDIUM
-  (** The announcement is of high
-  priority, and is usually spoken immediately. Because an interruption
-  might disorient users or cause them to not complete their current task,
-  authors SHOULD NOT use high priority announcements unless the
-  interruption is imperative. An example would be a notification about a
-  critical battery power level. *)
-  | `HIGH
+  | `LOW (** The announcement is low priority,
+and might be read only on the user's request. *)
+  | `MEDIUM (** The announcement is of medium
+priority, and is usually spoken at the next opportunity, such as at the
+end of speaking the current sentence or when the user pauses typing. *)
+  | `HIGH (** The announcement is of high
+priority, and is usually spoken immediately. Because an interruption
+might disorient users or cause them to not complete their current task,
+authors SHOULD NOT use high priority announcements unless the
+interruption is imperative. An example would be a notification about a
+critical battery power level. *)
 ]
 
 val accessibleannouncementpriority_of_int : int -> accessibleannouncementpriority
@@ -24,22 +21,18 @@ val accessibleannouncementpriority_to_int : accessibleannouncementpriority -> in
 
 (* AccessibleAutocomplete - enumeration *)
 type accessibleautocomplete = [
-  (** Automatic suggestions are not displayed. *)
-  | `NONE
-  (** When a user is providing input, text
-   suggesting one way to complete the provided input may be dynamically
-   inserted after the caret. *)
-  | `INLINE
-  (** When a user is providing input, an element
-   containing a collection of values that could complete the provided input
-   may be displayed. *)
-  | `LIST
-  (** When a user is providing input, an element
-   containing a collection of values that could complete the provided input
-   may be displayed. If displayed, one value in the collection is automatically
-   selected, and the text needed to complete the automatically selected value
-   appears after the caret in the input. *)
-  | `BOTH
+  | `NONE (** Automatic suggestions are not displayed. *)
+  | `INLINE (** When a user is providing input, text
+suggesting one way to complete the provided input may be dynamically
+inserted after the caret. *)
+  | `LIST (** When a user is providing input, an element
+containing a collection of values that could complete the provided input
+may be displayed. *)
+  | `BOTH (** When a user is providing input, an element
+containing a collection of values that could complete the provided input
+may be displayed. If displayed, one value in the collection is automatically
+selected, and the text needed to complete the automatically selected value
+appears after the caret in the input. *)
 ]
 
 val accessibleautocomplete_of_int : int -> accessibleautocomplete
@@ -47,14 +40,10 @@ val accessibleautocomplete_to_int : accessibleautocomplete -> int
 
 (* AccessibleInvalidState - enumeration *)
 type accessibleinvalidstate = [
-  (** There are no detected errors in the value *)
-  | `FALSE
-  (** The value entered by the user has failed validation *)
-  | `TRUE
-  (** A grammatical error was detected *)
-  | `GRAMMAR
-  (** A spelling error was detected *)
-  | `SPELLING
+  | `FALSE (** There are no detected errors in the value *)
+  | `TRUE (** The value entered by the user has failed validation *)
+  | `GRAMMAR (** A grammatical error was detected *)
+  | `SPELLING (** A spelling error was detected *)
 ]
 
 val accessibleinvalidstate_of_int : int -> accessibleinvalidstate
@@ -62,12 +51,9 @@ val accessibleinvalidstate_to_int : accessibleinvalidstate -> int
 
 (* AccessiblePlatformState - enumeration *)
 type accessibleplatformstate = [
-  (** whether the accessible can be focused *)
-  | `FOCUSABLE
-  (** whether the accessible has focus *)
-  | `FOCUSED
-  (** whether the accessible is active *)
-  | `ACTIVE
+  | `FOCUSABLE (** whether the accessible can be focused *)
+  | `FOCUSED (** whether the accessible has focus *)
+  | `ACTIVE (** whether the accessible is active *)
 ]
 
 val accessibleplatformstate_of_int : int -> accessibleplatformstate
@@ -75,77 +61,57 @@ val accessibleplatformstate_to_int : accessibleplatformstate -> int
 
 (* AccessibleProperty - enumeration *)
 type accessibleproperty = [
-  (** Indicates whether inputting text
-   could trigger display of one or more predictions of the user's intended
-   value for a combobox, searchbox, or textbox and specifies how predictions
-   would be presented if they were made. Value type: [enum@AccessibleAutocomplete] *)
-  | `AUTOCOMPLETE
-  (** Defines a string value that describes
-   or annotates the current element. Value type: string *)
-  | `DESCRIPTION
-  (** Indicates the availability and type of
-   interactive popup element, such as menu or dialog, that can be triggered
-   by an element. *)
-  | `HAS_POPUP
-  (** Indicates keyboard shortcuts that an
-   author has implemented to activate or give focus to an element. Value type:
-   string. The format of the value is a space-separated list of shortcuts, with
-   each shortcut consisting of one or more modifiers (`Control`, `Alt` or `Shift`),
-   followed by a non-modifier key, all separated by `+`.
-   Examples: `F2`, `Alt-F`, `Control+Shift+N` *)
-  | `KEY_SHORTCUTS
-  (** Defines a string value that labels the current
-   element. Value type: string *)
-  | `LABEL
-  (** Defines the hierarchical level of an element
-   within a structure. Value type: integer *)
-  | `LEVEL
-  (** Indicates whether an element is modal when
-   displayed. Value type: boolean *)
-  | `MODAL
-  (** Indicates whether a text box accepts
-   multiple lines of input or only a single line. Value type: boolean *)
-  | `MULTI_LINE
-  (** Indicates that the user may select
-   more than one item from the current selectable descendants. Value type:
-   boolean *)
-  | `MULTI_SELECTABLE
-  (** Indicates whether the element's
-   orientation is horizontal, vertical, or unknown/ambiguous. Value type:
-   [enum@Orientation] *)
-  | `ORIENTATION
-  (** Defines a short hint (a word or short
-   phrase) intended to aid the user with data entry when the control has no
-   value. A hint could be a sample value or a brief description of the expected
-   format. Value type: string *)
-  | `PLACEHOLDER
-  (** Indicates that the element is not editable,
-   but is otherwise operable. Value type: boolean *)
-  | `READ_ONLY
-  (** Indicates that user input is required on
-   the element before a form may be submitted. Value type: boolean *)
-  | `REQUIRED
-  (** Defines a human-readable,
-   author-localized description for the role of an element. Value type: string *)
-  | `ROLE_DESCRIPTION
-  (** Indicates if items in a table or grid are
-   sorted in ascending or descending order. Value type: [enum@AccessibleSort] *)
-  | `SORT
-  (** Defines the maximum allowed value for a
-   range widget. Value type: double *)
-  | `VALUE_MAX
-  (** Defines the minimum allowed value for a
-   range widget. Value type: double *)
-  | `VALUE_MIN
-  (** Defines the current value for a range widget.
-   Value type: double *)
-  | `VALUE_NOW
-  (** Defines the human readable text alternative
-   of [enum@Gtk.AccessibleProperty.VALUE_NOW] for a range widget. Value type: string *)
-  | `VALUE_TEXT
-  (** Defines a string value that provides a description of non-standard keyboard
+  | `AUTOCOMPLETE (** Indicates whether inputting text
+could trigger display of one or more predictions of the user's intended
+value for a combobox, searchbox, or textbox and specifies how predictions
+would be presented if they were made. Value type: [AccessibleAutocomplete] *)
+  | `DESCRIPTION (** Defines a string value that describes
+or annotates the current element. Value type: string *)
+  | `HAS_POPUP (** Indicates the availability and type of
+interactive popup element, such as menu or dialog, that can be triggered
+by an element. *)
+  | `KEY_SHORTCUTS (** Indicates keyboard shortcuts that an
+author has implemented to activate or give focus to an element. Value type:
+string. The format of the value is a space-separated list of shortcuts, with
+each shortcut consisting of one or more modifiers ([Control], [Alt] or [Shift]),
+followed by a non-modifier key, all separated by [+].
+Examples: [F2], [Alt-F], [Control+Shift+N] *)
+  | `LABEL (** Defines a string value that labels the current
+element. Value type: string *)
+  | `LEVEL (** Defines the hierarchical level of an element
+within a structure. Value type: integer *)
+  | `MODAL (** Indicates whether an element is modal when
+displayed. Value type: boolean *)
+  | `MULTI_LINE (** Indicates whether a text box accepts
+multiple lines of input or only a single line. Value type: boolean *)
+  | `MULTI_SELECTABLE (** Indicates that the user may select
+more than one item from the current selectable descendants. Value type:
+boolean *)
+  | `ORIENTATION (** Indicates whether the element's
+orientation is horizontal, vertical, or unknown/ambiguous. Value type:
+[Orientation] *)
+  | `PLACEHOLDER (** Defines a short hint (a word or short
+phrase) intended to aid the user with data entry when the control has no
+value. A hint could be a sample value or a brief description of the expected
+format. Value type: string *)
+  | `READ_ONLY (** Indicates that the element is not editable,
+but is otherwise operable. Value type: boolean *)
+  | `REQUIRED (** Indicates that user input is required on
+the element before a form may be submitted. Value type: boolean *)
+  | `ROLE_DESCRIPTION (** Defines a human-readable,
+author-localized description for the role of an element. Value type: string *)
+  | `SORT (** Indicates if items in a table or grid are
+sorted in ascending or descending order. Value type: [AccessibleSort] *)
+  | `VALUE_MAX (** Defines the maximum allowed value for a
+range widget. Value type: double *)
+  | `VALUE_MIN (** Defines the minimum allowed value for a
+range widget. Value type: double *)
+  | `VALUE_NOW (** Defines the current value for a range widget.
+Value type: double *)
+  | `VALUE_TEXT (** Defines the human readable text alternative
+of [Gtk.AccessibleProperty.VALUE_NOW] for a range widget. Value type: string *)
+  | `HELP_TEXT (** Defines a string value that provides a description of non-standard keyboard
 interactions of the current element. Value type: string *)
-  | `HELP_TEXT
 ]
 
 val accessibleproperty_of_int : int -> accessibleproperty
@@ -153,99 +119,75 @@ val accessibleproperty_to_int : accessibleproperty -> int
 
 (* AccessibleRelation - enumeration *)
 type accessiblerelation = [
-  (** Identifies the currently active
-   element when focus is on a composite widget, combobox, textbox, group,
-   or application. Value type: reference *)
-  | `ACTIVE_DESCENDANT
-  (** Defines the total number of columns
-   in a table, grid, or treegrid. Value type: integer *)
-  | `COL_COUNT
-  (** Defines an element's column index or
-   position with respect to the total number of columns within a table,
-   grid, or treegrid. Value type: integer *)
-  | `COL_INDEX
-  (** Defines a human readable text
-  alternative of %GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string *)
-  | `COL_INDEX_TEXT
-  (** Defines the number of columns spanned
-  by a cell or gridcell within a table, grid, or treegrid. Value type: integer *)
-  | `COL_SPAN
-  (** Identifies the element (or elements) whose
-   contents or presence are controlled by the current element. Value type: reference *)
-  | `CONTROLS
-  (** Identifies the element (or elements)
-   that describes the object. Value type: reference *)
-  | `DESCRIBED_BY
-  (** Identifies the element (or elements) that
-   provide additional information related to the object. Value type: reference *)
-  | `DETAILS
-  (** Identifies the element (or elements) that
-   provide an error message for an object. Value type: reference *)
-  | `ERROR_MESSAGE
-  (** Identifies the next element (or elements)
-   in an alternate reading order of content which, at the user's discretion,
-   allows assistive technology to override the general default of reading in
-   document source order. Value type: reference *)
-  | `FLOW_TO
-  (** Identifies the element (or elements)
-   that labels the current element. Value type: reference *)
-  | `LABELLED_BY
-  (** Identifies an element (or elements) in order
-   to define a visual, functional, or contextual parent/child relationship
-   between elements where the widget hierarchy cannot be used to represent
-   the relationship. Value type: reference *)
-  | `OWNS
-  (** Defines an element's number or position
-   in the current set of listitems or treeitems. Value type: integer *)
-  | `POS_IN_SET
-  (** Defines the total number of rows in a table,
-   grid, or treegrid. Value type: integer *)
-  | `ROW_COUNT
-  (** Defines an element's row index or position
-   with respect to the total number of rows within a table, grid, or treegrid.
-   Value type: integer *)
-  | `ROW_INDEX
-  (** Defines a human readable text
-   alternative of [enum@Gtk.AccessibleRelation.ROW_INDEX]. Value type: string *)
-  | `ROW_INDEX_TEXT
-  (** Defines the number of rows spanned by a
-   cell or gridcell within a table, grid, or treegrid. Value type: integer *)
-  | `ROW_SPAN
-  (** Defines the number of items in the current
-   set of listitems or treeitems. Value type: integer *)
-  | `SET_SIZE
-  (** Identifies the element (or elements) that are labeled by the
+  | `ACTIVE_DESCENDANT (** Identifies the currently active
+element when focus is on a composite widget, combobox, textbox, group,
+or application. Value type: reference *)
+  | `COL_COUNT (** Defines the total number of columns
+in a table, grid, or treegrid. Value type: integer *)
+  | `COL_INDEX (** Defines an element's column index or
+position with respect to the total number of columns within a table,
+grid, or treegrid. Value type: integer *)
+  | `COL_INDEX_TEXT (** Defines a human readable text
+alternative of [GTK_ACCESSIBLE_RELATION_COL_INDEX]. Value type: string *)
+  | `COL_SPAN (** Defines the number of columns spanned
+by a cell or gridcell within a table, grid, or treegrid. Value type: integer *)
+  | `CONTROLS (** Identifies the element (or elements) whose
+contents or presence are controlled by the current element. Value type: reference *)
+  | `DESCRIBED_BY (** Identifies the element (or elements)
+that describes the object. Value type: reference *)
+  | `DETAILS (** Identifies the element (or elements) that
+provide additional information related to the object. Value type: reference *)
+  | `ERROR_MESSAGE (** Identifies the element (or elements) that
+provide an error message for an object. Value type: reference *)
+  | `FLOW_TO (** Identifies the next element (or elements)
+in an alternate reading order of content which, at the user's discretion,
+allows assistive technology to override the general default of reading in
+document source order. Value type: reference *)
+  | `LABELLED_BY (** Identifies the element (or elements)
+that labels the current element. Value type: reference *)
+  | `OWNS (** Identifies an element (or elements) in order
+to define a visual, functional, or contextual parent/child relationship
+between elements where the widget hierarchy cannot be used to represent
+the relationship. Value type: reference *)
+  | `POS_IN_SET (** Defines an element's number or position
+in the current set of listitems or treeitems. Value type: integer *)
+  | `ROW_COUNT (** Defines the total number of rows in a table,
+grid, or treegrid. Value type: integer *)
+  | `ROW_INDEX (** Defines an element's row index or position
+with respect to the total number of rows within a table, grid, or treegrid.
+Value type: integer *)
+  | `ROW_INDEX_TEXT (** Defines a human readable text
+alternative of [Gtk.AccessibleRelation.ROW_INDEX]. Value type: string *)
+  | `ROW_SPAN (** Defines the number of rows spanned by a
+cell or gridcell within a table, grid, or treegrid. Value type: integer *)
+  | `SET_SIZE (** Defines the number of items in the current
+set of listitems or treeitems. Value type: integer *)
+  | `LABEL_FOR (** Identifies the element (or elements) that are labeled by the
 current element. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `LABEL_FOR
-  (** Identifies the element (or elements) that are described by
+  | `DESCRIPTION_FOR (** Identifies the element (or elements) that are described by
 the current element. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `DESCRIPTION_FOR
-  (** Identifies the element (or elements) that the current
+  | `CONTROLLED_BY (** Identifies the element (or elements) that the current
 element is controlled by. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `CONTROLLED_BY
-  (** Identifies the element (or elements) for which the current
+  | `DETAILS_FOR (** Identifies the element (or elements) for which the current
 element provides additional information. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `DETAILS_FOR
-  (** Identifies the element (or elements) for which the current
+  | `ERROR_MESSAGE_FOR (** Identifies the element (or elements) for which the current
 element provides an error message. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `ERROR_MESSAGE_FOR
-  (** Identifies the previous element (or elements) in an alternate
+  | `FLOW_FROM (** Identifies the previous element (or elements) in an alternate
 reading order of content which, at the user's discretion, allows
 assistive technology to override the general default of reading in
 document source order. Value type: reference
 
 This relation is managed by GTK and should not be set from application code. *)
-  | `FLOW_FROM
 ]
 
 val accessiblerelation_of_int : int -> accessiblerelation
@@ -253,204 +195,119 @@ val accessiblerelation_to_int : accessiblerelation -> int
 
 (* AccessibleRole - enumeration *)
 type accessiblerole = [
-  (** An element with important, and usually
-  time-sensitive, information *)
-  | `ALERT
-  (** A type of dialog that contains an
-  alert message *)
-  | `ALERT_DIALOG
-  (** Unused *)
-  | `BANNER
-  (** An input element that allows for
-  user-triggered actions when clicked or pressed *)
-  | `BUTTON
-  (** Unused *)
-  | `CAPTION
-  (** Unused *)
-  | `CELL
-  (** A checkable input element that has
-  three possible values: `true`, `false`, or `mixed` *)
-  | `CHECKBOX
-  (** A header in a columned list. *)
-  | `COLUMN_HEADER
-  (** An input that controls another element,
-  such as a list or a grid, that can dynamically pop up to help the user
-  set the value of the input *)
-  | `COMBO_BOX
-  (** Abstract role. *)
-  | `COMMAND
-  (** Abstract role. *)
-  | `COMPOSITE
-  (** A dialog is a window that is designed to interrupt
-  the current processing of an application in order to prompt the user to enter
-  information or require a response. *)
-  | `DIALOG
-  (** Content that assistive technology users may want to
-  browse in a reading mode. *)
-  | `DOCUMENT
-  (** Unused *)
-  | `FEED
-  (** Unused *)
-  | `FORM
-  (** A nameless container that has no semantic meaning
-  of its own. This is the role that GTK uses by default for widgets. *)
-  | `GENERIC
-  (** A grid of items. *)
-  | `GRID
-  (** An item in a grid or tree grid. *)
-  | `GRID_CELL
-  (** An element that groups multiple related widgets. GTK uses
-  this role for various containers, like [class@Gtk.HeaderBar] or [class@Gtk.Notebook]. *)
-  | `GROUP
-  (** Unused *)
-  | `HEADING
-  (** An image. *)
-  | `IMG
-  (** Abstract role. *)
-  | `INPUT
-  (** A visible name or caption for a user interface component. *)
-  | `LABEL
-  (** Abstract role. *)
-  | `LANDMARK
-  (** Unused *)
-  | `LEGEND
-  (** A clickable link. *)
-  | `LINK
-  (** A list of items. *)
-  | `LIST
-  (** Unused. *)
-  | `LIST_BOX
-  (** An item in a list. *)
-  | `LIST_ITEM
-  (** Unused *)
-  | `LOG
-  (** Unused *)
-  | `MAIN
-  (** Unused *)
-  | `MARQUEE
-  (** Unused *)
-  | `MATH
-  (** An element that represents a value within a known range. *)
-  | `METER
-  (** A menu. *)
-  | `MENU
-  (** A menubar. *)
-  | `MENU_BAR
-  (** An item in a menu. *)
-  | `MENU_ITEM
-  (** A check item in a menu. *)
-  | `MENU_ITEM_CHECKBOX
-  (** A radio item in a menu. *)
-  | `MENU_ITEM_RADIO
-  (** Unused *)
-  | `NAVIGATION
-  (** An element that is not represented to accessibility technologies.
-  This role is synonymous to @GTK_ACCESSIBLE_ROLE_PRESENTATION. *)
-  | `NONE
-  (** Unused *)
-  | `NOTE
-  (** Unused *)
-  | `OPTION
-  (** An element that is not represented to accessibility technologies.
-  This role is synonymous to @GTK_ACCESSIBLE_ROLE_NONE. *)
-  | `PRESENTATION
-  (** An element that displays the progress
-  status for tasks that take a long time. *)
-  | `PROGRESS_BAR
-  (** A checkable input in a group of radio roles,
-  only one of which can be checked at a time. *)
-  | `RADIO
-  (** Unused *)
-  | `RADIO_GROUP
-  (** Abstract role. *)
-  | `RANGE
-  (** Unused *)
-  | `REGION
-  (** A row in a columned list. *)
-  | `ROW
-  (** Unused *)
-  | `ROW_GROUP
-  (** Unused *)
-  | `ROW_HEADER
-  (** A graphical object that controls the scrolling
-  of content within a viewing area, regardless of whether the content is fully
-  displayed within the viewing area. *)
-  | `SCROLLBAR
-  (** Unused *)
-  | `SEARCH
-  (** A type of textbox intended for specifying
-  search criteria. *)
-  | `SEARCH_BOX
-  (** Abstract role. *)
-  | `SECTION
-  (** Abstract role. *)
-  | `SECTION_HEAD
-  (** Abstract role. *)
-  | `SELECT
-  (** A divider that separates and distinguishes
-  sections of content or groups of menuitems. *)
-  | `SEPARATOR
-  (** A user input where the user selects a value
-  from within a given range. *)
-  | `SLIDER
-  (** A form of range that expects the user to
-  select from among discrete choices. *)
-  | `SPIN_BUTTON
-  (** Unused *)
-  | `STATUS
-  (** Abstract role. *)
-  | `STRUCTURE
-  (** A type of checkbox that represents on/off values,
-  as opposed to checked/unchecked values. *)
-  | `SWITCH
-  (** An item in a list of tab used for switching pages. *)
-  | `TAB
-  (** Unused *)
-  | `TABLE
-  (** A list of tabs for switching pages. *)
-  | `TAB_LIST
-  (** A page in a notebook or stack. *)
-  | `TAB_PANEL
-  (** A type of input that allows free-form text
-  as its value. *)
-  | `TEXT_BOX
-  (** Unused *)
-  | `TIME
-  (** Unused *)
-  | `TIMER
-  (** Unused *)
-  | `TOOLBAR
-  (** Unused *)
-  | `TOOLTIP
-  (** Unused *)
-  | `TREE
-  (** A treeview-like, columned list. *)
-  | `TREE_GRID
-  (** Unused *)
-  | `TREE_ITEM
-  (** Abstract role for interactive components of a
-  graphical user interface *)
-  | `WIDGET
-  (** Abstract role for windows. *)
-  | `WINDOW
-  (** A type of push button which stays pressed until depressed by a second
+  | `ALERT (** An element with important, and usually
+time-sensitive, information *)
+  | `ALERT_DIALOG (** A type of dialog that contains an
+alert message *)
+  | `BANNER (** Unused *)
+  | `BUTTON (** An input element that allows for
+user-triggered actions when clicked or pressed *)
+  | `CAPTION (** Unused *)
+  | `CELL (** Unused *)
+  | `CHECKBOX (** A checkable input element that has
+three possible values: [true], [false], or [mixed] *)
+  | `COLUMN_HEADER (** A header in a columned list. *)
+  | `COMBO_BOX (** An input that controls another element,
+such as a list or a grid, that can dynamically pop up to help the user
+set the value of the input *)
+  | `COMMAND (** Abstract role. *)
+  | `COMPOSITE (** Abstract role. *)
+  | `DIALOG (** A dialog is a window that is designed to interrupt
+the current processing of an application in order to prompt the user to enter
+information or require a response. *)
+  | `DOCUMENT (** Content that assistive technology users may want to
+browse in a reading mode. *)
+  | `FEED (** Unused *)
+  | `FORM (** Unused *)
+  | `GENERIC (** A nameless container that has no semantic meaning
+of its own. This is the role that GTK uses by default for widgets. *)
+  | `GRID (** A grid of items. *)
+  | `GRID_CELL (** An item in a grid or tree grid. *)
+  | `GROUP (** An element that groups multiple related widgets. GTK uses
+this role for various containers, like [Gtk.HeaderBar] or [Gtk.Notebook]. *)
+  | `HEADING (** Unused *)
+  | `IMG (** An image. *)
+  | `INPUT (** Abstract role. *)
+  | `LABEL (** A visible name or caption for a user interface component. *)
+  | `LANDMARK (** Abstract role. *)
+  | `LEGEND (** Unused *)
+  | `LINK (** A clickable link. *)
+  | `LIST (** A list of items. *)
+  | `LIST_BOX (** Unused. *)
+  | `LIST_ITEM (** An item in a list. *)
+  | `LOG (** Unused *)
+  | `MAIN (** Unused *)
+  | `MARQUEE (** Unused *)
+  | `MATH (** Unused *)
+  | `METER (** An element that represents a value within a known range. *)
+  | `MENU (** A menu. *)
+  | `MENU_BAR (** A menubar. *)
+  | `MENU_ITEM (** An item in a menu. *)
+  | `MENU_ITEM_CHECKBOX (** A check item in a menu. *)
+  | `MENU_ITEM_RADIO (** A radio item in a menu. *)
+  | `NAVIGATION (** Unused *)
+  | `NONE (** An element that is not represented to accessibility technologies.
+This role is synonymous to \@GTK_ACCESSIBLE_ROLE_PRESENTATION. *)
+  | `NOTE (** Unused *)
+  | `OPTION (** Unused *)
+  | `PRESENTATION (** An element that is not represented to accessibility technologies.
+This role is synonymous to \@GTK_ACCESSIBLE_ROLE_NONE. *)
+  | `PROGRESS_BAR (** An element that displays the progress
+status for tasks that take a long time. *)
+  | `RADIO (** A checkable input in a group of radio roles,
+only one of which can be checked at a time. *)
+  | `RADIO_GROUP (** Unused *)
+  | `RANGE (** Abstract role. *)
+  | `REGION (** Unused *)
+  | `ROW (** A row in a columned list. *)
+  | `ROW_GROUP (** Unused *)
+  | `ROW_HEADER (** Unused *)
+  | `SCROLLBAR (** A graphical object that controls the scrolling
+of content within a viewing area, regardless of whether the content is fully
+displayed within the viewing area. *)
+  | `SEARCH (** Unused *)
+  | `SEARCH_BOX (** A type of textbox intended for specifying
+search criteria. *)
+  | `SECTION (** Abstract role. *)
+  | `SECTION_HEAD (** Abstract role. *)
+  | `SELECT (** Abstract role. *)
+  | `SEPARATOR (** A divider that separates and distinguishes
+sections of content or groups of menuitems. *)
+  | `SLIDER (** A user input where the user selects a value
+from within a given range. *)
+  | `SPIN_BUTTON (** A form of range that expects the user to
+select from among discrete choices. *)
+  | `STATUS (** Unused *)
+  | `STRUCTURE (** Abstract role. *)
+  | `SWITCH (** A type of checkbox that represents on/off values,
+as opposed to checked/unchecked values. *)
+  | `TAB (** An item in a list of tab used for switching pages. *)
+  | `TABLE (** Unused *)
+  | `TAB_LIST (** A list of tabs for switching pages. *)
+  | `TAB_PANEL (** A page in a notebook or stack. *)
+  | `TEXT_BOX (** A type of input that allows free-form text
+as its value. *)
+  | `TIME (** Unused *)
+  | `TIMER (** Unused *)
+  | `TOOLBAR (** Unused *)
+  | `TOOLTIP (** Unused *)
+  | `TREE (** Unused *)
+  | `TREE_GRID (** A treeview-like, columned list. *)
+  | `TREE_ITEM (** Unused *)
+  | `WIDGET (** Abstract role for interactive components of a
+graphical user interface *)
+  | `WINDOW (** Abstract role for windows. *)
+  | `TOGGLE_BUTTON (** A type of push button which stays pressed until depressed by a second
 activation. *)
-  | `TOGGLE_BUTTON
-  (** A toplevel element of a graphical user interface.
+  | `APPLICATION (** A toplevel element of a graphical user interface.
 
 This is the role that GTK uses by default for windows. *)
-  | `APPLICATION
-  (** A paragraph of content. *)
-  | `PARAGRAPH
-  (** A section of content that is quoted from another source. *)
-  | `BLOCK_QUOTE
-  (** A section of a page that consists of a composition that forms an independent
+  | `PARAGRAPH (** A paragraph of content. *)
+  | `BLOCK_QUOTE (** A section of content that is quoted from another source. *)
+  | `ARTICLE (** A section of a page that consists of a composition that forms an independent
 part of a document, page, or site. *)
-  | `ARTICLE
-  (** A comment contains content expressing reaction to other content. *)
-  | `COMMENT
-  (** A virtual terminal. *)
-  | `TERMINAL
+  | `COMMENT (** A comment contains content expressing reaction to other content. *)
+  | `TERMINAL (** A virtual terminal. *)
 ]
 
 val accessiblerole_of_int : int -> accessiblerole
@@ -458,15 +315,11 @@ val accessiblerole_to_int : accessiblerole -> int
 
 (* AccessibleSort - enumeration *)
 type accessiblesort = [
-  (** There is no defined sort applied to the column. *)
-  | `NONE
-  (** Items are sorted in ascending order by this column. *)
-  | `ASCENDING
-  (** Items are sorted in descending order by this column. *)
-  | `DESCENDING
-  (** A sort algorithm other than ascending or
-   descending has been applied. *)
-  | `OTHER
+  | `NONE (** There is no defined sort applied to the column. *)
+  | `ASCENDING (** Items are sorted in ascending order by this column. *)
+  | `DESCENDING (** Items are sorted in descending order by this column. *)
+  | `OTHER (** A sort algorithm other than ascending or
+descending has been applied. *)
 ]
 
 val accessiblesort_of_int : int -> accessiblesort
@@ -474,38 +327,29 @@ val accessiblesort_to_int : accessiblesort -> int
 
 (* AccessibleState - enumeration *)
 type accessiblestate = [
-  (** A “busy” state. This state has boolean values *)
-  | `BUSY
-  (** A “checked” state; indicates the current
-  state of a [class@CheckButton]. Value type: [enum@AccessibleTristate] *)
-  | `CHECKED
-  (** A “disabled” state; corresponds to the
-  [property@Widget:sensitive] property. It indicates a UI element
-  that is perceivable, but not editable or operable. Value type: boolean *)
-  | `DISABLED
-  (** An “expanded” state; corresponds to the
-  [property@Expander:expanded] property. Value type: boolean
-  or undefined *)
-  | `EXPANDED
-  (** A “hidden” state; corresponds to the
-  [property@Widget:visible] property. You can use this state
-  explicitly on UI elements that should not be exposed to an assistive
-  technology. Value type: boolean
-  See also: %GTK_ACCESSIBLE_STATE_DISABLED *)
-  | `HIDDEN
-  (** An “invalid” state; set when a widget
-  is showing an error. Value type: [enum@AccessibleInvalidState] *)
-  | `INVALID
-  (** A “pressed” state; indicates the current
-  state of a [class@ToggleButton]. Value type: [enum@AccessibleTristate]
-  enumeration *)
-  | `PRESSED
-  (** A “selected” state; set when a widget
-  is selected. Value type: boolean or undefined *)
-  | `SELECTED
-  (** Indicates that a widget with the GTK_ACCESSIBLE_ROLE_LINK has been visited.
+  | `BUSY (** A “busy” state. This state has boolean values *)
+  | `CHECKED (** A “checked” state; indicates the current
+state of a [CheckButton]. Value type: [AccessibleTristate] *)
+  | `DISABLED (** A “disabled” state; corresponds to the
+[Widget:sensitive] property. It indicates a UI element
+that is perceivable, but not editable or operable. Value type: boolean *)
+  | `EXPANDED (** An “expanded” state; corresponds to the
+[Expander:expanded] property. Value type: boolean
+or undefined *)
+  | `HIDDEN (** A “hidden” state; corresponds to the
+[Widget:visible] property. You can use this state
+explicitly on UI elements that should not be exposed to an assistive
+technology. Value type: boolean
+See also: [GTK_ACCESSIBLE_STATE_DISABLED] *)
+  | `INVALID (** An “invalid” state; set when a widget
+is showing an error. Value type: [AccessibleInvalidState] *)
+  | `PRESSED (** A “pressed” state; indicates the current
+state of a [ToggleButton]. Value type: [AccessibleTristate]
+enumeration *)
+  | `SELECTED (** A “selected” state; set when a widget
+is selected. Value type: boolean or undefined *)
+  | `VISITED (** Indicates that a widget with the GTK_ACCESSIBLE_ROLE_LINK has been visited.
 Value type: boolean. *)
-  | `VISITED
 ]
 
 val accessiblestate_of_int : int -> accessiblestate
@@ -513,12 +357,10 @@ val accessiblestate_to_int : accessiblestate -> int
 
 (* AccessibleTextContentChange - enumeration *)
 type accessibletextcontentchange = [
-  (** contents change as the result of
-  an insert operation *)
-  | `INSERT
-  (** contents change as the result of
-  a remove operation *)
-  | `REMOVE
+  | `INSERT (** contents change as the result of
+an insert operation *)
+  | `REMOVE (** contents change as the result of
+a remove operation *)
 ]
 
 val accessibletextcontentchange_of_int : int -> accessibletextcontentchange
@@ -526,25 +368,20 @@ val accessibletextcontentchange_to_int : accessibletextcontentchange -> int
 
 (* AccessibleTextGranularity - enumeration *)
 type accessibletextgranularity = [
-  (** Use the boundary between
-  characters (including non-printing characters) *)
-  | `CHARACTER
-  (** Use the boundary between words,
-  starting from the beginning of the current word and ending at the
-  beginning of the next word *)
-  | `WORD
-  (** Use the boundary between
-  sentences, starting from the beginning of the current sentence and
-  ending at the beginning of the next sentence *)
-  | `SENTENCE
-  (** Use the boundary between lines,
-  starting from the beginning of the current line and ending at the
-  beginning of the next line *)
-  | `LINE
-  (** Use the boundary between
-  paragraphs, starting from the beginning of the current paragraph and
-  ending at the beginning of the next paragraph *)
-  | `PARAGRAPH
+  | `CHARACTER (** Use the boundary between
+characters (including non-printing characters) *)
+  | `WORD (** Use the boundary between words,
+starting from the beginning of the current word and ending at the
+beginning of the next word *)
+  | `SENTENCE (** Use the boundary between
+sentences, starting from the beginning of the current sentence and
+ending at the beginning of the next sentence *)
+  | `LINE (** Use the boundary between lines,
+starting from the beginning of the current line and ending at the
+beginning of the next line *)
+  | `PARAGRAPH (** Use the boundary between
+paragraphs, starting from the beginning of the current paragraph and
+ending at the beginning of the next paragraph *)
 ]
 
 val accessibletextgranularity_of_int : int -> accessibletextgranularity
@@ -552,12 +389,9 @@ val accessibletextgranularity_to_int : accessibletextgranularity -> int
 
 (* AccessibleTristate - enumeration *)
 type accessibletristate = [
-  (** The state is `false` *)
-  | `FALSE
-  (** The state is `true` *)
-  | `TRUE
-  (** The state is `mixed` *)
-  | `MIXED
+  | `FALSE (** The state is [false] *)
+  | `TRUE (** The state is [true] *)
+  | `MIXED (** The state is [mixed] *)
 ]
 
 val accessibletristate_of_int : int -> accessibletristate
@@ -565,21 +399,14 @@ val accessibletristate_to_int : accessibletristate -> int
 
 (* Align - enumeration *)
 type align = [
-  (** stretch to fill all space if possible, center if
-  no meaningful way to stretch *)
-  | `FILL
-  (** snap to left or top side, leaving space on right or bottom *)
-  | `START
-  (** snap to right or bottom side, leaving space on left or top *)
-  | `END
-  (** center natural width of widget inside the allocation *)
-  | `CENTER
-  (** a different name for `GTK_ALIGN_BASELINE`. *)
-  | `BASELINE_FILL
-  (** align the widget according to the baseline. *)
-  | `BASELINE
-  (** stretch to fill all space, but align the baseline. *)
-  | `BASELINE_CENTER
+  | `FILL (** stretch to fill all space if possible, center if
+no meaningful way to stretch *)
+  | `START (** snap to left or top side, leaving space on right or bottom *)
+  | `END (** snap to right or bottom side, leaving space on left or top *)
+  | `CENTER (** center natural width of widget inside the allocation *)
+  | `BASELINE_FILL (** a different name for [GTK_ALIGN_BASELINE]. *)
+  | `BASELINE (** align the widget according to the baseline. *)
+  | `BASELINE_CENTER (** stretch to fill all space, but align the baseline. *)
 ]
 
 val align_of_int : int -> align
@@ -587,16 +414,11 @@ val align_to_int : align -> int
 
 (* ArrowType - enumeration *)
 type arrowtype = [
-  (** Represents an upward pointing arrow. *)
-  | `UP
-  (** Represents a downward pointing arrow. *)
-  | `DOWN
-  (** Represents a left pointing arrow. *)
-  | `LEFT
-  (** Represents a right pointing arrow. *)
-  | `RIGHT
-  (** No arrow. *)
-  | `NONE
+  | `UP (** Represents an upward pointing arrow. *)
+  | `DOWN (** Represents a downward pointing arrow. *)
+  | `LEFT (** Represents a left pointing arrow. *)
+  | `RIGHT (** Represents a right pointing arrow. *)
+  | `NONE (** No arrow. *)
 ]
 
 val arrowtype_of_int : int -> arrowtype
@@ -604,27 +426,21 @@ val arrowtype_to_int : arrowtype -> int
 
 (* AssistantPageType - enumeration *)
 type assistantpagetype = [
-  (** The page has regular contents. Both the
- Back and forward buttons will be shown. *)
-  | `CONTENT
-  (** The page contains an introduction to the
- assistant task. Only the Forward button will be shown if there is a
-  next page. *)
-  | `INTRO
-  (** The page lets the user confirm or deny the
- changes. The Back and Apply buttons will be shown. *)
-  | `CONFIRM
-  (** The page informs the user of the changes
- done. Only the Close button will be shown. *)
-  | `SUMMARY
-  (** Used for tasks that take a long time to
- complete, blocks the assistant until the page is marked as complete.
-  Only the back button will be shown. *)
-  | `PROGRESS
-  (** Used for when other page types are not
- appropriate. No buttons will be shown, and the application must
- add its own buttons through gtk_assistant_add_action_widget(). *)
-  | `CUSTOM
+  | `CONTENT (** The page has regular contents. Both the
+Back and forward buttons will be shown. *)
+  | `INTRO (** The page contains an introduction to the
+assistant task. Only the Forward button will be shown if there is a
+next page. *)
+  | `CONFIRM (** The page lets the user confirm or deny the
+changes. The Back and Apply buttons will be shown. *)
+  | `SUMMARY (** The page informs the user of the changes
+done. Only the Close button will be shown. *)
+  | `PROGRESS (** Used for tasks that take a long time to
+complete, blocks the assistant until the page is marked as complete.
+Only the back button will be shown. *)
+  | `CUSTOM (** Used for when other page types are not
+appropriate. No buttons will be shown, and the application must
+add its own buttons through gtk_assistant_add_action_widget(). *)
 ]
 
 val assistantpagetype_of_int : int -> assistantpagetype
@@ -632,12 +448,9 @@ val assistantpagetype_to_int : assistantpagetype -> int
 
 (* BaselinePosition - enumeration *)
 type baselineposition = [
-  (** Align the baseline at the top *)
-  | `TOP
-  (** Center the baseline *)
-  | `CENTER
-  (** Align the baseline at the bottom *)
-  | `BOTTOM
+  | `TOP (** Align the baseline at the top *)
+  | `CENTER (** Center the baseline *)
+  | `BOTTOM (** Align the baseline at the bottom *)
 ]
 
 val baselineposition_of_int : int -> baselineposition
@@ -645,26 +458,16 @@ val baselineposition_to_int : baselineposition -> int
 
 (* BorderStyle - enumeration *)
 type borderstyle = [
-  (** No visible border *)
-  | `NONE
-  (** Same as %GTK_BORDER_STYLE_NONE *)
-  | `HIDDEN
-  (** A single line segment *)
-  | `SOLID
-  (** Looks as if the content is sunken into the canvas *)
-  | `INSET
-  (** Looks as if the content is coming out of the canvas *)
-  | `OUTSET
-  (** A series of round dots *)
-  | `DOTTED
-  (** A series of square-ended dashes *)
-  | `DASHED
-  (** Two parallel lines with some space between them *)
-  | `DOUBLE
-  (** Looks as if it were carved in the canvas *)
-  | `GROOVE
-  (** Looks as if it were coming out of the canvas *)
-  | `RIDGE
+  | `NONE (** No visible border *)
+  | `HIDDEN (** Same as [GTK_BORDER_STYLE_NONE] *)
+  | `SOLID (** A single line segment *)
+  | `INSET (** Looks as if the content is sunken into the canvas *)
+  | `OUTSET (** Looks as if the content is coming out of the canvas *)
+  | `DOTTED (** A series of round dots *)
+  | `DASHED (** A series of square-ended dashes *)
+  | `DOUBLE (** Two parallel lines with some space between them *)
+  | `GROOVE (** Looks as if it were carved in the canvas *)
+  | `RIDGE (** Looks as if it were coming out of the canvas *)
 ]
 
 val borderstyle_of_int : int -> borderstyle
@@ -672,47 +475,32 @@ val borderstyle_to_int : borderstyle -> int
 
 (* BuilderError - enumeration *)
 type buildererror = [
-  (** A type-func attribute didn’t name
- a function that returns a `GType`. *)
-  | `INVALID_TYPE_FUNCTION
-  (** The input contained a tag that `GtkBuilder`
- can’t handle. *)
-  | `UNHANDLED_TAG
-  (** An attribute that is required by
- `GtkBuilder` was missing. *)
-  | `MISSING_ATTRIBUTE
-  (** `GtkBuilder` found an attribute that
- it doesn’t understand. *)
-  | `INVALID_ATTRIBUTE
-  (** `GtkBuilder` found a tag that
- it doesn’t understand. *)
-  | `INVALID_TAG
-  (** A required property value was
- missing. *)
-  | `MISSING_PROPERTY_VALUE
-  (** `GtkBuilder` couldn’t parse
- some attribute value. *)
-  | `INVALID_VALUE
-  (** The input file requires a newer version
- of GTK. *)
-  | `VERSION_MISMATCH
-  (** An object id occurred twice. *)
-  | `DUPLICATE_ID
-  (** A specified object type is of the same type or
- derived from the type of the composite class being extended with builder XML. *)
-  | `OBJECT_TYPE_REFUSED
-  (** The wrong type was specified in a composite class’s template XML *)
-  | `TEMPLATE_MISMATCH
-  (** The specified property is unknown for the object class. *)
-  | `INVALID_PROPERTY
-  (** The specified signal is unknown for the object class. *)
-  | `INVALID_SIGNAL
-  (** An object id is unknown. *)
-  | `INVALID_ID
-  (** A function could not be found. This often happens
-  when symbols are set to be kept private. Compiling code with -rdynamic or using the
-  `gmodule-export-2.0` pkgconfig module can fix this problem. *)
-  | `INVALID_FUNCTION
+  | `INVALID_TYPE_FUNCTION (** A type-func attribute didn’t name
+a function that returns a [GType]. *)
+  | `UNHANDLED_TAG (** The input contained a tag that [GtkBuilder]
+can’t handle. *)
+  | `MISSING_ATTRIBUTE (** An attribute that is required by
+[GtkBuilder] was missing. *)
+  | `INVALID_ATTRIBUTE (** [GtkBuilder] found an attribute that
+it doesn’t understand. *)
+  | `INVALID_TAG (** [GtkBuilder] found a tag that
+it doesn’t understand. *)
+  | `MISSING_PROPERTY_VALUE (** A required property value was
+missing. *)
+  | `INVALID_VALUE (** [GtkBuilder] couldn’t parse
+some attribute value. *)
+  | `VERSION_MISMATCH (** The input file requires a newer version
+of GTK. *)
+  | `DUPLICATE_ID (** An object id occurred twice. *)
+  | `OBJECT_TYPE_REFUSED (** A specified object type is of the same type or
+derived from the type of the composite class being extended with builder XML. *)
+  | `TEMPLATE_MISMATCH (** The wrong type was specified in a composite class’s template XML *)
+  | `INVALID_PROPERTY (** The specified property is unknown for the object class. *)
+  | `INVALID_SIGNAL (** The specified signal is unknown for the object class. *)
+  | `INVALID_ID (** An object id is unknown. *)
+  | `INVALID_FUNCTION (** A function could not be found. This often happens
+when symbols are set to be kept private. Compiling code with -rdynamic or using the
+[gmodule-export-2.0] pkgconfig module can fix this problem. *)
 ]
 
 val buildererror_of_int : int -> buildererror
@@ -720,18 +508,12 @@ val buildererror_to_int : buildererror -> int
 
 (* ButtonsType - enumeration *)
 type buttonstype = [
-  (** no buttons at all *)
-  | `NONE
-  (** an OK button *)
-  | `OK
-  (** a Close button *)
-  | `CLOSE
-  (** a Cancel button *)
-  | `CANCEL
-  (** Yes and No buttons *)
-  | `YES_NO
-  (** OK and Cancel buttons *)
-  | `OK_CANCEL
+  | `NONE (** no buttons at all *)
+  | `OK (** an OK button *)
+  | `CLOSE (** a Close button *)
+  | `CANCEL (** a Cancel button *)
+  | `YES_NO (** Yes and No buttons *)
+  | `OK_CANCEL (** OK and Cancel buttons *)
 ]
 
 val buttonstype_of_int : int -> buttonstype
@@ -739,10 +521,8 @@ val buttonstype_to_int : buttonstype -> int
 
 (* CellRendererAccelMode - enumeration *)
 type cellrendereraccelmode = [
-  (** GTK accelerators mode *)
-  | `GTK
-  (** Other accelerator mode *)
-  | `OTHER
+  | `GTK (** GTK accelerators mode *)
+  | `OTHER (** Other accelerator mode *)
 ]
 
 val cellrendereraccelmode_of_int : int -> cellrendereraccelmode
@@ -750,15 +530,12 @@ val cellrendereraccelmode_to_int : cellrendereraccelmode -> int
 
 (* CellRendererMode - enumeration *)
 type cellrenderermode = [
-  (** The cell is just for display
- and cannot be interacted with.  Note that this doesn’t mean that eg. the
- row being drawn can’t be selected -- just that a particular element of
- it cannot be individually modified. *)
-  | `INERT
-  (** The cell can be clicked. *)
-  | `ACTIVATABLE
-  (** The cell can be edited or otherwise modified. *)
-  | `EDITABLE
+  | `INERT (** The cell is just for display
+and cannot be interacted with.  Note that this doesn’t mean that eg. the
+row being drawn can’t be selected -- just that a particular element of
+it cannot be individually modified. *)
+  | `ACTIVATABLE (** The cell can be clicked. *)
+  | `EDITABLE (** The cell can be edited or otherwise modified. *)
 ]
 
 val cellrenderermode_of_int : int -> cellrenderermode
@@ -766,12 +543,9 @@ val cellrenderermode_to_int : cellrenderermode -> int
 
 (* Collation - enumeration *)
 type collation = [
-  (** Don't do any collation *)
-  | `NONE
-  (** Use [func@GLib.utf8_collate_key] *)
-  | `UNICODE
-  (** Use [func@GLib.utf8_collate_key_for_filename] *)
-  | `FILENAME
+  | `NONE (** Don't do any collation *)
+  | `UNICODE (** Use [GLib.utf8_collate_key] *)
+  | `FILENAME (** Use [GLib.utf8_collate_key_for_filename] *)
 ]
 
 val collation_of_int : int -> collation
@@ -779,39 +553,27 @@ val collation_to_int : collation -> int
 
 (* ConstraintAttribute - enumeration *)
 type constraintattribute = [
-  (** No attribute, used for constant
-  relations *)
-  | `NONE
-  (** The left edge of a widget, regardless of
-  text direction *)
-  | `LEFT
-  (** The right edge of a widget, regardless
-  of text direction *)
-  | `RIGHT
-  (** The top edge of a widget *)
-  | `TOP
-  (** The bottom edge of a widget *)
-  | `BOTTOM
-  (** The leading edge of a widget, depending
-  on text direction; equivalent to %GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR
-  languages, and %GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones *)
-  | `START
-  (** The trailing edge of a widget, depending
-  on text direction; equivalent to %GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
-  languages, and %GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones *)
-  | `END
-  (** The width of a widget *)
-  | `WIDTH
-  (** The height of a widget *)
-  | `HEIGHT
-  (** The center of a widget, on the
-  horizontal axis *)
-  | `CENTER_X
-  (** The center of a widget, on the
-  vertical axis *)
-  | `CENTER_Y
-  (** The baseline of a widget *)
-  | `BASELINE
+  | `NONE (** No attribute, used for constant
+relations *)
+  | `LEFT (** The left edge of a widget, regardless of
+text direction *)
+  | `RIGHT (** The right edge of a widget, regardless
+of text direction *)
+  | `TOP (** The top edge of a widget *)
+  | `BOTTOM (** The bottom edge of a widget *)
+  | `START (** The leading edge of a widget, depending
+on text direction; equivalent to [GTK_CONSTRAINT_ATTRIBUTE_LEFT] for LTR
+languages, and [GTK_CONSTRAINT_ATTRIBUTE_RIGHT] for RTL ones *)
+  | `END (** The trailing edge of a widget, depending
+on text direction; equivalent to [GTK_CONSTRAINT_ATTRIBUTE_RIGHT] for LTR
+languages, and [GTK_CONSTRAINT_ATTRIBUTE_LEFT] for RTL ones *)
+  | `WIDTH (** The width of a widget *)
+  | `HEIGHT (** The height of a widget *)
+  | `CENTER_X (** The center of a widget, on the
+horizontal axis *)
+  | `CENTER_Y (** The center of a widget, on the
+vertical axis *)
+  | `BASELINE (** The baseline of a widget *)
 ]
 
 val constraintattribute_of_int : int -> constraintattribute
@@ -819,12 +581,9 @@ val constraintattribute_to_int : constraintattribute -> int
 
 (* ConstraintRelation - enumeration *)
 type constraintrelation = [
-  (** Less than, or equal *)
-  | `LE
-  (** Equal *)
-  | `EQ
-  (** Greater than, or equal *)
-  | `GE
+  | `LE (** Less than, or equal *)
+  | `EQ (** Equal *)
+  | `GE (** Greater than, or equal *)
 ]
 
 val constraintrelation_of_int : int -> constraintrelation
@@ -832,14 +591,10 @@ val constraintrelation_to_int : constraintrelation -> int
 
 (* ConstraintStrength - enumeration *)
 type constraintstrength = [
-  (** The constraint is required towards solving the layout *)
-  | `REQUIRED
-  (** A strong constraint *)
-  | `STRONG
-  (** A medium constraint *)
-  | `MEDIUM
-  (** A weak constraint *)
-  | `WEAK
+  | `REQUIRED (** The constraint is required towards solving the layout *)
+  | `STRONG (** A strong constraint *)
+  | `MEDIUM (** A medium constraint *)
+  | `WEAK (** A weak constraint *)
 ]
 
 val constraintstrength_of_int : int -> constraintstrength
@@ -847,18 +602,12 @@ val constraintstrength_to_int : constraintstrength -> int
 
 (* ConstraintVflParserError - enumeration *)
 type constraintvflparsererror = [
-  (** Invalid or unknown symbol *)
-  | `SYMBOL
-  (** Invalid or unknown attribute *)
-  | `ATTRIBUTE
-  (** Invalid or unknown view *)
-  | `VIEW
-  (** Invalid or unknown metric *)
-  | `METRIC
-  (** Invalid or unknown priority *)
-  | `PRIORITY
-  (** Invalid or unknown relation *)
-  | `RELATION
+  | `SYMBOL (** Invalid or unknown symbol *)
+  | `ATTRIBUTE (** Invalid or unknown attribute *)
+  | `VIEW (** Invalid or unknown view *)
+  | `METRIC (** Invalid or unknown metric *)
+  | `PRIORITY (** Invalid or unknown priority *)
+  | `RELATION (** Invalid or unknown relation *)
 ]
 
 val constraintvflparsererror_of_int : int -> constraintvflparsererror
@@ -866,24 +615,20 @@ val constraintvflparsererror_to_int : constraintvflparsererror -> int
 
 (* ContentFit - enumeration *)
 type contentfit = [
-  (** Make the content fill the entire allocation,
-  without taking its aspect ratio in consideration. The resulting
-  content will appear as stretched if its aspect ratio is different
-  from the allocation aspect ratio. *)
-  | `FILL
-  (** Scale the content to fit the allocation,
-  while taking its aspect ratio in consideration. The resulting
-  content will appear as letterboxed if its aspect ratio is different
-  from the allocation aspect ratio. *)
-  | `CONTAIN
-  (** Cover the entire allocation, while taking
-  the content aspect ratio in consideration. The resulting content
-  will appear as clipped if its aspect ratio is different from the
-  allocation aspect ratio. *)
-  | `COVER
-  (** The content is scaled down to fit the
-  allocation, if needed, otherwise its original size is used. *)
-  | `SCALE_DOWN
+  | `FILL (** Make the content fill the entire allocation,
+without taking its aspect ratio in consideration. The resulting
+content will appear as stretched if its aspect ratio is different
+from the allocation aspect ratio. *)
+  | `CONTAIN (** Scale the content to fit the allocation,
+while taking its aspect ratio in consideration. The resulting
+content will appear as letterboxed if its aspect ratio is different
+from the allocation aspect ratio. *)
+  | `COVER (** Cover the entire allocation, while taking
+the content aspect ratio in consideration. The resulting content
+will appear as clipped if its aspect ratio is different from the
+allocation aspect ratio. *)
+  | `SCALE_DOWN (** The content is scaled down to fit the
+allocation, if needed, otherwise its original size is used. *)
 ]
 
 val contentfit_of_int : int -> contentfit
@@ -891,18 +636,14 @@ val contentfit_to_int : contentfit -> int
 
 (* CornerType - enumeration *)
 type cornertype = [
-  (** Place the scrollbars on the right and bottom of the
-  widget (default behaviour). *)
-  | `TOP_LEFT
-  (** Place the scrollbars on the top and right of the
-  widget. *)
-  | `BOTTOM_LEFT
-  (** Place the scrollbars on the left and bottom of the
-  widget. *)
-  | `TOP_RIGHT
-  (** Place the scrollbars on the top and left of the
-  widget. *)
-  | `BOTTOM_RIGHT
+  | `TOP_LEFT (** Place the scrollbars on the right and bottom of the
+widget (default behaviour). *)
+  | `BOTTOM_LEFT (** Place the scrollbars on the top and right of the
+widget. *)
+  | `TOP_RIGHT (** Place the scrollbars on the left and bottom of the
+widget. *)
+  | `BOTTOM_RIGHT (** Place the scrollbars on the top and left of the
+widget. *)
 ]
 
 val cornertype_of_int : int -> cornertype
@@ -910,16 +651,11 @@ val cornertype_to_int : cornertype -> int
 
 (* CssParserError - enumeration *)
 type cssparsererror = [
-  (** Unknown failure. *)
-  | `FAILED
-  (** The given text does not form valid syntax *)
-  | `SYNTAX
-  (** Failed to import a resource *)
-  | `IMPORT
-  (** The given name has not been defined *)
-  | `NAME
-  (** The given value is not correct *)
-  | `UNKNOWN_VALUE
+  | `FAILED (** Unknown failure. *)
+  | `SYNTAX (** The given text does not form valid syntax *)
+  | `IMPORT (** Failed to import a resource *)
+  | `NAME (** The given name has not been defined *)
+  | `UNKNOWN_VALUE (** The given value is not correct *)
 ]
 
 val cssparsererror_of_int : int -> cssparsererror
@@ -927,14 +663,11 @@ val cssparsererror_to_int : cssparsererror -> int
 
 (* CssParserWarning - enumeration *)
 type cssparserwarning = [
-  (** The given construct is
-  deprecated and will be removed in a future version *)
-  | `DEPRECATED
-  (** A syntax construct was used
-  that should be avoided *)
-  | `SYNTAX
-  (** A feature is not implemented *)
-  | `UNIMPLEMENTED
+  | `DEPRECATED (** The given construct is
+deprecated and will be removed in a future version *)
+  | `SYNTAX (** A syntax construct was used
+that should be avoided *)
+  | `UNIMPLEMENTED (** A feature is not implemented *)
 ]
 
 val cssparserwarning_of_int : int -> cssparserwarning
@@ -942,28 +675,20 @@ val cssparserwarning_to_int : cssparserwarning -> int
 
 (* DeleteType - enumeration *)
 type deletetype = [
-  (** Delete characters. *)
-  | `CHARS
-  (** Delete only the portion of the word to the
-  left/right of cursor if we’re in the middle of a word. *)
-  | `WORD_ENDS
-  (** Delete words. *)
-  | `WORDS
-  (** Delete display-lines. Display-lines
-  refers to the visible lines, with respect to the current line
-  breaks. As opposed to paragraphs, which are defined by line
-  breaks in the input. *)
-  | `DISPLAY_LINES
-  (** Delete only the portion of the
-  display-line to the left/right of cursor. *)
-  | `DISPLAY_LINE_ENDS
-  (** Delete to the end of the
-  paragraph. Like C-k in Emacs (or its reverse). *)
-  | `PARAGRAPH_ENDS
-  (** Delete entire line. Like C-k in pico. *)
-  | `PARAGRAPHS
-  (** Delete only whitespace. Like M-\ in Emacs. *)
-  | `WHITESPACE
+  | `CHARS (** Delete characters. *)
+  | `WORD_ENDS (** Delete only the portion of the word to the
+left/right of cursor if we’re in the middle of a word. *)
+  | `WORDS (** Delete words. *)
+  | `DISPLAY_LINES (** Delete display-lines. Display-lines
+refers to the visible lines, with respect to the current line
+breaks. As opposed to paragraphs, which are defined by line
+breaks in the input. *)
+  | `DISPLAY_LINE_ENDS (** Delete only the portion of the
+display-line to the left/right of cursor. *)
+  | `PARAGRAPH_ENDS (** Delete to the end of the
+paragraph. Like C-k in Emacs (or its reverse). *)
+  | `PARAGRAPHS (** Delete entire line. Like C-k in pico. *)
+  | `WHITESPACE (** Delete only whitespace. Like M-\ in Emacs. *)
 ]
 
 val deletetype_of_int : int -> deletetype
@@ -971,15 +696,12 @@ val deletetype_to_int : deletetype -> int
 
 (* DialogError - enumeration *)
 type dialogerror = [
-  (** Generic error condition for when
-  an operation fails and no more specific code is applicable *)
-  | `FAILED
-  (** The async function call was cancelled
-  via its `GCancellable` *)
-  | `CANCELLED
-  (** The operation was cancelled
-  by the user (via a Cancel or Close button) *)
-  | `DISMISSED
+  | `FAILED (** Generic error condition for when
+an operation fails and no more specific code is applicable *)
+  | `CANCELLED (** The async function call was cancelled
+via its [GCancellable] *)
+  | `DISMISSED (** The operation was cancelled
+by the user (via a Cancel or Close button) *)
 ]
 
 val dialogerror_of_int : int -> dialogerror
@@ -987,18 +709,12 @@ val dialogerror_to_int : dialogerror -> int
 
 (* DirectionType - enumeration *)
 type directiontype = [
-  (** Move forward. *)
-  | `TAB_FORWARD
-  (** Move backward. *)
-  | `TAB_BACKWARD
-  (** Move up. *)
-  | `UP
-  (** Move down. *)
-  | `DOWN
-  (** Move left. *)
-  | `LEFT
-  (** Move right. *)
-  | `RIGHT
+  | `TAB_FORWARD (** Move forward. *)
+  | `TAB_BACKWARD (** Move backward. *)
+  | `UP (** Move up. *)
+  | `DOWN (** Move down. *)
+  | `LEFT (** Move left. *)
+  | `RIGHT (** Move right. *)
 ]
 
 val directiontype_of_int : int -> directiontype
@@ -1006,24 +722,15 @@ val directiontype_to_int : directiontype -> int
 
 (* EditableProperties - enumeration *)
 type editableproperties = [
-  (** the property id for [property@Gtk.Editable:text] *)
-  | `PROP_TEXT
-  (** the property id for [property@Gtk.Editable:cursor-position] *)
-  | `PROP_CURSOR_POSITION
-  (** the property id for [property@Gtk.Editable:selection-bound] *)
-  | `PROP_SELECTION_BOUND
-  (** the property id for [property@Gtk.Editable:editable] *)
-  | `PROP_EDITABLE
-  (** the property id for [property@Gtk.Editable:width-chars] *)
-  | `PROP_WIDTH_CHARS
-  (** the property id for [property@Gtk.Editable:max-width-chars] *)
-  | `PROP_MAX_WIDTH_CHARS
-  (** the property id for [property@Gtk.Editable:xalign] *)
-  | `PROP_XALIGN
-  (** the property id for [property@Gtk.Editable:enable-undo] *)
-  | `PROP_ENABLE_UNDO
-  (** the number of properties *)
-  | `NUM_PROPERTIES
+  | `PROP_TEXT (** the property id for [Gtk.Editable:text] *)
+  | `PROP_CURSOR_POSITION (** the property id for [Gtk.Editable:cursor-position] *)
+  | `PROP_SELECTION_BOUND (** the property id for [Gtk.Editable:selection-bound] *)
+  | `PROP_EDITABLE (** the property id for [Gtk.Editable:editable] *)
+  | `PROP_WIDTH_CHARS (** the property id for [Gtk.Editable:width-chars] *)
+  | `PROP_MAX_WIDTH_CHARS (** the property id for [Gtk.Editable:max-width-chars] *)
+  | `PROP_XALIGN (** the property id for [Gtk.Editable:xalign] *)
+  | `PROP_ENABLE_UNDO (** the property id for [Gtk.Editable:enable-undo] *)
+  | `NUM_PROPERTIES (** the number of properties *)
 ]
 
 val editableproperties_of_int : int -> editableproperties
@@ -1031,10 +738,8 @@ val editableproperties_to_int : editableproperties -> int
 
 (* EntryIconPosition - enumeration *)
 type entryiconposition = [
-  (** At the beginning of the entry (depending on the text direction). *)
-  | `PRIMARY
-  (** At the end of the entry (depending on the text direction). *)
-  | `SECONDARY
+  | `PRIMARY (** At the beginning of the entry (depending on the text direction). *)
+  | `SECONDARY (** At the end of the entry (depending on the text direction). *)
 ]
 
 val entryiconposition_of_int : int -> entryiconposition
@@ -1042,12 +747,9 @@ val entryiconposition_to_int : entryiconposition -> int
 
 (* EventSequenceState - enumeration *)
 type eventsequencestate = [
-  (** The sequence is handled, but not grabbed. *)
-  | `NONE
-  (** The sequence is handled and grabbed. *)
-  | `CLAIMED
-  (** The sequence is denied. *)
-  | `DENIED
+  | `NONE (** The sequence is handled, but not grabbed. *)
+  | `CLAIMED (** The sequence is handled and grabbed. *)
+  | `DENIED (** The sequence is denied. *)
 ]
 
 val eventsequencestate_of_int : int -> eventsequencestate
@@ -1055,17 +757,14 @@ val eventsequencestate_to_int : eventsequencestate -> int
 
 (* FileChooserAction - enumeration *)
 type filechooseraction = [
-  (** Indicates open mode.  The file chooser
- will only let the user pick an existing file. *)
-  | `OPEN
-  (** Indicates save mode.  The file chooser
- will let the user pick an existing file, or type in a new
- filename. *)
-  | `SAVE
-  (** Indicates an Open mode for
- selecting folders.  The file chooser will let the user pick an
- existing folder. *)
-  | `SELECT_FOLDER
+  | `OPEN (** Indicates open mode.  The file chooser
+will only let the user pick an existing file. *)
+  | `SAVE (** Indicates save mode.  The file chooser
+will let the user pick an existing file, or type in a new
+filename. *)
+  | `SELECT_FOLDER (** Indicates an Open mode for
+selecting folders.  The file chooser will let the user pick an
+existing folder. *)
 ]
 
 val filechooseraction_of_int : int -> filechooseraction
@@ -1073,16 +772,12 @@ val filechooseraction_to_int : filechooseraction -> int
 
 (* FileChooserError - enumeration *)
 type filechoosererror = [
-  (** Indicates that a file does not exist. *)
-  | `NONEXISTENT
-  (** Indicates a malformed filename. *)
-  | `BAD_FILENAME
-  (** Indicates a duplicate path (e.g. when
- adding a bookmark). *)
-  | `ALREADY_EXISTS
-  (** Indicates an incomplete hostname
- (e.g. "http://foo" without a slash after that). *)
-  | `INCOMPLETE_HOSTNAME
+  | `NONEXISTENT (** Indicates that a file does not exist. *)
+  | `BAD_FILENAME (** Indicates a malformed filename. *)
+  | `ALREADY_EXISTS (** Indicates a duplicate path (e.g. when
+adding a bookmark). *)
+  | `INCOMPLETE_HOSTNAME [@ocaml.doc "Indicates an incomplete hostname
+(e.g. \"http://foo\" without a slash after that)."]
 ]
 
 val filechoosererror_of_int : int -> filechoosererror
@@ -1090,32 +785,26 @@ val filechoosererror_to_int : filechoosererror -> int
 
 (* FilterChange - enumeration *)
 type filterchange = [
-  (** The filter change cannot be
-  described with any of the other enumeration values *)
-  | `DIFFERENT
-  (** The filter is less strict than
-  it was before: All items that it used to return true
-  still return true, others now may, too. *)
-  | `LESS_STRICT
-  (** The filter is more strict than
-  it was before: All items that it used to return false
-  still return false, others now may, too. *)
-  | `MORE_STRICT
-  (** Similar to [enum@Gtk.FilterChange.DIFFERENT],
+  | `DIFFERENT (** The filter change cannot be
+described with any of the other enumeration values *)
+  | `LESS_STRICT (** The filter is less strict than
+it was before: All items that it used to return true
+still return true, others now may, too. *)
+  | `MORE_STRICT (** The filter is more strict than
+it was before: All items that it used to return false
+still return false, others now may, too. *)
+  | `DIFFERENT_REWATCH (** Similar to [Gtk.FilterChange.DIFFERENT],
 but signs that item watches should be recreated. This is used by
-[class@Gtk.FilterListModel] to keep the list up-to-date when items
+[Gtk.FilterListModel] to keep the list up-to-date when items
 change. *)
-  | `DIFFERENT_REWATCH
-  (** Similar to [enum@Gtk.FilterChange.LESS_STRICT],
+  | `LESS_STRICT_REWATCH (** Similar to [Gtk.FilterChange.LESS_STRICT],
 but signs that item watches should be recreated. This is used by
-[class@Gtk.FilterListModel] to keep the list up-to-date when items
+[Gtk.FilterListModel] to keep the list up-to-date when items
 change. *)
-  | `LESS_STRICT_REWATCH
-  (** Similar to [enum@Gtk.FilterChange.MORE_STRICT],
+  | `MORE_STRICT_REWATCH (** Similar to [Gtk.FilterChange.MORE_STRICT],
 but signs that item watches should be recreated. This is used by
-[class@Gtk.FilterListModel] to keep the list up-to-date when items
+[Gtk.FilterListModel] to keep the list up-to-date when items
 change. *)
-  | `MORE_STRICT_REWATCH
 ]
 
 val filterchange_of_int : int -> filterchange
@@ -1123,15 +812,12 @@ val filterchange_to_int : filterchange -> int
 
 (* FilterMatch - enumeration *)
 type filtermatch = [
-  (** The filter matches some items,
-  [method@Gtk.Filter.match] may return true or false *)
-  | `SOME
-  (** The filter does not match any item,
-  [method@Gtk.Filter.match] will always return false *)
-  | `NONE
-  (** The filter matches all items,
-  [method@Gtk.Filter.match] will alays return true *)
-  | `ALL
+  | `SOME (** The filter matches some items,
+[Gtk.Filter.match] may return true or false *)
+  | `NONE (** The filter does not match any item,
+[Gtk.Filter.match] will always return false *)
+  | `ALL (** The filter matches all items,
+[Gtk.Filter.match] will alays return true *)
 ]
 
 val filtermatch_of_int : int -> filtermatch
@@ -1139,14 +825,10 @@ val filtermatch_to_int : filtermatch -> int
 
 (* FontLevel - enumeration *)
 type fontlevel = [
-  (** Select a font family *)
-  | `FAMILY
-  (** Select a font face (i.e. a family and a style) *)
-  | `FACE
-  (** Select a font (i.e. a face with a size, and possibly font variations) *)
-  | `FONT
-  (** Select a font and font features *)
-  | `FEATURES
+  | `FAMILY (** Select a font family *)
+  | `FACE (** Select a font face (i.e. a family and a style) *)
+  | `FONT (** Select a font (i.e. a face with a size, and possibly font variations) *)
+  | `FEATURES (** Select a font and font features *)
 ]
 
 val fontlevel_of_int : int -> fontlevel
@@ -1154,12 +836,10 @@ val fontlevel_to_int : fontlevel -> int
 
 (* FontRendering - enumeration *)
 type fontrendering = [
-  (** Set up font rendering automatically,
-  taking factors like screen resolution and scale into account *)
-  | `AUTOMATIC
-  (** Follow low-level font-related settings
-  when configuring font rendering *)
-  | `MANUAL
+  | `AUTOMATIC (** Set up font rendering automatically,
+taking factors like screen resolution and scale into account *)
+  | `MANUAL (** Follow low-level font-related settings
+when configuring font rendering *)
 ]
 
 val fontrendering_of_int : int -> fontrendering
@@ -1167,10 +847,8 @@ val fontrendering_to_int : fontrendering -> int
 
 (* GraphicsOffloadEnabled - enumeration *)
 type graphicsoffloadenabled = [
-  (** Graphics offloading is enabled. *)
-  | `ENABLED
-  (** Graphics offloading is disabled. *)
-  | `DISABLED
+  | `ENABLED (** Graphics offloading is enabled. *)
+  | `DISABLED (** Graphics offloading is disabled. *)
 ]
 
 val graphicsoffloadenabled_of_int : int -> graphicsoffloadenabled
@@ -1178,12 +856,9 @@ val graphicsoffloadenabled_to_int : graphicsoffloadenabled -> int
 
 (* IconSize - enumeration *)
 type iconsize = [
-  (** Keep the size of the parent element *)
-  | `INHERIT
-  (** Size similar to text size *)
-  | `NORMAL
-  (** Large size, for example in an icon view *)
-  | `LARGE
+  | `INHERIT (** Keep the size of the parent element *)
+  | `NORMAL (** Size similar to text size *)
+  | `LARGE (** Large size, for example in an icon view *)
 ]
 
 val iconsize_of_int : int -> iconsize
@@ -1191,10 +866,8 @@ val iconsize_to_int : iconsize -> int
 
 (* IconThemeError - enumeration *)
 type iconthemeerror = [
-  (** The icon specified does not exist in the theme *)
-  | `NOT_FOUND
-  (** An unspecified error occurred. *)
-  | `FAILED
+  | `NOT_FOUND (** The icon specified does not exist in the theme *)
+  | `FAILED (** An unspecified error occurred. *)
 ]
 
 val iconthemeerror_of_int : int -> iconthemeerror
@@ -1202,18 +875,12 @@ val iconthemeerror_to_int : iconthemeerror -> int
 
 (* IconViewDropPosition - enumeration *)
 type iconviewdropposition = [
-  (** no drop possible *)
-  | `NO_DROP
-  (** dropped item replaces the item *)
-  | `DROP_INTO
-  (** dropped item is inserted to the left *)
-  | `DROP_LEFT
-  (** dropped item is inserted to the right *)
-  | `DROP_RIGHT
-  (** dropped item is inserted above *)
-  | `DROP_ABOVE
-  (** dropped item is inserted below *)
-  | `DROP_BELOW
+  | `NO_DROP (** no drop possible *)
+  | `DROP_INTO (** dropped item replaces the item *)
+  | `DROP_LEFT (** dropped item is inserted to the left *)
+  | `DROP_RIGHT (** dropped item is inserted to the right *)
+  | `DROP_ABOVE (** dropped item is inserted above *)
+  | `DROP_BELOW (** dropped item is inserted below *)
 ]
 
 val iconviewdropposition_of_int : int -> iconviewdropposition
@@ -1221,14 +888,10 @@ val iconviewdropposition_to_int : iconviewdropposition -> int
 
 (* ImageType - enumeration *)
 type imagetype = [
-  (** there is no image displayed by the widget *)
-  | `EMPTY
-  (** the widget contains a named icon *)
-  | `ICON_NAME
-  (** the widget contains a `GIcon` *)
-  | `GICON
-  (** the widget contains a `GdkPaintable` *)
-  | `PAINTABLE
+  | `EMPTY (** there is no image displayed by the widget *)
+  | `ICON_NAME (** the widget contains a named icon *)
+  | `GICON (** the widget contains a [GIcon] *)
+  | `PAINTABLE (** the widget contains a [GdkPaintable] *)
 ]
 
 val imagetype_of_int : int -> imagetype
@@ -1236,28 +899,17 @@ val imagetype_to_int : imagetype -> int
 
 (* InputPurpose - enumeration *)
 type inputpurpose = [
-  (** Allow any character *)
-  | `FREE_FORM
-  (** Allow only alphabetic characters *)
-  | `ALPHA
-  (** Allow only digits *)
-  | `DIGITS
-  (** Edited field expects numbers *)
-  | `NUMBER
-  (** Edited field expects phone number *)
-  | `PHONE
-  (** Edited field expects URL *)
-  | `URL
-  (** Edited field expects email address *)
-  | `EMAIL
-  (** Edited field expects the name of a person *)
-  | `NAME
-  (** Like %GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden *)
-  | `PASSWORD
-  (** Like %GTK_INPUT_PURPOSE_DIGITS, but characters are hidden *)
-  | `PIN
-  (** Allow any character, in addition to control codes *)
-  | `TERMINAL
+  | `FREE_FORM (** Allow any character *)
+  | `ALPHA (** Allow only alphabetic characters *)
+  | `DIGITS (** Allow only digits *)
+  | `NUMBER (** Edited field expects numbers *)
+  | `PHONE (** Edited field expects phone number *)
+  | `URL (** Edited field expects URL *)
+  | `EMAIL (** Edited field expects email address *)
+  | `NAME (** Edited field expects the name of a person *)
+  | `PASSWORD (** Like [GTK_INPUT_PURPOSE_FREE_FORM], but characters are hidden *)
+  | `PIN (** Like [GTK_INPUT_PURPOSE_DIGITS], but characters are hidden *)
+  | `TERMINAL (** Allow any character, in addition to control codes *)
 ]
 
 val inputpurpose_of_int : int -> inputpurpose
@@ -1265,14 +917,10 @@ val inputpurpose_to_int : inputpurpose -> int
 
 (* InscriptionOverflow - enumeration *)
 type inscriptionoverflow = [
-  (** Clip the remaining text *)
-  | `CLIP
-  (** Omit characters at the start of the text *)
-  | `ELLIPSIZE_START
-  (** Omit characters at the middle of the text *)
-  | `ELLIPSIZE_MIDDLE
-  (** Omit characters at the end of the text *)
-  | `ELLIPSIZE_END
+  | `CLIP (** Clip the remaining text *)
+  | `ELLIPSIZE_START (** Omit characters at the start of the text *)
+  | `ELLIPSIZE_MIDDLE (** Omit characters at the middle of the text *)
+  | `ELLIPSIZE_END (** Omit characters at the end of the text *)
 ]
 
 val inscriptionoverflow_of_int : int -> inscriptionoverflow
@@ -1280,14 +928,10 @@ val inscriptionoverflow_to_int : inscriptionoverflow -> int
 
 (* InterfaceColorScheme - enumeration *)
 type interfacecolorscheme = [
-  (** The system doesn't support color schemes *)
-  | `UNSUPPORTED
-  (** The default color scheme is used *)
-  | `DEFAULT
-  (** A dark color scheme is used *)
-  | `DARK
-  (** A light color scheme is used *)
-  | `LIGHT
+  | `UNSUPPORTED (** The system doesn't support color schemes *)
+  | `DEFAULT (** The default color scheme is used *)
+  | `DARK (** A dark color scheme is used *)
+  | `LIGHT (** A light color scheme is used *)
 ]
 
 val interfacecolorscheme_of_int : int -> interfacecolorscheme
@@ -1295,14 +939,10 @@ val interfacecolorscheme_to_int : interfacecolorscheme -> int
 
 (* InterfaceContrast - enumeration *)
 type interfacecontrast = [
-  (** The system doesn't support contrast levels *)
-  | `UNSUPPORTED
-  (** No particular preference for contrast *)
-  | `NO_PREFERENCE
-  (** More contrast is preferred *)
-  | `MORE
-  (** Less contrast is preferred *)
-  | `LESS
+  | `UNSUPPORTED (** The system doesn't support contrast levels *)
+  | `NO_PREFERENCE (** No particular preference for contrast *)
+  | `MORE (** More contrast is preferred *)
+  | `LESS (** Less contrast is preferred *)
 ]
 
 val interfacecontrast_of_int : int -> interfacecontrast
@@ -1310,14 +950,10 @@ val interfacecontrast_to_int : interfacecontrast -> int
 
 (* Justification - enumeration *)
 type justification = [
-  (** The text is placed at the left edge of the label. *)
-  | `LEFT
-  (** The text is placed at the right edge of the label. *)
-  | `RIGHT
-  (** The text is placed in the center of the label. *)
-  | `CENTER
-  (** The text is placed is distributed across the label. *)
-  | `FILL
+  | `LEFT (** The text is placed at the left edge of the label. *)
+  | `RIGHT (** The text is placed at the right edge of the label. *)
+  | `CENTER (** The text is placed in the center of the label. *)
+  | `FILL (** The text is placed is distributed across the label. *)
 ]
 
 val justification_of_int : int -> justification
@@ -1325,10 +961,8 @@ val justification_to_int : justification -> int
 
 (* LevelBarMode - enumeration *)
 type levelbarmode = [
-  (** the bar has a continuous mode *)
-  | `CONTINUOUS
-  (** the bar has a discrete mode *)
-  | `DISCRETE
+  | `CONTINUOUS (** the bar has a continuous mode *)
+  | `DISCRETE (** the bar has a discrete mode *)
 ]
 
 val levelbarmode_of_int : int -> levelbarmode
@@ -1336,18 +970,15 @@ val levelbarmode_to_int : levelbarmode -> int
 
 (* ListTabBehavior - enumeration *)
 type listtabbehavior = [
-  (** Cycle through all focusable items of the list *)
-  | `ALL
-  (** Cycle through a single list element, then move
-  focus out of the list. Moving focus between items needs to be
-  done with the arrow keys. *)
-  | `ITEM
-  (** Cycle only through a single cell, then
-  move focus out of the list. Moving focus between cells needs to
-  be done with the arrow keys. This is only relevant for
-  cell-based widgets like #GtkColumnView, otherwise it behaves
-  like `GTK_LIST_TAB_ITEM`. *)
-  | `CELL
+  | `ALL (** Cycle through all focusable items of the list *)
+  | `ITEM (** Cycle through a single list element, then move
+focus out of the list. Moving focus between items needs to be
+done with the arrow keys. *)
+  | `CELL (** Cycle only through a single cell, then
+move focus out of the list. Moving focus between cells needs to
+be done with the arrow keys. This is only relevant for
+cell-based widgets like [GtkColumnView], otherwise it behaves
+like [GTK_LIST_TAB_ITEM]. *)
 ]
 
 val listtabbehavior_of_int : int -> listtabbehavior
@@ -1355,16 +986,11 @@ val listtabbehavior_to_int : listtabbehavior -> int
 
 (* MessageType - enumeration *)
 type messagetype = [
-  (** Informational message *)
-  | `INFO
-  (** Non-fatal warning message *)
-  | `WARNING
-  (** Question requiring a choice *)
-  | `QUESTION
-  (** Fatal error message *)
-  | `ERROR
-  (** None of the above *)
-  | `OTHER
+  | `INFO (** Informational message *)
+  | `WARNING (** Non-fatal warning message *)
+  | `QUESTION (** Question requiring a choice *)
+  | `ERROR (** Fatal error message *)
+  | `OTHER (** None of the above *)
 ]
 
 val messagetype_of_int : int -> messagetype
@@ -1372,26 +998,16 @@ val messagetype_to_int : messagetype -> int
 
 (* MovementStep - enumeration *)
 type movementstep = [
-  (** Move forward or back by graphemes *)
-  | `LOGICAL_POSITIONS
-  (** Move left or right by graphemes *)
-  | `VISUAL_POSITIONS
-  (** Move forward or back by words *)
-  | `WORDS
-  (** Move up or down lines (wrapped lines) *)
-  | `DISPLAY_LINES
-  (** Move to either end of a line *)
-  | `DISPLAY_LINE_ENDS
-  (** Move up or down paragraphs (newline-ended lines) *)
-  | `PARAGRAPHS
-  (** Move to either end of a paragraph *)
-  | `PARAGRAPH_ENDS
-  (** Move by pages *)
-  | `PAGES
-  (** Move to ends of the buffer *)
-  | `BUFFER_ENDS
-  (** Move horizontally by pages *)
-  | `HORIZONTAL_PAGES
+  | `LOGICAL_POSITIONS (** Move forward or back by graphemes *)
+  | `VISUAL_POSITIONS (** Move left or right by graphemes *)
+  | `WORDS (** Move forward or back by words *)
+  | `DISPLAY_LINES (** Move up or down lines (wrapped lines) *)
+  | `DISPLAY_LINE_ENDS (** Move to either end of a line *)
+  | `PARAGRAPHS (** Move up or down paragraphs (newline-ended lines) *)
+  | `PARAGRAPH_ENDS (** Move to either end of a paragraph *)
+  | `PAGES (** Move by pages *)
+  | `BUFFER_ENDS (** Move to ends of the buffer *)
+  | `HORIZONTAL_PAGES (** Move horizontally by pages *)
 ]
 
 val movementstep_of_int : int -> movementstep
@@ -1399,17 +1015,14 @@ val movementstep_to_int : movementstep -> int
 
 (* NaturalWrapMode - enumeration *)
 type naturalwrapmode = [
-  (** Inherit the minimum size request.
-  In particular, this should be used with %PANGO_WRAP_CHAR. *)
-  | `INHERIT
-  (** Try not to wrap the text. This mode is the
-  closest to GTK3's behavior but can lead to a wide label leaving
-  lots of empty space below the text. *)
-  | `NONE
-  (** Attempt to wrap at word boundaries. This
-  is useful in particular when using %PANGO_WRAP_WORD_CHAR as the
-  wrap mode. *)
-  | `WORD
+  | `INHERIT (** Inherit the minimum size request.
+In particular, this should be used with [PANGO_WRAP_CHAR]. *)
+  | `NONE (** Try not to wrap the text. This mode is the
+closest to GTK3's behavior but can lead to a wide label leaving
+lots of empty space below the text. *)
+  | `WORD (** Attempt to wrap at word boundaries. This
+is useful in particular when using [PANGO_WRAP_WORD_CHAR] as the
+wrap mode. *)
 ]
 
 val naturalwrapmode_of_int : int -> naturalwrapmode
@@ -1417,10 +1030,8 @@ val naturalwrapmode_to_int : naturalwrapmode -> int
 
 (* NotebookTab - enumeration *)
 type notebooktab = [
-  (** the first tab in the notebook *)
-  | `FIRST
-  (** the last tab in the notebook *)
-  | `LAST
+  | `FIRST (** the first tab in the notebook *)
+  | `LAST (** the last tab in the notebook *)
 ]
 
 val notebooktab_of_int : int -> notebooktab
@@ -1428,21 +1039,13 @@ val notebooktab_to_int : notebooktab -> int
 
 (* NumberUpLayout - enumeration *)
 type numberuplayout = [
-  (** ![](layout-lrtb.png) *)
   | `LRTB
-  (** ![](layout-lrbt.png) *)
   | `LRBT
-  (** ![](layout-rltb.png) *)
   | `RLTB
-  (** ![](layout-rlbt.png) *)
   | `RLBT
-  (** ![](layout-tblr.png) *)
   | `TBLR
-  (** ![](layout-tbrl.png) *)
   | `TBRL
-  (** ![](layout-btlr.png) *)
   | `BTLR
-  (** ![](layout-btrl.png) *)
   | `BTRL
 ]
 
@@ -1451,12 +1054,9 @@ val numberuplayout_to_int : numberuplayout -> int
 
 (* Ordering - enumeration *)
 type ordering = [
-  (** the first value is smaller than the second *)
-  | `SMALLER
-  (** the two values are equal *)
-  | `EQUAL
-  (** the first value is larger than the second *)
-  | `LARGER
+  | `SMALLER (** the first value is smaller than the second *)
+  | `EQUAL (** the two values are equal *)
+  | `LARGER (** the first value is larger than the second *)
 ]
 
 val ordering_of_int : int -> ordering
@@ -1464,10 +1064,8 @@ val ordering_to_int : ordering -> int
 
 (* Orientation - enumeration *)
 type orientation = [
-  (** The element is in horizontal orientation. *)
-  | `HORIZONTAL
-  (** The element is in vertical orientation. *)
-  | `VERTICAL
+  | `HORIZONTAL (** The element is in horizontal orientation. *)
+  | `VERTICAL (** The element is in vertical orientation. *)
 ]
 
 val orientation_of_int : int -> orientation
@@ -1475,12 +1073,10 @@ val orientation_to_int : orientation -> int
 
 (* Overflow - enumeration *)
 type overflow = [
-  (** No change is applied. Content is drawn at the specified
-  position. *)
-  | `VISIBLE
-  (** Content is clipped to the bounds of the area. Content
-  outside the area is not drawn and cannot be interacted with. *)
-  | `HIDDEN
+  | `VISIBLE (** No change is applied. Content is drawn at the specified
+position. *)
+  | `HIDDEN (** Content is clipped to the bounds of the area. Content
+outside the area is not drawn and cannot be interacted with. *)
 ]
 
 val overflow_of_int : int -> overflow
@@ -1488,10 +1084,8 @@ val overflow_to_int : overflow -> int
 
 (* PackType - enumeration *)
 type packtype = [
-  (** The child is packed into the start of the widget *)
-  | `START
-  (** The child is packed into the end of the widget *)
-  | `END
+  | `START (** The child is packed into the start of the widget *)
+  | `END (** The child is packed into the end of the widget *)
 ]
 
 val packtype_of_int : int -> packtype
@@ -1499,14 +1093,10 @@ val packtype_to_int : packtype -> int
 
 (* PadActionType - enumeration *)
 type padactiontype = [
-  (** Action is triggered by a pad button *)
-  | `BUTTON
-  (** Action is triggered by a pad ring *)
-  | `RING
-  (** Action is triggered by a pad strip *)
-  | `STRIP
-  (** Action is triggered by a pad dial *)
-  | `DIAL
+  | `BUTTON (** Action is triggered by a pad button *)
+  | `RING (** Action is triggered by a pad ring *)
+  | `STRIP (** Action is triggered by a pad strip *)
+  | `DIAL (** Action is triggered by a pad dial *)
 ]
 
 val padactiontype_of_int : int -> padactiontype
@@ -1514,14 +1104,10 @@ val padactiontype_to_int : padactiontype -> int
 
 (* PageOrientation - enumeration *)
 type pageorientation = [
-  (** Portrait mode. *)
-  | `PORTRAIT
-  (** Landscape mode. *)
-  | `LANDSCAPE
-  (** Reverse portrait mode. *)
-  | `REVERSE_PORTRAIT
-  (** Reverse landscape mode. *)
-  | `REVERSE_LANDSCAPE
+  | `PORTRAIT (** Portrait mode. *)
+  | `LANDSCAPE (** Landscape mode. *)
+  | `REVERSE_PORTRAIT (** Reverse portrait mode. *)
+  | `REVERSE_LANDSCAPE (** Reverse landscape mode. *)
 ]
 
 val pageorientation_of_int : int -> pageorientation
@@ -1529,12 +1115,9 @@ val pageorientation_to_int : pageorientation -> int
 
 (* PageSet - enumeration *)
 type pageset = [
-  (** All pages. *)
-  | `ALL
-  (** Even pages. *)
-  | `EVEN
-  (** Odd pages. *)
-  | `ODD
+  | `ALL (** All pages. *)
+  | `EVEN (** Even pages. *)
+  | `ODD (** Odd pages. *)
 ]
 
 val pageset_of_int : int -> pageset
@@ -1542,14 +1125,10 @@ val pageset_to_int : pageset -> int
 
 (* PanDirection - enumeration *)
 type pandirection = [
-  (** panned towards the left *)
-  | `LEFT
-  (** panned towards the right *)
-  | `RIGHT
-  (** panned upwards *)
-  | `UP
-  (** panned downwards *)
-  | `DOWN
+  | `LEFT (** panned towards the left *)
+  | `RIGHT (** panned towards the right *)
+  | `UP (** panned upwards *)
+  | `DOWN (** panned downwards *)
 ]
 
 val pandirection_of_int : int -> pandirection
@@ -1557,19 +1136,15 @@ val pandirection_to_int : pandirection -> int
 
 (* PolicyType - enumeration *)
 type policytype = [
-  (** The scrollbar is always visible. The view size is
-  independent of the content. *)
-  | `ALWAYS
-  (** The scrollbar will appear and disappear as necessary.
-  For example, when all of a `GtkTreeView` can not be seen. *)
-  | `AUTOMATIC
-  (** The scrollbar should never appear. In this mode the
-  content determines the size. *)
-  | `NEVER
-  (** Don't show a scrollbar, but don't force the
-  size to follow the content. This can be used e.g. to make multiple
-  scrolled windows share a scrollbar. *)
-  | `EXTERNAL
+  | `ALWAYS (** The scrollbar is always visible. The view size is
+independent of the content. *)
+  | `AUTOMATIC (** The scrollbar will appear and disappear as necessary.
+For example, when all of a [GtkTreeView] can not be seen. *)
+  | `NEVER (** The scrollbar should never appear. In this mode the
+content determines the size. *)
+  | `EXTERNAL (** Don't show a scrollbar, but don't force the
+size to follow the content. This can be used e.g. to make multiple
+scrolled windows share a scrollbar. *)
 ]
 
 val policytype_of_int : int -> policytype
@@ -1577,14 +1152,10 @@ val policytype_to_int : policytype -> int
 
 (* PositionType - enumeration *)
 type positiontype = [
-  (** The feature is at the left edge. *)
-  | `LEFT
-  (** The feature is at the right edge. *)
-  | `RIGHT
-  (** The feature is at the top edge. *)
-  | `TOP
-  (** The feature is at the bottom edge. *)
-  | `BOTTOM
+  | `LEFT (** The feature is at the left edge. *)
+  | `RIGHT (** The feature is at the right edge. *)
+  | `TOP (** The feature is at the top edge. *)
+  | `BOTTOM (** The feature is at the bottom edge. *)
 ]
 
 val positiontype_of_int : int -> positiontype
@@ -1592,12 +1163,9 @@ val positiontype_to_int : positiontype -> int
 
 (* PrintDuplex - enumeration *)
 type printduplex = [
-  (** No duplex. *)
-  | `SIMPLEX
-  (** Horizontal duplex. *)
-  | `HORIZONTAL
-  (** Vertical duplex. *)
-  | `VERTICAL
+  | `SIMPLEX (** No duplex. *)
+  | `HORIZONTAL (** Horizontal duplex. *)
+  | `VERTICAL (** Vertical duplex. *)
 ]
 
 val printduplex_of_int : int -> printduplex
@@ -1605,15 +1173,11 @@ val printduplex_to_int : printduplex -> int
 
 (* PrintError - enumeration *)
 type printerror = [
-  (** An unspecified error occurred. *)
-  | `GENERAL
-  (** An internal error occurred. *)
-  | `INTERNAL_ERROR
-  (** A memory allocation failed. *)
-  | `NOMEM
-  (** An error occurred while loading a page setup
-  or paper size from a key file. *)
-  | `INVALID_FILE
+  | `GENERAL (** An unspecified error occurred. *)
+  | `INTERNAL_ERROR (** An internal error occurred. *)
+  | `NOMEM (** A memory allocation failed. *)
+  | `INVALID_FILE (** An error occurred while loading a page setup
+or paper size from a key file. *)
 ]
 
 val printerror_of_int : int -> printerror
@@ -1621,17 +1185,13 @@ val printerror_to_int : printerror -> int
 
 (* PrintOperationAction - enumeration *)
 type printoperationaction = [
-  (** Show the print dialog. *)
-  | `PRINT_DIALOG
-  (** Start to print without showing
-  the print dialog, based on the current print settings, if possible.
-  Depending on the platform, a print dialog might appear anyway. *)
-  | `PRINT
-  (** Show the print preview. *)
-  | `PREVIEW
-  (** Export to a file. This requires
-  the export-filename property to be set. *)
-  | `EXPORT
+  | `PRINT_DIALOG (** Show the print dialog. *)
+  | `PRINT (** Start to print without showing
+the print dialog, based on the current print settings, if possible.
+Depending on the platform, a print dialog might appear anyway. *)
+  | `PREVIEW (** Show the print preview. *)
+  | `EXPORT (** Export to a file. This requires
+the export-filename property to be set. *)
 ]
 
 val printoperationaction_of_int : int -> printoperationaction
@@ -1639,16 +1199,12 @@ val printoperationaction_to_int : printoperationaction -> int
 
 (* PrintOperationResult - enumeration *)
 type printoperationresult = [
-  (** An error has occurred. *)
-  | `ERROR
-  (** The print settings should be stored. *)
-  | `APPLY
-  (** The print operation has been canceled,
-  the print settings should not be stored. *)
-  | `CANCEL
-  (** The print operation is not complete
-  yet. This value will only be returned when running asynchronously. *)
-  | `IN_PROGRESS
+  | `ERROR (** An error has occurred. *)
+  | `APPLY (** The print settings should be stored. *)
+  | `CANCEL (** The print operation has been canceled,
+the print settings should not be stored. *)
+  | `IN_PROGRESS (** The print operation is not complete
+yet. This value will only be returned when running asynchronously. *)
 ]
 
 val printoperationresult_of_int : int -> printoperationresult
@@ -1656,14 +1212,10 @@ val printoperationresult_to_int : printoperationresult -> int
 
 (* PrintPages - enumeration *)
 type printpages = [
-  (** All pages. *)
-  | `ALL
-  (** Current page. *)
-  | `CURRENT
-  (** Range of pages. *)
-  | `RANGES
-  (** Selected pages. *)
-  | `SELECTION
+  | `ALL (** All pages. *)
+  | `CURRENT (** Current page. *)
+  | `RANGES (** Range of pages. *)
+  | `SELECTION (** Selected pages. *)
 ]
 
 val printpages_of_int : int -> printpages
@@ -1671,14 +1223,10 @@ val printpages_to_int : printpages -> int
 
 (* PrintQuality - enumeration *)
 type printquality = [
-  (** Low quality. *)
-  | `LOW
-  (** Normal quality. *)
-  | `NORMAL
-  (** High quality. *)
-  | `HIGH
-  (** Draft quality. *)
-  | `DRAFT
+  | `LOW (** Low quality. *)
+  | `NORMAL (** Normal quality. *)
+  | `HIGH (** High quality. *)
+  | `DRAFT (** Draft quality. *)
 ]
 
 val printquality_of_int : int -> printquality
@@ -1686,30 +1234,21 @@ val printquality_to_int : printquality -> int
 
 (* PrintStatus - enumeration *)
 type printstatus = [
-  (** The printing has not started yet; this
-  status is set initially, and while the print dialog is shown. *)
-  | `INITIAL
-  (** This status is set while the begin-print
-  signal is emitted and during pagination. *)
-  | `PREPARING
-  (** This status is set while the
-  pages are being rendered. *)
-  | `GENERATING_DATA
-  (** The print job is being sent off to the
-  printer. *)
-  | `SENDING_DATA
-  (** The print job has been sent to the printer,
-  but is not printed for some reason, e.g. the printer may be stopped. *)
-  | `PENDING
-  (** Some problem has occurred during
-  printing, e.g. a paper jam. *)
-  | `PENDING_ISSUE
-  (** The printer is processing the print job. *)
-  | `PRINTING
-  (** The printing has been completed successfully. *)
-  | `FINISHED
-  (** The printing has been aborted. *)
-  | `FINISHED_ABORTED
+  | `INITIAL (** The printing has not started yet; this
+status is set initially, and while the print dialog is shown. *)
+  | `PREPARING (** This status is set while the begin-print
+signal is emitted and during pagination. *)
+  | `GENERATING_DATA (** This status is set while the
+pages are being rendered. *)
+  | `SENDING_DATA (** The print job is being sent off to the
+printer. *)
+  | `PENDING (** The print job has been sent to the printer,
+but is not printed for some reason, e.g. the printer may be stopped. *)
+  | `PENDING_ISSUE (** Some problem has occurred during
+printing, e.g. a paper jam. *)
+  | `PRINTING (** The printer is processing the print job. *)
+  | `FINISHED (** The printing has been completed successfully. *)
+  | `FINISHED_ABORTED (** The printing has been aborted. *)
 ]
 
 val printstatus_of_int : int -> printstatus
@@ -1717,14 +1256,12 @@ val printstatus_to_int : printstatus -> int
 
 (* PropagationLimit - enumeration *)
 type propagationlimit = [
-  (** Events are handled regardless of what their
-  target is. *)
-  | `NONE
-  (** Events are only handled if their target is in
-  the same [iface@Native] (or widget with [property@Gtk.Widget:limit-events]
-  set) as the event controllers widget.
-  Note that some event types have two targets (origin and destination). *)
-  | `SAME_NATIVE
+  | `NONE (** Events are handled regardless of what their
+target is. *)
+  | `SAME_NATIVE (** Events are only handled if their target is in
+the same [Native] (or widget with [Gtk.Widget:limit-events]
+set) as the event controllers widget.
+Note that some event types have two targets (origin and destination). *)
 ]
 
 val propagationlimit_of_int : int -> propagationlimit
@@ -1732,21 +1269,17 @@ val propagationlimit_to_int : propagationlimit -> int
 
 (* PropagationPhase - enumeration *)
 type propagationphase = [
-  (** Events are not delivered. *)
-  | `NONE
-  (** Events are delivered in the capture phase. The
-  capture phase happens before the bubble phase, runs from the toplevel down
-  to the event widget. This option should only be used on containers that
-  might possibly handle events before their children do. *)
-  | `CAPTURE
-  (** Events are delivered in the bubble phase. The bubble
-  phase happens after the capture phase, and before the default handlers
-  are run. This phase runs from the event widget, up to the toplevel. *)
-  | `BUBBLE
-  (** Events are delivered in the default widget event handlers,
-  note that widget implementations must chain up on button, motion, touch and
-  grab broken handlers for controllers in this phase to be run. *)
-  | `TARGET
+  | `NONE (** Events are not delivered. *)
+  | `CAPTURE (** Events are delivered in the capture phase. The
+capture phase happens before the bubble phase, runs from the toplevel down
+to the event widget. This option should only be used on containers that
+might possibly handle events before their children do. *)
+  | `BUBBLE (** Events are delivered in the bubble phase. The bubble
+phase happens after the capture phase, and before the default handlers
+are run. This phase runs from the event widget, up to the toplevel. *)
+  | `TARGET (** Events are delivered in the default widget event handlers,
+note that widget implementations must chain up on button, motion, touch and
+grab broken handlers for controllers in this phase to be run. *)
 ]
 
 val propagationphase_of_int : int -> propagationphase
@@ -1754,25 +1287,18 @@ val propagationphase_to_int : propagationphase -> int
 
 (* RecentManagerError - enumeration *)
 type recentmanagererror = [
-  (** the URI specified does not exists in
-  the recently used resources list. *)
-  | `NOT_FOUND
-  (** the URI specified is not valid. *)
-  | `INVALID_URI
-  (** the supplied string is not
-  UTF-8 encoded. *)
-  | `INVALID_ENCODING
-  (** no application has registered
-  the specified item. *)
-  | `NOT_REGISTERED
-  (** failure while reading the recently used
-  resources file. *)
-  | `READ
-  (** failure while writing the recently used
-  resources file. *)
-  | `WRITE
-  (** unspecified error. *)
-  | `UNKNOWN
+  | `NOT_FOUND (** the URI specified does not exists in
+the recently used resources list. *)
+  | `INVALID_URI (** the URI specified is not valid. *)
+  | `INVALID_ENCODING (** the supplied string is not
+UTF-8 encoded. *)
+  | `NOT_REGISTERED (** no application has registered
+the specified item. *)
+  | `READ (** failure while reading the recently used
+resources file. *)
+  | `WRITE (** failure while writing the recently used
+resources file. *)
+  | `UNKNOWN (** unspecified error. *)
 ]
 
 val recentmanagererror_of_int : int -> recentmanagererror
@@ -1780,29 +1306,18 @@ val recentmanagererror_to_int : recentmanagererror -> int
 
 (* ResponseType - enumeration *)
 type responsetype = [
-  (** Returned if an action widget has no response id,
-  or if the dialog gets programmatically hidden or destroyed *)
-  | `NONE
-  (** Generic response id, not used by GTK dialogs *)
-  | `REJECT
-  (** Generic response id, not used by GTK dialogs *)
-  | `ACCEPT
-  (** Returned if the dialog is deleted *)
-  | `DELETE_EVENT
-  (** Returned by OK buttons in GTK dialogs *)
-  | `OK
-  (** Returned by Cancel buttons in GTK dialogs *)
-  | `CANCEL
-  (** Returned by Close buttons in GTK dialogs *)
-  | `CLOSE
-  (** Returned by Yes buttons in GTK dialogs *)
-  | `YES
-  (** Returned by No buttons in GTK dialogs *)
-  | `NO
-  (** Returned by Apply buttons in GTK dialogs *)
-  | `APPLY
-  (** Returned by Help buttons in GTK dialogs *)
-  | `HELP
+  | `NONE (** Returned if an action widget has no response id,
+or if the dialog gets programmatically hidden or destroyed *)
+  | `REJECT (** Generic response id, not used by GTK dialogs *)
+  | `ACCEPT (** Generic response id, not used by GTK dialogs *)
+  | `DELETE_EVENT (** Returned if the dialog is deleted *)
+  | `OK (** Returned by OK buttons in GTK dialogs *)
+  | `CANCEL (** Returned by Cancel buttons in GTK dialogs *)
+  | `CLOSE (** Returned by Close buttons in GTK dialogs *)
+  | `YES (** Returned by Yes buttons in GTK dialogs *)
+  | `NO (** Returned by No buttons in GTK dialogs *)
+  | `APPLY (** Returned by Apply buttons in GTK dialogs *)
+  | `HELP (** Returned by Help buttons in GTK dialogs *)
 ]
 
 val responsetype_of_int : int -> responsetype
@@ -1810,26 +1325,16 @@ val responsetype_to_int : responsetype -> int
 
 (* RevealerTransitionType - enumeration *)
 type revealertransitiontype = [
-  (** No transition *)
-  | `NONE
-  (** Fade in *)
-  | `CROSSFADE
-  (** Slide in from the left *)
-  | `SLIDE_RIGHT
-  (** Slide in from the right *)
-  | `SLIDE_LEFT
-  (** Slide in from the bottom *)
-  | `SLIDE_UP
-  (** Slide in from the top *)
-  | `SLIDE_DOWN
-  (** Floop in from the left *)
-  | `SWING_RIGHT
-  (** Floop in from the right *)
-  | `SWING_LEFT
-  (** Floop in from the bottom *)
-  | `SWING_UP
-  (** Floop in from the top *)
-  | `SWING_DOWN
+  | `NONE (** No transition *)
+  | `CROSSFADE (** Fade in *)
+  | `SLIDE_RIGHT (** Slide in from the left *)
+  | `SLIDE_LEFT (** Slide in from the right *)
+  | `SLIDE_UP (** Slide in from the bottom *)
+  | `SLIDE_DOWN (** Slide in from the top *)
+  | `SWING_RIGHT (** Floop in from the left *)
+  | `SWING_LEFT (** Floop in from the right *)
+  | `SWING_UP (** Floop in from the bottom *)
+  | `SWING_DOWN (** Floop in from the top *)
 ]
 
 val revealertransitiontype_of_int : int -> revealertransitiontype
@@ -1837,18 +1342,12 @@ val revealertransitiontype_to_int : revealertransitiontype -> int
 
 (* ScrollStep - enumeration *)
 type scrollstep = [
-  (** Scroll in steps. *)
-  | `STEPS
-  (** Scroll by pages. *)
-  | `PAGES
-  (** Scroll to ends. *)
-  | `ENDS
-  (** Scroll in horizontal steps. *)
-  | `HORIZONTAL_STEPS
-  (** Scroll by horizontal pages. *)
-  | `HORIZONTAL_PAGES
-  (** Scroll to the horizontal ends. *)
-  | `HORIZONTAL_ENDS
+  | `STEPS (** Scroll in steps. *)
+  | `PAGES (** Scroll by pages. *)
+  | `ENDS (** Scroll to ends. *)
+  | `HORIZONTAL_STEPS (** Scroll in horizontal steps. *)
+  | `HORIZONTAL_PAGES (** Scroll by horizontal pages. *)
+  | `HORIZONTAL_ENDS (** Scroll to the horizontal ends. *)
 ]
 
 val scrollstep_of_int : int -> scrollstep
@@ -1856,38 +1355,22 @@ val scrollstep_to_int : scrollstep -> int
 
 (* ScrollType - enumeration *)
 type scrolltype = [
-  (** No scrolling. *)
-  | `NONE
-  (** Jump to new location. *)
-  | `JUMP
-  (** Step backward. *)
-  | `STEP_BACKWARD
-  (** Step forward. *)
-  | `STEP_FORWARD
-  (** Page backward. *)
-  | `PAGE_BACKWARD
-  (** Page forward. *)
-  | `PAGE_FORWARD
-  (** Step up. *)
-  | `STEP_UP
-  (** Step down. *)
-  | `STEP_DOWN
-  (** Page up. *)
-  | `PAGE_UP
-  (** Page down. *)
-  | `PAGE_DOWN
-  (** Step to the left. *)
-  | `STEP_LEFT
-  (** Step to the right. *)
-  | `STEP_RIGHT
-  (** Page to the left. *)
-  | `PAGE_LEFT
-  (** Page to the right. *)
-  | `PAGE_RIGHT
-  (** Scroll to start. *)
-  | `START
-  (** Scroll to end. *)
-  | `END
+  | `NONE (** No scrolling. *)
+  | `JUMP (** Jump to new location. *)
+  | `STEP_BACKWARD (** Step backward. *)
+  | `STEP_FORWARD (** Step forward. *)
+  | `PAGE_BACKWARD (** Page backward. *)
+  | `PAGE_FORWARD (** Page forward. *)
+  | `STEP_UP (** Step up. *)
+  | `STEP_DOWN (** Step down. *)
+  | `PAGE_UP (** Page up. *)
+  | `PAGE_DOWN (** Page down. *)
+  | `STEP_LEFT (** Step to the left. *)
+  | `STEP_RIGHT (** Step to the right. *)
+  | `PAGE_LEFT (** Page to the left. *)
+  | `PAGE_RIGHT (** Page to the right. *)
+  | `START (** Scroll to start. *)
+  | `END (** Scroll to end. *)
 ]
 
 val scrolltype_of_int : int -> scrolltype
@@ -1895,10 +1378,8 @@ val scrolltype_to_int : scrolltype -> int
 
 (* ScrollablePolicy - enumeration *)
 type scrollablepolicy = [
-  (** Scrollable adjustments are based on the minimum size *)
-  | `MINIMUM
-  (** Scrollable adjustments are based on the natural size *)
-  | `NATURAL
+  | `MINIMUM (** Scrollable adjustments are based on the minimum size *)
+  | `NATURAL (** Scrollable adjustments are based on the natural size *)
 ]
 
 val scrollablepolicy_of_int : int -> scrollablepolicy
@@ -1906,22 +1387,18 @@ val scrollablepolicy_to_int : scrollablepolicy -> int
 
 (* SelectionMode - enumeration *)
 type selectionmode = [
-  (** No selection is possible. *)
-  | `NONE
-  (** Zero or one element may be selected. *)
-  | `SINGLE
-  (** Exactly one element is selected.
-  In some circumstances, such as initially or during a search
-  operation, it’s possible for no element to be selected with
-  %GTK_SELECTION_BROWSE. What is really enforced is that the user
-  can’t deselect a currently selected element except by selecting
-  another element. *)
-  | `BROWSE
-  (** Any number of elements may be selected.
-  The Ctrl key may be used to enlarge the selection, and Shift
-  key to select between the focus and the child pointed to.
-  Some widgets may also allow Click-drag to select a range of elements. *)
-  | `MULTIPLE
+  | `NONE (** No selection is possible. *)
+  | `SINGLE (** Zero or one element may be selected. *)
+  | `BROWSE (** Exactly one element is selected.
+In some circumstances, such as initially or during a search
+operation, it’s possible for no element to be selected with
+[GTK_SELECTION_BROWSE]. What is really enforced is that the user
+can’t deselect a currently selected element except by selecting
+another element. *)
+  | `MULTIPLE (** Any number of elements may be selected.
+The Ctrl key may be used to enlarge the selection, and Shift
+key to select between the focus and the child pointed to.
+Some widgets may also allow Click-drag to select a range of elements. *)
 ]
 
 val selectionmode_of_int : int -> selectionmode
@@ -1929,13 +1406,10 @@ val selectionmode_to_int : selectionmode -> int
 
 (* SensitivityType - enumeration *)
 type sensitivitytype = [
-  (** The control is made insensitive if no
-  action can be triggered *)
-  | `AUTO
-  (** The control is always sensitive *)
-  | `ON
-  (** The control is always insensitive *)
-  | `OFF
+  | `AUTO (** The control is made insensitive if no
+action can be triggered *)
+  | `ON (** The control is always sensitive *)
+  | `OFF (** The control is always insensitive *)
 ]
 
 val sensitivitytype_of_int : int -> sensitivitytype
@@ -1943,15 +1417,12 @@ val sensitivitytype_to_int : sensitivitytype -> int
 
 (* ShortcutScope - enumeration *)
 type shortcutscope = [
-  (** Shortcuts are handled inside
-  the widget the controller belongs to. *)
-  | `LOCAL
-  (** Shortcuts are handled by
-  the first ancestor that is a [iface@ShortcutManager] *)
-  | `MANAGED
-  (** Shortcuts are handled by
-  the root widget. *)
-  | `GLOBAL
+  | `LOCAL (** Shortcuts are handled inside
+the widget the controller belongs to. *)
+  | `MANAGED (** Shortcuts are handled by
+the first ancestor that is a [ShortcutManager] *)
+  | `GLOBAL (** Shortcuts are handled by
+the root widget. *)
 ]
 
 val shortcutscope_of_int : int -> shortcutscope
@@ -1959,28 +1430,18 @@ val shortcutscope_to_int : shortcutscope -> int
 
 (* ShortcutType - enumeration *)
 type shortcuttype = [
-  (** The shortcut is a keyboard accelerator. The GtkShortcutsShortcut:accelerator
-  property will be used. *)
-  | `ACCELERATOR
-  (** The shortcut is a pinch gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_PINCH
-  (** The shortcut is a stretch gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_STRETCH
-  (** The shortcut is a clockwise rotation gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_ROTATE_CLOCKWISE
-  (** The shortcut is a counterclockwise rotation gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_ROTATE_COUNTERCLOCKWISE
-  (** The shortcut is a two-finger swipe gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_TWO_FINGER_SWIPE_LEFT
-  (** The shortcut is a two-finger swipe gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_TWO_FINGER_SWIPE_RIGHT
-  (** The shortcut is a gesture. The GtkShortcutsShortcut:icon property will be
-  used. *)
-  | `GESTURE
-  (** The shortcut is a swipe gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_SWIPE_LEFT
-  (** The shortcut is a swipe gesture. GTK provides an icon and subtitle. *)
-  | `GESTURE_SWIPE_RIGHT
+  | `ACCELERATOR (** The shortcut is a keyboard accelerator. The GtkShortcutsShortcut:accelerator
+property will be used. *)
+  | `GESTURE_PINCH (** The shortcut is a pinch gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_STRETCH (** The shortcut is a stretch gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_ROTATE_CLOCKWISE (** The shortcut is a clockwise rotation gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_ROTATE_COUNTERCLOCKWISE (** The shortcut is a counterclockwise rotation gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_TWO_FINGER_SWIPE_LEFT (** The shortcut is a two-finger swipe gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_TWO_FINGER_SWIPE_RIGHT (** The shortcut is a two-finger swipe gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE (** The shortcut is a gesture. The GtkShortcutsShortcut:icon property will be
+used. *)
+  | `GESTURE_SWIPE_LEFT (** The shortcut is a swipe gesture. GTK provides an icon and subtitle. *)
+  | `GESTURE_SWIPE_RIGHT (** The shortcut is a swipe gesture. GTK provides an icon and subtitle. *)
 ]
 
 val shortcuttype_of_int : int -> shortcuttype
@@ -1988,14 +1449,10 @@ val shortcuttype_to_int : shortcuttype -> int
 
 (* SizeGroupMode - enumeration *)
 type sizegroupmode = [
-  (** group has no effect *)
-  | `NONE
-  (** group affects horizontal requisition *)
-  | `HORIZONTAL
-  (** group affects vertical requisition *)
-  | `VERTICAL
-  (** group affects both horizontal and vertical requisition *)
-  | `BOTH
+  | `NONE (** group has no effect *)
+  | `HORIZONTAL (** group affects horizontal requisition *)
+  | `VERTICAL (** group affects vertical requisition *)
+  | `BOTH (** group affects both horizontal and vertical requisition *)
 ]
 
 val sizegroupmode_of_int : int -> sizegroupmode
@@ -2003,12 +1460,9 @@ val sizegroupmode_to_int : sizegroupmode -> int
 
 (* SizeRequestMode - enumeration *)
 type sizerequestmode = [
-  (** Prefer height-for-width geometry management *)
-  | `HEIGHT_FOR_WIDTH
-  (** Prefer width-for-height geometry management *)
-  | `WIDTH_FOR_HEIGHT
-  (** Don’t trade height-for-width or width-for-height *)
-  | `CONSTANT_SIZE
+  | `HEIGHT_FOR_WIDTH (** Prefer height-for-width geometry management *)
+  | `WIDTH_FOR_HEIGHT (** Prefer width-for-height geometry management *)
+  | `CONSTANT_SIZE (** Don’t trade height-for-width or width-for-height *)
 ]
 
 val sizerequestmode_of_int : int -> sizerequestmode
@@ -2016,10 +1470,8 @@ val sizerequestmode_to_int : sizerequestmode -> int
 
 (* SortType - enumeration *)
 type sorttype = [
-  (** Sorting is in ascending order. *)
-  | `ASCENDING
-  (** Sorting is in descending order. *)
-  | `DESCENDING
+  | `ASCENDING (** Sorting is in ascending order. *)
+  | `DESCENDING (** Sorting is in descending order. *)
 ]
 
 val sorttype_of_int : int -> sorttype
@@ -2027,19 +1479,15 @@ val sorttype_to_int : sorttype -> int
 
 (* SorterChange - enumeration *)
 type sorterchange = [
-  (** The sorter change cannot be described
-  by any of the other enumeration values *)
-  | `DIFFERENT
-  (** The sort order was inverted. Comparisons
-  that returned %GTK_ORDERING_SMALLER now return %GTK_ORDERING_LARGER
-  and vice versa. Other comparisons return the same values as before. *)
-  | `INVERTED
-  (** The sorter is less strict: Comparisons
-  may now return %GTK_ORDERING_EQUAL that did not do so before. *)
-  | `LESS_STRICT
-  (** The sorter is more strict: Comparisons
-  that did return %GTK_ORDERING_EQUAL may not do so anymore. *)
-  | `MORE_STRICT
+  | `DIFFERENT (** The sorter change cannot be described
+by any of the other enumeration values *)
+  | `INVERTED (** The sort order was inverted. Comparisons
+that returned [GTK_ORDERING_SMALLER] now return [GTK_ORDERING_LARGER]
+and vice versa. Other comparisons return the same values as before. *)
+  | `LESS_STRICT (** The sorter is less strict: Comparisons
+may now return [GTK_ORDERING_EQUAL] that did not do so before. *)
+  | `MORE_STRICT (** The sorter is more strict: Comparisons
+that did return [GTK_ORDERING_EQUAL] may not do so anymore. *)
 ]
 
 val sorterchange_of_int : int -> sorterchange
@@ -2047,15 +1495,12 @@ val sorterchange_to_int : sorterchange -> int
 
 (* SorterOrder - enumeration *)
 type sorterorder = [
-  (** A partial order. Any `GtkOrdering` is possible. *)
-  | `PARTIAL
-  (** No order, all elements are considered equal.
-  gtk_sorter_compare() will only return %GTK_ORDERING_EQUAL. *)
-  | `NONE
-  (** A total order. gtk_sorter_compare() will only
-  return %GTK_ORDERING_EQUAL if an item is compared with itself. Two
-  different items will never cause this value to be returned. *)
-  | `TOTAL
+  | `PARTIAL (** A partial order. Any [GtkOrdering] is possible. *)
+  | `NONE (** No order, all elements are considered equal.
+gtk_sorter_compare() will only return [GTK_ORDERING_EQUAL]. *)
+  | `TOTAL (** A total order. gtk_sorter_compare() will only
+return [GTK_ORDERING_EQUAL] if an item is compared with itself. Two
+different items will never cause this value to be returned. *)
 ]
 
 val sorterorder_of_int : int -> sorterorder
@@ -2063,13 +1508,11 @@ val sorterorder_to_int : sorterorder -> int
 
 (* SpinButtonUpdatePolicy - enumeration *)
 type spinbuttonupdatepolicy = [
-  (** When refreshing your `GtkSpinButton`, the value is
-  always displayed *)
-  | `ALWAYS
-  (** When refreshing your `GtkSpinButton`, the value is
-  only displayed if it is valid within the bounds of the spin button's
-  adjustment *)
-  | `IF_VALID
+  | `ALWAYS (** When refreshing your [GtkSpinButton], the value is
+always displayed *)
+  | `IF_VALID (** When refreshing your [GtkSpinButton], the value is
+only displayed if it is valid within the bounds of the spin button's
+adjustment *)
 ]
 
 val spinbuttonupdatepolicy_of_int : int -> spinbuttonupdatepolicy
@@ -2077,20 +1520,13 @@ val spinbuttonupdatepolicy_to_int : spinbuttonupdatepolicy -> int
 
 (* SpinType - enumeration *)
 type spintype = [
-  (** Increment by the adjustments step increment. *)
-  | `STEP_FORWARD
-  (** Decrement by the adjustments step increment. *)
-  | `STEP_BACKWARD
-  (** Increment by the adjustments page increment. *)
-  | `PAGE_FORWARD
-  (** Decrement by the adjustments page increment. *)
-  | `PAGE_BACKWARD
-  (** Go to the adjustments lower bound. *)
-  | `HOME
-  (** Go to the adjustments upper bound. *)
-  | `END
-  (** Change by a specified amount. *)
-  | `USER_DEFINED
+  | `STEP_FORWARD (** Increment by the adjustments step increment. *)
+  | `STEP_BACKWARD (** Decrement by the adjustments step increment. *)
+  | `PAGE_FORWARD (** Increment by the adjustments page increment. *)
+  | `PAGE_BACKWARD (** Decrement by the adjustments page increment. *)
+  | `HOME (** Go to the adjustments lower bound. *)
+  | `END (** Go to the adjustments upper bound. *)
+  | `USER_DEFINED (** Change by a specified amount. *)
 ]
 
 val spintype_of_int : int -> spintype
@@ -2098,52 +1534,29 @@ val spintype_to_int : spintype -> int
 
 (* StackTransitionType - enumeration *)
 type stacktransitiontype = [
-  (** No transition *)
-  | `NONE
-  (** A cross-fade *)
-  | `CROSSFADE
-  (** Slide from left to right *)
-  | `SLIDE_RIGHT
-  (** Slide from right to left *)
-  | `SLIDE_LEFT
-  (** Slide from bottom up *)
-  | `SLIDE_UP
-  (** Slide from top down *)
-  | `SLIDE_DOWN
-  (** Slide from left or right according to the children order *)
-  | `SLIDE_LEFT_RIGHT
-  (** Slide from top down or bottom up according to the order *)
-  | `SLIDE_UP_DOWN
-  (** Cover the old page by sliding up *)
-  | `OVER_UP
-  (** Cover the old page by sliding down *)
-  | `OVER_DOWN
-  (** Cover the old page by sliding to the left *)
-  | `OVER_LEFT
-  (** Cover the old page by sliding to the right *)
-  | `OVER_RIGHT
-  (** Uncover the new page by sliding up *)
-  | `UNDER_UP
-  (** Uncover the new page by sliding down *)
-  | `UNDER_DOWN
-  (** Uncover the new page by sliding to the left *)
-  | `UNDER_LEFT
-  (** Uncover the new page by sliding to the right *)
-  | `UNDER_RIGHT
-  (** Cover the old page sliding up or uncover the new page sliding down, according to order *)
-  | `OVER_UP_DOWN
-  (** Cover the old page sliding down or uncover the new page sliding up, according to order *)
-  | `OVER_DOWN_UP
-  (** Cover the old page sliding left or uncover the new page sliding right, according to order *)
-  | `OVER_LEFT_RIGHT
-  (** Cover the old page sliding right or uncover the new page sliding left, according to order *)
-  | `OVER_RIGHT_LEFT
-  (** Pretend the pages are sides of a cube and rotate that cube to the left *)
-  | `ROTATE_LEFT
-  (** Pretend the pages are sides of a cube and rotate that cube to the right *)
-  | `ROTATE_RIGHT
-  (** Pretend the pages are sides of a cube and rotate that cube to the left or right according to the children order *)
-  | `ROTATE_LEFT_RIGHT
+  | `NONE (** No transition *)
+  | `CROSSFADE (** A cross-fade *)
+  | `SLIDE_RIGHT (** Slide from left to right *)
+  | `SLIDE_LEFT (** Slide from right to left *)
+  | `SLIDE_UP (** Slide from bottom up *)
+  | `SLIDE_DOWN (** Slide from top down *)
+  | `SLIDE_LEFT_RIGHT (** Slide from left or right according to the children order *)
+  | `SLIDE_UP_DOWN (** Slide from top down or bottom up according to the order *)
+  | `OVER_UP (** Cover the old page by sliding up *)
+  | `OVER_DOWN (** Cover the old page by sliding down *)
+  | `OVER_LEFT (** Cover the old page by sliding to the left *)
+  | `OVER_RIGHT (** Cover the old page by sliding to the right *)
+  | `UNDER_UP (** Uncover the new page by sliding up *)
+  | `UNDER_DOWN (** Uncover the new page by sliding down *)
+  | `UNDER_LEFT (** Uncover the new page by sliding to the left *)
+  | `UNDER_RIGHT (** Uncover the new page by sliding to the right *)
+  | `OVER_UP_DOWN (** Cover the old page sliding up or uncover the new page sliding down, according to order *)
+  | `OVER_DOWN_UP (** Cover the old page sliding down or uncover the new page sliding up, according to order *)
+  | `OVER_LEFT_RIGHT (** Cover the old page sliding left or uncover the new page sliding right, according to order *)
+  | `OVER_RIGHT_LEFT (** Cover the old page sliding right or uncover the new page sliding left, according to order *)
+  | `ROTATE_LEFT (** Pretend the pages are sides of a cube and rotate that cube to the left *)
+  | `ROTATE_RIGHT (** Pretend the pages are sides of a cube and rotate that cube to the right *)
+  | `ROTATE_LEFT_RIGHT (** Pretend the pages are sides of a cube and rotate that cube to the left or right according to the children order *)
 ]
 
 val stacktransitiontype_of_int : int -> stacktransitiontype
@@ -2151,15 +1564,12 @@ val stacktransitiontype_to_int : stacktransitiontype -> int
 
 (* StringFilterMatchMode - enumeration *)
 type stringfiltermatchmode = [
-  (** The search string and
-  text must match exactly *)
-  | `EXACT
-  (** The search string
-  must be contained as a substring inside the text *)
-  | `SUBSTRING
-  (** The text must begin
-  with the search string *)
-  | `PREFIX
+  | `EXACT (** The search string and
+text must match exactly *)
+  | `SUBSTRING (** The search string
+must be contained as a substring inside the text *)
+  | `PREFIX (** The text must begin
+with the search string *)
 ]
 
 val stringfiltermatchmode_of_int : int -> stringfiltermatchmode
@@ -2167,14 +1577,10 @@ val stringfiltermatchmode_to_int : stringfiltermatchmode -> int
 
 (* SymbolicColor - enumeration *)
 type symboliccolor = [
-  (** The default foreground color *)
-  | `FOREGROUND
-  (** Indication color for errors *)
-  | `ERROR
-  (** Indication color for warnings *)
-  | `WARNING
-  (** Indication color for success *)
-  | `SUCCESS
+  | `FOREGROUND (** The default foreground color *)
+  | `ERROR (** Indication color for errors *)
+  | `WARNING (** Indication color for warnings *)
+  | `SUCCESS (** Indication color for success *)
 ]
 
 val symboliccolor_of_int : int -> symboliccolor
@@ -2182,23 +1588,18 @@ val symboliccolor_to_int : symboliccolor -> int
 
 (* SystemSetting - enumeration *)
 type systemsetting = [
-  (** the [property@Gtk.Settings:gtk-xft-dpi] setting has changed *)
-  | `DPI
-  (** The [property@Gtk.Settings:gtk-font-name] setting has changed *)
-  | `FONT_NAME
-  (** The font configuration has changed in a way that
-  requires text to be redrawn. This can be any of the
-  [property@Gtk.Settings:gtk-xft-antialias],
-  [property@Gtk.Settings:gtk-xft-hinting],
-  [property@Gtk.Settings:gtk-xft-hintstyle],
-  [property@Gtk.Settings:gtk-xft-rgba] or
-  [property@Gtk.Settings:gtk-fontconfig-timestamp] settings *)
-  | `FONT_CONFIG
-  (** The display has changed *)
-  | `DISPLAY
-  (** The icon theme has changed in a way that requires
-  icons to be looked up again *)
-  | `ICON_THEME
+  | `DPI (** the [Gtk.Settings:gtk-xft-dpi] setting has changed *)
+  | `FONT_NAME (** The [Gtk.Settings:gtk-font-name] setting has changed *)
+  | `FONT_CONFIG (** The font configuration has changed in a way that
+requires text to be redrawn. This can be any of the
+[Gtk.Settings:gtk-xft-antialias],
+[Gtk.Settings:gtk-xft-hinting],
+[Gtk.Settings:gtk-xft-hintstyle],
+[Gtk.Settings:gtk-xft-rgba] or
+[Gtk.Settings:gtk-fontconfig-timestamp] settings *)
+  | `DISPLAY (** The display has changed *)
+  | `ICON_THEME (** The icon theme has changed in a way that requires
+icons to be looked up again *)
 ]
 
 val systemsetting_of_int : int -> systemsetting
@@ -2206,12 +1607,9 @@ val systemsetting_to_int : systemsetting -> int
 
 (* TextDirection - enumeration *)
 type textdirection = [
-  (** No direction. *)
-  | `NONE
-  (** Left to right text direction. *)
-  | `LTR
-  (** Right to left text direction. *)
-  | `RTL
+  | `NONE (** No direction. *)
+  | `LTR (** Left to right text direction. *)
+  | `RTL (** Right to left text direction. *)
 ]
 
 val textdirection_of_int : int -> textdirection
@@ -2219,12 +1617,10 @@ val textdirection_to_int : textdirection -> int
 
 (* TextExtendSelection - enumeration *)
 type textextendselection = [
-  (** Selects the current word. It is triggered by
-  a double-click for example. *)
-  | `WORD
-  (** Selects the current line. It is triggered by
-  a triple-click for example. *)
-  | `LINE
+  | `WORD (** Selects the current word. It is triggered by
+a double-click for example. *)
+  | `LINE (** Selects the current line. It is triggered by
+a triple-click for example. *)
 ]
 
 val textextendselection_of_int : int -> textextendselection
@@ -2232,10 +1628,8 @@ val textextendselection_to_int : textextendselection -> int
 
 (* TextViewLayer - enumeration *)
 type textviewlayer = [
-  (** The layer rendered below the text (but above the background). *)
-  | `BELOW_TEXT
-  (** The layer rendered above the text. *)
-  | `ABOVE_TEXT
+  | `BELOW_TEXT (** The layer rendered below the text (but above the background). *)
+  | `ABOVE_TEXT (** The layer rendered above the text. *)
 ]
 
 val textviewlayer_of_int : int -> textviewlayer
@@ -2243,18 +1637,12 @@ val textviewlayer_to_int : textviewlayer -> int
 
 (* TextWindowType - enumeration *)
 type textwindowtype = [
-  (** Window that floats over scrolling areas. *)
-  | `WIDGET
-  (** Scrollable text window. *)
-  | `TEXT
-  (** Left side border window. *)
-  | `LEFT
-  (** Right side border window. *)
-  | `RIGHT
-  (** Top border window. *)
-  | `TOP
-  (** Bottom border window. *)
-  | `BOTTOM
+  | `WIDGET (** Window that floats over scrolling areas. *)
+  | `TEXT (** Scrollable text window. *)
+  | `LEFT (** Left side border window. *)
+  | `RIGHT (** Right side border window. *)
+  | `TOP (** Top border window. *)
+  | `BOTTOM (** Bottom border window. *)
 ]
 
 val textwindowtype_of_int : int -> textwindowtype
@@ -2262,12 +1650,9 @@ val textwindowtype_to_int : textwindowtype -> int
 
 (* TreeViewColumnSizing - enumeration *)
 type treeviewcolumnsizing = [
-  (** Columns only get bigger in reaction to changes in the model *)
-  | `GROW_ONLY
-  (** Columns resize to be the optimal size every time the model changes. *)
-  | `AUTOSIZE
-  (** Columns are a fixed numbers of pixels wide. *)
-  | `FIXED
+  | `GROW_ONLY (** Columns only get bigger in reaction to changes in the model *)
+  | `AUTOSIZE (** Columns resize to be the optimal size every time the model changes. *)
+  | `FIXED (** Columns are a fixed numbers of pixels wide. *)
 ]
 
 val treeviewcolumnsizing_of_int : int -> treeviewcolumnsizing
@@ -2275,14 +1660,10 @@ val treeviewcolumnsizing_to_int : treeviewcolumnsizing -> int
 
 (* TreeViewDropPosition - enumeration *)
 type treeviewdropposition = [
-  (** dropped row is inserted before *)
-  | `BEFORE
-  (** dropped row is inserted after *)
-  | `AFTER
-  (** dropped row becomes a child or is inserted before *)
-  | `INTO_OR_BEFORE
-  (** dropped row becomes a child or is inserted after *)
-  | `INTO_OR_AFTER
+  | `BEFORE (** dropped row is inserted before *)
+  | `AFTER (** dropped row is inserted after *)
+  | `INTO_OR_BEFORE (** dropped row becomes a child or is inserted before *)
+  | `INTO_OR_AFTER (** dropped row becomes a child or is inserted after *)
 ]
 
 val treeviewdropposition_of_int : int -> treeviewdropposition
@@ -2290,14 +1671,10 @@ val treeviewdropposition_to_int : treeviewdropposition -> int
 
 (* TreeViewGridLines - enumeration *)
 type treeviewgridlines = [
-  (** No grid lines. *)
-  | `NONE
-  (** Horizontal grid lines. *)
-  | `HORIZONTAL
-  (** Vertical grid lines. *)
-  | `VERTICAL
-  (** Horizontal and vertical grid lines. *)
-  | `BOTH
+  | `NONE (** No grid lines. *)
+  | `HORIZONTAL (** Horizontal grid lines. *)
+  | `VERTICAL (** Vertical grid lines. *)
+  | `BOTH (** Horizontal and vertical grid lines. *)
 ]
 
 val treeviewgridlines_of_int : int -> treeviewgridlines
@@ -2305,14 +1682,10 @@ val treeviewgridlines_to_int : treeviewgridlines -> int
 
 (* Unit - enumeration *)
 type unit = [
-  (** No units. *)
-  | `NONE
-  (** Dimensions in points. *)
-  | `POINTS
-  (** Dimensions in inches. *)
-  | `INCH
-  (** Dimensions in millimeters *)
-  | `MM
+  | `NONE (** No units. *)
+  | `POINTS (** Dimensions in points. *)
+  | `INCH (** Dimensions in inches. *)
+  | `MM (** Dimensions in millimeters *)
 ]
 
 val unit_of_int : int -> unit
@@ -2320,42 +1693,27 @@ val unit_to_int : unit -> int
 
 (* WindowGravity - enumeration *)
 type windowgravity = [
-  (** The top left corner *)
-  | `TOP_LEFT
-  (** The top edge *)
-  | `TOP
-  (** The top right corner *)
-  | `TOP_RIGHT
-  (** The left edge *)
-  | `LEFT
-  (** The center pointer *)
-  | `CENTER
-  (** The right edge *)
-  | `RIGHT
-  (** The bottom left corner *)
-  | `BOTTOM_LEFT
-  (** the bottom edge *)
-  | `BOTTOM
-  (** The bottom right corner *)
-  | `BOTTOM_RIGHT
-  (** The top left or top right corner,
-  depending on the text direction *)
-  | `TOP_START
-  (** The top right or top left corner,
-  depending on the text direction *)
-  | `TOP_END
-  (** The left or right edge,
-  depending on the text direction *)
-  | `START
-  (** The right or left edge,
-  depending on the text direction *)
-  | `END
-  (** The bottom left or top right corner,
-  depending on the text direction *)
-  | `BOTTOM_START
-  (** The bottom right or top left corner,
-  depending on the text direction *)
-  | `BOTTOM_END
+  | `TOP_LEFT (** The top left corner *)
+  | `TOP (** The top edge *)
+  | `TOP_RIGHT (** The top right corner *)
+  | `LEFT (** The left edge *)
+  | `CENTER (** The center pointer *)
+  | `RIGHT (** The right edge *)
+  | `BOTTOM_LEFT (** The bottom left corner *)
+  | `BOTTOM (** the bottom edge *)
+  | `BOTTOM_RIGHT (** The bottom right corner *)
+  | `TOP_START (** The top left or top right corner,
+depending on the text direction *)
+  | `TOP_END (** The top right or top left corner,
+depending on the text direction *)
+  | `START (** The left or right edge,
+depending on the text direction *)
+  | `END (** The right or left edge,
+depending on the text direction *)
+  | `BOTTOM_START (** The bottom left or top right corner,
+depending on the text direction *)
+  | `BOTTOM_END (** The bottom right or top left corner,
+depending on the text direction *)
 ]
 
 val windowgravity_of_int : int -> windowgravity
@@ -2363,17 +1721,13 @@ val windowgravity_to_int : windowgravity -> int
 
 (* WrapMode - enumeration *)
 type wrapmode = [
-  (** do not wrap lines; just make the text area wider *)
-  | `NONE
-  (** wrap text, breaking lines anywhere the cursor can
-  appear (between characters, usually - if you want to be technical,
-  between graphemes, see pango_get_log_attrs()) *)
-  | `CHAR
-  (** wrap text, breaking lines in between words *)
-  | `WORD
-  (** wrap text, breaking lines in between words, or if
-  that is not enough, also between graphemes *)
-  | `WORD_CHAR
+  | `NONE (** do not wrap lines; just make the text area wider *)
+  | `CHAR (** wrap text, breaking lines anywhere the cursor can
+appear (between characters, usually - if you want to be technical,
+between graphemes, see pango_get_log_attrs()) *)
+  | `WORD (** wrap text, breaking lines in between words *)
+  | `WORD_CHAR (** wrap text, breaking lines in between words, or if
+that is not enough, also between graphemes *)
 ]
 
 val wrapmode_of_int : int -> wrapmode
@@ -2381,17 +1735,13 @@ val wrapmode_to_int : wrapmode -> int
 
 (* ApplicationInhibitFlags - bitfield/flags *)
 type applicationinhibitflags_flag = [
-  (** Inhibit ending the user session
-  by logging out or by shutting down the computer *)
-  | `LOGOUT
-  (** Inhibit user switching *)
-  | `SWITCH
-  (** Inhibit suspending the
-  session or computer *)
-  | `SUSPEND
-  (** Inhibit the session being
-  marked as idle (and possibly locked) *)
-  | `IDLE
+  | `LOGOUT (** Inhibit ending the user session
+by logging out or by shutting down the computer *)
+  | `SWITCH (** Inhibit user switching *)
+  | `SUSPEND (** Inhibit suspending the
+session or computer *)
+  | `IDLE (** Inhibit the session being
+marked as idle (and possibly locked) *)
 ]
 
 type applicationinhibitflags = applicationinhibitflags_flag list
@@ -2401,9 +1751,8 @@ val applicationinhibitflags_to_int : applicationinhibitflags -> int
 
 (* BuilderClosureFlags - bitfield/flags *)
 type builderclosureflags_flag = [
-  (** The closure should be created swapped. See
-  g_cclosure_new_swap() for details. *)
-  | `SWAPPED
+  | `SWAPPED (** The closure should be created swapped. See
+g_cclosure_new_swap() for details. *)
 ]
 
 type builderclosureflags = builderclosureflags_flag list
@@ -2413,21 +1762,14 @@ val builderclosureflags_to_int : builderclosureflags -> int
 
 (* CellRendererState - bitfield/flags *)
 type cellrendererstate_flag = [
-  (** The cell is currently selected, and
- probably has a selection colored background to render to. *)
-  | `SELECTED
-  (** The mouse is hovering over the cell. *)
-  | `PRELIT
-  (** The cell is drawn in an insensitive manner *)
-  | `INSENSITIVE
-  (** The cell is in a sorted row *)
-  | `SORTED
-  (** The cell is in the focus row. *)
-  | `FOCUSED
-  (** The cell is in a row that can be expanded *)
-  | `EXPANDABLE
-  (** The cell is in a row that is expanded *)
-  | `EXPANDED
+  | `SELECTED (** The cell is currently selected, and
+probably has a selection colored background to render to. *)
+  | `PRELIT (** The mouse is hovering over the cell. *)
+  | `INSENSITIVE (** The cell is drawn in an insensitive manner *)
+  | `SORTED (** The cell is in a sorted row *)
+  | `FOCUSED (** The cell is in the focus row. *)
+  | `EXPANDABLE (** The cell is in a row that can be expanded *)
+  | `EXPANDED (** The cell is in a row that is expanded *)
 ]
 
 type cellrendererstate = cellrendererstate_flag list
@@ -2437,50 +1779,28 @@ val cellrendererstate_to_int : cellrendererstate -> int
 
 (* DebugFlags - bitfield/flags *)
 type debugflags_flag = [
-  (** Information about GtkTextView *)
-  | `TEXT
-  (** Information about GtkTreeView *)
-  | `TREE
-  (** Information about keyboard shortcuts *)
-  | `KEYBINDINGS
-  (** Information about modules and extensions *)
-  | `MODULES
-  (** Information about size allocation *)
-  | `GEOMETRY
-  (** Information about icon themes *)
-  | `ICONTHEME
-  (** Information about printing *)
-  | `PRINTING
-  (** Trace GtkBuilder operation *)
-  | `BUILDER_TRACE
-  (** Information about size requests *)
-  | `SIZE_REQUEST
-  (** Disable the style property cache *)
-  | `NO_CSS_CACHE
-  (** Open the GTK inspector *)
-  | `INTERACTIVE
-  (** Show touch UI elements for pointer events. *)
-  | `TOUCHSCREEN
-  (** Information about actions and menu models *)
-  | `ACTIONS
-  (** Information from layout managers *)
-  | `LAYOUT
-  (** Include debug render nodes in the generated snapshots *)
-  | `SNAPSHOT
-  (** Information from the constraints solver *)
-  | `CONSTRAINTS
-  (** Log unused GtkBuilder objects *)
-  | `BUILDER_OBJECTS
-  (** Information about accessibility state changes *)
-  | `A11Y
-  (** Information about icon fallback. *)
-  | `ICONFALLBACK
-  (** Inverts the default text-direction. *)
-  | `INVERT_TEXT_DIR
-  (** Information about deprecated CSS features. *)
-  | `CSS
-  (** Information about deprecated GtkBuilder features. *)
-  | `BUILDER
+  | `TEXT (** Information about GtkTextView *)
+  | `TREE (** Information about GtkTreeView *)
+  | `KEYBINDINGS (** Information about keyboard shortcuts *)
+  | `MODULES (** Information about modules and extensions *)
+  | `GEOMETRY (** Information about size allocation *)
+  | `ICONTHEME (** Information about icon themes *)
+  | `PRINTING (** Information about printing *)
+  | `BUILDER_TRACE (** Trace GtkBuilder operation *)
+  | `SIZE_REQUEST (** Information about size requests *)
+  | `NO_CSS_CACHE (** Disable the style property cache *)
+  | `INTERACTIVE (** Open the GTK inspector *)
+  | `TOUCHSCREEN (** Show touch UI elements for pointer events. *)
+  | `ACTIONS (** Information about actions and menu models *)
+  | `LAYOUT (** Information from layout managers *)
+  | `SNAPSHOT (** Include debug render nodes in the generated snapshots *)
+  | `CONSTRAINTS (** Information from the constraints solver *)
+  | `BUILDER_OBJECTS (** Log unused GtkBuilder objects *)
+  | `A11Y (** Information about accessibility state changes *)
+  | `ICONFALLBACK (** Information about icon fallback. *)
+  | `INVERT_TEXT_DIR (** Inverts the default text-direction. *)
+  | `CSS (** Information about deprecated CSS features. *)
+  | `BUILDER (** Information about deprecated GtkBuilder features. *)
 ]
 
 type debugflags = debugflags_flag list
@@ -2490,13 +1810,10 @@ val debugflags_to_int : debugflags -> int
 
 (* DialogFlags - bitfield/flags *)
 type dialogflags_flag = [
-  (** Make the constructed dialog modal *)
-  | `MODAL
-  (** Destroy the dialog when its parent is destroyed *)
-  | `DESTROY_WITH_PARENT
-  (** Create dialog with actions in header
-  bar instead of action area *)
-  | `USE_HEADER_BAR
+  | `MODAL (** Make the constructed dialog modal *)
+  | `DESTROY_WITH_PARENT (** Destroy the dialog when its parent is destroyed *)
+  | `USE_HEADER_BAR (** Create dialog with actions in header
+bar instead of action area *)
 ]
 
 type dialogflags = dialogflags_flag list
@@ -2506,21 +1823,14 @@ val dialogflags_to_int : dialogflags -> int
 
 (* EventControllerScrollFlags - bitfield/flags *)
 type eventcontrollerscrollflags_flag = [
-  (** Don't emit scroll. *)
-  | `NONE
-  (** Emit scroll with vertical deltas. *)
-  | `VERTICAL
-  (** Emit scroll with horizontal deltas. *)
-  | `HORIZONTAL
-  (** Only emit deltas that are multiples of 1. *)
-  | `DISCRETE
-  (** Emit ::decelerate after continuous scroll finishes. *)
-  | `KINETIC
-  (** A #GtkEventControllerScrollFlags value to prefer physical direction over
+  | `NONE (** Don't emit scroll. *)
+  | `VERTICAL (** Emit scroll with vertical deltas. *)
+  | `HORIZONTAL (** Emit scroll with horizontal deltas. *)
+  | `DISCRETE (** Only emit deltas that are multiples of 1. *)
+  | `KINETIC (** Emit ::decelerate after continuous scroll finishes. *)
+  | `PHYSICAL_DIRECTION (** A [GtkEventControllerScrollFlags] value to prefer physical direction over
 logical direction (i.e. oblivious to natural scroll). *)
-  | `PHYSICAL_DIRECTION
-  (** Emit scroll on both axes. *)
-  | `BOTH_AXES
+  | `BOTH_AXES (** Emit scroll on both axes. *)
 ]
 
 type eventcontrollerscrollflags = eventcontrollerscrollflags_flag list
@@ -2530,16 +1840,11 @@ val eventcontrollerscrollflags_to_int : eventcontrollerscrollflags -> int
 
 (* FontChooserLevel - bitfield/flags *)
 type fontchooserlevel_flag = [
-  (** Allow selecting a font family *)
-  | `FAMILY
-  (** Allow selecting a specific font face *)
-  | `STYLE
-  (** Allow selecting a specific font size *)
-  | `SIZE
-  (** Allow changing OpenType font variation axes *)
-  | `VARIATIONS
-  (** Allow selecting specific OpenType font features *)
-  | `FEATURES
+  | `FAMILY (** Allow selecting a font family *)
+  | `STYLE (** Allow selecting a specific font face *)
+  | `SIZE (** Allow selecting a specific font size *)
+  | `VARIATIONS (** Allow changing OpenType font variation axes *)
+  | `FEATURES (** Allow selecting specific OpenType font features *)
 ]
 
 type fontchooserlevel = fontchooserlevel_flag list
@@ -2549,17 +1854,13 @@ val fontchooserlevel_to_int : fontchooserlevel -> int
 
 (* IconLookupFlags - bitfield/flags *)
 type iconlookupflags_flag = [
-  (** Perform a regular lookup. *)
-  | `NONE
-  (** Try to always load regular icons, even
-  when symbolic icon names are given *)
-  | `FORCE_REGULAR
-  (** Try to always load symbolic icons, even
-  when regular icon names are given *)
-  | `FORCE_SYMBOLIC
-  (** Starts loading the texture in the background
-  so it is ready when later needed. *)
-  | `PRELOAD
+  | `NONE (** Perform a regular lookup. *)
+  | `FORCE_REGULAR (** Try to always load regular icons, even
+when symbolic icon names are given *)
+  | `FORCE_SYMBOLIC (** Try to always load symbolic icons, even
+when regular icon names are given *)
+  | `PRELOAD (** Starts loading the texture in the background
+so it is ready when later needed. *)
 ]
 
 type iconlookupflags = iconlookupflags_flag list
@@ -2569,36 +1870,23 @@ val iconlookupflags_to_int : iconlookupflags -> int
 
 (* InputHints - bitfield/flags *)
 type inputhints_flag = [
-  (** No special behaviour suggested *)
-  | `NONE
-  (** Suggest checking for typos *)
-  | `SPELLCHECK
-  (** Suggest not checking for typos *)
-  | `NO_SPELLCHECK
-  (** Suggest word completion *)
-  | `WORD_COMPLETION
-  (** Suggest to convert all text to lowercase *)
-  | `LOWERCASE
-  (** Suggest to capitalize all text *)
-  | `UPPERCASE_CHARS
-  (** Suggest to capitalize the first
-  character of each word *)
-  | `UPPERCASE_WORDS
-  (** Suggest to capitalize the
-  first word of each sentence *)
-  | `UPPERCASE_SENTENCES
-  (** Suggest to not show an onscreen keyboard
-  (e.g for a calculator that already has all the keys). *)
-  | `INHIBIT_OSK
-  (** The text is vertical *)
-  | `VERTICAL_WRITING
-  (** Suggest offering Emoji support *)
-  | `EMOJI
-  (** Suggest not offering Emoji support *)
-  | `NO_EMOJI
-  (** Request that the input method should not
-   update personalized data (like typing history) *)
-  | `PRIVATE
+  | `NONE (** No special behaviour suggested *)
+  | `SPELLCHECK (** Suggest checking for typos *)
+  | `NO_SPELLCHECK (** Suggest not checking for typos *)
+  | `WORD_COMPLETION (** Suggest word completion *)
+  | `LOWERCASE (** Suggest to convert all text to lowercase *)
+  | `UPPERCASE_CHARS (** Suggest to capitalize all text *)
+  | `UPPERCASE_WORDS (** Suggest to capitalize the first
+character of each word *)
+  | `UPPERCASE_SENTENCES (** Suggest to capitalize the
+first word of each sentence *)
+  | `INHIBIT_OSK (** Suggest to not show an onscreen keyboard
+(e.g for a calculator that already has all the keys). *)
+  | `VERTICAL_WRITING (** The text is vertical *)
+  | `EMOJI (** Suggest offering Emoji support *)
+  | `NO_EMOJI (** Suggest not offering Emoji support *)
+  | `PRIVATE (** Request that the input method should not
+update personalized data (like typing history) *)
 ]
 
 type inputhints = inputhints_flag list
@@ -2608,13 +1896,10 @@ val inputhints_to_int : inputhints -> int
 
 (* ListScrollFlags - bitfield/flags *)
 type listscrollflags_flag = [
-  (** Don't do anything extra *)
-  | `NONE
-  (** Focus the target item *)
-  | `FOCUS
-  (** Select the target item and
-  unselect all other items. *)
-  | `SELECT
+  | `NONE (** Don't do anything extra *)
+  | `FOCUS (** Focus the target item *)
+  | `SELECT (** Select the target item and
+unselect all other items. *)
 ]
 
 type listscrollflags = listscrollflags_flag list
@@ -2624,12 +1909,9 @@ val listscrollflags_to_int : listscrollflags -> int
 
 (* PickFlags - bitfield/flags *)
 type pickflags_flag = [
-  (** The default behavior, include widgets that are receiving events *)
-  | `DEFAULT
-  (** Include widgets that are insensitive *)
-  | `INSENSITIVE
-  (** Include widgets that are marked as non-targetable. See [property@Widget:can-target] *)
-  | `NON_TARGETABLE
+  | `DEFAULT (** The default behavior, include widgets that are receiving events *)
+  | `INSENSITIVE (** Include widgets that are insensitive *)
+  | `NON_TARGETABLE (** Include widgets that are marked as non-targetable. See [Widget:can-target] *)
 ]
 
 type pickflags = pickflags_flag list
@@ -2639,11 +1921,9 @@ val pickflags_to_int : pickflags -> int
 
 (* PopoverMenuFlags - bitfield/flags *)
 type popovermenuflags_flag = [
-  (** Submenus are presented as sliding submenus that replace the main menu. *)
-  | `SLIDING
-  (** Submenus are presented as traditional, nested
-  popovers. *)
-  | `NESTED
+  | `SLIDING (** Submenus are presented as sliding submenus that replace the main menu. *)
+  | `NESTED (** Submenus are presented as traditional, nested
+popovers. *)
 ]
 
 type popovermenuflags = popovermenuflags_flag list
@@ -2653,10 +1933,9 @@ val popovermenuflags_to_int : popovermenuflags -> int
 
 (* ShortcutActionFlags - bitfield/flags *)
 type shortcutactionflags_flag = [
-  (** The action is the only
-  action that can be activated. If this flag is not set,
-  a future activation may select a different action. *)
-  | `EXCLUSIVE
+  | `EXCLUSIVE (** The action is the only
+action that can be activated. If this flag is not set,
+a future activation may select a different action. *)
 ]
 
 type shortcutactionflags = shortcutactionflags_flag list
@@ -2666,38 +1945,22 @@ val shortcutactionflags_to_int : shortcutactionflags -> int
 
 (* StateFlags - bitfield/flags *)
 type stateflags_flag = [
-  (** State during normal operation *)
-  | `NORMAL
-  (** Widget is active *)
-  | `ACTIVE
-  (** Widget has a mouse pointer over it *)
-  | `PRELIGHT
-  (** Widget is selected *)
-  | `SELECTED
-  (** Widget is insensitive *)
-  | `INSENSITIVE
-  (** Widget is inconsistent *)
-  | `INCONSISTENT
-  (** Widget has the keyboard focus *)
-  | `FOCUSED
-  (** Widget is in a background toplevel window *)
-  | `BACKDROP
-  (** Widget is in left-to-right text direction *)
-  | `DIR_LTR
-  (** Widget is in right-to-left text direction *)
-  | `DIR_RTL
-  (** Widget is a link *)
-  | `LINK
-  (** The location the widget points to has already been visited *)
-  | `VISITED
-  (** Widget is checked *)
-  | `CHECKED
-  (** Widget is highlighted as a drop target for DND *)
-  | `DROP_ACTIVE
-  (** Widget has the visible focus *)
-  | `FOCUS_VISIBLE
-  (** Widget contains the keyboard focus *)
-  | `FOCUS_WITHIN
+  | `NORMAL (** State during normal operation *)
+  | `ACTIVE (** Widget is active *)
+  | `PRELIGHT (** Widget has a mouse pointer over it *)
+  | `SELECTED (** Widget is selected *)
+  | `INSENSITIVE (** Widget is insensitive *)
+  | `INCONSISTENT (** Widget is inconsistent *)
+  | `FOCUSED (** Widget has the keyboard focus *)
+  | `BACKDROP (** Widget is in a background toplevel window *)
+  | `DIR_LTR (** Widget is in left-to-right text direction *)
+  | `DIR_RTL (** Widget is in right-to-left text direction *)
+  | `LINK (** Widget is a link *)
+  | `VISITED (** The location the widget points to has already been visited *)
+  | `CHECKED (** Widget is checked *)
+  | `DROP_ACTIVE (** Widget is highlighted as a drop target for DND *)
+  | `FOCUS_VISIBLE (** Widget has the visible focus *)
+  | `FOCUS_WITHIN (** Widget contains the keyboard focus *)
 ]
 
 type stateflags = stateflags_flag list
@@ -2707,17 +1970,13 @@ val stateflags_to_int : stateflags -> int
 
 (* StyleContextPrintFlags - bitfield/flags *)
 type stylecontextprintflags_flag = [
-  (** Default value. *)
-  | `NONE
-  (** Print the entire tree of
-  CSS nodes starting at the style context's node *)
-  | `RECURSE
-  (** Show the values of the
-  CSS properties for each node *)
-  | `SHOW_STYLE
-  (** Show information about
-  what changes affect the styles *)
-  | `SHOW_CHANGE
+  | `NONE (** Default value. *)
+  | `RECURSE (** Print the entire tree of
+CSS nodes starting at the style context's node *)
+  | `SHOW_STYLE (** Show the values of the
+CSS properties for each node *)
+  | `SHOW_CHANGE (** Show information about
+what changes affect the styles *)
 ]
 
 type stylecontextprintflags = stylecontextprintflags_flag list
@@ -2727,18 +1986,14 @@ val stylecontextprintflags_to_int : stylecontextprintflags -> int
 
 (* TextBufferNotifyFlags - bitfield/flags *)
 type textbuffernotifyflags_flag = [
-  (** Be notified before text
-  is inserted into the underlying buffer. *)
-  | `BEFORE_INSERT
-  (** Be notified after text
-  has been inserted into the underlying buffer. *)
-  | `AFTER_INSERT
-  (** Be notified before text
-  is deleted from the underlying buffer. *)
-  | `BEFORE_DELETE
-  (** Be notified after text
-  has been deleted from the underlying buffer. *)
-  | `AFTER_DELETE
+  | `BEFORE_INSERT (** Be notified before text
+is inserted into the underlying buffer. *)
+  | `AFTER_INSERT (** Be notified after text
+has been inserted into the underlying buffer. *)
+  | `BEFORE_DELETE (** Be notified before text
+is deleted from the underlying buffer. *)
+  | `AFTER_DELETE (** Be notified after text
+has been deleted from the underlying buffer. *)
 ]
 
 type textbuffernotifyflags = textbuffernotifyflags_flag list
@@ -2748,15 +2003,12 @@ val textbuffernotifyflags_to_int : textbuffernotifyflags -> int
 
 (* TextSearchFlags - bitfield/flags *)
 type textsearchflags_flag = [
-  (** Search only visible data. A search match may
+  | `VISIBLE_ONLY (** Search only visible data. A search match may
 have invisible text interspersed. *)
-  | `VISIBLE_ONLY
-  (** Search only text. A match may have paintables or
+  | `TEXT_ONLY (** Search only text. A match may have paintables or
 child widgets mixed inside the matched range. *)
-  | `TEXT_ONLY
-  (** The text will be matched regardless of
+  | `CASE_INSENSITIVE (** The text will be matched regardless of
 what case it is in. *)
-  | `CASE_INSENSITIVE
 ]
 
 type textsearchflags = textsearchflags_flag list
@@ -2766,12 +2018,10 @@ val textsearchflags_to_int : textsearchflags -> int
 
 (* TreeModelFlags - bitfield/flags *)
 type treemodelflags_flag = [
-  (** iterators survive all signals
-  emitted by the tree *)
-  | `ITERS_PERSIST
-  (** the model is a list only, and never
-  has children *)
-  | `LIST_ONLY
+  | `ITERS_PERSIST (** iterators survive all signals
+emitted by the tree *)
+  | `LIST_ONLY (** the model is a list only, and never
+has children *)
 ]
 
 type treemodelflags = treemodelflags_flag list

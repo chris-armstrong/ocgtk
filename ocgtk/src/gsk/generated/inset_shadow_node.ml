@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InsetShadowNode: InsetShadowNode *)
 
+(** A render node for an inset shadow. *)
+
 type t = [ `inset_shadow_node | `render_node ] Gobject.obj
 
 external new_ :

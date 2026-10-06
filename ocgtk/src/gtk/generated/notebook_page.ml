@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NotebookPage: NotebookPage *)
 
+(** An auxiliary object used by [GtkNotebook]. *)
+
 type t = [ `notebook_page | `object_ ] Gobject.obj
 
 (* Methods *)
@@ -10,7 +12,7 @@ external get_child :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_child"
-(** Returns the notebook child to which @page belongs. *)
+(** Returns the notebook child to which [page] belongs. *)
 
 (* Properties *)
 

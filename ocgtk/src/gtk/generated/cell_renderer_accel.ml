@@ -1,6 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererAccel: CellRendererAccel *)
 
+(** Renders a keyboard accelerator in a cell
+
+    [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key
+    combination like [Control + a]). If the cell renderer is editable, the
+    accelerator can be changed by simply typing the new combination. *)
+
 type t =
   [ `cell_renderer_accel
   | `cell_renderer_text

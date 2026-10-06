@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererToggle: CellRendererToggle *)
 
+(** Renders a toggle button in a cell
+
+    [GtkCellRendererToggle] renders a toggle button in a cell. The button is
+    drawn as a radio or a checkbutton, depending on the
+    [GtkCellRendererToggle:radio] property. When activated, it emits the
+    [GtkCellRendererToggle::toggled] signal. *)
+
 type t =
   [ `cell_renderer_toggle | `cell_renderer | `initially_unowned | `object_ ]
   Gobject.obj
@@ -11,13 +18,12 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"
 (* Methods *)
 
 external set_radio : t -> bool -> unit = "ml_gtk_cell_renderer_toggle_set_radio"
-(** If @radio is %TRUE, the cell renderer renders a radio toggle
-(i.e. a toggle in a group of mutually-exclusive toggles).
-If %FALSE, it renders a check toggle (a standalone boolean option).
-This can be set globally for the cell renderer, or changed just
-before rendering each cell in the model (for `GtkTreeView`, you set
-up a per-row setting using `GtkTreeViewColumn` to associate model
-columns with cell renderer properties). *)
+(** If [radio] is [TRUE], the cell renderer renders a radio toggle (i.e. a
+    toggle in a group of mutually-exclusive toggles). If [FALSE], it renders a
+    check toggle (a standalone boolean option). This can be set globally for the
+    cell renderer, or changed just before rendering each cell in the model (for
+    [GtkTreeView], you set up a per-row setting using [GtkTreeViewColumn] to
+    associate model columns with cell renderer properties). *)
 
 external set_active : t -> bool -> unit
   = "ml_gtk_cell_renderer_toggle_set_active"

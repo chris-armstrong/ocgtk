@@ -1,6 +1,36 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooserWidget: FileChooserWidget *)
 
+(** [GtkFileChooserWidget] is a widget for choosing files.
+
+    It exposes the [Gtk.FileChooser] interface, and you should use the methods
+    of this interface to interact with the widget.
+
+    {b Shortcuts and Gestures}
+
+    [GtkFileChooserWidget] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+
+    The following signals have default keybindings:
+
+    - [Gtk.FileChooserWidget::desktop-folder]
+    - [Gtk.FileChooserWidget::down-folder]
+    - [Gtk.FileChooserWidget::home-folder]
+    - [Gtk.FileChooserWidget::location-popup]
+    - [Gtk.FileChooserWidget::location-popup-on-paste]
+    - [Gtk.FileChooserWidget::location-toggle-popup]
+    - [Gtk.FileChooserWidget::places-shortcut]
+    - [Gtk.FileChooserWidget::quick-bookmark]
+    - [Gtk.FileChooserWidget::recent-shortcut]
+    - [Gtk.FileChooserWidget::search-shortcut]
+    - [Gtk.FileChooserWidget::show-hidden]
+    - [Gtk.FileChooserWidget::up-folder]
+
+    {b CSS nodes}
+
+    [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
+
 type t =
   [ `file_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 

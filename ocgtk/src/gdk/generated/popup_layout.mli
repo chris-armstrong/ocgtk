@@ -1,9 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopupLayout: PopupLayout *)
 
-type t = [ `popup_layout ] Gobject.obj
-(** Contains information that is necessary position a [iface@Gdk.Popup] relative
-    to its parent.
+(** Contains information that is necessary position a [Gdk.Popup] relative to
+    its parent.
 
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,
@@ -13,27 +12,29 @@ type t = [ `popup_layout ] Gobject.obj
     on both that rectangle and the popup. The anchors specify a side or corner
     to place next to each other.
 
-    ![Popup anchors](popup-anchors.png)
+    Popup anchors
 
     For cases where placing the anchors next to each other would make the popup
     extend offscreen, the layout includes some hints for how to resolve this
     problem. The hints may suggest to flip the anchor position to the other
     side, or to 'slide' the popup along a side, or to resize it.
 
-    ![Flipping popups](popup-flip.png)
+    Flipping popups
 
-    ![Sliding popups](popup-slide.png)
+    Sliding popups
 
     These hints may be combined.
 
     Ultimatively, it is up to the windowing system to determine the position and
     size of the popup. You can learn about the result by calling
-    [method@Gdk.Popup.get_position_x], [method@Gdk.Popup.get_position_y],
-    [method@Gdk.Popup.get_rect_anchor] and [method@Gdk.Popup.get_surface_anchor]
-    after the popup has been presented. This can be used to adjust the
-    rendering. For example, [GtkPopover](../gtk4/class.Popover.html) changes its
-    arrow position accordingly. But you have to be careful avoid changing the
-    size of the popover, or it has to be presented again. *)
+    [Gdk.Popup.get_position_x], [Gdk.Popup.get_position_y],
+    [Gdk.Popup.get_rect_anchor] and [Gdk.Popup.get_surface_anchor] after the
+    popup has been presented. This can be used to adjust the rendering. For
+    example, GtkPopover changes its arrow position accordingly. But you have to
+    be careful avoid changing the size of the popover, or it has to be presented
+    again. *)
+
+type t = [ `popup_layout ] Gobject.obj
 
 external new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> t
   = "ml_gdk_popup_layout_new"
@@ -68,14 +69,13 @@ external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit
   = "ml_gdk_popup_layout_set_anchor_hints"
 (** Set new anchor hints.
 
-The set @anchor_hints determines how @surface will be moved
-if the anchor points cause it to move off-screen. For example,
-`GDK_ANCHOR_FLIP_X` will replace `GDK_GRAVITY_NORTH_WEST` with
-`GDK_GRAVITY_NORTH_EAST` and vice versa if @surface extends
-beyond the left or right edges of the monitor. *)
+    The set [anchor_hints] determines how [surface] will be moved if the anchor
+    points cause it to move off-screen. For example, [GDK_ANCHOR_FLIP_X] will
+    replace [GDK_GRAVITY_NORTH_WEST] with [GDK_GRAVITY_NORTH_EAST] and vice
+    versa if [surface] extends beyond the left or right edges of the monitor. *)
 
 external ref : t -> t = "ml_gdk_popup_layout_ref"
-(** Increases the reference count of @value. *)
+(** Increases the reference count of [value]. *)
 
 external get_surface_anchor : t -> Gdk_enums.gravity
   = "ml_gdk_popup_layout_get_surface_anchor"
@@ -101,6 +101,6 @@ external get_anchor_hints : t -> Gdk_enums.anchorhints
 (** Get the anchor hints. *)
 
 external equal : t -> t -> bool = "ml_gdk_popup_layout_equal"
-(** Check whether @layout and @other has identical layout properties. *)
+(** Check whether [layout] and [other] has identical layout properties. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_popup_layout_get_type"

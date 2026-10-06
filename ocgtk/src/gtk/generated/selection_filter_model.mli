@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SelectionFilterModel: SelectionFilterModel *)
 
+(** A list model that presents the selection from a [GtkSelectionModel]. *)
+
 type t = [ `selection_filter_model | `object_ ] Gobject.obj
 
 external new_ : Selection_model.t option -> t
@@ -13,14 +15,13 @@ external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_selection_filter_model_set_model"
 (** Sets the model to be filtered.
 
-Note that GTK makes no effort to ensure that @model conforms to
-the item type of @self. It assumes that the caller knows what they
-are doing and have set up an appropriate filter to ensure that item
-types match. *)
+    Note that GTK makes no effort to ensure that [model] conforms to the item
+    type of [self]. It assumes that the caller knows what they are doing and
+    have set up an appropriate filter to ensure that item types match. *)
 
 external get_model : t -> Selection_model.t option
   = "ml_gtk_selection_filter_model_get_model"
-(** Gets the model currently filtered or %NULL if none. *)
+(** Gets the model currently filtered or [NULL] if none. *)
 
 (* Properties *)
 

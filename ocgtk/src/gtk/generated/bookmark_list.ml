@@ -1,6 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BookmarkList: BookmarkList *)
 
+(** A list model that wraps [GBookmarkFile].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    The [GFileInfo]s in the list have some attributes in the recent namespace
+    added: [recent::private] (boolean) and [recent:applications] (stringv). *)
+
 type t = [ `bookmark_list | `object_ ] Gobject.obj
 
 external new_ : string option -> string option -> t = "ml_gtk_bookmark_list_new"
@@ -12,21 +20,20 @@ external set_io_priority : t -> int -> unit
   = "ml_gtk_bookmark_list_set_io_priority"
 (** Sets the IO priority to use while loading files.
 
-    The default IO priority is %G_PRIORITY_DEFAULT. *)
+    The default IO priority is [G_PRIORITY_DEFAULT]. *)
 
 external set_attributes : t -> string option -> unit
   = "ml_gtk_bookmark_list_set_attributes"
-(** Sets the @attributes to be enumerated and starts the enumeration.
+(** Sets the [attributes] to be enumerated and starts the enumeration.
 
-If @attributes is %NULL, no attributes will be queried, but a list
-of `GFileInfo`s will still be created. *)
+    If [attributes] is [NULL], no attributes will be queried, but a list of
+    [GFileInfo]s will still be created. *)
 
 external is_loading : t -> bool = "ml_gtk_bookmark_list_is_loading"
-(** Returns %TRUE if the files are currently being loaded.
+(** Returns [TRUE] if the files are currently being loaded.
 
-Files will be added to @self from time to time while loading is
-going on. The order in which are added is undefined and may change
-in between runs. *)
+    Files will be added to [self] from time to time while loading is going on.
+    The order in which are added is undefined and may change in between runs. *)
 
 external get_io_priority : t -> int = "ml_gtk_bookmark_list_get_io_priority"
 (** Gets the IO priority to use while loading file. *)

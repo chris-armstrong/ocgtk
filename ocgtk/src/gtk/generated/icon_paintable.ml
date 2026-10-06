@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconPaintable: IconPaintable *)
 
+(** Contains information found when looking up an icon in [GtkIconTheme] or
+    loading it from a file.
+
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
+
 type t = [ `icon_paintable | `object_ ] Gobject.obj
 
 external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t -> int -> int -> t
@@ -17,21 +22,20 @@ external is_symbolic : t -> bool = "ml_gtk_icon_paintable_is_symbolic"
 
 external get_icon_name : t -> string option
   = "ml_gtk_icon_paintable_get_icon_name"
-(** Get the icon name being used for this icon.
-
-    When an icon looked up in the icon theme was not available, the icon theme
-    may use fallback icons - either those specified to
-    gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
-    icon chosen is returned by this function.
-
-    If the icon was created without an icon theme, this function returns %NULL.
-*)
+[@@ocaml.doc
+  "Get the icon name being used for this icon.\n\n\
+   When an icon looked up in the icon theme was not available, the\n\
+   icon theme may use fallback icons - either those specified to\n\
+   gtk_icon_theme_lookup_icon() or the always-available\n\
+   \"image-missing\". The icon chosen is returned by this function.\n\n\
+   If the icon was created without an icon theme, this function\n\
+   returns [NULL]."]
 
 external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
   = "ml_gtk_icon_paintable_get_file"
-(** Gets the `GFile` that was used to load the icon.
+(** Gets the [GFile] that was used to load the icon.
 
-    Returns %NULL if the icon was not loaded from a file. *)
+    Returns [NULL] if the icon was not loaded from a file. *)
 
 (* Properties *)
 

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiFilter: MultiFilter *)
 
+(** Base class for filters that combine multiple filters. *)
+
 type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
 
 (* Methods *)
@@ -8,8 +10,7 @@ type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
 external remove : t -> int -> unit = "ml_gtk_multi_filter_remove"
 (** Removes a filter.
 
-If @position is larger than the number of filters,
-nothing happens. *)
+    If [position] is larger than the number of filters, nothing happens. *)
 
 external append : t -> Filter.t -> unit = "ml_gtk_multi_filter_append"
 (** Adds a filter. *)

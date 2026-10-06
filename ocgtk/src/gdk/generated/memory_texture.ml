@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryTexture: MemoryTexture *)
 
+(** A [GdkTexture] representing image data in memory. *)
+
 type t = [ `memory_texture | `texture | `object_ ] Gobject.obj
 
 external new_ :

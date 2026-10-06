@@ -1,6 +1,29 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScaleButton: ScaleButton *)
 
+(** Provides a button which pops up a scale widget.
+
+    This kind of widget is commonly used for volume controls in multimedia
+    applications, and GTK provides a [Gtk.VolumeButton] subclass that is
+    tailored for this use case.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.ScaleButton::popup]
+
+    {b CSS nodes}
+
+    {[
+    scalebutton.scale
+    ╰── button.toggle
+        ╰── <icon>
+    ]}
+
+    [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
+    style class, and contains a [button] node with a [.toggle] style class. *)
+
 type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : float -> float -> float -> string array option -> t
@@ -15,8 +38,8 @@ external set_value : t -> float -> unit = "ml_gtk_scale_button_set_value"
     If the value is outside the minimum or maximum range values, it will be
     clamped to fit inside them.
 
-    The scale button emits the [signal@Gtk.ScaleButton::value-changed] signal if
-    the value changes. *)
+    The scale button emits the [Gtk.ScaleButton::value-changed] signal if the
+    value changes. *)
 
 external set_icons : t -> string array -> unit = "ml_gtk_scale_button_set_icons"
 (** Sets the icons to be used by the scale button. *)
@@ -26,10 +49,10 @@ external set_has_frame : t -> bool -> unit = "ml_gtk_scale_button_set_has_frame"
 
 external set_adjustment : t -> Adjustment.t -> unit
   = "ml_gtk_scale_button_set_adjustment"
-(** Sets the `GtkAdjustment` to be used as a model for the `GtkScaleButton`’s
+(** Sets the [GtkAdjustment] to be used as a model for the [GtkScaleButton]’s
     scale.
 
-    See [method@Gtk.Range.set_adjustment] for details. *)
+    See [Gtk.Range.set_adjustment] for details. *)
 
 external get_value : t -> float = "ml_gtk_scale_button_get_value"
 (** Gets the current value of the scale button. *)
@@ -39,29 +62,29 @@ external get_popup :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scale_button_get_popup"
-(** Retrieves the popup of the `GtkScaleButton`. *)
+(** Retrieves the popup of the [GtkScaleButton]. *)
 
 external get_plus_button : t -> Button.t = "ml_gtk_scale_button_get_plus_button"
-(** Retrieves the plus button of the `GtkScaleButton.` *)
+(** Retrieves the plus button of the [GtkScaleButton.] *)
 
 external get_minus_button : t -> Button.t
   = "ml_gtk_scale_button_get_minus_button"
-(** Retrieves the minus button of the `GtkScaleButton`. *)
+(** Retrieves the minus button of the [GtkScaleButton]. *)
 
 external get_has_frame : t -> bool = "ml_gtk_scale_button_get_has_frame"
 (** Returns whether the button has a frame. *)
 
 external get_adjustment : t -> Adjustment.t
   = "ml_gtk_scale_button_get_adjustment"
-(** Gets the `GtkAdjustment` associated with the `GtkScaleButton`’s scale.
+(** Gets the [GtkAdjustment] associated with the [GtkScaleButton]’s scale.
 
-    See [method@Gtk.Range.get_adjustment] for details. *)
+    See [Gtk.Range.get_adjustment] for details. *)
 
 external get_active : t -> bool = "ml_gtk_scale_button_get_active"
-(** Queries a `GtkScaleButton` and returns its current state.
+(** Queries a [GtkScaleButton] and returns its current state.
 
-    Returns %TRUE if the scale button is pressed in and %FALSE if it is raised.
-*)
+    Returns [TRUE] if the scale button is pressed in and [FALSE] if it is
+    raised. *)
 
 (* Properties *)
 

@@ -1,6 +1,77 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Entry: Entry *)
 
+[@@@ocaml.text
+"A single-line text entry widget.\n\n\
+ An example GtkEntry\n\n\
+ A fairly large set of key bindings are supported by default. If the\n\
+ entered text is longer than the allocation of the widget, the widget\n\
+ will scroll so that the cursor position is visible.\n\n\
+ When using an entry for passwords and other sensitive information, it\n\
+ can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+ In this mode, entered text is displayed using a “invisible” character.\n\
+ By default, GTK picks the best invisible character that is available\n\
+ in the current font, but it can be changed with\n\
+ [Gtk.Entry.set_invisible_char].\n\n\
+ [GtkEntry] has the ability to display progress or activity\n\
+ information behind the text. To make an entry display such information,\n\
+ use [Gtk.Entry.set_progress_fraction] or\n\
+ [Gtk.Entry.set_progress_pulse_step].\n\n\
+ Additionally, [GtkEntry] can show icons at either side of the entry.\n\
+ These icons can be activatable by clicking, can be set up as drag source\n\
+ and can have tooltips. To add an icon, use\n\
+ [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+ that set an icon from an icon name or a paintable. To trigger an action when\n\
+ the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+ To allow DND operations from an icon, use\n\
+ [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
+ [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+ for markup.\n\n\
+ Note that functionality or information that is only available by clicking\n\
+ on an icon in an entry may not be accessible at all to users which are not\n\
+ able to use a mouse or other pointing device. It is therefore recommended\n\
+ that any such functionality should also be available by other means, e.g.\n\
+ via the context menu of the entry.\n\n\
+ {b CSS nodes}\n\n\
+ {[\n\
+ entry[.flat][.warning][.error]\n\
+ ├── text[.readonly]\n\
+ ├── image.left\n\
+ ├── image.right\n\
+ ╰── [progress[.pulse]]\n\
+ ]}\n\n\
+ [GtkEntry] has a main node with the name entry. Depending on the properties\n\
+ of the entry, the style classes .read-only and .flat may appear. The style\n\
+ classes .warning and .error may also be used with entries.\n\n\
+ When the entry shows icons, it adds subnodes with the name image and the\n\
+ style class .left or .right, depending on where the icon appears.\n\n\
+ When the entry shows progress, it adds a subnode with the name progress.\n\
+ The node has the style class .pulse when the shown progress is pulsing.\n\n\
+ For all the subnodes added to the text node in various situations,\n\
+ see [Gtk.Text].\n\n\
+ {b GtkEntry as GtkBuildable}\n\n\
+ The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
+ custom [<attributes>] element, which supports any number of [<attribute>]\n\
+ elements. The [<attribute>] element has attributes named “name“, “value“,\n\
+ “start“ and “end“ and allows you to specify [PangoAttribute] values for\n\
+ this label.\n\n\
+ An example of a UI definition fragment specifying Pango attributes:\n\n\
+ {[\n\
+ <object class=\"GtkEntry\">\n\
+\  <attributes>\n\
+\    <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\"/>\n\
+\    <attribute name=\"background\" value=\"red\" start=\"5\" end=\"10\"/>\n\
+\  </attributes>\n\
+ </object>\n\
+ ]}\n\n\
+ The start and end attributes specify the range of characters to which the\n\
+ Pango attribute applies. If start and end are not specified, the attribute\n\
+ is applied to the whole text. Note that specifying ranges does not make much\n\
+ sense with translatable attributes. Use markup embedded in the translatable\n\
+ content instead.\n\n\
+ {b Accessibility}\n\n\
+ [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+
 type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_entry_new"
@@ -13,26 +84,26 @@ external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
 
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 (** Unsets the invisible char, so that the default invisible char is used again.
-    See [method@Gtk.Entry.set_invisible_char]. *)
+    See [Gtk.Entry.set_invisible_char]. *)
 
 external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 (** Sets whether the contents of the entry are visible or not.
 
-    When visibility is set to %FALSE, characters are displayed as the invisible
+    When visibility is set to [FALSE], characters are displayed as the invisible
     char, and will also appear that way when the text in the entry widget is
     copied elsewhere.
 
     By default, GTK picks the best invisible character available in the current
-    font, but it can be changed with [method@Gtk.Entry.set_invisible_char].
+    font, but it can be changed with [Gtk.Entry.set_invisible_char].
 
-    Note that you probably want to set [property@Gtk.Entry:input-purpose] to
-    %GTK_INPUT_PURPOSE_PASSWORD or %GTK_INPUT_PURPOSE_PIN to inform input
+    Note that you probably want to set [Gtk.Entry:input-purpose] to
+    [GTK_INPUT_PURPOSE_PASSWORD] or [GTK_INPUT_PURPOSE_PIN] to inform input
     methods about the purpose of this entry, in addition to setting visibility
-    to %FALSE. *)
+    to [FALSE]. *)
 
 external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit
   = "ml_gtk_entry_set_tabs"
-(** Sets a `PangoTabArray`.
+(** Sets a [PangoTabArray].
 
     The tabstops in the array are applied to the entry text. *)
 
@@ -41,7 +112,7 @@ external set_progress_pulse_step : t -> float -> unit
 (** Sets the fraction of total entry width to move the progress bouncing block
     for each pulse.
 
-    Use [method@Gtk.Entry.progress_pulse] to pulse the progress. *)
+    Use [Gtk.Entry.progress_pulse] to pulse the progress. *)
 
 external set_progress_fraction : t -> float -> unit
   = "ml_gtk_entry_set_progress_fraction"
@@ -52,19 +123,19 @@ external set_progress_fraction : t -> float -> unit
 
 external set_placeholder_text : t -> string option -> unit
   = "ml_gtk_entry_set_placeholder_text"
-(** Sets text to be displayed in @entry when it is empty.
+(** Sets text to be displayed in [entry] when it is empty.
 
-This can be used to give a visual hint of the expected
-contents of the `GtkEntry`. *)
+    This can be used to give a visual hint of the expected contents of the
+    [GtkEntry]. *)
 
 external set_overwrite_mode : t -> bool -> unit
   = "ml_gtk_entry_set_overwrite_mode"
-(** Sets whether the text is overwritten when typing in the `GtkEntry`. *)
+(** Sets whether the text is overwritten when typing in the [GtkEntry]. *)
 
 external set_menu_entry_icon_text :
   t -> Gtk_enums.entryiconposition -> string -> unit
   = "ml_gtk_entry_set_menu_entry_icon_text"
-(** Sets the text that will be used in the context menu of the `GtkEntry` when
+(** Sets the text that will be used in the context menu of the [GtkEntry] when
     the specified icon is activatable. Selecting this item in the menu results,
     from all aspects, the same than clicking on the specified icon. This greatly
     simplifies making accessible applications, because the icons aren't
@@ -74,17 +145,17 @@ external set_menu_entry_icon_text :
 external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
 (** Sets the maximum allowed length of the contents of the widget.
 
-If the current contents are longer than the given length, then
-they will be truncated to fit. The length is in characters.
+    If the current contents are longer than the given length, then they will be
+    truncated to fit. The length is in characters.
 
-This is equivalent to getting @entry's `GtkEntryBuffer` and
-calling [method@Gtk.EntryBuffer.set_max_length] on it. *)
+    This is equivalent to getting [entry]'s [GtkEntryBuffer] and calling
+    [Gtk.EntryBuffer.set_max_length] on it. *)
 
 external set_invisible_char : t -> int -> unit
   = "ml_gtk_entry_set_invisible_char"
 (** Sets the character to use in place of the actual text in “password mode”.
 
-    See [method@Gtk.Entry.set_visibility] for how to enable “password mode”.
+    See [Gtk.Entry.set_visibility] for how to enable “password mode”.
 
     By default, GTK picks the best invisible char available in the current font.
     If you set the invisible char to 0, then the user will get no feedback at
@@ -103,36 +174,33 @@ external set_input_hints : t -> Gtk_enums.inputhints -> unit
 external set_icon_tooltip_text :
   t -> Gtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_tooltip_text"
-(** Sets @tooltip as the contents of the tooltip for the icon
-at the specified position.
+(** Sets [tooltip] as the contents of the tooltip for the icon at the specified
+    position.
 
-Use %NULL for @tooltip to remove an existing tooltip.
+    Use [NULL] for [tooltip] to remove an existing tooltip.
 
-See also [method@Gtk.Widget.set_tooltip_text] and
-[method@Gtk.Entry.set_icon_tooltip_markup].
+    See also [Gtk.Widget.set_tooltip_text] and
+    [Gtk.Entry.set_icon_tooltip_markup].
 
-If you unset the widget tooltip via
-[method@Gtk.Widget.set_tooltip_text] or
-[method@Gtk.Widget.set_tooltip_markup], this sets
-[property@Gtk.Widget:has-tooltip] to %FALSE, which suppresses
-icon tooltips too. You can resolve this by then calling
-[method@Gtk.Widget.set_has_tooltip] to set
-[property@Gtk.Widget:has-tooltip] back to %TRUE, or
-setting at least one non-empty tooltip on any icon
-achieves the same result. *)
+    If you unset the widget tooltip via [Gtk.Widget.set_tooltip_text] or
+    [Gtk.Widget.set_tooltip_markup], this sets [Gtk.Widget:has-tooltip] to
+    [FALSE], which suppresses icon tooltips too. You can resolve this by then
+    calling [Gtk.Widget.set_has_tooltip] to set [Gtk.Widget:has-tooltip] back to
+    [TRUE], or setting at least one non-empty tooltip on any icon achieves the
+    same result. *)
 
 external set_icon_tooltip_markup :
   t -> Gtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_tooltip_markup"
-(** Sets @tooltip as the contents of the tooltip for the icon at
-the specified position.
+(** Sets [tooltip] as the contents of the tooltip for the icon at the specified
+    position.
 
-@tooltip is assumed to be marked up with Pango Markup.
+    [tooltip] is assumed to be marked up with Pango Markup.
 
-Use %NULL for @tooltip to remove an existing tooltip.
+    Use [NULL] for [tooltip] to remove an existing tooltip.
 
-See also [method@Gtk.Widget.set_tooltip_markup] and
-[method@Gtk.Entry.set_icon_tooltip_text]. *)
+    See also [Gtk.Widget.set_tooltip_markup] and
+    [Gtk.Entry.set_icon_tooltip_text]. *)
 
 external set_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool -> unit
   = "ml_gtk_entry_set_icon_sensitive"
@@ -143,35 +211,34 @@ external set_icon_from_paintable :
   Gtk_enums.entryiconposition ->
   Ocgtk_gdk.Gdk.Wrappers.Paintable.t option ->
   unit = "ml_gtk_entry_set_icon_from_paintable"
-(** Sets the icon shown in the specified position using a `GdkPaintable`.
+(** Sets the icon shown in the specified position using a [GdkPaintable].
 
-If @paintable is %NULL, no icon will be shown in the specified position. *)
+    If [paintable] is [NULL], no icon will be shown in the specified position.
+*)
 
 external set_icon_from_icon_name :
   t -> Gtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_from_icon_name"
-(** Sets the icon shown in the entry at the specified position
-from the current icon theme.
+(** Sets the icon shown in the entry at the specified position from the current
+    icon theme.
 
-If the icon name isn’t known, a “broken image” icon will be
-displayed instead.
+    If the icon name isn’t known, a “broken image” icon will be displayed
+    instead.
 
-If @icon_name is %NULL, no icon will be shown in the
-specified position. *)
+    If [icon_name] is [NULL], no icon will be shown in the specified position.
+*)
 
 external set_icon_from_gicon :
   t ->
   Gtk_enums.entryiconposition ->
   Ocgtk_gio.Gio.Wrappers.Icon.t option ->
   unit = "ml_gtk_entry_set_icon_from_gicon"
-(** Sets the icon shown in the entry at the specified position
-from the current icon theme.
+(** Sets the icon shown in the entry at the specified position from the current
+    icon theme.
 
-If the icon isn’t known, a “broken image” icon will be
-displayed instead.
+    If the icon isn’t known, a “broken image” icon will be displayed instead.
 
-If @icon is %NULL, no icon will be shown in the
-specified position. *)
+    If [icon] is [NULL], no icon will be shown in the specified position. *)
 
 external set_icon_drag_source :
   t ->
@@ -194,24 +261,22 @@ external set_has_frame : t -> bool -> unit = "ml_gtk_entry_set_has_frame"
 external set_extra_menu :
   t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
   = "ml_gtk_entry_set_extra_menu"
-(** Sets a menu model to add when constructing
-the context menu for @entry. *)
+(** Sets a menu model to add when constructing the context menu for [entry]. *)
 
 external set_completion : t -> Entry_completion.t option -> unit
   = "ml_gtk_entry_set_completion"
-(** Sets @completion to be the auxiliary completion object
-to use with @entry.
+(** Sets [completion] to be the auxiliary completion object to use with [entry].
 
-All further configuration of the completion mechanism is
-done on @completion using the `GtkEntryCompletion` API.
-Completion is disabled if @completion is set to %NULL. *)
+    All further configuration of the completion mechanism is done on
+    [completion] using the [GtkEntryCompletion] API. Completion is disabled if
+    [completion] is set to [NULL]. *)
 
 external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_entry_set_buffer"
-(** Set the `GtkEntryBuffer` object which holds the text for this widget. *)
+(** Set the [GtkEntryBuffer] object which holds the text for this widget. *)
 
 external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t -> unit
   = "ml_gtk_entry_set_attributes"
-(** Sets a `PangoAttrList`.
+(** Sets a [PangoAttrList].
 
     The attributes in the list are applied to the entry text.
 
@@ -224,15 +289,15 @@ external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
     This controls the horizontal positioning of the contents when the displayed
     text is shorter than the width of the entry.
 
-    See also: [property@Gtk.Editable:xalign] *)
+    See also: [Gtk.Editable:xalign] *)
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_entry_set_activates_default"
-(** Sets whether pressing Enter in the @entry will activate the default
-widget for the window containing the entry.
+(** Sets whether pressing Enter in the [entry] will activate the default widget
+    for the window containing the entry.
 
-This usually means that the dialog containing the entry will be closed,
-since the default widget is usually one of the dialog buttons. *)
+    This usually means that the dialog containing the entry will be closed,
+    since the default widget is usually one of the dialog buttons. *)
 
 external reset_im_context : t -> unit = "ml_gtk_entry_reset_im_context"
 (** Reset the input method context of the entry if needed.
@@ -246,33 +311,33 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
     Causes the entry’s progress indicator to enter “activity mode”, where a
     block bounces back and forth. Each call to gtk_entry_progress_pulse() causes
     the block to move by a little bit (the amount of movement per pulse is
-    determined by [method@Gtk.Entry.set_progress_pulse_step]). *)
+    determined by [Gtk.Entry.set_progress_pulse_step]). *)
 
 external grab_focus_without_selecting : t -> bool
   = "ml_gtk_entry_grab_focus_without_selecting"
-(** Causes @entry to have keyboard focus.
+(** Causes [entry] to have keyboard focus.
 
-It behaves like [method@Gtk.Widget.grab_focus], except that it doesn't
-select the contents of the entry. You only want to call this on some
-special entries which the user usually doesn't want to replace all text
-in, such as search-as-you-type entries. *)
+    It behaves like [Gtk.Widget.grab_focus], except that it doesn't select the
+    contents of the entry. You only want to call this on some special entries
+    which the user usually doesn't want to replace all text in, such as
+    search-as-you-type entries. *)
 
 external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
-(** Retrieves whether the text in @entry is visible.
+(** Retrieves whether the text in [entry] is visible.
 
-See [method@Gtk.Entry.set_visibility]. *)
+    See [Gtk.Entry.set_visibility]. *)
 
 external get_text_length : t -> UInt16.t = "ml_gtk_entry_get_text_length"
-(** Retrieves the current length of the text in @entry.
+(** Retrieves the current length of the text in [entry].
 
-This is equivalent to getting @entry's `GtkEntryBuffer`
-and calling [method@Gtk.EntryBuffer.get_length] on it. *)
+    This is equivalent to getting [entry]'s [GtkEntryBuffer] and calling
+    [Gtk.EntryBuffer.get_length] on it. *)
 
 external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
   = "ml_gtk_entry_get_tabs"
-(** Gets the tabstops of the `GtkEntry`.
+(** Gets the tabstops of the [GtkEntry].
 
-    See [method@Gtk.Entry.set_tabs]. *)
+    See [Gtk.Entry.set_tabs]. *)
 
 external get_progress_pulse_step : t -> float
   = "ml_gtk_entry_get_progress_pulse_step"
@@ -282,20 +347,20 @@ external get_progress_fraction : t -> float
   = "ml_gtk_entry_get_progress_fraction"
 (** Returns the current fraction of the task that’s been completed.
 
-    See [method@Gtk.Entry.set_progress_fraction]. *)
+    See [Gtk.Entry.set_progress_fraction]. *)
 
 external get_placeholder_text : t -> string option
   = "ml_gtk_entry_get_placeholder_text"
-(** Retrieves the text that will be displayed when @entry
-is empty and unfocused *)
+(** Retrieves the text that will be displayed when [entry] is empty and
+    unfocused *)
 
 external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
-(** Gets whether the `GtkEntry` is in overwrite mode. *)
+(** Gets whether the [GtkEntry] is in overwrite mode. *)
 
 external get_menu_entry_icon_text :
   t -> Gtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_menu_entry_icon_text"
-(** Gets the text that will be used in the context menu of the `GtkEntry` when
+(** Gets the text that will be used in the context menu of the [GtkEntry] when
     the specified icon is activatable. Selecting this item in the menu results,
     from all aspects, the same than clicking on the specified icon. This greatly
     simplifies making accessible applications, because the icons aren't
@@ -303,9 +368,9 @@ external get_menu_entry_icon_text :
     the same action to the context menu. *)
 
 external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
-(** Retrieves the maximum allowed length of the text in @entry.
+(** Retrieves the maximum allowed length of the text in [entry].
 
-See [method@Gtk.Entry.set_max_length]. *)
+    See [Gtk.Entry.set_max_length]. *)
 
 external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
 (** Retrieves the character displayed in place of the actual text in “password
@@ -313,30 +378,31 @@ external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
 
 external get_input_purpose : t -> Gtk_enums.inputpurpose
   = "ml_gtk_entry_get_input_purpose"
-(** Gets the input purpose of the `GtkEntry`. *)
+(** Gets the input purpose of the [GtkEntry]. *)
 
 external get_input_hints : t -> Gtk_enums.inputhints
   = "ml_gtk_entry_get_input_hints"
-(** Gets the input hints of this `GtkEntry`. *)
+(** Gets the input hints of this [GtkEntry]. *)
 
 external get_icon_tooltip_text :
   t -> Gtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_tooltip_text"
-(** Gets the contents of the tooltip on the icon at the specified
-position in @entry. *)
+(** Gets the contents of the tooltip on the icon at the specified position in
+    [entry]. *)
 
 external get_icon_tooltip_markup :
   t -> Gtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_tooltip_markup"
-(** Gets the contents of the tooltip on the icon at the specified
-position in @entry. *)
+(** Gets the contents of the tooltip on the icon at the specified position in
+    [entry]. *)
 
 external get_icon_storage_type :
   t -> Gtk_enums.entryiconposition -> Gtk_enums.imagetype
   = "ml_gtk_entry_get_icon_storage_type"
 (** Gets the type of representation being used by the icon to store image data.
 
-    If the icon has no image data, the return value will be %GTK_IMAGE_EMPTY. *)
+    If the icon has no image data, the return value will be [GTK_IMAGE_EMPTY].
+*)
 
 external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool
   = "ml_gtk_entry_get_icon_sensitive"
@@ -345,46 +411,44 @@ external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool
 external get_icon_paintable :
   t -> Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
   = "ml_gtk_entry_get_icon_paintable"
-(** Retrieves the `GdkPaintable` used for the icon.
+(** Retrieves the [GdkPaintable] used for the icon.
 
-    If no `GdkPaintable` was used for the icon, %NULL is returned. *)
+    If no [GdkPaintable] was used for the icon, [NULL] is returned. *)
 
 external get_icon_name : t -> Gtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_name"
 (** Retrieves the icon name used for the icon.
 
-    %NULL is returned if there is no icon or if the icon was set by some other
-    method (e.g., by `GdkPaintable` or gicon). *)
+    [NULL] is returned if there is no icon or if the icon was set by some other
+    method (e.g., by [GdkPaintable] or gicon). *)
 
 external get_icon_gicon :
   t -> Gtk_enums.entryiconposition -> Ocgtk_gio.Gio.Wrappers.Icon.t option
   = "ml_gtk_entry_get_icon_gicon"
-(** Retrieves the `GIcon` used for the icon.
+(** Retrieves the [GIcon] used for the icon.
 
-    %NULL will be returned if there is no icon or if the icon was set by some
-    other method (e.g., by `GdkPaintable` or icon name). *)
+    [NULL] will be returned if there is no icon or if the icon was set by some
+    other method (e.g., by [GdkPaintable] or icon name). *)
 
 external get_icon_at_pos : t -> int -> int -> int
   = "ml_gtk_entry_get_icon_at_pos"
 (** Finds the icon at the given position and return its index.
 
-The position’s coordinates are relative to the @entry’s
-top left corner. If @x, @y doesn’t lie inside an icon,
--1 is returned. This function is intended for use in a
-[signal@Gtk.Widget::query-tooltip] signal handler. *)
+    The position’s coordinates are relative to the [entry]’s top left corner. If
+    [x], [y] doesn’t lie inside an icon, -1 is returned. This function is
+    intended for use in a [Gtk.Widget::query-tooltip] signal handler. *)
 
 external get_icon_area :
   t -> Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
   = "ml_gtk_entry_get_icon_area"
-(** Gets the area where entry’s icon at @icon_pos is drawn.
+(** Gets the area where entry’s icon at [icon_pos] is drawn.
 
-This function is useful when drawing something to the
-entry in a draw callback.
+    This function is useful when drawing something to the entry in a draw
+    callback.
 
-If the entry is not realized or has no icon at the given
-position, @icon_area is filled with zeros. Otherwise,
-@icon_area will be filled with the icon's allocation,
-relative to @entry's allocation. *)
+    If the entry is not realized or has no icon at the given position,
+    [icon_area] is filled with zeros. Otherwise, [icon_area] will be filled with
+    the icon's allocation, relative to [entry]'s allocation. *)
 
 external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool
   = "ml_gtk_entry_get_icon_activatable"
@@ -404,22 +468,21 @@ external get_current_icon_drag_source : t -> int
 
 external get_completion : t -> Entry_completion.t option
   = "ml_gtk_entry_get_completion"
-(** Returns the auxiliary completion object currently
-in use by @entry. *)
+(** Returns the auxiliary completion object currently in use by [entry]. *)
 
 external get_buffer : t -> Entry_buffer.t = "ml_gtk_entry_get_buffer"
-(** Get the `GtkEntryBuffer` object which holds the text for this widget. *)
+(** Get the [GtkEntryBuffer] object which holds the text for this widget. *)
 
 external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
   = "ml_gtk_entry_get_attributes"
-(** Gets the attribute list of the `GtkEntry`.
+(** Gets the attribute list of the [GtkEntry].
 
-    See [method@Gtk.Entry.set_attributes]. *)
+    See [Gtk.Entry.set_attributes]. *)
 
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 (** Gets the value set by gtk_entry_set_alignment().
 
-    See also: [property@Gtk.Editable:xalign] *)
+    See also: [Gtk.Editable:xalign] *)
 
 external get_activates_default : t -> bool
   = "ml_gtk_entry_get_activates_default"

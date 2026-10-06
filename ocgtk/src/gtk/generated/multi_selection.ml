@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiSelection: MultiSelection *)
 
+(** A selection model that allows selecting multiple elements. *)
+
 type t = [ `multi_selection | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
@@ -11,13 +13,13 @@ external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
 
 external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
   = "ml_gtk_multi_selection_set_model"
-(** Sets the model that @self should wrap.
+(** Sets the model that [self] should wrap.
 
-If @model is %NULL, @self will be empty. *)
+    If [model] is [NULL], [self] will be empty. *)
 
 external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
   = "ml_gtk_multi_selection_get_model"
-(** Returns the underlying model of @self. *)
+(** Returns the underlying model of [self]. *)
 
 (* Properties *)
 

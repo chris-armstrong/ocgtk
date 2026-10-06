@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureNode: TextureNode *)
 
+(** A render node for a [GdkTexture]. *)
+
 type t = [ `texture_node | `render_node ] Gobject.obj
 
 external new_ :
@@ -13,4 +15,4 @@ external new_ :
 
 external get_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t
   = "ml_gsk_texture_node_get_texture"
-(** Retrieves the `GdkTexture` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)

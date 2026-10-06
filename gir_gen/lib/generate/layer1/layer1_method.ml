@@ -65,10 +65,12 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
   let param_count = 1 + List.length in_params in
 
   if should_generate_method ~ctx ~entity_kind meth then begin
-    (match meth.doc with
-    | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-    | None -> ());
+    let doc =
+      Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member meth.doc
+    in
+    bprintf buf "%s" (Doc_emit.before_item doc);
 
     let full_type = build_method_signature ~ctx ~class_name meth in
-    format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type
+    format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type;
+    bprintf buf "%s" (Doc_emit.after_item doc)
   end

@@ -1,6 +1,19 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoxLayout: BoxLayout *)
 
+(** Arranges children in a single row or column.
+
+    Whether it is a row or column depends on the value of its
+    [Gtk.Orientable:orientation] property. Within the other dimension all
+    children all allocated the same size. The [GtkBoxLayout] will respect the
+    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+
+    If you want all children to be assigned the same size, you can use the
+    [Gtk.BoxLayout:homogeneous] property.
+
+    If you want to specify the amount of space placed between each child, you
+    can use the [Gtk.BoxLayout:spacing] property. *)
+
 type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"
@@ -19,11 +32,11 @@ external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
   = "ml_gtk_box_layout_set_baseline_position"
 (** Sets the baseline position of a box layout.
 
-The baseline position affects only horizontal boxes with at least one
-baseline aligned child. If there is more vertical space available than
-requested, and the baseline is not allocated by the parent then the
-given @position is used to allocate the baseline within the extra
-space available. *)
+    The baseline position affects only horizontal boxes with at least one
+    baseline aligned child. If there is more vertical space available than
+    requested, and the baseline is not allocated by the parent then the given
+    [position] is used to allocate the baseline within the extra space
+    available. *)
 
 external set_baseline_child : t -> int -> unit
   = "ml_gtk_box_layout_set_baseline_child"
@@ -31,7 +44,7 @@ external set_baseline_child : t -> int -> unit
 *)
 
 external get_spacing : t -> int = "ml_gtk_box_layout_get_spacing"
-(** Returns the space that @box_layout puts between children. *)
+(** Returns the space that [box_layout] puts between children. *)
 
 external get_homogeneous : t -> bool = "ml_gtk_box_layout_get_homogeneous"
 (** Returns whether the layout is set to be homogeneous. *)

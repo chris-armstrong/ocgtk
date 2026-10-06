@@ -1,5 +1,5 @@
 (* Unit tests for the Doc_render policy (gir_gen/lib/generate/doc_render.ml):
-   every row of the v1 render policy table; the four prose escapes; the
+   every row of the v1 render policy table; the five prose escapes; the
    comment-hazard pass; the span/block balance fallbacks; heading policy in
    both contexts (entity normalisation incl. the {5} cap, member {b ...}
    lead-in); bullet and ordered lists; https links; relative .html links
@@ -84,20 +84,19 @@ let test_empty_blocks () =
 
 (* ---------- escapes and comment safety -------------------------- *)
 
-let test_four_prose_escapes () =
-  (* invariant 2 escapes exactly \{ \} \[ \@ at render — a stray ] is left
-     bare (odoc treats it as literal text), and a lowercase [@word] is a
-     param sigil, rendered as [word] — not an escape case, so the fixture
-     uses uppercase [@F] to exercise the literal-@ escape *)
+let test_prose_escapes () =
+  (* prose escapes exactly \{ \} \[ \] \@ at render. A lowercase [@word]
+     is a param sigil, rendered as [word] — not an escape case, so the
+     fixture uses uppercase [@F] to exercise the literal-@ escape *)
   let out = E.translate "a {b} c [d] e @F g" in
   has "escaped { and } at render" out "\\{b\\}";
-  has "escaped [ at render" out "\\[d]";
+  has "escaped [ and ] at render" out "\\[d\\]";
   has "escaped @ at render" out "\\@F"
 
-let test_stray_bracket_not_escaped () =
-  (* invariant 2 escapes exactly \{ \} \[ \@; a stray ] stays bare (odoc
-     treats it as literal text — verified against odoc 3.2.1) *)
-  has "stray ] left bare" (E.translate "text ] here") "text ] here"
+let test_closing_bracket_escaped () =
+  (* A bare ] in prose closes a code span odoc never saw open, so odoc warns
+     "Unpaired end of code". It must be escaped. *)
+  has "stray ] escaped" (E.translate "text ] here") "text \\] here"
 
 let test_comment_hazard () =
   let out = E.translate "A (* note *) here." in
@@ -113,7 +112,7 @@ let test_comment_hazard_inside_code () =
   lacks "no *) inside code" out "*)"
 
 let test_literal_at_never_a_tag () =
-  (* decision 6: any literal @ in prose is escaped, so a bare @word can
+  (* any literal @ in prose is escaped, so a bare @word can
      never start an odoc tag; and @param sigils become code spans *)
   let out = E.translate "The @self value is like @amount but also plain @x." in
   has "param ref becomes [name]" out "[amount]";
@@ -132,7 +131,7 @@ let test_relative_html_link_degraded () =
   has_fallback "page ref counted" `Page_ref_degraded fbs
 
 let test_http_link_degraded () =
-  (* v1 Link is https-only (plan policy table); http links keep their text *)
+  (* links are https-only; http links keep their text *)
   let out, fbs =
     translate_with_fallbacks Entity "[the spec](http://example.com/x)"
   in
@@ -140,12 +139,12 @@ let test_http_link_degraded () =
   lacks "no https link emitted" out "{{:http";
   has_fallback "http link counted" `Link_degraded fbs
 
-(* ---------- balance / fallback invariants (plan invariant 3) --- *)
+(* ---------- balance / fallback ---------------------------------------- *)
 
 let test_unbalanced_inline_code () =
   let out, fbs = translate_with_fallbacks Entity "Use `a]b` here." in
   lacks "broken [code] not emitted" out "[a]b]";
-  has "balance fallback: escaped plain prose, ] left bare" out "a]b";
+  has "balance fallback: escaped plain prose, ] escaped" out "a\\]b";
   has_fallback "unbalanced code counted" `Inline_code_unbalanced fbs
 
 let test_code_block_close_hazard_verbatim () =
@@ -178,8 +177,8 @@ let tests =
     ("fenced code block", `Quick, test_code_block);
     ("code block leading brace", `Quick, test_code_block_leading_brace);
     ("empty doc", `Quick, test_empty_blocks);
-    ("four prose escapes", `Quick, test_four_prose_escapes);
-    ("stray ] not escaped", `Quick, test_stray_bracket_not_escaped);
+    ("prose escapes", `Quick, test_prose_escapes);
+    ("closing bracket escaped", `Quick, test_closing_bracket_escaped);
     ("comment hazard neutralisation", `Quick, test_comment_hazard);
     ("comment hazard inside code", `Quick, test_comment_hazard_inside_code);
     ("literal @ never a tag", `Quick, test_literal_at_never_a_tag);

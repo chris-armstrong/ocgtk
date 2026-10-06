@@ -1,6 +1,47 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AboutDialog: AboutDialog *)
 
+[@@@ocaml.text
+"Displays information about a program.\n\n\
+ The shown information includes the programs' logo, name, copyright,\n\
+ website and license. It is also possible to give credits to the authors,\n\
+ documenters, translators and artists who have worked on the program.\n\n\
+ An about dialog is typically opened when the user selects the [About]\n\
+ option from the [Help] menu. All parts of the dialog are optional.\n\n\
+ An example GtkAboutDialog\n\n\
+ About dialogs often contain links and email addresses. [GtkAboutDialog]\n\
+ displays these as clickable links. By default, it calls \
+ [Gtk.FileLauncher.launch]\n\
+ when a user clicks one. The behaviour can be overridden with the\n\
+ [Gtk.AboutDialog::activate-link] signal.\n\n\
+ To specify a person with an email address, use a string like\n\
+ [Edgar Allan Poe <edgar@poe.com>]. To specify a website with a title,\n\
+ use a string like [GTK team https://www.gtk.org].\n\n\
+ To make constructing an about dialog as convenient as possible, you can\n\
+ use the function [Gtk.show_about_dialog] which constructs and shows\n\
+ a dialog and keeps it around so that it can be shown again.\n\n\
+ Note that GTK sets a default title of [_(\"About %s\")] on the dialog\n\
+ window (where [%s] is replaced by the name of the application, but in\n\
+ order to ensure proper translation of the title, applications should\n\
+ set the title property explicitly when constructing an about dialog,\n\
+ as shown in the following example:\n\n\
+ {[\n\
+ GFile *logo_file = g_file_new_for_path (\"./logo.png\");\n\
+ GdkTexture *example_logo = gdk_texture_new_from_file (logo_file, NULL);\n\
+ g_object_unref (logo_file);\n\n\
+ gtk_show_about_dialog (NULL,\n\
+\                       \"program-name\", \"ExampleCode\",\n\
+\                       \"logo\", example_logo,\n\
+\                       \"title\", _(\"About ExampleCode\"),\n\
+\                       NULL);\n\
+ ]}\n\n\
+ {b Shortcuts and Gestures}\n\n\
+ [GtkAboutDialog] supports the following keyboard shortcuts:\n\n\
+ - <kbd>Escape</kbd> closes the window.\n\n\
+ {b CSS nodes}\n\n\
+ [GtkAboutDialog] has a single CSS node with the name [window] and style\n\
+ class [.aboutdialog]."]
+
 type t =
   [ `about_dialog | `window | `widget | `initially_unowned | `object_ ]
   Gobject.obj
@@ -29,34 +70,36 @@ external set_version : t -> string option -> unit
 
 external set_translator_credits : t -> string option -> unit
   = "ml_gtk_about_dialog_set_translator_credits"
-(** Sets the translator credits string which is displayed in the credits page.
-
-    The intended use for this string is to display the translator of the
-    language which is currently used in the user interface. Using `gettext()`, a
-    simple way to achieve that is to mark the string for translation:
-
-    ```c GtkWidget *about = gtk_about_dialog_new ();
-    gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-    _("translator-credits")); ```
-
-    It is a good idea to use the customary `msgid` “translator-credits” for this
-    purpose, since translators will already know the purpose of that `msgid`,
-    and since `GtkAboutDialog` will detect if “translator-credits” is
-    untranslated and omit translator credits. *)
+[@@ocaml.doc
+  "Sets the translator credits string which is displayed in\n\
+   the credits page.\n\n\
+   The intended use for this string is to display the translator\n\
+   of the language which is currently used in the user interface.\n\
+   Using [gettext()], a simple way to achieve that is to mark the\n\
+   string for translation:\n\n\
+   {[\n\
+   GtkWidget *about = gtk_about_dialog_new ();\n\
+  \ gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),\n\
+  \                                          _(\"translator-credits\"));\n\
+   ]}\n\n\
+   It is a good idea to use the customary [msgid] “translator-credits”\n\
+   for this purpose, since translators will already know the purpose of\n\
+   that [msgid], and since [GtkAboutDialog] will detect if “translator-credits”\n\
+   is untranslated and omit translator credits."]
 
 external set_system_information : t -> string option -> unit
   = "ml_gtk_about_dialog_set_system_information"
 (** Sets the system information to be displayed in the about dialog.
 
-    If `system_information` is `NULL`, the system information page is hidden.
+    If [system_information] is [NULL], the system information page is hidden.
 
-    See [property@Gtk.AboutDialog:system-information]. *)
+    See [Gtk.AboutDialog:system-information]. *)
 
 external set_program_name : t -> string option -> unit
   = "ml_gtk_about_dialog_set_program_name"
 (** Sets the name to display in the about dialog.
 
-    If `name` is not set, the string returned by `g_get_application_name()` is
+    If [name] is not set, the string returned by [g_get_application_name()] is
     used. *)
 
 external set_logo_icon_name : t -> string option -> unit
@@ -71,12 +114,13 @@ external set_license : t -> string option -> unit
   = "ml_gtk_about_dialog_set_license"
 (** Sets the license information to be displayed in the about dialog.
 
-    If `license` is `NULL`, the license page is hidden. *)
+    If [license] is [NULL], the license page is hidden. *)
 
 external set_documenters : t -> string array -> unit
   = "ml_gtk_about_dialog_set_documenters"
-(** Sets the names of the documenters which are displayed in the "Credits" page.
-*)
+[@@ocaml.doc
+  "Sets the names of the documenters which are displayed\n\
+   in the \"Credits\" page."]
 
 external set_copyright : t -> string option -> unit
   = "ml_gtk_about_dialog_set_copyright"
@@ -92,12 +136,14 @@ external set_comments : t -> string option -> unit
 
 external set_authors : t -> string array -> unit
   = "ml_gtk_about_dialog_set_authors"
-(** Sets the names of the authors which are displayed in the "Credits" page of
-    the about dialog. *)
+[@@ocaml.doc
+  "Sets the names of the authors which are displayed\n\
+   in the \"Credits\" page of the about dialog."]
 
 external set_artists : t -> string array -> unit
   = "ml_gtk_about_dialog_set_artists"
-(** Sets the names of the artists to be displayed in the "Credits" page. *)
+[@@ocaml.doc
+  "Sets the names of the artists to be displayed\nin the \"Credits\" page."]
 
 external get_wrap_license : t -> bool = "ml_gtk_about_dialog_get_wrap_license"
 (** Returns whether the license text in the about dialog is automatically
@@ -157,7 +203,7 @@ external get_artists : t -> string array = "ml_gtk_about_dialog_get_artists"
 
 external add_credit_section : t -> string -> string array -> unit
   = "ml_gtk_about_dialog_add_credit_section"
-(** Creates a new section in the "Credits" page. *)
+[@@ocaml.doc "Creates a new section in the \"Credits\" page."]
 
 (* Properties *)
 

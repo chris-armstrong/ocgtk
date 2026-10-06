@@ -20,4 +20,4 @@ external get_transfer : t -> int -> Component_transfer.t
 
 external get_child : t -> Render_node.t
   = "ml_gsk_component_transfer_node_get_child"
-(** Gets the child node that is getting drawn by the given @node. *)
+(** Gets the child node that is getting drawn by the given [node]. *)

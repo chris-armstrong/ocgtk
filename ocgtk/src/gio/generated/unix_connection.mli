@@ -1,6 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixConnection: UnixConnection *)
 
+(** This is the subclass of [Gio.SocketConnection] that is created for UNIX
+    domain sockets.
+
+    It contains functions to do some of the UNIX socket specific functionality
+    like passing file descriptors.
+
+    Since GLib 2.72, [GUnixConnection] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixconnection.h>] belonged to the UNIX-specific
+    GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
+    when using it. This is no longer necessary since GLib 2.72. *)
+
 type t =
   [ `unix_connection | `socket_connection | `io_stream | `object_ ] Gobject.obj
 
@@ -41,7 +55,7 @@ external send_credentials : t -> Cancellable.t option -> (bool, GError.t) result
     - GNU/Hurd since GLib 2.40
 
     Other ways to exchange credentials with a foreign peer includes the
-    #GUnixCredentialsMessage type and g_socket_get_credentials() function. *)
+    [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)
 
 external receive_fd : t -> Cancellable.t option -> (int, GError.t) result
   = "ml_g_unix_connection_receive_fd"
@@ -77,4 +91,4 @@ external receive_credentials :
     - GNU/Hurd since GLib 2.40
 
     Other ways to exchange credentials with a foreign peer includes the
-    #GUnixCredentialsMessage type and g_socket_get_credentials() function. *)
+    [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)

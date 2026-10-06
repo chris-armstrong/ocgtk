@@ -101,11 +101,11 @@ let test_close_request () =
   let win_obj = Wrappers.Window.new_ () in
   let win = new Window.window win_obj in
   let handler_id = win#on_close_request ~callback:(fun () -> false) () in
-  (* Verify handler was connected (handler_id > 0 means success).
-     Note: we only test handler registration here because emitting
+  (* Note: we only test handler registration here because emitting
      close-request on an unrealized window does not invoke callbacks,
      and g_signal_emit_by_name does not handle boolean-return signals. *)
-  check bool "close-request handler connected" true (handler_id > 0)
+  check bool "close-request handler connected" true
+    (Gobject.Signal.handler_is_connected win_obj handler_id)
 
 (** {2 Test 6: EventControllerKey key-pressed (cross-namespace)} *)
 

@@ -1,6 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryOutputStream: MemoryOutputStream *)
 
+(** [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
+    for GIO streaming output operations.
+
+    As of GLib 2.34, [GMemoryOutputStream] trivially implements
+    [Gio.PollableOutputStream]: it always polls as ready. *)
+
 type t = [ `memory_output_stream | `output_stream | `object_ ] Gobject.obj
 
 external new_resizable : unit -> t = "ml_g_memory_output_stream_new_resizable"
@@ -10,8 +16,8 @@ external new_resizable : unit -> t = "ml_g_memory_output_stream_new_resizable"
 
 external steal_as_bytes : t -> Glib_bytes.t
   = "ml_g_memory_output_stream_steal_as_bytes"
-(** Returns data from the @ostream as a #GBytes. @ostream must be
-closed before calling this function. *)
+(** Returns data from the [ostream] as a [GBytes]. [ostream] must be closed
+    before calling this function. *)
 
 external get_size : t -> Gsize.t = "ml_g_memory_output_stream_get_size"
 (** Gets the size of the currently allocated data area (available from
@@ -24,7 +30,7 @@ external get_size : t -> Gsize.t = "ml_g_memory_output_stream_get_size"
 
     If the stream is fixed-sized (ie: no realloc was passed to
     g_memory_output_stream_new()) then this is the maximum size of the stream
-    and further writes will return %G_IO_ERROR_NO_SPACE.
+    and further writes will return [G_IO_ERROR_NO_SPACE].
 
     In any case, if you want the number of bytes currently written to the
     stream, use g_memory_output_stream_get_data_size(). *)

@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RadialGradientNode: RadialGradientNode *)
 
+(** A render node for a radial gradient. *)
+
 type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 
 external new_ :

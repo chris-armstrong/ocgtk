@@ -1,6 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GrabBrokenEvent: GrabBrokenEvent *)
 
+(** An event related to a broken windowing system grab. *)
+
 type t = [ `grab_broken_event | `event ] Gobject.obj
 
 (* Methods *)

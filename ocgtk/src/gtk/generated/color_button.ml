@@ -1,6 +1,25 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorButton: ColorButton *)
 
+(** The [GtkColorButton] allows to open a color chooser dialog to change the
+    color.
+
+    An example GtkColorButton
+
+    It is suitable widget for selecting a color in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    colorbutton
+    ╰── button.color
+        ╰── [content]
+    ]}
+
+    [GtkColorButton] has a single CSS node with name colorbutton which contains
+    a button node. To differentiate it from a plain [GtkButton], it gets the
+    .color style class. *)
+
 type t = [ `color_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_color_button_new"

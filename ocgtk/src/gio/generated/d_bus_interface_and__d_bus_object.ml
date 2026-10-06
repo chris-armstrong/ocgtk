@@ -11,18 +11,18 @@ module rec D_bus_interface : sig
 
   external set_object : t -> D_bus_object.t option -> unit
     = "ml_g_dbus_interface_set_object"
-  (** Sets the #GDBusObject for @interface_ to @object.
+  (** Sets the [GDBusObject] for [interface_] to [object].
 
-  Note that @interface_ will hold a weak reference to @object. *)
+      Note that [interface_] will hold a weak reference to [object]. *)
 
   external get_info : t -> D_bus_interface_info.t
     = "ml_g_dbus_interface_get_info"
-  (** Gets D-Bus introspection information for the D-Bus interface
-  implemented by @interface_. *)
+  (** Gets D-Bus introspection information for the D-Bus interface implemented
+      by [interface_]. *)
 
   external dup_object : t -> D_bus_object.t option
     = "ml_g_dbus_interface_dup_object"
-  (** Gets the #GDBusObject that @interface_ belongs to, if any. *)
+  (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
 end = struct
   type t = [ `d_bus_interface ] Gobject.obj
 
@@ -33,18 +33,18 @@ end = struct
 
   external set_object : t -> D_bus_object.t option -> unit
     = "ml_g_dbus_interface_set_object"
-  (** Sets the #GDBusObject for @interface_ to @object.
+  (** Sets the [GDBusObject] for [interface_] to [object].
 
-  Note that @interface_ will hold a weak reference to @object. *)
+      Note that [interface_] will hold a weak reference to [object]. *)
 
   external get_info : t -> D_bus_interface_info.t
     = "ml_g_dbus_interface_get_info"
-  (** Gets D-Bus introspection information for the D-Bus interface
-  implemented by @interface_. *)
+  (** Gets D-Bus introspection information for the D-Bus interface implemented
+      by [interface_]. *)
 
   external dup_object : t -> D_bus_object.t option
     = "ml_g_dbus_interface_dup_object"
-  (** Gets the #GDBusObject that @interface_ belongs to, if any. *)
+  (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
 end
 
 and D_bus_object : sig
@@ -56,16 +56,16 @@ and D_bus_object : sig
   (* Methods *)
 
   external get_object_path : t -> string = "ml_g_dbus_object_get_object_path"
-  (** Gets the object path for @object. *)
+  (** Gets the object path for [object]. *)
 
   external get_interfaces : t -> D_bus_interface.t list
     = "ml_g_dbus_object_get_interfaces"
-  (** Gets the D-Bus interfaces associated with @object. *)
+  (** Gets the D-Bus interfaces associated with [object]. *)
 
   external get_interface : t -> string -> D_bus_interface.t option
     = "ml_g_dbus_object_get_interface"
-  (** Gets the D-Bus interface with name @interface_name associated with
-  @object, if any. *)
+  (** Gets the D-Bus interface with name [interface_name] associated with
+      [object], if any. *)
 
   val on_interface_added :
     ?after:bool ->
@@ -87,16 +87,16 @@ end = struct
   (* Methods *)
 
   external get_object_path : t -> string = "ml_g_dbus_object_get_object_path"
-  (** Gets the object path for @object. *)
+  (** Gets the object path for [object]. *)
 
   external get_interfaces : t -> D_bus_interface.t list
     = "ml_g_dbus_object_get_interfaces"
-  (** Gets the D-Bus interfaces associated with @object. *)
+  (** Gets the D-Bus interfaces associated with [object]. *)
 
   external get_interface : t -> string -> D_bus_interface.t option
     = "ml_g_dbus_object_get_interface"
-  (** Gets the D-Bus interface with name @interface_name associated with
-  @object, if any. *)
+  (** Gets the D-Bus interface with name [interface_name] associated with
+      [object], if any. *)
 
   let on_interface_added ?after obj ~callback =
     let closure =

@@ -1,6 +1,41 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Button: Button *)
 
+(** Calls a callback function when the button is clicked.
+
+    An example GtkButton
+
+    The [GtkButton] widget can hold any valid child widget. That is, it can hold
+    almost any other standard [GtkWidget]. The most commonly used child is the
+    [GtkLabel].
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.Button::activate]
+
+    {b CSS nodes}
+
+    [GtkButton] has a single CSS node with name button. The node will get the
+    style classes .image-button or .text-button, if the content is just an image
+    or label, respectively. It may also receive the .flat style class. When
+    activating a button via the keyboard, the button will temporarily gain the
+    .keyboard-activating style class.
+
+    Other style classes that are commonly used with [GtkButton] include
+    .suggested-action and .destructive-action. In special cases, buttons can be
+    made round by adding the .circular style class.
+
+    Button-like widgets like [Gtk.ToggleButton], [Gtk.MenuButton],
+    [Gtk.VolumeButton], [Gtk.LockButton], [Gtk.ColorButton] or [Gtk.FontButton]
+    use style classes such as .toggle, .popup, .scale, .lock, .color on the
+    button node to differentiate themselves from a plain [GtkButton].
+
+    {b Accessibility}
+
+    [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
+
 type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_button_new"
@@ -25,15 +60,15 @@ external set_use_underline : t -> bool -> unit
     character should be used for the mnemonic accelerator key. *)
 
 external set_label : t -> string -> unit = "ml_gtk_button_set_label"
-(** Sets the text of the label of the button to @label.
+(** Sets the text of the label of the button to [label].
 
-This will also clear any previously set labels. *)
+    This will also clear any previously set labels. *)
 
 external set_icon_name : t -> string -> unit = "ml_gtk_button_set_icon_name"
-(** Adds a `GtkImage` with the given icon name as a child.
+(** Adds a [GtkImage] with the given icon name as a child.
 
-If @button already contains a child widget, that child widget will
-be removed and replaced with the image. *)
+    If [button] already contains a child widget, that child widget will be
+    removed and replaced with the image. *)
 
 external set_has_frame : t -> bool -> unit = "ml_gtk_button_set_has_frame"
 (** Sets the style of the button.
@@ -47,40 +82,40 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_button_set_child"
-(** Sets the child widget of @button.
+(** Sets the child widget of [button].
 
-Note that by using this API, you take full responsibility for setting
-up the proper accessibility label and description information for @button.
-Most likely, you'll either set the accessibility label or description
-for @button explicitly, or you'll set a labelled-by or described-by
-relations from @child to @button. *)
+    Note that by using this API, you take full responsibility for setting up the
+    proper accessibility label and description information for [button]. Most
+    likely, you'll either set the accessibility label or description for
+    [button] explicitly, or you'll set a labelled-by or described-by relations
+    from [child] to [button]. *)
 
 external set_can_shrink : t -> bool -> unit = "ml_gtk_button_set_can_shrink"
-(** Sets whether the button size can be smaller than the natural size of
-its contents.
+(** Sets whether the button size can be smaller than the natural size of its
+    contents.
 
-For text buttons, setting @can_shrink to true will ellipsize the label.
+    For text buttons, setting [can_shrink] to true will ellipsize the label.
 
-For icons and custom children, this function has no effect. *)
+    For icons and custom children, this function has no effect. *)
 
 external get_use_underline : t -> bool = "ml_gtk_button_get_use_underline"
 (** gets whether underlines are interpreted as mnemonics.
 
-    See [method@Gtk.Button.set_use_underline]. *)
+    See [Gtk.Button.set_use_underline]. *)
 
 external get_label : t -> string option = "ml_gtk_button_get_label"
 (** Fetches the text from the label of the button.
 
-    If the label text has not been set with [method@Gtk.Button.set_label] the
-    return value will be %NULL. This will be the case if you create an empty
-    button with [ctor@Gtk.Button.new] to use as a container. *)
+    If the label text has not been set with [Gtk.Button.set_label] the return
+    value will be [NULL]. This will be the case if you create an empty button
+    with [Gtk.Button.new] to use as a container. *)
 
 external get_icon_name : t -> string option = "ml_gtk_button_get_icon_name"
 (** Returns the icon name of the button.
 
-    If the icon name has not been set with [method@Gtk.Button.set_icon_name] the
-    return value will be %NULL. This will be the case if you create an empty
-    button with [ctor@Gtk.Button.new] to use as a container. *)
+    If the icon name has not been set with [Gtk.Button.set_icon_name] the return
+    value will be [NULL]. This will be the case if you create an empty button
+    with [Gtk.Button.new] to use as a container. *)
 
 external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
 (** Returns whether the button has a frame. *)
@@ -91,7 +126,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_button_get_child"
-(** Gets the child widget of @button. *)
+(** Gets the child widget of [button]. *)
 
 external get_can_shrink : t -> bool = "ml_gtk_button_get_can_shrink"
 (** Retrieves whether the button can be smaller than the natural size of its

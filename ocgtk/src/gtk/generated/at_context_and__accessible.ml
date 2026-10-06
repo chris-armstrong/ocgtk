@@ -19,7 +19,7 @@ module rec At_context : sig
 
   external get_accessible : t -> Accessible.t
     = "ml_gtk_at_context_get_accessible"
-  (** Retrieves the `GtkAccessible` using this context. *)
+  (** Retrieves the [GtkAccessible] using this context. *)
 
   (* Properties *)
 
@@ -51,7 +51,7 @@ end = struct
 
   external get_accessible : t -> Accessible.t
     = "ml_gtk_at_context_get_accessible"
-  (** Retrieves the `GtkAccessible` using this context. *)
+  (** Retrieves the [GtkAccessible] using this context. *)
 
   (* Properties *)
 
@@ -80,7 +80,7 @@ and Accessible : sig
     = "ml_gtk_accessible_update_platform_state"
   (** Informs ATs that the platform state has changed.
 
-      This function should be used by `GtkAccessible` implementations that have
+      This function should be used by [GtkAccessible] implementations that have
       a platform state but are not widgets. Widgets handle platform states
       automatically. *)
 
@@ -98,7 +98,7 @@ and Accessible : sig
       This function is meant to be used by accessible implementations that are
       not part of the widget hierarchy, and but act as a logical bridge between
       widgets. For instance, if a widget creates an object that holds metadata
-      for each child, and you want that object to implement the `GtkAccessible`
+      for each child, and you want that object to implement the [GtkAccessible]
       interface, you will use this function to ensure that the parent of each
       child widget is the metadata object, and the parent of each metadata
       object is the container widget. *)
@@ -119,9 +119,9 @@ and Accessible : sig
     = "ml_gtk_accessible_get_platform_state"
   (** Queries a platform state, such as focus.
 
-      This functionality can be overridden by `GtkAccessible` implementations,
+      This functionality can be overridden by [GtkAccessible] implementations,
       e.g. to get platform state from an ignored child widget, as is the case
-      for `GtkText` wrappers. *)
+      for [GtkText] wrappers. *)
 
   external get_next_accessible_sibling : t -> t option
     = "ml_gtk_accessible_get_next_accessible_sibling"
@@ -135,7 +135,7 @@ and Accessible : sig
     = "ml_gtk_accessible_get_bounds"
   (** Queries the coordinates and dimensions of this accessible
 
-      This functionality can be overridden by `GtkAccessible` implementations,
+      This functionality can be overridden by [GtkAccessible] implementations,
       e.g. to get the bounds from an ignored child widget. *)
 
   external get_at_context : t -> At_context.t
@@ -150,7 +150,7 @@ and Accessible : sig
     = "ml_gtk_accessible_get_accessible_parent"
   (** Retrieves the accessible parent for an accessible object.
 
-      This function returns `NULL` for top level widgets. *)
+      This function returns [NULL] for top level widgets. *)
 
   external announce :
     t -> string -> Gtk_enums.accessibleannouncementpriority -> unit
@@ -177,7 +177,7 @@ end = struct
     = "ml_gtk_accessible_update_platform_state"
   (** Informs ATs that the platform state has changed.
 
-      This function should be used by `GtkAccessible` implementations that have
+      This function should be used by [GtkAccessible] implementations that have
       a platform state but are not widgets. Widgets handle platform states
       automatically. *)
 
@@ -195,7 +195,7 @@ end = struct
       This function is meant to be used by accessible implementations that are
       not part of the widget hierarchy, and but act as a logical bridge between
       widgets. For instance, if a widget creates an object that holds metadata
-      for each child, and you want that object to implement the `GtkAccessible`
+      for each child, and you want that object to implement the [GtkAccessible]
       interface, you will use this function to ensure that the parent of each
       child widget is the metadata object, and the parent of each metadata
       object is the container widget. *)
@@ -216,9 +216,9 @@ end = struct
     = "ml_gtk_accessible_get_platform_state"
   (** Queries a platform state, such as focus.
 
-      This functionality can be overridden by `GtkAccessible` implementations,
+      This functionality can be overridden by [GtkAccessible] implementations,
       e.g. to get platform state from an ignored child widget, as is the case
-      for `GtkText` wrappers. *)
+      for [GtkText] wrappers. *)
 
   external get_next_accessible_sibling : t -> t option
     = "ml_gtk_accessible_get_next_accessible_sibling"
@@ -232,7 +232,7 @@ end = struct
     = "ml_gtk_accessible_get_bounds"
   (** Queries the coordinates and dimensions of this accessible
 
-      This functionality can be overridden by `GtkAccessible` implementations,
+      This functionality can be overridden by [GtkAccessible] implementations,
       e.g. to get the bounds from an ignored child widget. *)
 
   external get_at_context : t -> At_context.t
@@ -247,7 +247,7 @@ end = struct
     = "ml_gtk_accessible_get_accessible_parent"
   (** Retrieves the accessible parent for an accessible object.
 
-      This function returns `NULL` for top level widgets. *)
+      This function returns [NULL] for top level widgets. *)
 
   external announce :
     t -> string -> Gtk_enums.accessibleannouncementpriority -> unit

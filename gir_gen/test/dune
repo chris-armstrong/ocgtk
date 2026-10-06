@@ -57,6 +57,8 @@
   doc_translate_tests
   ; Doc_translate corpus smoke test (in-memory, both contexts)
   doc_translate_corpus_tests
+  ; Doc_emit — item doc assembly (tags last, comment safety, @since)
+  doc_emit_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests

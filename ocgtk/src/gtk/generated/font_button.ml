@@ -1,6 +1,23 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontButton: FontButton *)
 
+(** The [GtkFontButton] allows to open a font chooser dialog to change the font.
+
+    An example GtkFontButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontButton] has a single CSS node with name fontbutton which contains a
+    button node with the .font style class. *)
+
 type t = [ `font_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_font_button_new"
@@ -12,12 +29,12 @@ external new_with_font : string -> t = "ml_gtk_font_button_new_with_font"
 (* Methods *)
 
 external set_use_size : t -> bool -> unit = "ml_gtk_font_button_set_use_size"
-(** If @use_size is %TRUE, the font name will be written using
-the selected size. *)
+(** If [use_size] is [TRUE], the font name will be written using the selected
+    size. *)
 
 external set_use_font : t -> bool -> unit = "ml_gtk_font_button_set_use_font"
-(** If @use_font is %TRUE, the font name will be written
-using the selected font. *)
+(** If [use_font] is [TRUE], the font name will be written using the selected
+    font. *)
 
 external set_title : t -> string -> unit = "ml_gtk_font_button_set_title"
 (** Sets the title for the font chooser dialog. *)
