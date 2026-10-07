@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>D_bus_auth_observer (ocgtk.Ocgtk_gio.Gio.Wrappers.D_bus_auth_observer)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gio</a> &#x00BB; <a href="../../index.html">Gio</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; D_bus_auth_observer</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.D_bus_auth_observer</span></code></h1><p><code>GDBusAuthObserver</code> provides a mechanism for participating in how a <code>Gio.DBusServer</code> (or a <code>Gio.DBusConnection</code>) authenticates remote peers.</p><p>Simply instantiate a <code>GDBusAuthObserver</code> and connect to the signals you are interested in. Note that new signals may be added in the future.</p><p><b>Controlling Authentication Mechanisms</b></p><p>By default, a <code>GDBusServer</code> or server-side <code>GDBusConnection</code> will allow any authentication mechanism to be used. If you only want to allow D-Bus connections with the <code>EXTERNAL</code> mechanism, which makes use of credentials passing and is the recommended mechanism for modern Unix platforms such as Linux and the BSD family, you would use a signal handler like this:</p><pre class="language-ocaml"><code>static gboolean
+on_allow_mechanism (GDBusAuthObserver *observer,
+                    const gchar       *mechanism,
+                    gpointer           user_data)
+{
+  if (g_strcmp0 (mechanism, &quot;EXTERNAL&quot;) == 0)
+    {
+      return TRUE;
+    }
+
+  return FALSE;
+}</code></pre><p><b>Controlling Authorization</b></p><p>By default, a <code>GDBusServer</code> or server-side <code>GDBusConnection</code> will accept connections from any successfully authenticated user (but not from anonymous connections using the <code>ANONYMOUS</code> mechanism). If you only want to allow D-Bus connections from processes owned by the same uid as the server, since GLib 2.68, you should use the <code>G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER</code> flag. It’s equivalent to the following signal handler:</p><pre class="language-ocaml"><code>static gboolean
+on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+                                 GIOStream         *stream,
+                                 GCredentials      *credentials,
+                                 gpointer           user_data)
+{
+  gboolean authorized;
+
+  authorized = FALSE;
+  if (credentials != NULL)
+    {
+      GCredentials *own_credentials;
+      own_credentials = g_credentials_new ();
+      if (g_credentials_is_same_user (credentials, own_credentials, NULL))
+        authorized = TRUE;
+      g_object_unref (own_credentials);
+    }
+
+  return authorized;
+}</code></pre></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `d_bus_auth_observer <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : <span>unit <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new DBusAuthObserver</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-authorize_authenticated_peer"><a href="#val-authorize_authenticated_peer" class="anchor"></a><code><span><span class="keyword">val</span> authorize_authenticated_peer : 
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span>[ `io_stream <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span><span>[ `credentials <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span> <span class="arrow">&#45;&gt;</span></span>
+  bool</span></code></div><div class="spec-doc"><p>Emits the <code>GDBusAuthObserver::authorize</code>-authenticated-peer signal on <code>observer</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-allow_mechanism"><a href="#val-allow_mechanism" class="anchor"></a><code><span><span class="keyword">val</span> allow_mechanism : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string <span class="arrow">&#45;&gt;</span></span> bool</span></code></div><div class="spec-doc"><p>Emits the <code>GDBusAuthObserver::allow</code>-mechanism signal on <code>observer</code>.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_allow_mechanism"><a href="#val-on_allow_mechanism" class="anchor"></a><code><span><span class="keyword">val</span> on_allow_mechanism : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:<span>(<span><span class="label">mechanism</span>:string <span class="arrow">&#45;&gt;</span></span> bool)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_authorize_authenticated_peer"><a href="#val-on_authorize_authenticated_peer" class="anchor"></a><code><span><span class="keyword">val</span> on_authorize_authenticated_peer : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:
+    <span>(<span><span class="label">stream</span>:<span><span>[ `io_stream <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span>
+      <span><span class="label">credentials</span>:<span><span><span>[ `credentials <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span> <span class="arrow">&#45;&gt;</span></span>
+      bool)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div></div></body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Print_context (ocgtk.Ocgtk_gtk.Gtk.Wrappers.Print_context)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gtk</a> &#x00BB; <a href="../../index.html">Gtk</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Print_context</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Print_context</span></code></h1><p>Encapsulates context information that is required when drawing pages for printing.</p><p>This includes the cairo context and important parameters like page size and resolution. It also lets you easily create <code>Pango.Layout</code> and <code>Pango.Context</code> objects that match the font metrics of the cairo surface.</p><p><code>GtkPrintContext</code> objects get passed to the <code>Gtk.PrintOperation::begin-print</code>, <code>Gtk.PrintOperation::end-print</code>, <code>Gtk.PrintOperation::request-page-setup</code> and <code>Gtk.PrintOperation::draw-page</code> signals on the <code>Gtk.PrintOperation</code> object.</p><p><b>Using GtkPrintContext in a ::draw-page callback</b></p><pre class="language-ocaml"><code>static void
+draw_page (GtkPrintOperation *operation,
+           GtkPrintContext   *context,
+           int                page_nr)
+{
+  cairo_t *cr;
+  PangoLayout *layout;
+  PangoFontDescription *desc;
+
+  cr = gtk_print_context_get_cairo_context (context);
+
+  // Draw a red rectangle, as wide as the paper (inside the margins)
+  cairo_set_source_rgb (cr, 1.0, 0, 0);
+  cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
+
+  cairo_fill (cr);
+
+  // Draw some lines
+  cairo_move_to (cr, 20, 10);
+  cairo_line_to (cr, 40, 20);
+  cairo_arc (cr, 60, 60, 20, 0, M_PI);
+  cairo_line_to (cr, 80, 20);
+
+  cairo_set_source_rgb (cr, 0, 0, 0);
+  cairo_set_line_width (cr, 5);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+
+  cairo_stroke (cr);
+
+  // Draw some text
+  layout = gtk_print_context_create_pango_layout (context);
+  pango_layout_set_text (layout, &quot;Hello World! Printing is easy&quot;, -1);
+  desc = pango_font_description_from_string (&quot;sans 28&quot;);
+  pango_layout_set_font_description (layout, desc);
+  pango_font_description_free (desc);
+
+  cairo_move_to (cr, 30, 20);
+  pango_cairo_layout_path (cr, layout);
+
+  // Font Outline
+  cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
+  cairo_set_line_width (cr, 0.5);
+  cairo_stroke_preserve (cr);
+
+  // Font Fill
+  cairo_set_source_rgb (cr, 0, 0.0, 1.0);
+  cairo_fill (cr);
+
+  g_object_unref (layout);
+}</code></pre></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `print_context <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_cairo_context"><a href="#val-set_cairo_context" class="anchor"></a><code><span><span class="keyword">val</span> set_cairo_context : 
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../../../Ocgtk_cairo/Cairo/Wrappers/Context/index.html#type-t">Ocgtk_cairo.Cairo.Wrappers.Context.t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>float <span class="arrow">&#45;&gt;</span></span>
+  <span>float <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div><div class="spec-doc"><p>Sets a new cairo context on a print context.</p><p>This function is intended to be used when implementing an internal print preview, it is not needed for printing, since GTK itself creates a suitable cairo context in that case.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_width"><a href="#val-get_width" class="anchor"></a><code><span><span class="keyword">val</span> get_width : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> float</span></code></div><div class="spec-doc"><p>Obtains the width of the <code>GtkPrintContext</code>, in pixels.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_pango_fontmap"><a href="#val-get_pango_fontmap" class="anchor"></a><code><span><span class="keyword">val</span> get_pango_fontmap : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <a href="../../../../Ocgtk_pango/Pango/Wrappers/Font_map/index.html#type-t">Ocgtk_pango.Pango.Wrappers.Font_map.t</a></span></code></div><div class="spec-doc"><p>Returns a <code>PangoFontMap</code> that is suitable for use with the <code>GtkPrintContext</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_page_setup"><a href="#val-get_page_setup" class="anchor"></a><code><span><span class="keyword">val</span> get_page_setup : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span>[ `page_setup <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div><div class="spec-doc"><p>Obtains the <code>GtkPageSetup</code> that determines the page dimensions of the <code>GtkPrintContext</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_height"><a href="#val-get_height" class="anchor"></a><code><span><span class="keyword">val</span> get_height : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> float</span></code></div><div class="spec-doc"><p>Obtains the height of the <code>GtkPrintContext</code>, in pixels.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_hard_margins"><a href="#val-get_hard_margins" class="anchor"></a><code><span><span class="keyword">val</span> get_hard_margins : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> bool * float * float * float * float</span></code></div><div class="spec-doc"><p>Obtains the hardware printer margins of the <code>GtkPrintContext</code>, in units.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_dpi_y"><a href="#val-get_dpi_y" class="anchor"></a><code><span><span class="keyword">val</span> get_dpi_y : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> float</span></code></div><div class="spec-doc"><p>Obtains the vertical resolution of the <code>GtkPrintContext</code>, in dots per inch.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_dpi_x"><a href="#val-get_dpi_x" class="anchor"></a><code><span><span class="keyword">val</span> get_dpi_x : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> float</span></code></div><div class="spec-doc"><p>Obtains the horizontal resolution of the <code>GtkPrintContext</code>, in dots per inch.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_cairo_context"><a href="#val-get_cairo_context" class="anchor"></a><code><span><span class="keyword">val</span> get_cairo_context : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <a href="../../../../Ocgtk_cairo/Cairo/Wrappers/Context/index.html#type-t">Ocgtk_cairo.Cairo.Wrappers.Context.t</a></span></code></div><div class="spec-doc"><p>Obtains the cairo context that is associated with the <code>GtkPrintContext</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-create_pango_layout"><a href="#val-create_pango_layout" class="anchor"></a><code><span><span class="keyword">val</span> create_pango_layout : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <a href="../../../../Ocgtk_pango/Pango/Wrappers/Layout/index.html#type-t">Ocgtk_pango.Pango.Wrappers.Layout.t</a></span></code></div><div class="spec-doc"><p>Creates a new <code>PangoLayout</code> that is suitable for use with the <code>GtkPrintContext</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-create_pango_context"><a href="#val-create_pango_context" class="anchor"></a><code><span><span class="keyword">val</span> create_pango_context : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <a href="../../../../Ocgtk_pango/Pango/Wrappers/Context/index.html#type-t">Ocgtk_pango.Pango.Wrappers.Context.t</a></span></code></div><div class="spec-doc"><p>Creates a new <code>PangoContext</code> that can be used with the <code>GtkPrintContext</code>.</p></div></div></div></body></html>

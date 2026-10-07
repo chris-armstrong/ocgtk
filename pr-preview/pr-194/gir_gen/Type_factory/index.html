@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Type_factory (gir_gen.Type_factory)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../index.html">Index</a> &#x00BB; <a href="../index.html">gir_gen</a> &#x00BB; Type_factory</nav><header class="odoc-preamble"><h1>Module <code><span>Type_factory</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec value anchored" id="val-entity_of_class"><a href="#val-entity_of_class" class="anchor"></a><code><span><span class="keyword">val</span> entity_of_class : <span><a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a> <span class="arrow">&#45;&gt;</span></span> <a href="../Gir_gen_lib/Types/index.html#type-entity">Gir_gen_lib.Types.entity</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_return_type"><a href="#val-make_return_type" class="anchor"></a><code><span><span class="keyword">val</span> make_return_type : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?transfer_ownership</span>:<a href="../Gir_gen_lib/Types/index.html#type-transfer_ownership">Gir_gen_lib.Types.transfer_ownership</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?array</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_array">Gir_gen_lib.Types.gir_array</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_type"><a href="#val-make_gir_type" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_type : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?transfer_ownership</span>:<a href="../Gir_gen_lib/Types/index.html#type-transfer_ownership">Gir_gen_lib.Types.transfer_ownership</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?array</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_array">Gir_gen_lib.Types.gir_array</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_array"><a href="#val-make_gir_array" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_array : 
+  <span><span class="optlabel">?length</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?zero_terminated</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?fixed_size</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?array_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">element_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_array">Gir_gen_lib.Types.gir_array</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_param"><a href="#val-make_gir_param" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?direction</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_direction">Gir_gen_lib.Types.gir_direction</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?varargs</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?caller_allocates</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_method"><a href="#val-make_gir_method" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_method : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?get_property</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?set_property</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_function"><a href="#val-make_gir_function" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_function : 
+  <span><span class="label">function_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_function">Gir_gen_lib.Types.gir_function</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_signal"><a href="#val-make_gir_signal" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_signal : 
+  <span><span class="label">signal_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?sig_parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?run_when</span>:<a href="../Gir_gen_lib/Types/index.html#type-signal_run_when">Gir_gen_lib.Types.signal_run_when</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?action</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?no_recurse</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?no_hooks</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_constructor"><a href="#val-make_gir_constructor" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_constructor : 
+  <span><span class="label">ctor_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?ctor_parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?ctor_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?ctor_introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_constructor">Gir_gen_lib.Types.gir_constructor</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_property"><a href="#val-make_gir_property" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_property : 
+  <span><span class="label">prop_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">prop_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?readable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?writable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?construct_only</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?prop_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_property">Gir_gen_lib.Types.gir_property</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_record_field"><a href="#val-make_gir_record_field" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_record_field : 
+  <span><span class="label">field_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?field_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?readable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?writable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?field_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_record_field">Gir_gen_lib.Types.gir_record_field</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_record"><a href="#val-make_gir_record" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_record : 
+  <span><span class="optlabel">?record_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?glib_type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?glib_get_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?opaque</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?disguised</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_symbol_prefix</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?is_gtype_struct_for</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?fields</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_record_field">Gir_gen_lib.Types.gir_record_field</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constructors</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_constructor">Gir_gen_lib.Types.gir_constructor</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?methods</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?functions</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_function">Gir_gen_lib.Types.gir_function</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?record_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_record">Gir_gen_lib.Types.gir_record</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_enum_member"><a href="#val-make_gir_enum_member" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_enum_member : 
+  <span><span class="optlabel">?member_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?member_value</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?member_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_enum_member">Gir_gen_lib.Types.gir_enum_member</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_enum"><a href="#val-make_gir_enum" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_enum : 
+  <span><span class="optlabel">?enum_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?enum_c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?members</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_enum_member">Gir_gen_lib.Types.gir_enum_member</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?functions</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_function">Gir_gen_lib.Types.gir_function</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?enum_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?enum_version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_enum">Gir_gen_lib.Types.gir_enum</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_bitfield_member"><a href="#val-make_gir_bitfield_member" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_bitfield_member : 
+  <span><span class="optlabel">?flag_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?flag_value</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?flag_c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?flag_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_bitfield_member">Gir_gen_lib.Types.gir_bitfield_member</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_bitfield"><a href="#val-make_gir_bitfield" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_bitfield : 
+  <span><span class="optlabel">?bitfield_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?bitfield_c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?flags</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_bitfield_member">Gir_gen_lib.Types.gir_bitfield_member</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?bitfield_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?bitfield_version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_bitfield">Gir_gen_lib.Types.gir_bitfield</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_constant"><a href="#val-make_gir_constant" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_constant : 
+  <span><span class="optlabel">?constant_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constant_c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?value</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?value_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constant_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_constant">Gir_gen_lib.Types.gir_constant</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_class"><a href="#val-make_gir_class" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_class : 
+  <span><span class="optlabel">?class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parent</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?implements</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constructors</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_constructor">Gir_gen_lib.Types.gir_constructor</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?methods</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?properties</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_property">Gir_gen_lib.Types.gir_property</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?signals</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?class_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_interface"><a href="#val-make_gir_interface" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_interface : 
+  <span><span class="optlabel">?interface_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_symbol_prefix</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?glib_type_name</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?glib_get_type</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?prerequisites</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?introspectable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?methods</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?properties</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_property">Gir_gen_lib.Types.gir_property</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?signals</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?interface_doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_interface">Gir_gen_lib.Types.gir_interface</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_entity"><a href="#val-make_entity" class="anchor"></a><code><span><span class="keyword">val</span> make_entity : 
+  <span><span class="optlabel">?kind</span>:<a href="../Gir_gen_lib/Types/index.html#type-entity_kind">Gir_gen_lib.Types.entity_kind</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?doc</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parent</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?implements</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constructors</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_constructor">Gir_gen_lib.Types.gir_constructor</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?methods</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?properties</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_property">Gir_gen_lib.Types.gir_property</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?signals</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?os</span>:<span><a href="../Gir_gen_lib/Os_filter/index.html#type-t">Gir_gen_lib.Os_filter.t</a> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-entity">Gir_gen_lib.Types.entity</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_ocaml_class"><a href="#val-make_ocaml_class" class="anchor"></a><code><span><span class="keyword">val</span> make_ocaml_class : 
+  <span><span class="optlabel">?class_module</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?class_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?class_ml_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?class_layer1_accessor</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-ocaml_class">Gir_gen_lib.Types.ocaml_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_type_mapping"><a href="#val-make_type_mapping" class="anchor"></a><code><span><span class="keyword">val</span> make_type_mapping : 
+  <span><span class="label">ocaml_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_to_ml</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ml_to_c</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?layer2_class</span>:<a href="../Gir_gen_lib/Types/index.html#type-ocaml_class">Gir_gen_lib.Types.ocaml_class</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?is_value_type_record</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?transfer_strategy</span>:<a href="../Gir_gen_lib/Types/index.html#type-transfer_strategy">Gir_gen_lib.Types.transfer_strategy</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-type_mapping">Gir_gen_lib.Types.type_mapping</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_namespace"><a href="#val-make_gir_namespace" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_namespace : 
+  <span><span class="optlabel">?namespace_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?namespace_version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?namespace_shared_library</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?namespace_c_identifier_prefixes</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?namespace_c_symbol_prefixes</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_namespace">Gir_gen_lib.Types.gir_namespace</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_include"><a href="#val-make_gir_include" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_include : 
+  <span><span class="optlabel">?include_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?include_version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_include">Gir_gen_lib.Types.gir_include</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_gir_repository"><a href="#val-make_gir_repository" class="anchor"></a><code><span><span class="keyword">val</span> make_gir_repository : 
+  <span><span class="optlabel">?repository_includes</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_include">Gir_gen_lib.Types.gir_include</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?repository_c_includes</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?repository_packages</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_repository">Gir_gen_lib.Types.gir_repository</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_cross_reference_type"><a href="#val-make_cross_reference_type" class="anchor"></a><code><span><span class="keyword">val</span> make_cross_reference_type : 
+  <span><span class="optlabel">?parent</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span>[&lt; `Bitfield <span>| `Class</span> <span>| `Constant</span> <span>| `Enum</span> <span>| `Interface</span> <span><span>| `Record</span> of bool</span> ]</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-cross_reference_type">Gir_gen_lib.Types.cross_reference_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_cross_reference_entity"><a href="#val-make_cross_reference_entity" class="anchor"></a><code><span><span class="keyword">val</span> make_cross_reference_entity : 
+  <span><span class="optlabel">?cr_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-cross_reference_type">Gir_gen_lib.Types.cross_reference_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-cross_reference_entity">Gir_gen_lib.Types.cross_reference_entity</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_cross_reference_namespace"><a href="#val-make_cross_reference_namespace" class="anchor"></a><code><span><span class="keyword">val</span> make_cross_reference_namespace : 
+  <span><span class="optlabel">?cr_namespace_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_namespace_packages</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_namespace_includes</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_namespace_c_includes</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cr_entities</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-cross_reference_entity">Gir_gen_lib.Types.cross_reference_entity</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-cross_reference_namespace">Gir_gen_lib.Types.cross_reference_namespace</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_cross_reference_map"><a href="#val-make_cross_reference_map" class="anchor"></a><code><span><span class="keyword">val</span> make_cross_reference_map : 
+  <span><span><span>(<a href="../Gir_gen_lib/Types/StringMap/index.html#type-key">Gir_gen_lib.Types.StringMap.key</a> * <span class="type-var">'a</span>)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="type-var">'a</span> <a href="../Gir_gen_lib/Types/StringMap/index.html#type-t">Gir_gen_lib.Types.StringMap.t</a></span></span></code></div><div class="spec-doc"><p><code>make_cross_reference_map pairs</code> builds a <code>StringMap</code> of cross-namespace references from an association list of <code>(namespace_name, ncr)</code> pairs. Intended to be used with <code>Helpers.make_ncr</code>:</p><pre class="language-ocaml"><code>make_cross_reference_map
+  [
+    Helpers.make_ncr &quot;Gdk&quot; gdk_entities;
+    Helpers.make_ncr &quot;cairo&quot; cairo_entities;
+  ]</code></pre></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_generation_context"><a href="#val-make_generation_context" class="anchor"></a><code><span><span class="keyword">val</span> make_generation_context : 
+  <span><span class="optlabel">?namespace</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_namespace">Gir_gen_lib.Types.gir_namespace</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?repository</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_repository">Gir_gen_lib.Types.gir_repository</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?classes</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?interfaces</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_interface">Gir_gen_lib.Types.gir_interface</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?enums</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_enum">Gir_gen_lib.Types.gir_enum</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?bitfields</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_bitfield">Gir_gen_lib.Types.gir_bitfield</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?records</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_record">Gir_gen_lib.Types.gir_record</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?constants</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_constant">Gir_gen_lib.Types.gir_constant</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?module_groups</span>:<span><span>(string * string)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?current_cycle_classes</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?cross_references</span>:
+    <span><a href="../Gir_gen_lib/Types/index.html#type-generation_context_namespace_cross_references">Gir_gen_lib.Types.generation_context_namespace_cross_references</a>
+      <a href="../Gir_gen_lib/Types/StringMap/index.html#type-t">Gir_gen_lib.Types.StringMap.t</a></span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-generation_context">Gir_gen_lib.Types.generation_context</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-void_type"><a href="#val-void_type" class="anchor"></a><code><span><span class="keyword">val</span> void_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-utf8_type"><a href="#val-utf8_type" class="anchor"></a><code><span><span class="keyword">val</span> utf8_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-gint_type"><a href="#val-gint_type" class="anchor"></a><code><span><span class="keyword">val</span> gint_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-guint_type"><a href="#val-guint_type" class="anchor"></a><code><span><span class="keyword">val</span> guint_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-gdouble_type"><a href="#val-gdouble_type" class="anchor"></a><code><span><span class="keyword">val</span> gdouble_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-gboolean_type"><a href="#val-gboolean_type" class="anchor"></a><code><span><span class="keyword">val</span> gboolean_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_widget_type"><a href="#val-make_widget_type" class="anchor"></a><code><span><span class="keyword">val</span> make_widget_type : <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span> <span>unit <span class="arrow">&#45;&gt;</span></span> <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-widget_type"><a href="#val-widget_type" class="anchor"></a><code><span><span class="keyword">val</span> widget_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-window_type"><a href="#val-window_type" class="anchor"></a><code><span><span class="keyword">val</span> window_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-button_type"><a href="#val-button_type" class="anchor"></a><code><span><span class="keyword">val</span> button_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-string_option_type"><a href="#val-string_option_type" class="anchor"></a><code><span><span class="keyword">val</span> string_option_type : <a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_void_method"><a href="#val-make_void_method" class="anchor"></a><code><span><span class="keyword">val</span> make_void_method : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_string_method"><a href="#val-make_string_method" class="anchor"></a><code><span><span class="keyword">val</span> make_string_method : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_bool_method"><a href="#val-make_bool_method" class="anchor"></a><code><span><span class="keyword">val</span> make_bool_method : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_int_method"><a href="#val-make_int_method" class="anchor"></a><code><span><span class="keyword">val</span> make_int_method : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_string_param"><a href="#val-make_string_param" class="anchor"></a><code><span><span class="keyword">val</span> make_string_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_int_param"><a href="#val-make_int_param" class="anchor"></a><code><span><span class="keyword">val</span> make_int_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_uint_param"><a href="#val-make_uint_param" class="anchor"></a><code><span><span class="keyword">val</span> make_uint_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_bool_param"><a href="#val-make_bool_param" class="anchor"></a><code><span><span class="keyword">val</span> make_bool_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_object_param"><a href="#val-make_object_param" class="anchor"></a><code><span><span class="keyword">val</span> make_object_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_widget_param"><a href="#val-make_widget_param" class="anchor"></a><code><span><span class="keyword">val</span> make_widget_param : 
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?nullable</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_void_constructor"><a href="#val-make_void_constructor" class="anchor"></a><code><span><span class="keyword">val</span> make_void_constructor : 
+  <span><span class="label">ctor_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?ctor_parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?throws</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_constructor">Gir_gen_lib.Types.gir_constructor</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-make_void_signal"><a href="#val-make_void_signal" class="anchor"></a><code><span><span class="keyword">val</span> make_void_signal : 
+  <span><span class="label">signal_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?sig_parameters</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?version</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a></span></code></div></div></div></body></html>

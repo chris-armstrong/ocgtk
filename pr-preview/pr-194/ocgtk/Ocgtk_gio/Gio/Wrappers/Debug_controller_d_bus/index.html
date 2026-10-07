@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Debug_controller_d_bus (ocgtk.Ocgtk_gio.Gio.Wrappers.Debug_controller_d_bus)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gio</a> &#x00BB; <a href="../../index.html">Gio</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Debug_controller_d_bus</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Debug_controller_d_bus</span></code></h1><p><code>GDebugControllerDBus</code> is an implementation of <code>Gio.DebugController</code> which exposes debug settings as a D-Bus object.</p><p>It is a <code>Gio.Initable</code> object, and will register an object at <code>/org/gtk/Debugging</code> on the bus given as <code>Gio.DebugControllerDBus:connection</code> once it’s initialized. The object will be unregistered when the last reference to the <code>GDebugControllerDBus</code> is dropped.</p><p>This D-Bus object can be used by remote processes to enable or disable debug output in this process. Remote processes calling <code>org.gtk.Debugging.SetDebugEnabled()</code> will affect the value of <code>Gio.DebugController:debug-enabled</code> and, by default, <code>GLib.log_get_debug_enabled</code>.</p><p>By default, no processes are allowed to call <code>SetDebugEnabled()</code> unless a <code>Gio.DebugControllerDBus::authorize</code> signal handler is installed. This is because the process may be privileged, or might expose sensitive information in its debug output. You may want to restrict the ability to enable debug output to privileged users or processes.</p><p>One option is to install a D-Bus security policy which restricts access to <code>SetDebugEnabled()</code>, installing something like the following in <code>$datadir/dbus-1/system.d/</code>:</p><pre class="language-ocaml"><code>&lt;?xml version=&quot;1.0&quot;?&gt; &lt;!--*-nxml-*--&gt;
+&lt;!DOCTYPE busconfig PUBLIC &quot;-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN&quot;
+     &quot;http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd&quot;&gt;
+&lt;busconfig&gt;
+  &lt;policy user=&quot;root&quot;&gt;
+    &lt;allow send_destination=&quot;com.example.MyService&quot; send_interface=&quot;org.gtk.Debugging&quot;/&gt;
+  &lt;/policy&gt;
+  &lt;policy context=&quot;default&quot;&gt;
+    &lt;deny send_destination=&quot;com.example.MyService&quot; send_interface=&quot;org.gtk.Debugging&quot;/&gt;
+  &lt;/policy&gt;
+&lt;/busconfig&gt;</code></pre><p>This will prevent the <code>SetDebugEnabled()</code> method from being called by all except root. It will not prevent the <code>DebugEnabled</code> property from being read, as it’s accessed through the <code>org.freedesktop.DBus.Properties</code> interface.</p><p>Another option is to use polkit to allow or deny requests on a case-by-case basis, allowing for the possibility of dynamic authorisation. To do this, connect to the <code>Gio.DebugControllerDBus::authorize</code> signal and query polkit in it:</p><pre class="language-ocaml"><code>  g_autoptr(GError) child_error = NULL;
+  g_autoptr(GDBusConnection) connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, NULL);
+  gulong debug_controller_authorize_id = 0;
+
+  // Set up the debug controller.
+  debug_controller = G_DEBUG_CONTROLLER (g_debug_controller_dbus_new (priv-&gt;connection, NULL, &amp;child_error));
+  if (debug_controller == NULL)
+    {
+      g_error (&quot;Could not register debug controller on bus: %s&quot;,
+               child_error-&gt;message);
+    }
+
+  debug_controller_authorize_id = g_signal_connect (debug_controller,
+                                                    &quot;authorize&quot;,
+                                                    G_CALLBACK (debug_controller_authorize_cb),
+                                                    self);
+
+  static gboolean
+  debug_controller_authorize_cb (GDebugControllerDBus  *debug_controller,
+                                 GDBusMethodInvocation *invocation,
+                                 gpointer               user_data)
+  {
+    g_autoptr(PolkitAuthority) authority = NULL;
+    g_autoptr(PolkitSubject) subject = NULL;
+    g_autoptr(PolkitAuthorizationResult) auth_result = NULL;
+    g_autoptr(GError) local_error = NULL;
+    GDBusMessage *message;
+    GDBusMessageFlags message_flags;
+    PolkitCheckAuthorizationFlags flags = POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE;
+
+    message = g_dbus_method_invocation_get_message (invocation);
+    message_flags = g_dbus_message_get_flags (message);
+
+    authority = polkit_authority_get_sync (NULL, &amp;local_error);
+    if (authority == NULL)
+      {
+        g_warning (&quot;Failed to get polkit authority: %s&quot;, local_error-&gt;message);
+        return FALSE;
+      }
+
+    if (message_flags &amp; G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION)
+      flags |= POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION;
+
+    subject = polkit_system_bus_name_new (g_dbus_method_invocation_get_sender (invocation));
+
+    auth_result = polkit_authority_check_authorization_sync (authority,
+                                                             subject,
+                                                             &quot;com.example.MyService.set-debug-enabled&quot;,
+                                                             NULL,
+                                                             flags,
+                                                             NULL,
+                                                             &amp;local_error);
+    if (auth_result == NULL)
+      {
+        g_warning (&quot;Failed to get check polkit authorization: %s&quot;, local_error-&gt;message);
+        return FALSE;
+      }
+
+    return polkit_authorization_result_get_is_authorized (auth_result);
+  }</code></pre></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `debug_controller_d_bus <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : 
+  <span><span><span>[ `d_bus_connection <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span><span>[ `cancellable <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span>(<a href="#type-t">t</a>, <a href="../../../../GError/index.html#type-t">GError.t</a>)</span> <span class="xref-unresolved">Stdlib</span>.result</span></span></code></div><div class="spec-doc"><p>Create a new DebugControllerDBus</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-stop"><a href="#val-stop" class="anchor"></a><code><span><span class="keyword">val</span> stop : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Stop the debug controller, unregistering its object from the bus.</p><p>Any pending method calls to the object will complete successfully, but new ones will return an error. This method will block until all pending <code>GDebugControllerDBus::authorize</code> signals have been handled. This is expected to not take long, as it will just be waiting for threads to join. If any <code>GDebugControllerDBus::authorize</code> signal handlers are still executing in other threads, this will block until after they have returned.</p><p>This method will be called automatically when the final reference to the <code>GDebugControllerDBus</code> is dropped. You may want to call it explicitly to know when the controller has been fully removed from the bus, or to break reference count cycles.</p><p>Calling this method from within a <code>GDebugControllerDBus::authorize</code> signal handler will cause a deadlock and must not be done.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_connection"><a href="#val-get_connection" class="anchor"></a><code><span><span class="keyword">val</span> get_connection : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span>[ `d_bus_connection <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div><div class="spec-doc"><p>Get property: connection</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_authorize"><a href="#val-on_authorize" class="anchor"></a><code><span><span class="keyword">val</span> on_authorize : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:
+    <span>(<span><span class="label">invocation</span>:<span><span>[ `d_bus_method_invocation <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span> bool)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div></div></body></html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Async_result (ocgtk.Ocgtk_gio.Gio.Wrappers.Async_result)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gio</a> &#x00BB; <a href="../../index.html">Gio</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Async_result</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Async_result</span></code></h1><p><code>GAsyncResult</code> provides a base class for implementing asynchronous function results.</p><p>Asynchronous operations are broken up into two separate operations which are chained together by a <code>GAsyncReadyCallback</code>. To begin an asynchronous operation, provide a <code>GAsyncReadyCallback</code> to the asynchronous function. This callback will be triggered when the operation has completed, and must be run in a later iteration of the thread-default main context (see <code>GLib.MainContext.push_thread_default</code>) from where the operation was initiated. It will be passed a <code>GAsyncResult</code> instance filled with the details of the operation's success or failure, the object the asynchronous function was started for and any error codes returned. The asynchronous callback function is then expected to call the corresponding <code>_finish()</code> function, passing the object the function was called for, the <code>GAsyncResult</code> instance, and (optionally) an <code>error</code> to grab any error conditions that may have occurred.</p><p>The <code>_finish()</code> function for an operation takes the generic result (of type <code>GAsyncResult</code>) and returns the specific result that the operation in question yields (e.g. a <code>Gio.FileEnumerator</code> for a &quot;enumerate children&quot; operation). If the result or error status of the operation is not needed, there is no need to call the <code>_finish()</code> function; GIO will take care of cleaning up the result and error information after the <code>GAsyncReadyCallback</code> returns. You can pass <code>NULL</code> for the <code>GAsyncReadyCallback</code> if you don't need to take any action at all after the operation completes. Applications may also take a reference to the <code>GAsyncResult</code> and call <code>_finish()</code> later; however, the <code>_finish()</code> function may be called at most once.</p><p>Example of a typical asynchronous operation flow:</p><pre class="language-ocaml"><code>void _theoretical_frobnitz_async (Theoretical         *t,
+                                  GCancellable        *c,
+                                  GAsyncReadyCallback  cb,
+                                  gpointer             u);
+
+gboolean _theoretical_frobnitz_finish (Theoretical   *t,
+                                       GAsyncResult  *res,
+                                       GError       **e);
+
+static void
+frobnitz_result_func (GObject      *source_object,
+		 GAsyncResult *res,
+		 gpointer      user_data)
+{
+  gboolean success = FALSE;
+
+  success = _theoretical_frobnitz_finish (source_object, res, NULL);
+
+  if (success)
+    g_printf (&quot;Hurray!\n&quot;);
+  else
+    g_printf (&quot;Uh oh!\n&quot;);
+
+  ...
+
+}
+
+int main (int argc, void *argv[])
+{
+   ...
+
+   _theoretical_frobnitz_async (theoretical_data,
+                                NULL,
+                                frobnitz_result_func,
+                                NULL);
+
+   ...
+}</code></pre><p>The callback for an asynchronous operation is called only once, and is always called, even in the case of a cancelled operation. On cancellation the result is a <code>G_IO_ERROR_CANCELLED</code> error.</p><p><b>I/O Priority</b></p><p>Many I/O-related asynchronous operations have a priority parameter, which is used in certain cases to determine the order in which operations are executed. They are not used to determine system-wide I/O scheduling. Priorities are integers, with lower numbers indicating higher priority. It is recommended to choose priorities between <code>G_PRIORITY_LOW</code> and <code>G_PRIORITY_HIGH</code>, with <code>G_PRIORITY_DEFAULT</code> as a default.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `async_result ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-from_gobject"><a href="#val-from_gobject" class="anchor"></a><code><span><span class="keyword">val</span> from_gobject : <span><span><span class="type-var">'a</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-legacy_propagate_error"><a href="#val-legacy_propagate_error" class="anchor"></a><code><span><span class="keyword">val</span> legacy_propagate_error : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span>(bool, <a href="../../../../GError/index.html#type-t">GError.t</a>)</span> <span class="xref-unresolved">Stdlib</span>.result</span></span></code></div><div class="spec-doc"><p>If <code>res</code> is a <code>Gio.SimpleAsyncResult</code>, this is equivalent to <code>Gio.SimpleAsyncResult.propagate_error</code>. Otherwise it returns <code>FALSE</code>.</p><p>This can be used for legacy error handling in async <code>*_finish()</code> wrapper functions that traditionally handled <code>Gio.SimpleAsyncResult</code> error returns themselves rather than calling into the virtual method. This should not be used in new code; <code>Gio.AsyncResult</code> errors that are set by virtual methods should also be extracted by virtual methods, to enable subclasses to chain up correctly.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_source_object"><a href="#val-get_source_object" class="anchor"></a><code><span><span class="keyword">val</span> get_source_object : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span><span>[ `object_ ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span></span></code></div><div class="spec-doc"><p>Gets the source object from a <code>Gio.AsyncResult</code>.</p></div></div></div></body></html>

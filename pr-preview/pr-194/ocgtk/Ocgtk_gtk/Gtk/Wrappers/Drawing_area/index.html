@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Drawing_area (ocgtk.Ocgtk_gtk.Gtk.Wrappers.Drawing_area)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gtk</a> &#x00BB; <a href="../../index.html">Gtk</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Drawing_area</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Drawing_area</span></code></h1><p>Allows drawing with cairo.</p><p>An example GtkDrawingArea</p><p>It’s essentially a blank widget; you can draw on it. After creating a drawing area, the application may want to connect to:</p><ul><li>The <code>Gtk.Widget::realize</code> signal to take any necessary actions when the widget is instantiated on a particular display. (Create GDK resources in response to this signal.)</li></ul><ul><li>The <code>Gtk.DrawingArea::resize</code> signal to take any necessary actions when the widget changes size.</li></ul><ul><li>Call <code>Gtk.DrawingArea.set_draw_func</code> to handle redrawing the contents of the widget.</li></ul><p>The following code portion demonstrates using a drawing area to display a circle in the normal widget foreground color.</p><p><b>Simple GtkDrawingArea usage</b></p><pre class="language-ocaml"><code>static void
+draw_function (GtkDrawingArea *area,
+               cairo_t        *cr,
+               int             width,
+               int             height,
+               gpointer        data)
+{
+  GdkRGBA color;
+
+  cairo_arc (cr,
+             width / 2.0, height / 2.0,
+             MIN (width, height) / 2.0,
+             0, 2 * G_PI);
+
+  gtk_widget_get_color (GTK_WIDGET (area),
+                        &amp;color);
+  gdk_cairo_set_source_rgba (cr, &amp;color);
+
+  cairo_fill (cr);
+}
+
+int
+main (int argc, char **argv)
+{
+  gtk_init ();
+
+  GtkWidget *area = gtk_drawing_area_new ();
+  gtk_drawing_area_set_content_width (GTK_DRAWING_AREA (area), 100);
+  gtk_drawing_area_set_content_height (GTK_DRAWING_AREA (area), 100);
+  gtk_drawing_area_set_draw_func (GTK_DRAWING_AREA (area),
+                                  draw_function,
+                                  NULL, NULL);
+  return 0;
+}</code></pre><p>The draw function is normally called when a drawing area first comes onscreen, or when it’s covered by another window and then uncovered. You can also force a redraw by adding to the “damage region” of the drawing area’s window using <code>Gtk.Widget.queue_draw</code>. This will cause the drawing area to call the draw function again.</p><p>The available routines for drawing are documented in the <a href="https://www.cairographics.org/manual/">Cairo documentation</a>; GDK offers additional API to integrate with Cairo, like <code>Gdk.cairo_set_source_rgba</code> or <code>Gdk.cairo_set_source_pixbuf</code>.</p><p>To receive mouse events on a drawing area, you will need to use event controllers. To receive keyboard events, you will need to set the “can-focus” property on the drawing area, and you should probably draw some user-visible indication that the drawing area is focused.</p><p>If you need more complex control over your widget, you should consider creating your own <code>GtkWidget</code> subclass.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> =
+  <span><span>[ `drawing_area <span>| `widget</span> <span>| `initially_unowned</span> <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : <span>unit <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new DrawingArea</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_content_width"><a href="#val-set_content_width" class="anchor"></a><code><span><span class="keyword">val</span> set_content_width : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>int <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the desired width of the contents of the drawing area.</p><p>Note that because widgets may be allocated larger sizes than they requested, it is possible that the actual width passed to your draw function is larger than the width set here. You can use <code>Gtk.Widget.set_halign</code> to avoid that.</p><p>If the width is set to 0 (the default), the drawing area may disappear.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_content_height"><a href="#val-set_content_height" class="anchor"></a><code><span><span class="keyword">val</span> set_content_height : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>int <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the desired height of the contents of the drawing area.</p><p>Note that because widgets may be allocated larger sizes than they requested, it is possible that the actual height passed to your draw function is larger than the height set here. You can use <code>Gtk.Widget.set_valign</code> to avoid that.</p><p>If the height is set to 0 (the default), the drawing area may disappear.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_content_width"><a href="#val-get_content_width" class="anchor"></a><code><span><span class="keyword">val</span> get_content_width : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> int</span></code></div><div class="spec-doc"><p>Retrieves the content width of the <code>GtkDrawingArea</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_content_height"><a href="#val-get_content_height" class="anchor"></a><code><span><span class="keyword">val</span> get_content_height : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> int</span></code></div><div class="spec-doc"><p>Retrieves the content height of the <code>GtkDrawingArea</code>.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_resize"><a href="#val-on_resize" class="anchor"></a><code><span><span class="keyword">val</span> on_resize : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:<span>(<span><span class="label">width</span>:int <span class="arrow">&#45;&gt;</span></span> <span><span class="label">height</span>:int <span class="arrow">&#45;&gt;</span></span> unit)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div></div></body></html>

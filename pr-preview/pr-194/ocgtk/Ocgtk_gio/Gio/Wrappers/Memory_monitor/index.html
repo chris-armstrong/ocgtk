@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Memory_monitor (ocgtk.Ocgtk_gio.Gio.Wrappers.Memory_monitor)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gio</a> &#x00BB; <a href="../../index.html">Gio</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Memory_monitor</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Memory_monitor</span></code></h1><p><code>GMemoryMonitor</code> will monitor system memory and suggest to the application when to free memory so as to leave more room for other applications. It is implemented on Linux using the <a href="https://gitlab.freedesktop.org/hadess/low-memory-monitor/">Low Memory Monitor</a> (<a href="https://hadess.pages.freedesktop.org/low-memory-monitor/">API documentation</a>).</p><p>There is also an implementation for use inside Flatpak sandboxes.</p><p>Possible actions to take when the signal is received are:</p><ul><li>Free caches</li><li>Save files that haven’t been looked at in a while to disk, ready to be reopened when needed</li><li>Run a garbage collection cycle</li><li>Try and compress fragmented allocations</li><li>Exit on idle if the process has no reason to stay around</li><li>Call <code>malloc_trim(3)</code>) to return cached heap pages to the kernel (if supported by your libc)</li></ul><p>Note that some actions may not always improve system performance, and so should be profiled for your application. <code>malloc_trim()</code>, for example, may make future heap allocations slower (due to releasing cached heap pages back to the kernel).</p><p>See <code>Gio.MemoryMonitorWarningLevel</code> for details on the various warning levels.</p><pre class="language-ocaml"><code>static void
+warning_cb (GMemoryMonitor *m, GMemoryMonitorWarningLevel level)
+{
+  g_debug (&quot;Warning level: %d&quot;, level);
+  if (warning_level &gt; G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+    drop_caches ();
+}
+
+static GMemoryMonitor *
+monitor_low_memory (void)
+{
+  GMemoryMonitor *m;
+  m = g_memory_monitor_dup_default ();
+  g_signal_connect (G_OBJECT (m), &quot;low-memory-warning&quot;,
+                    G_CALLBACK (warning_cb), NULL);
+  return m;
+}</code></pre><p>Don’t forget to disconnect the <code>Gio.MemoryMonitor::low-memory-warning</code> signal, and unref the <code>GMemoryMonitor</code> itself when exiting.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `memory_monitor ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-from_gobject"><a href="#val-from_gobject" class="anchor"></a><code><span><span class="keyword">val</span> from_gobject : <span><span><span class="type-var">'a</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_low_memory_warning"><a href="#val-on_low_memory_warning" class="anchor"></a><code><span><span class="keyword">val</span> on_low_memory_warning : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:<span>(<span><span class="label">level</span>:<a href="../../../Gio_enums/index.html#type-memorymonitorwarninglevel">Gio_enums.memorymonitorwarninglevel</a> <span class="arrow">&#45;&gt;</span></span> unit)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div></div></body></html>

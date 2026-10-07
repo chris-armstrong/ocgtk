@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>conventions (ocgtk.conventions)</title><meta charset="utf-8"/><link rel="stylesheet" href="../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="index.html">Up</a> – <a href="../index.html">Index</a> &#x00BB; <a href="index.html">ocgtk</a> &#x00BB; conventions</nav><header class="odoc-preamble"><h1 id="conventions:-how-the-bindings-are-organised"><a href="#conventions:-how-the-bindings-are-organised" class="anchor"></a>Conventions: how the bindings are organised</h1><p><b>OUTLINE — to be written by hand.</b> Each section lists what to cover and suggested points. The diagrams are drafts to keep, change or drop. Remove this paragraph and the <code>TODO</code> notes when the page is written.</p></header><div class="odoc-tocs"><nav class="odoc-toc odoc-local-toc"><ul><li><a href="#who-this-page-is-for">Who this page is for</a></li><li><a href="#the-two-layers">The two layers</a></li><li><a href="#libraries-and-namespaces">Libraries and namespaces</a></li><li><a href="#anatomy">Anatomy of a class module</a></li><li><a href="#creating-objects">Creating objects</a></li><li><a href="#inheritance-and-interfaces">Inheritance and interfaces</a></li><li><a href="#methods-and-naming">Methods and naming</a></li><li><a href="#types">Types</a></li><li><a href="#signals">Signals</a></li><li><a href="#properties">Properties</a></li><li><a href="#memory-management">Memory management</a></li><li><a href="#errors">Errors</a></li><li><a href="#the-main-loop-and-threads">The main loop and threads</a></li><li><a href="#converting">Converting between the layers</a></li><li><a href="#version-availability">Version availability</a></li><li><a href="#reading-the-docs">Reading the docs</a></li></ul></nav></div><div class="odoc-content"><h2 id="who-this-page-is-for"><a href="#who-this-page-is-for" class="anchor"></a>Who this page is for</h2><p>TODO: one paragraph. Readers who know GTK from C (or another binding) and want to know where things are in OCaml, and readers new to GTK who need the mental model before the per-class pages make sense.</p><h2 id="the-two-layers"><a href="#the-two-layers" class="anchor"></a>The two layers</h2><p>TODO: cover</p><ul><li>Layer 1 (the <code>Wrappers</code> modules): one module per class, an abstract handle type <code>t</code>, one function per C function. Closest to the C API.</li><li>Layer 2 (the class modules): one module per class, holding an OCaml class type, a class, and constructors. Methods, signals and properties are object methods. This is the layer most code should use.</li><li>Both layers wrap the same objects; you can move between them (see <a href="#converting" title="converting">Converting between the layers</a>).</li><li>When to use Layer 1: interop, functions with no Layer 2 form, or avoiding objects in performance-sensitive code (check that this claim holds before writing it).</li></ul><pre class="language-mermaid"><code>flowchart TD
+  C[&quot;C library (libgtk-4, libgio-2.0, ...)&quot;]
+  L1[&quot;Layer 1: Gtk.Wrappers.Button
+  type t, one function per C function&quot;]
+  L2[&quot;Layer 2: Gtk.Button
+  class type button_t, class button, new_* constructors&quot;]
+  APP[&quot;Your code&quot;]
+  C --&gt; L1 --&gt; L2
+  APP -- &quot;usually&quot; --&gt; L2
+  APP -. &quot;interop, low level&quot; .-&gt; L1</code></pre><h2 id="libraries-and-namespaces"><a href="#libraries-and-namespaces" class="anchor"></a>Libraries and namespaces</h2><p>TODO: cover</p><ul><li>One library per GObject namespace (<code>Ocgtk_gtk</code>, <code>Ocgtk_gio</code>, ...), with the <code>Ocgtk</code> umbrella module re-exporting them; link the <a href="index.html" title="index">package index</a>.</li><li>Each library has a namespace module named after the C namespace (<code>Gtk</code>, <code>Gio</code>, <code>GdkPixbuf</code>, ...). Start there: it lists every class, interface, enumeration and constant.</li><li>Typical <code>open</code>: <code>open Ocgtk_gtk.Gtk</code> (match the examples directory).</li></ul><h2 id="anatomy"><a href="#anatomy" class="anchor"></a>Anatomy of a class module</h2><p>TODO: walk through one class end to end (suggest <code>Gtk.Button</code>: small, has several constructors, a signal, an interface).</p><ul><li><code>class type button_t</code>: the object's methods, signals and properties. Grouped on its page into Signals, Methods, Properties and Conversions.</li><li><code>class button</code>: wraps an existing Layer 1 handle. Not normally called directly; use the constructors.</li><li><code>new_</code>, <code>new_with_label</code>, ...: the constructors. They return <code>button_t</code>.</li><li>Why the class type is <code>button_t</code> and not <code>t</code>: types in signatures and error messages read as <code>Button.button_t</code>, not an anonymous <code>t</code>.</li></ul><pre class="language-mermaid"><code>flowchart LR
+  subgraph NS[&quot;Ocgtk_gtk.Gtk (namespace module)&quot;]
+    direction TB
+    subgraph L2M[&quot;Button (Layer 2)&quot;]
+      CT[&quot;class type button_t
+      methods, signals, properties&quot;]
+      CL[&quot;class button : Wrappers.Button.t -&gt; button_t&quot;]
+      CTOR[&quot;new_ / new_with_label / ...
+      return button_t&quot;]
+    end
+    subgraph W[&quot;Wrappers&quot;]
+      L1M[&quot;Button (Layer 1)
+      type t, new_, get_label, set_label, ...&quot;]
+    end
+    ENUMS[&quot;Enumerations: polymorphic variants&quot;]
+    CONSTS[&quot;Constants&quot;]
+  end
+  CTOR --&gt; CL --&gt; CT
+  CL -. wraps .-&gt; L1M</code></pre><h2 id="creating-objects"><a href="#creating-objects" class="anchor"></a>Creating objects</h2><p>TODO: cover the four cases each class page states in its canned text.</p><ul><li>The class has constructors: call one (<code>Button.new_with_label &quot;OK&quot;</code>).</li><li>Abstract class: no constructor; create a subclass instead (for example <code>Widget</code>).</li><li>Interface: no constructor; values come from methods or functions, or from objects that implement it.</li><li>Neither: the object is returned by methods on other classes (for example a <code>Display</code>, a <code>Clipboard</code>, an event).</li></ul><pre class="language-mermaid"><code>flowchart TD
+  Q{&quot;Does the class page have a
+  Constructors section?&quot;}
+  Q -- yes --&gt; A[&quot;Call a constructor:
+  Button.new_with_label&quot;]
+  Q -- no --&gt; K{&quot;What does the page say?&quot;}
+  K -- &quot;abstract class&quot; --&gt; S[&quot;Create a subclass,
+  e.g. Button for Widget&quot;]
+  K -- &quot;interface&quot; --&gt; I[&quot;Use an object that implements it,
+  or a function that returns it&quot;]
+  K -- &quot;returned by other classes&quot; --&gt; R[&quot;Get it from a method,
+  e.g. a display or a clipboard&quot;]</code></pre><h2 id="inheritance-and-interfaces"><a href="#inheritance-and-interfaces" class="anchor"></a>Inheritance and interfaces</h2><p>TODO: cover</p><ul><li>How the C hierarchy maps onto class types: a class type <code>inherit</code>s its parent's class type and the class types of the interfaces it implements. Each class type page lists &quot;Inherits from&quot; and &quot;Implements&quot;.</li><li>Upcasting with <code>:&gt;</code> (for example <code>(button :&gt; Widget.widget_t)</code>).</li><li>Downcasting / runtime type checks: say what is and is not supported (check the current API before writing).</li><li><code>as_*</code> methods return the Layer 1 handle.</li><li>Cyclic groups: some modules have long generated names such as <code>GEvent_controller_and__..._widget</code>. These are internal; use the public module (<code>Gtk.Widget</code>).</li></ul><pre class="language-mermaid"><code>classDiagram
+  direction BT
+  class widget_t {
+    show()
+    ...()
+  }
+  class actionable_t {
+    &lt;&lt;interface&gt;&gt;
+    get_action_name()
+  }
+  class button_t {
+    on_clicked()
+    get_label()
+    set_label()
+    as_button()
+  }
+  button_t --|&gt; widget_t : inherit
+  button_t ..|&gt; actionable_t : inherit</code></pre><h2 id="methods-and-naming"><a href="#methods-and-naming" class="anchor"></a>Methods and naming</h2><p>TODO: a mapping table from C to OCaml. Suggested rows:</p><ul><li><code>gtk_button_set_label (b, &quot;x&quot;)</code> → Layer 2 <code>b#set_label &quot;x&quot;</code>, Layer 1 <code>Wrappers.Button.set_label b &quot;x&quot;</code>.</li><li><code>GtkButton</code> → <code>Gtk.Button</code> (module), <code>button_t</code> (class type).</li><li>Constructor <code>gtk_button_new_with_label</code> → <code>Button.new_with_label</code>.</li><li>Constants and enumeration members → <code>`UPPER_CASE</code> polymorphic variants (enumerations) and flag lists (bitfields); say which.</li><li>Reserved words and other renamings (<code>new_</code>, <code>type_</code>, ...).</li><li>Each generated doc names the C function it wraps, with a link to the upstream C documentation.</li></ul><h2 id="types"><a href="#types" class="anchor"></a>Types</h2><p>TODO: one short rule per row, with an example each:</p><ul><li>Nullable values → <code>option</code>.</li><li><code>GError**</code> → <code>result</code> with <a href="GError/index.html#type-t"><code>GError.t</code></a>.</li><li>Out parameters → tuples (check how multiple outputs are returned).</li><li>Arrays and lists → OCaml arrays or lists (say which, and when).</li><li>Strings: UTF-8 OCaml <code>string</code>.</li><li>Sized integers → the modules in <code>Ocgtk_common</code> (<code>Int32</code>, <code>UInt8</code>, ...).</li><li>Records and boxed types: what you can access (field accessors).</li></ul><h2 id="signals"><a href="#signals" class="anchor"></a>Signals</h2><p>TODO: cover</p><ul><li>Each signal is an <code>on_&lt;name&gt;</code> method: <code>?after:bool</code>, a labelled <code>~callback</code>, and <code>()</code>; it returns a handler id.</li><li>Callback arguments are labelled (<code>~x ~y ~width ~height</code>).</li><li>Disconnecting and blocking with the handler id (see <a href="Gobject/index.html"><code>Gobject</code></a>).</li><li>Signals that return a value (for example to stop propagation).</li></ul><pre class="language-mermaid"><code>sequenceDiagram
+  participant App as Your code
+  participant B as button_t
+  participant G as GObject signal system
+  App-&gt;&gt;B: b#35;on_clicked ~callback ()
+  B-&gt;&gt;G: connect &quot;clicked&quot;
+  G--&gt;&gt;App: handler id
+  Note over G: user clicks the button
+  G-&gt;&gt;App: callback ()</code></pre><h2 id="properties"><a href="#properties" class="anchor"></a>Properties</h2><p>TODO: cover</p><ul><li>Properties with C getters and setters appear as <code>get_x</code> / <code>set_x</code> methods.</li><li>Properties without accessors: how to read and write them (check the current API before writing; property docs land in a later phase).</li><li>Change notification (<code>notify</code> signal).</li></ul><h2 id="memory-management"><a href="#memory-management" class="anchor"></a>Memory management</h2><p>TODO: cover</p><ul><li>The OCaml GC owns every value; there is no <code>unref</code> or <code>free</code> to call. Docs translated from C drop &quot;free the result with ...&quot; sentences for this reason.</li><li>What keeps a widget alive (its parent container, a window, your reference).</li><li>Anything that does need explicit cleanup (check: for example closing streams, destroying windows).</li></ul><h2 id="errors"><a href="#errors" class="anchor"></a>Errors</h2><p>TODO: cover</p><ul><li>Functions that can fail return <code>result</code> with <a href="GError/index.html#type-t"><code>GError.t</code></a>.</li><li>Programming errors (GLib critical warnings) versus recoverable errors.</li></ul><h2 id="the-main-loop-and-threads"><a href="#the-main-loop-and-threads" class="anchor"></a>The main loop and threads</h2><p>TODO: cover</p><ul><li>Initialising GTK and running the main loop (match the examples).</li><li>Timeouts and idle callbacks (<a href="Glib/index.html"><code>Glib</code></a>).</li><li>Threads: which calls are allowed off the main thread.</li></ul><h2 id="converting"><a href="#converting" class="anchor"></a>Converting between the layers</h2><p>TODO: cover</p><ul><li>Layer 2 → Layer 1: <code>obj#as_button</code> returns the handle.</li><li>Layer 1 → Layer 2: <code>new Button.button handle</code> wraps a handle.</li><li>When you need this: functions that exist only at one layer, or code mixing both.</li></ul><pre class="language-mermaid"><code>flowchart LR
+  H[&quot;Layer 1 handle
+  Wrappers.Button.t&quot;]
+  O[&quot;Layer 2 object
+  Button.button_t&quot;]
+  H -- &quot;new Button.button h&quot; --&gt; O
+  O -- &quot;o#35;as_button&quot; --&gt; H</code></pre><h2 id="version-availability"><a href="#version-availability" class="anchor"></a>Version availability</h2><p>TODO: cover</p><ul><li>Which GTK version the bindings target, and how newer APIs are guarded (version checks in the C stubs; what happens at runtime on an older library).</li><li>The <code>@since</code> tags in the docs.</li></ul><h2 id="reading-the-docs"><a href="#reading-the-docs" class="anchor"></a>Reading the docs</h2><p>TODO: cover</p><ul><li>Docs come from the upstream GIR files, translated to OCaml conventions: links to OCaml modules where they resolve, and inline code where they do not yet.</li><li>Code examples in C are labelled as C; some have hand-written OCaml versions.</li><li>Each item links to the upstream C documentation.</li></ul> <script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+// Render each {@mermaid[...]} block with its own id. mermaid.run() derives
+// ids from Date.now(), so diagrams rendered in the same millisecond collide.
+let n = 0;
+for (const code of document.querySelectorAll('pre.language-mermaid > code')) {
+  const { svg } = await mermaid.render(`ocgtk-diagram-${n++}`, code.textContent);
+  const div = document.createElement('div');
+  div.className = 'ocgtk-diagram';
+  div.innerHTML = svg;
+  code.parentElement.replaceWith(div);
+}
+</script> </div></body></html>

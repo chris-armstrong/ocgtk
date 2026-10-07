@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>File_chooser_native (ocgtk.Ocgtk_gtk.Gtk.Wrappers.File_chooser_native)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gtk</a> &#x00BB; <a href="../../index.html">Gtk</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; File_chooser_native</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.File_chooser_native</span></code></h1><p><code>GtkFileChooserNative</code> is an abstraction of a dialog suitable for use with “File Open” or “File Save as” commands.</p><p>By default, this just uses a <code>GtkFileChooserDialog</code> to implement the actual dialog. However, on some platforms, such as Windows and macOS, the native platform file chooser is used instead. When the application is running in a sandboxed environment without direct filesystem access (such as Flatpak), <code>GtkFileChooserNative</code> may call the proper APIs (portals) to let the user choose a file and make it available to the application.</p><p>While the API of <code>GtkFileChooserNative</code> closely mirrors <code>GtkFileChooserDialog</code>, the main difference is that there is no access to any <code>GtkWindow</code> or <code>GtkWidget</code> for the dialog. This is required, as there may not be one in the case of a platform native dialog.</p><p>Showing, hiding and running the dialog is handled by the <code>Gtk.NativeDialog</code> functions.</p><p>Note that unlike <code>GtkFileChooserDialog</code>, <code>GtkFileChooserNative</code> objects are not toplevel widgets, and GTK does not keep them alive. It is your responsibility to keep a reference until you are done with the object.</p><p><b>Typical usage</b></p><p>In the simplest of cases, you can the following code to use <code>GtkFileChooserNative</code> to select a file for opening:</p><pre class="language-ocaml"><code>static void
+on_response (GtkNativeDialog *native,
+             int              response)
+{
+  if (response == GTK_RESPONSE_ACCEPT)
+    {
+      GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+      GFile *file = gtk_file_chooser_get_file (chooser);
+
+      open_file (file);
+
+      g_object_unref (file);
+    }
+
+  g_object_unref (native);
+}
+
+  // ...
+  GtkFileChooserNative *native;
+  GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+
+  native = gtk_file_chooser_native_new (&quot;Open File&quot;,
+                                        parent_window,
+                                        action,
+                                        &quot;_Open&quot;,
+                                        &quot;_Cancel&quot;);
+
+  g_signal_connect (native, &quot;response&quot;, G_CALLBACK (on_response), NULL);
+  gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));</code></pre><p>To use a <code>GtkFileChooserNative</code> for saving, you can use this:</p><pre class="language-ocaml"><code>static void
+on_response (GtkNativeDialog *native,
+             int              response)
+{
+  if (response == GTK_RESPONSE_ACCEPT)
+    {
+      GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+      GFile *file = gtk_file_chooser_get_file (chooser);
+
+      save_to_file (file);
+
+      g_object_unref (file);
+    }
+
+  g_object_unref (native);
+}
+
+  // ...
+  GtkFileChooserNative *native;
+  GtkFileChooser *chooser;
+  GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+
+  native = gtk_file_chooser_native_new (&quot;Save File&quot;,
+                                        parent_window,
+                                        action,
+                                        &quot;_Save&quot;,
+                                        &quot;_Cancel&quot;);
+  chooser = GTK_FILE_CHOOSER (native);
+
+  if (user_edited_a_new_document)
+    gtk_file_chooser_set_current_name (chooser, _(&quot;Untitled document&quot;));
+  else
+    gtk_file_chooser_set_file (chooser, existing_file, NULL);
+
+  g_signal_connect (native, &quot;response&quot;, G_CALLBACK (on_response), NULL);
+  gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));</code></pre><p>For more information on how to best set up a file dialog, see the <code>Gtk.FileChooserDialog</code> documentation.</p><p><b>Response Codes</b></p><p><code>GtkFileChooserNative</code> inherits from <code>Gtk.NativeDialog</code>, which means it will return <code>GTK_RESPONSE_ACCEPT</code> if the user accepted, and <code>GTK_RESPONSE_CANCEL</code> if he pressed cancel. It can also return <code>GTK_RESPONSE_DELETE_EVENT</code> if the window was unexpectedly closed.</p><p><b>Differences from <code>GtkFileChooserDialog</code></b></p><p>There are a few things in the <code>Gtk.FileChooser</code> interface that are not possible to use with <code>GtkFileChooserNative</code>, as such use would prohibit the use of a native dialog.</p><p>No operations that change the dialog work while the dialog is visible. Set all the properties that are required before showing the dialog.</p><p><b>Win32 details</b></p><p>On windows the <code>IFileDialog</code> implementation (added in Windows Vista) is used. It supports many of the features that <code>GtkFileChooser</code> has, but there are some things it does not handle:</p><ul><li>Any <code>Gtk.FileFilter</code> added using a mimetype</li></ul><p>If any of these features are used the regular <code>GtkFileChooserDialog</code> will be used in place of the native one.</p><p><b>Portal details</b></p><p>When the <code>org.freedesktop.portal.FileChooser</code> portal is available on the session bus, it is used to bring up an out-of-process file chooser. Depending on the kind of session the application is running in, this may or may not be a GTK file chooser.</p><p><b>macOS details</b></p><p>On macOS the <code>NSSavePanel</code> and <code>NSOpenPanel</code> classes are used to provide native file chooser dialogs. Some features provided by <code>GtkFileChooser</code> are not supported:</p><ul><li>Shortcut folders.</li></ul></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `file_chooser_native <span>| `native_dialog</span> <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : 
+  <span><span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span><span>[ `window <span>| `widget</span> <span>| `initially_unowned</span> <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../../Gtk_enums/index.html#type-filechooseraction">Gtk_enums.filechooseraction</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new FileChooserNative</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_cancel_label"><a href="#val-set_cancel_label" class="anchor"></a><code><span><span class="keyword">val</span> set_cancel_label : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span>string option</span> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the custom label text for the cancel button.</p><p>If characters in <code>label</code> are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic.</p><p>Pressing Alt and that key should activate the button.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_accept_label"><a href="#val-set_accept_label" class="anchor"></a><code><span><span class="keyword">val</span> set_accept_label : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span>string option</span> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the custom label text for the accept button.</p><p>If characters in <code>label</code> are preceded by an underscore, they are underlined. If you need a literal underscore character in a label, use “__” (two underscores). The first underlined character represents a keyboard accelerator called a mnemonic.</p><p>Pressing Alt and that key should activate the button.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_cancel_label"><a href="#val-get_cancel_label" class="anchor"></a><code><span><span class="keyword">val</span> get_cancel_label : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string option</span></span></code></div><div class="spec-doc"><p>Retrieves the custom label text for the cancel button.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_accept_label"><a href="#val-get_accept_label" class="anchor"></a><code><span><span class="keyword">val</span> get_accept_label : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string option</span></span></code></div><div class="spec-doc"><p>Retrieves the custom label text for the accept button.</p></div></div></div></body></html>
