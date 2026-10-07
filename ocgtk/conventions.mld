@@ -1,0 +1,275 @@
+{0 Conventions: how the bindings are organised}
+
+{b OUTLINE — to be written by hand.} Each section lists what to cover and
+suggested points. The diagrams are drafts to keep, change or drop. Remove
+this paragraph and the [TODO] notes when the page is written.
+
+{1 Who this page is for}
+
+TODO: one paragraph. Readers who know GTK from C (or another binding) and
+want to know where things are in OCaml, and readers new to GTK who need the
+mental model before the per-class pages make sense.
+
+{1 The two layers}
+
+TODO: cover
+- Layer 1 (the [Wrappers] modules): one module per class, an abstract
+  handle type [t], one function per C function. Closest to the C API.
+- Layer 2 (the class modules): one module per class, holding an OCaml
+  class type, a class, and constructors. Methods, signals and properties
+  are object methods. This is the layer most code should use.
+- Both layers wrap the same objects; you can move between them (see
+  {{!section-converting}Converting between the layers}).
+- When to use Layer 1: interop, functions with no Layer 2 form, or
+  avoiding objects in performance-sensitive code (check that this claim
+  holds before writing it).
+
+{@mermaid[
+flowchart TD
+  C["C library (libgtk-4, libgio-2.0, ...)"]
+  L1["Layer 1: Gtk.Wrappers.Button
+  type t, one function per C function"]
+  L2["Layer 2: Gtk.Button
+  class type button_t, class button, new_* constructors"]
+  APP["Your code"]
+  C --> L1 --> L2
+  APP -- "usually" --> L2
+  APP -. "interop, low level" .-> L1
+]}
+
+{1 Libraries and namespaces}
+
+TODO: cover
+- One library per GObject namespace ([Ocgtk_gtk], [Ocgtk_gio], ...), with
+  the [Ocgtk] umbrella module re-exporting them; link the
+  {{!page-index}package index}.
+- Each library has a namespace module named after the C namespace
+  ([Gtk], [Gio], [GdkPixbuf], ...). Start there: it lists every class,
+  interface, enumeration and constant.
+- Typical [open]: [open Ocgtk_gtk.Gtk] (match the examples directory).
+
+{1:anatomy Anatomy of a class module}
+
+TODO: walk through one class end to end (suggest [Gtk.Button]: small, has
+several constructors, a signal, an interface).
+- [class type button_t]: the object's methods, signals and properties.
+  Grouped on its page into Signals, Methods, Properties and Conversions.
+- [class button]: wraps an existing Layer 1 handle. Not normally called
+  directly; use the constructors.
+- [new_], [new_with_label], ...: the constructors. They return
+  [button_t].
+- Why the class type is [button_t] and not [t]: types in signatures and
+  error messages read as [Button.button_t], not an anonymous [t].
+
+{@mermaid[
+flowchart LR
+  subgraph NS["Ocgtk_gtk.Gtk (namespace module)"]
+    direction TB
+    subgraph L2M["Button (Layer 2)"]
+      CT["class type button_t
+      methods, signals, properties"]
+      CL["class button : Wrappers.Button.t -> button_t"]
+      CTOR["new_ / new_with_label / ...
+      return button_t"]
+    end
+    subgraph W["Wrappers"]
+      L1M["Button (Layer 1)
+      type t, new_, get_label, set_label, ..."]
+    end
+    ENUMS["Enumerations: polymorphic variants"]
+    CONSTS["Constants"]
+  end
+  CTOR --> CL --> CT
+  CL -. wraps .-> L1M
+]}
+
+{1 Creating objects}
+
+TODO: cover the four cases each class page states in its canned text.
+- The class has constructors: call one ([Button.new_with_label "OK"]).
+- Abstract class: no constructor; create a subclass instead (for example
+  [Widget]).
+- Interface: no constructor; values come from methods or functions, or
+  from objects that implement it.
+- Neither: the object is returned by methods on other classes (for example
+  a [Display], a [Clipboard], an event).
+
+{@mermaid[
+flowchart TD
+  Q{"Does the class page have a
+  Constructors section?"}
+  Q -- yes --> A["Call a constructor:
+  Button.new_with_label"]
+  Q -- no --> K{"What does the page say?"}
+  K -- "abstract class" --> S["Create a subclass,
+  e.g. Button for Widget"]
+  K -- "interface" --> I["Use an object that implements it,
+  or a function that returns it"]
+  K -- "returned by other classes" --> R["Get it from a method,
+  e.g. a display or a clipboard"]
+]}
+
+{1 Inheritance and interfaces}
+
+TODO: cover
+- How the C hierarchy maps onto class types: a class type [inherit]s its
+  parent's class type and the class types of the interfaces it
+  implements. Each class type page lists "Inherits from" and
+  "Implements".
+- Upcasting with [:>] (for example [(button :> Widget.widget_t)]).
+- Downcasting / runtime type checks: say what is and is not supported
+  (check the current API before writing).
+- [as_*] methods return the Layer 1 handle.
+- Cyclic groups: some modules have long generated names such as
+  [GEvent_controller_and__..._widget]. These are internal; use the public
+  module ([Gtk.Widget]).
+
+{@mermaid[
+classDiagram
+  direction BT
+  class widget_t {
+    show()
+    ...()
+  }
+  class actionable_t {
+    <<interface>>
+    get_action_name()
+  }
+  class button_t {
+    on_clicked()
+    get_label()
+    set_label()
+    as_button()
+  }
+  button_t --|> widget_t : inherit
+  button_t ..|> actionable_t : inherit
+]}
+
+{1 Methods and naming}
+
+TODO: a mapping table from C to OCaml. Suggested rows:
+- [gtk_button_set_label (b, "x")] → Layer 2 [b#set_label "x"],
+  Layer 1 [Wrappers.Button.set_label b "x"].
+- [GtkButton] → [Gtk.Button] (module), [button_t] (class type).
+- Constructor [gtk_button_new_with_label] → [Button.new_with_label].
+- Constants and enumeration members → [`UPPER_CASE] polymorphic variants
+  (enumerations) and flag lists (bitfields); say which.
+- Reserved words and other renamings ([new_], [type_], ...).
+- Each generated doc names the C function it wraps, with a link to the
+  upstream C documentation.
+
+{1 Types}
+
+TODO: one short rule per row, with an example each:
+- Nullable values → [option].
+- [GError**] → [result] with {!GError.t}.
+- Out parameters → tuples (check how multiple outputs are returned).
+- Arrays and lists → OCaml arrays or lists (say which, and when).
+- Strings: UTF-8 OCaml [string].
+- Sized integers → the modules in [Ocgtk_common] ([Int32], [UInt8], ...).
+- Records and boxed types: what you can access (field accessors).
+
+{1 Signals}
+
+TODO: cover
+- Each signal is an [on_<name>] method: [?after:bool], a labelled
+  [~callback], and [()]; it returns a handler id.
+- Callback arguments are labelled ([~x ~y ~width ~height]).
+- Disconnecting and blocking with the handler id (see {!Gobject}).
+- Signals that return a value (for example to stop propagation).
+
+{@mermaid[
+sequenceDiagram
+  participant App as Your code
+  participant B as button_t
+  participant G as GObject signal system
+  App->>B: b#35;on_clicked ~callback ()
+  B->>G: connect "clicked"
+  G-->>App: handler id
+  Note over G: user clicks the button
+  G->>App: callback ()
+]}
+
+{1 Properties}
+
+TODO: cover
+- Properties with C getters and setters appear as [get_x] / [set_x]
+  methods.
+- Properties without accessors: how to read and write them (check the
+  current API before writing; property docs land in a later phase).
+- Change notification ([notify] signal).
+
+{1 Memory management}
+
+TODO: cover
+- The OCaml GC owns every value; there is no [unref] or [free] to call.
+  Docs translated from C drop "free the result with ..." sentences for
+  this reason.
+- What keeps a widget alive (its parent container, a window, your
+  reference).
+- Anything that does need explicit cleanup (check: for example closing
+  streams, destroying windows).
+
+{1 Errors}
+
+TODO: cover
+- Functions that can fail return [result] with {!GError.t}.
+- Programming errors (GLib critical warnings) versus recoverable errors.
+
+{1 The main loop and threads}
+
+TODO: cover
+- Initialising GTK and running the main loop (match the examples).
+- Timeouts and idle callbacks ({!Glib}).
+- Threads: which calls are allowed off the main thread.
+
+{1:converting Converting between the layers}
+
+TODO: cover
+- Layer 2 → Layer 1: [obj#as_button] returns the handle.
+- Layer 1 → Layer 2: [new Button.button handle] wraps a handle.
+- When you need this: functions that exist only at one layer, or code
+  mixing both.
+
+{@mermaid[
+flowchart LR
+  H["Layer 1 handle
+  Wrappers.Button.t"]
+  O["Layer 2 object
+  Button.button_t"]
+  H -- "new Button.button h" --> O
+  O -- "o#35;as_button" --> H
+]}
+
+{1 Version availability}
+
+TODO: cover
+- Which GTK version the bindings target, and how newer APIs are guarded
+  (version checks in the C stubs; what happens at runtime on an older
+  library).
+- The [@since] tags in the docs.
+
+{1 Reading the docs}
+
+TODO: cover
+- Docs come from the upstream GIR files, translated to OCaml
+  conventions: links to OCaml modules where they resolve, and inline code
+  where they do not yet.
+- Code examples in C are labelled as C; some have hand-written OCaml
+  versions.
+- Each item links to the upstream C documentation.
+
+{%html: <script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+// Render each {@mermaid[...]} block with its own id. mermaid.run() derives
+// ids from Date.now(), so diagrams rendered in the same millisecond collide.
+let n = 0;
+for (const code of document.querySelectorAll('pre.language-mermaid > code')) {
+  const { svg } = await mermaid.render(`ocgtk-diagram-${n++}`, code.textContent);
+  const div = document.createElement('div');
+  div.className = 'ocgtk-diagram';
+  div.innerHTML = svg;
+  code.parentElement.replaceWith(div);
+}
+</script> %}

@@ -9,7 +9,8 @@ branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
-for PRs and `main` only)**
+for PRs and `main` only; L2 page structure (decision 10), new Phase 7,
+Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -63,16 +64,20 @@ auto-managed `gh-pages` branch and in the local cache.
    `layer1_main.ml` path), **thread docs into each `module rec X : sig` arm
    of combined cyclic modules** (new wiring — those emitters currently take
    no doc argument), un-suppress enum/bitfield type docs (emitters already
-   exist), and give L2 (`g<Type>` class types, combined class modules) and
-   cyclic shims the same entity docs. Each site kind lands in both layers in
-   the same phase; no layer waits for a later leg. Alias pages stay doc-less
-   until the page-model leg (PRD §11).
+   exist), and give L2 modules (`g<Type>`, combined class modules) and
+   cyclic shims the same entity docs. At L2 the GIR class doc is the
+   **module** preamble, and the `class type` and `class` get canned docs
+   (decision 10, revised 2026-10-07; earlier text put the class doc on the
+   `class type` header). Each site kind lands in both layers in the same
+   phase; no layer waits for a later leg. Alias pages stay doc-less until the
+   page-model leg (PRD §11).
 
 5. **Member docs: methods, constructors, signals in both layers (Phase 5);
    properties and record fields in Phase 6.** Methods: existing L1 emission,
    now translated; L2 method wrappers gain the same docs. Constructors:
-   `ctor_doc` replaces the synthetic `Create a new X` when present (synthetic
-   text stays as fallback), at L1 and L2. Signals: the signal `<doc>` goes on
+   `ctor_doc` is used when present; otherwise a synthetic fallback,
+   `Create a new <class name>. Wraps <link to the online C docs>` (revised
+   2026-10-07), at L1 and L2. Signals: the signal `<doc>` goes on
    the L1 `on_<sig>` val/external and the L2 signal methods. Properties keep
    the synthetic `Get/Set property` text until Phase 6, which covers both
    layers together; `prop_doc`/`field_doc` remain parsed-but-dropped until then.
@@ -95,13 +100,13 @@ auto-managed `gh-pages` branch and in the local cache.
    own messages), classified into buckets, trivially fixable classes are
    fixed at emission (paragraph-on-own-line, nested-tag re-parses), and the
    rest are recorded as TODO counts in the artifact manifest. Capture is
-   available from Phase 3; classification follows in Phase 9. No CI gate this
+   available from Phase 3; classification follows in Phase 10. No CI gate this
    leg; the gate arrives once classification stabilises.
 
 8. **C idioms are translated, not just degraded (added 2026-10-04).** GIR
    prose and examples are written for C. Two phase groups handle them:
-   **Phase 7** (right after Phase 5) does the trivial, deterministic AST
-   rewrites; **Phases 10–13** (end of cycle) do code-block translation.
+   **Phase 8** (after Phases 5–7) does the trivial, deterministic AST
+   rewrites; **Phases 11–14** (end of cycle) do code-block translation.
    Ownership boilerplate (`Free the returned object with g_object_unref()`,
    `should be freed with g_free()`) is **stripped**: the GC owns every value,
    so the sentence is actively misleading. Every strip is counted in the
@@ -115,6 +120,68 @@ auto-managed `gh-pages` branch and in the local cache.
    branch and merged in order. A phase's acceptance gate is the checkpoint for
    its PR. From Phase 4 on, every PR gets a preview URL, so the rendered docs
    are reviewed on the PR, not only in the local cache.
+
+10. **L2 page structure (added 2026-10-07).** Reviewing the Phase 4 preview
+    showed that a reader of an L2 page is not told how the module is laid
+    out, where the constructors are, or why some classes have none. Agreed
+    layout for each L2 class module:
+
+    - **Module preamble:** the GIR class doc, followed by a fixed navigation
+      paragraph: methods, signals and properties are on
+      `{!class-type-<name>_t}`; constructors are at
+      `{!section-constructors}`; low-level functions are in the L1 module.
+      The L1 module preamble gets the matching pointer to the L2 module.
+    - **`class type <name>_t`:** canned doc. "The methods, signals and
+      properties of a <Class>." Then the inheritance block, with interfaces
+      as a list because there can be many:
+
+      ```
+      Inherits from: <class name>
+      Implements:
+      - <interface 1>
+      - <interface 2>
+      ```
+
+      Then a pointer to the constructors. The class type body is grouped by
+      floating section comments: `{2 Signals}`, `{2 Methods}`,
+      `{2 Properties}`, `{2 Conversions}` (the `as_*` methods).
+    - **`class <name>`:** canned doc. It wraps an existing Layer 1 handle;
+      use the constructors instead, except when converting a handle obtained
+      from Layer 1. (Direct instantiation stays supported.)
+    - **`{2:constructors Constructors}`** heading before the constructors.
+      When a class has no constructors, the heading is followed by one canned
+      line instead:
+      - abstract (GIR `abstract="1"`): "This is an abstract class that can't
+        be instantiated directly. Refer to its subclasses for a concrete
+        implementation."
+      - interface: "This is an interface which can't be instantiated
+        directly, but which may be returned from a method or function."
+      - otherwise: "This class is not instantiated directly - it is used as
+        a return value by methods on other classes."
+
+      A missing constructor is a documentation gap, not a binding gap: 342 of
+      699 L2 modules have no `new*`, and only one of them (gio
+      `AsyncInitable`) has an L1 constructor that L2 lacks. The rest have no
+      constructor in the C library.
+    - **No `type t` alias** for the class type: `<name>_t` reads better in
+      inferred types and errors, and renaming would break the API.
+    - **Conventions page:** a hand-written `ocgtk/conventions.mld` explains
+      the layers, the module anatomy, naming and type mappings, signals and
+      properties once. `index.mld` and each generated namespace module
+      (`GdkPixbuf.mli`, ...) link to it. An outline with draft diagrams is
+      committed; the text is written by hand.
+
+    **odoc probe (odoc 3.2.1, 2026-10-07):** floating section comments inside
+    a `class type` render as headings with anchors and appear in the page's
+    contents sidebar; `{2:constructors Constructors}` gives a linkable
+    anchor; `{!class-type-button_t}`, `{!section-constructors}` and a
+    reference from an L1 module to the L2 module that depends on it all
+    resolve with no warnings. Mermaid diagrams work in `.mld` pages as
+    `{@mermaid[ … ]}` blocks (odoc emits `<pre class="language-mermaid">`)
+    plus one `{%html: <script …> %}` block per page that loads a pinned
+    Mermaid from jsDelivr. The script renders each block with its own id,
+    because `mermaid.run()` derives ids from `Date.now()` and diagrams
+    rendered in the same millisecond collide.
 
 ## Translator design: parse → flat AST → render
 
@@ -254,13 +321,14 @@ design, recorded as fallbacks for the warnings report): admonitions
 | L2 method docs | `class_gen_method.ml`, `class_gen_body.ml` | **new wiring** (Phase 5) |
 | L1 entity docs, standalone | `layer1/layer1_main.ml` module comment | translate; **un-suppress** class/interface |
 | L1 combined cyclic modules | `generate_combined_ml_modules` / `generate_ml_interface_internal` (no doc param today) | **new wiring** (Phase 5): thread `class_doc` into each `module rec` arm |
-| L2 class types, combined class modules, cyclic shims | `class_gen.ml` (no doc emission today) | **new wiring** (Phase 5): class doc on `class type` header, combined modules and shims |
-| Constructors (L1 and L2) | `layer1/layer1_constructor.ml`; `class_gen.ml` `generate_constructor_*` | **new wiring** (Phase 5): `ctor_doc` when present, synthetic fallback |
+| L2 modules, combined class modules, cyclic shims | `class_gen.ml` (no doc emission today) | **new wiring** (Phase 5): class doc as module preamble + navigation paragraph; canned `class type` / `class` docs (decision 10) |
+| Constructors (L1 and L2) | `layer1/layer1_constructor.ml`; `class_gen.ml` `generate_constructor_*` | **new wiring** (Phase 5): `ctor_doc` when present, else `Create a new <class>. Wraps <C docs link>`; L2 `Constructors` heading |
+| L2 class type sections, inheritance block, no-constructor text | `class_gen.ml`, `class_gen_body.ml` | **new wiring** (Phase 7) |
 | Signals (L1 `on_<sig>` and L2 signal methods) | `signal_gen.ml` (`emit_l1_val`, `emit_l2_method*`) | **new wiring** (Phase 5): signal `<doc>` |
 | Properties (L1 and L2) | `layer1_property.ml`, `class_gen_property.ml` | **new wiring** (Phase 6), both layers together |
 | Record fields | — (`field_doc` parsed, dropped) | Phase 6, if a layer has a counterpart; else the one site |
 | Alias pages | — | deferred (page-model leg, PRD §11) |
-| Per-package `index.mld` | new | **new**: generated (Phase 8) |
+| Namespace module intros (`GdkPixbuf.mli`, ...) | `library_module.ml` | **new**: short generated intro linking the conventions page (Phase 9) |
 
 - Delete the two suppression sites in `bin/gir_gen.ml` (class/interface
   entity-doc blanking, now gone; `enum_doc`/`bitfield_doc` field blanking in
@@ -291,10 +359,10 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `gir_gen/lib/generate/doc_render.ml` / `.mli` | `render`, `render_as`, `render_with_fallbacks`: AST → odoc markup; heading policy per context; render-time fallbacks; comment-hazard neutralisation. |
 | `gir_gen/lib/generate/doc_translate.ml` / `.mli` | Composition: `translate`, `translate_with_fallbacks` (= render ∘ parse), re-exports of the AST types, `equal_t`. The entry point emission sites call. |
 | `gir_gen/lib/generate/doc_emit.ml` / `.mli` | `emit_item_doc`, `emit_entity_doc`: assembly, tags-last, final-comment sanitisation, `@since`. |
-| `gir_gen/lib/generate/doc_index.ml` / `.mli` | Per-namespace `index.mld` emit pass — `{!…}` tables grouped by kind; called from the bindings pipeline (Phase 8). |
+| `ocgtk/conventions.mld` | Hand-written conventions page (Phase 9; outline with draft Mermaid diagrams committed 2026-10-07). Replaces the generated `doc_index.ml` / `index.mld` of the earlier plan. |
 | `gir_gen/test/generate/doc_parse_tests.ml`, `doc_render_tests.ml`, `doc_translate_tests.ml` (+ `doc_translate_test_helpers.ml`), `doc_emit_tests.ml` (Phase 2) | Unit/expect tests per the `constant_code_tests.ml` convention: every render-policy row, every invariant. |
 | `gir_gen/test/corpus/doc_translate_corpus_tests.ml` | Corpus smoke test (Phase 1): `parse`+`render` over the bundled `<doc>` elements; asserts comment safety, balance, the wiring property. |
-| `scripts/doc_artifacts.ml` | Artifact cache driver (Phase 3; warning classification added in Phase 9): `build`/`list`/`extract`/`diff`/`diff-baseline`/`set-baseline`/`warnings` subcommands plus `--force`. Pure `Sys.command` shelling; invoked as `opam exec -- ocaml scripts/doc_artifacts.ml …` (no dune bootstrap needed — it shells out only). |
+| `scripts/doc_artifacts.ml` | Artifact cache driver (Phase 3; warning classification added in Phase 10): `build`/`list`/`extract`/`diff`/`diff-baseline`/`set-baseline`/`warnings` subcommands plus `--force`. Pure `Sys.command` shelling; invoked as `opam exec -- ocaml scripts/doc_artifacts.ml …` (no dune bootstrap needed — it shells out only). |
 | `.github/workflows/doc-preview.yml` | Phase 4. Builds `@doc` (read-only job), deploys PR previews and `main` (write job). |
 | `.github/workflows/doc-preview-cleanup.yml` | Phase 4. Removes a PR's preview on close (`pull_request_target`, no PR code run). |
 | `scripts/doc-preview-landing.sh` | Phase 4. Writes the landing `index.html` linking the package roots, with build provenance. Runs locally too. |
@@ -313,7 +381,6 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `lib/generate/layer1/layer1_constructor.ml` | New: `ctor_doc` when present, synthetic fallback. |
 | `lib/generate/signal_gen.ml`, `signal_gen.mli` | New: signal `doc` on the L1 `on_<sig>` val and the L2 signal methods; `signal_emission` carries the doc. |
 | `lib/generate/layer1/layer1_property.ml`, `lib/generate/class_gen_property.ml` | Property docs, both layers (Phase 6). |
-| `scripts/generate-bindings.sh` | Also emits the two `index.mld`s (via the binary) — Phase 8. |
 | `ocgtk/dune`, `gir_gen/dune` | `(documentation)` stanzas (leg 0). |
 
 **No change:** `.opam` files (`odoc {with-doc}` already emitted by dune),
@@ -329,22 +396,17 @@ under a `(documentation)` stanza (one per dune project: `ocgtk/` root,
   bundled GIR file. The only namespace-level prose is `<docsection>` groups —
   Graphene 16, Gtk 1, all others 0 — parsed-and-dropped for now; folding them
   in later is forward-compatible.
-- So each `index.mld` is **generated by gir_gen**: a short intro plus a table
-  of `{!…}` links grouped by kind (Classes, Interfaces, Enums, Bitfields,
-  Records, Constants, Functions) pointing at the stable public paths. The
-  generator has the full AST; this is one emit pass per namespace
-  (`doc_index.ml` above).
-- **Provenance (deliberate):** `index.mld` is **committed, like the
-  bindings**, and produced by the same regeneration pipeline
-  (`generate-bindings.sh` runs the binary's index pass). Reason: decision 1's
-  logic — everything generated is committed so the tree stays
-  regeneration-idempotent and the artifact cache's clean-tree keying holds.
-  It is not generated at build time.
+- **Revised 2026-10-07:** `ocgtk/index.mld` was written by hand before this
+  leg (per-library headings and descriptions), so it is not generated. The
+  per-namespace listing it would have held already exists: each generated
+  namespace module (`GdkPixbuf.mli`, ...) lists its classes, enumerations
+  and constants under headings. Phase 9 adds a short generated intro to
+  each namespace module and the hand-written conventions page (decision 10).
+  The earlier generated `index.mld` and `doc_index.ml` are dropped.
 - **Landing page**: the preview workflow (Phase 4) drops a tiny static
   `index.html` at the artifact root that links each package's odoc root. In
-  Phase 4 it links whatever roots `@doc` produces; Phase 8 adds the
-  `index.mld` package pages it points to. odoc cannot cross-link page trees,
-  a raw HTML link can.
+  Phase 4 it links whatever roots `@doc` produces. odoc cannot cross-link
+  page trees, a raw HTML link can.
 
 ## Doc artifact cache
 
@@ -408,7 +470,7 @@ versions make the situation recognisable.
 **Manifest fields (`<sha>.json`):** sha, branch, date, host odoc version,
 dune version, artifact byte size, HTML file count, free-text note, and the
 **odoc warning report** — filtered to odoc-attributable lines (decision 7).
-Phase 3 records the filtered raw warning count; Phase 9 adds the classified
+Phase 3 records the filtered raw warning count; Phase 10 adds the classified
 bucket counts (report-only this leg).
 
 **Benchmark semantics:** once translation stabilises, one artifact is blessed
@@ -505,8 +567,7 @@ not verify them.
 - Install via `opam install . --deps-only --with-doc` — both `.opam` files
   already carry `odoc {with-doc}` (dune's generator emits it), so **no new
   opam dependency** is being added.
-- Add the two `(documentation)` stanzas in Phase 0; the committed, generated
-  `index.mld`s arrive in Phase 8.
+- Add the two `(documentation)` stanzas in Phase 0.
 - Phase 0's milestone: `dune build @doc` green from the repo root,
   producing HTML for both packages; translation work then proceeds against a
   rendered baseline.
@@ -648,7 +709,7 @@ baseline, so every later PR can be diffed against it.
 above (`build`, `build --force`, `list`, `extract`, `diff`, `diff-baseline`,
 `set-baseline`); keying and dirty-suffix semantics as specified; manifest
 (sha, branch, date, odoc and dune versions, byte size, HTML file count, note,
-and the filtered raw warning count). Bucket classification is left to Phase 9.
+and the filtered raw warning count). Bucket classification is left to Phase 10.
 Small OCaml test for the purely testable parts: manifest serialisation and
 key/dirty-suffix logic.
 
@@ -667,7 +728,7 @@ Dirty-tree build keys `<sha>-dirty` and is never a baseline candidate.
 ### Phase 4 — PR preview workflow (CI)
 
 *Goal:* every PR from here on gets a rendered-docs preview URL, which is the
-review surface for Phases 5–13.
+review surface for Phases 5–14.
 
 **Status: implemented; acceptance pending the first run** (branch `m3-p4`;
 the checks below need the workflow to have run on the PR and the Pages
@@ -681,8 +742,7 @@ it.
 *Changes:* `.github/workflows/doc-preview.yml` and
 `doc-preview-cleanup.yml` per the preview workflow section above, with
 `scripts/doc-preview-landing.sh` for the landing `index.html`. The landing
-page links the package roots `@doc` produces; the `index.mld` pages arrive
-in Phase 8.
+page links the package roots `@doc` produces.
 Requires the one-time repository setup described in the preview section.
 
 *Acceptance:* the preview URL comment appears on the PR; the preview shows
@@ -722,14 +782,22 @@ each; every site kind lands in both layers where it has both):*
    `layer1_main.ml`'s `generate_ml_interface_internal` /
    `generate_combined_ml_modules` gain a doc parameter; one doc comment per
    `module rec X : sig` arm; `ml_interface.ml` re-exports the updated
-   signature. L2: the `class type X` header and the combined class modules in
-   `class_gen.ml` take the class doc. Cyclic shims (`generate_cyclic_shim_*`)
-   take the same entity doc.
+   signature. L2: the module preamble of each class module, and of each
+   combined class module in `class_gen.ml`, takes the class doc followed by
+   the navigation paragraph (decision 10); the L1 module preamble gets the
+   pointer back to L2. The `class type` and `class` get their canned docs.
+   Cyclic shims (`generate_cyclic_shim_*`) take the same entity doc.
 3. Method docs at L2: `class_gen_method.ml` and `class_gen_body.ml` emit the
    translated method doc (L1 method docs already exist from Phase 2).
 4. Constructors, both layers: `layer1_constructor.ml` and
    `generate_constructor_impl` / `generate_constructor_sig` use translated
-   `ctor_doc` when present, synthetic `Create a new X` as fallback.
+   `ctor_doc` when present; otherwise `Create a new <class name>. Wraps
+   <link to the online C docs>`, with the C function name as the link text.
+   L2 constructors follow a `{2:constructors Constructors}` heading. The
+   link needs the per-namespace base URL (PRD §6.3) and gi-docgen's
+   `ctor.<Type>.<name>.html` page pattern. This phase pulls in just that
+   part of the table. Namespaces without gi-docgen docs (cairo) get the C
+   name without a link.
 5. Signals, both layers: `signal_gen.ml` emits the signal `<doc>` on the L1
    `on_<sig>` val (Interface mode) and on the L2 signal methods
    (`emit_l2_method`, `emit_l2_method_sig`); `signal_emission` gains the doc.
@@ -750,7 +818,8 @@ opam exec -- ocaml scripts/doc_artifacts.ml build          # cache the commit
 opam exec -- ocaml scripts/doc_artifacts.ml diff-baseline   # additive diff only
 ```
 Spot checks against known corpus anchors: `Gtk.Button` class doc non-empty
-in `button.mli`, and in the L2 `class type` for `Button`; `gtk_enums.mli`
+in `button.mli`, and as the L2 `GButton` module preamble with the navigation
+paragraph; `gtk_enums.mli`
 gains ≥1 enum/bitfield type-level doc; a combined cyclic-module file gains one
 doc comment per `module rec` arm; a cyclic shim carries its entity doc; a
 constructor with real `<doc>` shows GIR-derived text at L1 and L2; a signal
@@ -774,7 +843,41 @@ with and without `prop_doc`.
 *Acceptance:* the standing invariant; a property with a real `<doc>` shows
 GIR-derived text at L1 and L2 in the PR's preview.
 
-### Phase 7 — C-idiom AST rewrites (scalars, primitive types, ownership)
+### Phase 7 — L2 page structure (sections, inheritance, no-constructor text)
+
+*Goal:* every L2 class page follows the decision 10 layout, so a reader can
+find a class's members and learn how to get an instance without knowing the
+generator's conventions.
+
+*Changes:*
+- Class type sections: `class_gen` emits `{2 Signals}`, `{2 Methods}`,
+  `{2 Properties}` and `{2 Conversions}` as floating comments in the
+  `class type` body (in the `.mli`; the probe showed odoc renders them and
+  lists them in the contents sidebar). Sections with no members are not
+  emitted. Properties need Phase 6, so their section has docs.
+- Inheritance block in the canned `class type` doc: "Inherits from:" the
+  parent class, and "Implements:" with one list item per interface.
+- No-constructor text: when a class has no constructors, the
+  `Constructors` heading is followed by the canned line for abstract
+  classes, interfaces or other classes (decision 10).
+- Public inheritance paths: classes outside a cyclic group `inherit` the
+  public shim's class type (`GWidget.widget_t`) instead of the combined
+  module's (`GEvent_controller_and__..._widget.widget_t`). The shim's class
+  type is an alias, so the type is unchanged, but the pages stop showing
+  internal names. 126 gtk L2 files use the combined path today. This is a
+  generator change, so the standing invariant covers it.
+
+*Tests:* `class_gen` expect tests for section emission (including empty
+sections), the inheritance block with zero, one and several interfaces, the
+three no-constructor variants, and the shim inherit path.
+
+*Acceptance:* the standing invariant; in the PR's preview, the `Button`
+class type page has the four sections in its contents sidebar, the
+inheritance block, and no internal cyclic module names; `Widget` shows the
+abstract-class line, an interface page shows the interface line, and
+`Display` shows the third line.
+
+### Phase 8 — C-idiom AST rewrites (scalars, primitive types, ownership)
 
 Corpus anchors (sampled over Gtk/Gio/Gdk/Pango/Gsk/GdkPixbuf/cairo/Graphene,
 ~39,700 docs): `%TRUE`/`%FALSE`/`%NULL` ≈ 4,200 docs, backticked
@@ -810,7 +913,7 @@ the resolver leg.
 - **Code blocks keep their language:** `Code_block of string` becomes
   `Code_block of { lang : string option; body : string }`; `parse` records
   the fence language (`c`, `C`, `xml`, …, or `|[ <!-- language="C" --> ` form)
-  and `render` still emits `{[ … ]}` for now. Phases 10–13 consume `lang`.
+  and `render` still emits `{[ … ]}` for now. Phases 11–14 consume `lang`.
 
 *Deferred to the resolver leg (need a symbol index, not just a table):*
 `%GTK_FOO` constants → enum constructors, `foo_bar()` function references →
@@ -818,7 +921,7 @@ the resolver leg.
 
 *Tests:* parse and render unit tests for every row above; the corpus smoke
 test gains counters (`C_lit`, `C_prim`, ownership strips) and a
-**no-residual check**: after Phase 7, no rendered doc contains `%TRUE`,
+**no-residual check**: after Phase 8, no rendered doc contains `%TRUE`,
 `%FALSE`, `%NULL`, or `g_object_unref`/`g_free` outside a code block.
 
 *Acceptance:*
@@ -830,27 +933,37 @@ grep -rE '%(TRUE|FALSE|NULL)\b' ocgtk/src/*/generated/*.mli   # empty
 grep -rE 'g_object_unref|freed with g_free' ocgtk/src/*/generated/*.mli  # only code blocks, if any
 ```
 
-### Phase 8 — `doc_index.ml`: committed, generated `index.mld`s
+### Phase 9 — Conventions page and namespace module intros
 
-*Goal:* per-package landing pages in the odoc HTML, produced by the
-bindings pipeline (provenance decision above).
+*Revised 2026-10-07:* this phase previously generated a committed
+`index.mld` per package with `doc_index.ml`. `ocgtk/index.mld` is hand-written
+and the namespace modules already list their contents, so that is dropped.
 
-*Changes:* new `lib/generate/doc_index.ml`/`.mli` (one emit pass per
-namespace: intro + `{!…}` tables grouped by kind); called from
-`bin/gir_gen.ml` and hence from `scripts/generate-bindings.sh`; committed
-like the bindings; `doc_index` unit test (one fixture namespace → expected
-link groups). The landing page from Phase 4 is updated to link these pages.
+*Goal:* a reader who lands on any namespace module or the package index
+finds one page that explains how the bindings are organised.
+
+*Changes:*
+- `ocgtk/conventions.mld`, written by hand from the committed outline
+  (sections, suggested points and draft Mermaid diagrams), linked from
+  `index.mld`.
+- A short generated intro on each namespace module (`GdkPixbuf.mli`, ...,
+  emitted by `library_module.ml`):
+  two sentences on the module's contents (class modules, the `Wrappers`
+  submodule, enumerations, constants) and a link to the conventions page.
+  The intro is fixed text with the namespace name substituted.
+- Generator unit test for the intro.
 
 *Acceptance:*
 ```bash
 opam exec -- dune build @all && opam exec -- dune test gir_gen/
-git status --porcelain        # empty — index.mld committed, idempotent
-opam exec -- dune build @doc
+git status --porcelain        # empty — regenerated namespace modules committed
+opam exec -- dune build @doc --cache=disabled
 # every {!…} link target resolves — odoc warnings for broken links are
-# Phase-8 BLOCKERS, not TODO counts
+# Phase-9 BLOCKERS, not TODO counts
 ```
+The diagrams render in the PR's preview.
 
-### Phase 9 — Warning classification
+### Phase 10 — Warning classification
 
 *Goal:* odoc warnings are classified, not just counted.
 
@@ -869,7 +982,7 @@ opam exec -- ocaml scripts/doc_artifacts.ml warnings <sha>   # classified bucket
 The trivially fixable buckets are zero at emission; the rest are recorded as
 TODO counts, not silently dropped.
 
-### C code-block translation (Phases 10–13, end of cycle; layer-aware)
+### C code-block translation (Phases 11–14, end of cycle; layer-aware)
 
 Corpus: ~210 fenced C blocks (`c`/`C`/`|[ language="C" ]|`) plus ~66 other
 languages (xml 53, css 4, glsl 4, plain 5). The C blocks range from 2-line
@@ -884,18 +997,18 @@ label (Some entry)`; L2 docs (classes/methods) render
 `new label ~label:"_Hello" ()` / `label#set_mnemonic_widget (Some entry)`.
 The C → symbol step (below) is layer-independent; only the final rendering
 of each call differs. *Dependency:* L2 docs land in Phase 5, so the L2
-renderer is visible as soon as Phase 12 ships.
+renderer is visible as soon as Phase 13 ships.
 
-### Phase 10 — Tier A: label C blocks honestly
+### Phase 11 — Tier A: label C blocks honestly
 
 `Code_block {lang=Some ("c"|"C")}` that is not translated renders as `{v … v}`
 (verbatim, no OCaml highlighting) with a lead-in `C example:`. `xml`/`css`/
 `glsl`/`plain` render as `{v … v}` too (they are real languages applied as-is,
 e.g. GtkBuilder UI). `{[ … ]}` is reserved for translated OCaml. The
 balance/comment-safety fallbacks (invariant 3) still apply. Replaces the
-plan's "banner deferred" row. Depends on Phase 7 (`Code_block.lang`).
+plan's "banner deferred" row. Depends on Phase 8 (`Code_block.lang`).
 
-### Phase 11 — Tier B: census and subset parser (go/no-go gate)
+### Phase 12 — Tier B: census and subset parser (go/no-go gate)
 
 **Tier B: mechanical translation of a restricted C subset.** Input
 subset: sequences of `T *x = fn (args);`, `fn (obj, args);`, `x = fn (args);`,
@@ -908,13 +1021,13 @@ block to Tier A.
 This phase builds the C tokenizer and the subset statement parser, then runs
 the **corpus census**: how many of the ~210 blocks fit the subset, with the L1
 result eyeballed. The census result is recorded in this plan. **Gate:** if the
-fraction is small, stop here. Phase 10 and Phase 13 then cover the C blocks,
-and Phase 12 is not built.
+fraction is small, stop here. Phase 11 and Phase 14 then cover the C blocks,
+and Phase 13 is not built.
 
-### Phase 12 — Tier B: resolution, adaptation and rendering
+### Phase 13 — Tier B: resolution, adaptation and rendering
 
-Only if the Phase 11 gate passes. Pipeline: C tokenizer → statement parser
-(subset only; built in Phase 11) → symbol resolution via the generator's
+Only if the Phase 12 gate passes. Pipeline: C tokenizer → statement parser
+(subset only; built in Phase 12) → symbol resolution via the generator's
 C-identifier table (`c:identifier` → namespace, type, method, constructor) →
 signature-driven adaptation (nullable param → `Some`/`None`, out/`GError**` →
 `result` with a `match`, `void` → `unit` sequencing, `let … in` chaining) →
@@ -922,7 +1035,7 @@ layer renderer (L1 or L2). Rejection reasons are counted in the manifest, so
 the translated fraction is a tracked number. This phase also adds the compile
 check (below).
 
-### Phase 13 — Tier C: hand-written overrides for prominent examples
+### Phase 14 — Tier C: hand-written overrides for prominent examples
 
 A new override form in the existing s-expression system:
 `(doc-example <gir-entity> <index> (l1 "…ocaml…") (l2 "…ocaml…"))`, which
@@ -930,16 +1043,16 @@ replaces the nth code block of that entity's doc (checked: the C block must
 still be the one the override was written against, via a short hash, so a
 GIR update flags stale overrides instead of silently misapplying). Target
 the 10–20 most prominent examples (`GtkEntry` mnemonic, `GtkExpression`,
-`GTask`, `GtkBuilder`, `GtkListView` factory). Independent of Phase 12, so it
-also applies if the Phase 11 gate stops the translator.
+`GTask`, `GtkBuilder`, `GtkListView` factory). Independent of Phase 13, so it
+also applies if the Phase 12 gate stops the translator.
 
-*Tests (Phases 11–13):* tokenizer/parser/translator unit tests per construct;
+*Tests (Phases 12–14):* tokenizer/parser/translator unit tests per construct;
 golden tests for ~10 real corpus blocks in L1 and L2; a **compile check** for
 translated blocks — extract each emitted `{[ … ]}` OCaml snippet and typecheck
 it against the built `ocgtk` library (translated examples must at least
 typecheck; this is what makes Tier B trustworthy); override staleness test.
 
-*Acceptance (Phases 10–13):* the compile check is green; no `{[ … ]}` block in
+*Acceptance (Phases 11–14):* the compile check is green; no `{[ … ]}` block in
 generated docs contains C tokens (`->`, `;` after a `)` call with `NULL`, `g_`);
 the manifest reports translated / labelled / rejected counts per rejection
 reason; `dune build @doc` shows no new warnings.
@@ -954,15 +1067,17 @@ reason; `dune build @doc` shows no new warnings.
   landed before 3. It must precede 5, so that every later PR has a preview.
 - 5 (wiring) needs 2 and 3 (its diff is reviewed against the cached baseline).
 - 6 (properties) needs 5: it reuses the both-layer pattern Phase 5 establishes.
-- 7 (C idioms) needs 5 (translated output must already flow through all sites
+- 7 (L2 page structure) needs 6: the Properties section should have docs
+  when it first appears.
+- 8 (C idioms) needs 5 (translated output must already flow through all sites
   so the diff is only the idiom rewrites).
-- 8 (index) needs 0 only, and could run earlier; it is kept after 7 so the
-  landing page links a stable set of pages.
-- 9 (warning classification) needs 3 (captured warnings) and a stable `@doc`
-  from 5–8, so the buckets are not classified against a moving target.
-- 10–13 are end of cycle: 10 needs 7 (`Code_block.lang`); 11 needs 5 (the L2
-  renderer is only visible once L2 docs exist) and 9 (stable warning counts);
-  12 needs 11's gate; 13 needs only 5.
+- 9 (conventions page and namespace intros) needs 7, so the page describes
+  the final layout. The hand-written text can be drafted earlier.
+- 10 (warning classification) needs 3 (captured warnings) and a stable `@doc`
+  from 5–9, so the buckets are not classified against a moving target.
+- 11–14 are end of cycle: 11 needs 8 (`Code_block.lang`); 12 needs 5 (the L2
+  renderer is only visible once L2 docs exist) and 10 (stable warning counts);
+  13 needs 12's gate; 14 needs only 5.
 
 ## Verification for the whole leg (after all phases)
 
@@ -973,7 +1088,7 @@ closing checklist on top of them:
   ocgtk tests, per CONTRIBUTORS).
 - Translator and `Doc_emit` unit/expect tests pass; corpus smoke test green
   (re-run at close).
-- Regenerated bindings (and `index.mld`s) committed; tree clean afterwards;
+- Regenerated bindings committed; tree clean afterwards;
   the full test suite is green on the committed tree.
 - `doc_artifacts.ml build` twice in a row: second run is a cache hit;
   `build --force` rebuilds.
@@ -993,13 +1108,16 @@ closing checklist on top of them:
 - Alias pages (page model, PRD §11).
 - `@param`/`@return`/`@deprecated` tag emission; generalised `@since`.
 - Constants (`%GTK_FOO`), `foo_bar()` function refs and bare `::signal`
-  sigils → resolver leg (need a symbol index; Phase 7 only does the
+  sigils → resolver leg (need a symbol index; Phase 8 only does the
   table-driven idioms).
 - Cross-reference resolution (PRD §7) — the `Sym_ref` → `[code]` fallback
   covers it; the resolver leg is a pure AST rewrite.
 - Upstream-URL mapping for relative `.html` links (PRD §6.3) — likewise a
   pure `Page_ref` rewrite.
-- Page-model refinements: §11.2 grouping headings, Inherits/Implements
-  blocks, synthetic synopses (§12), screenshots, `<docsection>` fold into
-  index pages.
+- Page-model refinements: synthetic synopses (§12), screenshots,
+  `<docsection>` fold into index pages. (Class-type grouping headings and
+  the Inherits/Implements block moved into this leg as Phase 7.)
+- "Returned by" lists for classes without constructors (the functions and
+  methods whose return type is the class) → resolver leg; Phase 7 states
+  only the canned no-constructor line.
 - Warning gate in CI (report-only this leg).
