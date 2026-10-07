@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>C_stub_method (gir_gen.Gir_gen_lib.Generate.C_stub_method)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../index.html">Index</a> &#x00BB; <a href="../../../index.html">gir_gen</a> &#x00BB; <a href="../../index.html">Gir_gen_lib</a> &#x00BB; <a href="../index.html">Generate</a> &#x00BB; C_stub_method</nav><header class="odoc-preamble"><h1>Module <code><span>Generate.C_stub_method</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec module anchored" id="module-Out_conv"><a href="#module-Out_conv" class="anchor"></a><code><span><span class="keyword">module</span> Out_conv</span><span> = <a href="../C_stub_method_out/index.html">C_stub_method_out</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-(let*)"><a href="#val-(let*)" class="anchor"></a><code><span><span class="keyword">val</span> (let*) : <span><span><span class="type-var">'a</span> option</span> <span class="arrow">&#45;&gt;</span></span> <span><span>(<span><span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span> <span><span class="type-var">'b</span> option</span>)</span> <span class="arrow">&#45;&gt;</span></span> <span><span class="type-var">'b</span> option</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-option_get_exn"><a href="#val-option_get_exn" class="anchor"></a><code><span><span class="keyword">val</span> option_get_exn : <span><span class="label">message</span>:string <span class="arrow">&#45;&gt;</span></span> <span><span><span class="type-var">'a</span> option</span> <span class="arrow">&#45;&gt;</span></span> <span class="type-var">'a</span></span></code></div></div><div class="odoc-spec"><div class="spec module anchored" id="module-Log"><a href="#module-Log" class="anchor"></a><code><span><span class="keyword">module</span> Log</span><span> : <span class="xref-unresolved">Logs</span>.LOG</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-var_name_for_direction"><a href="#val-var_name_for_direction" class="anchor"></a><code><span><span class="keyword">val</span> var_name_for_direction : <span><a href="../../Types/index.html#type-gir_direction">Types.gir_direction</a> <span class="arrow">&#45;&gt;</span></span> <span>int <span class="arrow">&#45;&gt;</span></span> string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-declare_fixed_array"><a href="#val-declare_fixed_array" class="anchor"></a><code><span><span class="keyword">val</span> declare_fixed_array : 
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">var_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">fixed_size</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-declare_array_out_param"><a href="#val-declare_array_out_param" class="anchor"></a><code><span><span class="keyword">val</span> declare_array_out_param : 
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">var_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_out_param"><a href="#val-handle_out_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_out_param : 
+  <span><span class="label">param_index</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_inout_param"><a href="#val-handle_inout_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_inout_param : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_index</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">tm</span>:<span><a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_in_array_param"><a href="#val-handle_in_array_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_in_array_param : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">arg_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">tm</span>:<span><a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_array">Types.gir_array</a> <span class="arrow">&#45;&gt;</span></span>
+  string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_scalar_param"><a href="#val-handle_scalar_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_scalar_param : 
+  <span><span class="label">arg_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ocaml_idx</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">length_param_map</span>:<span><span>(<span class="type-var">'a</span> * string)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">p</span>:<a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">tm</span>:<span><a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> option</span> <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_in_list_param"><a href="#val-handle_in_list_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_in_list_param : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">arg_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_in_param"><a href="#val-handle_in_param" class="anchor"></a><code><span><span class="keyword">val</span> handle_in_param : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">acc</span>:<a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">length_param_map</span>:<span><span>(int * string)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">tm</span>:<span><a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../C_stub_helpers/index.html#type-param_acc">C_stub_helpers.param_acc</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-generate_ref_sink_stmt"><a href="#val-generate_ref_sink_stmt" class="anchor"></a><code><span><span class="keyword">val</span> generate_ref_sink_stmt : 
+  <span><span class="label">transfer_ownership</span>:<a href="../../Types/index.html#type-transfer_ownership">Types.transfer_ownership</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_void_return"><a href="#val-handle_void_return" class="anchor"></a><code><span><span class="keyword">val</span> handle_void_return : 
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span class="type-var">'a</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_array_return"><a href="#val-handle_array_return" class="anchor"></a><code><span><span class="keyword">val</span> handle_array_return : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ret_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_scalar_return"><a href="#val-handle_scalar_return" class="anchor"></a><code><span><span class="keyword">val</span> handle_scalar_return : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ret_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">mapping</span>:<a href="../../Types/index.html#type-type_mapping">Types.type_mapping</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span class="type-var">'a</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_list_return"><a href="#val-handle_list_return" class="anchor"></a><code><span><span class="keyword">val</span> handle_list_return : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span class="type-var">'b</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-handle_non_void_return"><a href="#val-handle_non_void_return" class="anchor"></a><code><span><span class="keyword">val</span> handle_non_void_return : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ret_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_return_conversion"><a href="#val-build_return_conversion" class="anchor"></a><code><span><span class="keyword">val</span> build_return_conversion : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">args</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ret_type</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_conv_code</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_conversions</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">out_array_cleanup_list</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-compute_in_param_indices"><a href="#val-compute_in_param_indices" class="anchor"></a><code><span><span class="keyword">val</span> compute_in_param_indices : 
+  <span><span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span>(<a href="../../Types/index.html#type-gir_param">Types.gir_param</a> * int)</span> list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_param_to_ocaml_map"><a href="#val-build_param_to_ocaml_map" class="anchor"></a><code><span><span class="keyword">val</span> build_param_to_ocaml_map : <span><span><a href="../../Types/index.html#type-gir_param">Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span> <span><span>(int * int)</span> list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-extract_length_mappings"><a href="#val-extract_length_mappings" class="anchor"></a><code><span><span class="keyword">val</span> extract_length_mappings : 
+  <span><span><span>(<a href="../../Types/index.html#type-gir_param">Types.gir_param</a> * int)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span>(int * <span class="type-var">'a</span>)</span> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span>(<span class="type-var">'a</span> * string)</span> list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_length_param_map"><a href="#val-build_length_param_map" class="anchor"></a><code><span><span class="keyword">val</span> build_length_param_map : <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span> <span><span>(int * string)</span> list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_method_params"><a href="#val-build_method_params" class="anchor"></a><code><span><span class="keyword">val</span> build_method_params : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  string * <span>string list</span> * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_method_call"><a href="#val-build_method_call" class="anchor"></a><code><span><span class="keyword">val</span> build_method_call : 
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_args</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-build_method_return"><a href="#val-build_method_return" class="anchor"></a><code><span><span class="keyword">val</span> build_method_return : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">meth</span>:<a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_args</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string * string * <span>string list</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-generate_c_method"><a href="#val-generate_c_method" class="anchor"></a><code><span><span class="keyword">val</span> generate_c_method : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div></div></body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Application_command_line (ocgtk.Ocgtk_gio.Gio.Wrappers.Application_command_line)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gio</a> &#x00BB; <a href="../../index.html">Gio</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Application_command_line</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Application_command_line</span></code></h1><p><code>GApplicationCommandLine</code> represents a command-line invocation of an application.</p><p>It is created by <code>Gio.Application</code> and emitted in the <code>Gio.Application::command-line</code> signal and virtual function.</p><p>The class contains the list of arguments that the program was invoked with. It is also possible to query if the commandline invocation was local (ie: the current process is running in direct response to the invocation) or remote (ie: some other process forwarded the commandline to this process).</p><p>The <code>GApplicationCommandLine</code> object can provide the <code>argc</code> and <code>argv</code> parameters for use with the <code>GLib.OptionContext</code> command-line parsing API, with the <code>Gio.ApplicationCommandLine.get_arguments</code> function. See <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c">gapplication-example-cmdline3.c</a> for an example.</p><p>The exit status of the originally-invoked process may be set and messages can be printed to stdout or stderr of that process.</p><p>For remote invocation, the originally-invoked process exits when <code>Gio.ApplicationCommandLine.done</code> method is called. This method is also automatically called when the object is disposed.</p><p>The main use for <code>GApplicationCommandLine</code> (and the <code>Gio.Application::command-line</code> signal) is 'Emacs server' like use cases: You can set the <code>EDITOR</code> environment variable to have e.g. git use your favourite editor to edit commit messages, and if you already have an instance of the editor running, the editing will happen in the running instance, instead of opening a new one. An important aspect of this use case is that the process that gets started by git does not return until the editing is done.</p><p>Normally, the commandline is completely handled in the <code>Gio.Application::command-line</code> handler. The launching instance exits once the signal handler in the primary instance has returned, and the return value of the signal handler becomes the exit status of the launching instance.</p><pre class="language-ocaml"><code>static int
+command_line (GApplication            *application,
+              GApplicationCommandLine *cmdline)
+{
+  gchar **argv;
+  gint argc;
+  gint i;
+
+  argv = g_application_command_line_get_arguments (cmdline, &amp;argc);
+
+  g_application_command_line_print (cmdline,
+                                    &quot;This text is written back\n&quot;
+                                    &quot;to stdout of the caller\n&quot;);
+
+  for (i = 0; i &lt; argc; i++)
+    g_print (&quot;argument %d: %s\n&quot;, i, argv[i]);
+
+  g_strfreev (argv);
+
+  return 0;
+}</code></pre><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline.c">gapplication-example-cmdline.c</a></p><p>In more complicated cases, the handling of the commandline can be split between the launcher and the primary instance.</p><pre class="language-ocaml"><code>static gboolean
+ test_local_cmdline (GApplication   *application,
+                     gchar        ***arguments,
+                     gint           *exit_status)
+{
+  gint i, j;
+  gchar **argv;
+
+  argv = *arguments;
+
+  if (argv[0] == NULL)
+    {
+      *exit_status = 0;
+      return FALSE;
+    }
+
+  i = 1;
+  while (argv[i])
+    {
+      if (g_str_has_prefix (argv[i], &quot;--local-&quot;))
+        {
+          g_print (&quot;handling argument %s locally\n&quot;, argv[i]);
+          g_free (argv[i]);
+          for (j = i; argv[j]; j++)
+            argv[j] = argv[j + 1];
+        }
+      else
+        {
+          g_print (&quot;not handling argument %s locally\n&quot;, argv[i]);
+          i++;
+        }
+    }
+
+  *exit_status = 0;
+
+  return FALSE;
+}
+
+static void
+test_application_class_init (TestApplicationClass *class)
+{
+  G_APPLICATION_CLASS (class)-&gt;local_command_line = test_local_cmdline;
+
+  ...
+}</code></pre><p>In this example of split commandline handling, options that start with <code>--local-</code> are handled locally, all other options are passed to the <code>Gio.Application::command-line</code> handler which runs in the primary instance.</p><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c">gapplication-example-cmdline2.c</a></p><p>If handling the commandline requires a lot of work, it may be better to defer it.</p><pre class="language-ocaml"><code>static gboolean
+my_cmdline_handler (gpointer data)
+{
+  GApplicationCommandLine *cmdline = data;
+
+  // do the heavy lifting in an idle
+
+  g_application_command_line_set_exit_status (cmdline, 0);
+  g_object_unref (cmdline); // this releases the application
+
+  return G_SOURCE_REMOVE;
+}
+
+static int
+command_line (GApplication            *application,
+              GApplicationCommandLine *cmdline)
+{
+  // keep the application running until we are done with this commandline
+  g_application_hold (application);
+
+  g_object_set_data_full (G_OBJECT (cmdline),
+                          &quot;application&quot;, application,
+                          (GDestroyNotify)g_application_release);
+
+  g_object_ref (cmdline);
+  g_idle_add (my_cmdline_handler, cmdline);
+
+  return 0;
+}</code></pre><p>In this example the commandline is not completely handled before the <code>Gio.Application::command-line</code> handler returns. Instead, we keep a reference to the <code>GApplicationCommandLine</code> object and handle it later (in this example, in an idle). Note that it is necessary to hold the application until you are done with the commandline.</p><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c">gapplication-example-cmdline3.c</a></p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> = <span><span>[ `application_command_line <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_exit_status"><a href="#val-set_exit_status" class="anchor"></a><code><span><span class="keyword">val</span> set_exit_status : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>int <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the exit status that will be used when the invoking process exits.</p><p>The return value of the <code>GApplication::command</code>-line signal is passed to this function when the handler returns. This is the usual way of setting the exit status.</p><p>In the event that you want the remote invocation to continue running and want to decide on the exit status in the future, you can use this call. For the case of a remote invocation, the remote process will typically exit when the last reference is dropped on <code>cmdline</code>. The exit status of the remote process will be equal to the last value that was set with this function.</p><p>In the case that the commandline invocation is local, the situation is slightly more complicated. If the commandline invocation results in the mainloop running (ie: because the use-count of the application increased to a non-zero value) then the application is considered to have been 'successful' in a certain sense, and the exit status is always zero. If the application use count is zero, though, the exit status of the local <code>GApplicationCommandLine</code> is used.</p><p>This method is a no-op if g_application_command_line_done() has been called.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-printerr_literal"><a href="#val-printerr_literal" class="anchor"></a><code><span><span class="keyword">val</span> printerr_literal : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Prints a message using the stderr print handler in the invoking process.</p><p>Unlike g_application_command_line_printerr(), <code>message</code> is not a <code>printf()</code>-style format string. Use this function if <code>message</code> contains text you don't have control over, that could include <code>printf()</code> escape sequences.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-print_literal"><a href="#val-print_literal" class="anchor"></a><code><span><span class="keyword">val</span> print_literal : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Prints a message using the stdout print handler in the invoking process.</p><p>Unlike g_application_command_line_print(), <code>message</code> is not a <code>printf()</code>-style format string. Use this function if <code>message</code> contains text you don't have control over, that could include <code>printf()</code> escape sequences.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-getenv"><a href="#val-getenv" class="anchor"></a><code><span><span class="keyword">val</span> getenv : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string <span class="arrow">&#45;&gt;</span></span> <span>string option</span></span></code></div><div class="spec-doc"><p>Gets the value of a particular environment variable of the command line invocation, as would be returned by g_getenv(). The strings may contain non-utf8 data.</p><p>The remote application usually does not send an environment. Use <code>G_APPLICATION_SEND_ENVIRONMENT</code> to affect that. Even with this flag set it is possible that the environment is still not available (due to invocation messages from other applications).</p><p>The return value should not be modified or freed and is valid for as long as <code>cmdline</code> exists.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_stdin"><a href="#val-get_stdin" class="anchor"></a><code><span><span class="keyword">val</span> get_stdin : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span><span>[ `input_stream <span>| `object_</span> ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span> option</span></span></code></div><div class="spec-doc"><p>Gets the stdin of the invoking process.</p><p>The <code>GInputStream</code> can be used to read data passed to the standard input of the invoking process. This doesn't work on all platforms. Presently, it is only available on UNIX when using a D-Bus daemon capable of passing file descriptors. If stdin is not available then <code>NULL</code> will be returned. In the future, support may be expanded to other platforms.</p><p>You must only call this function once per commandline invocation.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_platform_data"><a href="#val-get_platform_data" class="anchor"></a><code><span><span class="keyword">val</span> get_platform_data : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><a href="../../../../Gvariant/index.html#type-t">Gvariant.t</a> option</span></span></code></div><div class="spec-doc"><p>Gets the platform data associated with the invocation of <code>cmdline</code>.</p><p>This is a <code>GVariant</code> dictionary containing information about the context in which the invocation occurred. It typically contains information like the current working directory and the startup notification ID.</p><p>It comes from an untrusted external process and hence the types of all values must be validated before being used.</p><p>For local invocation, it will be <code>NULL</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_is_remote"><a href="#val-get_is_remote" class="anchor"></a><code><span><span class="keyword">val</span> get_is_remote : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> bool</span></code></div><div class="spec-doc"><p>Determines if <code>cmdline</code> represents a remote invocation.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_exit_status"><a href="#val-get_exit_status" class="anchor"></a><code><span><span class="keyword">val</span> get_exit_status : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> int</span></code></div><div class="spec-doc"><p>Gets the exit status of <code>cmdline</code>. See g_application_command_line_set_exit_status() for more information.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_environ"><a href="#val-get_environ" class="anchor"></a><code><span><span class="keyword">val</span> get_environ : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string array</span></span></code></div><div class="spec-doc"><p>Gets the contents of the 'environ' variable of the command line invocation, as would be returned by g_get_environ(), ie as a <code>NULL</code>-terminated list of strings in the form 'NAME=VALUE'. The strings may contain non-utf8 data.</p><p>The remote application usually does not send an environment. Use <code>G_APPLICATION_SEND_ENVIRONMENT</code> to affect that. Even with this flag set it is possible that the environment is still not available (due to invocation messages from other applications).</p><p>The return value should not be modified or freed and is valid for as long as <code>cmdline</code> exists.</p><p>See g_application_command_line_getenv() if you are only interested in the value of a single environment variable.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_cwd"><a href="#val-get_cwd" class="anchor"></a><code><span><span class="keyword">val</span> get_cwd : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string option</span></span></code></div><div class="spec-doc"><p>Gets the working directory of the command line invocation. The string may contain non-utf8 data.</p><p>It is possible that the remote application did not send a working directory, so this may be <code>NULL</code>.</p><p>The return value should not be modified or freed and is valid for as long as <code>cmdline</code> exists.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_arguments"><a href="#val-get_arguments" class="anchor"></a><code><span><span class="keyword">val</span> get_arguments : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string array</span> * int</span></code></div><div class="spec-doc"><p>Gets the list of arguments that was passed on the command line.</p><p>The strings in the array may contain non-UTF-8 data on UNIX (such as filenames or arguments given in the system locale) but are always in UTF-8 on Windows.</p><p>If you wish to use the return value with <code>GOptionContext</code>, you must use g_option_context_parse_strv().</p><p>The return value is <code>NULL</code>-terminated and should be freed using g_strfreev().</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-done_"><a href="#val-done_" class="anchor"></a><code><span><span class="keyword">val</span> done_ : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Signals that command line processing is completed.</p><p>For remote invocation, it causes the invoking process to terminate.</p><p>For local invocation, it does nothing.</p><p>This method should be called in the <code>Gio.Application::command-line</code> handler, after the exit status is set and all messages are printed.</p><p>After this call, g_application_command_line_set_exit_status() has no effect. Subsequent calls to this method are no-ops.</p><p>This method is automatically called when the <code>GApplicationCommandLine</code> object is disposed — so you can omit the call in non-garbage collected languages.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-create_file_for_arg"><a href="#val-create_file_for_arg" class="anchor"></a><code><span><span class="keyword">val</span> create_file_for_arg : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>string <span class="arrow">&#45;&gt;</span></span> <span><span>[ `file ]</span> <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div><div class="spec-doc"><p>Creates a <code>GFile</code> corresponding to a filename that was given as part of the invocation of <code>cmdline</code>.</p><p>This differs from g_file_new_for_commandline_arg() in that it resolves relative pathnames using the current working directory of the invoking process rather than the local process.</p></div></div></div></body></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Toggle_button (ocgtk.Ocgtk_gtk.Gtk.Wrappers.Toggle_button)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../../index.html">Index</a> &#x00BB; <a href="../../../../index.html">ocgtk</a> &#x00BB; <a href="../../../index.html">Ocgtk_gtk</a> &#x00BB; <a href="../../index.html">Gtk</a> &#x00BB; <a href="../index.html">Wrappers</a> &#x00BB; Toggle_button</nav><header class="odoc-preamble"><h1>Module <code><span>Wrappers.Toggle_button</span></code></h1><p>Shows a button which remains “pressed-in” when clicked.</p><p>Example GtkToggleButtons</p><p>Clicking again will cause the toggle button to return to its normal state.</p><p>A toggle button is created by calling either <code>Gtk.ToggleButton.new</code> or <code>Gtk.ToggleButton.new_with_label</code>. If using the former, it is advisable to pack a widget, (such as a <code>GtkLabel</code> and/or a <code>GtkImage</code>), into the toggle button’s container. (See <code>Gtk.Button</code> for more information).</p><p>The state of a <code>GtkToggleButton</code> can be set specifically using <code>Gtk.ToggleButton.set_active</code>, and retrieved using <code>Gtk.ToggleButton.get_active</code>.</p><p><b>Grouping</b></p><p>Toggle buttons can be grouped together, to form mutually exclusive groups - only one of the buttons can be toggled at a time, and toggling another one will switch the currently toggled one off.</p><p>To add a <code>GtkToggleButton</code> to a group, use <code>Gtk.ToggleButton.set_group</code>.</p><p><b>CSS nodes</b></p><p><code>GtkToggleButton</code> has a single CSS node with name button. To differentiate it from a plain <code>GtkButton</code>, it gets the <code>.toggle</code> style class.</p><p><b>Accessibility</b></p><p><code>GtkToggleButton</code> uses the <code>Gtk.AccessibleRole.toggle_button</code> role.</p><p><b>Creating two <code>GtkToggleButton</code> widgets.</b></p><pre class="language-ocaml"><code>static void
+output_state (GtkToggleButton *source,
+              gpointer         user_data)
+{
+  g_print (&quot;Toggle button &quot;%s&quot; is active: %s&quot;,
+           gtk_button_get_label (GTK_BUTTON (source)),
+           gtk_toggle_button_get_active (source) ? &quot;Yes&quot; : &quot;No&quot;);
+}
+
+static void
+make_toggles (void)
+{
+  GtkWidget *window, *toggle1, *toggle2;
+  GtkWidget *box;
+  const char *text;
+
+  window = gtk_window_new ();
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+
+  text = &quot;Hi, I’m toggle button one&quot;;
+  toggle1 = gtk_toggle_button_new_with_label (text);
+
+  g_signal_connect (toggle1, &quot;toggled&quot;,
+                    G_CALLBACK (output_state),
+                    NULL);
+  gtk_box_append (GTK_BOX (box), toggle1);
+
+  text = &quot;Hi, I’m toggle button two&quot;;
+  toggle2 = gtk_toggle_button_new_with_label (text);
+  g_signal_connect (toggle2, &quot;toggled&quot;,
+                    G_CALLBACK (output_state),
+                    NULL);
+  gtk_box_append (GTK_BOX (box), toggle2);
+
+  gtk_window_set_child (GTK_WINDOW (window), box);
+  gtk_window_present (GTK_WINDOW (window));
+}</code></pre></header><div class="odoc-content"><div class="odoc-spec"><div class="spec type anchored" id="type-t"><a href="#type-t" class="anchor"></a><code><span><span class="keyword">type</span> t</span><span> =
+  <span><span>[ `toggle_button <span>| `button</span> <span>| `widget</span> <span>| `initially_unowned</span> <span>| `object_</span> ]</span>
+    <a href="../../../../Gobject/index.html#type-obj">Gobject.obj</a></span></span></code></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : <span>unit <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new ToggleButton</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_with_label"><a href="#val-new_with_label" class="anchor"></a><code><span><span class="keyword">val</span> new_with_label : <span>string <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new ToggleButton</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-new_with_mnemonic"><a href="#val-new_with_mnemonic" class="anchor"></a><code><span><span class="keyword">val</span> new_with_mnemonic : <span>string <span class="arrow">&#45;&gt;</span></span> <a href="#type-t">t</a></span></code></div><div class="spec-doc"><p>Create a new ToggleButton</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-toggled"><a href="#val-toggled" class="anchor"></a><code><span><span class="keyword">val</span> toggled : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Emits the ::toggled signal on the <code>GtkToggleButton</code>.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_group"><a href="#val-set_group" class="anchor"></a><code><span><span class="keyword">val</span> set_group : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span><span><a href="#type-t">t</a> option</span> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Adds <code>self</code> to the group of <code>group</code>.</p><p>In a group of multiple toggle buttons, only one button can be active at a time.</p><p>Setting up groups in a cycle leads to undefined behavior.</p><p>Note that the same effect can be achieved via the <code>Gtk.Actionable</code> API, by using the same action with parameter type and state type 's' for all buttons in the group, and giving each button its own target value.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-set_active"><a href="#val-set_active" class="anchor"></a><code><span><span class="keyword">val</span> set_active : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> <span>bool <span class="arrow">&#45;&gt;</span></span> unit</span></code></div><div class="spec-doc"><p>Sets the status of the toggle button.</p><p>Set to <code>TRUE</code> if you want the <code>GtkToggleButton</code> to be “pressed in”, and <code>FALSE</code> to raise it.</p><p>If the status of the button changes, this action causes the <code>Gtk.ToggleButton::toggled</code> signal to be emitted.</p></div></div><div class="odoc-spec"><div class="spec value external anchored" id="val-get_active"><a href="#val-get_active" class="anchor"></a><code><span><span class="keyword">val</span> get_active : <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span> bool</span></code></div><div class="spec-doc"><p>Queries a <code>GtkToggleButton</code> and returns its current state.</p><p>Returns <code>TRUE</code> if the toggle button is pressed in and <code>FALSE</code> if it is raised.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-on_toggled"><a href="#val-on_toggled" class="anchor"></a><code><span><span class="keyword">val</span> on_toggled : 
+  <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="#type-t">t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">callback</span>:<span>(<span>unit <span class="arrow">&#45;&gt;</span></span> unit)</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../../../../Gobject/Signal/index.html#type-handler_id">Gobject.Signal.handler_id</a></span></code></div></div></div></body></html>

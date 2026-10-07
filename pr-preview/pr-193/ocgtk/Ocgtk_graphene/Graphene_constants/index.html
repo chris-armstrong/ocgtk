@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Graphene_constants (ocgtk.Ocgtk_graphene.Graphene_constants)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgtk</a> &#x00BB; <a href="../index.html">Ocgtk_graphene</a> &#x00BB; Graphene_constants</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgtk_graphene.Graphene_constants</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec value anchored" id="val-pi"><a href="#val-pi" class="anchor"></a><code><span><span class="keyword">val</span> pi : float</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-pi_2"><a href="#val-pi_2" class="anchor"></a><code><span><span class="keyword">val</span> pi_2 : float</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-vec2_len"><a href="#val-vec2_len" class="anchor"></a><code><span><span class="keyword">val</span> vec2_len : int</span></code></div><div class="spec-doc"><p>Evaluates to the number of components of a #graphene_vec2_t.</p><p>This symbol is useful when declaring a C array of floating point values to be used with graphene_vec2_init_from_float() and graphene_vec2_to_float(), e.g.</p><pre class="language-ocaml"><code>  float v[GRAPHENE_VEC2_LEN];
+
+  // vec is defined elsewhere
+  graphene_vec2_to_float (&amp;vec, v);
+
+  for (int i = 0; i &lt; GRAPHENE_VEC2_LEN; i++)
+    fprintf (stdout, &quot;component %d: %g\n&quot;, i, v[i]);</code></pre><ul class="at-tags"><li class="since"><span class="at-tag">since</span> 1.0</li></ul></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-vec3_len"><a href="#val-vec3_len" class="anchor"></a><code><span><span class="keyword">val</span> vec3_len : int</span></code></div><div class="spec-doc"><p>Evaluates to the number of components of a #graphene_vec3_t.</p><p>This symbol is useful when declaring a C array of floating point values to be used with graphene_vec3_init_from_float() and graphene_vec3_to_float(), e.g.</p><pre class="language-ocaml"><code>  float v[GRAPHENE_VEC3_LEN];
+
+  // vec is defined elsewhere
+  graphene_vec3_to_float (&amp;vec, v);
+
+  for (int i = 0; i &lt; GRAPHENE_VEC2_LEN; i++)
+    fprintf (stdout, &quot;component %d: %g\n&quot;, i, v[i]);</code></pre><ul class="at-tags"><li class="since"><span class="at-tag">since</span> 1.0</li></ul></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-vec4_len"><a href="#val-vec4_len" class="anchor"></a><code><span><span class="keyword">val</span> vec4_len : int</span></code></div><div class="spec-doc"><p>Evaluates to the number of components of a #graphene_vec4_t.</p><p>This symbol is useful when declaring a C array of floating point values to be used with graphene_vec4_init_from_float() and graphene_vec4_to_float(), e.g.</p><pre class="language-ocaml"><code>  float v[GRAPHENE_VEC4_LEN];
+
+  // vec is defined elsewhere
+  graphene_vec4_to_float (&amp;vec, v);
+
+  for (int i = 0; i &lt; GRAPHENE_VEC4_LEN; i++)
+    fprintf (stdout, &quot;component %d: %g\n&quot;, i, v[i]);</code></pre><ul class="at-tags"><li class="since"><span class="at-tag">since</span> 1.0</li></ul></div></div></div></body></html>
