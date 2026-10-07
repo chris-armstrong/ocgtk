@@ -74,8 +74,10 @@ jobs:
         run: opam pin add -n conf-gtk4 conf-gtk4
 
       # odoc comes in through the `{with-doc}` dependency of both packages.
+      # `--with-test` is needed too: @doc for gir_gen covers its private test
+      # helper library, which depends on alcotest.
       - name: Install OCaml dependencies
-        run: opam install ./ocgtk ./gir_gen --deps-only --with-doc
+        run: opam install ./ocgtk ./gir_gen --deps-only --with-test --with-doc
 
       # odoc warnings are reported, not fatal (report-only policy). Compiler
       # warnings ("Warning 50 [...]") are not counted, only odoc's own
