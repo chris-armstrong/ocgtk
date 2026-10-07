@@ -5,9 +5,11 @@ libraries. Each namespace below is a separate sub-library; the
 [.generated_stubs*] libraries (pure C stubs with no OCaml modules, used
 internally to link the generated bindings) are omitted from this index.
 
-New to the bindings? Read {!page-conventions} first: the two layers, what
-a class module contains, and how C names, types, signals and properties
-map to OCaml.
+{1 Reference}
+
+- {b {{!page-conventions}Conventions}}: Learn how each library is structured
+  and where to find classes, methods, types and signals, and how they are
+  mapped in OCaml.
 
 {1 Libraries}
 
