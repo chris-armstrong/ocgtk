@@ -1,0 +1,232 @@
+name: Doc preview
+
+# Renders the odoc HTML for both packages (`dune build @doc`) and publishes it
+# on the `gh-pages` branch. Rendered HTML never lands on a code branch.
+#
+#   pull request  -> <pages>/pr-preview/pr-<n>/  (sticky URL comment on the PR)
+#   push to main  -> <pages>/main/
+#
+# doc-preview-cleanup.yml removes a PR's preview when the PR closes.
+#
+# The preview renders the committed tree as-is. The generated bindings are
+# committed, so this workflow does not regenerate them.
+#
+# The build job has a read-only token: it runs opam package builds and dune.
+# Only the deploy job, which runs nothing but pinned deploy actions, can write.
+#
+# One-time repository setup: after the first run creates `gh-pages`, set
+# Settings > Pages > Build and deployment to "Deploy from a branch",
+# branch `gh-pages`, folder `/ (root)`.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
+
+# One run per PR or branch. A newer push cancels a run still in progress.
+# The PR group name is shared with doc-preview-cleanup.yml, so closing a PR
+# cancels a deploy that has not finished before the preview is removed.
+concurrency:
+  group: >-
+    ${{ github.event_name == 'pull_request'
+        && format('doc-preview-pr-{0}', github.event.number)
+        || format('doc-preview-{0}', github.ref) }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build docs
+    # Pull requests from forks get a read-only token and cannot deploy.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      HTML_DIR: _build/default/_doc/_html
+      # Build exactly the PR head commit (not the merge commit), so the
+      # preview matches the commit SHA used by the local artifact cache.
+      BUILD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BUILD_SHA }}
+          persist-credentials: false
+
+      # No dune cache: dune does not replay the warnings of rules restored
+      # from the cache, so a cached build would under-count odoc warnings.
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.4.x
+
+      - name: Install external dependencies
+        run: |
+          sudo apt-get update &&
+          sudo apt-get install -y libcairo2-dev libgtk-4-dev
+
+      - name: Pin conf-gtk4 package
+        run: opam pin add -n conf-gtk4 conf-gtk4
+
+      # odoc comes in through the `{with-doc}` dependency of both packages.
+      # `--with-test` is needed too: @doc for gir_gen covers its private test
+      # helper library, which depends on alcotest.
+      - name: Install OCaml dependencies
+        run: opam install ./ocgtk ./gir_gen --deps-only --with-test --with-doc
+
+      # odoc warnings are reported, not fatal (report-only policy). Compiler
+      # warnings ("Warning 50 [...]") are not counted, only odoc's own
+      # "Warning:" lines.
+      - name: Build documentation
+        id: doc
+        run: |
+          set -o pipefail
+          opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
+          warnings=$(grep -c '^Warning: ' doc-build.log || true)
+          echo "warnings=$warnings" >> "$GITHUB_OUTPUT"
+          echo "odoc warnings: $warnings"
+
+      - name: Write landing page
+        env:
+          DOC_PREVIEW_REF: >-
+            ${{ github.event_name == 'pull_request'
+                && format('PR #{0} ({1})', github.event.number, github.head_ref)
+                || github.ref_name }}
+          DOC_PREVIEW_SHA: ${{ env.BUILD_SHA }}
+          DOC_PREVIEW_SHA_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ env.BUILD_SHA }}
+          DOC_PREVIEW_WARNINGS: ${{ steps.doc.outputs.warnings }}
+        run: |
+          # _build is read-only after dune; copy the tree out before editing.
+          rm -rf site
+          cp -r "$HTML_DIR" site
+          chmod -R u+w site
+          bash scripts/doc-preview-landing.sh site
+
+      - name: Upload site
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-site
+          path: site
+          retention-days: 3
+
+      - name: Job summary
+        env:
+          WARNINGS: ${{ steps.doc.outputs.warnings }}
+        run: |
+          {
+            echo "### Doc build"
+            echo "- Commit: \`$BUILD_SHA\`"
+            echo "- odoc warnings: $WARNINGS"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload doc build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-build-log
+          path: doc-build.log
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy docs
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # push to gh-pages
+      pull-requests: write   # preview URL comment
+    steps:
+      # The deploy actions work inside a git checkout; they push with the
+      # token they are given, not a persisted credential.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download site
+        uses: actions/download-artifact@v4
+        with:
+          name: doc-site
+          path: site
+
+      # .nojekyll at the gh-pages root stops Pages from running Jekyll over
+      # thousands of HTML files per preview. The root index.html points at
+      # the previews. These change rarely, so they are deployed on pushes to
+      # main, and on any run where gh-pages has no .nojekyll yet.
+      - name: Check gh-pages root files
+        id: root
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ] ||
+             ! gh api "repos/$GITHUB_REPOSITORY/contents/.nojekyll?ref=gh-pages" \
+                 --silent 2>/dev/null; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare gh-pages root files
+        if: steps.root.outputs.deploy == 'true'
+        run: |
+          mkdir -p pages-root
+          touch pages-root/.nojekyll
+          cat > pages-root/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8"/>
+              <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+              <title>ocgtk documentation</title>
+            </head>
+            <body>
+              <h1>ocgtk documentation</h1>
+              <ul>
+                <li><a href="main/">main branch</a></li>
+                <li>Pull request previews: <code>pr-preview/pr-&lt;number&gt;/</code></li>
+              </ul>
+            </body>
+          </html>
+          EOF
+
+      - name: Deploy gh-pages root files
+        if: steps.root.outputs.deploy == 'true'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: gh-pages
+          folder: pages-root
+          clean: false
+          force: false
+          attempt-limit: 10
+          commit-message: Update gh-pages root files
+
+      - name: Deploy PR preview
+        id: preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          source-dir: site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: deploy
+          qr-code: false
+
+      - name: Deploy main docs
+        if: github.event_name == 'push'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: gh-pages
+          folder: site
+          target-folder: main
+          force: false
+          attempt-limit: 10
+          commit-message: Deploy docs for main @ ${{ github.sha }}
+
+      - name: Job summary
+        if: steps.preview.outputs.preview-url != ''
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.preview-url }}
+        run: |
+          echo "Preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"

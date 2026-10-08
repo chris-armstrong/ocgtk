@@ -1,0 +1,50 @@
+name: Doc preview cleanup
+
+# Removes a PR's doc preview (gh-pages: pr-preview/pr-<n>/) when the PR
+# closes, merged or not. See doc-preview.yml for the deploy side.
+#
+# This uses pull_request_target, not pull_request: GitHub does not run
+# pull_request workflows for a PR with merge conflicts, so a conflicting PR
+# that closes would keep its preview forever. pull_request_target runs this
+# file from the base branch with a write token. That is safe here because
+# no code from the PR is checked out or run.
+
+on:
+  pull_request_target:
+    types: [closed]
+
+# Same group name as a PR's deploy run in doc-preview.yml: closing the PR
+# cancels a deploy still in progress, so it cannot re-create the preview
+# after it has been removed.
+concurrency:
+  group: doc-preview-pr-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  remove-preview:
+    name: Remove PR preview
+    # Fork PRs never get a preview (doc-preview.yml skips them).
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # push to gh-pages
+      pull-requests: write   # update the preview comment
+    steps:
+      # The action commits to gh-pages from inside a git checkout. This
+      # checks out the base branch (the pull_request_target default), never
+      # the PR's code.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Remove PR preview
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1.8.1
+        with:
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: remove
+          qr-code: false
