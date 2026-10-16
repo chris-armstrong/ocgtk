@@ -863,9 +863,18 @@ generator's conventions.
 - Public inheritance paths: classes outside a cyclic group `inherit` the
   public shim's class type (`GWidget.widget_t`) instead of the combined
   module's (`GEvent_controller_and__..._widget.widget_t`). The shim's class
-  type is an alias, so the type is unchanged, but the pages stop showing
-  internal names. 126 gtk L2 files use the combined path today. This is a
-  generator change, so the standing invariant covers it.
+  type is an alias, so the type is unchanged, and the pages stop showing the
+  long cluster names. 126 gtk L2 files use the combined path today. This is a
+  generator change, so the standing invariant covers it. **This does not make
+  the `inherit` line a link:** the gtk library has a hand-written main module,
+  so the path still renders as unresolved text (`Ocgtk_gtk__.GWidget.widget_t`).
+  See "Known limitations" below.
+- Links to parents: the inheritance block (above) is what gives the reader
+  clickable parents. Write its entries as doc-comment references with public
+  paths (`{!Ocgtk_gtk.Gtk.Widget.widget_t}`), which odoc resolves against the
+  whole doc set. For a cluster member the module is the class's own public
+  name (`Widget`), not the cluster's. Check on the real tree first; the
+  mechanism was only confirmed on a small repro.
 
 *Tests:* `class_gen` expect tests for section emission (including empty
 sections), the inheritance block with zero, one and several interfaces, the
@@ -873,7 +882,9 @@ three no-constructor variants, and the shim inherit path.
 
 *Acceptance:* the standing invariant; in the PR's preview, the `Button`
 class type page has the four sections in its contents sidebar, the
-inheritance block, and no internal cyclic module names; `Widget` shows the
+inheritance block with working links to the parent and interfaces, and no
+cyclic module names in the `class type` header or the block (the raw
+`inherit` lines remain unlinked text, a known limitation); `Widget` shows the
 abstract-class line, an interface page shows the interface line, and
 `Display` shows the third line.
 
@@ -1103,6 +1114,27 @@ closing checklist on top of them:
   that emits at L1 also emits its doc at L2, or is recorded here as a named
   exception.
 
+## Known limitations
+
+- **`inherit` lines on L2 class type pages are not links.** The gtk library has
+  a hand-written main module (`ocgtk_gtk.ml`). Dune builds the alias module it
+  generates for such libraries without `@canonical` annotations, and odoc
+  cannot link to modules named `Ocgtk_gtk__*`. All 297 intra-gtk `inherit`
+  lines are unresolved text in the preview. Parents in other libraries
+  render as plain text. This affects every class, not only cyclic-group
+  members. It does not affect the generated code or its type safety.
+  - Mitigation in this leg: the Phase 7 inheritance block gives clickable
+    parents through doc-comment references.
+  - Accepted for now: the proper fix is to let dune generate the main module,
+    which is part of a larger library layout change that is deferred. Doing
+    just that step (delete `ocgtk_gtk.ml`) is acceptable as an intermediate
+    while this leg is developed; it makes `GFoo`, layer 1 and the cluster
+    modules public and documented.
+    Investigation and options: [unresolved-inherit-links](../research/unresolved-inherit-links.md);
+    layout: [library-layout-proposal](../research/library-layout-proposal.md).
+  - Do not spend effort on `@canonical` annotations on the `GFoo` shims or on an
+    upstream odoc report: neither helps (see the research note).
+
 ## Explicitly out of scope (later legs)
 
 - Alias pages (page model, PRD §11).
@@ -1121,3 +1153,6 @@ closing checklist on top of them:
   methods whose return type is the class) → resolver leg; Phase 7 states
   only the canned no-constructor line.
 - Warning gate in CI (report-only this leg).
+- Library layout change (one library per namespace, dune-generated main
+  module, flat public class modules); makes the `inherit` lines links. See
+  [library-layout-proposal](../research/library-layout-proposal.md).
