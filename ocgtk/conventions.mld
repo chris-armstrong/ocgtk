@@ -6,23 +6,48 @@ this paragraph and the [TODO] notes when the page is written.
 
 {1 Who this page is for}
 
-TODO: one paragraph. Readers who know GTK from C (or another binding) and
-want to know where things are in OCaml, and readers new to GTK who need the
-mental model before the per-class pages make sense.
+This page explains how the bindings are organised. It is meant for both
+those familiar with GObject-based libraries like GTK (maybe from C or other languages) 
+as well as those who are new to GObject, GTK and OCaml.
 
-{1 The two layers}
+{1 Background on GObject}
 
-TODO: cover
-- Layer 1 (the [Wrappers] modules): one module per class, an abstract
-  handle type [t], one function per C function. Closest to the C API.
-- Layer 2 (the class modules): one module per class, holding an OCaml
-  class type, a class, and constructors. Methods, signals and properties
-  are object methods. This is the layer most code should use.
-- Both layers wrap the same objects; you can move between them (see
-  {{!section-converting}Converting between the layers}).
-- When to use Layer 1: interop, functions with no Layer 2 form, or
-  avoiding objects in performance-sensitive code (check that this claim
-  holds before writing it).
+GObject (or the GLib Object system) defines a portable object model 
+for C-based code in a way that makes it straightforward to bind 
+and use from other languages. GObject is the cornerstone of GTK
+and its dependencies, as well as libraries that depend on it like
+GNOME's Adwaita.
+
+At the core of GObject is a generic, introspectable type system
+called GType. This runtime description facilitates cross-language
+bindings, which can be done either dynamically at runtime (e.g.
+in loosely typed languages like JavaScript or Python) or used
+to generate metadata for procedurally generating binding code
+for strongly typed languages via {b GObject Introspection} 
+(like Rust or OCaml) - we've used the latter approach.
+
+The GType system can handle primitives like strings, numbers, booleans,
+etc., as well as objects and classes (using a single-parent inheritance
+structure but allowing multiple interfaces, similar to Java or Objective-C).
+It contains enough metadata to specify how reference counting should
+operate (for objects) and how ownership is transferred (for both objects and
+primitives) so that memory can be managed from the host
+language runtime.
+
+GObject also defines {b closures}, which allow the C-language code to
+call back into the host language; and {b signals}, which are events
+emitted on an object, that can be listened to via a closure. (You will
+interact with signals by registering an OCaml callback function - 
+closures are an internal detail).
+
+{1 Overview: The two layers}
+
+OCaml is a functional language with an object-oriented layer. Because
+GTK is object-oriented but OCaml requires C-bindings to occur in its
+functional / module layer, we provide two sets of bindings:
+
+* {b Layer 2: classes and objects}: this is an object-oriented binding to GObject
+* {b Layer 1: functions}: a pure functional binding to GObject
 
 {@mermaid[
 flowchart TD
@@ -37,29 +62,111 @@ flowchart TD
   APP -. "interop, low level" .-> L1
 ]}
 
+(Internally, the C binding layer is known as "Layer 0").
+
+You can use each layer independently of the other one, but because the classes
+layer wraps around the functional layer, you can also move back and forth as
+needed.
+
+{2 Class Types / Constructors}
+
+
+{2 Modules / Functions}
+
+You can also access GTK through a pure functional layer, where
+the GObject instance is an opaque type you pass as the first parameter
+of a function.
+TODO: cover
+- Layer 1 (the [Wrappers] modules): one module per class, an abstract
+  handle type [t], one function per C function. Closest to the C API.
+- Layer 2 (the class modules): one module per class, holding an OCaml
+  class type, a class, and constructors. Methods, signals and properties
+  are object methods. This is the layer most code should use.
+- Both layers wrap the same objects; you can move between them (see
+  {{!section-converting}Converting between the layers}).
+- When to use Layer 1: interop, functions with no Layer 2 form, or
+  avoiding objects in performance-sensitive code (check that this claim
+  holds before writing it).
+
+
 {1 Libraries and namespaces}
 
-TODO: cover
-- One library per GObject namespace ([Ocgtk_gtk], [Ocgtk_gio], ...), with
-  the [Ocgtk] umbrella module re-exporting them; link the
-  {{!page-index}package index}.
-- Each library has a namespace module named after the C namespace
-  ([Gtk], [Gio], [GdkPixbuf], ...). Start there: it lists every class,
-  interface, enumeration and constant.
-- Typical [open]: [open Ocgtk_gtk.Gtk] (match the examples directory).
+ocgtk is a single opam package, but internally it contains one
+library per GObject namespace, such as `Ocgtk_gtk`.
+
+{t | Namespace | Library |
+   | --------- | ------- |
+   | GTK       | Ocgtk_gtk |
+   | Gdk       | Ocgtk_gdk |
+   | Pango     | Ocgtk_pango |
+   | Gio       | Ocgtk_gio |}
+
+In each library, you'll find a layout like the following:
+
+{[
+Ocgtk_<namespace>
+  +- <Namespace>             (* class and interface modules (layer 2) *)
+  |    +- Wrappers           (* functional modules (layer 1) *)
+  +- <Namespace>_enums       (* enumerations *)
+  +- <Namespace>_constants   (* constants *)
+]}
+
+For example, GTK has a layout like the following:
+
+{[
+Ocgtk_gtk
+  +- Gtk                     (* class and interface modules (layer 2) *)
+  |    +- Wrappers           (* functional modules (layer 1) *)
+  +- Gtk_enums
+  +- Gtk_constants
+  +- GMain                   (* GTK only: initialisation and main loop *)
+  +- GVersion                (* GTK only: version information *)
+]}
+
+These are designed so that you can open [Ocgtk_gtk] and [Ocgtk_gtk.Gtk], and then refer to
+each class module and [GMain] directly e.g.:
+
+{[
+
+open Ocgtk_gtk
+open Gtk
+
+let () =
+  let _ = GMain.init () in
+  let window = Window.new_ () in
+  window#set_gravity `TOP_LEFT;
+  window#set_default_size 300 200;
+  GMain.main ()
+]}
 
 {1:anatomy Anatomy of a class module}
 
-TODO: walk through one class end to end (suggest [Gtk.Button]: small, has
-several constructors, a signal, an interface).
-- [class type button_t]: the object's methods, signals and properties.
-  Grouped on its page into Signals, Methods, Properties and Conversions.
-- [class button]: wraps an existing Layer 1 handle. Not normally called
-  directly; use the constructors.
-- [new_], [new_with_label], ...: the constructors. They return
-  [button_t].
-- Why the class type is [button_t] and not [t]: types in signatures and
-  error messages read as [Button.button_t], not an anonymous [t].
+Known internally as "Layer 2", this is the recommended way of interacting 
+with ocgtk. Each GObject class and interface is mapped to an OCaml class which you 
+can invoke methods on, but you don't instantiate them directly.
+
+Each class and its type is declared in a separate module. The module is named after the GObject class. It will also contain one or more constructor functions that instantiate an object of that class for you.
+
+(Each class has been put in its own module for several reasons. The first is practicality: OCaml's compiler won't easily handle a file with hundreds of class types and classes, each with dozens of methods. By splitting them up, they can also be compiled in parallel (which is much faster), and unused classes won't get pulled into your application and bloat its binary size).
+
+For example the [Gtk.Window] class, class type and constructors are available in the [Ocgtk_gtk.Gtk.Window]
+module, which looks like this:
+
+{@ocaml[
+(* The class type, returned by a constructor function *)
+class type window_t 
+
+(* The class itself, never used directly (only if you are bridging L1 -> L2).
+   It takes the Layer 1 handle, Wrappers.Window.t, which is
+   [ `window | `widget | `initially_unowned | `object_ ] Gobject.obj *)
+class window : Wrappers.Window.t -> window_t
+
+(* Constructor, used to create a new instance *)
+val new_ : unit -> window_t
+]}
+
+Class types are named in full so that they can be disambiguated in hover
+and type-preview via LSP/merlin.
 
 {@mermaid[
 flowchart LR
@@ -85,89 +192,235 @@ flowchart LR
 
 {1 Creating objects}
 
-TODO: cover the four cases each class page states in its canned text.
-- The class has constructors: call one ([Button.new_with_label "OK"]).
-- Abstract class: no constructor; create a subclass instead (for example
-  [Widget]).
-- Interface: no constructor; values come from methods or functions, or
-  from objects that implement it.
-- Neither: the object is returned by methods on other classes (for example
-  a [Display], a [Clipboard], an event).
+Use a constructor in a class's module to instantiate it, for example:
+{[
 
-{@mermaid[
-flowchart TD
-  Q{"Does the class page have a
-  Constructors section?"}
-  Q -- yes --> A["Call a constructor:
-  Button.new_with_label"]
-  Q -- no --> K{"What does the page say?"}
-  K -- "abstract class" --> S["Create a subclass,
-  e.g. Button for Widget"]
-  K -- "interface" --> I["Use an object that implements it,
-  or a function that returns it"]
-  K -- "returned by other classes" --> R["Get it from a method,
-  e.g. a display or a clipboard"]
+open Ocgtk_gtk
+open Gtk
+
+let () =
+  let _ = GMain.init () in
+  let window = Window.new_ () in
+  ...
 ]}
+
+{b Interfaces} are also classes in OCaml, but they won't have constructor functions. The same applies to {b abstract classes}. For both of these, you will get values indirectly as the result of calling methods on other objects.
 
 {1 Inheritance and interfaces}
 
-TODO: cover
-- How the C hierarchy maps onto class types: a class type [inherit]s its
-  parent's class type and the class types of the interfaces it
-  implements. Each class type page lists "Inherits from" and
-  "Implements".
-- Upcasting with [:>] (for example [(button :> Widget.widget_t)]).
-- Downcasting / runtime type checks: say what is and is not supported
-  (check the current API before writing).
-- [as_*] methods return the Layer 1 handle.
-- Cyclic groups: some modules have long generated names such as
-  [GEvent_controller_and__..._widget]. These are internal; use the public
-  module ([Gtk.Widget]).
+{2 How inheritance and interface implementation is implemented in OCaml}
 
-{@mermaid[
-classDiagram
-  direction BT
-  class widget_t {
-    show()
-    ...()
-  }
-  class actionable_t {
-    <<interface>>
-    get_action_name()
-  }
-  class button_t {
-    on_clicked()
-    get_label()
-    set_label()
-    as_button()
-  }
-  button_t --|> widget_t : inherit
-  button_t ..|> actionable_t : inherit
+Classes and Interfaces are represented as a class type and a class in OCaml. The OCaml class type for each GObject class/interface will inherit both its base class and each of its interfaces.
+
+(Unlike GObject's single-inheritance + interfaces, OCaml supports multiple inheritance).
+
+For example in GObject, the [Window] class inherits from [Widget] and implements [Accessible], [Buildable], [ConstraintTarget], [Native], [Root] and [ShortcutManager].
+
+In OCaml, this will look something like:
+
+{[
+class type window_t = object
+  (* base class *)
+  inherit Widget.widget_t
+
+  (* implements *)
+  (* The other interfaces would appear here, but widget_t already inherits them, so they are skipped *)
+  inherit Native.native_t
+  inherit Root.root_t
+  inherit ShortcutManager.shortcut_manager_t
+
+end
 ]}
 
-{1 Methods and naming}
+Note that [Widget] already implements [Accessible], [Buildable] and [ConstraintTarget], so they won't be added again to the definition of [Window].
 
-TODO: a mapping table from C to OCaml. Suggested rows:
-- [gtk_button_set_label (b, "x")] → Layer 2 [b#set_label "x"],
-  Layer 1 [Wrappers.Button.set_label b "x"].
-- [GtkButton] → [Gtk.Button] (module), [button_t] (class type).
-- Constructor [gtk_button_new_with_label] → [Button.new_with_label].
-- Constants and enumeration members → [`UPPER_CASE] polymorphic variants
-  (enumerations) and flag lists (bitfields); say which.
-- Reserved words and other renamings ([new_], [type_], ...).
-- Each generated doc names the C function it wraps, with a link to the
-  upstream C documentation.
+{2 Upcasting: how to pass subclass values and use polymorphism}
+
+Say you have a [button_t], but you want to pass it as a value to a method that
+declares a parameter of [widget_t]. Unlike other object-oriented languages where you
+can pass this directly, OCaml requires you to explicitly upcast it using the [:>]
+operator.
+
+For example, [Box#append] takes a [widget_t], so a button must be upcast before
+it can be added to a box:
+
+{[
+open Ocgtk_gtk.Gtk
+
+let build_layout () =
+  let box = Box.new_ `VERTICAL 10 in
+  let button = Button.new_with_label "Click me" in
+
+  (* Correct: upcast with :> *)
+  let () = box#append (button :> Widget.widget_t) in
+  box
+]}
+
+Without the upcast, [box#append button] is a type error, because [button] has
+type [button_t] but [append] expects a [widget_t].
+
+The same applies wherever a method takes a [widget_t]. For example,
+[window#set_child (Some (box :> Widget.widget_t))] passes a [box_t option] to a
+parameter of type [widget_t option].
+
+{2 Cyclic groups and top-level classes}
+
+You may notice references to modules like [Application_and__window_and__window_group] in the documentation and the source code. This is because some GObject classes and/or interfaces have mutually recursive dependencies between them.
+
+In OCaml, these can't be declared in separate files, but instead need to be declared in an OCaml recursive cluster in the same file i.e. [class type c1 ... and c2 .. end] / [class c1 ... and c2 ... end]. Each individual class is then aliased in a separate module to "flatten" the namespace and hide the recursive classes.
+
+{1:naming Name mapping}
+
+{2:classes Classes}
+
+The following table shows how various things are mapped between GObject (in the GIR files and GObject documentation) and the equivalent:
+* C declarations 
+* OCaml for classes (Layer 2)  
+* OCaml modules/functions (layer 1).
+
+{t | Component | GObject | C | Class Layer (L2) | Module Layer (L1) |
+   | ----------| ----------- | ----- |
+   | Methods   | set_label | [gtk_button_set_label(b, "x")] | [b#set_label "x"] | [Wrappers.Button.set_label b "x"] |
+   | Instance Type | Button | [GtkButton] | [Gtk.Button.button_t] | [Gtk.Wrappers.Button.t] |
+   | Constructors | [gtk_button_new_with_label("x")] | [Gtk.Button.new_with_label "x"] | [Gtk.Wrappers.Button.new_with_label "x"] |
+   | Signals | clicked | [g_signal_connect(button, "clicked", ...)] | [b#on_clicked ~callback:(fun () -> ...)] |  [Wrappers.Button.on_clicked b ~callback:(fun () -> ...)] |
+   | Properties (setters) | icon-name | [g_value_set_string(&sv, "question"); g_object_set_property(G_OBJECT(b), "icon-name", sv)] | [b#set_icon_name "question"] | [Wrappers.Button.set_icon_name b "question"] |
+
+|}
+
+Other rules to note:
+* When a GObject method or type is a reserved word in OCaml, it is suffixed with an additional underscore e.g. [new] -> [new_], [type] -> [type_]
+* If there is a property whose name would conflict with a method when generated, the property accessor is suppressed as OCaml cannot have both, and the method (should) do the same thing.
+
+{2:constants Constants}
+
+Constants are a name for a fixed value in GObject (derived directly from the GIR).
+
+You'll find all constants in the top-level [<Namespace>_constants] module (e.g. [Gtk_constants], converted to snake_case in OCaml. As they are just OCaml values, you can use them with both the classes layer and the module layer.
+
+{t
+   | GObject | C | OCaml |
+   | ----------| ----------- | ----- |
+| INPUT_AGE | | GTK_INPUT_AGE | Gtk_constants.input_age |
+}
+
+{2:enumerations Enumerations}
+
+Enumerations are mapped into the top-level [<Namespace>_enums] module (e.g. [Gtk_enums]).
+Each enumeration is a polymorphic variant type.
+
+The enumeration type is mapped to lowercase without spaces e.g. [AccessibleProperty] in GIR becomes [type accessibleproperty] in OCaml.
+
+Each property is kept as {b screaming snake case}
+
+{t
+   | GObject | C | OCaml variant constructor |
+   | autocomplete |  GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE | `AUTOCOMPLETE |
+   | multi_selectable | GTK_ACCESSIBLE_PROPERTY_MULTI_SELECTABLE | `MULTI_SELECTABLE |
+}
+
+There are also converter functions to convert them to integer form ([<enum>_to_int] e.g. [accessibleproperty_to_int]) and from integer form ([<enum_of_int] e.g. [accessible_property_of_int]), the latter of which throws if you pass an unmapped value.
+
+{2:bitfields Bitfields}
+
+Bitfields are also mapped to the top-level [<Namespace>_enums] module (e.g. [Gtk_enums]).
+A bitfield is represented in OCaml as a list, where each entry is a value of an associated polymorphic type.
+
+For example, the GObject StyleContextPrintFlags bitfield will be declared as such:
+
+{[
+
+(* StyleContextPrintFlags values type *)
+type stylecontextprintflags_flag = 
+  [ `NONE | `RECURSE | `SHOW_STYLE | `SHOW_CHANGE ]
+
+(* StyleContextPrintFlags type *)
+type stylecontextprintflags = stylecontextprintflags_flag list
+
+]}
+
+Any parameter or return type or property will use the [stylecontextprintflags] type. At runtime, each value is mapped to an integer value and bitwise-or`ed together.
 
 {1 Types}
 
-TODO: one short rule per row, with an example each:
-- Nullable values → [option].
-- [GError**] → [result] with {!GError.t}.
-- Out parameters → tuples (check how multiple outputs are returned).
-- Arrays and lists → OCaml arrays or lists (say which, and when).
-- Strings: UTF-8 OCaml [string].
-- Sized integers → the modules in [Ocgtk_common] ([Int32], [UInt8], ...).
-- Records and boxed types: what you can access (field accessors).
+{2 Nullable values}
+
+Nullable values in GObject are represented as an OCaml [option] type.
+
+{2 Error values}
+
+Any GLib.Error type as a return value or parameter is mapped to `GError.t` in OCaml.
+
+However, when a method is specified with the [throws] attribute, the OCaml return type will be an OCaml [result] type with [GError.t] as the [`err] part of the type. 
+
+For example, [Gdk.Clipboard.read_value_finish] declares a return type of [GObject.Value], so it's signature becomes in OCaml:
+
+{|
+class clipboard_t : object
+  ...
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+end
+|}
+
+(in C, these functions take a [GError**] value to be able to return a newly allocated error object when there is an exception)
+
+{2 Primitive Types}
+
+{3 Strings}
+
+OCaml strings are mapped transparently in parameters and return types. They are copied in full between GObject strings and OCaml strings in the C layer.
+
+{3 Integers}
+
+Plain C [int] and [uint] values ([gint], [guint]) are 32-bit and become ordinary OCaml
+[int]. Out-of-range values are not checked.
+
+Similarly, [gssize], [gulong] and [gchar] are converted to int and are not checked for out-of-range values. 
+
+A [gint64] becomes an OCaml [int64] and maps with no range issues.
+
+Fixed-width integers get their own types in [Ocgtk_common], so that the range
+is part of the type and a value that doesn't fit is caught when you convert it:
+
+{t | C type | OCaml type | Range |
+   | ------ | ---------- | ----- |
+   | [guint8]  | [UInt8.t]  | 0 to 255 |
+   | [gint8]   | [Int8.t]   | -128 to 127 |
+   | [guint16] | [UInt16.t] | 0 to 65535 |
+   | [gint16]  | [Int16.t]  | -32768 to 32767 |
+   | [guint32] | [UInt32.t] | 0 to 4294967295 |
+   | [gint32]  | [Int32.t]  | -2147483648 to 2147483647 |
+   | [guint64] | [UInt64.t] | 0 to 2{^64}-1 |
+   | [gsize]   | [Gsize.t]  | 0 to [max_int] |}
+
+Apart from [UInt64], these are all [private int], so they cost nothing at
+runtime. You can read them as an [int] with [to_int], but you can only create
+one through [of_int]. [UInt64.t] is abstract and holds an [int64] internally.
+
+Each module has the same small API:
+
+- [of_int : int -> t] raises [Invalid_argument] if the value is out of range.
+- [to_int : t -> int] converts back.
+- [min_int], [max_int] and [zero] (or [minus_one] for signed types) are constants of
+  type [t]. [min_value] and [max_value] give the same limits as plain [int]s.
+
+{[
+let n = UInt16.of_int 300 in
+let width : int = UInt16.to_int n + 1 in
+ignore (UInt8.of_int 256) (* raises Invalid_argument *)
+]}
+
+[Int32] shadows [Stdlib.Int32] on some versions if Ocgtk_common is opened. If you need OCaml's boxed [int32], write
+[Stdlib.Int32]. All the modules are also grouped under [Bounded_int], for
+example [Bounded_int.UInt16].
+
+{3 Lists and ARrays} 
+
+{3 Record Types}
+
+including boxed
 
 {1 Signals}
 
