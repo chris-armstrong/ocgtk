@@ -291,6 +291,12 @@ The prototype branch stays local.
    script, rather than rebasing `proto/ocglib-ocgraphene`, whose generated
    files all conflict. Keep the old branch for reference until the new one
    reaches the same point.
+
+   **Done 2026-10-25**: `main` merged into `m3` as `d9c00187` (pushed),
+   this branch rebased onto it. merlint was removed rather than merged
+   (unmaintained); semgrep is the lint gate. The merge also fixed an `m3`
+   generator bug (eager `Option.fold ~none:` writing guarded enum cases and
+   OS-guarded stubs twice). The prototype is not yet redone.
 1. Move the prototype to the target layout: `ocglib/` and `ocgraphene/` at
    the root, a root `dune-project`, and `ocgraphene.enums` split out as the
    single module `ocgraphene_enums.ml`, re-exported as `Ocgraphene.Enums`.
