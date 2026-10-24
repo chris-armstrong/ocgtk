@@ -261,7 +261,7 @@ item on it has been checked, and the result is recorded here (numbers, not
 
 ### Baselines
 
-Several criteria compare against today's tree. Record these from `lablgtk4`
+Several criteria compare against today's tree. Record these from `main`
 at the commit phase 0 starts from, and again at the commit phase 3 starts
 from (the tree moves on in between):
 
