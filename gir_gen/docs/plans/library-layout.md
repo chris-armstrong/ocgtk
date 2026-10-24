@@ -17,6 +17,7 @@ Ocgraphene.Point.point_t        (* class type, layer 2 *)
 Ocgraphene.Point.alloc          (* constructor *)
 Ocgraphene.Raw.Point.t          (* layer 1: externals and abstract type *)
 Ocgraphene.Enums.eulerorder     (* enums and bitfields *)
+Ocgraphene.Constants            (* constants *)
 Ocglib.Gobject                  (* hand-written GLib/GObject *)
 ```
 
@@ -50,7 +51,7 @@ replace them.
   |---|---|---|---|
   | `ocgraphene.enums` | `Ocgraphene_enums` | one module, `ocgraphene_enums.ml` (pure OCaml, no C), so it is the library's main module | nothing (Stdlib only, checked for every namespace) |
   | `ocgraphene.raw` | `Ocgraphene_raw` | layer 1, every C stub (generated and hand-written), `graphene_decls.h` | `ocgraphene.enums`, `ocglib`, other `*.raw` |
-  | `ocgraphene` | `Ocgraphene` | layer 2 classes and shims, `Raw`, `Graphene_constants`, `Enums` (re-export) | the two above, other namespaces' main libraries |
+  | `ocgraphene` | `Ocgraphene` | layer 2 classes and shims, `Raw`, `Constants`, `Enums` (re-export) | the two above, other namespaces' main libraries |
 
   Users depend on `ocgraphene` only. `.raw` and `.enums` are public names
   because installation needs them, and a user may list them directly in
@@ -62,7 +63,9 @@ replace them.
   as the main module and there is no `Ocgraphene_enums.Graphene_enums`
   level. The main library's `enums.ml` is `include Ocgraphene_enums`
   (an `include`, not an alias, for the same reason `Raw` cannot be one).
-  Constants are unchanged (`Ocgraphene.Graphene_constants`).
+  Constants follow suit: `Graphene_constants` becomes `Ocgraphene.Constants`
+  (`constants.ml` in the main library; constants have no dependencies, so
+  they need no library of their own).
 - **`Raw` is a generated `raw.ml` with one alias per class**:
   `module Point = Ocgraphene_raw.Point`,
   `module Box = Ocgraphene_raw.Box_and__sphere.Box`. These are true module
@@ -79,9 +82,12 @@ replace them.
   modules anyway; then `Ocgraphene_raw`'s main module lists each class at the
   top level and `Ocgraphene`'s main module can say `module Raw =
   Ocgraphene_raw` instead of `raw.ml`.
-- **Layer 1 and the raw library open `Ocglib`** (`-open Ocglib` in the
-  library flags) instead of qualifying `Gobject.` paths. Layer 2 needs no
-  open (it never names `Gobject`).
+- **The raw and main libraries open `Ocglib`** (`-open Ocglib` in the
+  library flags) instead of qualifying `Gobject.` paths. Both layers need
+  it: layer 2 names `Gobject` in gio (37 of 175 modules), gdk (11), gtk
+  (128), pango (2) and gdkpixbuf (1). Graphene happens not to, which is why
+  the prototype's main library built without it. The enums library needs
+  no open.
 - **Cluster modules are hidden if odoc allows it.** The preference is a
   generated main `.mli` for `Ocgraphene` and `Ocgraphene_raw` that leaves the
   `*_and__*` cluster modules out. This must be tested first (phase 0): the
@@ -160,7 +166,7 @@ ocglib/
   tests/
 ocgraphene/
   generated/                  library ocgraphene (all generated)
-    dune  point.ml  box.ml  box_and__sphere.ml  graphene_constants.ml
+    dune  point.ml  box.ml  box_and__sphere.ml  constants.ml
     raw.ml                    module Point = Ocgraphene_raw.Point, one per class
     enums.ml                  include Ocgraphene_enums
     ocgraphene.ml/.mli        only if clusters are hidden
@@ -192,6 +198,7 @@ libraries have no hand-written parts, so the generator writes their whole
 | Layer 1 to enums (same or other namespace) | `Graphene_enums.x` | `Ocgraphene_enums.x` |
 | Layer 2 to enums, same namespace | `Graphene_enums.x` | `Enums.x` |
 | Layer 2 to another namespace's enums | `Ocgtk_graphene.Graphene_enums.x` | `Ocgraphene.Enums.x` |
+| Constants | `Graphene_constants.x` | `Constants.x` (same namespace), `Ocgraphene.Constants.x` |
 | User code | `Ocgtk_graphene.Graphene_enums.x` | `Ocgraphene.Enums.x` (or `Ocgraphene_enums.x` with a direct dependency) |
 | GObject runtime | `Gobject.obj` (common unwrapped) | `Gobject.obj` under `-open Ocglib` |
 | C decls header, other namespace | `#include "generated/graphene_decls.h"` | `#include "graphene_decls.h"`, installed by `ocgraphene.raw` |
@@ -209,20 +216,41 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 1. Move the prototype to the target layout: `ocglib/` and `ocgraphene/` at
    the root, a root `dune-project`, and `ocgraphene.enums` split out as the
    single module `ocgraphene_enums.ml`, re-exported as `Ocgraphene.Enums`.
-2. Hide the cluster modules with a main `.mli` for both `Ocgraphene` and
-   `Ocgraphene_raw`, then build the docs. Record whether every link resolves,
-   with and without `@canonical` tags. This decides the cluster decision.
-   Graphene has no `inherit` lines, so also check one gtk cluster by hand,
-   or do step 4 first.
-3. Runtime test in `ocgraphene/tests/`: alcotest cases that create objects
+2. Runtime test in `ocgraphene/tests/`: alcotest cases that create objects
    through the classes and through `Raw`, return values from one class into
    another (`Box` from `Point3_d`s), and call `Gc.full_major` while they are
    alive and after they are dropped. The prototype's `consumer.exe` only
    checked that a handful of calls link and run.
-4. One dependent namespace: move gsk (depends on gdk and graphene; gdk can
-   stay unconverted if the references allow it, otherwise pick a smaller
-   dependent) to check the cross-namespace rows of the name mapping,
-   raw-to-raw dependencies and the installed `graphene_decls.h`.
+3. Convert gio with the script. Gio depends only on ocglib, so the script
+   needs no cross-namespace rewriting, and it is the first namespace that
+   exercises what graphene cannot:
+   - `inherit` (176 lines) and odoc links in the new layout, which is the
+     motivation for the whole change and is unverified in it;
+   - cluster hiding (20 clusters): build the docs with a generated main
+     `.mli` for `Ocgio` and `Ocgio_raw`, with and without `@canonical` tags,
+     and record whether every link resolves. This decides the cluster
+     decision; graphene has no `inherit` lines, so it cannot;
+   - layer 2 that names `Gobject`, signals and properties;
+   - stub batches (gio has them, for the Windows command-line limit) as
+     dependencies of `ocgio.raw`;
+   - hand-written OCaml (`gio_volume_monitor_core.ml`, which uses layer 1
+     only, so it goes to `raw/core/`) and the optional `gio-unix-2.0`;
+   - scale: build and doc build time for about 850 files, a data point for
+     gtk and for the doc-preview workflow;
+   - the 81 unresolved references from the proposal: count them for gio
+     before and after, to see whether any are layout-related.
+4. Convert gdkpixbuf (depends only on gio), extending the script for
+   references between namespaces. This checks the cross-namespace rows of
+   the name mapping, raw-to-raw dependencies, the installed `gio_decls.h`,
+   `inherit` across packages (8 lines) and odoc links across packages, none
+   of which is tested yet. Then build `ocgdkpixbuf` alone with `dune build
+   -p` against an installed `ocgio`, as was done for ocgraphene.
+
+   The original choice, gsk, is not feasible: it needs gdk, which needs
+   cairo, gdkpixbuf, gio, pango and pangocairo.
+5. Decide, from steps 3 and 4, whether to start phase 2 directly or extend
+   the script further. The script is throwaway work, and every extension is
+   logic the generator needs anyway.
 
 ### Phase 1 — conf packages and ocglib
 
@@ -257,8 +285,7 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
    `dep_libraries`: new library names, and the raw/main distinction.
 6. `install_c_headers` for each `*_decls.h`, and cross-namespace includes
    without the `generated/` prefix.
-7. Check whether `overrides/*.sexp` refer to module or file names.
-8. `scripts/generate-bindings.sh`: new output paths, and deletion of stale
+7. `scripts/generate-bindings.sh`: new output paths, and deletion of stale
    files (the generator does not remove them).
 
 ### Phase 3 — move and regenerate everything
@@ -268,10 +295,20 @@ regeneration. Today `frustum.ml` is layer 1 and `gFrustum.ml` is layer 2;
 afterwards `frustum.ml` is layer 2, and git reads the combined change as an
 edit, which ruins history and blame.
 
-Order follows the dependency graph: cairo, graphene, gio; then gdkpixbuf,
-pango; then pangocairo, gdk; then gsk; then gtk. Hand-written `core/` code
-moves to `raw/core/` (check `gio_volume_monitor_core.ml`: if it uses layer 2
-it belongs in the main library instead).
+The moves can be one commit per namespace, but the regeneration cannot: the
+generator writes every namespace in one run and their references change
+together, so it is one commit, and the tree does not build between the
+first move and that commit. Keep it all in one PR so `main` stays buildable,
+and accept that `git bisect` must skip those commits.
+
+Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
+(`gio_volume_monitor_core.ml` does). Gtk's `core/gMain.ml` and
+`core/gVersion.ml` are hand-written modules with the `G` prefix, used in
+182 places; see Open items.
+
+Generated C files move one directory deeper (`<pkg>/raw/generated/`), so
+check the stub-batch size in `dune_file.ml`, which allows for about 55
+characters per path, against the new paths.
 
 ### Phase 4 — tests, examples, packaging
 
@@ -319,7 +356,19 @@ downstream intentionally broken):
   between separate packages were not tested.
 - A consumer outside the repository, built against the installed packages,
   ran real calls (`Point`, `Box` from a cluster, `Raw.Point`) without
-  crashing. No GC or finaliser testing yet (phase 0 step 3).
+  crashing. No GC or finaliser testing yet (phase 0 step 2).
+- Each package builds on its own the way opam builds it: `dune build -p
+  ocgraphene` with `ocglib` installed in a separate prefix succeeds, and
+  fails with `Library "ocglib" not found` without that prefix, so the
+  in-tree copy is not used.
+- No class in any namespace is named `Raw`, `Enums` or `Constants`, or
+  shares a name with an `Ocglib` or Stdlib module, so dropping the `G`
+  prefix and adding those modules causes no clashes (checked over every
+  layer 2 module).
+- `overrides/*.sexp` refer to GIR names (`(class ...)`, `(record ...)`),
+  not module or file names, so they need no change.
+- ocglib's C includes `caml/threads.h` but calls nothing from the threads
+  library, so ocglib needs no `threads` dependency.
 - The build root is the repository root (because of `dune-workspace`), so
   output is in `_build/default/ocgtk/...`.
 
@@ -328,8 +377,16 @@ downstream intentionally broken):
 1. Depexts for the four new conf packages on the Debian, Fedora, SUSE and
    Alpine families (Arch and FreeBSD names are above), and macOS for
    `conf-glib-2`'s coverage of gobject and gio.
-2. The cluster-hiding result (phase 0 step 2).
+2. The cluster-hiding result (phase 0 step 3).
 3. Whether a raw library ever needs another namespace's main library (it
    should not; phase 0 step 4 checks).
 4. Proposal open questions 3 and 4 (the 81 other `xref-unresolved` spans;
-   doc build time) still stand.
+   doc build time); phase 0 step 3 gives gio's numbers for both.
+5. What gtk's hand-written `GMain` and `GVersion` become. Dropping the
+   prefix gives `Ocgtk.Main` and `Ocgtk.Version`, which matches the rest of
+   the layout. `GMain` holds both externals and wrapper functions, so it
+   cannot simply move to `raw/core/`.
+6. Gtk itself cannot be prototyped before phase 3, because it depends on
+   every other namespace. Its risks are the same as gio's at a larger scale
+   (320 layer 2 modules against gio's 175, 8 stub batches against 6), so
+   gio stands in for it.
