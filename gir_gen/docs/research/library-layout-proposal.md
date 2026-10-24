@@ -1,7 +1,13 @@
 # Library layout proposal — one library per namespace, flat public modules
 
-> **Status: proposal, not scheduled; naming and the main layout decisions are
-> recorded below.** This records the direction discussed while investigating
+> **Status: superseded in part by the implementation plan,
+> [library-layout.md](../plans/library-layout.md)**, which changes several
+> decisions below (layer 1 becomes a separate `.raw` library, enums a
+> `.enums` library, packages move to top-level directories). Where the two
+> disagree, the plan wins.
+>
+> **Original status: proposal, not scheduled; naming and the main layout
+> decisions are recorded below.** This records the direction discussed while investigating
 > the unresolved `inherit` links (see
 > [unresolved-inherit-links.md](./unresolved-inherit-links.md)). The remaining
 > open items are listed at the end. Nothing here has been prototyped beyond the
@@ -121,15 +127,7 @@ research note):
   `*_enums` and `*_constants` modules (`Gtk_enums`, `Gtk_constants`), not
   beside the classes.
 - **Naming keeps the `oc` prefix**: `ocgtk`, `ocgdk`, `ocgio`, `ocgsk`, and so
-  on, with modules `Ocgtk`, `Ocgdk`, `Ocgio`, ... Considered `sc` to avoid
-  any resemblance to "OCaml" and rejected it: `oc` is already the project's
-  identity, and a search of discuss.ocaml.org, the opam-repository
-  guidelines and the ocaml.org lists found no policy reserving or restricting
-  `oc*` names. Other `oc*` packages (`ocurl`, `ocamlnet`, `ocplib`) use `oc`
-  as part of their own names, not as a family prefix, so they are not
-  precedent either way. Trademark status of "OCaml" was not established.
-  The exact names for base namespaces (cairo, graphene, pangocairo) still
-  follow the same pattern and are listed under Open questions.
+  on, with modules `Ocgtk`, `Ocgdk`, `Ocgio`, ... 
 - **The generator emits `Raw` itself; `(include_subdirs qualified)` is not
   used.** This avoids relying on that dune feature at several-hundred-module
   scale. The cost is more naming logic in the generator.
