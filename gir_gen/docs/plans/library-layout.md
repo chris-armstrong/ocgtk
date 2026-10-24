@@ -16,7 +16,7 @@ flat public modules:
 Ocgraphene.Point.point_t        (* class type, layer 2 *)
 Ocgraphene.Point.alloc          (* constructor *)
 Ocgraphene.Raw.Point.t          (* layer 1: externals and abstract type *)
-Ocgraphene.Graphene_enums       (* enums and bitfields *)
+Ocgraphene.Enums.eulerorder     (* enums and bitfields *)
 Ocglib.Gobject                  (* hand-written GLib/GObject *)
 ```
 
@@ -48,13 +48,21 @@ replace them.
 
   | Library | Module | Contents | Depends on |
   |---|---|---|---|
-  | `ocgraphene.enums` | `Ocgraphene_enums` | `Graphene_enums` (pure OCaml, no C) | nothing (Stdlib only, checked for every namespace) |
+  | `ocgraphene.enums` | `Ocgraphene_enums` | one module, `ocgraphene_enums.ml` (pure OCaml, no C), so it is the library's main module | nothing (Stdlib only, checked for every namespace) |
   | `ocgraphene.raw` | `Ocgraphene_raw` | layer 1, every C stub (generated and hand-written), `graphene_decls.h` | `ocgraphene.enums`, `ocglib`, other `*.raw` |
-  | `ocgraphene` | `Ocgraphene` | layer 2 classes and shims, `Raw`, `Graphene_constants`, a re-export of `Graphene_enums` | the two above, other namespaces' main libraries |
+  | `ocgraphene` | `Ocgraphene` | layer 2 classes and shims, `Raw`, `Graphene_constants`, `Enums` (re-export) | the two above, other namespaces' main libraries |
 
   Users depend on `ocgraphene` only. `.raw` and `.enums` are public names
   because installation needs them, and a user may list them directly in
   dune, but the documented API goes through `Ocgraphene`.
+- **Enums are one level deep: `Ocgraphene.Enums.x`, or `Ocgraphene_enums.x`
+  from the enums library directly.** This replaces the proposal's decision to
+  keep the `Graphene_enums` module name. The enums library has exactly one
+  module, named after the library (`ocgraphene_enums.ml`), so dune uses it
+  as the main module and there is no `Ocgraphene_enums.Graphene_enums`
+  level. The main library's `enums.ml` is `include Ocgraphene_enums`
+  (an `include`, not an alias, for the same reason `Raw` cannot be one).
+  Constants are unchanged (`Ocgraphene.Graphene_constants`).
 - **`Raw` is a generated `raw.ml` with one alias per class**:
   `module Point = Ocgraphene_raw.Point`,
   `module Box = Ocgraphene_raw.Box_and__sphere.Box`. These are true module
@@ -154,14 +162,14 @@ ocgraphene/
   generated/                  library ocgraphene (all generated)
     dune  point.ml  box.ml  box_and__sphere.ml  graphene_constants.ml
     raw.ml                    module Point = Ocgraphene_raw.Point, one per class
-    graphene_enums.ml         include Ocgraphene_enums.Graphene_enums
+    enums.ml                  include Ocgraphene_enums
     ocgraphene.ml/.mli        only if clusters are hidden
   raw/
     dune                      hand-written: (include generated/dune.inc) + core stubs
     generated/                layer 1 .ml/.mli, ml_*_gen.c, graphene_decls.h, dune.inc
     core/                     hand-written C and ML (was src/<ns>/core)
   enums/
-    generated/                dune, graphene_enums.ml/.mli
+    generated/                dune, ocgraphene_enums.ml/.mli
   tests/
   examples/                   only if the package has examples of its own
 ocgtk/                        Gtk, same shape as ocgraphene/, plus examples/
@@ -181,7 +189,10 @@ libraries have no hand-written parts, so the generator writes their whole
 | Layer 1 to layer 1, same namespace | `Point3_d.t` | unchanged |
 | Layer 2 to another namespace's layer 2 | `Ocgtk_graphene.Graphene.Rect.rect_t` | `Ocgraphene.Rect.rect_t` |
 | Layer 1 to another namespace's layer 1 | `Ocgtk_graphene.Graphene.Wrappers.Rect.t` | `Ocgraphene_raw.Rect.t` |
-| Any to enums | `Graphene_enums.x` | `Graphene_enums.x` (via `Ocgraphene_enums`; cross-namespace `Ocgraphene_enums.Graphene_enums.x`) |
+| Layer 1 to enums (same or other namespace) | `Graphene_enums.x` | `Ocgraphene_enums.x` |
+| Layer 2 to enums, same namespace | `Graphene_enums.x` | `Enums.x` |
+| Layer 2 to another namespace's enums | `Ocgtk_graphene.Graphene_enums.x` | `Ocgraphene.Enums.x` |
+| User code | `Ocgtk_graphene.Graphene_enums.x` | `Ocgraphene.Enums.x` (or `Ocgraphene_enums.x` with a direct dependency) |
 | GObject runtime | `Gobject.obj` (common unwrapped) | `Gobject.obj` under `-open Ocglib` |
 | C decls header, other namespace | `#include "generated/graphene_decls.h"` | `#include "graphene_decls.h"`, installed by `ocgraphene.raw` |
 
@@ -196,7 +207,8 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 (`scripts/proto-relayout.py` on that branch), not the generator.
 
 1. Move the prototype to the target layout: `ocglib/` and `ocgraphene/` at
-   the root, a root `dune-project`, and `ocgraphene.enums` split out.
+   the root, a root `dune-project`, and `ocgraphene.enums` split out as the
+   single module `ocgraphene_enums.ml`, re-exported as `Ocgraphene.Enums`.
 2. Hide the cluster modules with a main `.mli` for both `Ocgraphene` and
    `Ocgraphene_raw`, then build the docs. Record whether every link resolves,
    with and without `@canonical` tags. This decides the cluster decision.
