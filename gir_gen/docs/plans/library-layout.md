@@ -32,7 +32,15 @@ replace them.
   generates all the `.opam` files at one shared version. `gir_gen/` keeps its
   own `dune-project`. The current root `dune-workspace` can then be removed.
 - **Tests live inside each package** (`ocgraphene/tests/`, `ocgtk/tests/`,
-  ...). `examples/` and `overrides/` move to the repository root.
+  ...). `overrides/` moves to the repository root.
+- **Examples live inside the package they demonstrate**: Gtk examples in
+  `ocgtk/examples/`, and an example that uses only, say, Gio in
+  `ocgio/examples/`. An example that uses Gtk together with other namespaces
+  (Gio, Pango, Gdk) is a Gtk example. Today every example is a Gtk program
+  (checked 2026-10-24: `counter`, `counter_simple`, `demo_all`,
+  `form_example`, `login_form`, `picture_test`, `settings_panel`,
+  `text_editor` and `calculator/`), so all of them move to
+  `ocgtk/examples/`.
 - **Each namespace has three libraries.** This replaces the proposal's
   "generator emits `Raw` itself" and its use of the word "sub-libraries":
   there are still no umbrella packages, but each package has internal
@@ -138,7 +146,7 @@ is a single hand-written library).
 dune-project                  all packages
 conf-gtk4/  conf-cairo-gobject/  ...  our conf packages (see Conf packages)
 configurator/                 config_flags.exe (moved from ocgtk/src/)
-examples/  overrides/
+overrides/
 ocglib/
   dune  *.ml  *.mli  *.c  wrappers.h  value_kinds.h
   tests/
@@ -155,7 +163,8 @@ ocgraphene/
   enums/
     generated/                dune, graphene_enums.ml/.mli
   tests/
-ocgtk/                        Gtk, same shape as ocgraphene/
+  examples/                   only if the package has examples of its own
+ocgtk/                        Gtk, same shape as ocgraphene/, plus examples/
 ```
 
 The split between generated and hand-written dune files in `raw/` keeps the
@@ -255,7 +264,10 @@ it belongs in the main library instead).
 ### Phase 4 — tests, examples, packaging
 
 1. Tests to `<pkg>/tests/`, with the gtk test helpers in `ocgtk/tests/`.
-2. Examples to `examples/` at the root; update library names.
+2. Examples to `<pkg>/examples/` (all current ones to `ocgtk/examples/`,
+   including the calculator's own tests); update library names, since
+   most examples depend on the umbrella `ocgtk` library and must list the
+   packages they use instead.
 3. Remove `ocgtk/src/ocgtk.ml`, the umbrella library and its `dune`.
 4. Documentation: one `index.mld` per package; the root `(documentation)`
    stanza per package.
