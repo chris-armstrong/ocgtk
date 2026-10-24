@@ -208,6 +208,26 @@ library, so layer 1 must use `OcgX_raw` paths, not `OcgX.Raw`.
 
 ## Phases
 
+Each phase ends with a "Done when" list. A phase is not finished until every
+item on it has been checked, and the result is recorded here (numbers, not
+"works").
+
+### Baselines
+
+Several criteria compare against today's tree. Record these from `lablgtk4`
+at the commit phase 0 starts from, and again at the commit phase 3 starts
+from (the tree moves on in between):
+
+- `dune test ocgtk/`: the number of test cases run and passed, per test
+  executable.
+- `dune build @doc`: the number of `Warning:` lines (what `doc-preview.yml`
+  counts), the number of `xref-unresolved` spans in the HTML, and how many
+  of those are on `inherit` lines.
+- Wall-clock time for a clean `dune build` and a clean `dune build @doc`, on
+  the same machine as the later measurements.
+- The public module paths of every library (`dune describe` or the odoc
+  index), for checking the migration note in phase 5.
+
 ### Phase 0 — finish the prototype
 
 On `proto/ocglib-ocgraphene`, still with the hand-run script
@@ -252,6 +272,37 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
    the script further. The script is throwaway work, and every extension is
    logic the generator needs anyway.
 
+**Done when:**
+
+- Step 1: `dune build` from the root, with the root `dune-project`, builds
+  `ocglib`, `ocgraphene.enums`, `ocgraphene.raw` and `ocgraphene`. A
+  consumer compiles against both `Ocgraphene.Enums.x` and
+  `Ocgraphene_enums.x`, and no `Graphene_enums` module exists in the
+  installed tree.
+- Step 2: the GC test passes in 20 consecutive runs of `dune test
+  ocgraphene/ --force`, and its cases include one value created in each
+  way listed (class, `Raw`, returned from another class).
+- Step 3:
+  - `ocgio`, `ocgio.raw` and `ocgio.enums` build, and gio's existing test
+    (`test_gio_volume_monitor`) passes, moved to `ocgio/tests/`.
+  - Every `inherit` line in gio whose parent is in gio links (0 unresolved
+    of 176). This is the result the whole change is for; if it fails, stop
+    and revisit the design before going further.
+  - The cluster decision is recorded under Decisions, with the unresolved
+    count for each configuration tried (dune's main module, generated
+    `.mli`, generated `.mli` with `@canonical`).
+  - Build time, doc build time and the unresolved-reference count for gio
+    are recorded under Prototype findings, beside the baseline numbers.
+- Step 4:
+  - `dune build -p ocgdkpixbuf` succeeds against an `ocgio` installed in a
+    separate prefix, and fails without it.
+  - `test_gdkpixbuf` passes from `ocgdkpixbuf/tests/`.
+  - No raw library's `libraries` field names a main library.
+  - How the 8 cross-package `inherit` lines render is recorded, and the
+    doc-comment "Inherits from" links to `Ocgio` pages resolve (the
+    proposal accepts plain text on the `inherit` line itself).
+- Step 5: the decision and its reason are written into this plan.
+
 ### Phase 1 — conf packages and ocglib
 
 1. Add the four new conf packages (`conf-cairo-gobject`, `conf-pangocairo`,
@@ -267,6 +318,27 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 3. Move the GLib/GObject tests (`test_gobj`, `test_gvariant*`,
    `test_glib_bytes`, `test_bounded_int`, `test_closure*`, the gobject test
    helpers) to `ocglib/tests/`.
+
+Phase 1 lands on `main` on its own, so the rest of the tree must keep
+building: the generated dune files switch from `ocgtk.common` to `ocglib`
+and add `-open Ocglib`, a small generator change ahead of phase 2. If that
+turns out not to be small, phase 1 joins phase 3's PR instead.
+
+**Done when:**
+
+- `opam lint` reports nothing for each new conf package.
+- In a fresh container for each of Debian, Ubuntu, Fedora, openSUSE,
+  Alpine and Arch, with none of the libraries installed, `opam install
+  ./conf-<name>` installs the system package through depexts and then
+  succeeds. On Fedora this must pull in `cairo-gobject-devel`.
+- `dune build -p ocglib` succeeds in a container that has GLib's
+  development files but not GTK's, which shows ocglib no longer needs
+  `gtk4`. Nothing under `ocglib/` mentions `gtk`.
+- The moved tests pass from `ocglib/tests/`, with the same number of cases
+  as the baseline for those executables.
+- `dune build` and `dune test` pass for the whole tree, and CI (Linux and
+  macOS) is green. macOS passing is also the missing check that Homebrew's
+  `glib` provides `gobject-2.0` (Open items 1).
 
 ### Phase 2 — generator
 
@@ -288,6 +360,21 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 7. `scripts/generate-bindings.sh`: new output paths, and deletion of stale
    files (the generator does not remove them).
 
+The generator change is not merged on its own: its output lands with it in
+phase 3's PR.
+
+**Done when:**
+
+- `dune test gir_gen/` passes, with tests for the new output paths, module
+  paths (one per row of the name mapping) and dune stanzas.
+- For graphene, gio and gdkpixbuf, the generator's output matches what the
+  phase 0 script produced, after ocamlformat on both. Any difference is
+  explained here or fixed.
+- Running `scripts/generate-bindings.sh` twice in a row leaves no diff, and
+  after a run no file remains in a `generated/` directory that the run did
+  not write.
+- No step rewrites generated text after emitting it.
+
 ### Phase 3 — move and regenerate everything
 
 Commit the directory moves (`git mv`, no content changes) separately from the
@@ -301,6 +388,15 @@ together, so it is one commit, and the tree does not build between the
 first move and that commit. Keep it all in one PR so `main` stays buildable,
 and accept that `git bisect` must skip those commits.
 
+So the order is: commit the moves, then regenerate and reformat
+(`generate-bindings.sh`, then `dune fmt`) and commit that. The second
+commit's diff is the review point for the whole generator change: it must
+contain nothing but the rewiring of module paths (the name mapping) and the
+files the new layout adds or drops (`raw.ml`, `enums.ml`, the dune files,
+the deleted `<Ns>.ml` and `ocgtk_<ns>.ml`). Any other change to a moved
+file (a different external, a missing method, reordered code, a changed
+doc comment) is a generator bug and is fixed before merging.
+
 Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
 (`gio_volume_monitor_core.ml` does). Gtk's `core/gMain.ml` and
 `core/gVersion.ml` are hand-written modules with the `G` prefix, used in
@@ -309,6 +405,26 @@ Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
 Generated C files move one directory deeper (`<pkg>/raw/generated/`), so
 check the stub-batch size in `dune_file.ml`, which allows for about 55
 characters per path, against the new paths.
+
+**Done when:**
+
+- Every move commit is renames only: `git show -M --stat` lists no file
+  as modified, and `git log --follow` on a layer 2 file (say
+  `ocgtk/generated/window.ml`) reaches its history as `gWindow.ml`.
+- The regenerate-and-reformat commit has no material change: for every
+  moved file, its diff, with old paths rewritten to new by a script
+  that applies the name mapping, is empty. The script and its output are
+  kept in the PR description. Files the commit adds or deletes are the
+  ones listed above and no others.
+- After `dune clean`, `dune build` passes at the regeneration commit.
+- No generated module has a `G` prefix, no `ocgtk_<ns>.ml` or `<Ns>.ml`
+  remains, and `ocgtk/src/` no longer exists.
+- The longest compiler command line for a stub batch is measured, and is
+  under 8191 characters (the Windows limit) with the margin the current
+  batching assumes.
+- Every package builds with `dune build -p <pkg>`, one at a time in
+  dependency order, each against its predecessors installed in a separate
+  prefix.
 
 ### Phase 4 — tests, examples, packaging
 
@@ -320,6 +436,17 @@ characters per path, against the new paths.
 3. Remove `ocgtk/src/ocgtk.ml`, the umbrella library and its `dune`.
 4. Documentation: one `index.mld` per package; the root `(documentation)`
    stanza per package.
+
+**Done when:**
+
+- `dune test` passes, and the test cases run, summed over every package,
+  equal the baseline taken at the start of phase 3. A lower count means a
+  test was lost in the move.
+- Every example builds, and the calculator's tests pass.
+- No dune or opam file names an old library (`ocgtk.common`, `ocgtk.gtk`,
+  `ocgtk.gio`, ...) or the umbrella `ocgtk` library.
+- `opam lint` reports nothing for every generated `.opam` file.
+- `dune build @doc` produces an index page for every package.
 
 ### Phase 5 — CI, docs and migration
 
@@ -334,6 +461,22 @@ characters per path, against the new paths.
 4. opam-repository: when publishing, mark the `0.1~preview*` releases as no
    longer maintained (the `x-maintenance-intent` field, or `flags:
    deprecated`; confirm which at the time).
+
+**Done when:**
+
+- Every workflow passes on the PR: `ci.yml` (Linux, macOS, lint),
+  `doc-preview.yml` and `release-verification.yml`.
+- The doc preview contains every package. Its warning count is no higher
+  than the baseline, same-package `inherit` links are 0 unresolved, and the
+  doc build time is recorded.
+- In a fresh opam switch, each package installs from a local
+  opam-repository checkout (or pins) in dependency order, and a small
+  program depending only on `ocgtk` builds against the installed set.
+- The migration note has a row for every public path in the baseline list
+  that changed.
+- Searching `README.md`, `AGENTS.md` and the docs for old paths
+  (`Ocgtk_`, `ocgtk.common`, `src/gtk`, `GWindow`-style names) finds only
+  the migration note and CHANGELOG.
 
 ## Prototype findings
 
