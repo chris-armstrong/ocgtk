@@ -3,7 +3,7 @@
    No file I/O: all functions return strings. *)
 
 open StdLabels
-open Printf
+open Gen_buffer
 open Types
 
 (* ================================================================= *)
@@ -113,8 +113,7 @@ type signal_emission = {
 let classify_param ~ctx (param : gir_param) :
     (gir_param * Signal_marshaller.marshaller, string) result =
   match param.direction with
-  | Out | InOut ->
-      Error (sprintf "non-In direction parameter '%s'" param.param_name)
+  | Out | InOut -> Fmt.error "non-In direction parameter '%s'" param.param_name
   | In -> (
       let gir_type =
         {
@@ -124,9 +123,8 @@ let classify_param ~ctx (param : gir_param) :
       in
       match Signal_marshaller.classify ~ctx ~gir_type with
       | Signal_marshaller.Unsupported reason ->
-          Error
-            (sprintf "unsupported parameter type for '%s': %s" param.param_name
-               reason)
+          Fmt.error "unsupported parameter type for '%s': %s" param.param_name
+            reason
       | Signal_marshaller.Supported m -> Ok (param, m))
 
 (** Check whether any parameter classification failed; return the first error or
@@ -156,7 +154,7 @@ let classify_return ~ctx (return_type : gir_type) :
       Ok None
   | Signal_marshaller.Supported m -> Ok (Some m)
   | Signal_marshaller.Unsupported reason ->
-      Error (sprintf "unsupported return type: %s" reason)
+      Fmt.error "unsupported return type: %s" reason
 
 let classify ~ctx (signal : gir_signal) : (signal_emission, string) result =
   let ( let* ) = Result.bind in
@@ -193,14 +191,14 @@ let build_callback_type ~render_param ~render_return
   let param_parts =
     List.map param_marshallers
       ~f:(fun (param, (m : Signal_marshaller.marshaller)) ->
-        sprintf "%s:%s" (sanitize_param_name param.param_name) (render_param m))
+        Fmt.str "%s:%s" (sanitize_param_name param.param_name) (render_param m))
   in
   let return_type =
     match return_marshaller with None -> "unit" | Some m -> render_return m
   in
   match param_parts with
-  | [] -> sprintf "unit -> %s" return_type
-  | _ -> sprintf "%s -> %s" (String.concat ~sep:" -> " param_parts) return_type
+  | [] -> Fmt.str "unit -> %s" return_type
+  | _ -> Fmt.str "%s -> %s" (String.concat ~sep:" -> " param_parts) return_type
 
 let l1_callback_type ~current_class (e : signal_emission) : string =
   let render m = Signal_marshaller.render_l1_type ~current_class m in
@@ -217,7 +215,7 @@ let l2_callback_type ~current_layer2_module (e : signal_emission) : string =
 (* ================================================================= *)
 
 let emit_l1_val ~current_class (e : signal_emission) : string =
-  sprintf
+  Fmt.str
     "val %s : ?after:bool -> t -> callback:(%s) -> Gobject.Signal.handler_id\n"
     e.method_name
     (l1_callback_type ~current_class e)
@@ -227,13 +225,19 @@ let emit_l1_val ~current_class (e : signal_emission) : string =
 (* ================================================================= *)
 
 (** Substitute the placeholder [v] in a [getter_expr] with the actual
-    [Gobject.Closure.nth argv ~pos:N] expression for position [pos]. *)
-let substitute_getter_expr (getter_expr : string) (pos : int) : string =
-  let nth_expr = sprintf "(Gobject.Closure.nth argv ~pos:%d)" pos in
-  sprintf "(let v = %s in %s)" nth_expr getter_expr
+    [Gobject.Closure.nth argv ~pos:N] expression for position [pos], resolving
+    the [%GTYPE%] expected-type placeholder of object marshallers against the
+    class whose module will contain the emitted closure. *)
+let substitute_getter_expr ~current_class (m : Signal_marshaller.marshaller)
+    (getter_expr : string) (pos : int) : string =
+  let nth_expr = Fmt.str "(Gobject.Closure.nth argv ~pos:%d)" pos in
+  let getter_expr =
+    Signal_marshaller.substitute_gtype ~current_class m getter_expr
+  in
+  Fmt.str "(let v = %s in %s)" nth_expr getter_expr
 
 (** Emit the closure body for signals with parameters and/or a return value. *)
-let emit_closure_body (e : signal_emission) : string =
+let emit_closure_body ~current_class (e : signal_emission) : string =
   let buf = Buffer.create 256 in
   Buffer.add_string buf "Gobject.Closure.create (fun argv ->\n";
   (* Extract each parameter from the closure argv (positions start at 1) *)
@@ -242,16 +246,16 @@ let emit_closure_body (e : signal_emission) : string =
       let pos = i + 1 in
       let pname = sanitize_param_name param.param_name in
       bprintf buf "    let %s = %s in\n" pname
-        (substitute_getter_expr m.getter_expr pos));
+        (substitute_getter_expr ~current_class m m.getter_expr pos));
   (* Build the callback application *)
   let callback_args =
     List.map e.param_marshallers ~f:(fun (param, _) ->
-        sprintf "~%s" (sanitize_param_name param.param_name))
+        Fmt.str "~%s" (sanitize_param_name param.param_name))
   in
   let callback_call =
     match callback_args with
     | [] -> "callback ()"
-    | args -> sprintf "callback %s" (String.concat ~sep:" " args)
+    | args -> Fmt.str "callback %s" (String.concat ~sep:" " args)
   in
   (match e.return_marshaller with
   | None -> bprintf buf "    %s)\n" callback_call
@@ -263,19 +267,19 @@ let emit_closure_body (e : signal_emission) : string =
            where v is the target GValue (Gobject.Closure.result argv) and x is
            the OCaml value.  Replace v with the result value argument and x
            with result. *)
-        sprintf
+        Fmt.str
           "let v = Gobject.Closure.result argv in\n\
           \    let x = result in\n\
           \    %s"
-          m.setter_expr
+          (Signal_marshaller.substitute_gtype ~current_class m m.setter_expr)
       in
       bprintf buf "    %s)" setter);
   Buffer.contents buf
 
-let emit_l1_let (e : signal_emission) : string =
+let emit_l1_let ~current_class (e : signal_emission) : string =
   match e.strategy with
   | `Connect_simple ->
-      sprintf
+      Fmt.str
         "let %s ?after obj ~callback =\n\
         \  Gobject.Signal.connect_simple obj ~name:\"%s\" ~callback\n\
         \    ~after:(Option.value after ~default:false)\n\n"
@@ -283,7 +287,7 @@ let emit_l1_let (e : signal_emission) : string =
   | `Closure ->
       let buf = Buffer.create 256 in
       bprintf buf "let %s ?after obj ~callback =\n" e.method_name;
-      bprintf buf "  let closure = %s in\n" (emit_closure_body e);
+      bprintf buf "  let closure = %s in\n" (emit_closure_body ~current_class e);
       bprintf buf
         "  Gobject.Signal.connect obj ~name:\"%s\" ~callback:closure\n"
         e.raw_signal_name;
@@ -309,7 +313,7 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
   if not (needs_l2_wrapping e) then
     (* No GObject params or return — the L1 callback type matches L2 exactly,
        so forward the user's callback through unchanged. *)
-    sprintf
+    Fmt.str
       "  method %s ?(after = false) ~callback () =\n\
       \    %s.%s ~after self#as_%s ~callback\n\n"
       e.method_name layer1_module_name e.method_name class_snake
@@ -324,8 +328,8 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
       let wrapped =
         Signal_marshaller.l2_param_wrap_expr ~current_layer2_module m pname
       in
-      if String.equal wrapped pname then sprintf "~%s" pname
-      else sprintf "~%s:%s" pname wrapped
+      if String.equal wrapped pname then Fmt.str "~%s" pname
+      else Fmt.str "~%s:%s" pname wrapped
     in
     let fun_param_list, _user_callback_args, user_call =
       match e.param_marshallers with
@@ -335,14 +339,14 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
             List.map params ~f:(fun (p, _) -> sanitize_param_name p.param_name)
           in
           let fun_params =
-            String.concat ~sep:" " (List.map names ~f:(sprintf "~%s"))
+            String.concat ~sep:" " (List.map names ~f:(Fmt.str "~%s"))
           in
           let user_callback_args =
             String.concat ~sep:" " (List.map params ~f:format_user_arg)
           in
           ( fun_params,
             user_callback_args,
-            sprintf "callback %s" user_callback_args )
+            Fmt.str "callback %s" user_callback_args )
     in
     let body =
       match e.return_marshaller with
@@ -360,7 +364,7 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
     type body (.mli / class type definition). Unlike [emit_l2_method] (which
     emits a concrete method body), this emits only the method type. *)
 let emit_l2_method_sig ~current_layer2_module (e : signal_emission) : string =
-  sprintf
+  Fmt.str
     "    method %s : ?after:bool -> callback:(%s) -> unit -> \
      Gobject.Signal.handler_id\n"
     e.method_name

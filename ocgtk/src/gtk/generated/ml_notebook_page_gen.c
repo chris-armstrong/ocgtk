@@ -69,7 +69,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_notebook_page_get_menu: property 'menu'
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "menu", &prop_gvalue);
-          prop_value = (GtkWidget*)g_value_get_object(&prop_gvalue);
+          prop_value = (GtkWidget*)g_value_dup_object(&prop_gvalue);
 
       result = Val_GtkWidget(prop_value);
 g_value_unset(&prop_gvalue);
@@ -182,7 +182,7 @@ if (pspec == NULL) caml_failwith("ml_gtk_notebook_page_get_tab: property 'tab' n
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "tab", &prop_gvalue);
-          prop_value = (GtkWidget*)g_value_get_object(&prop_gvalue);
+          prop_value = (GtkWidget*)g_value_dup_object(&prop_gvalue);
 
       result = Val_GtkWidget(prop_value);
 g_value_unset(&prop_gvalue);
@@ -282,4 +282,13 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_object_set_property(G_OBJECT(obj), "tab-label", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
+}
+
+GType gtk_notebook_page_get_type (void);
+
+
+CAMLprim value ml_gtk_notebook_page_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_notebook_page_get_type()));
 }

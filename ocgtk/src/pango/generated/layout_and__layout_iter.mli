@@ -4,6 +4,8 @@
 module rec Layout : sig
   type t = [ `layout | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_layout_get_type"
+
   external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t
     = "ml_pango_layout_new"
   (** Create a new Layout *)
@@ -591,6 +593,8 @@ end
 
 and Layout_iter : sig
   type t = [ `layout_iter ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_layout_iter_get_type"
 
   (* Methods *)
 

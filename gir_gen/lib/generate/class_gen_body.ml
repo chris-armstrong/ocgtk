@@ -1,9 +1,9 @@
 (* Class body generation (Step 3) - orchestrators *)
 
-[@@@warning "-32"]
+(*E110-removed*)
 
 open StdLabels
-open Printf
+open Gen_buffer
 open Types
 
 (* Use Common.StringSet for type compatibility across all modules *)

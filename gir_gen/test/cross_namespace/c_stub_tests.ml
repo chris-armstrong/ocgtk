@@ -229,7 +229,8 @@ let test_copy_function_returns_copy_result () =
   (* Parse the generated C code *)
   let functions = C_parser.parse_c_code c_code in
   let copy_func =
-    Option.get (C_ast.find_function functions "copy_TestFormat")
+    assert_some_value "copy_TestFormat"
+      (C_ast.find_function functions "copy_TestFormat")
   in
 
   (* Positive: copy function uses g_boxed_copy via the registered GType, not the
@@ -305,7 +306,7 @@ let test_record_copy_parses_successfully () =
     "copy function parses to valid AST" true (Option.is_some copy_func);
 
   (* Positive: the parsed copy function has a return statement *)
-  let func = Option.get copy_func in
+  let func = assert_some_value "copy_func" copy_func in
   Alcotest.(check bool)
     "Has return statement" true
     (Option.is_some (C_ast.return_expr func));
@@ -459,7 +460,8 @@ let test_enum_array_element_conversion () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (C_ast.find_function functions "ml_pango_language_get_scripts")
+    assert_some_value "ml_pango_language_get_scripts"
+      (C_ast.find_function functions "ml_pango_language_get_scripts")
   in
 
   (* Positive: calls the C function *)
@@ -498,6 +500,15 @@ let test_enum_array_element_conversion () =
      The generated code should be Val_GtkScript(result[i]), NOT
      Val_GtkScript(&result[i]). *)
   let has_addr_of_in_enum_call =
+    let rec check_expr = function
+      | C_ast.Call ("Val_GtkScript", args) | C_ast.Macro ("Val_GtkScript", args)
+        ->
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
     let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
     and check_stmt = function
       | C_ast.ExprStmt e -> check_expr e
@@ -505,14 +516,6 @@ let test_enum_array_element_conversion () =
       | C_ast.VarDecl (_, _, Some e) -> check_expr e
       | C_ast.IfStmt (_, then_stmts, else_stmts) ->
           check_stmts then_stmts || check_stmts else_stmts
-      | _ -> false
-    and check_expr = function
-      | C_ast.Call ("Val_GtkScript", args) | C_ast.Macro ("Val_GtkScript", args)
-        ->
-          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
-      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
-          List.exists check_expr args
-      | C_ast.Cast (_, e) -> check_expr e
       | _ -> false
     in
     check_stmts func.C_ast.body
@@ -577,7 +580,7 @@ let test_bitfield_array_element_conversion () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get
+    assert_some_value "ml_gtk_application_get_inhibit_flags"
       (C_ast.find_function functions "ml_gtk_application_get_inhibit_flags")
   in
 
@@ -598,6 +601,15 @@ let test_bitfield_array_element_conversion () =
 
   (* Critical: verify no AddrOf nodes wrap the bitfield conversion *)
   let has_addr_of_in_bitfield_call =
+    let rec check_expr = function
+      | C_ast.Call ("Val_GtkInhibitFlags", args)
+      | C_ast.Macro ("Val_GtkInhibitFlags", args) ->
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
     let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
     and check_stmt = function
       | C_ast.ExprStmt e -> check_expr e
@@ -605,14 +617,6 @@ let test_bitfield_array_element_conversion () =
       | C_ast.VarDecl (_, _, Some e) -> check_expr e
       | C_ast.IfStmt (_, then_stmts, else_stmts) ->
           check_stmts then_stmts || check_stmts else_stmts
-      | _ -> false
-    and check_expr = function
-      | C_ast.Call ("Val_GtkInhibitFlags", args)
-      | C_ast.Macro ("Val_GtkInhibitFlags", args) ->
-          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
-      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
-          List.exists check_expr args
-      | C_ast.Cast (_, e) -> check_expr e
       | _ -> false
     in
     check_stmts func.C_ast.body
@@ -678,7 +682,7 @@ let test_inout_record_param_pointer_type () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get
+    assert_some_value "ml_pango_matrix_transform_rectangle"
       (C_ast.find_function functions "ml_pango_matrix_transform_rectangle")
   in
 
@@ -865,7 +869,8 @@ let test_fixed_size_array_out_param () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (C_ast.find_function functions "ml_graphene_box_get_vertices")
+    assert_some_value "ml_graphene_box_get_vertices"
+      (C_ast.find_function functions "ml_graphene_box_get_vertices")
   in
 
   (* Positive: only self parameter (out array not an OCaml param) *)
@@ -971,7 +976,8 @@ let test_fixed_size_float_array_return () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (C_ast.find_function functions "ml_gsk_border_node_get_widths")
+    assert_some_value "ml_gsk_border_node_get_widths"
+      (C_ast.find_function functions "ml_gsk_border_node_get_widths")
   in
 
   (* Positive: calls the underlying C function *)
@@ -1349,7 +1355,8 @@ let test_cross_namespace_enum_array_element_conversion () =
 
   let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (C_ast.find_function functions "ml_gtk_widget_get_modifiers")
+    assert_some_value "ml_gtk_widget_get_modifiers"
+      (C_ast.find_function functions "ml_gtk_widget_get_modifiers")
   in
 
   (* Positive: has Store_field conversion loop *)
@@ -1361,6 +1368,15 @@ let test_cross_namespace_enum_array_element_conversion () =
      The generated code should be Val_GdkModifierType(result[i]), NOT
      Val_GdkModifierType(&result[i]). *)
   let has_addr_of_in_enum_call =
+    let rec check_expr = function
+      | C_ast.Call ("Val_GdkModifierType", args)
+      | C_ast.Macro ("Val_GdkModifierType", args) ->
+          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
+      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
+          List.exists check_expr args
+      | C_ast.Cast (_, e) -> check_expr e
+      | _ -> false
+    in
     let rec check_stmts stmts = List.exists (fun stmt -> check_stmt stmt) stmts
     and check_stmt = function
       | C_ast.ExprStmt e -> check_expr e
@@ -1368,14 +1384,6 @@ let test_cross_namespace_enum_array_element_conversion () =
       | C_ast.VarDecl (_, _, Some e) -> check_expr e
       | C_ast.IfStmt (_, then_stmts, else_stmts) ->
           check_stmts then_stmts || check_stmts else_stmts
-      | _ -> false
-    and check_expr = function
-      | C_ast.Call ("Val_GdkModifierType", args)
-      | C_ast.Macro ("Val_GdkModifierType", args) ->
-          List.exists (function C_ast.AddrOf _ -> true | _ -> false) args
-      | C_ast.Call (_, args) | C_ast.Macro (_, args) ->
-          List.exists check_expr args
-      | C_ast.Cast (_, e) -> check_expr e
       | _ -> false
     in
     check_stmts func.C_ast.body

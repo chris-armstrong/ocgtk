@@ -4,6 +4,8 @@
 module rec Socket_address : sig
   type t = [ `socket_address | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_address_get_type"
+
   (* Methods *)
 
   external get_native_size : t -> int = "ml_g_socket_address_get_native_size"
@@ -17,6 +19,8 @@ module rec Socket_address : sig
   (* Properties *)
 end = struct
   type t = [ `socket_address | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_address_get_type"
 
   (* Methods *)
 
@@ -33,6 +37,9 @@ end
 
 and Socket_address_enumerator : sig
   type t = [ `socket_address_enumerator | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t
+    = "ml_gio_socket_address_enumerator_get_type"
 
   (* Methods *)
 
@@ -60,6 +67,9 @@ and Socket_address_enumerator : sig
       triggered) will be ignored. *)
 end = struct
   type t = [ `socket_address_enumerator | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t
+    = "ml_gio_socket_address_enumerator_get_type"
 
   (* Methods *)
 
@@ -89,6 +99,8 @@ end
 
 and Socket_connectable : sig
   type t = [ `socket_connectable ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_connectable_get_type"
 
   external from_gobject : 'a Gobject.obj -> t
     = "ml_gio_socket_connectable_from_gobject"
@@ -120,6 +132,8 @@ and Socket_connectable : sig
   (** Creates a [GSocketAddressEnumerator] for [connectable]. *)
 end = struct
   type t = [ `socket_connectable ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_connectable_get_type"
 
   external from_gobject : 'a Gobject.obj -> t
     = "ml_gio_socket_connectable_from_gobject"

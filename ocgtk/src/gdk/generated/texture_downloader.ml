@@ -13,6 +13,8 @@
 
 type t = [ `texture_downloader ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gdk_texture_downloader_get_type"
+
 external new_ : Texture.t -> t = "ml_gdk_texture_downloader_new"
 (** Create a new TextureDownloader *)
 
@@ -68,6 +70,3 @@ external download_bytes : t -> Glib_bytes.t * Gsize.t
 
     This function cannot be used with a multiplanar format. Use
     [Gdk.TextureDownloader.download_bytes_with_planes] for that purpose. *)
-
-external get_type : unit -> Gobject.Type.t
-  = "ml_gdk_texture_downloader_get_type"

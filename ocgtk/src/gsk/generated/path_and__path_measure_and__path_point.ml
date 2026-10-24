@@ -4,6 +4,8 @@
 module rec Path : sig
   type t = [ `path ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_get_type"
+
   (* Methods *)
 
   external to_string : t -> string = "ml_gsk_path_to_string"
@@ -90,6 +92,8 @@ module rec Path : sig
       zero rectangle but true will be returned. *)
 end = struct
   type t = [ `path ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_get_type"
 
   (* Methods *)
 
@@ -180,6 +184,8 @@ end
 and Path_measure : sig
   type t = [ `path_measure ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_measure_get_type"
+
   external new_ : Path.t -> t = "ml_gsk_path_measure_new"
   (** Create a new PathMeasure *)
 
@@ -210,6 +216,8 @@ and Path_measure : sig
       The length is cached, so this function does not do any work. *)
 end = struct
   type t = [ `path_measure ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_measure_get_type"
 
   external new_ : Path.t -> t = "ml_gsk_path_measure_new"
   (** Create a new PathMeasure *)
@@ -243,6 +251,8 @@ end
 
 and Path_point : sig
   type t = [ `path_point ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_point_get_type"
 
   (* Methods *)
 
@@ -318,6 +328,8 @@ and Path_point : sig
   (** Returns whether [point1] is before or after [point2]. *)
 end = struct
   type t = [ `path_point ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_point_get_type"
 
   (* Methods *)
 

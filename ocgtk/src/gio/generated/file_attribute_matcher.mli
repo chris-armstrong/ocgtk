@@ -5,6 +5,9 @@
 
 type t = [ `file_attribute_matcher ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t
+  = "ml_gio_file_attribute_matcher_get_type"
+
 external new_ : string -> t = "ml_g_file_attribute_matcher_new"
 (** Create a new FileAttributeMatcher *)
 
@@ -54,6 +57,3 @@ external enumerate_namespace : t -> string -> bool
    matcher was created\n\
    using \"}\" and namespace is anything.)\n\n\
    TODO: this is awkwardly worded."]
-
-external get_type : unit -> Gobject.Type.t
-  = "ml_gio_file_attribute_matcher_get_type"

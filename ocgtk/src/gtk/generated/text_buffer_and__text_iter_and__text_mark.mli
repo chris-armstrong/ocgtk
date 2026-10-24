@@ -4,6 +4,8 @@
 module rec Text_buffer : sig
   type t = [ `text_buffer | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_text_buffer_get_type"
+
   external new_ : Text_tag_table.t option -> t = "ml_gtk_text_buffer_new"
   (** Create a new TextBuffer *)
 
@@ -663,6 +665,8 @@ end
 
 and Text_iter : sig
   type t = [ `text_iter ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_text_iter_get_type"
 
   (* Methods *)
 
@@ -1355,6 +1359,8 @@ end
 
 and Text_mark : sig
   type t = [ `text_mark | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_text_mark_get_type"
 
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
   (** Create a new TextMark *)

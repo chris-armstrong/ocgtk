@@ -9,6 +9,8 @@
 
 type t = [ `pixbuf_format ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_format_get_type"
+
 (* Methods *)
 
 external set_disabled : t -> bool -> unit = "ml_gdk_pixbuf_format_set_disabled"
@@ -64,6 +66,3 @@ external get_extensions : t -> string array option
 external get_description : t -> string option
   = "ml_gdk_pixbuf_format_get_description"
 (** Returns a description of the format. *)
-
-external get_type : unit -> Gobject.Type.t
-  = "ml_gdk_pixbuf_pixbuf_format_get_type"

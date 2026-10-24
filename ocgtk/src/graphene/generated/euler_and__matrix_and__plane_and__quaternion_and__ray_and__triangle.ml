@@ -4,6 +4,8 @@
 module rec Euler : sig
   type t = [ `euler ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_euler_get_type"
+
   external alloc : unit -> t = "ml_graphene_euler_alloc"
   (** Create a new Euler *)
 
@@ -129,6 +131,8 @@ module rec Euler : sig
   (** Checks if two #graphene_euler_t are equal. *)
 end = struct
   type t = [ `euler ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_euler_get_type"
 
   external alloc : unit -> t = "ml_graphene_euler_alloc"
   (** Create a new Euler *)
@@ -257,6 +261,8 @@ end
 
 and Matrix : sig
   type t = [ `matrix ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_matrix_get_type"
 
   external alloc : unit -> t = "ml_graphene_matrix_alloc"
   (** Create a new Matrix *)
@@ -668,6 +674,8 @@ and Matrix : sig
     \  available online."]
 end = struct
   type t = [ `matrix ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_matrix_get_type"
 
   external alloc : unit -> t = "ml_graphene_matrix_alloc"
   (** Create a new Matrix *)
@@ -1082,6 +1090,8 @@ end
 and Plane : sig
   type t = [ `plane ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_plane_get_type"
+
   external alloc : unit -> t = "ml_graphene_plane_alloc"
   (** Create a new Plane *)
 
@@ -1148,6 +1158,8 @@ and Plane : sig
   (** Computes the distance of [point] from a #graphene_plane_t. *)
 end = struct
   type t = [ `plane ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_plane_get_type"
 
   external alloc : unit -> t = "ml_graphene_plane_alloc"
   (** Create a new Plane *)
@@ -1217,6 +1229,8 @@ end
 
 and Quaternion : sig
   type t = [ `quaternion ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_quaternion_get_type"
 
   external alloc : unit -> t = "ml_graphene_quaternion_alloc"
   (** Create a new Quaternion *)
@@ -1317,6 +1331,8 @@ and Quaternion : sig
   (** Adds two #graphene_quaternion_t [a] and [b]. *)
 end = struct
   type t = [ `quaternion ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_quaternion_get_type"
 
   external alloc : unit -> t = "ml_graphene_quaternion_alloc"
   (** Create a new Quaternion *)
@@ -1420,6 +1436,8 @@ end
 and Ray : sig
   type t = [ `ray ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_ray_get_type"
+
   external alloc : unit -> t = "ml_graphene_ray_alloc"
   (** Create a new Ray *)
 
@@ -1515,6 +1533,8 @@ and Ray : sig
   (** Checks whether the two given #graphene_ray_t are equal. *)
 end = struct
   type t = [ `ray ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_ray_get_type"
 
   external alloc : unit -> t = "ml_graphene_ray_alloc"
   (** Create a new Ray *)
@@ -1614,6 +1634,8 @@ end
 and Triangle : sig
   type t = [ `triangle ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_triangle_get_type"
+
   external alloc : unit -> t = "ml_graphene_triangle_alloc"
   (** Create a new Triangle *)
 
@@ -1711,6 +1733,8 @@ and Triangle : sig
   (** Checks whether the given triangle [t] contains the point [p]. *)
 end = struct
   type t = [ `triangle ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_triangle_get_type"
 
   external alloc : unit -> t = "ml_graphene_triangle_alloc"
   (** Create a new Triangle *)

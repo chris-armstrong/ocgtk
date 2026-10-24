@@ -5,6 +5,8 @@
 
 type t = [ `point ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_graphene_point_get_type"
+
 external alloc : unit -> t = "ml_graphene_point_alloc"
 (** Create a new Point *)
 
@@ -43,5 +45,3 @@ external equal : t -> t -> bool = "ml_graphene_point_equal"
 external distance : t -> t -> float * float * float
   = "ml_graphene_point_distance"
 (** Computes the distance between [a] and [b]. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_graphene_point_get_type"

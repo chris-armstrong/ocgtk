@@ -10,6 +10,8 @@
 
 type t = [ `glyph_item ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_glyph_item_get_type"
+
 (* Methods *)
 
 external split : t -> string -> int -> t option = "ml_pango_glyph_item_split"
@@ -44,5 +46,3 @@ external apply_attrs : t -> string -> Attr_list.t -> t list
 
     This function takes ownership of [glyph_item]; it will be reused as one of
     the elements in the list. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_get_type"

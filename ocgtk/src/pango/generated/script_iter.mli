@@ -6,6 +6,8 @@
 
 type t = [ `script_iter ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_script_iter_get_type"
+
 external new_ : string -> int -> t = "ml_pango_script_iter_new"
 (** Create a new ScriptIter *)
 
@@ -16,5 +18,3 @@ external next : t -> bool = "ml_pango_script_iter_next"
 
     If [iter] is already at the end, it is left unchanged and [FALSE] is
     returned. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_script_iter_get_type"

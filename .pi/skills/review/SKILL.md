@@ -1,0 +1,95 @@
+---
+name: review
+description: Report-only guideline review of a PR, branch, staged files, or explicit .ml/.mli paths in this repository. Resolves the file scope, dispatches the six guideline reviewer agents in parallel as subagents, and aggregates a severity-bucketed violations report. Reviewers never edit files. Use for pre-merge or pre-commit review of OCaml changes. Arguments — a PR number, a branch name, "staged", or explicit file paths; defaults to all OCaml files changed on the current branch vs origin/main.
+---
+
+# Code Review
+
+You are the coordinating agent for a guideline-based code review of this OCaml GTK
+bindings repository. The reviewer agents report violations but make no changes to
+files.
+
+The review arguments (if any) specify the scope. If none were given, use the default
+scope in Step 1.
+
+## Step 1: Determine the File Scope
+
+Parse the review arguments to determine which files to review:
+
+- **PR number** (e.g. `123` or `#123`): get the changed OCaml files from the PR:
+  ```bash
+  gh pr diff 123 --name-only | grep -E '\.(ml|mli)$'
+  ```
+- **Branch name** (e.g. `feature/foo` or `origin/foo`): files changed on that branch vs its merge base:
+  ```bash
+  git diff $(git merge-base HEAD <branch>) --name-only -- '*.ml' '*.mli'
+  ```
+- **`staged`**: uncommitted staged files:
+  ```bash
+  git diff --cached --name-only -- '*.ml' '*.mli'
+  ```
+- **Explicit file paths**: if the arguments contain `.ml` or `.mli` paths, use those directly.
+- **Default** (no arguments or unrecognised): all OCaml files changed on this branch vs main:
+  ```bash
+  git diff $(git merge-base HEAD origin/main) --name-only -- '*.ml' '*.mli'
+  ```
+
+Filter the result:
+- Remove paths containing `/_build/` or `/generated/`
+- Remove paths that do not exist on disk
+
+Print the final file list. If it is empty, stop and report that no OCaml files matched
+the scope.
+
+## Step 2: Dispatch All Six Reviewers in Parallel
+
+Dispatch each reviewer agent below as a subagent via the Agent tool, with `subagent_type`
+set to the agent name (each agent's frontmatter pins its model). Send all six Agent tool calls
+**in a single message**, each with `run_in_background: true`, so they run concurrently; then
+wait for all of them to complete and collect each report.
+
+1. `control-flow-reviewer` — nesting-and-control-flow, error-handling, partial-functions
+2. `type-correctness-reviewer` — type-safety, pattern-matching, module-boundaries
+3. `code-quality-reviewer` — naming-and-intermediates, code-reuse
+4. `abstractions-reviewer` — abstractions
+5. `test-reviewer` — test-patterns, atspi-e2e-testing
+6. `docs-reviewer` — comments-and-documentation
+
+Message to pass to each:
+
+```
+Files to review (full list — do not skip any):
+<one file path per line, the complete list from Step 1>
+```
+
+Do NOT include "apply fixes" in the message — reviewers are report-only.
+
+## Step 3: Final Report
+
+Aggregate the results and output:
+
+```
+## Code Review
+Scope: <description of how files were selected>
+Files reviewed: <N>
+
+### Violations by Severity
+
+Collect all violations from all agents and bucket them:
+
+**Must Fix** (correctness, type safety, partial functions, pattern matching, error handling):
+- <file>:<line> — [<agent>/<guideline>] <description>
+
+**Should Fix** (module boundaries, reuse, naming, abstractions, docs, comments):
+- <file>:<line> — [<agent>/<guideline>] <description>
+
+**Nice to Fix** (docs, comments):
+- <file>:<line> — [<agent>/<guideline>] <description>
+
+### Per-Agent Summaries
+<paste each reviewer's Summary paragraph here, labelled by agent>
+
+### Total Violations: <N>
+```
+
+If there are no violations, say so clearly.

@@ -21,9 +21,17 @@
   type_factory
   override_factory
   fixtures)
- (libraries gir_gen_lib alcotest ppxlib sexplib str unix))
+ (libraries
+  gir_gen_lib
+  alcotest
+  ppxlib
+  ppxlib.astlib
+  sexplib
+  re
+  unix
+  fmt
+  compiler-libs))
 
-; ---- Unit and pipeline tests (no gir_gen.exe dependency) -------------------
 ; These can run even if gir_gen.exe fails to build.
 
 (test
@@ -59,6 +67,8 @@
   doc_translate_corpus_tests
   ; Doc_emit — item doc assembly (tags last, comment safety, @since)
   doc_emit_tests
+  ; Dune library/stub-batch generation (pure unit)
+  dune_file_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests
@@ -100,9 +110,13 @@
   gir_gen_lib
   alcotest
   ppxlib
+  ppxlib.astlib
   sexplib
-  str
-  unix))
+  re
+  unix
+  containers
+  fmt
+  compiler-libs))
 
 ; ---- Integration tests (require gir_gen.exe) --------------------------------
 ; Spawns gir_gen.exe as a subprocess or reads its output artefacts.
@@ -159,6 +173,9 @@
   gir_gen_lib
   alcotest
   ppxlib
+  ppxlib.astlib
   sexplib
-  str
-  unix))
+  re
+  unix
+  fmt
+  compiler-libs))

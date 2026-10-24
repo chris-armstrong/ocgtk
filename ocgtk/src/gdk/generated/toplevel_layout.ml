@@ -12,6 +12,8 @@
 
 type t = [ `toplevel_layout ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gdk_toplevel_layout_get_type"
+
 external new_ : unit -> t = "ml_gdk_toplevel_layout_new"
 (** Create a new ToplevelLayout *)
 
@@ -58,5 +60,3 @@ external get_fullscreen : t -> bool * bool
 
 external equal : t -> t -> bool = "ml_gdk_toplevel_layout_equal"
 (** Check whether [layout] and [other] has identical layout properties. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_gdk_toplevel_layout_get_type"

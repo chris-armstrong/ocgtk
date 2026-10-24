@@ -1,12 +1,36 @@
 (* Dune File Generation *)
 
 open ContainersLabels
-open Printf
+open Gen_buffer
 
 (* Maximum C stub files per batch library. Windows (CreateProcess) has a
    32 767-char command-line limit; ~80 stubs × ~55-char path ≈ 4 400 chars,
    leaving enough headroom for the ar/ld invocation. *)
 let stub_batch_size = 80
+
+(* Order the stub file names for batching.
+
+   Every class stub file (ml_button_gen, ml_box_gen, ...) depends on the
+   enum converter file (ml_<ns>_enums_gen) of its namespace, but the
+   native linker emits the -cclib archive flags in the reverse of the
+   order the batch libraries are listed, so the first-listed batch
+   (batch_0) is scanned *last* by ld. Chunking a plain alphabetical list
+   therefore leaves class stubs whose enum converter landed in an
+   earlier-listed batch unable to resolve it whenever nothing else pulls
+   the converter archive in first — exactly what happens in executables
+   that only reference class stubs from the first batch (e.g. tests
+   using Button/Box but no Widget/Window).
+
+   Enum converter files are the only stubs that everything else
+   depends on while depending on nothing, so listing them first — and
+   thus inside batch_0, where the single-archive rescan of ld resolves
+   the mutual references with the batch_0 class stubs — makes every
+   cross-batch reference flow towards later-scanned archives. *)
+let order_stub_names_for_batching names =
+  let is_enums_converter name = String.suffix ~suf:"_enums_gen" name in
+  let sorted = List.sort ~cmp:String.compare names in
+  let enums, rest = List.partition ~f:is_enums_converter sorted in
+  List.concat [ enums; rest ]
 
 (* Split a list into chunks of at most n elements, preserving order. *)
 let list_chunks n lst =
@@ -79,7 +103,7 @@ let rec transitively_includes ~ctx ~visited ~target namespace_name =
 (* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
-  sprintf "ocgtk.%s" ns_lower
+  Fmt.str "ocgtk.%s" ns_lower
 
 (* Emit the pkg-config rule that generates cflag and clink sexp files. *)
 let emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional
@@ -114,7 +138,7 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
     if String.equal dep_libraries "" then
       " (libraries ocgtk_common)  ; Depend on common for header files\n"
     else
-      sprintf
+      Fmt.str
         " (libraries %s ocgtk_common)  ; Dependencies and common for header \
          files\n"
         dep_libraries
@@ -137,8 +161,8 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
   let buf = Buffer.create 2048 in
 
   let lib_name_snake = lib_name |> Utils.to_snake_case in
-  let cflag_file = sprintf "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
-  let clink_file = sprintf "clink-%s.sexp" (String.lowercase_ascii lib_name) in
+  let cflag_file = Fmt.str "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
+  let clink_file = Fmt.str "clink-%s.sexp" (String.lowercase_ascii lib_name) in
 
   Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
   Buffer.add_string buf "; Regenerate by running gir_gen\n\n";
@@ -215,27 +239,33 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
 
   let n_stubs = List.length stub_names in
   if n_stubs <= stub_batch_size then begin
-    (* Small enough to fit in a single library stanza *)
+    (* Small enough to fit in a single library stanza — order is irrelevant
+       with a single archive, but keep it canonical. *)
     emit_stub_library buf
-      ~name:(sprintf "ocgtk_%s_generated_stubs" lib_name_snake)
-      ~public_name:(Some (sprintf "ocgtk.%s.generated_stubs" lib_name_snake))
-      ~dep_libraries ~stub_names ~cflag_file ~clink_file
+      ~name:(Fmt.str "ocgtk_%s_generated_stubs" lib_name_snake)
+      ~public_name:
+        (Fmt.kstr (fun s -> Some s) "ocgtk.%s.generated_stubs" lib_name_snake)
+      ~dep_libraries
+      ~stub_names:(order_stub_names_for_batching stub_names)
+      ~cflag_file ~clink_file
   end
   else begin
     (* Too many stubs for a single Windows command line — split into batches.
        Each batch is a private library; a public facade library depends on all
        of them so downstream consumers need only list the facade. *)
-    let batches = list_chunks stub_batch_size stub_names in
+    let batches =
+      list_chunks stub_batch_size (order_stub_names_for_batching stub_names)
+    in
     let batch_lib_names =
       List.mapi
         ~f:(fun i _ ->
-          sprintf "ocgtk_%s_generated_stubs_batch_%d" lib_name_snake i)
+          Fmt.str "ocgtk_%s_generated_stubs_batch_%d" lib_name_snake i)
         batches
     in
     let batch_public_names =
       List.mapi
         ~f:(fun i _ ->
-          sprintf "ocgtk.%s.generated_stubs_batch_%d" lib_name_snake i)
+          Fmt.str "ocgtk.%s.generated_stubs_batch_%d" lib_name_snake i)
         batches
     in
     (* Emit each batch library with a public name (required because the public

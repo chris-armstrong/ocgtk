@@ -488,8 +488,17 @@ if (pspec == NULL) caml_failwith("ml_gtk_icon_view_get_cell_area: property 'cell
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
       g_object_get_property(G_OBJECT(obj), "cell-area", &prop_gvalue);
-          prop_value = (GtkCellArea*)g_value_get_object(&prop_gvalue);
+          prop_value = (GtkCellArea*)g_value_dup_object(&prop_gvalue);
 
       result = Val_GtkCellArea(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+GType gtk_icon_view_get_type (void);
+
+
+CAMLprim value ml_gtk_icon_view_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_icon_view_get_type()));
+}

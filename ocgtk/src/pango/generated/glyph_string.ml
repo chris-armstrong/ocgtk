@@ -9,6 +9,8 @@
 
 type t = [ `glyph_string ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"
+
 external new_ : unit -> t = "ml_pango_glyph_string_new"
 (** Create a new GlyphString *)
 
@@ -78,5 +80,3 @@ external extents :
     the interpretation of the rectangles.
 
     Examples of logical (red) and ink (green) rects: *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"

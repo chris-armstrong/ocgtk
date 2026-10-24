@@ -6,6 +6,8 @@
 
 type t = [ `settings_schema_key ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gio_settings_schema_key_get_type"
+
 (* Methods *)
 
 external ref : t -> t = "ml_g_settings_schema_key_ref"
@@ -97,6 +99,3 @@ external get_default_value : t -> Gvariant.t
 
     Note that this is the default value according to the schema. System
     administrator defaults and lockdown are not visible via this API. *)
-
-external get_type : unit -> Gobject.Type.t
-  = "ml_gio_settings_schema_key_get_type"

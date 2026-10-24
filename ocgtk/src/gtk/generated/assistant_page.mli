@@ -5,6 +5,8 @@
 
 type t = [ `assistant_page | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gtk_assistant_page_get_type"
+
 (* Methods *)
 
 external get_child :

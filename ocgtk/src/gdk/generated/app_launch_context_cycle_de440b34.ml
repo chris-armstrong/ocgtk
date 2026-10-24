@@ -4,6 +4,8 @@
 module rec App_launch_context : sig
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_app_launch_context_get_type"
+
   (* Methods *)
 
   external set_timestamp : t -> UInt32.t -> unit
@@ -60,6 +62,8 @@ module rec App_launch_context : sig
   (** Get property: display *)
 end = struct
   type t = [ `app_launch_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_app_launch_context_get_type"
 
   (* Methods *)
 
@@ -120,6 +124,8 @@ end
 and Cairo_context : sig
   type t = [ `cairo_context | `draw_context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_cairo_context_get_type"
+
   (* Methods *)
 
   external cairo_create : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t option
@@ -134,6 +140,8 @@ and Cairo_context : sig
       [Gdk.DrawContext.end_frame] is called. *)
 end = struct
   type t = [ `cairo_context | `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_cairo_context_get_type"
 
   (* Methods *)
 
@@ -151,6 +159,8 @@ end
 
 and Clipboard : sig
   type t = [ `clipboard | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_clipboard_get_type"
 
   (* Methods *)
 
@@ -233,6 +243,8 @@ and Clipboard : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `clipboard | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_clipboard_get_type"
 
   (* Methods *)
 
@@ -318,6 +330,8 @@ end
 
 and Device : sig
   type t = [ `device | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_device_get_type"
 
   (* Methods *)
 
@@ -461,6 +475,8 @@ and Device : sig
 end = struct
   type t = [ `device | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_device_get_type"
+
   (* Methods *)
 
   external has_bidi_layouts : t -> bool = "ml_gdk_device_has_bidi_layouts"
@@ -601,7 +617,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Device_tool.gtype ())
           in
           callback ~tool)
     in
@@ -611,6 +627,8 @@ end
 
 and Display : sig
   type t = [ `display | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_display_get_type"
 
   (* Methods *)
 
@@ -890,6 +908,8 @@ and Display : sig
 end = struct
   type t = [ `display | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_display_get_type"
+
   (* Methods *)
 
   external translate_key :
@@ -1160,7 +1180,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let seat =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Seat.gtype ())
           in
           callback ~seat)
     in
@@ -1172,7 +1192,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let seat =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Seat.gtype ())
           in
           callback ~seat)
     in
@@ -1194,6 +1214,8 @@ end
 
 and Draw_context : sig
   type t = [ `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_draw_context_get_type"
 
   (* Methods *)
 
@@ -1262,6 +1284,8 @@ and Draw_context : sig
   (* Properties *)
 end = struct
   type t = [ `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_draw_context_get_type"
 
   (* Methods *)
 
@@ -1332,6 +1356,8 @@ end
 
 and Event : sig
   type t = [ `event ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_event_get_type"
 
   (* Methods *)
 
@@ -1462,6 +1488,8 @@ and Event : sig
       returns [FALSE]. *)
 end = struct
   type t = [ `event ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_event_get_type"
 
   (* Methods *)
 
@@ -1594,6 +1622,8 @@ end
 
 and Gl_context : sig
   type t = [ `gl_context | `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_gl_context_get_type"
 
   (* Methods *)
 
@@ -1752,6 +1782,8 @@ and Gl_context : sig
   (* Properties *)
 end = struct
   type t = [ `gl_context | `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_gl_context_get_type"
 
   (* Methods *)
 
@@ -1913,6 +1945,8 @@ end
 and Monitor : sig
   type t = [ `monitor | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_monitor_get_type"
+
   (* Methods *)
 
   external is_valid : t -> bool = "ml_gdk_monitor_is_valid"
@@ -1998,6 +2032,8 @@ and Monitor : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `monitor | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_monitor_get_type"
 
   (* Methods *)
 
@@ -2088,6 +2124,8 @@ end
 and Seat : sig
   type t = [ `seat | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_seat_get_type"
+
   (* Methods *)
 
   external get_tools : t -> Device_tool.t list = "ml_gdk_seat_get_tools"
@@ -2138,6 +2176,8 @@ and Seat : sig
 end = struct
   type t = [ `seat | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_seat_get_type"
+
   (* Methods *)
 
   external get_tools : t -> Device_tool.t list = "ml_gdk_seat_get_tools"
@@ -2167,7 +2207,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let device =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Device.gtype ())
           in
           callback ~device)
     in
@@ -2179,7 +2219,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let device =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Device.gtype ())
           in
           callback ~device)
     in
@@ -2191,7 +2231,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Device_tool.gtype ())
           in
           callback ~tool)
     in
@@ -2203,7 +2243,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Device_tool.gtype ())
           in
           callback ~tool)
     in
@@ -2213,6 +2253,8 @@ end
 
 and Surface : sig
   type t = [ `surface | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_surface_get_type"
 
   external new_popup : t -> bool -> t = "ml_gdk_surface_new_popup"
   (** Create a new Surface *)
@@ -2472,6 +2514,8 @@ and Surface : sig
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_surface_get_type"
+
   external new_popup : t -> bool -> t = "ml_gdk_surface_new_popup"
   (** Create a new Surface *)
 
@@ -2709,7 +2753,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let monitor =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Monitor.gtype ())
           in
           callback ~monitor)
     in
@@ -2721,7 +2765,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let event =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Event.gtype ())
           in
           let result = callback ~event in
           let v = Gobject.Closure.result argv in
@@ -2752,7 +2796,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let monitor =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Monitor.gtype ())
           in
           callback ~monitor)
     in
@@ -2763,11 +2807,15 @@ end
 and Vulkan_context : sig
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_vulkan_context_get_type"
+
   (* Methods *)
   val on_images_updated :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gdk_vulkan_context_get_type"
 
   (* Methods *)
   let on_images_updated ?after obj ~callback =

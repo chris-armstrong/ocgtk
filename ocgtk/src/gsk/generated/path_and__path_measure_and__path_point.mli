@@ -4,6 +4,8 @@
 module rec Path : sig
   type t = [ `path ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_get_type"
+
   (* Methods *)
 
   external to_string : t -> string = "ml_gsk_path_to_string"
@@ -93,6 +95,8 @@ end
 and Path_measure : sig
   type t = [ `path_measure ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_measure_get_type"
+
   external new_ : Path.t -> t = "ml_gsk_path_measure_new"
   (** Create a new PathMeasure *)
 
@@ -125,6 +129,8 @@ end
 
 and Path_point : sig
   type t = [ `path_point ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gsk_path_point_get_type"
 
   (* Methods *)
 

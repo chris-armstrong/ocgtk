@@ -16,6 +16,8 @@
 
 type t = [ `attr_list ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_attr_list_get_type"
+
 external new_ : unit -> t = "ml_pango_attr_list_new"
 (** Create a new AttrList *)
 
@@ -125,5 +127,3 @@ external change : t -> Attribute.t -> unit = "ml_pango_attr_list_change"
     attribute list in order (potentially much slower for large lists). However,
     [Pango.AttrList.insert] is not suitable for continually changing a set of
     attributes since it never removes or combines existing attributes. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_attr_list_get_type"

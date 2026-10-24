@@ -4,6 +4,8 @@
 module rec Box : sig
   type t = [ `box ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_box_get_type"
+
   external alloc : unit -> t = "ml_graphene_box_alloc"
   (** Create a new Box *)
 
@@ -107,6 +109,8 @@ end
 
 and Sphere : sig
   type t = [ `sphere ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_graphene_sphere_get_type"
 
   external alloc : unit -> t = "ml_graphene_sphere_alloc"
   (** Create a new Sphere *)

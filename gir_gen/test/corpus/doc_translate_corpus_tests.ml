@@ -44,26 +44,26 @@ let gir_files =
   ]
 
 let xml_unescape s =
-  let open Str in
+  let open Re.Str in
   s
-  |> Str.global_replace (regexp_string "&lt;") "<"
-  |> Str.global_replace (regexp_string "&gt;") ">"
-  |> Str.global_replace (regexp_string "&quot;") "\""
-  |> Str.global_replace (regexp_string "&apos;") "'"
-  |> Str.global_replace (regexp_string "&amp;") "&"
+  |> Re.Str.global_replace (regexp_string "&lt;") "<"
+  |> Re.Str.global_replace (regexp_string "&gt;") ">"
+  |> Re.Str.global_replace (regexp_string "&quot;") "\""
+  |> Re.Str.global_replace (regexp_string "&apos;") "'"
+  |> Re.Str.global_replace (regexp_string "&amp;") "&"
 
 (** All <doc> texts of a GIR file, in document order. *)
 let docs_of_gir_file path =
   let content = Helpers.read_file path in
-  let re = Str.regexp "<doc\\([^>]*\\)>\\([^<]*\\)</doc>" in
+  let re = Re.Str.regexp "<doc\\([^>]*\\)>\\([^<]*\\)</doc>" in
   let rec collect pos acc =
     try
-      let _seek = Str.search_forward re content pos in
-      let attrs = Str.matched_group 1 content in
-      let raw_doc = Str.matched_group 2 content in
+      let _seek = Re.Str.search_forward re content pos in
+      let attrs = Re.Str.matched_group 1 content in
+      let raw_doc = Re.Str.matched_group 2 content in
       (* capture the end position before any other Str call: the unescape
          below runs global_replace searches that clobber the match state *)
-      let end_pos = Str.match_end () in
+      let end_pos = Re.Str.match_end () in
       let valid =
         String.length attrs = 0 || (attrs.[0] <> '-' && attrs.[0] <> ':')
       in

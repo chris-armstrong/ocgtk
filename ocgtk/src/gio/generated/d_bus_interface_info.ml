@@ -5,6 +5,8 @@
 
 type t = [ `d_bus_interface_info ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_interface_info_get_type"
+
 (* Methods *)
 
 external ref : t -> t = "ml_g_dbus_interface_info_ref"
@@ -47,6 +49,3 @@ external cache_build : t -> unit = "ml_g_dbus_interface_info_cache_build"
 
     Note that [info] cannot be modified until
     g_dbus_interface_info_cache_release() is called. *)
-
-external get_type : unit -> Gobject.Type.t
-  = "ml_gio_d_bus_interface_info_get_type"

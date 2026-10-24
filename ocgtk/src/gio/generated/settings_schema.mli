@@ -75,6 +75,8 @@
 
 type t = [ `settings_schema ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gio_settings_schema_get_type"
+
 (* Methods *)
 
 external ref : t -> t = "ml_g_settings_schema_ref"
@@ -117,5 +119,3 @@ external get_key : t -> string -> Settings_schema_key.t
 
 external get_id : t -> string = "ml_g_settings_schema_get_id"
 (** Get the ID of [schema]. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_gio_settings_schema_get_type"

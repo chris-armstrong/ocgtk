@@ -25,6 +25,8 @@
 type t =
   [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_widget_get_type"
+
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 (** Create a new AppChooserWidget *)
 

@@ -8,6 +8,8 @@
 
 type t = [ `language ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_language_get_type"
+
 (* Methods *)
 
 external to_string : t -> string = "ml_pango_language_to_string"
@@ -78,5 +80,3 @@ external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
    {[\n\
    pango_language_get_sample_string (pango_language_from_string (\"xx\"))\n\
    ]}"]
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_language_get_type"

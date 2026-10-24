@@ -4,6 +4,7 @@
 module rec App_info : sig
   type t = [ `app_info ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_app_info_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
 
   (* Methods *)
@@ -171,6 +172,7 @@ module rec App_info : sig
 end = struct
   type t = [ `app_info ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_app_info_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
 
   (* Methods *)
@@ -340,6 +342,8 @@ end
 and App_launch_context : sig
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_app_launch_context_get_type"
+
   external new_ : unit -> t = "ml_g_app_launch_context_new"
   (** Create a new AppLaunchContext *)
 
@@ -415,6 +419,8 @@ and App_launch_context : sig
 end = struct
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_app_launch_context_get_type"
+
   external new_ : unit -> t = "ml_g_app_launch_context_new"
   (** Create a new AppLaunchContext *)
 
@@ -487,7 +493,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let info =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (App_info.gtype ())
           in
           let platform_data =
             let v = Gobject.Closure.nth argv ~pos:2 in
@@ -503,7 +509,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let info =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (App_info.gtype ())
           in
           let platform_data =
             let v = Gobject.Closure.nth argv ~pos:2 in
@@ -518,6 +524,7 @@ end
 and Drive : sig
   type t = [ `drive ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_drive_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_drive_from_gobject"
 
   (* Methods *)
@@ -625,6 +632,7 @@ and Drive : sig
 end = struct
   type t = [ `drive ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_drive_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_drive_from_gobject"
 
   (* Methods *)
@@ -738,6 +746,7 @@ end
 and File : sig
   type t = [ `file ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
 
   (* Methods *)
@@ -1752,6 +1761,7 @@ and File : sig
 end = struct
   type t = [ `file ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
 
   (* Methods *)
@@ -2768,6 +2778,8 @@ end
 and File_enumerator : sig
   type t = [ `file_enumerator | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_enumerator_get_type"
+
   (* Methods *)
 
   external set_pending : t -> bool -> unit = "ml_g_file_enumerator_set_pending"
@@ -2846,6 +2858,8 @@ and File_enumerator : sig
   (* Properties *)
 end = struct
   type t = [ `file_enumerator | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_enumerator_get_type"
 
   (* Methods *)
 
@@ -2928,6 +2942,8 @@ end
 and File_monitor : sig
   type t = [ `file_monitor | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_monitor_get_type"
+
   (* Methods *)
 
   external set_rate_limit : t -> int -> unit
@@ -2965,6 +2981,8 @@ and File_monitor : sig
 end = struct
   type t = [ `file_monitor | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_file_monitor_get_type"
+
   (* Methods *)
 
   external set_rate_limit : t -> int -> unit
@@ -2995,11 +3013,11 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let file =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (File.gtype ())
           in
           let other_file =
             let v = Gobject.Closure.nth argv ~pos:2 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object v (File.gtype ())
           in
           let event_type =
             let v = Gobject.Closure.nth argv ~pos:3 in
@@ -3014,6 +3032,7 @@ end
 and Mount : sig
   type t = [ `mount ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_mount_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
 
   (* Methods *)
@@ -3153,6 +3172,7 @@ and Mount : sig
 end = struct
   type t = [ `mount ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_mount_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
 
   (* Methods *)
@@ -3297,6 +3317,7 @@ end
 and Volume : sig
   type t = [ `volume ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_volume_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
 
   (* Methods *)
@@ -3402,6 +3423,7 @@ and Volume : sig
 end = struct
   type t = [ `volume ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_volume_get_type"
   external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
 
   (* Methods *)

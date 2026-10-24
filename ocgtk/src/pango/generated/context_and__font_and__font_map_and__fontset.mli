@@ -4,6 +4,8 @@
 module rec Context : sig
   type t = [ `context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_context_get_type"
+
   external new_ : unit -> t = "ml_pango_context_new"
   (** Create a new Context *)
 
@@ -180,6 +182,8 @@ end
 and Font : sig
   type t = [ `font | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_get_type"
+
   (* Methods *)
 
   external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
@@ -261,6 +265,8 @@ end
 
 and Font_map : sig
   type t = [ `font_map | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_map_get_type"
 
   (* Methods *)
 
@@ -351,6 +357,8 @@ end
 
 and Fontset : sig
   type t = [ `fontset | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_fontset_get_type"
 
   (* Methods *)
 

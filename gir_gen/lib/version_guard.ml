@@ -18,7 +18,7 @@ let namespace_macro_kind namespace =
       Ok (EncodeComparison ("GRAPHENE_VERSION", "GRAPHENE_ENCODE_VERSION"))
   (* Cairo needs an encode comparison macro too *)
   | "Cairo" -> Ok (EncodeComparison ("CAIRO_VERSION", "CAIRO_VERSION_ENCODE"))
-  | other -> Error (Printf.sprintf "Unknown namespace: %s" other)
+  | other -> Fmt.error "Unknown namespace: %s" other
 
 (** Map a user-supplied (case-insensitive) library name to the canonical GIR
     namespace name accepted by {!namespace_macro_kind}. Returns [Error] for
@@ -35,20 +35,17 @@ let normalize_namespace s =
   | "graphene" -> Ok "Graphene"
   | "cairo" -> Ok "Cairo"
   | _ ->
-      Error
-        (Printf.sprintf
-           "Unknown library name '%s'. Expected one of: gtk, gdk, gsk, pango, \
-            pangocairo, gio, glib, gdkpixbuf, graphene, cairo"
-           s)
+      Fmt.error
+        "Unknown library name '%s'. Expected one of: gtk, gdk, gsk, pango, \
+         pangocairo, gio, glib, gdkpixbuf, graphene, cairo"
+        s
 
 let parse_component ~version_str ~s =
   match int_of_string_opt s with
   | Some n -> Ok n
   | None ->
-      Error
-        (Printf.sprintf
-           "Invalid version format '%s': component '%s' is not an integer"
-           version_str s)
+      Fmt.error "Invalid version format '%s': component '%s' is not an integer"
+        version_str s
 
 let parse_version version_str =
   let parts = String.split_on_char '.' version_str in
@@ -64,11 +61,10 @@ let parse_version version_str =
       let* micro = parse_component ~version_str ~s:micro_str in
       Ok { major; minor; micro }
   | _ ->
-      Error
-        (Printf.sprintf
-           "Invalid version format '%s', expected 'major.minor' or \
-            'major.minor.micro'"
-           version_str)
+      Fmt.error
+        "Invalid version format '%s', expected 'major.minor' or \
+         'major.minor.micro'"
+        version_str
 
 let compare_versions v1 v2 =
   match Int.compare v1.major v2.major with
@@ -95,7 +91,7 @@ let resolve_guard ~class_version ~member_version =
       else Ok (Class_guard class_v)
 
 let format_version_args version =
-  Printf.sprintf "%d,%d,%d" version.major version.minor version.micro
+  Fmt.str "%d,%d,%d" version.major version.minor version.micro
 
 let emit_c_guard namespace version ~is_opening =
   let ( let* ) = Result.bind in
@@ -103,11 +99,12 @@ let emit_c_guard namespace version ~is_opening =
   let guard_expr =
     match macro_kind with
     | EncodeComparison (version_macro, encode_macro_name) ->
-        Printf.sprintf "%s >= %s(%s)" version_macro encode_macro_name
+        Fmt.str "%s >= %s(%s)" version_macro encode_macro_name
           (format_version_args version)
     | Standard macro_name ->
-        Printf.sprintf "%s(%s)" macro_name (format_version_args version)
+        Fmt.str "%s(%s)" macro_name (format_version_args version)
   in
-  if is_opening then Ok (Printf.sprintf "#if %s" guard_expr) else Ok "#endif"
+  if is_opening then Fmt.kstr (fun s -> Ok s) "#if %s" guard_expr
+  else Ok "#endif"
 
 let c_guard_else = "#else"

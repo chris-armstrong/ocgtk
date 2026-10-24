@@ -25,6 +25,8 @@
 type t =
   [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_widget_get_type"
+
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 (** Create a new AppChooserWidget *)
 
@@ -94,6 +96,7 @@ let on_application_activated ?after obj ~callback =
         let application =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (Ocgtk_gio.Gio.Wrappers.App_info.gtype ())
         in
         callback ~application)
   in
@@ -106,6 +109,7 @@ let on_application_selected ?after obj ~callback =
         let application =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (Ocgtk_gio.Gio.Wrappers.App_info.gtype ())
         in
         callback ~application)
   in

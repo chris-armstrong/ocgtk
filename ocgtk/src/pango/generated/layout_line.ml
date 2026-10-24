@@ -10,6 +10,8 @@
 
 type t = [ `layout_line ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_layout_line_get_type"
+
 (* Methods *)
 
 external x_to_index : t -> int -> bool * int * int
@@ -81,5 +83,3 @@ external get_extents : t -> Rectangle.t * Rectangle.t
 
     See [Pango.Font.get_glyph_extents] for details about the interpretation of
     the rectangles. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_layout_line_get_type"

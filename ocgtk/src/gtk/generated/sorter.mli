@@ -23,6 +23,8 @@
 
 type t = [ `sorter | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gtk_sorter_get_type"
+
 (* Methods *)
 
 external get_order : t -> Gtk_enums.sorterorder = "ml_gtk_sorter_get_order"

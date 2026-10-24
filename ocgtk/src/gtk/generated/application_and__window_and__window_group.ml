@@ -4,6 +4,8 @@
 module rec Application : sig
   type t = [ `application | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_application_get_type"
+
   external new_ : string option -> Ocgtk_gio.Gio.applicationflags -> t
     = "ml_gtk_application_new"
   (** Create a new Application *)
@@ -209,6 +211,8 @@ module rec Application : sig
 end = struct
   type t = [ `application | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_application_get_type"
+
   external new_ : string option -> Ocgtk_gio.Gio.applicationflags -> t
     = "ml_gtk_application_new"
   (** Create a new Application *)
@@ -406,7 +410,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let window =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Window.gtype ())
           in
           callback ~window)
     in
@@ -418,7 +422,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let window =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object_exn v
+            Gobject.Value.get_object_exn v (Window.gtype ())
           in
           callback ~window)
     in
@@ -428,6 +432,8 @@ end
 
 and Window : sig
   type t = [ `window | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_window_get_type"
 
   external new_ : unit -> t = "ml_gtk_window_new"
   (** Create a new Window *)
@@ -983,6 +989,8 @@ and Window : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `window | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_window_get_type"
 
   external new_ : unit -> t = "ml_gtk_window_new"
   (** Create a new Window *)
@@ -1561,6 +1569,8 @@ end
 and Window_group : sig
   type t = [ `window_group | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_window_group_get_type"
+
   external new_ : unit -> t = "ml_gtk_window_group_new"
   (** Create a new WindowGroup *)
 
@@ -1578,6 +1588,8 @@ and Window_group : sig
   (** Adds a window to a [GtkWindowGroup]. *)
 end = struct
   type t = [ `window_group | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_window_group_get_type"
 
   external new_ : unit -> t = "ml_gtk_window_group_new"
   (** Create a new WindowGroup *)

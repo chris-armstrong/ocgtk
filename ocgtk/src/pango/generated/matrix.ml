@@ -13,6 +13,8 @@
 
 type t = [ `matrix ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_matrix_get_type"
+
 (* Methods *)
 
 external translate : t -> float -> float -> unit = "ml_pango_matrix_translate"
@@ -116,5 +118,3 @@ external concat : t -> t -> unit = "ml_pango_matrix_concat"
 (** Changes the transformation represented by [matrix] to be the transformation
     given by first applying transformation given by [new_matrix] then applying
     the original transformation. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_matrix_get_type"

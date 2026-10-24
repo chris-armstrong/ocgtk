@@ -56,15 +56,13 @@ jobs:
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test ocgtk/
 
-  # ── Lint (semgrep) ───────────────────────────────────────────────────────
-  # Advisory for now: runs semgrep (banned partial functions in
-  # .semgrep/banned-partials.yml), uploads JSON reports, and does NOT fail the
-  # workflow. Once the codebase is compliant, remove `continue-on-error` (job +
-  # the tool step) to make this a hard gate.
+  # ── Lint (semgrep) — HARD GATE ─────────────────────────────────────────────
+  # Runs semgrep (banned partial functions in .semgrep/banned-partials.yml) and
+  # FAILS the workflow on any finding (`--error`). Uploads the JSON report on
+  # failure too (the `if: always()` upload step) so a red run is debuggable.
   lint:
     name: Lint (semgrep)
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -90,11 +88,10 @@ jobs:
         run: python3 -m pip install semgrep
 
       - name: Run semgrep (banned partial functions)
-        continue-on-error: true
         run: |
-          semgrep --config .semgrep/banned-partials.yml --json --error \
+          semgrep --config .semgrep/banned-partials.yml --json \
             > semgrep-report.json || true
-          semgrep --config .semgrep/banned-partials.yml --error . || true
+          semgrep --config .semgrep/banned-partials.yml --error .
 
       - name: Upload lint reports
         if: always()

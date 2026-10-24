@@ -1,15 +1,13 @@
 (* Main Entry Point for GIR Code Generator *)
 
-[@@@warning "-27"]
-
-open Printf
+open Gir_gen_lib.Gen_buffer
 open StdLabels
 open Cmdliner
 open Gir_gen_lib.Types
 
 (* Helper function to write content to a file *)
 let write_file ~path ~content =
-  printf "Writing %s...\n" path;
+  Fmt.pr "Writing %s...\n" path;
   let oc = open_out path in
   output_string oc content;
   close_out oc
@@ -66,7 +64,7 @@ let entity_generator_by_entity_type =
                     ~c_type:entity.c_type ~class_name:entity.name ~ml_name
                     ~c_identifier:ctor.c_identifier ~version:v ctor)
             with Failure msg ->
-              eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name
+              Fmt.epr "  Warning: skipping constructor %s: %s\n" ctor.ctor_name
                 msg)
         entity.constructors
     in
@@ -116,7 +114,7 @@ let entity_generator_by_entity_type =
                     ~os:(Some os_val) ~failwith_stub:os_fallback
                     ~stub:method_content buf
             with Failure msg ->
-              eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
+              Fmt.epr "  Warning: skipping method %s: %s\n" meth.method_name msg)
         (List.rev entity.methods)
     in
     let generate_c_stub_properties =
@@ -198,7 +196,7 @@ let entity_generator_by_entity_type =
 (** C name of the from_gobject stub for the interface [class_name] in
     [namespace_name]. *)
 let from_gobject_stub_name ~namespace_name ~class_name =
-  sprintf "ml_%s_%s_from_gobject"
+  Fmt.str "ml_%s_%s_from_gobject"
     (String.lowercase_ascii namespace_name)
     (Gir_gen_lib.Utils.to_snake_case class_name)
 
@@ -237,10 +235,9 @@ let gtype_macro_from_get_type get_type_fn =
 let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
   match (intf.glib_type_name, intf.glib_get_type) with
   | None, _ ->
-      failwith
-        (sprintf
-           "generate_from_gobject_stub: interface %s has no glib_type_name"
-           intf.interface_name)
+      Fmt.failwith
+        "generate_from_gobject_stub: interface %s has no glib_type_name"
+        intf.interface_name
   | Some type_name, get_type_opt ->
       let fn_name =
         from_gobject_stub_name ~namespace_name ~class_name:intf.interface_name
@@ -253,7 +250,7 @@ let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
           ~some:gtype_macro_from_get_type
         @@ get_type_opt
       in
-      sprintf
+      Fmt.str
         {|CAMLexport CAMLprim value %s(value obj)
 {
     CAMLparam1(obj);
@@ -270,18 +267,18 @@ let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
 }
 |}
         fn_name gtype_macro type_name
-        (sprintf "Val_%s" intf.c_type)
+        (Fmt.str "Val_%s" intf.c_type)
         intf.c_type
 
 (* Generate C stub file for a single entity (class or interface or record) *)
 let generate_c_stub ~ctx ~output_dir entity =
   begin
-    printf "  - %s (%d methods, %d properties)\n" entity.Gir_gen_lib.Types.name
+    Fmt.pr "  - %s (%d methods, %d properties)\n" entity.Gir_gen_lib.Types.name
       (List.length entity.Gir_gen_lib.Types.methods)
       (List.length entity.Gir_gen_lib.Types.properties);
 
     let stub_name =
-      sprintf "ml_%s_gen"
+      Fmt.str "ml_%s_gen"
         (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name)
     in
     let c_file =
@@ -322,28 +319,37 @@ let generate_c_stub ~ctx ~output_dir entity =
         Buffer.add_string body_buf stub
     | Class _ | Record _ | Interface _ -> ());
 
-    (* Append get_type stub for records registered with the GType system *)
-    (match entity.kind with
-    | Gir_gen_lib.Types.Record record ->
-        Option.iter (fun get_type_func ->
-            let ns_snake =
-              Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
-            in
-            let class_snake =
-              Gir_gen_lib.Utils.to_snake_case record.record_name
-            in
-            let ml_name = sprintf "ml_%s_%s_get_type" ns_snake class_snake in
-            Buffer.add_string body_buf
-              (sprintf
-                 "\n\
-                  CAMLprim value %s(value unit)\n\
-                  {\n\
-                 \  CAMLparam1(unit);\n\
-                 \  CAMLreturn(Val_long(%s()));\n\
-                  }\n"
-                 ml_name get_type_func))
-        @@ record.glib_get_type
-    | Class _ | Interface _ -> ());
+    (* Append get_type stub for any entity registered with the GType system
+       (records, classes and interfaces). The generated OCaml module declares
+       [external gtype] against it (records keep [get_type]) so signal
+       marshallers can pass the parameter class's GType to
+       [Gobject.Value.get_object]/[set_object]. *)
+    (match Gir_gen_lib.Types.entity_glib_get_type entity with
+    | Some get_type_func ->
+        let ns_snake =
+          Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
+        in
+        let class_snake = Gir_gen_lib.Utils.to_snake_case entity.name in
+        let ml_name = Fmt.str "ml_%s_%s_get_type" ns_snake class_snake in
+        (* Not every glib:get-type symbol is exposed through the namespace's
+           public headers (g_threaded_resolver_get_type is not in gio.h), so
+           an undeclared call would compile as an implicit declaration: an
+           error under clang and an int-truncation of the GType pointer
+           otherwise. Redeclaring the plain prototype is always valid C. *)
+        Buffer.add_string body_buf
+          (Fmt.str "\nGType %s (void);\n" get_type_func);
+        Buffer.add_string body_buf
+          (Fmt.str
+             {|
+
+CAMLprim value %s(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(%s()));
+}
+|}
+             ml_name get_type_func)
+    | None -> ());
 
     let body_content = Buffer.contents body_buf in
 
@@ -465,7 +471,7 @@ let generate_c_stub ~ctx ~output_dir entity =
                         ~class_name:entity.name
                     in
                     Buffer.add_string version_buf
-                      (sprintf
+                      (Fmt.str
                          {|CAMLexport CAMLprim value %s(value obj)
 {
     CAMLparam1(obj);
@@ -492,9 +498,9 @@ let generate_c_stub ~ctx ~output_dir entity =
 
     (* Apply OS guard (outer) wrapping the version-guarded content *)
     let version_guarded = Buffer.contents version_buf in
-    Option.fold
-      ~none:(Buffer.add_string buf version_guarded)
-      ~some:(fun os_val ->
+    (match entity.os with
+    | None -> Buffer.add_string buf version_guarded
+    | Some os_val ->
         (* Generate OS-fallback stubs for the #else branch *)
         let os_fallback_buf = Buffer.create 2048 in
         List.iter
@@ -576,8 +582,7 @@ let generate_c_stub ~ctx ~output_dir entity =
         Buffer.add_char buf '\n';
         Buffer.add_string buf
           (Gir_gen_lib.Generate.C_stub_helpers.os_to_c_guard_close os_val);
-        Buffer.add_char buf '\n')
-      entity.os;
+        Buffer.add_char buf '\n');
 
     write_file ~path:c_file ~content:(Buffer.contents buf);
     Some stub_name
@@ -613,7 +618,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
   let ml_file =
     Filename.concat
       (generated_output_dir output_dir)
-      (sprintf "%s%s"
+      (Fmt.str "%s%s"
          (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name)
          ext)
   in
@@ -627,11 +632,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
   let entity_kind =
     Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
   in
-  let glib_get_type =
-    match entity.Gir_gen_lib.Types.kind with
-    | Gir_gen_lib.Types.Record record -> record.glib_get_type
-    | Gir_gen_lib.Types.Class _ | Gir_gen_lib.Types.Interface _ -> None
-  in
+  let glib_get_type = Gir_gen_lib.Types.entity_glib_get_type entity in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name ~class_doc:emitted_class_doc
@@ -706,8 +707,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
 
     (* Always overwrite to enable wholesale regeneration *)
     if g_file_exists then
-      printf "Overwriting %s (wholesale regeneration enabled)\n" g_file
-    else printf "Creating %s\n" g_file;
+      Fmt.pr "Overwriting %s (wholesale regeneration enabled)\n" g_file
+    else Fmt.pr "Creating %s\n" g_file;
 
     let entity_kind =
       Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
@@ -725,8 +726,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
     if g_sig_exists then
-      printf "Overwriting %s (wholesale regeneration enabled)\n" g_sig_file
-    else printf "Creating %s\n" g_sig_file;
+      Fmt.pr "Overwriting %s (wholesale regeneration enabled)\n" g_sig_file
+    else Fmt.pr "Creating %s\n" g_sig_file;
     write_file ~path:g_sig_file
       ~content:
         (Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
@@ -905,12 +906,12 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
     let enum_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (sprintf "%s_enums.mli" namespace.prefix)
+        (Fmt.str "%s_enums.mli" namespace.prefix)
     in
     let ocaml_content_parts =
       [
         "(* GENERATED CODE - DO NOT EDIT *)\n";
-        sprintf "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
+        Fmt.str "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
       ]
       @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enums
       @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield
@@ -923,12 +924,12 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
     let enum_ml_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (sprintf "%s_enums.ml" namespace.prefix)
+        (Fmt.str "%s_enums.ml" namespace.prefix)
     in
     let ocaml_ml_content_parts =
       [
         "(* GENERATED CODE - DO NOT EDIT *)\n";
-        sprintf "(* %s Enumeration and Bitfield Converters *)\n\n"
+        Fmt.str "(* %s Enumeration and Bitfield Converters *)\n\n"
           namespace.name;
       ]
       @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum_impl
@@ -940,14 +941,14 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
       ~content:(String.concat ~sep:"" ocaml_ml_content_parts);
 
     (* Generate C converter file *)
-    let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
+    let stub_name = Fmt.str "ml_%s_enums_gen" namespace.prefix in
     let c_file =
       Filename.concat (generated_output_dir output_dir) (stub_name ^ ".c")
     in
     let c_content_parts =
       [
         "/* GENERATED CODE - DO NOT EDIT */\n";
-        sprintf "/* %s enum/bitfield converters */\n\n" namespace.name;
+        Fmt.str "/* %s enum/bitfield converters */\n\n" namespace.name;
         "#include <caml/mlvalues.h>\n";
         "#include <caml/memory.h>\n";
         "#include <caml/alloc.h>\n";
@@ -1003,14 +1004,14 @@ let load_reference_files reference_files =
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files
     overrides_file =
-  printf "Current directory: %s\n" (Sys.getcwd ());
-  printf "Parsing %s ...\n" gir_file;
+  Fmt.pr "Current directory: %s\n" (Sys.getcwd ());
+  Fmt.pr "Parsing %s ...\n" gir_file;
 
   (* Log reference files if provided *)
   if List.length reference_files > 0 then begin
-    printf "Using %d reference file(s) for cross-namespace validation:\n"
+    Fmt.pr "Using %d reference file(s) for cross-namespace validation:\n"
       (List.length reference_files);
-    List.iter ~f:(fun path -> printf "  - %s\n" path) reference_files
+    List.iter ~f:(fun path -> Fmt.pr "  - %s\n" path) reference_files
   end;
 
   (* ==== INITIALIZATION ==== *)
@@ -1023,12 +1024,13 @@ let generate_bindings filter_file gir_file output_dir reference_files
 
   (* Read filter file if specified *)
   let filter_classes =
-    Option.fold ~none:[] ~some:(fun f ->
-        printf "Reading filter file: %s\n" f;
+    match filter_file with
+    | Some f ->
+        Fmt.pr "Reading filter file: %s\n" f;
         let classes = Gir_gen_lib.Utils.read_filter_file f in
-        printf "Filter includes %d classes\n" (List.length classes);
-        classes)
-    @@ filter_file
+        Fmt.pr "Filter includes %d classes\n" (List.length classes);
+        classes
+    | None -> []
   in
 
   (* ==== PARSING STAGE ==== *)
@@ -1045,12 +1047,12 @@ let generate_bindings filter_file gir_file output_dir reference_files
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
   in
 
-  printf "Found %d classes\n" (List.length classes);
-  printf "Found %d interfaces\n" (List.length interfaces);
-  printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
-  printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
-  printf "Found %d records\n" (List.length gtk_records);
-  printf "Found %d constants\n" (List.length gtk_constants);
+  Fmt.pr "Found %d classes\n" (List.length classes);
+  Fmt.pr "Found %d interfaces\n" (List.length interfaces);
+  Fmt.pr "Found %d Gtk enumerations\n" (List.length gtk_enums);
+  Fmt.pr "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
+  Fmt.pr "Found %d records\n" (List.length gtk_records);
+  Fmt.pr "Found %d constants\n" (List.length gtk_constants);
 
   (* ==== OVERRIDE APPLICATION STAGE ==== *)
 
@@ -1066,10 +1068,10 @@ let generate_bindings filter_file gir_file output_dir reference_files
     Option.fold
       ~none:(classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
       ~some:(fun file ->
-        printf "Loading overrides from %s\n" file;
+        Fmt.pr "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
         | Error e ->
-            eprintf "Error: override parse failed: %s\n"
+            Fmt.epr "Error: override parse failed: %s\n"
               (Gir_gen_lib.Override_parser.format_error e);
             exit 1
         | Ok ov ->
@@ -1080,9 +1082,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
                 ~interfaces ~enums:gtk_enums ~bitfields:gtk_bitfields
                 ~records:gtk_records ~functions:[]
             in
-            List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
-            if not (List.is_empty result.ignored_entities) then
-              printf "Ignored %d entity(ies): %s\n"
+            List.iter result.warnings ~f:(fun w -> Fmt.epr "Warning: %s\n" w);
+            if result.ignored_entities <> [] then
+              Fmt.pr "Ignored %d entity(ies): %s\n"
                 (List.length result.ignored_entities)
                 (String.concat ~sep:", " result.ignored_entities);
             ( result.classes,
@@ -1260,9 +1262,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
   let header_file =
     Filename.concat
       (generated_output_dir output_dir)
-      (sprintf "%s_decls.h" ns_lower)
+      (Fmt.str "%s_decls.h" ns_lower)
   in
-  printf "\n";
+  Fmt.pr "\n";
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~header_overrides
       ~classes:ctx.classes ~gtk_enums ~gtk_bitfields ~records:ctx.records
@@ -1292,8 +1294,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
   (* ==== SCC-BASED GENERATION ==== *)
 
   (* Use the already computed module groups *)
-  printf "\nUsing computed dependency groups...\n";
-  printf "Found %d module groups (%d cyclic, %d acyclic)\n"
+  Fmt.pr "\nUsing computed dependency groups...\n";
+  Fmt.pr "Found %d module groups (%d cyclic, %d acyclic)\n"
     (List.length module_groups_list)
     (List.length
        (List.filter module_groups_list
@@ -1303,7 +1305,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
             not (Gir_gen_lib.Dependency_analysis.is_cyclic_group g))));
 
   (* Generate Layer 1 files (OCaml interfaces) *)
-  printf "\nGenerating Layer 1 interface files...\n";
+  Fmt.pr "\nGenerating Layer 1 interface files...\n";
   List.iter
     ~f:(fun group ->
       match group with
@@ -1317,13 +1319,13 @@ let generate_bindings filter_file gir_file output_dir reference_files
             String.concat ~sep:", "
               (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name))
           in
-          printf "  Generating combined module for cycle: %s\n" names;
+          Fmt.pr "  Generating combined module for cycle: %s\n" names;
           generate_combined_ml_files ~ctx ~output_dir ~module_group:group
             ~parent_chain_for_class)
     module_groups_list;
 
   (* Generate Layer 2 files (high-level wrapper classes) *)
-  printf "\nGenerating Layer 2 class files...\n";
+  Fmt.pr "\nGenerating Layer 2 class files...\n";
   List.iter
     ~f:(fun group ->
       match group with
@@ -1337,7 +1339,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
             String.concat ~sep:", "
               (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name))
           in
-          printf "  Generating combined class for cycle: %s\n" names;
+          Fmt.pr "  Generating combined class for cycle: %s\n" names;
           generate_combined_class_files ~ctx ~output_dir ~module_group:group
             ~parent_chain_for_class;
           (* Generate shim modules for each entity in the cycle *)
@@ -1355,11 +1357,11 @@ let generate_bindings filter_file gir_file output_dir reference_files
   let dune_file =
     Filename.concat (generated_output_dir output_dir) "dune-generated.inc"
   in
-  printf "\n";
+  Fmt.pr "\n";
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
 
   (* ==== LIBRARY TOP-LEVEL MODULE ==== *)
-  printf "Generating library top-level module...\n";
+  Fmt.pr "Generating library top-level module...\n";
   let lib_name = String.capitalize_ascii namespace.namespace_name in
   let lib_ml_file =
     Filename.concat (generated_output_dir output_dir) (lib_name ^ ".ml")
@@ -1397,7 +1399,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
     else []
   in
   let core_module_lines =
-    List.map core_modules ~f:(fun m -> sprintf "module %s = %s" m m)
+    List.map core_modules ~f:(fun m -> Fmt.str "module %s = %s" m m)
   in
   let enums_module_name =
     Gir_gen_lib.Utils.internal_namespace_to_module_name namespace.namespace_name
@@ -1410,7 +1412,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   let enums_alias_line =
     if Sys.file_exists enums_ml_path then
-      sprintf "module %s = %s\n" enums_module_name enums_module_name
+      Fmt.str "module %s = %s\n" enums_module_name enums_module_name
     else ""
   in
   let constants_module_name =
@@ -1424,7 +1426,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   let constants_alias_line =
     if Sys.file_exists constants_ml_path then
-      sprintf "module %s = %s\n" constants_module_name constants_module_name
+      Fmt.str "module %s = %s\n" constants_module_name constants_module_name
     else ""
   in
   (* Short odoc synopsis for the wrapper module's own page, shown on the
@@ -1462,11 +1464,11 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   let wrapper_doc_comment =
     Option.fold ~none:""
-      ~some:(fun synopsis -> sprintf "(** %s *)\n\n" synopsis)
+      ~some:(fun synopsis -> Fmt.str "(** %s *)\n\n" synopsis)
       wrapper_synopsis
   in
   let wrapper_content =
-    sprintf
+    Fmt.str
       "(* GENERATED CODE - DO NOT EDIT *)\n\
        (* Library wrapper module - re-exports %s as the public API *)\n\n\
        %smodule %s = %s\n\
@@ -1496,16 +1498,16 @@ let generate_bindings filter_file gir_file output_dir reference_files
               || List.length r.Gir_gen_lib.Types.methods > 0)))
   in
 
-  printf "\n✓ Code generation complete!\n";
-  printf "  Generated: %d C files (classes/interfaces) and %d record stubs\n"
+  Fmt.pr "\n✓ Code generation complete!\n";
+  Fmt.pr "  Generated: %d C files (classes/interfaces) and %d record stubs\n"
     (List.length all_classes + List.length interfaces)
     boxed_record_count;
-  printf "  Generated: %d OCaml interface files and %d record bindings\n"
+  Fmt.pr "  Generated: %d OCaml interface files and %d record bindings\n"
     (List.length all_classes + List.length interfaces)
     record_binding_count;
   if List.length gtk_enums > 0 || List.length gtk_bitfields > 0 then begin
     let ns_name = ctx.namespace.namespace_name in
-    printf
+    Fmt.pr
       "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enumerations, %d \
        bitfields)\n"
       (String.lowercase_ascii ns_name)
@@ -1513,14 +1515,14 @@ let generate_bindings filter_file gir_file output_dir reference_files
       (List.length gtk_enums)
       (List.length gtk_bitfields)
   end;
-  printf "  Generated: dune-generated.inc with %d C stub names\n"
+  Fmt.pr "  Generated: dune-generated.inc with %d C stub names\n"
     (List.length stub_list);
-  printf "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
+  Fmt.pr "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
   `Ok ()
 
 (* References generation function *)
 let generate_references ~gir_file ~output_file ~overrides_file =
-  printf "Parsing %s for references...\n" gir_file;
+  Fmt.pr "Parsing %s for references...\n" gir_file;
 
   let filter_classes = [] in
 
@@ -1539,10 +1541,10 @@ let generate_references ~gir_file ~output_file ~overrides_file =
   let classes, interfaces, enums, bitfields, records =
     Option.fold ~none:(classes, interfaces, enums, bitfields, records)
       ~some:(fun file ->
-        printf "Loading overrides from %s\n" file;
+        Fmt.pr "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
         | Error e ->
-            eprintf "Error: override parse failed: %s\n"
+            Fmt.epr "Error: override parse failed: %s\n"
               (Gir_gen_lib.Override_parser.format_error e);
             exit 1
         | Ok ov ->
@@ -1552,7 +1554,7 @@ let generate_references ~gir_file ~output_file ~overrides_file =
               Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov ~classes
                 ~interfaces ~enums ~bitfields ~records ~functions:[]
             in
-            List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
+            List.iter result.warnings ~f:(fun w -> Fmt.epr "Warning: %s\n" w);
             ( result.classes,
               result.interfaces,
               result.enums,
@@ -1561,7 +1563,7 @@ let generate_references ~gir_file ~output_file ~overrides_file =
     @@ overrides_file
   in
 
-  printf "References will be written to: %s\n" output_file;
+  Fmt.pr "References will be written to: %s\n" output_file;
   let entities =
     (classes
     |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_class
@@ -1635,16 +1637,16 @@ let generate_references ~gir_file ~output_file ~overrides_file =
 let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
 
 let render_version_component ~kind ~name ~version =
-  sprintf "    (%s %s (version \"%s\"))" kind name version
+  Fmt.str "    (%s %s (version \"%s\"))" kind name version
 
 (* Render a single component override back to human-friendly sexp. *)
 let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
-  Option.fold ~none:(sprintf "    (%s %s)" kind c.component_name)
+  Option.fold ~none:(Fmt.str "    (%s %s)" kind c.component_name)
     ~some:(function
     | Gir_gen_lib.Override_types.Ignore ->
-        sprintf "    (%s %s (ignore))" kind c.component_name
+        Fmt.str "    (%s %s (ignore))" kind c.component_name
     | Gir_gen_lib.Override_types.Set_version vs ->
-        sprintf "    (%s %s (version \"%s\"))" kind c.component_name
+        Fmt.str "    (%s %s (version \"%s\"))" kind c.component_name
           vs.vs_version)
   @@ c.action
 
@@ -1750,7 +1752,7 @@ let entity_member_versions ~get_name ~get_members ~get_member_name
    Existing (ignore) entries are always preserved. Version annotations are replaced
    with fresh data extracted from GIR <doc> text. *)
 let generate_overrides ~gir_file ~output_file =
-  printf "Parsing %s for Since version annotations...\n" gir_file;
+  Fmt.pr "Parsing %s for Since version annotations...\n" gir_file;
 
   let ( _repository,
         namespace,
@@ -1767,11 +1769,11 @@ let generate_overrides ~gir_file ~output_file =
   (* Load existing overrides if the file already exists *)
   let existing =
     if Sys.file_exists output_file then begin
-      printf "Merging with existing %s...\n" output_file;
+      Fmt.pr "Merging with existing %s...\n" output_file;
       match Gir_gen_lib.Override_parser.parse_overrides output_file with
       | Ok ov -> ov
       | Error e ->
-          eprintf
+          Fmt.epr
             "Warning: could not parse existing override file (%s); starting \
              fresh\n"
             (Gir_gen_lib.Override_parser.format_error e);
@@ -1800,7 +1802,7 @@ let generate_overrides ~gir_file ~output_file =
   in
 
   let buf = Buffer.create 4096 in
-  Buffer.add_string buf (sprintf "(overrides\n  (library \"%s\")\n" lib_name);
+  Buffer.add_string buf (Fmt.str "(overrides\n  (library \"%s\")\n" lib_name);
 
   (* Emit class/interface/function overrides from existing file unchanged *)
   List.iter
@@ -1888,7 +1890,7 @@ let generate_overrides ~gir_file ~output_file =
 
   let content = Buffer.contents buf in
   write_file ~path:output_file ~content;
-  printf "✓ Overrides written to %s\n" output_file;
+  Fmt.pr "✓ Overrides written to %s\n" output_file;
   `Ok ()
 
 (* Cmdliner argument definitions *)

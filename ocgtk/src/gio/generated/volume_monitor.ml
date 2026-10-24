@@ -14,6 +14,8 @@
 
 type t = [ `volume_monitor | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gio_volume_monitor_get_type"
+
 (* Methods *)
 
 external get_volumes : t -> App_info_cycle_64c425a0.Volume.t list
@@ -53,6 +55,7 @@ let on_drive_changed ?after obj ~callback =
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Drive.gtype ())
         in
         callback ~drive)
   in
@@ -65,6 +68,7 @@ let on_drive_connected ?after obj ~callback =
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Drive.gtype ())
         in
         callback ~drive)
   in
@@ -77,6 +81,7 @@ let on_drive_disconnected ?after obj ~callback =
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Drive.gtype ())
         in
         callback ~drive)
   in
@@ -89,6 +94,7 @@ let on_drive_eject_button ?after obj ~callback =
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Drive.gtype ())
         in
         callback ~drive)
   in
@@ -101,6 +107,7 @@ let on_drive_stop_button ?after obj ~callback =
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Drive.gtype ())
         in
         callback ~drive)
   in
@@ -113,6 +120,7 @@ let on_mount_added ?after obj ~callback =
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Mount.gtype ())
         in
         callback ~mount)
   in
@@ -125,6 +133,7 @@ let on_mount_changed ?after obj ~callback =
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Mount.gtype ())
         in
         callback ~mount)
   in
@@ -137,6 +146,7 @@ let on_mount_pre_unmount ?after obj ~callback =
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Mount.gtype ())
         in
         callback ~mount)
   in
@@ -149,6 +159,7 @@ let on_mount_removed ?after obj ~callback =
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Mount.gtype ())
         in
         callback ~mount)
   in
@@ -161,6 +172,7 @@ let on_volume_added ?after obj ~callback =
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Volume.gtype ())
         in
         callback ~volume)
   in
@@ -173,6 +185,7 @@ let on_volume_changed ?after obj ~callback =
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Volume.gtype ())
         in
         callback ~volume)
   in
@@ -185,6 +198,7 @@ let on_volume_removed ?after obj ~callback =
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_object_exn v
+            (App_info_cycle_64c425a0.Volume.gtype ())
         in
         callback ~volume)
   in

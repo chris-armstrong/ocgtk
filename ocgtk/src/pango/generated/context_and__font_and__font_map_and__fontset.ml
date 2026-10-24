@@ -4,6 +4,8 @@
 module rec Context : sig
   type t = [ `context | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_context_get_type"
+
   external new_ : unit -> t = "ml_pango_context_new"
   (** Create a new Context *)
 
@@ -177,6 +179,8 @@ module rec Context : sig
       they have attached extra data to the context and such data is changed. *)
 end = struct
   type t = [ `context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_context_get_type"
 
   external new_ : unit -> t = "ml_pango_context_new"
   (** Create a new Context *)
@@ -354,6 +358,8 @@ end
 and Font : sig
   type t = [ `font | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_get_type"
+
   (* Methods *)
 
   external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
@@ -433,6 +439,8 @@ and Font : sig
       device units. *)
 end = struct
   type t = [ `font | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_get_type"
 
   (* Methods *)
 
@@ -515,6 +523,8 @@ end
 
 and Font_map : sig
   type t = [ `font_map | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_map_get_type"
 
   (* Methods *)
 
@@ -603,6 +613,8 @@ and Font_map : sig
   (** Get property: n-items *)
 end = struct
   type t = [ `font_map | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_font_map_get_type"
 
   (* Methods *)
 
@@ -694,6 +706,8 @@ end
 and Fontset : sig
   type t = [ `fontset | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_pango_fontset_get_type"
+
   (* Methods *)
 
   external get_metrics : t -> Font_metrics.t = "ml_pango_fontset_get_metrics"
@@ -704,6 +718,8 @@ and Fontset : sig
       character. *)
 end = struct
   type t = [ `fontset | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_pango_fontset_get_type"
 
   (* Methods *)
 

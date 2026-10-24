@@ -10,6 +10,8 @@
 
 type t = [ `alert_dialog | `object_ ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gtk_alert_dialog_get_type"
+
 (* Methods *)
 
 external show :

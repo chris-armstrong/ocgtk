@@ -5,6 +5,8 @@
 
 type t = [ `crossing_event | `event ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gdk_crossing_event_get_type"
+
 (* Methods *)
 
 external get_mode : t -> Gdk_enums.crossingmode

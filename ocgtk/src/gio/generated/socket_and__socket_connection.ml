@@ -4,6 +4,8 @@
 module rec Socket : sig
   type t = [ `socket | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_get_type"
+
   external new_ :
     Gio_enums.socketfamily ->
     Gio_enums.sockettype ->
@@ -645,6 +647,8 @@ module rec Socket : sig
   (** Get property: type *)
 end = struct
   type t = [ `socket | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_get_type"
 
   external new_ :
     Gio_enums.socketfamily ->
@@ -1290,6 +1294,8 @@ end
 and Socket_connection : sig
   type t = [ `socket_connection | `io_stream | `object_ ] Gobject.obj
 
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_connection_get_type"
+
   (* Methods *)
 
   external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
@@ -1342,6 +1348,8 @@ and Socket_connection : sig
   (* Properties *)
 end = struct
   type t = [ `socket_connection | `io_stream | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gio_socket_connection_get_type"
 
   (* Methods *)
 

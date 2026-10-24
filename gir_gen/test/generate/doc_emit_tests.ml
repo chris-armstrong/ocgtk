@@ -19,14 +19,14 @@ let member ?since ?fallback doc =
 let count_sub s sub =
   let n = String.length sub in
   let rec go i acc =
-    match Str.search_forward (Str.regexp_string sub) s i with
+    match Re.Str.search_forward (Re.Str.regexp_string sub) s i with
     | j -> go (j + n) (acc + 1)
     | exception Not_found -> acc
   in
   go 0 0
 
 (* Raises [Not_found] when [sub] is absent. *)
-let index_of_exn s sub = Str.search_forward (Str.regexp_string sub) s 0
+let index_of_exn s sub = Re.Str.search_forward (Re.Str.regexp_string sub) s 0
 
 let check_opt msg expected actual =
   Alcotest.(check (option string)) msg expected actual

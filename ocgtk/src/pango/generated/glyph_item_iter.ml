@@ -45,6 +45,8 @@
 
 type t = [ `glyph_item_iter ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_pango_glyph_item_iter_get_type"
+
 (* Methods *)
 
 external prev_cluster : t -> bool = "ml_pango_glyph_item_iter_prev_cluster"
@@ -69,5 +71,3 @@ external init_end : t -> Glyph_item.t -> string -> bool
     a glyph item.
 
     See [PangoGlyphItemIter] for details of cluster orders. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_iter_get_type"

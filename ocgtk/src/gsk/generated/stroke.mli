@@ -5,6 +5,8 @@
 
 type t = [ `stroke ] Gobject.obj
 
+external gtype : unit -> Gobject.Type.t = "ml_gsk_stroke_get_type"
+
 external new_ : float -> t = "ml_gsk_stroke_new"
 (** Create a new Stroke *)
 
@@ -93,5 +95,3 @@ external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
 
 external get_dash : t -> float array option * Gsize.t = "ml_gsk_stroke_get_dash"
 (** Gets the dash array in use. *)
-
-external get_type : unit -> Gobject.Type.t = "ml_gsk_stroke_get_type"

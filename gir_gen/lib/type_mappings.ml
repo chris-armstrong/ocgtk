@@ -1,7 +1,6 @@
 (* Type Mappings for GIR Code Generator *)
 open Containers
 open StdLabels
-open Printf
 open Types
 
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
@@ -32,13 +31,13 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
     c_type = cr.cr_c_type;
     c_to_ml =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield -> sprintf "Val_%s%s" namespace cr.cr_name
-      | Crt_Constant -> sprintf "Val_%s" cr.cr_c_type
+      | Crt_Enum | Crt_Bitfield -> Fmt.str "Val_%s%s" namespace cr.cr_name
+      | Crt_Constant -> Fmt.str "Val_%s" cr.cr_c_type
       | Crt_Class _ | Crt_Interface | Crt_Record _ -> "Val_" ^ cr.cr_c_type);
     ml_to_c =
       (match cr.cr_type with
-      | Crt_Enum | Crt_Bitfield -> sprintf "%s%s_val" namespace cr.cr_name
-      | Crt_Constant -> sprintf "%s_val" cr.cr_c_type
+      | Crt_Enum | Crt_Bitfield -> Fmt.str "%s%s_val" namespace cr.cr_name
+      | Crt_Constant -> Fmt.str "%s_val" cr.cr_c_type
       | Crt_Class _ | Crt_Interface | Crt_Record _ -> cr.cr_c_type ^ "_val");
     layer2_class =
       (match cr.cr_type with
@@ -591,8 +590,8 @@ let find_class_mapping ~ctx ~lookup_str =
         Some
           (calculate_layer2_class ~class_module:ocaml_class_module
              ~class_name:ocaml_class_name);
-      c_to_ml = sprintf "Val_%s" cls.c_type;
-      ml_to_c = sprintf "%s_val" cls.c_type;
+      c_to_ml = Fmt.str "Val_%s" cls.c_type;
+      ml_to_c = Fmt.str "%s_val" cls.c_type;
       c_type = cls.c_type;
       is_value_type_record = false;
       transfer_strategy = Ts_gobject;
@@ -625,8 +624,8 @@ let find_interface_mapping ~ctx ~lookup_str =
         Some
           (calculate_layer2_class ~class_module:ocaml_class_module
              ~class_name:ocaml_class_name);
-      c_to_ml = sprintf "Val_%s" iface.c_type;
-      ml_to_c = sprintf "%s_val" iface.c_type;
+      c_to_ml = Fmt.str "Val_%s" iface.c_type;
+      ml_to_c = Fmt.str "%s_val" iface.c_type;
       c_type = iface.c_type;
       is_value_type_record = false;
       transfer_strategy = Ts_gobject;
@@ -649,8 +648,8 @@ let find_record_mapping ~ctx ~lookup_str =
   Some
     {
       ocaml_type;
-      c_to_ml = sprintf "Val_%s" record.c_type;
-      ml_to_c = sprintf "%s_val" record.c_type;
+      c_to_ml = Fmt.str "Val_%s" record.c_type;
+      ml_to_c = Fmt.str "%s_val" record.c_type;
       layer2_class = None;
       c_type = record.c_type;
       is_value_type_record = not record.opaque;
@@ -675,8 +674,8 @@ let find_enum_mapping ~ctx ~lookup_str =
     {
       ocaml_type = namespace ^ "." ^ String.lowercase_ascii enum.enum_name;
       c_type = enum.enum_c_type;
-      c_to_ml = sprintf "Val_%s%s" c_namespace enum.enum_name;
-      ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
+      c_to_ml = Fmt.str "Val_%s%s" c_namespace enum.enum_name;
+      ml_to_c = Fmt.str "%s%s_val" c_namespace enum.enum_name;
       layer2_class = None;
       is_value_type_record = false;
       transfer_strategy = Ts_none;
@@ -699,8 +698,8 @@ let find_bitfield_mapping ~ctx ~lookup_str =
     {
       ocaml_type =
         namespace ^ "." ^ String.lowercase_ascii bitfield.bitfield_name;
-      c_to_ml = sprintf "Val_%s%s" c_namespace bitfield.bitfield_name;
-      ml_to_c = sprintf "%s%s_val" c_namespace bitfield.bitfield_name;
+      c_to_ml = Fmt.str "Val_%s%s" c_namespace bitfield.bitfield_name;
+      ml_to_c = Fmt.str "%s%s_val" c_namespace bitfield.bitfield_name;
       layer2_class = None;
       c_type = bitfield.bitfield_c_type;
       is_value_type_record = false;
@@ -764,19 +763,14 @@ let classify_type ~ctx (gir_type : Types.gir_type) =
 (* Option.bind operator for cleaner sequential logic *)
 let ( let* ) = Option.bind
 
-let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
-  if Gir_type_pred.is_list gir_type then handle_list_type ~ctx gir_type
-  else if Option.is_some gir_type.array then handle_array_type ~ctx gir_type
-  else normal_type_lookup ~ctx gir_type
-
 (** Determine C type for GList/GSList based on type name *)
-and list_c_type_of_gir_type gir_type c_type_opt =
+let list_c_type_of_gir_type gir_type c_type_opt =
   Option.value c_type_opt
     ~default:(if Gir_type_pred.is_glist gir_type then "GList*" else "GSList*")
 
 (** Build a type mapping for a container type (array or list) with resolved
     element type *)
-and build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
+let build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
     ~c_type ~marker =
   {
     ocaml_type = element_mapping.ocaml_type ^ container_suffix;
@@ -787,6 +781,46 @@ and build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
     is_value_type_record = false;
     transfer_strategy = Ts_none;
   }
+
+let normal_type_lookup ~ctx (gir_type : Types.gir_type) =
+  let try_lookup lookup_str =
+    let find_hardcoded_mapping () =
+      (* Fall back to hardcoded type mappings *)
+      List.assoc_opt lookup_str type_mappings
+    in
+    let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
+      let open Option in
+      let* ncr_namespace = StringMap.find_opt namespace ctx.cross_references in
+      let* cross_reference =
+        StringMap.find_opt name ncr_namespace.ncr_entities
+      in
+      Some (map_cross_reference_to_type_mapping ~ctx ~namespace cross_reference)
+    in
+    let namespace, name = Utils.name_to_parts ~ctx lookup_str in
+    if String.equal namespace ctx.namespace.namespace_name then
+      find_class_mapping ~ctx ~lookup_str
+      |> or_else (fun () -> find_interface_mapping ~ctx ~lookup_str)
+      |> or_else (fun () -> find_record_mapping ~ctx ~lookup_str)
+      |> or_else (fun () -> find_enum_mapping ~ctx ~lookup_str)
+      |> or_else (fun () -> find_bitfield_mapping ~ctx ~lookup_str)
+      |> or_else find_hardcoded_mapping
+    else
+      find_cross_namespace_type_mapping ~ctx ~namespace ~name
+      |> or_else find_hardcoded_mapping
+  in
+  (* Try gir_name first, then c_type if that fails *)
+  gir_type.name |> try_lookup
+  |> or_else (fun () ->
+      Option.bind gir_type.c_type (fun c_type -> try_lookup c_type))
+
+(** Simplify type references when they refer to the current module's type.
+    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t"
+    or "t option". Handles common type wrappers like "option", "array", and
+    combinations. *)
+let rec find_type_mapping_for_gir_type ~ctx (gir_type : Types.gir_type) =
+  if Gir_type_pred.is_list gir_type then handle_list_type ~ctx gir_type
+  else if Option.is_some gir_type.array then handle_array_type ~ctx gir_type
+  else normal_type_lookup ~ctx gir_type
 
 (** Handle GList/GSList container types. Returns None if the element type cannot
     be resolved (instead of generating a generic type). This ensures we only
@@ -822,41 +856,6 @@ and handle_array_type ~ctx (gir_type : Types.gir_type) =
     (build_container_mapping ~element_mapping:elem_mapping
        ~container_suffix:" array" ~c_type ~marker:"ARRAY_INLINE")
 
-and normal_type_lookup ~ctx (gir_type : Types.gir_type) =
-  let try_lookup lookup_str =
-    let find_hardcoded_mapping () =
-      (* Fall back to hardcoded type mappings *)
-      List.assoc_opt lookup_str type_mappings
-    in
-    let find_cross_namespace_type_mapping ~ctx ~namespace ~name =
-      let open Option in
-      let* ncr_namespace = StringMap.find_opt namespace ctx.cross_references in
-      let* cross_reference =
-        StringMap.find_opt name ncr_namespace.ncr_entities
-      in
-      Some (map_cross_reference_to_type_mapping ~ctx ~namespace cross_reference)
-    in
-    let namespace, name = Utils.name_to_parts ~ctx lookup_str in
-    if String.equal namespace ctx.namespace.namespace_name then
-      find_class_mapping ~ctx ~lookup_str
-      |> or_else (fun () -> find_interface_mapping ~ctx ~lookup_str)
-      |> or_else (fun () -> find_record_mapping ~ctx ~lookup_str)
-      |> or_else (fun () -> find_enum_mapping ~ctx ~lookup_str)
-      |> or_else (fun () -> find_bitfield_mapping ~ctx ~lookup_str)
-      |> or_else find_hardcoded_mapping
-    else
-      find_cross_namespace_type_mapping ~ctx ~namespace ~name
-      |> or_else find_hardcoded_mapping
-  in
-  (* Try gir_name first, then c_type if that fails *)
-  gir_type.name |> try_lookup
-  |> or_else (fun () ->
-      Option.bind gir_type.c_type (fun c_type -> try_lookup c_type))
-
-(** Simplify type references when they refer to the current module's type.
-    Converts patterns like "CurrentModule.t" or "CurrentModule.t option" to "t"
-    or "t option". Handles common type wrappers like "option", "array", and
-    combinations. *)
 let simplify_self_reference ~class_name ~ocaml_type =
   let current_module = Utils.module_name_of_class class_name in
   let self_type = current_module ^ ".t" in

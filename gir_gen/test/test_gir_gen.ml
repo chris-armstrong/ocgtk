@@ -32,6 +32,7 @@ let () =
       ("Doc Translate", Doc_translate_tests.tests);
       ("Doc Translate Corpus", Doc_translate_corpus_tests.tests);
       ("Doc Emit", Doc_emit_tests.tests);
+      ("Dune File", Dune_file_tests.tests);
       (* Layer 2 — Class Generation (pure unit/pipeline) *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
