@@ -275,6 +275,21 @@ phase 3 starts from (the tree moves on in between):
 - The public module paths of every library (`dune describe` or the odoc
   index), for checking the migration note in phase 5.
 
+Recorded 2026-10-25 at `m3` `d9c00187` (20 cores, `--cache=disabled`,
+after `dune clean`); the data files are in
+[library-layout-baseline/](library-layout-baseline/):
+
+| Measure | Value |
+|---|---|
+| Test cases (`xvfb-run dune test ocgtk/`) | 391 in 31 suites, all passing (`tests-m3-d9c00187.tsv`) |
+| odoc `Warning:` lines | 0 |
+| HTML pages | 2862 |
+| `xref-unresolved` spans | 8962 (1614 pages under `ocgtk`, 41 under `gir_gen`) |
+| ... on `inherit` lines | 874 of 874 (gtk 594, gio 176, gsk 64, gdk 34, gdkpixbuf 4, pango 2); every one names the library's own `Ocgtk_<ns>__` alias module |
+| Clean `dune build` | 67 s |
+| Clean `dune build @doc` (after the build) | 7.6 s |
+| Public module paths | 2778 (`modules-m3-d9c00187.txt`, from the odoc page tree) |
+
 ### Phase 0 — finish the prototype
 
 Based on `m3`, still with the hand-run script
