@@ -261,9 +261,9 @@ item on it has been checked, and the result is recorded here (numbers, not
 
 ### Baselines
 
-Several criteria compare against today's tree. Record these from `main`
-at the commit phase 0 starts from, and again at the commit phase 3 starts
-from (the tree moves on in between):
+Several criteria compare against today's tree. Record these from `m3`
+once phase 0 step 0 has synced it with `main`, and again at the commit
+phase 3 starts from (the tree moves on in between):
 
 - `dune test ocgtk/`: the number of test cases run and passed, per test
   executable.
@@ -277,9 +277,20 @@ from (the tree moves on in between):
 
 ### Phase 0 — finish the prototype
 
-On `proto/ocglib-ocgraphene`, still with the hand-run script
-(`scripts/proto-relayout.py` on that branch), not the generator.
+Based on `m3`, still with the hand-run script
+(`scripts/proto-relayout.py` on the prototype branch), not the generator.
+The prototype branch stays local.
 
+0. Bring `m3` up to date with `main`. On 2026-10-25 `m3` was 79 commits
+   ahead of `main` and 46 behind (stub batching, per-class GType stubs, the
+   merlint lint gate). A trial merge conflicts in about 135 files: most are
+   generated and are resolved by regenerating, and 14 are hand-written
+   (`gir_gen` generator and tests, `gobject.mli`, `uInt32.ml`, CI,
+   `merlint.toml`, one gtk test). Then rebase this plan's branch onto `m3`
+   and redo the prototype on a fresh branch from it by re-running the
+   script, rather than rebasing `proto/ocglib-ocgraphene`, whose generated
+   files all conflict. Keep the old branch for reference until the new one
+   reaches the same point.
 1. Move the prototype to the target layout: `ocglib/` and `ocgraphene/` at
    the root, a root `dune-project`, and `ocgraphene.enums` split out as the
    single module `ocgraphene_enums.ml`, re-exported as `Ocgraphene.Enums`.
@@ -321,6 +332,8 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 
 **Done when:**
 
+- Step 0: `main` is an ancestor of `m3`, and `dune build`, `dune test` and
+  the lint job pass on `m3`. The baselines are taken from this commit.
 - Step 1: `dune build` from the root, with the root `dune-project`, builds
   `ocglib`, `ocgraphene.enums`, `ocgraphene.raw` and `ocgraphene`. A
   consumer compiles against both `Ocgraphene.Enums.x` and
