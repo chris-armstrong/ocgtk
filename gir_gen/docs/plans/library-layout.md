@@ -96,6 +96,13 @@ replace them.
   `inherit` links. If hiding breaks links, even with `@canonical` tags on
   the cluster submodules, keep dune's generated main module and leave
   clusters visible.
+- **Gtk's hand-written `GMain` and `GVersion` become `Ocgtk.Main` and
+  `Ocgtk.Version`**, dropping the prefix like the generated modules.
+  `GMain` holds both externals and wrapper functions, so it cannot simply
+  move to `raw/core/`. If the dependency graph needs it (say, the main
+  library cannot hold them because of what they depend on), they go in a
+  separate sub-library of the `ocgtk` package, re-exported under the same
+  names.
 - **ocglib uses its own pkg-config modules** (`glib-2.0`, `gobject-2.0`),
   not `gtk4`.
 - **Conf packages: our own where none exists, opam-repository's where one
@@ -150,6 +157,46 @@ Debian/Ubuntu (`libcairo2-dev`), openSUSE (`cairo-devel`), Alpine
 (`cairo-dev`), Arch (`cairo`) and FreeBSD (`cairo`) ship it with cairo. Hence
 `conf-cairo-gobject`, whose depexts must name `cairo-gobject-devel` on the
 Fedora family.
+
+## Supported platforms
+
+The conf packages' depexts and `release-verification.yml` cover the same
+list of platforms. Today they do not match (checked 2026-10-25):
+
+| Platform | `release-verification.yml` | `conf-gtk4` depexts |
+|---|---|---|
+| Ubuntu 22.04, 24.04 | yes | yes (`os-family = "debian"`) |
+| Ubuntu 25.04 | yes (end of life since January 2026) | yes |
+| Debian 12 | yes | yes |
+| Fedora 40, 43 | yes (40 is end of life) | yes |
+| CentOS Stream 9 | yes | yes, plus `rhel` |
+| openSUSE Leap 15.6 | yes | yes, plus Tumbleweed |
+| Alpine, Arch | no | yes |
+| macOS, Homebrew (arm64) | yes (also in `ci.yml`) | yes |
+| macOS, MacPorts | no | yes |
+| FreeBSD 14 | yes | yes |
+| Windows, MSYS2 MinGW64 | yes | yes |
+
+Proposed list. Images exist for every Linux entry (checked 2026-10-25);
+confirm each release's support status when the list is fixed:
+
+| Platform | Versions |
+|---|---|
+| Ubuntu | 22.04, 24.04 and 26.04 LTS, and the latest interim release (26.10) |
+| Debian | 12, 13 |
+| Fedora | the two current releases (44, and 45 once released) |
+| CentOS Stream | 9, 10 (stands in for RHEL and its rebuilds) |
+| openSUSE | Leap 16.0, Tumbleweed |
+| Alpine | latest stable (3.24) |
+| Arch | rolling |
+| macOS | Homebrew, latest macOS on arm64 |
+| FreeBSD | 14, and 15 if released |
+| Windows | MSYS2 MinGW64 |
+
+MacPorts and `rhel` are dropped from the depexts unless a CI job is added
+for them; Leap 15.6 is dropped if it is past end of life by then. Rolling
+and "latest" entries are tested against whatever is current at release
+time.
 
 ## Target layout
 
@@ -305,17 +352,21 @@ On `proto/ocglib-ocgraphene`, still with the hand-run script
 
 ### Phase 1 — conf packages and ocglib
 
-1. Add the four new conf packages (`conf-cairo-gobject`, `conf-pangocairo`,
+1. Fix the list of supported platforms (see Supported platforms below),
+   and bring `release-verification.yml` and `conf-gtk4`'s depexts into line
+   with it.
+2. Add the four new conf packages (`conf-cairo-gobject`, `conf-pangocairo`,
    `conf-gdk-pixbuf-2`, `conf-graphene-1`) as top-level directories like
    `conf-gtk4/`, and depend on opam-repository's `conf-glib-2` and
-   `conf-pango`. Write depexts per platform from the distros' file lists, as
-   was done for GLib (see Conf packages), not by guessing package names.
-   Re-check opam-repository for the four names just before publishing.
-2. Move `ocgtk/src/common` to `ocglib/` as the wrapped library `ocglib`,
+   `conf-pango`. Write depexts for every supported platform from the
+   distros' file lists, as was done for GLib (see Conf packages), not by
+   guessing package names. Re-check opam-repository for the four names just
+   before publishing.
+3. Move `ocgtk/src/common` to `ocglib/` as the wrapped library `ocglib`,
    delete `ocgtk_common.ml/.mli`, switch its pkg-config rule to
    `glib-2.0`/`gobject-2.0`, and replace `#include <gtk/gtk.h>` in
    `ml_glib.c` with the GLib headers it actually uses.
-3. Move the GLib/GObject tests (`test_gobj`, `test_gvariant*`,
+4. Move the GLib/GObject tests (`test_gobj`, `test_gvariant*`,
    `test_glib_bytes`, `test_bounded_int`, `test_closure*`, the gobject test
    helpers) to `ocglib/tests/`.
 
@@ -327,10 +378,14 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
 **Done when:**
 
 - `opam lint` reports nothing for each new conf package.
-- In a fresh container for each of Debian, Ubuntu, Fedora, openSUSE,
-  Alpine and Arch, with none of the libraries installed, `opam install
-  ./conf-<name>` installs the system package through depexts and then
-  succeeds. On Fedora this must pull in `cairo-gobject-devel`.
+- Every platform in Supported platforms is a job in
+  `release-verification.yml`, and every platform named in a depext is in
+  Supported platforms (no untested depexts, no tested platform without
+  one).
+- On each supported platform, starting with none of the libraries
+  installed, `opam install ./conf-<name>` installs the system package
+  through depexts and then succeeds. On the Fedora family this must pull
+  in `cairo-gobject-devel`.
 - `dune build -p ocglib` succeeds in a container that has GLib's
   development files but not GTK's, which shows ocglib no longer needs
   `gtk4`. Nothing under `ocglib/` mentions `gtk`.
@@ -398,9 +453,9 @@ file (a different external, a missing method, reordered code, a changed
 doc comment) is a generator bug and is fixed before merging.
 
 Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
-(`gio_volume_monitor_core.ml` does). Gtk's `core/gMain.ml` and
-`core/gVersion.ml` are hand-written modules with the `G` prefix, used in
-182 places; see Open items.
+(`gio_volume_monitor_core.ml` does). Gtk's hand-written `core/gMain.ml` and
+`core/gVersion.ml` become `Ocgtk.Main` and `Ocgtk.Version` (see
+Decisions); their 182 uses are renamed in the same PR.
 
 Generated C files move one directory deeper (`<pkg>/raw/generated/`), so
 check the stub-batch size in `dune_file.ml`, which allows for about 55
@@ -411,11 +466,10 @@ characters per path, against the new paths.
 - Every move commit is renames only: `git show -M --stat` lists no file
   as modified, and `git log --follow` on a layer 2 file (say
   `ocgtk/generated/window.ml`) reaches its history as `gWindow.ml`.
-- The regenerate-and-reformat commit has no material change: for every
-  moved file, its diff, with old paths rewritten to new by a script
-  that applies the name mapping, is empty. The script and its output are
-  kept in the PR description. Files the commit adds or deletes are the
-  ones listed above and no others.
+- A spot check of the regenerate-and-reformat commit finds no material
+  change: a sample of moved files from each namespace (a plain class, a
+  cluster, one with cross-namespace parents, a C stub file) differs only in
+  module paths, and the files it adds or deletes are the ones listed above.
 - After `dune clean`, `dune build` passes at the regeneration commit.
 - No generated module has a `G` prefix, no `ocgtk_<ns>.ml` or `<Ns>.ml`
   remains, and `ocgtk/src/` no longer exists.
@@ -517,19 +571,16 @@ downstream intentionally broken):
 
 ## Open items
 
-1. Depexts for the four new conf packages on the Debian, Fedora, SUSE and
-   Alpine families (Arch and FreeBSD names are above), and macOS for
-   `conf-glib-2`'s coverage of gobject and gio.
+1. The supported platform list (proposed under Supported platforms; fixed
+   in phase 1 step 1), then depexts for the four new conf packages on each
+   (Arch and FreeBSD names are above), and macOS for `conf-glib-2`'s
+   coverage of gobject and gio.
 2. The cluster-hiding result (phase 0 step 3).
 3. Whether a raw library ever needs another namespace's main library (it
    should not; phase 0 step 4 checks).
 4. Proposal open questions 3 and 4 (the 81 other `xref-unresolved` spans;
    doc build time); phase 0 step 3 gives gio's numbers for both.
-5. What gtk's hand-written `GMain` and `GVersion` become. Dropping the
-   prefix gives `Ocgtk.Main` and `Ocgtk.Version`, which matches the rest of
-   the layout. `GMain` holds both externals and wrapper functions, so it
-   cannot simply move to `raw/core/`.
-6. Gtk itself cannot be prototyped before phase 3, because it depends on
+5. Gtk itself cannot be prototyped before phase 3, because it depends on
    every other namespace. Its risks are the same as gio's at a larger scale
    (320 layer 2 modules against gio's 175, 8 stub batches against 6), so
    gio stands in for it.
