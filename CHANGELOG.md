@@ -4,6 +4,28 @@ All notable changes to **ocgtk** are documented here. Entries are grouped by
 release; the `0.1~preview*` series is the initial preview track toward a
 usable OCaml GTK 4 binding library.
 
+## [Unreleased]
+
+### Packaging
+
+- **ocglib** — the GLib/GObject runtime (`Gobject`, `Gvariant`, `Gerror`,
+  …) is a separate opam package and wrapped library, `ocglib`, that needs
+  only GLib's development files, not GTK's. ocgtk depends on it and
+  re-exports it as `Ocgtk.Common`.
+
+### Platforms
+
+- **Windows unsupported** — MSYS2 deprecated its MINGW64 environment and no
+  longer ships GTK 4 there, and opam cannot yet build OCaml in the UCRT64
+  environment that does. `conf-gtk4` is no longer available on Windows, and
+  the Windows release check is disabled until opam supports UCRT64.
+- **Release checks** now cover Ubuntu 22.04, 24.04, 26.04 and 26.10, Debian
+  12 and 13, Fedora 43 and 44, CentOS Stream 9 and 10, openSUSE Leap 16.0
+  and Tumbleweed, Alpine 3.24, Arch Linux and macOS (Homebrew). Ubuntu
+  25.04, Fedora 40 and openSUSE Leap 15.6 (all end of life) are dropped.
+- **conf-gtk4** — depexts trimmed to the checked platforms: MacPorts and
+  the `rhel` distribution entry are removed.
+
 ## [0.1~preview2] — 2026-06-24
 
 Completes **Milestone 2 (signal handling with parameters)** and brings broad

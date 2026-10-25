@@ -182,26 +182,51 @@ list of platforms. Today they do not match (checked 2026-10-25):
 | FreeBSD 14 | yes | yes |
 | Windows, MSYS2 MinGW64 | yes | yes |
 
-Proposed list. Images exist for every Linux entry (checked 2026-10-25);
-confirm each release's support status when the list is fixed:
+The list, fixed in phase 1 step 1 (2026-10-25):
 
-| Platform | Versions |
-|---|---|
-| Ubuntu | 22.04, 24.04 and 26.04 LTS, and the latest interim release (26.10) |
-| Debian | 12, 13 |
-| Fedora | the two current releases (44, and 45 once released) |
-| CentOS Stream | 9, 10 (stands in for RHEL and its rebuilds) |
-| openSUSE | Leap 16.0, Tumbleweed |
-| Alpine | latest stable (3.24) |
-| Arch | rolling |
-| macOS | Homebrew, latest macOS on arm64 |
-| FreeBSD | 14, and 15 if released |
-| Windows | MSYS2 MinGW64 |
+| Platform | Versions | opam `os-distribution` (`os-family`) |
+|---|---|---|
+| Ubuntu | 22.04, 24.04 and 26.04 LTS, and the latest interim release (26.10) | `ubuntu` (`debian`) |
+| Debian | 12, 13 | `debian` (`debian`) |
+| Fedora | the two current releases (43, 44; 45 replaces 43 once released) | `fedora` (`fedora`) |
+| CentOS Stream | 9, 10 (stands in for RHEL and its rebuilds) | `centos` (`rhel`) |
+| openSUSE | Leap 16.0, Tumbleweed | `opensuse-leap` (`suse`), `opensuse-tumbleweed` (`opensuse`) |
+| Alpine | latest stable (3.24) | `alpine` (`alpine`) |
+| Arch | rolling | `arch` (`arch`) |
+| macOS | Homebrew, latest macOS on arm64 | `homebrew` |
+| FreeBSD | 14, 15 (CI job disabled: too slow under QEMU) | — (`os = "freebsd"`) |
+| Windows | unsupported for now, see below | — |
 
-MacPorts and `rhel` are dropped from the depexts unless a CI job is added
-for them; Leap 15.6 is dropped if it is past end of life by then. Rolling
-and "latest" entries are tested against whatever is current at release
-time.
+The opam variables are what opam 2.5.0 reports in each container image
+(Linux only). MacPorts and `rhel` are dropped from the depexts; Leap 15.6
+(end of life 2026-04-30), Fedora 40 and Ubuntu 25.04 are dropped from CI.
+Fedora 45 is not released yet (due 2026-11-03). Rolling and "latest"
+entries are tested against whatever is current at release time.
+
+CentOS Stream 10 has no Xvfb (RHEL 10 dropped the Xorg server). Its tests
+run under `xwfb-run -c mutter` (`xwayland-run` and `mutter`, both in
+AppStream); a GTK 4 program got a display there with mutter and with
+weston (EPEL).
+
+**Windows** is unsupported until opam can build OCaml in an MSYS2
+environment that has GTK 4 (checked 2026-10-25):
+
+- MSYS2 deprecated MINGW64 on 2026-03-15. Its live package database
+  still has GLib, cairo, pango, gdk-pixbuf, graphene and gcc, but not
+  `mingw-w64-x86_64-gtk4`. GTK 4 (4.24.1) is in UCRT64, CLANG64 and
+  CLANGARM64.
+- opam-repository's mingw compiler chain (`conf-mingw-w64-gcc-x86_64`)
+  requires `msys2-mingw64`, and the `msys2` package rejects UCRT64
+  (opam-repository issue #29447, open). UCRT64 support was merged and
+  partly reverted (#29579, #29751); #29795 starts a new series towards it.
+  opam does not expand `%{msys2:package-prefix}%` in depext names.
+- setup-ocaml's `msys2` mode installs only `mingw-w64-x86_64-gcc`.
+
+Building OCaml in MINGW64 against UCRT64's GTK would mix two C runtimes
+(msvcrt and UCRT), so it is not an option. The Windows job stays in
+`release-verification.yml` with `if: false` and UCRT64 package names;
+`conf-gtk4` has `available: os != "win32"` and no MSYS2 depext. Revisit
+when opam-repository ships UCRT64 support for the compiler.
 
 ## Target layout
 
@@ -459,6 +484,25 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   `opam install` adds `.` for `ocglib.opam`.
 - Not done yet: the release tarball (see phase 3), and CI on GitHub,
   which runs when `layout-phase1` is pushed.
+
+**Step 1 done** (2026-10-25), apart from CI on GitHub:
+
+- The list is fixed (Supported platforms). `release-verification.yml` has
+  a job per entry: native Ubuntu 22.04 and 24.04; container matrices for
+  APT (Ubuntu 26.04, 26.10, Debian 12, 13), Fedora (43, 44), CentOS
+  Stream (9, 10) and openSUSE (Leap 16.0, Tumbleweed); Alpine 3.24; Arch;
+  macOS; FreeBSD 14 and 15 (disabled); Windows (disabled). The
+  `windows_only` input is gone.
+- Each new container job's system-package install was run in its image:
+  all succeed, and gtk4, the build tools and the X server runner
+  (`xvfb-run`, or `xwfb-run` on Stream 10) are present. The opam build
+  and tests in the new jobs have not run yet.
+- `conf-gtk4` depexts: MacPorts, `rhel` and MSYS2 removed; `available:
+  os != "win32"`. `opam lint` passes. Its version stays at 2; it is
+  bumped when it is next published.
+- actionlint: no errors (only the `eval $(opam env)` quoting warnings that
+  were already there, and the two `if: false`).
+- Not changed: the local `ci/` Docker images still use the old set.
 
 **Done when:**
 
@@ -729,10 +773,10 @@ Docs (odoc, `--cache=disabled`):
 
 ## Open items
 
-1. The supported platform list (proposed under Supported platforms; fixed
-   in phase 1 step 1), then depexts for the four new conf packages on each
+1. Depexts for the four new conf packages on each supported platform
    (Arch and FreeBSD names are above), and macOS for `conf-glib-2`'s
-   coverage of gobject and gio.
+   coverage of gobject and gio. Windows support, once opam-repository
+   supports MSYS2 UCRT64 (Supported platforms).
 2. Gtk itself cannot be prototyped before phase 3, because it depends on
    every other namespace. Its risks are the same as gio's at a larger scale
    (320 layer 2 modules against gio's 175, 4 stub batches against 3), so
