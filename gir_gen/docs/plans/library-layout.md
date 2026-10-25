@@ -503,6 +503,10 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
 - actionlint: no errors (only the `eval $(opam env)` quoting warnings that
   were already there, and the two `if: false`).
 - Not changed: the local `ci/` Docker images still use the old set.
+- CI on GitHub (PR #195): container jobs needed `git config --global
+  --add safe.directory`, because opam pins the repository root with git.
+  Ubuntu 22.04, Debian 12 and CentOS Stream 9 fail at Build on old cairo,
+  which is also broken on `main` (Open items 4).
 
 **Done when:**
 
@@ -785,6 +789,22 @@ Docs (odoc, `--cache=disabled`):
    independent of the layout and exists on `main`; fix it in the generator
    on its own branch (copy the record with `g_boxed_copy` or
    `g_memdup2` before `Val_<record>`), not as part of this work.
-4. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
+4. Cairo older than 1.18 does not build, on `main` too, so Ubuntu 22.04
+   (cairo 1.16), Debian 12 (1.16) and CentOS Stream 9 (1.17.4) fail
+   `release-verification.yml` at Build. Left failing on `layout-phase1`
+   (checked 2026-10-25). Since 9dd45ebc (2026-09-11) the generated cairo
+   stubs declare and call `cairo_gobject_glyph_get_type` and
+   `cairo_gobject_text_cluster_get_type`, which `cairo-gobject.h` gains
+   only in 1.18.0 (checked at the 1.17.4, 1.17.6, 1.17.8 and 1.18.0 tags).
+   Release Verification had not run since July, so nothing caught it. A
+   `(record Glyph (version "1.18"))` override in `ocgtk/overrides/cairo.sexp`
+   is not enough: regenerating with it changed no output, and guarding the
+   converters away would leave `Val_cairo_glyph_t` and the
+   `ml_cairo_glyph_get_type` external undefined on old cairo. The fix needs
+   the guarded record to keep its symbols (an `#else` that fails at run
+   time, as for guarded enum members), or the minimum cairo raised to 1.18
+   and those three platforms dropped. Fix it on its own branch off `main`,
+   not as part of this work.
+5. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
    in the baseline: odoc has no Stdlib docs to link to. A docs question for
    the m3 work, not the layout.
