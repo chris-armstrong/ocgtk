@@ -432,10 +432,33 @@ The prototype branch stays local.
    helpers too, and dune does not let one project use another's private
    library. Once there is one `dune-project`, they move.
 
-Phase 1 lands on `main` on its own, so the rest of the tree must keep
+Phase 1 lands on `m3` on its own, so the rest of the tree must keep
 building: the generated dune files switch from `ocgtk.common` to `ocglib`
 and add `-open Ocglib`, a small generator change ahead of phase 2. If that
 turns out not to be small, phase 1 joins phase 3's PR instead.
+
+**Steps 3 and 4 done** (2026-10-25, branch `layout-phase1`):
+
+- `ocglib/` is the wrapped library `ocglib` in a root `dune-project` that
+  declares only that package; `ocgtk/` keeps its own project until phase
+  3. `configurator/` moved to the root with it.
+- The generator change was small: the stub stanzas depend on `ocglib`,
+  drop `-I../common`, and run `../../../configurator`. Three new tests in
+  `dune_file_tests.ml`. `-open Ocglib` goes in the hand-written dune files
+  (`ocgtk/src/*/dune`, tests, examples), not the generated ones, because
+  the generated stub libraries have no OCaml modules. Regenerating after
+  the change left no diff.
+- `dune build -p ocglib @install` and its tests (`@ocglib/runtest`, 165
+  cases) pass in `ubuntu:24.04` with `libglib2.0-dev` and no GTK
+  (`gtk4.pc` absent).
+- Tests: 165 cases in 5 suites under `ocglib/`, 226 in 26 under `ocgtk/`.
+  Per suite, the same as the baseline (391 in 31).
+- `dune build @doc`: 0 warnings; `ocglib/index.mld` links all 16 modules.
+- `opam lint` passes for `ocglib.opam` and `ocgtk/ocgtk.opam`.
+- Every test command now runs `dune test ocglib/ ocgtk/`, and every
+  `opam install` adds `.` for `ocglib.opam`.
+- Not done yet: the release tarball (see phase 3), and CI on GitHub,
+  which runs when `layout-phase1` is pushed.
 
 **Done when:**
 
@@ -450,7 +473,9 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   in `cairo-gobject-devel`.
 - `dune build -p ocglib` succeeds in a container that has GLib's
   development files but not GTK's, which shows ocglib no longer needs
-  `gtk4`. Nothing under `ocglib/` mentions `gtk`.
+  `gtk4`. No source under `ocglib/` includes a GTK header, calls a
+  `gtk_` function, or asks pkg-config for `gtk4`. Mentions in comments,
+  licence headers and `docs.gtk.org` links are fine.
 - The moved tests pass from `ocglib/tests/`, with the same number of cases
   as the baseline for those executables.
 - `dune build` and `dune test` pass for the whole tree, and CI (Linux and
@@ -564,6 +589,11 @@ without `gir_gen/` and the other development-only directories.
 ### Phase 4 — tests, examples, packaging
 
 1. Tests to `<pkg>/tests/`, with the gtk test helpers in `ocgtk/tests/`.
+   Each test stanza gets `(package <pkg>)`. Without it a test belongs to
+   no package, so `dune build -p ocglib @runtest` (what opam runs for
+   `--with-test`) builds every test in the tree, the gtk ones included.
+   Phase 1 found this: from the repository root it compiled the ocgtk
+   tests against whichever `ocgtk` was installed.
 2. Examples to `<pkg>/examples/` (all current ones to `ocgtk/examples/`,
    including the calculator's own tests); update library names, since
    most examples depend on the umbrella `ocgtk` library and must list the
@@ -582,6 +612,8 @@ without `gir_gen/` and the other development-only directories.
   `ocgtk.gio`, ...) or the umbrella `ocgtk` library.
 - `opam lint` reports nothing for every generated `.opam` file.
 - `dune build @doc` produces an index page for every package.
+- For each package, `dune build -p <pkg> @runtest` runs only that
+  package's tests.
 
 ### Phase 5 — CI, docs and migration
 
