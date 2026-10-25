@@ -37,7 +37,7 @@ jobs:
 
       - name: Install OCaml dependencies
         run: |
-          opam install ./ocgtk ./gir_gen --deps-only --with-test
+          opam install . ./ocgtk ./gir_gen --deps-only --with-test
 
       # --check exits non-zero if any gir_gen source would be reformatted.
       - name: Check gir_gen formatting
@@ -82,7 +82,7 @@ jobs:
         run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
-        run: opam install ./ocgtk ./gir_gen --deps-only --with-test
+        run: opam install . ./ocgtk ./gir_gen --deps-only --with-test
 
       - name: Install semgrep
         run: python3 -m pip install semgrep
@@ -136,7 +136,7 @@ jobs:
 
       - name: Install OCaml dependencies
         run: |
-          opam install ./ocgtk --deps-only --with-test
+          opam install . ./ocgtk --deps-only --with-test
           opam install ./gir_gen --deps-only --with-test
 
       - name: Build both packages

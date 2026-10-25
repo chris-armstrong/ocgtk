@@ -8,4 +8,4 @@ module Gtk = Ocgtk_gtk.Gtk
 module Pango = Ocgtk_pango.Pango
 module PangoCairo = Ocgtk_pangocairo.PangoCairo
 module GMain = Ocgtk_gtk.GMain
-module Common = Ocgtk_common
+module Common = Ocglib

@@ -526,6 +526,14 @@ Generated C files move one directory deeper (`<pkg>/raw/generated/`), so
 check the stub-batch size in `dune_file.ml`, which allows for about 55
 characters per path, against the new paths.
 
+The release tarball (the `package` job in `release-verification.yml`) is
+built from the `ocgtk/` subtree, so since phase 1 it leaves out `ocglib/`
+and `configurator/`. It cannot simply become the repository root while
+`ocgtk/` has its own `dune-project`, because dune then writes
+`ocgtk.install` into `ocgtk/`, one directory too deep for opam. Once the
+packages share the root `dune-project`, the tarball is the repository root
+without `gir_gen/` and the other development-only directories.
+
 **Done when:**
 
 - Every move commit is renames only: `git show -M --stat` lists no file
@@ -544,6 +552,8 @@ characters per path, against the new paths.
 - Every package builds with `dune build -p <pkg>`, one at a time in
   dependency order, each against its predecessors installed in a separate
   prefix.
+- The release tarball, unpacked, builds and installs every package with
+  `opam install` from that directory, and has no `gir_gen/` in it.
 
 ### Phase 4 — tests, examples, packaging
 

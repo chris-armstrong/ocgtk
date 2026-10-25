@@ -18,7 +18,7 @@ fundamental GLib data structures and utilities.
 
 Generating bindings for GLib and GObject would produce a large amount of code for
 infrastructure that is mostly internal plumbing. Instead, the parts we need are
-bound manually in `ocgtk/src/common/`:
+bound manually in `ocglib/`:
 
 | Module | Covers |
 |--------|--------|

@@ -747,8 +747,8 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 - `src/gtk/generated/ocgtk_gtk.ml` - Library wrapper module (`module Gtk = Gtk; include Gtk; module GMain = GMain`)
 
 ### Runtime Dependencies
-- `src/common/gObj.ml` - Base `widget_impl` class for high-level wrappers
-- `src/common/gobject.ml` - GObject type system, signal connection infrastructure
+- `ocglib/gObj.ml` - Base `widget_impl` class for high-level wrappers
+- `ocglib/gobject.ml` - GObject type system, signal connection infrastructure
 
 ### External References
 - **GObject Introspection Spec**: https://gi.readthedocs.io/

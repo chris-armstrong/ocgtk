@@ -40,11 +40,12 @@ RUN opam init --disable-sandboxing -y --bare \
 # Install conf-gtk4 (local virtual package) and OCaml deps
 WORKDIR /tmp/opam-bootstrap
 COPY conf-gtk4/ ./conf-gtk4/
+COPY ocglib.opam ./ocglib.opam
 COPY ocgtk/ocgtk.opam ./ocgtk/ocgtk.opam
 COPY gir_gen/gir_gen.opam ./gir_gen/gir_gen.opam
 RUN eval $(opam env) \
  && opam pin add -n conf-gtk4 ./conf-gtk4 \
- && opam install --deps-only --with-test -y ./ocgtk ./gir_gen \
+ && opam install --deps-only --with-test -y . ./ocgtk ./gir_gen \
  && opam clean -a -c -s \
  && rm -rf /tmp/opam-bootstrap
 

@@ -112,7 +112,7 @@ let emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
   bprintf buf " (action\n";
   bprintf buf "  (run\n";
-  bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
+  bprintf buf "   %%{exe:../../../configurator/config_flags.exe}\n";
   List.iter
     ~f:(fun package_name ->
       let flag =
@@ -136,11 +136,10 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
   let libraries_clause =
     if String.equal dep_libraries "" then
-      " (libraries ocgtk_common)  ; Depend on common for header files\n"
+      " (libraries ocglib)  ; Depend on ocglib for header files\n"
     else
       Fmt.str
-        " (libraries %s ocgtk_common)  ; Dependencies and common for header \
-         files\n"
+        " (libraries %s ocglib)  ; Dependencies and ocglib for header files\n"
         dep_libraries
   in
   Buffer.add_string buf libraries_clause;
@@ -150,7 +149,7 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
   List.iter ~f:(fun s -> bprintf buf "   %s\n" s) stub_names;
   Buffer.add_string buf "  )\n";
   bprintf buf
-    "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
+    "  (flags -fPIC -Igenerated -Icore (:include %s) \
      -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
      -Wno-int-conversion))\n"
     cflag_file;

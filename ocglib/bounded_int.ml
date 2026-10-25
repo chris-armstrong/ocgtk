@@ -14,7 +14,7 @@
 (* Convenience re-export of the individual bounded integer modules.
  * The canonical implementations live in uInt8.ml, int8.ml, uInt16.ml,
  * int16.ml, uInt32.ml, int32.ml, and uInt64.ml; they are exposed as flat
- * top-level modules (UInt8, Int8, …) because ocgtk_common is (wrapped false).
+ * modules of ocglib (Ocglib.UInt8, Ocglib.Int8, …).
  * This module lets callers write Bounded_int.UInt16 if they prefer
  * an explicit namespace. *)
 

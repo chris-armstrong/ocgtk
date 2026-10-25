@@ -408,7 +408,7 @@ Key points:
 
 - **GLib and GObject are not generated**: they provide the runtime infrastructure
   (type system, memory management, data structures). The parts we need are bound
-  manually in `ocgtk/src/common/`.
+  manually in `ocglib/`.
 
 - **Reference files**: `gir_gen references` produces a `.sexp` file listing every
   exported entity from a namespace with its fully-qualified OCaml module path. When

@@ -5,7 +5,7 @@
  (targets cflag-gdk.sexp clink-gdk.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -30,7 +30,7 @@
  (public_name ocgtk.gdk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdkpixbuf ocgtk.gio ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdkpixbuf ocgtk.gio ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -100,6 +100,6 @@
    ml_touchpad_event_gen
    ml_vulkan_context_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gdk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gdk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gdk.sexp)))
 

@@ -5,7 +5,7 @@
  (targets cflag-gdkpixbuf.sexp clink-gdkpixbuf.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    gdk-pixbuf-2.0
    --pkg
@@ -22,7 +22,7 @@
  (public_name ocgtk.gdk_pixbuf.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gio ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gio ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -35,6 +35,6 @@
    ml_pixbuf_simple_anim_gen
    ml_pixbuf_simple_anim_iter_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gdkpixbuf.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gdkpixbuf.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gdkpixbuf.sexp)))
 

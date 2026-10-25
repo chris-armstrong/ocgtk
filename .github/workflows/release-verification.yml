@@ -40,7 +40,7 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
@@ -68,7 +68,7 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
@@ -116,7 +116,7 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -168,7 +168,7 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -215,7 +215,7 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -259,7 +259,7 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -288,7 +288,7 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
@@ -324,7 +324,7 @@ jobs:
             opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
             eval $(opam env)
             opam pin add -n conf-gtk4 conf-gtk4
-            opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+            opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
             dune build
             dune test gir_gen/
             # xvfb-run is not available on FreeBSD; start Xvfb manually
@@ -371,7 +371,7 @@ jobs:
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only -y ./ocgtk
+          opam install --deps-only -y . ./ocgtk
 
       - name: Build
         run: opam exec -- dune build @ocgtk/install

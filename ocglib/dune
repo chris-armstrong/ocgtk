@@ -1,24 +1,23 @@
-; Common library for ocgtk
-; Hand-written library-agnostic code
-
-; Configure pkg-config for GTK4
+; ocglib: hand-written GLib/GObject bindings and shared runtime support
 
 (rule
- (targets cflag-gtk4.sexp clink-gtk4.sexp)
+ (targets cflag-glib.sexp clink-glib.sexp)
  (action
   (run
    %{exe:../configurator/config_flags.exe}
    --pkg
-   gtk4
+   glib-2.0
+   --pkg
+   gobject-2.0
    --cflags-out
-   cflag-gtk4.sexp
+   cflag-glib.sexp
    --libs-out
-   clink-gtk4.sexp)))
+   clink-glib.sexp)))
 
 (library
- (name ocgtk_common)
- (public_name ocgtk.common)
- (wrapped false)
+ (name ocglib)
+ (public_name ocglib)
+ (synopsis "OCaml bindings for GLib and GObject")
  (libraries)
  (foreign_stubs
   (language c)
@@ -31,9 +30,11 @@
    ml_glib_bytes)
   (flags
    -fPIC
-   -I../gtk/generated
-   (:include cflag-gtk4.sexp)
+   (:include cflag-glib.sexp)
    -Wno-deprecated-declarations))
  (c_library_flags
-  (:include clink-gtk4.sexp))
+  (:include clink-glib.sexp))
  (install_c_headers wrappers value_kinds))
+
+(documentation
+ (package ocglib))

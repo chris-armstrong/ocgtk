@@ -20,7 +20,7 @@ Public License.
 
 For simplicity and the sake of clarity, these terms apply to all the bundled code including:
 * the code generator ("ocgtk/src/tools/gir_gen"), 
-* the common libraries ("ocgtk/src/common"), 
+* the common libraries ("ocglib"), 
 * the generated bindings ("ocgtk/src/gtk", "ocgtk/src/gio", etc.) 
 * all tests 
 * all examples
@@ -28,7 +28,7 @@ For simplicity and the sake of clarity, these terms apply to all the bundled cod
 Authors:
 	Chris Armstrong <hello@chrisarmstrong.dev>
 
---- For the lablgtk3-derived components (ocgtk/src/common) ---
+--- For the lablgtk3-derived components (ocglib) ---
 
 This library (files in src directory) is made available under the
 GNU Library General Public License (LGPL). You should have got a

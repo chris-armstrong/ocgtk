@@ -5,7 +5,7 @@
  (targets cflag-graphene.sexp clink-graphene.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    graphene-gobject-1.0
    --cflags-out
@@ -18,7 +18,7 @@
  (public_name ocgtk.graphene.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocglib)  ; Depend on ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -43,6 +43,6 @@
    ml_vec3_gen
    ml_vec4_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-graphene.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-graphene.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-graphene.sexp)))
 

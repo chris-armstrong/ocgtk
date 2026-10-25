@@ -1,6 +1,6 @@
 (** Test suite for the GType-aware gir_record finalizer.
 
-    The custom-block finalizer in [ocgtk/src/common/wrappers.c] dispatches by
+    The custom-block finalizer in [ocglib/wrappers.c] dispatches by
     GType: boxed records (those whose GIR carries [glib:get-type]) are freed via
     [g_boxed_free] so per-type destructors run; plain records fall back to
     [g_free]. The generator threads the get-type call through
@@ -28,7 +28,7 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module Helpers = Gtk_test_helpers
-module Gvariant = Ocgtk_common.Gvariant
+module Gvariant = Ocglib.Gvariant
 
 (* Layer 1 (raw) tree_path bindings. Pulling these locally documents the
    contract that [Tree_path.free]/[Tree_path.copy] no longer exist as
@@ -143,7 +143,7 @@ let test_stress_alloc_drop () =
 
 (* ========== Cross-kind rejection ==========
 
-   Pass a GVariant (ocgtk.gvariant custom block, in ocgtk_common) to a
+   Pass a GVariant (ocgtk.gvariant custom block, in ocglib) to a
    binding that expects a gir_record (GtkTreePath). The call routes through
    ml_gir_record_ptr_val which now performs a strict Custom_ops_val identity
    check. The fallback ext_of_val path would previously silently read
@@ -152,7 +152,7 @@ let test_stress_alloc_drop () =
    ("ocgtk.gvariant").
 
    We use GVariant rather than a GObject (Box) because GVariant lives in
-   ocgtk_common and avoids a pre-existing cross-batch linker issue that
+   ocglib and avoids a pre-existing cross-batch linker issue that
    surfaces when test_record_finalizer is linked against the gtk batch stubs
    containing Box but not the enum stubs they depend on. *)
 

@@ -5,7 +5,7 @@
  (targets cflag-cairo.sexp clink-cairo.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --cflags-out
@@ -18,7 +18,7 @@
  (public_name ocgtk.cairo.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocglib)  ; Depend on ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -38,6 +38,6 @@
    ml_surface_gen
    ml_text_cluster_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-cairo.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-cairo.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-cairo.sexp)))
 

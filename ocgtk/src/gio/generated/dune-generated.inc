@@ -5,7 +5,7 @@
  (targets cflag-gio.sexp clink-gio.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    gio-2.0
    --pkg-optional
@@ -20,7 +20,7 @@
  (public_name ocgtk.gio.generated_stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocglib)  ; Depend on ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -105,7 +105,7 @@
    ml_input_stream_gen
    ml_input_vector_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
 
 (library
@@ -113,7 +113,7 @@
  (public_name ocgtk.gio.generated_stubs_batch_1)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocglib)  ; Depend on ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -198,7 +198,7 @@
    ml_tls_interaction_gen
    ml_tls_password_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
 
 (library
@@ -206,7 +206,7 @@
  (public_name ocgtk.gio.generated_stubs_batch_2)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_common)  ; Depend on common for header files
+ (libraries ocglib)  ; Depend on ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -221,7 +221,7 @@
    ml_zlib_compressor_gen
    ml_zlib_decompressor_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
 
 (library

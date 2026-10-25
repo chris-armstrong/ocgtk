@@ -14,8 +14,8 @@
 (** Convenience namespace re-exporting all bounded integer modules.
 
     The individual modules ([UInt8], [Int8], [UInt16], [Int16], [UInt32],
-    [Int32], [UInt64]) are also available as direct top-level modules within the
-    [ocgtk.common] library. This module lets callers write [Bounded_int.UInt16]
+    [Int32], [UInt64]) are also available directly as modules of [Ocglib].
+    This module lets callers write [Bounded_int.UInt16]
     when an explicit namespace is preferred. *)
 
 module UInt8 = UInt8

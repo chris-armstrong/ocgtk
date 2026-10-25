@@ -11,6 +11,7 @@ bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 depends: [
   "dune" {>= "3.21"}
   "ocaml" {>= "4.14"}
+  "ocglib" {= version}
   "conf-gtk4" {>= "2"}
   "dune-configurator" {build}
   "alcotest" {with-test}

@@ -9,7 +9,7 @@ internally to link the generated bindings) are omitted from this index.
 
 {2 {!Ocgtk} }
 The top-level module: re-exports every namespace below as a sub-module
-(e.g. [Ocgtk.Gtk.Widget]), plus {!Ocgtk_common} as [Ocgtk.Common].
+(e.g. [Ocgtk.Gtk.Widget]), plus {!Ocglib} as [Ocgtk.Common].
 
 {2 {!Ocgtk_cairo} }
 2D vector graphics: drawing contexts, paths, patterns and surfaces.
@@ -40,26 +40,7 @@ Text layout and internationalized font rendering.
 {2 {!Ocgtk_pangocairo} }
 Glue between Pango text layout and Cairo rendering.
 
-{1 Common utility modules (ocgtk.common)}
+{1 GLib and GObject (ocglib)}
 
-Hand-written modules shared across the binding libraries, also available as
-a single {!Ocgtk_common} namespace.
-
-{ul
-{- {!Bounded_int} — namespace re-exporting all the bounded integer modules below. }
-{- {!GError} — the error type for GTK/GLib functions. }
-{- {!Glib} — GLib's main event loop, timeouts and idle callbacks. }
-{- {!Glib_bytes} — [GBytes], an immutable reference-counted byte buffer. }
-{- {!Gobject} — the GObject type system, properties and signals. }
-{- {!Gsize} — a non-negative [gsize] ([size_t]). }
-{- {!Gvariant} — [GVariant] structured data serialization. }
-{- {!Gvariant_type} — [GVariant] type descriptions. }
-{- {!Int16} — signed 16-bit integer ([gint16]). }
-{- {!Int32} — signed 32-bit integer ([gint32]). }
-{- {!Int8} — signed 8-bit integer ([gint8]). }
-{- {!Ocgtk_common} — this library's own top module. }
-{- {!UInt16} — unsigned 16-bit integer ([guint16]). }
-{- {!UInt32} — unsigned 32-bit integer ([guint32]). }
-{- {!UInt64} — unsigned 64-bit integer ([guint64]). }
-{- {!UInt8} — unsigned 8-bit integer ([guint8]). }
-}
+The hand-written GLib and GObject modules shared by every library above
+are in the separate {b ocglib} package, as {!Ocglib}.

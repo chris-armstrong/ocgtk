@@ -12,7 +12,7 @@
  (targets c_flags.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    gtk4
    --cflags-out
@@ -25,7 +25,7 @@
  (public_name ocgtk.gsk)
  (synopsis "OCaml bindings for GSK")
  (wrapped true)
- (flags :standard -w -3-6-9-27-32-33-34-50)
+ (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
  (modules :standard)
  (foreign_stubs
   (language c)
@@ -36,7 +36,7 @@
    -Icore
    (:include c_flags.sexp)))
  (libraries
-  ocgtk.common
+  ocglib
   ocgtk.gdk
   ocgtk.graphene
   ocgtk.cairo

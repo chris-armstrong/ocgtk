@@ -129,8 +129,8 @@ Create `src/<library>/dune`:
  (name ocgtk_<library>)
  (public_name ocgtk.<library>)
  (synopsis "OCaml bindings for <Library>")
- (flags :standard -w -3-6-9-27-32-33-34-50)
- (libraries ocgtk_common)
+ (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
+ (libraries ocglib)
  (foreign_stubs
   (language c)
   (names ml_<library>)  ; Hand-written C stubs in core/
@@ -153,8 +153,8 @@ Example for Gio:
  (name ocgtk_gio)
  (public_name ocgtk.gio)
  (synopsis "OCaml bindings for GIO")
- (flags :standard -w -3-6-9-27-32-33-34-50)
- (libraries ocgtk_common)
+ (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
+ (libraries ocglib)
  (foreign_stubs
   (language c)
   (names ml_gio)
@@ -208,8 +208,8 @@ Edit `src/dune` to expose the new sub-library:
 (library
  (name ocgtk)
  (public_name ocgtk)
- (libraries ocgtk_common ocgtk_gtk ocgtk_<library>)
- (re_export ocgtk_common ocgtk_gtk ocgtk_<library>))
+ (libraries ocglib ocgtk_gtk ocgtk_<library>)
+ (re_export ocglib ocgtk_gtk ocgtk_<library>))
 ```
 
 ### Step 10: Build and Fix Errors
@@ -266,7 +266,6 @@ git commit -m "Add <Library> bindings"
 ocgtk/
 ├── src/
 │   ├── dune                          # Wrapper library
-│   ├── common/                       # ocgtk_common
 │   ├── gtk/                          # ocgtk_gtk
 │   └── <library>/                    # ocgtk_<library> (NEW)
 │       ├── dune                      # Library definition
