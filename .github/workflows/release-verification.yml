@@ -98,6 +98,10 @@ jobs:
             gcc make m4 patch unzip bzip2 pkg-config perl diffutils rsync \
             libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
             libgirepository1.0-dev gir1.2-gtk-4.0 xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -149,6 +153,10 @@ jobs:
             gcc make m4 patch unzip bzip2 pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
             gobject-introspection-devel xorg-x11-server-Xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -210,6 +218,10 @@ jobs:
             gcc make m4 patch unzip bzip2 pkgconf-pkg-config perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
             gobject-introspection-devel ${{ matrix.display_packages }}
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -261,6 +273,10 @@ jobs:
             gcc make m4 patch unzip bzip2 gzip tar pkg-config pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
             gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -304,6 +320,10 @@ jobs:
             build-base m4 patch unzip bzip2 pkgconf perl diffutils rsync \
             gtk4.0-dev cairo-dev pango-dev gdk-pixbuf-dev glib-dev \
             gobject-introspection-dev xvfb-run
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -347,6 +367,10 @@ jobs:
             base-devel unzip rsync \
             gtk4 cairo pango gdk-pixbuf2 glib2 \
             gobject-introspection xorg-server-xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
