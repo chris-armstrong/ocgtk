@@ -20,8 +20,9 @@
 type t = private int
 
 val of_int : int -> t
-(** [of_int n] converts [n] to a [UInt32.t].
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < 0 || n > 4294967295]. *)
+(** [of_int n] converts [n] to a [UInt32.t]. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+    if [n < 0 || n > 4294967295]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
@@ -42,9 +43,11 @@ val max_value : int
 (** The maximum value representable as an [int], equal to [to_int max_int]. *)
 
 val of_string : string -> t
-(** Parse a decimal integer string into a [UInt32.t].
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if the string is not a valid integer.
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if the value is out of [[0, 4294967295]]. *)
+(** Parse a decimal integer string into a [UInt32.t]. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONFailure}Failure} if
+    the string is not a valid integer. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+    if the value is out of [[0, 4294967295]]. *)
 
 val to_string : t -> string
 (** Format as a decimal string. *)

@@ -34,7 +34,13 @@
  (name ocgtk_gtk)
  (public_name ocgtk.gtk)
  (wrapped true)
- (flags :standard -open Ocglib -w -6-7-9-10-27-32-33-34-35-36-50-52 -no-strict-sequence)
+ (flags
+  :standard
+  -open
+  Ocglib
+  -w
+  -6-7-9-10-27-32-33-34-35-36-50-52
+  -no-strict-sequence)
  (modules :standard)
  (foreign_stubs
   (language c)

@@ -35,8 +35,4 @@
    -Igenerated
    -Icore
    (:include c_flags.sexp)))
- (libraries
-  ocglib
-  ocgtk_pango_cairo_generated_stubs
-  ocgtk_cairo
-  ocgtk_pango))
+ (libraries ocglib ocgtk_pango_cairo_generated_stubs ocgtk_cairo ocgtk_pango))

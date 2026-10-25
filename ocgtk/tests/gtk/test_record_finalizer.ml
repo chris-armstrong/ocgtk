@@ -1,7 +1,7 @@
 (** Test suite for the GType-aware gir_record finalizer.
 
-    The custom-block finalizer in [ocglib/wrappers.c] dispatches by
-    GType: boxed records (those whose GIR carries [glib:get-type]) are freed via
+    The custom-block finalizer in [ocglib/wrappers.c] dispatches by GType: boxed
+    records (those whose GIR carries [glib:get-type]) are freed via
     [g_boxed_free] so per-type destructors run; plain records fall back to
     [g_free]. The generator threads the get-type call through
     [ml_gir_record_val_ptr_with_type], so [Val_GtkTreePath] et al. now record
