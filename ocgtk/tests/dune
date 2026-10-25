@@ -71,13 +71,6 @@
 ;  (libraries ocgtk alcotest))
 
 (test
- (name test_gobj)
- (modules test_gobj)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest))
-
-(test
  (name test_integration)
  (modules test_integration)
  (libraries alcotest))
@@ -111,31 +104,3 @@
 ; Tests moved to gtk/ subdirectory (active at tests/gtk/test_button.ml)
 
 ; Tests moved to gtk/ subdirectory (active at tests/gtk/test_range.ml)
-
-(test
- (name test_gvariant)
- (modules test_gvariant)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest))
-
-(test
- (name test_gvariant_type)
- (modules test_gvariant_type)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest))
-
-(test
- (name test_glib_bytes)
- (modules test_glib_bytes)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest))
-
-(test
- (name test_bounded_int)
- (modules test_bounded_int)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest))

@@ -426,8 +426,11 @@ The prototype branch stays local.
    `glib-2.0`/`gobject-2.0`, and replace `#include <gtk/gtk.h>` in
    `ml_glib.c` with the GLib headers it actually uses.
 4. Move the GLib/GObject tests (`test_gobj`, `test_gvariant*`,
-   `test_glib_bytes`, `test_bounded_int`, `test_closure*`, the gobject test
-   helpers) to `ocglib/tests/`.
+   `test_glib_bytes`, `test_bounded_int`) to `ocglib/tests/`.
+   `test_closure*` and the gobject test helpers stay in `ocgtk/tests/`
+   until phase 3: `ocgtk/tests/gtk/test_signal_marshalling` uses the
+   helpers too, and dune does not let one project use another's private
+   library. Once there is one `dune-project`, they move.
 
 Phase 1 lands on `main` on its own, so the rest of the tree must keep
 building: the generated dune files switch from `ocgtk.common` to `ocglib`
@@ -516,6 +519,9 @@ files the new layout adds or drops (`raw.ml`, `enums.ml`, the dune files,
 the deleted `<Ns>.ml` and `ocgtk_<ns>.ml`). Any other change to a moved
 file (a different external, a missing method, reordered code, a changed
 doc comment) is a generator bug and is fixed before merging.
+
+`test_closure_stress`, `test_closure_with_gc` and the gobject test helpers
+move from `ocgtk/tests/` to `ocglib/tests/` (left behind in phase 1, step 4).
 
 Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
 (`gio_volume_monitor_core.ml` does). Gtk's hand-written `core/gMain.ml` and

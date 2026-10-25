@@ -3,7 +3,7 @@
 ## MANDATORY: Development Essentials
 
 1. ALWAYS build the project after making changes with `dune build` from the repo root. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root
+2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS follow the mandatory code guidelines. Read [docs/code_guidelines/agent-summary.md](./docs/code_guidelines/agent-summary.md) — it covers all style, idiom, safety, and test requirements. The full guidelines are indexed at [docs/code_guidelines/index.md](./docs/code_guidelines/index.md).
 ### ast-grep
@@ -58,7 +58,7 @@ for full documentation.
 
 ## Running Build Tools
 
-**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test ocgtk/` (test).
+**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/` (test).
 See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for complete build, test, and CI instructions.
 
 ## OCaml / C FFI Guidelines

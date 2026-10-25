@@ -46,7 +46,7 @@ jobs:
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
       - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocgtk/
+        run: opam exec -- xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
@@ -74,7 +74,7 @@ jobs:
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
       - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocgtk/
+        run: opam exec -- xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
   linux-apt:
@@ -128,7 +128,7 @@ jobs:
       - name: Test ocgtk
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
   linux-fedora:
@@ -180,7 +180,7 @@ jobs:
       - name: Test ocgtk
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
   centos-9:
@@ -227,7 +227,7 @@ jobs:
       - name: Test ocgtk
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
   opensuse-15:
@@ -271,7 +271,7 @@ jobs:
       - name: Test ocgtk
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test ocglib/ ocgtk/
 
   # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
   macos:
@@ -294,7 +294,7 @@ jobs:
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
       - name: Test ocgtk
-        run: opam exec -- dune test ocgtk/
+        run: opam exec -- dune test ocglib/ ocgtk/
 
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
   # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
@@ -330,7 +330,7 @@ jobs:
             # xvfb-run is not available on FreeBSD; start Xvfb manually
             Xvfb :99 -screen 0 1280x1024x24 &
             sleep 1
-            DISPLAY=:99 dune test ocgtk/
+            DISPLAY=:99 dune test ocglib/ ocgtk/
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
