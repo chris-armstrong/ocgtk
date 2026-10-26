@@ -1,37 +1,179 @@
-; Test suite for ocgtk
-;
+; Tests for ocgtk (GTK 4)
+
+(library
+ (name gtk_test_helpers)
+ (wrapped false)
+ (modules gtk_test_helpers)
+ (libraries ocgtk alcotest))
 
 (test
- (name test_gio_volume_monitor)
- (modules test_gio_volume_monitor)
- (libraries ocgio alcotest))
+ (name test_string_list)
+ (package ocgtk)
+ (modules test_string_list)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_box)
+ (package ocgtk)
+ (modules test_box)
+ (libraries ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_widget)
+ (package ocgtk)
+ (modules test_widget)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_button)
+ (package ocgtk)
+ (modules test_button)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_range)
+ (package ocgtk)
+ (modules test_range)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_variance)
+ (package ocgtk)
+ (modules test_variance)
+ (libraries ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_interface)
+ (package ocgtk)
+ (modules test_interface)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_record_finalizer)
+ (package ocgtk)
+ (modules test_record_finalizer)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_value_kinds)
+ (package ocgtk)
+ (modules test_value_kinds)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_tree_path)
+ (package ocgtk)
+ (modules test_tree_path)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_nullable_arrays)
+ (package ocgtk)
+ (modules test_nullable_arrays)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_signal_value_enum_flags)
+ (package ocgtk)
+ (modules test_signal_value_enum_flags)
+ (foreign_stubs
+  (language c)
+  (names test_signal_value_enum_flags_stubs)
+  (flags
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))
+
+(test
+ (name test_gvalue_object_memory)
+ (package ocgtk)
+ (modules test_gvalue_object_memory)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_gvalue_safety)
+ (package ocgtk)
+ (modules test_gvalue_safety)
+ (foreign_stubs
+  (language c)
+  (names test_gvalue_safety_stubs)
+  (flags
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))
+
+(test
+ (name test_generated_property_object_ownership)
+ (package ocgtk)
+ (modules test_generated_property_object_ownership)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_gobject_equality)
+ (package ocgtk)
+ (modules test_gobject_equality)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
+
+(test
+ (name test_signal_marshalling)
+ (package ocgtk)
+ (modules test_signal_marshalling)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers gobject_test_helpers))
+
+(test
+ (name test_signal_widget)
+ (package ocgtk)
+ (modules test_signal_widget)
+ (foreign_stubs
+  (language c)
+  (names test_signal_widget_stubs)
+  (flags
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))
 
 (test
  (name test_gobject_stress)
+ (package ocgtk)
  (modules test_gobject_stress)
  (flags
   (:standard -open Ocglib))
  (libraries ocglib alcotest gtk_test_helpers))
-
-; Blocked: GdkPixbuf.Pixbuf load/scale methods not yet generated
-; (test
-;  (name test_gdkpixbuf)
-;  (modules test_gdkpixbuf)
-;  (libraries ocgtk alcotest))
-
-; Blocked: Pango layout/font methods not yet generated
-; (test
-;  (name test_pango)
-;  (modules test_pango)
-;  (libraries ocgtk alcotest))
 
 ; DISABLED: needs rewrite — inline gtk_available/require_gtk, migrate to Gtk_test_helpers first
 ; (test
 ;  (name test_clipboard)
 ;  (modules test_clipboard)
 ;  (libraries ocgtk alcotest))
-
-; Tests moved to gtk/ subdirectory (active at tests/gtk/test_widget.ml)
 
 ; Blocked: GtkSnapshot append/render methods not yet generated
 ; (test
@@ -41,6 +183,7 @@
 
 (test
  (name test_gtk_init)
+ (package ocgtk)
  (modules test_gtk_init)
  (libraries ocgtk alcotest))
 
@@ -58,10 +201,9 @@
 
 (test
  (name test_integration)
+ (package ocgtk)
  (modules test_integration)
  (libraries alcotest))
-
-; Tests moved to gtk/ subdirectory (active at tests/gtk/test_box.ml)
 
 ; Blocked: GtkGrid attach/remove/query_child bindings not yet generated
 ; (test
@@ -86,7 +228,3 @@
 ;  (name test_window)
 ;  (modules test_window)
 ;  (libraries ocgtk alcotest))
-
-; Tests moved to gtk/ subdirectory (active at tests/gtk/test_button.ml)
-
-; Tests moved to gtk/ subdirectory (active at tests/gtk/test_range.ml)

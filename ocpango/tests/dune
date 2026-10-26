@@ -1,0 +1,8 @@
+; Tests for ocpango
+
+; Blocked: Pango layout/font methods not yet generated
+; (test
+;  (name test_pango)
+;  (package ocpango)
+;  (modules test_pango)
+;  (libraries ocpango alcotest))
