@@ -4,17 +4,17 @@
     GTK/GDK registered GTypes (cases 1–3, 9) are gated with [require_gtk] so
     they skip gracefully when run without a display.
 
-    The generated enum/bitfield decoders live in [Gtk_enums] and [Gdk_enums]
-    which are re-exported by the library wrappers [Ocgtk_gtk] and [Ocgtk_gdk];
-    the generated Rectangle record decoder is reachable through the public path
-    [Ocgtk_gdk.Gdk.Wrappers.Rectangle]. *)
+    The generated enum/bitfield decoders live in [Ocgtk.Enums] and
+    [Ocgdk.Enums], aliased here as [Gtk_enums] and [Gdk_enums]; the generated
+    Rectangle record decoder is reachable through the public path
+    [Ocgdk.Raw.Rectangle]. *)
 
 open Alcotest
-module Gtk_enums = Ocgtk_gtk.Gtk_enums
-module Gdk_enums = Ocgtk_gdk.Gdk_enums
+module Gtk_enums = Ocgtk.Enums
+module Gdk_enums = Ocgdk.Enums
 module Gvariant = Ocglib.Gvariant
 module Helpers = Gtk_test_helpers
-module Rectangle = Ocgtk_gdk.Gdk.Wrappers.Rectangle
+module Rectangle = Ocgdk.Raw.Rectangle
 
 let require_gtk = Helpers.require_gtk
 

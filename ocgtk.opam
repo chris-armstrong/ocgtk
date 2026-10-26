@@ -12,6 +12,14 @@ depends: [
   "dune" {>= "3.21"}
   "ocaml" {>= "4.14"}
   "ocglib" {= version}
+  "occairo" {= version}
+  "ocgdk" {= version}
+  "ocgdkpixbuf" {= version}
+  "ocgio" {= version}
+  "ocgraphene" {= version}
+  "ocgsk" {= version}
+  "ocpango" {= version}
+  "ocpangocairo" {= version}
   "conf-gtk4" {>= "2"}
   "dune-configurator" {build}
   "alcotest" {with-test}

@@ -1,32 +1,24 @@
-; Include subdirectories to find modules in core/ and generated/
+; ocpango.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
 
 (include_subdirs unqualified)
 
-; Include generated C stubs library definition
-
-(include generated/dune-generated.inc)
-
-; Configure pkg-config for Pango
-
-(rule
- (targets c_flags.sexp)
- (action
-  (run
-   %{exe:../../../configurator/config_flags.exe}
-   --pkg
-   pango
-   --cflags-out
-   c_flags.sexp)))
-
-; Main Pango library combining core and generated code
+(include generated/dune.inc)
 
 (library
- (name ocgtk_pango)
- (public_name ocgtk.pango)
- (synopsis "OCaml bindings for Pango")
- (wrapped true)
- (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
- (modules :standard)
+ (name ocpango_raw)
+ (public_name ocpango.raw)
+ (synopsis "Pango layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries
+  ocglib
+  ocpango.enums
+  ocpango.raw.stubs
+  occairo.raw
+  occairo.enums
+  ocgio.raw
+  ocgio.enums)
  (foreign_stubs
   (language c)
   (names ml_pango)
@@ -34,5 +26,6 @@
    :standard
    -Igenerated
    -Icore
-   (:include c_flags.sexp)))
- (libraries ocglib ocgtk.gio ocgtk_pango_generated_stubs))
+   (:include cflag-pango.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers pango_decls pango_core))

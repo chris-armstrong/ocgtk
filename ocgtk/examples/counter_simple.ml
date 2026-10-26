@@ -1,15 +1,15 @@
-open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
-module Button = Wrappers.Button
-module Check_button = Wrappers.Check_button
-module Toggle_button = Wrappers.Toggle_button
+open Ocgtk
+module Main = Ocgtk.Main
+module Button = Raw.Button
+module Check_button = Raw.Check_button
+module Toggle_button = Raw.Toggle_button
 
 (* Simple Counter - using only gtkButton and minimal dependencies
    Demonstrates: gtkButton module directly *)
 
 let () =
   (* Initialize GTK *)
-  ignore (GMain.init ());
+  ignore (Main.init ());
 
   print_endline "Counter app starting...";
   print_endline "Window would appear here in a full GUI environment";

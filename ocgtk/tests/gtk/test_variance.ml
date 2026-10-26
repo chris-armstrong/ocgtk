@@ -11,12 +11,12 @@
     - Downcasts remain unsafe and fail at compile time *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 (* Module aliases for clarity *)
-module Button = Wrappers.Button
-module Box = Wrappers.Box
-module Widget = Wrappers.Widget
+module Button = Raw.Button
+module Box = Raw.Box
+module Widget = Raw.Widget
 
 let require_gtk = Gtk_test_helpers.require_gtk
 

@@ -1901,9 +1901,7 @@ let generate_cmd =
         "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt gir/Gtk-4.0.gir \
          ./output";
       `P "Generate with override file:";
-      `Pre
-        "  gir_gen generate -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
-         ./output";
+      `Pre "  gir_gen generate -o overrides/gtk.sexp gir/Gtk-4.0.gir ./output";
     ]
   in
   let info = Cmd.info "generate" ~doc ~man in
@@ -1937,7 +1935,7 @@ let overrides_cmd =
          manually-authored ignore entries to form a complete override file.";
       `S Manpage.s_examples;
       `P "Extract version overrides from GTK GIR:";
-      `Pre "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
+      `Pre "  gir_gen overrides gir/Gtk-4.0.gir overrides/gtk.sexp";
     ]
   in
   let info = Cmd.info "overrides" ~doc ~man in
@@ -1963,7 +1961,7 @@ let references_cmd =
       `Pre "  gir_gen references gir/Gtk-4.0.gir gtk_refs.txt";
       `P "Generate reference list with overrides:";
       `Pre
-        "  gir_gen references -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
+        "  gir_gen references -o overrides/gtk.sexp gir/Gtk-4.0.gir \
          gtk_refs.txt";
     ]
   in

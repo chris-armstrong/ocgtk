@@ -7,7 +7,7 @@
     covered directly here so that Signal_marshaller consumers can depend on the
     dispatch with confidence. *)
 
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 
 external classify_int : 'a -> int = "caml_ocgtk_classify"
@@ -33,7 +33,7 @@ let test_gobject () =
   (* DropTarget is a concrete GObject whose constructor needs no display.
      Its custom block must classify as KIND_GOBJECT — the dispatch
      Signal_marshaller relies on for object-typed signal arguments. *)
-  let dt = Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
+  let dt = Raw.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
   check_int_eq "Drop_target -> KIND_GOBJECT" kind_gobject (classify_int dt)
 
 let test_gir_record () =
@@ -41,7 +41,7 @@ let test_gir_record () =
      introduced in PR #126. Its custom block must classify as
      KIND_GIR_RECORD so Signal_marshaller routes record-typed arguments
      through ml_gir_record_ptr_val rather than the GObject accessor. *)
-  let p = Wrappers.Tree_path.new_ () in
+  let p = Raw.Tree_path.new_ () in
   check_int_eq "Tree_path -> KIND_GIR_RECORD" kind_gir_record (classify_int p)
 
 let test_gvariant () =

@@ -1,32 +1,17 @@
-; Include subdirectories to find modules in core/ and generated/
+; occairo.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
 
 (include_subdirs unqualified)
 
-; Include generated C stubs library definition
-
-(include generated/dune-generated.inc)
-
-; Configure pkg-config for Cairo
-
-(rule
- (targets c_flags.sexp)
- (action
-  (run
-   %{exe:../../../configurator/config_flags.exe}
-   --pkg
-   cairo-gobject
-   --cflags-out
-   c_flags.sexp)))
-
-; Main Cairo library combining core and generated code
+(include generated/dune.inc)
 
 (library
- (name ocgtk_cairo)
- (public_name ocgtk.cairo)
- (synopsis "OCaml bindings for Cairo (GObject types and enumerations)")
- (wrapped true)
- (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
- (modules :standard)
+ (name occairo_raw)
+ (public_name occairo.raw)
+ (synopsis "Cairo layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries ocglib occairo.enums occairo.raw.stubs)
  (foreign_stubs
   (language c)
   (names ml_cairo)
@@ -34,5 +19,6 @@
    :standard
    -Igenerated
    -Icore
-   (:include c_flags.sexp)))
- (libraries ocglib ocgtk_cairo_generated_stubs))
+   (:include cflag-cairo.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers cairo_decls cairo_core))

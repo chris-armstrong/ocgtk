@@ -1,4 +1,4 @@
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 (** Calculator UI builder.
 

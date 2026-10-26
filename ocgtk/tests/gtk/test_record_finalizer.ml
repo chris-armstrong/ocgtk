@@ -26,17 +26,17 @@
       the very first method call; the fix lights it green. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 module Gvariant = Ocglib.Gvariant
 
 (* Layer 1 (raw) tree_path bindings. Pulling these locally documents the
    contract that [Tree_path.free]/[Tree_path.copy] no longer exist as
    externals — referencing them here would be a compile error. *)
-let path_new = Wrappers.Tree_path.new_
-let path_append = Wrappers.Tree_path.append_index
-let path_get_depth = Wrappers.Tree_path.get_depth
-let path_to_string = Wrappers.Tree_path.to_string
+let path_new = Raw.Tree_path.new_
+let path_append = Raw.Tree_path.append_index
+let path_get_depth = Raw.Tree_path.get_depth
+let path_to_string = Raw.Tree_path.to_string
 let require_gtk = Helpers.require_gtk
 
 (* Cross-kind rejection: routes through ml_gir_record_ptr_val internally.
@@ -47,12 +47,12 @@ external raw_tree_path_get_depth : 'a -> int = "ml_gtk_tree_path_get_depth"
 (* ========== Compile-time absence of free/copy/unref externals ==========
 
    These references would not type-check after the cleanup PR landed; the
-   binding [Wrappers.Tree_path.free] etc. simply do not exist. Keeping
+   binding [Raw.Tree_path.free] etc. simply do not exist. Keeping
    them in a commented block documents the contract a future regression
    would break.
 
-     let _ = Wrappers.Tree_path.free        (* removed: double-free hazard *)
-     let _ = Wrappers.Tree_path.copy        (* removed: redundant *)
+     let _ = Raw.Tree_path.free        (* removed: double-free hazard *)
+     let _ = Raw.Tree_path.copy        (* removed: redundant *)
 *)
 
 (* ========== Single-instance round-trip ==========

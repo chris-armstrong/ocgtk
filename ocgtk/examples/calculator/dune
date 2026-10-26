@@ -6,7 +6,7 @@
 (executable
  (name calculator)
  (modules calculator calc_ui)
- (libraries calc_core ocgtk.gtk ocgtk.gio ocgtk.pango))
+ (libraries calc_core ocgtk ocgio ocpango))
 
 (test
  (name test_calc_expr)

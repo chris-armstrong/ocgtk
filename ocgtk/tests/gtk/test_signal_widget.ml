@@ -6,14 +6,14 @@
     display. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
-module Gdk_enums = Ocgtk_gdk.Gdk_enums
+module Gdk_enums = Ocgdk.Enums
 
 let require_gtk = Helpers.require_gtk
 
 external emit_key_pressed_signal :
-  Wrappers.Event_controller_key.t -> int -> int -> int -> bool
+  Raw.Event_controller_key.t -> int -> int -> int -> bool
   = "ml_test_emit_key_pressed_signal"
 (** Emit "key-pressed" signal on an EventControllerKey via C stub. Returns the
     boolean result of the signal handler chain. *)
@@ -21,7 +21,7 @@ external emit_key_pressed_signal :
 (** {2 Test 0: Signal disconnect} *)
 
 let test_signal_disconnect () =
-  let btn_obj = Wrappers.Button.new_ () in
+  let btn_obj = Raw.Button.new_ () in
   let btn = new Button.button btn_obj in
   let called = ref false in
   let handler_id = btn#on_clicked ~callback:(fun () -> called := true) () in
@@ -38,7 +38,7 @@ let test_signal_disconnect () =
 (** {2 Test 1: Button clicked (simple)} *)
 
 let test_button_clicked () =
-  let btn_obj = Wrappers.Button.new_ () in
+  let btn_obj = Raw.Button.new_ () in
   let btn = new Button.button btn_obj in
   let called = ref false in
   ignore (btn#on_clicked ~callback:(fun () -> called := true) ());
@@ -48,7 +48,7 @@ let test_button_clicked () =
 (** {2 Test 2: Button clicked after} *)
 
 let test_button_clicked_after () =
-  let btn_obj = Wrappers.Button.new_ () in
+  let btn_obj = Raw.Button.new_ () in
   let btn = new Button.button btn_obj in
   let order = ref [] in
   ignore (btn#on_clicked ~callback:(fun () -> order := "first" :: !order) ());
@@ -63,23 +63,22 @@ let test_button_clicked_after () =
 (** {2 Test 3: CheckButton toggled} *)
 
 let test_check_button_toggled () =
-  let btn_obj = Wrappers.Check_button.new_ () in
+  let btn_obj = Raw.Check_button.new_ () in
   let btn = new Check_button.check_button btn_obj in
-  Wrappers.Check_button.set_active btn_obj false;
+  Raw.Check_button.set_active btn_obj false;
   let called = ref false in
   ignore (btn#on_toggled ~callback:(fun () -> called := true) ());
-  Wrappers.Check_button.set_active btn_obj true;
+  Raw.Check_button.set_active btn_obj true;
   check bool "toggled callback was invoked" true !called;
-  check bool "check button is active" true
-    (Wrappers.Check_button.get_active btn_obj)
+  check bool "check button is active" true (Raw.Check_button.get_active btn_obj)
 
 (** {2 Test 4: Notebook page-added} *)
 
 let test_page_added () =
-  let nb_obj = Wrappers.Notebook.new_ () in
+  let nb_obj = Raw.Notebook.new_ () in
   let nb = new Notebook.notebook nb_obj in
-  let btn_obj = Wrappers.Button.new_ () in
-  let child_obj : Wrappers.Widget.t = (btn_obj :> Wrappers.Widget.t) in
+  let btn_obj = Raw.Button.new_ () in
+  let child_obj : Raw.Widget.t = (btn_obj :> Raw.Widget.t) in
   let captured_child = ref None in
   let captured_page_num = ref 0 in
   ignore
@@ -88,7 +87,7 @@ let test_page_added () =
          captured_child := Some child;
          captured_page_num := page_num)
        ());
-  let _page_num = Wrappers.Notebook.append_page nb_obj child_obj None in
+  let _page_num = Raw.Notebook.append_page nb_obj child_obj None in
   let child_matches =
     match !captured_child with Some _ -> true | None -> false
   in
@@ -98,7 +97,7 @@ let test_page_added () =
 (** {2 Test 5: Window close-request} *)
 
 let test_close_request () =
-  let win_obj = Wrappers.Window.new_ () in
+  let win_obj = Raw.Window.new_ () in
   let win = new Window.window win_obj in
   let handler_id = win#on_close_request ~callback:(fun () -> false) () in
   (* Note: we only test handler registration here because emitting
@@ -110,7 +109,7 @@ let test_close_request () =
 (** {2 Test 6: EventControllerKey key-pressed (cross-namespace)} *)
 
 let test_key_pressed_cross_namespace () =
-  let ctrl_obj = Wrappers.Event_controller_key.new_ () in
+  let ctrl_obj = Raw.Event_controller_key.new_ () in
   let ctrl = new Event_controller_key.event_controller_key ctrl_obj in
   let captured_keyval = ref 0 in
   let captured_keycode = ref 0 in

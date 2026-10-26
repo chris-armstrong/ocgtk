@@ -13,7 +13,7 @@ module Helpers = Gobject_test_helpers
 (** {2 M1: multi-param dispatch with bool return (true)} *)
 
 let test_mixed_params_bool_return_true () =
-  let btn_obj = Ocgtk_gtk.Gtk.Wrappers.Button.new_ () in
+  let btn_obj = Ocgtk.Raw.Button.new_ () in
   let int_captured = ref 0 in
   let str_captured = ref "" in
   let obj_captured = ref None in
@@ -36,7 +36,7 @@ let test_mixed_params_bool_return_true () =
 (** {2 M2: multi-param dispatch with bool return (false)} *)
 
 let test_mixed_params_bool_return_false () =
-  let btn_obj = Ocgtk_gtk.Gtk.Wrappers.Button.new_ () in
+  let btn_obj = Ocgtk.Raw.Button.new_ () in
   let closure =
     Closure.create (fun argv -> Value.set_boolean (Closure.result argv) false)
   in
@@ -70,7 +70,7 @@ let test_null_gobject_param () =
 (** {2 M5b: non-null GObject param preserves identity} *)
 
 let test_non_null_gobject_param () =
-  let btn_obj = Ocgtk_gtk.Gtk.Wrappers.Button.new_ () in
+  let btn_obj = Ocgtk.Raw.Button.new_ () in
   let obj_captured = ref None in
   let closure =
     Closure.create (fun argv ->
@@ -166,7 +166,7 @@ let test_gc_safety () =
    produced it; a scope-local ref would not be reliably live once the callback
    returns. *)
 let argv_holder : Closure.argv option ref = ref None
-let make_button () = Ocgtk_gtk.Gtk.Wrappers.Button.new_ ()
+let make_button () = Ocgtk.Raw.Button.new_ ()
 
 (** The marshaller must hand the callback an [argv] whose fields are all
     well-formed OCaml values. A raw C [param_values] pointer stored in a scanned

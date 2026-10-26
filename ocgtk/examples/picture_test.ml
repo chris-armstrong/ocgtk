@@ -1,4 +1,4 @@
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 let test_image_path = "/usr/share/pixmaps/ubuntu-logo-text.png"
 

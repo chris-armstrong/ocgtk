@@ -8,20 +8,20 @@
     - get_string extraction safety
     - remove operation
     - get_n_items property
-    - High-level GString_list wrapper
+    - High-level String_list wrapper
     - Ownership semantics and memory safety *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 
 (* Layer 1 (raw) string_list functions *)
-let string_list_new = Wrappers.String_list.new_
-let string_list_append = Wrappers.String_list.append
-let string_list_take = Wrappers.String_list.take
-let string_list_get_string = Wrappers.String_list.get_string
-let string_list_remove = Wrappers.String_list.remove
-let string_list_get_n_items = Wrappers.String_list.get_n_items
+let string_list_new = Raw.String_list.new_
+let string_list_append = Raw.String_list.append
+let string_list_take = Raw.String_list.take
+let string_list_get_string = Raw.String_list.get_string
+let string_list_remove = Raw.String_list.remove
+let string_list_get_n_items = Raw.String_list.get_n_items
 let require_gtk = Gtk_test_helpers.require_gtk
 
 (* Helper to skip tests that require GTK >= 4.14 (e.g. n-items property) *)
@@ -30,12 +30,12 @@ let require_gtk_414 f = require_gtk (Helpers.require_gtk_version 4 14 0 f)
 (* ========== Module Accessibility Tests ========== *)
 
 let test_string_list_module_accessible () =
-  let _t : Wrappers.String_list.t option = None in
+  let _t : Raw.String_list.t option = None in
   check bool "String_list module accessible" true true
 
 let test_string_list_type () =
   (* Verify the type is correctly defined as an object subtype
-     The type Wrappers.String_list.t = [`string_list | `object_] Gobject.obj
+     The type Raw.String_list.t = [`string_list | `object_] Gobject.obj
      already proves it's GObject-based; we just test creation works *)
   let list = string_list_new (Some [||]) in
   check bool "String_list instance created" true (Gobject.get_ref_count list > 0)

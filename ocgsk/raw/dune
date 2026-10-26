@@ -1,32 +1,34 @@
-; Include subdirectories to find modules in core/ and generated/
+; ocgsk.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
 
 (include_subdirs unqualified)
 
-; Include generated C stubs library definition
-
-(include generated/dune-generated.inc)
-
-; Configure pkg-config for GSK (bundled with gtk4)
-
-(rule
- (targets c_flags.sexp)
- (action
-  (run
-   %{exe:../../../configurator/config_flags.exe}
-   --pkg
-   gtk4
-   --cflags-out
-   c_flags.sexp)))
-
-; Main GSK library combining core and generated code
+(include generated/dune.inc)
 
 (library
- (name ocgtk_gsk)
- (public_name ocgtk.gsk)
- (synopsis "OCaml bindings for GSK")
- (wrapped true)
- (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
- (modules :standard)
+ (name ocgsk_raw)
+ (public_name ocgsk.raw)
+ (synopsis "Gsk layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries
+  ocglib
+  ocgsk.enums
+  ocgsk.raw.stubs
+  occairo.raw
+  occairo.enums
+  ocgio.raw
+  ocgio.enums
+  ocgdk.raw
+  ocgdk.enums
+  ocpangocairo.raw
+  ocpangocairo.enums
+  ocpango.raw
+  ocpango.enums
+  ocgdkpixbuf.raw
+  ocgdkpixbuf.enums
+  ocgraphene.raw
+  ocgraphene.enums)
  (foreign_stubs
   (language c)
   (names ml_gsk)
@@ -34,11 +36,6 @@
    :standard
    -Igenerated
    -Icore
-   (:include c_flags.sexp)))
- (libraries
-  ocglib
-  ocgtk.gdk
-  ocgtk.graphene
-  ocgtk.cairo
-  ocgtk.pango
-  ocgtk_gsk_generated_stubs))
+   (:include cflag-gsk.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers gsk_decls gsk_core))

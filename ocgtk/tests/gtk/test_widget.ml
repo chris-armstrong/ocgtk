@@ -8,12 +8,12 @@
     - Basic type definitions are correct *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
-module Widget = Wrappers.Widget
+open Ocgtk
+module Main = Ocgtk.Main
+module Widget = Raw.Widget
 
 module Box = struct
-  include Wrappers.Box
+  include Raw.Box
 
   let as_widget (box : t) : Widget.t = (box :> Widget.t)
 end
@@ -59,7 +59,7 @@ let require_gtk = Gtk_test_helpers.require_gtk
 (* Widget creation tests *)
 let test_widget_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     (* Create a widget (using GtkBox) *)
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
@@ -67,13 +67,13 @@ let test_widget_creation () =
     (* Verify widget was created *)
     check bool "widget created" true (Gobject.get_ref_count widget > 0)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Visibility tests - Now working with GtkBox *)
 let test_visibility () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
@@ -95,13 +95,13 @@ let test_visibility () =
     Widget.set_visible widget true;
     check bool "widget set visible" true (Widget.get_visible widget)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Size request tests - Now working with GtkBox *)
 let test_size_request () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
@@ -110,13 +110,13 @@ let test_size_request () =
     (* Note: get_size_request not available in current bindings *)
     check bool "set_size_request succeeded" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* CSS class tests - Now working with GtkBox *)
 (* let test_css_classes () = *)
 (*   try *)
-(*     let _ = GMain.init () in *)
+(*     let _ = Main.init () in *)
 (*     let box = Box.new_ `HORIZONTAL 0 in *)
 (*     let widget = Box.as_widget box in *)
 (**)
@@ -130,7 +130,7 @@ let test_size_request () =
 (*     Widget.remove_css_class widget "test-class"; *)
 (*     check bool "CSS class removed" false (Widget.has_css_class widget "test-class") *)
 (*   with *)
-(*   | GMain.Error _ -> *)
+(*   | Main.Error _ -> *)
 (*       skip () *)
 (*   | e -> *)
 (*       fail ("Unexpected error: " ^ Printexc.to_string e) *)
@@ -138,7 +138,7 @@ let test_size_request () =
 (* Focus tests - Now working with GtkBox *)
 let test_focus () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
@@ -155,13 +155,13 @@ let test_focus () =
     let _ = Widget.grab_focus widget in
     check bool "focus API works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* State flags tests - Now working with GtkBox *)
 (* let test_state_flags () = *)
 (*   try *)
-(*     let _ = GMain.init () in *)
+(*     let _ = Main.init () in *)
 (*     let box = Box.new_ `HORIZONTAL 0 in *)
 (*     let widget = Box.as_widget box in *)
 (**)
@@ -172,7 +172,7 @@ let test_focus () =
 (*     (* Just verify we can get/set flags - actual flag values may vary *) *)
 (*     check bool "can set state flags" true (List.length flags >= 0) *)
 (*   with *)
-(*   | GMain.Error _ -> *)
+(*   | Main.Error _ -> *)
 (*       skip () *)
 (*   | e -> *)
 (*       fail ("Unexpected error: " ^ Printexc.to_string e) *)
@@ -182,7 +182,7 @@ let test_focus () =
    which is not generated yet *)
 (* let test_parent_root () = *)
 (*   try *)
-(*     let _ = GMain.init () in *)
+(*     let _ = Main.init () in *)
 (*     let parent_box = Box.new_ `HORIZONTAL 0 in *)
 (*     let child_box = Box.new_ `VERTICAL 0 in *)
 (*     let child_widget = Box.as_widget child_box in *)
@@ -201,13 +201,13 @@ let test_focus () =
 (*     let _ = Widget.get_root child_widget in *)
 (*     check bool "get_root API works" true true *)
 (*   with *)
-(*   | GMain.Error _ -> skip () *)
+(*   | Main.Error _ -> skip () *)
 (*   | e -> fail ("Unexpected error: " ^ Printexc.to_string e) *)
 
 (* Queue draw/resize tests *)
 let test_queue_operations () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
@@ -217,7 +217,7 @@ let test_queue_operations () =
 
     check bool "queue operations work" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

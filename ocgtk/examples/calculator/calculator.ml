@@ -1,5 +1,5 @@
-open Ocgtk_gtk.Gtk
-open Ocgtk_gio.Gio
+open Ocgtk
+open Ocgio
 
 let activate app =
   let window = Window.new_ () in
@@ -20,7 +20,7 @@ let activate app =
   window#present ()
 
 let () =
-  ignore (Ocgtk_gtk.GMain.init ());
+  ignore (Ocgtk.Main.init ());
   let app = Application.new_ (Some "org.ocgtk.Calculator") [ `DEFAULT_FLAGS ] in
   ignore (app#on_activate ~callback:(fun () -> activate app) ());
   let status = app#run 0 None in

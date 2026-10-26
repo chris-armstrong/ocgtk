@@ -2,15 +2,15 @@
    the ocgtk_gobject_ops custom block now installs. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 
 let require_gtk = Helpers.require_gtk
 
 (* Distinct GObject pointers — neither identity check should succeed. *)
 let test_distinct_objects_not_same () =
-  let a = Wrappers.Button.new_ () in
-  let b = Wrappers.Button.new_ () in
+  let a = Raw.Button.new_ () in
+  let b = Raw.Button.new_ () in
   check bool "Gobject.same false on distinct objects" false (Gobject.same a b);
   check bool "(=) false on distinct objects" false (Stdlib.( = ) a b)
 
@@ -32,7 +32,7 @@ let extract_twice : string -> 'a Gobject.obj -> 'a Gobject.obj * 'a Gobject.obj
         label
 
 let test_same_pointer_is_same () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let a, b = extract_twice "Button" btn in
   check bool "Gobject.same true on round-tripped pointer" true
     (Gobject.same a b);
@@ -42,7 +42,7 @@ let test_same_pointer_is_same () =
    whole reason same/(=) exist. Guards against a future refactor that
    accidentally interns the wrapper. *)
 let test_same_pointer_not_physically_equal () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let a, b = extract_twice "Button" btn in
   check bool "(==) false on round-tripped pointer (distinct blocks)" false
     (a == b)
@@ -51,7 +51,7 @@ let test_same_pointer_not_physically_equal () =
    A get_object handle and the original button must lookup to the same
    bucket and the equality check must succeed. *)
 let test_hashtbl_lookup () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let tbl = Hashtbl.create 4 in
   Hashtbl.add tbl btn "primary";
   let v = Gobject.Value.create (Gobject.get_type btn) in
