@@ -508,6 +508,42 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   Ubuntu 22.04, Debian 12 and CentOS Stream 9 fail at Build on old cairo,
   which is also broken on `main` (Open items 4).
 
+**Step 2 done** (2026-10-26), apart from macOS, which only CI can check:
+
+- `conf-cairo-gobject/`, `conf-pangocairo/`, `conf-gdk-pixbuf-2/` and
+  `conf-graphene-1/` are top-level packages like `conf-gtk4/`, version 1.
+  None of the names is in opam-repository (checked 2026-10-26).
+  `conf-pangocairo` depends on `conf-pango`, the others on `conf-glib-2`.
+  `opam lint` passes for all four.
+- Depexts, one system package per platform:
+
+  | Package | Debian/Ubuntu | Fedora, CentOS Stream | openSUSE | Alpine | Arch | Homebrew | FreeBSD |
+  |---|---|---|---|---|---|---|---|
+  | `conf-cairo-gobject` | `libcairo2-dev` | `cairo-gobject-devel` | `cairo-devel` | `cairo-dev` | `cairo` | `cairo` | `cairo` |
+  | `conf-pangocairo` | `libpango1.0-dev` | `pango-devel` | `pango-devel` | `pango-dev` | `pango` | `pango` | `pango` |
+  | `conf-gdk-pixbuf-2` | `libgdk-pixbuf-2.0-dev` | `gdk-pixbuf2-devel` | `gdk-pixbuf-devel` | `gdk-pixbuf-dev` | `gdk-pixbuf2` | `gdk-pixbuf` | `gdk-pixbuf2` |
+  | `conf-graphene-1` | `libgraphene-1.0-dev` | `graphene-devel` | `libgraphene-devel` | `graphene-dev` | `graphene` | `graphene` | `graphene` |
+
+- Each package was installed with opam 2.5.0 (`opam install ./conf-<name>`
+  into an empty switch, depexts on) in a fresh container on all 14 Linux
+  images: Ubuntu 22.04, 24.04, 26.04, 26.10, Debian 12, 13, Fedora 43, 44,
+  CentOS Stream 9, 10, openSUSE Leap 16.0, Tumbleweed, Alpine 3.24, Arch.
+  56 of 56 succeed. Before each install the module's `.pc` file was
+  absent; afterwards it is owned by the package in the table, so Fedora
+  and CentOS Stream pull in `cairo-gobject-devel`. The base images had none
+  of the libraries, except Arch, whose base system already has `glib2`
+  (Arch ships headers in the same package; `conf-glib-2` has no Arch
+  depext, so this is also what makes it installable there).
+- Homebrew: the formulas build the GObject parts (`cairo` with
+  `-Dglib=enabled`; `graphene` depends on `glib`). The new
+  `macos-conf` job in `release-verification.yml` installs each package
+  through Homebrew depexts and checks `glib-2.0`, `gobject-2.0`,
+  `gio-2.0` and `gio-unix-2.0` (Open items 1).
+- FreeBSD names come from the ports (Conf packages); not run, as the
+  FreeBSD job is disabled.
+- Nothing depends on the four packages yet; the namespace packages do from
+  phase 3.
+
 **Done when:**
 
 - `opam lint` reports nothing for each new conf package.
@@ -777,10 +813,10 @@ Docs (odoc, `--cache=disabled`):
 
 ## Open items
 
-1. Depexts for the four new conf packages on each supported platform
-   (Arch and FreeBSD names are above), and macOS for `conf-glib-2`'s
-   coverage of gobject and gio. Windows support, once opam-repository
-   supports MSYS2 UCRT64 (Supported platforms).
+1. macOS: the four new conf packages through Homebrew depexts, and
+   `conf-glib-2`'s coverage of gobject and gio (the `macos-conf` job checks
+   both). Windows support, once opam-repository supports MSYS2 UCRT64
+   (Supported platforms).
 2. Gtk itself cannot be prototyped before phase 3, because it depends on
    every other namespace. Its risks are the same as gio's at a larger scale
    (320 layer 2 modules against gio's 175, 4 stub batches against 3), so

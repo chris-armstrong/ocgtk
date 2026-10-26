@@ -421,6 +421,30 @@ jobs:
       - name: Test ocgtk
         run: opam exec -- dune test ocglib/ ocgtk/
 
+  # ── macOS conf packages (Homebrew depexts) ───────────────────────────────────
+  #
+  # Installs each conf package through opam's Homebrew depexts, without
+  # installing the libraries first, and checks that Homebrew's glib provides
+  # every GLib module conf-glib-2 stands for.
+  macos-conf:
+    name: macOS conf packages (Homebrew)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+          opam-pin: false
+      - name: Libraries already installed
+        run: brew list --versions glib cairo pango gdk-pixbuf graphene gtk4 || true
+      - name: Install each conf package through depexts
+        run: |
+          for pkg in conf-cairo-gobject conf-pangocairo conf-gdk-pixbuf-2 conf-graphene-1 conf-gtk4; do
+            opam install --confirm-level=unsafe-yes "./$pkg"
+          done
+      - name: GLib modules
+        run: opam exec -- pkg-config --print-errors glib-2.0 gobject-2.0 gio-2.0 gio-unix-2.0
+
   # ── FreeBSD 14, 15 ───────────────────────────────────────────────────────────
   # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
   # virtualisation extensions, making it too slow and prone to timeouts.
@@ -533,6 +557,7 @@ jobs:
       - linux-alpine
       - linux-arch
       - macos
+      - macos-conf
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

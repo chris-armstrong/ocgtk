@@ -12,6 +12,10 @@ usable OCaml GTK 4 binding library.
   …) is a separate opam package and wrapped library, `ocglib`, that needs
   only GLib's development files, not GTK's. ocgtk depends on it and
   re-exports it as `Ocgtk.Common`.
+- **New conf packages** — `conf-cairo-gobject`, `conf-pangocairo`,
+  `conf-gdk-pixbuf-2` and `conf-graphene-1` install each library's
+  development files through depexts. `conf-cairo-gobject` exists because
+  `conf-cairo` does not install `cairo-gobject` on Fedora and CentOS.
 
 ### Platforms
 
