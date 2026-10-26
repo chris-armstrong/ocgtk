@@ -465,7 +465,7 @@ let namespace_display_name namespace_name =
   | "GdkPixbuf" -> "GdkPixbuf"
   | "Gio" -> "GLib"
   | "Graphene" -> "Graphene"
-  | "Cairo" -> "Cairo"
+  | "cairo" -> "Cairo"
   | other -> other
 
 (** Format version string for failwith messages: "M.m" (omit micro if 0) *)
@@ -529,6 +529,16 @@ let emit_fallback_property_setter_stub ~ctx ~c_type:_ ~class_name ~ml_name
   emit_failwith_stub_core ~ml_name
     ~params:[ "value self"; "value arg1" ]
     ~param_names:[ "self"; "arg1" ] ~param_count_for_caml:2 ~failwith_msg
+
+(** Emit a class-level fallback stub for the [get_type] wrapper. *)
+let emit_fallback_get_type_stub ~ctx ~class_name ~ml_name ~version =
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg =
+    Fmt.str "%s requires %s >= %s" class_name display_ns
+      (format_version_for_message version)
+  in
+  emit_failwith_stub_core ~ml_name ~params:[ "value unit" ]
+    ~param_names:[ "unit" ] ~param_count_for_caml:1 ~failwith_msg
 
 (** Emit a class-level fallback stub for a record method. *)
 let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name

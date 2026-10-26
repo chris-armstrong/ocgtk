@@ -502,7 +502,7 @@ let rec longident_is_hierarchy_type (lid : Longident.t) : bool =
       in
       s <> "" && Char.uppercase_ascii s.[0] = s.[0] && s.[0] <> '_'
   | Longident.Ldot (parent, _) ->
-      (* Dotted path like GWidget.widget - check if parent is hierarchy type *)
+      (* Dotted path like Widget.widget - check if parent is hierarchy type *)
       longident_is_hierarchy_type parent
   | Longident.Lapply _ -> false
 
@@ -1149,3 +1149,70 @@ let collect_labelled_args_of_call (expr : expression) (func_name : string) :
   in
   scan expr;
   !labels
+
+(* ========================================================================= *)
+(* Module Alias and Include Helpers *)
+(* ========================================================================= *)
+
+(* Top-level [module A = B.C] aliases of a structure, as [(A, "B.C")] *)
+let module_aliases (ast : structure) : (string * string) list =
+  List.filter_map
+    (fun item ->
+      match item.pstr_desc with
+      | Pstr_module
+          {
+            pmb_name = { txt = Some name; _ };
+            pmb_expr = { pmod_desc = Pmod_ident { txt; _ }; _ };
+            _;
+          } ->
+          Some (name, longident_to_string txt)
+      | _ -> None)
+    ast
+
+(* Top-level [include M] items of a structure, as module paths *)
+let included_modules (ast : structure) : string list =
+  List.filter_map
+    (fun item ->
+      match item.pstr_desc with
+      | Pstr_include { pincl_mod = { pmod_desc = Pmod_ident { txt; _ }; _ }; _ }
+        ->
+          Some (longident_to_string txt)
+      | _ -> None)
+    ast
+
+(* Top-level [include module type of struct include M end] items of a
+   signature, as the paths [M] *)
+let strengthened_includes (sig_ : signature) : string list =
+  List.filter_map
+    (fun item ->
+      match item.psig_desc with
+      | Psig_include
+          {
+            pincl_mod =
+              {
+                pmty_desc =
+                  Pmty_typeof
+                    {
+                      pmod_desc =
+                        Pmod_structure
+                          [
+                            {
+                              pstr_desc =
+                                Pstr_include
+                                  {
+                                    pincl_mod =
+                                      { pmod_desc = Pmod_ident { txt; _ }; _ };
+                                    _;
+                                  };
+                              _;
+                            };
+                          ];
+                      _;
+                    };
+                _;
+              };
+            _;
+          } ->
+          Some (longident_to_string txt)
+      | _ -> None)
+    sig_

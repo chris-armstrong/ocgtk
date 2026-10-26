@@ -188,13 +188,14 @@ as a tuple.
 
 ## Enums and Bitfields
 
-`enum_code.ml` generates a single `<ns>_enums.mli` file per namespace containing
-the OCaml types for all enums and bitfields.
+`enum_code.ml` generates a single `oc<ns>_enums.mli` file per namespace containing
+the OCaml types for all enums and bitfields. It is the only module of the
+`oc<ns>.enums` library, and the main library re-exports it as `Oc<ns>.Enums`.
 
 **Enums** become polymorphic variant types with integer converters:
 
 ```ocaml
-(* gtk_enums.mli — generated excerpt *)
+(* ocgtk_enums.mli — generated excerpt *)
 type orientation = [`HORIZONTAL | `VERTICAL]
 val orientation_of_int : int -> orientation
 val orientation_to_int : orientation -> int
@@ -208,9 +209,10 @@ maps back.
 set bits via a flags list or variant OR (depending on the bitfield definition in
 GIR).
 
-Enums and bitfields from other namespaces are referenced with the fully-qualified
-module prefix: `Gtk_enums.orientation` for same-namespace, or
-`Ocgtk_gdk.Gdk_enums.event_type` for cross-namespace.
+Generated code refers to enums by library: Layer 1 (in the raw library) writes
+`Ocgtk_enums.orientation` and `Ocgdk_enums.modifiertype`; Layer 2 writes
+`Enums.orientation` for its own namespace and `Ocgdk.Enums.modifiertype` for
+another.
 
 ---
 
@@ -246,7 +248,7 @@ int gtk_enums_input_purpose_to_int(value v) {
 
 Version guards are applied via two sources:
 
-1. **Override sexp** (`ocgtk/overrides/<ns>.sexp`): explicit
+1. **Override sexp** (`overrides/<ns>.sexp`): explicit
    `(version "X.Y")` directives added by contributors. This is the primary
    source of version information.
 2. **GIR `version` attributes** on methods, properties, etc. (`version="X.Y"`),

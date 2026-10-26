@@ -6,23 +6,23 @@ This directory contains simple example applications demonstrating various ocgtk4
 
 ```bash
 # Build all examples
-dune build examples/
+dune build ocgtk/examples/
 
 # Build specific example
-dune build examples/counter.exe
+dune build ocgtk/examples/counter.exe
 ```
 
 ## Running Examples
 
 ```bash
 # Run with dune exec
-dune exec examples/counter.exe
-dune exec examples/settings_panel.exe
-dune exec examples/text_editor.exe
-dune exec examples/login_form.exe
+dune exec ocgtk/examples/counter.exe
+dune exec ocgtk/examples/settings_panel.exe
+dune exec ocgtk/examples/text_editor.exe
+dune exec ocgtk/examples/login_form.exe
 
 # Or run the built executable directly
-./_build/default/examples/counter.exe
+./_build/default/ocgtk/examples/counter.exe
 ```
 
 ## API Pattern
@@ -30,12 +30,12 @@ dune exec examples/login_form.exe
 All examples follow the same pattern:
 
 ```ocaml
-open Ocgtk_gtk.Gtk           (* Short class names: widget, button, box, etc. *)
-module GMain = Ocgtk_gtk.GMain
+open Ocgtk           (* Short class names: widget, button, box, etc. *)
+module Main = Ocgtk.Main
 
 (* Layer 1: create underlying GTK objects *)
-let window_obj = Wrappers.Window.new_ () in
-let btn_obj = Wrappers.Button.new_with_label "Click" in
+let window_obj = Raw.Window.new_ () in
+let btn_obj = Raw.Button.new_with_label "Click" in
 
 (* Layer 2: wrap in OO classes for methods and signals *)
 let window = new window window_obj in
@@ -109,8 +109,8 @@ Tests nullable parameters, radio button grouping, and both Layer 1 and Layer 2 A
 
 ## Notes
 
-- All examples use `GMain.init()` for GTK initialization
-- `open Ocgtk_gtk.Gtk` provides short class names and the `Wrappers` module
+- All examples use `Main.init()` for GTK initialization
+- `open Ocgtk` provides short class names and the `Raw` module (layer 1)
 - Examples follow GTK4 conventions (e.g., CheckButton for radio buttons)
 
 ### Calculator AT-SPI E2E Tests

@@ -1,0 +1,111 @@
+class type d_bus_object_manager_t = object
+  method on_interface_added :
+    ?after:bool ->
+    callback:
+      (object_:D_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:D_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    ?after:bool ->
+    callback:
+      (object_:D_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:D_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_added :
+    ?after:bool ->
+    callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_removed :
+    ?after:bool ->
+    callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method get_interface :
+    string ->
+    string ->
+    D_bus_interface_and__d_bus_object.d_bus_interface_t option
+
+  method get_object :
+    string -> D_bus_interface_and__d_bus_object.d_bus_object_t option
+
+  method get_object_path : unit -> string
+
+  method get_objects :
+    unit -> D_bus_interface_and__d_bus_object.d_bus_object_t list
+
+  method as_d_bus_object_manager : Raw.D_bus_object_manager.t
+end
+
+(* High-level class for DBusObjectManager *)
+class d_bus_object_manager (obj : Raw.D_bus_object_manager.t) :
+  d_bus_object_manager_t =
+  object (self)
+    method on_interface_added ?(after = false) ~callback () =
+      Raw.D_bus_object_manager.on_interface_added ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ~interface ->
+          callback
+            ~object_:
+              (new D_bus_interface_and__d_bus_object.d_bus_object object_)
+            ~interface:
+              (new D_bus_interface_and__d_bus_object.d_bus_interface interface))
+
+    method on_interface_removed ?(after = false) ~callback () =
+      Raw.D_bus_object_manager.on_interface_removed ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ~interface ->
+          callback
+            ~object_:
+              (new D_bus_interface_and__d_bus_object.d_bus_object object_)
+            ~interface:
+              (new D_bus_interface_and__d_bus_object.d_bus_interface interface))
+
+    method on_object_added ?(after = false) ~callback () =
+      Raw.D_bus_object_manager.on_object_added ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ->
+          callback
+            ~object_:
+              (new D_bus_interface_and__d_bus_object.d_bus_object object_))
+
+    method on_object_removed ?(after = false) ~callback () =
+      Raw.D_bus_object_manager.on_object_removed ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ->
+          callback
+            ~object_:
+              (new D_bus_interface_and__d_bus_object.d_bus_object object_))
+
+    method get_interface :
+        string ->
+        string ->
+        D_bus_interface_and__d_bus_object.d_bus_interface_t option =
+      fun object_path interface_name ->
+        Option.map
+          (fun ret -> new D_bus_interface_and__d_bus_object.d_bus_interface ret)
+          (Raw.D_bus_object_manager.get_interface obj object_path interface_name)
+
+    method get_object :
+        string -> D_bus_interface_and__d_bus_object.d_bus_object_t option =
+      fun object_path ->
+        Option.map
+          (fun ret -> new D_bus_interface_and__d_bus_object.d_bus_object ret)
+          (Raw.D_bus_object_manager.get_object obj object_path)
+
+    method get_object_path : unit -> string =
+      fun () -> Raw.D_bus_object_manager.get_object_path obj
+
+    method get_objects :
+        unit -> D_bus_interface_and__d_bus_object.d_bus_object_t list =
+      fun () ->
+        (List.map (fun ret ->
+             new D_bus_interface_and__d_bus_object.d_bus_object ret))
+          (Raw.D_bus_object_manager.get_objects obj)
+
+    method as_d_bus_object_manager = obj
+  end

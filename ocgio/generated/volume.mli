@@ -1,0 +1,6 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Shim module for Volume from cyclic group App_info_cycle_64c425a0 *)
+
+class type volume_t = App_info_cycle_64c425a0.volume_t
+
+class volume : Raw.Volume.t -> volume_t

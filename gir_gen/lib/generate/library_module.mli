@@ -1,9 +1,26 @@
-(* Top-level library module generation: emits the `<Ns>.ml/.mli` that
-   re-exports every class/interface/record (including cyclic combined modules)
-   and the enum/bitfield type aliases for one namespace. *)
+(* Modules of a namespace's main library that re-export its raw and enums
+   libraries. *)
 
 open Types
 
-val generate_library_module : ctx:generation_context -> string * string
-(** Generate both the .ml and .mli content for a namespace's top-level library
-    module, returned as [(ml, mli)]. *)
+val raw_module_aliases :
+  ctx:generation_context ->
+  entity_names:string list ->
+  core_modules:string list ->
+  (string * string) list
+(** [(alias, path)] for each module of [raw.ml]: one per class, interface and
+    record in [entity_names], sorted (e.g. [("Box", "Ocgraphene_raw.Box")]; a
+    member of a cycle is its shim module), then one per hand-written module of
+    [raw/core] in [core_modules] (e.g.
+    [("Gio_volume_monitor_core", "Ocgio_raw.Gio_volume_monitor_core")]). *)
+
+val generate_raw_module :
+  ctx:generation_context ->
+  entity_names:string list ->
+  core_modules:string list ->
+  string
+(** Content of [raw.ml], from {!raw_module_aliases}. *)
+
+val generate_enums_module : namespace:string -> string
+(** Content of [enums.ml]: [include Ocgio_enums]. A source file cannot itself be
+    an alias for another library's module, hence the [include]. *)

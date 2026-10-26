@@ -120,21 +120,6 @@ let is_callback_type (gir_type : gir_type) =
   let lower = String.lowercase_ascii gir_type.name in
   String.mem ~sub:"func" lower || String.mem ~sub:"callback" lower
 
-(** Build the enums module prefix for a same-namespace enum/bitfield. *)
-let same_ns_enums_module ~ctx =
-  Utils.internal_namespace_to_module_name ctx.namespace.namespace_name
-  ^ "_enums"
-
-(** Build the enums module prefix for a cross-namespace enum/bitfield, given the
-    external namespace name (e.g. ["Gdk"]). *)
-let cross_ns_enums_module namespace =
-  let pkg = Utils.library_wrapper_name namespace in
-  (* Ocgtk_<ns>.<Ns>_enums *)
-  String.capitalize_ascii pkg
-  ^ "."
-  ^ Utils.internal_namespace_to_module_name namespace
-  ^ "_enums"
-
 (** Build the L1 OCaml type for a same-namespace GObject class / interface.
     [<Mod>.t] is itself a [Gobject.obj] phantom (e.g.
     [type t = [`widget | ...] Gobject.obj]) so no extra [Gobject.obj] is
@@ -147,14 +132,11 @@ let same_ns_object_type ~ctx class_name =
   in
   mod_path ^ ".t"
 
-(** Build the L1 OCaml type for a cross-namespace GObject class / interface.
-    Cross-namespace classes are exposed via the library wrapper's [Wrappers]
-    submodule, e.g. [Ocgtk_gio.Gio.Wrappers.App_info.t]. As with same-namespace
-    classes, the [.t] is already a [Gobject.obj]. *)
-let cross_ns_object_type ~namespace ~class_name =
-  let ext = Utils.external_namespace_to_module_name namespace in
-  let mod_ = Utils.module_name_of_class class_name in
-  ext ^ ".Wrappers." ^ mod_ ^ ".t"
+(** Build the L1 OCaml type for a cross-namespace GObject class / interface,
+    e.g. [Ocgio_raw.Icon.t] from layer 1 or [Ocgio.Raw.Icon.t] from layer 2. As
+    with same-namespace classes, the [.t] is already a [Gobject.obj]. *)
+let cross_ns_object_type ~ctx ~namespace ~class_name =
+  Module_paths.cross_ns_layer1_module ~ctx ~namespace class_name ^ ".t"
 
 (** Look up the L2 [ocaml_class] info for a GIR type via [Type_mappings].
     Returns [None] when the type has no L2 representation (e.g. an interface
@@ -169,11 +151,7 @@ let lookup_l2_class ~ctx gir_type : ocaml_class option =
 (* ===================================================================== *)
 
 let classify_enum ~ctx ~namespace ~name =
-  let enums_module =
-    if String.equal namespace ctx.namespace.namespace_name then
-      same_ns_enums_module ~ctx
-    else cross_ns_enums_module namespace
-  in
+  let enums_module = Module_paths.namespace_enums_module ~ctx namespace in
   let lower_name = String.lowercase_ascii name in
   let ocaml_type = enums_module ^ "." ^ lower_name in
   let of_int = enums_module ^ "." ^ lower_name ^ "_of_int" in
@@ -183,11 +161,7 @@ let classify_enum ~ctx ~namespace ~name =
   Supported (make_marshaller ~ocaml_type ~getter_expr ~setter_expr ())
 
 let classify_bitfield ~ctx ~namespace ~name =
-  let enums_module =
-    if String.equal namespace ctx.namespace.namespace_name then
-      same_ns_enums_module ~ctx
-    else cross_ns_enums_module namespace
-  in
+  let enums_module = Module_paths.namespace_enums_module ~ctx namespace in
   let lower_name = String.lowercase_ascii name in
   let ocaml_type = enums_module ^ "." ^ lower_name in
   let of_int = enums_module ^ "." ^ lower_name ^ "_of_int" in
@@ -215,7 +189,7 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
   let same_ns = String.equal namespace ctx.namespace.namespace_name in
   let base_type =
     if same_ns then same_ns_object_type ~ctx name
-    else cross_ns_object_type ~namespace ~class_name:name
+    else cross_ns_object_type ~ctx ~namespace ~class_name:name
   in
   let l2_class = lookup_l2_class ~ctx gir_type in
   let is_same_ns_class = same_ns in
@@ -229,11 +203,7 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
       Some
         (Type_mappings.calculate_class_or_interface_or_record_module_name ~ctx
            ~name)
-    else
-      Some
-        (Utils.external_namespace_to_module_name namespace
-        ^ ".Wrappers."
-        ^ Utils.module_name_of_class name)
+    else Some (Module_paths.cross_ns_layer1_module ~ctx ~namespace name)
   in
   if gir_type.nullable then
     Supported

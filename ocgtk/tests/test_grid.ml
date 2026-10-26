@@ -6,16 +6,16 @@
     - Child management (attach, attach_next_to, remove)
     - Grid properties (spacing, homogeneous, baseline_row)
     - Row/column insertion and removal
-    - High-level GGrid wrapper functionality *)
+    - High-level Grid wrapper functionality *)
 
 open Alcotest
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     true
-  with GMain.Error _ -> false
+  with Main.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()
@@ -42,7 +42,7 @@ let test_type_constructors () =
 let test_grid_creation () =
   try
     (* Initialize GTK *)
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     (* Create grid *)
     let grid = Grid.new_ () in
@@ -52,13 +52,13 @@ let test_grid_creation () =
     check bool "grid column not homogeneous" false
       (Grid.get_column_homogeneous grid)
   with
-  | GMain.Error _ -> skip () (* No display available *)
+  | Main.Error _ -> skip () (* No display available *)
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid properties *)
 let test_grid_properties () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
 
     (* Test row spacing *)
@@ -83,13 +83,13 @@ let test_grid_properties () =
     Grid.set_baseline_row grid 2;
     check int "baseline row set to 2" 2 (Grid.get_baseline_row grid)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid child attach *)
 let test_child_attach () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
     let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
@@ -102,13 +102,13 @@ let test_child_attach () =
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid child removal *)
 let test_child_removal () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
     let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
@@ -122,13 +122,13 @@ let test_child_removal () =
     | None -> check bool "child removed" true true
     | Some _ -> fail "child still present after removal"
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test row/column insertion and removal *)
 let test_row_column_operations () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
 
     (* Test insert row *)
@@ -147,13 +147,13 @@ let test_row_column_operations () =
 
     check bool "row/column operations successful" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test attach_next_to *)
 let test_attach_next_to () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
     let child1_box = Box.new_ `HORIZONTAL 0 in
     let child1_widget = Box.as_widget child1_box in
@@ -169,13 +169,13 @@ let test_attach_next_to () =
 
     check bool "attach_next_to successful" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test insert_next_to *)
 let test_insert_next_to () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
     let child_box = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child_box in
@@ -191,16 +191,16 @@ let test_insert_next_to () =
 
     check bool "insert_next_to successful" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
-(* Test high-level GGrid wrapper *)
+(* Test high-level Grid wrapper *)
 let test_ggrid_wrapper () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     (* Create grid with wrapper *)
-    let grid = GGrid.new_ ~row_spacing:10 ~column_spacing:15 () in
+    let grid = Grid.new_ ~row_spacing:10 ~column_spacing:15 () in
     check int "ggrid row spacing" 10 grid#row_spacing;
     check int "ggrid column spacing" 15 grid#column_spacing;
 
@@ -217,13 +217,13 @@ let test_ggrid_wrapper () =
     grid#set_column_homogeneous true;
     check bool "ggrid column homogeneous" true grid#column_homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test as_widget function *)
 let test_as_widget () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = Grid.new_ () in
     let widget = Grid.as_widget grid in
 
@@ -231,18 +231,18 @@ let test_as_widget () =
     Widget.set_name widget "test_grid";
     check string "converted widget name" "test_grid" (Widget.get_name widget)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
-(* ========== Comprehensive GGrid Tests ========== *)
+(* ========== Comprehensive Grid Tests ========== *)
 
 let test_ggrid_attach_multiple () =
   try
-    let _ = GMain.init () in
-    let grid = GGrid.new_ ~row_spacing:5 ~column_spacing:10 () in
+    let _ = Main.init () in
+    let grid = Grid.new_ ~row_spacing:5 ~column_spacing:10 () in
 
     (* Attach multiple children in a grid pattern *)
-    let make_box () = GBox.hbox ~spacing:0 () in
+    let make_box () = Box.hbox ~spacing:0 () in
     let b00 = make_box () in
     let b01 = make_box () in
     let b10 = make_box () in
@@ -254,65 +254,65 @@ let test_ggrid_attach_multiple () =
     grid#attach ~left:1 ~top:1 ~width:1 ~height:1 (b11 :> GObj.widget);
 
     (* Verify grid properties *)
-    check int "GGrid row_spacing" 5 grid#row_spacing;
-    check int "GGrid column_spacing" 10 grid#column_spacing;
+    check int "Grid row_spacing" 5 grid#row_spacing;
+    check int "Grid column_spacing" 10 grid#column_spacing;
 
     (* Attach a spanning child *)
     let wide_box = make_box () in
     grid#attach ~left:0 ~top:2 ~width:2 ~height:1 (wide_box :> GObj.widget);
 
-    check bool "GGrid multiple attach works" true true
+    check bool "Grid multiple attach works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_homogeneous () =
   try
-    let _ = GMain.init () in
-    let grid = GGrid.new_ () in
+    let _ = Main.init () in
+    let grid = Grid.new_ () in
 
     (* Test row homogeneous *)
     grid#set_row_homogeneous true;
-    check bool "GGrid row homogeneous" true grid#row_homogeneous;
+    check bool "Grid row homogeneous" true grid#row_homogeneous;
 
     grid#set_row_homogeneous false;
-    check bool "GGrid row not homogeneous" false grid#row_homogeneous;
+    check bool "Grid row not homogeneous" false grid#row_homogeneous;
 
     (* Test column homogeneous *)
     grid#set_column_homogeneous true;
-    check bool "GGrid column homogeneous" true grid#column_homogeneous;
+    check bool "Grid column homogeneous" true grid#column_homogeneous;
 
     grid#set_column_homogeneous false;
-    check bool "GGrid column not homogeneous" false grid#column_homogeneous
+    check bool "Grid column not homogeneous" false grid#column_homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_baseline () =
   try
-    let _ = GMain.init () in
-    let grid = GGrid.new_ () in
+    let _ = Main.init () in
+    let grid = Grid.new_ () in
 
     (* Test baseline row property *)
     grid#set_baseline_row 3;
-    check int "GGrid baseline row" 3 grid#baseline_row;
+    check int "Grid baseline row" 3 grid#baseline_row;
 
     grid#set_baseline_row 0;
-    check int "GGrid baseline row reset" 0 grid#baseline_row
+    check int "Grid baseline row reset" 0 grid#baseline_row
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_ggrid_with_nested_containers () =
   try
-    let _ = GMain.init () in
-    let grid = GGrid.new_ ~row_spacing:10 ~column_spacing:10 () in
+    let _ = Main.init () in
+    let grid = Grid.new_ ~row_spacing:10 ~column_spacing:10 () in
 
     (* Create different container types to put in grid *)
-    let notebook = GNotebook.create () in
-    let paned = GPaned.hpaned () in
-    let stack = GStack.create () in
-    let box = GBox.vbox () in
+    let notebook = Notebook.create () in
+    let paned = Paned.hpaned () in
+    let stack = Stack.create () in
+    let box = Box.vbox () in
 
     (* Attach containers to grid *)
     grid#attach ~left:0 ~top:0 ~width:1 ~height:1 (notebook :> GObj.widget);
@@ -321,9 +321,9 @@ let test_ggrid_with_nested_containers () =
     grid#attach ~left:1 ~top:1 ~width:1 ~height:1 (box :> GObj.widget);
 
     (* Verify grid can be used for complex layouts *)
-    check bool "GGrid with nested containers" true true
+    check bool "Grid with nested containers" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

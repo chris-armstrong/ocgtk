@@ -1,0 +1,32 @@
+class type d_bus_object_skeleton_t = object
+  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
+
+  method on_authorize_method :
+    ?after:bool ->
+    callback:
+      (interface:D_bus_interface_skeleton.d_bus_interface_skeleton_t ->
+      invocation:D_bus_method_invocation.d_bus_method_invocation_t ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method add_interface :
+    D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
+
+  method flush : unit -> unit
+
+  method remove_interface :
+    D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
+
+  method remove_interface_by_name : string -> unit
+  method set_object_path : string -> unit
+  method g_object_path : string
+  method set_g_object_path : string -> unit
+  method as_d_bus_object_skeleton : Raw.D_bus_object_skeleton.t
+end
+
+class d_bus_object_skeleton :
+  Raw.D_bus_object_skeleton.t ->
+  d_bus_object_skeleton_t
+
+val new_ : string -> d_bus_object_skeleton_t

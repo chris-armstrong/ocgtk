@@ -28,6 +28,7 @@ let build_context (namespace : Types.gir_namespace)
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = Types.StringMap.empty;
+    target_library = Types.Raw_library;
   }
 
 let classify_signals_of_file filepath =

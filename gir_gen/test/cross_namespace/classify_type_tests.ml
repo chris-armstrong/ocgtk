@@ -223,8 +223,8 @@ let test_array_cross_ns_class_element () =
     "ocaml_type ends with array" true
     (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type starts with Ocgtk_gdk" true
-    (String.starts_with ~prefix:"Ocgtk_gdk" tm.ocaml_type)
+    "ocaml_type starts with Ocgdk_raw" true
+    (String.starts_with ~prefix:"Ocgdk_raw" tm.ocaml_type)
 
 let test_array_cross_ns_enum_element () =
   let ctx = add_cross_refs (base_ctx ()) in
@@ -237,8 +237,8 @@ let test_array_cross_ns_enum_element () =
     "ocaml_type ends with array" true
     (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type starts with Ocgtk_cairo" true
-    (String.starts_with ~prefix:"Ocgtk_cairo" tm.ocaml_type)
+    "ocaml_type starts with Occairo_" true
+    (String.starts_with ~prefix:"Occairo_" tm.ocaml_type)
 
 let test_array_cross_ns_record_element () =
   let ctx = add_cross_refs (base_ctx ()) in
@@ -251,8 +251,8 @@ let test_array_cross_ns_record_element () =
     "ocaml_type ends with array" true
     (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type starts with Ocgtk_cairo" true
-    (String.starts_with ~prefix:"Ocgtk_cairo" tm.ocaml_type)
+    "ocaml_type starts with Occairo_" true
+    (String.starts_with ~prefix:"Occairo_" tm.ocaml_type)
 
 let test_array_same_ns_class_element () =
   let ctx = base_ctx () in

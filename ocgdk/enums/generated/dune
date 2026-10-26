@@ -1,0 +1,7 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgdk_enums)
+ (public_name ocgdk.enums)
+ (synopsis "Gdk enumerations and bitfields")
+ (flags :standard -w -3-6-9-27-32-33-34-50))

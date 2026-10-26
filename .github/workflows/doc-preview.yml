@@ -1,6 +1,6 @@
 name: Doc preview
 
-# Renders the odoc HTML for both packages (`dune build @doc`) and publishes it
+# Renders the odoc HTML for every package (`dune build @doc`) and publishes it
 # on the `gh-pages` branch. Rendered HTML never lands on a code branch.
 #
 #   pull request  -> <pages>/pr-preview/pr-<n>/  (sticky URL comment on the PR)
@@ -63,21 +63,21 @@ jobs:
       - name: Set up OCaml
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.4.x
+          ocaml-compiler: 5.5.x
 
       - name: Install external dependencies
         run: |
           sudo apt-get update &&
           sudo apt-get install -y libcairo2-dev libgtk-4-dev
 
-      - name: Pin conf-gtk4 package
-        run: opam pin add -n conf-gtk4 conf-gtk4
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
 
-      # odoc comes in through the `{with-doc}` dependency of both packages.
+      # odoc comes in through the `{with-doc}` dependency of every package.
       # `--with-test` is needed too: @doc for gir_gen covers its private test
       # helper library, which depends on alcotest.
       - name: Install OCaml dependencies
-        run: opam install ./ocgtk ./gir_gen --deps-only --with-test --with-doc
+        run: opam install . ./gir_gen --deps-only --with-test --with-doc
 
       # odoc warnings are reported, not fatal (report-only policy). Compiler
       # warnings ("Warning 50 [...]") are not counted, only odoc's own

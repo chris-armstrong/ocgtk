@@ -90,6 +90,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
     ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type () : string
     =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -191,6 +192,7 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
     ~parent_chain_for_entity ?(from_gobject_c_name_for_entity = fun _ -> None)
     () : string =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -207,3 +209,24 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
     sorted_entities;
 
   Buffer.contents buf
+
+(* Each member of a cycle lives inside the combined module, so dune's main
+   module of the raw library has no alias for it. A file per member restores
+   the short path ([Ocgio_raw.File] for [App_info_cycle_<hash>.File]) that
+   other namespaces and [Raw] refer to; the strengthened signature keeps its
+   types equal to the combined module's. *)
+let generate_cycle_member_shim ~output_mode ~combined_module_name ~member_name =
+  let member =
+    combined_module_name ^ "." ^ Utils.module_name_of_class member_name
+  in
+  let body =
+    match output_mode with
+    | Layer1_helpers.Interface ->
+        Fmt.str "include module type of struct\n  include %s\nend\n" member
+    | Layer1_helpers.Implementation -> Fmt.str "include %s\n" member
+  in
+  Fmt.str
+    "(* GENERATED CODE - DO NOT EDIT *)\n\
+     (* %s, a member of the cyclic module %s *)\n\n\
+     %s"
+    member_name combined_module_name body

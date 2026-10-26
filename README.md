@@ -2,19 +2,48 @@
 
 This repository contains OCaml bindings for the GTK toolkit version 4
 
+## Packages
+
+Each library is its own opam package and dune library:
+
+| Package | Main module | Binds |
+|---|---|---|
+| [`ocglib`](ocglib/) | `Ocglib` | GLib and GObject (hand-written) |
+| [`occairo`](occairo/) | `Occairo` | Cairo's GObject types |
+| [`ocgio`](ocgio/) | `Ocgio` | GIO |
+| [`ocgraphene`](ocgraphene/) | `Ocgraphene` | Graphene |
+| [`ocgdkpixbuf`](ocgdkpixbuf/) | `Ocgdkpixbuf` | GdkPixbuf |
+| [`ocpango`](ocpango/) | `Ocpango` | Pango |
+| [`ocpangocairo`](ocpangocairo/) | `Ocpangocairo` | PangoCairo |
+| [`ocgdk`](ocgdk/) | `Ocgdk` | GDK 4 |
+| [`ocgsk`](ocgsk/) | `Ocgsk` | GSK 4 |
+| [`ocgtk`](ocgtk/) | `Ocgtk` | GTK 4 |
+
+A class is `Ocgtk.Button`, its C externals are `Ocgtk.Raw.Button`, and
+enums are under `Ocgtk.Enums`; every package has the same shape.
+
+**The `ocgtk` package changed meaning after `0.1~preview2`.** In
+`0.1~preview2` it was the umbrella for every library (`ocgtk.gtk`,
+`ocgtk.gio`, ...); now it is Gtk only, and the other libraries are the
+packages above. The CHANGELOG lists the module path renames.
+
 ## Repository Structure
 
 ```
 <repo root>/
+├── dune-project       # Declares every package above
+├── ocglib/ ... ocgtk/ # One directory per package (generated/, raw/, enums/, tests/)
+├── conf-*/            # conf packages for the C libraries (not yet in opam-repository)
+├── configurator/      # pkg-config helper used by every package's build
+├── overrides/         # Per-namespace GIR override files for the generator
 ├── gir/               # Bundled GIR data files (9 namespaces)
-├── gir_gen/           # GIR code generator (standalone dune project, OCaml >= 5.3)
-├── ocgtk/             # GTK 4 bindings (dune project, OCaml >= 5.0)
+├── gir_gen/           # GIR code generator (separate dune project, OCaml >= 5.3)
 ├── ci/                # Docker-based multi-distro CI scripts
 └── scripts/           # Helper scripts (e.g. generate-bindings.sh)
 ```
 
-- **[`gir_gen/`](gir_gen/)** — reads GIR XML files and generates OCaml/C FFI bindings. Only needed when regenerating bindings; not a runtime dependency of `ocgtk`.
-- **[`ocgtk/`](ocgtk/)** — the GTK 4 binding library itself. Depends only on GTK system libraries.
+- **[`gir_gen/`](gir_gen/)** — reads GIR XML files and generates OCaml/C FFI bindings. Only needed when regenerating bindings; not a runtime dependency of any package.
+- **[`ocgtk/`](ocgtk/)** — the GTK 4 package, with the examples in [`ocgtk/examples/`](ocgtk/examples/).
 
 ## Status
 
@@ -45,11 +74,14 @@ sudo apt-get install libgtk-4-dev libcairo2-dev
 Install OCaml dependencies and build:
 
 ```bash
+# Our conf packages are not in opam-repository yet: pin them first
+for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+
 # To use the bindings only (OCaml >= 5.0):
-opam install ./ocgtk --deps-only --with-test
+opam install . --deps-only --with-test
 
 # Also install the code generator (OCaml >= 5.3):
-opam install ./ocgtk ./gir_gen --deps-only --with-test
+opam install . ./gir_gen --deps-only --with-test
 
 dune build
 ```
@@ -80,7 +112,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 - **Development Setup**: [CONTRIBUTORS.md](CONTRIBUTORS.md)
 - **Security Guidelines**: [architecture/FFI_GUIDELINES.md](architecture/FFI_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
-- **GIR Override Files**: [ocgtk/overrides/](ocgtk/overrides/) — per-namespace sexp files controlling entity ignores and version guards
+- **GIR Override Files**: [overrides/](overrides/) — per-namespace sexp files controlling entity ignores and version guards
 - **CI / Distro Testing**: [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)
 
 ## Resources

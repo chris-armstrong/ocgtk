@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [5.4.x]
+        ocaml-compiler: [5.5.x]
 
     steps:
       - name: Checkout code
@@ -32,12 +32,12 @@ jobs:
           sudo apt-get update &&
           sudo apt-get install -y libcairo2-dev libgtk-4-dev xdot xvfb
 
-      - name: Pin conf-gtk4 package
-        run: opam pin add -n conf-gtk4 conf-gtk4
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
 
       - name: Install OCaml dependencies
         run: |
-          opam install ./ocgtk ./gir_gen --deps-only --with-test
+          opam install . ./gir_gen --deps-only --with-test
 
       # --check exits non-zero if any gir_gen source would be reformatted.
       - name: Check gir_gen formatting
@@ -51,10 +51,64 @@ jobs:
       - name: Test gir_gen package
         run: opam exec -- dune test gir_gen/
 
-      - name: Test ocgtk package
+      - name: Test the bindings
         run: |
           # Use xvfb-run to provide virtual display for GTK runtime tests
-          opam exec -- xvfb-run -a dune test ocgtk/
+          opam exec -- xvfb-run -a dune test
+
+  # ── Packages (opam install) ────────────────────────────────────────────────
+  # Installs every package the way opam does for a user: each is built with
+  # `dune build -p <pkg>`, in dependency order, against the ones before it
+  # already installed, and runs only its own tests (no display, as in
+  # opam-repository's CI). Then builds and runs a program that depends only
+  # on ocgtk against the installed set.
+  opam-install:
+    name: Install packages (opam)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.5.x
+          opam-pin: false
+
+      - name: Install external dependencies
+        run: |
+          sudo apt-get update &&
+          sudo apt-get install -y libcairo2-dev libgtk-4-dev xvfb
+
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+
+      - name: Install every package
+        run: opam install -y --with-test .
+
+      # setup-ocaml's switch is local to the checkout, so name it explicitly
+      # before leaving the checkout.
+      - name: Build a program against the installed ocgtk
+        run: |
+          eval "$(opam env --switch="$GITHUB_WORKSPACE" --set-switch)"
+          mkdir -p "$RUNNER_TEMP/consumer"
+          cd "$RUNNER_TEMP/consumer"
+          echo '(lang dune 3.0)' > dune-project
+          echo '(executable (name consumer) (libraries ocgtk))' > dune
+          cat > consumer.ml <<'EOF'
+          let () =
+            ignore (Ocgtk.Main.init ());
+            let button = Ocgtk.Button.new_with_label "ocgtk" in
+            let label = Ocgtk.Raw.Button.get_label button#as_button in
+            let (_ : Ocgtk.Enums.orientation) = `HORIZONTAL in
+            Printf.printf "%s, GTK %d.%d\n"
+              (Option.value ~default:"" label)
+              (Ocgtk.Version.runtime_major ())
+              (Ocgtk.Version.runtime_minor ())
+          EOF
+          dune build ./consumer.exe
+          xvfb-run -a dune exec ./consumer.exe
 
   # ── Lint (semgrep) — HARD GATE ─────────────────────────────────────────────
   # Runs semgrep (banned partial functions in .semgrep/banned-partials.yml) and
@@ -70,7 +124,7 @@ jobs:
       - name: Set up OCaml
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.4.x
+          ocaml-compiler: 5.5.x
           dune-cache: true
 
       - name: Install external dependencies
@@ -78,11 +132,11 @@ jobs:
           sudo apt-get update &&
           sudo apt-get install -y libcairo2-dev libgtk-4-dev
 
-      - name: Pin conf-gtk4 package
-        run: opam pin add -n conf-gtk4 conf-gtk4
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
 
       - name: Install OCaml dependencies
-        run: opam install ./ocgtk ./gir_gen --deps-only --with-test
+        run: opam install . ./gir_gen --deps-only --with-test
 
       - name: Install semgrep
         run: python3 -m pip install semgrep
@@ -114,7 +168,7 @@ jobs:
       matrix:
         include:
           - os: macos-latest  # arm64 — Apple Silicon
-            ocaml-compiler: 5.4.x
+            ocaml-compiler: 5.5.x
 
     steps:
       - name: Checkout code
@@ -131,15 +185,15 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
 
-      - name: Pin conf-gtk4 package
-        run: opam pin add -n conf-gtk4 conf-gtk4
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
 
       - name: Install OCaml dependencies
         run: |
-          opam install ./ocgtk --deps-only --with-test
+          opam install . --deps-only --with-test
           opam install ./gir_gen --deps-only --with-test
 
-      - name: Build both packages
+      - name: Build
         run: opam exec -- dune build
 
       # Replicate opam-ci's non-TTY build-sandbox conditions:
@@ -149,7 +203,7 @@ jobs:
           TERM: dumb
         run: |
           opam exec -- dune test gir_gen/ 2>&1 | tee test-output-gir-gen.log
-          opam exec -- dune test ocgtk/ 2>&1 | tee test-output.log
+          opam exec -- dune test 2>&1 | tee test-output.log
 
       - name: Run tests again with TERM=xterm-256color (CLI help regression check)
         env:

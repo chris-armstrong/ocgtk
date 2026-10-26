@@ -100,19 +100,52 @@ let rec transitively_includes ~ctx ~visited ~target namespace_name =
           ~f:(transitively_includes ~ctx ~visited ~target)
           ncr.ncr_namespace_includes
 
-(* Map namespace to library name for dune (ocgtk.<ns>) *)
-let library_name_of_namespace namespace_name =
-  let ns_lower = String.lowercase_ascii namespace_name in
-  Fmt.str "ocgtk.%s" ns_lower
+(* Warnings generated code triggers routinely: deprecated values, omitted
+   labels, unused names and opens, unattached doc comments. *)
+let generated_ocaml_flags = ":standard -w -3-6-9-27-32-33-34-50"
 
-(* Emit the pkg-config rule that generates cflag and clink sexp files. *)
+(* Layer 2 also overrides methods: a class and the interfaces it inherits may
+   each define the same one (Gtk's Popover and Native: realize, unrealize). *)
+let main_ocaml_flags = generated_ocaml_flags ^ "-7"
+
+(* Namespaces whose libraries the current one depends on: its GIR includes and
+   theirs, transitively, without the base namespaces (GLib, GObject, ...)
+   that ocglib covers. Sorted. *)
+let dependency_namespaces ~ctx ~repository =
+  let rec collect ~visited namespace_name =
+    let open Types in
+    if
+      List.mem ~eq:String.equal namespace_name visited
+      || List.mem ~eq:String.equal namespace_name C_stubs.base_namespaces
+    then []
+    else
+      let visited = namespace_name :: visited in
+      let transitive =
+        match StringMap.find_opt namespace_name ctx.cross_references with
+        | None -> []
+        | Some ncr ->
+            ncr.ncr_namespace_includes
+            |> List.map ~f:(collect ~visited)
+            |> List.flatten
+      in
+      namespace_name :: transitive
+  in
+  Types.(repository.repository_includes)
+  |> List.map ~f:(fun { Types.include_name; _ } ->
+      collect ~visited:[] include_name)
+  |> List.flatten
+  |> List.sort_uniq ~cmp:String.compare
+
+(* Emit the pkg-config rule that generates cflag and clink sexp files. The
+   rule is in raw/generated/dune.inc, included from <pkg>/raw/dune, so paths
+   are relative to <pkg>/raw/. *)
 let emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional
     =
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
   bprintf buf " (action\n";
   bprintf buf "  (run\n";
-  bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
+  bprintf buf "   %%{exe:../../configurator/config_flags.exe}\n";
   List.iter
     ~f:(fun package_name ->
       let flag =
@@ -122,6 +155,17 @@ let emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional
     all_packages;
   bprintf buf "   --cflags-out\n   %s\n" cflag_file;
   bprintf buf "   --libs-out\n   %s)))\n\n" clink_file
+
+(* Other namespaces' stubs include the decls header, which includes the core
+   header. [install_c_headers] takes headers from the library's own directory
+   (<pkg>/raw/), so both are copied up from generated/ and core/; includes
+   name them without a directory. *)
+let emit_header_copy_rules buf ~namespace =
+  let ns_lower = String.lowercase_ascii namespace in
+  List.iter
+    ~f:(fun (dir, header) ->
+      bprintf buf "(rule\n (copy %s/%s %s))\n\n" dir header header)
+    [ ("generated", ns_lower ^ "_decls.h"); ("core", ns_lower ^ "_core.h") ]
 
 (* Emit one library stanza containing C foreign stubs (either the single
    stubs library or one batch of it). *)
@@ -136,11 +180,10 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
   Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
   let libraries_clause =
     if String.equal dep_libraries "" then
-      " (libraries ocgtk_common)  ; Depend on common for header files\n"
+      " (libraries ocglib)  ; Depend on ocglib for header files\n"
     else
       Fmt.str
-        " (libraries %s ocgtk_common)  ; Dependencies and common for header \
-         files\n"
+        " (libraries %s ocglib)  ; Dependencies and ocglib for header files\n"
         dep_libraries
   in
   Buffer.add_string buf libraries_clause;
@@ -150,19 +193,20 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
   List.iter ~f:(fun s -> bprintf buf "   %s\n" s) stub_names;
   Buffer.add_string buf "  )\n";
   bprintf buf
-    "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
+    "  (flags -fPIC -Igenerated -Icore (:include %s) \
      -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
      -Wno-int-conversion))\n"
     cflag_file;
   bprintf buf " (c_library_flags (:include %s)))\n\n" clink_file
 
-(* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
+(* Generate raw/generated/dune.inc: the pkg-config rule, the header copies and
+   the C stubs library (or its batches) that the raw library depends on *)
+let generate_raw_dune_inc ~ctx ~namespace ~stub_names ~repository =
   let buf = Buffer.create 2048 in
 
-  let lib_name_snake = lib_name |> Utils.to_snake_case in
-  let cflag_file = Fmt.str "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
-  let clink_file = Fmt.str "clink-%s.sexp" (String.lowercase_ascii lib_name) in
+  let ns_lower = String.lowercase_ascii namespace in
+  let cflag_file = Fmt.str "cflag-%s.sexp" ns_lower in
+  let clink_file = Fmt.str "clink-%s.sexp" ns_lower in
 
   Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
   Buffer.add_string buf "; Regenerate by running gir_gen\n\n";
@@ -178,7 +222,7 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
     |> List.sort_uniq ~cmp:String.compare
   in
   (* Our hand-written gio_core.h unconditionally #includes gio-unix-2.0
-     headers on Linux (see src/gio/core/gio_core.h). Newer GLib (>=2.86)
+     headers on Linux (see ocgio/raw/core/gio_core.h). Newer GLib (>=2.86)
      split Gio's Unix-specific types out into a separate GioUnix-2.0
      namespace, so Gio-2.0.gir no longer declares <package
      name="gio-unix-2.0"/> and it won't show up via repository_packages or
@@ -186,7 +230,7 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
      transitively pulls in Gio's headers, regardless of what the GIR
      declares. *)
   let needs_gio_unix =
-    String.equal lib_name "Gio"
+    String.equal namespace "Gio"
     || List.exists
          ~f:(fun { Types.include_name; _ } ->
            transitively_includes ~ctx ~visited:[] ~target:"Gio" include_name)
@@ -206,34 +250,13 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
   let is_optional p = List.mem ~eq:String.equal p optional_packages in
 
   emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional;
+  emit_header_copy_rules buf ~namespace;
 
-  (* Compute the dep_libraries string (used in C stubs (libraries ...) clause
-     for transitive header include paths). *)
-  let rec collect_transitive_namespaces ~visited namespace_name =
-    let open Types in
-    if
-      List.mem ~eq:String.equal namespace_name visited
-      || List.mem ~eq:String.equal namespace_name C_stubs.base_namespaces
-    then []
-    else
-      let visited = namespace_name :: visited in
-      let transitive =
-        match StringMap.find_opt namespace_name ctx.cross_references with
-        | None -> []
-        | Some ncr ->
-            ncr.ncr_namespace_includes
-            |> List.map ~f:(collect_transitive_namespaces ~visited)
-            |> List.flatten
-      in
-      namespace_name :: transitive
-  in
+  (* The stubs include other namespaces' decls headers, which their raw
+     libraries install. *)
   let dep_libraries =
-    Types.(repository.repository_includes)
-    |> List.map ~f:(fun { Types.include_name; _ } ->
-        collect_transitive_namespaces ~visited:[] include_name)
-    |> List.flatten
-    |> List.sort_uniq ~cmp:String.compare
-    |> List.map ~f:library_name_of_namespace
+    dependency_namespaces ~ctx ~repository
+    |> List.map ~f:Module_paths.raw_library_public_name
     |> String.concat ~sep:" "
   in
 
@@ -242,9 +265,8 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
     (* Small enough to fit in a single library stanza — order is irrelevant
        with a single archive, but keep it canonical. *)
     emit_stub_library buf
-      ~name:(Fmt.str "ocgtk_%s_generated_stubs" lib_name_snake)
-      ~public_name:
-        (Fmt.kstr (fun s -> Some s) "ocgtk.%s.generated_stubs" lib_name_snake)
+      ~name:(Module_paths.stubs_library_name namespace)
+      ~public_name:(Some (Module_paths.stubs_library_public_name namespace))
       ~dep_libraries
       ~stub_names:(order_stub_names_for_batching stub_names)
       ~cflag_file ~clink_file
@@ -258,30 +280,26 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
     in
     let batch_lib_names =
       List.mapi
-        ~f:(fun i _ ->
-          Fmt.str "ocgtk_%s_generated_stubs_batch_%d" lib_name_snake i)
-        batches
-    in
-    let batch_public_names =
-      List.mapi
-        ~f:(fun i _ ->
-          Fmt.str "ocgtk.%s.generated_stubs_batch_%d" lib_name_snake i)
+        ~f:(fun i _ -> Module_paths.stubs_batch_library_name namespace i)
         batches
     in
     (* Emit each batch library with a public name (required because the public
        facade library lists them as dependencies). *)
-    List.iter2
-      ~f:(fun (batch_name, batch_public) batch_stubs ->
-        emit_stub_library buf ~name:batch_name ~public_name:(Some batch_public)
+    List.iteri
+      ~f:(fun i batch_stubs ->
+        emit_stub_library buf
+          ~name:(Module_paths.stubs_batch_library_name namespace i)
+          ~public_name:
+            (Some (Module_paths.stubs_batch_library_public_name namespace i))
           ~dep_libraries ~stub_names:batch_stubs ~cflag_file ~clink_file)
-      (List.combine batch_lib_names batch_public_names)
       batches;
     (* Emit the public facade library that depends on all batches.
        The facade carries no C stubs itself; dune propagates the C archives
        of the batch libraries transitively when linking downstream targets. *)
     bprintf buf "(library\n";
-    bprintf buf " (name ocgtk_%s_generated_stubs)\n" lib_name_snake;
-    bprintf buf " (public_name ocgtk.%s.generated_stubs)\n" lib_name_snake;
+    bprintf buf " (name %s)\n" (Module_paths.stubs_library_name namespace);
+    bprintf buf " (public_name %s)\n"
+      (Module_paths.stubs_library_public_name namespace);
     Buffer.add_string buf " (wrapped false)\n";
     Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
     let batch_deps = String.concat ~sep:" " batch_lib_names in
@@ -289,3 +307,51 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
   end;
 
   Buffer.contents buf
+
+let generated_dune_header = "; GENERATED CODE - DO NOT EDIT\n\n"
+
+(* Generate enums/generated/dune: pure OCaml, no dependencies *)
+let generate_enums_dune ~namespace =
+  Fmt.str
+    "%s(library\n\
+    \ (name %s)\n\
+    \ (public_name %s)\n\
+    \ (synopsis \"%s enumerations and bitfields\")\n\
+    \ (flags %s))\n"
+    generated_dune_header
+    (Module_paths.enums_file_stem namespace)
+    (Module_paths.enums_library_public_name namespace)
+    namespace generated_ocaml_flags
+
+(* Hand-written modules of the main library live in <pkg>/core/, since every
+   file in generated/ is the generator's; dune copies them in. *)
+let main_core_copy_files ~core_modules =
+  if List.is_empty core_modules then ""
+  else Fmt.str "\n(copy_files# ../%s/*.{ml,mli})\n" Module_paths.main_core_dir
+
+(* Generate generated/dune: the main library, whose layer 2 refers to the
+   other namespaces' main libraries only *)
+let generate_main_dune ~ctx ~namespace ~repository ~core_modules =
+  let libraries =
+    [
+      "ocglib";
+      Module_paths.raw_library_public_name namespace;
+      Module_paths.enums_library_public_name namespace;
+    ]
+    @ List.map ~f:Module_paths.package_name
+        (dependency_namespaces ~ctx ~repository)
+  in
+  Fmt.str
+    "%s(library\n\
+    \ (name %s)\n\
+    \ (public_name %s)\n\
+    \ (synopsis \"OCaml bindings for %s\")\n\
+    \ (flags %s -open Ocglib)\n\
+    \ (libraries %s))\n\
+     %s"
+    generated_dune_header
+    (Module_paths.package_name namespace)
+    (Module_paths.package_name namespace)
+    namespace main_ocaml_flags
+    (String.concat ~sep:" " libraries)
+    (main_core_copy_files ~core_modules)

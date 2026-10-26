@@ -80,6 +80,7 @@ let create_context_with_mixed_enums () =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
   }
 
 (* Helper: Create a context with local and external bitfields to test
@@ -147,6 +148,7 @@ let create_context_with_mixed_bitfields () =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
   }
 
 (* Test: Local enums produce correct forward declarations (Val_<Enum>, <Enum>_val) *)

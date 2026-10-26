@@ -181,3 +181,14 @@ val no_closure_nth_at_pos_zero : Ppxlib.Parsetree.expression -> bool
 
 val collect_labelled_args_of_call :
   Ppxlib.Parsetree.expression -> string -> string list
+
+val module_aliases : Ppxlib.Parsetree.structure -> (string * string) list
+(** Top-level [module A = B.C] aliases of a structure, as [("A", "B.C")], in
+    order. *)
+
+val included_modules : Ppxlib.Parsetree.structure -> string list
+(** Top-level [include M] items of a structure, as module paths, in order. *)
+
+val strengthened_includes : Ppxlib.Parsetree.signature -> string list
+(** Top-level [include module type of struct include M end] items of a
+    signature, as the paths [M], in order. *)

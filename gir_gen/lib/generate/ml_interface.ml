@@ -9,3 +9,5 @@ let generate_ml_interface = Layer1.Layer1_main.generate_ml_interface
 
 let generate_combined_ml_modules =
   Layer1.Layer1_main.generate_combined_ml_modules
+
+let generate_cycle_member_shim = Layer1.Layer1_main.generate_cycle_member_shim

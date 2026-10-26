@@ -61,6 +61,43 @@ let test_chunking_puts_enums_in_first_batch () =
         "enums converter only in batch_0" false
         (List.exists contains_enums rest)
 
+(* ---------- stanza text -------------------------------------------------- *)
+
+let lines_of_stub_library ~dep_libraries =
+  let buf = Buffer.create 512 in
+  emit_stub_library buf ~name:"ocgtk_x_generated_stubs" ~public_name:None
+    ~dep_libraries ~stub_names:[ "ml_x_gen" ] ~cflag_file:"cflag-x.sexp"
+    ~clink_file:"clink-x.sexp";
+  String.split_on_char '\n' (Buffer.contents buf)
+
+let check_has_line msg line lines =
+  Alcotest.(check bool) msg true (List.mem line lines)
+
+(* The C stubs take wrappers.h and value_kinds.h from ocglib, which installs
+   them; dune adds its directory to the include path. *)
+let test_stub_library_depends_on_ocglib () =
+  check_has_line "no namespace dependencies"
+    " (libraries ocglib)  ; Depend on ocglib for header files"
+    (lines_of_stub_library ~dep_libraries:"");
+  check_has_line "with namespace dependencies"
+    " (libraries ocgtk.gio ocglib)  ; Dependencies and ocglib for header files"
+    (lines_of_stub_library ~dep_libraries:"ocgtk.gio")
+
+let test_stub_library_has_no_common_include () =
+  check_has_line "flags without -I../common"
+    "  (flags -fPIC -Igenerated -Icore (:include cflag-x.sexp) \
+     -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
+     -Wno-int-conversion))"
+    (lines_of_stub_library ~dep_libraries:"")
+
+let test_pkg_config_rule_uses_root_configurator () =
+  let buf = Buffer.create 256 in
+  emit_pkg_config_rule buf ~cflag_file:"cflag-x.sexp" ~clink_file:"clink-x.sexp"
+    ~all_packages:[ "glib-2.0" ] ~is_optional:(fun _ -> false);
+  check_has_line "configurator at the repository root"
+    "   %{exe:../../configurator/config_flags.exe}"
+    (String.split_on_char '\n' (Buffer.contents buf))
+
 let tests =
   [
     ("enums files move to front", `Quick, test_enums_files_move_to_front);
@@ -69,4 +106,13 @@ let tests =
     ( "chunking puts enums in first batch",
       `Quick,
       test_chunking_puts_enums_in_first_batch );
+    ( "stub library depends on ocglib",
+      `Quick,
+      test_stub_library_depends_on_ocglib );
+    ( "stub library has no ../common include",
+      `Quick,
+      test_stub_library_has_no_common_include );
+    ( "pkg-config rule uses the root configurator",
+      `Quick,
+      test_pkg_config_rule_uses_root_configurator );
   ]

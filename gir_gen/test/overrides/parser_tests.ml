@@ -537,8 +537,71 @@ let test_mix_os_and_not_os_on_entity () =
         (Fmt.str "Expected Invalid_format, got: %s"
            (Gir_gen_lib.Override_parser.format_error e))
 
+(* ---- Entity-level version ---- *)
+
+let test_record_entity_version () =
+  let ov =
+    parse_ok "(overrides (library \"cairo\") (record Glyph (version \"1.18\")))"
+  in
+  let r = hd_exn "Expected one record" ov.records in
+  Alcotest.(check bool)
+    "record version" true
+    (Option.equal equal_override_action r.record_action
+       (Some (Set_version { vs_version = "1.18"; vs_namespace = None })))
+
+let test_class_entity_version_with_components () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gtk\") (class Widget (version \"4.10\") (method \
+       foo (ignore))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  Alcotest.(check bool)
+    "class version" true
+    (Option.equal equal_override_action c.class_action
+       (Some (Set_version { vs_version = "4.10"; vs_namespace = None })));
+  Alcotest.(check int) "methods still parsed" 1 (List.length c.methods)
+
+let test_entity_invalid_version () =
+  match
+    parse_err "(overrides (library \"cairo\") (record Glyph (version \"bad\")))"
+  with
+  | Invalid_version { name; version; _ } ->
+      Alcotest.(check string) "name" "Glyph" name;
+      Alcotest.(check string) "version" "bad" version
+  | e ->
+      Alcotest.fail
+        (Fmt.str "Expected Invalid_version, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let expect_entity_invalid_format ~label content =
+  match parse_err content with
+  | Invalid_format _ -> ()
+  | e ->
+      Alcotest.fail
+        (Fmt.str "%s: expected Invalid_format, got: %s" label
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let test_entity_version_rejections () =
+  expect_entity_invalid_format ~label:"ignore and version"
+    "(overrides (library \"Gtk\") (class Widget (ignore) (version \"4.10\")))";
+  expect_entity_invalid_format ~label:"two versions"
+    "(overrides (library \"Gtk\") (class Widget (version \"4.10\") (version \
+     \"4.12\")))";
+  expect_entity_invalid_format ~label:"cross-namespace version"
+    "(overrides (library \"Gtk\") (class Widget (version (pango \"1.50\"))))"
+
+let test_roundtrip_entity_version () =
+  let original =
+    parse_ok
+      "(overrides (library \"cairo\") (record Glyph (version \"1.18\")) \
+       (record TextCluster (version \"1.18\")))"
+  in
+  roundtrip original
+
 let test_suite_roundtrip =
   [
+    ("entity_version", `Quick, test_roundtrip_entity_version);
     ("minimal", `Quick, test_roundtrip_minimal);
     ("class_ignore", `Quick, test_roundtrip_class_ignore);
     ("class_components", `Quick, test_roundtrip_class_components);
@@ -576,6 +639,12 @@ let test_suite =
     ("wrong_kind_in_class", `Quick, test_wrong_kind_in_class);
     ("wrong_kind_in_record", `Quick, test_wrong_kind_in_record);
     ("invalid_version", `Quick, test_invalid_version);
+    ("record_entity_version", `Quick, test_record_entity_version);
+    ( "class_entity_version_with_components",
+      `Quick,
+      test_class_entity_version_with_components );
+    ("entity_invalid_version", `Quick, test_entity_invalid_version);
+    ("entity_version_rejections", `Quick, test_entity_version_rejections);
     ("malformed_sexp", `Quick, test_malformed_sexp);
     ("not_overrides_form", `Quick, test_not_overrides_form);
     ("bad_component_action", `Quick, test_bad_component_action);

@@ -31,16 +31,20 @@ parameters.
 opam install ocgtk
 ```
 
+This installs the Gtk library and the packages it depends on: `ocglib`,
+`occairo`, `ocgio`, `ocgraphene`, `ocgdkpixbuf`, `ocpango`,
+`ocpangocairo`, `ocgdk` and `ocgsk`. Depend on each one you use directly in
+your dune file, for example `(libraries ocgtk ocgio)`.
+
+In `0.1~preview2` the `ocgtk` package held every library.
+
 ## Quick example
 
 ```ocaml
-open Ocgtk_gtk.Gtk
-module Button = Wrappers.Button
-
 let () =
-  ignore (GMain.init ());
-  let btn = Button.new_with_label "Click Me!" in
-  Button.set_label btn "Hello, GTK 4!"
+  ignore (Ocgtk.Main.init ());
+  let btn = Ocgtk.Button.new_with_label "Click Me!" in
+  btn#set_label "Hello, GTK 4!"
 ```
 
 ## Source and documentation

@@ -1,36 +1,36 @@
-open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
+open Ocgtk
+module Main = Ocgtk.Main
 (* Simple Text Editor
    Demonstrates: TextView, TextBuffer, Entry, ScrolledWindow, Button *)
 
 let () =
-  ignore (GMain.init ());
+  ignore (Main.init ());
 
   (* Create main window *)
-  let window_obj = Wrappers.Window.new_ () in
+  let window_obj = Raw.Window.new_ () in
   let window = new Window.window window_obj in
   window#set_title (Some "Simple Text Editor");
   window#set_default_size 600 400;
   ignore
     (window#on_close_request
        ~callback:(fun () ->
-         GMain.quit ();
+         Main.quit ();
          false)
        ());
 
   (* Create vertical box for layout *)
-  let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 5) in
+  let vbox = new Box.box (Raw.Box.new_ `VERTICAL 5) in
   window#set_child (Some (vbox :> Widget.widget_t));
 
   (* Create text buffer and view *)
-  let buffer = new Text_buffer.text_buffer (Wrappers.Text_buffer.new_ None) in
-  let text_view = new Text_view.text_view (Wrappers.Text_view.new_ ()) in
+  let buffer = new Text_buffer.text_buffer (Raw.Text_buffer.new_ None) in
+  let text_view = new Text_view.text_view (Raw.Text_view.new_ ()) in
   text_view#set_buffer (Some (buffer :> Text_buffer.text_buffer_t));
   text_view#set_wrap_mode `WORD;
 
   (* Add scrolled window for text view *)
   let scrolled =
-    new Scrolled_window.scrolled_window (Wrappers.Scrolled_window.new_ ())
+    new Scrolled_window.scrolled_window (Raw.Scrolled_window.new_ ())
   in
   scrolled#set_child (Some (text_view :> Widget.widget_t));
   vbox#append (scrolled :> Widget.widget_t);
@@ -40,17 +40,17 @@ let () =
   buffer#insert_at_cursor "Type your text here.\n" (-1);
 
   (* Entry for new text *)
-  let entry_ = new Entry.entry (Wrappers.Entry.new_ ()) in
+  let entry_ = new Entry.entry (Raw.Entry.new_ ()) in
   entry_#set_placeholder_text (Some "Type text to insert...");
   vbox#append (entry_ :> Widget.widget_t);
 
   (* Button row *)
-  let button_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 5) in
+  let button_box = new Box.box (Raw.Box.new_ `HORIZONTAL 5) in
   vbox#append (button_box :> Widget.widget_t);
 
   (* Insert text button *)
   let insert_btn =
-    new Button.button (Wrappers.Button.new_with_label "Insert Text")
+    new Button.button (Raw.Button.new_with_label "Insert Text")
   in
   button_box#append (insert_btn :> Widget.widget_t);
 
@@ -66,15 +66,13 @@ let () =
        ());
 
   (* Clear button *)
-  let clear_btn =
-    new Button.button (Wrappers.Button.new_with_label "Clear All")
-  in
+  let clear_btn = new Button.button (Raw.Button.new_with_label "Clear All") in
   button_box#append (clear_btn :> Widget.widget_t);
 
   ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)) ());
 
   (* Status label - updates on buffer changes *)
-  let status_label = new Label.label (Wrappers.Label.new_ None) in
+  let status_label = new Label.label (Raw.Label.new_ None) in
   let update_status () =
     let char_count = buffer#get_char_count () in
     status_label#set_label (Printf.sprintf "Characters: %d" char_count)
@@ -85,4 +83,4 @@ let () =
 
   (* Show window and run main loop *)
   window#present ();
-  GMain.main ()
+  Main.main ()

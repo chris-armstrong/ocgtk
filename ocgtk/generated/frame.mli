@@ -1,0 +1,41 @@
+class type frame_t = object
+  inherit
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  method get_child :
+    unit ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option
+
+  method get_label : unit -> string option
+  method get_label_align : unit -> float
+
+  method get_label_widget :
+    unit ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option
+
+  method set_child :
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_label : string option -> unit
+  method set_label_align : float -> unit
+
+  method set_label_widget :
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method as_frame : Raw.Frame.t
+end
+
+class frame : Raw.Frame.t -> frame_t
+
+val new_ : string option -> frame_t
