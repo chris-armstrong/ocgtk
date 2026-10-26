@@ -68,18 +68,29 @@ replace them.
   they need no library of their own).
 - **`Raw` is a generated `raw.ml` with one alias per class**:
   `module Point = Ocgraphene_raw.Point`,
-  `module Box = Ocgraphene_raw.Box_and__sphere.Box`. These are true module
+  `module Box = Ocgraphene_raw.Box` (a member of the cycle
+  `Box_and__sphere`, by its shim module; see below). These are true module
   aliases, so odoc links `Raw.Point.t` to the `Ocgraphene_raw` page (verified
   in the prototype). Two alternatives were rejected:
-  - `include Ocgraphene_raw` does not compile: it exposes only the raw
-    library's top-level modules, so classes that live inside a cluster
-    (`Raw.Vec3`, `Raw.Plane`, ...) are unbound (tried in the prototype).
+  - `include Ocgraphene_raw` did not compile in the prototype: it exposes
+    only the raw library's top-level modules, so classes that lived only
+    inside a cluster (`Raw.Vec3`, `Raw.Plane`, ...) were unbound. The shims
+    below would fix that, but it was not retried.
   - `module Raw = Ocgraphene_raw` as a single alias can only be written in
     `Ocgraphene`'s main module, which dune generates. A source file cannot
     itself be an alias for another library's module.
 
   Hand-written layer 1 modules (`raw/core/*.ml`) are listed in `raw.ml` the
   same way: `Ocgio.Raw.Gio_volume_monitor_core`.
+- **Each member of a cycle has its own layer 1 module** in the raw library,
+  beside the combined module: `raw/generated/file.ml` is
+  `include App_info_cycle_64c425a0.File`, and `file.mli` is
+  `include module type of struct include App_info_cycle_64c425a0.File end`,
+  so `Ocgio_raw.File.t` is the same type. Other namespaces and `raw.ml` use
+  that path, so no cluster name (whose hash changes with the cycle's
+  membership) appears outside its own namespace, and reference files need
+  not record clusters. Within the namespace, layer 1 keeps the cluster path:
+  the shims depend on the combined module.
 - **The raw and main libraries open `Ocglib`** (`-open Ocglib` in the
   library flags) instead of qualifying `Gobject.` paths. Both layers need
   it: layer 2 names `Gobject` in gio (37 of 175 modules), gdk (11), gtk
@@ -591,8 +602,8 @@ PR instead.
    `<pkg>/raw/generated/`; enums to `<pkg>/enums/generated/`; layer 2 to
    `<pkg>/generated/` without the `G` prefix.
 2. Stop emitting `<Ns>.ml/.mli` and `ocgtk_<ns>.ml`. Emit `raw.ml` (one
-   alias per class, clusters flattened, including `*_cycle_<hash>`
-   clusters, plus one per hand-written `raw/core` module) and the enums
+   alias per class, a cycle member by its shim module (see Decisions), plus
+   one per hand-written `raw/core` module) and the enums
    re-export. No main modules: dune generates them (see Decisions). The
    library synopsis that `ocgtk_<ns>.ml` carried moves to the package's
    `index.mld` (phase 4).
@@ -637,8 +648,9 @@ phase 3's PR.
   updated `Dependency Includes` and `Header Pipeline` tests. `Library
   Layout` (5 tests) runs `gir_gen.exe`: the three output directories, no
   `<Ns>.ml`, `ocgtk_<ns>.ml` or `G`-prefixed module, stale files removed,
-  `raw/core` kept and aliased in `raw.ml`, and `cr_cluster` in the real Gio
-  references.
+  `raw/core` kept and aliased in `raw.ml`, and a shim module for each member
+  of a cycle. A further unit test checks the shim's implementation and
+  strengthened signature.
 - Against the prototype (`proto/ocglib-ocgraphene` at `aa4c71cf`), for
   graphene, gio and gdkpixbuf after ocamlformat on both, every `.ml`,
   `.mli`, `.c` and `.h` file is identical. The differences: `dune.inc` has
@@ -664,11 +676,19 @@ phase 3's PR.
 
 Changes to the steps above:
 
-- **Reference files name each cycle member's combined module**
-  (`cr_cluster`). Layer 1 must reach another namespace's cycle members
-  through it (Gtk names `Ocgio_raw.App_info_cycle_64c425a0.File.t` 72
-  times); `references` computes the module groups exactly as `generate`
-  does.
+- **Each member of a cycle gets a layer 1 shim module** (see Decisions),
+  added after the comparison above: gio 20, gtk 21, gdk 14, graphene 10,
+  pango 8, gsk 3. Gtk now names `Ocgio_raw.File.t` (72 times) instead of
+  `Ocgio_raw.App_info_cycle_64c425a0.File.t`. Rechecked: against the
+  prototype the only differences beyond those above are the shims and
+  `raw.ml`'s shorter paths; the build and the prototype's tests pass as
+  before; across all nine namespaces no layer 1 names another namespace's
+  cluster, and a second script run leaves no diff. odoc on ocgio, measured
+  the same way on the prototype and on this output: every `inherit` links
+  as before, and the 14 unresolved spans other than `Stdlib.result` are
+  the same; 20 more pages (the shims, 710 against 690) bring 133 more
+  unresolved `Stdlib.result` spans (1112 against 979), from repeating
+  their member's signature.
 - **The header `copy` rules are generated** into `dune.inc`, since the
   generator knows both names; the hand-written `raw/dune` keeps
   `install_c_headers`.

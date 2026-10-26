@@ -191,8 +191,8 @@ dune exec gir_gen -- generate \
 ```
 
 A reference file lists the namespace's classes, interfaces, records, enums
-and constants. A class in a cycle carries its combined module (`cr_cluster`),
-which layer 1 of other namespaces must name: `Ocgio_raw.App_info_cycle_64c425a0.File.t`.
+and constants. A member of a cycle needs no special handling: it has its own
+layer 1 module (see Output Files), so other namespaces write `Ocgio_raw.File.t`.
 
 ### Generate with Override File
 
@@ -214,11 +214,12 @@ namespace, e.g. `ocgdkpixbuf` for GdkPixbuf):
 | `ml_*_gen.c` | `raw/generated/` | `oc<ns>.raw` (via the stubs library) | C bindings for classes, interfaces, records, enums |
 | `<class_name>.ml/.mli` | `raw/generated/` | `oc<ns>.raw` | Layer 1: abstract `t` and external declarations |
 | `<a>_and__<b>.ml/.mli`, `<a>_cycle_<hash>.ml/.mli` | `raw/generated/` | `oc<ns>.raw` | Layer 1 combined module for a cycle of classes (see dependency resolution below) |
+| `<member>.ml/.mli` | `raw/generated/` | `oc<ns>.raw` | Shim for each member of a cycle: `include App_info_cycle_<hash>.File`, with a signature keeping the types equal, so the member is `Ocgio_raw.File` |
 | `<ns>_decls.h` | `raw/generated/` | `oc<ns>.raw` (installed) | C type converter declarations; includes dependency namespaces' headers |
 | `dune.inc` | `raw/generated/` | | pkg-config rule, header copies, C stubs library `oc<ns>_raw_stubs` (in batches when large) |
 | `oc<ns>_enums.ml/.mli`, `dune` | `enums/generated/` | `oc<ns>.enums` | Enumeration and bitfield types (written even when empty) |
 | `<class_name>.ml/.mli` | `generated/` | `oc<ns>` | Layer 2: OCaml wrapper classes, one module per class (no prefix); members of a cycle have a combined module plus one shim each |
-| `raw.ml` | `generated/` | `oc<ns>` | `module Point = Ocgraphene_raw.Point`, one alias per layer 1 module (clusters flattened) and per `raw/core` module |
+| `raw.ml` | `generated/` | `oc<ns>` | `module Point = Ocgraphene_raw.Point`, one alias per class (a cycle member by its shim) and per `raw/core` module |
 | `enums.ml` | `generated/` | `oc<ns>` | `include Oc<ns>_enums` |
 | `constants.ml/.mli` | `generated/` | `oc<ns>` | Pure-OCaml `let` bindings for GIR `<constant>` elements (omitted when the namespace has none, e.g. Cairo/Gsk/PangoCairo) |
 | `dune` | `generated/` | `oc<ns>` | The main library: depends on its raw and enums libraries and other namespaces' main libraries, opens `Ocglib` |
@@ -234,7 +235,7 @@ Module paths in generated code depend on the library the code belongs to
 |---|---|---|
 | Same-namespace class | `Point.t`, `Box_and__sphere.Box.t` | `Raw.Point.t`, `Raw.Box.t` |
 | Same-namespace layer 2 class | | `Point.point_t` |
-| Other namespace's class | `Ocgio_raw.Icon.t` | `Ocgio.Raw.Icon.t`, layer 2 `Ocgio.Icon.icon_t` |
+| Other namespace's class | `Ocgio_raw.Icon.t`, `Ocgio_raw.File.t` (cycle member) | `Ocgio.Raw.Icon.t`, layer 2 `Ocgio.Icon.icon_t` |
 | Same-namespace enum | `Ocgtk_enums.orientation` | `Enums.orientation` |
 | Other namespace's enum | `Ocgdk_enums.modifiertype` | `Ocgdk.Enums.modifiertype` |
 | Constants | | `Constants.x`, `Ocgdk.Constants.x` |
