@@ -17,7 +17,7 @@ let namespace_macro_kind namespace =
   | "Graphene" ->
       Ok (EncodeComparison ("GRAPHENE_VERSION", "GRAPHENE_ENCODE_VERSION"))
   (* Cairo needs an encode comparison macro too *)
-  | "Cairo" -> Ok (EncodeComparison ("CAIRO_VERSION", "CAIRO_VERSION_ENCODE"))
+  | "cairo" -> Ok (EncodeComparison ("CAIRO_VERSION", "CAIRO_VERSION_ENCODE"))
   | other -> Fmt.error "Unknown namespace: %s" other
 
 (** Map a user-supplied (case-insensitive) library name to the canonical GIR
@@ -33,7 +33,7 @@ let normalize_namespace s =
   | "gio" | "glib" -> Ok "Gio"
   | "gdkpixbuf" | "gdk-pixbuf" -> Ok "GdkPixbuf"
   | "graphene" -> Ok "Graphene"
-  | "cairo" -> Ok "Cairo"
+  | "cairo" -> Ok "cairo"
   | _ ->
       Fmt.error
         "Unknown library name '%s'. Expected one of: gtk, gdk, gsk, pango, \

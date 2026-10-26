@@ -178,9 +178,44 @@ let test_non_opaque_record_in_property () =
          C_validation.calls_c_function f "GtkRectangle_val")
        c_functions)
 
+let versioned_record_gir =
+  wrap_namespace
+    {|
+    <record name="VersionedRec" c:type="GtkVersionedRec" version="4.14" glib:type-name="GtkVersionedRec" glib:get-type="gtk_versioned_rec_get_type">
+      <field name="width"><type name="gint" c:type="gint"/></field>
+    </record>
+|}
+
+let test_versioned_record_get_type_has_fallback () =
+  let output_dir =
+    run_integration_test ~gir_content:versioned_record_gir
+      ~class_names:[ "VersionedRec" ] ~test_name:"versioned_record" ()
+  in
+  let c_content = read_file (stub_c_file output_dir "VersionedRec") in
+  let get_type_stubs =
+    C_parser.parse_c_code c_content
+    |> List.filter (fun (f : C_ast.c_function) ->
+        String.equal f.name "ml_gtk_versioned_rec_get_type")
+  in
+  assert_true "get_type stub defined in both #if branches"
+    (List.length get_type_stubs = 2);
+  assert_true "one get_type stub calls the GType function"
+    (List.exists
+       (fun f -> C_validation.calls_c_function f "gtk_versioned_rec_get_type")
+       get_type_stubs);
+  (* The test C parser reads the [>=] in the message as an assignment, so the
+     fallback's call is checked as text. *)
+  assert_true "the other get_type stub fails at run time"
+    (String.split_on_char '\n' c_content
+    |> List.exists (fun line ->
+        String.equal (String.trim line)
+          "caml_failwith(\"VersionedRec requires GTK >= 4.14\");"))
+
 let tests =
   [
     Alcotest.test_case "Record type support" `Quick test_record_support;
+    Alcotest.test_case "Versioned record get_type has fallback" `Quick
+      test_versioned_record_get_type_has_fallback;
     Alcotest.test_case "Non-opaque record functions" `Quick
       test_non_opaque_record_functions;
     Alcotest.test_case "Opaque vs non-opaque records" `Quick

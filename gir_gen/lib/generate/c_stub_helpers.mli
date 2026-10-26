@@ -245,6 +245,16 @@ val emit_fallback_record_method_stub :
   string
 (** Emit a fallback stub for a record method when class version check fails *)
 
+val emit_fallback_get_type_stub :
+  ctx:Types.generation_context ->
+  class_name:string ->
+  ml_name:string ->
+  version:Version_guard.version ->
+  string
+(** Emit a fallback stub for the [get_type] wrapper when the class version check
+    fails, so the OCaml [gtype] external still links against an older library.
+*)
+
 val emit_with_member_guard :
   ctx:Types.generation_context ->
   ?version_namespace:string option ->

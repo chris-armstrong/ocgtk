@@ -214,14 +214,46 @@ let validate_body_elements ~entity_name ~valid_kinds body =
   in
   check body
 
+let entity_action_error ~entity_name message =
+  Error (Invalid_format { location = entity_name; message })
+
+(** Extract the entity-level [(ignore)] or [(version "X.Y")] marker from an
+    entity body. The cross-namespace form is rejected: the entity-level guard
+    always uses the entity's own namespace, so the qualifier would be dropped.
+*)
+let extract_entity_action ~entity_name body =
+  let version_args =
+    List.filter_map
+      (function
+        | Sexp.List (Sexp.Atom "version" :: args) -> Some args | _ -> None)
+      body
+  in
+  match (has_ignore_marker body, version_args) with
+  | false, [] -> Ok None
+  | true, [] -> Ok (Some Ignore)
+  | true, _ :: _ ->
+      entity_action_error ~entity_name
+        "Cannot combine (ignore) and (version ...) on the same entity"
+  | false, _ :: _ :: _ ->
+      entity_action_error ~entity_name
+        "Expected at most one (version ...) on an entity"
+  | false, [ args ] -> (
+      let* action = parse_version_spec ~comp_name:entity_name args in
+      match action with
+      | Set_version { vs_namespace = Some _; _ } ->
+          entity_action_error ~entity_name
+            "Entity-level (version (lib \"X.Y\")) is not supported; use \
+             (version \"X.Y\")"
+      | Set_version { vs_namespace = None; _ } | Ignore -> Ok (Some action))
+
 (** Parse the common header shared by all entity overrides: the entity name and
-    optional ignore/action marker. Returns [(name, action_opt, body)] on
+    optional ignore/version marker. Returns [(name, action_opt, os, body)] on
     success. *)
 let parse_entity_header ~kind sexp =
   match sexp with
   | Sexp.List (Sexp.Atom k :: Sexp.Atom name :: body) when String.equal k kind
     ->
-      let action = if has_ignore_marker body then Some Ignore else None in
+      let* action = extract_entity_action ~entity_name:name body in
       let* os = extract_os_from_body ~context:name body in
       Ok (name, action, os, body)
   | _ ->

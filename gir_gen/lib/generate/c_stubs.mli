@@ -168,6 +168,13 @@ val emit_fallback_record_method_stub :
   Types.gir_method ->
   string
 
+val emit_fallback_get_type_stub :
+  ctx:Types.generation_context ->
+  class_name:string ->
+  ml_name:string ->
+  version:Version_guard.version ->
+  string
+
 val emit_with_member_guard :
   ctx:Types.generation_context ->
   ?version_namespace:string option ->
