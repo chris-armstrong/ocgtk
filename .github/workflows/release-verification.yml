@@ -7,7 +7,7 @@ on:
     tags: ['v*']
 
 env:
-  OCAML_VERSION: '5.3.0'
+  OCAML_VERSION: '5.5.2'
   OPAM_VERSION: '2.5.0'
 
 permissions:
@@ -31,16 +31,16 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocglib/ ocgtk/
+      - name: Test the bindings
+        run: opam exec -- xvfb-run -a dune test
 
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
@@ -58,16 +58,42 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocglib/ ocgtk/
+      - name: Test the bindings
+        run: opam exec -- xvfb-run -a dune test
+
+  # ── OCaml 4.14 (oldest supported compiler) ──────────────────────────────────
+  # The packages declare `ocaml >= 4.14`; every other job uses OCAML_VERSION.
+  # gir_gen needs OCaml >= 5.3, so this job installs only the binding packages,
+  # as opam would for a user: each built with `dune build -p <pkg>` against
+  # the ones before it, running its own tests (no display: the GTK tests that
+  # need one skip themselves).
+  ocaml-4-14:
+    name: OCaml 4.14 (Ubuntu 24.04)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc make m4 patch unzip bzip2 curl git pkg-config perl diffutils rsync \
+            libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: '4.14'
+          opam-pin: false
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+      - name: Install every package with its tests
+        run: opam install -y --with-test .
 
   # ── APT-based containers (Ubuntu 26.04, 26.10, Debian 12, 13) ───────────────
   linux-apt:
@@ -112,11 +138,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -125,10 +151,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocglib/ ocgtk/
+          xvfb-run -a dune test
 
   # ── Fedora containers (Fedora 43, Fedora 44) ─────────────────────────────────
   linux-fedora:
@@ -167,11 +193,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -180,10 +206,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocglib/ ocgtk/
+          xvfb-run -a dune test
 
   # ── CentOS Stream containers (Stream 9, Stream 10) ───────────────────────────
   #
@@ -232,11 +258,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -245,10 +271,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          ${{ matrix.display_run }} dune test ocglib/ ocgtk/
+          ${{ matrix.display_run }} dune test
 
   # ── openSUSE containers (Leap 16.0, Tumbleweed) ──────────────────────────────
   linux-opensuse:
@@ -287,11 +313,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -300,10 +326,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocglib/ ocgtk/
+          xvfb-run -a dune test
 
   # ── Alpine 3.24 ──────────────────────────────────────────────────────────────
   linux-alpine:
@@ -334,11 +360,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -347,10 +373,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocglib/ ocgtk/
+          xvfb-run -a dune test
 
   # ── Arch Linux (rolling) ─────────────────────────────────────────────────────
   linux-arch:
@@ -381,11 +407,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -394,10 +420,10 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocglib/ ocgtk/
+          xvfb-run -a dune test
 
   # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
   macos:
@@ -410,16 +436,16 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- dune test ocglib/ ocgtk/
+      - name: Test the bindings
+        run: opam exec -- dune test
 
   # ── macOS conf packages (Homebrew depexts) ───────────────────────────────────
   #
@@ -477,14 +503,14 @@ jobs:
             opam init --disable-sandboxing -y --bare
             opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
             eval $(opam env)
-            opam pin add -n conf-gtk4 conf-gtk4
-            opam install --deps-only --with-test -y . ./ocgtk ./gir_gen
+            for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+            opam install --deps-only --with-test -y . ./gir_gen
             dune build
             dune test gir_gen/
             # xvfb-run is not available on FreeBSD; start Xvfb manually
             Xvfb :99 -screen 0 1280x1024x24 &
             sleep 1
-            DISPLAY=:99 dune test ocglib/ ocgtk/
+            DISPLAY=:99 dune test
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
@@ -527,29 +553,30 @@ jobs:
           windows-compiler: mingw
           windows-environment: msys2
 
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only -y . ./ocgtk
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only -y .
 
       - name: Build
-        run: opam exec -- dune build @ocgtk/install
+        run: opam exec -- dune build @install
 
   # ── Package + publish release ────────────────────────────────────────────────
   #
   # Only fires on an actual tag push (not workflow_dispatch), and only after
-  # every platform verification job above has passed. Builds a tarball whose
-  # root is the `ocgtk/` subtree (so dune-project / *.install end up at the
-  # tarball root, where opam expects them) plus LICENSE/LGPL, and publishes it
-  # as a GitHub Release asset. opam-repository submissions must point url.src
-  # at this asset, not GitHub's auto-generated "Source code" archive, which
-  # still contains the whole monorepo.
+  # every platform verification job above has passed. Builds a tarball of the
+  # repository root (the dune-project and every package's .opam file) without
+  # the development-only directories, and publishes it as a GitHub Release
+  # asset. opam-repository submissions must point url.src at this asset, not
+  # GitHub's auto-generated "Source code" archive, which still contains the
+  # generator and the GIR files.
   package:
     name: Package release tarball
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
       - ubuntu-22
       - ubuntu-24
+      - ocaml-4-14
       - linux-apt
       - linux-fedora
       - linux-centos
@@ -578,7 +605,7 @@ jobs:
           # directory stays out unless added here.
           git archive "$GITHUB_REF_NAME" -- \
             dune-project ':(glob)*.opam' configurator ':(glob)oc*/**' \
-            LICENSE LGPL README.md CHANGELOG.md | tar -x -C "$STAGE"
+            LICENSE LGPL README.md CHANGELOG.md MIGRATION.md | tar -x -C "$STAGE"
 
           tar -czf "$PKG.tar.gz" -C "$(dirname "$STAGE")" "$PKG"
           sha256sum "$PKG.tar.gz" > "$PKG.tar.gz.sha256"

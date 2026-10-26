@@ -6,4 +6,4 @@ set -euo pipefail
 eval $(opam env)
 cd /workspace
 dune test gir_gen/ --build-dir /build
-exec xvfb-run dune test ocglib/ ocgtk/ --build-dir /build
+exec xvfb-run dune test --build-dir /build
