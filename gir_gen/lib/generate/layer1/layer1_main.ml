@@ -90,6 +90,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
     ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type () : string
     =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -191,6 +192,7 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
     ~parent_chain_for_entity ?(from_gobject_c_name_for_entity = fun _ -> None)
     () : string =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";

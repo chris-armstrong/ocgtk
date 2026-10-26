@@ -263,13 +263,14 @@ let test_same_ns_enum_orientation () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"Orientation enum" result @@ fun m ->
-  Alcotest.(check string) "ocaml_type" "Gtk_enums.orientation" m.ocaml_type;
+  Alcotest.(check string) "ocaml_type" "Ocgtk_enums.orientation" m.ocaml_type;
   Alcotest.(check string)
-    "getter_expr" "Gtk_enums.orientation_of_int (Gobject.Value.get_enum_int v)"
+    "getter_expr"
+    "Ocgtk_enums.orientation_of_int (Gobject.Value.get_enum_int v)"
     m.getter_expr;
   Alcotest.(check string)
     "setter_expr"
-    "Gobject.Value.set_enum_int v (Gtk_enums.orientation_to_int x)"
+    "Gobject.Value.set_enum_int v (Ocgtk_enums.orientation_to_int x)"
     m.setter_expr
 
 let test_cross_ns_bitfield_modifiertype () =
@@ -280,15 +281,14 @@ let test_cross_ns_bitfield_modifiertype () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"Gdk.ModifierType bitfield" result @@ fun m ->
-  Alcotest.(check string)
-    "ocaml_type" "Ocgtk_gdk.Gdk_enums.modifiertype" m.ocaml_type;
+  Alcotest.(check string) "ocaml_type" "Ocgdk_enums.modifiertype" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr"
-    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    "Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
     m.getter_expr;
   Alcotest.(check string)
     "setter_expr"
-    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    "Gobject.Value.set_flags_int v (Ocgdk_enums.modifiertype_to_int x)"
     m.setter_expr
 
 let test_glib_variant_maps_to_gvariant () =
@@ -338,8 +338,7 @@ let test_cross_ns_gobject_gio_file () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
-  Alcotest.(check string)
-    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t" m.ocaml_type;
+  Alcotest.(check string) "ocaml_type" "Ocgio_raw.File.t" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object_exn v %GTYPE%" m.getter_expr;
   Alcotest.(check string)
@@ -353,8 +352,7 @@ let test_cross_ns_gobject_gio_file_nullable () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"cross-ns GObject class nullable" result @@ fun m ->
-  Alcotest.(check string)
-    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t option" m.ocaml_type;
+  Alcotest.(check string) "ocaml_type" "Ocgio_raw.File.t option" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v %GTYPE%" m.getter_expr;
   Alcotest.(check string)
@@ -420,22 +418,22 @@ let tests =
     Alcotest.test_case "gchar* maps to string" `Quick
       test_gchar_star_maps_to_string;
     Alcotest.test_case "utf8 maps to string" `Quick test_utf8_maps_to_string;
-    Alcotest.test_case "same-ns enum Orientation -> Gtk_enums.orientation"
+    Alcotest.test_case "same-ns enum Orientation -> Ocgtk_enums.orientation"
       `Quick test_same_ns_enum_orientation;
     Alcotest.test_case
-      "cross-ns bitfield Gdk.ModifierType -> Ocgtk_gdk.Gdk_enums.modifiertype"
-      `Quick test_cross_ns_bitfield_modifiertype;
+      "cross-ns bitfield Gdk.ModifierType -> Ocgdk_enums.modifiertype" `Quick
+      test_cross_ns_bitfield_modifiertype;
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
     Alcotest.test_case "same-ns GObject class -> Widget.t" `Quick
       test_same_ns_gobject_class;
     Alcotest.test_case "same-ns GObject class nullable -> Widget.t option"
       `Quick test_same_ns_gobject_class_nullable;
-    Alcotest.test_case "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t"
-      `Quick test_cross_ns_gobject_gio_file;
+    Alcotest.test_case "cross-ns GObject class -> Ocgio_raw.File.t" `Quick
+      test_cross_ns_gobject_gio_file;
     Alcotest.test_case
-      "cross-ns GObject class nullable -> Ocgtk_gio.Wrappers.File.t option"
-      `Quick test_cross_ns_gobject_gio_file_nullable;
+      "cross-ns GObject class nullable -> Ocgio_raw.File.t option" `Quick
+      test_cross_ns_gobject_gio_file_nullable;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick

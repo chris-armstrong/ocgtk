@@ -24,7 +24,7 @@ let require_type ~location ~gir_type_name (type_opt : string option) : string =
 
 let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
-  { layer1; layer2 = Utils.layer2_module_name class_name }
+  { layer1; layer2 = Module_paths.layer2_module_name class_name }
 
 let get_property_filters ~ctx ~class_name ~methods properties =
   {

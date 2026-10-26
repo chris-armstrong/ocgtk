@@ -270,6 +270,7 @@ val make_cross_reference_entity :
   ?cr_name:string ->
   ?cr_type:Gir_gen_lib.Types.cross_reference_type ->
   ?cr_c_type:string ->
+  ?cr_cluster:string ->
   unit ->
   Gir_gen_lib.Types.cross_reference_entity
 
@@ -300,6 +301,7 @@ val make_generation_context :
   ?cross_references:
     Gir_gen_lib.Types.generation_context_namespace_cross_references
     Gir_gen_lib.Types.StringMap.t ->
+  ?target_library:Gir_gen_lib.Types.target_library ->
   unit ->
   Gir_gen_lib.Types.generation_context
 

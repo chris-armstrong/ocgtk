@@ -337,8 +337,8 @@ let make_cross_reference_type ?parent = function
   | `Constant -> Crt_Constant
 
 let make_cross_reference_entity ?(cr_name = "TestEntity")
-    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") () =
-  { cr_name; cr_type; cr_c_type }
+    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") ?cr_cluster () =
+  { cr_name; cr_type; cr_c_type; cr_cluster }
 
 let make_cross_reference_namespace ?(cr_namespace_name = "Test")
     ?(cr_namespace_packages = []) ?(cr_namespace_includes = [])
@@ -371,7 +371,7 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     ?(repository = make_gir_repository ()) ?(classes = []) ?(interfaces = [])
     ?(enums = []) ?(bitfields = []) ?(records = []) ?(constants = [])
     ?module_groups ?(current_cycle_classes = [])
-    ?(cross_references = StringMap.empty) () =
+    ?(cross_references = StringMap.empty) ?(target_library = Raw_library) () =
   let module_groups_table =
     match module_groups with
     | None -> Hashtbl.create 0
@@ -392,6 +392,7 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     module_groups = module_groups_table;
     current_cycle_classes;
     cross_references;
+    target_library;
   }
 
 let void_type = make_gir_type ~name:"none" ~c_type:"void" ()

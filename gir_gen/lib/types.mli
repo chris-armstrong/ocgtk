@@ -370,6 +370,9 @@ type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
+  cr_cluster : string option; [@sexp.option]
+      (* Combined module holding the entity's layer 1 module when it is part
+         of a cycle (e.g. [App_info_cycle_64c425a0]); [None] otherwise *)
 }
 
 val cross_reference_entity_of_sexp : Sexplib0.Sexp.t -> cross_reference_entity
@@ -449,6 +452,11 @@ type generation_context_namespace_cross_references = {
   ncr_entities : cross_reference_entity StringMap.t;
 }
 
+(** Each namespace's generated OCaml lives in two libraries: layer 1 in the raw
+    library ([Ocgio_raw]), layer 2 in the main library ([Ocgio]). The same type
+    is named differently from each (see [Module_paths]). *)
+type target_library = Raw_library | Main_library
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -463,4 +471,6 @@ type generation_context = {
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
   cross_references : generation_context_namespace_cross_references StringMap.t;
+  target_library : target_library;
+      (* Library the code being generated belongs to; decides module paths *)
 }

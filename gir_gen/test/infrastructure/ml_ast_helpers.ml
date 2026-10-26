@@ -502,7 +502,7 @@ let rec longident_is_hierarchy_type (lid : Longident.t) : bool =
       in
       s <> "" && Char.uppercase_ascii s.[0] = s.[0] && s.[0] <> '_'
   | Longident.Ldot (parent, _) ->
-      (* Dotted path like GWidget.widget - check if parent is hierarchy type *)
+      (* Dotted path like Widget.widget - check if parent is hierarchy type *)
       longident_is_hierarchy_type parent
   | Longident.Lapply _ -> false
 

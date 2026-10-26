@@ -26,10 +26,9 @@ let get_dependency_namespaces cross_references =
   |> List.filter ~f:(fun ns -> not (List.mem ~set:base_namespaces ns))
   |> List.sort_uniq ~cmp:String.compare
 
-(* Generate #include directives for dependency namespaces.
-   Headers are included as "generated/<ns>_decls.h" because OCaml automatically
-   passes -I path/to/<library> when you depend on a library, so the full path
-   resolves to path/to/<library>/generated/<ns>_decls.h *)
+(* Generate #include directives for dependency namespaces. Each raw library
+   installs its <ns>_decls.h in its own directory, which dune passes as -I to
+   anything depending on it, in the workspace and installed alike. *)
 let generate_dependency_includes dependency_namespaces =
   match dependency_namespaces with
   | [] -> ""
@@ -37,7 +36,7 @@ let generate_dependency_includes dependency_namespaces =
       deps
       |> List.map ~f:(fun ns ->
           let ns_lower = String.lowercase_ascii ns in
-          Fmt.str "#include \"generated/%s_decls.h\"" ns_lower)
+          Fmt.str "#include \"%s_decls.h\"" ns_lower)
       |> String.concat ~sep:"\n"
       |> fun s -> s ^ "\n"
 
@@ -155,7 +154,7 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   Buffer.add_string buf "\n";
   (* Include manually-maintained core header for namespace-specific additions
      (e.g. UNIX headers not present in older GIR versions) *)
-  bprintf buf "#include \"../core/%s_core.h\"\n" ns_lower;
+  bprintf buf "#include \"%s_core.h\"\n" ns_lower;
   Buffer.add_string buf "\n";
   bprintf buf "#endif /* _%s_decls_h_ */\n" ns_lower;
   Buffer.contents buf

@@ -321,9 +321,9 @@ let test_record_copy_parses_successfully () =
     (List.mem "ml_gir_record_val_ptr" calls)
 
 (* Bug 10: Module name capitalization must match dune convention
-   Dune lowercases all characters after the first in module names.
-   So "GdkPixbuf" becomes "Gdkpixbuf" in the module name.
-   Therefore, enums_module_name must return "Gdkpixbuf_enums" not "GdkPixbuf_enums". *)
+   Dune lowercases all characters after the first in module names, and the
+   enums library of GdkPixbuf is ocgdkpixbuf_enums, so its module is
+   "Ocgdkpixbuf_enums", not "OcGdkPixbuf_enums". *)
 let test_enum_module_name_matches_dune_convention () =
   (* Create a context with a multi-word namespace like GdkPixbuf *)
   let namespace =
@@ -338,29 +338,13 @@ let test_enum_module_name_matches_dune_convention () =
       ~repository:(Type_factory.make_gir_repository ())
       ()
   in
-  (* Create a dummy enum for the test *)
-  let dummy_enum =
-    Type_factory.make_gir_enum ~enum_name:"Colorspace"
-      ~enum_c_type:"GdkColorspace" ()
+  let module_name =
+    Gir_gen_lib.Module_paths.namespace_enums_module ~ctx "GdkPixbuf"
   in
-  (* Check that the module name follows dune convention *)
-  let module_name = Gir_gen_lib.Utils.enums_module_name ctx dummy_enum in
   Alcotest.(check string)
     "Enums module name follows dune convention (first char uppercase, rest \
      lowercase)"
-    "Gdkpixbuf_enums" module_name;
-
-  (* Also test bitfields_module_name *)
-  let dummy_bitfield =
-    Type_factory.make_gir_bitfield ~bitfield_name:"PixbufRotation"
-      ~bitfield_c_type:"GdkPixbufRotation" ()
-  in
-  let bitfield_module_name =
-    Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield
-  in
-  Alcotest.(check string)
-    "Bitfields module name follows dune convention" "Gdkpixbuf_enums"
-    bitfield_module_name
+    "Ocgdkpixbuf_enums" module_name
 
 (* Bug 8: Class with no c:type attribute should use namespace c:identifier-prefixes,
    not hardcoded "Gtk" prefix. E.g., GdkPixbufNonAnim not GtkNonAnim. *)
@@ -783,7 +767,7 @@ let test_value_record_has_complete_forward_decls () =
 
   (* Read the forward declarations header *)
   let header_path =
-    Filename.concat (generated_dir output_dir) "testns_decls.h"
+    Filename.concat (raw_generated_dir output_dir) "testns_decls.h"
   in
   let header = read_file header_path in
 

@@ -60,30 +60,50 @@ let read_file filename =
   close_in ic;
   Bytes.to_string buf
 
-let generated_dir output_dir = Filename.concat output_dir "generated"
+(* Generated directories under a package directory (gir_gen's OUTPUT_DIR) *)
+let raw_generated_dir output_dir =
+  Filename.concat output_dir Gir_gen_lib.Module_paths.raw_generated_dir
+
+let enums_generated_dir output_dir =
+  Filename.concat output_dir Gir_gen_lib.Module_paths.enums_generated_dir
+
+let main_generated_dir output_dir =
+  Filename.concat output_dir Gir_gen_lib.Module_paths.main_generated_dir
+
+let rec remove_tree path =
+  match Sys.is_directory path with
+  | true ->
+      Array.iter
+        (fun f -> remove_tree (Filename.concat path f))
+        (Sys.readdir path);
+      Unix.rmdir path
+  | false -> Sys.remove path
+  | exception Sys_error _ -> ()
 
 let stub_c_file output_dir class_name =
-  Filename.concat (generated_dir output_dir)
+  Filename.concat
+    (raw_generated_dir output_dir)
     (Fmt.str "ml_%s_gen.c" (Gir_gen_lib.Utils.to_snake_case class_name))
 
-let g_wrapper_file output_dir class_name =
-  Filename.concat (generated_dir output_dir)
-    (Fmt.str "g%s.ml" (Gir_gen_lib.Utils.module_name_of_class class_name))
+let layer2_file output_dir class_name =
+  Filename.concat
+    (main_generated_dir output_dir)
+    (Gir_gen_lib.Module_paths.layer2_module_filename class_name ^ ".ml")
 
 let ml_file output_dir module_name =
-  Filename.concat (generated_dir output_dir) (module_name ^ ".ml")
+  Filename.concat (raw_generated_dir output_dir) (module_name ^ ".ml")
 
 let mli_file output_dir module_name =
-  Filename.concat (generated_dir output_dir) (module_name ^ ".mli")
+  Filename.concat (raw_generated_dir output_dir) (module_name ^ ".mli")
 
 let enum_file output_dir =
-  Filename.concat (generated_dir output_dir) "gtk_enums.mli"
+  Filename.concat (enums_generated_dir output_dir) "ocgtk_enums.mli"
 
 let enum_ml_file output_dir =
-  Filename.concat (generated_dir output_dir) "gtk_enums.ml"
+  Filename.concat (enums_generated_dir output_dir) "ocgtk_enums.ml"
 
 let enum_c_file output_dir =
-  Filename.concat (generated_dir output_dir) "ml_gtk_enums_gen.c"
+  Filename.concat (raw_generated_dir output_dir) "ml_gtk_enums_gen.c"
 
 (* ========================================================================= *)
 (* GIR XML Generation *)
@@ -411,6 +431,7 @@ let create_test_context () =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
   }
 
 let create_test_context_with_hierarchy () = create_test_context ()

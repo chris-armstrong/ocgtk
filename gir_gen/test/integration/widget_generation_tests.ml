@@ -120,7 +120,7 @@ let test_widget_generation () =
   Ml_validation.assert_value_exists_sig button_sig "set_label";
 
   (* High-level wrapper generation *)
-  let gbutton = g_wrapper_file output_dir "Button" in
+  let gbutton = layer2_file output_dir "Button" in
   assert_true "gButton.ml should be created" (file_exists gbutton);
   let gbutton_content = read_file gbutton in
   let gbutton_ast = Ml_ast_helpers.parse_implementation gbutton_content in
