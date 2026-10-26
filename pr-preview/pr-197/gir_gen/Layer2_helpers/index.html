@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Layer2_helpers (gir_gen.Layer2_helpers)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../index.html">Index</a> &#x00BB; <a href="../index.html">gir_gen</a> &#x00BB; Layer2_helpers</nav><header class="odoc-preamble"><h1>Module <code><span>Layer2_helpers</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_class_with_parent"><a href="#val-create_test_class_with_parent" class="anchor"></a><code><span><span class="keyword">val</span> create_test_class_with_parent : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="optlabel">?parent</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_parent_class"><a href="#val-create_parent_class" class="anchor"></a><code><span><span class="keyword">val</span> create_parent_class : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_child_class"><a href="#val-create_child_class" class="anchor"></a><code><span><span class="keyword">val</span> create_child_class : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_class_with_methods"><a href="#val-create_test_class_with_methods" class="anchor"></a><code><span><span class="keyword">val</span> create_test_class_with_methods : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">methods</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_method"><a href="#val-create_test_method" class="anchor"></a><code><span><span class="keyword">val</span> create_test_method : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_method_with_param"><a href="#val-create_test_method_with_param" class="anchor"></a><code><span><span class="keyword">val</span> create_test_method_with_param : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_method_with_params"><a href="#val-create_test_method_with_params" class="anchor"></a><code><span><span class="keyword">val</span> create_test_method_with_params : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">params</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_method_with_return"><a href="#val-create_test_method_with_return" class="anchor"></a><code><span><span class="keyword">val</span> create_test_method_with_return : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_method_throwing"><a href="#val-create_test_method_throwing" class="anchor"></a><code><span><span class="keyword">val</span> create_test_method_throwing : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_identifier</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_method">Gir_gen_lib.Types.gir_method</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_layer2_output"><a href="#val-validate_layer2_output" class="anchor"></a><code><span><span class="keyword">val</span> validate_layer2_output : 
+  <span><span class="label">output_dir</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">module_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">expected_types</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  string
+  * string
+  * <span class="xref-unresolved">Ppxlib_ast__Import</span>.Js.Ast.Parsetree.structure
+  * <span class="xref-unresolved">Ppxlib_ast__Import</span>.Js.Ast.Parsetree.signature</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_accessor_method"><a href="#val-validate_accessor_method" class="anchor"></a><code><span><span class="keyword">val</span> validate_accessor_method : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">accessor_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_inheritance"><a href="#val-validate_inheritance" class="anchor"></a><code><span><span class="keyword">val</span> validate_inheritance : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">child_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_method_generation"><a href="#val-validate_method_generation" class="anchor"></a><code><span><span class="keyword">val</span> validate_method_generation : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-check_mli_vs_ml_consistency"><a href="#val-check_mli_vs_ml_consistency" class="anchor"></a><code><span><span class="keyword">val</span> check_mli_vs_ml_consistency : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-check_externals_consistency"><a href="#val-check_externals_consistency" class="anchor"></a><code><span><span class="keyword">val</span> check_externals_consistency : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">external_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_function_signature_consistency"><a href="#val-validate_function_signature_consistency" class="anchor"></a><code><span><span class="keyword">val</span> validate_function_signature_consistency : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">func_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_conversion_methods"><a href="#val-validate_conversion_methods" class="anchor"></a><code><span><span class="keyword">val</span> validate_conversion_methods : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">from_type</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">to_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_base_type_conversion"><a href="#val-validate_base_type_conversion" class="anchor"></a><code><span><span class="keyword">val</span> validate_base_type_conversion : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_property_generation"><a href="#val-validate_property_generation" class="anchor"></a><code><span><span class="keyword">val</span> validate_property_generation : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">property_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_signal_generation"><a href="#val-validate_signal_generation" class="anchor"></a><code><span><span class="keyword">val</span> validate_signal_generation : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">signal_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_abstract_type_wrapper"><a href="#val-validate_abstract_type_wrapper" class="anchor"></a><code><span><span class="keyword">val</span> validate_abstract_type_wrapper : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_gobject_wrapper"><a href="#val-validate_gobject_wrapper" class="anchor"></a><code><span><span class="keyword">val</span> validate_gobject_wrapper : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_structural_type_parameter"><a href="#val-validate_structural_type_parameter" class="anchor"></a><code><span><span class="keyword">val</span> validate_structural_type_parameter : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">type_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">field_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">field_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_hierarchy_coercion"><a href="#val-validate_hierarchy_coercion" class="anchor"></a><code><span><span class="keyword">val</span> validate_hierarchy_coercion : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">function_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_idx</span>:int <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">expected_coercion</span>:<span class="xref-unresolved">Stdlib</span>.String.t <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_wrapped_return"><a href="#val-validate_wrapped_return" class="anchor"></a><code><span><span class="keyword">val</span> validate_wrapped_return : 
+  <span><span class="label">ml_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">function_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">wrapper_class</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_signal_handler_inheritance"><a href="#val-validate_signal_handler_inheritance" class="anchor"></a><code><span><span class="keyword">val</span> validate_signal_handler_inheritance : 
+  <span><span class="label">mli_ast</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">signal_handler_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_signal</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_signal"><a href="#val-create_test_signal" class="anchor"></a><code><span><span class="keyword">val</span> create_test_signal : <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span> <a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_signal_with_return"><a href="#val-create_test_signal_with_return" class="anchor"></a><code><span><span class="keyword">val</span> create_test_signal_with_return : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_signal_with_params"><a href="#val-create_test_signal_with_params" class="anchor"></a><code><span><span class="keyword">val</span> create_test_signal_with_params : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">return_type</span>:<a href="../Gir_gen_lib/Types/index.html#type-gir_type">Gir_gen_lib.Types.gir_type</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">params</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_param">Gir_gen_lib.Types.gir_param</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_class_with_signals"><a href="#val-create_test_class_with_signals" class="anchor"></a><code><span><span class="keyword">val</span> create_test_class_with_signals : 
+  <span><span class="label">name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">signals</span>:<span><a href="../Gir_gen_lib/Types/index.html#type-gir_signal">Gir_gen_lib.Types.gir_signal</a> list</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-gir_class">Gir_gen_lib.Types.gir_class</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_class_inherits"><a href="#val-validate_class_inherits" class="anchor"></a><code><span><span class="keyword">val</span> validate_class_inherits : 
+  <span><span class="label">structure</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_class</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_class_type_inherits"><a href="#val-validate_class_type_inherits" class="anchor"></a><code><span><span class="keyword">val</span> validate_class_type_inherits : 
+  <span><span class="label">signature</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_class_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_method_type_annotation"><a href="#val-validate_method_type_annotation" class="anchor"></a><code><span><span class="keyword">val</span> validate_method_type_annotation : 
+  <span><span class="label">structure</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.structure <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">expected_type</span>:<span class="xref-unresolved">Stdlib</span>.String.t <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-validate_method_type_annotation_sig"><a href="#val-validate_method_type_annotation_sig" class="anchor"></a><code><span><span class="keyword">val</span> validate_method_type_annotation_sig : 
+  <span><span class="label">signature</span>:<span class="xref-unresolved">Ppxlib</span>.Parsetree.signature <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">expected_type</span>:<span class="xref-unresolved">Stdlib</span>.String.t <span class="arrow">&#45;&gt;</span></span>
+  unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_gir_class_with_parent"><a href="#val-create_gir_class_with_parent" class="anchor"></a><code><span><span class="keyword">val</span> create_gir_class_with_parent : 
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_gir_method"><a href="#val-create_gir_method" class="anchor"></a><code><span><span class="keyword">val</span> create_gir_method : <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span> <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span> string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_gir_method_with_param"><a href="#val-create_gir_method_with_param" class="anchor"></a><code><span><span class="keyword">val</span> create_gir_method_with_param : 
+  <span><span class="label">method_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">c_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">param_type</span>:string <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-add_class_with_hierarchy"><a href="#val-add_class_with_hierarchy" class="anchor"></a><code><span><span class="keyword">val</span> add_class_with_hierarchy : 
+  <span><span class="label">context</span>:<a href="../Gir_gen_lib/Types/index.html#type-generation_context">Gir_gen_lib.Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">parent_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">layer2_module</span>:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">base_type</span>:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-generation_context">Gir_gen_lib.Types.generation_context</a></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-create_test_context_with_hierarchy_chain"><a href="#val-create_test_context_with_hierarchy_chain" class="anchor"></a><code><span><span class="keyword">val</span> create_test_context_with_hierarchy_chain : 
+  <span><span class="label">base_class</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">derived_classes</span>:<span>string list</span> <span class="arrow">&#45;&gt;</span></span>
+  <a href="../Gir_gen_lib/Types/index.html#type-generation_context">Gir_gen_lib.Types.generation_context</a></span></code></div></div></div></body></html>
