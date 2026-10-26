@@ -41,6 +41,5 @@
    :standard
    -Igenerated
    -Icore
-   -I../common
    (:include c_flags.sexp)))
  (libraries ocglib ocgtk_gio_generated_stubs))

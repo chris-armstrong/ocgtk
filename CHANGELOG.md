@@ -8,7 +8,7 @@ usable OCaml GTK 4 binding library.
 
 ### Packaging
 
-- **ocglib** — the GLib/GObject runtime (`Gobject`, `Gvariant`, `Gerror`,
+- **ocglib** — the GLib/GObject runtime (`Gobject`, `Gvariant`, `GError`,
   …) is a separate opam package and wrapped library, `ocglib`, that needs
   only GLib's development files, not GTK's. ocgtk depends on it and
   re-exports it as `Ocgtk.Common`.

@@ -1,6 +1,6 @@
 # Library layout — implementation plan
 
-> **Status: planned, not started.** Implements
+> **Status: phases 0 and 1 done.** Implements
 > [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
@@ -471,33 +471,11 @@ The prototype branch stays local.
 
 Phase 1 lands on `m3` on its own, so the rest of the tree must keep
 building: the generated dune files switch from `ocgtk.common` to `ocglib`
-and add `-open Ocglib`, a small generator change ahead of phase 2. If that
-turns out not to be small, phase 1 joins phase 3's PR instead.
+(a small generator change ahead of phase 2), and the hand-written ones add
+`-open Ocglib`. If that turns out not to be small, phase 1 joins phase 3's
+PR instead.
 
-**Steps 3 and 4 done** (2026-10-25, branch `layout-phase1`):
-
-- `ocglib/` is the wrapped library `ocglib` in a root `dune-project` that
-  declares only that package; `ocgtk/` keeps its own project until phase
-  3. `configurator/` moved to the root with it.
-- The generator change was small: the stub stanzas depend on `ocglib`,
-  drop `-I../common`, and run `../../../configurator`. Three new tests in
-  `dune_file_tests.ml`. `-open Ocglib` goes in the hand-written dune files
-  (`ocgtk/src/*/dune`, tests, examples), not the generated ones, because
-  the generated stub libraries have no OCaml modules. Regenerating after
-  the change left no diff.
-- `dune build -p ocglib @install` and its tests (`@ocglib/runtest`, 165
-  cases) pass in `ubuntu:24.04` with `libglib2.0-dev` and no GTK
-  (`gtk4.pc` absent).
-- Tests: 165 cases in 5 suites under `ocglib/`, 226 in 26 under `ocgtk/`.
-  Per suite, the same as the baseline (391 in 31).
-- `dune build @doc`: 0 warnings; `ocglib/index.mld` links all 16 modules.
-- `opam lint` passes for `ocglib.opam` and `ocgtk/ocgtk.opam`.
-- Every test command now runs `dune test ocglib/ ocgtk/`, and every
-  `opam install` adds `.` for `ocglib.opam`.
-- Not done yet: the release tarball (see phase 3), and CI on GitHub,
-  which runs when `layout-phase1` is pushed.
-
-**Step 1 done** (2026-10-25), apart from CI on GitHub:
+**Step 1 done** (2026-10-25):
 
 - The list is fixed (Supported platforms). `release-verification.yml` has
   a job per entry: native Ubuntu 22.04 and 24.04; container matrices for
@@ -508,7 +486,7 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
 - Each new container job's system-package install was run in its image:
   all succeed, and gtk4, the build tools and the X server runner
   (`xvfb-run`, or `xwfb-run` on Stream 10) are present. The opam build
-  and tests in the new jobs have not run yet.
+  and tests ran on GitHub (below).
 - `conf-gtk4` depexts: MacPorts, `rhel` and MSYS2 removed; `available:
   os != "win32"`. `opam lint` passes. Its version stays at 2; it is
   bumped when it is next published.
@@ -559,6 +537,31 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   FreeBSD job is disabled.
 - Nothing depends on the four packages yet; the namespace packages do from
   phase 3.
+
+**Steps 3 and 4 done** (2026-10-25, branch `layout-phase1`):
+
+- `ocglib/` is the wrapped library `ocglib` in a root `dune-project` that
+  declares only that package; `ocgtk/` keeps its own project until phase
+  3. `configurator/` moved to the root with it.
+- The generator change was small: the stub stanzas depend on `ocglib`,
+  drop `-I../common`, and run `../../../configurator`. Three new tests in
+  `dune_file_tests.ml`. `-open Ocglib` goes in the hand-written dune files
+  (`ocgtk/src/*/dune`, tests, examples), not the generated ones, because
+  the generated stub libraries have no OCaml modules. Regenerating after
+  the change left no diff.
+- `dune build -p ocglib @install` and its tests (`@ocglib/runtest`, 165
+  cases) pass in `ubuntu:24.04` with `libglib2.0-dev` and no GTK
+  (`gtk4.pc` absent).
+- Tests: 165 cases in 5 suites under `ocglib/`, 226 in 26 under `ocgtk/`.
+  Per suite, the same as the baseline (391 in 31).
+- `dune build @doc`: 0 warnings; `ocglib/index.mld` links all 16 modules.
+- `opam lint` passes for `ocglib.opam` and `ocgtk/ocgtk.opam`.
+- Every test command now runs `dune test ocglib/ ocgtk/`, and every
+  `opam install` adds `.` for `ocglib.opam`.
+- CI on GitHub (PR #195): `ci.yml` (Linux, macOS, lint) and
+  `doc-preview.yml` pass.
+- Not done: the release tarball, which leaves out `ocglib/` and
+  `configurator/` until phase 3.
 
 **Done when:**
 

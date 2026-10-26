@@ -21,7 +21,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Project Layout and Architecture
 
-This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`: the repo root formats `ocgtk/`; `gir_gen/` is a separate dune root with its own `.ocamlformat` — run `dune fmt` inside `gir_gen/` too (CI enforces `ocamlformat --check` on gir_gen sources).
+This is a dune workspace with three projects: the repo root (`ocglib/`, the GLib/GObject bindings), `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover all three. For `ocamlformat`: the repo root formats `ocglib/` and `ocgtk/`; `gir_gen/` is a separate dune root with its own `.ocamlformat` — run `dune fmt` inside `gir_gen/` too (CI enforces `ocamlformat --check` on gir_gen sources).
 
 [The architecture documentation](./architecture/README.md) describes the project layout and system architecture.
 

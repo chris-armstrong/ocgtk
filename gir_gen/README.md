@@ -747,7 +747,6 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 - `src/gtk/generated/ocgtk_gtk.ml` - Library wrapper module (`module Gtk = Gtk; include Gtk; module GMain = GMain`)
 
 ### Runtime Dependencies
-- `ocglib/gObj.ml` - Base `widget_impl` class for high-level wrappers
 - `ocglib/gobject.ml` - GObject type system, signal connection infrastructure
 
 ### External References
