@@ -12,7 +12,7 @@
  (targets c_flags.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    gio-2.0
    --pkg-optional
@@ -32,7 +32,7 @@
  (public_name ocgtk.gio)
  (synopsis "OCaml bindings for GIO")
  (wrapped true)
- (flags :standard -w -3-6-9-27-32-33-34-50)
+ (flags :standard -open Ocglib -w -3-6-9-27-32-33-34-50)
  (modules :standard)
  (foreign_stubs
   (language c)
@@ -41,6 +41,5 @@
    :standard
    -Igenerated
    -Icore
-   -I../common
    (:include c_flags.sexp)))
- (libraries ocgtk.common ocgtk_gio_generated_stubs))
+ (libraries ocglib ocgtk_gio_generated_stubs))

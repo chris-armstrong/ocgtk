@@ -11,30 +11,28 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Signed 16-bit integer ([gint16]).
-
-    Backed by [private int] — no heap allocation. Range: [-32768, 32767]. *)
+(** A non-negative integer representing a GLib [gsize] (equivalent to C
+    [size_t]). Values are guaranteed to be non-negative; use {!of_int} to
+    construct. *)
 
 type t = private int
 
 val of_int : int -> t
-(** [of_int n] converts [n] to an [Int16.t].
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < -32768 || n > 32767]. *)
+(** [of_int n] is [n] as a [gsize]. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+    if [n < 0]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
 
-val min_int : t
-(** The minimum value: [-32768]. *)
+val zero : t
+(** The value [0]. *)
 
 val max_int : t
-(** The maximum value: [32767]. *)
-
-val minus_one : t
-(** The value [-1]. *)
+(** The maximum value: [Stdlib.max_int]. *)
 
 val min_value : int
-(** The minimum value representable as an [int], equal to [to_int min_int]. *)
+(** The minimum value representable as an [int]: [0]. *)
 
 val max_value : int
-(** The maximum value representable as an [int], equal to [to_int max_int]. *)
+(** The maximum value representable as an [int]: [Stdlib.max_int]. *)

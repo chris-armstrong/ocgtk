@@ -1,0 +1,26 @@
+{0 ocglib index}
+
+The {b ocglib} package provides hand-written OCaml bindings to GLib and
+GObject, and the C runtime support that the generated bindings in the other
+packages share. Its library is wrapped: modules are reached as
+[Ocglib.Gobject], [Ocglib.UInt8], and so on.
+
+{1 Modules}
+
+{ul
+{- {!Ocglib.Bounded_int} — namespace re-exporting all the bounded integer modules below. }
+{- {!Ocglib.GError} — the error type for GTK/GLib functions. }
+{- {!Ocglib.Glib} — GLib's main event loop, timeouts and idle callbacks. }
+{- {!Ocglib.Glib_bytes} — [GBytes], an immutable reference-counted byte buffer. }
+{- {!Ocglib.Gobject} — the GObject type system, properties and signals. }
+{- {!Ocglib.Gsize} — a non-negative [gsize] ([size_t]). }
+{- {!Ocglib.Gvariant} — [GVariant] structured data serialization. }
+{- {!Ocglib.Gvariant_type} — [GVariant] type descriptions. }
+{- {!Ocglib.Int16} — signed 16-bit integer ([gint16]). }
+{- {!Ocglib.Int32} — signed 32-bit integer ([gint32]). }
+{- {!Ocglib.Int8} — signed 8-bit integer ([gint8]). }
+{- {!Ocglib.UInt16} — unsigned 16-bit integer ([guint16]). }
+{- {!Ocglib.UInt32} — unsigned 32-bit integer ([guint32]). }
+{- {!Ocglib.UInt64} — unsigned 64-bit integer ([guint64]). }
+{- {!Ocglib.UInt8} — unsigned 8-bit integer ([guint8]). }
+}

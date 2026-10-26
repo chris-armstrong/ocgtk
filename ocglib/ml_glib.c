@@ -26,7 +26,7 @@
 #include <string.h>
 #include <locale.h>
 #include <glib.h>
-#include <gtk/gtk.h>
+#include <glib-object.h>
 
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>

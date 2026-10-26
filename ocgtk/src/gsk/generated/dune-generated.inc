@@ -5,7 +5,7 @@
  (targets cflag-gsk.sexp clink-gsk.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -32,7 +32,7 @@
  (public_name ocgtk.gsk.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -85,6 +85,6 @@
    ml_transform_gen
    ml_transform_node_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gsk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gsk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gsk.sexp)))
 

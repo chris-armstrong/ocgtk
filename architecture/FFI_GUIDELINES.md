@@ -18,14 +18,14 @@ or reading existing ones.
 | GClosure | `ocgtk_gclosure_ops` | `"ocgtk.gclosure"` | (internal — signal infrastructure) | `GClosure_val` |
 
 All seven `extern struct custom_operations ocgtk_<kind>_ops` declarations are
-in `ocgtk/src/common/value_kinds.h`.  Include that header to access them.
+in `ocglib/value_kinds.h`.  Include that header to access them.
 
 ## The Registry and `ocgtk_classify`
 
-`ocgtk/src/common/value_kinds.h` exposes the seven extern `custom_operations`
+`ocglib/value_kinds.h` exposes the seven extern `custom_operations`
 structs described above, along with the `ocgtk_kind` enum and the
 `ocgtk_classify(value v) -> ocgtk_kind` function (implemented in
-`ocgtk/src/common/wrappers.c`).  `ocgtk_classify` is the canonical way to ask
+`ocglib/wrappers.c`).  `ocgtk_classify` is the canonical way to ask
 "what kind of FFI value am I holding?" at dynamic-dispatch sites — for example
 signal marshallers and `GValue`↔OCaml decoders.
 

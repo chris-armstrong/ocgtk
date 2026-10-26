@@ -16,7 +16,7 @@
 #include <caml/fail.h>
 
 /* Forward-declare the OCaml GObject pointer extractor (from ml_gobject.c,
- * part of ocgtk.common, linked at test time). */
+ * part of ocglib, linked at test time). */
 extern gpointer ml_gobject_ext_of_val(value v);
 
 CAMLprim value ml_test_emit_key_pressed_signal(value ctrl_val,

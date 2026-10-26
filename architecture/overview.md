@@ -31,7 +31,10 @@ the generator is re-run whenever it changes or when the GIR files are updated.
 
 ```
 <repo root>/
-├── dune-workspace              # spans ocgtk/ and gir_gen/
+├── dune-workspace              # spans the root project, ocgtk/ and gir_gen/
+├── dune-project                # root project: the ocglib package
+├── configurator/               # config_flags.exe (pkg-config flags for the C stubs)
+├── ocglib/                     # handwritten runtime (GObject, GLib, closures)
 ├── gir/                        # bundled GIR data files (9 namespaces)
 ├── scripts/                    # build and generation scripts
 │   └── generate-bindings.sh   # regenerate all 9 namespaces
@@ -45,7 +48,6 @@ the generator is re-run whenever it changes or when the GIR files are updated.
 └── ocgtk/                      # GTK bindings (main dune project)
     ├── overrides/               # per-namespace generation overrides (<ns>.sexp)
     └── src/
-        ├── common/              # handwritten runtime (GObject, GLib, closures)
         └── <ns>/                # one directory per namespace (gtk, gdk, gio, …)
             ├── core/            # handwritten namespace extras
             └── generated/       # owned entirely by gir_gen
@@ -59,7 +61,7 @@ for things gir_gen cannot express: manual bindings for opaque types, wrappers ar
 GLib functions that aren't in GIR, or corrections for cases where the generator
 produces something suboptimal.
 
-`common/` holds the handwritten runtime that all namespaces depend on: the GObject
+`ocglib/` holds the handwritten runtime that all namespaces depend on: the GObject
 value system, GLib bindings, closure support, GError, GVariant, and the C helper
 header `wrappers.h`. None of this is generated — these are the foundations that the
 generated code builds on.
@@ -408,7 +410,7 @@ Key points:
 
 - **GLib and GObject are not generated**: they provide the runtime infrastructure
   (type system, memory management, data structures). The parts we need are bound
-  manually in `ocgtk/src/common/`.
+  manually in `ocglib/`.
 
 - **Reference files**: `gir_gen references` produces a `.sexp` file listing every
   exported entity from a namespace with its fully-qualified OCaml module path. When

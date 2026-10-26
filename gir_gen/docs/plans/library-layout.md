@@ -1,6 +1,6 @@
 # Library layout — implementation plan
 
-> **Status: planned, not started.** Implements
+> **Status: phases 0 and 1 done.** Implements
 > [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
@@ -182,26 +182,63 @@ list of platforms. Today they do not match (checked 2026-10-25):
 | FreeBSD 14 | yes | yes |
 | Windows, MSYS2 MinGW64 | yes | yes |
 
-Proposed list. Images exist for every Linux entry (checked 2026-10-25);
-confirm each release's support status when the list is fixed:
+The list, fixed in phase 1 step 1 (2026-10-25):
 
-| Platform | Versions |
-|---|---|
-| Ubuntu | 22.04, 24.04 and 26.04 LTS, and the latest interim release (26.10) |
-| Debian | 12, 13 |
-| Fedora | the two current releases (44, and 45 once released) |
-| CentOS Stream | 9, 10 (stands in for RHEL and its rebuilds) |
-| openSUSE | Leap 16.0, Tumbleweed |
-| Alpine | latest stable (3.24) |
-| Arch | rolling |
-| macOS | Homebrew, latest macOS on arm64 |
-| FreeBSD | 14, and 15 if released |
-| Windows | MSYS2 MinGW64 |
+| Platform | Versions | opam `os-distribution` (`os-family`) |
+|---|---|---|
+| Ubuntu | 22.04, 24.04 and 26.04 LTS, and the latest interim release (26.10) | `ubuntu` (`debian`) |
+| Debian | 12, 13 | `debian` (`debian`) |
+| Fedora | the two current releases (43, 44; 45 replaces 43 once released) | `fedora` (`fedora`) |
+| CentOS Stream | 9, 10 (stands in for RHEL and its rebuilds) | `centos` (`rhel`) |
+| openSUSE | Leap 16.0, Tumbleweed | `opensuse-leap` (`suse`), `opensuse-tumbleweed` (`opensuse`) |
+| Alpine | latest stable (3.24) | `alpine` (`alpine`) |
+| Arch | rolling | `arch` (`arch`) |
+| macOS | Homebrew, latest macOS on arm64 | `homebrew` |
+| FreeBSD | 14, 15 (CI job disabled: too slow under QEMU) | — (`os = "freebsd"`) |
+| Windows | unsupported for now, see below | — |
 
-MacPorts and `rhel` are dropped from the depexts unless a CI job is added
-for them; Leap 15.6 is dropped if it is past end of life by then. Rolling
-and "latest" entries are tested against whatever is current at release
-time.
+The opam variables are what opam 2.5.0 reports in each container image
+(Linux only). MacPorts and `rhel` are dropped from the depexts; Leap 15.6
+(end of life 2026-04-30), Fedora 40 and Ubuntu 25.04 are dropped from CI.
+Fedora 45 is not released yet (due 2026-11-03). Rolling and "latest"
+entries are tested against whatever is current at release time.
+
+CentOS Stream 10 has no Xvfb (RHEL 10 dropped the Xorg server). Its tests
+run under `xwfb-run -c mutter` (`xwayland-run` and `mutter`, both in
+AppStream); a GTK 4 program got a display there with mutter and with
+weston (EPEL).
+
+**Windows** is unsupported until opam can build OCaml in an MSYS2
+environment that has GTK 4 (checked 2026-10-25):
+
+- MSYS2 deprecated MINGW64 on 2026-03-15. Its live package database
+  still has GLib, cairo, pango, gdk-pixbuf, graphene and gcc, but not
+  `mingw-w64-x86_64-gtk4`. GTK 4 (4.24.1) is in UCRT64, CLANG64 and
+  CLANGARM64.
+- opam-repository's mingw compiler chain (`conf-mingw-w64-gcc-x86_64`)
+  requires `msys2-mingw64`, and the `msys2` package rejects UCRT64
+  (opam-repository issue #29447, open). UCRT64 support was merged and
+  partly reverted (#29579, #29751); #29795 starts a new series towards it.
+  opam does not expand `%{msys2:package-prefix}%` in depext names.
+- setup-ocaml's `msys2` mode installs only `mingw-w64-x86_64-gcc`.
+- CLANG64 is ruled out by OCaml itself (checked 2026-10-26). It has the
+  whole stack (`mingw-w64-clang-x86_64-gtk4` 4.24.1, glib2, cairo, pango,
+  gdk-pixbuf2, graphene, gobject-introspection, pkgconf), and the `msys2`
+  package accepts it. Its `gcc-compat` package even provides
+  `x86_64-w64-mingw32-gcc.exe` as an alias for clang. But OCaml's
+  `configure` identifies the compiler as `mingw-*-clang-*` and accepts
+  only `mingw-*-*-gcc-*` for a MinGW-w64 build ("Unsupported C compiler
+  for a MinGW-w64 build"), in 5.3, 5.4, 5.5 and trunk. opam's compiler
+  chain also requires `msys2-mingw64`, which conflicts with
+  `msys2-clang64`.
+- The `msys2` package's `gen_config.sh` lists MINGW32 and MINGW64 twice
+  and UCRT64 not at all, which looks like the cause of #29447.
+
+Building OCaml in MINGW64 against UCRT64's GTK would mix two C runtimes
+(msvcrt and UCRT), so it is not an option. The Windows job stays in
+`release-verification.yml` with `if: false` and UCRT64 package names;
+`conf-gtk4` has `available: os != "win32"` and no MSYS2 depext. Revisit
+when opam-repository ships UCRT64 support for the compiler.
 
 ## Target layout
 
@@ -426,13 +463,105 @@ The prototype branch stays local.
    `glib-2.0`/`gobject-2.0`, and replace `#include <gtk/gtk.h>` in
    `ml_glib.c` with the GLib headers it actually uses.
 4. Move the GLib/GObject tests (`test_gobj`, `test_gvariant*`,
-   `test_glib_bytes`, `test_bounded_int`, `test_closure*`, the gobject test
-   helpers) to `ocglib/tests/`.
+   `test_glib_bytes`, `test_bounded_int`) to `ocglib/tests/`.
+   `test_closure*` and the gobject test helpers stay in `ocgtk/tests/`
+   until phase 3: `ocgtk/tests/gtk/test_signal_marshalling` uses the
+   helpers too, and dune does not let one project use another's private
+   library. Once there is one `dune-project`, they move.
 
-Phase 1 lands on `main` on its own, so the rest of the tree must keep
+Phase 1 lands on `m3` on its own, so the rest of the tree must keep
 building: the generated dune files switch from `ocgtk.common` to `ocglib`
-and add `-open Ocglib`, a small generator change ahead of phase 2. If that
-turns out not to be small, phase 1 joins phase 3's PR instead.
+(a small generator change ahead of phase 2), and the hand-written ones add
+`-open Ocglib`. If that turns out not to be small, phase 1 joins phase 3's
+PR instead.
+
+**Step 1 done** (2026-10-25):
+
+- The list is fixed (Supported platforms). `release-verification.yml` has
+  a job per entry: native Ubuntu 22.04 and 24.04; container matrices for
+  APT (Ubuntu 26.04, 26.10, Debian 12, 13), Fedora (43, 44), CentOS
+  Stream (9, 10) and openSUSE (Leap 16.0, Tumbleweed); Alpine 3.24; Arch;
+  macOS; FreeBSD 14 and 15 (disabled); Windows (disabled). The
+  `windows_only` input is gone.
+- Each new container job's system-package install was run in its image:
+  all succeed, and gtk4, the build tools and the X server runner
+  (`xvfb-run`, or `xwfb-run` on Stream 10) are present. The opam build
+  and tests ran on GitHub (below).
+- `conf-gtk4` depexts: MacPorts, `rhel` and MSYS2 removed; `available:
+  os != "win32"`. `opam lint` passes. Its version stays at 2; it is
+  bumped when it is next published.
+- actionlint: no errors (only the `eval $(opam env)` quoting warnings that
+  were already there, and the two `if: false`).
+- Not changed: the local `ci/` Docker images still use the old set.
+- CI on GitHub (PR #195): container jobs needed `git config --global
+  --add safe.directory`, because opam pins the repository root with git.
+  Ubuntu 22.04, Debian 12 and CentOS Stream 9 fail at Build on old cairo,
+  which is also broken on `main` (Open items 4).
+
+**Step 2 done** (2026-10-26):
+
+- `conf-cairo-gobject/`, `conf-pangocairo/`, `conf-gdk-pixbuf-2/` and
+  `conf-graphene-1/` are top-level packages like `conf-gtk4/`, version 1.
+  None of the names is in opam-repository (checked 2026-10-26).
+  `conf-pangocairo` depends on `conf-pango`, the others on `conf-glib-2`.
+  `opam lint` passes for all four.
+- Depexts, one system package per platform:
+
+  | Package | Debian/Ubuntu | Fedora, CentOS Stream | openSUSE | Alpine | Arch | Homebrew | FreeBSD |
+  |---|---|---|---|---|---|---|---|
+  | `conf-cairo-gobject` | `libcairo2-dev` | `cairo-gobject-devel` | `cairo-devel` | `cairo-dev` | `cairo` | `cairo` | `cairo` |
+  | `conf-pangocairo` | `libpango1.0-dev` | `pango-devel` | `pango-devel` | `pango-dev` | `pango` | `pango` | `pango` |
+  | `conf-gdk-pixbuf-2` | `libgdk-pixbuf-2.0-dev` | `gdk-pixbuf2-devel` | `gdk-pixbuf-devel` | `gdk-pixbuf-dev` | `gdk-pixbuf2` | `gdk-pixbuf` | `gdk-pixbuf2` |
+  | `conf-graphene-1` | `libgraphene-1.0-dev` | `graphene-devel` | `libgraphene-devel` | `graphene-dev` | `graphene` | `graphene` | `graphene` |
+
+- Each package was installed with opam 2.5.0 (`opam install ./conf-<name>`
+  into an empty switch, depexts on) in a fresh container on all 14 Linux
+  images: Ubuntu 22.04, 24.04, 26.04, 26.10, Debian 12, 13, Fedora 43, 44,
+  CentOS Stream 9, 10, openSUSE Leap 16.0, Tumbleweed, Alpine 3.24, Arch.
+  56 of 56 succeed. Before each install the module's `.pc` file was
+  absent; afterwards it is owned by the package in the table, so Fedora
+  and CentOS Stream pull in `cairo-gobject-devel`. The base images had none
+  of the libraries, except Arch, whose base system already has `glib2`
+  (Arch ships headers in the same package; `conf-glib-2` has no Arch
+  depext, so this is also what makes it installable there).
+- Homebrew: the formulas build the GObject parts (`cairo` with
+  `-Dglib=enabled`; `graphene` depends on `glib`). The `macos-conf` job in
+  `release-verification.yml` passed on GitHub (run 40252144256): opam
+  installed `pango`, `gdk-pixbuf`, `graphene` and `gtk4` through Homebrew
+  depexts, and each package built. `cairo` and `glib` were already on the
+  runner, so for `conf-cairo-gobject` the run only shows that Homebrew's
+  `cairo` provides `cairo-gobject`. `pkg-config` finds `glib-2.0`,
+  `gobject-2.0`, `gio-2.0` and `gio-unix-2.0` from Homebrew's `glib`, so
+  `conf-glib-2` covers all four GLib modules on macOS too.
+- FreeBSD names come from the ports (Conf packages); not run, as the
+  FreeBSD job is disabled.
+- Nothing depends on the four packages yet; the namespace packages do from
+  phase 3.
+
+**Steps 3 and 4 done** (2026-10-25, branch `layout-phase1`):
+
+- `ocglib/` is the wrapped library `ocglib` in a root `dune-project` that
+  declares only that package; `ocgtk/` keeps its own project until phase
+  3. `configurator/` moved to the root with it.
+- The generator change was small: the stub stanzas depend on `ocglib`,
+  drop `-I../common`, and run `../../../configurator`. Three new tests in
+  `dune_file_tests.ml`. `-open Ocglib` goes in the hand-written dune files
+  (`ocgtk/src/*/dune`, tests, examples), not the generated ones, because
+  the generated stub libraries have no OCaml modules. Regenerating after
+  the change left no diff.
+- `dune build -p ocglib @install` and its tests (`@ocglib/runtest`, 165
+  cases) pass in `ubuntu:24.04` with `libglib2.0-dev` and no GTK
+  (`gtk4.pc` absent).
+- Tests: 165 cases in 5 suites under `ocglib/`, 226 in 26 under `ocgtk/`.
+  Per suite, the same as the baseline (391 in 31).
+- `dune build @doc`: 0 warnings; `ocglib/index.mld` links all 16 modules.
+- `opam lint` passes for `ocglib.opam` and `ocgtk/ocgtk.opam`.
+- Every test command now runs `dune test ocglib/ ocgtk/`, and every
+  `opam install` adds `.` for `ocglib.opam`.
+- CI on GitHub (PR #195): `ci.yml` (Linux, macOS, lint) and
+  `doc-preview.yml` pass.
+- Not done: the release tarball, which leaves out `ocglib/` and
+  `configurator/` until phase 3.
 
 **Done when:**
 
@@ -447,12 +576,14 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   in `cairo-gobject-devel`.
 - `dune build -p ocglib` succeeds in a container that has GLib's
   development files but not GTK's, which shows ocglib no longer needs
-  `gtk4`. Nothing under `ocglib/` mentions `gtk`.
+  `gtk4`. No source under `ocglib/` includes a GTK header, calls a
+  `gtk_` function, or asks pkg-config for `gtk4`. Mentions in comments,
+  licence headers and `docs.gtk.org` links are fine.
 - The moved tests pass from `ocglib/tests/`, with the same number of cases
   as the baseline for those executables.
 - `dune build` and `dune test` pass for the whole tree, and CI (Linux and
   macOS) is green. macOS passing is also the missing check that Homebrew's
-  `glib` provides `gobject-2.0` (Open items 1).
+  `glib` provides `gobject-2.0` (done, see step 2).
 
 ### Phase 2 — generator
 
@@ -517,6 +648,9 @@ the deleted `<Ns>.ml` and `ocgtk_<ns>.ml`). Any other change to a moved
 file (a different external, a missing method, reordered code, a changed
 doc comment) is a generator bug and is fixed before merging.
 
+`test_closure_stress`, `test_closure_with_gc` and the gobject test helpers
+move from `ocgtk/tests/` to `ocglib/tests/` (left behind in phase 1, step 4).
+
 Hand-written `core/` code moves to `raw/core/` when it uses layer 1 only
 (`gio_volume_monitor_core.ml` does). Gtk's hand-written `core/gMain.ml` and
 `core/gVersion.ml` become `Ocgtk.Main` and `Ocgtk.Version` (see
@@ -525,6 +659,14 @@ Decisions); their 182 uses are renamed in the same PR.
 Generated C files move one directory deeper (`<pkg>/raw/generated/`), so
 check the stub-batch size in `dune_file.ml`, which allows for about 55
 characters per path, against the new paths.
+
+The release tarball (the `package` job in `release-verification.yml`) is
+built from the `ocgtk/` subtree, so since phase 1 it leaves out `ocglib/`
+and `configurator/`. It cannot simply become the repository root while
+`ocgtk/` has its own `dune-project`, because dune then writes
+`ocgtk.install` into `ocgtk/`, one directory too deep for opam. Once the
+packages share the root `dune-project`, the tarball is the repository root
+without `gir_gen/` and the other development-only directories.
 
 **Done when:**
 
@@ -544,10 +686,17 @@ characters per path, against the new paths.
 - Every package builds with `dune build -p <pkg>`, one at a time in
   dependency order, each against its predecessors installed in a separate
   prefix.
+- The release tarball, unpacked, builds and installs every package with
+  `opam install` from that directory, and has no `gir_gen/` in it.
 
 ### Phase 4 — tests, examples, packaging
 
 1. Tests to `<pkg>/tests/`, with the gtk test helpers in `ocgtk/tests/`.
+   Each test stanza gets `(package <pkg>)`. Without it a test belongs to
+   no package, so `dune build -p ocglib @runtest` (what opam runs for
+   `--with-test`) builds every test in the tree, the gtk ones included.
+   Phase 1 found this: from the repository root it compiled the ocgtk
+   tests against whichever `ocgtk` was installed.
 2. Examples to `<pkg>/examples/` (all current ones to `ocgtk/examples/`,
    including the calculator's own tests); update library names, since
    most examples depend on the umbrella `ocgtk` library and must list the
@@ -566,6 +715,8 @@ characters per path, against the new paths.
   `ocgtk.gio`, ...) or the umbrella `ocgtk` library.
 - `opam lint` reports nothing for every generated `.opam` file.
 - `dune build @doc` produces an index page for every package.
+- For each package, `dune build -p <pkg> @runtest` runs only that
+  package's tests.
 
 ### Phase 5 — CI, docs and migration
 
@@ -681,10 +832,8 @@ Docs (odoc, `--cache=disabled`):
 
 ## Open items
 
-1. The supported platform list (proposed under Supported platforms; fixed
-   in phase 1 step 1), then depexts for the four new conf packages on each
-   (Arch and FreeBSD names are above), and macOS for `conf-glib-2`'s
-   coverage of gobject and gio.
+1. Windows support, once opam-repository supports MSYS2 UCRT64
+   (Supported platforms).
 2. Gtk itself cannot be prototyped before phase 3, because it depends on
    every other namespace. Its risks are the same as gio's at a larger scale
    (320 layer 2 modules against gio's 175, 4 stub batches against 3), so
@@ -693,6 +842,22 @@ Docs (odoc, `--cache=disabled`):
    independent of the layout and exists on `main`; fix it in the generator
    on its own branch (copy the record with `g_boxed_copy` or
    `g_memdup2` before `Val_<record>`), not as part of this work.
-4. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
+4. Cairo older than 1.18 does not build, on `main` too, so Ubuntu 22.04
+   (cairo 1.16), Debian 12 (1.16) and CentOS Stream 9 (1.17.4) fail
+   `release-verification.yml` at Build. Left failing on `layout-phase1`
+   (checked 2026-10-25). Since 9dd45ebc (2026-09-11) the generated cairo
+   stubs declare and call `cairo_gobject_glyph_get_type` and
+   `cairo_gobject_text_cluster_get_type`, which `cairo-gobject.h` gains
+   only in 1.18.0 (checked at the 1.17.4, 1.17.6, 1.17.8 and 1.18.0 tags).
+   Release Verification had not run since July, so nothing caught it. A
+   `(record Glyph (version "1.18"))` override in `ocgtk/overrides/cairo.sexp`
+   is not enough: regenerating with it changed no output, and guarding the
+   converters away would leave `Val_cairo_glyph_t` and the
+   `ml_cairo_glyph_get_type` external undefined on old cairo. The fix needs
+   the guarded record to keep its symbols (an `#else` that fails at run
+   time, as for guarded enum members), or the minimum cairo raised to 1.18
+   and those three platforms dropped. Fix it on its own branch off `main`,
+   not as part of this work.
+5. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
    in the baseline: odoc has no Stdlib docs to link to. A docs question for
    the m3 work, not the layout.

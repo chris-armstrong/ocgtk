@@ -11,20 +11,35 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Common utility modules for ocgtk GTK4 bindings.
+(** Signed 32-bit integer ([gint32]).
 
-    This module re-exports hand-written common modules shared across all ocgtk
-    binding libraries (Gtk, Gio, Gdk, etc.). Each module is also available as a
-    flat top-level module (e.g. [Gobject]) in the [ocgtk.common] library. *)
+    Backed by [private int] — no heap allocation. Range:
+    [-2147483648, 2147483647].
 
-module GError = GError
-(** Error type for GTK/GLib functions. See {!GError}. *)
+    This module intentionally shadows [Stdlib.Int32]. Use [Stdlib.Int32] when
+    you need OCaml's boxed [int32] type. *)
 
-module Gobject = Gobject
-(** GObject type system, properties, and signals. See {!Gobject}. *)
+type t = private int
 
-module Gvariant = Gvariant
-(** GVariant structured data serialization. See {!Gvariant}. *)
+val of_int : int -> t
+(** [of_int n] converts [n] to an [Int32.t]. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+    if [n < -2147483648 || n > 2147483647]. *)
 
-module Gvariant_type = Gvariant_type
-(** GVariant type descriptions. See {!Gvariant_type}. *)
+val to_int : t -> int
+(** [to_int v] returns the underlying integer value. *)
+
+val min_int : t
+(** The minimum value: [-2147483648]. *)
+
+val max_int : t
+(** The maximum value: [2147483647]. *)
+
+val minus_one : t
+(** The value [-1]. *)
+
+val min_value : int
+(** The minimum value representable as an [int], equal to [to_int min_int]. *)
+
+val max_value : int
+(** The maximum value representable as an [int], equal to [to_int max_int]. *)

@@ -11,30 +11,17 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Signed 8-bit integer ([gint8]).
+(* Convenience re-export of the individual bounded integer modules.
+ * The canonical implementations live in uInt8.ml, int8.ml, uInt16.ml,
+ * int16.ml, uInt32.ml, int32.ml, and uInt64.ml; they are exposed as flat
+ * modules of ocglib (Ocglib.UInt8, Ocglib.Int8, …).
+ * This module lets callers write Bounded_int.UInt16 if they prefer
+ * an explicit namespace. *)
 
-    Backed by [private int] — no heap allocation. Range: [-128, 127]. *)
-
-type t = private int
-
-val of_int : int -> t
-(** [of_int n] converts [n] to an [Int8.t].
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < -128 || n > 127]. *)
-
-val to_int : t -> int
-(** [to_int v] returns the underlying integer value. *)
-
-val min_int : t
-(** The minimum value: [-128]. *)
-
-val max_int : t
-(** The maximum value: [127]. *)
-
-val minus_one : t
-(** The value [-1]. *)
-
-val min_value : int
-(** The minimum value representable as an [int], equal to [to_int min_int]. *)
-
-val max_value : int
-(** The maximum value representable as an [int], equal to [to_int max_int]. *)
+module UInt8 = UInt8
+module Int8 = Int8
+module UInt16 = UInt16
+module Int16 = Int16
+module UInt32 = UInt32
+module Int32 = Int32
+module UInt64 = UInt64

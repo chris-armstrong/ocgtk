@@ -46,10 +46,10 @@ Install OCaml dependencies and build:
 
 ```bash
 # To use the bindings only (OCaml >= 5.0):
-opam install ./ocgtk --deps-only --with-test
+opam install . ./ocgtk --deps-only --with-test
 
 # Also install the code generator (OCaml >= 5.3):
-opam install ./ocgtk ./gir_gen --deps-only --with-test
+opam install . ./ocgtk ./gir_gen --deps-only --with-test
 
 dune build
 ```

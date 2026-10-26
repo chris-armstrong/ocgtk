@@ -12,7 +12,7 @@
 open Alcotest
 module Gtk_enums = Ocgtk_gtk.Gtk_enums
 module Gdk_enums = Ocgtk_gdk.Gdk_enums
-module Gvariant = Ocgtk_common.Gvariant
+module Gvariant = Ocglib.Gvariant
 module Helpers = Gtk_test_helpers
 module Rectangle = Ocgtk_gdk.Gdk.Wrappers.Rectangle
 

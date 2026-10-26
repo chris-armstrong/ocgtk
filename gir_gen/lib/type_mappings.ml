@@ -222,7 +222,7 @@ let type_mappings : (string * Types.type_mapping) list =
         transfer_strategy = Ts_none;
       } );
     (* GObject namespace types — not generated from GIR, mapped to
-       hand-written wrappers in src/common/gobject.ml *)
+       hand-written wrappers in ocglib/gobject.ml *)
     ( "GObject.Object",
       {
         ocaml_type = "[`object_] Gobject.obj";
@@ -417,7 +417,7 @@ let type_mappings : (string * Types.type_mapping) list =
       } );
     (* guint64 uses the integers library (already a dependency via GVariant).
        wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64.
-       Exposed as UInt64.t (via src/common/uInt64.ml) for consistency with the other
+       Exposed as UInt64.t (via ocglib/uInt64.ml) for consistency with the other
        bounded integer modules — the underlying type is still Unsigned.UInt64.t. *)
     ( "guint64",
       {

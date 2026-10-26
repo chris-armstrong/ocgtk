@@ -5,7 +5,7 @@
  (targets cflag-pangocairo.sexp clink-pangocairo.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -26,13 +26,13 @@
  (public_name ocgtk.pango_cairo.generated_stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gio ocgtk.pango ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gio ocgtk.pango ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
    ml_font_gen
    ml_font_map_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-pangocairo.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-pangocairo.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-pangocairo.sexp)))
 

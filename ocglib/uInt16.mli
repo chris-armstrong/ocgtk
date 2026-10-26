@@ -11,15 +11,16 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Unsigned 8-bit integer ([guint8]).
+(** Unsigned 16-bit integer ([guint16]).
 
-    Backed by [private int] — no heap allocation. Range: [0, 255]. *)
+    Backed by [private int] — no heap allocation. Range: [0, 65535]. *)
 
 type t = private int
 
 val of_int : int -> t
-(** [of_int n] converts [n] to a [UInt8.t].
-    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < 0 || n > 255]. *)
+(** [of_int n] converts [n] to a [UInt16.t]. Raises
+    {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument}
+    if [n < 0 || n > 65535]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
@@ -28,7 +29,7 @@ val min_int : t
 (** The minimum value: [0]. *)
 
 val max_int : t
-(** The maximum value: [255]. *)
+(** The maximum value: [65535]. *)
 
 val zero : t
 (** Alias for [min_int]: [0]. *)

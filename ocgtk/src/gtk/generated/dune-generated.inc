@@ -5,7 +5,7 @@
  (targets cflag-gtk.sexp clink-gtk.sexp)
  (action
   (run
-   %{exe:../configurator/config_flags.exe}
+   %{exe:../../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -32,7 +32,7 @@
  (public_name ocgtk.gtk.generated_stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -117,7 +117,7 @@
    ml_constraint_layout_child_gen
    ml_constraint_layout_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
@@ -125,7 +125,7 @@
  (public_name ocgtk.gtk.generated_stubs_batch_1)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -210,7 +210,7 @@
    ml_image_gen
    ml_info_bar_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
@@ -218,7 +218,7 @@
  (public_name ocgtk.gtk.generated_stubs_batch_2)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -303,7 +303,7 @@
    ml_search_entry_gen
    ml_section_model_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
@@ -311,7 +311,7 @@
  (public_name ocgtk.gtk.generated_stubs_batch_3)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -390,7 +390,7 @@
    ml_window_group_gen
    ml_window_handle_gen
   )
-  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+  (flags -fPIC -Igenerated -Icore (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library

@@ -36,10 +36,10 @@ Generated files are already committed; you do not need to run the generator just
 dune test gir_gen/
 
 # All tests including ocgtk (requires a display)
-xvfb-run dune test ocgtk/
+xvfb-run dune test ocglib/ ocgtk/
 
 # Both
-dune test gir_gen/ && xvfb-run dune test ocgtk/
+dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/
 ```
 
 `xvfb-run` provides a headless X display server so that the ocgtk tests which need a
@@ -48,7 +48,7 @@ available, but note that `dune` caches this skip decision — if you later want 
 the full suite with a display, pass `--force` to dune:
 
 ```bash
-dune test gir_gen/ && xvfb-run dune test ocgtk/ --force
+dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/ --force
 ```
 
 Always check the return code — some test output looks like success even on failure.
@@ -68,7 +68,7 @@ This runs in two phases:
 After regeneration, rebuild and test:
 
 ```bash
-dune build && dune test gir_gen/ && xvfb-run dune test ocgtk/
+dune build && dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/
 ```
 
 ## Development Workflow
@@ -79,7 +79,7 @@ dune build && dune test gir_gen/ && xvfb-run dune test ocgtk/
 2. `dune build` to compile
 3. `bash scripts/generate-bindings.sh` to regenerate all bindings
 4. `dune build` again to compile the regenerated code
-5. `dune test gir_gen/ && xvfb-run dune test ocgtk/`
+5. `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/`
 
 Tip: if a generated C file fails to compile, add the failing entity to
 `ocgtk/overrides/<ns>.sexp` with `(ignore)` while you fix the generator.

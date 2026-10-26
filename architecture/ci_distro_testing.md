@@ -39,7 +39,7 @@ ci/
   fedora40.Dockerfile
   scripts/
     build.sh             # dune build --build-dir /build
-    test.sh              # dune test gir_gen/ then xvfb-run dune test ocgtk/ (both with --build-dir /build)
+    test.sh              # dune test gir_gen/ then xvfb-run dune test ocglib/ ocgtk/ (both with --build-dir /build)
 ```
 
 Each Dockerfile:

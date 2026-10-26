@@ -9,7 +9,9 @@
 (test
  (name test_gobject_stress)
  (modules test_gobject_stress)
- (libraries ocgtk.common alcotest gtk_test_helpers))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gtk_test_helpers))
 
 ; Blocked: GdkPixbuf.Pixbuf load/scale methods not yet generated
 ; (test
@@ -40,12 +42,16 @@
 (test
  (name test_closure_stress)
  (modules test_closure_stress)
- (libraries ocgtk.common alcotest gobject_test_helpers))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))
 
 (test
  (name test_closure_with_gc)
  (modules test_closure_with_gc)
- (libraries ocgtk.common alcotest gobject_test_helpers))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))
 
 (test
  (name test_gtk_init)
@@ -63,11 +69,6 @@
 ;  (name test_event_controller_runtime)
 ;  (modules test_event_controller_runtime)
 ;  (libraries ocgtk alcotest))
-
-(test
- (name test_gobj)
- (modules test_gobj)
- (libraries ocgtk.common alcotest))
 
 (test
  (name test_integration)
@@ -103,23 +104,3 @@
 ; Tests moved to gtk/ subdirectory (active at tests/gtk/test_button.ml)
 
 ; Tests moved to gtk/ subdirectory (active at tests/gtk/test_range.ml)
-
-(test
- (name test_gvariant)
- (modules test_gvariant)
- (libraries ocgtk.common alcotest))
-
-(test
- (name test_gvariant_type)
- (modules test_gvariant_type)
- (libraries ocgtk.common alcotest))
-
-(test
- (name test_glib_bytes)
- (modules test_glib_bytes)
- (libraries ocgtk.common alcotest))
-
-(test
- (name test_bounded_int)
- (modules test_bounded_int)
- (libraries ocgtk.common alcotest))
