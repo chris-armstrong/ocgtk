@@ -1,6 +1,6 @@
 # Library layout — implementation plan
 
-> **Status: phases 0 to 3 done.** Implements
+> **Status: phases 0 to 4 done.** Implements
 > [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
@@ -860,6 +860,51 @@ generated directories), still name `ocgtk/src/` and `ocgtk/overrides/`
 - `dune build @doc` produces an index page for every package.
 - For each package, `dune build -p <pkg> @runtest` runs only that
   package's tests.
+
+**Done 2026-10-26** on `layout-phase4` (from `layout-phase3` at
+`6267b8b1`). The commits: `6bb028c5` the test moves (27 renames, 0
+insertions and 0 deletions), `f49af1bf` the test stanzas, `1fa96245` the
+index pages.
+
+- Tests: `test_gio_volume_monitor` to `ocgio/tests/`; the disabled
+  `test_gdkpixbuf` and `test_pango` (commented-out stanzas) to
+  `ocgdkpixbuf/tests/` and `ocpango/tests/`; the GVariant text-format probe
+  (`test_gvariant_text_format.c`, in no dune file) to `ocglib/tests/`, and
+  its committed binary deleted. `ocgtk/tests/gtk/` is merged into
+  `ocgtk/tests/`, test helpers included. ocgraphene and ocgdkpixbuf gain the
+  prototype's runtime tests (5 and 3 cases).
+- Every test stanza has `(package <pkg>)`, the calculator's two included.
+  The helper libraries (`gobject_test_helpers`, `gtk_test_helpers`,
+  `calc_core`) do not: dune 3.23 installs a private library that names a
+  package, under `lib/<pkg>/__private__/`, and `dune install` then crashed
+  (`Option.value_exn` in `Obj_dir.External.encode`) on
+  `gobject_test_helpers`. Without a package they are built only when a test
+  that needs them is.
+- `xvfb-run dune test -j1 --force` over every package: 399 cases in 33
+  suites, all passing: the 391 in 31 of the phase 3 baseline, the same per
+  suite, plus the two new suites.
+- `dune build -p <pkg> @install @runtest` then `dune install`, for each
+  package in dependency order into one prefix: all ten succeed, each runs
+  only its own suites (ocglib 7, ocgio 1, ocgraphene 1, ocgdkpixbuf 1,
+  ocgtk 23 including the calculator's, the rest none; 399 cases in all),
+  and no `.install` file has a `__private__` entry.
+- Examples were already in `ocgtk/examples/` with per-package library
+  names (phase 3), and all build. Their README and `record_demo.sh` now
+  give paths from the repository root.
+- No dune or opam file names `ocgtk.<ns>`, `ocgtk.common` or an
+  `ocgtk_<ns>` library. `opam lint` passes for all ten `.opam` files.
+  Step 3 was done in phase 3.
+- Docs: each package directory has a `dune` with its `(documentation)`
+  stanza and an `index.mld` linking the main module, `Enums`, `Constants`
+  (where it exists), `Raw` and the packages it builds on, with the synopses
+  from the old `ocgtk_<ns>.ml`. `dune build @doc`: 0 warnings (20 at the
+  end of phase 3), an `index.html` for each of the ten packages, none with
+  an unresolved span; 2945 pages; 1796 unresolved spans (1395 under the ten
+  packages); 942 `inherit` lines, 0 unresolved.
+
+Left for phase 5: the test command in `AGENTS.md`, `CONTRIBUTORS.md` and
+CI is still `dune test ocglib/ ocgtk/`, which skips the tests now in
+`ocgio/`, `ocgraphene/` and `ocgdkpixbuf/`.
 
 ### Phase 5 — CI, docs and migration
 
