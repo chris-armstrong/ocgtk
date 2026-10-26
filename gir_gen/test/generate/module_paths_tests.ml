@@ -236,7 +236,7 @@ let test_main_dune () =
   let text = main_dune ~core_modules:[] in
   check_has_line "name" " (name ocgraphene)" text;
   check_has_line "opens Ocglib"
-    " (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)" text;
+    " (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)" text;
   check_has_line "own raw and enums, other namespaces' main libraries"
     " (libraries ocglib ocgraphene.raw ocgraphene.enums ocgio))" text;
   Alcotest.(check bool)

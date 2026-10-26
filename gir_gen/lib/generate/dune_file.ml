@@ -104,6 +104,10 @@ let rec transitively_includes ~ctx ~visited ~target namespace_name =
    labels, unused names and opens, unattached doc comments. *)
 let generated_ocaml_flags = ":standard -w -3-6-9-27-32-33-34-50"
 
+(* Layer 2 also overrides methods: a class and the interfaces it inherits may
+   each define the same one (Gtk's Popover and Native: realize, unrealize). *)
+let main_ocaml_flags = generated_ocaml_flags ^ "-7"
+
 (* Namespaces whose libraries the current one depends on: its GIR includes and
    theirs, transitively, without the base namespaces (GLib, GObject, ...)
    that ocglib covers. Sorted. *)
@@ -348,6 +352,6 @@ let generate_main_dune ~ctx ~namespace ~repository ~core_modules =
     generated_dune_header
     (Module_paths.package_name namespace)
     (Module_paths.package_name namespace)
-    namespace generated_ocaml_flags
+    namespace main_ocaml_flags
     (String.concat ~sep:" " libraries)
     (main_core_copy_files ~core_modules)
