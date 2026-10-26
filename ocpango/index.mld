@@ -1,0 +1,21 @@
+{0 ocpango}
+
+The {b ocpango} package provides OCaml bindings for Pango: text layout and
+internationalized font rendering. They are generated from Pango's GObject
+introspection data.
+
+{1 Modules}
+
+The library is reached as {!Ocpango}, with one module per class, interface or
+record, such as {!Ocpango.Layout} and {!Ocpango.Font_description}.
+
+{ul
+{- {!Ocpango.Enums} — enumerations and bitfields. }
+{- {!Ocpango.Constants} — constants. }
+{- {!Ocpango.Raw} — the C externals and abstract types the modules above are
+   built on. }
+}
+
+{1 Dependencies}
+
+It builds on {!Ocglib} (GLib and GObject), {!Occairo} and {!Ocgio}.

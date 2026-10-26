@@ -1,7 +1,7 @@
 # Library layout — implementation plan
 
-> **Status: phases 0 to 3 done.** Implements
-> [library-layout-proposal.md](../research/library-layout-proposal.md), with
+> **Status: phases 0 to 5 done** (phase 5 step 4 waits for publishing).
+> Implements [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
 > `proto/ocglib-ocgraphene` (see Prototype findings). Where this plan and the
@@ -861,6 +861,51 @@ generated directories), still name `ocgtk/src/` and `ocgtk/overrides/`
 - For each package, `dune build -p <pkg> @runtest` runs only that
   package's tests.
 
+**Done 2026-10-26** on `layout-phase4` (from `layout-phase3` at
+`6267b8b1`). The commits: `6bb028c5` the test moves (27 renames, 0
+insertions and 0 deletions), `f49af1bf` the test stanzas, `1fa96245` the
+index pages.
+
+- Tests: `test_gio_volume_monitor` to `ocgio/tests/`; the disabled
+  `test_gdkpixbuf` and `test_pango` (commented-out stanzas) to
+  `ocgdkpixbuf/tests/` and `ocpango/tests/`; the GVariant text-format probe
+  (`test_gvariant_text_format.c`, in no dune file) to `ocglib/tests/`, and
+  its committed binary deleted. `ocgtk/tests/gtk/` is merged into
+  `ocgtk/tests/`, test helpers included. ocgraphene and ocgdkpixbuf gain the
+  prototype's runtime tests (5 and 3 cases).
+- Every test stanza has `(package <pkg>)`, the calculator's two included.
+  The helper libraries (`gobject_test_helpers`, `gtk_test_helpers`,
+  `calc_core`) do not: dune 3.23 installs a private library that names a
+  package, under `lib/<pkg>/__private__/`, and `dune install` then crashed
+  (`Option.value_exn` in `Obj_dir.External.encode`) on
+  `gobject_test_helpers`. Without a package they are built only when a test
+  that needs them is.
+- `xvfb-run dune test -j1 --force` over every package: 399 cases in 33
+  suites, all passing: the 391 in 31 of the phase 3 baseline, the same per
+  suite, plus the two new suites.
+- `dune build -p <pkg> @install @runtest` then `dune install`, for each
+  package in dependency order into one prefix: all ten succeed, each runs
+  only its own suites (ocglib 7, ocgio 1, ocgraphene 1, ocgdkpixbuf 1,
+  ocgtk 23 including the calculator's, the rest none; 399 cases in all),
+  and no `.install` file has a `__private__` entry.
+- Examples were already in `ocgtk/examples/` with per-package library
+  names (phase 3), and all build. Their README and `record_demo.sh` now
+  give paths from the repository root.
+- No dune or opam file names `ocgtk.<ns>`, `ocgtk.common` or an
+  `ocgtk_<ns>` library. `opam lint` passes for all ten `.opam` files.
+  Step 3 was done in phase 3.
+- Docs: each package directory has a `dune` with its `(documentation)`
+  stanza and an `index.mld` linking the main module, `Enums`, `Constants`
+  (where it exists), `Raw` and the packages it builds on, with the synopses
+  from the old `ocgtk_<ns>.ml`. `dune build @doc`: 0 warnings (20 at the
+  end of phase 3), an `index.html` for each of the ten packages, none with
+  an unresolved span; 2945 pages; 1796 unresolved spans (1395 under the ten
+  packages); 942 `inherit` lines, 0 unresolved.
+
+Left for phase 5: the test command in `AGENTS.md`, `CONTRIBUTORS.md` and
+CI is still `dune test ocglib/ ocgtk/`, which skips the tests now in
+`ocgio/`, `ocgraphene/` and `ocgdkpixbuf/`.
+
 ### Phase 5 — CI, docs and migration
 
 1. CI workflows, Dockerfiles and `release-verification.yml`: package names,
@@ -890,6 +935,53 @@ generated directories), still name `ocgtk/src/` and `ocgtk/overrides/`
 - Searching `README.md`, `AGENTS.md` and the docs for old paths
   (`Ocgtk_`, `ocgtk.common`, `src/gtk`, `GWindow`-style names) finds only
   the migration note and CHANGELOG.
+
+**Done 2026-10-26** on `layout-phase5` (PR #199, with phase 4, into
+`oc-separate-libs`), except Release Verification on the three old-cairo
+platforms (Open items 4) and step 4, which is for publishing time.
+
+- Workflows and Docker images pin all five local conf packages, install
+  `. ./gir_gen`, and run `dune test` over the whole tree. `ci.yml` has a new
+  `opam-install` job: `opam install --with-test .` builds each package with
+  `dune build -p` in dependency order and runs only its tests (no display),
+  then a program that depends only on `ocgtk` (`Ocgtk.Main`, `Button`,
+  `Raw`, `Enums`, `Version`) is built against the installed set and run
+  under Xvfb (it printed `ocgtk, GTK 4.22`).
+- OCaml: CI and the release checks moved to 5.5 (5.5.x, or 5.5.2 where
+  opam needs an exact version), at the user's request. Release Verification
+  gained an OCaml 4.14 job (the packages' lower bound): `opam install
+  --with-test .` of the binding packages (gir_gen needs 5.3). It passed on
+  GitHub and, beforehand, in a local 4.14.2 switch.
+- On PR #199 (commit `a3864b3a`): `ci.yml` (lint, Linux, macOS,
+  opam-install) and `doc-preview.yml` pass. Release Verification: 15 jobs
+  pass (Ubuntu 24.04, 26.04, 26.10, Debian 13, Fedora 43, 44, CentOS Stream
+  10, openSUSE Leap 16.0 and Tumbleweed, Alpine, Arch, macOS, macOS conf
+  packages, OCaml 4.14); Ubuntu 22.04, Debian 12 and CentOS Stream 9 fail
+  at Build on `cairo_gobject_glyph_get_type`, as on `main` (Open items 4).
+- Tumbleweed failed at first on the ocgdkpixbuf PNG round trip ("Unknown
+  image format: image/png"): gdk-pixbuf 2.44 loads PNG through glycin,
+  whose loaders are the separate `glycin-loaders` package. Checked in a
+  Tumbleweed container (a PNG fails to load without it and loads with it);
+  the job now installs it. Tumbleweed users loading PNGs need it too.
+- Doc preview: 0 odoc warnings (baseline 0); the landing page links all
+  ten packages and gir_gen, and every package index loads. `dune build
+  @doc` took 33 s on the GitHub runner. Same-package `inherit` links: 942,
+  0 unresolved (phase 4, locally).
+- Migration note: dropped by the user's decision, as the packages are
+  still in preview; the CHANGELOG's breaking-change entry gives the
+  renaming rules instead. (A note with a row for each of the 2778 baseline
+  paths, each new path checked against the current odoc page tree, was
+  written and removed again.)
+- The search finds old paths only in `CHANGELOG.md`, plans
+  and research notes (history), and
+  `ocgtk/docs/ocaml_ast/AST_REFERENCE_GUIDE.md`, whose lablgtk-style
+  examples are marked historical. `architecture/` was rewritten for the
+  layout (`overview.md`, `adding_gir_library.md`, the linking, enum and
+  cross-namespace pages). The m3 odoc plan is reconciled: old names read as
+  new, and its index-page phase builds on the hand-written `index.mld`s.
+- Not done: actionlint (not available locally; YAML only parsed), and the
+  local `ci/` images, whose Dockerfiles changed but were not built (a
+  podman build ran out of disk).
 
 ## Prototype findings
 

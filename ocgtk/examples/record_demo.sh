@@ -13,7 +13,8 @@ sleep 2
 
 # Run the demo (it will print output to stdout)
 echo "Running demo..."
-/home/user/lablgtk/ocgtk/_build/default/examples/demo_all.exe
+# Run from the repository root
+./_build/default/ocgtk/examples/demo_all.exe
 
 # Clean up
 kill $XVFB_PID

@@ -1,0 +1,14 @@
+; Tests for ocgdkpixbuf
+
+; Blocked: GdkPixbuf.Pixbuf load/scale methods not yet generated
+; (test
+;  (name test_gdkpixbuf)
+;  (package ocgdkpixbuf)
+;  (modules test_gdkpixbuf)
+;  (libraries ocgdkpixbuf alcotest))
+
+(test
+ (name test_ocgdkpixbuf)
+ (package ocgdkpixbuf)
+ (modules test_ocgdkpixbuf)
+ (libraries ocgdkpixbuf ocgio ocglib alcotest))

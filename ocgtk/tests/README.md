@@ -11,7 +11,7 @@ See [CONTRIBUTORS.md](../../CONTRIBUTORS.md) for build and test commands.
 Tests are run automatically on every push and pull request via GitHub Actions. See `.github/workflows/ci.yml` for the full CI configuration.
 
 The CI runs tests on:
-- OCaml versions: 5.3.x,5.4.x
+- OCaml versions: 5.5.x
 - OS: Ubuntu Latest
 - GTK version: 4.10+
 

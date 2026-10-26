@@ -30,7 +30,7 @@ After generation, run `dune build` to compile the updated bindings.
 
 ### Override files
 
-Per-namespace override files live in `ocgtk/overrides/` and are committed to the
+Per-namespace override files live in `overrides/` and are committed to the
 repository. See [gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
 for the file format and editing workflow.
 

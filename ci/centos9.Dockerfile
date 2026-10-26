@@ -1,7 +1,7 @@
 FROM quay.io/centos/centos:stream9
 
 ARG OPAM_VERSION=2.5.0
-ARG OCAML_VERSION=5.3.0
+ARG OCAML_VERSION=5.5.2
 
 # Enable EPEL and CodeReady Linux Builder for broader package availability
 RUN dnf install -y epel-release \
@@ -37,15 +37,18 @@ RUN opam init --disable-sandboxing -y --bare \
  && opam switch create default "ocaml-base-compiler.${OCAML_VERSION}" -y \
  && opam clean -a -c -s
 
-# Install conf-gtk4 (local virtual package) and OCaml deps
+# Pin our conf packages (not in opam-repository yet) and install OCaml deps
 WORKDIR /tmp/opam-bootstrap
+COPY conf-cairo-gobject/ ./conf-cairo-gobject/
+COPY conf-gdk-pixbuf-2/ ./conf-gdk-pixbuf-2/
+COPY conf-graphene-1/ ./conf-graphene-1/
 COPY conf-gtk4/ ./conf-gtk4/
-COPY ocglib.opam ./ocglib.opam
-COPY ocgtk/ocgtk.opam ./ocgtk/ocgtk.opam
+COPY conf-pangocairo/ ./conf-pangocairo/
+COPY *.opam ./
 COPY gir_gen/gir_gen.opam ./gir_gen/gir_gen.opam
 RUN eval $(opam env) \
- && opam pin add -n conf-gtk4 ./conf-gtk4 \
- && opam install --deps-only --with-test -y . ./ocgtk ./gir_gen \
+ && for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done \
+ && opam install --deps-only --with-test -y . ./gir_gen \
  && opam clean -a -c -s \
  && rm -rf /tmp/opam-bootstrap
 

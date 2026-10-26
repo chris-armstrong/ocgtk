@@ -110,7 +110,7 @@ Follow these steps when adding a new custom-block kind to the registry.
    }
    ```
 
-6. **Add a test case** to `ocgtk/tests/gtk/test_value_kinds.ml` covering the
+6. **Add a test case** to `ocgtk/tests/test_value_kinds.ml` covering the
    classification round-trip for the new kind.
 
 ## OCaml/C FFI Critical Lessons

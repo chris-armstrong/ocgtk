@@ -39,7 +39,7 @@ ci/
   fedora40.Dockerfile
   scripts/
     build.sh             # dune build --build-dir /build
-    test.sh              # dune test gir_gen/ then xvfb-run dune test ocglib/ ocgtk/ (both with --build-dir /build)
+    test.sh              # dune test gir_gen/ then xvfb-run dune test (both with --build-dir /build)
 ```
 
 Each Dockerfile:
@@ -61,7 +61,7 @@ Edit `ci/versions.env` to update opam or OCaml versions across all distros at on
 
 ```
 OPAM_VERSION=2.5.0
-OCAML_VERSION=5.3.0
+OCAML_VERSION=5.5.2
 ```
 
 Then rebuild images: `./ci/oci build`.

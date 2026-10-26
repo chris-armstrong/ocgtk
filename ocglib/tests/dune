@@ -2,6 +2,7 @@
 
 (test
  (name test_gobj)
+ (package ocglib)
  (modules test_gobj)
  (flags
   (:standard -open Ocglib))
@@ -9,6 +10,7 @@
 
 (test
  (name test_gvariant)
+ (package ocglib)
  (modules test_gvariant)
  (flags
   (:standard -open Ocglib))
@@ -16,6 +18,7 @@
 
 (test
  (name test_gvariant_type)
+ (package ocglib)
  (modules test_gvariant_type)
  (flags
   (:standard -open Ocglib))
@@ -23,6 +26,7 @@
 
 (test
  (name test_glib_bytes)
+ (package ocglib)
  (modules test_glib_bytes)
  (flags
   (:standard -open Ocglib))
@@ -30,6 +34,7 @@
 
 (test
  (name test_bounded_int)
+ (package ocglib)
  (modules test_bounded_int)
  (flags
   (:standard -open Ocglib))
@@ -54,6 +59,7 @@
 
 (test
  (name test_closure_stress)
+ (package ocglib)
  (modules test_closure_stress)
  (flags
   (:standard -open Ocglib))
@@ -61,6 +67,7 @@
 
 (test
  (name test_closure_with_gc)
+ (package ocglib)
  (modules test_closure_with_gc)
  (flags
   (:standard -open Ocglib))

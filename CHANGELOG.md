@@ -6,12 +6,34 @@ usable OCaml GTK 4 binding library.
 
 ## [Unreleased]
 
+### Breaking: one package per library
+
+- **One opam package per namespace** — `occairo`, `ocgio`, `ocgraphene`,
+  `ocgdkpixbuf`, `ocpango`, `ocpangocairo`, `ocgdk`, `ocgsk` and `ocgtk`,
+  each in its own top-level directory and declared in the root
+  `dune-project`. **`ocgtk` is now Gtk only**; in `0.1~preview2` it was the
+  umbrella for every library, and the umbrella `Ocgtk` module and the
+  `ocgtk.<ns>` sub-libraries are gone.
+- **Flat module paths** — `Ocgtk_gio.Gio.File` is now `Ocgio.File`; layer 1
+  (`Ocgtk_gio.Gio.Wrappers.File`) is `Ocgio.Raw.File`; enums
+  (`Ocgtk_gio.Gio_enums`) are `Ocgio.Enums`; constants are
+  `Ocgio.Constants`. Layer 2 modules lose their `G` prefix
+  (`GButton` is `Ocgtk.Button`), and `GMain` and `GVersion` are
+  `Ocgtk.Main` and `Ocgtk.Version`.
+- **Three libraries per package** — `<pkg>.enums`, `<pkg>.raw` and `<pkg>`;
+  users depend on `<pkg>` alone. The raw libraries install their C headers
+  (`gio_decls.h`, ...), so C stubs include them without a directory.
+- **Docs** — every `inherit` line in the class documentation now links to
+  the parent class, and each package has its own index page.
+- **Tests** live in each package's `tests/` directory, and run only for that
+  package under `opam install --with-test`.
+
 ### Packaging
 
 - **ocglib** — the GLib/GObject runtime (`Gobject`, `Gvariant`, `GError`,
   …) is a separate opam package and wrapped library, `ocglib`, that needs
-  only GLib's development files, not GTK's. ocgtk depends on it and
-  re-exports it as `Ocgtk.Common`.
+  only GLib's development files, not GTK's. Every other package depends on
+  it; its modules are `Ocglib.Gobject` and so on.
 - **New conf packages** — `conf-cairo-gobject`, `conf-pangocairo`,
   `conf-gdk-pixbuf-2` and `conf-graphene-1` install each library's
   development files through depexts. `conf-cairo-gobject` exists because
@@ -29,6 +51,9 @@ usable OCaml GTK 4 binding library.
   25.04, Fedora 40 and openSUSE Leap 15.6 (all end of life) are dropped.
 - **conf-gtk4** — depexts trimmed to the checked platforms: MacPorts and
   the `rhel` distribution entry are removed.
+- **OCaml versions** — CI builds with OCaml 5.5, and the release checks add
+  a job that installs every package on OCaml 4.14, the oldest the packages
+  accept.
 
 ## [0.1~preview2] — 2026-06-24
 

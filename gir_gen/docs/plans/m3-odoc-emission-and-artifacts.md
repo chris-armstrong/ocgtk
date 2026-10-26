@@ -14,6 +14,19 @@ for PRs and `main` only)**
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
 
+> **Library layout (reconciled 2026-10-26).** This plan was written for the
+> old layout: one `ocgtk` package with a sub-library per namespace, layer 1
+> in each namespace's `Wrappers` module, layer 2 in `G`-prefixed modules
+> under `ocgtk/src/<ns>/generated/`. The layout change
+> ([library-layout.md](./library-layout.md)) replaced that in one step, not
+> through the intermediate (deleting `ocgtk_gtk.ml` first) that
+> [unresolved-inherit-links.md](../research/unresolved-inherit-links.md)
+> accepted. Read the old names as the new ones: one package per namespace
+> (`ocgtk` is Gtk only), layer 1 is `Oc<ns>.Raw.<Class>`, layer 2 is
+> `Oc<ns>.<Class>` in `<pkg>/generated/`, enums are `Oc<ns>.Enums`. Every
+> `inherit` line now links. Phase 8 is the only phase whose design changes;
+> see Root index pages.
+
 ## Purpose of this leg
 
 First *visible* vertical slice of M3: GIR `<doc>` text (already captured in the
@@ -106,7 +119,7 @@ auto-managed `gh-pages` branch and in the local cache.
    `should be freed with g_free()`) is **stripped**: the GC owns every value,
    so the sentence is actively misleading. Every strip is counted in the
    warnings manifest. Code-block translation is **layer-aware**: L1 emission
-   uses L1 idioms (modules and functions of the `Wrappers` module,
+   uses L1 idioms (modules and functions of the `Raw` modules,
    `Label.set_text l "x"`), L2 emission uses L2 idioms (classes and methods,
    `l#set_text "x"`).
 
@@ -313,7 +326,7 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `lib/generate/layer1/layer1_constructor.ml` | New: `ctor_doc` when present, synthetic fallback. |
 | `lib/generate/signal_gen.ml`, `signal_gen.mli` | New: signal `doc` on the L1 `on_<sig>` val and the L2 signal methods; `signal_emission` carries the doc. |
 | `lib/generate/layer1/layer1_property.ml`, `lib/generate/class_gen_property.ml` | Property docs, both layers (Phase 6). |
-| `scripts/generate-bindings.sh` | Also emits the two `index.mld`s (via the binary) — Phase 8. |
+| `scripts/generate-bindings.sh` | Also emits the generated packages' `index.mld` content (via the binary) — Phase 8. |
 | `ocgtk/dune`, `gir_gen/dune` | `(documentation)` stanzas (leg 0). |
 
 **No change:** `.opam` files (`odoc {with-doc}` already emitted by dune),
@@ -322,8 +335,8 @@ design, recorded as fallbacks for the warnings report): admonitions
 ## Root index pages (per package)
 
 odoc page trees are per-package, so each package gets its own `index.mld`
-under a `(documentation)` stanza (one per dune project: `ocgtk/` root,
-`gir_gen/` root).
+under a `(documentation)` stanza (one per package directory, `ocglib/` to
+`ocgtk/`, and `gir_gen/`).
 
 - **Corpus fact** (checked): there is no namespace-level `<doc>` in any
   bundled GIR file. The only namespace-level prose is `<docsection>` groups —
@@ -345,6 +358,14 @@ under a `(documentation)` stanza (one per dune project: `ocgtk/` root,
   Phase 4 it links whatever roots `@doc` produces; Phase 8 adds the
   `index.mld` package pages it points to. odoc cannot cross-link page trees,
   a raw HTML link can.
+- **Since the library layout change** (reconciled 2026-10-26, see
+  [library-layout.md](./library-layout.md)), each of the ten packages has a
+  hand-written `<pkg>/index.mld`: a synopsis, links to the main module,
+  `Enums`, `Constants` and `Raw`, and the packages it builds on. Phase 8 keeps
+  those for ocglib and as the intro of the nine generated packages, and
+  generates the grouped `{!…}` tables. Where the tables go (the hand-written
+  page including a generated one, or the generator owning the whole page and
+  taking the intro from the overrides) is decided when Phase 8 starts.
 
 ## Doc artifact cache
 
@@ -826,8 +847,8 @@ test gains counters (`C_lit`, `C_prim`, ownership strips) and a
 opam exec -- dune build @all
 opam exec -- dune test gir_gen/ && xvfb-run $(which dune) test ocgtk/
 git status --porcelain     # empty (regenerated bindings committed)
-grep -rE '%(TRUE|FALSE|NULL)\b' ocgtk/src/*/generated/*.mli   # empty
-grep -rE 'g_object_unref|freed with g_free' ocgtk/src/*/generated/*.mli  # only code blocks, if any
+grep -rE '%(TRUE|FALSE|NULL)\b' oc*/generated/*.mli oc*/raw/generated/*.mli   # empty
+grep -rE 'g_object_unref|freed with g_free' oc*/generated/*.mli oc*/raw/generated/*.mli  # only code blocks, if any
 ```
 
 ### Phase 8 — `doc_index.ml`: committed, generated `index.mld`s
@@ -878,7 +899,7 @@ translator is deliberately conservative: it either translates a block fully
 or leaves it as honestly-labelled C. It never emits wrong OCaml.
 
 **Layer awareness.** The emission site passes `layer : L1 | L2` into the
-translator context. L1 docs (modules/functions of the `Wrappers` module)
+translator context. L1 docs (modules/functions of the `Raw` modules)
 render `Label.new_with_mnemonic "_Hello"` and `Label.set_mnemonic_widget
 label (Some entry)`; L2 docs (classes/methods) render
 `new label ~label:"_Hello" ()` / `label#set_mnemonic_widget (Some entry)`.
