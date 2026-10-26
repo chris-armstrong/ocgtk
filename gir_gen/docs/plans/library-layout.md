@@ -508,7 +508,7 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   Ubuntu 22.04, Debian 12 and CentOS Stream 9 fail at Build on old cairo,
   which is also broken on `main` (Open items 4).
 
-**Step 2 done** (2026-10-26), apart from macOS, which only CI can check:
+**Step 2 done** (2026-10-26):
 
 - `conf-cairo-gobject/`, `conf-pangocairo/`, `conf-gdk-pixbuf-2/` and
   `conf-graphene-1/` are top-level packages like `conf-gtk4/`, version 1.
@@ -535,10 +535,14 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   (Arch ships headers in the same package; `conf-glib-2` has no Arch
   depext, so this is also what makes it installable there).
 - Homebrew: the formulas build the GObject parts (`cairo` with
-  `-Dglib=enabled`; `graphene` depends on `glib`). The new
-  `macos-conf` job in `release-verification.yml` installs each package
-  through Homebrew depexts and checks `glib-2.0`, `gobject-2.0`,
-  `gio-2.0` and `gio-unix-2.0` (Open items 1).
+  `-Dglib=enabled`; `graphene` depends on `glib`). The `macos-conf` job in
+  `release-verification.yml` passed on GitHub (run 40252144256): opam
+  installed `pango`, `gdk-pixbuf`, `graphene` and `gtk4` through Homebrew
+  depexts, and each package built. `cairo` and `glib` were already on the
+  runner, so for `conf-cairo-gobject` the run only shows that Homebrew's
+  `cairo` provides `cairo-gobject`. `pkg-config` finds `glib-2.0`,
+  `gobject-2.0`, `gio-2.0` and `gio-unix-2.0` from Homebrew's `glib`, so
+  `conf-glib-2` covers all four GLib modules on macOS too.
 - FreeBSD names come from the ports (Conf packages); not run, as the
   FreeBSD job is disabled.
 - Nothing depends on the four packages yet; the namespace packages do from
@@ -564,7 +568,7 @@ turns out not to be small, phase 1 joins phase 3's PR instead.
   as the baseline for those executables.
 - `dune build` and `dune test` pass for the whole tree, and CI (Linux and
   macOS) is green. macOS passing is also the missing check that Homebrew's
-  `glib` provides `gobject-2.0` (Open items 1).
+  `glib` provides `gobject-2.0` (done, see step 2).
 
 ### Phase 2 — generator
 
@@ -813,9 +817,7 @@ Docs (odoc, `--cache=disabled`):
 
 ## Open items
 
-1. macOS: the four new conf packages through Homebrew depexts, and
-   `conf-glib-2`'s coverage of gobject and gio (the `macos-conf` job checks
-   both). Windows support, once opam-repository supports MSYS2 UCRT64
+1. Windows support, once opam-repository supports MSYS2 UCRT64
    (Supported platforms).
 2. Gtk itself cannot be prototyped before phase 3, because it depends on
    every other namespace. Its risks are the same as gio's at a larger scale
