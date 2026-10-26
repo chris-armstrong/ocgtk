@@ -25,6 +25,7 @@ type output_dirs = {
   raw_core : string;  (** hand-written layer 1 OCaml and C *)
   enums_generated : string;  (** the enums library *)
   main_generated : string;  (** layer 2, raw.ml, enums.ml, constants *)
+  main_core : string;  (** hand-written main library modules *)
 }
 
 let output_dirs_of_package package_dir =
@@ -34,6 +35,7 @@ let output_dirs_of_package package_dir =
     raw_core = Filename.concat package_dir raw_core_dir;
     enums_generated = Filename.concat package_dir enums_generated_dir;
     main_generated = Filename.concat package_dir main_generated_dir;
+    main_core = Filename.concat package_dir main_core_dir;
   }
 
 let generated_dirs dirs =
@@ -1031,10 +1033,11 @@ let load_reference_files reference_files =
       in
       StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
 
-(* Hand-written layer 1 modules (raw/core/*.ml), which [Raw] re-exports *)
-let core_module_names dirs =
-  if Sys.file_exists dirs.raw_core && Sys.is_directory dirs.raw_core then
-    Sys.readdir dirs.raw_core |> Array.to_list
+(* Hand-written modules in [dir]: layer 1 in raw/core, which [Raw] re-exports,
+   or layer 2 in core, which the main library copies in *)
+let core_module_names dir =
+  if Sys.file_exists dir && Sys.is_directory dir then
+    Sys.readdir dir |> Array.to_list
     |> List.filter_map ~f:(fun f ->
         if Filename.check_suffix f ".ml" then
           Some (String.capitalize_ascii (Filename.chop_suffix f ".ml"))
@@ -1400,7 +1403,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
     module_groups_list;
 
   (* ==== MAIN LIBRARY MODULES ==== *)
-  let core_modules = core_module_names dirs in
+  let core_modules = core_module_names dirs.raw_core in
   write_file
     ~path:(Filename.concat dirs.main_generated "raw.ml")
     ~content:
@@ -1428,7 +1431,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
     ~content:(generate_enums_dune ~namespace:ns_name);
   write_file
     ~path:(Filename.concat dirs.main_generated "dune")
-    ~content:(generate_main_dune ~ctx ~namespace:ns_name ~repository);
+    ~content:
+      (generate_main_dune ~ctx ~namespace:ns_name ~repository
+         ~core_modules:(core_module_names dirs.main_core));
 
   remove_stale_files dirs;
 

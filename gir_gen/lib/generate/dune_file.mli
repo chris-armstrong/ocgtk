@@ -71,6 +71,9 @@ val generate_main_dune :
   ctx:Types.generation_context ->
   namespace:string ->
   repository:Types.gir_repository ->
+  core_modules:string list ->
   string
 (** Content of [<pkg>/generated/dune]: library [oc<ns>], depending on its own
-    raw and enums libraries and the other namespaces' main libraries. *)
+    raw and enums libraries and the other namespaces' main libraries. When
+    [core_modules] (the hand-written modules in [<pkg>/core/]) is not empty, it
+    copies them into the library. *)

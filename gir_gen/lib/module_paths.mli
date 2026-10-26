@@ -75,6 +75,10 @@ val enums_generated_dir : string
 val main_generated_dir : string
 (** ["generated"]: layer 2, [raw.ml], [enums.ml], [constants.ml]. *)
 
+val main_core_dir : string
+(** ["core"]: hand-written modules of the main library (e.g. Gtk's [Main]),
+    which its generated [dune] copies in. *)
+
 (** {1 Module paths in generated code} *)
 
 val layer2_module_name : string -> string

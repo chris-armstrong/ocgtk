@@ -37,6 +37,9 @@ let package_with_leftovers () =
   let core_dir = Filename.concat output_dir "raw/core" in
   mkdir_p core_dir;
   write_file (Filename.concat core_dir "gtk_extra_core.ml") "let x = 1\n";
+  let main_core_dir = Filename.concat output_dir "core" in
+  mkdir_p main_core_dir;
+  write_file (Filename.concat main_core_dir "main.ml") "let y = 2\n";
   let stale =
     [
       Filename.concat (raw_generated_dir output_dir) "ml_old_gen.c";
@@ -113,6 +116,15 @@ let test_core_kept_and_aliased () =
     ]
     (Ml_ast_helpers.module_aliases ast)
 
+let test_main_core_kept_and_copied () =
+  with_generated_package @@ fun ~output_dir ~stale:_ ->
+  assert_true "core is not a generated directory"
+    (file_exists (Filename.concat output_dir "core/main.ml"));
+  assert_true "the main library copies in core/"
+    (string_contains
+       (read_file (Filename.concat (main_generated_dir output_dir) "dune"))
+       "(copy_files# ../core/*.{ml,mli})")
+
 (* Alpha and Beta name each other, so they form one combined module *)
 let cycle_gir =
   wrap_namespace
@@ -170,6 +182,9 @@ let tests =
     ( "raw/core is kept and re-exported by raw.ml",
       `Quick,
       test_core_kept_and_aliased );
+    ( "core is kept and copied into the main library",
+      `Quick,
+      test_main_core_kept_and_copied );
     ( "each member of a cycle has its own layer 1 module",
       `Quick,
       test_cycle_members_have_shims );

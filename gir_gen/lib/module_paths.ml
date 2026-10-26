@@ -26,6 +26,7 @@ let raw_generated_dir = Filename.concat "raw" "generated"
 let raw_core_dir = Filename.concat "raw" "core"
 let enums_generated_dir = Filename.concat "enums" "generated"
 let main_generated_dir = "generated"
+let main_core_dir = "core"
 let layer2_module_name name = Utils.module_name_of_class name
 
 let layer2_module_filename name =
