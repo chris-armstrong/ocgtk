@@ -99,4 +99,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_d_bus_auth_observer_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DBusAuthObserver requires GLib >= 2.26");
+return Val_unit;
+}
+
 #endif

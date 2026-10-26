@@ -52,4 +52,12 @@ CAMLexport CAMLprim value ml_gio_memory_monitor_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_memory_monitor_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("MemoryMonitor requires GLib >= 2.64");
+return Val_unit;
+}
+
 #endif

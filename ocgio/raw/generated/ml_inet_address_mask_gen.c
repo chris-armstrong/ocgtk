@@ -174,4 +174,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_inet_address_mask_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
 #endif

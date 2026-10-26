@@ -153,4 +153,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_column_view_cell_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("ColumnViewCell requires GTK >= 4.12");
+return Val_unit;
+}
+
 #endif

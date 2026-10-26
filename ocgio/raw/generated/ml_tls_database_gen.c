@@ -202,4 +202,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_tls_database_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
 #endif

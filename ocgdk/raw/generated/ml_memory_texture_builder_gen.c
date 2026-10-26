@@ -480,4 +480,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_memory_texture_builder_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("MemoryTextureBuilder requires GTK >= 4.16");
+return Val_unit;
+}
+
 #endif

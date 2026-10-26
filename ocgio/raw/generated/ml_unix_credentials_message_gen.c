@@ -86,6 +86,14 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_unix_credentials_message_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("UnixCredentialsMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
 #endif
 
 #else

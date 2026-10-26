@@ -118,4 +118,12 @@ CAMLexport CAMLprim value ml_gio_d_bus_interface_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_d_bus_interface_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DBusInterface requires GLib >= 2.30");
+return Val_unit;
+}
+
 #endif

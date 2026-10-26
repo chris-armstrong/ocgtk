@@ -112,4 +112,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_pango_glyph_item_iter_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("GlyphItemIter requires Pango >= 1.22");
+return Val_unit;
+}
+
 #endif

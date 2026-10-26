@@ -418,4 +418,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_inscription_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Inscription requires GTK >= 4.8");
+return Val_unit;
+}
+
 #endif

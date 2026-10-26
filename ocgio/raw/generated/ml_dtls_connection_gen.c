@@ -561,4 +561,12 @@ CAMLexport CAMLprim value ml_gio_dtls_connection_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_dtls_connection_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DtlsConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
 #endif

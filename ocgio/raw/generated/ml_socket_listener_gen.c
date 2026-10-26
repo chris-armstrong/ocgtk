@@ -207,4 +207,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_socket_listener_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("SocketListener requires GLib >= 2.22");
+return Val_unit;
+}
+
 #endif

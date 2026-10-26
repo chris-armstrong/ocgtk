@@ -219,4 +219,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_property_action_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PropertyAction requires GLib >= 2.38");
+return Val_unit;
+}
+
 #endif

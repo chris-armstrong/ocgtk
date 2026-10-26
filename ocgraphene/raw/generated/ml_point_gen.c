@@ -249,4 +249,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_graphene_point_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
 #endif

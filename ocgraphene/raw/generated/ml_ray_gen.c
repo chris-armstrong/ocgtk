@@ -458,4 +458,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_graphene_ray_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
 #endif

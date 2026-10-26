@@ -138,4 +138,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_file_list_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("FileList requires GTK >= 4.6");
+return Val_unit;
+}
+
 #endif

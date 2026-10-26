@@ -227,7 +227,7 @@ let test_emit_c_guard_graphene () =
 
 let test_emit_c_guard_cairo_opening () =
   let version = { major = 1; minor = 17; micro = 0 } in
-  let result = emit_c_guard "Cairo" version ~is_opening:true in
+  let result = emit_c_guard "cairo" version ~is_opening:true in
   match result with
   | Error msg -> Alcotest.fail msg
   | Ok guard ->

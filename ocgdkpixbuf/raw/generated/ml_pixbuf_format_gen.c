@@ -311,4 +311,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_pixbuf_pixbuf_format_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PixbufFormat requires GdkPixbuf >= 2.2");
+return Val_unit;
+}
+
 #endif

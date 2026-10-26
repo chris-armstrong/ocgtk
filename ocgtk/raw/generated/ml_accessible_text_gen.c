@@ -107,4 +107,12 @@ CAMLexport CAMLprim value ml_gtk_accessible_text_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gtk_accessible_text_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("AccessibleText requires GTK >= 4.14");
+return Val_unit;
+}
+
 #endif

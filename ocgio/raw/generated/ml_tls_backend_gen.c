@@ -302,4 +302,12 @@ CAMLexport CAMLprim value ml_gio_tls_backend_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_tls_backend_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TlsBackend requires GLib >= 2.28");
+return Val_unit;
+}
+
 #endif

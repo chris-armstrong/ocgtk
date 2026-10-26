@@ -246,6 +246,12 @@ let from_gobject_stub_name ~namespace_name ~class_name =
     (String.lowercase_ascii namespace_name)
     (Gir_gen_lib.Utils.to_snake_case class_name)
 
+(** C name of the get_type wrapper stub for [class_name] in [namespace_name]. *)
+let get_type_stub_name ~namespace_name ~class_name =
+  Fmt.str "ml_%s_%s_get_type"
+    (Gir_gen_lib.Utils.to_snake_case namespace_name)
+    (Gir_gen_lib.Utils.to_snake_case class_name)
+
 (** Derives the GType macro name from a [glib:get-type] function name. *)
 let gtype_macro_from_get_type get_type_fn =
   (* Derive the GType macro from the glib:get-type function name.
@@ -370,11 +376,10 @@ let generate_c_stub ~ctx ~dirs entity =
        [Gobject.Value.get_object]/[set_object]. *)
     (match Gir_gen_lib.Types.entity_glib_get_type entity with
     | Some get_type_func ->
-        let ns_snake =
-          Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
+        let ml_name =
+          get_type_stub_name ~namespace_name:ctx.namespace.namespace_name
+            ~class_name:entity.name
         in
-        let class_snake = Gir_gen_lib.Utils.to_snake_case entity.name in
-        let ml_name = Fmt.str "ml_%s_%s_get_type" ns_snake class_snake in
         (* Not every glib:get-type symbol is exposed through the namespace's
            public headers (g_threaded_resolver_get_type is not in gio.h), so
            an undeclared call would compile as an implicit declaration: an
@@ -527,6 +532,18 @@ CAMLprim value %s(value unit)
                          fn_name entity.name version_str);
                     Buffer.add_string version_buf "\n"
                 | Class _ | Record _ | Interface _ -> ());
+
+                Gir_gen_lib.Types.entity_glib_get_type entity
+                |> Option.iter (fun _ ->
+                    let ml_name =
+                      get_type_stub_name
+                        ~namespace_name:ctx.namespace.namespace_name
+                        ~class_name:entity.name
+                    in
+                    Buffer.add_string version_buf
+                      (Gir_gen_lib.Generate.C_stub_helpers
+                       .emit_fallback_get_type_stub ~ctx ~class_name:entity.name
+                         ~ml_name ~version));
 
                 Buffer.add_string version_buf "\n";
                 match
