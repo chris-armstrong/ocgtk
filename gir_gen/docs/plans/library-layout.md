@@ -221,6 +221,18 @@ environment that has GTK 4 (checked 2026-10-25):
   partly reverted (#29579, #29751); #29795 starts a new series towards it.
   opam does not expand `%{msys2:package-prefix}%` in depext names.
 - setup-ocaml's `msys2` mode installs only `mingw-w64-x86_64-gcc`.
+- CLANG64 is ruled out by OCaml itself (checked 2026-10-26). It has the
+  whole stack (`mingw-w64-clang-x86_64-gtk4` 4.24.1, glib2, cairo, pango,
+  gdk-pixbuf2, graphene, gobject-introspection, pkgconf), and the `msys2`
+  package accepts it. Its `gcc-compat` package even provides
+  `x86_64-w64-mingw32-gcc.exe` as an alias for clang. But OCaml's
+  `configure` identifies the compiler as `mingw-*-clang-*` and accepts
+  only `mingw-*-*-gcc-*` for a MinGW-w64 build ("Unsupported C compiler
+  for a MinGW-w64 build"), in 5.3, 5.4, 5.5 and trunk. opam's compiler
+  chain also requires `msys2-mingw64`, which conflicts with
+  `msys2-clang64`.
+- The `msys2` package's `gen_config.sh` lists MINGW32 and MINGW64 twice
+  and UCRT64 not at all, which looks like the cause of #29447.
 
 Building OCaml in MINGW64 against UCRT64's GTK would mix two C runtimes
 (msvcrt and UCRT), so it is not an option. The Windows job stays in
