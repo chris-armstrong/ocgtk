@@ -1149,3 +1149,33 @@ let collect_labelled_args_of_call (expr : expression) (func_name : string) :
   in
   scan expr;
   !labels
+
+(* ========================================================================= *)
+(* Module Alias and Include Helpers *)
+(* ========================================================================= *)
+
+(* Top-level [module A = B.C] aliases of a structure, as [(A, "B.C")] *)
+let module_aliases (ast : structure) : (string * string) list =
+  List.filter_map
+    (fun item ->
+      match item.pstr_desc with
+      | Pstr_module
+          {
+            pmb_name = { txt = Some name; _ };
+            pmb_expr = { pmod_desc = Pmod_ident { txt; _ }; _ };
+            _;
+          } ->
+          Some (name, longident_to_string txt)
+      | _ -> None)
+    ast
+
+(* Top-level [include M] items of a structure, as module paths *)
+let included_modules (ast : structure) : string list =
+  List.filter_map
+    (fun item ->
+      match item.pstr_desc with
+      | Pstr_include { pincl_mod = { pmod_desc = Pmod_ident { txt; _ }; _ }; _ }
+        ->
+          Some (longident_to_string txt)
+      | _ -> None)
+    ast

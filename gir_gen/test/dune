@@ -69,6 +69,8 @@
   doc_emit_tests
   ; Dune library/stub-batch generation (pure unit)
   dune_file_tests
+  ; Library layout: module paths, raw.ml, dune stanzas (pure unit)
+  module_paths_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests
@@ -144,6 +146,7 @@
   records_tests
   properties_tests
   edge_cases_tests
+  layout_tests
   ; Signal corpus — uses cross-namespace reference files produced by
   ; gir_gen.exe references rules in corpus/dune.
   signal_corpus
