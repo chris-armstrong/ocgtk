@@ -30,3 +30,13 @@ val generate_combined_ml_modules :
   string
 (** Generate combined [module rec / and] ML text for a set of entities that have
     cyclic dependencies. *)
+
+val generate_cycle_member_shim :
+  output_mode:Layer1_helpers.output_mode ->
+  combined_module_name:string ->
+  member_name:string ->
+  string
+(** The layer 1 module of a member of a cycle, outside the combined module:
+    [include App_info_cycle_<hash>.File], with a signature that keeps its types
+    equal to the combined module's. Gives other namespaces the path
+    [Ocgio_raw.File]. *)

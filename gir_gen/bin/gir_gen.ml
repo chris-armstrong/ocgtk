@@ -820,6 +820,28 @@ let generate_combined_ml_files ~ctx ~dirs ~module_group ~parent_chain_for_class
   write_file ~path:mli_path ~content:mli_content;
   write_file ~path:ml_path ~content:ml_content
 
+(* Generate the layer 1 module of each member of a cycle, outside the
+   combined module *)
+let generate_cycle_member_shims ~dirs ~module_group =
+  let open Gir_gen_lib in
+  let combined_module_name =
+    Dependency_analysis.module_name_of_group module_group
+  in
+  Dependency_analysis.entities_of_group module_group
+  |> List.iter ~f:(fun (entity : Types.entity) ->
+      let stem = Utils.to_snake_case entity.name in
+      List.iter
+        ~f:(fun (output_mode, ext) ->
+          write_file
+            ~path:(Filename.concat dirs.raw_generated (stem ^ ext))
+            ~content:
+              (Generate.Ml_interface.generate_cycle_member_shim ~output_mode
+                 ~combined_module_name ~member_name:entity.name))
+        [
+          (Generate.Ml_interface.Interface, ".mli");
+          (Generate.Ml_interface.Implementation, ".ml");
+        ])
+
 (* Generate the combined layer 2 module for a cycle of classes *)
 let generate_combined_class_files ~ctx ~dirs ~module_group
     ~parent_chain_for_class =
@@ -1042,9 +1064,7 @@ let generate_constants_files ~ctx ~dirs =
   end
 
 (* The generation context of a namespace, its generated classes, interfaces
-   and records, and their module groups (cycles become one combined module).
-   Both [generate] and [references] use it, so a reference file names the same
-   combined modules the generated code does. *)
+   and records, and their module groups (cycles become one combined module) *)
 let build_generation_context ~namespace ~repository ~classes ~interfaces ~enums
     ~bitfields ~records ~constants ~cross_references =
   let open Gir_gen_lib in
@@ -1348,7 +1368,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
           in
           Fmt.pr "  Generating combined module for cycle: %s\n" names;
           generate_combined_ml_files ~ctx ~dirs ~module_group:group
-            ~parent_chain_for_class)
+            ~parent_chain_for_class;
+          generate_cycle_member_shims ~dirs ~module_group:group)
     module_groups_list;
 
   (* Generate Layer 2 files (high-level wrapper classes) *)
@@ -1486,19 +1507,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
     @@ overrides_file
   in
 
-  (* Members of a cycle live in a combined layer 1 module, which other
-     namespaces' layer 1 must name. *)
-  let ctx, _, _ =
-    build_generation_context ~namespace ~repository ~classes ~interfaces ~enums
-      ~bitfields ~records ~constants ~cross_references:StringMap.empty
-  in
-  let cluster_of name =
-    Hashtbl.find_opt ctx.module_groups name
-    |> Fun.flip Option.bind (fun combined ->
-        if String.equal combined (Gir_gen_lib.Utils.module_name_of_class name)
-        then None
-        else Some combined)
-  in
   Fmt.pr "References will be written to: %s\n" output_file;
   let entities =
     (classes
@@ -1509,7 +1517,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
           cr_type =
             Crt_Class { parent = cls.parent; implements = cls.implements };
           cr_c_type = cls.c_type;
-          cr_cluster = cluster_of cls.class_name;
         }))
     @ (interfaces
       |> List.map ~f:(fun intf ->
@@ -1517,7 +1524,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
             cr_name = intf.interface_name;
             cr_type = Crt_Interface;
             cr_c_type = intf.c_type;
-            cr_cluster = cluster_of intf.interface_name;
           }))
     @ List.map
         ~f:(fun enms ->
@@ -1525,7 +1531,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
             cr_name = enms.enum_name;
             cr_type = Crt_Enum;
             cr_c_type = enms.enum_c_type;
-            cr_cluster = None;
           })
         enums
     @ List.map
@@ -1534,7 +1539,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
             cr_name = bitfield.bitfield_name;
             cr_type = Crt_Bitfield;
             cr_c_type = bitfield.bitfield_c_type;
-            cr_cluster = None;
           })
         bitfields
     @ (records
@@ -1546,7 +1550,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
               Crt_Record
                 { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
-            cr_cluster = cluster_of rec_.record_name;
           }))
     @ List.map
         ~f:(fun cst ->
@@ -1554,7 +1557,6 @@ let generate_references ~gir_file ~output_file ~overrides_file =
             cr_name = cst.constant_name;
             cr_type = Crt_Constant;
             cr_c_type = cst.constant_c_type;
-            cr_cluster = None;
           })
         constants
   in

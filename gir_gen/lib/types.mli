@@ -370,9 +370,6 @@ type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
-  cr_cluster : string option; [@sexp.option]
-      (* Combined module holding the entity's layer 1 module when it is part
-         of a cycle (e.g. [App_info_cycle_64c425a0]); [None] otherwise *)
 }
 
 val cross_reference_entity_of_sexp : Sexplib0.Sexp.t -> cross_reference_entity

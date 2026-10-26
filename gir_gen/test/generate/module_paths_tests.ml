@@ -6,7 +6,7 @@
    takes, from a raw-library and a main-library context, one test per row of
    the layout plan's name mapping. Fixtures: Graphene with Point and the
    cycle Box/Sphere (combined module Box_and__sphere), and a Gio reference
-   file with Icon and the cycle member AppInfo. *)
+   file with Icon and AppInfo, which is in a cycle in Gio. *)
 
 open Gir_gen_lib.Types
 module Module_paths = Gir_gen_lib.Module_paths
@@ -14,20 +14,18 @@ module Dune_file = Gir_gen_lib.Generate.Dune_file
 module Library_module = Gir_gen_lib.Generate.Library_module
 
 let gir_type name = Type_factory.make_gir_type ~name ()
-let gio_app_info_cluster = "App_info_cycle_64c425a0"
 
 let gio_references =
-  let entity ~name ~kind ?cr_cluster c_type =
+  let entity ~name ~kind c_type =
     ( name,
       Type_factory.make_cross_reference_entity ~cr_name:name
         ~cr_type:(Type_factory.make_cross_reference_type kind)
-        ~cr_c_type:c_type ?cr_cluster () )
+        ~cr_c_type:c_type () )
   in
   StringMap.of_list
     [
       entity ~name:"Icon" ~kind:`Interface "GIcon";
-      entity ~name:"AppInfo" ~kind:`Interface ~cr_cluster:gio_app_info_cluster
-        "GAppInfo";
+      entity ~name:"AppInfo" ~kind:`Interface "GAppInfo";
       entity ~name:"FileType" ~kind:`Enum "GFileType";
     ]
 
@@ -109,8 +107,7 @@ let test_layer2_to_layer2_other_namespace () =
 
 let test_layer1_to_layer1_other_namespace () =
   check_ocaml_type ~ctx:raw_ctx "Gio.Icon" "Ocgio_raw.Icon.t";
-  check_ocaml_type ~ctx:raw_ctx "Gio.AppInfo"
-    "Ocgio_raw.App_info_cycle_64c425a0.App_info.t"
+  check_ocaml_type ~ctx:raw_ctx "Gio.AppInfo" "Ocgio_raw.App_info.t"
 
 let test_layer2_to_layer1_other_namespace () =
   check_ocaml_type ~ctx:main_ctx "Gio.Icon" "Ocgio.Raw.Icon.t";
@@ -168,7 +165,7 @@ let test_layer2_module_has_no_g_prefix () =
 
 (* ---------- raw.ml and enums.ml ----------------------------------------- *)
 
-let test_raw_module_flattens_clusters () =
+let test_raw_module_aliases () =
   let ast =
     Ml_ast_helpers.parse_implementation
       (Library_module.generate_raw_module ~ctx:raw_ctx
@@ -176,23 +173,33 @@ let test_raw_module_flattens_clusters () =
          ~core_modules:[ "Graphene_extra_core" ])
   in
   Alcotest.(check (list (pair string string)))
-    "one alias per class, sorted, then the core modules"
+    "one alias per class (cycle members by their shim), sorted, then core"
     [
-      ("Box", "Ocgraphene_raw.Box_and__sphere.Box");
+      ("Box", "Ocgraphene_raw.Box");
       ("Point", "Ocgraphene_raw.Point");
-      ("Sphere", "Ocgraphene_raw.Box_and__sphere.Sphere");
+      ("Sphere", "Ocgraphene_raw.Sphere");
       ("Graphene_extra_core", "Ocgraphene_raw.Graphene_extra_core");
     ]
     (Ml_ast_helpers.module_aliases ast)
 
-(* The main library's context must not leak into raw.ml's paths *)
-let test_raw_module_same_from_main_context () =
-  let render ctx =
-    Library_module.raw_module_aliases ~ctx ~entity_names:[ "Box" ]
-      ~core_modules:[]
+(* A member of a cycle gets its own layer 1 module: the implementation
+   includes the member of the combined module, and the interface keeps its
+   types equal to it. *)
+let test_cycle_member_shim () =
+  let shim output_mode =
+    Gir_gen_lib.Generate.Ml_interface.generate_cycle_member_shim ~output_mode
+      ~combined_module_name:"Box_and__sphere" ~member_name:"Box"
   in
-  Alcotest.(check (list (pair string string)))
-    "same aliases" (render raw_ctx) (render main_ctx)
+  Alcotest.(check (list string))
+    "implementation" [ "Box_and__sphere.Box" ]
+    (Ml_ast_helpers.included_modules
+       (Ml_ast_helpers.parse_implementation
+          (shim Gir_gen_lib.Generate.Ml_interface.Implementation)));
+  Alcotest.(check (list string))
+    "interface" [ "Box_and__sphere.Box" ]
+    (Ml_ast_helpers.strengthened_includes
+       (Ml_ast_helpers.parse_interface
+          (shim Gir_gen_lib.Generate.Ml_interface.Interface)))
 
 let test_enums_module_includes_enums_library () =
   let ast =
@@ -272,7 +279,7 @@ let tests =
     ( "layer 2 to another namespace's layer 2",
       `Quick,
       test_layer2_to_layer2_other_namespace );
-    ( "layer 1 to another namespace's raw library, with its cluster",
+    ( "layer 1 to another namespace's raw library, cycle member by its shim",
       `Quick,
       test_layer1_to_layer1_other_namespace );
     ( "layer 2 to another namespace's layer 1, via its Raw",
@@ -291,12 +298,8 @@ let tests =
     ( "layer 2 module has no G prefix",
       `Quick,
       test_layer2_module_has_no_g_prefix );
-    ( "raw.ml flattens clusters, then core",
-      `Quick,
-      test_raw_module_flattens_clusters );
-    ( "raw.ml is the same from a main-library context",
-      `Quick,
-      test_raw_module_same_from_main_context );
+    ("raw.ml: one alias per class, then core", `Quick, test_raw_module_aliases);
+    ("cycle member shim module", `Quick, test_cycle_member_shim);
     ( "enums.ml includes the enums library",
       `Quick,
       test_enums_module_includes_enums_library );

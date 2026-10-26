@@ -1179,3 +1179,40 @@ let included_modules (ast : structure) : string list =
           Some (longident_to_string txt)
       | _ -> None)
     ast
+
+(* Top-level [include module type of struct include M end] items of a
+   signature, as the paths [M] *)
+let strengthened_includes (sig_ : signature) : string list =
+  List.filter_map
+    (fun item ->
+      match item.psig_desc with
+      | Psig_include
+          {
+            pincl_mod =
+              {
+                pmty_desc =
+                  Pmty_typeof
+                    {
+                      pmod_desc =
+                        Pmod_structure
+                          [
+                            {
+                              pstr_desc =
+                                Pstr_include
+                                  {
+                                    pincl_mod =
+                                      { pmod_desc = Pmod_ident { txt; _ }; _ };
+                                    _;
+                                  };
+                              _;
+                            };
+                          ];
+                      _;
+                    };
+                _;
+              };
+            _;
+          } ->
+          Some (longident_to_string txt)
+      | _ -> None)
+    sig_

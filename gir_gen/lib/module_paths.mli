@@ -93,9 +93,9 @@ val same_ns_layer1_module : ctx:generation_context -> string -> string
 val cross_ns_layer1_module :
   ctx:generation_context -> namespace:string -> string -> string
 (** Layer 1 module of a class, interface or record of another namespace. From
-    the raw library: ["Ocgio_raw.Icon"], or ["Ocgio_raw.A_and__b.B"] for a
-    member of a cycle (from the reference file's [cr_cluster]). From the main
-    library: ["Ocgio.Raw.Icon"]. *)
+    the raw library: ["Ocgio_raw.Icon"]; a member of a cycle has its own shim
+    module beside the combined module, so it is ["Ocgio_raw.File"] too. From the
+    main library: ["Ocgio.Raw.Icon"]. *)
 
 val namespace_enums_module : ctx:generation_context -> string -> string
 (** Module holding the enums of [namespace]. Same namespace: ["Ocgio_enums"]

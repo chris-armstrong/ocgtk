@@ -45,23 +45,12 @@ let same_ns_layer1_module ~ctx name =
         |> Option.fold ~none:simple ~some:(fun cluster ->
             in_cluster ~cluster simple)
 
-let cross_ns_cluster ~ctx ~namespace name =
-  StringMap.find_opt namespace ctx.cross_references
-  |> Fun.flip Option.bind (fun ncr -> StringMap.find_opt name ncr.ncr_entities)
-  |> Fun.flip Option.bind (fun cr -> cr.cr_cluster)
-
 let cross_ns_layer1_module ~ctx ~namespace name =
   let simple = Utils.module_name_of_class name in
   match ctx.target_library with
   | Main_library ->
       main_module namespace ^ "." ^ raw_alias_module ^ "." ^ simple
-  | Raw_library ->
-      let in_raw =
-        cross_ns_cluster ~ctx ~namespace name
-        |> Option.fold ~none:simple ~some:(fun cluster ->
-            in_cluster ~cluster simple)
-      in
-      raw_module namespace ^ "." ^ in_raw
+  | Raw_library -> raw_module namespace ^ "." ^ simple
 
 let is_current_namespace ~ctx namespace =
   String.equal namespace ctx.namespace.namespace_name

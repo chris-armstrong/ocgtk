@@ -7,28 +7,20 @@ open Types
    links to layer 2 parents), so the generator only adds modules to it:
    [Raw] re-exports the raw library and [Enums] the enums library.
 
-   [Raw] cannot be [include Ocgio_raw], which leaves cluster members
-   unbound, nor a single alias, which only dune's main module could hold. One
-   alias per layer 1 module keeps odoc linking [Raw.Point.t] to the raw
-   library's page. *)
+   [Raw] cannot be a single alias, which only dune's main module could hold.
+   One alias per layer 1 module keeps odoc linking [Raw.Point.t] to the raw
+   library's page. Members of a cycle have their own shim module in the raw
+   library, so they need no cluster in the path. *)
 
 let generated_header = "(* GENERATED CODE - DO NOT EDIT *)\n\n"
 
 let raw_module_aliases ~ctx ~entity_names ~core_modules =
   let raw_module = Module_paths.raw_module ctx.namespace.namespace_name in
-  let in_raw_ctx =
-    { (Module_paths.raw_library_ctx ctx) with current_cycle_classes = [] }
-  in
-  let entity_alias name =
-    ( Utils.module_name_of_class name,
-      raw_module ^ "." ^ Module_paths.same_ns_layer1_module ~ctx:in_raw_ctx name
-    )
-  in
-  let core_alias m = (m, raw_module ^ "." ^ m) in
-  List.sort
-    ~cmp:(fun (a, _) (b, _) -> String.compare a b)
-    (List.map ~f:entity_alias entity_names)
-  @ List.map ~f:core_alias core_modules
+  let alias m = (m, raw_module ^ "." ^ m) in
+  (List.map ~f:Utils.module_name_of_class entity_names
+  |> List.sort ~cmp:String.compare)
+  @ core_modules
+  |> List.map ~f:alias
 
 let generate_raw_module ~ctx ~entity_names ~core_modules =
   let buf = Buffer.create 4096 in

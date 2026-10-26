@@ -128,7 +128,6 @@ let test_get_dependency_namespaces_filters_base_namespaces () =
       cr_name = "Test";
       cr_type = Crt_Class { parent = None; implements = [] };
       cr_c_type = "Test";
-      cr_cluster = None;
     }
   in
   let dummy_map = StringMap.add "Test" dummy_cr StringMap.empty in

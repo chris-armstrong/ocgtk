@@ -1,6 +1,6 @@
 (* Integration tests for the per-namespace library layout: where gir_gen.exe
    writes each library's files, that earlier runs' leftovers are removed, and
-   that reference files name the combined module of each cycle member. *)
+   that each member of a cycle has its own layer 1 module. *)
 
 open Helpers
 
@@ -113,28 +113,48 @@ let test_core_kept_and_aliased () =
     ]
     (Ml_ast_helpers.module_aliases ast)
 
-(* corpus/gio-references.sexp is produced by gir_gen.exe references over the
-   real Gio GIR (see corpus/dune). File and AppInfo are in one cycle; Icon is
-   in none. *)
-let test_references_record_clusters () =
-  let gio =
-    Sexplib.Sexp.load_sexp_conv_exn "corpus/gio-references.sexp"
-      Gir_gen_lib.Types.cross_reference_namespace_of_sexp
-  in
-  let cluster name =
-    match
-      List.find_opt
-        (fun (cr : Gir_gen_lib.Types.cross_reference_entity) ->
-          String.equal cr.cr_name name)
-        gio.cr_entities
-    with
-    | Some cr -> cr.cr_cluster
-    | None -> Alcotest.failf "%s not in the Gio references" name
-  in
-  Helpers.expect_some "File is in a cycle" (cluster "File") @@ fun file ->
-  Alcotest.(check (option string))
-    "AppInfo shares File's combined module" (Some file) (cluster "AppInfo");
-  Alcotest.(check (option string)) "Icon is in no cycle" None (cluster "Icon")
+(* Alpha and Beta name each other, so they form one combined module *)
+let cycle_gir =
+  wrap_namespace
+    {|
+    <class name="Alpha" c:type="GtkAlpha" parent="GObject.Object">
+      <method name="get_beta" c:identifier="gtk_alpha_get_beta">
+        <return-value transfer-ownership="none"><type name="Beta" c:type="GtkBeta*"/></return-value>
+      </method>
+    </class>
+    <class name="Beta" c:type="GtkBeta" parent="GObject.Object">
+      <method name="get_alpha" c:identifier="gtk_beta_get_alpha">
+        <return-value transfer-ownership="none"><type name="Alpha" c:type="GtkAlpha*"/></return-value>
+      </method>
+    </class>
+|}
+
+let test_cycle_members_have_shims () =
+  let gir_file = Filename.temp_file "test_layout_cycle" ".gir" in
+  let output_dir = Filename.temp_file "test_layout_cycle" "" in
+  Sys.remove output_dir;
+  Unix.mkdir output_dir 0o755;
+  Fun.protect ~finally:(fun () ->
+      remove_tree gir_file;
+      remove_tree output_dir)
+  @@ fun () ->
+  create_gir_file gir_file cycle_gir;
+  ignore (run_gir_gen gir_file output_dir);
+  let raw_dir = raw_generated_dir output_dir in
+  assert_files_exist raw_dir
+    [ "alpha_and__beta.ml"; "alpha.ml"; "alpha.mli"; "beta.ml"; "beta.mli" ];
+  Alcotest.(check (list string))
+    "alpha.ml includes the member of the combined module"
+    [ "Alpha_and__beta.Alpha" ]
+    (Ml_ast_helpers.included_modules
+       (Ml_ast_helpers.parse_implementation
+          (read_file (Filename.concat raw_dir "alpha.ml"))));
+  Alcotest.(check (list (pair string string)))
+    "raw.ml aliases the shims"
+    [ ("Alpha", "Ocgtk_raw.Alpha"); ("Beta", "Ocgtk_raw.Beta") ]
+    (Ml_ast_helpers.module_aliases
+       (Ml_ast_helpers.parse_implementation
+          (read_file (Filename.concat (main_generated_dir output_dir) "raw.ml"))))
 
 let tests =
   [
@@ -150,7 +170,7 @@ let tests =
     ( "raw/core is kept and re-exported by raw.ml",
       `Quick,
       test_core_kept_and_aliased );
-    ( "references record each cycle member's combined module",
+    ( "each member of a cycle has its own layer 1 module",
       `Quick,
-      test_references_record_clusters );
+      test_cycle_members_have_shims );
   ]
