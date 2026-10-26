@@ -107,3 +107,10 @@
   (flags
    (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
  (libraries ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))
+
+; Reproduces a crash: plain (non-boxed) records in a returned array are wrapped
+; as interior pointers, then the array is freed. Expected to fail until fixed.
+(test
+ (name test_plain_record_array)
+ (modules test_plain_record_array)
+ (libraries ocgtk.gtk alcotest))
