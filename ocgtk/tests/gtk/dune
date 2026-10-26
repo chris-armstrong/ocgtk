@@ -4,94 +4,80 @@
  (name gtk_test_helpers)
  (wrapped false)
  (modules gtk_test_helpers)
- (libraries ocgtk.gtk alcotest))
-
-(library
- (name gobject_test_helpers)
- (wrapped false)
- (modules gobject_test_helpers)
- (foreign_stubs
-  (language c)
-  (names ml_gobject_test_helpers)
-  (flags
-   -fPIC
-   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk))
+ (libraries ocgtk alcotest))
 
 (test
  (name test_string_list)
  (modules test_string_list)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_box)
  (modules test_box)
- (libraries ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_widget)
  (modules test_widget)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_button)
  (modules test_button)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_range)
  (modules test_range)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_variance)
  (modules test_variance)
- (libraries ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_interface)
  (modules test_interface)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_record_finalizer)
  (modules test_record_finalizer)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_value_kinds)
  (modules test_value_kinds)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_tree_path)
  (modules test_tree_path)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_nullable_arrays)
  (modules test_nullable_arrays)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_signal_value_enum_flags)
@@ -100,17 +86,17 @@
   (language c)
   (names test_signal_value_enum_flags_stubs)
   (flags
-   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))
 
 (test
  (name test_gvalue_object_memory)
  (modules test_gvalue_object_memory)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_gvalue_safety)
@@ -119,31 +105,31 @@
   (language c)
   (names test_gvalue_safety_stubs)
   (flags
-   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))
 
 (test
  (name test_generated_property_object_ownership)
  (modules test_generated_property_object_ownership)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_gobject_equality)
  (modules test_gobject_equality)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers))
 
 (test
  (name test_signal_marshalling)
  (modules test_signal_marshalling)
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk alcotest gtk_test_helpers gobject_test_helpers))
+ (libraries ocglib ocgtk alcotest gtk_test_helpers gobject_test_helpers))
 
 (test
  (name test_signal_widget)
@@ -152,7 +138,7 @@
   (language c)
   (names test_signal_widget_stubs)
   (flags
-   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+   (:include %{project_root}/ocgtk/raw/cflag-gtk.sexp)))
  (flags
   (:standard -open Ocglib))
- (libraries ocglib ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))
+ (libraries ocglib ocgtk ocgdk alcotest gtk_test_helpers))

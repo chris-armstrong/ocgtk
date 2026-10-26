@@ -19,8 +19,8 @@
     destroyed while its container still holds it. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
-module Widget = Wrappers.Widget
+open Ocgtk
+module Widget = Raw.Widget
 module Value = Gobject.Value
 module Type = Gobject.Type
 
@@ -42,7 +42,7 @@ let check_rc label expected obj = check int label expected (rc obj)
 let gvalue_holder : Gobject.Value.t option ref = ref None
 
 let drop_target () =
-  Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") []
+  Raw.Drop_target.new_ (Gobject.Type.from_name "gchararray") []
 
 (** [g_value_get_object] must add a reference of its own on top of the GValue's,
     and the OCaml wrapper's finalizer must release exactly that reference once
@@ -92,11 +92,11 @@ let test_gvalue_object_lifecycle_returns_to_baseline () =
     side lets go, and the child is destroyed out from under the live container.
 *)
 let test_parent_owned_child_survives_gvalue_gc () =
-  let box = Wrappers.Box.new_ `HORIZONTAL 0 in
-  let child = Wrappers.Button.new_ () in
-  Wrappers.Button.set_label child "do-not-steal-my-ref";
+  let box = Raw.Box.new_ `HORIZONTAL 0 in
+  let child = Raw.Button.new_ () in
+  Raw.Button.set_label child "do-not-steal-my-ref";
   let base = rc child in
-  Wrappers.Box.append box (child :> Widget.t);
+  Raw.Box.append box (child :> Widget.t);
   check_rc "append gives the container its own reference" (base + 1) child;
   let scoped () =
     let v = Value.create Type.object_ in
@@ -119,16 +119,16 @@ let test_parent_owned_child_survives_gvalue_gc () =
   (* And the child is still functional. *)
   check (option string) "child still usable after bridge GC"
     (Some "do-not-steal-my-ref")
-    (Wrappers.Button.get_label child)
+    (Raw.Button.get_label child)
 
 (** [g_object_get_property] auto-initializes an empty (zero-filled) GValue since
     GLib 2.60, behind this binding's back. For object-valued properties the
     getter stores its own reference; the GValue finalizer must still unset such
     values or that reference leaks. *)
 let test_property_get_into_empty_value_releases_reference () =
-  let window = Wrappers.Window.new_ () in
-  let child = Wrappers.Button.new_ () in
-  Wrappers.Window.set_child window (Some (child :> Widget.t));
+  let window = Raw.Window.new_ () in
+  let child = Raw.Button.new_ () in
+  Raw.Window.set_child window (Some (child :> Widget.t));
   let base = rc child in
   let scoped () =
     let v = Value.create_empty () in

@@ -1,0 +1,8 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgraphene)
+ (public_name ocgraphene)
+ (synopsis "OCaml bindings for Graphene")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries ocglib ocgraphene.raw ocgraphene.enums))

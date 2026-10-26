@@ -1,0 +1,25 @@
+class type inet_address_t = object
+  method equal : inet_address_t -> bool
+  method get_family : unit -> Enums.socketfamily
+  method get_flowinfo : unit -> UInt32.t
+  method get_is_any : unit -> bool
+  method get_is_link_local : unit -> bool
+  method get_is_loopback : unit -> bool
+  method get_is_mc_global : unit -> bool
+  method get_is_mc_link_local : unit -> bool
+  method get_is_mc_node_local : unit -> bool
+  method get_is_mc_org_local : unit -> bool
+  method get_is_mc_site_local : unit -> bool
+  method get_is_multicast : unit -> bool
+  method get_is_site_local : unit -> bool
+  method get_native_size : unit -> Gsize.t
+  method get_scope_id : unit -> UInt32.t
+  method to_string : unit -> string
+  method as_inet_address : Raw.Inet_address.t
+end
+
+class inet_address : Raw.Inet_address.t -> inet_address_t
+
+val new_any : Enums.socketfamily -> inet_address_t
+val new_from_string : string -> inet_address_t
+val new_loopback : Enums.socketfamily -> inet_address_t

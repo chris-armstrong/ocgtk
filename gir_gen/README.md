@@ -131,7 +131,10 @@ libraries of the package under it:
 
 `<pkg>/raw/core/` holds hand-written C and layer 1 OCaml, and `<pkg>/raw/dune`
 declares the raw library and includes `generated/dune.inc`; the generator
-reads the former and writes neither.
+reads the former and writes neither. `<pkg>/core/`, when present, holds
+hand-written modules of the main library (Gtk's `Main` and `Version`): the
+generated `<pkg>/generated/dune` copies them in with `copy_files#`, so they
+are `Ocgtk.Main`, not `Ocgtk.Raw.Main`.
 
 The three generated directories hold generated files only: after writing, the
 generator deletes every file in them that the run did not write, so renamed or

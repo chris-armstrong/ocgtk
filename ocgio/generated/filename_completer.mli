@@ -1,0 +1,13 @@
+class type filename_completer_t = object
+  method on_got_completion_data :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method get_completion_suffix : string -> string option
+  method get_completions : string -> string array
+  method set_dirs_only : bool -> unit
+  method as_filename_completer : Raw.Filename_completer.t
+end
+
+class filename_completer : Raw.Filename_completer.t -> filename_completer_t
+
+val new_ : unit -> filename_completer_t

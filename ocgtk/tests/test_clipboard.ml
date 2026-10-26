@@ -5,9 +5,9 @@ open Alcotest
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     true
-  with GMain.Error _ -> false
+  with Main.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()

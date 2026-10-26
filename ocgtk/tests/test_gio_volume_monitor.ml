@@ -11,14 +11,14 @@
     elements are present. *)
 
 open Alcotest
-module Gio = Ocgtk_gio.Gio
+module Gio = Ocgio
 
 (* Layer 2 VolumeMonitor class *)
 module L2_vm = Gio.Volume_monitor
 
 (* Singleton getter (hand-written; g_volume_monitor_get is a free function) *)
 let get_l2_vm () =
-  let obj = Ocgtk_gio.Gio_volume_monitor_core.volume_monitor_get () in
+  let obj = Ocgio.Raw.Gio_volume_monitor_core.volume_monitor_get () in
   new L2_vm.volume_monitor obj
 
 (** Test 1: L2 list return — get mounts and call get_name on each element. This

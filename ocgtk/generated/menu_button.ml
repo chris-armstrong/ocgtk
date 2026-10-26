@@ -1,0 +1,158 @@
+class type menu_button_t = object
+  inherit
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method get_active : unit -> bool
+  method get_always_show_arrow : unit -> bool
+  method get_can_shrink : unit -> bool
+
+  method get_child :
+    unit ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option
+
+  method get_has_frame : unit -> bool
+  method get_icon_name : unit -> string option
+  method get_label : unit -> string option
+  method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option
+  method get_popover : unit -> Popover.popover_t option
+  method get_primary : unit -> bool
+  method get_use_underline : unit -> bool
+  method popdown : unit -> unit
+  method popup : unit -> unit
+  method set_active : bool -> unit
+  method set_always_show_arrow : bool -> unit
+  method set_can_shrink : bool -> unit
+
+  method set_child :
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_has_frame : bool -> unit
+  method set_icon_name : string -> unit
+  method set_label : string -> unit
+  method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
+  method set_popover : Popover.popover_t option -> unit
+  method set_primary : bool -> unit
+  method set_use_underline : bool -> unit
+  method as_menu_button : Raw.Menu_button.t
+end
+
+(* High-level class for MenuButton *)
+class menu_button (obj : Raw.Menu_button.t) : menu_button_t =
+  object (self)
+    inherit
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      .widget
+        (obj :> Raw.Widget.t)
+
+    method on_activate ?(after = false) ~callback () =
+      Raw.Menu_button.on_activate ~after self#as_menu_button ~callback
+
+    method get_active : unit -> bool = fun () -> Raw.Menu_button.get_active obj
+
+    method get_always_show_arrow : unit -> bool =
+      fun () -> Raw.Menu_button.get_always_show_arrow obj
+
+    method get_can_shrink : unit -> bool =
+      fun () -> Raw.Menu_button.get_can_shrink obj
+
+    method get_child :
+        unit ->
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .widget_t
+        option =
+      fun () ->
+        Option.map
+          (fun ret ->
+            new
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              .widget
+              ret)
+          (Raw.Menu_button.get_child obj)
+
+    method get_has_frame : unit -> bool =
+      fun () -> Raw.Menu_button.get_has_frame obj
+
+    method get_icon_name : unit -> string option =
+      fun () -> Raw.Menu_button.get_icon_name obj
+
+    method get_label : unit -> string option =
+      fun () -> Raw.Menu_button.get_label obj
+
+    method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Ocgio.Menu_model.menu_model ret)
+          (Raw.Menu_button.get_menu_model obj)
+
+    method get_popover : unit -> Popover.popover_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Popover.popover ret)
+          (Raw.Menu_button.get_popover obj)
+
+    method get_primary : unit -> bool =
+      fun () -> Raw.Menu_button.get_primary obj
+
+    method get_use_underline : unit -> bool =
+      fun () -> Raw.Menu_button.get_use_underline obj
+
+    method popdown : unit -> unit = fun () -> Raw.Menu_button.popdown obj
+    method popup : unit -> unit = fun () -> Raw.Menu_button.popup obj
+
+    method set_active : bool -> unit =
+      fun active -> Raw.Menu_button.set_active obj active
+
+    method set_always_show_arrow : bool -> unit =
+      fun always_show_arrow ->
+        Raw.Menu_button.set_always_show_arrow obj always_show_arrow
+
+    method set_can_shrink : bool -> unit =
+      fun can_shrink -> Raw.Menu_button.set_can_shrink obj can_shrink
+
+    method set_child :
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .widget_t
+        option ->
+        unit =
+      fun child ->
+        let child = Option.map (fun c -> c#as_widget) child in
+        Raw.Menu_button.set_child obj child
+
+    method set_has_frame : bool -> unit =
+      fun has_frame -> Raw.Menu_button.set_has_frame obj has_frame
+
+    method set_icon_name : string -> unit =
+      fun icon_name -> Raw.Menu_button.set_icon_name obj icon_name
+
+    method set_label : string -> unit =
+      fun label -> Raw.Menu_button.set_label obj label
+
+    method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit =
+      fun menu_model ->
+        let menu_model = Option.map (fun c -> c#as_menu_model) menu_model in
+        Raw.Menu_button.set_menu_model obj menu_model
+
+    method set_popover : Popover.popover_t option -> unit =
+      fun popover ->
+        let popover = Option.map (fun c -> c#as_popover) popover in
+        Raw.Menu_button.set_popover obj popover
+
+    method set_primary : bool -> unit =
+      fun primary -> Raw.Menu_button.set_primary obj primary
+
+    method set_use_underline : bool -> unit =
+      fun use_underline -> Raw.Menu_button.set_use_underline obj use_underline
+
+    method as_menu_button = obj
+  end
+
+let new_ () : menu_button_t = new menu_button (Raw.Menu_button.new_ ())

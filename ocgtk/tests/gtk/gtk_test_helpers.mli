@@ -1,7 +1,7 @@
 (** Helpers for gating GTK tests by runtime version *)
 
-module GVersion = Ocgtk_gtk.GVersion
-module GMain = Ocgtk_gtk.GMain
+module Version = Ocgtk.Version
+module Main = Ocgtk.Main
 
 val gtk_available : bool
 (** True if GTK initialised successfully on this system. *)

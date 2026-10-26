@@ -1,0 +1,76 @@
+class type stack_page_t = object
+  inherit At_context_and__accessible.accessible_t
+
+  method get_child :
+    unit ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  method get_icon_name : unit -> string option
+  method get_name : unit -> string option
+  method get_needs_attention : unit -> bool
+  method get_title : unit -> string option
+  method get_use_underline : unit -> bool
+  method get_visible : unit -> bool
+  method set_icon_name : string -> unit
+  method set_name : string -> unit
+  method set_needs_attention : bool -> unit
+  method set_title : string -> unit
+  method set_use_underline : bool -> unit
+  method set_visible : bool -> unit
+  method as_stack_page : Raw.Stack_page.t
+end
+
+(* High-level class for StackPage *)
+class stack_page (obj : Raw.Stack_page.t) : stack_page_t =
+  object (self)
+    inherit
+      At_context_and__accessible.accessible (Raw.Accessible.from_gobject obj)
+
+    method get_child :
+        unit ->
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .widget_t =
+      fun () ->
+        new
+          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+          .widget
+          (Raw.Stack_page.get_child obj)
+
+    method get_icon_name : unit -> string option =
+      fun () -> Raw.Stack_page.get_icon_name obj
+
+    method get_name : unit -> string option =
+      fun () -> Raw.Stack_page.get_name obj
+
+    method get_needs_attention : unit -> bool =
+      fun () -> Raw.Stack_page.get_needs_attention obj
+
+    method get_title : unit -> string option =
+      fun () -> Raw.Stack_page.get_title obj
+
+    method get_use_underline : unit -> bool =
+      fun () -> Raw.Stack_page.get_use_underline obj
+
+    method get_visible : unit -> bool = fun () -> Raw.Stack_page.get_visible obj
+
+    method set_icon_name : string -> unit =
+      fun setting -> Raw.Stack_page.set_icon_name obj setting
+
+    method set_name : string -> unit =
+      fun setting -> Raw.Stack_page.set_name obj setting
+
+    method set_needs_attention : bool -> unit =
+      fun setting -> Raw.Stack_page.set_needs_attention obj setting
+
+    method set_title : string -> unit =
+      fun setting -> Raw.Stack_page.set_title obj setting
+
+    method set_use_underline : bool -> unit =
+      fun setting -> Raw.Stack_page.set_use_underline obj setting
+
+    method set_visible : bool -> unit =
+      fun visible -> Raw.Stack_page.set_visible obj visible
+
+    method as_stack_page = obj
+  end

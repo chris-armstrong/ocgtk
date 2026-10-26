@@ -1,6 +1,6 @@
 # Library layout — implementation plan
 
-> **Status: phases 0, 1 and 2 done.** Implements
+> **Status: phases 0 to 3 done.** Implements
 > [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
@@ -108,10 +108,13 @@ replace them.
 - **Gtk's hand-written `GMain` and `GVersion` become `Ocgtk.Main` and
   `Ocgtk.Version`**, dropping the prefix like the generated modules.
   `GMain` holds both externals and wrapper functions, so it cannot simply
-  move to `raw/core/`. If the dependency graph needs it (say, the main
-  library cannot hold them because of what they depend on), they go in a
-  separate sub-library of the `ocgtk` package, re-exported under the same
-  names.
+  move to `raw/core/`. They are modules of the main library, kept in
+  `ocgtk/core/` (every file in `ocgtk/generated/` is the generator's): when
+  `<pkg>/core/` exists, the generated main `dune` copies it in with
+  `copy_files#`. No separate sub-library was needed.
+- **Enum types are only under `Enums`.** The old `Gtk` module also
+  re-exported each enum type at its top (`Gtk.orientation`); `Ocgtk` does
+  not, so user code writes `Ocgtk.Enums.orientation`.
 - **ocglib uses its own pkg-config modules** (`glib-2.0`, `gobject-2.0`),
   not `gtk4`.
 - **Conf packages: our own where none exists, opam-repository's where one
@@ -325,7 +328,10 @@ phase 3 starts from (the tree moves on in between):
 
 Recorded 2026-10-25 at `m3` `d9c00187` (20 cores, `--cache=disabled`,
 after `dune clean`); the data files are in
-[library-layout-baseline/](library-layout-baseline/):
+[library-layout-baseline/](library-layout-baseline/). The same measures at
+`813dd318`, where phase 3 starts (2026-10-26): 391 test cases in 31 suites,
+the same per suite (`tests-813dd318.tsv`); 0 odoc warnings; 2864 HTML
+pages; 8966 `xref-unresolved` spans; clean build 56 s, docs 7.2 s.
 
 | Measure | Value |
 |---|---|
@@ -751,6 +757,80 @@ without `gir_gen/` and the other development-only directories.
   prefix.
 - The release tarball, unpacked, builds and installs every package with
   `opam install` from that directory, and has no `gir_gen/` in it.
+
+**Done 2026-10-26** on `layout-phase3` (from `layout-phase2` at
+`813dd318`). The commits, in order:
+
+1. `5b17c20d` gir_gen: a hand-written `<pkg>/core/` is copied into the main
+   library (for `Ocgtk.Main` and `Ocgtk.Version`, see Decisions).
+2. `3e2b33c0` the moves: 3460 renames, `git show -M --stat` reports 0
+   insertions and 0 deletions. `<Ns>.ml` and `ocgtk_<ns>.ml` move to
+   `<pkg>/generated/`, where the regeneration deletes them.
+3. `d54ed2ef` gir_gen: main libraries disable warning 7 (method
+   override), which Gtk's layer 2 triggers (`Popover` inherits `realize`
+   from `Native`). Of the flags the old Gtk library added (7, 10, 35, 36,
+   52, `-no-strict-sequence`), only 7 is needed.
+4. `fbea2fc0` hand-written changes: the root `dune-project` declares all
+   ten packages (`ocgtk/dune-project` and the root `dune-workspace` are
+   gone); each `<pkg>/raw/dune`; the umbrella library `ocgtk/src/` is
+   removed, as its name is now Gtk's main library (phase 4 step 3, done
+   early); tests and examples use the new paths; `test_closure_stress`,
+   `test_closure_with_gc` and the gobject helpers move to `ocglib/tests/`.
+5. `06fbe424` `generate-bindings.sh` and `dune fmt`, nothing else.
+6. `08ceb1b6` the release tarball, and `(name ocgtk)` in the root
+   `dune-project`, which `dune subst` needs for pinned packages.
+
+Results:
+
+- `git log --follow ocgtk/generated/window.ml` reaches
+  `ocgtk/src/gtk/generated/gWindow.ml` through the move commit.
+- The regeneration commit, checked for every file rather than a sample:
+  with module path prefixes (`Foo.` up to a dot, across ocamlformat's line
+  breaks) and whitespace removed, 1922 of the 1929 modified or renamed
+  `.ml`/`.mli` files are identical to before. The other 7 are enums
+  interfaces that were never run through ocamlformat; formatting the old
+  ones gives the new ones byte for byte. In C, only the 9 decls headers
+  change, in their `#include` lines. Added: `raw.ml`, `enums.ml` and two
+  `dune` files per namespace, PangoCairo's empty enums module, and 76
+  cycle member modules (152 files). Deleted: 9 `<Ns>.ml/.mli`, 9
+  `ocgtk_<ns>.ml`, a stray `gio.refs`, and 12 C files for types the
+  overrides ignore, which no dune file listed (`ml_gl_renderer_gen.c`,
+  `ml_print_backend_gen.c`, the 9 GioUnix ones, ...).
+- After `dune clean`, `dune build` passes: 52 s (`--cache=disabled`),
+  against 56 s at the start. Tests: 391 cases in 31 suites, the same per
+  suite as at the start; gir_gen 530 unit and 136 integration tests.
+  semgrep: 0 findings.
+- No `G`-prefixed module, `<Ns>.ml` or `ocgtk_<ns>.ml` remains, and
+  `ocgtk/src/` is gone. `generate-bindings.sh` run again leaves no diff.
+- Stub batches: objects are built in `<pkg>/raw/`, so each path on the
+  archive command is about 30 characters (`ocgtk/raw/ml_box_gen.o`), not
+  the 55 `dune_file.ml` allows. The longest command, `ocamlmklib` for
+  `ocgtk_raw_stubs_batch_0`, is 3049 characters (80 objects plus link
+  flags), 37% of 8191; the longest C compile, `ml_gtk.c`, 1328.
+- `dune build -p <pkg> @install` then `dune install`, for each package in
+  dependency order into one prefix on `OCAMLPATH` (none of the new
+  packages is in the opam switch): all ten succeed. Without the prefix,
+  `-p ocgdkpixbuf` fails with `Library "ocgio" not found`.
+- Release tarball: an allow-list of the root (`dune-project`, `*.opam`,
+  `configurator/`, `oc*/`, licences, README, CHANGELOG), 3739 files, no
+  `gir_gen/`. In a fresh opam 2.5.1 switch (OCaml 5.3.0), with the four
+  unpublished conf packages pinned to their directories, `opam install`
+  of the unpacked directory installs all ten packages, and a program
+  depending only on `ocgtk` (`Ocgtk.Main`, `Ocgtk.Button`, `Ocgtk.Raw`,
+  `Ocgtk.Enums`, `Ocgtk.Version`) builds and runs under Xvfb.
+- Docs, ahead of phases 4 and 5: 942 `inherit` lines, all linked (the
+  baseline had 874, all unresolved); 1792 unresolved spans against 8966.
+  20 warnings: dune's generated index pages for the nine new packages have
+  empty `{!modules}` lists, and `ocgtk/index.mld` still links the old
+  `Ocgtk_<ns>` modules. Both are phase 4 step 4.
+
+Left for later phases: CI workflows other than the tarball job (they run
+`opam install . ./ocgtk ...`, but `ocgtk/` no longer has an opam file, and
+the root packages need the four new conf packages, which opam-repository
+does not have, pinned; so CI fails until phase 5 step 1), and the docs (`README.md`, `CONTRIBUTORS.md`, `architecture/`, `LICENSE`'s list of
+generated directories), still name `ocgtk/src/` and `ocgtk/overrides/`
+(phase 5). Tests other than the moved ones are still in `ocgtk/tests/`
+(phase 4).
 
 ### Phase 4 — tests, examples, packaging
 

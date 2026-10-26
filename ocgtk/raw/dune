@@ -1,0 +1,45 @@
+; ocgtk.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name ocgtk_raw)
+ (public_name ocgtk.raw)
+ (synopsis "Gtk layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries
+  ocglib
+  ocgtk.enums
+  ocgtk.raw.stubs
+  occairo.raw
+  occairo.enums
+  ocgio.raw
+  ocgio.enums
+  ocgdk.raw
+  ocgdk.enums
+  ocgraphene.raw
+  ocgraphene.enums
+  ocgdkpixbuf.raw
+  ocgdkpixbuf.enums
+  ocpango.raw
+  ocpango.enums
+  ocpangocairo.raw
+  ocpangocairo.enums
+  ocgsk.raw
+  ocgsk.enums)
+ (foreign_stubs
+  (language c)
+  (names converters ml_gtk)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-gtk.sexp)
+   -Wno-deprecated-declarations
+   -Wno-incompatible-pointer-types
+   -Wno-int-conversion))
+ (install_c_headers gtk_decls gtk_core))

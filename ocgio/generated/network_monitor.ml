@@ -1,0 +1,56 @@
+class type network_monitor_t = object
+  method on_network_changed :
+    ?after:bool ->
+    callback:(network_available:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method can_reach :
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
+    .socket_connectable_t ->
+    Cancellable.cancellable_t option ->
+    (bool, GError.t) result
+
+  method can_reach_finish :
+    Async_result.async_result_t -> (bool, GError.t) result
+
+  method get_connectivity : unit -> Enums.networkconnectivity
+  method get_network_available : unit -> bool
+  method get_network_metered : unit -> bool
+  method as_network_monitor : Raw.Network_monitor.t
+end
+
+(* High-level class for NetworkMonitor *)
+class network_monitor (obj : Raw.Network_monitor.t) : network_monitor_t =
+  object (self)
+    method on_network_changed ?(after = false) ~callback () =
+      Raw.Network_monitor.on_network_changed ~after self#as_network_monitor
+        ~callback
+
+    method can_reach :
+        Socket_address_and__socket_address_enumerator_and__socket_connectable
+        .socket_connectable_t ->
+        Cancellable.cancellable_t option ->
+        (bool, GError.t) result =
+      fun connectable cancellable ->
+        let connectable = connectable#as_socket_connectable in
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Raw.Network_monitor.can_reach obj connectable cancellable
+
+    method can_reach_finish :
+        Async_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Raw.Network_monitor.can_reach_finish obj result
+
+    method get_connectivity : unit -> Enums.networkconnectivity =
+      fun () -> Raw.Network_monitor.get_connectivity obj
+
+    method get_network_available : unit -> bool =
+      fun () -> Raw.Network_monitor.get_network_available obj
+
+    method get_network_metered : unit -> bool =
+      fun () -> Raw.Network_monitor.get_network_metered obj
+
+    method as_network_monitor = obj
+  end

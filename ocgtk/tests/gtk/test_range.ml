@@ -1,11 +1,11 @@
 (* Range Widget Tests *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
-module Progress_bar = Wrappers.Progress_bar
-module Scale = Wrappers.Scale
-module Range = Wrappers.Range
-module Level_bar = Wrappers.Level_bar
+open Ocgtk
+module Progress_bar = Raw.Progress_bar
+module Scale = Raw.Scale
+module Range = Raw.Range
+module Level_bar = Raw.Level_bar
 
 let require_gtk = Gtk_test_helpers.require_gtk
 

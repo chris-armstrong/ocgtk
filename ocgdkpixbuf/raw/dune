@@ -1,0 +1,29 @@
+; ocgdkpixbuf.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name ocgdkpixbuf_raw)
+ (public_name ocgdkpixbuf.raw)
+ (synopsis "GdkPixbuf layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries
+  ocglib
+  ocgdkpixbuf.enums
+  ocgdkpixbuf.raw.stubs
+  ocgio.raw
+  ocgio.enums)
+ (foreign_stubs
+  (language c)
+  (names ml_gdkpixbuf)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-gdkpixbuf.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers gdkpixbuf_decls gdkpixbuf_core))

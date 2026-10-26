@@ -22,8 +22,8 @@ open Alcotest
 module Value = Gobject.Value
 module Type = Gobject.Type
 module Property = Gobject.Property
-module Widget = Ocgtk_gtk.Gtk.Wrappers.Widget
-module Wrappers = Ocgtk_gtk.Gtk.Wrappers
+module Widget = Ocgtk.Raw.Widget
+module Raw = Ocgtk.Raw
 
 (* Mirrors the OCGTK_KIND_* enum in value_kinds.h: the block kind returned
     by get_boxed must be the gir_record one, not a GObject block. *)
@@ -41,7 +41,7 @@ external gdk_rectangle_get_type : unit -> Gobject.g_type
 external gdk_rectangle_create : int -> int -> int -> int -> 'a Gobject.obj
   = "ml_test_gdk_rectangle_create"
 
-module Rectangle = Ocgtk_gdk.Gdk.Wrappers.Rectangle
+module Rectangle = Ocgdk.Raw.Rectangle
 
 (** [true] iff [needle] occurs in [haystack]. Avoids pulling in extra
     dependencies for substring tests on dynamic error messages. *)
@@ -73,7 +73,7 @@ let expect_invalid_argument ~label ~needle f =
     otherwise copy the foreign pointer with the GValue's own [g_boxed_copy]. *)
 let test_set_boxed_rejects_mismatched_boxed_record () =
   let v = Value.create (gdk_rectangle_get_type ()) in
-  let path = Ocgtk_gtk.Gtk.Wrappers.Tree_path.new_ () in
+  let path = Ocgtk.Raw.Tree_path.new_ () in
   expect_invalid_argument ~label:"set_boxed rejects a mismatched boxed record"
     ~needle:"g_value_set_boxed" (fun () -> Value.set_boxed v path)
 
@@ -126,7 +126,7 @@ let test_wrong_typed_setters_raise () =
   check_raises "set_object on an int-typed GValue"
     (Invalid_argument "g_value_set_object: not an object") (fun () ->
       let int_value = Value.create Type.int_ in
-      Value.set_object_exn int_value Type.object_ (Wrappers.Button.new_ ()))
+      Value.set_object_exn int_value Type.object_ (Raw.Button.new_ ()))
 
 (** Matched-type setters keep round-tripping. *)
 let test_matched_setters_round_trip () =
@@ -153,15 +153,15 @@ let test_matched_setters_round_trip () =
     object incompatible with the GValue's own type is still rejected by the
     [g_value_type_compatible] check. *)
 let test_set_object_rejects_incompatible_object_type () =
-  let btn = Wrappers.Button.new_ () in
-  let win = Wrappers.Window.new_ () in
+  let btn = Raw.Button.new_ () in
+  let win = Raw.Window.new_ () in
   let v = Value.create (Gobject.get_type win) in
   check_raises "set_object with an incompatible concrete type"
     (Invalid_argument "g_value_set_object: object type incompatible with GValue")
     (fun () -> Value.set_object_exn v Gobject.Type.object_ btn)
 
 let test_set_object_round_trips () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let gtype = Gobject.get_type btn in
   let v = Value.create gtype in
   Value.set_object_exn v gtype btn;
@@ -179,8 +179,8 @@ let test_set_object_round_trips () =
     type must be rejected even when the object is compatible with the GValue's
     own type. *)
 let test_set_object_rejects_wrong_expected_type () =
-  let btn = Wrappers.Button.new_ () in
-  let box = Wrappers.Box.new_ `HORIZONTAL 0 in
+  let btn = Raw.Button.new_ () in
+  let box = Raw.Box.new_ `HORIZONTAL 0 in
   let v = Value.create (Gobject.get_type btn) in
   expect_invalid_argument
     ~label:"set_object rejects an object outside the expected type"
@@ -188,8 +188,8 @@ let test_set_object_rejects_wrong_expected_type () =
       Value.set_object_exn v (Gobject.get_type box) btn)
 
 let test_get_object_rejects_wrong_expected_type () =
-  let btn = Wrappers.Button.new_ () in
-  let box = Wrappers.Box.new_ `HORIZONTAL 0 in
+  let btn = Raw.Button.new_ () in
+  let box = Raw.Box.new_ `HORIZONTAL 0 in
   let v = Value.create (Gobject.get_type btn) in
   Value.set_object_exn v (Gobject.get_type btn) btn;
   expect_invalid_argument
@@ -200,8 +200,8 @@ let test_get_object_rejects_wrong_expected_type () =
 (** A type mismatch must not be masked as [None]: only a NULL object maps to
     [None], so the option getter still raises on a wrong expected type. *)
 let test_get_object_propagates_mismatch_instead_of_none () =
-  let btn = Wrappers.Button.new_ () in
-  let box = Wrappers.Box.new_ `HORIZONTAL 0 in
+  let btn = Raw.Button.new_ () in
+  let box = Raw.Box.new_ `HORIZONTAL 0 in
   let v = Value.create (Gobject.get_type btn) in
   Value.set_object_exn v (Gobject.get_type btn) btn;
   expect_invalid_argument
@@ -213,7 +213,7 @@ let test_get_object_propagates_mismatch_instead_of_none () =
     Button stored under a Widget-typed expectation (the generated marshallers
     rely on this for inherited signal parameters). *)
 let test_object_accessors_accept_ancestor_expected_type () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let widget_type = Type.parent (Gobject.get_type btn) in
   let v = Value.create (Gobject.get_type btn) in
   Value.set_object_exn v widget_type btn;
@@ -223,14 +223,12 @@ let test_object_accessors_accept_ancestor_expected_type () =
 (** Storing NULL still requires the GValue's type to belong to the expected
     object type. *)
 let test_set_object_none_rejects_wrong_expected_type () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let v = Value.create (Gobject.get_type btn) in
   expect_invalid_argument
     ~label:"set_object None rejects a GValue type outside the expected type"
     ~needle:"g_value_set_object" (fun () ->
-      Value.set_object v
-        (Gobject.get_type (Wrappers.Box.new_ `HORIZONTAL 0))
-        None)
+      Value.set_object v (Gobject.get_type (Raw.Box.new_ `HORIZONTAL 0)) None)
 
 (** {2 Property error surfacing} *)
 
@@ -239,14 +237,14 @@ let test_set_object_none_rejects_wrong_expected_type () =
     trips over the untouched value. [Property.get_value]/[set_value] must raise
     [Invalid_argument] mentioning the property name instead. *)
 let test_property_get_missing_name_raises () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let v = Value.create_empty () in
   expect_invalid_argument ~label:"get_value on unknown property raises"
     ~needle:"no-such-property" (fun () ->
       Property.get_value btn ~name:"no-such-property" v)
 
 let test_property_set_missing_name_raises () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let v = Value.create Type.string in
   expect_invalid_argument ~label:"set_value on unknown property raises"
     ~needle:"no-such-property" (fun () ->
@@ -255,7 +253,7 @@ let test_property_set_missing_name_raises () =
 
 (** The positive path keeps working: get and set a real property. *)
 let test_property_get_set_round_trip () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let v = Value.create Type.string in
   Value.set_string v "set-through-gvalue";
   Property.set_value btn ~name:"label" v;
@@ -271,7 +269,7 @@ let test_property_get_set_round_trip () =
     [label] property is NULL, so getting it must yield the empty string — the
     documented mapping, not an error. *)
 let test_get_string_maps_null_to_empty () =
-  let btn = Wrappers.Button.new_ () in
+  let btn = Raw.Button.new_ () in
   let v = Value.create Type.string in
   Property.get_value btn ~name:"label" v;
   check string "NULL string property reads as empty (documented mapping)" ""
@@ -294,11 +292,11 @@ let test_get_boxed_returns_gir_record_block () =
     public accessor); pin its observable semantics: a freshly created object has
     at least one reference and a container takes its own. *)
 let test_get_ref_count_tracks_ownership () =
-  let box = Wrappers.Box.new_ `HORIZONTAL 0 in
-  let child = Wrappers.Button.new_ () in
+  let box = Raw.Box.new_ `HORIZONTAL 0 in
+  let child = Raw.Button.new_ () in
   let base = Gobject.get_ref_count child in
   check bool "fresh object holds at least one reference" true (base >= 1);
-  Wrappers.Box.append box (child :> Widget.t);
+  Raw.Box.append box (child :> Widget.t);
   check int "container append adds one reference" (base + 1)
     (Gobject.get_ref_count child)
 

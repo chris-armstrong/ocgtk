@@ -153,7 +153,8 @@ let test_output_directories () =
   check "layer 1 and C" "raw/generated" Module_paths.raw_generated_dir;
   check "hand-written core" "raw/core" Module_paths.raw_core_dir;
   check "enums" "enums/generated" Module_paths.enums_generated_dir;
-  check "layer 2" "generated" Module_paths.main_generated_dir
+  check "layer 2" "generated" Module_paths.main_generated_dir;
+  check "hand-written layer 2" "core" Module_paths.main_core_dir
 
 let test_layer2_module_has_no_g_prefix () =
   Alcotest.(check string)
@@ -225,16 +226,26 @@ let test_enums_dune () =
     "no libraries" false
     (Helpers.string_contains text "(libraries")
 
+let main_dune ~core_modules =
+  Dune_file.generate_main_dune ~ctx:main_ctx ~namespace:"Graphene"
+    ~repository:main_ctx.repository ~core_modules
+
+let core_copy_files = "(copy_files# ../core/*.{ml,mli})"
+
 let test_main_dune () =
-  let text =
-    Dune_file.generate_main_dune ~ctx:main_ctx ~namespace:"Graphene"
-      ~repository:main_ctx.repository
-  in
+  let text = main_dune ~core_modules:[] in
   check_has_line "name" " (name ocgraphene)" text;
   check_has_line "opens Ocglib"
-    " (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)" text;
+    " (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)" text;
   check_has_line "own raw and enums, other namespaces' main libraries"
-    " (libraries ocglib ocgraphene.raw ocgraphene.enums ocgio))" text
+    " (libraries ocglib ocgraphene.raw ocgraphene.enums ocgio))" text;
+  Alcotest.(check bool)
+    "no core, no copy_files" false
+    (Helpers.string_contains text "copy_files")
+
+let test_main_dune_copies_core () =
+  check_has_line "hand-written modules from core/" core_copy_files
+    (main_dune ~core_modules:[ "Main" ])
 
 let raw_dune_inc ~stub_names =
   Dune_file.generate_raw_dune_inc ~ctx:raw_ctx ~namespace:"Graphene" ~stub_names
@@ -305,6 +316,7 @@ let tests =
       test_enums_module_includes_enums_library );
     ("enums library stanza", `Quick, test_enums_dune);
     ("main library stanza", `Quick, test_main_dune);
+    ("main library copies in core/", `Quick, test_main_dune_copies_core);
     ("raw stubs library stanza", `Quick, test_raw_dune_inc_stubs_library);
     ( "dune.inc copies the headers for install",
       `Quick,

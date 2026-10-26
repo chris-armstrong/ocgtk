@@ -104,6 +104,10 @@ let rec transitively_includes ~ctx ~visited ~target namespace_name =
    labels, unused names and opens, unattached doc comments. *)
 let generated_ocaml_flags = ":standard -w -3-6-9-27-32-33-34-50"
 
+(* Layer 2 also overrides methods: a class and the interfaces it inherits may
+   each define the same one (Gtk's Popover and Native: realize, unrealize). *)
+let main_ocaml_flags = generated_ocaml_flags ^ "-7"
+
 (* Namespaces whose libraries the current one depends on: its GIR includes and
    theirs, transitively, without the base namespaces (GLib, GObject, ...)
    that ocglib covers. Sorted. *)
@@ -319,9 +323,15 @@ let generate_enums_dune ~namespace =
     (Module_paths.enums_library_public_name namespace)
     namespace generated_ocaml_flags
 
+(* Hand-written modules of the main library live in <pkg>/core/, since every
+   file in generated/ is the generator's; dune copies them in. *)
+let main_core_copy_files ~core_modules =
+  if List.is_empty core_modules then ""
+  else Fmt.str "\n(copy_files# ../%s/*.{ml,mli})\n" Module_paths.main_core_dir
+
 (* Generate generated/dune: the main library, whose layer 2 refers to the
    other namespaces' main libraries only *)
-let generate_main_dune ~ctx ~namespace ~repository =
+let generate_main_dune ~ctx ~namespace ~repository ~core_modules =
   let libraries =
     [
       "ocglib";
@@ -337,9 +347,11 @@ let generate_main_dune ~ctx ~namespace ~repository =
     \ (public_name %s)\n\
     \ (synopsis \"OCaml bindings for %s\")\n\
     \ (flags %s -open Ocglib)\n\
-    \ (libraries %s))\n"
+    \ (libraries %s))\n\
+     %s"
     generated_dune_header
     (Module_paths.package_name namespace)
     (Module_paths.package_name namespace)
-    namespace generated_ocaml_flags
+    namespace main_ocaml_flags
     (String.concat ~sep:" " libraries)
+    (main_core_copy_files ~core_modules)

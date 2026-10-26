@@ -33,9 +33,9 @@
       one reference, returning to baseline — never below it *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
-module Adjustment = Wrappers.Adjustment
-module Cell_renderer_spin = Wrappers.Cell_renderer_spin
+open Ocgtk
+module Adjustment = Raw.Adjustment
+module Cell_renderer_spin = Raw.Cell_renderer_spin
 
 let require_gtk = Gtk_test_helpers.require_gtk
 let rc obj = Gobject.get_ref_count obj

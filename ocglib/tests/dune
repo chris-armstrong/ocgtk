@@ -34,3 +34,34 @@
  (flags
   (:standard -open Ocglib))
  (libraries ocglib alcotest))
+
+; Test-only C helpers that invoke GClosures the way GLib's signal
+; machinery does
+
+(library
+ (name gobject_test_helpers)
+ (wrapped false)
+ (modules gobject_test_helpers)
+ (foreign_stubs
+  (language c)
+  (names ml_gobject_test_helpers)
+  (flags
+   -fPIC
+   (:include %{project_root}/ocglib/cflag-glib.sexp)))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib))
+
+(test
+ (name test_closure_stress)
+ (modules test_closure_stress)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))
+
+(test
+ (name test_closure_with_gc)
+ (modules test_closure_with_gc)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))

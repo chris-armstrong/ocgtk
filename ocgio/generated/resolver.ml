@@ -1,0 +1,158 @@
+class type resolver_t = object
+  method on_reload :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method get_timeout : unit -> int
+
+  method lookup_by_address :
+    Inet_address.inet_address_t ->
+    Cancellable.cancellable_t option ->
+    (string, GError.t) result
+
+  method lookup_by_address_finish :
+    Async_result.async_result_t -> (string, GError.t) result
+
+  method lookup_by_name :
+    string ->
+    Cancellable.cancellable_t option ->
+    (Inet_address.inet_address_t list, GError.t) result
+
+  method lookup_by_name_finish :
+    Async_result.async_result_t ->
+    (Inet_address.inet_address_t list, GError.t) result
+
+  method lookup_by_name_with_flags :
+    string ->
+    Enums.resolvernamelookupflags ->
+    Cancellable.cancellable_t option ->
+    (Inet_address.inet_address_t list, GError.t) result
+
+  method lookup_by_name_with_flags_finish :
+    Async_result.async_result_t ->
+    (Inet_address.inet_address_t list, GError.t) result
+
+  method lookup_records :
+    string ->
+    Enums.resolverrecordtype ->
+    Cancellable.cancellable_t option ->
+    (Gvariant.t list, GError.t) result
+
+  method lookup_records_finish :
+    Async_result.async_result_t -> (Gvariant.t list, GError.t) result
+
+  method lookup_service :
+    string ->
+    string ->
+    string ->
+    Cancellable.cancellable_t option ->
+    (Raw.Srv_target.t list, GError.t) result
+
+  method lookup_service_finish :
+    Async_result.async_result_t -> (Raw.Srv_target.t list, GError.t) result
+
+  method set_default : unit -> unit
+  method set_timeout : int -> unit
+  method as_resolver : Raw.Resolver.t
+end
+
+(* High-level class for Resolver *)
+class resolver (obj : Raw.Resolver.t) : resolver_t =
+  object (self)
+    method on_reload ?(after = false) ~callback () =
+      Raw.Resolver.on_reload ~after self#as_resolver ~callback
+
+    method get_timeout : unit -> int = fun () -> Raw.Resolver.get_timeout obj
+
+    method lookup_by_address :
+        Inet_address.inet_address_t ->
+        Cancellable.cancellable_t option ->
+        (string, GError.t) result =
+      fun address cancellable ->
+        let address = address#as_inet_address in
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Raw.Resolver.lookup_by_address obj address cancellable
+
+    method lookup_by_address_finish :
+        Async_result.async_result_t -> (string, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Raw.Resolver.lookup_by_address_finish obj result
+
+    method lookup_by_name :
+        string ->
+        Cancellable.cancellable_t option ->
+        (Inet_address.inet_address_t list, GError.t) result =
+      fun hostname cancellable ->
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Result.map
+          (List.map (fun ret -> new Inet_address.inet_address ret))
+          (Raw.Resolver.lookup_by_name obj hostname cancellable)
+
+    method lookup_by_name_finish :
+        Async_result.async_result_t ->
+        (Inet_address.inet_address_t list, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Result.map
+          (List.map (fun ret -> new Inet_address.inet_address ret))
+          (Raw.Resolver.lookup_by_name_finish obj result)
+
+    method lookup_by_name_with_flags :
+        string ->
+        Enums.resolvernamelookupflags ->
+        Cancellable.cancellable_t option ->
+        (Inet_address.inet_address_t list, GError.t) result =
+      fun hostname flags cancellable ->
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Result.map
+          (List.map (fun ret -> new Inet_address.inet_address ret))
+          (Raw.Resolver.lookup_by_name_with_flags obj hostname flags cancellable)
+
+    method lookup_by_name_with_flags_finish :
+        Async_result.async_result_t ->
+        (Inet_address.inet_address_t list, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Result.map
+          (List.map (fun ret -> new Inet_address.inet_address ret))
+          (Raw.Resolver.lookup_by_name_with_flags_finish obj result)
+
+    method lookup_records :
+        string ->
+        Enums.resolverrecordtype ->
+        Cancellable.cancellable_t option ->
+        (Gvariant.t list, GError.t) result =
+      fun rrname record_type cancellable ->
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Raw.Resolver.lookup_records obj rrname record_type cancellable
+
+    method lookup_records_finish :
+        Async_result.async_result_t -> (Gvariant.t list, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Raw.Resolver.lookup_records_finish obj result
+
+    method lookup_service :
+        string ->
+        string ->
+        string ->
+        Cancellable.cancellable_t option ->
+        (Raw.Srv_target.t list, GError.t) result =
+      fun service protocol domain cancellable ->
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Raw.Resolver.lookup_service obj service protocol domain cancellable
+
+    method lookup_service_finish :
+        Async_result.async_result_t -> (Raw.Srv_target.t list, GError.t) result
+        =
+      fun result ->
+        let result = result#as_async_result in
+        Raw.Resolver.lookup_service_finish obj result
+
+    method set_default : unit -> unit = fun () -> Raw.Resolver.set_default obj
+
+    method set_timeout : int -> unit =
+      fun timeout_ms -> Raw.Resolver.set_timeout obj timeout_ms
+
+    method as_resolver = obj
+  end

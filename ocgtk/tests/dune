@@ -4,7 +4,7 @@
 (test
  (name test_gio_volume_monitor)
  (modules test_gio_volume_monitor)
- (libraries ocgtk.gio alcotest))
+ (libraries ocgio alcotest))
 
 (test
  (name test_gobject_stress)
@@ -40,23 +40,9 @@
 ;  (libraries ocgtk alcotest))
 
 (test
- (name test_closure_stress)
- (modules test_closure_stress)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest gobject_test_helpers))
-
-(test
- (name test_closure_with_gc)
- (modules test_closure_with_gc)
- (flags
-  (:standard -open Ocglib))
- (libraries ocglib alcotest gobject_test_helpers))
-
-(test
  (name test_gtk_init)
  (modules test_gtk_init)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk alcotest))
 
 ; Blocked: EventController key/motion/scroll binding methods not yet generated
 ; (test

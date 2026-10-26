@@ -7,15 +7,15 @@
     [Val_some] as required. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 
 let require_gtk = Helpers.require_gtk
 
 (* Layer 1 bindings used in tests *)
-let path_new = Wrappers.Tree_path.new_
-let path_append = Wrappers.Tree_path.append_index
-let get_indices_with_depth = Wrappers.Tree_path.get_indices_with_depth
+let path_new = Raw.Tree_path.new_
+let path_append = Raw.Tree_path.append_index
+let get_indices_with_depth = Raw.Tree_path.get_indices_with_depth
 
 (* ========== Empty path: expect (None, 0) ========== *)
 

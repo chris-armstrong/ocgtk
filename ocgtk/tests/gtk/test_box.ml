@@ -5,47 +5,47 @@
     - Box creation with different orientations
     - Child management (append, prepend, insert, remove)
     - Box properties (spacing, homogeneous, baseline_position)
-    - High-level GBox wrapper functionality
+    - High-level Box wrapper functionality
     - GTK3 compatibility helpers *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
-module Widget = Wrappers.Widget
+open Ocgtk
+module Widget = Raw.Widget
 
 let require_gtk = Gtk_test_helpers.require_gtk
 
 (* Layer 1 (raw) box functions *)
-let box_new = Wrappers.Box.new_
-let box_get_spacing = Wrappers.Box.get_spacing
-let box_set_spacing = Wrappers.Box.set_spacing
-let box_get_homogeneous = Wrappers.Box.get_homogeneous
-let box_set_homogeneous = Wrappers.Box.set_homogeneous
-let box_get_baseline_position = Wrappers.Box.get_baseline_position
-let box_set_baseline_position = Wrappers.Box.set_baseline_position
-let box_append = Wrappers.Box.append
-let box_prepend = Wrappers.Box.prepend
-let box_remove = Wrappers.Box.remove
-let box_as_widget (box : Wrappers.Box.t) : Widget.t = (box :> Widget.t)
+let box_new = Raw.Box.new_
+let box_get_spacing = Raw.Box.get_spacing
+let box_set_spacing = Raw.Box.set_spacing
+let box_get_homogeneous = Raw.Box.get_homogeneous
+let box_set_homogeneous = Raw.Box.set_homogeneous
+let box_get_baseline_position = Raw.Box.get_baseline_position
+let box_set_baseline_position = Raw.Box.set_baseline_position
+let box_append = Raw.Box.append
+let box_prepend = Raw.Box.prepend
+let box_remove = Raw.Box.remove
+let box_as_widget (box : Raw.Box.t) : Widget.t = (box :> Widget.t)
 
 (* Test that Box module is accessible and types compile *)
 let test_module_accessible () =
   (* Test that we can reference the types *)
-  let _box_type : Wrappers.Box.t option = None in
-  let _orientation : orientation = `HORIZONTAL in
-  let _baseline : baselineposition = `CENTER in
+  let _box_type : Raw.Box.t option = None in
+  let _orientation : Enums.orientation = `HORIZONTAL in
+  let _baseline : Enums.baselineposition = `CENTER in
 
   check bool "module accessible" true true
 
 (* Test type constructors for orientation and baseline_position *)
 let test_type_constructors () =
   (* Test orientation *)
-  let _horiz : orientation = `HORIZONTAL in
-  let _vert : orientation = `VERTICAL in
+  let _horiz : Enums.orientation = `HORIZONTAL in
+  let _vert : Enums.orientation = `VERTICAL in
 
   (* Test baseline_position *)
-  let _top : baselineposition = `TOP in
-  let _center : baselineposition = `CENTER in
-  let _bottom : baselineposition = `BOTTOM in
+  let _top : Enums.baselineposition = `TOP in
+  let _center : Enums.baselineposition = `CENTER in
+  let _bottom : Enums.baselineposition = `BOTTOM in
 
   check bool "types construct" true true
 
@@ -111,7 +111,7 @@ let test_packing_properties () =
   Widget.set_margin_bottom widget 15;
   check int "margin_bottom set" 15 (Widget.get_margin_bottom widget)
 
-(* Test high-level GBox wrapper *)
+(* Test high-level Box wrapper *)
 let test_gbox_wrapper () =
   (* Create horizontal box with wrapper *)
   let hbox_obj = box_new `HORIZONTAL 10 in

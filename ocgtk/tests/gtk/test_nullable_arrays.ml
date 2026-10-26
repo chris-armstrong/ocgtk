@@ -25,7 +25,7 @@
     bindings, so coverage is sufficient. *)
 
 open Alcotest
-open Ocgtk_gtk.Gtk
+open Ocgtk
 module Helpers = Gtk_test_helpers
 
 let require_gtk = Helpers.require_gtk
@@ -46,21 +46,21 @@ let test_drop_target_get_gtypes_set_none_round_trips () =
   (* Constructing with a placeholder GType then clearing it via
      [set_gtypes None 0] is the only way to land in the None branch:
      [gtk_drop_target_new] seeds the internal types list from its argument. *)
-  let dt = Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
-  Wrappers.Drop_target.set_gtypes dt None Gsize.zero;
-  let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
+  let dt = Raw.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
+  Raw.Drop_target.set_gtypes dt None Gsize.zero;
+  let arr_opt, n = Raw.Drop_target.get_gtypes dt in
   check int "count is 0 after set_gtypes None" 0 (Gsize.to_int n);
   check g_type_array_option "get_gtypes returns None after set_gtypes None" None
     arr_opt
 
 let test_drop_target_get_gtypes_set_some_round_trips () =
-  let dt = Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
+  let dt = Raw.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
   let g_string = Gobject.Type.from_name "gchararray" in
   let g_int = Gobject.Type.from_name "gint" in
   let expected = [| g_string; g_int |] in
-  Wrappers.Drop_target.set_gtypes dt (Some expected)
+  Raw.Drop_target.set_gtypes dt (Some expected)
     (Gsize.of_int (Array.length expected));
-  let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
+  let arr_opt, n = Raw.Drop_target.get_gtypes dt in
   check int "count matches set" (Array.length expected) (Gsize.to_int n);
   check g_type_array_option "get_gtypes returns the array we set"
     (Some expected) arr_opt
@@ -68,36 +68,36 @@ let test_drop_target_get_gtypes_set_some_round_trips () =
 (* ========== Icon_theme.get_search_path : t -> string array option ========== *)
 
 let test_icon_theme_get_search_path_set_none_round_trips () =
-  let theme = Wrappers.Icon_theme.new_ () in
-  Wrappers.Icon_theme.set_search_path theme None;
+  let theme = Raw.Icon_theme.new_ () in
+  Raw.Icon_theme.set_search_path theme None;
   check string_array_option
     "get_search_path returns None after set_search_path None" None
-    (Wrappers.Icon_theme.get_search_path theme)
+    (Raw.Icon_theme.get_search_path theme)
 
 let test_icon_theme_get_search_path_set_some_round_trips () =
-  let theme = Wrappers.Icon_theme.new_ () in
+  let theme = Raw.Icon_theme.new_ () in
   let expected = [| "/tmp/icons-a"; "/tmp/icons-b" |] in
-  Wrappers.Icon_theme.set_search_path theme (Some expected);
+  Raw.Icon_theme.set_search_path theme (Some expected);
   check string_array_option "get_search_path returns the array we set"
     (Some expected)
-    (Wrappers.Icon_theme.get_search_path theme)
+    (Raw.Icon_theme.get_search_path theme)
 
 (* ========== Icon_theme.get_resource_path : t -> string array option ========== *)
 
 let test_icon_theme_get_resource_path_set_none_round_trips () =
-  let theme = Wrappers.Icon_theme.new_ () in
-  Wrappers.Icon_theme.set_resource_path theme None;
+  let theme = Raw.Icon_theme.new_ () in
+  Raw.Icon_theme.set_resource_path theme None;
   check string_array_option
     "get_resource_path returns None after set_resource_path None" None
-    (Wrappers.Icon_theme.get_resource_path theme)
+    (Raw.Icon_theme.get_resource_path theme)
 
 let test_icon_theme_get_resource_path_set_some_round_trips () =
-  let theme = Wrappers.Icon_theme.new_ () in
+  let theme = Raw.Icon_theme.new_ () in
   let expected = [| "/org/example/icons"; "/org/example/more-icons" |] in
-  Wrappers.Icon_theme.set_resource_path theme (Some expected);
+  Raw.Icon_theme.set_resource_path theme (Some expected);
   check string_array_option "get_resource_path returns the array we set"
     (Some expected)
-    (Wrappers.Icon_theme.get_resource_path theme)
+    (Raw.Icon_theme.get_resource_path theme)
 
 (* ========== Test Suite ========== *)
 
