@@ -1,5 +1,7 @@
 (lang dune 3.21)
 
+(name ocgtk)
+
 (version 0.1~preview2)
 
 (generate_opam_files true)

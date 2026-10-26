@@ -564,7 +564,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build ocgtk-only release tarball
+      - name: Build release tarball
         run: |
           set -euo pipefail
           VERSION="${GITHUB_REF_NAME#v}"
@@ -572,11 +572,13 @@ jobs:
           STAGE="$(mktemp -d)/$PKG"
           mkdir -p "$STAGE"
 
-          # ocgtk/ subtree becomes the tarball root (fixes dune-project /
-          # *.install being one directory too deep for opam).
-          git archive "$GITHUB_REF_NAME:ocgtk" | tar -x -C "$STAGE"
-          # Fold in the repo-root license files alongside it.
-          git archive "$GITHUB_REF_NAME" -- LICENSE LGPL | tar -x -C "$STAGE"
+          # The repository root, holding the dune-project and .opam files of
+          # every package, less what only development needs (gir_gen/, gir/,
+          # overrides/, CI, docs). An allow-list, so a new development
+          # directory stays out unless added here.
+          git archive "$GITHUB_REF_NAME" -- \
+            dune-project ':(glob)*.opam' configurator ':(glob)oc*/**' \
+            LICENSE LGPL README.md CHANGELOG.md | tar -x -C "$STAGE"
 
           tar -czf "$PKG.tar.gz" -C "$(dirname "$STAGE")" "$PKG"
           sha256sum "$PKG.tar.gz" > "$PKG.tar.gz.sha256"
