@@ -287,8 +287,12 @@ jobs:
         include:
           - name: openSUSE Leap 16.0
             image: opensuse/leap:16.0
+            extra_packages: ''
+          # gdk-pixbuf 2.44 loads PNG through glycin, whose loaders are a
+          # separate package; the ocgdkpixbuf tests load a PNG.
           - name: openSUSE Tumbleweed
             image: opensuse/tumbleweed:latest
+            extra_packages: glycin-loaders
     steps:
       - name: Install git and curl
         run: zypper install -y git curl
@@ -298,7 +302,8 @@ jobs:
           zypper install -y \
             gcc make m4 patch unzip bzip2 gzip tar pkg-config pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
-            gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
+            gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run \
+            ${{ matrix.extra_packages }}
       # The checkout is owned by the runner user, not the container's root,
       # and opam pins the repository root with git, which refuses it then.
       - name: Trust the checkout for git

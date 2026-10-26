@@ -87,8 +87,11 @@ jobs:
       - name: Install every package
         run: opam install -y --with-test .
 
+      # setup-ocaml's switch is local to the checkout, so name it explicitly
+      # before leaving the checkout.
       - name: Build a program against the installed ocgtk
         run: |
+          eval "$(opam env --switch="$GITHUB_WORKSPACE" --set-switch)"
           mkdir -p "$RUNNER_TEMP/consumer"
           cd "$RUNNER_TEMP/consumer"
           echo '(lang dune 3.0)' > dune-project
@@ -104,8 +107,8 @@ jobs:
               (Ocgtk.Version.runtime_major ())
               (Ocgtk.Version.runtime_minor ())
           EOF
-          opam exec -- dune build ./consumer.exe
-          opam exec -- xvfb-run -a dune exec ./consumer.exe
+          dune build ./consumer.exe
+          xvfb-run -a dune exec ./consumer.exe
 
   # ── Lint (semgrep) — HARD GATE ─────────────────────────────────────────────
   # Runs semgrep (banned partial functions in .semgrep/banned-partials.yml) and
