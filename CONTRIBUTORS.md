@@ -14,6 +14,14 @@ sudo apt-get install libgtk-4-dev libglib2.0-dev \
   pkg-config xvfb
 ```
 
+Then the OCaml dependencies. Our conf packages are not in opam-repository yet,
+so pin them first:
+
+```bash
+for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+opam install . ./gir_gen --deps-only --with-test
+```
+
 The full dependency list for CI-tested distros is in `ci/versions.env`. See
 [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) for
 Docker-based distro testing.
@@ -26,7 +34,8 @@ From the repository root:
 dune build
 ```
 
-This compiles both `gir_gen` (the code generator) and `ocgtk` (the GTK bindings).
+This compiles `gir_gen` (the code generator) and every binding package (`ocglib`,
+`ocgio`, ..., `ocgtk`), all declared in the root `dune-project`.
 Generated files are already committed; you do not need to run the generator just to build.
 
 ## Running Tests
@@ -35,11 +44,14 @@ Generated files are already committed; you do not need to run the generator just
 # Generator tests only (fast)
 dune test gir_gen/
 
-# All tests including ocgtk (requires a display)
-xvfb-run dune test ocglib/ ocgtk/
+# Every package's tests (the gtk ones need a display)
+xvfb-run dune test
 
-# Both
-dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/
+# One package's tests
+xvfb-run dune test ocgio/
+
+# Generator first, then the rest
+dune test gir_gen/ && xvfb-run dune test
 ```
 
 `xvfb-run` provides a headless X display server so that the ocgtk tests which need a
@@ -48,7 +60,7 @@ available, but note that `dune` caches this skip decision — if you later want 
 the full suite with a display, pass `--force` to dune:
 
 ```bash
-dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/ --force
+dune test gir_gen/ && xvfb-run dune test --force
 ```
 
 Always check the return code — some test output looks like success even on failure.
@@ -68,7 +80,7 @@ This runs in two phases:
 After regeneration, rebuild and test:
 
 ```bash
-dune build && dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/
+dune build && dune test gir_gen/ && xvfb-run dune test
 ```
 
 ## Development Workflow
@@ -79,14 +91,14 @@ dune build && dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/
 2. `dune build` to compile
 3. `bash scripts/generate-bindings.sh` to regenerate all bindings
 4. `dune build` again to compile the regenerated code
-5. `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/`
+5. `dune test gir_gen/ && xvfb-run dune test`
 
 Tip: if a generated C file fails to compile, add the failing entity to
-`ocgtk/overrides/<ns>.sexp` with `(ignore)` while you fix the generator.
+`overrides/<ns>.sexp` with `(ignore)` while you fix the generator.
 
 ### Suppressing a problematic type or method
 
-Edit `ocgtk/overrides/<ns>.sexp`. The format is s-expressions; add an `(ignore)`
+Edit `overrides/<ns>.sexp`. The format is s-expressions; add an `(ignore)`
 directive for the entity or method:
 
 ```sexp
@@ -100,8 +112,12 @@ full format reference.
 
 ### Adding handwritten bindings for a type
 
-Put them in `ocgtk/src/<ns>/core/`. The `core/` directory is for handwritten code;
-`generated/` is entirely owned by the generator and is overwritten on each regeneration.
+Put them in `<pkg>/raw/core/` (for example `ocgio/raw/core/`), where they join the
+layer 1 library and are aliased in the package's `Raw` module. Hand-written modules
+that need layer 2 go in `<pkg>/core/` and join the main library, like
+`ocgtk/core/main.ml` (`Ocgtk.Main`). The `core/` directories are for handwritten
+code; every `generated/` directory is entirely owned by the generator, and the
+generator deletes any file in one that it did not write.
 
 ### Adding a new GIR library
 

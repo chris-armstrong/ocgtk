@@ -47,20 +47,23 @@ file format.
 ## `<ns>_decls.h`: Cross-Namespace C Headers
 
 Every namespace's generated output includes a C header file,
-`src/<ns>/generated/<ns>_decls.h`, containing:
+`<pkg>/raw/generated/<ns>_decls.h`, containing:
 
 - Type conversion macros for all classes in that namespace
   (`Val_GtkWidget`, `GtkWidget_val`, …)
 - Forward declarations for opaque pointer types
 
 When generating C stubs for namespace B that reference types from namespace A,
-the C stub file includes `<a>_decls.h`:
+B's decls header includes `<a>_decls.h` by name, with no directory: each raw
+library installs its decls header and its core header with
+`install_c_headers`, so the include resolves both in the source tree and against
+an installed package:
 
 ```c
-/* ml_gtk_gen.c — generated header includes */
+/* gtk_decls.h — generated header includes (excerpt) */
 #include <gtk/gtk.h>
-#include "../../gdk/generated/gdk_decls.h"
-#include "../../pango/generated/pango_decls.h"
+#include "gdk_decls.h"
+#include "pango_decls.h"
 ```
 
 This means all the type macros for cross-namespace types are available in the
@@ -81,12 +84,12 @@ workflow and command syntax.
 ### OCaml Layer 1
 
 A method parameter typed `Gdk.Display` in GIR resolves to
-`Ocgtk_gdk.Gdk.Wrappers.Display.t` in the generated OCaml:
+`Ocgdk_raw.Display.t` in the generated OCaml. A raw library depends only on other
+raw and enums libraries, never on a main library:
 
 ```ocaml
-(* widget.mli — generated *)
-external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
-  = "ml_gtk_widget_get_display"
+(* ocgtk/raw/generated/widget's cluster .mli — generated *)
+external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_widget_get_display"
 ```
 
 ### OCaml Layer 2
@@ -94,19 +97,18 @@ external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
 Layer 2 uses the L2 class type from the referenced namespace:
 
 ```ocaml
-(* gWidget.mli — generated excerpt *)
-method get_display :
-  unit -> Ocgtk_gdk.Gdk.GDisplay.display_t
+(* ocgtk/generated/widget's cluster .mli — generated excerpt *)
+method get_display : unit -> Ocgdk.Display.display_t
 ```
 
 ### Enums and bitfields from other namespaces
 
 Cross-namespace enums use the enums module from the referenced namespace:
+`Ocgdk_enums.modifiertype` in Layer 1, `Ocgdk.Enums.modifiertype` in Layer 2:
 
 ```ocaml
-(* gtk_enums.mli — excerpt where a Gdk enum appears in a Gtk signal *)
-(* signal parameter typed Gdk.EventType: *)
-callback:(event_type:Ocgtk_gdk.Gdk_enums.event_type -> unit)
+(* ocgtk/generated/cell_renderer_accel.mli — generated excerpt *)
+method accel_mods : Ocgdk.Enums.modifiertype
 ```
 
 ---

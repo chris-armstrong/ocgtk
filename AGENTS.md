@@ -3,7 +3,7 @@
 ## MANDATORY: Development Essentials
 
 1. ALWAYS build the project after making changes with `dune build` from the repo root. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/` from the repo root
+2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS follow the mandatory code guidelines. Read [docs/code_guidelines/agent-summary.md](./docs/code_guidelines/agent-summary.md) — it covers all style, idiom, safety, and test requirements. The full guidelines are indexed at [docs/code_guidelines/index.md](./docs/code_guidelines/index.md).
 ### ast-grep
@@ -21,7 +21,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Project Layout and Architecture
 
-This is a dune workspace with three projects: the repo root (`ocglib/`, the GLib/GObject bindings), `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover all three. For `ocamlformat`: the repo root formats `ocglib/` and `ocgtk/`; `gir_gen/` is a separate dune root with its own `.ocamlformat` — run `dune fmt` inside `gir_gen/` too (CI enforces `ocamlformat --check` on gir_gen sources).
+The root `dune-project` declares one opam package per library, each in its own top-level directory: `ocglib/` (hand-written GLib/GObject) and the generated `occairo/`, `ocgio/`, `ocgraphene/`, `ocgdkpixbuf/`, `ocpango/`, `ocpangocairo/`, `ocgdk/`, `ocgsk/` and `ocgtk/` (Gtk). Each generated package has three libraries: `<pkg>.enums` (`enums/generated/`), `<pkg>.raw` (layer 1, `raw/`) and `<pkg>` (layer 2, `generated/`), plus `tests/`. `gir_gen/` (code generator) is a separate dune project. Run `dune build` and `dune test` from the repo root to cover everything. For `ocamlformat`: the repo root formats the packages; `gir_gen/` has its own `.ocamlformat` — run `dune fmt` inside `gir_gen/` too (CI enforces `ocamlformat --check` on gir_gen sources).
 
 [The architecture documentation](./architecture/README.md) describes the project layout and system architecture.
 
@@ -58,7 +58,7 @@ for full documentation.
 
 ## Running Build Tools
 
-**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test ocglib/ ocgtk/` (test).
+**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test` (test).
 See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for complete build, test, and CI instructions.
 
 ## OCaml / C FFI Guidelines

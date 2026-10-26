@@ -223,7 +223,7 @@
 ;  (modules test_gpack)
 ;  (libraries ocgtk alcotest))
 
-; DISABLED: needs rewrite for new GTK4 API — GWindow module replaced by Gtk.Window
+; DISABLED: needs rewrite for new GTK4 API — GWindow module replaced by Ocgtk.Window
 ; (test
 ;  (name test_window)
 ;  (modules test_window)
