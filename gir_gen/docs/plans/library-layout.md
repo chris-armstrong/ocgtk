@@ -1104,7 +1104,8 @@ Docs (odoc, `--cache=disabled`):
    also adds 147 stubs to versioned classes, interfaces and records in the
    other namespaces (`AccessibleList` on GTK < 4.14, for example), which
    until now had no `ml_*_get_type` symbol when built against an older
-   library. Release Verification has not been run on the fix yet.
+   library. Release Verification (2026-10-27, PR #200): all 17 jobs pass,
+   Ubuntu 22.04, Debian 12 and CentOS Stream 9 included.
 5. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
    in the baseline: odoc has no Stdlib docs to link to. A docs question for
    the m3 work, not the layout.
