@@ -6,23 +6,23 @@ This directory contains simple example applications demonstrating various ocgtk4
 
 ```bash
 # Build all examples
-dune build examples/
+dune build ocgtk/examples/
 
 # Build specific example
-dune build examples/counter.exe
+dune build ocgtk/examples/counter.exe
 ```
 
 ## Running Examples
 
 ```bash
 # Run with dune exec
-dune exec examples/counter.exe
-dune exec examples/settings_panel.exe
-dune exec examples/text_editor.exe
-dune exec examples/login_form.exe
+dune exec ocgtk/examples/counter.exe
+dune exec ocgtk/examples/settings_panel.exe
+dune exec ocgtk/examples/text_editor.exe
+dune exec ocgtk/examples/login_form.exe
 
 # Or run the built executable directly
-./_build/default/examples/counter.exe
+./_build/default/ocgtk/examples/counter.exe
 ```
 
 ## API Pattern
