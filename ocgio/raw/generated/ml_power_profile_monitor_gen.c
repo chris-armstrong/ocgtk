@@ -69,4 +69,12 @@ CAMLexport CAMLprim value ml_gio_power_profile_monitor_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_power_profile_monitor_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PowerProfileMonitor requires GLib >= 2.70");
+return Val_unit;
+}
+
 #endif

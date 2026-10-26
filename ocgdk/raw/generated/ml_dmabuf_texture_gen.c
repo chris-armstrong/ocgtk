@@ -30,4 +30,12 @@ CAMLprim value ml_gdk_dmabuf_texture_get_type(value unit)
 #else
 
 
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DmabufTexture requires GTK >= 4.14");
+return Val_unit;
+}
+
 #endif

@@ -96,4 +96,12 @@ CAMLexport CAMLprim value ml_gtk_section_model_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gtk_section_model_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("SectionModel requires GTK >= 4.12");
+return Val_unit;
+}
+
 #endif

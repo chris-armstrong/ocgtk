@@ -151,4 +151,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_test_d_bus_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
 #endif

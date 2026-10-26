@@ -163,4 +163,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_d_bus_object_manager_client_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DBusObjectManagerClient requires GLib >= 2.30");
+return Val_unit;
+}
+
 #endif

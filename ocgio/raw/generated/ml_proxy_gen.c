@@ -109,4 +109,12 @@ CAMLexport CAMLprim value ml_gio_proxy_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_proxy_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Proxy requires GLib >= 2.26");
+return Val_unit;
+}
+
 #endif

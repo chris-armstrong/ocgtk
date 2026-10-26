@@ -30,4 +30,12 @@ CAMLprim value ml_gio_native_socket_address_get_type(value unit)
 #else
 
 
+CAMLexport CAMLprim value ml_gio_native_socket_address_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("NativeSocketAddress requires GLib >= 2.46");
+return Val_unit;
+}
+
 #endif

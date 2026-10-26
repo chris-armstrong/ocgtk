@@ -66,4 +66,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_drag_surface_size_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("DragSurfaceSize requires GTK >= 4.12");
+return Val_unit;
+}
+
 #endif

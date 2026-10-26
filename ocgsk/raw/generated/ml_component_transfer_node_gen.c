@@ -89,4 +89,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gsk_component_transfer_node_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("ComponentTransferNode requires GTK >= 4.20");
+return Val_unit;
+}
+
 #endif

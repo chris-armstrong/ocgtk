@@ -86,4 +86,12 @@ CAMLexport CAMLprim value ml_gtk_symbolic_paintable_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gtk_symbolic_paintable_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("SymbolicPaintable requires GTK >= 4.6");
+return Val_unit;
+}
+
 #endif

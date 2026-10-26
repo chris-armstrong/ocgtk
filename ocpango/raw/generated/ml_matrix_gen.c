@@ -358,4 +358,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_pango_matrix_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Matrix requires Pango >= 1.6");
+return Val_unit;
+}
+
 #endif

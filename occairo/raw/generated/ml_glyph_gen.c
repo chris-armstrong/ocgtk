@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "cairo_decls.h"
 
+#if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1,18,0)
 /* Conversion functions for cairo_glyph_t (opaque record with hidden fields) */
 cairo_glyph_t *cairo_glyph_t_val(value v) {
   return (cairo_glyph_t *)ml_gir_record_ptr_val(v, "cairo_glyph_t");
@@ -29,6 +30,9 @@ value Val_cairo_glyph_t_option(const cairo_glyph_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_cairo_glyph_t(ptr));
 }
+#endif
+
+#if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1,18,0)
 
 
 GType cairo_gobject_glyph_get_type (void);
@@ -39,3 +43,16 @@ CAMLprim value ml_cairo_glyph_get_type(value unit)
   CAMLparam1(unit);
   CAMLreturn(Val_long(cairo_gobject_glyph_get_type()));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_cairo_glyph_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Glyph requires Cairo >= 1.18");
+return Val_unit;
+}
+
+#endif

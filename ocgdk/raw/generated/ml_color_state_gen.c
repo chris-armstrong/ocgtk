@@ -131,4 +131,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_color_state_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("ColorState requires GTK >= 4.16");
+return Val_unit;
+}
+
 #endif

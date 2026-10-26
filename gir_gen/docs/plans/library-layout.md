@@ -1093,6 +1093,18 @@ Docs (odoc, `--cache=disabled`):
    time, as for guarded enum members), or the minimum cairo raised to 1.18
    and those three platforms dropped. Fix it on its own branch off `main`,
    not as part of this work.
+
+   **Fixed on `fix-cairo-old-version`** (from `oc-separate-libs`,
+   2026-10-26). The override had no effect for three reasons: the parser
+   read only `(ignore)` at entity level and dropped `(version ...)`;
+   `Version_guard` knew the namespace as `Cairo`, but the GIR names it
+   `cairo`; and the class-level `#else` had no fallback for the `get_type`
+   stub. All three are fixed, and `overrides/cairo.sexp` sets
+   `(version "1.18")` on `Glyph` and `TextCluster`. The `get_type` fallback
+   also adds 147 stubs to versioned classes, interfaces and records in the
+   other namespaces (`AccessibleList` on GTK < 4.14, for example), which
+   until now had no `ml_*_get_type` symbol when built against an older
+   library. Release Verification has not been run on the fix yet.
 5. `Stdlib.result` is unresolved wherever it appears (965 spans in gio), as
    in the baseline: odoc has no Stdlib docs to link to. A docs question for
    the m3 work, not the layout.

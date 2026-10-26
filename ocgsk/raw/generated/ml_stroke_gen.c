@@ -321,4 +321,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gsk_stroke_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
 #endif

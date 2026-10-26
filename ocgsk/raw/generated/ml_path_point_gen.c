@@ -176,4 +176,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gsk_path_point_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
 #endif

@@ -173,4 +173,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_color_dialog_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("ColorDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
 #endif

@@ -182,4 +182,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_graphics_offload_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
 #endif

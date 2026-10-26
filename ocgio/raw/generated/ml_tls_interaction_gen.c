@@ -196,4 +196,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gio_tls_interaction_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TlsInteraction requires GLib >= 2.30");
+return Val_unit;
+}
+
 #endif

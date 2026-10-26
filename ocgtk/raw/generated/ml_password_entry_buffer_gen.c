@@ -49,4 +49,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_password_entry_buffer_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PasswordEntryBuffer requires GTK >= 4.4");
+return Val_unit;
+}
+
 #endif

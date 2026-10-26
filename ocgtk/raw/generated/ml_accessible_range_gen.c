@@ -53,4 +53,12 @@ CAMLexport CAMLprim value ml_gtk_accessible_range_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gtk_accessible_range_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("AccessibleRange requires GTK >= 4.10");
+return Val_unit;
+}
+
 #endif

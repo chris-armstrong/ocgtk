@@ -70,4 +70,12 @@ CAMLexport CAMLprim value ml_pangocairo_font_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_pango_cairo_font_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Font requires Pango >= 1.18");
+return Val_unit;
+}
+
 #endif

@@ -85,4 +85,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gsk_texture_scale_node_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TextureScaleNode requires GTK >= 4.10");
+return Val_unit;
+}
+
 #endif

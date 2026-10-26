@@ -481,4 +481,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_pango_renderer_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Renderer requires Pango >= 1.8");
+return Val_unit;
+}
+
 #endif

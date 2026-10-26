@@ -247,4 +247,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_file_launcher_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("FileLauncher requires GTK >= 4.10");
+return Val_unit;
+}
+
 #endif

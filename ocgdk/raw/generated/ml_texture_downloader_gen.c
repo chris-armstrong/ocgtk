@@ -269,4 +269,12 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_texture_downloader_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("TextureDownloader requires GTK >= 4.10");
+return Val_unit;
+}
+
 #endif

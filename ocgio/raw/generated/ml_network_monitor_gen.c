@@ -168,4 +168,12 @@ CAMLexport CAMLprim value ml_gio_network_monitor_from_gobject(value obj)
 }
 
 
+CAMLexport CAMLprim value ml_gio_network_monitor_get_type(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("NetworkMonitor requires GLib >= 2.32");
+return Val_unit;
+}
+
 #endif
