@@ -1,6 +1,6 @@
 # Library layout — implementation plan
 
-> **Status: phases 0 and 1 done.** Implements
+> **Status: phases 0, 1 and 2 done.** Implements
 > [library-layout-proposal.md](../research/library-layout-proposal.md), with
 > the changes recorded under Decisions below, some of which replace the
 > proposal's. A prototype of `ocglib` and `ocgraphene` is on branch
@@ -609,7 +609,7 @@ PR instead.
    from `generated/` and `core/` with `copy` rules in `raw/dune`. Includes
    drop the `generated/` and `../core/` prefixes.
 7. `scripts/generate-bindings.sh`: new output paths, and deletion of stale
-   files (the generator does not remove them).
+   files (the generator did not remove them; it now does, see below).
 
 The generator change is not merged on its own: its output lands with it in
 phase 3's PR.
@@ -625,6 +625,68 @@ phase 3's PR.
   after a run no file remains in a `generated/` directory that the run did
   not write.
 - No step rewrites generated text after emitting it.
+
+**Done 2026-10-26** on `layout-phase2` (from `oc-separate-libs` at
+`8cab3723`):
+
+- `dune test gir_gen/`: 529 unit tests (508 before) and 135 integration
+  tests (130 before), all passing. `Module Paths` (21 tests) resolves each
+  row of the name mapping through `find_type_mapping_for_gir_type` from a
+  raw- and a main-library context, and checks `raw.ml`, `enums.ml`, the
+  three libraries' stanzas and stub batches; the two C header rows are the
+  updated `Dependency Includes` and `Header Pipeline` tests. `Library
+  Layout` (5 tests) runs `gir_gen.exe`: the three output directories, no
+  `<Ns>.ml`, `ocgtk_<ns>.ml` or `G`-prefixed module, stale files removed,
+  `raw/core` kept and aliased in `raw.ml`, and `cr_cluster` in the real Gio
+  references.
+- Against the prototype (`proto/ocglib-ocgraphene` at `aa4c71cf`), for
+  graphene, gio and gdkpixbuf after ocamlformat on both, every `.ml`,
+  `.mli`, `.c` and `.h` file is identical. The differences: `dune.inc` has
+  the header `copy` rules, which the prototype had in `raw/dune` (see
+  below); the stub library comment says `ocglib`, not `common` (phase 1);
+  the prototype's main `dune` had a trailing space; and the prototype
+  carried 9 stale C files for the types GLib moved to GioUnix-2.0
+  (`ml_desktop_app_info_gen.c`, `ml_unix_mount_entry_gen.c`, ...), listed in
+  no dune file, which the generator now deletes. The output, copied over the
+  prototype branch with the `copy` rules taken out of its `raw/dune`, builds
+  and passes the prototype's tests (ocgraphene 5, ocgio 4, ocgdkpixbuf 3).
+- `generate-bindings.sh`, run twice in a scratch worktree (overrides moved
+  to the root, the packages declared in the root `dune-project`): the second
+  run leaves no diff and removes nothing. Across all nine namespaces no old
+  path remains (`Ocgtk_<ns>`, `Wrappers`, `G`-prefixed modules,
+  `<Ns>_enums`), layer 2 names no raw or enums library outside `raw.ml`,
+  and layer 1 names no main library. In the real tree a second run fails
+  until the packages are declared (phase 3): the script's `dune build` loads
+  the generated dune files.
+- No step rewrites generated text: paths come from `Module_paths`, keyed on
+  the library being emitted into (`ctx.target_library`); the script only
+  runs ocamlformat.
+
+Changes to the steps above:
+
+- **Reference files name each cycle member's combined module**
+  (`cr_cluster`). Layer 1 must reach another namespace's cycle members
+  through it (Gtk names `Ocgio_raw.App_info_cycle_64c425a0.File.t` 72
+  times); `references` computes the module groups exactly as `generate`
+  does.
+- **The header `copy` rules are generated** into `dune.inc`, since the
+  generator knows both names; the hand-written `raw/dune` keeps
+  `install_c_headers`.
+- **The generator deletes stale files**, not the script: after a run it
+  removes every file in its three generated directories that it did not
+  write.
+- **Every namespace has an enums library**, written even when empty
+  (PangoCairo has no enums).
+- The script reads overrides from `overrides/` (moved there in phase 3)
+  and keeps reference files in `_build/references`.
+- The library synopses are no longer generated. For phase 4's
+  `index.mld`, take them from `ocgtk/src/<ns>/generated/ocgtk_<ns>.ml`
+  before phase 3 deletes them (or from git history).
+- The main library uses the prototype's warning flags. Gtk's library
+  today also disables 7, 10, 35, 36 and 52 and passes
+  `-no-strict-sequence`; phase 3 finds out whether `ocgtk` needs them.
+- `architecture/` still describes the old layout, as the tree does until
+  phase 3; update it with phase 5's docs.
 
 ### Phase 3 — move and regenerate everything
 
