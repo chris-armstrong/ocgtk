@@ -8,8 +8,6 @@ usable OCaml GTK 4 binding library.
 
 ### Breaking: one package per library
 
-See [MIGRATION.md](MIGRATION.md) for every renamed module path.
-
 - **One opam package per namespace** — `occairo`, `ocgio`, `ocgraphene`,
   `ocgdkpixbuf`, `ocpango`, `ocpangocairo`, `ocgdk`, `ocgsk` and `ocgtk`,
   each in its own top-level directory and declared in the root

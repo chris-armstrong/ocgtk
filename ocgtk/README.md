@@ -36,9 +36,7 @@ This installs the Gtk library and the packages it depends on: `ocglib`,
 `ocpangocairo`, `ocgdk` and `ocgsk`. Depend on each one you use directly in
 your dune file, for example `(libraries ocgtk ocgio)`.
 
-In `0.1~preview2` the `ocgtk` package held every library. See
-[MIGRATION.md](https://github.com/chris-armstrong/ocgtk/blob/main/MIGRATION.md)
-for the new module paths.
+In `0.1~preview2` the `ocgtk` package held every library.
 
 ## Quick example
 

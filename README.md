@@ -25,8 +25,7 @@ enums are under `Ocgtk.Enums`; every package has the same shape.
 **The `ocgtk` package changed meaning after `0.1~preview2`.** In
 `0.1~preview2` it was the umbrella for every library (`ocgtk.gtk`,
 `ocgtk.gio`, ...); now it is Gtk only, and the other libraries are the
-packages above. [MIGRATION.md](MIGRATION.md) maps every old module path to
-its new one.
+packages above. The CHANGELOG lists the module path renames.
 
 ## Repository Structure
 
@@ -113,7 +112,6 @@ This library is distributed under the terms of the GNU Library General Public Li
 - **Development Setup**: [CONTRIBUTORS.md](CONTRIBUTORS.md)
 - **Security Guidelines**: [architecture/FFI_GUIDELINES.md](architecture/FFI_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
-- **Migrating from 0.1~preview2**: [MIGRATION.md](MIGRATION.md)
 - **GIR Override Files**: [overrides/](overrides/) — per-namespace sexp files controlling entity ignores and version guards
 - **CI / Distro Testing**: [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)
 

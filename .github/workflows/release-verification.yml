@@ -610,7 +610,7 @@ jobs:
           # directory stays out unless added here.
           git archive "$GITHUB_REF_NAME" -- \
             dune-project ':(glob)*.opam' configurator ':(glob)oc*/**' \
-            LICENSE LGPL README.md CHANGELOG.md MIGRATION.md | tar -x -C "$STAGE"
+            LICENSE LGPL README.md CHANGELOG.md | tar -x -C "$STAGE"
 
           tar -czf "$PKG.tar.gz" -C "$(dirname "$STAGE")" "$PKG"
           sha256sum "$PKG.tar.gz" > "$PKG.tar.gz.sha256"
