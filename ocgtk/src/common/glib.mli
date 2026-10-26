@@ -30,23 +30,58 @@ exception GError of string
 
 (** {2 Main Event Loop} *)
 
-(** The Main Event Loop
+(** The GLib main loop.
+
+    All loops created here run on GLib's default main context. That is the same
+    context that [Ocgtk_gtk.GMain] and [Gtk.Application] run, so timeouts, idle
+    callbacks and signal handlers are dispatched whichever of them is running
+    the loop.
+
+    For a GTK program you normally don't need this module. [Gtk.Application#run]
+    (or [GMain.main] without an application) runs the loop for you. Use [Main]
+    when you need a loop of your own, for example a nested loop that waits for
+    something while keeping the UI responsive:
+
+    {[
+    let wait_until (ready : bool ref) =
+      let loop = Glib.Main.create false in
+      let _ =
+        Glib.Timeout.add ~ms:100
+          ~callback:(fun () ->
+            if !ready then (
+              Glib.Main.quit loop;
+              false)
+            else true)
+          ()
+      in
+      Glib.Main.run loop
+    ]}
+
+    This module doesn't initialise GTK. Inside a [Gtk.Application] that has
+    already happened; otherwise call [GMain.init] before creating widgets.
+
+    [run] does not release the OCaml runtime lock while waiting for events, so
+    other OCaml threads are starved while it runs.
+
     @see <https://docs.gtk.org/glib/main-loop.html> GLib Main Loop *)
 module Main : sig
   type t
   (** Main loop handle *)
 
   val create : bool -> t
-  (** [create is_running] creates a new main loop. If [is_running] is [true],
-      the loop is immediately marked as running. *)
+  (** [create is_running] creates a new main loop on the default context. If
+      [is_running] is [true], the loop is immediately marked as running. *)
 
   val run : t -> unit
-  (** [run loop] runs the main loop until {!quit} is called. *)
+  (** [run loop] runs the main loop until {!quit} is called on it. Loops can be
+      nested: calling [run] from inside a callback runs a new loop, and returns
+      to the outer one when it quits. *)
 
   val iteration : bool -> bool
-  (** [iteration may_block] runs a single iteration of the main context. If
-      [may_block] is [true], the iteration can block waiting for events. Returns
-      [true] if events were processed. *)
+  (** [iteration may_block] runs a single iteration of the default main context.
+      If [may_block] is [true], the iteration can block waiting for events.
+      Returns [true] if events were dispatched. Identical to [GMain.iteration].
+  *)
 
   val pending : unit -> bool
   (** Returns [true] if events are pending in the main loop *)

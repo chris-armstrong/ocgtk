@@ -11,51 +11,70 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Main event loop and initialization for GTK4 *)
+(** Initialise GTK and run its main loop without an application object.
+
+    Most programs should use {!Gtk.Application} instead. It initialises GTK,
+    runs the main loop, quits when its last window closes, and handles
+    application IDs and single-instance behaviour. [GMain] is for tests,
+    examples and short scripts where that isn't needed.
+
+    {[
+    let () =
+      let _ = GMain.init () in
+      let window = Gtk.Window.new_ () in
+      ignore
+        (window#on_close_request
+           ~callback:(fun () ->
+             GMain.quit ();
+             false)
+           ());
+      window#present ();
+      GMain.main ()
+    ]}
+
+    [main] and [quit] run and stop a single GLib main loop that this module
+    keeps. [iteration] is the same as [Glib.Main.iteration]. Timeouts, idle
+    callbacks and signals run on the same default GLib main context whichever of
+    [GMain], [Glib.Main] or [Gtk.Application] runs the loop.
+
+    None of these functions release the OCaml runtime lock while waiting for
+    events, so other OCaml threads are starved while the loop runs. See the
+    threads section of the conventions page. *)
 
 (** {2 Initialization} *)
 
 exception Error of string
+(** Raised by {!init} when GTK cannot be initialised, typically because no
+    display is available. *)
 
 val init : ?setlocale:bool -> unit -> string array
-(** Initialize GTK.
+(** Initialise GTK. Call this before creating any widget.
 
-    This must be called before using any GTK functions. Returns the remaining
-    command-line arguments after GTK processes its options.
+    Returns [Sys.argv] unchanged. GTK 4 no longer reads or removes command-line
+    arguments, so there is nothing to strip.
 
-    @param argv Command-line arguments (typically Sys.argv)
-    @raise Error if initialization fails
-
-    Example:
-    {[
-    let () =
-      let _ = GMain.init () in
-      (* ... create widgets ... *)
-      GMain.main ()
-    ]} *)
+    @param setlocale Currently ignored.
+    @raise Error if GTK cannot be initialised. *)
 
 (** {2 Main Loop} *)
 
 val main : unit -> unit
-(** Start the GTK main event loop. This function blocks until {!quit} is called.
+(** Run the main loop. Blocks until {!quit} is called.
+
+    Unlike [Gtk.Application], nothing quits automatically when the last window
+    closes. Call {!quit} yourself, for example from a [close-request] handler.
 *)
 
 val quit : unit -> unit
-(** Exit the main event loop. Typically called from a signal handler or
-    callback. *)
+(** Stop the loop started by {!main}, which then returns. Typically called from
+    a signal handler or other callback. Does nothing if {!main} has never been
+    called. *)
 
 val iteration : bool -> bool
-(** Run one iteration of the main loop.
-    @param block
-      If true, wait for events; if false, return immediately if no events
-    @return true if more events are pending *)
+(** [iteration may_block] runs one pass of the main loop, dispatching any events
+    that are ready. Useful in tests, or to drive the loop yourself.
 
-(** {2 Deprecated - Use GtkApplication Instead}
-
-    Note: For new GTK4 applications, GtkApplication is preferred over the main
-    loop functions. However, these are provided for:
-    - Testing during development
-    - Simple examples
-    - Migration from GTK3
-
-    Full GtkApplication support is planned for a future release. *)
+    @param may_block
+      If [true], wait for an event when none is ready. If [false], return
+      immediately.
+    @return [true] if any events were dispatched. *)
