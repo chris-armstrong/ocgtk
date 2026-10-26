@@ -18,8 +18,7 @@ external row_draggable : t -> Tree_path.t -> bool
     source of a DND operation. If the source doesn’t implement this interface,
     the row is assumed draggable. *)
 
-external drag_data_get :
-  t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t option
+external drag_data_get : t -> Tree_path.t -> Ocgdk_raw.Content_provider.t option
   = "ml_gtk_tree_drag_source_drag_data_get"
 (** Asks the [GtkTreeDragSource] to return a [GdkContentProvider] representing
     the row at [path]. Should robustly handle a [path] no longer found in the

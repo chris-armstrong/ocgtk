@@ -1,6 +1,6 @@
 class type pixbuf_t = object
-  inherit Ocgtk_gio.Gio.Icon.icon_t
-  inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
+  inherit Ocgio.Icon.icon_t
+  inherit Ocgio.Loadable_icon.loadable_icon_t
   method apply_embedded_orientation : unit -> pixbuf_t option
 
   method composite :
@@ -13,7 +13,7 @@ class type pixbuf_t = object
     float ->
     float ->
     float ->
-    Gdkpixbuf_enums.interptype ->
+    Enums.interptype ->
     int ->
     unit
 
@@ -27,7 +27,7 @@ class type pixbuf_t = object
     float ->
     float ->
     float ->
-    Gdkpixbuf_enums.interptype ->
+    Enums.interptype ->
     int ->
     int ->
     int ->
@@ -39,7 +39,7 @@ class type pixbuf_t = object
   method composite_color_simple :
     int ->
     int ->
-    Gdkpixbuf_enums.interptype ->
+    Enums.interptype ->
     int ->
     int ->
     UInt32.t ->
@@ -53,7 +53,7 @@ class type pixbuf_t = object
   method flip : bool -> pixbuf_t option
   method get_bits_per_sample : unit -> int
   method get_byte_length : unit -> Gsize.t
-  method get_colorspace : unit -> Gdkpixbuf_enums.colorspace
+  method get_colorspace : unit -> Enums.colorspace
   method get_has_alpha : unit -> bool
   method get_height : unit -> int
   method get_n_channels : unit -> int
@@ -63,15 +63,15 @@ class type pixbuf_t = object
   method new_subpixbuf : int -> int -> int -> int -> pixbuf_t
   method read_pixel_bytes : unit -> Glib_bytes.t
   method remove_option : string -> bool
-  method rotate_simple : Gdkpixbuf_enums.pixbufrotation -> pixbuf_t option
+  method rotate_simple : Enums.pixbufrotation -> pixbuf_t option
   method saturate_and_pixelate : pixbuf_t -> float -> bool -> unit
 
   method save_to_streamv :
-    Ocgtk_gio.Gio.Output_stream.output_stream_t ->
+    Ocgio.Output_stream.output_stream_t ->
     string ->
     string array option ->
     string array option ->
-    Ocgtk_gio.Gio.Cancellable.cancellable_t option ->
+    Ocgio.Cancellable.cancellable_t option ->
     (bool, GError.t) result
 
   method savev :
@@ -91,24 +91,22 @@ class type pixbuf_t = object
     float ->
     float ->
     float ->
-    Gdkpixbuf_enums.interptype ->
+    Enums.interptype ->
     unit
 
-  method scale_simple :
-    int -> int -> Gdkpixbuf_enums.interptype -> pixbuf_t option
-
+  method scale_simple : int -> int -> Enums.interptype -> pixbuf_t option
   method set_option : string -> string -> bool
   method pixel_bytes : Glib_bytes.t
-  method as_pixbuf : Pixbuf.t
+  method as_pixbuf : Raw.Pixbuf.t
 end
 
-class pixbuf : Pixbuf.t -> pixbuf_t
+class pixbuf : Raw.Pixbuf.t -> pixbuf_t
 
-val new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> pixbuf_t
+val new_ : Enums.colorspace -> bool -> int -> int -> int -> pixbuf_t
 
 val new_from_bytes :
   Glib_bytes.t ->
-  Gdkpixbuf_enums.colorspace ->
+  Enums.colorspace ->
   bool ->
   int ->
   int ->
@@ -128,19 +126,19 @@ val new_from_resource_at_scale :
   string -> int -> int -> bool -> (pixbuf_t, GError.t) result
 
 val new_from_stream :
-  Ocgtk_gio.Gio.Input_stream.input_stream_t ->
-  Ocgtk_gio.Gio.Cancellable.cancellable_t option ->
+  Ocgio.Input_stream.input_stream_t ->
+  Ocgio.Cancellable.cancellable_t option ->
   (pixbuf_t, GError.t) result
 
 val new_from_stream_at_scale :
-  Ocgtk_gio.Gio.Input_stream.input_stream_t ->
+  Ocgio.Input_stream.input_stream_t ->
   int ->
   int ->
   bool ->
-  Ocgtk_gio.Gio.Cancellable.cancellable_t option ->
+  Ocgio.Cancellable.cancellable_t option ->
   (pixbuf_t, GError.t) result
 
 val new_from_stream_finish :
-  Ocgtk_gio.Gio.Async_result.async_result_t -> (pixbuf_t, GError.t) result
+  Ocgio.Async_result.async_result_t -> (pixbuf_t, GError.t) result
 
 val new_from_xpm_data : string array -> pixbuf_t

@@ -87,7 +87,7 @@ external set_icon : t -> Icon.t -> unit = "ml_g_file_info_set_icon"
 (** Sets the icon for a given [GFileInfo]. See [G_FILE_ATTRIBUTE_STANDARD_ICON].
 *)
 
-external set_file_type : t -> Gio_enums.filetype -> unit
+external set_file_type : t -> Ocgio_enums.filetype -> unit
   = "ml_g_file_info_set_file_type"
 (** Sets the file type in a [GFileInfo] to [type]. See
     [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
@@ -125,7 +125,7 @@ external set_attribute_string : t -> string -> string -> unit
 (** Sets the [attribute] to contain the given [attr_value], if possible. *)
 
 external set_attribute_status :
-  t -> string -> Gio_enums.fileattributestatus -> bool
+  t -> string -> Ocgio_enums.fileattributestatus -> bool
   = "ml_g_file_info_set_attribute_status"
 (** Sets the attribute status for an attribute key. This is only needed by
     external code that implement g_file_set_attributes_from_info() or similar
@@ -239,7 +239,7 @@ external get_icon : t -> Icon.t option = "ml_g_file_info_get_icon"
     It is an error to call this if the [GFileInfo] does not contain
     [G_FILE_ATTRIBUTE_STANDARD_ICON]. *)
 
-external get_file_type : t -> Gio_enums.filetype
+external get_file_type : t -> Ocgio_enums.filetype
   = "ml_g_file_info_get_file_type"
 (** Gets a file's type (whether it is a regular file, symlink, etc). This is
     different from the file's content type, see g_file_info_get_content_type().
@@ -285,7 +285,7 @@ external get_attribute_uint32 : t -> string -> UInt32.t
     attribute does not contain an unsigned 32-bit integer, or is invalid, 0 will
     be returned. *)
 
-external get_attribute_type : t -> string -> Gio_enums.fileattributetype
+external get_attribute_type : t -> string -> Ocgio_enums.fileattributetype
   = "ml_g_file_info_get_attribute_type"
 (** Gets the attribute type for an attribute key. *)
 
@@ -299,7 +299,7 @@ external get_attribute_string : t -> string -> string option
 (** Gets the value of a string attribute. If the attribute does not contain a
     string, [NULL] will be returned. *)
 
-external get_attribute_status : t -> string -> Gio_enums.fileattributestatus
+external get_attribute_status : t -> string -> Ocgio_enums.fileattributestatus
   = "ml_g_file_info_get_attribute_status"
 (** Gets the attribute status for an attribute key. *)
 

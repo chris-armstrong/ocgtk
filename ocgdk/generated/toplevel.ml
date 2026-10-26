@@ -1,6 +1,6 @@
 class type toplevel_t = object
   method begin_move :
-    GApp_launch_context_cycle_de440b34.device_t ->
+    App_launch_context_cycle_de440b34.device_t ->
     int ->
     float ->
     float ->
@@ -8,8 +8,8 @@ class type toplevel_t = object
     unit
 
   method begin_resize :
-    Gdk_enums.surfaceedge ->
-    GApp_launch_context_cycle_de440b34.device_t option ->
+    Enums.surfaceedge ->
+    App_launch_context_cycle_de440b34.device_t option ->
     int ->
     float ->
     float ->
@@ -17,42 +17,39 @@ class type toplevel_t = object
     unit
 
   method focus : UInt32.t -> unit
-  method get_capabilities : unit -> Gdk_enums.toplevelcapabilities
-  method get_gravity : unit -> Gdk_enums.gravity
-  method get_state : unit -> Gdk_enums.toplevelstate
+  method get_capabilities : unit -> Enums.toplevelcapabilities
+  method get_gravity : unit -> Enums.gravity
+  method get_state : unit -> Enums.toplevelstate
 
   method inhibit_system_shortcuts :
-    GApp_launch_context_cycle_de440b34.event_t option -> unit
+    App_launch_context_cycle_de440b34.event_t option -> unit
 
   method lower : unit -> bool
   method minimize : unit -> bool
-  method present : Toplevel_layout.t -> unit
+  method present : Raw.Toplevel_layout.t -> unit
   method restore_system_shortcuts : unit -> unit
   method set_decorated : bool -> unit
   method set_deletable : bool -> unit
-  method set_gravity : Gdk_enums.gravity -> unit
-  method set_icon_list : GTexture.texture_t list -> unit
+  method set_gravity : Enums.gravity -> unit
+  method set_icon_list : Texture.texture_t list -> unit
   method set_modal : bool -> unit
   method set_startup_id : string -> unit
   method set_title : string -> unit
-
-  method set_transient_for :
-    GApp_launch_context_cycle_de440b34.surface_t -> unit
-
-  method show_window_menu : GApp_launch_context_cycle_de440b34.event_t -> bool
+  method set_transient_for : App_launch_context_cycle_de440b34.surface_t -> unit
+  method show_window_menu : App_launch_context_cycle_de440b34.event_t -> bool
   method supports_edge_constraints : unit -> bool
-  method titlebar_gesture : Gdk_enums.titlebargesture -> bool
-  method fullscreen_mode : Gdk_enums.fullscreenmode
-  method set_fullscreen_mode : Gdk_enums.fullscreenmode -> unit
+  method titlebar_gesture : Enums.titlebargesture -> bool
+  method fullscreen_mode : Enums.fullscreenmode
+  method set_fullscreen_mode : Enums.fullscreenmode -> unit
   method shortcuts_inhibited : bool
-  method as_toplevel : Toplevel.t
+  method as_toplevel : Raw.Toplevel.t
 end
 
 (* High-level class for Toplevel *)
-class toplevel (obj : Toplevel.t) : toplevel_t =
+class toplevel (obj : Raw.Toplevel.t) : toplevel_t =
   object (self)
     method begin_move :
-        GApp_launch_context_cycle_de440b34.device_t ->
+        App_launch_context_cycle_de440b34.device_t ->
         int ->
         float ->
         float ->
@@ -60,11 +57,11 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
         unit =
       fun device button x y timestamp ->
         let device = device#as_device in
-        Toplevel.begin_move obj device button x y timestamp
+        Raw.Toplevel.begin_move obj device button x y timestamp
 
     method begin_resize :
-        Gdk_enums.surfaceedge ->
-        GApp_launch_context_cycle_de440b34.device_t option ->
+        Enums.surfaceedge ->
+        App_launch_context_cycle_de440b34.device_t option ->
         int ->
         float ->
         float ->
@@ -72,77 +69,78 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
         unit =
       fun edge device button x y timestamp ->
         let device = Option.map (fun c -> c#as_device) device in
-        Toplevel.begin_resize obj edge device button x y timestamp
+        Raw.Toplevel.begin_resize obj edge device button x y timestamp
 
     method focus : UInt32.t -> unit =
-      fun timestamp -> Toplevel.focus obj timestamp
+      fun timestamp -> Raw.Toplevel.focus obj timestamp
 
-    method get_capabilities : unit -> Gdk_enums.toplevelcapabilities =
-      fun () -> Toplevel.get_capabilities obj
+    method get_capabilities : unit -> Enums.toplevelcapabilities =
+      fun () -> Raw.Toplevel.get_capabilities obj
 
-    method get_gravity : unit -> Gdk_enums.gravity =
-      fun () -> Toplevel.get_gravity obj
+    method get_gravity : unit -> Enums.gravity =
+      fun () -> Raw.Toplevel.get_gravity obj
 
-    method get_state : unit -> Gdk_enums.toplevelstate =
-      fun () -> Toplevel.get_state obj
+    method get_state : unit -> Enums.toplevelstate =
+      fun () -> Raw.Toplevel.get_state obj
 
     method inhibit_system_shortcuts :
-        GApp_launch_context_cycle_de440b34.event_t option -> unit =
+        App_launch_context_cycle_de440b34.event_t option -> unit =
       fun event ->
         let event = Option.map (fun c -> c#as_event) event in
-        Toplevel.inhibit_system_shortcuts obj event
+        Raw.Toplevel.inhibit_system_shortcuts obj event
 
-    method lower : unit -> bool = fun () -> Toplevel.lower obj
-    method minimize : unit -> bool = fun () -> Toplevel.minimize obj
+    method lower : unit -> bool = fun () -> Raw.Toplevel.lower obj
+    method minimize : unit -> bool = fun () -> Raw.Toplevel.minimize obj
 
-    method present : Toplevel_layout.t -> unit =
-      fun layout -> Toplevel.present obj layout
+    method present : Raw.Toplevel_layout.t -> unit =
+      fun layout -> Raw.Toplevel.present obj layout
 
     method restore_system_shortcuts : unit -> unit =
-      fun () -> Toplevel.restore_system_shortcuts obj
+      fun () -> Raw.Toplevel.restore_system_shortcuts obj
 
     method set_decorated : bool -> unit =
-      fun decorated -> Toplevel.set_decorated obj decorated
+      fun decorated -> Raw.Toplevel.set_decorated obj decorated
 
     method set_deletable : bool -> unit =
-      fun deletable -> Toplevel.set_deletable obj deletable
+      fun deletable -> Raw.Toplevel.set_deletable obj deletable
 
-    method set_gravity : Gdk_enums.gravity -> unit =
-      fun gravity -> Toplevel.set_gravity obj gravity
+    method set_gravity : Enums.gravity -> unit =
+      fun gravity -> Raw.Toplevel.set_gravity obj gravity
 
-    method set_icon_list : GTexture.texture_t list -> unit =
+    method set_icon_list : Texture.texture_t list -> unit =
       fun surfaces ->
         let surfaces = (List.map (fun c -> c#as_texture)) surfaces in
-        Toplevel.set_icon_list obj surfaces
+        Raw.Toplevel.set_icon_list obj surfaces
 
-    method set_modal : bool -> unit = fun modal -> Toplevel.set_modal obj modal
+    method set_modal : bool -> unit =
+      fun modal -> Raw.Toplevel.set_modal obj modal
 
     method set_startup_id : string -> unit =
-      fun startup_id -> Toplevel.set_startup_id obj startup_id
+      fun startup_id -> Raw.Toplevel.set_startup_id obj startup_id
 
     method set_title : string -> unit =
-      fun title -> Toplevel.set_title obj title
+      fun title -> Raw.Toplevel.set_title obj title
 
     method set_transient_for :
-        GApp_launch_context_cycle_de440b34.surface_t -> unit =
+        App_launch_context_cycle_de440b34.surface_t -> unit =
       fun parent ->
         let parent = parent#as_surface in
-        Toplevel.set_transient_for obj parent
+        Raw.Toplevel.set_transient_for obj parent
 
-    method show_window_menu : GApp_launch_context_cycle_de440b34.event_t -> bool
+    method show_window_menu : App_launch_context_cycle_de440b34.event_t -> bool
         =
       fun event ->
         let event = event#as_event in
-        Toplevel.show_window_menu obj event
+        Raw.Toplevel.show_window_menu obj event
 
     method supports_edge_constraints : unit -> bool =
-      fun () -> Toplevel.supports_edge_constraints obj
+      fun () -> Raw.Toplevel.supports_edge_constraints obj
 
-    method titlebar_gesture : Gdk_enums.titlebargesture -> bool =
-      fun gesture -> Toplevel.titlebar_gesture obj gesture
+    method titlebar_gesture : Enums.titlebargesture -> bool =
+      fun gesture -> Raw.Toplevel.titlebar_gesture obj gesture
 
-    method fullscreen_mode = Toplevel.get_fullscreen_mode obj
-    method set_fullscreen_mode v = Toplevel.set_fullscreen_mode obj v
-    method shortcuts_inhibited = Toplevel.get_shortcuts_inhibited obj
+    method fullscreen_mode = Raw.Toplevel.get_fullscreen_mode obj
+    method set_fullscreen_mode v = Raw.Toplevel.set_fullscreen_mode obj v
+    method shortcuts_inhibited = Raw.Toplevel.get_shortcuts_inhibited obj
     method as_toplevel = obj
   end

@@ -12,7 +12,7 @@ module rec Socket_address : sig
   (** Gets the size of [address]'s native struct sockaddr. You can use this to
       allocate memory to pass to g_socket_address_to_native(). *)
 
-  external get_family : t -> Gio_enums.socketfamily
+  external get_family : t -> Ocgio_enums.socketfamily
     = "ml_g_socket_address_get_family"
   (** Gets the socket family type of [address]. *)
 

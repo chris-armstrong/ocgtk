@@ -1,6 +1,6 @@
 class type network_service_t = object
   inherit
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
 
   method get_domain : unit -> string
@@ -8,9 +8,9 @@ class type network_service_t = object
   method get_scheme : unit -> string
   method get_service : unit -> string
   method set_scheme : string -> unit
-  method as_network_service : Network_service.t
+  method as_network_service : Raw.Network_service.t
 end
 
-class network_service : Network_service.t -> network_service_t
+class network_service : Raw.Network_service.t -> network_service_t
 
 val new_ : string -> string -> string -> network_service_t

@@ -28,7 +28,7 @@ external set_search : t -> string option -> unit
   = "ml_gtk_string_filter_set_search"
 (** Sets the string to search for. *)
 
-external set_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit
+external set_match_mode : t -> Ocgtk_enums.stringfiltermatchmode -> unit
   = "ml_gtk_string_filter_set_match_mode"
 (** Sets the match mode for the filter. *)
 
@@ -46,7 +46,7 @@ external set_expression : t -> Expression.t option -> unit
 external get_search : t -> string option = "ml_gtk_string_filter_get_search"
 (** Gets the search term. *)
 
-external get_match_mode : t -> Gtk_enums.stringfiltermatchmode
+external get_match_mode : t -> Ocgtk_enums.stringfiltermatchmode
   = "ml_gtk_string_filter_get_match_mode"
 (** Returns the match mode that the filter is using. *)
 

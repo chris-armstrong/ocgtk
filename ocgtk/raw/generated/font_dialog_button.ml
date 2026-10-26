@@ -38,12 +38,11 @@ external set_use_font : t -> bool -> unit
 (** If [use_font] is [TRUE], the font name will be written using the selected
     font. *)
 
-external set_level : t -> Gtk_enums.fontlevel -> unit
+external set_level : t -> Ocgtk_enums.fontlevel -> unit
   = "ml_gtk_font_dialog_button_set_level"
 (** Sets the level of detail at which this dialog lets the user select fonts. *)
 
-external set_language :
-  t -> Ocgtk_pango.Pango.Wrappers.Language.t option -> unit
+external set_language : t -> Ocpango_raw.Language.t option -> unit
   = "ml_gtk_font_dialog_button_set_language"
 (** Sets the language to use for font features. *)
 
@@ -51,8 +50,7 @@ external set_font_features : t -> string option -> unit
   = "ml_gtk_font_dialog_button_set_font_features"
 (** Sets the font features of the button. *)
 
-external set_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit
+external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_font_dialog_button_set_font_desc"
 (** Sets the font of the button. *)
 
@@ -67,12 +65,12 @@ external get_use_size : t -> bool = "ml_gtk_font_dialog_button_get_use_size"
 external get_use_font : t -> bool = "ml_gtk_font_dialog_button_get_use_font"
 (** Returns whether the selected font is used in the label. *)
 
-external get_level : t -> Gtk_enums.fontlevel
+external get_level : t -> Ocgtk_enums.fontlevel
   = "ml_gtk_font_dialog_button_get_level"
 (** Returns the level of detail at which this dialog lets the user select fonts.
 *)
 
-external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t option
+external get_language : t -> Ocpango_raw.Language.t option
   = "ml_gtk_font_dialog_button_get_language"
 (** Returns the language that is used for font features. *)
 
@@ -87,8 +85,7 @@ external get_font_features : t -> string option
    if [Gtk.FontDialogButton:level] is set to\n\
    [GTK_FONT_LEVEL_FEATURES]."]
 
-external get_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option
+external get_font_desc : t -> Ocpango_raw.Font_description.t option
   = "ml_gtk_font_dialog_button_get_font_desc"
 [@@ocaml.doc
   "Returns the font of the button.\n\n\

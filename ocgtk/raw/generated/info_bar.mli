@@ -93,7 +93,7 @@ external set_response_sensitive : t -> int -> bool -> unit
     info bars’s action area with the given [response_id]. A convenient way to
     sensitize/desensitize buttons. *)
 
-external set_message_type : t -> Gtk_enums.messagetype -> unit
+external set_message_type : t -> Ocgtk_enums.messagetype -> unit
   = "ml_gtk_info_bar_set_message_type"
 (** Sets the message type of the message area.
 
@@ -138,7 +138,7 @@ external get_show_close_button : t -> bool
 external get_revealed : t -> bool = "ml_gtk_info_bar_get_revealed"
 (** Returns whether the info bar is currently revealed. *)
 
-external get_message_type : t -> Gtk_enums.messagetype
+external get_message_type : t -> Ocgtk_enums.messagetype
   = "ml_gtk_info_bar_get_message_type"
 (** Returns the message type of the message area. *)
 

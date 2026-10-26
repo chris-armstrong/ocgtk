@@ -9,7 +9,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_gl_shader_node_get_type"
 
 external new_ :
   Gl_shader.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
+  Ocgraphene_raw.Rect.t ->
   Glib_bytes.t ->
   Render_node.t array option ->
   int ->

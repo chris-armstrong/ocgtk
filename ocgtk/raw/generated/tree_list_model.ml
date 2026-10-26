@@ -47,7 +47,7 @@ external get_passthrough : t -> bool = "ml_gtk_tree_list_model_get_passthrough"
     original state. You then need to call [Gtk.TreeListModel.get_row] to get the
     custom [GtkTreeListRow]s. *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external get_model : t -> Ocgio_raw.List_model.t
   = "ml_gtk_tree_list_model_get_model"
 (** Gets the root model that [self] was created with. *)
 

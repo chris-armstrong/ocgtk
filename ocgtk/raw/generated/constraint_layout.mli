@@ -150,7 +150,7 @@ external remove_all_constraints : t -> unit
   = "ml_gtk_constraint_layout_remove_all_constraints"
 (** Removes all constraints from the layout manager. *)
 
-external observe_guides : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external observe_guides : t -> Ocgio_raw.List_model.t
   = "ml_gtk_constraint_layout_observe_guides"
 (** Returns a [GListModel] to track the guides that are part of the layout.
 
@@ -161,7 +161,7 @@ external observe_guides : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
     Applications should try hard to avoid calling this function because of the
     slowdowns. *)
 
-external observe_constraints : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external observe_constraints : t -> Ocgio_raw.List_model.t
   = "ml_gtk_constraint_layout_observe_constraints"
 (** Returns a [GListModel] to track the constraints that are part of the layout.
 

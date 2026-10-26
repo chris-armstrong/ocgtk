@@ -21,9 +21,9 @@ class type entry_buffer_t = object
   method insert_text : int -> string -> int -> int
   method set_max_length : int -> unit
   method set_text : string -> int -> unit
-  method as_entry_buffer : Entry_buffer.t
+  method as_entry_buffer : Raw.Entry_buffer.t
 end
 
-class entry_buffer : Entry_buffer.t -> entry_buffer_t
+class entry_buffer : Raw.Entry_buffer.t -> entry_buffer_t
 
 val new_ : string option -> int -> entry_buffer_t

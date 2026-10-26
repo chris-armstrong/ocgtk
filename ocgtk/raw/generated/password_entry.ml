@@ -50,8 +50,7 @@ external set_show_peek_icon : t -> bool -> unit
 
     Setting this to [FALSE] also hides the text again. *)
 
-external set_extra_menu :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_password_entry_set_extra_menu"
 (** Sets a menu model to add when constructing the context menu for [entry]. *)
 
@@ -59,7 +58,7 @@ external get_show_peek_icon : t -> bool
   = "ml_gtk_password_entry_get_show_peek_icon"
 (** Returns whether the entry is showing an icon to reveal the contents. *)
 
-external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_password_entry_get_extra_menu"
 (** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)
 

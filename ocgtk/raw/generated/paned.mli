@@ -67,7 +67,7 @@ type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_paned_get_type"
 
-external new_ : Gtk_enums.orientation -> t = "ml_gtk_paned_new"
+external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_paned_new"
 (** Create a new Paned *)
 
 (* Methods *)
@@ -187,7 +187,7 @@ val on_cycle_handle_focus :
 val on_move_handle :
   ?after:bool ->
   t ->
-  callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+  callback:(scroll_type:Ocgtk_enums.scrolltype -> bool) ->
   Gobject.Signal.handler_id
 
 val on_toggle_handle_focus :

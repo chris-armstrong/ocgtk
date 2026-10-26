@@ -8,7 +8,7 @@ type t = [ `tls_password | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_tls_password_get_type"
 
-external new_ : Gio_enums.tlspasswordflags -> string -> t
+external new_ : Ocgio_enums.tlspasswordflags -> string -> t
   = "ml_g_tls_password_new"
 (** Create a new TlsPassword *)
 
@@ -19,7 +19,7 @@ external set_warning : t -> string -> unit = "ml_g_tls_password_set_warning"
     representation of the password flags returned from
     g_tls_password_get_flags(). *)
 
-external set_flags : t -> Gio_enums.tlspasswordflags -> unit
+external set_flags : t -> Ocgio_enums.tlspasswordflags -> unit
   = "ml_g_tls_password_set_flags"
 (** Set flags about the password. *)
 
@@ -32,7 +32,7 @@ external get_warning : t -> string = "ml_g_tls_password_get_warning"
     representation of the password flags returned from
     g_tls_password_get_flags(). *)
 
-external get_flags : t -> Gio_enums.tlspasswordflags
+external get_flags : t -> Ocgio_enums.tlspasswordflags
   = "ml_g_tls_password_get_flags"
 (** Get flags about the password. *)
 

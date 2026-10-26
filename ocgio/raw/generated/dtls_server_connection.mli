@@ -15,10 +15,11 @@ external from_gobject : 'a Gobject.obj -> t
 (* Methods *)
 (* Properties *)
 
-external get_authentication_mode : t -> Gio_enums.tlsauthenticationmode
+external get_authentication_mode : t -> Ocgio_enums.tlsauthenticationmode
   = "ml_g_dtls_server_connection_get_authentication_mode"
 (** Get property: authentication-mode *)
 
-external set_authentication_mode : t -> Gio_enums.tlsauthenticationmode -> unit
+external set_authentication_mode :
+  t -> Ocgio_enums.tlsauthenticationmode -> unit
   = "ml_g_dtls_server_connection_set_authentication_mode"
 (** Set property: authentication-mode *)

@@ -38,7 +38,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_map_list_model_get_type"
 
 (* Methods *)
 
-external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_map_list_model_set_model"
 (** Sets the model to be mapped.
 
@@ -49,7 +49,7 @@ external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
 external has_map : t -> bool = "ml_gtk_map_list_model_has_map"
 (** Checks if a map function is currently set on [self]. *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_map_list_model_get_model"
 (** Gets the model that is currently being mapped or [NULL] if none. *)
 

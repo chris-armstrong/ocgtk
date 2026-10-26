@@ -1,34 +1,30 @@
 class type multi_filter_t = object
-  inherit GFilter.filter_t
-  inherit Ocgtk_gio.Gio.List_model.list_model_t
-  inherit GBuildable.buildable_t
-  method append : GFilter.filter_t -> unit
+  inherit Filter.filter_t
+  inherit Ocgio.List_model.list_model_t
+  inherit Buildable.buildable_t
+  method append : Filter.filter_t -> unit
   method remove : int -> unit
   method item_type : Gobject.Type.t
   method n_items : int
-  method as_multi_filter : Multi_filter.t
+  method as_multi_filter : Raw.Multi_filter.t
 end
 
 (* High-level class for MultiFilter *)
-class multi_filter (obj : Multi_filter.t) : multi_filter_t =
+class multi_filter (obj : Raw.Multi_filter.t) : multi_filter_t =
   object (self)
-    inherit GFilter.filter (obj :> Filter.t)
+    inherit Filter.filter (obj :> Raw.Filter.t)
+    inherit Ocgio.List_model.list_model (Ocgio.Raw.List_model.from_gobject obj)
+    inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 
-    inherit
-      Ocgtk_gio.Gio.List_model.list_model
-        (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
-
-    inherit GBuildable.buildable (Buildable.from_gobject obj)
-
-    method append : GFilter.filter_t -> unit =
+    method append : Filter.filter_t -> unit =
       fun filter ->
         let filter = filter#as_filter in
-        Multi_filter.append obj filter
+        Raw.Multi_filter.append obj filter
 
     method remove : int -> unit =
-      fun position -> Multi_filter.remove obj position
+      fun position -> Raw.Multi_filter.remove obj position
 
-    method item_type = Multi_filter.get_item_type obj
-    method n_items = Multi_filter.get_n_items obj
+    method item_type = Raw.Multi_filter.get_item_type obj
+    method n_items = Raw.Multi_filter.get_n_items obj
     method as_multi_filter = obj
   end

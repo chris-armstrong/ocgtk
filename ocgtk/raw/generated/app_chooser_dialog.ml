@@ -31,14 +31,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_dialog_get_type"
 
 external new_ :
   Application_and__window_and__window_group.Window.t option ->
-  Gtk_enums.dialogflags ->
-  Ocgtk_gio.Gio.Wrappers.File.t ->
+  Ocgtk_enums.dialogflags ->
+  Ocgio_raw.File.t ->
   t = "ml_gtk_app_chooser_dialog_new"
 (** Create a new AppChooserDialog *)
 
 external new_for_content_type :
   Application_and__window_and__window_group.Window.t option ->
-  Gtk_enums.dialogflags ->
+  Ocgtk_enums.dialogflags ->
   string ->
   t = "ml_gtk_app_chooser_dialog_new_for_content_type"
 (** Create a new AppChooserDialog *)
@@ -64,6 +64,6 @@ external get_heading : t -> string option
 
 (* Properties *)
 
-external get_gfile : t -> Ocgtk_gio.Gio.Wrappers.File.t
+external get_gfile : t -> Ocgio_raw.File.t
   = "ml_gtk_app_chooser_dialog_get_gfile"
 (** Get property: gfile *)

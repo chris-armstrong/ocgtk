@@ -85,8 +85,7 @@ external set_popover : t -> Popover.t option -> unit
     If [Gtk.MenuButton:menu-model] is set, the menu model is dissociated from
     the [menu_button], and the property is set to [NULL]. *)
 
-external set_menu_model :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_menu_button_set_menu_model"
 (** Sets the [GMenuModel] from which the popup will be constructed.
 
@@ -121,7 +120,7 @@ external set_icon_name : t -> string -> unit
 external set_has_frame : t -> bool -> unit = "ml_gtk_menu_button_set_has_frame"
 (** Sets the style of the button. *)
 
-external set_direction : t -> Gtk_enums.arrowtype -> unit
+external set_direction : t -> Ocgtk_enums.arrowtype -> unit
   = "ml_gtk_menu_button_set_direction"
 (** Sets the direction in which the popup will be popped up.
 
@@ -184,7 +183,7 @@ external get_popover : t -> Popover.t option = "ml_gtk_menu_button_get_popover"
 
     If the button is not using a [GtkPopover], this function returns [NULL]. *)
 
-external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_menu_model : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_menu_button_get_menu_model"
 (** Returns the [GMenuModel] used to generate the popup. *)
 
@@ -197,7 +196,7 @@ external get_icon_name : t -> string option = "ml_gtk_menu_button_get_icon_name"
 external get_has_frame : t -> bool = "ml_gtk_menu_button_get_has_frame"
 (** Returns whether the button has a frame. *)
 
-external get_direction : t -> Gtk_enums.arrowtype
+external get_direction : t -> Ocgtk_enums.arrowtype
   = "ml_gtk_menu_button_get_direction"
 (** Returns the direction the popup will be pointing at when popped up. *)
 

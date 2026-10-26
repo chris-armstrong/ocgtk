@@ -82,8 +82,7 @@ external new_ : unit -> t = "ml_gtk_drag_source_new"
 
 (* Methods *)
 
-external set_icon :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> int -> int -> unit
+external set_icon : t -> Ocgdk_raw.Paintable.t option -> int -> int -> unit
   = "ml_gtk_drag_source_set_icon"
 (** Sets a paintable to use as icon during DND operations.
 
@@ -95,8 +94,7 @@ external set_icon :
     This function can be called before a drag is started, or in a
     [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler. *)
 
-external set_content :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t option -> unit
+external set_content : t -> Ocgdk_raw.Content_provider.t option -> unit
   = "ml_gtk_drag_source_set_content"
 (** Sets a content provider on a [GtkDragSource].
 
@@ -109,7 +107,7 @@ external set_content :
     You may consider setting the content provider back to [NULL] in a
     [Gtk.DragSource::drag-end] signal handler. *)
 
-external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit
+external set_actions : t -> Ocgdk_enums.dragaction -> unit
   = "ml_gtk_drag_source_set_actions"
 (** Sets the actions on the [GtkDragSource].
 
@@ -120,15 +118,14 @@ external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit
     This function can be called before a drag is started, or in a handler for
     the [Gtk.DragSource::prepare] signal. *)
 
-external get_drag : t -> Ocgtk_gdk.Gdk.Wrappers.Drag.t option
-  = "ml_gtk_drag_source_get_drag"
+external get_drag : t -> Ocgdk_raw.Drag.t option = "ml_gtk_drag_source_get_drag"
 (** Returns the underlying [GdkDrag] object for an ongoing drag. *)
 
-external get_content : t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t option
+external get_content : t -> Ocgdk_raw.Content_provider.t option
   = "ml_gtk_drag_source_get_content"
 (** Gets the current content provider of a [GtkDragSource]. *)
 
-external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
+external get_actions : t -> Ocgdk_enums.dragaction
   = "ml_gtk_drag_source_get_actions"
 (** Gets the actions that are currently set on the [GtkDragSource]. *)
 
@@ -142,7 +139,7 @@ let on_drag_begin ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v (Ocgtk_gdk.Gdk.Wrappers.Drag.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Drag.gtype ())
         in
         callback ~drag)
   in
@@ -154,12 +151,11 @@ let on_drag_cancel ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v (Ocgtk_gdk.Gdk.Wrappers.Drag.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Drag.gtype ())
         in
         let reason =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Ocgtk_gdk.Gdk_enums.dragcancelreason_of_int
-            (Gobject.Value.get_enum_int v)
+          Ocgdk_enums.dragcancelreason_of_int (Gobject.Value.get_enum_int v)
         in
         let result = callback ~drag ~reason in
         let v = Gobject.Closure.result argv in
@@ -174,7 +170,7 @@ let on_drag_end ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v (Ocgtk_gdk.Gdk.Wrappers.Drag.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Drag.gtype ())
         in
         let delete_data =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -199,9 +195,7 @@ let on_prepare ?after obj ~callback =
         let result = callback ~x ~y in
         let v = Gobject.Closure.result argv in
         let x = result in
-        Gobject.Value.set_object v
-          (Ocgtk_gdk.Gdk.Wrappers.Content_provider.gtype ())
-          x)
+        Gobject.Value.set_object v (Ocgdk_raw.Content_provider.gtype ()) x)
   in
   Gobject.Signal.connect obj ~name:"prepare" ~callback:closure
     ~after:(Option.value after ~default:false)

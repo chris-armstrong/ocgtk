@@ -8,8 +8,8 @@ class type font_metrics_t = object
   method get_strikethrough_thickness : unit -> int
   method get_underline_position : unit -> int
   method get_underline_thickness : unit -> int
-  method ref : unit -> Font_metrics.t option
-  method as_font_metrics : Font_metrics.t
+  method ref : unit -> Raw.Font_metrics.t option
+  method as_font_metrics : Raw.Font_metrics.t
 end
 
-class font_metrics : Font_metrics.t -> font_metrics_t
+class font_metrics : Raw.Font_metrics.t -> font_metrics_t

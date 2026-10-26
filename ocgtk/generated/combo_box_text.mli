@@ -1,5 +1,5 @@
 class type combo_box_text_t = object
-  inherit GCombo_box.combo_box_t
+  inherit Combo_box.combo_box_t
   method append : string option -> string -> unit
   method append_text : string -> unit
   method get_active_text : unit -> string option
@@ -9,10 +9,10 @@ class type combo_box_text_t = object
   method prepend_text : string -> unit
   method remove : int -> unit
   method remove_all : unit -> unit
-  method as_combo_box_text : Combo_box_text.t
+  method as_combo_box_text : Raw.Combo_box_text.t
 end
 
-class combo_box_text : Combo_box_text.t -> combo_box_text_t
+class combo_box_text : Raw.Combo_box_text.t -> combo_box_text_t
 
 val new_ : unit -> combo_box_text_t
 val new_with_entry : unit -> combo_box_text_t

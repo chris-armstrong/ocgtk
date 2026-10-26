@@ -64,7 +64,7 @@ external set_page_type :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Gtk_enums.assistantpagetype ->
+  Ocgtk_enums.assistantpagetype ->
   unit = "ml_gtk_assistant_set_page_type"
 (** Sets the page type for [page].
 
@@ -146,8 +146,7 @@ external insert_page :
   int = "ml_gtk_assistant_insert_page"
 (** Inserts a page in the [assistant] at a given position. *)
 
-external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
-  = "ml_gtk_assistant_get_pages"
+external get_pages : t -> Ocgio_raw.List_model.t = "ml_gtk_assistant_get_pages"
 (** Gets a list model of the assistant pages. *)
 
 external get_page_type :
@@ -155,7 +154,7 @@ external get_page_type :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Gtk_enums.assistantpagetype = "ml_gtk_assistant_get_page_type"
+  Ocgtk_enums.assistantpagetype = "ml_gtk_assistant_get_page_type"
 (** Gets the page type of [page]. *)
 
 external get_page_title :

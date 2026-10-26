@@ -22,7 +22,7 @@ external new_ : unit -> t = "ml_gtk_print_dialog_new"
 (* Methods *)
 
 external setup_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Print_setup.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Print_setup.t, GError.t) result
   = "ml_gtk_print_dialog_setup_finish"
 (** Finishes the [Gtk.PrintDialog.setup] call.
 
@@ -53,9 +53,7 @@ external set_accept_label : t -> string -> unit
     shown for [Gtk.PrintDialog.setup]. *)
 
 external print_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.Output_stream.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.Output_stream.t, GError.t) result
   = "ml_gtk_print_dialog_print_finish"
 (** Finishes the [Gtk.PrintDialog.print] call and returns the results.
 
@@ -72,7 +70,7 @@ external print_finish :
     user cancels the dialog. *)
 
 external print_file_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_print_dialog_print_file_finish"
 (** Finishes the [Gtk.PrintDialog.print_file] call and returns the results.
 

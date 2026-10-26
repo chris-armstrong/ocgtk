@@ -22,8 +22,7 @@ external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 
 (* Methods *)
 
-external trigger :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool -> Ocgtk_gdk.Gdk.keymatch
+external trigger : t -> Ocgdk_raw.Event.t -> bool -> Ocgdk_enums.keymatch
   = "ml_gtk_shortcut_trigger_trigger"
 (** Checks if the given [event] triggers [self]. *)
 
@@ -33,7 +32,7 @@ external to_string : t -> string = "ml_gtk_shortcut_trigger_to_string"
     This is a small wrapper around [Gtk.ShortcutTrigger.print] to help when
     debugging. *)
 
-external to_label : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> string
+external to_label : t -> Ocgdk_raw.Display.t -> string
   = "ml_gtk_shortcut_trigger_to_label"
 (** Gets textual representation for the given trigger.
 

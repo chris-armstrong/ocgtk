@@ -24,7 +24,7 @@ external set_texture : t -> Texture.t -> unit
   = "ml_gdk_texture_downloader_set_texture"
 (** Changes the texture the downloader will download. *)
 
-external set_format : t -> Gdk_enums.memoryformat -> unit
+external set_format : t -> Ocgdk_enums.memoryformat -> unit
   = "ml_gdk_texture_downloader_set_format"
 (** Sets the format the downloader will download.
 
@@ -41,7 +41,7 @@ external set_color_state :
 external get_texture : t -> Texture.t = "ml_gdk_texture_downloader_get_texture"
 (** Gets the texture that the downloader will download. *)
 
-external get_format : t -> Gdk_enums.memoryformat
+external get_format : t -> Ocgdk_enums.memoryformat
   = "ml_gdk_texture_downloader_get_format"
 (** Gets the format that the data will be downloaded in. *)
 

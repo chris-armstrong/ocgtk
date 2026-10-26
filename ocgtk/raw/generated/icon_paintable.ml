@@ -10,7 +10,7 @@ type t = [ `icon_paintable | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_icon_paintable_get_type"
 
-external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t -> int -> int -> t
+external new_for_file : Ocgio_raw.File.t -> int -> int -> t
   = "ml_gtk_icon_paintable_new_for_file"
 (** Create a new IconPaintable *)
 
@@ -33,7 +33,7 @@ external get_icon_name : t -> string option
    If the icon was created without an icon theme, this function\n\
    returns [NULL]."]
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_icon_paintable_get_file"
 (** Gets the [GFile] that was used to load the icon.
 

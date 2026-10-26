@@ -23,28 +23,26 @@ external new_ : unit -> t = "ml_gtk_snapshot_new"
 
 (* Methods *)
 
-external translate_3d : t -> Ocgtk_graphene.Graphene.Wrappers.Point3_d.t -> unit
+external translate_3d : t -> Ocgraphene_raw.Point3_d.t -> unit
   = "ml_gtk_snapshot_translate_3d"
 (** Translates [snapshot]'s coordinate system by [point]. *)
 
-external translate : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> unit
+external translate : t -> Ocgraphene_raw.Point.t -> unit
   = "ml_gtk_snapshot_translate"
 (** Translates [snapshot]'s coordinate system by [point] in 2-dimensional space.
 *)
 
-external transform_matrix :
-  t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t -> unit
+external transform_matrix : t -> Ocgraphene_raw.Matrix.t -> unit
   = "ml_gtk_snapshot_transform_matrix"
 (** Transforms [snapshot]'s coordinate system with the given [matrix]. *)
 
-external transform : t -> Ocgtk_gsk.Gsk.Wrappers.Transform.t option -> unit
+external transform : t -> Ocgsk_raw.Transform.t option -> unit
   = "ml_gtk_snapshot_transform"
 (** Transforms [snapshot]'s coordinate system with the given [transform]. *)
 
 external to_paintable :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Size.t option ->
-  Ocgtk_gdk.Gdk.Wrappers.Paintable.t option = "ml_gtk_snapshot_to_paintable"
+  t -> Ocgraphene_raw.Size.t option -> Ocgdk_raw.Paintable.t option
+  = "ml_gtk_snapshot_to_paintable"
 (** Returns a paintable encapsulating the render node that was constructed by
     [snapshot].
 
@@ -52,7 +50,7 @@ external to_paintable :
     [snapshot]. The only function that should be called after this is
     [GObject.Object.unref]. *)
 
-external to_node : t -> Ocgtk_gsk.Gsk.Wrappers.Render_node.t option
+external to_node : t -> Ocgsk_raw.Render_node.t option
   = "ml_gtk_snapshot_to_node"
 (** Returns the render node that was constructed by [snapshot].
 
@@ -87,8 +85,7 @@ external save : t -> unit = "ml_gtk_snapshot_save"
     It is necessary to clear all saved states with corresponding calls to
     [gtk_snapshot_restore()]. *)
 
-external rotate_3d :
-  t -> float -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> unit
+external rotate_3d : t -> float -> Ocgraphene_raw.Vec3.t -> unit
   = "ml_gtk_snapshot_rotate_3d"
 (** Rotates [snapshot]'s coordinate system by [angle] degrees around [axis].
 
@@ -107,12 +104,8 @@ external restore : t -> unit = "ml_gtk_snapshot_restore"
     [Snapshot.save] and removes that state from the stack of saved states. *)
 
 external render_layout :
-  t ->
-  Style_context.t ->
-  float ->
-  float ->
-  Ocgtk_pango.Pango.Wrappers.Layout.t ->
-  unit = "ml_gtk_snapshot_render_layout"
+  t -> Style_context.t -> float -> float -> Ocpango_raw.Layout.t -> unit
+  = "ml_gtk_snapshot_render_layout"
 (** Creates a render node for rendering [layout] according to the style
     information in [context], and appends it to the current node of [snapshot],
     without changing the current node. *)
@@ -122,9 +115,9 @@ external render_insertion_cursor :
   Style_context.t ->
   float ->
   float ->
-  Ocgtk_pango.Pango.Wrappers.Layout.t ->
+  Ocpango_raw.Layout.t ->
   int ->
-  Ocgtk_pango.Pango.direction ->
+  Ocpango_enums.direction ->
   unit
   = "ml_gtk_snapshot_render_insertion_cursor_bytecode"
     "ml_gtk_snapshot_render_insertion_cursor_native"
@@ -153,8 +146,7 @@ external render_background :
     appends it to the current node of [snapshot], without changing the current
     node. *)
 
-external push_stroke :
-  t -> Ocgtk_gsk.Gsk.Wrappers.Path.t -> Ocgtk_gsk.Gsk.Wrappers.Stroke.t -> unit
+external push_stroke : t -> Ocgsk_raw.Path.t -> Ocgsk_raw.Stroke.t -> unit
   = "ml_gtk_snapshot_push_stroke"
 (** Strokes the given [path] with the attributes given by [stroke] and an image.
 
@@ -167,24 +159,21 @@ external push_stroke :
     If you want to stroke the path with a color, [Gtk.Snapshot.append_stroke]
     may be more convenient. *)
 
-external push_shadow :
-  t -> Ocgtk_gsk.Gsk.Wrappers.Shadow.t array -> Gsize.t -> unit
+external push_shadow : t -> Ocgsk_raw.Shadow.t array -> Gsize.t -> unit
   = "ml_gtk_snapshot_push_shadow"
 (** Applies a shadow to an image.
 
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
-external push_rounded_clip : t -> Ocgtk_gsk.Gsk.Wrappers.Rounded_rect.t -> unit
+external push_rounded_clip : t -> Ocgsk_raw.Rounded_rect.t -> unit
   = "ml_gtk_snapshot_push_rounded_clip"
 (** Clips an image to a rounded rectangle.
 
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
 external push_repeat :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t option ->
-  unit = "ml_gtk_snapshot_push_repeat"
+  t -> Ocgraphene_raw.Rect.t -> Ocgraphene_raw.Rect.t option -> unit
+  = "ml_gtk_snapshot_push_repeat"
 (** Creates a node that repeats the child node.
 
     The child is recorded until the next call to [Gtk.Snapshot.pop]. *)
@@ -194,7 +183,7 @@ external push_opacity : t -> float -> unit = "ml_gtk_snapshot_push_opacity"
 
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
-external push_mask : t -> Ocgtk_gsk.Gsk.maskmode -> unit
+external push_mask : t -> Ocgsk_enums.maskmode -> unit
   = "ml_gtk_snapshot_push_mask"
 (** Until the first call to [Gtk.Snapshot.pop], the mask image for the mask
     operation will be recorded.
@@ -205,11 +194,8 @@ external push_mask : t -> Ocgtk_gsk.Gsk.maskmode -> unit
     Calling this function requires 2 subsequent calls to gtk_snapshot_pop(). *)
 
 external push_gl_shader :
-  t ->
-  Ocgtk_gsk.Gsk.Wrappers.Gl_shader.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Glib_bytes.t ->
-  unit = "ml_gtk_snapshot_push_gl_shader"
+  t -> Ocgsk_raw.Gl_shader.t -> Ocgraphene_raw.Rect.t -> Glib_bytes.t -> unit
+  = "ml_gtk_snapshot_push_gl_shader"
 (** Push a [Gsk.GLShaderNode].
 
     The node uses the given [Gsk.GLShader] and uniform values Additionally this
@@ -243,8 +229,7 @@ external push_gl_shader :
 
     For details on how to write shaders, see [Gsk.GLShader]. *)
 
-external push_fill :
-  t -> Ocgtk_gsk.Gsk.Wrappers.Path.t -> Ocgtk_gsk.Gsk.fillrule -> unit
+external push_fill : t -> Ocgsk_raw.Path.t -> Ocgsk_enums.fillrule -> unit
   = "ml_gtk_snapshot_push_fill"
 (** Fills the area given by [path] and [fill_rule] with an image and discards
     everything outside of it.
@@ -269,10 +254,10 @@ external push_cross_fade : t -> float -> unit
 
 external push_component_transfer :
   t ->
-  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
+  Ocgsk_raw.Component_transfer.t ->
+  Ocgsk_raw.Component_transfer.t ->
+  Ocgsk_raw.Component_transfer.t ->
+  Ocgsk_raw.Component_transfer.t ->
   unit = "ml_gtk_snapshot_push_component_transfer"
 (** Modifies the colors of an image by applying a transfer function for each
     component.
@@ -282,10 +267,8 @@ external push_component_transfer :
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
 external push_color_matrix :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Matrix.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Vec4.t ->
-  unit = "ml_gtk_snapshot_push_color_matrix"
+  t -> Ocgraphene_raw.Matrix.t -> Ocgraphene_raw.Vec4.t -> unit
+  = "ml_gtk_snapshot_push_color_matrix"
 (** Modifies the colors of an image by applying an affine transformation in RGB
     space.
 
@@ -298,7 +281,7 @@ external push_color_matrix :
 
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
-external push_clip : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit
+external push_clip : t -> Ocgraphene_raw.Rect.t -> unit
   = "ml_gtk_snapshot_push_clip"
 (** Clips an image to a rectangle.
 
@@ -309,7 +292,7 @@ external push_blur : t -> float -> unit = "ml_gtk_snapshot_push_blur"
 
     The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
 
-external push_blend : t -> Ocgtk_gsk.Gsk.blendmode -> unit
+external push_blend : t -> Ocgsk_enums.blendmode -> unit
   = "ml_gtk_snapshot_push_blend"
 (** Blends together two images with the given blend mode.
 
@@ -338,10 +321,8 @@ external gl_shader_pop_texture : t -> unit
     needed for the shader in [Gtk.Snapshot.push_gl_shader]. *)
 
 external append_texture :
-  t ->
-  Ocgtk_gdk.Gdk.Wrappers.Texture.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  unit = "ml_gtk_snapshot_append_texture"
+  t -> Ocgdk_raw.Texture.t -> Ocgraphene_raw.Rect.t -> unit
+  = "ml_gtk_snapshot_append_texture"
 (** Creates a new render node drawing the [texture] into the given [bounds] and
     appends it to the current render node of [snapshot].
 
@@ -350,11 +331,8 @@ external append_texture :
     such as nearest-neighbour. *)
 
 external append_stroke :
-  t ->
-  Ocgtk_gsk.Gsk.Wrappers.Path.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Stroke.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  unit = "ml_gtk_snapshot_append_stroke"
+  t -> Ocgsk_raw.Path.t -> Ocgsk_raw.Stroke.t -> Ocgdk_raw.Rgb_a.t -> unit
+  = "ml_gtk_snapshot_append_stroke"
 (** A convenience method to stroke a path with a color.
 
     See [Gtk.Snapshot.push_stroke] if you need to stroke a path with more
@@ -362,9 +340,9 @@ external append_stroke :
 
 external append_scaled_texture :
   t ->
-  Ocgtk_gdk.Gdk.Wrappers.Texture.t ->
-  Ocgtk_gsk.Gsk.scalingfilter ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
+  Ocgdk_raw.Texture.t ->
+  Ocgsk_enums.scalingfilter ->
+  Ocgraphene_raw.Rect.t ->
   unit = "ml_gtk_snapshot_append_scaled_texture"
 (** Creates a new render node drawing the [texture] into the given [bounds] and
     appends it to the current render node of [snapshot].
@@ -374,13 +352,13 @@ external append_scaled_texture :
 
 external append_repeating_radial_gradient :
   t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
   float ->
   float ->
   float ->
   float ->
-  Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array ->
+  Ocgsk_raw.Color_stop.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_snapshot_append_repeating_radial_gradient_bytecode"
@@ -390,10 +368,10 @@ external append_repeating_radial_gradient :
 
 external append_repeating_linear_gradient :
   t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
+  Ocgraphene_raw.Point.t ->
+  Ocgsk_raw.Color_stop.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_snapshot_append_repeating_linear_gradient_bytecode"
@@ -403,13 +381,13 @@ external append_repeating_linear_gradient :
 
 external append_radial_gradient :
   t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
   float ->
   float ->
   float ->
   float ->
-  Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array ->
+  Ocgsk_raw.Color_stop.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_snapshot_append_radial_gradient_bytecode"
@@ -418,8 +396,8 @@ external append_radial_gradient :
 
 external append_outset_shadow :
   t ->
-  Ocgtk_gsk.Gsk.Wrappers.Rounded_rect.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
+  Ocgsk_raw.Rounded_rect.t ->
+  Ocgdk_raw.Rgb_a.t ->
   float ->
   float ->
   float ->
@@ -429,7 +407,7 @@ external append_outset_shadow :
     "ml_gtk_snapshot_append_outset_shadow_native"
 (** Appends an outset shadow node around the box given by [outline]. *)
 
-external append_node : t -> Ocgtk_gsk.Gsk.Wrappers.Render_node.t -> unit
+external append_node : t -> Ocgsk_raw.Render_node.t -> unit
   = "ml_gtk_snapshot_append_node"
 (** Appends [node] to the current render node of [snapshot], without changing
     the current node.
@@ -439,21 +417,18 @@ external append_node : t -> Ocgtk_gsk.Gsk.Wrappers.Render_node.t -> unit
 
 external append_linear_gradient :
   t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-  Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
+  Ocgraphene_raw.Point.t ->
+  Ocgsk_raw.Color_stop.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_snapshot_append_linear_gradient_bytecode"
     "ml_gtk_snapshot_append_linear_gradient_native"
 (** Appends a linear gradient node with the given stops to [snapshot]. *)
 
-external append_layout :
-  t ->
-  Ocgtk_pango.Pango.Wrappers.Layout.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  unit = "ml_gtk_snapshot_append_layout"
+external append_layout : t -> Ocpango_raw.Layout.t -> Ocgdk_raw.Rgb_a.t -> unit
+  = "ml_gtk_snapshot_append_layout"
 (** Creates render nodes for rendering [layout] in the given foregound [color]
     and appends them to the current node of [snapshot] without changing the
     current node. The current theme's foreground color for a widget can be
@@ -464,8 +439,8 @@ external append_layout :
 
 external append_inset_shadow :
   t ->
-  Ocgtk_gsk.Gsk.Wrappers.Rounded_rect.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
+  Ocgsk_raw.Rounded_rect.t ->
+  Ocgdk_raw.Rgb_a.t ->
   float ->
   float ->
   float ->
@@ -476,11 +451,8 @@ external append_inset_shadow :
 (** Appends an inset shadow into the box given by [outline]. *)
 
 external append_fill :
-  t ->
-  Ocgtk_gsk.Gsk.Wrappers.Path.t ->
-  Ocgtk_gsk.Gsk.fillrule ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  unit = "ml_gtk_snapshot_append_fill"
+  t -> Ocgsk_raw.Path.t -> Ocgsk_enums.fillrule -> Ocgdk_raw.Rgb_a.t -> unit
+  = "ml_gtk_snapshot_append_fill"
 (** A convenience method to fill a path with a color.
 
     See [Gtk.Snapshot.push_fill] if you need to fill a path with more complex
@@ -488,38 +460,33 @@ external append_fill :
 
 external append_conic_gradient :
   t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
   float ->
-  Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array ->
+  Ocgsk_raw.Color_stop.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_snapshot_append_conic_gradient_bytecode"
     "ml_gtk_snapshot_append_conic_gradient_native"
 (** Appends a conic gradient node with the given stops to [snapshot]. *)
 
-external append_color :
-  t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  unit = "ml_gtk_snapshot_append_color"
+external append_color : t -> Ocgdk_raw.Rgb_a.t -> Ocgraphene_raw.Rect.t -> unit
+  = "ml_gtk_snapshot_append_color"
 (** Creates a new render node drawing the [color] into the given [bounds] and
     appends it to the current render node of [snapshot].
 
     You should try to avoid calling this function if [color] is transparent. *)
 
-external append_cairo :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_cairo.Cairo.Wrappers.Context.t = "ml_gtk_snapshot_append_cairo"
+external append_cairo : t -> Ocgraphene_raw.Rect.t -> Occairo_raw.Context.t
+  = "ml_gtk_snapshot_append_cairo"
 (** Creates a new [Gsk.CairoNode] and appends it to the current render node of
     [snapshot], without changing the current node. *)
 
 external append_border :
   t ->
-  Ocgtk_gsk.Gsk.Wrappers.Rounded_rect.t ->
+  Ocgsk_raw.Rounded_rect.t ->
   float array ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array ->
+  Ocgdk_raw.Rgb_a.t array ->
   unit = "ml_gtk_snapshot_append_border"
 (** Appends a stroked border rectangle inside the given [outline].
 

@@ -75,8 +75,7 @@ external get_buttons : t -> string array option
   = "ml_gtk_alert_dialog_get_buttons"
 (** Returns the button labels for the alert. *)
 
-external choose_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (int, GError.t) result
+external choose_finish : t -> Ocgio_raw.Async_result.t -> (int, GError.t) result
   = "ml_gtk_alert_dialog_choose_finish"
 (** Finishes the [Gtk.AlertDialog.choose] call. *)
 

@@ -20,7 +20,7 @@ external sort_column_changed : t -> unit
   = "ml_gtk_tree_sortable_sort_column_changed"
 (** Emits a [GtkTreeSortable::sort-column-changed] signal on [sortable]. *)
 
-external set_sort_column_id : t -> int -> Gtk_enums.sorttype -> unit
+external set_sort_column_id : t -> int -> Ocgtk_enums.sorttype -> unit
   = "ml_gtk_tree_sortable_set_sort_column_id"
 (** Sets the current sort column to be [sort_column_id]. The [sortable] will
     resort itself to reflect this change, after emitting a
@@ -38,7 +38,7 @@ external has_default_sort_func : t -> bool
     primarily by GtkTreeViewColumns in order to determine if a model can go back
     to the default state, or not. *)
 
-external get_sort_column_id : t -> bool * int * Gtk_enums.sorttype
+external get_sort_column_id : t -> bool * int * Ocgtk_enums.sorttype
   = "ml_gtk_tree_sortable_get_sort_column_id"
 (** Fills in [sort_column_id] and [order] with the current sort column and the
     order. It returns [TRUE] unless the [sort_column_id] is

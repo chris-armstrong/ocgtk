@@ -41,7 +41,7 @@ type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_box_get_type"
 
-external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"
+external new_ : Ocgtk_enums.orientation -> int -> t = "ml_gtk_box_new"
 (** Create a new Box *)
 
 (* Methods *)
@@ -52,7 +52,7 @@ external set_spacing : t -> int -> unit = "ml_gtk_box_set_spacing"
 external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
 (** Sets whether or not all children are given equal space in the box. *)
 
-external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
+external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_box_set_baseline_position"
 (** Sets the baseline position of a box.
 
@@ -126,7 +126,7 @@ external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
 
     In a homogeneous box all children are the same size. *)
 
-external get_baseline_position : t -> Gtk_enums.baselineposition
+external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_box_get_baseline_position"
 (** Gets the value set by [Gtk.Box.set_baseline_position]. *)
 

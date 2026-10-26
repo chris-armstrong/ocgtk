@@ -45,6 +45,6 @@ external get_resolution : t -> float = "ml_pango_cairo_font_map_get_resolution"
 
     See [PangoCairo.FontMap.set_resolution]. *)
 
-external get_font_type : t -> Ocgtk_cairo.Cairo.fonttype
+external get_font_type : t -> Occairo_enums.fonttype
   = "ml_pango_cairo_font_map_get_font_type"
 (** Gets the type of Cairo font backend that [fontmap] uses. *)

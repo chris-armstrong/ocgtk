@@ -126,7 +126,7 @@ external set_child :
   unit = "ml_gtk_combo_box_set_child"
 (** Sets the child widget of [combo_box]. *)
 
-external set_button_sensitivity : t -> Gtk_enums.sensitivitytype -> unit
+external set_button_sensitivity : t -> Ocgtk_enums.sensitivitytype -> unit
   = "ml_gtk_combo_box_set_button_sensitivity"
 (** Sets whether the dropdown button of the combo box should update its
     sensitivity depending on the model contents. *)
@@ -151,7 +151,7 @@ external set_active_id : t -> string option -> bool
 external set_active : t -> int -> unit = "ml_gtk_combo_box_set_active"
 (** Sets the active item of [combo_box] to be the item at [index]. *)
 
-external popup_for_device : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t -> unit
+external popup_for_device : t -> Ocgdk_raw.Device.t -> unit
   = "ml_gtk_combo_box_popup_for_device"
 (** Pops up the menu of [combo_box].
 
@@ -201,7 +201,7 @@ external get_child :
   option = "ml_gtk_combo_box_get_child"
 (** Gets the child widget of [combo_box]. *)
 
-external get_button_sensitivity : t -> Gtk_enums.sensitivitytype
+external get_button_sensitivity : t -> Ocgtk_enums.sensitivitytype
   = "ml_gtk_combo_box_get_button_sensitivity"
 (** Returns whether the combo box sets the dropdown button sensitive or not when
     there are no items in the model. *)
@@ -261,7 +261,7 @@ val on_format_entry_text :
 val on_move_active :
   ?after:bool ->
   t ->
-  callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+  callback:(scroll_type:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_popdown :

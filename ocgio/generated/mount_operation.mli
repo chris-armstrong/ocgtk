@@ -8,14 +8,14 @@ class type mount_operation_t = object
       (message:string ->
       default_user:string ->
       default_domain:string ->
-      flags:Gio_enums.askpasswordflags ->
+      flags:Enums.askpasswordflags ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_reply :
     ?after:bool ->
-    callback:(result:Gio_enums.mountoperationresult -> unit) ->
+    callback:(result:Enums.mountoperationresult -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -31,22 +31,22 @@ class type mount_operation_t = object
   method get_is_tcrypt_hidden_volume : unit -> bool
   method get_is_tcrypt_system_volume : unit -> bool
   method get_password : unit -> string option
-  method get_password_save : unit -> Gio_enums.passwordsave
+  method get_password_save : unit -> Enums.passwordsave
   method get_pim : unit -> int
   method get_username : unit -> string option
-  method reply : Gio_enums.mountoperationresult -> unit
+  method reply : Enums.mountoperationresult -> unit
   method set_anonymous : bool -> unit
   method set_choice : int -> unit
   method set_domain : string option -> unit
   method set_is_tcrypt_hidden_volume : bool -> unit
   method set_is_tcrypt_system_volume : bool -> unit
   method set_password : string option -> unit
-  method set_password_save : Gio_enums.passwordsave -> unit
+  method set_password_save : Enums.passwordsave -> unit
   method set_pim : int -> unit
   method set_username : string option -> unit
-  method as_mount_operation : Mount_operation.t
+  method as_mount_operation : Raw.Mount_operation.t
 end
 
-class mount_operation : Mount_operation.t -> mount_operation_t
+class mount_operation : Raw.Mount_operation.t -> mount_operation_t
 
 val new_ : unit -> mount_operation_t

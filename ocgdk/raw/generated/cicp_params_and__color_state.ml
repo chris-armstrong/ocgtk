@@ -15,7 +15,7 @@ module rec Cicp_params : sig
     = "ml_gdk_cicp_params_set_transfer_function"
   (** Sets the transfer-function property of [self]. *)
 
-  external set_range : t -> Gdk_enums.cicprange -> unit
+  external set_range : t -> Ocgdk_enums.cicprange -> unit
     = "ml_gdk_cicp_params_set_range"
   (** Sets the range property of [self] *)
 
@@ -32,7 +32,8 @@ module rec Cicp_params : sig
     = "ml_gdk_cicp_params_get_transfer_function"
   (** Gets the transfer-function property of [self]. *)
 
-  external get_range : t -> Gdk_enums.cicprange = "ml_gdk_cicp_params_get_range"
+  external get_range : t -> Ocgdk_enums.cicprange
+    = "ml_gdk_cicp_params_get_range"
   (** Gets the range property of [self]. *)
 
   external get_matrix_coefficients : t -> int
@@ -66,7 +67,7 @@ end = struct
     = "ml_gdk_cicp_params_set_transfer_function"
   (** Sets the transfer-function property of [self]. *)
 
-  external set_range : t -> Gdk_enums.cicprange -> unit
+  external set_range : t -> Ocgdk_enums.cicprange -> unit
     = "ml_gdk_cicp_params_set_range"
   (** Sets the range property of [self] *)
 
@@ -83,7 +84,8 @@ end = struct
     = "ml_gdk_cicp_params_get_transfer_function"
   (** Gets the transfer-function property of [self]. *)
 
-  external get_range : t -> Gdk_enums.cicprange = "ml_gdk_cicp_params_get_range"
+  external get_range : t -> Ocgdk_enums.cicprange
+    = "ml_gdk_cicp_params_get_range"
   (** Gets the range property of [self]. *)
 
   external get_matrix_coefficients : t -> int

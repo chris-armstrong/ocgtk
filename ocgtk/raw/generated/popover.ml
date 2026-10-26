@@ -87,7 +87,7 @@ external new_ : unit -> t = "ml_gtk_popover_new"
 
 (* Methods *)
 
-external set_position : t -> Gtk_enums.positiontype -> unit
+external set_position : t -> Ocgtk_enums.positiontype -> unit
   = "ml_gtk_popover_set_position"
 (** Sets the preferred position for [popover] to appear.
 
@@ -97,8 +97,7 @@ external set_position : t -> Gtk_enums.positiontype -> unit
     (eg. if close to the window edges), the [GtkPopover] may choose to appear on
     the opposite side. *)
 
-external set_pointing_to :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t option -> unit
+external set_pointing_to : t -> Ocgdk_raw.Rectangle.t option -> unit
   = "ml_gtk_popover_set_pointing_to"
 (** Sets the rectangle that [popover] points to.
 
@@ -175,11 +174,11 @@ external popdown : t -> unit = "ml_gtk_popover_popdown"
     This may have the side-effect of closing a parent popover as well. See
     [Gtk.Popover:cascade-popdown]. *)
 
-external get_position : t -> Gtk_enums.positiontype
+external get_position : t -> Ocgtk_enums.positiontype
   = "ml_gtk_popover_get_position"
 (** Returns the preferred position of [popover]. *)
 
-external get_pointing_to : t -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+external get_pointing_to : t -> bool * Ocgdk_raw.Rectangle.t
   = "ml_gtk_popover_get_pointing_to"
 (** Gets the rectangle that the popover points to.
 

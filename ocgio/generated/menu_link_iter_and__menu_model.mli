@@ -2,7 +2,7 @@ class type menu_link_iter_t = object
   method get_name : unit -> string
   method get_value : unit -> menu_model_t
   method next : unit -> bool
-  method as_menu_link_iter : Menu_link_iter_and__menu_model.Menu_link_iter.t
+  method as_menu_link_iter : Raw.Menu_link_iter.t
 end
 
 and menu_model_t = object
@@ -21,14 +21,12 @@ and menu_model_t = object
   method items_changed : int -> int -> int -> unit
 
   method iterate_item_attributes :
-    int -> GMenu_attribute_iter.menu_attribute_iter_t
+    int -> Menu_attribute_iter.menu_attribute_iter_t
 
   method iterate_item_links : int -> menu_link_iter_t
-  method as_menu_model : Menu_link_iter_and__menu_model.Menu_model.t
+  method as_menu_model : Raw.Menu_model.t
 end
 
-class menu_link_iter :
-  Menu_link_iter_and__menu_model.Menu_link_iter.t ->
-  menu_link_iter_t
+class menu_link_iter : Raw.Menu_link_iter.t -> menu_link_iter_t
 
-and menu_model : Menu_link_iter_and__menu_model.Menu_model.t -> menu_model_t
+and menu_model : Raw.Menu_model.t -> menu_model_t

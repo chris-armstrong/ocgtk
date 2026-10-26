@@ -1,0 +1,8 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgdkpixbuf)
+ (public_name ocgdkpixbuf)
+ (synopsis "OCaml bindings for GdkPixbuf")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries ocglib ocgdkpixbuf.raw ocgdkpixbuf.enums ocgio))

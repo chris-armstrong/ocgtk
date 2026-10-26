@@ -1,5 +1,5 @@
 class type gesture_drag_t = object
-  inherit GGesture_single.gesture_single_t
+  inherit Gesture_single.gesture_single_t
 
   method on_drag_begin :
     ?after:bool ->
@@ -19,24 +19,24 @@ class type gesture_drag_t = object
     unit ->
     Gobject.Signal.handler_id
 
-  method as_gesture_drag : Gesture_drag.t
+  method as_gesture_drag : Raw.Gesture_drag.t
 end
 
 (* High-level class for GestureDrag *)
-class gesture_drag (obj : Gesture_drag.t) : gesture_drag_t =
+class gesture_drag (obj : Raw.Gesture_drag.t) : gesture_drag_t =
   object (self)
-    inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
+    inherit Gesture_single.gesture_single (obj :> Raw.Gesture_single.t)
 
     method on_drag_begin ?(after = false) ~callback () =
-      Gesture_drag.on_drag_begin ~after self#as_gesture_drag ~callback
+      Raw.Gesture_drag.on_drag_begin ~after self#as_gesture_drag ~callback
 
     method on_drag_end ?(after = false) ~callback () =
-      Gesture_drag.on_drag_end ~after self#as_gesture_drag ~callback
+      Raw.Gesture_drag.on_drag_end ~after self#as_gesture_drag ~callback
 
     method on_drag_update ?(after = false) ~callback () =
-      Gesture_drag.on_drag_update ~after self#as_gesture_drag ~callback
+      Raw.Gesture_drag.on_drag_update ~after self#as_gesture_drag ~callback
 
     method as_gesture_drag = obj
   end
 
-let new_ () : gesture_drag_t = new gesture_drag (Gesture_drag.new_ ())
+let new_ () : gesture_drag_t = new gesture_drag (Raw.Gesture_drag.new_ ())

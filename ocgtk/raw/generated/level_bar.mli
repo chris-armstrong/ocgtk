@@ -95,7 +95,7 @@ external new_for_interval : float -> float -> t
 external set_value : t -> float -> unit = "ml_gtk_level_bar_set_value"
 (** Sets the value of the [GtkLevelBar]. *)
 
-external set_mode : t -> Gtk_enums.levelbarmode -> unit
+external set_mode : t -> Ocgtk_enums.levelbarmode -> unit
   = "ml_gtk_level_bar_set_mode"
 (** Sets the [mode] of the [GtkLevelBar]. *)
 
@@ -128,7 +128,7 @@ external get_offset_value : t -> string option -> bool * float
   = "ml_gtk_level_bar_get_offset_value"
 (** Fetches the value specified for the offset marker [name] in [self]. *)
 
-external get_mode : t -> Gtk_enums.levelbarmode = "ml_gtk_level_bar_get_mode"
+external get_mode : t -> Ocgtk_enums.levelbarmode = "ml_gtk_level_bar_get_mode"
 (** Returns the [mode] of the [GtkLevelBar]. *)
 
 external get_min_value : t -> float = "ml_gtk_level_bar_get_min_value"

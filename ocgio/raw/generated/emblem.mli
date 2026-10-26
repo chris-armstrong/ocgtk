@@ -15,13 +15,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_emblem_get_type"
 external new_ : Icon.t -> t = "ml_g_emblem_new"
 (** Create a new Emblem *)
 
-external new_with_origin : Icon.t -> Gio_enums.emblemorigin -> t
+external new_with_origin : Icon.t -> Ocgio_enums.emblemorigin -> t
   = "ml_g_emblem_new_with_origin"
 (** Create a new Emblem *)
 
 (* Methods *)
 
-external get_origin : t -> Gio_enums.emblemorigin = "ml_g_emblem_get_origin"
+external get_origin : t -> Ocgio_enums.emblemorigin = "ml_g_emblem_get_origin"
 (** Gets the origin of the emblem. *)
 
 external get_icon : t -> Icon.t = "ml_g_emblem_get_icon"

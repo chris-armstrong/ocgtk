@@ -18,7 +18,7 @@ external new_ : Input_stream.t -> t = "ml_g_data_input_stream_new"
 (** Create a new DataInputStream *)
 
 (* Methods *)
-external set_newline_type : t -> Gio_enums.datastreamnewlinetype -> unit
+external set_newline_type : t -> Ocgio_enums.datastreamnewlinetype -> unit
   = "ml_g_data_input_stream_set_newline_type"
 [@@ocaml.doc
   "Sets the newline type for the [stream].\n\n\
@@ -27,7 +27,7 @@ external set_newline_type : t -> Gio_enums.datastreamnewlinetype -> unit
    \"CR\" or\n\
    \"CR LF\", and this might block if there is no more data available."]
 
-external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit
+external set_byte_order : t -> Ocgio_enums.datastreambyteorder -> unit
   = "ml_g_data_input_stream_set_byte_order"
 (** This function sets the byte order for the given [stream]. All subsequent
     reads from the [stream] will be read in the given [order]. *)
@@ -159,11 +159,11 @@ external read_int16 : t -> Cancellable.t option -> (Int16.t, GError.t) result
     g_data_input_stream_get_byte_order() and
     g_data_input_stream_set_byte_order(). *)
 
-external get_newline_type : t -> Gio_enums.datastreamnewlinetype
+external get_newline_type : t -> Ocgio_enums.datastreamnewlinetype
   = "ml_g_data_input_stream_get_newline_type"
 (** Gets the current newline type for the [stream]. *)
 
-external get_byte_order : t -> Gio_enums.datastreambyteorder
+external get_byte_order : t -> Ocgio_enums.datastreambyteorder
   = "ml_g_data_input_stream_get_byte_order"
 (** Gets the byte order for the data input stream. *)
 

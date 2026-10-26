@@ -13,7 +13,7 @@ module rec Column_view : sig
   (* Methods *)
 
   external sort_by_column :
-    t -> Column_view_column.t option -> Gtk_enums.sorttype -> unit
+    t -> Column_view_column.t option -> Ocgtk_enums.sorttype -> unit
     = "ml_gtk_column_view_sort_by_column"
   (** Sets the sorting of the view.
 
@@ -28,7 +28,7 @@ module rec Column_view : sig
 
       If [column] is unset, the view will be unsorted. *)
 
-  external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
+  external set_tab_behavior : t -> Ocgtk_enums.listtabbehavior -> unit
     = "ml_gtk_column_view_set_tab_behavior"
   (** Sets the <kbd>Tab</kbd> key behavior.
 
@@ -87,7 +87,7 @@ module rec Column_view : sig
     t ->
     int ->
     Column_view_column.t option ->
-    Gtk_enums.listscrollflags ->
+    Ocgtk_enums.listscrollflags ->
     Scroll_info.t option ->
     unit = "ml_gtk_column_view_scroll_to"
   (** Scroll to the row at the given position - or cell if a column is given -
@@ -106,7 +106,7 @@ module rec Column_view : sig
 
       If [column] is already a column of [self], it will be repositioned. *)
 
-  external get_tab_behavior : t -> Gtk_enums.listtabbehavior
+  external get_tab_behavior : t -> Ocgtk_enums.listtabbehavior
     = "ml_gtk_column_view_get_tab_behavior"
   (** Gets the behavior set for the <kbd>Tab</kbd> key. *)
 
@@ -163,7 +163,7 @@ module rec Column_view : sig
     = "ml_gtk_column_view_get_enable_rubberband"
   (** Returns whether rows can be selected by dragging with the mouse. *)
 
-  external get_columns : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external get_columns : t -> Ocgio_raw.List_model.t
     = "ml_gtk_column_view_get_columns"
   (** Gets the list of columns in this column view.
 
@@ -232,8 +232,7 @@ and Column_view_column : sig
 
       It is up to callers to ensure uniqueness of IDs. *)
 
-  external set_header_menu :
-    t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+  external set_header_menu : t -> Ocgio_raw.Menu_model.t option -> unit
     = "ml_gtk_column_view_column_set_header_menu"
   (** Sets the menu model that is used to create the context menu for the column
       header. *)
@@ -276,7 +275,7 @@ and Column_view_column : sig
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
   (** Returns the ID set with [Gtk.ColumnViewColumn.set_id]. *)
 
-  external get_header_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+  external get_header_menu : t -> Ocgio_raw.Menu_model.t option
     = "ml_gtk_column_view_column_get_header_menu"
   (** Gets the menu model that is used to create the context menu for the column
       header. *)

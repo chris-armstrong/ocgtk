@@ -5,7 +5,7 @@
  (targets cflag-gdk.sexp clink-gdk.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -25,12 +25,18 @@
    --libs-out
    clink-gdk.sexp)))
 
+(rule
+ (copy generated/gdk_decls.h gdk_decls.h))
+
+(rule
+ (copy core/gdk_core.h gdk_core.h))
+
 (library
- (name ocgtk_gdk_generated_stubs)
- (public_name ocgtk.gdk.generated_stubs)
+ (name ocgdk_raw_stubs)
+ (public_name ocgdk.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdkpixbuf ocgtk.gio ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgdkpixbuf.raw ocgio.raw ocpango.raw ocpangocairo.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names

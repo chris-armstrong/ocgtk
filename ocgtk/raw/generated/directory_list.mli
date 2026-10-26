@@ -25,7 +25,7 @@ type t = [ `directory_list | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_directory_list_get_type"
 
-external new_ : string option -> Ocgtk_gio.Gio.Wrappers.File.t option -> t
+external new_ : string option -> Ocgio_raw.File.t option -> t
   = "ml_gtk_directory_list_new"
 (** Create a new DirectoryList *)
 
@@ -54,7 +54,7 @@ external set_io_priority : t -> int -> unit
     lowering it to something like [G_PRIORITY_DEFAULT_IDLE] may increase
     responsiveness. *)
 
-external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_directory_list_set_file"
 (** Sets the [file] to be enumerated and starts the enumeration.
 
@@ -80,7 +80,7 @@ external get_monitored : t -> bool = "ml_gtk_directory_list_get_monitored"
 external get_io_priority : t -> int = "ml_gtk_directory_list_get_io_priority"
 (** Gets the IO priority set via gtk_directory_list_set_io_priority(). *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_directory_list_get_file"
 (** Gets the file whose children are currently enumerated. *)
 

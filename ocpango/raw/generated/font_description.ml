@@ -17,7 +17,7 @@ external new_ : unit -> t = "ml_pango_font_description_new"
 
 (* Methods *)
 
-external unset_fields : t -> Pango_enums.fontmask -> unit
+external unset_fields : t -> Ocpango_enums.fontmask -> unit
   = "ml_pango_font_description_unset_fields"
 (** Unsets some of the fields in a [PangoFontDescription].
 
@@ -39,7 +39,7 @@ external to_filename : t -> string option
     [Pango.FontDescription.to_string], but with underscores instead of
     characters that are untypical in filenames, and in lower case only. *)
 
-external set_weight : t -> Pango_enums.weight -> unit
+external set_weight : t -> Ocpango_enums.weight -> unit
   = "ml_pango_font_description_set_weight"
 (** Sets the weight field of a font description.
 
@@ -77,14 +77,14 @@ external set_variations : t -> string option -> unit
     {{:https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-get-axis-infos}hb_ot_var_get_axis_infos}.
 *)
 
-external set_variant : t -> Pango_enums.variant -> unit
+external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_pango_font_description_set_variant"
 (** Sets the variant field of a font description.
 
     The [Pango.Variant] can either be [PANGO_VARIANT_NORMAL] or
     [PANGO_VARIANT_SMALL_CAPS]. *)
 
-external set_style : t -> Pango_enums.style -> unit
+external set_style : t -> Ocpango_enums.style -> unit
   = "ml_pango_font_description_set_style"
 (** Sets the style field of a [PangoFontDescription].
 
@@ -96,7 +96,7 @@ external set_style : t -> Pango_enums.style -> unit
     both, and font matching in Pango will match italic specifications with
     oblique fonts and vice-versa if an exact match is not found. *)
 
-external set_stretch : t -> Pango_enums.stretch -> unit
+external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_pango_font_description_set_stretch"
 (** Sets the stretch field of a font description.
 
@@ -109,7 +109,7 @@ external set_size : t -> int -> unit = "ml_pango_font_description_set_size"
     This is mutually exclusive with [Pango.FontDescription.set_absolute_size].
 *)
 
-external set_gravity : t -> Pango_enums.gravity -> unit
+external set_gravity : t -> Ocpango_enums.gravity -> unit
   = "ml_pango_font_description_set_gravity"
 (** Sets the gravity field of a font description.
 
@@ -177,7 +177,7 @@ external set_family : t -> string -> unit
     it is also possible to use a comma separated list of family names for this
     field. *)
 
-external set_color : t -> Pango_enums.fontcolor -> unit
+external set_color : t -> Ocpango_enums.fontcolor -> unit
   = "ml_pango_font_description_set_color"
 (** Sets the color field of a font description.
 
@@ -217,7 +217,7 @@ external hash : t -> int = "ml_pango_font_description_hash"
     This is suitable to be used, for example, as an argument to
     g_hash_table_new(). The hash value is independent of [desc]->mask. *)
 
-external get_weight : t -> Pango_enums.weight
+external get_weight : t -> Ocpango_enums.weight
   = "ml_pango_font_description_get_weight"
 (** Gets the weight field of a font description.
 
@@ -229,19 +229,19 @@ external get_variations : t -> string option
 
     See [Pango.FontDescription.set_variations]. *)
 
-external get_variant : t -> Pango_enums.variant
+external get_variant : t -> Ocpango_enums.variant
   = "ml_pango_font_description_get_variant"
 (** Gets the variant field of a [PangoFontDescription].
 
     See [Pango.FontDescription.set_variant]. *)
 
-external get_style : t -> Pango_enums.style
+external get_style : t -> Ocpango_enums.style
   = "ml_pango_font_description_get_style"
 (** Gets the style field of a [PangoFontDescription].
 
     See [Pango.FontDescription.set_style]. *)
 
-external get_stretch : t -> Pango_enums.stretch
+external get_stretch : t -> Ocpango_enums.stretch
   = "ml_pango_font_description_get_stretch"
 (** Gets the stretch field of a font description.
 
@@ -260,11 +260,11 @@ external get_size : t -> int = "ml_pango_font_description_get_size"
 
     See [Pango.FontDescription.set_size]. *)
 
-external get_set_fields : t -> Pango_enums.fontmask
+external get_set_fields : t -> Ocpango_enums.fontmask
   = "ml_pango_font_description_get_set_fields"
 (** Determines which fields in a font description have been set. *)
 
-external get_gravity : t -> Pango_enums.gravity
+external get_gravity : t -> Ocpango_enums.gravity
   = "ml_pango_font_description_get_gravity"
 (** Gets the gravity field of a font description.
 
@@ -282,7 +282,7 @@ external get_family : t -> string option
 
     See [Pango.FontDescription.set_family]. *)
 
-external get_color : t -> Pango_enums.fontcolor
+external get_color : t -> Ocpango_enums.fontcolor
   = "ml_pango_font_description_get_color"
 (** Returns the color field of the font description.
 

@@ -29,7 +29,7 @@ external update : t -> int64 -> unit = "ml_gtk_media_stream_update"
 
     The media stream must be prepared when this function is called. *)
 
-external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit
+external unrealize : t -> Ocgdk_raw.Surface.t -> unit
   = "ml_gtk_media_stream_unrealize"
 (** Undoes a previous call to gtk_media_stream_realize().
 
@@ -123,7 +123,7 @@ external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
     When calling gtk_media_stream_seek() during an ongoing seek operation, the
     new seek will override any pending seek. *)
 
-external realize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit
+external realize : t -> Ocgdk_raw.Surface.t -> unit
   = "ml_gtk_media_stream_realize"
 (** Called by users to attach the media stream to a [GdkSurface] they manage.
 

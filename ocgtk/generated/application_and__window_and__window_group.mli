@@ -1,5 +1,5 @@
 class type application_t = object
-  inherit Ocgtk_gio.Gio.Application.application_t
+  inherit Ocgio.Application.application_t
 
   method on_query_end :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -20,18 +20,18 @@ class type application_t = object
   method get_accels_for_action : string -> string array
   method get_actions_for_accel : string -> string array
   method get_active_window : unit -> window_t option
-  method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
-  method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
+  method get_menu_by_id : string -> Ocgio.Menu.menu_t option
+  method get_menubar : unit -> Ocgio.Menu_model.menu_model_t option
   method get_window_by_id : int -> window_t option
   method get_windows : unit -> window_t list
 
   method inhibit :
-    window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
+    window_t option -> Enums.applicationinhibitflags -> string option -> int
 
   method list_action_descriptions : unit -> string array
   method remove_window : window_t -> unit
   method set_accels_for_action : string -> string array -> unit
-  method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
+  method set_menubar : Ocgio.Menu_model.menu_model_t option -> unit
   method uninhibit : int -> unit
   method register_session : bool
   method set_register_session : bool -> unit
@@ -40,16 +40,16 @@ end
 
 and window_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GNative.native_t
+  inherit Native.native_t
 
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .root_t
 
-  inherit GShortcut_manager.shortcut_manager_t
+  inherit Shortcut_manager.shortcut_manager_t
 
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -72,12 +72,12 @@ and window_t = object
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit
-  method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit
+  method fullscreen_on_monitor : Ocgdk.Monitor.monitor_t -> unit
   method get_application : unit -> application_t option
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -85,14 +85,14 @@ and window_t = object
 
   method get_default_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_deletable : unit -> bool
   method get_destroy_with_parent : unit -> bool
   method get_focus_visible : unit -> bool
-  method get_gravity : unit -> Gtk_enums.windowgravity
+  method get_gravity : unit -> Enums.windowgravity
   method get_group : unit -> window_group_t
   method get_handle_menubar_accel : unit -> bool
   method get_hide_on_close : unit -> bool
@@ -104,7 +104,7 @@ and window_t = object
 
   method get_titlebar :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -121,7 +121,7 @@ and window_t = object
   method set_application : application_t option -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -130,16 +130,16 @@ and window_t = object
   method set_default_size : int -> int -> unit
 
   method set_default_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_deletable : bool -> unit
   method set_destroy_with_parent : bool -> unit
-  method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
+  method set_display : Ocgdk.Display.display_t -> unit
   method set_focus_visible : bool -> unit
-  method set_gravity : Gtk_enums.windowgravity -> unit
+  method set_gravity : Enums.windowgravity -> unit
   method set_handle_menubar_accel : bool -> unit
   method set_hide_on_close : bool -> unit
   method set_icon_name : string option -> unit
@@ -150,7 +150,7 @@ and window_t = object
   method set_title : string option -> unit
 
   method set_titlebar :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -163,28 +163,22 @@ and window_t = object
   method set_default_height : int -> unit
   method default_width : int
   method set_default_width : int -> unit
-  method as_window : Application_and__window_and__window_group.Window.t
+  method as_window : Raw.Window.t
 end
 
 and window_group_t = object
   method add_window : window_t -> unit
   method list_windows : unit -> window_t list
   method remove_window : window_t -> unit
-
-  method as_window_group :
-    Application_and__window_and__window_group.Window_group.t
+  method as_window_group : Raw.Window_group.t
 end
 
-class application :
-  Application_and__window_and__window_group.Application.t ->
-  application_t
+class application : Raw.Application.t -> application_t
 
-and window : Application_and__window_and__window_group.Window.t -> window_t
+and window : Raw.Window.t -> window_t
 
-and window_group :
-  Application_and__window_and__window_group.Window_group.t ->
-  window_group_t
+and window_group : Raw.Window_group.t -> window_group_t
 
 val new_ : unit -> window_t
-val new_ : string option -> Ocgtk_gio.Gio.applicationflags -> application_t
+val new_ : string option -> Ocgio.Enums.applicationflags -> application_t
 val new_ : unit -> window_group_t

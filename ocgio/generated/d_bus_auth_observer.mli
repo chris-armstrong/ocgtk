@@ -8,8 +8,8 @@ class type d_bus_auth_observer_t = object
   method on_authorize_authenticated_peer :
     ?after:bool ->
     callback:
-      (stream:GIo_stream.io_stream_t ->
-      credentials:GCredentials.credentials_t option ->
+      (stream:Io_stream.io_stream_t ->
+      credentials:Credentials.credentials_t option ->
       bool) ->
     unit ->
     Gobject.Signal.handler_id
@@ -17,11 +17,11 @@ class type d_bus_auth_observer_t = object
   method allow_mechanism : string -> bool
 
   method authorize_authenticated_peer :
-    GIo_stream.io_stream_t -> GCredentials.credentials_t option -> bool
+    Io_stream.io_stream_t -> Credentials.credentials_t option -> bool
 
-  method as_d_bus_auth_observer : D_bus_auth_observer.t
+  method as_d_bus_auth_observer : Raw.D_bus_auth_observer.t
 end
 
-class d_bus_auth_observer : D_bus_auth_observer.t -> d_bus_auth_observer_t
+class d_bus_auth_observer : Raw.D_bus_auth_observer.t -> d_bus_auth_observer_t
 
 val new_ : unit -> d_bus_auth_observer_t

@@ -7,17 +7,16 @@ type t = [ `cairo_node | `render_node ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_cairo_node_get_type"
 
-external new_ : Ocgtk_graphene.Graphene.Wrappers.Rect.t -> t
-  = "ml_gsk_cairo_node_new"
+external new_ : Ocgraphene_raw.Rect.t -> t = "ml_gsk_cairo_node_new"
 (** Create a new CairoNode *)
 
 (* Methods *)
 
-external get_surface : t -> Ocgtk_cairo.Cairo.Wrappers.Surface.t
+external get_surface : t -> Occairo_raw.Surface.t
   = "ml_gsk_cairo_node_get_surface"
 (** Retrieves the Cairo surface used by the render node. *)
 
-external get_draw_context : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t
+external get_draw_context : t -> Occairo_raw.Context.t
   = "ml_gsk_cairo_node_get_draw_context"
 (** Creates a Cairo context for drawing using the surface associated to the
     render node.

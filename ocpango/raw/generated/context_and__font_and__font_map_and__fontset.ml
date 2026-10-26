@@ -40,7 +40,7 @@ module rec Context : sig
       The default language for the locale of the running process can be found
       using [Pango.Language.get_default]. *)
 
-  external set_gravity_hint : t -> Pango_enums.gravityhint -> unit
+  external set_gravity_hint : t -> Ocpango_enums.gravityhint -> unit
     = "ml_pango_context_set_gravity_hint"
   (** Sets the gravity hint for the context.
 
@@ -60,13 +60,13 @@ module rec Context : sig
     = "ml_pango_context_set_font_description"
   (** Set the default font description for the context *)
 
-  external set_base_gravity : t -> Pango_enums.gravity -> unit
+  external set_base_gravity : t -> Ocpango_enums.gravity -> unit
     = "ml_pango_context_set_base_gravity"
   (** Sets the base gravity for the context.
 
       The base gravity is used in laying vertical text out. *)
 
-  external set_base_dir : t -> Pango_enums.direction -> unit
+  external set_base_dir : t -> Ocpango_enums.direction -> unit
     = "ml_pango_context_set_base_dir"
   (** Sets the base direction for the context.
 
@@ -135,13 +135,13 @@ module rec Context : sig
   external get_language : t -> Language.t = "ml_pango_context_get_language"
   (** Retrieves the global language tag for the context. *)
 
-  external get_gravity_hint : t -> Pango_enums.gravityhint
+  external get_gravity_hint : t -> Ocpango_enums.gravityhint
     = "ml_pango_context_get_gravity_hint"
   (** Retrieves the gravity hint for the context.
 
       See [Pango.Context.set_gravity_hint] for details. *)
 
-  external get_gravity : t -> Pango_enums.gravity
+  external get_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_gravity"
   (** Retrieves the gravity for the context.
 
@@ -158,13 +158,13 @@ module rec Context : sig
     = "ml_pango_context_get_font_description"
   (** Retrieve the default font description for the context. *)
 
-  external get_base_gravity : t -> Pango_enums.gravity
+  external get_base_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_base_gravity"
   (** Retrieves the base gravity for the context.
 
       See [Pango.Context.set_base_gravity]. *)
 
-  external get_base_dir : t -> Pango_enums.direction
+  external get_base_dir : t -> Ocpango_enums.direction
     = "ml_pango_context_get_base_dir"
   (** Retrieves the base direction for the context.
 
@@ -216,7 +216,7 @@ end = struct
       The default language for the locale of the running process can be found
       using [Pango.Language.get_default]. *)
 
-  external set_gravity_hint : t -> Pango_enums.gravityhint -> unit
+  external set_gravity_hint : t -> Ocpango_enums.gravityhint -> unit
     = "ml_pango_context_set_gravity_hint"
   (** Sets the gravity hint for the context.
 
@@ -236,13 +236,13 @@ end = struct
     = "ml_pango_context_set_font_description"
   (** Set the default font description for the context *)
 
-  external set_base_gravity : t -> Pango_enums.gravity -> unit
+  external set_base_gravity : t -> Ocpango_enums.gravity -> unit
     = "ml_pango_context_set_base_gravity"
   (** Sets the base gravity for the context.
 
       The base gravity is used in laying vertical text out. *)
 
-  external set_base_dir : t -> Pango_enums.direction -> unit
+  external set_base_dir : t -> Ocpango_enums.direction -> unit
     = "ml_pango_context_set_base_dir"
   (** Sets the base direction for the context.
 
@@ -311,13 +311,13 @@ end = struct
   external get_language : t -> Language.t = "ml_pango_context_get_language"
   (** Retrieves the global language tag for the context. *)
 
-  external get_gravity_hint : t -> Pango_enums.gravityhint
+  external get_gravity_hint : t -> Ocpango_enums.gravityhint
     = "ml_pango_context_get_gravity_hint"
   (** Retrieves the gravity hint for the context.
 
       See [Pango.Context.set_gravity_hint] for details. *)
 
-  external get_gravity : t -> Pango_enums.gravity
+  external get_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_gravity"
   (** Retrieves the gravity for the context.
 
@@ -334,13 +334,13 @@ end = struct
     = "ml_pango_context_get_font_description"
   (** Retrieve the default font description for the context. *)
 
-  external get_base_gravity : t -> Pango_enums.gravity
+  external get_base_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_base_gravity"
   (** Retrieves the base gravity for the context.
 
       See [Pango.Context.set_base_gravity]. *)
 
-  external get_base_dir : t -> Pango_enums.direction
+  external get_base_dir : t -> Ocpango_enums.direction
     = "ml_pango_context_get_base_dir"
   (** Retrieves the base direction for the context.
 

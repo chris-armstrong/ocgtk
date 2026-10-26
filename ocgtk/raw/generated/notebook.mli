@@ -112,7 +112,7 @@ external set_tab_reorderable :
   unit = "ml_gtk_notebook_set_tab_reorderable"
 (** Sets whether the notebook tab can be reordered via drag and drop or not. *)
 
-external set_tab_pos : t -> Gtk_enums.positiontype -> unit
+external set_tab_pos : t -> Ocgtk_enums.positiontype -> unit
   = "ml_gtk_notebook_set_tab_pos"
 (** Sets the edge at which the tabs are drawn. *)
 
@@ -242,7 +242,7 @@ external set_action_widget :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Gtk_enums.packtype ->
+  Ocgtk_enums.packtype ->
   unit = "ml_gtk_notebook_set_action_widget"
 (** Sets [widget] as one of the action widgets.
 
@@ -361,7 +361,7 @@ external get_tab_reorderable :
   bool = "ml_gtk_notebook_get_tab_reorderable"
 (** Gets whether the tab can be reordered via drag and drop or not. *)
 
-external get_tab_pos : t -> Gtk_enums.positiontype
+external get_tab_pos : t -> Ocgtk_enums.positiontype
   = "ml_gtk_notebook_get_tab_pos"
 (** Gets the edge at which the tabs are drawn. *)
 
@@ -404,8 +404,7 @@ external get_show_border : t -> bool = "ml_gtk_notebook_get_show_border"
 external get_scrollable : t -> bool = "ml_gtk_notebook_get_scrollable"
 (** Returns whether the tab label area has arrows for scrolling. *)
 
-external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
-  = "ml_gtk_notebook_get_pages"
+external get_pages : t -> Ocgio_raw.List_model.t = "ml_gtk_notebook_get_pages"
 (** Returns a [GListModel] that contains the pages of the notebook.
 
     This can be used to keep an up-to-date view. The model also implements
@@ -459,7 +458,7 @@ external get_current_page : t -> int = "ml_gtk_notebook_get_current_page"
 
 external get_action_widget :
   t ->
-  Gtk_enums.packtype ->
+  Ocgtk_enums.packtype ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
@@ -535,13 +534,13 @@ val on_create_window :
 val on_focus_tab :
   ?after:bool ->
   t ->
-  callback:(tab:Gtk_enums.notebooktab -> bool) ->
+  callback:(tab:Ocgtk_enums.notebooktab -> bool) ->
   Gobject.Signal.handler_id
 
 val on_move_focus_out :
   ?after:bool ->
   t ->
-  callback:(direction:Gtk_enums.directiontype -> unit) ->
+  callback:(direction:Ocgtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_page_added :
@@ -583,7 +582,7 @@ val on_page_reordered :
 val on_reorder_tab :
   ?after:bool ->
   t ->
-  callback:(direction:Gtk_enums.directiontype -> move_to_last:bool -> bool) ->
+  callback:(direction:Ocgtk_enums.directiontype -> move_to_last:bool -> bool) ->
   Gobject.Signal.handler_id
 
 val on_select_page :

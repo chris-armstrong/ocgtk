@@ -5,7 +5,7 @@
  (targets cflag-gtk.sexp clink-gtk.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -27,12 +27,18 @@
    --libs-out
    clink-gtk.sexp)))
 
+(rule
+ (copy generated/gtk_decls.h gtk_decls.h))
+
+(rule
+ (copy core/gtk_core.h gtk_core.h))
+
 (library
- (name ocgtk_gtk_generated_stubs_batch_0)
- (public_name ocgtk.gtk.generated_stubs_batch_0)
+ (name ocgtk_raw_stubs_batch_0)
+ (public_name ocgtk.raw.stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgdk.raw ocgdkpixbuf.raw ocgio.raw ocgraphene.raw ocgsk.raw ocpango.raw ocpangocairo.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -121,11 +127,11 @@
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
- (name ocgtk_gtk_generated_stubs_batch_1)
- (public_name ocgtk.gtk.generated_stubs_batch_1)
+ (name ocgtk_raw_stubs_batch_1)
+ (public_name ocgtk.raw.stubs_batch_1)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgdk.raw ocgdkpixbuf.raw ocgio.raw ocgraphene.raw ocgsk.raw ocpango.raw ocpangocairo.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -214,11 +220,11 @@
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
- (name ocgtk_gtk_generated_stubs_batch_2)
- (public_name ocgtk.gtk.generated_stubs_batch_2)
+ (name ocgtk_raw_stubs_batch_2)
+ (public_name ocgtk.raw.stubs_batch_2)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgdk.raw ocgdkpixbuf.raw ocgio.raw ocgraphene.raw ocgsk.raw ocpango.raw ocpangocairo.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -307,11 +313,11 @@
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
- (name ocgtk_gtk_generated_stubs_batch_3)
- (public_name ocgtk.gtk.generated_stubs_batch_3)
+ (name ocgtk_raw_stubs_batch_3)
+ (public_name ocgtk.raw.stubs_batch_3)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgdk.raw ocgdkpixbuf.raw ocgio.raw ocgraphene.raw ocgsk.raw ocpango.raw ocpangocairo.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names
@@ -394,8 +400,8 @@
  (c_library_flags (:include clink-gtk.sexp)))
 
 (library
- (name ocgtk_gtk_generated_stubs)
- (public_name ocgtk.gtk.generated_stubs)
+ (name ocgtk_raw_stubs)
+ (public_name ocgtk.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_gtk_generated_stubs_batch_0 ocgtk_gtk_generated_stubs_batch_1 ocgtk_gtk_generated_stubs_batch_2 ocgtk_gtk_generated_stubs_batch_3))
+ (libraries ocgtk_raw_stubs_batch_0 ocgtk_raw_stubs_batch_1 ocgtk_raw_stubs_batch_2 ocgtk_raw_stubs_batch_3))

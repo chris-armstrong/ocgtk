@@ -61,7 +61,7 @@ external set_urgent : t -> bool -> unit = "ml_g_notification_set_urgent"
 external set_title : t -> string -> unit = "ml_g_notification_set_title"
 (** Sets the title of [notification] to [title]. *)
 
-external set_priority : t -> Gio_enums.notificationpriority -> unit
+external set_priority : t -> Ocgio_enums.notificationpriority -> unit
   = "ml_g_notification_set_priority"
 (** Sets the priority of [notification] to [priority]. See
     [GNotificationPriority] for possible values. *)

@@ -56,7 +56,7 @@ external new_ :
 
 (* Methods *)
 
-external set_enabled : t -> Gtk_enums.graphicsoffloadenabled -> unit
+external set_enabled : t -> Ocgtk_enums.graphicsoffloadenabled -> unit
   = "ml_gtk_graphics_offload_set_enabled"
 (** Sets whether this GtkGraphicsOffload widget will attempt to offload the
     content of its child widget. *)
@@ -86,7 +86,7 @@ external set_black_background : t -> bool -> unit
     {{:https://wayland.app/protocols/single-pixel-buffer-v1}single-pixel buffer}
     protocol. *)
 
-external get_enabled : t -> Gtk_enums.graphicsoffloadenabled
+external get_enabled : t -> Ocgtk_enums.graphicsoffloadenabled
   = "ml_gtk_graphics_offload_get_enabled"
 (** Returns whether offload is enabled for [self]. *)
 

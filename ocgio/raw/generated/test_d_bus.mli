@@ -71,7 +71,7 @@ type t = [ `test_d_bus | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_test_d_bus_get_type"
 
-external new_ : Gio_enums.testdbusflags -> t = "ml_g_test_dbus_new"
+external new_ : Ocgio_enums.testdbusflags -> t = "ml_g_test_dbus_new"
 (** Create a new TestDBus *)
 
 (* Methods *)
@@ -95,7 +95,7 @@ external stop : t -> unit = "ml_g_test_dbus_stop"
     to verify behaviour after the session bus has been stopped can use this
     function but should still call g_test_dbus_down() when done. *)
 
-external get_flags : t -> Gio_enums.testdbusflags = "ml_g_test_dbus_get_flags"
+external get_flags : t -> Ocgio_enums.testdbusflags = "ml_g_test_dbus_get_flags"
 (** Get the flags of the [GTestDBus] object. *)
 
 external get_bus_address : t -> string option = "ml_g_test_dbus_get_bus_address"

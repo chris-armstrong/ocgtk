@@ -1,15 +1,12 @@
 class type border_node_t = object
-  inherit GRender_node.render_node_t
-  method get_colors : unit -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array
-  method get_outline : unit -> Rounded_rect.t
+  inherit Render_node.render_node_t
+  method get_colors : unit -> Ocgdk.Raw.Rgb_a.t array
+  method get_outline : unit -> Raw.Rounded_rect.t
   method get_widths : unit -> float array
-  method as_border_node : Border_node.t
+  method as_border_node : Raw.Border_node.t
 end
 
-class border_node : Border_node.t -> border_node_t
+class border_node : Raw.Border_node.t -> border_node_t
 
 val new_ :
-  Rounded_rect.t ->
-  float array ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array ->
-  border_node_t
+  Raw.Rounded_rect.t -> float array -> Ocgdk.Raw.Rgb_a.t array -> border_node_t

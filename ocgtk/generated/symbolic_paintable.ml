@@ -1,29 +1,30 @@
 class type symbolic_paintable_t = object
   method snapshot_symbolic :
-    Ocgtk_gdk.Gdk.Snapshot.snapshot_t ->
+    Ocgdk.Snapshot.snapshot_t ->
     float ->
     float ->
-    Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array ->
+    Ocgdk.Raw.Rgb_a.t array ->
     Gsize.t ->
     unit
 
-  method as_symbolic_paintable : Symbolic_paintable.t
+  method as_symbolic_paintable : Raw.Symbolic_paintable.t
 end
 
 (* High-level class for SymbolicPaintable *)
-class symbolic_paintable (obj : Symbolic_paintable.t) : symbolic_paintable_t =
+class symbolic_paintable (obj : Raw.Symbolic_paintable.t) : symbolic_paintable_t
+  =
   object (self)
     method snapshot_symbolic :
-        Ocgtk_gdk.Gdk.Snapshot.snapshot_t ->
+        Ocgdk.Snapshot.snapshot_t ->
         float ->
         float ->
-        Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array ->
+        Ocgdk.Raw.Rgb_a.t array ->
         Gsize.t ->
         unit =
       fun snapshot width height colors n_colors ->
         let snapshot = snapshot#as_snapshot in
-        Symbolic_paintable.snapshot_symbolic obj snapshot width height colors
-          n_colors
+        Raw.Symbolic_paintable.snapshot_symbolic obj snapshot width height
+          colors n_colors
 
     method as_symbolic_paintable = obj
   end

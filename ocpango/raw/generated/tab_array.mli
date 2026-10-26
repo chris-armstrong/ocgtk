@@ -40,7 +40,7 @@ external to_string : t -> string = "ml_pango_tab_array_to_string"
 external sort : t -> unit = "ml_pango_tab_array_sort"
 (** Utility function to ensure that the tab stops are in increasing order. *)
 
-external set_tab : t -> int -> Pango_enums.tabalign -> int -> unit
+external set_tab : t -> int -> Ocpango_enums.tabalign -> int -> unit
   = "ml_pango_tab_array_set_tab"
 (** Sets the alignment and location of a tab stop. *)
 
@@ -63,7 +63,7 @@ external resize : t -> int -> unit = "ml_pango_tab_array_resize"
     You must subsequently initialize any tabs that were added as a result of
     growing the array. *)
 
-external get_tab : t -> int -> Pango_enums.tabalign * int
+external get_tab : t -> int -> Ocpango_enums.tabalign * int
   = "ml_pango_tab_array_get_tab"
 (** Gets the alignment and position of a tab stop. *)
 

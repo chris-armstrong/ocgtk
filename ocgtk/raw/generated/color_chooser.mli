@@ -23,23 +23,22 @@ external set_use_alpha : t -> bool -> unit
   = "ml_gtk_color_chooser_set_use_alpha"
 (** Sets whether or not the color chooser should use the alpha channel. *)
 
-external set_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_color_chooser_set_rgba"
 (** Sets the color. *)
 
 external get_use_alpha : t -> bool = "ml_gtk_color_chooser_get_use_alpha"
 (** Returns whether the color chooser shows the alpha channel. *)
 
-external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-  = "ml_gtk_color_chooser_get_rgba"
+external get_rgba : t -> Ocgdk_raw.Rgb_a.t = "ml_gtk_color_chooser_get_rgba"
 (** Gets the currently-selected color. *)
 
 external add_palette :
   t ->
-  Gtk_enums.orientation ->
+  Ocgtk_enums.orientation ->
   int ->
   int ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array option ->
+  Ocgdk_raw.Rgb_a.t array option ->
   unit = "ml_gtk_color_chooser_add_palette"
 (** Adds a palette to the color chooser.
 

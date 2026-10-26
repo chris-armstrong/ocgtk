@@ -1,101 +1,98 @@
 class type fixed_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_child_transform :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    Ocgtk_gsk.Gsk.Transform.transform_t option
+    Ocgsk.Transform.transform_t option
 
   method move :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     float ->
     float ->
     unit
 
   method put :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     float ->
     float ->
     unit
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method set_child_transform :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    Ocgtk_gsk.Gsk.Transform.transform_t option ->
+    Ocgsk.Transform.transform_t option ->
     unit
 
-  method as_fixed : Fixed.t
+  method as_fixed : Raw.Fixed.t
 end
 
 (* High-level class for Fixed *)
-class fixed (obj : Fixed.t) : fixed_t =
+class fixed (obj : Raw.Fixed.t) : fixed_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
-        (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-             .Widget
-             .t)
+        (obj :> Raw.Widget.t)
 
     method get_child_transform :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        Ocgtk_gsk.Gsk.Transform.transform_t option =
+        Ocgsk.Transform.transform_t option =
       fun widget ->
         let widget = widget#as_widget in
         Option.map
-          (fun ret -> new Ocgtk_gsk.Gsk.Transform.transform ret)
-          (Fixed.get_child_transform obj widget)
+          (fun ret -> new Ocgsk.Transform.transform ret)
+          (Raw.Fixed.get_child_transform obj widget)
 
     method move :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         float ->
         float ->
         unit =
       fun widget x y ->
         let widget = widget#as_widget in
-        Fixed.move obj widget x y
+        Raw.Fixed.move obj widget x y
 
     method put :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         float ->
         float ->
         unit =
       fun widget x y ->
         let widget = widget#as_widget in
-        Fixed.put obj widget x y
+        Raw.Fixed.put obj widget x y
 
     method remove :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
         let widget = widget#as_widget in
-        Fixed.remove obj widget
+        Raw.Fixed.remove obj widget
 
     method set_child_transform :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        Ocgtk_gsk.Gsk.Transform.transform_t option ->
+        Ocgsk.Transform.transform_t option ->
         unit =
       fun widget transform ->
         let widget = widget#as_widget in
         let transform = Option.map (fun c -> c#as_transform) transform in
-        Fixed.set_child_transform obj widget transform
+        Raw.Fixed.set_child_transform obj widget transform
 
     method as_fixed = obj
   end
 
-let new_ () : fixed_t = new fixed (Fixed.new_ ())
+let new_ () : fixed_t = new fixed (Raw.Fixed.new_ ())

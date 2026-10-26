@@ -1,6 +1,6 @@
 class type calendar_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method on_day_selected :
@@ -34,9 +34,9 @@ class type calendar_t = object
   method set_show_week_numbers : bool -> unit
   method set_year : int -> unit
   method unmark_day : int -> unit
-  method as_calendar : Calendar.t
+  method as_calendar : Raw.Calendar.t
 end
 
-class calendar : Calendar.t -> calendar_t
+class calendar : Raw.Calendar.t -> calendar_t
 
 val new_ : unit -> calendar_t

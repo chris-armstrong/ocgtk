@@ -55,10 +55,8 @@ type t = [ `pad_controller | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_pad_controller_get_type"
 
-external new_ :
-  Ocgtk_gio.Gio.Wrappers.Action_group.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Device.t option ->
-  t = "ml_gtk_pad_controller_new"
+external new_ : Ocgio_raw.Action_group.t -> Ocgdk_raw.Device.t option -> t
+  = "ml_gtk_pad_controller_new"
 (** Create a new PadController *)
 
 (* Methods *)
@@ -70,7 +68,7 @@ external set_action_entries : t -> Pad_action_entry.t array -> int -> unit
     See [Gtk.PadActionEntry] and [Gtk.PadController.set_action]. *)
 
 external set_action :
-  t -> Gtk_enums.padactiontype -> int -> int -> string -> string -> unit
+  t -> Ocgtk_enums.padactiontype -> int -> int -> string -> string -> unit
   = "ml_gtk_pad_controller_set_action_bytecode"
     "ml_gtk_pad_controller_set_action_native"
 (** Adds an individual action to [controller].
@@ -85,10 +83,9 @@ external set_action :
 
 (* Properties *)
 
-external get_action_group : t -> Ocgtk_gio.Gio.Wrappers.Action_group.t
+external get_action_group : t -> Ocgio_raw.Action_group.t
   = "ml_gtk_pad_controller_get_action_group"
 (** Get property: action-group *)
 
-external get_pad : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t
-  = "ml_gtk_pad_controller_get_pad"
+external get_pad : t -> Ocgdk_raw.Device.t = "ml_gtk_pad_controller_get_pad"
 (** Get property: pad *)

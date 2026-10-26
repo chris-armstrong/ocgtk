@@ -68,8 +68,7 @@ external set_filter : t -> File_filter.t -> unit
     you want to restrict the displayed set of files without letting the user
     change it. *)
 
-external set_file :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
+external set_file : t -> Ocgio_raw.File.t -> (bool, GError.t) result
   = "ml_gtk_file_chooser_set_file"
 [@@ocaml.doc
   "Sets [file] as the current filename for the file chooser.\n\n\
@@ -125,7 +124,7 @@ external set_current_name : t -> string -> unit
     [Gtk.FileChooser.set_current_name] as well. *)
 
 external set_current_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t option -> (bool, GError.t) result
+  t -> Ocgio_raw.File.t option -> (bool, GError.t) result
   = "ml_gtk_file_chooser_set_current_folder"
 (** Sets the current folder for [chooser] from a [GFile]. *)
 
@@ -143,7 +142,7 @@ external set_choice : t -> string -> string -> unit
    gtk_file_chooser_add_choice().\n\n\
    For a boolean choice, the possible options are \"true\" and \"false\"."]
 
-external set_action : t -> Gtk_enums.filechooseraction -> unit
+external set_action : t -> Ocgtk_enums.filechooseraction -> unit
   = "ml_gtk_file_chooser_set_action"
 (** Sets the type of operation that the chooser is performing.
 
@@ -154,7 +153,7 @@ external set_action : t -> Gtk_enums.filechooseraction -> unit
     [GTK_FILE_CHOOSER_ACTION_OPEN]. *)
 
 external remove_shortcut_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
+  t -> Ocgio_raw.File.t -> (bool, GError.t) result
   = "ml_gtk_file_chooser_remove_shortcut_folder"
 (** Removes a folder from the shortcut folders in a file chooser. *)
 
@@ -168,7 +167,7 @@ external remove_choice : t -> string -> unit
 (** Removes a 'choice' that has been added with gtk_file_chooser_add_choice().
 *)
 
-external get_shortcut_folders : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external get_shortcut_folders : t -> Ocgio_raw.List_model.t
   = "ml_gtk_file_chooser_get_shortcut_folders"
 (** Queries the list of shortcut folders in the file chooser.
 
@@ -179,7 +178,7 @@ external get_select_multiple : t -> bool
   = "ml_gtk_file_chooser_get_select_multiple"
 (** Gets whether multiple files can be selected in the file chooser. *)
 
-external get_filters : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external get_filters : t -> Ocgio_raw.List_model.t
   = "ml_gtk_file_chooser_get_filters"
 (** Gets the current set of user-selectable filters, as a list model.
 
@@ -193,12 +192,12 @@ external get_filter : t -> File_filter.t option
   = "ml_gtk_file_chooser_get_filter"
 (** Gets the current filter. *)
 
-external get_files : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+external get_files : t -> Ocgio_raw.List_model.t
   = "ml_gtk_file_chooser_get_files"
 (** Lists all the selected files and subfolders in the current folder of
     [chooser] as [GFile]. *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_file_chooser_get_file"
 (** Gets the [GFile] for the currently selected file in the file selector.
 
@@ -214,7 +213,7 @@ external get_current_name : t -> string option
     This is meant to be used in save dialogs, to get the currently typed
     filename when the file itself does not exist yet. *)
 
-external get_current_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_current_folder : t -> Ocgio_raw.File.t option
   = "ml_gtk_file_chooser_get_current_folder"
 (** Gets the current folder of [chooser] as [GFile]. *)
 
@@ -226,12 +225,11 @@ external get_choice : t -> string -> string option
   = "ml_gtk_file_chooser_get_choice"
 (** Gets the currently selected option in the 'choice' with the given ID. *)
 
-external get_action : t -> Gtk_enums.filechooseraction
+external get_action : t -> Ocgtk_enums.filechooseraction
   = "ml_gtk_file_chooser_get_action"
 (** Gets the type of operation that the file chooser is performing. *)
 
-external add_shortcut_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
+external add_shortcut_folder : t -> Ocgio_raw.File.t -> (bool, GError.t) result
   = "ml_gtk_file_chooser_add_shortcut_folder"
 (** Adds a folder to be displayed with the shortcut folders in a file chooser.
 *)

@@ -1,76 +1,71 @@
 class type drag_icon_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GNative.native_t
+  inherit Native.native_t
 
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .root_t
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
-  method as_drag_icon : Drag_icon.t
+  method as_drag_icon : Raw.Drag_icon.t
 end
 
 (* High-level class for DragIcon *)
-class drag_icon (obj : Drag_icon.t) : drag_icon_t =
+class drag_icon (obj : Raw.Drag_icon.t) : drag_icon_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
-        (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-             .Widget
-             .t)
+        (obj :> Raw.Widget.t)
 
-    inherit GNative.native (Native.from_gobject obj)
+    inherit Native.native (Raw.Native.from_gobject obj)
 
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .root
-        (Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Root
-         .from_gobject obj)
+        (Raw.Root.from_gobject obj)
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
-          (Drag_icon.get_child obj)
+          (Raw.Drag_icon.get_child obj)
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
-        Drag_icon.set_child obj child
+        Raw.Drag_icon.set_child obj child
 
     method as_drag_icon = obj
   end
 
-let get_for_drag (drag : Ocgtk_gdk.Gdk.Drag.drag_t) : drag_icon_t =
+let get_for_drag (drag : Ocgdk.Drag.drag_t) : drag_icon_t =
   let drag = drag#as_drag in
-  let obj_ = Drag_icon.get_for_drag drag in
+  let obj_ = Raw.Drag_icon.get_for_drag drag in
   new drag_icon obj_

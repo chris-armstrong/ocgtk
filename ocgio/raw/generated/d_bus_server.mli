@@ -28,7 +28,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_server_get_type"
 
 external new_sync :
   string ->
-  Gio_enums.dbusserverflags ->
+  Ocgio_enums.dbusserverflags ->
   string ->
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
@@ -49,7 +49,7 @@ external is_active : t -> bool = "ml_g_dbus_server_is_active"
 external get_guid : t -> string = "ml_g_dbus_server_get_guid"
 (** Gets the GUID for [server], as provided to g_dbus_server_new_sync(). *)
 
-external get_flags : t -> Gio_enums.dbusserverflags
+external get_flags : t -> Ocgio_enums.dbusserverflags
   = "ml_g_dbus_server_get_flags"
 (** Gets the flags for [server]. *)
 

@@ -3,7 +3,7 @@ class type icon_t = object
   method hash : unit -> int
   method serialize : unit -> Gvariant.t option
   method to_string : unit -> string option
-  method as_icon : Icon.t
+  method as_icon : Raw.Icon.t
 end
 
-class icon : Icon.t -> icon_t
+class icon : Raw.Icon.t -> icon_t

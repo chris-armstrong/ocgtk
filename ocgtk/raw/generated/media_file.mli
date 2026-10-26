@@ -17,14 +17,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_media_file_get_type"
 external new_ : unit -> t = "ml_gtk_media_file_new"
 (** Create a new MediaFile *)
 
-external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t -> t
-  = "ml_gtk_media_file_new_for_file"
+external new_for_file : Ocgio_raw.File.t -> t = "ml_gtk_media_file_new_for_file"
 (** Create a new MediaFile *)
 
 external new_for_filename : string -> t = "ml_gtk_media_file_new_for_filename"
 (** Create a new MediaFile *)
 
-external new_for_input_stream : Ocgtk_gio.Gio.Wrappers.Input_stream.t -> t
+external new_for_input_stream : Ocgio_raw.Input_stream.t -> t
   = "ml_gtk_media_file_new_for_input_stream"
 (** Create a new MediaFile *)
 
@@ -40,8 +39,7 @@ external set_resource : t -> string option -> unit
     This is a utility function that converts the given [resource_path] to a
     [GFile] and calls [Gtk.MediaFile.set_file]. *)
 
-external set_input_stream :
-  t -> Ocgtk_gio.Gio.Wrappers.Input_stream.t option -> unit
+external set_input_stream : t -> Ocgio_raw.Input_stream.t option -> unit
   = "ml_gtk_media_file_set_input_stream"
 (** Sets the [GtkMediaFile] to play the given stream.
 
@@ -57,21 +55,20 @@ external set_filename : t -> string option -> unit
     This is a utility function that converts the given [filename] to a [GFile]
     and calls [Gtk.MediaFile.set_file]. *)
 
-external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_media_file_set_file"
 (** Sets the [GtkMediaFile] to play the given file.
 
     If any file is still playing, stop playing it. *)
 
-external get_input_stream : t -> Ocgtk_gio.Gio.Wrappers.Input_stream.t option
+external get_input_stream : t -> Ocgio_raw.Input_stream.t option
   = "ml_gtk_media_file_get_input_stream"
 (** Returns the stream that [self] is currently playing from.
 
     When [self] is not playing or not playing from a stream, [NULL] is returned.
 *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_media_file_get_file"
+external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_media_file_get_file"
 (** Returns the file that [self] is currently playing from.
 
     When [self] is not playing or not playing from a file, [NULL] is returned.

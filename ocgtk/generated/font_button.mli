@@ -1,9 +1,9 @@
 class type font_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GFont_chooser.font_chooser_t
+  inherit Font_chooser.font_chooser_t
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -19,10 +19,10 @@ class type font_button_t = object
   method set_title : string -> unit
   method set_use_font : bool -> unit
   method set_use_size : bool -> unit
-  method as_font_button : Font_button.t
+  method as_font_button : Raw.Font_button.t
 end
 
-class font_button : Font_button.t -> font_button_t
+class font_button : Raw.Font_button.t -> font_button_t
 
 val new_ : unit -> font_button_t
 val new_with_font : string -> font_button_t

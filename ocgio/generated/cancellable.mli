@@ -11,9 +11,9 @@ class type cancellable_t = object
   method release_fd : unit -> unit
   method reset : unit -> unit
   method set_error_if_cancelled : unit -> (bool, GError.t) result
-  method as_cancellable : Cancellable.t
+  method as_cancellable : Raw.Cancellable.t
 end
 
-class cancellable : Cancellable.t -> cancellable_t
+class cancellable : Raw.Cancellable.t -> cancellable_t
 
 val new_ : unit -> cancellable_t

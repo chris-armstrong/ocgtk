@@ -115,7 +115,7 @@ val on_event :
   ?after:bool ->
   t ->
   callback:
-    (event:Gio_enums.socketlistenerevent ->
+    (event:Ocgio_enums.socketlistenerevent ->
     socket:Socket_and__socket_connection.Socket.t ->
     unit) ->
   Gobject.Signal.handler_id

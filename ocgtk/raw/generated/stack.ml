@@ -61,7 +61,7 @@ external set_visible_child_name : t -> string -> unit
     in order to become the visible child of [stack]. *)
 
 external set_visible_child_full :
-  t -> string -> Gtk_enums.stacktransitiontype -> unit
+  t -> string -> Ocgtk_enums.stacktransitiontype -> unit
   = "ml_gtk_stack_set_visible_child_full"
 (** Makes the child with the given name visible.
 
@@ -90,7 +90,7 @@ external set_vhomogeneous : t -> bool -> unit = "ml_gtk_stack_set_vhomogeneous"
     its children. If it isn't, the stack may change height when a different
     child becomes visible. *)
 
-external set_transition_type : t -> Gtk_enums.stacktransitiontype -> unit
+external set_transition_type : t -> Ocgtk_enums.stacktransitiontype -> unit
   = "ml_gtk_stack_set_transition_type"
 (** Sets the type of animation that will be used for transitions between pages
     in [stack].
@@ -148,7 +148,7 @@ external get_visible_child :
 external get_vhomogeneous : t -> bool = "ml_gtk_stack_get_vhomogeneous"
 (** Gets whether [stack] is vertically homogeneous. *)
 
-external get_transition_type : t -> Gtk_enums.stacktransitiontype
+external get_transition_type : t -> Ocgtk_enums.stacktransitiontype
   = "ml_gtk_stack_get_transition_type"
 (** Gets the type of animation that will be used for transitions between pages
     in [stack]. *)

@@ -40,10 +40,10 @@ external get_pulse : t -> int = "ml_gtk_cell_renderer_spinner_get_pulse"
 external set_pulse : t -> int -> unit = "ml_gtk_cell_renderer_spinner_set_pulse"
 (** Set property: pulse *)
 
-external get_size : t -> Gtk_enums.iconsize
+external get_size : t -> Ocgtk_enums.iconsize
   = "ml_gtk_cell_renderer_spinner_get_size"
 (** Get property: size *)
 
-external set_size : t -> Gtk_enums.iconsize -> unit
+external set_size : t -> Ocgtk_enums.iconsize -> unit
   = "ml_gtk_cell_renderer_spinner_set_size"
 (** Set property: size *)

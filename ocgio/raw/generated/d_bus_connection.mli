@@ -68,7 +68,7 @@ external new_for_address_finish : Async_result.t -> (t, GError.t) result
 
 external new_for_address_sync :
   string ->
-  Gio_enums.dbusconnectionflags ->
+  Ocgio_enums.dbusconnectionflags ->
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
   (t, GError.t) result = "ml_g_dbus_connection_new_for_address_sync"
@@ -77,7 +77,7 @@ external new_for_address_sync :
 external new_sync :
   Io_stream.t ->
   string option ->
-  Gio_enums.dbusconnectionflags ->
+  Ocgio_enums.dbusconnectionflags ->
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
   (t, GError.t) result = "ml_g_dbus_connection_new_sync"
@@ -147,7 +147,7 @@ external set_exit_on_close : t -> bool -> unit
 external send_message_with_reply_sync :
   t ->
   D_bus_message.t ->
-  Gio_enums.dbussendmessageflags ->
+  Ocgio_enums.dbussendmessageflags ->
   int ->
   Cancellable.t option ->
   (D_bus_message.t * UInt32.t, GError.t) result
@@ -199,7 +199,7 @@ external send_message_with_reply_finish :
 external send_message :
   t ->
   D_bus_message.t ->
-  Gio_enums.dbussendmessageflags ->
+  Ocgio_enums.dbussendmessageflags ->
   (bool * UInt32.t, GError.t) result = "ml_g_dbus_connection_send_message"
 (** Asynchronously sends [message] to the peer represented by [connection].
 
@@ -270,7 +270,7 @@ external get_guid : t -> string = "ml_g_dbus_connection_get_guid"
 (** The GUID of the peer performing the role of server when authenticating. See
     [GDBusConnection:guid] for more details. *)
 
-external get_flags : t -> Gio_enums.dbusconnectionflags
+external get_flags : t -> Ocgio_enums.dbusconnectionflags
   = "ml_g_dbus_connection_get_flags"
 (** Gets the flags used to construct this connection *)
 
@@ -279,7 +279,7 @@ external get_exit_on_close : t -> bool
 (** Gets whether the process is terminated when [connection] is closed by the
     remote peer. See [GDBusConnection:exit]-on-close for more details. *)
 
-external get_capabilities : t -> Gio_enums.dbuscapabilityflags
+external get_capabilities : t -> Ocgio_enums.dbuscapabilityflags
   = "ml_g_dbus_connection_get_capabilities"
 (** Gets the capabilities negotiated with the remote peer *)
 
@@ -375,7 +375,7 @@ external call_sync :
   string ->
   Gvariant.t option ->
   Gvariant_type.t option ->
-  Gio_enums.dbuscallflags ->
+  Ocgio_enums.dbuscallflags ->
   int ->
   Cancellable.t option ->
   (Gvariant.t, GError.t) result

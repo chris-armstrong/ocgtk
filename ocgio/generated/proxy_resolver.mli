@@ -3,13 +3,13 @@ class type proxy_resolver_t = object
 
   method lookup :
     string ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (string array, GError.t) result
 
   method lookup_finish :
-    GAsync_result.async_result_t -> (string array, GError.t) result
+    Async_result.async_result_t -> (string array, GError.t) result
 
-  method as_proxy_resolver : Proxy_resolver.t
+  method as_proxy_resolver : Raw.Proxy_resolver.t
 end
 
-class proxy_resolver : Proxy_resolver.t -> proxy_resolver_t
+class proxy_resolver : Raw.Proxy_resolver.t -> proxy_resolver_t

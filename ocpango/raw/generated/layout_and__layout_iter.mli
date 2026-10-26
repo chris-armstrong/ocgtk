@@ -25,7 +25,7 @@ module rec Layout : sig
       on an exact hit, it returns [TRUE]. *)
 
   external write_to_file :
-    t -> Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result
+    t -> Ocpango_enums.layoutserializeflags -> string -> (bool, GError.t) result
     = "ml_pango_layout_write_to_file"
   (** A convenience method to serialize a layout to a file.
 
@@ -37,7 +37,7 @@ module rec Layout : sig
       It is mostly intended for use inside a debugger to quickly dump a layout
       to a file for later inspection. *)
 
-  external set_wrap : t -> Pango_enums.wrapmode -> unit
+  external set_wrap : t -> Ocpango_enums.wrapmode -> unit
     = "ml_pango_layout_set_wrap"
   (** Sets the wrap mode.
 
@@ -224,7 +224,7 @@ module rec Layout : sig
       If no font description is set on the layout, the font description from the
       layout's context is used. *)
 
-  external set_ellipsize : t -> Pango_enums.ellipsizemode -> unit
+  external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
     = "ml_pango_layout_set_ellipsize"
   (** Sets the type of ellipsization being performed for [layout].
 
@@ -265,14 +265,14 @@ module rec Layout : sig
 
       References [attrs], so the caller can unref its reference. *)
 
-  external set_alignment : t -> Pango_enums.alignment -> unit
+  external set_alignment : t -> Ocpango_enums.alignment -> unit
     = "ml_pango_layout_set_alignment"
   (** Sets the alignment for the layout: how partial lines are positioned within
       the horizontal space available.
 
       The default alignment is [PANGO_ALIGN_LEFT]. *)
 
-  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t
+  external serialize : t -> Ocpango_enums.layoutserializeflags -> Glib_bytes.t
     = "ml_pango_layout_serialize"
   (** Serializes the [layout] for later deserialization via
       [Pango.Layout.deserialize].
@@ -330,7 +330,7 @@ module rec Layout : sig
 
       The X position is measured from the left edge of the line. *)
 
-  external get_wrap : t -> Pango_enums.wrapmode = "ml_pango_layout_get_wrap"
+  external get_wrap : t -> Ocpango_enums.wrapmode = "ml_pango_layout_get_wrap"
   (** Gets the wrap mode for the layout.
 
       Use [Pango.Layout.is_wrapped] to query whether any paragraphs were
@@ -502,7 +502,7 @@ module rec Layout : sig
       The extents are given in layout coordinates and in Pango units; layout
       coordinates begin at the top left corner of the layout. *)
 
-  external get_ellipsize : t -> Pango_enums.ellipsizemode
+  external get_ellipsize : t -> Ocpango_enums.ellipsizemode
     = "ml_pango_layout_get_ellipsize"
   (** Gets the type of ellipsization being performed for [layout].
 
@@ -511,7 +511,7 @@ module rec Layout : sig
       Use [Pango.Layout.is_ellipsized] to query whether any paragraphs were
       actually ellipsized. *)
 
-  external get_direction : t -> int -> Pango_enums.direction
+  external get_direction : t -> int -> Ocpango_enums.direction
     = "ml_pango_layout_get_direction"
   (** Gets the text direction at the given character position in [layout]. *)
 
@@ -572,7 +572,7 @@ module rec Layout : sig
     = "ml_pango_layout_get_attributes"
   (** Gets the attribute list for the layout, if any. *)
 
-  external get_alignment : t -> Pango_enums.alignment
+  external get_alignment : t -> Ocpango_enums.alignment
     = "ml_pango_layout_get_alignment"
   (** Gets the alignment for the layout: how partial lines are positioned within
       the horizontal space available. *)

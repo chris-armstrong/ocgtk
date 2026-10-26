@@ -6,7 +6,7 @@ module rec Application : sig
 
   external gtype : unit -> Gobject.Type.t = "ml_gtk_application_get_type"
 
-  external new_ : string option -> Ocgtk_gio.Gio.applicationflags -> t
+  external new_ : string option -> Ocgio_enums.applicationflags -> t
     = "ml_gtk_application_new"
   (** Create a new Application *)
 
@@ -19,7 +19,7 @@ module rec Application : sig
 
       Inhibitors are also cleared when the application exits. *)
 
-  external set_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+  external set_menubar : t -> Ocgio_raw.Menu_model.t option -> unit
     = "ml_gtk_application_set_menubar"
   (** Sets or unsets the menubar for windows of the application.
 
@@ -73,7 +73,7 @@ module rec Application : sig
   external inhibit :
     t ->
     Window.t option ->
-    Gtk_enums.applicationinhibitflags ->
+    Ocgtk_enums.applicationinhibitflags ->
     string option ->
     int = "ml_gtk_application_inhibit"
   (** Informs the session manager that certain types of actions should be
@@ -121,11 +121,11 @@ module rec Application : sig
       The ID of a [GtkApplicationWindow] can be retrieved with
       [Gtk.ApplicationWindow.get_id]. *)
 
-  external get_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+  external get_menubar : t -> Ocgio_raw.Menu_model.t option
     = "ml_gtk_application_get_menubar"
   (** Returns the menu model for the menu bar of the application. *)
 
-  external get_menu_by_id : t -> string -> Ocgtk_gio.Gio.Wrappers.Menu.t option
+  external get_menu_by_id : t -> string -> Ocgio_raw.Menu.t option
     = "ml_gtk_application_get_menu_by_id"
   (** Gets a menu from automatically loaded resources.
 
@@ -213,7 +213,7 @@ end = struct
 
   external gtype : unit -> Gobject.Type.t = "ml_gtk_application_get_type"
 
-  external new_ : string option -> Ocgtk_gio.Gio.applicationflags -> t
+  external new_ : string option -> Ocgio_enums.applicationflags -> t
     = "ml_gtk_application_new"
   (** Create a new Application *)
 
@@ -226,7 +226,7 @@ end = struct
 
       Inhibitors are also cleared when the application exits. *)
 
-  external set_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+  external set_menubar : t -> Ocgio_raw.Menu_model.t option -> unit
     = "ml_gtk_application_set_menubar"
   (** Sets or unsets the menubar for windows of the application.
 
@@ -280,7 +280,7 @@ end = struct
   external inhibit :
     t ->
     Window.t option ->
-    Gtk_enums.applicationinhibitflags ->
+    Ocgtk_enums.applicationinhibitflags ->
     string option ->
     int = "ml_gtk_application_inhibit"
   (** Informs the session manager that certain types of actions should be
@@ -328,11 +328,11 @@ end = struct
       The ID of a [GtkApplicationWindow] can be retrieved with
       [Gtk.ApplicationWindow.get_id]. *)
 
-  external get_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+  external get_menubar : t -> Ocgio_raw.Menu_model.t option
     = "ml_gtk_application_get_menubar"
   (** Returns the menu model for the menu bar of the application. *)
 
-  external get_menu_by_id : t -> string -> Ocgtk_gio.Gio.Wrappers.Menu.t option
+  external get_menu_by_id : t -> string -> Ocgio_raw.Menu.t option
     = "ml_gtk_application_get_menu_by_id"
   (** Gets a menu from automatically loaded resources.
 
@@ -588,7 +588,7 @@ and Window : sig
   (** Sets whether this window should react to <kbd>F10</kbd> presses by
       activating a menubar it contains. *)
 
-  external set_gravity : t -> Gtk_enums.windowgravity -> unit
+  external set_gravity : t -> Ocgtk_enums.windowgravity -> unit
     = "ml_gtk_window_set_gravity"
   (** Sets the gravity that is used when changing the window size
       programmatically. *)
@@ -615,7 +615,7 @@ and Window : sig
       toplevel, it is usually more convenient to use [Gtk.Widget.grab_focus]
       instead of this function. *)
 
-  external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
+  external set_display : t -> Ocgdk_raw.Display.t -> unit
     = "ml_gtk_window_set_display"
   (** Sets the display where the window is displayed.
 
@@ -854,7 +854,7 @@ and Window : sig
 
       If the window has no group, then the default group is returned. *)
 
-  external get_gravity : t -> Gtk_enums.windowgravity
+  external get_gravity : t -> Ocgtk_enums.windowgravity
     = "ml_gtk_window_get_gravity"
   (** Returns the gravity that is used when changing the window size
       programmatically. *)
@@ -916,7 +916,7 @@ and Window : sig
     = "ml_gtk_window_get_application"
   (** Gets the application object associated with the window. *)
 
-  external fullscreen_on_monitor : t -> Ocgtk_gdk.Gdk.Wrappers.Monitor.t -> unit
+  external fullscreen_on_monitor : t -> Ocgdk_raw.Monitor.t -> unit
     = "ml_gtk_window_fullscreen_on_monitor"
   (** Asks to place the window in the fullscreen state on the given monitor.
 
@@ -1145,7 +1145,7 @@ end = struct
   (** Sets whether this window should react to <kbd>F10</kbd> presses by
       activating a menubar it contains. *)
 
-  external set_gravity : t -> Gtk_enums.windowgravity -> unit
+  external set_gravity : t -> Ocgtk_enums.windowgravity -> unit
     = "ml_gtk_window_set_gravity"
   (** Sets the gravity that is used when changing the window size
       programmatically. *)
@@ -1172,7 +1172,7 @@ end = struct
       toplevel, it is usually more convenient to use [Gtk.Widget.grab_focus]
       instead of this function. *)
 
-  external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
+  external set_display : t -> Ocgdk_raw.Display.t -> unit
     = "ml_gtk_window_set_display"
   (** Sets the display where the window is displayed.
 
@@ -1411,7 +1411,7 @@ end = struct
 
       If the window has no group, then the default group is returned. *)
 
-  external get_gravity : t -> Gtk_enums.windowgravity
+  external get_gravity : t -> Ocgtk_enums.windowgravity
     = "ml_gtk_window_get_gravity"
   (** Returns the gravity that is used when changing the window size
       programmatically. *)
@@ -1473,7 +1473,7 @@ end = struct
     = "ml_gtk_window_get_application"
   (** Gets the application object associated with the window. *)
 
-  external fullscreen_on_monitor : t -> Ocgtk_gdk.Gdk.Wrappers.Monitor.t -> unit
+  external fullscreen_on_monitor : t -> Ocgdk_raw.Monitor.t -> unit
     = "ml_gtk_window_fullscreen_on_monitor"
   (** Asks to place the window in the fullscreen state on the given monitor.
 

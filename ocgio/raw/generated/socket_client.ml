@@ -24,7 +24,7 @@ external new_ : unit -> t = "ml_g_socket_client_new"
 
 (* Methods *)
 
-external set_tls_validation_flags : t -> Gio_enums.tlscertificateflags -> unit
+external set_tls_validation_flags : t -> Ocgio_enums.tlscertificateflags -> unit
   = "ml_g_socket_client_set_tls_validation_flags"
 (** Sets the TLS validation flags used when creating TLS connections via
     [client]. The default value is [G_TLS_CERTIFICATE_VALIDATE_ALL].
@@ -58,7 +58,7 @@ external set_timeout : t -> int -> unit = "ml_g_socket_client_set_timeout"
     this may cause calls to g_socket_client_connect(), etc, to fail with
     [G_IO_ERROR_TIMED_OUT]. *)
 
-external set_socket_type : t -> Gio_enums.sockettype -> unit
+external set_socket_type : t -> Ocgio_enums.sockettype -> unit
   = "ml_g_socket_client_set_socket_type"
 (** Sets the socket type of the socket client. The sockets created by this
     object will be of the specified type.
@@ -76,7 +76,7 @@ external set_proxy_resolver : t -> Proxy_resolver.t option -> unit
     setting of [GSocketClient:enable]-proxy, which is not changed by this
     function (but which is [TRUE] by default) *)
 
-external set_protocol : t -> Gio_enums.socketprotocol -> unit
+external set_protocol : t -> Ocgio_enums.socketprotocol -> unit
   = "ml_g_socket_client_set_protocol"
 (** Sets the protocol of the socket client. The sockets created by this object
     will use of the specified protocol.
@@ -98,7 +98,7 @@ external set_local_address :
     This is useful if you want to ensure that the local side of the connection
     is on a specific port, or on a specific interface. *)
 
-external set_family : t -> Gio_enums.socketfamily -> unit
+external set_family : t -> Ocgio_enums.socketfamily -> unit
   = "ml_g_socket_client_set_family"
 (** Sets the socket family of the socket client. If this is set to something
     other than [G_SOCKET_FAMILY_INVALID] then the sockets created by this object
@@ -117,7 +117,7 @@ external set_enable_proxy : t -> bool -> unit
 
     See also g_socket_client_set_proxy_resolver(). *)
 
-external get_tls_validation_flags : t -> Gio_enums.tlscertificateflags
+external get_tls_validation_flags : t -> Ocgio_enums.tlscertificateflags
   = "ml_g_socket_client_get_tls_validation_flags"
 (** Gets the TLS validation flags used creating TLS connections via [client].
 
@@ -133,7 +133,7 @@ external get_timeout : t -> int = "ml_g_socket_client_get_timeout"
 
     See g_socket_client_set_timeout() for details. *)
 
-external get_socket_type : t -> Gio_enums.sockettype
+external get_socket_type : t -> Ocgio_enums.sockettype
   = "ml_g_socket_client_get_socket_type"
 (** Gets the socket type of the socket client.
 
@@ -145,7 +145,7 @@ external get_proxy_resolver : t -> Proxy_resolver.t
     resolver returned by g_proxy_resolver_get_default(), but you can override it
     with g_socket_client_set_proxy_resolver(). *)
 
-external get_protocol : t -> Gio_enums.socketprotocol
+external get_protocol : t -> Ocgio_enums.socketprotocol
   = "ml_g_socket_client_get_protocol"
 (** Gets the protocol name type of the socket client.
 
@@ -161,7 +161,7 @@ external get_local_address :
 
     See g_socket_client_set_local_address() for details. *)
 
-external get_family : t -> Gio_enums.socketfamily
+external get_family : t -> Ocgio_enums.socketfamily
   = "ml_g_socket_client_get_family"
 (** Gets the socket family of the socket client.
 
@@ -335,10 +335,10 @@ external add_application_proxy : t -> string -> unit
 
 (* Properties *)
 
-external get_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_type"
+external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_client_get_type"
 (** Get property: type *)
 
-external set_type : t -> Gio_enums.sockettype -> unit
+external set_type : t -> Ocgio_enums.sockettype -> unit
   = "ml_g_socket_client_set_type"
 (** Set property: type *)
 
@@ -347,7 +347,7 @@ let on_event ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let event =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gio_enums.socketclientevent_of_int (Gobject.Value.get_enum_int v)
+          Ocgio_enums.socketclientevent_of_int (Gobject.Value.get_enum_int v)
         in
         let connectable =
           let v = Gobject.Closure.nth argv ~pos:2 in

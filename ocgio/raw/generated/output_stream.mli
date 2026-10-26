@@ -143,7 +143,7 @@ external splice_finish : t -> Async_result.t -> (int, GError.t) result
 external splice :
   t ->
   Input_stream.t ->
-  Gio_enums.outputstreamspliceflags ->
+  Ocgio_enums.outputstreamspliceflags ->
   Cancellable.t option ->
   (int, GError.t) result = "ml_g_output_stream_splice"
 (** Splices an input stream into an output stream. *)

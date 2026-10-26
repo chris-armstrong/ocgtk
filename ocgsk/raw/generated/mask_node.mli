@@ -7,7 +7,7 @@ type t = [ `mask_node | `render_node ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_mask_node_get_type"
 
-external new_ : Render_node.t -> Render_node.t -> Gsk_enums.maskmode -> t
+external new_ : Render_node.t -> Render_node.t -> Ocgsk_enums.maskmode -> t
   = "ml_gsk_mask_node_new"
 (** Create a new MaskNode *)
 
@@ -16,7 +16,7 @@ external new_ : Render_node.t -> Render_node.t -> Gsk_enums.maskmode -> t
 external get_source : t -> Render_node.t = "ml_gsk_mask_node_get_source"
 (** Retrieves the source [GskRenderNode] child of the [node]. *)
 
-external get_mask_mode : t -> Gsk_enums.maskmode
+external get_mask_mode : t -> Ocgsk_enums.maskmode
   = "ml_gsk_mask_node_get_mask_mode"
 (** Retrieves the mask mode used by [node]. *)
 

@@ -31,7 +31,7 @@ external new_ : unit -> t = "ml_gtk_revealer_new"
 
 (* Methods *)
 
-external set_transition_type : t -> Gtk_enums.revealertransitiontype -> unit
+external set_transition_type : t -> Ocgtk_enums.revealertransitiontype -> unit
   = "ml_gtk_revealer_set_transition_type"
 (** Sets the type of animation that will be used for transitions in [revealer].
 
@@ -57,7 +57,7 @@ external set_child :
   unit = "ml_gtk_revealer_set_child"
 (** Sets the child widget of [revealer]. *)
 
-external get_transition_type : t -> Gtk_enums.revealertransitiontype
+external get_transition_type : t -> Ocgtk_enums.revealertransitiontype
   = "ml_gtk_revealer_get_transition_type"
 (** Gets the type of animation that will be used for transitions in [revealer].
 *)

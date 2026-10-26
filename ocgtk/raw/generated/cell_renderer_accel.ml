@@ -30,19 +30,19 @@ external set_accel_key : t -> int -> unit
   = "ml_gtk_cell_renderer_accel_set_accel_key"
 (** Set property: accel-key *)
 
-external get_accel_mode : t -> Gtk_enums.cellrendereraccelmode
+external get_accel_mode : t -> Ocgtk_enums.cellrendereraccelmode
   = "ml_gtk_cell_renderer_accel_get_accel_mode"
 (** Get property: accel-mode *)
 
-external set_accel_mode : t -> Gtk_enums.cellrendereraccelmode -> unit
+external set_accel_mode : t -> Ocgtk_enums.cellrendereraccelmode -> unit
   = "ml_gtk_cell_renderer_accel_set_accel_mode"
 (** Set property: accel-mode *)
 
-external get_accel_mods : t -> Ocgtk_gdk.Gdk.modifiertype
+external get_accel_mods : t -> Ocgdk_enums.modifiertype
   = "ml_gtk_cell_renderer_accel_get_accel_mods"
 (** Get property: accel-mods *)
 
-external set_accel_mods : t -> Ocgtk_gdk.Gdk.modifiertype -> unit
+external set_accel_mods : t -> Ocgdk_enums.modifiertype -> unit
   = "ml_gtk_cell_renderer_accel_set_accel_mods"
 (** Set property: accel-mods *)
 
@@ -78,8 +78,7 @@ let on_accel_edited ?after obj ~callback =
         in
         let accel_mods =
           let v = Gobject.Closure.nth argv ~pos:3 in
-          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
-            (Gobject.Value.get_flags_int v)
+          Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)
         in
         let hardware_keycode =
           let v = Gobject.Closure.nth argv ~pos:4 in

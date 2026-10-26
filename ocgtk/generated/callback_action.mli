@@ -1,6 +1,6 @@
 class type callback_action_t = object
-  inherit GShortcut_action.shortcut_action_t
-  method as_callback_action : Callback_action.t
+  inherit Shortcut_action.shortcut_action_t
+  method as_callback_action : Raw.Callback_action.t
 end
 
-class callback_action : Callback_action.t -> callback_action_t
+class callback_action : Raw.Callback_action.t -> callback_action_t

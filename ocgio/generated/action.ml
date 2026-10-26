@@ -7,32 +7,32 @@ class type action_t = object
   method get_state : unit -> Gvariant.t option
   method get_state_hint : unit -> Gvariant.t option
   method get_state_type : unit -> Gvariant_type.t option
-  method as_action : Action.t
+  method as_action : Raw.Action.t
 end
 
 (* High-level class for Action *)
-class action (obj : Action.t) : action_t =
+class action (obj : Raw.Action.t) : action_t =
   object (self)
     method activate : Gvariant.t option -> unit =
-      fun parameter -> Action.activate obj parameter
+      fun parameter -> Raw.Action.activate obj parameter
 
     method change_state : Gvariant.t -> unit =
-      fun value -> Action.change_state obj value
+      fun value -> Raw.Action.change_state obj value
 
-    method get_enabled : unit -> bool = fun () -> Action.get_enabled obj
-    method get_name : unit -> string = fun () -> Action.get_name obj
+    method get_enabled : unit -> bool = fun () -> Raw.Action.get_enabled obj
+    method get_name : unit -> string = fun () -> Raw.Action.get_name obj
 
     method get_parameter_type : unit -> Gvariant_type.t option =
-      fun () -> Action.get_parameter_type obj
+      fun () -> Raw.Action.get_parameter_type obj
 
     method get_state : unit -> Gvariant.t option =
-      fun () -> Action.get_state obj
+      fun () -> Raw.Action.get_state obj
 
     method get_state_hint : unit -> Gvariant.t option =
-      fun () -> Action.get_state_hint obj
+      fun () -> Raw.Action.get_state_hint obj
 
     method get_state_type : unit -> Gvariant_type.t option =
-      fun () -> Action.get_state_type obj
+      fun () -> Raw.Action.get_state_type obj
 
     method as_action = obj
   end

@@ -80,7 +80,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_get_type"
 external ungroup : t -> unit = "ml_gtk_gesture_ungroup"
 (** Separates [gesture] into an isolated group. *)
 
-external set_state : t -> Gtk_enums.eventsequencestate -> bool
+external set_state : t -> Ocgtk_enums.eventsequencestate -> bool
   = "ml_gtk_gesture_set_state"
 (** Sets the state of all sequences that [gesture] is currently interacting
     with.
@@ -126,10 +126,8 @@ external set_state : t -> Gtk_enums.eventsequencestate -> bool
     group's global state when the second gesture processes the event. *)
 
 external set_sequence_state :
-  t ->
-  Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t ->
-  Gtk_enums.eventsequencestate ->
-  bool = "ml_gtk_gesture_set_sequence_state"
+  t -> Ocgdk_raw.Event_sequence.t -> Ocgtk_enums.eventsequencestate -> bool
+  = "ml_gtk_gesture_set_sequence_state"
 (** Sets the state of [sequence] in [gesture].
 
     Sequences start in state [GTK_EVENT_SEQUENCE_NONE], and whenever they change
@@ -186,8 +184,7 @@ external is_active : t -> bool = "ml_gtk_gesture_is_active"
 
     A gesture is active while there are touch sequences interacting with it. *)
 
-external handles_sequence :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option -> bool
+external handles_sequence : t -> Ocgdk_raw.Event_sequence.t option -> bool
   = "ml_gtk_gesture_handles_sequence"
 (** Returns [TRUE] if [gesture] is currently handling events corresponding to
     [sequence]. *)
@@ -208,18 +205,18 @@ external group : t -> t -> unit = "ml_gtk_gesture_group"
    [GtkWidget] will switch the state for that sequence to\n\
    [GTK_EVENT_SEQUENCE_DENIED]."]
 
-external get_sequences : t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t list
+external get_sequences : t -> Ocgdk_raw.Event_sequence.t list
   = "ml_gtk_gesture_get_sequences"
 (** Returns the list of [GdkEventSequences] currently being interpreted by
     [gesture]. *)
 
 external get_sequence_state :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t -> Gtk_enums.eventsequencestate
+  t -> Ocgdk_raw.Event_sequence.t -> Ocgtk_enums.eventsequencestate
   = "ml_gtk_gesture_get_sequence_state"
 (** Returns the [sequence] state, as seen by [gesture]. *)
 
 external get_point :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option -> bool * float * float
+  t -> Ocgdk_raw.Event_sequence.t option -> bool * float * float
   = "ml_gtk_gesture_get_point"
 (** If [sequence] is currently being interpreted by [gesture], returns [TRUE]
     and fills in [x] and [y] with the last coordinates stored for that event
@@ -227,15 +224,13 @@ external get_point :
 
     The coordinates are always relative to the widget allocation. *)
 
-external get_last_updated_sequence :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option
+external get_last_updated_sequence : t -> Ocgdk_raw.Event_sequence.t option
   = "ml_gtk_gesture_get_last_updated_sequence"
 (** Returns the [GdkEventSequence] that was last updated on [gesture]. *)
 
 external get_last_event :
-  t ->
-  Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option ->
-  Ocgtk_gdk.Gdk.Wrappers.Event.t option = "ml_gtk_gesture_get_last_event"
+  t -> Ocgdk_raw.Event_sequence.t option -> Ocgdk_raw.Event.t option
+  = "ml_gtk_gesture_get_last_event"
 (** Returns the last event that was processed for [sequence].
 
     Note that the returned pointer is only valid as long as the [sequence] is
@@ -245,7 +240,7 @@ external get_last_event :
 external get_group : t -> t list = "ml_gtk_gesture_get_group"
 (** Returns all gestures in the group of [gesture] *)
 
-external get_device : t -> Ocgtk_gdk.Gdk.Wrappers.Device.t option
+external get_device : t -> Ocgdk_raw.Device.t option
   = "ml_gtk_gesture_get_device"
 (** Returns the logical [GdkDevice] that is currently operating on [gesture].
 
@@ -259,7 +254,7 @@ external get_bounding_box_center : t -> bool * float * float
 
     Otherwise, [FALSE] will be returned. *)
 
-external get_bounding_box : t -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+external get_bounding_box : t -> bool * Ocgdk_raw.Rectangle.t
   = "ml_gtk_gesture_get_bounding_box"
 (** If there are touch sequences being currently handled by [gesture], returns
     [TRUE] and fills in [rect] with the bounding box containing all active

@@ -39,7 +39,7 @@ external verify :
   .t
   option ->
   t option ->
-  Gio_enums.tlscertificateflags = "ml_g_tls_certificate_verify"
+  Ocgio_enums.tlscertificateflags = "ml_g_tls_certificate_verify"
 (** This verifies [cert] and returns a set of [GTlsCertificateFlags] indicating
     any problems found with it. This can be used to verify a certificate outside
     the context of making a connection, or to check a certificate against a CA

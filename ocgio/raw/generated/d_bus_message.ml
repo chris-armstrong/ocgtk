@@ -76,7 +76,7 @@ external set_num_unix_fds : t -> UInt32.t -> unit
 (** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header
     field. *)
 
-external set_message_type : t -> Gio_enums.dbusmessagetype -> unit
+external set_message_type : t -> Ocgio_enums.dbusmessagetype -> unit
   = "ml_g_dbus_message_set_message_type"
 (** Sets [message] to be of [type]. *)
 
@@ -91,13 +91,13 @@ external set_interface : t -> string option -> unit
     field. *)
 
 external set_header :
-  t -> Gio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit
+  t -> Ocgio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit
   = "ml_g_dbus_message_set_header"
 (** Sets a header field on [message].
 
     If [value] is floating, [message] assumes ownership of [value]. *)
 
-external set_flags : t -> Gio_enums.dbusmessageflags -> unit
+external set_flags : t -> Ocgio_enums.dbusmessageflags -> unit
   = "ml_g_dbus_message_set_flags"
 (** Sets the flags to set on [message]. *)
 
@@ -111,7 +111,7 @@ external set_destination : t -> string option -> unit
 (** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION] header
     field. *)
 
-external set_byte_order : t -> Gio_enums.dbusmessagebyteorder -> unit
+external set_byte_order : t -> Ocgio_enums.dbusmessagebyteorder -> unit
   = "ml_g_dbus_message_set_byte_order"
 (** Sets the byte order of [message]. *)
 
@@ -206,7 +206,7 @@ external get_num_unix_fds : t -> UInt32.t = "ml_g_dbus_message_get_num_unix_fds"
 (** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header
     field. *)
 
-external get_message_type : t -> Gio_enums.dbusmessagetype
+external get_message_type : t -> Ocgio_enums.dbusmessagetype
   = "ml_g_dbus_message_get_message_type"
 (** Gets the type of [message]. *)
 
@@ -223,14 +223,15 @@ external get_interface : t -> string option = "ml_g_dbus_message_get_interface"
 (** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE] header
     field. *)
 
-external get_header : t -> Gio_enums.dbusmessageheaderfield -> Gvariant.t option
+external get_header :
+  t -> Ocgio_enums.dbusmessageheaderfield -> Gvariant.t option
   = "ml_g_dbus_message_get_header"
 (** Gets a header field on [message].
 
     The caller is responsible for checking the type of the returned [GVariant]
     matches what is expected. *)
 
-external get_flags : t -> Gio_enums.dbusmessageflags
+external get_flags : t -> Ocgio_enums.dbusmessageflags
   = "ml_g_dbus_message_get_flags"
 (** Gets the flags for [message]. *)
 
@@ -244,7 +245,7 @@ external get_destination : t -> string option
 (** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION] header
     field. *)
 
-external get_byte_order : t -> Gio_enums.dbusmessagebyteorder
+external get_byte_order : t -> Ocgio_enums.dbusmessagebyteorder
   = "ml_g_dbus_message_get_byte_order"
 (** Gets the byte order of [message]. *)
 

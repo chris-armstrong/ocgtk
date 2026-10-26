@@ -18,20 +18,20 @@ external set_matrix : t -> Matrix.t option -> unit
   = "ml_pango_renderer_set_matrix"
 (** Sets the transformation matrix that will be applied when rendering. *)
 
-external set_color : t -> Pango_enums.renderpart -> Color.t option -> unit
+external set_color : t -> Ocpango_enums.renderpart -> Color.t option -> unit
   = "ml_pango_renderer_set_color"
 (** Sets the color for part of the rendering.
 
     Also see [Pango.Renderer.set_alpha]. *)
 
-external set_alpha : t -> Pango_enums.renderpart -> UInt16.t -> unit
+external set_alpha : t -> Ocpango_enums.renderpart -> UInt16.t -> unit
   = "ml_pango_renderer_set_alpha"
 (** Sets the alpha for part of the rendering.
 
     Note that the alpha may only be used if a color is specified for [part] as
     well. *)
 
-external part_changed : t -> Pango_enums.renderpart -> unit
+external part_changed : t -> Ocpango_enums.renderpart -> unit
   = "ml_pango_renderer_part_changed"
 (** Informs Pango that the way that the rendering is done for [part] has
     changed.
@@ -73,17 +73,17 @@ external get_layout : t -> Layout_and__layout_iter.Layout.t option
 
     The returned layout should not be modified while still being rendered. *)
 
-external get_color : t -> Pango_enums.renderpart -> Color.t option
+external get_color : t -> Ocpango_enums.renderpart -> Color.t option
   = "ml_pango_renderer_get_color"
 (** Gets the current rendering color for the specified part. *)
 
-external get_alpha : t -> Pango_enums.renderpart -> UInt16.t
+external get_alpha : t -> Ocpango_enums.renderpart -> UInt16.t
   = "ml_pango_renderer_get_alpha"
 (** Gets the current alpha for the specified part. *)
 
 external draw_trapezoid :
   t ->
-  Pango_enums.renderpart ->
+  Ocpango_enums.renderpart ->
   float ->
   float ->
   float ->
@@ -97,7 +97,7 @@ external draw_trapezoid :
     given [PangoRenderer]; coordinates are in device space. *)
 
 external draw_rectangle :
-  t -> Pango_enums.renderpart -> int -> int -> int -> int -> unit
+  t -> Ocpango_enums.renderpart -> int -> int -> int -> int -> unit
   = "ml_pango_renderer_draw_rectangle_bytecode"
     "ml_pango_renderer_draw_rectangle_native"
 (** Draws an axis-aligned rectangle in user space coordinates with the specified

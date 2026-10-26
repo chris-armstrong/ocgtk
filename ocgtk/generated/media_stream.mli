@@ -1,5 +1,5 @@
 class type media_stream_t = object
-  inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
+  inherit Ocgdk.Paintable.paintable_t
   method gerror : GError.t -> unit
   method get_duration : unit -> int64
   method get_ended : unit -> bool
@@ -16,7 +16,7 @@ class type media_stream_t = object
   method is_seeking : unit -> bool
   method pause : unit -> unit
   method play : unit -> unit
-  method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+  method realize : Ocgdk.Surface.surface_t -> unit
   method seek : int64 -> unit
   method seek_failed : unit -> unit
   method seek_success : unit -> unit
@@ -27,9 +27,9 @@ class type media_stream_t = object
   method stream_ended : unit -> unit
   method stream_prepared : bool -> bool -> bool -> int64 -> unit
   method stream_unprepared : unit -> unit
-  method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+  method unrealize : Ocgdk.Surface.surface_t -> unit
   method update : int64 -> unit
-  method as_media_stream : Media_stream.t
+  method as_media_stream : Raw.Media_stream.t
 end
 
-class media_stream : Media_stream.t -> media_stream_t
+class media_stream : Raw.Media_stream.t -> media_stream_t

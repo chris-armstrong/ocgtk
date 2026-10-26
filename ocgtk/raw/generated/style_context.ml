@@ -44,7 +44,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_style_context_get_type"
 
 (* Methods *)
 
-external to_string : t -> Gtk_enums.stylecontextprintflags -> string
+external to_string : t -> Ocgtk_enums.stylecontextprintflags -> string
   = "ml_gtk_style_context_to_string"
 (** Converts the style context into a string representation.
 
@@ -56,14 +56,14 @@ external to_string : t -> Gtk_enums.stylecontextprintflags -> string
     implementation in GTK. There are no guarantees about the format of the
     returned string, it may change. *)
 
-external set_state : t -> Gtk_enums.stateflags -> unit
+external set_state : t -> Ocgtk_enums.stateflags -> unit
   = "ml_gtk_style_context_set_state"
 (** Sets the state to be used for style matching. *)
 
 external set_scale : t -> int -> unit = "ml_gtk_style_context_set_scale"
 (** Sets the scale to use when getting image assets for the style. *)
 
-external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
+external set_display : t -> Ocgdk_raw.Display.t -> unit
   = "ml_gtk_style_context_set_display"
 (** Attaches [context] to the given display.
 
@@ -97,14 +97,14 @@ external remove_class : t -> string -> unit
   = "ml_gtk_style_context_remove_class"
 (** Removes [class_name] from [context]. *)
 
-external lookup_color : t -> string -> bool * Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external lookup_color : t -> string -> bool * Ocgdk_raw.Rgb_a.t
   = "ml_gtk_style_context_lookup_color"
 (** Looks up and resolves a color name in the [context] color map. *)
 
 external has_class : t -> string -> bool = "ml_gtk_style_context_has_class"
 (** Returns [TRUE] if [context] currently has defined the given class name. *)
 
-external get_state : t -> Gtk_enums.stateflags
+external get_state : t -> Ocgtk_enums.stateflags
   = "ml_gtk_style_context_get_state"
 (** Returns the state used for style matching.
 
@@ -122,12 +122,11 @@ external get_padding : t -> Border.t = "ml_gtk_style_context_get_padding"
 external get_margin : t -> Border.t = "ml_gtk_style_context_get_margin"
 (** Gets the margin for a given state as a [GtkBorder]. *)
 
-external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
+external get_display : t -> Ocgdk_raw.Display.t
   = "ml_gtk_style_context_get_display"
 (** Returns the [GdkDisplay] to which [context] is attached. *)
 
-external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-  = "ml_gtk_style_context_get_color"
+external get_color : t -> Ocgdk_raw.Rgb_a.t = "ml_gtk_style_context_get_color"
 (** Gets the foreground color for a given state. *)
 
 external get_border : t -> Border.t = "ml_gtk_style_context_get_border"

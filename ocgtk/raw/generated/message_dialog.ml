@@ -79,11 +79,11 @@ external get_message_area :
 
 (* Properties *)
 
-external get_message_type : t -> Gtk_enums.messagetype
+external get_message_type : t -> Ocgtk_enums.messagetype
   = "ml_gtk_message_dialog_get_message_type"
 (** Get property: message-type *)
 
-external set_message_type : t -> Gtk_enums.messagetype -> unit
+external set_message_type : t -> Ocgtk_enums.messagetype -> unit
   = "ml_gtk_message_dialog_set_message_type"
 (** Set property: message-type *)
 

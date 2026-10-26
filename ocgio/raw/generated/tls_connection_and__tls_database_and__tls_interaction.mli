@@ -47,7 +47,7 @@ module rec Tls_connection : sig
      other\n\
     \  operations are pending on [conn] or the base I/O stream."]
 
-  external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
+  external set_rehandshake_mode : t -> Ocgio_enums.tlsrehandshakemode -> unit
     = "ml_g_tls_connection_set_rehandshake_mode"
   (** Since GLib 2.64, changing the rehandshake mode is no longer supported and
       will have no effect. With TLS 1.3, rehandshaking has been removed from the
@@ -153,19 +153,19 @@ module rec Tls_connection : sig
       the connection is closed. See g_tls_connection_set_require_close_notify()
       for details. *)
 
-  external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode
+  external get_rehandshake_mode : t -> Ocgio_enums.tlsrehandshakemode
     = "ml_g_tls_connection_get_rehandshake_mode"
   (** Gets [conn] rehandshaking mode. See
       g_tls_connection_set_rehandshake_mode() for details. *)
 
-  external get_protocol_version : t -> Gio_enums.tlsprotocolversion
+  external get_protocol_version : t -> Ocgio_enums.tlsprotocolversion
     = "ml_g_tls_connection_get_protocol_version"
   (** Returns the current TLS protocol version, which may be
       [G_TLS_PROTOCOL_VERSION_UNKNOWN] if the connection has not handshaked, or
       has been closed, or if the TLS backend has implemented a protocol version
       that is not a recognized [GTlsProtocolVersion]. *)
 
-  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags
+  external get_peer_certificate_errors : t -> Ocgio_enums.tlscertificateflags
     = "ml_g_tls_connection_get_peer_certificate_errors"
   (** Gets the errors associated with validating [conn]'s peer's certificate,
       after the handshake has completed or failed. (It is not set during the
@@ -217,7 +217,7 @@ module rec Tls_connection : sig
   *)
 
   external emit_accept_certificate :
-    t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool
+    t -> Tls_certificate.t -> Ocgio_enums.tlscertificateflags -> bool
     = "ml_g_tls_connection_emit_accept_certificate"
   (** Used by [GTlsConnection] implementations to emit the
       [GTlsConnection::accept]-certificate signal. *)
@@ -233,7 +233,7 @@ module rec Tls_connection : sig
     t ->
     callback:
       (peer_cert:Tls_certificate.t ->
-      errors:Gio_enums.tlscertificateflags ->
+      errors:Ocgio_enums.tlscertificateflags ->
       bool) ->
     Gobject.Signal.handler_id
 end
@@ -246,7 +246,7 @@ and Tls_database : sig
   (* Methods *)
 
   external verify_chain_finish :
-    t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result
+    t -> Async_result.t -> (Ocgio_enums.tlscertificateflags, GError.t) result
     = "ml_g_tls_database_verify_chain_finish"
   (** Finish an asynchronous verify chain operation. See
       g_tls_database_verify_chain() for more information.
@@ -268,9 +268,9 @@ and Tls_database : sig
     .t
     option ->
     Tls_interaction.t option ->
-    Gio_enums.tlsdatabaseverifyflags ->
+    Ocgio_enums.tlsdatabaseverifyflags ->
     Cancellable.t option ->
-    (Gio_enums.tlscertificateflags, GError.t) result
+    (Ocgio_enums.tlscertificateflags, GError.t) result
     = "ml_g_tls_database_verify_chain_bytecode"
       "ml_g_tls_database_verify_chain_native"
   (** Determines the validity of a certificate chain, outside the context of a
@@ -348,7 +348,7 @@ and Tls_database : sig
     t ->
     Tls_certificate.t ->
     Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
+    Ocgio_enums.tlsdatabaselookupflags ->
     Cancellable.t option ->
     (Tls_certificate.t, GError.t) result
     = "ml_g_tls_database_lookup_certificate_issuer"
@@ -387,7 +387,7 @@ and Tls_database : sig
     t ->
     string ->
     Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
+    Ocgio_enums.tlsdatabaselookupflags ->
     Cancellable.t option ->
     (Tls_certificate.t option, GError.t) result
     = "ml_g_tls_database_lookup_certificate_for_handle"
@@ -426,7 +426,7 @@ and Tls_interaction : sig
   (* Methods *)
 
   external request_certificate_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
+    t -> Async_result.t -> (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_request_certificate_finish"
   (** Complete a request certificate user interaction request. This should be
       once the g_tls_interaction_request_certificate_async() completion callback
@@ -443,9 +443,9 @@ and Tls_interaction : sig
   external request_certificate :
     t ->
     Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
+    Ocgio_enums.tlscertificaterequestflags ->
     Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
+    (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_request_certificate"
   (** Run synchronous interaction to ask the user to choose a certificate to use
       with the connection. In general,
@@ -469,9 +469,9 @@ and Tls_interaction : sig
   external invoke_request_certificate :
     t ->
     Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
+    Ocgio_enums.tlscertificaterequestflags ->
     Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
+    (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_invoke_request_certificate"
   (** Invoke the interaction to ask the user to choose a certificate to use with
       the connection. It invokes this interaction in the main loop, specifically
@@ -497,7 +497,7 @@ and Tls_interaction : sig
     t ->
     Tls_password.t ->
     Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
+    (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_invoke_ask_password"
   (** Invoke the interaction to ask the user for a password. It invokes this
       interaction in the main loop, specifically the [GMainContext] returned by
@@ -521,7 +521,7 @@ and Tls_interaction : sig
       not support immediate cancellation. *)
 
   external ask_password_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
+    t -> Async_result.t -> (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_ask_password_finish"
   (** Complete an ask password user interaction request. This should be once the
       g_tls_interaction_ask_password_async() completion callback is called.
@@ -537,7 +537,7 @@ and Tls_interaction : sig
     t ->
     Tls_password.t ->
     Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
+    (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_ask_password"
   (** Run synchronous interaction to ask the user for a password. In general,
       g_tls_interaction_invoke_ask_password() should be used instead of this

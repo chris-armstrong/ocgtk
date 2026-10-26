@@ -27,8 +27,8 @@ external dup : t -> t = "ml_g_file_attribute_info_list_dup"
 external add :
   t ->
   string ->
-  Gio_enums.fileattributetype ->
-  Gio_enums.fileattributeinfoflags ->
+  Ocgio_enums.fileattributetype ->
+  Ocgio_enums.fileattributeinfoflags ->
   unit = "ml_g_file_attribute_info_list_add"
 (** Adds a new attribute with [name] to the [list], setting its [type] and
     [flags]. *)

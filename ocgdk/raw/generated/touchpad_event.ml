@@ -24,7 +24,7 @@ external get_pinch_angle_delta : t -> float
 external get_n_fingers : t -> int = "ml_gdk_touchpad_event_get_n_fingers"
 (** Extracts the number of fingers from a touchpad event. *)
 
-external get_gesture_phase : t -> Gdk_enums.touchpadgesturephase
+external get_gesture_phase : t -> Ocgdk_enums.touchpadgesturephase
   = "ml_gdk_touchpad_event_get_gesture_phase"
 (** Extracts the touchpad gesture phase from a touchpad event. *)
 

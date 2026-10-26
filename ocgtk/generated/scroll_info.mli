@@ -1,12 +1,12 @@
 class type scroll_info_t = object
   method get_enable_horizontal : unit -> bool
   method get_enable_vertical : unit -> bool
-  method ref : unit -> Scroll_info.t
+  method ref : unit -> Raw.Scroll_info.t
   method set_enable_horizontal : bool -> unit
   method set_enable_vertical : bool -> unit
-  method as_scroll_info : Scroll_info.t
+  method as_scroll_info : Raw.Scroll_info.t
 end
 
-class scroll_info : Scroll_info.t -> scroll_info_t
+class scroll_info : Raw.Scroll_info.t -> scroll_info_t
 
 val new_ : unit -> scroll_info_t

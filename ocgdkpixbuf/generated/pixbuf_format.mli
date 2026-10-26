@@ -9,7 +9,7 @@ class type pixbuf_format_t = object
   method is_scalable : unit -> bool
   method is_writable : unit -> bool
   method set_disabled : bool -> unit
-  method as_pixbuf_format : Pixbuf_format.t
+  method as_pixbuf_format : Raw.Pixbuf_format.t
 end
 
-class pixbuf_format : Pixbuf_format.t -> pixbuf_format_t
+class pixbuf_format : Raw.Pixbuf_format.t -> pixbuf_format_t

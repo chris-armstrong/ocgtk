@@ -37,11 +37,11 @@ external set_xalign : t -> float -> unit = "ml_gtk_inscription_set_xalign"
 
     See the [Gtk.Inscription:xalign] property. *)
 
-external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit
+external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_inscription_set_wrap_mode"
 (** Controls how line wrapping is done. *)
 
-external set_text_overflow : t -> Gtk_enums.inscriptionoverflow -> unit
+external set_text_overflow : t -> Ocgtk_enums.inscriptionoverflow -> unit
   = "ml_gtk_inscription_set_text_overflow"
 (** Sets what to do when the text doesn't fit. *)
 
@@ -74,8 +74,7 @@ external set_markup : t -> string option -> unit
 
     See the [Gtk.Inscription:markup] property. *)
 
-external set_attributes :
-  t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit
+external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
   = "ml_gtk_inscription_set_attributes"
 (** Apply attributes to the inscription text.
 
@@ -91,13 +90,13 @@ external get_xalign : t -> float = "ml_gtk_inscription_get_xalign"
 
     See the [Gtk.Inscription:xalign] property. *)
 
-external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode
+external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_inscription_get_wrap_mode"
 (** Returns line wrap mode used by the inscription.
 
     See [Gtk.Inscription.set_wrap_mode]. *)
 
-external get_text_overflow : t -> Gtk_enums.inscriptionoverflow
+external get_text_overflow : t -> Ocgtk_enums.inscriptionoverflow
   = "ml_gtk_inscription_get_text_overflow"
 (** Gets the inscription's overflow method. *)
 
@@ -124,7 +123,7 @@ external get_min_chars : t -> int = "ml_gtk_inscription_get_min_chars"
 
     See the [Gtk.Inscription:min-chars] property. *)
 
-external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
+external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_inscription_get_attributes"
 (** Gets the inscription's attribute list. *)
 

@@ -50,7 +50,7 @@ external serialize : t -> Glib_bytes.t = "ml_gsk_render_node_serialize"
 external ref : t -> t = "ml_gsk_render_node_ref"
 (** Acquires a reference on the given [GskRenderNode]. *)
 
-external get_opaque_rect : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+external get_opaque_rect : t -> bool * Ocgraphene_raw.Rect.t
   = "ml_gsk_render_node_get_opaque_rect"
 (** Gets an opaque rectangle inside the node that GTK can determine to be fully
     opaque.
@@ -61,18 +61,17 @@ external get_opaque_rect : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
 
     The rectangle will be fully contained in the bounds of the node. *)
 
-external get_node_type : t -> Gsk_enums.rendernodetype
+external get_node_type : t -> Ocgsk_enums.rendernodetype
   = "ml_gsk_render_node_get_node_type"
 (** Returns the type of the render node. *)
 
-external get_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t
+external get_bounds : t -> Ocgraphene_raw.Rect.t
   = "ml_gsk_render_node_get_bounds"
 (** Retrieves the boundaries of the [node].
 
     The node will not draw outside of its boundaries. *)
 
-external draw : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
-  = "ml_gsk_render_node_draw"
+external draw : t -> Occairo_raw.Context.t -> unit = "ml_gsk_render_node_draw"
 (** Draws the contents of a render node on a cairo context.
 
     Typically, you'll use this function to implement fallback rendering of

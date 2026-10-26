@@ -28,12 +28,11 @@ external set_modal : t -> bool -> unit = "ml_gtk_font_dialog_set_modal"
 (** Sets whether the font chooser dialog blocks interaction with the parent
     window while it is presented. *)
 
-external set_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t -> unit
+external set_language : t -> Ocpango_raw.Language.t -> unit
   = "ml_gtk_font_dialog_set_language"
 (** Sets the language for which font features are applied. *)
 
-external set_font_map :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit
+external set_font_map : t -> Ocpango_raw.Font_map.t option -> unit
   = "ml_gtk_font_dialog_set_font_map"
 (** Sets the fontmap from which fonts are selected.
 
@@ -54,11 +53,11 @@ external get_modal : t -> bool = "ml_gtk_font_dialog_get_modal"
 (** Returns whether the font chooser dialog blocks interaction with the parent
     window while it is presented. *)
 
-external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t option
+external get_language : t -> Ocpango_raw.Language.t option
   = "ml_gtk_font_dialog_get_language"
 (** Returns the language for which font features are applied. *)
 
-external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
+external get_font_map : t -> Ocpango_raw.Font_map.t option
   = "ml_gtk_font_dialog_get_font_map"
 (** Returns the fontmap from which fonts are selected, or [NULL] for the default
     fontmap. *)
@@ -69,8 +68,8 @@ external get_filter : t -> Filter.t option = "ml_gtk_font_dialog_get_filter"
 
 external choose_font_finish :
   t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_description.t, GError.t) result
+  Ocgio_raw.Async_result.t ->
+  (Ocpango_raw.Font_description.t, GError.t) result
   = "ml_gtk_font_dialog_choose_font_finish"
 (** Finishes the [Gtk.FontDialog.choose_font] call.
 
@@ -78,9 +77,7 @@ external choose_font_finish :
     user cancels the dialog. *)
 
 external choose_family_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_family.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocpango_raw.Font_family.t, GError.t) result
   = "ml_gtk_font_dialog_choose_family_finish"
 (** Finishes the [Gtk.FontDialog.choose_family] call.
 
@@ -88,9 +85,7 @@ external choose_family_finish :
     user cancels the dialog. *)
 
 external choose_face_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_face.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocpango_raw.Font_face.t, GError.t) result
   = "ml_gtk_font_dialog_choose_face_finish"
 (** Finishes the [Gtk.FontDialog.choose_face] call.
 

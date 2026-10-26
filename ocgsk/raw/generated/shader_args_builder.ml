@@ -25,19 +25,19 @@ external to_args : t -> Glib_bytes.t = "ml_gsk_shader_args_builder_to_args"
     This function is intended primarily for bindings. C code should use
     [Gsk.ShaderArgsBuilder.free_to_args]. *)
 
-external set_vec4 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec4.t -> unit
+external set_vec4 : t -> int -> Ocgraphene_raw.Vec4.t -> unit
   = "ml_gsk_shader_args_builder_set_vec4"
 (** Sets the value of the uniform [idx].
 
     The uniform must be of vec4 type. *)
 
-external set_vec3 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> unit
+external set_vec3 : t -> int -> Ocgraphene_raw.Vec3.t -> unit
   = "ml_gsk_shader_args_builder_set_vec3"
 (** Sets the value of the uniform [idx].
 
     The uniform must be of vec3 type. *)
 
-external set_vec2 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit
+external set_vec2 : t -> int -> Ocgraphene_raw.Vec2.t -> unit
   = "ml_gsk_shader_args_builder_set_vec2"
 (** Sets the value of the uniform [idx].
 

@@ -1,6 +1,6 @@
 class type entry_completion_t = object
-  inherit GBuildable.buildable_t
-  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Buildable.buildable_t
+  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
   method on_insert_prefix :
     ?after:bool ->
@@ -17,13 +17,13 @@ class type entry_completion_t = object
 
   method get_entry :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_inline_completion : unit -> bool
   method get_inline_selection : unit -> bool
   method get_minimum_key_length : unit -> int
-  method get_model : unit -> GTree_model.tree_model_t option
+  method get_model : unit -> Tree_model.tree_model_t option
   method get_popup_completion : unit -> bool
   method get_popup_set_width : unit -> bool
   method get_popup_single_match : unit -> bool
@@ -32,22 +32,22 @@ class type entry_completion_t = object
   method set_inline_completion : bool -> unit
   method set_inline_selection : bool -> unit
   method set_minimum_key_length : int -> unit
-  method set_model : GTree_model.tree_model_t option -> unit
+  method set_model : Tree_model.tree_model_t option -> unit
   method set_popup_completion : bool -> unit
   method set_popup_set_width : bool -> unit
   method set_popup_single_match : bool -> unit
   method set_text_column : int -> unit
 
   method cell_area :
-    GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
+    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
 
-  method as_entry_completion : Entry_completion.t
+  method as_entry_completion : Raw.Entry_completion.t
 end
 
-class entry_completion : Entry_completion.t -> entry_completion_t
+class entry_completion : Raw.Entry_completion.t -> entry_completion_t
 
 val new_ : unit -> entry_completion_t
 
 val new_with_area :
-  GCell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
+  Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
   entry_completion_t

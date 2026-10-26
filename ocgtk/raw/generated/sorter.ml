@@ -27,7 +27,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_sorter_get_type"
 
 (* Methods *)
 
-external get_order : t -> Gtk_enums.sorterorder = "ml_gtk_sorter_get_order"
+external get_order : t -> Ocgtk_enums.sorterorder = "ml_gtk_sorter_get_order"
 (** Gets the order that [self] conforms to.
 
     See [Gtk.SorterOrder] for details of the possible return values.
@@ -38,7 +38,7 @@ external compare :
   t ->
   [ `object_ ] Gobject.obj ->
   [ `object_ ] Gobject.obj ->
-  Gtk_enums.ordering = "ml_gtk_sorter_compare"
+  Ocgtk_enums.ordering = "ml_gtk_sorter_compare"
 (** Compares two given items according to the sort order implemented by the
     sorter.
 
@@ -51,7 +51,8 @@ external compare :
     The sorter may signal it conforms to additional constraints via the return
     value of [Gtk.Sorter.get_order]. *)
 
-external changed : t -> Gtk_enums.sorterchange -> unit = "ml_gtk_sorter_changed"
+external changed : t -> Ocgtk_enums.sorterchange -> unit
+  = "ml_gtk_sorter_changed"
 (** Notifies all users of the sorter that it has changed.
 
     This emits the [Gtk.Sorter::changed] signal. Users of the sorter should then
@@ -69,7 +70,7 @@ let on_changed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let change =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.sorterchange_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.sorterchange_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~change)
   in

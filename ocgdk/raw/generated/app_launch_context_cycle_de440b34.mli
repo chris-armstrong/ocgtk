@@ -31,7 +31,7 @@ module rec App_launch_context : sig
       file that is passed to launched application or from the [GAppInfo] for the
       launched application itself. *)
 
-  external set_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option -> unit
+  external set_icon : t -> Ocgio_raw.Icon.t option -> unit
     = "ml_gdk_app_launch_context_set_icon"
   (** Sets the icon for applications that are launched with this context.
 
@@ -69,7 +69,7 @@ and Cairo_context : sig
 
   (* Methods *)
 
-  external cairo_create : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t option
+  external cairo_create : t -> Occairo_raw.Context.t option
     = "ml_gdk_cairo_context_cairo_create"
   (** Retrieves a Cairo context to be used to draw on the [GdkSurface] of
       [context].
@@ -89,7 +89,7 @@ and Clipboard : sig
   (* Methods *)
 
   external store_finish :
-    t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+    t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
     = "ml_gdk_clipboard_store_finish"
   (** Finishes an asynchronous clipboard store.
 
@@ -115,25 +115,22 @@ and Clipboard : sig
       transfer the contents and then request that format from [provider]. *)
 
   external read_value_finish :
-    t ->
-    Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-    (Gobject.Value.t, GError.t) result = "ml_gdk_clipboard_read_value_finish"
+    t -> Ocgio_raw.Async_result.t -> (Gobject.Value.t, GError.t) result
+    = "ml_gdk_clipboard_read_value_finish"
   (** Finishes an asynchronous clipboard read.
 
       See [Gdk.Clipboard.read_value_async]. *)
 
   external read_texture_finish :
-    t ->
-    Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-    (Texture.t option, GError.t) result = "ml_gdk_clipboard_read_texture_finish"
+    t -> Ocgio_raw.Async_result.t -> (Texture.t option, GError.t) result
+    = "ml_gdk_clipboard_read_texture_finish"
   (** Finishes an asynchronous clipboard read.
 
       See [Gdk.Clipboard.read_texture_async]. *)
 
   external read_text_finish :
-    t ->
-    Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-    (string option, GError.t) result = "ml_gdk_clipboard_read_text_finish"
+    t -> Ocgio_raw.Async_result.t -> (string option, GError.t) result
+    = "ml_gdk_clipboard_read_text_finish"
   (** Finishes an asynchronous clipboard read.
 
       See [Gdk.Clipboard.read_text_async]. *)
@@ -221,7 +218,8 @@ and Device : sig
       Returns [NULL] if the surface tree under [device] is not known to GDK (for
       example, belongs to another application). *)
 
-  external get_source : t -> Gdk_enums.inputsource = "ml_gdk_device_get_source"
+  external get_source : t -> Ocgdk_enums.inputsource
+    = "ml_gdk_device_get_source"
   (** Determines the type of the device. *)
 
   external get_seat : t -> Seat.t = "ml_gdk_device_get_seat"
@@ -250,7 +248,7 @@ and Device : sig
   external get_name : t -> string = "ml_gdk_device_get_name"
   (** The name of the device, suitable for showing in a user interface. *)
 
-  external get_modifier_state : t -> Gdk_enums.modifiertype
+  external get_modifier_state : t -> Ocgdk_enums.modifiertype
     = "ml_gdk_device_get_modifier_state"
   (** Retrieves the current modifier state of the keyboard.
 
@@ -271,7 +269,7 @@ and Device : sig
   external get_display : t -> Display.t = "ml_gdk_device_get_display"
   (** Returns the [GdkDisplay] to which [device] pertains. *)
 
-  external get_direction : t -> Ocgtk_pango.Pango.direction
+  external get_direction : t -> Ocpango_enums.direction
     = "ml_gdk_device_get_direction"
   (** Returns the direction of effective layout of the keyboard.
 
@@ -323,9 +321,9 @@ and Display : sig
   external translate_key :
     t ->
     int ->
-    Gdk_enums.modifiertype ->
+    Ocgdk_enums.modifiertype ->
     int ->
-    bool * int * int * int * Gdk_enums.modifiertype
+    bool * int * int * int * Ocgdk_enums.modifiertype
     = "ml_gdk_display_translate_key"
   (** Translates the contents of a [GdkEventKey] into a keyval, effective group,
       and level.
@@ -485,7 +483,7 @@ and Display : sig
   external get_name : t -> string = "ml_gdk_display_get_name"
   (** Gets the name of the display. *)
 
-  external get_monitors : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external get_monitors : t -> Ocgio_raw.List_model.t
     = "ml_gdk_display_get_monitors"
   (** Gets the list of monitors associated with this display.
 
@@ -613,7 +611,7 @@ and Draw_context : sig
     = "ml_gdk_draw_context_get_surface"
   (** Retrieves the surface that [context] is bound to. *)
 
-  external get_frame_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
+  external get_frame_region : t -> Occairo_raw.Region.t option
     = "ml_gdk_draw_context_get_frame_region"
   (** Retrieves the region that is currently being repainted.
 
@@ -638,7 +636,7 @@ and Draw_context : sig
       implicitly before returning; it is not recommended to call [glFlush()]
       explicitly before calling this function. *)
 
-  external begin_frame : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t -> unit
+  external begin_frame : t -> Occairo_raw.Region.t -> unit
     = "ml_gdk_draw_context_begin_frame"
   (** Indicates that you are beginning the process of redrawing [region] on the
       [context]'s surface.
@@ -720,7 +718,7 @@ and Event : sig
 
       Emulated pointer events typically originate from a touch events. *)
 
-  external get_modifier_state : t -> Gdk_enums.modifiertype
+  external get_modifier_state : t -> Ocgdk_enums.modifiertype
     = "ml_gdk_event_get_modifier_state"
   (** Returns the modifier state field of an event. *)
 
@@ -736,7 +734,7 @@ and Event : sig
       do it only if one of the mouse buttons is down, or the device has a tool.
   *)
 
-  external get_event_type : t -> Gdk_enums.eventtype
+  external get_event_type : t -> Ocgdk_enums.eventtype
     = "ml_gdk_event_get_event_type"
   (** Retrieves the type of the event. *)
 
@@ -764,7 +762,7 @@ and Event : sig
   external get_device : t -> Device.t option = "ml_gdk_event_get_device"
   (** Returns the device of an event. *)
 
-  external get_axis : t -> Gdk_enums.axisuse -> bool * float
+  external get_axis : t -> Ocgdk_enums.axisuse -> bool * float
     = "ml_gdk_event_get_axis"
   (** Extract the axis value for a particular axis use from an event structure.
 
@@ -857,7 +855,7 @@ and Gl_context : sig
       The [GdkGLContext] must not be realized or made current prior to calling
       this function. *)
 
-  external set_allowed_apis : t -> Gdk_enums.glapi -> unit
+  external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
     = "ml_gdk_gl_context_set_allowed_apis"
   (** Sets the allowed APIs. When gdk_gl_context_realize() is called, only the
       allowed APIs will be tried. If you set this to 0, realizing will always
@@ -951,12 +949,12 @@ and Gl_context : sig
 
       See [Gdk.GLContext.set_debug_enabled]. *)
 
-  external get_api : t -> Gdk_enums.glapi = "ml_gdk_gl_context_get_api"
+  external get_api : t -> Ocgdk_enums.glapi = "ml_gdk_gl_context_get_api"
   (** Gets the API currently in use.
 
       If the renderer has not been realized yet, 0 is returned. *)
 
-  external get_allowed_apis : t -> Gdk_enums.glapi
+  external get_allowed_apis : t -> Ocgdk_enums.glapi
     = "ml_gdk_gl_context_get_allowed_apis"
   (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
 
@@ -979,7 +977,7 @@ and Monitor : sig
   external get_width_mm : t -> int = "ml_gdk_monitor_get_width_mm"
   (** Gets the width in millimeters of the monitor. *)
 
-  external get_subpixel_layout : t -> Gdk_enums.subpixellayout
+  external get_subpixel_layout : t -> Ocgdk_enums.subpixellayout
     = "ml_gdk_monitor_get_subpixel_layout"
   (** Gets information about the layout of red, green and blue primaries for
       pixels. *)
@@ -1072,11 +1070,11 @@ and Seat : sig
   external get_display : t -> Display.t = "ml_gdk_seat_get_display"
   (** Returns the [GdkDisplay] this seat belongs to. *)
 
-  external get_devices : t -> Gdk_enums.seatcapabilities -> Device.t list
+  external get_devices : t -> Ocgdk_enums.seatcapabilities -> Device.t list
     = "ml_gdk_seat_get_devices"
   (** Returns the devices that match the given capabilities. *)
 
-  external get_capabilities : t -> Gdk_enums.seatcapabilities
+  external get_capabilities : t -> Ocgdk_enums.seatcapabilities
     = "ml_gdk_seat_get_capabilities"
   (** Returns the capabilities this [GdkSeat] currently has. *)
 
@@ -1127,8 +1125,7 @@ and Surface : sig
       Note that this only works if [to] and [from] are popups or transient-for
       to the same toplevel (directly or indirectly). *)
 
-  external set_opaque_region :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+  external set_opaque_region : t -> Occairo_raw.Region.t option -> unit
     = "ml_gdk_surface_set_opaque_region"
   (** Marks a region of the [GdkSurface] as opaque.
 
@@ -1145,8 +1142,7 @@ and Surface : sig
       background is not opaque, please update this property in your
       GtkWidgetClass.css_changed handler. *)
 
-  external set_input_region :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+  external set_input_region : t -> Occairo_raw.Region.t option -> unit
     = "ml_gdk_surface_set_input_region"
   (** Apply the region to the surface for the purpose of event handling.
 
@@ -1259,7 +1255,7 @@ and Surface : sig
   (** Gets the [GdkDisplay] associated with a [GdkSurface]. *)
 
   external get_device_position :
-    t -> Device.t -> bool * float * float * Gdk_enums.modifiertype
+    t -> Device.t -> bool * float * float * Ocgdk_enums.modifiertype
     = "ml_gdk_surface_get_device_position"
   (** Obtains the current device position and modifier state.
 
@@ -1301,11 +1297,7 @@ and Surface : sig
   (** Sets an error and returns [NULL]. *)
 
   external create_similar_surface :
-    t ->
-    Ocgtk_cairo.Cairo.content ->
-    int ->
-    int ->
-    Ocgtk_cairo.Cairo.Wrappers.Surface.t
+    t -> Occairo_enums.content -> int -> int -> Occairo_raw.Surface.t
     = "ml_gdk_surface_create_similar_surface"
   (** Create a new Cairo surface that is as compatible as possible with the
       given [surface].

@@ -1,5 +1,5 @@
 class type cell_renderer_toggle_t = object
-  inherit GCell_renderer.cell_renderer_t
+  inherit Cell_renderer.cell_renderer_t
 
   method on_toggled :
     ?after:bool ->
@@ -15,9 +15,11 @@ class type cell_renderer_toggle_t = object
   method set_radio : bool -> unit
   method inconsistent : bool
   method set_inconsistent : bool -> unit
-  method as_cell_renderer_toggle : Cell_renderer_toggle.t
+  method as_cell_renderer_toggle : Raw.Cell_renderer_toggle.t
 end
 
-class cell_renderer_toggle : Cell_renderer_toggle.t -> cell_renderer_toggle_t
+class cell_renderer_toggle :
+  Raw.Cell_renderer_toggle.t ->
+  cell_renderer_toggle_t
 
 val new_ : unit -> cell_renderer_toggle_t

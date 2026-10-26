@@ -18,7 +18,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_paper_size_get_type"
 external new_ : string option -> t = "ml_gtk_paper_size_new"
 (** Create a new PaperSize *)
 
-external new_custom : string -> string -> float -> float -> Gtk_enums.unit -> t
+external new_custom :
+  string -> string -> float -> float -> Ocgtk_enums.unit -> t
   = "ml_gtk_paper_size_new_custom"
 (** Create a new PaperSize *)
 
@@ -39,7 +40,7 @@ external new_from_ppd : string -> string -> float -> float -> t
 external to_gvariant : t -> Gvariant.t = "ml_gtk_paper_size_to_gvariant"
 (** Serialize a paper size to an [a{sv}] variant. *)
 
-external set_size : t -> float -> float -> Gtk_enums.unit -> unit
+external set_size : t -> float -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_paper_size_set_size"
 (** Changes the dimensions of a [size] to [width] x [height]. *)
 
@@ -52,7 +53,7 @@ external is_equal : t -> t -> bool = "ml_gtk_paper_size_is_equal"
 external is_custom : t -> bool = "ml_gtk_paper_size_is_custom"
 (** Returns [TRUE] if [size] is not a standard paper size. *)
 
-external get_width : t -> Gtk_enums.unit -> float
+external get_width : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_width"
 (** Gets the paper width of the [GtkPaperSize], in units of [unit]. *)
 
@@ -62,25 +63,25 @@ external get_ppd_name : t -> string = "ml_gtk_paper_size_get_ppd_name"
 external get_name : t -> string = "ml_gtk_paper_size_get_name"
 (** Gets the name of the [GtkPaperSize]. *)
 
-external get_height : t -> Gtk_enums.unit -> float
+external get_height : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_height"
 (** Gets the paper height of the [GtkPaperSize], in units of [unit]. *)
 
 external get_display_name : t -> string = "ml_gtk_paper_size_get_display_name"
 (** Gets the human-readable name of the [GtkPaperSize]. *)
 
-external get_default_top_margin : t -> Gtk_enums.unit -> float
+external get_default_top_margin : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_top_margin"
 (** Gets the default top margin for the [GtkPaperSize]. *)
 
-external get_default_right_margin : t -> Gtk_enums.unit -> float
+external get_default_right_margin : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_right_margin"
 (** Gets the default right margin for the [GtkPaperSize]. *)
 
-external get_default_left_margin : t -> Gtk_enums.unit -> float
+external get_default_left_margin : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_left_margin"
 (** Gets the default left margin for the [GtkPaperSize]. *)
 
-external get_default_bottom_margin : t -> Gtk_enums.unit -> float
+external get_default_bottom_margin : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_bottom_margin"
 (** Gets the default bottom margin for the [GtkPaperSize]. *)

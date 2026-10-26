@@ -19,11 +19,11 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gtk_orientable_from_gobject"
 
 (* Methods *)
 
-external set_orientation : t -> Gtk_enums.orientation -> unit
+external set_orientation : t -> Ocgtk_enums.orientation -> unit
   = "ml_gtk_orientable_set_orientation"
 (** Sets the orientation of the [orientable]. *)
 
-external get_orientation : t -> Gtk_enums.orientation
+external get_orientation : t -> Ocgtk_enums.orientation
   = "ml_gtk_orientable_get_orientation"
 (** Retrieves the orientation of the [orientable]. *)
 

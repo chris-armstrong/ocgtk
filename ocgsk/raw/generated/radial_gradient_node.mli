@@ -8,8 +8,8 @@ type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_radial_gradient_node_get_type"
 
 external new_ :
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
+  Ocgraphene_raw.Rect.t ->
+  Ocgraphene_raw.Point.t ->
   float ->
   float ->
   float ->
@@ -43,6 +43,6 @@ external get_color_stops : t -> Color_stop.t array * Gsize.t
   = "ml_gsk_radial_gradient_node_get_color_stops"
 (** Retrieves the color stops in the gradient. *)
 
-external get_center : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
+external get_center : t -> Ocgraphene_raw.Point.t
   = "ml_gsk_radial_gradient_node_get_center"
 (** Retrieves the center pointer for the gradient. *)

@@ -149,7 +149,7 @@ external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
     called. This mode is useful when the scene changes seldom, but takes a long
     time to redraw. *)
 
-external set_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi -> unit
+external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
   = "ml_gtk_gl_area_set_allowed_apis"
 (** Sets the allowed APIs to create a context with.
 
@@ -198,19 +198,19 @@ external get_has_depth_buffer : t -> bool
 external get_error : t -> GError.t option = "ml_gtk_gl_area_get_error"
 (** Gets the current error set on the [area]. *)
 
-external get_context : t -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option
+external get_context : t -> Ocgdk_raw.Gl_context.t option
   = "ml_gtk_gl_area_get_context"
 (** Retrieves the [GdkGLContext] used by [area]. *)
 
 external get_auto_render : t -> bool = "ml_gtk_gl_area_get_auto_render"
 (** Returns whether the area is in auto render mode or not. *)
 
-external get_api : t -> Ocgtk_gdk.Gdk.glapi = "ml_gtk_gl_area_get_api"
+external get_api : t -> Ocgdk_enums.glapi = "ml_gtk_gl_area_get_api"
 (** Gets the API that is currently in use.
 
     If the GL area has not been realized yet, 0 is returned. *)
 
-external get_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi
+external get_allowed_apis : t -> Ocgdk_enums.glapi
   = "ml_gtk_gl_area_get_allowed_apis"
 (** Gets the allowed APIs.
 
@@ -232,13 +232,13 @@ external attach_buffers : t -> unit = "ml_gtk_gl_area_attach_buffers"
 val on_create_context :
   ?after:bool ->
   t ->
-  callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t) ->
+  callback:(unit -> Ocgdk_raw.Gl_context.t) ->
   Gobject.Signal.handler_id
 
 val on_render :
   ?after:bool ->
   t ->
-  callback:(context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t -> bool) ->
+  callback:(context:Ocgdk_raw.Gl_context.t -> bool) ->
   Gobject.Signal.handler_id
 
 val on_resize :

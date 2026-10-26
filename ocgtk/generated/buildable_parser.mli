@@ -1,5 +1,5 @@
 class type buildable_parser_t = object
-  method as_buildable_parser : Buildable_parser.t
+  method as_buildable_parser : Raw.Buildable_parser.t
 end
 
-class buildable_parser : Buildable_parser.t -> buildable_parser_t
+class buildable_parser : Raw.Buildable_parser.t -> buildable_parser_t

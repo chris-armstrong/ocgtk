@@ -17,8 +17,7 @@ type t = [ `file_launcher | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_file_launcher_get_type"
 
-external new_ : Ocgtk_gio.Gio.Wrappers.File.t option -> t
-  = "ml_gtk_file_launcher_new"
+external new_ : Ocgio_raw.File.t option -> t = "ml_gtk_file_launcher_new"
 (** Create a new FileLauncher *)
 
 (* Methods *)
@@ -26,7 +25,7 @@ external new_ : Ocgtk_gio.Gio.Wrappers.File.t option -> t
 external set_writable : t -> bool -> unit = "ml_gtk_file_launcher_set_writable"
 (** Sets whether to make the file writable for the handler. *)
 
-external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_file_launcher_set_file"
 (** Sets the file that will be opened. *)
 
@@ -38,20 +37,20 @@ external set_always_ask : t -> bool -> unit
     choice. *)
 
 external open_containing_folder_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_open_containing_folder_finish"
 (** Finishes the [Gtk.FileLauncher.open_containing_folder] call and returns the
     result. *)
 
 external launch_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_launch_finish"
 (** Finishes the [Gtk.FileLauncher.launch] call and returns the result. *)
 
 external get_writable : t -> bool = "ml_gtk_file_launcher_get_writable"
 (** Returns whether to make the file writable for the handler. *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_file_launcher_get_file"
 (** Gets the file that will be opened. *)
 

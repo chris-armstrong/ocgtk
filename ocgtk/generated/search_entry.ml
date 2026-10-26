@@ -1,9 +1,9 @@
 class type search_entry_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GEditable.editable_t
+  inherit Editable.editable_t
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -23,22 +23,22 @@ class type search_entry_t = object
   method on_stop_search :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method get_input_hints : unit -> Gtk_enums.inputhints
-  method get_input_purpose : unit -> Gtk_enums.inputpurpose
+  method get_input_hints : unit -> Enums.inputhints
+  method get_input_purpose : unit -> Enums.inputpurpose
 
   method get_key_capture_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_placeholder_text : unit -> string option
   method get_search_delay : unit -> int
-  method set_input_hints : Gtk_enums.inputhints -> unit
-  method set_input_purpose : Gtk_enums.inputpurpose -> unit
+  method set_input_hints : Enums.inputhints -> unit
+  method set_input_purpose : Enums.inputpurpose -> unit
 
   method set_key_capture_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -47,90 +47,90 @@ class type search_entry_t = object
   method set_search_delay : int -> unit
   method activates_default : bool
   method set_activates_default : bool -> unit
-  method as_search_entry : Search_entry.t
+  method as_search_entry : Raw.Search_entry.t
 end
 
 (* High-level class for SearchEntry *)
-class search_entry (obj : Search_entry.t) : search_entry_t =
+class search_entry (obj : Raw.Search_entry.t) : search_entry_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
-        (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-             .Widget
-             .t)
+        (obj :> Raw.Widget.t)
 
-    inherit GEditable.editable (Editable.from_gobject obj)
+    inherit Editable.editable (Raw.Editable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
-      Search_entry.on_activate ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_activate ~after self#as_search_entry ~callback
 
     method on_next_match ?(after = false) ~callback () =
-      Search_entry.on_next_match ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_next_match ~after self#as_search_entry ~callback
 
     method on_previous_match ?(after = false) ~callback () =
-      Search_entry.on_previous_match ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_previous_match ~after self#as_search_entry ~callback
 
     method on_search_changed ?(after = false) ~callback () =
-      Search_entry.on_search_changed ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_search_changed ~after self#as_search_entry ~callback
 
     method on_search_started ?(after = false) ~callback () =
-      Search_entry.on_search_started ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_search_started ~after self#as_search_entry ~callback
 
     method on_stop_search ?(after = false) ~callback () =
-      Search_entry.on_stop_search ~after self#as_search_entry ~callback
+      Raw.Search_entry.on_stop_search ~after self#as_search_entry ~callback
 
-    method get_input_hints : unit -> Gtk_enums.inputhints =
-      fun () -> Search_entry.get_input_hints obj
+    method get_input_hints : unit -> Enums.inputhints =
+      fun () -> Raw.Search_entry.get_input_hints obj
 
-    method get_input_purpose : unit -> Gtk_enums.inputpurpose =
-      fun () -> Search_entry.get_input_purpose obj
+    method get_input_purpose : unit -> Enums.inputpurpose =
+      fun () -> Raw.Search_entry.get_input_purpose obj
 
     method get_key_capture_widget :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
-          (Search_entry.get_key_capture_widget obj)
+          (Raw.Search_entry.get_key_capture_widget obj)
 
     method get_placeholder_text : unit -> string option =
-      fun () -> Search_entry.get_placeholder_text obj
+      fun () -> Raw.Search_entry.get_placeholder_text obj
 
     method get_search_delay : unit -> int =
-      fun () -> Search_entry.get_search_delay obj
+      fun () -> Raw.Search_entry.get_search_delay obj
 
-    method set_input_hints : Gtk_enums.inputhints -> unit =
-      fun hints -> Search_entry.set_input_hints obj hints
+    method set_input_hints : Enums.inputhints -> unit =
+      fun hints -> Raw.Search_entry.set_input_hints obj hints
 
-    method set_input_purpose : Gtk_enums.inputpurpose -> unit =
-      fun purpose -> Search_entry.set_input_purpose obj purpose
+    method set_input_purpose : Enums.inputpurpose -> unit =
+      fun purpose -> Raw.Search_entry.set_input_purpose obj purpose
 
     method set_key_capture_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
-        Search_entry.set_key_capture_widget obj widget
+        Raw.Search_entry.set_key_capture_widget obj widget
 
     method set_placeholder_text : string option -> unit =
-      fun text -> Search_entry.set_placeholder_text obj text
+      fun text -> Raw.Search_entry.set_placeholder_text obj text
 
     method set_search_delay : int -> unit =
-      fun delay -> Search_entry.set_search_delay obj delay
+      fun delay -> Raw.Search_entry.set_search_delay obj delay
 
-    method activates_default = Search_entry.get_activates_default obj
-    method set_activates_default v = Search_entry.set_activates_default obj v
+    method activates_default = Raw.Search_entry.get_activates_default obj
+
+    method set_activates_default v =
+      Raw.Search_entry.set_activates_default obj v
+
     method as_search_entry = obj
   end
 
-let new_ () : search_entry_t = new search_entry (Search_entry.new_ ())
+let new_ () : search_entry_t = new search_entry (Raw.Search_entry.new_ ())

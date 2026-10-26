@@ -55,8 +55,7 @@ let on_key_pressed ?after obj ~callback =
         in
         let state =
           let v = Gobject.Closure.nth argv ~pos:3 in
-          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
-            (Gobject.Value.get_flags_int v)
+          Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)
         in
         let result = callback ~keyval ~keycode ~state in
         let v = Gobject.Closure.result argv in
@@ -79,8 +78,7 @@ let on_key_released ?after obj ~callback =
         in
         let state =
           let v = Gobject.Closure.nth argv ~pos:3 in
-          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
-            (Gobject.Value.get_flags_int v)
+          Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)
         in
         callback ~keyval ~keycode ~state)
   in
@@ -92,8 +90,7 @@ let on_modifiers ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let state =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
-            (Gobject.Value.get_flags_int v)
+          Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)
         in
         let result = callback ~state in
         let v = Gobject.Closure.result argv in

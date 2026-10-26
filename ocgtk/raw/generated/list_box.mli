@@ -80,7 +80,7 @@ external unselect_row : t -> List_box_row.t -> unit
 external unselect_all : t -> unit = "ml_gtk_list_box_unselect_all"
 (** Unselect all children of [box], if the selection mode allows it. *)
 
-external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
+external set_tab_behavior : t -> Ocgtk_enums.listtabbehavior -> unit
   = "ml_gtk_list_box_set_tab_behavior"
 (** Sets the behavior of the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
     keys. *)
@@ -89,7 +89,7 @@ external set_show_separators : t -> bool -> unit
   = "ml_gtk_list_box_set_show_separators"
 (** Sets whether the list box should show separators between rows. *)
 
-external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
+external set_selection_mode : t -> Ocgtk_enums.selectionmode -> unit
   = "ml_gtk_list_box_set_selection_mode"
 (** Sets how selection works in the listbox. *)
 
@@ -185,7 +185,7 @@ external insert :
     If [position] is -1, or larger than the total number of items in the [box],
     then the [child] will be appended to the end. *)
 
-external get_tab_behavior : t -> Gtk_enums.listtabbehavior
+external get_tab_behavior : t -> Ocgtk_enums.listtabbehavior
   = "ml_gtk_list_box_get_tab_behavior"
 (** Returns the behavior of the <kbd>Tab</kbd> and
     <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
@@ -193,7 +193,7 @@ external get_tab_behavior : t -> Gtk_enums.listtabbehavior
 external get_show_separators : t -> bool = "ml_gtk_list_box_get_show_separators"
 (** Returns whether the list box should show separators between rows. *)
 
-external get_selection_mode : t -> Gtk_enums.selectionmode
+external get_selection_mode : t -> Ocgtk_enums.selectionmode
   = "ml_gtk_list_box_get_selection_mode"
 (** Gets the selection mode of the listbox. *)
 
@@ -273,7 +273,7 @@ val on_move_cursor :
   ?after:bool ->
   t ->
   callback:
-    (step:Gtk_enums.movementstep ->
+    (step:Ocgtk_enums.movementstep ->
     count:int ->
     extend:bool ->
     modify:bool ->

@@ -25,9 +25,9 @@ module rec Cell_area : sig
     .Widget
     .t ->
     Snapshot.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
     bool ->
     unit
     = "ml_gtk_cell_area_snapshot_bytecode" "ml_gtk_cell_area_snapshot_native"
@@ -45,7 +45,7 @@ module rec Cell_area : sig
   external request_renderer :
     t ->
     Cell_renderer.t ->
-    Gtk_enums.orientation ->
+    Ocgtk_enums.orientation ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
@@ -80,8 +80,8 @@ module rec Cell_area : sig
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
   (** This is a convenience function for [GtkCellArea] implementations to get
       the inner area where a given [GtkCellRenderer] will be rendered. It
       removes any padding previously added by gtk_cell_area_request_renderer().
@@ -91,7 +91,7 @@ module rec Cell_area : sig
     = "ml_gtk_cell_area_has_renderer"
   (** Checks if [area] contains [renderer]. *)
 
-  external get_request_mode : t -> Gtk_enums.sizerequestmode
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
     = "ml_gtk_cell_area_get_request_mode"
   (** Gets whether the area prefers a height-for-width layout or a
       width-for-height layout. *)
@@ -213,10 +213,10 @@ module rec Cell_area : sig
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t ->
     int ->
     int ->
-    Cell_renderer.t * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+    Cell_renderer.t * Ocgdk_raw.Rectangle.t
     = "ml_gtk_cell_area_get_cell_at_position_bytecode"
       "ml_gtk_cell_area_get_cell_at_position_native"
   (** Gets the [GtkCellRenderer] at [x] and [y] coordinates inside [area] and
@@ -229,12 +229,12 @@ module rec Cell_area : sig
     .Widget
     .t ->
     Cell_renderer.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_area_get_cell_allocation"
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_get_cell_allocation"
   (** Derives the allocation of [renderer] inside [area] if [area] were to be
       rendered in [cell_area]. *)
 
-  external focus : t -> Gtk_enums.directiontype -> bool
+  external focus : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_cell_area_focus"
   (** This should be called by the [area]’s owning layout widget when focus is
       to be passed to [area], or moved within [area] for a given [direction] and
@@ -249,9 +249,9 @@ module rec Cell_area : sig
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
-    Ocgtk_gdk.Gdk.Wrappers.Event.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk_raw.Event.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
     int = "ml_gtk_cell_area_event_bytecode" "ml_gtk_cell_area_event_native"
   (** Delegates event handling to a [GtkCellArea]. *)
 
@@ -325,9 +325,9 @@ module rec Cell_area : sig
     .Widget
     .t ->
     Cell_renderer.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Event.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk_raw.Event.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
     bool
     = "ml_gtk_cell_area_activate_cell_bytecode"
       "ml_gtk_cell_area_activate_cell_native"
@@ -341,8 +341,8 @@ module rec Cell_area : sig
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
     bool ->
     bool
     = "ml_gtk_cell_area_activate_bytecode" "ml_gtk_cell_area_activate_native"

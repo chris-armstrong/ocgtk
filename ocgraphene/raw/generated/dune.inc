@@ -5,7 +5,7 @@
  (targets cflag-graphene.sexp clink-graphene.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    graphene-gobject-1.0
    --cflags-out
@@ -13,9 +13,15 @@
    --libs-out
    clink-graphene.sexp)))
 
+(rule
+ (copy generated/graphene_decls.h graphene_decls.h))
+
+(rule
+ (copy core/graphene_core.h graphene_core.h))
+
 (library
- (name ocgtk_graphene_generated_stubs)
- (public_name ocgtk.graphene.generated_stubs)
+ (name ocgraphene_raw_stubs)
+ (public_name ocgraphene.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocglib)  ; Depend on ocglib for header files

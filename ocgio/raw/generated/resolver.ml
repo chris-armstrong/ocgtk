@@ -91,7 +91,7 @@ external lookup_records_finish :
 external lookup_records :
   t ->
   string ->
-  Gio_enums.resolverrecordtype ->
+  Ocgio_enums.resolverrecordtype ->
   Cancellable.t option ->
   (Gvariant.t list, GError.t) result = "ml_g_resolver_lookup_records"
 (** Synchronously performs a DNS record lookup for the given [rrname] and
@@ -117,7 +117,7 @@ external lookup_by_name_with_flags_finish :
 external lookup_by_name_with_flags :
   t ->
   string ->
-  Gio_enums.resolvernamelookupflags ->
+  Ocgio_enums.resolvernamelookupflags ->
   Cancellable.t option ->
   (Inet_address.t list, GError.t) result
   = "ml_g_resolver_lookup_by_name_with_flags"

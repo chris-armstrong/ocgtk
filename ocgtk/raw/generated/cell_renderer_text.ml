@@ -41,19 +41,19 @@ external set_align_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_align_set"
 (** Set property: align-set *)
 
-external get_alignment : t -> Ocgtk_pango.Pango.alignment
+external get_alignment : t -> Ocpango_enums.alignment
   = "ml_gtk_cell_renderer_text_get_alignment"
 (** Get property: alignment *)
 
-external set_alignment : t -> Ocgtk_pango.Pango.alignment -> unit
+external set_alignment : t -> Ocpango_enums.alignment -> unit
   = "ml_gtk_cell_renderer_text_set_alignment"
 (** Set property: alignment *)
 
-external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t
+external get_attributes : t -> Ocpango_raw.Attr_list.t
   = "ml_gtk_cell_renderer_text_get_attributes"
 (** Get property: attributes *)
 
-external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t -> unit
+external set_attributes : t -> Ocpango_raw.Attr_list.t -> unit
   = "ml_gtk_cell_renderer_text_set_attributes"
 (** Set property: attributes *)
 
@@ -61,11 +61,11 @@ external set_background : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_background"
 (** Set property: background *)
 
-external get_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_background_rgba"
 (** Get property: background-rgba *)
 
-external set_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_text_set_background_rgba"
 (** Set property: background-rgba *)
 
@@ -92,11 +92,11 @@ external set_editable_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_editable_set"
 (** Set property: editable-set *)
 
-external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode
+external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_cell_renderer_text_get_ellipsize"
 (** Get property: ellipsize *)
 
-external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit
+external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
   = "ml_gtk_cell_renderer_text_set_ellipsize"
 (** Set property: ellipsize *)
 
@@ -128,12 +128,11 @@ external get_font : t -> string = "ml_gtk_cell_renderer_text_get_font"
 external set_font : t -> string -> unit = "ml_gtk_cell_renderer_text_set_font"
 (** Set property: font *)
 
-external get_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t
+external get_font_desc : t -> Ocpango_raw.Font_description.t
   = "ml_gtk_cell_renderer_text_get_font_desc"
 (** Get property: font-desc *)
 
-external set_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit
+external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_cell_renderer_text_set_font_desc"
 (** Set property: font-desc *)
 
@@ -141,11 +140,11 @@ external set_foreground : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_foreground"
 (** Set property: foreground *)
 
-external get_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_foreground_rgba"
 (** Get property: foreground-rgba *)
 
-external set_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_text_set_foreground_rgba"
 (** Set property: foreground-rgba *)
 
@@ -247,11 +246,11 @@ external set_size_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_size_set"
 (** Set property: size-set *)
 
-external get_stretch : t -> Ocgtk_pango.Pango.stretch
+external get_stretch : t -> Ocpango_enums.stretch
   = "ml_gtk_cell_renderer_text_get_stretch"
 (** Get property: stretch *)
 
-external set_stretch : t -> Ocgtk_pango.Pango.stretch -> unit
+external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_gtk_cell_renderer_text_set_stretch"
 (** Set property: stretch *)
 
@@ -279,11 +278,11 @@ external set_strikethrough_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_strikethrough_set"
 (** Set property: strikethrough-set *)
 
-external get_style : t -> Ocgtk_pango.Pango.style
+external get_style : t -> Ocpango_enums.style
   = "ml_gtk_cell_renderer_text_get_style"
 (** Get property: style *)
 
-external set_style : t -> Ocgtk_pango.Pango.style -> unit
+external set_style : t -> Ocpango_enums.style -> unit
   = "ml_gtk_cell_renderer_text_set_style"
 (** Set property: style *)
 
@@ -300,11 +299,11 @@ external get_text : t -> string = "ml_gtk_cell_renderer_text_get_text"
 external set_text : t -> string -> unit = "ml_gtk_cell_renderer_text_set_text"
 (** Set property: text *)
 
-external get_underline : t -> Ocgtk_pango.Pango.underline
+external get_underline : t -> Ocpango_enums.underline
   = "ml_gtk_cell_renderer_text_get_underline"
 (** Get property: underline *)
 
-external set_underline : t -> Ocgtk_pango.Pango.underline -> unit
+external set_underline : t -> Ocpango_enums.underline -> unit
   = "ml_gtk_cell_renderer_text_set_underline"
 (** Set property: underline *)
 
@@ -316,11 +315,11 @@ external set_underline_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_underline_set"
 (** Set property: underline-set *)
 
-external get_variant : t -> Ocgtk_pango.Pango.variant
+external get_variant : t -> Ocpango_enums.variant
   = "ml_gtk_cell_renderer_text_get_variant"
 (** Get property: variant *)
 
-external set_variant : t -> Ocgtk_pango.Pango.variant -> unit
+external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_gtk_cell_renderer_text_set_variant"
 (** Set property: variant *)
 
@@ -353,11 +352,11 @@ external set_width_chars : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_width_chars"
 (** Set property: width-chars *)
 
-external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode
+external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_cell_renderer_text_get_wrap_mode"
 (** Get property: wrap-mode *)
 
-external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit
+external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_cell_renderer_text_set_wrap_mode"
 (** Set property: wrap-mode *)
 

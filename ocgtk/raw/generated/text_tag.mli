@@ -97,11 +97,11 @@ external set_background_full_height_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_background_full_height_set"
 (** Set property: background-full-height-set *)
 
-external get_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_background_rgba"
 (** Get property: background-rgba *)
 
-external set_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_background_rgba"
 (** Set property: background-rgba *)
 
@@ -112,11 +112,11 @@ external set_background_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_background_set"
 (** Set property: background-set *)
 
-external get_direction : t -> Gtk_enums.textdirection
+external get_direction : t -> Ocgtk_enums.textdirection
   = "ml_gtk_text_tag_get_direction"
 (** Get property: direction *)
 
-external set_direction : t -> Gtk_enums.textdirection -> unit
+external set_direction : t -> Ocgtk_enums.textdirection -> unit
   = "ml_gtk_text_tag_set_direction"
 (** Set property: direction *)
 
@@ -164,12 +164,11 @@ external get_font : t -> string = "ml_gtk_text_tag_get_font"
 external set_font : t -> string -> unit = "ml_gtk_text_tag_set_font"
 (** Set property: font *)
 
-external get_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t
+external get_font_desc : t -> Ocpango_raw.Font_description.t
   = "ml_gtk_text_tag_get_font_desc"
 (** Get property: font-desc *)
 
-external set_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit
+external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_text_tag_set_font_desc"
 (** Set property: font-desc *)
 
@@ -191,11 +190,11 @@ external set_font_features_set : t -> bool -> unit
 external set_foreground : t -> string -> unit = "ml_gtk_text_tag_set_foreground"
 (** Set property: foreground *)
 
-external get_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_foreground_rgba"
 (** Get property: foreground-rgba *)
 
-external set_foreground_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_foreground_rgba"
 (** Set property: foreground-rgba *)
 
@@ -246,11 +245,11 @@ external set_invisible_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_invisible_set"
 (** Set property: invisible-set *)
 
-external get_justification : t -> Gtk_enums.justification
+external get_justification : t -> Ocgtk_enums.justification
   = "ml_gtk_text_tag_get_justification"
 (** Get property: justification *)
 
-external set_justification : t -> Gtk_enums.justification -> unit
+external set_justification : t -> Ocgtk_enums.justification -> unit
   = "ml_gtk_text_tag_set_justification"
 (** Set property: justification *)
 
@@ -320,19 +319,19 @@ external set_line_height_set : t -> bool -> unit
 external get_name : t -> string = "ml_gtk_text_tag_get_name"
 (** Get property: name *)
 
-external get_overline : t -> Ocgtk_pango.Pango.overline
+external get_overline : t -> Ocpango_enums.overline
   = "ml_gtk_text_tag_get_overline"
 (** Get property: overline *)
 
-external set_overline : t -> Ocgtk_pango.Pango.overline -> unit
+external set_overline : t -> Ocpango_enums.overline -> unit
   = "ml_gtk_text_tag_set_overline"
 (** Set property: overline *)
 
-external get_overline_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_overline_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_overline_rgba"
 (** Get property: overline-rgba *)
 
-external set_overline_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_overline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_overline_rgba"
 (** Set property: overline-rgba *)
 
@@ -355,12 +354,11 @@ external set_paragraph_background : t -> string -> unit
   = "ml_gtk_text_tag_set_paragraph_background"
 (** Set property: paragraph-background *)
 
-external get_paragraph_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_paragraph_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_paragraph_background_rgba"
 (** Get property: paragraph-background-rgba *)
 
-external set_paragraph_background_rgba :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_paragraph_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_paragraph_background_rgba"
 (** Set property: paragraph-background-rgba *)
 
@@ -472,11 +470,11 @@ external set_sentence_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_sentence_set"
 (** Set property: sentence-set *)
 
-external get_show_spaces : t -> Ocgtk_pango.Pango.showflags
+external get_show_spaces : t -> Ocpango_enums.showflags
   = "ml_gtk_text_tag_get_show_spaces"
 (** Get property: show-spaces *)
 
-external set_show_spaces : t -> Ocgtk_pango.Pango.showflags -> unit
+external set_show_spaces : t -> Ocpango_enums.showflags -> unit
   = "ml_gtk_text_tag_set_show_spaces"
 (** Set property: show-spaces *)
 
@@ -506,11 +504,11 @@ external get_size_set : t -> bool = "ml_gtk_text_tag_get_size_set"
 external set_size_set : t -> bool -> unit = "ml_gtk_text_tag_set_size_set"
 (** Set property: size-set *)
 
-external get_stretch : t -> Ocgtk_pango.Pango.stretch
+external get_stretch : t -> Ocpango_enums.stretch
   = "ml_gtk_text_tag_get_stretch"
 (** Get property: stretch *)
 
-external set_stretch : t -> Ocgtk_pango.Pango.stretch -> unit
+external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_gtk_text_tag_set_stretch"
 (** Set property: stretch *)
 
@@ -527,11 +525,11 @@ external set_strikethrough : t -> bool -> unit
   = "ml_gtk_text_tag_set_strikethrough"
 (** Set property: strikethrough *)
 
-external get_strikethrough_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_strikethrough_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_strikethrough_rgba"
 (** Get property: strikethrough-rgba *)
 
-external set_strikethrough_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_strikethrough_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_strikethrough_rgba"
 (** Set property: strikethrough-rgba *)
 
@@ -551,10 +549,10 @@ external set_strikethrough_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_strikethrough_set"
 (** Set property: strikethrough-set *)
 
-external get_style : t -> Ocgtk_pango.Pango.style = "ml_gtk_text_tag_get_style"
+external get_style : t -> Ocpango_enums.style = "ml_gtk_text_tag_get_style"
 (** Get property: style *)
 
-external set_style : t -> Ocgtk_pango.Pango.style -> unit
+external set_style : t -> Ocpango_enums.style -> unit
   = "ml_gtk_text_tag_set_style"
 (** Set property: style *)
 
@@ -564,11 +562,10 @@ external get_style_set : t -> bool = "ml_gtk_text_tag_get_style_set"
 external set_style_set : t -> bool -> unit = "ml_gtk_text_tag_set_style_set"
 (** Set property: style-set *)
 
-external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t
-  = "ml_gtk_text_tag_get_tabs"
+external get_tabs : t -> Ocpango_raw.Tab_array.t = "ml_gtk_text_tag_get_tabs"
 (** Get property: tabs *)
 
-external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t -> unit
+external set_tabs : t -> Ocpango_raw.Tab_array.t -> unit
   = "ml_gtk_text_tag_set_tabs"
 (** Set property: tabs *)
 
@@ -578,11 +575,11 @@ external get_tabs_set : t -> bool = "ml_gtk_text_tag_get_tabs_set"
 external set_tabs_set : t -> bool -> unit = "ml_gtk_text_tag_set_tabs_set"
 (** Set property: tabs-set *)
 
-external get_text_transform : t -> Ocgtk_pango.Pango.texttransform
+external get_text_transform : t -> Ocpango_enums.texttransform
   = "ml_gtk_text_tag_get_text_transform"
 (** Get property: text-transform *)
 
-external set_text_transform : t -> Ocgtk_pango.Pango.texttransform -> unit
+external set_text_transform : t -> Ocpango_enums.texttransform -> unit
   = "ml_gtk_text_tag_set_text_transform"
 (** Set property: text-transform *)
 
@@ -594,19 +591,19 @@ external set_text_transform_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_text_transform_set"
 (** Set property: text-transform-set *)
 
-external get_underline : t -> Ocgtk_pango.Pango.underline
+external get_underline : t -> Ocpango_enums.underline
   = "ml_gtk_text_tag_get_underline"
 (** Get property: underline *)
 
-external set_underline : t -> Ocgtk_pango.Pango.underline -> unit
+external set_underline : t -> Ocpango_enums.underline -> unit
   = "ml_gtk_text_tag_set_underline"
 (** Set property: underline *)
 
-external get_underline_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_underline_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_underline_rgba"
 (** Get property: underline-rgba *)
 
-external set_underline_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_underline_rgba"
 (** Set property: underline-rgba *)
 
@@ -625,11 +622,11 @@ external set_underline_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_underline_set"
 (** Set property: underline-set *)
 
-external get_variant : t -> Ocgtk_pango.Pango.variant
+external get_variant : t -> Ocpango_enums.variant
   = "ml_gtk_text_tag_get_variant"
 (** Get property: variant *)
 
-external set_variant : t -> Ocgtk_pango.Pango.variant -> unit
+external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_gtk_text_tag_set_variant"
 (** Set property: variant *)
 
@@ -663,11 +660,11 @@ external get_word_set : t -> bool = "ml_gtk_text_tag_get_word_set"
 external set_word_set : t -> bool -> unit = "ml_gtk_text_tag_set_word_set"
 (** Set property: word-set *)
 
-external get_wrap_mode : t -> Gtk_enums.wrapmode
+external get_wrap_mode : t -> Ocgtk_enums.wrapmode
   = "ml_gtk_text_tag_get_wrap_mode"
 (** Get property: wrap-mode *)
 
-external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit
+external set_wrap_mode : t -> Ocgtk_enums.wrapmode -> unit
   = "ml_gtk_text_tag_set_wrap_mode"
 (** Set property: wrap-mode *)
 

@@ -65,7 +65,7 @@ external get_groups : t -> string array * Gsize.t
     The array of returned group names will be [NULL] terminated, so length might
     optionally be [NULL]. *)
 
-external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option
+external get_gicon : t -> Ocgio_raw.Icon.t option
   = "ml_gtk_recent_info_get_gicon"
 (** Retrieves the icon associated to the resource MIME type. *)
 
@@ -90,9 +90,7 @@ external exists : t -> bool = "ml_gtk_recent_info_exists"
     this check is done only on resources pointing to local files. *)
 
 external create_app_info :
-  t ->
-  string option ->
-  (Ocgtk_gio.Gio.Wrappers.App_info.t option, GError.t) result
+  t -> string option -> (Ocgio_raw.App_info.t option, GError.t) result
   = "ml_gtk_recent_info_create_app_info"
 (** Creates a [GAppInfo] for the specified [GtkRecentInfo]
 

@@ -48,7 +48,7 @@ external set_spacing : t -> int -> unit = "ml_gtk_tree_view_column_set_spacing"
 (** Sets the spacing field of [tree_column], which is the number of pixels to
     place between cell renderers packed into it. *)
 
-external set_sort_order : t -> Gtk_enums.sorttype -> unit
+external set_sort_order : t -> Ocgtk_enums.sorttype -> unit
   = "ml_gtk_tree_view_column_set_sort_order"
 (** Changes the appearance of the sort indicator.
 
@@ -75,7 +75,7 @@ external set_sort_column_id : t -> int -> unit
 (** Sets the logical [sort_column_id] that this column sorts on when this column
     is selected for sorting. Doing so makes the column header clickable. *)
 
-external set_sizing : t -> Gtk_enums.treeviewcolumnsizing -> unit
+external set_sizing : t -> Ocgtk_enums.treeviewcolumnsizing -> unit
   = "ml_gtk_tree_view_column_set_sizing"
 (** Sets the growth behavior of [tree_column] to [type]. *)
 
@@ -189,7 +189,7 @@ external get_title : t -> string = "ml_gtk_tree_view_column_get_title"
 external get_spacing : t -> int = "ml_gtk_tree_view_column_get_spacing"
 (** Returns the spacing of [tree_column]. *)
 
-external get_sort_order : t -> Gtk_enums.sorttype
+external get_sort_order : t -> Ocgtk_enums.sorttype
   = "ml_gtk_tree_view_column_get_sort_order"
 (** Gets the value set by gtk_tree_view_column_set_sort_order(). *)
 
@@ -204,7 +204,7 @@ external get_sort_column_id : t -> int
 
     See [Gtk.TreeViewColumn.set_sort_column_id]. *)
 
-external get_sizing : t -> Gtk_enums.treeviewcolumnsizing
+external get_sizing : t -> Ocgtk_enums.treeviewcolumnsizing
   = "ml_gtk_tree_view_column_get_sizing"
 (** Returns the current type of [tree_column]. *)
 

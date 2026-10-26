@@ -5,7 +5,7 @@
  (targets cflag-cairo.sexp clink-cairo.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --cflags-out
@@ -13,9 +13,15 @@
    --libs-out
    clink-cairo.sexp)))
 
+(rule
+ (copy generated/cairo_decls.h cairo_decls.h))
+
+(rule
+ (copy core/cairo_core.h cairo_core.h))
+
 (library
- (name ocgtk_cairo_generated_stubs)
- (public_name ocgtk.cairo.generated_stubs)
+ (name occairo_raw_stubs)
+ (public_name occairo.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocglib)  ; Depend on ocglib for header files

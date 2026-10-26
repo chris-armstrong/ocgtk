@@ -190,7 +190,7 @@ external html_arc_to : t -> float -> float -> float -> float -> float -> unit
     After this, the current point will be the point where the circle with the
     given radius touches the line from [x1], [y1] to [x2], [y2]. *)
 
-external get_current_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
+external get_current_point : t -> Ocgraphene_raw.Point.t
   = "ml_gsk_path_builder_get_current_point"
 (** Gets the current point.
 
@@ -281,7 +281,7 @@ external add_reverse_path :
   = "ml_gsk_path_builder_add_reverse_path"
 (** Appends all of [path] to the builder, in reverse order. *)
 
-external add_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit
+external add_rect : t -> Ocgraphene_raw.Rect.t -> unit
   = "ml_gsk_path_builder_add_rect"
 (** Adds a rectangle as a new contour.
 
@@ -294,12 +294,11 @@ external add_path : t -> Path_and__path_measure_and__path_point.Path.t -> unit
   = "ml_gsk_path_builder_add_path"
 (** Appends all of [path] to the builder. *)
 
-external add_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t -> unit
+external add_layout : t -> Ocpango_raw.Layout.t -> unit
   = "ml_gsk_path_builder_add_layout"
 (** Adds the outlines for the glyphs in [layout] to the builder. *)
 
-external add_circle :
-  t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> unit
+external add_circle : t -> Ocgraphene_raw.Point.t -> float -> unit
   = "ml_gsk_path_builder_add_circle"
 (** Adds a circle as a new contour.
 
@@ -307,7 +306,7 @@ external add_circle :
 
     If [radius] is zero, the contour will be a closed point. *)
 
-external add_cairo_path : t -> Ocgtk_cairo.Cairo.Wrappers.Path.t -> unit
+external add_cairo_path : t -> Occairo_raw.Path.t -> unit
   = "ml_gsk_path_builder_add_cairo_path"
 (** Adds a Cairo path to the builder.
 

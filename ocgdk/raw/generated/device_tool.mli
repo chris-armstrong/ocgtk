@@ -9,7 +9,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_device_tool_get_type"
 
 (* Methods *)
 
-external get_tool_type : t -> Gdk_enums.devicetooltype
+external get_tool_type : t -> Ocgdk_enums.devicetooltype
   = "ml_gdk_device_tool_get_tool_type"
 (** Gets the [GdkDeviceToolType] of the tool. *)
 
@@ -31,7 +31,7 @@ external get_hardware_id : t -> UInt64.t = "ml_gdk_device_tool_get_hardware_id"
     multiple devices with the same [GdkDeviceToolType], but different hardware
     identifiers. *)
 
-external get_axes : t -> Gdk_enums.axisflags = "ml_gdk_device_tool_get_axes"
+external get_axes : t -> Ocgdk_enums.axisflags = "ml_gdk_device_tool_get_axes"
 (** Gets the axes of the tool. *)
 
 (* Properties *)

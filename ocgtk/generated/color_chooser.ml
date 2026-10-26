@@ -1,40 +1,36 @@
 class type color_chooser_t = object
   method add_palette :
-    Gtk_enums.orientation ->
-    int ->
-    int ->
-    Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array option ->
-    unit
+    Enums.orientation -> int -> int -> Ocgdk.Raw.Rgb_a.t array option -> unit
 
   method get_use_alpha : unit -> bool
-  method set_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
+  method set_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit
   method set_use_alpha : bool -> unit
-  method as_color_chooser : Color_chooser.t
+  method as_color_chooser : Raw.Color_chooser.t
 end
 
 (* High-level class for ColorChooser *)
-class color_chooser (obj : Color_chooser.t) : color_chooser_t =
+class color_chooser (obj : Raw.Color_chooser.t) : color_chooser_t =
   object (self)
     method add_palette :
-        Gtk_enums.orientation ->
+        Enums.orientation ->
         int ->
         int ->
-        Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array option ->
+        Ocgdk.Raw.Rgb_a.t array option ->
         unit =
       fun orientation colors_per_line n_colors colors ->
-        Color_chooser.add_palette obj orientation colors_per_line n_colors
+        Raw.Color_chooser.add_palette obj orientation colors_per_line n_colors
           colors
 
     method get_use_alpha : unit -> bool =
-      fun () -> Color_chooser.get_use_alpha obj
+      fun () -> Raw.Color_chooser.get_use_alpha obj
 
-    method set_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit =
+    method set_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit =
       fun color ->
         let color = color#as_rgb_a in
-        Color_chooser.set_rgba obj color
+        Raw.Color_chooser.set_rgba obj color
 
     method set_use_alpha : bool -> unit =
-      fun use_alpha -> Color_chooser.set_use_alpha obj use_alpha
+      fun use_alpha -> Raw.Color_chooser.set_use_alpha obj use_alpha
 
     method as_color_chooser = obj
   end

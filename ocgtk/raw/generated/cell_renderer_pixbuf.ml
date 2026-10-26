@@ -28,11 +28,11 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_pixbuf_new"
 (* Methods *)
 (* Properties *)
 
-external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t
+external get_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_cell_renderer_pixbuf_get_gicon"
 (** Get property: gicon *)
 
-external set_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit
+external set_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_gicon"
 (** Set property: gicon *)
 
@@ -44,42 +44,38 @@ external set_icon_name : t -> string -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_icon_name"
 (** Set property: icon-name *)
 
-external get_icon_size : t -> Gtk_enums.iconsize
+external get_icon_size : t -> Ocgtk_enums.iconsize
   = "ml_gtk_cell_renderer_pixbuf_get_icon_size"
 (** Get property: icon-size *)
 
-external set_icon_size : t -> Gtk_enums.iconsize -> unit
+external set_icon_size : t -> Ocgtk_enums.iconsize -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_icon_size"
 (** Set property: icon-size *)
 
-external set_pixbuf : t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> unit
+external set_pixbuf : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf"
 (** Set property: pixbuf *)
 
-external get_pixbuf_expander_closed :
-  t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t
+external get_pixbuf_expander_closed : t -> Ocgdkpixbuf_raw.Pixbuf.t
   = "ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_closed"
 (** Get property: pixbuf-expander-closed *)
 
-external set_pixbuf_expander_closed :
-  t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> unit
+external set_pixbuf_expander_closed : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_closed"
 (** Set property: pixbuf-expander-closed *)
 
-external get_pixbuf_expander_open :
-  t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t
+external get_pixbuf_expander_open : t -> Ocgdkpixbuf_raw.Pixbuf.t
   = "ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_open"
 (** Get property: pixbuf-expander-open *)
 
-external set_pixbuf_expander_open :
-  t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> unit
+external set_pixbuf_expander_open : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_open"
 (** Set property: pixbuf-expander-open *)
 
-external get_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t
+external get_texture : t -> Ocgdk_raw.Texture.t
   = "ml_gtk_cell_renderer_pixbuf_get_texture"
 (** Get property: texture *)
 
-external set_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t -> unit
+external set_texture : t -> Ocgdk_raw.Texture.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_texture"
 (** Set property: texture *)

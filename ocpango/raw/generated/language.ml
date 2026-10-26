@@ -25,7 +25,7 @@ external matches : t -> string -> bool = "ml_pango_language_matches"
     '*', the range is exactly the tag, or the range is a prefix of the tag, and
     the character after it in the tag is '-'. *)
 
-external includes_script : t -> Pango_enums.script -> bool
+external includes_script : t -> Ocpango_enums.script -> bool
   = "ml_pango_language_includes_script"
 (** Determines if [script] is one of the scripts used to write [language].
 
@@ -39,7 +39,7 @@ external includes_script : t -> Pango_enums.script -> bool
 
     This function uses [Pango.Language.get_scripts] internally. *)
 
-external get_scripts : t -> Pango_enums.script array option * int
+external get_scripts : t -> Ocpango_enums.script array option * int
   = "ml_pango_language_get_scripts"
 (** Determines the scripts used to to write [language].
 

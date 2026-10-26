@@ -2,8 +2,8 @@ class type socket_listener_t = object
   method on_event :
     ?after:bool ->
     callback:
-      (event:Gio_enums.socketlistenerevent ->
-      socket:GSocket_and__socket_connection.socket_t ->
+      (event:Enums.socketlistenerevent ->
+      socket:Socket_and__socket_connection.socket_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -15,7 +15,7 @@ class type socket_listener_t = object
     UInt16.t -> [ `object_ ] Gobject.obj option -> (bool, GError.t) result
 
   method add_socket :
-    GSocket_and__socket_connection.socket_t ->
+    Socket_and__socket_connection.socket_t ->
     [ `object_ ] Gobject.obj option ->
     (bool, GError.t) result
 
@@ -23,9 +23,9 @@ class type socket_listener_t = object
   method set_backlog : int -> unit
   method listen_backlog : int
   method set_listen_backlog : int -> unit
-  method as_socket_listener : Socket_listener.t
+  method as_socket_listener : Raw.Socket_listener.t
 end
 
-class socket_listener : Socket_listener.t -> socket_listener_t
+class socket_listener : Raw.Socket_listener.t -> socket_listener_t
 
 val new_ : unit -> socket_listener_t

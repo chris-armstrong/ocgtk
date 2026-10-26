@@ -88,7 +88,7 @@ external set_row_homogeneous : t -> bool -> unit
 (** Sets whether all rows of [grid] will have the same height. *)
 
 external set_row_baseline_position :
-  t -> int -> Gtk_enums.baselineposition -> unit
+  t -> int -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_grid_set_row_baseline_position"
 (** Sets how the baseline should be positioned on [row] of the grid, in case
     that row is assigned more space than is requested.
@@ -155,7 +155,7 @@ external insert_next_to :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Gtk_enums.positiontype ->
+  Ocgtk_enums.positiontype ->
   unit = "ml_gtk_grid_insert_next_to"
 (** Inserts a row or column at the specified position.
 
@@ -176,7 +176,7 @@ external get_row_spacing : t -> int = "ml_gtk_grid_get_row_spacing"
 external get_row_homogeneous : t -> bool = "ml_gtk_grid_get_row_homogeneous"
 (** Returns whether all rows of [grid] have the same height. *)
 
-external get_row_baseline_position : t -> int -> Gtk_enums.baselineposition
+external get_row_baseline_position : t -> int -> Ocgtk_enums.baselineposition
   = "ml_gtk_grid_get_row_baseline_position"
 (** Returns the baseline position of [row].
 
@@ -212,7 +212,7 @@ external attach_next_to :
   .Widget
   .t
   option ->
-  Gtk_enums.positiontype ->
+  Ocgtk_enums.positiontype ->
   int ->
   int ->
   unit

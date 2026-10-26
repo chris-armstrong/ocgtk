@@ -1,5 +1,5 @@
 class type settings_t = object
-  inherit GStyle_provider.style_provider_t
+  inherit Style_provider.style_provider_t
   method reset_property : string -> unit
   method gtk_alternative_button_order : bool
   method set_gtk_alternative_button_order : bool -> unit
@@ -47,8 +47,8 @@ class type settings_t = object
   method set_gtk_error_bell : bool -> unit
   method gtk_font_name : string
   method set_gtk_font_name : string -> unit
-  method gtk_font_rendering : Gtk_enums.fontrendering
-  method set_gtk_font_rendering : Gtk_enums.fontrendering -> unit
+  method gtk_font_rendering : Enums.fontrendering
+  method set_gtk_font_rendering : Enums.fontrendering -> unit
   method gtk_fontconfig_timestamp : int
   method set_gtk_fontconfig_timestamp : int -> unit
   method gtk_hint_font_metrics : bool
@@ -57,10 +57,10 @@ class type settings_t = object
   method set_gtk_icon_theme_name : string -> unit
   method gtk_im_module : string
   method set_gtk_im_module : string -> unit
-  method gtk_interface_color_scheme : Gtk_enums.interfacecolorscheme
-  method set_gtk_interface_color_scheme : Gtk_enums.interfacecolorscheme -> unit
-  method gtk_interface_contrast : Gtk_enums.interfacecontrast
-  method set_gtk_interface_contrast : Gtk_enums.interfacecontrast -> unit
+  method gtk_interface_color_scheme : Enums.interfacecolorscheme
+  method set_gtk_interface_color_scheme : Enums.interfacecolorscheme -> unit
+  method gtk_interface_contrast : Enums.interfacecontrast
+  method set_gtk_interface_contrast : Enums.interfacecontrast -> unit
   method gtk_keynav_use_caret : bool
   method set_gtk_keynav_use_caret : bool -> unit
   method gtk_label_select_on_focus : bool
@@ -109,7 +109,7 @@ class type settings_t = object
   method set_gtk_xft_hintstyle : string -> unit
   method gtk_xft_rgba : string
   method set_gtk_xft_rgba : string -> unit
-  method as_settings : Settings.t
+  method as_settings : Raw.Settings.t
 end
 
-class settings : Settings.t -> settings_t
+class settings : Raw.Settings.t -> settings_t

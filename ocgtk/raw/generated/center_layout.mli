@@ -40,7 +40,7 @@ external set_shrink_center_last : t -> bool -> unit
     If set to [FALSE], start and end widgets keep natural width and the center
     widget starts shrinking instead. *)
 
-external set_orientation : t -> Gtk_enums.orientation -> unit
+external set_orientation : t -> Ocgtk_enums.orientation -> unit
   = "ml_gtk_center_layout_set_orientation"
 (** Sets the orientation of [self]. *)
 
@@ -66,7 +66,7 @@ external set_center_widget :
 
     To remove the existing center widget, pass [NULL]. *)
 
-external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
+external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_center_layout_set_baseline_position"
 (** Sets the new baseline position of [self] *)
 
@@ -82,7 +82,7 @@ external get_shrink_center_last : t -> bool
   = "ml_gtk_center_layout_get_shrink_center_last"
 (** Gets whether [self] shrinks the center widget after other children. *)
 
-external get_orientation : t -> Gtk_enums.orientation
+external get_orientation : t -> Ocgtk_enums.orientation
   = "ml_gtk_center_layout_get_orientation"
 (** Gets the current orienration of the layout manager. *)
 
@@ -102,7 +102,7 @@ external get_center_widget :
   option = "ml_gtk_center_layout_get_center_widget"
 (** Returns the center widget of the layout. *)
 
-external get_baseline_position : t -> Gtk_enums.baselineposition
+external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_center_layout_get_baseline_position"
 (** Returns the baseline position of the layout. *)
 

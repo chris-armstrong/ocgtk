@@ -41,17 +41,17 @@ type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t
   = "ml_gtk_event_controller_scroll_get_type"
 
-external new_ : Gtk_enums.eventcontrollerscrollflags -> t
+external new_ : Ocgtk_enums.eventcontrollerscrollflags -> t
   = "ml_gtk_event_controller_scroll_new"
 (** Create a new EventControllerScroll *)
 
 (* Methods *)
 
-external set_flags : t -> Gtk_enums.eventcontrollerscrollflags -> unit
+external set_flags : t -> Ocgtk_enums.eventcontrollerscrollflags -> unit
   = "ml_gtk_event_controller_scroll_set_flags"
 (** Sets the flags conditioning scroll controller behavior. *)
 
-external get_unit : t -> Ocgtk_gdk.Gdk.scrollunit
+external get_unit : t -> Ocgdk_enums.scrollunit
   = "ml_gtk_event_controller_scroll_get_unit"
 (** Gets the scroll unit of the last [Gtk.EventControllerScroll::scroll] signal
     received.
@@ -59,7 +59,7 @@ external get_unit : t -> Ocgtk_gdk.Gdk.scrollunit
     Always returns [GDK_SCROLL_UNIT_WHEEL] if the
     [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE] flag is set. *)
 
-external get_flags : t -> Gtk_enums.eventcontrollerscrollflags
+external get_flags : t -> Ocgtk_enums.eventcontrollerscrollflags
   = "ml_gtk_event_controller_scroll_get_flags"
 (** Gets the flags conditioning the scroll controller behavior. *)
 

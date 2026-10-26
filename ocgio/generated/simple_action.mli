@@ -1,5 +1,5 @@
 class type simple_action_t = object
-  inherit GAction.action_t
+  inherit Action.action_t
 
   method on_activate :
     ?after:bool ->
@@ -19,10 +19,10 @@ class type simple_action_t = object
   method name : string
   method parameter_type : Gvariant_type.t
   method state_type : Gvariant_type.t
-  method as_simple_action : Simple_action.t
+  method as_simple_action : Raw.Simple_action.t
 end
 
-class simple_action : Simple_action.t -> simple_action_t
+class simple_action : Raw.Simple_action.t -> simple_action_t
 
 val new_ : string -> Gvariant_type.t option -> simple_action_t
 

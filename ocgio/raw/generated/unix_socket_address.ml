@@ -33,7 +33,7 @@ external new_abstract : int array -> int -> t
 (** Create a new UnixSocketAddress *)
 
 external new_with_type :
-  int array -> int -> Gio_enums.unixsocketaddresstype -> t
+  int array -> int -> Ocgio_enums.unixsocketaddresstype -> t
   = "ml_g_unix_socket_address_new_with_type"
 (** Create a new UnixSocketAddress *)
 
@@ -56,7 +56,7 @@ external get_is_abstract : t -> bool
   = "ml_g_unix_socket_address_get_is_abstract"
 (** Tests if [address] is abstract. *)
 
-external get_address_type : t -> Gio_enums.unixsocketaddresstype
+external get_address_type : t -> Ocgio_enums.unixsocketaddresstype
   = "ml_g_unix_socket_address_get_address_type"
 (** Gets [address]'s type. *)
 

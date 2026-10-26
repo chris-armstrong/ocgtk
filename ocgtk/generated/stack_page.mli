@@ -1,9 +1,9 @@
 class type stack_page_t = object
-  inherit GAt_context_and__accessible.accessible_t
+  inherit At_context_and__accessible.accessible_t
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_icon_name : unit -> string option
@@ -18,7 +18,7 @@ class type stack_page_t = object
   method set_title : string -> unit
   method set_use_underline : bool -> unit
   method set_visible : bool -> unit
-  method as_stack_page : Stack_page.t
+  method as_stack_page : Raw.Stack_page.t
 end
 
-class stack_page : Stack_page.t -> stack_page_t
+class stack_page : Raw.Stack_page.t -> stack_page_t

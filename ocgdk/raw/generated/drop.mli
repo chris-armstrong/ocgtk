@@ -20,7 +20,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_drop_get_type"
 
 (* Methods *)
 
-external status : t -> Gdk_enums.dragaction -> Gdk_enums.dragaction -> unit
+external status : t -> Ocgdk_enums.dragaction -> Ocgdk_enums.dragaction -> unit
   = "ml_gdk_drop_status"
 (** Selects all actions that are potentially supported by the destination.
 
@@ -37,9 +37,8 @@ external status : t -> Gdk_enums.dragaction -> Gdk_enums.dragaction -> unit
     first and then later call this function again. *)
 
 external read_value_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Gobject.Value.t, GError.t) result = "ml_gdk_drop_read_value_finish"
+  t -> Ocgio_raw.Async_result.t -> (Gobject.Value.t, GError.t) result
+  = "ml_gdk_drop_read_value_finish"
 (** Finishes an async drop read.
 
     See [Gdk.Drop.read_value_async]. *)
@@ -66,7 +65,7 @@ external get_device : t -> App_launch_context_cycle_de440b34.Device.t
   = "ml_gdk_drop_get_device"
 (** Returns the [GdkDevice] performing the drop. *)
 
-external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drop_get_actions"
+external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drop_get_actions"
 (** Returns the possible actions for this [GdkDrop].
 
     If this value contains multiple actions - i.e. [Gdk.DragAction.is_unique]
@@ -81,7 +80,7 @@ external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drop_get_actions"
     [Gdk.Drop.finish]. The source side will not change this value anymore once a
     drop has started. *)
 
-external finish : t -> Gdk_enums.dragaction -> unit = "ml_gdk_drop_finish"
+external finish : t -> Ocgdk_enums.dragaction -> unit = "ml_gdk_drop_finish"
 (** Ends the drag operation after a drop.
 
     The [action] must be a single action selected from the actions available via

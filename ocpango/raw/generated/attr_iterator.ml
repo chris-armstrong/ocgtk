@@ -28,7 +28,7 @@ external next : t -> bool = "ml_pango_attr_iterator_next"
 external get_attrs : t -> Attribute.t list = "ml_pango_attr_iterator_get_attrs"
 (** Gets a list of all attributes at the current position of the iterator. *)
 
-external get : t -> Pango_enums.attrtype -> Attribute.t option
+external get : t -> Ocpango_enums.attrtype -> Attribute.t option
   = "ml_pango_attr_iterator_get"
 (** Find the current attribute of a particular type at the iterator location.
 

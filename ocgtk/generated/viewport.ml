@@ -1,91 +1,89 @@
 class type viewport_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GScrollable.scrollable_t
+  inherit Scrollable.scrollable_t
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_scroll_to_focus : unit -> bool
 
   method scroll_to :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    Scroll_info.t option ->
+    Raw.Scroll_info.t option ->
     unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_scroll_to_focus : bool -> unit
-  method as_viewport : Viewport.t
+  method as_viewport : Raw.Viewport.t
 end
 
 (* High-level class for Viewport *)
-class viewport (obj : Viewport.t) : viewport_t =
+class viewport (obj : Raw.Viewport.t) : viewport_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
-        (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-             .Widget
-             .t)
+        (obj :> Raw.Widget.t)
 
-    inherit GScrollable.scrollable (Scrollable.from_gobject obj)
+    inherit Scrollable.scrollable (Raw.Scrollable.from_gobject obj)
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
-          (Viewport.get_child obj)
+          (Raw.Viewport.get_child obj)
 
     method get_scroll_to_focus : unit -> bool =
-      fun () -> Viewport.get_scroll_to_focus obj
+      fun () -> Raw.Viewport.get_scroll_to_focus obj
 
     method scroll_to :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        Scroll_info.t option ->
+        Raw.Scroll_info.t option ->
         unit =
       fun descendant scroll ->
         let descendant = descendant#as_widget in
-        Viewport.scroll_to obj descendant scroll
+        Raw.Viewport.scroll_to obj descendant scroll
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
-        Viewport.set_child obj child
+        Raw.Viewport.set_child obj child
 
     method set_scroll_to_focus : bool -> unit =
-      fun scroll_to_focus -> Viewport.set_scroll_to_focus obj scroll_to_focus
+      fun scroll_to_focus ->
+        Raw.Viewport.set_scroll_to_focus obj scroll_to_focus
 
     method as_viewport = obj
   end
 
-let new_ (hadjustment : GAdjustment.adjustment_t option)
-    (vadjustment : GAdjustment.adjustment_t option) : viewport_t =
+let new_ (hadjustment : Adjustment.adjustment_t option)
+    (vadjustment : Adjustment.adjustment_t option) : viewport_t =
   let hadjustment = Option.map (fun c -> c#as_adjustment) hadjustment in
   let vadjustment = Option.map (fun c -> c#as_adjustment) vadjustment in
-  let obj_ = Viewport.new_ hadjustment vadjustment in
+  let obj_ = Raw.Viewport.new_ hadjustment vadjustment in
   new viewport obj_

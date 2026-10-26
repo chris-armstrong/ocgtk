@@ -13,7 +13,8 @@ type t = [ `subprocess_launcher | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_subprocess_launcher_get_type"
 
-external new_ : Gio_enums.subprocessflags -> t = "ml_g_subprocess_launcher_new"
+external new_ : Ocgio_enums.subprocessflags -> t
+  = "ml_g_subprocess_launcher_new"
 (** Create a new SubprocessLauncher *)
 
 (* Methods *)
@@ -155,7 +156,7 @@ external set_stderr_file_path : t -> string option -> unit
 
     This feature is only available on UNIX. *)
 
-external set_flags : t -> Gio_enums.subprocessflags -> unit
+external set_flags : t -> Ocgio_enums.subprocessflags -> unit
   = "ml_g_subprocess_launcher_set_flags"
 (** Sets the flags on the launcher.
 

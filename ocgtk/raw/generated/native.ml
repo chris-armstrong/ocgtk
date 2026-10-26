@@ -40,10 +40,10 @@ external get_surface_transform : t -> float * float
     This is the translation from [self]'s surface coordinates into [self]'s
     widget coordinates. *)
 
-external get_surface : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t option
+external get_surface : t -> Ocgdk_raw.Surface.t option
   = "ml_gtk_native_get_surface"
 (** Returns the surface of this [GtkNative]. *)
 
-external get_renderer : t -> Ocgtk_gsk.Gsk.Wrappers.Renderer.t option
+external get_renderer : t -> Ocgsk_raw.Renderer.t option
   = "ml_gtk_native_get_renderer"
 (** Returns the renderer that is used for this [GtkNative]. *)

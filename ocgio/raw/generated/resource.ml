@@ -162,7 +162,7 @@ external ref : t -> t = "ml_g_resource_ref"
 external open_stream :
   t ->
   string ->
-  Gio_enums.resourcelookupflags ->
+  Ocgio_enums.resourcelookupflags ->
   (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
 (** Looks for a file at the specified [path] in the resource and returns a
     [Gio.InputStream] that lets you read the data.
@@ -175,7 +175,7 @@ external open_stream :
 external lookup_data :
   t ->
   string ->
-  Gio_enums.resourcelookupflags ->
+  Ocgio_enums.resourcelookupflags ->
   (Glib_bytes.t, GError.t) result = "ml_g_resource_lookup_data"
 (** Looks for a file at the specified [path] in the resource and returns a
     [GLib.Bytes] that lets you directly access the data in memory.
@@ -201,7 +201,7 @@ external has_children : t -> string -> bool = "ml_g_resource_has_children"
 external get_info :
   t ->
   string ->
-  Gio_enums.resourcelookupflags ->
+  Ocgio_enums.resourcelookupflags ->
   (bool * Gsize.t * UInt32.t, GError.t) result = "ml_g_resource_get_info"
 (** Looks for a file at the specified [path] in the resource and if found
     returns information about it.
@@ -214,7 +214,7 @@ external get_info :
 external enumerate_children :
   t ->
   string ->
-  Gio_enums.resourcelookupflags ->
+  Ocgio_enums.resourcelookupflags ->
   (string array, GError.t) result = "ml_g_resource_enumerate_children"
 (** Returns all the names of children at the specified [path] in the resource.
 

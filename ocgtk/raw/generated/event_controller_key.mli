@@ -44,25 +44,17 @@ val on_im_update :
 val on_key_pressed :
   ?after:bool ->
   t ->
-  callback:
-    (keyval:int ->
-    keycode:int ->
-    state:Ocgtk_gdk.Gdk_enums.modifiertype ->
-    bool) ->
+  callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> bool) ->
   Gobject.Signal.handler_id
 
 val on_key_released :
   ?after:bool ->
   t ->
-  callback:
-    (keyval:int ->
-    keycode:int ->
-    state:Ocgtk_gdk.Gdk_enums.modifiertype ->
-    unit) ->
+  callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_modifiers :
   ?after:bool ->
   t ->
-  callback:(state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+  callback:(state:Ocgdk_enums.modifiertype -> bool) ->
   Gobject.Signal.handler_id

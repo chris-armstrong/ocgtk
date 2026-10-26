@@ -3,38 +3,38 @@ class type at_context_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_accessible : unit -> accessible_t
-  method get_accessible_role : unit -> Gtk_enums.accessiblerole
-  method display : Ocgtk_gdk.Gdk.Display.display_t
-  method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
-  method as_at_context : At_context_and__accessible.At_context.t
+  method get_accessible_role : unit -> Enums.accessiblerole
+  method display : Ocgdk.Display.display_t
+  method set_display : Ocgdk.Display.display_t -> unit
+  method as_at_context : Raw.At_context.t
 end
 
 and accessible_t = object
-  method announce : string -> Gtk_enums.accessibleannouncementpriority -> unit
+  method announce : string -> Enums.accessibleannouncementpriority -> unit
   method get_accessible_parent : unit -> accessible_t option
-  method get_accessible_role : unit -> Gtk_enums.accessiblerole
+  method get_accessible_role : unit -> Enums.accessiblerole
   method get_at_context : unit -> at_context_t
   method get_first_accessible_child : unit -> accessible_t option
   method get_next_accessible_sibling : unit -> accessible_t option
-  method get_platform_state : Gtk_enums.accessibleplatformstate -> bool
-  method reset_property : Gtk_enums.accessibleproperty -> unit
-  method reset_relation : Gtk_enums.accessiblerelation -> unit
-  method reset_state : Gtk_enums.accessiblestate -> unit
+  method get_platform_state : Enums.accessibleplatformstate -> bool
+  method reset_property : Enums.accessibleproperty -> unit
+  method reset_relation : Enums.accessiblerelation -> unit
+  method reset_state : Enums.accessiblestate -> unit
 
   method set_accessible_parent :
     accessible_t option -> accessible_t option -> unit
 
   method update_next_accessible_sibling : accessible_t option -> unit
-  method update_platform_state : Gtk_enums.accessibleplatformstate -> unit
-  method as_accessible : At_context_and__accessible.Accessible.t
+  method update_platform_state : Enums.accessibleplatformstate -> unit
+  method as_accessible : Raw.Accessible.t
 end
 
-class at_context : At_context_and__accessible.At_context.t -> at_context_t
+class at_context : Raw.At_context.t -> at_context_t
 
-and accessible : At_context_and__accessible.Accessible.t -> accessible_t
+and accessible : Raw.Accessible.t -> accessible_t
 
 val create :
-  Gtk_enums.accessiblerole ->
+  Enums.accessiblerole ->
   accessible_t ->
-  Ocgtk_gdk.Gdk.Display.display_t ->
+  Ocgdk.Display.display_t ->
   at_context_t

@@ -36,7 +36,7 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gtk_scrollable_from_gobject"
 
 (* Methods *)
 
-external set_vscroll_policy : t -> Gtk_enums.scrollablepolicy -> unit
+external set_vscroll_policy : t -> Ocgtk_enums.scrollablepolicy -> unit
   = "ml_gtk_scrollable_set_vscroll_policy"
 (** Sets the [GtkScrollablePolicy].
 
@@ -47,7 +47,7 @@ external set_vadjustment : t -> Adjustment.t option -> unit
   = "ml_gtk_scrollable_set_vadjustment"
 (** Sets the vertical adjustment of the [GtkScrollable]. *)
 
-external set_hscroll_policy : t -> Gtk_enums.scrollablepolicy -> unit
+external set_hscroll_policy : t -> Ocgtk_enums.scrollablepolicy -> unit
   = "ml_gtk_scrollable_set_hscroll_policy"
 (** Sets the [GtkScrollablePolicy].
 
@@ -58,7 +58,7 @@ external set_hadjustment : t -> Adjustment.t option -> unit
   = "ml_gtk_scrollable_set_hadjustment"
 (** Sets the horizontal adjustment of the [GtkScrollable]. *)
 
-external get_vscroll_policy : t -> Gtk_enums.scrollablepolicy
+external get_vscroll_policy : t -> Ocgtk_enums.scrollablepolicy
   = "ml_gtk_scrollable_get_vscroll_policy"
 (** Gets the vertical [GtkScrollablePolicy]. *)
 
@@ -66,7 +66,7 @@ external get_vadjustment : t -> Adjustment.t option
   = "ml_gtk_scrollable_get_vadjustment"
 (** Retrieves the [GtkAdjustment] used for vertical scrolling. *)
 
-external get_hscroll_policy : t -> Gtk_enums.scrollablepolicy
+external get_hscroll_policy : t -> Ocgtk_enums.scrollablepolicy
   = "ml_gtk_scrollable_get_hscroll_policy"
 (** Gets the horizontal [GtkScrollablePolicy]. *)
 

@@ -1,6 +1,6 @@
 class type drop_controller_motion_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
   method on_enter :
@@ -19,13 +19,13 @@ class type drop_controller_motion_t = object
     Gobject.Signal.handler_id
 
   method contains_pointer : unit -> bool
-  method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
+  method get_drop : unit -> Ocgdk.Drop.drop_t option
   method is_pointer : unit -> bool
-  method as_drop_controller_motion : Drop_controller_motion.t
+  method as_drop_controller_motion : Raw.Drop_controller_motion.t
 end
 
 class drop_controller_motion :
-  Drop_controller_motion.t ->
+  Raw.Drop_controller_motion.t ->
   drop_controller_motion_t
 
 val new_ : unit -> drop_controller_motion_t

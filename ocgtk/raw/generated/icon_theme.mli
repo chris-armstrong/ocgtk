@@ -85,8 +85,8 @@ external lookup_icon :
   string array option ->
   int ->
   int ->
-  Gtk_enums.textdirection ->
-  Gtk_enums.iconlookupflags ->
+  Ocgtk_enums.textdirection ->
+  Ocgtk_enums.iconlookupflags ->
   Icon_paintable.t
   = "ml_gtk_icon_theme_lookup_icon_bytecode"
     "ml_gtk_icon_theme_lookup_icon_native"
@@ -106,11 +106,11 @@ external lookup_icon :
 
 external lookup_by_gicon :
   t ->
-  Ocgtk_gio.Gio.Wrappers.Icon.t ->
+  Ocgio_raw.Icon.t ->
   int ->
   int ->
-  Gtk_enums.textdirection ->
-  Gtk_enums.iconlookupflags ->
+  Ocgtk_enums.textdirection ->
+  Ocgtk_enums.iconlookupflags ->
   Icon_paintable.t
   = "ml_gtk_icon_theme_lookup_by_gicon_bytecode"
     "ml_gtk_icon_theme_lookup_by_gicon_native"
@@ -122,7 +122,7 @@ external lookup_by_gicon :
 external has_icon : t -> string -> bool = "ml_gtk_icon_theme_has_icon"
 (** Checks whether an icon theme includes an icon for a particular name. *)
 
-external has_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> bool
+external has_gicon : t -> Ocgio_raw.Icon.t -> bool
   = "ml_gtk_icon_theme_has_gicon"
 (** Checks whether an icon theme includes an icon for a particular [GIcon]. *)
 
@@ -144,7 +144,7 @@ external get_resource_path : t -> string array option
 external get_icon_names : t -> string array = "ml_gtk_icon_theme_get_icon_names"
 (** Lists the names of icons in the current icon theme. *)
 
-external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t option
+external get_display : t -> Ocgdk_raw.Display.t option
   = "ml_gtk_icon_theme_get_display"
 (** Returns the display that the [GtkIconTheme] object was created for. *)
 

@@ -8,7 +8,7 @@
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "generated/gio_decls.h"
+#include "gio_decls.h"
 
 /* Class-specific conversion macros (shared) */
 #ifndef Val_GdkPixbuf
@@ -88,6 +88,6 @@ GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
 #endif
 
 
-#include "../core/gdkpixbuf_core.h"
+#include "gdkpixbuf_core.h"
 
 #endif /* _gdkpixbuf_decls_h_ */

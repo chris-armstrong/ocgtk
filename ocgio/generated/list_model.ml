@@ -9,26 +9,26 @@ class type list_model_t = object
   method get_n_items : unit -> int
   method get_object : int -> [ `object_ ] Gobject.obj option
   method items_changed : int -> int -> int -> unit
-  method as_list_model : List_model.t
+  method as_list_model : Raw.List_model.t
 end
 
 (* High-level class for ListModel *)
-class list_model (obj : List_model.t) : list_model_t =
+class list_model (obj : Raw.List_model.t) : list_model_t =
   object (self)
     method on_items_changed ?(after = false) ~callback () =
-      List_model.on_items_changed ~after self#as_list_model ~callback
+      Raw.List_model.on_items_changed ~after self#as_list_model ~callback
 
     method get_item_type : unit -> Gobject.Type.t =
-      fun () -> List_model.get_item_type obj
+      fun () -> Raw.List_model.get_item_type obj
 
-    method get_n_items : unit -> int = fun () -> List_model.get_n_items obj
+    method get_n_items : unit -> int = fun () -> Raw.List_model.get_n_items obj
 
     method get_object : int -> [ `object_ ] Gobject.obj option =
-      fun position -> List_model.get_object obj position
+      fun position -> Raw.List_model.get_object obj position
 
     method items_changed : int -> int -> int -> unit =
       fun position removed added ->
-        List_model.items_changed obj position removed added
+        Raw.List_model.items_changed obj position removed added
 
     method as_list_model = obj
   end

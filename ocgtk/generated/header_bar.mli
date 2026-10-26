@@ -1,6 +1,6 @@
 class type header_bar_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_decoration_layout : unit -> string option
@@ -8,24 +8,24 @@ class type header_bar_t = object
 
   method get_title_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_use_native_controls : unit -> bool
 
   method pack_end :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method pack_start :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -33,15 +33,15 @@ class type header_bar_t = object
   method set_show_title_buttons : bool -> unit
 
   method set_title_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_use_native_controls : bool -> unit
-  method as_header_bar : Header_bar.t
+  method as_header_bar : Raw.Header_bar.t
 end
 
-class header_bar : Header_bar.t -> header_bar_t
+class header_bar : Raw.Header_bar.t -> header_bar_t
 
 val new_ : unit -> header_bar_t

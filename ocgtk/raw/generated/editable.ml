@@ -258,7 +258,7 @@ external delete_selection : t -> unit = "ml_gtk_editable_delete_selection"
     This call doesn’t do anything if there is no selected text. *)
 
 external delegate_get_accessible_platform_state :
-  t -> Gtk_enums.accessibleplatformstate -> bool
+  t -> Ocgtk_enums.accessibleplatformstate -> bool
   = "ml_gtk_editable_delegate_get_accessible_platform_state"
 (** Retrieves the accessible platform state from the editable delegate.
 

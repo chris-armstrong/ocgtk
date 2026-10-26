@@ -88,8 +88,7 @@ external append_separator : t -> unit
 (** Appends a separator to the list of applications that is shown in the popup.
 *)
 
-external append_custom_item :
-  t -> string -> string -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit
+external append_custom_item : t -> string -> string -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_app_chooser_button_append_custom_item"
 (** Appends a custom item to the list of applications that is shown in the
     popup.

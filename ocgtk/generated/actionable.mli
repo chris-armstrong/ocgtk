@@ -4,7 +4,7 @@ class type actionable_t = object
   method set_action_name : string option -> unit
   method set_action_target_value : Gvariant.t option -> unit
   method set_detailed_action_name : string -> unit
-  method as_actionable : Actionable.t
+  method as_actionable : Raw.Actionable.t
 end
 
-class actionable : Actionable.t -> actionable_t
+class actionable : Raw.Actionable.t -> actionable_t

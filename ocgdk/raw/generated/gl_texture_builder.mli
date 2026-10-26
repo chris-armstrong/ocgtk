@@ -33,8 +33,7 @@ external set_update_texture : t -> Texture.t option -> unit
 (** Sets the texture to be updated by this texture. See
     [Gdk.GLTextureBuilder.set_update_region] for an explanation. *)
 
-external set_update_region :
-  t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+external set_update_region : t -> Occairo_raw.Region.t option -> unit
   = "ml_gdk_gl_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
     [Gdk.GLTextureBuilder:update-texture] this describes an update of a previous
@@ -67,7 +66,7 @@ external set_has_mipmap : t -> bool -> unit
 
     Typically, the [glGenerateMipmap] function is used to generate a mimap. *)
 
-external set_format : t -> Gdk_enums.memoryformat -> unit
+external set_format : t -> Ocgdk_enums.memoryformat -> unit
   = "ml_gdk_gl_texture_builder_set_format"
 (** Sets the format of the texture. The default is
     [GDK_MEMORY_R8G8B8A8_PREMULTIPLIED].
@@ -115,7 +114,7 @@ external get_update_texture : t -> Texture.t option
 (** Gets the texture previously set via
     gdk_gl_texture_builder_set_update_texture() or [NULL] if none was set. *)
 
-external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
+external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_gl_texture_builder_get_update_region"
 (** Gets the region previously set via
     gdk_gl_texture_builder_set_update_region() or [NULL] if none was set. *)
@@ -131,7 +130,7 @@ external get_height : t -> int = "ml_gdk_gl_texture_builder_get_height"
 external get_has_mipmap : t -> bool = "ml_gdk_gl_texture_builder_get_has_mipmap"
 (** Gets whether the texture has a mipmap. *)
 
-external get_format : t -> Gdk_enums.memoryformat
+external get_format : t -> Ocgdk_enums.memoryformat
   = "ml_gdk_gl_texture_builder_get_format"
 (** Gets the format previously set via gdk_gl_texture_builder_set_format(). *)
 

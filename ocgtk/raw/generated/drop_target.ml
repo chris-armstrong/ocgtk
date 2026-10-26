@@ -66,7 +66,7 @@ type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_get_type"
 
-external new_ : Gobject.Type.t -> Ocgtk_gdk.Gdk.dragaction -> t
+external new_ : Gobject.Type.t -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_new"
 (** Create a new DropTarget *)
 
@@ -79,7 +79,7 @@ external set_gtypes : t -> Gobject.Type.t array option -> Gsize.t -> unit
   = "ml_gtk_drop_target_set_gtypes"
 (** Sets the supported [GType]s for this drop target. *)
 
-external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit
+external set_actions : t -> Ocgdk_enums.dragaction -> unit
   = "ml_gtk_drop_target_set_actions"
 (** Sets the actions that this drop target supports. *)
 
@@ -105,25 +105,24 @@ external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
 
     If no types have been set, [NULL] will be returned. *)
 
-external get_formats : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t option
+external get_formats : t -> Ocgdk_raw.Content_formats.t option
   = "ml_gtk_drop_target_get_formats"
 (** Gets the data formats that this drop target accepts.
 
     If the result is [NULL], all formats are expected to be supported. *)
 
-external get_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option
-  = "ml_gtk_drop_target_get_drop"
+external get_drop : t -> Ocgdk_raw.Drop.t option = "ml_gtk_drop_target_get_drop"
 (** Gets the currently handled drop operation.
 
     If no drop operation is going on, [NULL] is returned. *)
 
-external get_current_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option
+external get_current_drop : t -> Ocgdk_raw.Drop.t option
   = "ml_gtk_drop_target_get_current_drop"
 (** Gets the currently handled drop operation.
 
     If no drop operation is going on, [NULL] is returned. *)
 
-external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
+external get_actions : t -> Ocgdk_enums.dragaction
   = "ml_gtk_drop_target_get_actions"
 (** Gets the actions that this drop target supports. *)
 
@@ -134,7 +133,7 @@ let on_accept ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v (Ocgtk_gdk.Gdk.Wrappers.Drop.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Drop.gtype ())
         in
         let result = callback ~drop in
         let v = Gobject.Closure.result argv in
@@ -181,7 +180,7 @@ let on_enter ?after obj ~callback =
         let result = callback ~x ~y in
         let v = Gobject.Closure.result argv in
         let x = result in
-        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+        Gobject.Value.set_flags_int v (Ocgdk_enums.dragaction_to_int x))
   in
   Gobject.Signal.connect obj ~name:"enter" ~callback:closure
     ~after:(Option.value after ~default:false)
@@ -204,7 +203,7 @@ let on_motion ?after obj ~callback =
         let result = callback ~x ~y in
         let v = Gobject.Closure.result argv in
         let x = result in
-        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+        Gobject.Value.set_flags_int v (Ocgdk_enums.dragaction_to_int x))
   in
   Gobject.Signal.connect obj ~name:"motion" ~callback:closure
     ~after:(Option.value after ~default:false)

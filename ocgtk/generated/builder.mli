@@ -24,16 +24,16 @@ class type builder_t = object
   method get_current_object : unit -> [ `object_ ] Gobject.obj option
   method get_object : string -> [ `object_ ] Gobject.obj option
   method get_objects : unit -> [ `object_ ] Gobject.obj list
-  method get_scope : unit -> GBuilder_scope.builder_scope_t
+  method get_scope : unit -> Builder_scope.builder_scope_t
   method get_translation_domain : unit -> string option
   method get_type_from_name : string -> Gobject.Type.t
   method set_current_object : [ `object_ ] Gobject.obj option -> unit
-  method set_scope : GBuilder_scope.builder_scope_t option -> unit
+  method set_scope : Builder_scope.builder_scope_t option -> unit
   method set_translation_domain : string option -> unit
-  method as_builder : Builder.t
+  method as_builder : Raw.Builder.t
 end
 
-class builder : Builder.t -> builder_t
+class builder : Raw.Builder.t -> builder_t
 
 val new_ : unit -> builder_t
 val new_from_file : string -> builder_t

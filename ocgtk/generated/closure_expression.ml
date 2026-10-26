@@ -1,11 +1,12 @@
 class type closure_expression_t = object
-  inherit GExpression.expression_t
-  method as_closure_expression : Closure_expression.t
+  inherit Expression.expression_t
+  method as_closure_expression : Raw.Closure_expression.t
 end
 
 (* High-level class for ClosureExpression *)
-class closure_expression (obj : Closure_expression.t) : closure_expression_t =
+class closure_expression (obj : Raw.Closure_expression.t) : closure_expression_t
+  =
   object (self)
-    inherit GExpression.expression (obj :> Expression.t)
+    inherit Expression.expression (obj :> Raw.Expression.t)
     method as_closure_expression = obj
   end

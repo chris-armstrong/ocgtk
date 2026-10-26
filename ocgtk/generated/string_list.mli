@@ -1,6 +1,6 @@
 class type string_list_t = object
-  inherit Ocgtk_gio.Gio.List_model.list_model_t
-  inherit GBuildable.buildable_t
+  inherit Ocgio.List_model.list_model_t
+  inherit Buildable.buildable_t
   method append : string -> unit
   method find : string -> int
   method get_string : int -> string option
@@ -9,9 +9,9 @@ class type string_list_t = object
   method take : string -> unit
   method item_type : Gobject.Type.t
   method n_items : int
-  method as_string_list : String_list.t
+  method as_string_list : Raw.String_list.t
 end
 
-class string_list : String_list.t -> string_list_t
+class string_list : Raw.String_list.t -> string_list_t
 
 val new_ : string array option -> string_list_t

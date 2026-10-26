@@ -85,7 +85,7 @@ external set_vadjustment : t -> Adjustment.t -> unit
     The adjustments have to be in pixel units and in the same coordinate system
     as the allocation for immediate children of the box. *)
 
-external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
+external set_selection_mode : t -> Ocgtk_enums.selectionmode -> unit
   = "ml_gtk_flow_box_set_selection_mode"
 (** Sets how selection works in [box]. *)
 
@@ -193,7 +193,7 @@ external insert :
     If [position] is -1, or larger than the total number of children in the
     [box], then the [widget] will be appended to the end. *)
 
-external get_selection_mode : t -> Gtk_enums.selectionmode
+external get_selection_mode : t -> Ocgtk_enums.selectionmode
   = "ml_gtk_flow_box_get_selection_mode"
 (** Gets the selection mode of [box]. *)
 
@@ -268,7 +268,7 @@ val on_move_cursor :
   ?after:bool ->
   t ->
   callback:
-    (step:Gtk_enums.movementstep ->
+    (step:Ocgtk_enums.movementstep ->
     count:int ->
     extend:bool ->
     modify:bool ->

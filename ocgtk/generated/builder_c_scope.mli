@@ -1,8 +1,8 @@
 class type builder_c_scope_t = object
-  inherit GBuilder_scope.builder_scope_t
-  method as_builder_c_scope : Builder_c_scope.t
+  inherit Builder_scope.builder_scope_t
+  method as_builder_c_scope : Raw.Builder_c_scope.t
 end
 
-class builder_c_scope : Builder_c_scope.t -> builder_c_scope_t
+class builder_c_scope : Raw.Builder_c_scope.t -> builder_c_scope_t
 
 val new_ : unit -> builder_c_scope_t

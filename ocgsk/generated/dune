@@ -1,0 +1,18 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgsk)
+ (public_name ocgsk)
+ (synopsis "OCaml bindings for Gsk")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries
+  ocglib
+  ocgsk.raw
+  ocgsk.enums
+  ocgdk
+  ocgdkpixbuf
+  ocgio
+  ocgraphene
+  ocpango
+  ocpangocairo
+  occairo))

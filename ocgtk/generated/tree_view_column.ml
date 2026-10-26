@@ -1,6 +1,6 @@
 class type tree_view_column_t = object
-  inherit GBuildable.buildable_t
-  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Buildable.buildable_t
+  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -8,15 +8,15 @@ class type tree_view_column_t = object
   method cell_is_visible : unit -> bool
 
   method cell_set_cell_data :
-    GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit
+    Tree_model.tree_model_t -> Raw.Tree_iter.t -> bool -> bool -> unit
 
   method clicked : unit -> unit
-  method focus_cell : GCell_renderer.cell_renderer_t -> unit
+  method focus_cell : Cell_renderer.cell_renderer_t -> unit
   method get_alignment : unit -> float
 
   method get_button :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_clickable : unit -> bool
@@ -26,16 +26,16 @@ class type tree_view_column_t = object
   method get_min_width : unit -> int
   method get_reorderable : unit -> bool
   method get_resizable : unit -> bool
-  method get_sizing : unit -> Gtk_enums.treeviewcolumnsizing
+  method get_sizing : unit -> Enums.treeviewcolumnsizing
   method get_sort_column_id : unit -> int
   method get_sort_indicator : unit -> bool
-  method get_sort_order : unit -> Gtk_enums.sorttype
+  method get_sort_order : unit -> Enums.sorttype
   method get_spacing : unit -> int
   method get_title : unit -> string
 
   method get_tree_view :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -43,7 +43,7 @@ class type tree_view_column_t = object
 
   method get_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -58,213 +58,215 @@ class type tree_view_column_t = object
   method set_min_width : int -> unit
   method set_reorderable : bool -> unit
   method set_resizable : bool -> unit
-  method set_sizing : Gtk_enums.treeviewcolumnsizing -> unit
+  method set_sizing : Enums.treeviewcolumnsizing -> unit
   method set_sort_column_id : int -> unit
   method set_sort_indicator : bool -> unit
-  method set_sort_order : Gtk_enums.sorttype -> unit
+  method set_sort_order : Enums.sorttype -> unit
   method set_spacing : int -> unit
   method set_title : string -> unit
   method set_visible : bool -> unit
 
   method set_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method cell_area :
-    GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
+    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
 
-  method as_tree_view_column : Tree_view_column.t
+  method as_tree_view_column : Raw.Tree_view_column.t
 end
 
 (* High-level class for TreeViewColumn *)
-class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
+class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
   object (self)
-    inherit GBuildable.buildable (Buildable.from_gobject obj)
+    inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 
     inherit
-      GCell_area_and__cell_area_context_and__cell_layout.cell_layout
-        (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
-         .from_gobject obj)
+      Cell_area_and__cell_area_context_and__cell_layout.cell_layout
+        (Raw.Cell_layout.from_gobject obj)
 
     method on_clicked ?(after = false) ~callback () =
-      Tree_view_column.on_clicked ~after self#as_tree_view_column ~callback
+      Raw.Tree_view_column.on_clicked ~after self#as_tree_view_column ~callback
 
     method cell_is_visible : unit -> bool =
-      fun () -> Tree_view_column.cell_is_visible obj
+      fun () -> Raw.Tree_view_column.cell_is_visible obj
 
     method cell_set_cell_data :
-        GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit =
+        Tree_model.tree_model_t -> Raw.Tree_iter.t -> bool -> bool -> unit =
       fun tree_model iter is_expander is_expanded ->
         let tree_model = tree_model#as_tree_model in
-        Tree_view_column.cell_set_cell_data obj tree_model iter is_expander
+        Raw.Tree_view_column.cell_set_cell_data obj tree_model iter is_expander
           is_expanded
 
-    method clicked : unit -> unit = fun () -> Tree_view_column.clicked obj
+    method clicked : unit -> unit = fun () -> Raw.Tree_view_column.clicked obj
 
-    method focus_cell : GCell_renderer.cell_renderer_t -> unit =
+    method focus_cell : Cell_renderer.cell_renderer_t -> unit =
       fun cell ->
         let cell = cell#as_cell_renderer in
-        Tree_view_column.focus_cell obj cell
+        Raw.Tree_view_column.focus_cell obj cell
 
     method get_alignment : unit -> float =
-      fun () -> Tree_view_column.get_alignment obj
+      fun () -> Raw.Tree_view_column.get_alignment obj
 
     method get_button :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
-          (Tree_view_column.get_button obj)
+          (Raw.Tree_view_column.get_button obj)
 
     method get_clickable : unit -> bool =
-      fun () -> Tree_view_column.get_clickable obj
+      fun () -> Raw.Tree_view_column.get_clickable obj
 
-    method get_expand : unit -> bool = fun () -> Tree_view_column.get_expand obj
+    method get_expand : unit -> bool =
+      fun () -> Raw.Tree_view_column.get_expand obj
 
     method get_fixed_width : unit -> int =
-      fun () -> Tree_view_column.get_fixed_width obj
+      fun () -> Raw.Tree_view_column.get_fixed_width obj
 
     method get_max_width : unit -> int =
-      fun () -> Tree_view_column.get_max_width obj
+      fun () -> Raw.Tree_view_column.get_max_width obj
 
     method get_min_width : unit -> int =
-      fun () -> Tree_view_column.get_min_width obj
+      fun () -> Raw.Tree_view_column.get_min_width obj
 
     method get_reorderable : unit -> bool =
-      fun () -> Tree_view_column.get_reorderable obj
+      fun () -> Raw.Tree_view_column.get_reorderable obj
 
     method get_resizable : unit -> bool =
-      fun () -> Tree_view_column.get_resizable obj
+      fun () -> Raw.Tree_view_column.get_resizable obj
 
-    method get_sizing : unit -> Gtk_enums.treeviewcolumnsizing =
-      fun () -> Tree_view_column.get_sizing obj
+    method get_sizing : unit -> Enums.treeviewcolumnsizing =
+      fun () -> Raw.Tree_view_column.get_sizing obj
 
     method get_sort_column_id : unit -> int =
-      fun () -> Tree_view_column.get_sort_column_id obj
+      fun () -> Raw.Tree_view_column.get_sort_column_id obj
 
     method get_sort_indicator : unit -> bool =
-      fun () -> Tree_view_column.get_sort_indicator obj
+      fun () -> Raw.Tree_view_column.get_sort_indicator obj
 
-    method get_sort_order : unit -> Gtk_enums.sorttype =
-      fun () -> Tree_view_column.get_sort_order obj
+    method get_sort_order : unit -> Enums.sorttype =
+      fun () -> Raw.Tree_view_column.get_sort_order obj
 
     method get_spacing : unit -> int =
-      fun () -> Tree_view_column.get_spacing obj
+      fun () -> Raw.Tree_view_column.get_spacing obj
 
-    method get_title : unit -> string = fun () -> Tree_view_column.get_title obj
+    method get_title : unit -> string =
+      fun () -> Raw.Tree_view_column.get_title obj
 
     method get_tree_view :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
-          (Tree_view_column.get_tree_view obj)
+          (Raw.Tree_view_column.get_tree_view obj)
 
     method get_visible : unit -> bool =
-      fun () -> Tree_view_column.get_visible obj
+      fun () -> Raw.Tree_view_column.get_visible obj
 
     method get_widget :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
-          (Tree_view_column.get_widget obj)
+          (Raw.Tree_view_column.get_widget obj)
 
-    method get_width : unit -> int = fun () -> Tree_view_column.get_width obj
+    method get_width : unit -> int =
+      fun () -> Raw.Tree_view_column.get_width obj
 
     method get_x_offset : unit -> int =
-      fun () -> Tree_view_column.get_x_offset obj
+      fun () -> Raw.Tree_view_column.get_x_offset obj
 
     method queue_resize : unit -> unit =
-      fun () -> Tree_view_column.queue_resize obj
+      fun () -> Raw.Tree_view_column.queue_resize obj
 
     method set_alignment : float -> unit =
-      fun xalign -> Tree_view_column.set_alignment obj xalign
+      fun xalign -> Raw.Tree_view_column.set_alignment obj xalign
 
     method set_clickable : bool -> unit =
-      fun clickable -> Tree_view_column.set_clickable obj clickable
+      fun clickable -> Raw.Tree_view_column.set_clickable obj clickable
 
     method set_expand : bool -> unit =
-      fun expand -> Tree_view_column.set_expand obj expand
+      fun expand -> Raw.Tree_view_column.set_expand obj expand
 
     method set_fixed_width : int -> unit =
-      fun fixed_width -> Tree_view_column.set_fixed_width obj fixed_width
+      fun fixed_width -> Raw.Tree_view_column.set_fixed_width obj fixed_width
 
     method set_max_width : int -> unit =
-      fun max_width -> Tree_view_column.set_max_width obj max_width
+      fun max_width -> Raw.Tree_view_column.set_max_width obj max_width
 
     method set_min_width : int -> unit =
-      fun min_width -> Tree_view_column.set_min_width obj min_width
+      fun min_width -> Raw.Tree_view_column.set_min_width obj min_width
 
     method set_reorderable : bool -> unit =
-      fun reorderable -> Tree_view_column.set_reorderable obj reorderable
+      fun reorderable -> Raw.Tree_view_column.set_reorderable obj reorderable
 
     method set_resizable : bool -> unit =
-      fun resizable -> Tree_view_column.set_resizable obj resizable
+      fun resizable -> Raw.Tree_view_column.set_resizable obj resizable
 
-    method set_sizing : Gtk_enums.treeviewcolumnsizing -> unit =
-      fun type_ -> Tree_view_column.set_sizing obj type_
+    method set_sizing : Enums.treeviewcolumnsizing -> unit =
+      fun type_ -> Raw.Tree_view_column.set_sizing obj type_
 
     method set_sort_column_id : int -> unit =
       fun sort_column_id ->
-        Tree_view_column.set_sort_column_id obj sort_column_id
+        Raw.Tree_view_column.set_sort_column_id obj sort_column_id
 
     method set_sort_indicator : bool -> unit =
-      fun setting -> Tree_view_column.set_sort_indicator obj setting
+      fun setting -> Raw.Tree_view_column.set_sort_indicator obj setting
 
-    method set_sort_order : Gtk_enums.sorttype -> unit =
-      fun order -> Tree_view_column.set_sort_order obj order
+    method set_sort_order : Enums.sorttype -> unit =
+      fun order -> Raw.Tree_view_column.set_sort_order obj order
 
     method set_spacing : int -> unit =
-      fun spacing -> Tree_view_column.set_spacing obj spacing
+      fun spacing -> Raw.Tree_view_column.set_spacing obj spacing
 
     method set_title : string -> unit =
-      fun title -> Tree_view_column.set_title obj title
+      fun title -> Raw.Tree_view_column.set_title obj title
 
     method set_visible : bool -> unit =
-      fun visible -> Tree_view_column.set_visible obj visible
+      fun visible -> Raw.Tree_view_column.set_visible obj visible
 
     method set_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
-        Tree_view_column.set_widget obj widget
+        Raw.Tree_view_column.set_widget obj widget
 
     method cell_area =
-      new GCell_area_and__cell_area_context_and__cell_layout.cell_area
-        (Tree_view_column.get_cell_area obj)
+      new Cell_area_and__cell_area_context_and__cell_layout.cell_area
+        (Raw.Tree_view_column.get_cell_area obj)
 
     method as_tree_view_column = obj
   end
 
 let new_ () : tree_view_column_t =
-  new tree_view_column (Tree_view_column.new_ ())
+  new tree_view_column (Raw.Tree_view_column.new_ ())
 
 let new_with_area
-    (area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t) :
+    (area : Cell_area_and__cell_area_context_and__cell_layout.cell_area_t) :
     tree_view_column_t =
   let area = area#as_cell_area in
-  let obj_ = Tree_view_column.new_with_area area in
+  let obj_ = Raw.Tree_view_column.new_with_area area in
   new tree_view_column obj_

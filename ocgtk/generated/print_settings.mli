@@ -7,25 +7,25 @@ class type print_settings_t = object
   method get_dither : unit -> string option
   method get_double : string -> float
   method get_double_with_default : string -> float -> float
-  method get_duplex : unit -> Gtk_enums.printduplex
+  method get_duplex : unit -> Enums.printduplex
   method get_finishings : unit -> string option
   method get_int : string -> int
   method get_int_with_default : string -> int -> int
-  method get_length : string -> Gtk_enums.unit -> float
+  method get_length : string -> Enums.unit -> float
   method get_media_type : unit -> string option
   method get_n_copies : unit -> int
   method get_number_up : unit -> int
-  method get_number_up_layout : unit -> Gtk_enums.numberuplayout
-  method get_orientation : unit -> Gtk_enums.pageorientation
+  method get_number_up_layout : unit -> Enums.numberuplayout
+  method get_orientation : unit -> Enums.pageorientation
   method get_output_bin : unit -> string option
-  method get_page_set : unit -> Gtk_enums.pageset
-  method get_paper_height : Gtk_enums.unit -> float
-  method get_paper_size : unit -> Paper_size.t option
-  method get_paper_width : Gtk_enums.unit -> float
-  method get_print_pages : unit -> Gtk_enums.printpages
+  method get_page_set : unit -> Enums.pageset
+  method get_paper_height : Enums.unit -> float
+  method get_paper_size : unit -> Raw.Paper_size.t option
+  method get_paper_width : Enums.unit -> float
+  method get_print_pages : unit -> Enums.printpages
   method get_printer : unit -> string option
   method get_printer_lpi : unit -> float
-  method get_quality : unit -> Gtk_enums.printquality
+  method get_quality : unit -> Enums.printquality
   method get_resolution : unit -> int
   method get_resolution_x : unit -> int
   method get_resolution_y : unit -> int
@@ -40,25 +40,25 @@ class type print_settings_t = object
   method set_default_source : string -> unit
   method set_dither : string -> unit
   method set_double : string -> float -> unit
-  method set_duplex : Gtk_enums.printduplex -> unit
+  method set_duplex : Enums.printduplex -> unit
   method set_finishings : string -> unit
   method set_int : string -> int -> unit
-  method set_length : string -> float -> Gtk_enums.unit -> unit
+  method set_length : string -> float -> Enums.unit -> unit
   method set_media_type : string -> unit
   method set_n_copies : int -> unit
   method set_number_up : int -> unit
-  method set_number_up_layout : Gtk_enums.numberuplayout -> unit
-  method set_orientation : Gtk_enums.pageorientation -> unit
+  method set_number_up_layout : Enums.numberuplayout -> unit
+  method set_orientation : Enums.pageorientation -> unit
   method set_output_bin : string -> unit
-  method set_page_ranges : Page_range.t array -> int -> unit
-  method set_page_set : Gtk_enums.pageset -> unit
-  method set_paper_height : float -> Gtk_enums.unit -> unit
-  method set_paper_size : Paper_size.t -> unit
-  method set_paper_width : float -> Gtk_enums.unit -> unit
-  method set_print_pages : Gtk_enums.printpages -> unit
+  method set_page_ranges : Raw.Page_range.t array -> int -> unit
+  method set_page_set : Enums.pageset -> unit
+  method set_paper_height : float -> Enums.unit -> unit
+  method set_paper_size : Raw.Paper_size.t -> unit
+  method set_paper_width : float -> Enums.unit -> unit
+  method set_print_pages : Enums.printpages -> unit
   method set_printer : string -> unit
   method set_printer_lpi : float -> unit
-  method set_quality : Gtk_enums.printquality -> unit
+  method set_quality : Enums.printquality -> unit
   method set_resolution : int -> unit
   method set_resolution_xy : int -> int -> unit
   method set_reverse : bool -> unit
@@ -67,10 +67,10 @@ class type print_settings_t = object
   method to_file : string -> (bool, GError.t) result
   method to_gvariant : unit -> Gvariant.t
   method unset : string -> unit
-  method as_print_settings : Print_settings.t
+  method as_print_settings : Raw.Print_settings.t
 end
 
-class print_settings : Print_settings.t -> print_settings_t
+class print_settings : Raw.Print_settings.t -> print_settings_t
 
 val new_ : unit -> print_settings_t
 val new_from_file : string -> (print_settings_t, GError.t) result

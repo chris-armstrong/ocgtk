@@ -103,7 +103,7 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
     methods about the purpose of this entry, in addition to setting visibility
     to [FALSE]. *)
 
-external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit
+external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_entry_set_tabs"
 (** Sets a [PangoTabArray].
 
@@ -135,7 +135,7 @@ external set_overwrite_mode : t -> bool -> unit
 (** Sets whether the text is overwritten when typing in the [GtkEntry]. *)
 
 external set_menu_entry_icon_text :
-  t -> Gtk_enums.entryiconposition -> string -> unit
+  t -> Ocgtk_enums.entryiconposition -> string -> unit
   = "ml_gtk_entry_set_menu_entry_icon_text"
 (** Sets the text that will be used in the context menu of the [GtkEntry] when
     the specified icon is activatable. Selecting this item in the menu results,
@@ -163,18 +163,18 @@ external set_invisible_char : t -> int -> unit
     If you set the invisible char to 0, then the user will get no feedback at
     all; there will be no text on the screen as they type. *)
 
-external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_entry_set_input_purpose"
 (** Sets the input purpose which can be used by input methods to adjust their
     behavior. *)
 
-external set_input_hints : t -> Gtk_enums.inputhints -> unit
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_entry_set_input_hints"
 (** Set additional hints which allow input methods to fine-tune their behavior.
 *)
 
 external set_icon_tooltip_text :
-  t -> Gtk_enums.entryiconposition -> string option -> unit
+  t -> Ocgtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_tooltip_text"
 (** Sets [tooltip] as the contents of the tooltip for the icon at the specified
     position.
@@ -192,7 +192,7 @@ external set_icon_tooltip_text :
     same result. *)
 
 external set_icon_tooltip_markup :
-  t -> Gtk_enums.entryiconposition -> string option -> unit
+  t -> Ocgtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_tooltip_markup"
 (** Sets [tooltip] as the contents of the tooltip for the icon at the specified
     position.
@@ -204,22 +204,20 @@ external set_icon_tooltip_markup :
     See also [Gtk.Widget.set_tooltip_markup] and
     [Gtk.Entry.set_icon_tooltip_text]. *)
 
-external set_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool -> unit
+external set_icon_sensitive : t -> Ocgtk_enums.entryiconposition -> bool -> unit
   = "ml_gtk_entry_set_icon_sensitive"
 (** Sets the sensitivity for the specified icon. *)
 
 external set_icon_from_paintable :
-  t ->
-  Gtk_enums.entryiconposition ->
-  Ocgtk_gdk.Gdk.Wrappers.Paintable.t option ->
-  unit = "ml_gtk_entry_set_icon_from_paintable"
+  t -> Ocgtk_enums.entryiconposition -> Ocgdk_raw.Paintable.t option -> unit
+  = "ml_gtk_entry_set_icon_from_paintable"
 (** Sets the icon shown in the specified position using a [GdkPaintable].
 
     If [paintable] is [NULL], no icon will be shown in the specified position.
 *)
 
 external set_icon_from_icon_name :
-  t -> Gtk_enums.entryiconposition -> string option -> unit
+  t -> Ocgtk_enums.entryiconposition -> string option -> unit
   = "ml_gtk_entry_set_icon_from_icon_name"
 (** Sets the icon shown in the entry at the specified position from the current
     icon theme.
@@ -231,10 +229,8 @@ external set_icon_from_icon_name :
 *)
 
 external set_icon_from_gicon :
-  t ->
-  Gtk_enums.entryiconposition ->
-  Ocgtk_gio.Gio.Wrappers.Icon.t option ->
-  unit = "ml_gtk_entry_set_icon_from_gicon"
+  t -> Ocgtk_enums.entryiconposition -> Ocgio_raw.Icon.t option -> unit
+  = "ml_gtk_entry_set_icon_from_gicon"
 (** Sets the icon shown in the entry at the specified position from the current
     icon theme.
 
@@ -244,24 +240,24 @@ external set_icon_from_gicon :
 
 external set_icon_drag_source :
   t ->
-  Gtk_enums.entryiconposition ->
-  Ocgtk_gdk.Gdk.Wrappers.Content_provider.t ->
-  Ocgtk_gdk.Gdk.dragaction ->
+  Ocgtk_enums.entryiconposition ->
+  Ocgdk_raw.Content_provider.t ->
+  Ocgdk_enums.dragaction ->
   unit = "ml_gtk_entry_set_icon_drag_source"
 (** Sets up the icon at the given position as drag source.
 
     This makes it so that GTK will start a drag operation when the user clicks
     and drags the icon. *)
 
-external set_icon_activatable : t -> Gtk_enums.entryiconposition -> bool -> unit
+external set_icon_activatable :
+  t -> Ocgtk_enums.entryiconposition -> bool -> unit
   = "ml_gtk_entry_set_icon_activatable"
 (** Sets whether the icon is activatable. *)
 
 external set_has_frame : t -> bool -> unit = "ml_gtk_entry_set_has_frame"
 (** Sets whether the entry has a beveled frame around it. *)
 
-external set_extra_menu :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_entry_set_extra_menu"
 (** Sets a menu model to add when constructing the context menu for [entry]. *)
 
@@ -276,7 +272,7 @@ external set_completion : t -> Entry_completion.t option -> unit
 external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_entry_set_buffer"
 (** Set the [GtkEntryBuffer] object which holds the text for this widget. *)
 
-external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t -> unit
+external set_attributes : t -> Ocpango_raw.Attr_list.t -> unit
   = "ml_gtk_entry_set_attributes"
 (** Sets a [PangoAttrList].
 
@@ -335,7 +331,7 @@ external get_text_length : t -> UInt16.t = "ml_gtk_entry_get_text_length"
     This is equivalent to getting [entry]'s [GtkEntryBuffer] and calling
     [Gtk.EntryBuffer.get_length] on it. *)
 
-external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
+external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_entry_get_tabs"
 (** Gets the tabstops of the [GtkEntry].
 
@@ -360,7 +356,7 @@ external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
 (** Gets whether the [GtkEntry] is in overwrite mode. *)
 
 external get_menu_entry_icon_text :
-  t -> Gtk_enums.entryiconposition -> string option
+  t -> Ocgtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_menu_entry_icon_text"
 (** Gets the text that will be used in the context menu of the [GtkEntry] when
     the specified icon is activatable. Selecting this item in the menu results,
@@ -378,46 +374,46 @@ external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
 (** Retrieves the character displayed in place of the actual text in “password
     mode”. *)
 
-external get_input_purpose : t -> Gtk_enums.inputpurpose
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_entry_get_input_purpose"
 (** Gets the input purpose of the [GtkEntry]. *)
 
-external get_input_hints : t -> Gtk_enums.inputhints
+external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_entry_get_input_hints"
 (** Gets the input hints of this [GtkEntry]. *)
 
 external get_icon_tooltip_text :
-  t -> Gtk_enums.entryiconposition -> string option
+  t -> Ocgtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_tooltip_text"
 (** Gets the contents of the tooltip on the icon at the specified position in
     [entry]. *)
 
 external get_icon_tooltip_markup :
-  t -> Gtk_enums.entryiconposition -> string option
+  t -> Ocgtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_tooltip_markup"
 (** Gets the contents of the tooltip on the icon at the specified position in
     [entry]. *)
 
 external get_icon_storage_type :
-  t -> Gtk_enums.entryiconposition -> Gtk_enums.imagetype
+  t -> Ocgtk_enums.entryiconposition -> Ocgtk_enums.imagetype
   = "ml_gtk_entry_get_icon_storage_type"
 (** Gets the type of representation being used by the icon to store image data.
 
     If the icon has no image data, the return value will be [GTK_IMAGE_EMPTY].
 *)
 
-external get_icon_sensitive : t -> Gtk_enums.entryiconposition -> bool
+external get_icon_sensitive : t -> Ocgtk_enums.entryiconposition -> bool
   = "ml_gtk_entry_get_icon_sensitive"
 (** Returns whether the icon appears sensitive or insensitive. *)
 
 external get_icon_paintable :
-  t -> Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+  t -> Ocgtk_enums.entryiconposition -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_entry_get_icon_paintable"
 (** Retrieves the [GdkPaintable] used for the icon.
 
     If no [GdkPaintable] was used for the icon, [NULL] is returned. *)
 
-external get_icon_name : t -> Gtk_enums.entryiconposition -> string option
+external get_icon_name : t -> Ocgtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_name"
 (** Retrieves the icon name used for the icon.
 
@@ -425,7 +421,7 @@ external get_icon_name : t -> Gtk_enums.entryiconposition -> string option
     method (e.g., by [GdkPaintable] or gicon). *)
 
 external get_icon_gicon :
-  t -> Gtk_enums.entryiconposition -> Ocgtk_gio.Gio.Wrappers.Icon.t option
+  t -> Ocgtk_enums.entryiconposition -> Ocgio_raw.Icon.t option
   = "ml_gtk_entry_get_icon_gicon"
 (** Retrieves the [GIcon] used for the icon.
 
@@ -441,7 +437,7 @@ external get_icon_at_pos : t -> int -> int -> int
     intended for use in a [Gtk.Widget::query-tooltip] signal handler. *)
 
 external get_icon_area :
-  t -> Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+  t -> Ocgtk_enums.entryiconposition -> Ocgdk_raw.Rectangle.t
   = "ml_gtk_entry_get_icon_area"
 (** Gets the area where entry’s icon at [icon_pos] is drawn.
 
@@ -452,14 +448,14 @@ external get_icon_area :
     [icon_area] is filled with zeros. Otherwise, [icon_area] will be filled with
     the icon's allocation, relative to [entry]'s allocation. *)
 
-external get_icon_activatable : t -> Gtk_enums.entryiconposition -> bool
+external get_icon_activatable : t -> Ocgtk_enums.entryiconposition -> bool
   = "ml_gtk_entry_get_icon_activatable"
 (** Returns whether the icon is activatable. *)
 
 external get_has_frame : t -> bool = "ml_gtk_entry_get_has_frame"
 (** Gets the value set by gtk_entry_set_has_frame(). *)
 
-external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_entry_get_extra_menu"
 (** Gets the menu model set with gtk_entry_set_extra_menu(). *)
 
@@ -475,7 +471,7 @@ external get_completion : t -> Entry_completion.t option
 external get_buffer : t -> Entry_buffer.t = "ml_gtk_entry_get_buffer"
 (** Get the [GtkEntryBuffer] object which holds the text for this widget. *)
 
-external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
+external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_entry_get_attributes"
 (** Gets the attribute list of the [GtkEntry].
 
@@ -538,11 +534,11 @@ external set_primary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_primary_icon_activatable"
 (** Set property: primary-icon-activatable *)
 
-external get_primary_icon_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t
+external get_primary_icon_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_entry_get_primary_icon_gicon"
 (** Get property: primary-icon-gicon *)
 
-external set_primary_icon_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit
+external set_primary_icon_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_entry_set_primary_icon_gicon"
 (** Set property: primary-icon-gicon *)
 
@@ -554,12 +550,11 @@ external set_primary_icon_name : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_name"
 (** Set property: primary-icon-name *)
 
-external get_primary_icon_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t
+external get_primary_icon_paintable : t -> Ocgdk_raw.Paintable.t
   = "ml_gtk_entry_get_primary_icon_paintable"
 (** Get property: primary-icon-paintable *)
 
-external set_primary_icon_paintable :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t -> unit
+external set_primary_icon_paintable : t -> Ocgdk_raw.Paintable.t -> unit
   = "ml_gtk_entry_set_primary_icon_paintable"
 (** Set property: primary-icon-paintable *)
 
@@ -571,7 +566,7 @@ external set_primary_icon_sensitive : t -> bool -> unit
   = "ml_gtk_entry_set_primary_icon_sensitive"
 (** Set property: primary-icon-sensitive *)
 
-external get_primary_icon_storage_type : t -> Gtk_enums.imagetype
+external get_primary_icon_storage_type : t -> Ocgtk_enums.imagetype
   = "ml_gtk_entry_get_primary_icon_storage_type"
 (** Get property: primary-icon-storage-type *)
 
@@ -602,11 +597,11 @@ external set_secondary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_secondary_icon_activatable"
 (** Set property: secondary-icon-activatable *)
 
-external get_secondary_icon_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t
+external get_secondary_icon_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_entry_get_secondary_icon_gicon"
 (** Get property: secondary-icon-gicon *)
 
-external set_secondary_icon_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit
+external set_secondary_icon_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_entry_set_secondary_icon_gicon"
 (** Set property: secondary-icon-gicon *)
 
@@ -618,12 +613,11 @@ external set_secondary_icon_name : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_name"
 (** Set property: secondary-icon-name *)
 
-external get_secondary_icon_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t
+external get_secondary_icon_paintable : t -> Ocgdk_raw.Paintable.t
   = "ml_gtk_entry_get_secondary_icon_paintable"
 (** Get property: secondary-icon-paintable *)
 
-external set_secondary_icon_paintable :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t -> unit
+external set_secondary_icon_paintable : t -> Ocgdk_raw.Paintable.t -> unit
   = "ml_gtk_entry_set_secondary_icon_paintable"
 (** Set property: secondary-icon-paintable *)
 
@@ -635,7 +629,7 @@ external set_secondary_icon_sensitive : t -> bool -> unit
   = "ml_gtk_entry_set_secondary_icon_sensitive"
 (** Set property: secondary-icon-sensitive *)
 
-external get_secondary_icon_storage_type : t -> Gtk_enums.imagetype
+external get_secondary_icon_storage_type : t -> Ocgtk_enums.imagetype
   = "ml_gtk_entry_get_secondary_icon_storage_type"
 (** Get property: secondary-icon-storage-type *)
 
@@ -676,11 +670,11 @@ val on_activate :
 val on_icon_press :
   ?after:bool ->
   t ->
-  callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+  callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id
 
 val on_icon_release :
   ?after:bool ->
   t ->
-  callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+  callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id

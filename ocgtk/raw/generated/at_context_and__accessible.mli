@@ -7,15 +7,13 @@ module rec At_context : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_at_context_get_type"
 
   external create :
-    Gtk_enums.accessiblerole ->
-    Accessible.t ->
-    Ocgtk_gdk.Gdk.Wrappers.Display.t ->
-    t = "ml_gtk_at_context_create"
+    Ocgtk_enums.accessiblerole -> Accessible.t -> Ocgdk_raw.Display.t -> t
+    = "ml_gtk_at_context_create"
   (** Create a new ATContext *)
 
   (* Methods *)
 
-  external get_accessible_role : t -> Gtk_enums.accessiblerole
+  external get_accessible_role : t -> Ocgtk_enums.accessiblerole
     = "ml_gtk_at_context_get_accessible_role"
   (** Retrieves the accessible role of this context. *)
 
@@ -25,11 +23,11 @@ module rec At_context : sig
 
   (* Properties *)
 
-  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
+  external get_display : t -> Ocgdk_raw.Display.t
     = "ml_gtk_at_context_get_display"
   (** Get property: display *)
 
-  external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
+  external set_display : t -> Ocgdk_raw.Display.t -> unit
     = "ml_gtk_at_context_set_display"
   (** Set property: display *)
 
@@ -46,7 +44,7 @@ and Accessible : sig
   (* Methods *)
 
   external update_platform_state :
-    t -> Gtk_enums.accessibleplatformstate -> unit
+    t -> Ocgtk_enums.accessibleplatformstate -> unit
     = "ml_gtk_accessible_update_platform_state"
   (** Informs ATs that the platform state has changed.
 
@@ -73,19 +71,19 @@ and Accessible : sig
       child widget is the metadata object, and the parent of each metadata
       object is the container widget. *)
 
-  external reset_state : t -> Gtk_enums.accessiblestate -> unit
+  external reset_state : t -> Ocgtk_enums.accessiblestate -> unit
     = "ml_gtk_accessible_reset_state"
   (** Resets the accessible state to its default value. *)
 
-  external reset_relation : t -> Gtk_enums.accessiblerelation -> unit
+  external reset_relation : t -> Ocgtk_enums.accessiblerelation -> unit
     = "ml_gtk_accessible_reset_relation"
   (** Resets the accessible relation to its default value. *)
 
-  external reset_property : t -> Gtk_enums.accessibleproperty -> unit
+  external reset_property : t -> Ocgtk_enums.accessibleproperty -> unit
     = "ml_gtk_accessible_reset_property"
   (** Resets the accessible property to its default value. *)
 
-  external get_platform_state : t -> Gtk_enums.accessibleplatformstate -> bool
+  external get_platform_state : t -> Ocgtk_enums.accessibleplatformstate -> bool
     = "ml_gtk_accessible_get_platform_state"
   (** Queries a platform state, such as focus.
 
@@ -112,7 +110,7 @@ and Accessible : sig
     = "ml_gtk_accessible_get_at_context"
   (** Retrieves the implementation for the given accessible object. *)
 
-  external get_accessible_role : t -> Gtk_enums.accessiblerole
+  external get_accessible_role : t -> Ocgtk_enums.accessiblerole
     = "ml_gtk_accessible_get_accessible_role"
   (** Retrieves the accessible role of an accessible object. *)
 
@@ -123,7 +121,7 @@ and Accessible : sig
       This function returns [NULL] for top level widgets. *)
 
   external announce :
-    t -> string -> Gtk_enums.accessibleannouncementpriority -> unit
+    t -> string -> Ocgtk_enums.accessibleannouncementpriority -> unit
     = "ml_gtk_accessible_announce"
   (** Requests the user's screen reader to announce the given message.
 

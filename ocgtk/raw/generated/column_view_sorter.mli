@@ -38,7 +38,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_column_view_sorter_get_type"
 
 (* Methods *)
 
-external get_primary_sort_order : t -> Gtk_enums.sorttype
+external get_primary_sort_order : t -> Ocgtk_enums.sorttype
   = "ml_gtk_column_view_sorter_get_primary_sort_order"
 (** Returns the primary sort order.
 
@@ -60,7 +60,7 @@ external get_nth_sort_column :
   t ->
   int ->
   Column_view_and__column_view_column.Column_view_column.t option
-  * Gtk_enums.sorttype = "ml_gtk_column_view_sorter_get_nth_sort_column"
+  * Ocgtk_enums.sorttype = "ml_gtk_column_view_sorter_get_nth_sort_column"
 (** Gets the [position]'th sort column and its associated sort order.
 
     Use the [Gtk.Sorter::changed] signal to get notified when sort columns

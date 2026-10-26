@@ -19,13 +19,13 @@ external is_stop : t -> bool = "ml_gdk_scroll_event_is_stop"
 
     Stop scroll events always have a delta of 0/0. *)
 
-external get_unit : t -> Gdk_enums.scrollunit = "ml_gdk_scroll_event_get_unit"
+external get_unit : t -> Ocgdk_enums.scrollunit = "ml_gdk_scroll_event_get_unit"
 (** Extracts the scroll delta unit of a scroll event.
 
     The unit will always be [GDK_SCROLL_UNIT_WHEEL] if the scroll direction is
     not [GDK_SCROLL_SMOOTH]. *)
 
-external get_direction : t -> Gdk_enums.scrolldirection
+external get_direction : t -> Ocgdk_enums.scrolldirection
   = "ml_gdk_scroll_event_get_direction"
 (** Extracts the direction of a scroll event. *)
 

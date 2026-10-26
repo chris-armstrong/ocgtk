@@ -1,12 +1,12 @@
 class type settings_schema_t = object
   method get_id : unit -> string
-  method get_key : string -> Settings_schema_key.t
+  method get_key : string -> Raw.Settings_schema_key.t
   method get_path : unit -> string option
   method has_key : string -> bool
   method list_children : unit -> string array
   method list_keys : unit -> string array
-  method ref : unit -> Settings_schema.t
-  method as_settings_schema : Settings_schema.t
+  method ref : unit -> Raw.Settings_schema.t
+  method as_settings_schema : Raw.Settings_schema.t
 end
 
-class settings_schema : Settings_schema.t -> settings_schema_t
+class settings_schema : Raw.Settings_schema.t -> settings_schema_t

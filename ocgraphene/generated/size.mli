@@ -1,10 +1,10 @@
 class type size_t = object
-  method equal : Size.t -> bool
-  method init : float -> float -> Size.t
-  method init_from_size : Size.t -> Size.t
-  method as_size : Size.t
+  method equal : Raw.Size.t -> bool
+  method init : float -> float -> Raw.Size.t
+  method init_from_size : Raw.Size.t -> Raw.Size.t
+  method as_size : Raw.Size.t
 end
 
-class size : Size.t -> size_t
+class size : Raw.Size.t -> size_t
 
 val alloc : unit -> size_t

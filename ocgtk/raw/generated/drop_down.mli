@@ -48,8 +48,7 @@ type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_down_get_type"
 
-external new_ :
-  Ocgtk_gio.Gio.Wrappers.List_model.t option -> Expression.t option -> t
+external new_ : Ocgio_raw.List_model.t option -> Expression.t option -> t
   = "ml_gtk_drop_down_new"
 (** Create a new DropDown *)
 
@@ -65,11 +64,11 @@ external set_show_arrow : t -> bool -> unit = "ml_gtk_drop_down_set_show_arrow"
 external set_selected : t -> int -> unit = "ml_gtk_drop_down_set_selected"
 (** Selects the item at the given position. *)
 
-external set_search_match_mode : t -> Gtk_enums.stringfiltermatchmode -> unit
+external set_search_match_mode : t -> Ocgtk_enums.stringfiltermatchmode -> unit
   = "ml_gtk_drop_down_set_search_match_mode"
 (** Sets the match mode for the search filter. *)
 
-external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_drop_down_set_model"
 (** Sets the [GListModel] to use. *)
 
@@ -111,11 +110,11 @@ external get_selected_item : t -> [ `object_ ] Gobject.obj option
 external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
 (** Gets the position of the selected item. *)
 
-external get_search_match_mode : t -> Gtk_enums.stringfiltermatchmode
+external get_search_match_mode : t -> Ocgtk_enums.stringfiltermatchmode
   = "ml_gtk_drop_down_get_search_match_mode"
 (** Returns the match mode that the search filter is using. *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_drop_down_get_model"
 (** Gets the model that provides the displayed items. *)
 

@@ -116,7 +116,7 @@ let on_event ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let event =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gio_enums.socketlistenerevent_of_int (Gobject.Value.get_enum_int v)
+          Ocgio_enums.socketlistenerevent_of_int (Gobject.Value.get_enum_int v)
         in
         let socket =
           let v = Gobject.Closure.nth argv ~pos:2 in

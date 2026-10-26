@@ -1,11 +1,11 @@
 class type custom_sorter_t = object
-  inherit GSorter.sorter_t
-  method as_custom_sorter : Custom_sorter.t
+  inherit Sorter.sorter_t
+  method as_custom_sorter : Raw.Custom_sorter.t
 end
 
 (* High-level class for CustomSorter *)
-class custom_sorter (obj : Custom_sorter.t) : custom_sorter_t =
+class custom_sorter (obj : Raw.Custom_sorter.t) : custom_sorter_t =
   object (self)
-    inherit GSorter.sorter (obj :> Sorter.t)
+    inherit Sorter.sorter (obj :> Raw.Sorter.t)
     method as_custom_sorter = obj
   end

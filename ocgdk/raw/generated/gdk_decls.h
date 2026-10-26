@@ -8,11 +8,11 @@
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "generated/gdkpixbuf_decls.h"
-#include "generated/gio_decls.h"
-#include "generated/pango_decls.h"
-#include "generated/pangocairo_decls.h"
-#include "generated/cairo_decls.h"
+#include "gdkpixbuf_decls.h"
+#include "gio_decls.h"
+#include "pango_decls.h"
+#include "pangocairo_decls.h"
+#include "cairo_decls.h"
 
 /* Class-specific conversion macros (shared) */
 #ifndef Val_GdkAppLaunchContext
@@ -456,6 +456,6 @@ value Val_GdkToplevelState(GdkToplevelState flags);
 GdkToplevelState GdkToplevelState_val(value list);
 
 
-#include "../core/gdk_core.h"
+#include "gdk_core.h"
 
 #endif /* _gdk_decls_h_ */

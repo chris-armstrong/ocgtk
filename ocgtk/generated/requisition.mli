@@ -1,7 +1,7 @@
 class type requisition_t = object
-  method as_requisition : Requisition.t
+  method as_requisition : Raw.Requisition.t
 end
 
-class requisition : Requisition.t -> requisition_t
+class requisition : Raw.Requisition.t -> requisition_t
 
 val new_ : unit -> requisition_t

@@ -105,7 +105,7 @@ external new_from_resource : string -> t = "ml_gsk_gl_shader_new_from_resource"
 
 (* Methods *)
 
-external get_uniform_type : t -> int -> Gsk_enums.gluniformtype
+external get_uniform_type : t -> int -> Ocgsk_enums.gluniformtype
   = "ml_gsk_gl_shader_get_uniform_type"
 (** Get the type of the declared uniform for this shader at index [idx]. *)
 
@@ -139,21 +139,21 @@ external get_args_size : t -> Gsize.t = "ml_gsk_gl_shader_get_args_size"
 (** Get the size of the data block used to specify arguments for this shader. *)
 
 external get_arg_vec4 :
-  t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec4.t -> unit
+  t -> Glib_bytes.t -> int -> Ocgraphene_raw.Vec4.t -> unit
   = "ml_gsk_gl_shader_get_arg_vec4"
 (** Gets the value of the uniform [idx] in the [args] block.
 
     The uniform must be of vec4 type. *)
 
 external get_arg_vec3 :
-  t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> unit
+  t -> Glib_bytes.t -> int -> Ocgraphene_raw.Vec3.t -> unit
   = "ml_gsk_gl_shader_get_arg_vec3"
 (** Gets the value of the uniform [idx] in the [args] block.
 
     The uniform must be of vec3 type. *)
 
 external get_arg_vec2 :
-  t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit
+  t -> Glib_bytes.t -> int -> Ocgraphene_raw.Vec2.t -> unit
   = "ml_gsk_gl_shader_get_arg_vec2"
 (** Gets the value of the uniform [idx] in the [args] block.
 

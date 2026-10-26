@@ -3,23 +3,27 @@ class type srv_target_t = object
   method get_port : unit -> UInt16.t
   method get_priority : unit -> UInt16.t
   method get_weight : unit -> UInt16.t
-  method as_srv_target : Srv_target.t
+  method as_srv_target : Raw.Srv_target.t
 end
 
 (* High-level class for SrvTarget *)
-class srv_target (obj : Srv_target.t) : srv_target_t =
+class srv_target (obj : Raw.Srv_target.t) : srv_target_t =
   object (self)
-    method get_hostname : unit -> string = fun () -> Srv_target.get_hostname obj
-    method get_port : unit -> UInt16.t = fun () -> Srv_target.get_port obj
+    method get_hostname : unit -> string =
+      fun () -> Raw.Srv_target.get_hostname obj
+
+    method get_port : unit -> UInt16.t = fun () -> Raw.Srv_target.get_port obj
 
     method get_priority : unit -> UInt16.t =
-      fun () -> Srv_target.get_priority obj
+      fun () -> Raw.Srv_target.get_priority obj
 
-    method get_weight : unit -> UInt16.t = fun () -> Srv_target.get_weight obj
+    method get_weight : unit -> UInt16.t =
+      fun () -> Raw.Srv_target.get_weight obj
+
     method as_srv_target = obj
   end
 
 let new_ (hostname : string) (port : UInt16.t) (priority : UInt16.t)
     (weight : UInt16.t) : srv_target_t =
-  let obj_ = Srv_target.new_ hostname port priority weight in
+  let obj_ = Raw.Srv_target.new_ hostname port priority weight in
   new srv_target obj_

@@ -13,7 +13,7 @@ type t = [ `slice_list_model | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_slice_list_model_get_type"
 
-external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> int -> int -> t
+external new_ : Ocgio_raw.List_model.t option -> int -> int -> t
   = "ml_gtk_slice_list_model_new"
 (** Create a new SliceListModel *)
 
@@ -31,7 +31,7 @@ external set_offset : t -> int -> unit = "ml_gtk_slice_list_model_set_offset"
     If the offset is too large for the sliced model, [self] will end up empty.
 *)
 
-external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_slice_list_model_set_model"
 (** Sets the model to show a slice of.
 
@@ -43,7 +43,7 @@ external get_size : t -> int = "ml_gtk_slice_list_model_get_size"
 external get_offset : t -> int = "ml_gtk_slice_list_model_get_offset"
 (** Gets the offset set via gtk_slice_list_model_set_offset(). *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_slice_list_model_get_model"
 (** Gets the model that is currently being used or [NULL] if none. *)
 

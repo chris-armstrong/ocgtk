@@ -1,25 +1,23 @@
 class type grab_broken_event_t = object
-  inherit GApp_launch_context_cycle_de440b34.event_t
-  method get_grab_surface : unit -> GApp_launch_context_cycle_de440b34.surface_t
+  inherit App_launch_context_cycle_de440b34.event_t
+  method get_grab_surface : unit -> App_launch_context_cycle_de440b34.surface_t
   method get_implicit : unit -> bool
-  method as_grab_broken_event : Grab_broken_event.t
+  method as_grab_broken_event : Raw.Grab_broken_event.t
 end
 
 (* High-level class for GrabBrokenEvent *)
-class grab_broken_event (obj : Grab_broken_event.t) : grab_broken_event_t =
+class grab_broken_event (obj : Raw.Grab_broken_event.t) : grab_broken_event_t =
   object (self)
-    inherit
-      GApp_launch_context_cycle_de440b34.event
-        (obj :> App_launch_context_cycle_de440b34.Event.t)
+    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
 
     method get_grab_surface :
-        unit -> GApp_launch_context_cycle_de440b34.surface_t =
+        unit -> App_launch_context_cycle_de440b34.surface_t =
       fun () ->
-        new GApp_launch_context_cycle_de440b34.surface
-          (Grab_broken_event.get_grab_surface obj)
+        new App_launch_context_cycle_de440b34.surface
+          (Raw.Grab_broken_event.get_grab_surface obj)
 
     method get_implicit : unit -> bool =
-      fun () -> Grab_broken_event.get_implicit obj
+      fun () -> Raw.Grab_broken_event.get_implicit obj
 
     method as_grab_broken_event = obj
   end

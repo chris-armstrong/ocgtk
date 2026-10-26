@@ -23,7 +23,7 @@ external unref : t -> unit = "ml_pango_coverage_unref"
 
     If the result is zero, free the coverage and all associated memory. *)
 
-external set : t -> int -> Pango_enums.coveragelevel -> unit
+external set : t -> int -> Ocpango_enums.coveragelevel -> unit
   = "ml_pango_coverage_set"
 (** Modify a particular index within [coverage] *)
 
@@ -35,7 +35,7 @@ external max : t -> t -> unit = "ml_pango_coverage_max"
     of the current coverage for the index and the coverage for the corresponding
     index in [other]. *)
 
-external get : t -> int -> Pango_enums.coveragelevel = "ml_pango_coverage_get"
+external get : t -> int -> Ocpango_enums.coveragelevel = "ml_pango_coverage_get"
 (** Determine whether a particular index is covered by [coverage]. *)
 
 external copy : t -> t = "ml_pango_coverage_copy"

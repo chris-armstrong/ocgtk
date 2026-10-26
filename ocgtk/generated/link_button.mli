@@ -1,5 +1,5 @@
 class type link_button_t = object
-  inherit GButton.button_t
+  inherit Button.button_t
 
   method on_activate_link :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
@@ -8,10 +8,10 @@ class type link_button_t = object
   method get_visited : unit -> bool
   method set_uri : string -> unit
   method set_visited : bool -> unit
-  method as_link_button : Link_button.t
+  method as_link_button : Raw.Link_button.t
 end
 
-class link_button : Link_button.t -> link_button_t
+class link_button : Raw.Link_button.t -> link_button_t
 
 val new_ : string -> link_button_t
 val new_with_label : string -> string option -> link_button_t

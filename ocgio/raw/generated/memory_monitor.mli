@@ -57,5 +57,5 @@ external from_gobject : 'a Gobject.obj -> t
 val on_low_memory_warning :
   ?after:bool ->
   t ->
-  callback:(level:Gio_enums.memorymonitorwarninglevel -> unit) ->
+  callback:(level:Ocgio_enums.memorymonitorwarninglevel -> unit) ->
   Gobject.Signal.handler_id

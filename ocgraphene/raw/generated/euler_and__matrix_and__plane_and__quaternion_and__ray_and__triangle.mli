@@ -33,7 +33,7 @@ module rec Euler : sig
       The rotation sign convention is right-handed, to preserve compatibility
       between Euler-based, quaternion-based, and angle-axis-based rotations. *)
 
-  external reorder : t -> Graphene_enums.eulerorder -> t
+  external reorder : t -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_reorder"
   (** Reorders a #graphene_euler_t using [order].
 
@@ -42,12 +42,12 @@ module rec Euler : sig
       #graphene_euler_t. *)
 
   external init_with_order :
-    t -> float -> float -> float -> Graphene_enums.eulerorder -> t
+    t -> float -> float -> float -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_init_with_order"
   (** Initializes a #graphene_euler_t with the given angles and [order]. *)
 
   external init_from_vec3 :
-    t -> Vec3_and__vec4.Vec3.t option -> Graphene_enums.eulerorder -> t
+    t -> Vec3_and__vec4.Vec3.t option -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_init_from_vec3"
   (** Initializes a #graphene_euler_t using the angles contained in a
       #graphene_vec3_t.
@@ -56,13 +56,13 @@ module rec Euler : sig
       initialized with all angles set to 0. *)
 
   external init_from_radians :
-    t -> float -> float -> float -> Graphene_enums.eulerorder -> t
+    t -> float -> float -> float -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_init_from_radians"
   (** Initializes a #graphene_euler_t using the given angles and order of
       rotation. *)
 
   external init_from_quaternion :
-    t -> Quaternion.t option -> Graphene_enums.eulerorder -> t
+    t -> Quaternion.t option -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_init_from_quaternion"
   (** Initializes a #graphene_euler_t using the given normalized quaternion.
 
@@ -70,7 +70,7 @@ module rec Euler : sig
       initialized with all angles set to 0. *)
 
   external init_from_matrix :
-    t -> Matrix.t option -> Graphene_enums.eulerorder -> t
+    t -> Matrix.t option -> Ocgraphene_enums.eulerorder -> t
     = "ml_graphene_euler_init_from_matrix"
   (** Initializes a #graphene_euler_t using the given rotation matrix.
 
@@ -99,7 +99,7 @@ module rec Euler : sig
   external get_x : t -> float = "ml_graphene_euler_get_x"
   (** Retrieves the rotation angle on the X axis, in degrees. *)
 
-  external get_order : t -> Graphene_enums.eulerorder
+  external get_order : t -> Ocgraphene_enums.eulerorder
     = "ml_graphene_euler_get_order"
   (** Retrieves the order used to apply the rotations described in the
       #graphene_euler_t structure, when converting to and from other structures,
@@ -753,19 +753,21 @@ and Ray : sig
       See also: graphene_ray_intersect_box() *)
 
   external intersect_triangle :
-    t -> Triangle.t -> Graphene_enums.rayintersectionkind * float
+    t -> Triangle.t -> Ocgraphene_enums.rayintersectionkind * float
     = "ml_graphene_ray_intersect_triangle"
   (** Intersects the given #graphene_ray_t [r] with the given
       #graphene_triangle_t [t]. *)
 
   external intersect_sphere :
-    t -> Box_and__sphere.Sphere.t -> Graphene_enums.rayintersectionkind * float
+    t ->
+    Box_and__sphere.Sphere.t ->
+    Ocgraphene_enums.rayintersectionkind * float
     = "ml_graphene_ray_intersect_sphere"
   (** Intersects the given #graphene_ray_t [r] with the given #graphene_sphere_t
       [s]. *)
 
   external intersect_box :
-    t -> Box_and__sphere.Box.t -> Graphene_enums.rayintersectionkind * float
+    t -> Box_and__sphere.Box.t -> Ocgraphene_enums.rayintersectionkind * float
     = "ml_graphene_ray_intersect_box"
   (** Intersects the given #graphene_ray_t [r] with the given #graphene_box_t
       [b]. *)

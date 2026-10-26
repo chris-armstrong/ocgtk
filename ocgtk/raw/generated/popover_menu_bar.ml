@@ -34,14 +34,13 @@ type t =
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_popover_menu_bar_get_type"
 
-external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t
+external new_from_model : Ocgio_raw.Menu_model.t option -> t
   = "ml_gtk_popover_menu_bar_new_from_model"
 (** Create a new PopoverMenuBar *)
 
 (* Methods *)
 
-external set_menu_model :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_popover_menu_bar_set_menu_model"
 (** Sets a menu model from which [bar] should take its contents. *)
 
@@ -54,7 +53,7 @@ external remove_child :
 (** Removes a widget that has previously been added with
     gtk_popover_menu_bar_add_child(). *)
 
-external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_menu_model : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_popover_menu_bar_get_menu_model"
 (** Returns the model from which the contents of [bar] are taken. *)
 

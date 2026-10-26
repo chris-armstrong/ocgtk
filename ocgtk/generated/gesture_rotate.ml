@@ -1,5 +1,5 @@
 class type gesture_rotate_t = object
-  inherit GGesture.gesture_t
+  inherit Gesture.gesture_t
 
   method on_angle_changed :
     ?after:bool ->
@@ -8,21 +8,22 @@ class type gesture_rotate_t = object
     Gobject.Signal.handler_id
 
   method get_angle_delta : unit -> float
-  method as_gesture_rotate : Gesture_rotate.t
+  method as_gesture_rotate : Raw.Gesture_rotate.t
 end
 
 (* High-level class for GestureRotate *)
-class gesture_rotate (obj : Gesture_rotate.t) : gesture_rotate_t =
+class gesture_rotate (obj : Raw.Gesture_rotate.t) : gesture_rotate_t =
   object (self)
-    inherit GGesture.gesture (obj :> Gesture.t)
+    inherit Gesture.gesture (obj :> Raw.Gesture.t)
 
     method on_angle_changed ?(after = false) ~callback () =
-      Gesture_rotate.on_angle_changed ~after self#as_gesture_rotate ~callback
+      Raw.Gesture_rotate.on_angle_changed ~after self#as_gesture_rotate
+        ~callback
 
     method get_angle_delta : unit -> float =
-      fun () -> Gesture_rotate.get_angle_delta obj
+      fun () -> Raw.Gesture_rotate.get_angle_delta obj
 
     method as_gesture_rotate = obj
   end
 
-let new_ () : gesture_rotate_t = new gesture_rotate (Gesture_rotate.new_ ())
+let new_ () : gesture_rotate_t = new gesture_rotate (Raw.Gesture_rotate.new_ ())

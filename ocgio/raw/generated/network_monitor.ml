@@ -29,7 +29,7 @@ external get_network_available : t -> bool
    IPv6. It does not necessarily imply that the public Internet is\n\
    reachable. See [GNetworkMonitor:network]-available for more details."]
 
-external get_connectivity : t -> Gio_enums.networkconnectivity
+external get_connectivity : t -> Ocgio_enums.networkconnectivity
   = "ml_g_network_monitor_get_connectivity"
 [@@ocaml.doc
   "Gets a more detailed networking state than\n\

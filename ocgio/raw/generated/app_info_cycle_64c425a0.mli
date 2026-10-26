@@ -299,7 +299,7 @@ and Drive : sig
   external get_symbolic_icon : t -> Icon.t = "ml_g_drive_get_symbolic_icon"
   (** Gets the icon for [drive]. *)
 
-  external get_start_stop_type : t -> Gio_enums.drivestartstoptype
+  external get_start_stop_type : t -> Ocgio_enums.drivestartstoptype
     = "ml_g_drive_get_start_stop_type"
   (** Gets a hint about how a drive can be started/stopped. *)
 
@@ -458,7 +458,7 @@ and File : sig
   external set_attributes_from_info :
     t ->
     File_info.t ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
   [@@ocaml.doc
@@ -477,7 +477,7 @@ and File : sig
     t ->
     string ->
     UInt64.t ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_uint64"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_UINT64] to [value]. If
@@ -491,7 +491,7 @@ and File : sig
     t ->
     string ->
     UInt32.t ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_UINT32] to [value]. If
@@ -505,7 +505,7 @@ and File : sig
     t ->
     string ->
     string ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_string"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_STRING] to [value]. If
@@ -519,7 +519,7 @@ and File : sig
     t ->
     string ->
     int64 ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_int64"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_INT64] to [value]. If
@@ -533,7 +533,7 @@ and File : sig
     t ->
     string ->
     Int32.t ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_int32"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_INT32] to [value]. If
@@ -547,7 +547,7 @@ and File : sig
     t ->
     string ->
     string ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_set_attribute_byte_string"
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING] to [value].
@@ -577,7 +577,7 @@ and File : sig
     t ->
     string option ->
     bool ->
-    Gio_enums.filecreateflags ->
+    Ocgio_enums.filecreateflags ->
     Cancellable.t option ->
     (File_io_stream.t, GError.t) result = "ml_g_file_replace_readwrite"
   (** Returns an output stream for overwriting the file in readwrite mode,
@@ -601,7 +601,7 @@ and File : sig
     t ->
     string option ->
     bool ->
-    Gio_enums.filecreateflags ->
+    Ocgio_enums.filecreateflags ->
     Cancellable.t option ->
     (File_output_stream.t, GError.t) result = "ml_g_file_replace"
   (** Returns an output stream for overwriting the file, possibly creating a
@@ -698,7 +698,7 @@ and File : sig
   external query_info :
     t ->
     string ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (File_info.t, GError.t) result = "ml_g_file_query_info"
   [@@ocaml.doc
@@ -776,9 +776,9 @@ and File : sig
 
   external query_file_type :
     t ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
-    Gio_enums.filetype = "ml_g_file_query_file_type"
+    Ocgio_enums.filetype = "ml_g_file_query_file_type"
   (** Utility function to inspect the [GFileType] of a file. This is implemented
       using g_file_query_info() and as such does blocking I/O.
 
@@ -889,7 +889,7 @@ and File : sig
 
   external monitor_file :
     t ->
-    Gio_enums.filemonitorflags ->
+    Ocgio_enums.filemonitorflags ->
     Cancellable.t option ->
     (File_monitor.t, GError.t) result = "ml_g_file_monitor_file"
   (** Obtains a file monitor for the given file. If no file notification
@@ -908,7 +908,7 @@ and File : sig
 
   external monitor_directory :
     t ->
-    Gio_enums.filemonitorflags ->
+    Ocgio_enums.filemonitorflags ->
     Cancellable.t option ->
     (File_monitor.t, GError.t) result = "ml_g_file_monitor_directory"
   (** Obtains a directory monitor for the given file. This may fail if directory
@@ -926,7 +926,7 @@ and File : sig
 
   external monitor :
     t ->
-    Gio_enums.filemonitorflags ->
+    Ocgio_enums.filemonitorflags ->
     Cancellable.t option ->
     (File_monitor.t, GError.t) result = "ml_g_file_monitor"
   (** Obtains a file or directory monitor for the given file, depending on the
@@ -1170,7 +1170,7 @@ and File : sig
   external enumerate_children :
     t ->
     string ->
-    Gio_enums.filequeryinfoflags ->
+    Ocgio_enums.filequeryinfoflags ->
     Cancellable.t option ->
     (File_enumerator.t, GError.t) result = "ml_g_file_enumerate_children"
   [@@ocaml.doc
@@ -1260,7 +1260,7 @@ and File : sig
 
   external create_readwrite :
     t ->
-    Gio_enums.filecreateflags ->
+    Ocgio_enums.filecreateflags ->
     Cancellable.t option ->
     (File_io_stream.t, GError.t) result = "ml_g_file_create_readwrite"
   (** Creates a new file and returns a stream for reading and writing to it. The
@@ -1294,7 +1294,7 @@ and File : sig
 
   external create :
     t ->
-    Gio_enums.filecreateflags ->
+    Ocgio_enums.filecreateflags ->
     Cancellable.t option ->
     (File_output_stream.t, GError.t) result = "ml_g_file_create"
   (** Creates a new file and returns an output stream for writing to it. The
@@ -1323,7 +1323,7 @@ and File : sig
   external copy_attributes :
     t ->
     t ->
-    Gio_enums.filecopyflags ->
+    Ocgio_enums.filecopyflags ->
     Cancellable.t option ->
     (bool, GError.t) result = "ml_g_file_copy_attributes"
   (** Copies the file attributes from [source] to [destination].
@@ -1336,7 +1336,7 @@ and File : sig
 
   external build_attribute_list_for_copy :
     t ->
-    Gio_enums.filecopyflags ->
+    Ocgio_enums.filecopyflags ->
     Cancellable.t option ->
     (string, GError.t) result = "ml_g_file_build_attribute_list_for_copy"
   (** Prepares the file attribute query string for copying to [file].
@@ -1356,7 +1356,7 @@ and File : sig
 
   external append_to :
     t ->
-    Gio_enums.filecreateflags ->
+    Ocgio_enums.filecreateflags ->
     Cancellable.t option ->
     (File_output_stream.t, GError.t) result = "ml_g_file_append_to"
   (** Gets an output stream for appending data to the file. If the file doesn't
@@ -1476,7 +1476,7 @@ and File_monitor : sig
   (** Returns whether the monitor is canceled. *)
 
   external emit_event :
-    t -> File.t -> File.t option -> Gio_enums.filemonitorevent -> unit
+    t -> File.t -> File.t option -> Ocgio_enums.filemonitorevent -> unit
     = "ml_g_file_monitor_emit_event"
   (** Emits the [GFileMonitor::changed] signal if a change has taken place.
       Should be called from file monitor implementations only.
@@ -1496,7 +1496,7 @@ and File_monitor : sig
     callback:
       (file:File.t ->
       other_file:File.t option ->
-      event_type:Gio_enums.filemonitorevent ->
+      event_type:Ocgio_enums.filemonitorevent ->
       unit) ->
     Gobject.Signal.handler_id
 end

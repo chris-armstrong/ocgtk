@@ -17,7 +17,7 @@ module rec Path : sig
       This is a wrapper around [Gsk.Path.print], see that function for details.
   *)
 
-  external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
+  external to_cairo : t -> Occairo_raw.Context.t -> unit
     = "ml_gsk_path_to_cairo"
   (** Appends the path to a cairo context for drawing with Cairo.
 
@@ -36,16 +36,14 @@ module rec Path : sig
   external is_closed : t -> bool = "ml_gsk_path_is_closed"
   (** Returns if the path represents a single closed contour. *)
 
-  external in_fill :
-    t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Gsk_enums.fillrule -> bool
+  external in_fill : t -> Ocgraphene_raw.Point.t -> Ocgsk_enums.fillrule -> bool
     = "ml_gsk_path_in_fill"
   (** Returns whether a point is inside the fill area of a path.
 
       Note that this function assumes that filling a contour implicitly closes
       it. *)
 
-  external get_stroke_bounds :
-    t -> Stroke.t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external get_stroke_bounds : t -> Stroke.t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gsk_path_get_stroke_bounds"
   (** Computes the bounds for stroking the given path with the given parameters.
 
@@ -66,16 +64,14 @@ module rec Path : sig
       An empty path has no points, so false is returned in this case. *)
 
   external get_closest_point :
-    t ->
-    Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-    float ->
-    bool * Path_point.t * float = "ml_gsk_path_get_closest_point"
+    t -> Ocgraphene_raw.Point.t -> float -> bool * Path_point.t * float
+    = "ml_gsk_path_get_closest_point"
   (** Computes the closest point on the path to the given point.
 
       If there is no point closer than the given threshold, false is returned.
   *)
 
-  external get_bounds : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external get_bounds : t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gsk_path_get_bounds"
   (** Computes the bounds of the given path.
 
@@ -106,7 +102,7 @@ end = struct
       This is a wrapper around [Gsk.Path.print], see that function for details.
   *)
 
-  external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
+  external to_cairo : t -> Occairo_raw.Context.t -> unit
     = "ml_gsk_path_to_cairo"
   (** Appends the path to a cairo context for drawing with Cairo.
 
@@ -125,16 +121,14 @@ end = struct
   external is_closed : t -> bool = "ml_gsk_path_is_closed"
   (** Returns if the path represents a single closed contour. *)
 
-  external in_fill :
-    t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Gsk_enums.fillrule -> bool
+  external in_fill : t -> Ocgraphene_raw.Point.t -> Ocgsk_enums.fillrule -> bool
     = "ml_gsk_path_in_fill"
   (** Returns whether a point is inside the fill area of a path.
 
       Note that this function assumes that filling a contour implicitly closes
       it. *)
 
-  external get_stroke_bounds :
-    t -> Stroke.t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external get_stroke_bounds : t -> Stroke.t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gsk_path_get_stroke_bounds"
   (** Computes the bounds for stroking the given path with the given parameters.
 
@@ -155,16 +149,14 @@ end = struct
       An empty path has no points, so false is returned in this case. *)
 
   external get_closest_point :
-    t ->
-    Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-    float ->
-    bool * Path_point.t * float = "ml_gsk_path_get_closest_point"
+    t -> Ocgraphene_raw.Point.t -> float -> bool * Path_point.t * float
+    = "ml_gsk_path_get_closest_point"
   (** Computes the closest point on the path to the given point.
 
       If there is no point closer than the given threshold, false is returned.
   *)
 
-  external get_bounds : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external get_bounds : t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gsk_path_get_bounds"
   (** Computes the bounds of the given path.
 
@@ -257,10 +249,8 @@ and Path_point : sig
   (* Methods *)
 
   external get_tangent :
-    t ->
-    Path.t ->
-    Gsk_enums.pathdirection ->
-    Ocgtk_graphene.Graphene.Wrappers.Vec2.t = "ml_gsk_path_point_get_tangent"
+    t -> Path.t -> Ocgsk_enums.pathdirection -> Ocgraphene_raw.Vec2.t
+    = "ml_gsk_path_point_get_tangent"
   (** Gets the tangent of the path at the point.
 
       Note that certain points on a path may not have a single tangent, such as
@@ -274,7 +264,7 @@ and Path_point : sig
       If you want to orient something in the direction of the path,
       [Gsk.PathPoint.get_rotation] may be more convenient to use. *)
 
-  external get_rotation : t -> Path.t -> Gsk_enums.pathdirection -> float
+  external get_rotation : t -> Path.t -> Ocgsk_enums.pathdirection -> float
     = "ml_gsk_path_point_get_rotation"
   (** Gets the direction of the tangent at a given point.
 
@@ -282,8 +272,7 @@ and Path_point : sig
       the angle between the tangent and the X axis. The angle can e.g. be used
       in gtk_snapshot_rotate(). *)
 
-  external get_position :
-    t -> Path.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
+  external get_position : t -> Path.t -> Ocgraphene_raw.Point.t
     = "ml_gsk_path_point_get_position"
   (** Gets the position of the point. *)
 
@@ -294,9 +283,8 @@ and Path_point : sig
   external get_curvature :
     t ->
     Path.t ->
-    Gsk_enums.pathdirection ->
-    float * Ocgtk_graphene.Graphene.Wrappers.Point.t option
-    = "ml_gsk_path_point_get_curvature"
+    Ocgsk_enums.pathdirection ->
+    float * Ocgraphene_raw.Point.t option = "ml_gsk_path_point_get_curvature"
   (** Calculates the curvature of the path at the point.
 
       Optionally, returns the center of the osculating circle as well. The
@@ -334,10 +322,8 @@ end = struct
   (* Methods *)
 
   external get_tangent :
-    t ->
-    Path.t ->
-    Gsk_enums.pathdirection ->
-    Ocgtk_graphene.Graphene.Wrappers.Vec2.t = "ml_gsk_path_point_get_tangent"
+    t -> Path.t -> Ocgsk_enums.pathdirection -> Ocgraphene_raw.Vec2.t
+    = "ml_gsk_path_point_get_tangent"
   (** Gets the tangent of the path at the point.
 
       Note that certain points on a path may not have a single tangent, such as
@@ -351,7 +337,7 @@ end = struct
       If you want to orient something in the direction of the path,
       [Gsk.PathPoint.get_rotation] may be more convenient to use. *)
 
-  external get_rotation : t -> Path.t -> Gsk_enums.pathdirection -> float
+  external get_rotation : t -> Path.t -> Ocgsk_enums.pathdirection -> float
     = "ml_gsk_path_point_get_rotation"
   (** Gets the direction of the tangent at a given point.
 
@@ -359,8 +345,7 @@ end = struct
       the angle between the tangent and the X axis. The angle can e.g. be used
       in gtk_snapshot_rotate(). *)
 
-  external get_position :
-    t -> Path.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
+  external get_position : t -> Path.t -> Ocgraphene_raw.Point.t
     = "ml_gsk_path_point_get_position"
   (** Gets the position of the point. *)
 
@@ -371,9 +356,8 @@ end = struct
   external get_curvature :
     t ->
     Path.t ->
-    Gsk_enums.pathdirection ->
-    float * Ocgtk_graphene.Graphene.Wrappers.Point.t option
-    = "ml_gsk_path_point_get_curvature"
+    Ocgsk_enums.pathdirection ->
+    float * Ocgraphene_raw.Point.t option = "ml_gsk_path_point_get_curvature"
   (** Calculates the curvature of the path at the point.
 
       Optionally, returns the center of the osculating circle as well. The

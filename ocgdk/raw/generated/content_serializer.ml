@@ -37,7 +37,7 @@ external get_priority : t -> int = "ml_gdk_content_serializer_get_priority"
 
     This is the priority that was passed to [content_serialize_async]. *)
 
-external get_output_stream : t -> Ocgtk_gio.Gio.Wrappers.Output_stream.t
+external get_output_stream : t -> Ocgio_raw.Output_stream.t
   = "ml_gdk_content_serializer_get_output_stream"
 (** Gets the output stream for the current operation.
 
@@ -49,7 +49,7 @@ external get_mime_type : t -> string = "ml_gdk_content_serializer_get_mime_type"
 external get_gtype : t -> Gobject.Type.t = "ml_gdk_content_serializer_get_gtype"
 (** Gets the [GType] to of the object to serialize. *)
 
-external get_cancellable : t -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option
+external get_cancellable : t -> Ocgio_raw.Cancellable.t option
   = "ml_gdk_content_serializer_get_cancellable"
 (** Gets the cancellable for the current operation.
 

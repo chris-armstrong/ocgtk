@@ -148,7 +148,7 @@ external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_text_set_truncate_multiline"
 (** Sets whether pasted text should be truncated to the first line. *)
 
-external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit
+external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_text_set_tabs"
 (** Sets tab stops for the text widget. *)
 
@@ -184,19 +184,18 @@ external set_invisible_char : t -> int -> unit
     If you set the invisible char to 0, then the user will get no feedback at
     all; there will be no text on the screen as they type. *)
 
-external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_text_set_input_purpose"
 (** Sets the input purpose of the text widget.
 
     The input purpose can be used by on-screen keyboards and other input methods
     to adjust their behaviour. *)
 
-external set_input_hints : t -> Gtk_enums.inputhints -> unit
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_text_set_input_hints"
 (** Sets hints that allow input methods to fine-tune their behaviour. *)
 
-external set_extra_menu :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_text_set_extra_menu"
 (** Sets a menu model to add to the context menu of the text widget. *)
 
@@ -210,8 +209,7 @@ external set_enable_emoji_completion : t -> bool -> unit
 external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_text_set_buffer"
 (** Set the entry buffer object which holds the text for this widget. *)
 
-external set_attributes :
-  t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit
+external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
   = "ml_gtk_text_set_attributes"
 (** Apply attributes to the contents of the text widget. *)
 
@@ -245,8 +243,7 @@ external get_text_length : t -> UInt16.t = "ml_gtk_text_get_text_length"
     This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
     [Gtk.EntryBuffer.get_length] on it. *)
 
-external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
-  = "ml_gtk_text_get_tabs"
+external get_tabs : t -> Ocpango_raw.Tab_array.t option = "ml_gtk_text_get_tabs"
 (** Gets the tab stops for the text widget.
 
     See [Gtk.Text.set_tabs]. *)
@@ -282,15 +279,15 @@ external get_invisible_char : t -> int = "ml_gtk_text_get_invisible_char"
     returned by this function is not very useful unless it has been explicitly
     set with [Gtk.Text.set_invisible_char]. *)
 
-external get_input_purpose : t -> Gtk_enums.inputpurpose
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_text_get_input_purpose"
 (** Gets the input purpose of the text widget. *)
 
-external get_input_hints : t -> Gtk_enums.inputhints
+external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_text_get_input_hints"
 (** Gets the input hints of the text widget. *)
 
-external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_text_get_extra_menu"
 (** Gets the extra menu model of the text widget.
 
@@ -303,7 +300,7 @@ external get_enable_emoji_completion : t -> bool
 external get_buffer : t -> Entry_buffer.t = "ml_gtk_text_get_buffer"
 (** Get the entry buffer object which holds the text for this widget. *)
 
-external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
+external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_text_get_attributes"
 (** Gets the attribute list that was set on the text widget.
 
@@ -316,10 +313,7 @@ external get_activates_default : t -> bool = "ml_gtk_text_get_activates_default"
     See [Gtk.Text.set_activates_default]. *)
 
 external compute_cursor_extents :
-  t ->
-  Gsize.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t
-  * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  t -> Gsize.t -> Ocgraphene_raw.Rect.t * Ocgraphene_raw.Rect.t
   = "ml_gtk_text_compute_cursor_extents"
 (** Determines the positions of the strong and weak cursors for a given
     character position.
@@ -372,7 +366,7 @@ let on_delete_from_cursor ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let type_ =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.deletetype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.deletetype_of_int (Gobject.Value.get_enum_int v)
         in
         let count =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -404,7 +398,7 @@ let on_move_cursor ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let step =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
         in
         let count =
           let v = Gobject.Closure.nth argv ~pos:2 in

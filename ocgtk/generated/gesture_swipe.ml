@@ -1,5 +1,5 @@
 class type gesture_swipe_t = object
-  inherit GGesture_single.gesture_single_t
+  inherit Gesture_single.gesture_single_t
 
   method on_swipe :
     ?after:bool ->
@@ -7,18 +7,18 @@ class type gesture_swipe_t = object
     unit ->
     Gobject.Signal.handler_id
 
-  method as_gesture_swipe : Gesture_swipe.t
+  method as_gesture_swipe : Raw.Gesture_swipe.t
 end
 
 (* High-level class for GestureSwipe *)
-class gesture_swipe (obj : Gesture_swipe.t) : gesture_swipe_t =
+class gesture_swipe (obj : Raw.Gesture_swipe.t) : gesture_swipe_t =
   object (self)
-    inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
+    inherit Gesture_single.gesture_single (obj :> Raw.Gesture_single.t)
 
     method on_swipe ?(after = false) ~callback () =
-      Gesture_swipe.on_swipe ~after self#as_gesture_swipe ~callback
+      Raw.Gesture_swipe.on_swipe ~after self#as_gesture_swipe ~callback
 
     method as_gesture_swipe = obj
   end
 
-let new_ () : gesture_swipe_t = new gesture_swipe (Gesture_swipe.new_ ())
+let new_ () : gesture_swipe_t = new gesture_swipe (Raw.Gesture_swipe.new_ ())

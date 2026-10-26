@@ -341,7 +341,7 @@ external get_iter : t -> Tree_path.t -> bool * Tree_iter.t
     If [path] does not exist, [iter] is set to an invalid iterator and [FALSE]
     is returned. *)
 
-external get_flags : t -> Gtk_enums.treemodelflags
+external get_flags : t -> Ocgtk_enums.treemodelflags
   = "ml_gtk_tree_model_get_flags"
 (** Returns a set of flags supported by this interface.
 

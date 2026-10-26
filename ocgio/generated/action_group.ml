@@ -36,67 +36,69 @@ class type action_group_t = object
   method get_action_state_type : string -> Gvariant_type.t option
   method has_action : string -> bool
   method list_actions : unit -> string array
-  method as_action_group : Action_group.t
+  method as_action_group : Raw.Action_group.t
 end
 
 (* High-level class for ActionGroup *)
-class action_group (obj : Action_group.t) : action_group_t =
+class action_group (obj : Raw.Action_group.t) : action_group_t =
   object (self)
     method on_action_added ?(after = false) ~callback () =
-      Action_group.on_action_added ~after self#as_action_group ~callback
+      Raw.Action_group.on_action_added ~after self#as_action_group ~callback
 
     method on_action_enabled_changed ?(after = false) ~callback () =
-      Action_group.on_action_enabled_changed ~after self#as_action_group
+      Raw.Action_group.on_action_enabled_changed ~after self#as_action_group
         ~callback
 
     method on_action_removed ?(after = false) ~callback () =
-      Action_group.on_action_removed ~after self#as_action_group ~callback
+      Raw.Action_group.on_action_removed ~after self#as_action_group ~callback
 
     method on_action_state_changed ?(after = false) ~callback () =
-      Action_group.on_action_state_changed ~after self#as_action_group ~callback
+      Raw.Action_group.on_action_state_changed ~after self#as_action_group
+        ~callback
 
     method action_added : string -> unit =
-      fun action_name -> Action_group.action_added obj action_name
+      fun action_name -> Raw.Action_group.action_added obj action_name
 
     method action_enabled_changed : string -> bool -> unit =
       fun action_name enabled ->
-        Action_group.action_enabled_changed obj action_name enabled
+        Raw.Action_group.action_enabled_changed obj action_name enabled
 
     method action_removed : string -> unit =
-      fun action_name -> Action_group.action_removed obj action_name
+      fun action_name -> Raw.Action_group.action_removed obj action_name
 
     method action_state_changed : string -> Gvariant.t -> unit =
       fun action_name state ->
-        Action_group.action_state_changed obj action_name state
+        Raw.Action_group.action_state_changed obj action_name state
 
     method activate_action : string -> Gvariant.t option -> unit =
       fun action_name parameter ->
-        Action_group.activate_action obj action_name parameter
+        Raw.Action_group.activate_action obj action_name parameter
 
     method change_action_state : string -> Gvariant.t -> unit =
       fun action_name value ->
-        Action_group.change_action_state obj action_name value
+        Raw.Action_group.change_action_state obj action_name value
 
     method get_action_enabled : string -> bool =
-      fun action_name -> Action_group.get_action_enabled obj action_name
+      fun action_name -> Raw.Action_group.get_action_enabled obj action_name
 
     method get_action_parameter_type : string -> Gvariant_type.t option =
-      fun action_name -> Action_group.get_action_parameter_type obj action_name
+      fun action_name ->
+        Raw.Action_group.get_action_parameter_type obj action_name
 
     method get_action_state : string -> Gvariant.t option =
-      fun action_name -> Action_group.get_action_state obj action_name
+      fun action_name -> Raw.Action_group.get_action_state obj action_name
 
     method get_action_state_hint : string -> Gvariant.t option =
-      fun action_name -> Action_group.get_action_state_hint obj action_name
+      fun action_name -> Raw.Action_group.get_action_state_hint obj action_name
 
     method get_action_state_type : string -> Gvariant_type.t option =
-      fun action_name -> Action_group.get_action_state_type obj action_name
+      fun action_name -> Raw.Action_group.get_action_state_type obj action_name
 
     method has_action : string -> bool =
-      fun action_name -> Action_group.has_action obj action_name
+      fun action_name -> Raw.Action_group.has_action obj action_name
 
     method list_actions : unit -> string array =
-      fun () -> Action_group.list_actions obj
+      fun () -> Raw.Action_group.list_actions obj
 
     method as_action_group = obj
   end

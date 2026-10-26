@@ -8,13 +8,7 @@ type t = [ `outset_shadow_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_outset_shadow_node_get_type"
 
 external new_ :
-  Rounded_rect.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  float ->
-  float ->
-  float ->
-  float ->
-  t
+  Rounded_rect.t -> Ocgdk_raw.Rgb_a.t -> float -> float -> float -> float -> t
   = "ml_gsk_outset_shadow_node_new_bytecode"
     "ml_gsk_outset_shadow_node_new_native"
 (** Create a new OutsetShadowNode *)
@@ -34,7 +28,7 @@ external get_dy : t -> float = "ml_gsk_outset_shadow_node_get_dy"
 external get_dx : t -> float = "ml_gsk_outset_shadow_node_get_dx"
 (** Retrieves the horizontal offset of the outset shadow. *)
 
-external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_color : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gsk_outset_shadow_node_get_color"
 (** Retrieves the color of the outset shadow.
 

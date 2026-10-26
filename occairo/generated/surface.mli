@@ -1,5 +1,5 @@
 class type surface_t = object
-  method as_surface : Surface.t
+  method as_surface : Raw.Surface.t
 end
 
-class surface : Surface.t -> surface_t
+class surface : Raw.Surface.t -> surface_t

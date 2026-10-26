@@ -30,7 +30,7 @@ external matches : t -> Inet_address.t -> bool
 external get_length : t -> int = "ml_g_inet_address_mask_get_length"
 (** Gets [mask]'s length *)
 
-external get_family : t -> Gio_enums.socketfamily
+external get_family : t -> Ocgio_enums.socketfamily
   = "ml_g_inet_address_mask_get_family"
 (** Gets the [GSocketFamily] of [mask]'s address *)
 

@@ -16,7 +16,7 @@ type t = [ `renderer | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_renderer_get_type"
 
-external new_for_surface : Ocgtk_gdk.Gdk.Wrappers.Surface.t -> t
+external new_for_surface : Ocgdk_raw.Surface.t -> t
   = "ml_gsk_renderer_new_for_surface"
 (** Create a new Renderer *)
 
@@ -26,10 +26,8 @@ external unrealize : t -> unit = "ml_gsk_renderer_unrealize"
 (** Releases all the resources created by [Gsk.Renderer.realize]. *)
 
 external render_texture :
-  t ->
-  Render_node.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t option ->
-  Ocgtk_gdk.Gdk.Wrappers.Texture.t = "ml_gsk_renderer_render_texture"
+  t -> Render_node.t -> Ocgraphene_raw.Rect.t option -> Ocgdk_raw.Texture.t
+  = "ml_gsk_renderer_render_texture"
 (** Renders a scene graph, described by a tree of [GskRenderNode] instances, to
     a texture.
 
@@ -39,8 +37,7 @@ external render_texture :
     If you want to apply any transformations to [root], you should put it into a
     transform node and pass that node instead. *)
 
-external render :
-  t -> Render_node.t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+external render : t -> Render_node.t -> Occairo_raw.Region.t option -> unit
   = "ml_gsk_renderer_render"
 (** Renders the scene graph, described by a tree of [GskRenderNode] instances to
     the renderer's surface, ensuring that the given region gets redrawn.
@@ -56,15 +53,14 @@ external render :
     rendering is in progress. *)
 
 external realize_for_display :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> (bool, GError.t) result
+  t -> Ocgdk_raw.Display.t -> (bool, GError.t) result
   = "ml_gsk_renderer_realize_for_display"
 (** Creates the resources needed by the renderer.
 
     Note that it is mandatory to call [Gsk.Renderer.unrealize] before destroying
     the renderer. *)
 
-external realize :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t option -> (bool, GError.t) result
+external realize : t -> Ocgdk_raw.Surface.t option -> (bool, GError.t) result
   = "ml_gsk_renderer_realize"
 (** Creates the resources needed by the renderer.
 
@@ -78,7 +74,7 @@ external realize :
 external is_realized : t -> bool = "ml_gsk_renderer_is_realized"
 (** Checks whether the renderer is realized or not. *)
 
-external get_surface : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t option
+external get_surface : t -> Ocgdk_raw.Surface.t option
   = "ml_gsk_renderer_get_surface"
 (** Retrieves the surface that the renderer is associated with.
 

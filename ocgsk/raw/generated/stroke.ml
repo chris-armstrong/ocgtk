@@ -12,7 +12,7 @@ external new_ : float -> t = "ml_gsk_stroke_new"
 
 (* Methods *)
 
-external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
+external to_cairo : t -> Occairo_raw.Context.t -> unit
   = "ml_gsk_stroke_to_cairo"
 (** A helper function that sets the stroke parameters of a cairo context from a
     [GskStroke]. *)
@@ -33,13 +33,13 @@ external set_line_width : t -> float -> unit = "ml_gsk_stroke_set_line_width"
 
     The line width must be >= 0. *)
 
-external set_line_join : t -> Gsk_enums.linejoin -> unit
+external set_line_join : t -> Ocgsk_enums.linejoin -> unit
   = "ml_gsk_stroke_set_line_join"
 (** Sets the line join to be used when stroking.
 
     See [Gsk.LineJoin] for details. *)
 
-external set_line_cap : t -> Gsk_enums.linecap -> unit
+external set_line_cap : t -> Ocgsk_enums.linecap -> unit
   = "ml_gsk_stroke_set_line_cap"
 (** Sets the line cap to be used when stroking.
 
@@ -80,12 +80,13 @@ external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
 external get_line_width : t -> float = "ml_gsk_stroke_get_line_width"
 (** Gets the line width used. *)
 
-external get_line_join : t -> Gsk_enums.linejoin = "ml_gsk_stroke_get_line_join"
+external get_line_join : t -> Ocgsk_enums.linejoin
+  = "ml_gsk_stroke_get_line_join"
 (** Gets the line join used.
 
     See [Gsk.LineJoin] for details. *)
 
-external get_line_cap : t -> Gsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
+external get_line_cap : t -> Ocgsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
 (** Gets the line cap used.
 
     See [Gsk.LineCap] for details. *)

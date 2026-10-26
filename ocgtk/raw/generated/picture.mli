@@ -44,7 +44,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_picture_get_type"
 external new_ : unit -> t = "ml_gtk_picture_new"
 (** Create a new Picture *)
 
-external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t option -> t
+external new_for_file : Ocgio_raw.File.t option -> t
   = "ml_gtk_picture_new_for_file"
 (** Create a new Picture *)
 
@@ -52,12 +52,11 @@ external new_for_filename : string option -> t
   = "ml_gtk_picture_new_for_filename"
 (** Create a new Picture *)
 
-external new_for_paintable : Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> t
+external new_for_paintable : Ocgdk_raw.Paintable.t option -> t
   = "ml_gtk_picture_new_for_paintable"
 (** Create a new Picture *)
 
-external new_for_pixbuf :
-  Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> t
+external new_for_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t option -> t
   = "ml_gtk_picture_new_for_pixbuf"
 (** Create a new Picture *)
 
@@ -73,8 +72,7 @@ external set_resource : t -> string option -> unit
 
     This is a utility function that calls [Gtk.Picture.set_file]. *)
 
-external set_pixbuf :
-  t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t option -> unit
+external set_pixbuf : t -> Ocgdkpixbuf_raw.Pixbuf.t option -> unit
   = "ml_gtk_picture_set_pixbuf"
 (** Sets a [GtkPicture] to show a [GdkPixbuf].
 
@@ -82,7 +80,7 @@ external set_pixbuf :
 
     This is a utility function that calls [Gtk.Picture.set_paintable]. *)
 
-external set_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit
+external set_paintable : t -> Ocgdk_raw.Paintable.t option -> unit
   = "ml_gtk_picture_set_paintable"
 (** Makes [self] display the given [paintable].
 
@@ -111,7 +109,7 @@ external set_filename : t -> string option -> unit
     image loading framework such as libglycin, which can load many image formats
     into a [GdkTexture], and then use [Gtk.Image.set_from_paintable]. *)
 
-external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_picture_set_file"
 (** Makes [self] load and display [file].
 
@@ -121,7 +119,7 @@ external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
     image loading framework such as libglycin, which can load many image formats
     into a [GdkTexture], and then use [Gtk.Image.set_from_paintable]. *)
 
-external set_content_fit : t -> Gtk_enums.contentfit -> unit
+external set_content_fit : t -> Ocgtk_enums.contentfit -> unit
   = "ml_gtk_picture_set_content_fit"
 (** Sets how the content should be resized to fit the [GtkPicture].
 
@@ -147,7 +145,7 @@ external set_alternative_text : t -> string option -> unit
    This text will be made available to accessibility tools.\n\n\
    If the picture cannot be described textually, set this property to [NULL]."]
 
-external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+external get_paintable : t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_picture_get_paintable"
 (** Gets the [GdkPaintable] being displayed by the [GtkPicture]. *)
 
@@ -155,14 +153,13 @@ external get_keep_aspect_ratio : t -> bool
   = "ml_gtk_picture_get_keep_aspect_ratio"
 (** Returns whether the [GtkPicture] preserves its contents aspect ratio. *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_picture_get_file"
+external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_picture_get_file"
 (** Gets the [GFile] currently displayed if [self] is displaying a file.
 
     If [self] is not displaying a file, for example when
     [Gtk.Picture.set_paintable] was used, then [NULL] is returned. *)
 
-external get_content_fit : t -> Gtk_enums.contentfit
+external get_content_fit : t -> Ocgtk_enums.contentfit
   = "ml_gtk_picture_get_content_fit"
 (** Returns the fit mode for the content of the [GtkPicture].
 

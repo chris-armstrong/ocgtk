@@ -679,7 +679,7 @@ external bind :
   string ->
   [ `object_ ] Gobject.obj ->
   string ->
-  Gio_enums.settingsbindflags ->
+  Ocgio_enums.settingsbindflags ->
   unit = "ml_g_settings_bind"
 (** Create a binding between the [key] in the [settings] object and the property
     [property] of [object].

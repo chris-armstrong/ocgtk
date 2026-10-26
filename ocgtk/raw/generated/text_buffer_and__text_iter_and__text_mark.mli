@@ -81,8 +81,7 @@ module rec Text_buffer : sig
       The default handler for the signal removes all occurrences of [tag] from
       the given range. [start] and [end] don’t have to be in order. *)
 
-  external remove_selection_clipboard :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit
+  external remove_selection_clipboard : t -> Ocgdk_raw.Clipboard.t -> unit
     = "ml_gtk_text_buffer_remove_selection_clipboard"
   (** Removes a [GdkClipboard] added with
       [Gtk.TextBuffer.add_selection_clipboard] *)
@@ -119,11 +118,8 @@ module rec Text_buffer : sig
       function moves them as a unit, which can be optimized. *)
 
   external paste_clipboard :
-    t ->
-    Ocgtk_gdk.Gdk.Wrappers.Clipboard.t ->
-    Text_iter.t option ->
-    bool ->
-    unit = "ml_gtk_text_buffer_paste_clipboard"
+    t -> Ocgdk_raw.Clipboard.t -> Text_iter.t option -> bool -> unit
+    = "ml_gtk_text_buffer_paste_clipboard"
   (** Pastes the contents of a clipboard.
 
       If [override_location] is [NULL], the pasted text will be inserted at the
@@ -173,8 +169,7 @@ module rec Text_buffer : sig
       Implemented via emissions of the ::insert-text and ::apply-tag signals, so
       expect those. *)
 
-  external insert_paintable :
-    t -> Text_iter.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t -> unit
+  external insert_paintable : t -> Text_iter.t -> Ocgdk_raw.Paintable.t -> unit
     = "ml_gtk_text_buffer_insert_paintable"
   (** Inserts an image into the text buffer at [iter].
 
@@ -284,8 +279,7 @@ module rec Text_buffer : sig
       well, so it is not a reliable indicator that a paintable or widget is in
       the buffer. *)
 
-  external get_selection_content :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t
+  external get_selection_content : t -> Ocgdk_raw.Content_provider.t
     = "ml_gtk_text_buffer_get_selection_content"
   (** Get a content provider for this buffer.
 
@@ -502,8 +496,7 @@ module rec Text_buffer : sig
       however, the [start] and [end] will be re-initialized to point to the
       location where text was deleted. *)
 
-  external cut_clipboard :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> bool -> unit
+  external cut_clipboard : t -> Ocgdk_raw.Clipboard.t -> bool -> unit
     = "ml_gtk_text_buffer_cut_clipboard"
   (** Copies the currently-selected text to a clipboard, then deletes said text
       if it’s editable. *)
@@ -540,7 +533,7 @@ module rec Text_buffer : sig
       The new anchor is owned by the buffer; no reference count is returned to
       the caller of this function. *)
 
-  external copy_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit
+  external copy_clipboard : t -> Ocgdk_raw.Clipboard.t -> unit
     = "ml_gtk_text_buffer_copy_clipboard"
   (** Copies the currently-selected text to a clipboard. *)
 
@@ -606,8 +599,7 @@ module rec Text_buffer : sig
       The default handler for the signal applies [tag] to the given range.
       [start] and [end] do not have to be in order. *)
 
-  external add_selection_clipboard :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit
+  external add_selection_clipboard : t -> Ocgdk_raw.Clipboard.t -> unit
     = "ml_gtk_text_buffer_add_selection_clipboard"
   (** Adds [clipboard] to the list of clipboards in which the selection contents
       of [buffer] are available.
@@ -653,7 +645,7 @@ module rec Text_buffer : sig
   val on_paste_done :
     ?after:bool ->
     t ->
-    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit) ->
+    callback:(clipboard:Ocgdk_raw.Clipboard.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_redo :
@@ -870,7 +862,7 @@ and Text_iter : sig
       well, so it is not a reliable indicator that a paintable or widget is in
       the buffer. *)
 
-  external get_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+  external get_paintable : t -> Ocgdk_raw.Paintable.t option
     = "ml_gtk_text_iter_get_paintable"
   (** If the element at [iter] is a paintable, the paintable is returned.
 
@@ -910,7 +902,7 @@ and Text_iter : sig
       Lines in a [GtkTextBuffer] are numbered beginning with 0 for the first
       line in the buffer. *)
 
-  external get_language : t -> Ocgtk_pango.Pango.Wrappers.Language.t
+  external get_language : t -> Ocpango_raw.Language.t
     = "ml_gtk_text_iter_get_language"
   (** Returns the language in effect at [iter].
 
@@ -1050,7 +1042,7 @@ and Text_iter : sig
       nearly any language. *)
 
   external forward_search :
-    t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t
+    t -> string -> Ocgtk_enums.textsearchflags -> t option -> bool * t * t
     = "ml_gtk_text_iter_forward_search"
   (** Searches forward for [str].
 
@@ -1291,7 +1283,7 @@ and Text_iter : sig
       nearly any language. *)
 
   external backward_search :
-    t -> string -> Gtk_enums.textsearchflags -> t option -> bool * t * t
+    t -> string -> Ocgtk_enums.textsearchflags -> t option -> bool * t * t
     = "ml_gtk_text_iter_backward_search"
   (** Same as [Gtk.TextIter.forward_search], but moves backward.
 

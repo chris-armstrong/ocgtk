@@ -9,7 +9,7 @@ class type list_model_t = object
   method get_n_items : unit -> int
   method get_object : int -> [ `object_ ] Gobject.obj option
   method items_changed : int -> int -> int -> unit
-  method as_list_model : List_model.t
+  method as_list_model : Raw.List_model.t
 end
 
-class list_model : List_model.t -> list_model_t
+class list_model : Raw.List_model.t -> list_model_t

@@ -29,13 +29,13 @@ external new_from_resource : string -> (t, GError.t) result
 (** Create a new PixbufAnimation *)
 
 external new_from_stream :
-  Ocgtk_gio.Gio.Wrappers.Input_stream.t ->
-  Ocgtk_gio.Gio.Wrappers.Cancellable.t option ->
+  Ocgio_raw.Input_stream.t ->
+  Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_stream"
 (** Create a new PixbufAnimation *)
 
 external new_from_stream_finish :
-  Ocgtk_gio.Gio.Wrappers.Async_result.t -> (t, GError.t) result
+  Ocgio_raw.Async_result.t -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_stream_finish"
 (** Create a new PixbufAnimation *)
 

@@ -20,31 +20,26 @@ external new_ : unit -> t = "ml_gsk_transform_new"
 
 (* Methods *)
 
-external translate_3d :
-  t -> Ocgtk_graphene.Graphene.Wrappers.Point3_d.t -> t option
+external translate_3d : t -> Ocgraphene_raw.Point3_d.t -> t option
   = "ml_gsk_transform_translate_3d"
 (** Translates [next] by [point].
 
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)
 
-external translate : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> t option
+external translate : t -> Ocgraphene_raw.Point.t -> t option
   = "ml_gsk_transform_translate"
 (** Translates [next] in 2-dimensional space by [point].
 
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)
 
-external transform_point :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t = "ml_gsk_transform_transform_point"
+external transform_point : t -> Ocgraphene_raw.Point.t -> Ocgraphene_raw.Point.t
+  = "ml_gsk_transform_transform_point"
 (** Transforms a point using the given transform. *)
 
-external transform_bounds :
-  t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gsk_transform_transform_bounds"
+external transform_bounds : t -> Ocgraphene_raw.Rect.t -> Ocgraphene_raw.Rect.t
+  = "ml_gsk_transform_transform_bounds"
 (** Transforms a rectangle using the given transform.
 
     The result is the bounding box containing the coplanar quad. *)
@@ -71,8 +66,7 @@ external to_string : t -> string = "ml_gsk_transform_to_string"
 
     This is a wrapper around [Gsk.Transform.print]. *)
 
-external to_matrix : t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t
-  = "ml_gsk_transform_to_matrix"
+external to_matrix : t -> Ocgraphene_raw.Matrix.t = "ml_gsk_transform_to_matrix"
 (** Computes the 4x4 matrix for the transform.
 
     The previous value of [out_matrix] will be ignored. *)
@@ -154,8 +148,7 @@ external scale : t -> float -> float -> t option = "ml_gsk_transform_scale"
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)
 
-external rotate_3d :
-  t -> float -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> t option
+external rotate_3d : t -> float -> Ocgraphene_raw.Vec3.t -> t option
   = "ml_gsk_transform_rotate_3d"
 (** Rotates [next] [angle] degrees around [axis].
 
@@ -196,8 +189,7 @@ external matrix_2d :
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)
 
-external matrix : t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t -> t
-  = "ml_gsk_transform_matrix"
+external matrix : t -> Ocgraphene_raw.Matrix.t -> t = "ml_gsk_transform_matrix"
 (** Multiplies [next] with the given [matrix].
 
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
@@ -214,7 +206,7 @@ external invert : t -> t option = "ml_gsk_transform_invert"
     This function consumes [self]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)
 
-external get_category : t -> Gsk_enums.transformcategory
+external get_category : t -> Ocgsk_enums.transformcategory
   = "ml_gsk_transform_get_category"
 (** Returns the category this transform belongs to. *)
 

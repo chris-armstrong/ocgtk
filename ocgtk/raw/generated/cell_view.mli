@@ -41,7 +41,7 @@ external new_with_markup : string -> t = "ml_gtk_cell_view_new_with_markup"
 external new_with_text : string -> t = "ml_gtk_cell_view_new_with_text"
 (** Create a new CellView *)
 
-external new_with_texture : Ocgtk_gdk.Gdk.Wrappers.Texture.t -> t
+external new_with_texture : Ocgdk_raw.Texture.t -> t
   = "ml_gtk_cell_view_new_with_texture"
 (** Create a new CellView *)
 

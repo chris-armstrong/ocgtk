@@ -53,14 +53,14 @@ external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
 
 external start_editing :
   t ->
-  Ocgtk_gdk.Gdk.Wrappers.Event.t option ->
+  Ocgdk_raw.Event.t option ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Gtk_enums.cellrendererstate ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgtk_enums.cellrendererstate ->
   Cell_editable.t option
   = "ml_gtk_cell_renderer_start_editing_bytecode"
     "ml_gtk_cell_renderer_start_editing_native"
@@ -74,9 +74,9 @@ external snapshot :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Gtk_enums.cellrendererstate ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgtk_enums.cellrendererstate ->
   unit
   = "ml_gtk_cell_renderer_snapshot_bytecode"
     "ml_gtk_cell_renderer_snapshot_native"
@@ -127,15 +127,15 @@ external get_state :
   .Widget
   .t
   option ->
-  Gtk_enums.cellrendererstate ->
-  Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
+  Ocgtk_enums.cellrendererstate ->
+  Ocgtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
 (** Translates the cell renderer state to [GtkStateFlags], based on the cell
     renderer and widget sensitivity, and the given [GtkCellRenderer]State. *)
 
 external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
 (** Returns the cell renderer’s sensitivity. *)
 
-external get_request_mode : t -> Gtk_enums.sizerequestmode
+external get_request_mode : t -> Ocgtk_enums.sizerequestmode
   = "ml_gtk_cell_renderer_get_request_mode"
 (** Gets whether the cell renderer prefers a height-for-width layout or a
     width-for-height layout. *)
@@ -206,22 +206,22 @@ external get_aligned_area :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Gtk_enums.cellrendererstate ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_renderer_get_aligned_area"
+  Ocgtk_enums.cellrendererstate ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgdk_raw.Rectangle.t = "ml_gtk_cell_renderer_get_aligned_area"
 (** Gets the aligned area used by [cell] inside [cell_area]. Used for finding
     the appropriate edit and focus rectangle. *)
 
 external activate :
   t ->
-  Ocgtk_gdk.Gdk.Wrappers.Event.t ->
+  Ocgdk_raw.Event.t ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
-  Gtk_enums.cellrendererstate ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgdk_raw.Rectangle.t ->
+  Ocgtk_enums.cellrendererstate ->
   bool
   = "ml_gtk_cell_renderer_activate_bytecode"
     "ml_gtk_cell_renderer_activate_native"
@@ -235,11 +235,11 @@ external set_cell_background : t -> string -> unit
   = "ml_gtk_cell_renderer_set_cell_background"
 (** Set property: cell-background *)
 
-external get_cell_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_get_cell_background_rgba"
 (** Get property: cell-background-rgba *)
 
-external set_cell_background_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_set_cell_background_rgba"
 (** Set property: cell-background-rgba *)
 
@@ -260,11 +260,11 @@ external get_height : t -> int = "ml_gtk_cell_renderer_get_height"
 external set_height : t -> int -> unit = "ml_gtk_cell_renderer_set_height"
 (** Set property: height *)
 
-external get_mode : t -> Gtk_enums.cellrenderermode
+external get_mode : t -> Ocgtk_enums.cellrenderermode
   = "ml_gtk_cell_renderer_get_mode"
 (** Get property: mode *)
 
-external set_mode : t -> Gtk_enums.cellrenderermode -> unit
+external set_mode : t -> Ocgtk_enums.cellrenderermode -> unit
   = "ml_gtk_cell_renderer_set_mode"
 (** Set property: mode *)
 

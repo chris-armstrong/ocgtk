@@ -112,7 +112,7 @@ type t = [ `application | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_application_get_type"
 
-external new_ : string option -> Gio_enums.applicationflags -> t
+external new_ : string option -> Ocgio_enums.applicationflags -> t
   = "ml_g_application_new"
 (** Create a new Application *)
 
@@ -219,7 +219,7 @@ external set_inactivity_timeout : t -> int -> unit
     for next time g_application_release() drops the use count to zero. Any
     timeouts currently in progress are not impacted. *)
 
-external set_flags : t -> Gio_enums.applicationflags -> unit
+external set_flags : t -> Ocgio_enums.applicationflags -> unit
   = "ml_g_application_set_flags"
 (** Sets the flags for [application].
 
@@ -473,7 +473,7 @@ external get_inactivity_timeout : t -> int
     This is the amount of time (in milliseconds) after the last call to
     g_application_release() before the application stops running. *)
 
-external get_flags : t -> Gio_enums.applicationflags
+external get_flags : t -> Ocgio_enums.applicationflags
   = "ml_g_application_get_flags"
 (** Gets the flags for [application].
 

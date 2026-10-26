@@ -20,9 +20,9 @@ class type adjustment_t = object
   method set_step_increment : float -> unit
   method set_upper : float -> unit
   method set_value : float -> unit
-  method as_adjustment : Adjustment.t
+  method as_adjustment : Raw.Adjustment.t
 end
 
-class adjustment : Adjustment.t -> adjustment_t
+class adjustment : Raw.Adjustment.t -> adjustment_t
 
 val new_ : float -> float -> float -> float -> float -> float -> adjustment_t

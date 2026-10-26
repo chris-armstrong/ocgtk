@@ -28,7 +28,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_filter_get_type"
 external match_ : t -> [ `object_ ] Gobject.obj -> bool = "ml_gtk_filter_match"
 (** Checks if the given [item] is matched by the filter or not. *)
 
-external get_strictness : t -> Gtk_enums.filtermatch
+external get_strictness : t -> Ocgtk_enums.filtermatch
   = "ml_gtk_filter_get_strictness"
 (** Gets the known strictness of a filter.
 
@@ -39,7 +39,8 @@ external get_strictness : t -> Gtk_enums.filtermatch
     This function is meant purely for optimization purposes. Filters can choose
     to omit implementing it, but [GtkFilterListModel] uses it. *)
 
-external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
+external changed : t -> Ocgtk_enums.filterchange -> unit
+  = "ml_gtk_filter_changed"
 (** Notifies all users of the filter that it has changed.
 
     This emits the [Gtk.Filter::changed] signal. Users of the filter should then
@@ -54,5 +55,5 @@ external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
 val on_changed :
   ?after:bool ->
   t ->
-  callback:(change:Gtk_enums.filterchange -> unit) ->
+  callback:(change:Ocgtk_enums.filterchange -> unit) ->
   Gobject.Signal.handler_id

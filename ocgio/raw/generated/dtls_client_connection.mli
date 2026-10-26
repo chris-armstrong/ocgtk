@@ -14,7 +14,7 @@ external from_gobject : 'a Gobject.obj -> t
 
 (* Methods *)
 
-external set_validation_flags : t -> Gio_enums.tlscertificateflags -> unit
+external set_validation_flags : t -> Ocgio_enums.tlscertificateflags -> unit
   = "ml_g_dtls_client_connection_set_validation_flags"
 (** Sets [conn]'s validation flags, to override the default set of checks
     performed when validating a server certificate. By default,
@@ -35,7 +35,7 @@ external set_server_identity :
     what name to look for in the certificate when performing
     [G_TLS_CERTIFICATE_BAD_IDENTITY] validation, if enabled. *)
 
-external get_validation_flags : t -> Gio_enums.tlscertificateflags
+external get_validation_flags : t -> Ocgio_enums.tlscertificateflags
   = "ml_g_dtls_client_connection_get_validation_flags"
 (** Gets [conn]'s validation flags
 

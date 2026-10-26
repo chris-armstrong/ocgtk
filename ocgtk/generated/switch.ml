@@ -1,9 +1,9 @@
 class type switch_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GActionable.actionable_t
+  inherit Actionable.actionable_t
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -18,36 +18,35 @@ class type switch_t = object
   method get_state : unit -> bool
   method set_active : bool -> unit
   method set_state : bool -> unit
-  method as_switch : Switch.t
+  method as_switch : Raw.Switch.t
 end
 
 (* High-level class for Switch *)
-class switch (obj : Switch.t) : switch_t =
+class switch (obj : Raw.Switch.t) : switch_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
-        (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-             .Widget
-             .t)
+        (obj :> Raw.Widget.t)
 
-    inherit GActionable.actionable (Actionable.from_gobject obj)
+    inherit Actionable.actionable (Raw.Actionable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
-      Switch.on_activate ~after self#as_switch ~callback
+      Raw.Switch.on_activate ~after self#as_switch ~callback
 
     method on_state_set ?(after = false) ~callback () =
-      Switch.on_state_set ~after self#as_switch ~callback
+      Raw.Switch.on_state_set ~after self#as_switch ~callback
 
-    method get_active : unit -> bool = fun () -> Switch.get_active obj
-    method get_state : unit -> bool = fun () -> Switch.get_state obj
+    method get_active : unit -> bool = fun () -> Raw.Switch.get_active obj
+    method get_state : unit -> bool = fun () -> Raw.Switch.get_state obj
 
     method set_active : bool -> unit =
-      fun is_active -> Switch.set_active obj is_active
+      fun is_active -> Raw.Switch.set_active obj is_active
 
-    method set_state : bool -> unit = fun state -> Switch.set_state obj state
+    method set_state : bool -> unit =
+      fun state -> Raw.Switch.set_state obj state
+
     method as_switch = obj
   end
 
-let new_ () : switch_t = new switch (Switch.new_ ())
+let new_ () : switch_t = new switch (Raw.Switch.new_ ())

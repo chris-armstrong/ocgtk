@@ -95,8 +95,7 @@ let on_application_activated ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let application =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v
-            (Ocgtk_gio.Gio.Wrappers.App_info.gtype ())
+          Gobject.Value.get_object_exn v (Ocgio_raw.App_info.gtype ())
         in
         callback ~application)
   in
@@ -108,8 +107,7 @@ let on_application_selected ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let application =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v
-            (Ocgtk_gio.Gio.Wrappers.App_info.gtype ())
+          Gobject.Value.get_object_exn v (Ocgio_raw.App_info.gtype ())
         in
         callback ~application)
   in

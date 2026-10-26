@@ -30,7 +30,7 @@ type t = [ `texture | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gdk_texture_get_type"
 
-external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> t
+external new_for_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t -> t
   = "ml_gdk_texture_new_for_pixbuf"
 (** Create a new Texture *)
 
@@ -38,7 +38,7 @@ external new_from_bytes : Glib_bytes.t -> (t, GError.t) result
   = "ml_gdk_texture_new_from_bytes"
 (** Create a new Texture *)
 
-external new_from_file : Ocgtk_gio.Gio.Wrappers.File.t -> (t, GError.t) result
+external new_from_file : Ocgio_raw.File.t -> (t, GError.t) result
   = "ml_gdk_texture_new_from_file"
 (** Create a new Texture *)
 
@@ -100,7 +100,8 @@ external get_width : t -> int = "ml_gdk_texture_get_width"
 external get_height : t -> int = "ml_gdk_texture_get_height"
 (** Returns the height of the [texture], in pixels. *)
 
-external get_format : t -> Gdk_enums.memoryformat = "ml_gdk_texture_get_format"
+external get_format : t -> Ocgdk_enums.memoryformat
+  = "ml_gdk_texture_get_format"
 (** Gets the memory format most closely associated with the data of the texture.
 
     Note that it may not be an exact match for texture data stored on the GPU or

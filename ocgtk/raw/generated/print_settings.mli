@@ -65,7 +65,7 @@ external set_resolution : t -> int -> unit
 (** Sets the values of [GTK_PRINT_SETTINGS_RESOLUTION],
     [GTK_PRINT_SETTINGS_RESOLUTION_X] and [GTK_PRINT_SETTINGS_RESOLUTION_Y]. *)
 
-external set_quality : t -> Gtk_enums.printquality -> unit
+external set_quality : t -> Ocgtk_enums.printquality -> unit
   = "ml_gtk_print_settings_set_quality"
 (** Sets the value of [GTK_PRINT_SETTINGS_QUALITY]. *)
 
@@ -76,11 +76,11 @@ external set_printer_lpi : t -> float -> unit
 external set_printer : t -> string -> unit = "ml_gtk_print_settings_set_printer"
 (** Convenience function to set [GTK_PRINT_SETTINGS_PRINTER] to [printer]. *)
 
-external set_print_pages : t -> Gtk_enums.printpages -> unit
+external set_print_pages : t -> Ocgtk_enums.printpages -> unit
   = "ml_gtk_print_settings_set_print_pages"
 (** Sets the value of [GTK_PRINT_SETTINGS_PRINT_PAGES]. *)
 
-external set_paper_width : t -> float -> Gtk_enums.unit -> unit
+external set_paper_width : t -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_settings_set_paper_width"
 (** Sets the value of [GTK_PRINT_SETTINGS_PAPER_WIDTH]. *)
 
@@ -89,11 +89,11 @@ external set_paper_size : t -> Paper_size.t -> unit
 (** Sets the value of [GTK_PRINT_SETTINGS_PAPER_FORMAT],
     [GTK_PRINT_SETTINGS_PAPER_WIDTH] and [GTK_PRINT_SETTINGS_PAPER_HEIGHT]. *)
 
-external set_paper_height : t -> float -> Gtk_enums.unit -> unit
+external set_paper_height : t -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_settings_set_paper_height"
 (** Sets the value of [GTK_PRINT_SETTINGS_PAPER_HEIGHT]. *)
 
-external set_page_set : t -> Gtk_enums.pageset -> unit
+external set_page_set : t -> Ocgtk_enums.pageset -> unit
   = "ml_gtk_print_settings_set_page_set"
 (** Sets the value of [GTK_PRINT_SETTINGS_PAGE_SET]. *)
 
@@ -105,11 +105,11 @@ external set_output_bin : t -> string -> unit
   = "ml_gtk_print_settings_set_output_bin"
 (** Sets the value of [GTK_PRINT_SETTINGS_OUTPUT_BIN]. *)
 
-external set_orientation : t -> Gtk_enums.pageorientation -> unit
+external set_orientation : t -> Ocgtk_enums.pageorientation -> unit
   = "ml_gtk_print_settings_set_orientation"
 (** Sets the value of [GTK_PRINT_SETTINGS_ORIENTATION]. *)
 
-external set_number_up_layout : t -> Gtk_enums.numberuplayout -> unit
+external set_number_up_layout : t -> Ocgtk_enums.numberuplayout -> unit
   = "ml_gtk_print_settings_set_number_up_layout"
 (** Sets the value of [GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]. *)
 
@@ -126,7 +126,7 @@ external set_media_type : t -> string -> unit
 
     The set of media types is defined in PWG 5101.1-2002 PWG. *)
 
-external set_length : t -> string -> float -> Gtk_enums.unit -> unit
+external set_length : t -> string -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_settings_set_length"
 (** Associates a length in units of [unit] with [key]. *)
 
@@ -137,7 +137,7 @@ external set_finishings : t -> string -> unit
   = "ml_gtk_print_settings_set_finishings"
 (** Sets the value of [GTK_PRINT_SETTINGS_FINISHINGS]. *)
 
-external set_duplex : t -> Gtk_enums.printduplex -> unit
+external set_duplex : t -> Ocgtk_enums.printduplex -> unit
   = "ml_gtk_print_settings_set_duplex"
 (** Sets the value of [GTK_PRINT_SETTINGS_DUPLEX]. *)
 
@@ -193,7 +193,7 @@ external get_resolution_x : t -> int = "ml_gtk_print_settings_get_resolution_x"
 external get_resolution : t -> int = "ml_gtk_print_settings_get_resolution"
 (** Gets the value of [GTK_PRINT_SETTINGS_RESOLUTION]. *)
 
-external get_quality : t -> Gtk_enums.printquality
+external get_quality : t -> Ocgtk_enums.printquality
   = "ml_gtk_print_settings_get_quality"
 (** Gets the value of [GTK_PRINT_SETTINGS_QUALITY]. *)
 
@@ -203,11 +203,11 @@ external get_printer_lpi : t -> float = "ml_gtk_print_settings_get_printer_lpi"
 external get_printer : t -> string option = "ml_gtk_print_settings_get_printer"
 (** Convenience function to obtain the value of [GTK_PRINT_SETTINGS_PRINTER]. *)
 
-external get_print_pages : t -> Gtk_enums.printpages
+external get_print_pages : t -> Ocgtk_enums.printpages
   = "ml_gtk_print_settings_get_print_pages"
 (** Gets the value of [GTK_PRINT_SETTINGS_PRINT_PAGES]. *)
 
-external get_paper_width : t -> Gtk_enums.unit -> float
+external get_paper_width : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_print_settings_get_paper_width"
 (** Gets the value of [GTK_PRINT_SETTINGS_PAPER_WIDTH], converted to [unit]. *)
 
@@ -216,11 +216,11 @@ external get_paper_size : t -> Paper_size.t option
 (** Gets the value of [GTK_PRINT_SETTINGS_PAPER_FORMAT], converted to a
     [GtkPaperSize]. *)
 
-external get_paper_height : t -> Gtk_enums.unit -> float
+external get_paper_height : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_print_settings_get_paper_height"
 (** Gets the value of [GTK_PRINT_SETTINGS_PAPER_HEIGHT], converted to [unit]. *)
 
-external get_page_set : t -> Gtk_enums.pageset
+external get_page_set : t -> Ocgtk_enums.pageset
   = "ml_gtk_print_settings_get_page_set"
 (** Gets the value of [GTK_PRINT_SETTINGS_PAGE_SET]. *)
 
@@ -232,12 +232,12 @@ external get_output_bin : t -> string option
   = "ml_gtk_print_settings_get_output_bin"
 (** Gets the value of [GTK_PRINT_SETTINGS_OUTPUT_BIN]. *)
 
-external get_orientation : t -> Gtk_enums.pageorientation
+external get_orientation : t -> Ocgtk_enums.pageorientation
   = "ml_gtk_print_settings_get_orientation"
 (** Get the value of [GTK_PRINT_SETTINGS_ORIENTATION], converted to a
     [GtkPageOrientation]. *)
 
-external get_number_up_layout : t -> Gtk_enums.numberuplayout
+external get_number_up_layout : t -> Ocgtk_enums.numberuplayout
   = "ml_gtk_print_settings_get_number_up_layout"
 (** Gets the value of [GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]. *)
 
@@ -253,7 +253,7 @@ external get_media_type : t -> string option
 
     The set of media types is defined in PWG 5101.1-2002 PWG. *)
 
-external get_length : t -> string -> Gtk_enums.unit -> float
+external get_length : t -> string -> Ocgtk_enums.unit -> float
   = "ml_gtk_print_settings_get_length"
 (** Returns the value associated with [key], interpreted as a length.
 
@@ -271,7 +271,7 @@ external get_finishings : t -> string option
   = "ml_gtk_print_settings_get_finishings"
 (** Gets the value of [GTK_PRINT_SETTINGS_FINISHINGS]. *)
 
-external get_duplex : t -> Gtk_enums.printduplex
+external get_duplex : t -> Ocgtk_enums.printduplex
   = "ml_gtk_print_settings_get_duplex"
 (** Gets the value of [GTK_PRINT_SETTINGS_DUPLEX]. *)
 

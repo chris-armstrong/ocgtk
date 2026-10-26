@@ -91,11 +91,11 @@ external set_key_capture_widget :
     can capture and forward the events yourself with
     [Gtk.EventControllerKey.forward]. *)
 
-external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_search_entry_set_input_purpose"
 (** Sets the input purpose of [entry]. *)
 
-external set_input_hints : t -> Gtk_enums.inputhints -> unit
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_search_entry_set_input_hints"
 (** Sets the input hints for [entry]. *)
 
@@ -115,11 +115,11 @@ external get_key_capture_widget :
   option = "ml_gtk_search_entry_get_key_capture_widget"
 (** Gets the widget that [entry] is capturing key events from. *)
 
-external get_input_purpose : t -> Gtk_enums.inputpurpose
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_search_entry_get_input_purpose"
 (** Gets the input purpose of [entry]. *)
 
-external get_input_hints : t -> Gtk_enums.inputhints
+external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_search_entry_get_input_hints"
 (** Gets the input purpose for [entry]. *)
 

@@ -1,6 +1,6 @@
 class type application_t = object
-  inherit GAction_group.action_group_t
-  inherit GAction_map.action_map_t
+  inherit Action_group.action_group_t
+  inherit Action_map.action_map_t
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -8,7 +8,7 @@ class type application_t = object
   method on_command_line :
     ?after:bool ->
     callback:
-      (command_line:GApplication_command_line.application_command_line_t -> int) ->
+      (command_line:Application_command_line.application_command_line_t -> int) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -26,10 +26,10 @@ class type application_t = object
   method get_application_id : unit -> string option
 
   method get_dbus_connection :
-    unit -> GD_bus_connection.d_bus_connection_t option
+    unit -> D_bus_connection.d_bus_connection_t option
 
   method get_dbus_object_path : unit -> string option
-  method get_flags : unit -> Gio_enums.applicationflags
+  method get_flags : unit -> Enums.applicationflags
   method get_inactivity_timeout : unit -> int
   method get_is_busy : unit -> bool
   method get_is_registered : unit -> bool
@@ -38,19 +38,19 @@ class type application_t = object
   method get_version : unit -> string option
   method hold : unit -> unit
   method mark_busy : unit -> unit
-  method open_ : App_info_cycle_64c425a0.File.t array -> int -> string -> unit
+  method open_ : Raw.File.t array -> int -> string -> unit
   method quit : unit -> unit
-  method register : GCancellable.cancellable_t option -> (bool, GError.t) result
+  method register : Cancellable.cancellable_t option -> (bool, GError.t) result
   method release : unit -> unit
   method run : int -> string array option -> int
 
   method send_notification :
-    string option -> GNotification.notification_t -> unit
+    string option -> Notification.notification_t -> unit
 
-  method set_action_group : GAction_group.action_group_t option -> unit
+  method set_action_group : Action_group.action_group_t option -> unit
   method set_application_id : string option -> unit
   method set_default : unit -> unit
-  method set_flags : Gio_enums.applicationflags -> unit
+  method set_flags : Enums.applicationflags -> unit
   method set_inactivity_timeout : int -> unit
   method set_option_context_description : string option -> unit
   method set_option_context_parameter_string : string option -> unit
@@ -60,9 +60,9 @@ class type application_t = object
   method unbind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   method unmark_busy : unit -> unit
   method withdraw_notification : string -> unit
-  method as_application : Application.t
+  method as_application : Raw.Application.t
 end
 
-class application : Application.t -> application_t
+class application : Raw.Application.t -> application_t
 
-val new_ : string option -> Gio_enums.applicationflags -> application_t
+val new_ : string option -> Enums.applicationflags -> application_t

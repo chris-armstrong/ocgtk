@@ -16,8 +16,7 @@ type t = [ `filter_list_model | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_filter_list_model_get_type"
 
-external new_ :
-  Ocgtk_gio.Gio.Wrappers.List_model.t option -> Filter.t option -> t
+external new_ : Ocgio_raw.List_model.t option -> Filter.t option -> t
   = "ml_gtk_filter_list_model_new"
 (** Create a new FilterListModel *)
 
@@ -33,7 +32,7 @@ external set_watch_items : t -> bool -> unit
 
     By default, watching items is disabled. *)
 
-external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_filter_list_model_set_model"
 (** Sets the model to be filtered.
 
@@ -87,7 +86,7 @@ external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
     If no filter operation is ongoing - in particular when
     [Gtk.FilterListModel:incremental] is [FALSE] - this function returns 0. *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_filter_list_model_get_model"
 (** Gets the model currently filtered or [NULL] if none. *)
 

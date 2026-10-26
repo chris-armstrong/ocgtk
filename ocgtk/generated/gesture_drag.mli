@@ -1,5 +1,5 @@
 class type gesture_drag_t = object
-  inherit GGesture_single.gesture_single_t
+  inherit Gesture_single.gesture_single_t
 
   method on_drag_begin :
     ?after:bool ->
@@ -19,9 +19,9 @@ class type gesture_drag_t = object
     unit ->
     Gobject.Signal.handler_id
 
-  method as_gesture_drag : Gesture_drag.t
+  method as_gesture_drag : Raw.Gesture_drag.t
 end
 
-class gesture_drag : Gesture_drag.t -> gesture_drag_t
+class gesture_drag : Raw.Gesture_drag.t -> gesture_drag_t
 
 val new_ : unit -> gesture_drag_t

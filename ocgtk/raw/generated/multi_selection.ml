@@ -7,19 +7,19 @@ type t = [ `multi_selection | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_multi_selection_get_type"
 
-external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
+external new_ : Ocgio_raw.List_model.t option -> t
   = "ml_gtk_multi_selection_new"
 (** Create a new MultiSelection *)
 
 (* Methods *)
 
-external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_multi_selection_set_model"
 (** Sets the model that [self] should wrap.
 
     If [model] is [NULL], [self] will be empty. *)
 
-external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_multi_selection_get_model"
 (** Returns the underlying model of [self]. *)
 

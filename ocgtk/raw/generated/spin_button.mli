@@ -135,7 +135,7 @@ external new_with_range : float -> float -> float -> t
 external update : t -> unit = "ml_gtk_spin_button_update"
 (** Manually force an update of the spin button. *)
 
-external spin : t -> Gtk_enums.spintype -> float -> unit
+external spin : t -> Ocgtk_enums.spintype -> float -> unit
   = "ml_gtk_spin_button_spin"
 (** Increment or decrement a spin button’s value in a specified direction by a
     specified amount. *)
@@ -147,7 +147,7 @@ external set_wrap : t -> bool -> unit = "ml_gtk_spin_button_set_wrap"
 external set_value : t -> float -> unit = "ml_gtk_spin_button_set_value"
 (** Sets the value of [spin_button]. *)
 
-external set_update_policy : t -> Gtk_enums.spinbuttonupdatepolicy -> unit
+external set_update_policy : t -> Ocgtk_enums.spinbuttonupdatepolicy -> unit
   = "ml_gtk_spin_button_set_update_policy"
 (** Sets the update behavior of a spin button.
 
@@ -209,7 +209,7 @@ external get_value_as_int : t -> int = "ml_gtk_spin_button_get_value_as_int"
 external get_value : t -> float = "ml_gtk_spin_button_get_value"
 (** Get the value in the [spin_button]. *)
 
-external get_update_policy : t -> Gtk_enums.spinbuttonupdatepolicy
+external get_update_policy : t -> Ocgtk_enums.spinbuttonupdatepolicy
   = "ml_gtk_spin_button_get_update_policy"
 (** Gets the update behavior of a spin button.
 
@@ -261,7 +261,7 @@ val on_activate :
 val on_change_value :
   ?after:bool ->
   t ->
-  callback:(scroll:Gtk_enums.scrolltype -> unit) ->
+  callback:(scroll:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_output :

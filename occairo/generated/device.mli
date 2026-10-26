@@ -1,5 +1,5 @@
 class type device_t = object
-  method as_device : Device.t
+  method as_device : Raw.Device.t
 end
 
-class device : Device.t -> device_t
+class device : Raw.Device.t -> device_t

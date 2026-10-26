@@ -1,14 +1,11 @@
 class type motion_event_t = object
-  inherit GApp_launch_context_cycle_de440b34.event_t
-  method as_motion_event : Motion_event.t
+  inherit App_launch_context_cycle_de440b34.event_t
+  method as_motion_event : Raw.Motion_event.t
 end
 
 (* High-level class for MotionEvent *)
-class motion_event (obj : Motion_event.t) : motion_event_t =
+class motion_event (obj : Raw.Motion_event.t) : motion_event_t =
   object (self)
-    inherit
-      GApp_launch_context_cycle_de440b34.event
-        (obj :> App_launch_context_cycle_de440b34.Event.t)
-
+    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
     method as_motion_event = obj
   end

@@ -26,7 +26,7 @@ external writev_nonblocking :
   Output_vector.t array ->
   Gsize.t ->
   Cancellable.t option ->
-  (Gio_enums.pollablereturn * Gsize.t, GError.t) result
+  (Ocgio_enums.pollablereturn * Gsize.t, GError.t) result
   = "ml_g_pollable_output_stream_writev_nonblocking"
 (** Attempts to write the bytes contained in the [n_vectors] [vectors] to
     [stream], as with g_output_stream_writev(). If [stream] is not currently

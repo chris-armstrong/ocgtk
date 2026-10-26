@@ -71,7 +71,7 @@ external set_use_full_page : t -> bool -> unit
     orientation and the number of pages per sheet). Otherwise, the origin is at
     the top left corner of the imageable area (i.e. inside the margins). *)
 
-external set_unit : t -> Gtk_enums.unit -> unit
+external set_unit : t -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_operation_set_unit"
 (** Sets up the transformation for the cairo context obtained from
     [GtkPrintContext] in such a way that distances are measured in units of
@@ -192,9 +192,9 @@ external set_allow_async : t -> bool -> unit
 
 external run :
   t ->
-  Gtk_enums.printoperationaction ->
+  Ocgtk_enums.printoperationaction ->
   Application_and__window_and__window_group.Window.t option ->
-  (Gtk_enums.printoperationresult, GError.t) result
+  (Ocgtk_enums.printoperationresult, GError.t) result
   = "ml_gtk_print_operation_run"
 [@@ocaml.doc
   "Runs the print operation.\n\n\
@@ -268,7 +268,7 @@ external get_status_string : t -> string
     Use [Gtk.PrintOperation.get_status] to obtain a status value that is
     suitable for programmatic use. *)
 
-external get_status : t -> Gtk_enums.printstatus
+external get_status : t -> Ocgtk_enums.printstatus
   = "ml_gtk_print_operation_get_status"
 (** Returns the status of the print operation.
 
@@ -367,7 +367,7 @@ let on_done_ ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let result =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.printoperationresult_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.printoperationresult_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~result)
   in

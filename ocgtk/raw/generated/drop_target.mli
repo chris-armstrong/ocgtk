@@ -66,7 +66,7 @@ type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_get_type"
 
-external new_ : Gobject.Type.t -> Ocgtk_gdk.Gdk.dragaction -> t
+external new_ : Gobject.Type.t -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_new"
 (** Create a new DropTarget *)
 
@@ -79,7 +79,7 @@ external set_gtypes : t -> Gobject.Type.t array option -> Gsize.t -> unit
   = "ml_gtk_drop_target_set_gtypes"
 (** Sets the supported [GType]s for this drop target. *)
 
-external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit
+external set_actions : t -> Ocgdk_enums.dragaction -> unit
   = "ml_gtk_drop_target_set_actions"
 (** Sets the actions that this drop target supports. *)
 
@@ -105,25 +105,24 @@ external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
 
     If no types have been set, [NULL] will be returned. *)
 
-external get_formats : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t option
+external get_formats : t -> Ocgdk_raw.Content_formats.t option
   = "ml_gtk_drop_target_get_formats"
 (** Gets the data formats that this drop target accepts.
 
     If the result is [NULL], all formats are expected to be supported. *)
 
-external get_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option
-  = "ml_gtk_drop_target_get_drop"
+external get_drop : t -> Ocgdk_raw.Drop.t option = "ml_gtk_drop_target_get_drop"
 (** Gets the currently handled drop operation.
 
     If no drop operation is going on, [NULL] is returned. *)
 
-external get_current_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option
+external get_current_drop : t -> Ocgdk_raw.Drop.t option
   = "ml_gtk_drop_target_get_current_drop"
 (** Gets the currently handled drop operation.
 
     If no drop operation is going on, [NULL] is returned. *)
 
-external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
+external get_actions : t -> Ocgdk_enums.dragaction
   = "ml_gtk_drop_target_get_actions"
 (** Gets the actions that this drop target supports. *)
 
@@ -132,7 +131,7 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 val on_accept :
   ?after:bool ->
   t ->
-  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t -> bool) ->
+  callback:(drop:Ocgdk_raw.Drop.t -> bool) ->
   Gobject.Signal.handler_id
 
 val on_drop :
@@ -144,7 +143,7 @@ val on_drop :
 val on_enter :
   ?after:bool ->
   t ->
-  callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+  callback:(x:float -> y:float -> Ocgdk_enums.dragaction) ->
   Gobject.Signal.handler_id
 
 val on_leave :
@@ -153,5 +152,5 @@ val on_leave :
 val on_motion :
   ?after:bool ->
   t ->
-  callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+  callback:(x:float -> y:float -> Ocgdk_enums.dragaction) ->
   Gobject.Signal.handler_id

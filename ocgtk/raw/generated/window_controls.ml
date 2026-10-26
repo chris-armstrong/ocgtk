@@ -46,7 +46,7 @@ type t =
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_window_controls_get_type"
 
-external new_ : Gtk_enums.packtype -> t = "ml_gtk_window_controls_new"
+external new_ : Ocgtk_enums.packtype -> t = "ml_gtk_window_controls_new"
 (** Create a new WindowControls *)
 
 (* Methods *)
@@ -58,7 +58,7 @@ external set_use_native_controls : t -> bool -> unit
    For Linux, this option has no effect.\n\n\
    See also Using GTK on Apple macOS."]
 
-external set_side : t -> Gtk_enums.packtype -> unit
+external set_side : t -> Ocgtk_enums.packtype -> unit
   = "ml_gtk_window_controls_set_side"
 (** Determines which part of decoration layout the window controls widget uses.
 
@@ -85,7 +85,8 @@ external get_use_native_controls : t -> bool
   = "ml_gtk_window_controls_get_use_native_controls"
 (** Returns whether platform native window controls are shown. *)
 
-external get_side : t -> Gtk_enums.packtype = "ml_gtk_window_controls_get_side"
+external get_side : t -> Ocgtk_enums.packtype
+  = "ml_gtk_window_controls_get_side"
 (** Gets the side to which this window controls widget belongs. *)
 
 external get_empty : t -> bool = "ml_gtk_window_controls_get_empty"

@@ -40,7 +40,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_frame_clock_get_type"
 
 (* Methods *)
 
-external request_phase : t -> Gdk_enums.frameclockphase -> unit
+external request_phase : t -> Ocgdk_enums.frameclockphase -> unit
   = "ml_gdk_frame_clock_request_phase"
 (** Asks the frame clock to run a particular phase.
 

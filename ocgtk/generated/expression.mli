@@ -3,14 +3,14 @@ class type expression_t = object
     [ `object_ ] Gobject.obj ->
     string ->
     [ `object_ ] Gobject.obj option ->
-    Expression_watch.t
+    Raw.Expression_watch.t
 
   method evaluate : [ `object_ ] Gobject.obj option -> Gobject.Value.t -> bool
   method get_value_type : unit -> Gobject.Type.t
   method is_static : unit -> bool
   method ref : unit -> expression_t
   method unref : unit -> unit
-  method as_expression : Expression.t
+  method as_expression : Raw.Expression.t
 end
 
-class expression : Expression.t -> expression_t
+class expression : Raw.Expression.t -> expression_t

@@ -23,10 +23,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_constraint_get_type"
 
 external new_ :
   Constraint_target.t option ->
-  Gtk_enums.constraintattribute ->
-  Gtk_enums.constraintrelation ->
+  Ocgtk_enums.constraintattribute ->
+  Ocgtk_enums.constraintrelation ->
   Constraint_target.t option ->
-  Gtk_enums.constraintattribute ->
+  Ocgtk_enums.constraintattribute ->
   float ->
   float ->
   int ->
@@ -35,8 +35,8 @@ external new_ :
 
 external new_constant :
   Constraint_target.t option ->
-  Gtk_enums.constraintattribute ->
-  Gtk_enums.constraintrelation ->
+  Ocgtk_enums.constraintattribute ->
+  Ocgtk_enums.constraintrelation ->
   float ->
   int ->
   t = "ml_gtk_constraint_new_constant"
@@ -56,7 +56,7 @@ external is_attached : t -> bool = "ml_gtk_constraint_is_attached"
 (** Checks whether the constraint is attached to a [Gtk.ConstraintLayout], and
     it is contributing to the layout. *)
 
-external get_target_attribute : t -> Gtk_enums.constraintattribute
+external get_target_attribute : t -> Ocgtk_enums.constraintattribute
   = "ml_gtk_constraint_get_target_attribute"
 (** Retrieves the attribute of the target to be set by the constraint. *)
 
@@ -70,7 +70,7 @@ external get_target : t -> Constraint_target.t option
 external get_strength : t -> int = "ml_gtk_constraint_get_strength"
 (** Retrieves the strength of the constraint. *)
 
-external get_source_attribute : t -> Gtk_enums.constraintattribute
+external get_source_attribute : t -> Ocgtk_enums.constraintattribute
   = "ml_gtk_constraint_get_source_attribute"
 (** Retrieves the attribute of the source to be read by the constraint. *)
 
@@ -81,7 +81,7 @@ external get_source : t -> Constraint_target.t option
     If the source is set to [NULL] at creation, the constraint will use the
     widget using the [Gtk.ConstraintLayout] as the source. *)
 
-external get_relation : t -> Gtk_enums.constraintrelation
+external get_relation : t -> Ocgtk_enums.constraintrelation
   = "ml_gtk_constraint_get_relation"
 (** The order relation between the terms of the constraint. *)
 

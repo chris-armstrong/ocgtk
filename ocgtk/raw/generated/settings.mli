@@ -225,11 +225,11 @@ external set_gtk_font_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_font_name"
 (** Set property: gtk-font-name *)
 
-external get_gtk_font_rendering : t -> Gtk_enums.fontrendering
+external get_gtk_font_rendering : t -> Ocgtk_enums.fontrendering
   = "ml_gtk_settings_get_gtk_font_rendering"
 (** Get property: gtk-font-rendering *)
 
-external set_gtk_font_rendering : t -> Gtk_enums.fontrendering -> unit
+external set_gtk_font_rendering : t -> Ocgtk_enums.fontrendering -> unit
   = "ml_gtk_settings_set_gtk_font_rendering"
 (** Set property: gtk-font-rendering *)
 
@@ -264,20 +264,20 @@ external set_gtk_im_module : t -> string -> unit
   = "ml_gtk_settings_set_gtk_im_module"
 (** Set property: gtk-im-module *)
 
-external get_gtk_interface_color_scheme : t -> Gtk_enums.interfacecolorscheme
+external get_gtk_interface_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_settings_get_gtk_interface_color_scheme"
 (** Get property: gtk-interface-color-scheme *)
 
 external set_gtk_interface_color_scheme :
-  t -> Gtk_enums.interfacecolorscheme -> unit
+  t -> Ocgtk_enums.interfacecolorscheme -> unit
   = "ml_gtk_settings_set_gtk_interface_color_scheme"
 (** Set property: gtk-interface-color-scheme *)
 
-external get_gtk_interface_contrast : t -> Gtk_enums.interfacecontrast
+external get_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_settings_get_gtk_interface_contrast"
 (** Get property: gtk-interface-contrast *)
 
-external set_gtk_interface_contrast : t -> Gtk_enums.interfacecontrast -> unit
+external set_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_settings_set_gtk_interface_contrast"
 (** Set property: gtk-interface-contrast *)
 

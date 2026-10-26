@@ -1,5 +1,5 @@
 class type media_stream_t = object
-  inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
+  inherit Ocgdk.Paintable.paintable_t
   method gerror : GError.t -> unit
   method get_duration : unit -> int64
   method get_ended : unit -> bool
@@ -16,7 +16,7 @@ class type media_stream_t = object
   method is_seeking : unit -> bool
   method pause : unit -> unit
   method play : unit -> unit
-  method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+  method realize : Ocgdk.Surface.surface_t -> unit
   method seek : int64 -> unit
   method seek_failed : unit -> unit
   method seek_success : unit -> unit
@@ -27,82 +27,96 @@ class type media_stream_t = object
   method stream_ended : unit -> unit
   method stream_prepared : bool -> bool -> bool -> int64 -> unit
   method stream_unprepared : unit -> unit
-  method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+  method unrealize : Ocgdk.Surface.surface_t -> unit
   method update : int64 -> unit
-  method as_media_stream : Media_stream.t
+  method as_media_stream : Raw.Media_stream.t
 end
 
 (* High-level class for MediaStream *)
-class media_stream (obj : Media_stream.t) : media_stream_t =
+class media_stream (obj : Raw.Media_stream.t) : media_stream_t =
   object (self)
-    inherit
-      Ocgtk_gdk.Gdk.Paintable.paintable
-        (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
+    inherit Ocgdk.Paintable.paintable (Ocgdk.Raw.Paintable.from_gobject obj)
 
     method gerror : GError.t -> unit =
-      fun error -> Media_stream.gerror obj error
+      fun error -> Raw.Media_stream.gerror obj error
 
     method get_duration : unit -> int64 =
-      fun () -> Media_stream.get_duration obj
+      fun () -> Raw.Media_stream.get_duration obj
 
-    method get_ended : unit -> bool = fun () -> Media_stream.get_ended obj
+    method get_ended : unit -> bool = fun () -> Raw.Media_stream.get_ended obj
 
     method get_error : unit -> GError.t option =
-      fun () -> Media_stream.get_error obj
+      fun () -> Raw.Media_stream.get_error obj
 
-    method get_loop : unit -> bool = fun () -> Media_stream.get_loop obj
-    method get_muted : unit -> bool = fun () -> Media_stream.get_muted obj
-    method get_playing : unit -> bool = fun () -> Media_stream.get_playing obj
+    method get_loop : unit -> bool = fun () -> Raw.Media_stream.get_loop obj
+    method get_muted : unit -> bool = fun () -> Raw.Media_stream.get_muted obj
+
+    method get_playing : unit -> bool =
+      fun () -> Raw.Media_stream.get_playing obj
 
     method get_timestamp : unit -> int64 =
-      fun () -> Media_stream.get_timestamp obj
+      fun () -> Raw.Media_stream.get_timestamp obj
 
-    method get_volume : unit -> float = fun () -> Media_stream.get_volume obj
-    method has_audio : unit -> bool = fun () -> Media_stream.has_audio obj
-    method has_video : unit -> bool = fun () -> Media_stream.has_video obj
-    method is_prepared : unit -> bool = fun () -> Media_stream.is_prepared obj
-    method is_seekable : unit -> bool = fun () -> Media_stream.is_seekable obj
-    method is_seeking : unit -> bool = fun () -> Media_stream.is_seeking obj
-    method pause : unit -> unit = fun () -> Media_stream.pause obj
-    method play : unit -> unit = fun () -> Media_stream.play obj
+    method get_volume : unit -> float =
+      fun () -> Raw.Media_stream.get_volume obj
 
-    method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
+    method has_audio : unit -> bool = fun () -> Raw.Media_stream.has_audio obj
+    method has_video : unit -> bool = fun () -> Raw.Media_stream.has_video obj
+
+    method is_prepared : unit -> bool =
+      fun () -> Raw.Media_stream.is_prepared obj
+
+    method is_seekable : unit -> bool =
+      fun () -> Raw.Media_stream.is_seekable obj
+
+    method is_seeking : unit -> bool = fun () -> Raw.Media_stream.is_seeking obj
+    method pause : unit -> unit = fun () -> Raw.Media_stream.pause obj
+    method play : unit -> unit = fun () -> Raw.Media_stream.play obj
+
+    method realize : Ocgdk.Surface.surface_t -> unit =
       fun surface ->
         let surface = surface#as_surface in
-        Media_stream.realize obj surface
+        Raw.Media_stream.realize obj surface
 
     method seek : int64 -> unit =
-      fun timestamp -> Media_stream.seek obj timestamp
+      fun timestamp -> Raw.Media_stream.seek obj timestamp
 
-    method seek_failed : unit -> unit = fun () -> Media_stream.seek_failed obj
-    method seek_success : unit -> unit = fun () -> Media_stream.seek_success obj
-    method set_loop : bool -> unit = fun loop -> Media_stream.set_loop obj loop
+    method seek_failed : unit -> unit =
+      fun () -> Raw.Media_stream.seek_failed obj
+
+    method seek_success : unit -> unit =
+      fun () -> Raw.Media_stream.seek_success obj
+
+    method set_loop : bool -> unit =
+      fun loop -> Raw.Media_stream.set_loop obj loop
 
     method set_muted : bool -> unit =
-      fun muted -> Media_stream.set_muted obj muted
+      fun muted -> Raw.Media_stream.set_muted obj muted
 
     method set_playing : bool -> unit =
-      fun playing -> Media_stream.set_playing obj playing
+      fun playing -> Raw.Media_stream.set_playing obj playing
 
     method set_volume : float -> unit =
-      fun volume -> Media_stream.set_volume obj volume
+      fun volume -> Raw.Media_stream.set_volume obj volume
 
-    method stream_ended : unit -> unit = fun () -> Media_stream.stream_ended obj
+    method stream_ended : unit -> unit =
+      fun () -> Raw.Media_stream.stream_ended obj
 
     method stream_prepared : bool -> bool -> bool -> int64 -> unit =
       fun has_audio has_video seekable duration ->
-        Media_stream.stream_prepared obj has_audio has_video seekable duration
+        Raw.Media_stream.stream_prepared obj has_audio has_video seekable
+          duration
 
     method stream_unprepared : unit -> unit =
-      fun () -> Media_stream.stream_unprepared obj
+      fun () -> Raw.Media_stream.stream_unprepared obj
 
-    method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
+    method unrealize : Ocgdk.Surface.surface_t -> unit =
       fun surface ->
         let surface = surface#as_surface in
-        Media_stream.unrealize obj surface
+        Raw.Media_stream.unrealize obj surface
 
     method update : int64 -> unit =
-      fun timestamp -> Media_stream.update obj timestamp
+      fun timestamp -> Raw.Media_stream.update obj timestamp
 
     method as_media_stream = obj
   end

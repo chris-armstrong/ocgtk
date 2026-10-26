@@ -83,7 +83,7 @@ external set_require_close_notify : t -> bool -> unit
    close, you can close [conn]'s [GDtlsConnection:base]-socket rather\n\
    than closing [conn] itself."]
 
-external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
+external set_rehandshake_mode : t -> Ocgio_enums.tlsrehandshakemode -> unit
   = "ml_g_dtls_connection_set_rehandshake_mode"
 (** Since GLib 2.64, changing the rehandshake mode is no longer supported and
     will have no effect. With TLS 1.3, rehandshaking has been removed from the
@@ -186,19 +186,19 @@ external get_require_close_notify : t -> bool
     connection is closed. See g_dtls_connection_set_require_close_notify() for
     details. *)
 
-external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode
+external get_rehandshake_mode : t -> Ocgio_enums.tlsrehandshakemode
   = "ml_g_dtls_connection_get_rehandshake_mode"
 (** Gets [conn] rehandshaking mode. See g_dtls_connection_set_rehandshake_mode()
     for details. *)
 
-external get_protocol_version : t -> Gio_enums.tlsprotocolversion
+external get_protocol_version : t -> Ocgio_enums.tlsprotocolversion
   = "ml_g_dtls_connection_get_protocol_version"
 (** Returns the current DTLS protocol version, which may be
     [G_TLS_PROTOCOL_VERSION_UNKNOWN] if the connection has not handshaked, or
     has been closed, or if the TLS backend has implemented a protocol version
     that is not a recognized [GTlsProtocolVersion]. *)
 
-external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags
+external get_peer_certificate_errors : t -> Ocgio_enums.tlscertificateflags
   = "ml_g_dtls_connection_get_peer_certificate_errors"
 (** Gets the errors associated with validating [conn]'s peer's certificate,
     after the handshake has completed or failed. (It is not set during the
@@ -250,7 +250,7 @@ external get_certificate : t -> Tls_certificate.t option
 (** Gets [conn]'s certificate, as set by g_dtls_connection_set_certificate(). *)
 
 external emit_accept_certificate :
-  t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool
+  t -> Tls_certificate.t -> Ocgio_enums.tlscertificateflags -> bool
   = "ml_g_dtls_connection_emit_accept_certificate"
 (** Used by [GDtlsConnection] implementations to emit the
     [GDtlsConnection::accept]-certificate signal. *)
@@ -294,6 +294,6 @@ val on_accept_certificate :
   t ->
   callback:
     (peer_cert:Tls_certificate.t ->
-    errors:Gio_enums.tlscertificateflags ->
+    errors:Ocgio_enums.tlscertificateflags ->
     bool) ->
   Gobject.Signal.handler_id

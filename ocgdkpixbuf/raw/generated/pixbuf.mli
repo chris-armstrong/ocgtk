@@ -111,13 +111,13 @@ type t = [ `pixbuf | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_get_type"
 
-external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t
+external new_ : Ocgdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t
   = "ml_gdk_pixbuf_new"
 (** Create a new Pixbuf *)
 
 external new_from_bytes :
   Glib_bytes.t ->
-  Gdkpixbuf_enums.colorspace ->
+  Ocgdkpixbuf_enums.colorspace ->
   bool ->
   int ->
   int ->
@@ -151,22 +151,22 @@ external new_from_resource_at_scale :
 (** Create a new Pixbuf *)
 
 external new_from_stream :
-  Ocgtk_gio.Gio.Wrappers.Input_stream.t ->
-  Ocgtk_gio.Gio.Wrappers.Cancellable.t option ->
+  Ocgio_raw.Input_stream.t ->
+  Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream"
 (** Create a new Pixbuf *)
 
 external new_from_stream_at_scale :
-  Ocgtk_gio.Gio.Wrappers.Input_stream.t ->
+  Ocgio_raw.Input_stream.t ->
   int ->
   int ->
   bool ->
-  Ocgtk_gio.Gio.Wrappers.Cancellable.t option ->
+  Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream_at_scale"
 (** Create a new Pixbuf *)
 
 external new_from_stream_finish :
-  Ocgtk_gio.Gio.Wrappers.Async_result.t -> (t, GError.t) result
+  Ocgio_raw.Async_result.t -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_stream_finish"
 (** Create a new Pixbuf *)
 
@@ -183,7 +183,7 @@ external set_option : t -> string -> string -> bool = "ml_gdk_pixbuf_set_option"
     new value is ignored and [FALSE] is returned. *)
 
 external scale_simple :
-  t -> int -> int -> Gdkpixbuf_enums.interptype -> t option
+  t -> int -> int -> Ocgdkpixbuf_enums.interptype -> t option
   = "ml_gdk_pixbuf_scale_simple"
 (** Create a new pixbuf containing a copy of [src] scaled to [dest_width] x
     [dest_height].
@@ -215,7 +215,7 @@ external scale :
   float ->
   float ->
   float ->
-  Gdkpixbuf_enums.interptype ->
+  Ocgdkpixbuf_enums.interptype ->
   unit = "ml_gdk_pixbuf_scale_bytecode" "ml_gdk_pixbuf_scale_native"
 (** Creates a transformation of the source image [src] by scaling by [scale_x]
     and [scale_y] then translating by [offset_x] and [offset_y], then renders
@@ -246,11 +246,11 @@ external savev :
 
 external save_to_streamv :
   t ->
-  Ocgtk_gio.Gio.Wrappers.Output_stream.t ->
+  Ocgio_raw.Output_stream.t ->
   string ->
   string array option ->
   string array option ->
-  Ocgtk_gio.Gio.Wrappers.Cancellable.t option ->
+  Ocgio_raw.Cancellable.t option ->
   (bool, GError.t) result
   = "ml_gdk_pixbuf_save_to_streamv_bytecode"
     "ml_gdk_pixbuf_save_to_streamv_native"
@@ -277,7 +277,7 @@ external saturate_and_pixelate : t -> t -> float -> bool -> unit
     If [pixelate] is [TRUE], then pixels are faded in a checkerboard pattern to
     create a pixelated image. *)
 
-external rotate_simple : t -> Gdkpixbuf_enums.pixbufrotation -> t option
+external rotate_simple : t -> Ocgdkpixbuf_enums.pixbufrotation -> t option
   = "ml_gdk_pixbuf_rotate_simple"
 (** Rotates a pixbuf by a multiple of 90 degrees, and returns the result in a
     new pixbuf.
@@ -338,7 +338,7 @@ external get_height : t -> int = "ml_gdk_pixbuf_get_height"
 external get_has_alpha : t -> bool = "ml_gdk_pixbuf_get_has_alpha"
 (** Queries whether a pixbuf has an alpha channel (opacity information). *)
 
-external get_colorspace : t -> Gdkpixbuf_enums.colorspace
+external get_colorspace : t -> Ocgdkpixbuf_enums.colorspace
   = "ml_gdk_pixbuf_get_colorspace"
 (** Queries the color space of a pixbuf. *)
 
@@ -388,7 +388,7 @@ external composite_color_simple :
   t ->
   int ->
   int ->
-  Gdkpixbuf_enums.interptype ->
+  Ocgdkpixbuf_enums.interptype ->
   int ->
   int ->
   UInt32.t ->
@@ -411,7 +411,7 @@ external composite_color :
   float ->
   float ->
   float ->
-  Gdkpixbuf_enums.interptype ->
+  Ocgdkpixbuf_enums.interptype ->
   int ->
   int ->
   int ->
@@ -444,7 +444,7 @@ external composite :
   float ->
   float ->
   float ->
-  Gdkpixbuf_enums.interptype ->
+  Ocgdkpixbuf_enums.interptype ->
   int ->
   unit = "ml_gdk_pixbuf_composite_bytecode" "ml_gdk_pixbuf_composite_native"
 (** Creates a transformation of the source image [src] by scaling by [scale_x]

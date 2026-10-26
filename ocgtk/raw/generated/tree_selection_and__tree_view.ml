@@ -24,7 +24,7 @@ module rec Tree_selection : sig
   external unselect_all : t -> unit = "ml_gtk_tree_selection_unselect_all"
   (** Unselects all the nodes. *)
 
-  external set_mode : t -> Gtk_enums.selectionmode -> unit
+  external set_mode : t -> Ocgtk_enums.selectionmode -> unit
     = "ml_gtk_tree_selection_set_mode"
   (** Sets the selection mode of the [selection]. If the previous type was
       [GTK_SELECTION_MULTIPLE], then the anchor is kept selected, if it was
@@ -60,7 +60,7 @@ module rec Tree_selection : sig
     = "ml_gtk_tree_selection_get_tree_view"
   (** Returns the tree view associated with [selection]. *)
 
-  external get_mode : t -> Gtk_enums.selectionmode
+  external get_mode : t -> Ocgtk_enums.selectionmode
     = "ml_gtk_tree_selection_get_mode"
   (** Gets the selection mode for [selection]. See
       gtk_tree_selection_set_mode(). *)
@@ -96,7 +96,7 @@ end = struct
   external unselect_all : t -> unit = "ml_gtk_tree_selection_unselect_all"
   (** Unselects all the nodes. *)
 
-  external set_mode : t -> Gtk_enums.selectionmode -> unit
+  external set_mode : t -> Ocgtk_enums.selectionmode -> unit
     = "ml_gtk_tree_selection_set_mode"
   (** Sets the selection mode of the [selection]. If the previous type was
       [GTK_SELECTION_MULTIPLE], then the anchor is kept selected, if it was
@@ -132,7 +132,7 @@ end = struct
     = "ml_gtk_tree_selection_get_tree_view"
   (** Returns the tree view associated with [selection]. *)
 
-  external get_mode : t -> Gtk_enums.selectionmode
+  external get_mode : t -> Ocgtk_enums.selectionmode
     = "ml_gtk_tree_selection_get_mode"
   (** Gets the selection mode for [selection]. See
       gtk_tree_selection_set_mode(). *)
@@ -302,7 +302,7 @@ and Tree_view : sig
     = "ml_gtk_tree_view_set_headers_clickable"
   (** Allow the column title buttons to be clicked. *)
 
-  external set_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
+  external set_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_grid_lines"
   (** Sets which grid lines to draw in [tree_view]. *)
 
@@ -336,7 +336,7 @@ and Tree_view : sig
     \  using the “start-interactive-search” key binding."]
 
   external set_drag_dest_row :
-    t -> Tree_path.t option -> Gtk_enums.treeviewdropposition -> unit
+    t -> Tree_path.t option -> Ocgtk_enums.treeviewdropposition -> unit
     = "ml_gtk_tree_view_set_drag_dest_row"
   (** Sets the row that is highlighted for feedback. If [path] is [NULL], an
       existing highlight is removed. *)
@@ -453,7 +453,7 @@ and Tree_view : sig
       has “fixed_height” mode enabled, then [column] must have its “sizing”
       property set to be GTK_TREE_VIEW_COLUMN_FIXED. *)
 
-  external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+  external get_visible_rect : t -> Ocgdk_raw.Rectangle.t
     = "ml_gtk_tree_view_get_visible_rect"
   (** Fills [visible_rect] with the currently-visible region of the buffer, in
       tree coordinates. Convert to bin_window coordinates with
@@ -519,7 +519,7 @@ and Tree_view : sig
     = "ml_gtk_tree_view_get_headers_clickable"
   (** Returns whether all header columns are clickable. *)
 
-  external get_grid_lines : t -> Gtk_enums.treeviewgridlines
+  external get_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_grid_lines"
   (** Returns which grid lines are enabled in [tree_view]. *)
 
@@ -553,7 +553,7 @@ and Tree_view : sig
     t ->
     Tree_path.t option ->
     Tree_view_column.t option ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
+    Ocgdk_raw.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
   (** Fills the bounding rectangle in bin_window coordinates for the cell at the
       row specified by [path] and the column specified by [column]. If [path] is
       [NULL], or points to a path not currently displayed, the [y] and [height]
@@ -568,7 +568,7 @@ and Tree_view : sig
     t ->
     Tree_path.t option ->
     Tree_view_column.t option ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_background_area"
+    Ocgdk_raw.Rectangle.t = "ml_gtk_tree_view_get_background_area"
   (** Fills the bounding rectangle in bin_window coordinates for the cell at the
       row specified by [path] and the column specified by [column]. If [path] is
       [NULL], or points to a node not found in the tree, the [y] and [height]
@@ -598,23 +598,21 @@ and Tree_view : sig
 
   external enable_model_drag_source :
     t ->
-    Ocgtk_gdk.Gdk.modifiertype ->
-    Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-    Ocgtk_gdk.Gdk.dragaction ->
+    Ocgdk_enums.modifiertype ->
+    Ocgdk_raw.Content_formats.t ->
+    Ocgdk_enums.dragaction ->
     unit = "ml_gtk_tree_view_enable_model_drag_source"
   (** Turns [tree_view] into a drag source for automatic DND. Calling this
       method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
   external enable_model_drag_dest :
-    t ->
-    Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-    Ocgtk_gdk.Gdk.dragaction ->
-    unit = "ml_gtk_tree_view_enable_model_drag_dest"
+    t -> Ocgdk_raw.Content_formats.t -> Ocgdk_enums.dragaction -> unit
+    = "ml_gtk_tree_view_enable_model_drag_dest"
   (** Turns [tree_view] into a drop destination for automatic DND. Calling this
       method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
   external create_row_drag_icon :
-    t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+    t -> Tree_path.t -> Ocgdk_raw.Paintable.t option
     = "ml_gtk_tree_view_create_row_drag_icon"
   (** Creates a [cairo_surface_t] representation of the row at [path]. This
       image is used for a drag icon. *)
@@ -666,11 +664,11 @@ and Tree_view : sig
 
   (* Properties *)
 
-  external get_enable_grid_lines : t -> Gtk_enums.treeviewgridlines
+  external get_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_enable_grid_lines"
   (** Get property: enable-grid-lines *)
 
-  external set_enable_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
+  external set_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
   (** Set property: enable-grid-lines *)
 
@@ -690,7 +688,7 @@ and Tree_view : sig
     ?after:bool ->
     t ->
     callback:
-      (step:Gtk_enums.movementstep ->
+      (step:Ocgtk_enums.movementstep ->
       direction:int ->
       extend:bool ->
       modify:bool ->
@@ -871,7 +869,7 @@ end = struct
     = "ml_gtk_tree_view_set_headers_clickable"
   (** Allow the column title buttons to be clicked. *)
 
-  external set_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
+  external set_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_grid_lines"
   (** Sets which grid lines to draw in [tree_view]. *)
 
@@ -905,7 +903,7 @@ end = struct
     \  using the “start-interactive-search” key binding."]
 
   external set_drag_dest_row :
-    t -> Tree_path.t option -> Gtk_enums.treeviewdropposition -> unit
+    t -> Tree_path.t option -> Ocgtk_enums.treeviewdropposition -> unit
     = "ml_gtk_tree_view_set_drag_dest_row"
   (** Sets the row that is highlighted for feedback. If [path] is [NULL], an
       existing highlight is removed. *)
@@ -1022,7 +1020,7 @@ end = struct
       has “fixed_height” mode enabled, then [column] must have its “sizing”
       property set to be GTK_TREE_VIEW_COLUMN_FIXED. *)
 
-  external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+  external get_visible_rect : t -> Ocgdk_raw.Rectangle.t
     = "ml_gtk_tree_view_get_visible_rect"
   (** Fills [visible_rect] with the currently-visible region of the buffer, in
       tree coordinates. Convert to bin_window coordinates with
@@ -1088,7 +1086,7 @@ end = struct
     = "ml_gtk_tree_view_get_headers_clickable"
   (** Returns whether all header columns are clickable. *)
 
-  external get_grid_lines : t -> Gtk_enums.treeviewgridlines
+  external get_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_grid_lines"
   (** Returns which grid lines are enabled in [tree_view]. *)
 
@@ -1122,7 +1120,7 @@ end = struct
     t ->
     Tree_path.t option ->
     Tree_view_column.t option ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
+    Ocgdk_raw.Rectangle.t = "ml_gtk_tree_view_get_cell_area"
   (** Fills the bounding rectangle in bin_window coordinates for the cell at the
       row specified by [path] and the column specified by [column]. If [path] is
       [NULL], or points to a path not currently displayed, the [y] and [height]
@@ -1137,7 +1135,7 @@ end = struct
     t ->
     Tree_path.t option ->
     Tree_view_column.t option ->
-    Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_tree_view_get_background_area"
+    Ocgdk_raw.Rectangle.t = "ml_gtk_tree_view_get_background_area"
   (** Fills the bounding rectangle in bin_window coordinates for the cell at the
       row specified by [path] and the column specified by [column]. If [path] is
       [NULL], or points to a node not found in the tree, the [y] and [height]
@@ -1167,23 +1165,21 @@ end = struct
 
   external enable_model_drag_source :
     t ->
-    Ocgtk_gdk.Gdk.modifiertype ->
-    Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-    Ocgtk_gdk.Gdk.dragaction ->
+    Ocgdk_enums.modifiertype ->
+    Ocgdk_raw.Content_formats.t ->
+    Ocgdk_enums.dragaction ->
     unit = "ml_gtk_tree_view_enable_model_drag_source"
   (** Turns [tree_view] into a drag source for automatic DND. Calling this
       method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
   external enable_model_drag_dest :
-    t ->
-    Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-    Ocgtk_gdk.Gdk.dragaction ->
-    unit = "ml_gtk_tree_view_enable_model_drag_dest"
+    t -> Ocgdk_raw.Content_formats.t -> Ocgdk_enums.dragaction -> unit
+    = "ml_gtk_tree_view_enable_model_drag_dest"
   (** Turns [tree_view] into a drop destination for automatic DND. Calling this
       method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
   external create_row_drag_icon :
-    t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+    t -> Tree_path.t -> Ocgdk_raw.Paintable.t option
     = "ml_gtk_tree_view_create_row_drag_icon"
   (** Creates a [cairo_surface_t] representation of the row at [path]. This
       image is used for a drag icon. *)
@@ -1235,11 +1231,11 @@ end = struct
 
   (* Properties *)
 
-  external get_enable_grid_lines : t -> Gtk_enums.treeviewgridlines
+  external get_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_enable_grid_lines"
   (** Get property: enable-grid-lines *)
 
-  external set_enable_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
+  external set_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
   (** Set property: enable-grid-lines *)
 
@@ -1280,7 +1276,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let step =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+            Ocgtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
           in
           let direction =
             let v = Gobject.Closure.nth argv ~pos:2 in

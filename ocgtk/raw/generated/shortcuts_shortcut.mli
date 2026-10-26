@@ -34,19 +34,18 @@ external set_action_name : t -> string -> unit
   = "ml_gtk_shortcuts_shortcut_set_action_name"
 (** Set property: action-name *)
 
-external get_direction : t -> Gtk_enums.textdirection
+external get_direction : t -> Ocgtk_enums.textdirection
   = "ml_gtk_shortcuts_shortcut_get_direction"
 (** Get property: direction *)
 
-external set_direction : t -> Gtk_enums.textdirection -> unit
+external set_direction : t -> Ocgtk_enums.textdirection -> unit
   = "ml_gtk_shortcuts_shortcut_set_direction"
 (** Set property: direction *)
 
-external get_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t
-  = "ml_gtk_shortcuts_shortcut_get_icon"
+external get_icon : t -> Ocgio_raw.Icon.t = "ml_gtk_shortcuts_shortcut_get_icon"
 (** Get property: icon *)
 
-external set_icon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> unit
+external set_icon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_shortcuts_shortcut_set_icon"
 (** Set property: icon *)
 
@@ -57,11 +56,11 @@ external set_icon_set : t -> bool -> unit
   = "ml_gtk_shortcuts_shortcut_set_icon_set"
 (** Set property: icon-set *)
 
-external get_shortcut_type : t -> Gtk_enums.shortcuttype
+external get_shortcut_type : t -> Ocgtk_enums.shortcuttype
   = "ml_gtk_shortcuts_shortcut_get_shortcut_type"
 (** Get property: shortcut-type *)
 
-external set_shortcut_type : t -> Gtk_enums.shortcuttype -> unit
+external set_shortcut_type : t -> Ocgtk_enums.shortcuttype -> unit
   = "ml_gtk_shortcuts_shortcut_set_shortcut_type"
 (** Set property: shortcut-type *)
 

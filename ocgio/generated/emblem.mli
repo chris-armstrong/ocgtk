@@ -1,11 +1,11 @@
 class type emblem_t = object
-  inherit GIcon.icon_t
-  method get_icon : unit -> GIcon.icon_t
-  method get_origin : unit -> Gio_enums.emblemorigin
-  method as_emblem : Emblem.t
+  inherit Icon.icon_t
+  method get_icon : unit -> Icon.icon_t
+  method get_origin : unit -> Enums.emblemorigin
+  method as_emblem : Raw.Emblem.t
 end
 
-class emblem : Emblem.t -> emblem_t
+class emblem : Raw.Emblem.t -> emblem_t
 
-val new_ : GIcon.icon_t -> emblem_t
-val new_with_origin : GIcon.icon_t -> Gio_enums.emblemorigin -> emblem_t
+val new_ : Icon.icon_t -> emblem_t
+val new_with_origin : Icon.icon_t -> Enums.emblemorigin -> emblem_t

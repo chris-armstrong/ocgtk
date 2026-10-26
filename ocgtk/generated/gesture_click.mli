@@ -1,5 +1,5 @@
 class type gesture_click_t = object
-  inherit GGesture_single.gesture_single_t
+  inherit Gesture_single.gesture_single_t
 
   method on_pressed :
     ?after:bool ->
@@ -16,9 +16,9 @@ class type gesture_click_t = object
   method on_stopped :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method as_gesture_click : Gesture_click.t
+  method as_gesture_click : Raw.Gesture_click.t
 end
 
-class gesture_click : Gesture_click.t -> gesture_click_t
+class gesture_click : Raw.Gesture_click.t -> gesture_click_t
 
 val new_ : unit -> gesture_click_t

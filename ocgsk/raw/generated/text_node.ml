@@ -8,10 +8,10 @@ type t = [ `text_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_text_node_get_type"
 
 external new_ :
-  Ocgtk_pango.Pango.Wrappers.Font.t ->
-  Ocgtk_pango.Pango.Wrappers.Glyph_string.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Point.t ->
+  Ocpango_raw.Font.t ->
+  Ocpango_raw.Glyph_string.t ->
+  Ocgdk_raw.Rgb_a.t ->
+  Ocgraphene_raw.Point.t ->
   t = "ml_gsk_text_node_new"
 (** Create a new TextNode *)
 
@@ -20,23 +20,21 @@ external new_ :
 external has_color_glyphs : t -> bool = "ml_gsk_text_node_has_color_glyphs"
 (** Checks whether the text [node] has color glyphs. *)
 
-external get_offset : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t
+external get_offset : t -> Ocgraphene_raw.Point.t
   = "ml_gsk_text_node_get_offset"
 (** Retrieves the offset applied to the text. *)
 
 external get_num_glyphs : t -> int = "ml_gsk_text_node_get_num_glyphs"
 (** Retrieves the number of glyphs in the text node. *)
 
-external get_glyphs : t -> Ocgtk_pango.Pango.Wrappers.Glyph_info.t array * int
+external get_glyphs : t -> Ocpango_raw.Glyph_info.t array * int
   = "ml_gsk_text_node_get_glyphs"
 (** Retrieves the glyph information in the [node]. *)
 
-external get_font : t -> Ocgtk_pango.Pango.Wrappers.Font.t
-  = "ml_gsk_text_node_get_font"
+external get_font : t -> Ocpango_raw.Font.t = "ml_gsk_text_node_get_font"
 (** Returns the font used by the text [node]. *)
 
-external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-  = "ml_gsk_text_node_get_color"
+external get_color : t -> Ocgdk_raw.Rgb_a.t = "ml_gsk_text_node_get_color"
 (** Retrieves the color used by the text [node].
 
     The value returned by this function will not be correct if the render node

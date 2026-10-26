@@ -1,7 +1,7 @@
 class type orientable_t = object
-  method get_orientation : unit -> Gtk_enums.orientation
-  method set_orientation : Gtk_enums.orientation -> unit
-  method as_orientable : Orientable.t
+  method get_orientation : unit -> Enums.orientation
+  method set_orientation : Enums.orientation -> unit
+  method as_orientable : Raw.Orientable.t
 end
 
-class orientable : Orientable.t -> orientable_t
+class orientable : Raw.Orientable.t -> orientable_t

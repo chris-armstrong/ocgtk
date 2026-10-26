@@ -1,5 +1,5 @@
 class type shortcuts_section_t = object
-  inherit GBox.box_t
+  inherit Box.box_t
 
   method on_change_current_page :
     ?after:bool ->
@@ -7,7 +7,7 @@ class type shortcuts_section_t = object
     unit ->
     Gobject.Signal.handler_id
 
-  method add_group : GShortcuts_group.shortcuts_group_t -> unit
+  method add_group : Shortcuts_group.shortcuts_group_t -> unit
   method max_height : int
   method set_max_height : int -> unit
   method section_name : string
@@ -16,7 +16,7 @@ class type shortcuts_section_t = object
   method set_title : string -> unit
   method view_name : string
   method set_view_name : string -> unit
-  method as_shortcuts_section : Shortcuts_section.t
+  method as_shortcuts_section : Raw.Shortcuts_section.t
 end
 
-class shortcuts_section : Shortcuts_section.t -> shortcuts_section_t
+class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t

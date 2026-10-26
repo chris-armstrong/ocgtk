@@ -7,7 +7,7 @@ class type action_t = object
   method get_state : unit -> Gvariant.t option
   method get_state_hint : unit -> Gvariant.t option
   method get_state_type : unit -> Gvariant_type.t option
-  method as_action : Action.t
+  method as_action : Raw.Action.t
 end
 
-class action : Action.t -> action_t
+class action : Raw.Action.t -> action_t

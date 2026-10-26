@@ -108,7 +108,7 @@ external set_logo_icon_name : t -> string option -> unit
   = "ml_gtk_about_dialog_set_logo_icon_name"
 (** Sets the icon name to be displayed as logo in the about dialog. *)
 
-external set_logo : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit
+external set_logo : t -> Ocgdk_raw.Paintable.t option -> unit
   = "ml_gtk_about_dialog_set_logo"
 (** Sets the logo in the about dialog. *)
 
@@ -178,7 +178,7 @@ external get_logo_icon_name : t -> string option
   = "ml_gtk_about_dialog_get_logo_icon_name"
 (** Returns the icon name displayed as logo in the about dialog. *)
 
-external get_logo : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+external get_logo : t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_about_dialog_get_logo"
 (** Returns the paintable displayed as logo in the about dialog. *)
 

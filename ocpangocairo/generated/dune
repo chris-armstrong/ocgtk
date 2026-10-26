@@ -1,0 +1,8 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocpangocairo)
+ (public_name ocpangocairo)
+ (synopsis "OCaml bindings for PangoCairo")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries ocglib ocpangocairo.raw ocpangocairo.enums ocgio ocpango occairo))

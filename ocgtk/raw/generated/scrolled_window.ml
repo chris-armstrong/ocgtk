@@ -108,7 +108,8 @@ external set_propagate_natural_height : t -> bool -> unit
 (** Sets whether the natural height of the child should be calculated and
     propagated through the scrolled window’s requested natural height. *)
 
-external set_policy : t -> Gtk_enums.policytype -> Gtk_enums.policytype -> unit
+external set_policy :
+  t -> Ocgtk_enums.policytype -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_policy"
 (** Sets the scrollbar policy for the horizontal and vertical scrollbars.
 
@@ -119,7 +120,7 @@ external set_policy : t -> Gtk_enums.policytype -> Gtk_enums.policytype -> unit
     the slider part of the bar would be smaller than the trough — the display is
     larger than the page size). *)
 
-external set_placement : t -> Gtk_enums.cornertype -> unit
+external set_placement : t -> Ocgtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_placement"
 (** Sets the placement of the contents with respect to the scrollbars for the
     scrolled window.
@@ -228,14 +229,14 @@ external get_propagate_natural_height : t -> bool
 (** Reports whether the natural height of the child will be calculated and
     propagated through the scrolled window’s requested natural height. *)
 
-external get_policy : t -> Gtk_enums.policytype * Gtk_enums.policytype
+external get_policy : t -> Ocgtk_enums.policytype * Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_policy"
 (** Retrieves the current policy values for the horizontal and vertical
     scrollbars.
 
     See [Gtk.ScrolledWindow.set_policy]. *)
 
-external get_placement : t -> Gtk_enums.cornertype
+external get_placement : t -> Ocgtk_enums.cornertype
   = "ml_gtk_scrolled_window_get_placement"
 (** Gets the placement of the contents with respect to the scrollbars. *)
 
@@ -294,19 +295,19 @@ external get_child :
 
 (* Properties *)
 
-external get_hscrollbar_policy : t -> Gtk_enums.policytype
+external get_hscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_hscrollbar_policy"
 (** Get property: hscrollbar-policy *)
 
-external set_hscrollbar_policy : t -> Gtk_enums.policytype -> unit
+external set_hscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_hscrollbar_policy"
 (** Set property: hscrollbar-policy *)
 
-external get_vscrollbar_policy : t -> Gtk_enums.policytype
+external get_vscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_vscrollbar_policy"
 (** Get property: vscrollbar-policy *)
 
-external set_vscrollbar_policy : t -> Gtk_enums.policytype -> unit
+external set_vscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_vscrollbar_policy"
 (** Set property: vscrollbar-policy *)
 
@@ -315,7 +316,7 @@ let on_edge_overshot ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let pos =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~pos)
   in
@@ -327,7 +328,7 @@ let on_edge_reached ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let pos =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~pos)
   in
@@ -339,7 +340,7 @@ let on_move_focus_out ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let direction_type =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~direction_type)
   in
@@ -351,7 +352,7 @@ let on_scroll_child ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let scroll =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
         in
         let horizontal =
           let v = Gobject.Closure.nth argv ~pos:2 in

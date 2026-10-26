@@ -105,7 +105,7 @@ external set_spacing : t -> int -> unit = "ml_gtk_icon_view_set_spacing"
 (** Sets the ::spacing property which specifies the space which is inserted
     between the cells (i.e. the icon and the text) of an item. *)
 
-external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
+external set_selection_mode : t -> Ocgtk_enums.selectionmode -> unit
   = "ml_gtk_icon_view_set_selection_mode"
 (** Sets the selection mode of the [icon_view]. *)
 
@@ -160,13 +160,13 @@ external set_item_padding : t -> int -> unit
 (** Sets the [GtkIconView]:item-padding property which specifies the padding
     around each of the icon view’s items. *)
 
-external set_item_orientation : t -> Gtk_enums.orientation -> unit
+external set_item_orientation : t -> Ocgtk_enums.orientation -> unit
   = "ml_gtk_icon_view_set_item_orientation"
 (** Sets the ::item-orientation property which determines whether the labels are
     drawn beside the icons instead of below. *)
 
 external set_drag_dest_item :
-  t -> Tree_path.t option -> Gtk_enums.iconviewdropposition -> unit
+  t -> Tree_path.t option -> Ocgtk_enums.iconviewdropposition -> unit
   = "ml_gtk_icon_view_set_drag_dest_item"
 (** Sets the item that is highlighted for feedback. *)
 
@@ -240,7 +240,7 @@ external get_text_column : t -> int = "ml_gtk_icon_view_get_text_column"
 external get_spacing : t -> int = "ml_gtk_icon_view_get_spacing"
 (** Returns the value of the ::spacing property. *)
 
-external get_selection_mode : t -> Gtk_enums.selectionmode
+external get_selection_mode : t -> Ocgtk_enums.selectionmode
   = "ml_gtk_icon_view_get_selection_mode"
 (** Gets the selection mode of the [icon_view]. *)
 
@@ -299,7 +299,7 @@ external get_item_row : t -> Tree_path.t -> int
 external get_item_padding : t -> int = "ml_gtk_icon_view_get_item_padding"
 (** Returns the value of the ::item-padding property. *)
 
-external get_item_orientation : t -> Gtk_enums.orientation
+external get_item_orientation : t -> Ocgtk_enums.orientation
   = "ml_gtk_icon_view_get_item_orientation"
 (** Returns the value of the ::item-orientation property which determines
     whether the labels are drawn beside the icons instead of below. *)
@@ -316,10 +316,8 @@ external get_column_spacing : t -> int = "ml_gtk_icon_view_get_column_spacing"
 (** Returns the value of the ::column-spacing property. *)
 
 external get_cell_rect :
-  t ->
-  Tree_path.t ->
-  Cell_renderer.t option ->
-  bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_icon_view_get_cell_rect"
+  t -> Tree_path.t -> Cell_renderer.t option -> bool * Ocgdk_raw.Rectangle.t
+  = "ml_gtk_icon_view_get_cell_rect"
 (** Fills the bounding rectangle in widget coordinates for the cell specified by
     [path] and [cell]. If [cell] is [NULL] the main cell area is used.
 
@@ -331,23 +329,20 @@ external get_activate_on_single_click : t -> bool
 
 external enable_model_drag_source :
   t ->
-  Ocgtk_gdk.Gdk.modifiertype ->
-  Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-  Ocgtk_gdk.Gdk.dragaction ->
+  Ocgdk_enums.modifiertype ->
+  Ocgdk_raw.Content_formats.t ->
+  Ocgdk_enums.dragaction ->
   unit = "ml_gtk_icon_view_enable_model_drag_source"
 (** Turns [icon_view] into a drag source for automatic DND. Calling this method
     sets [GtkIconView]:reorderable to [FALSE]. *)
 
 external enable_model_drag_dest :
-  t ->
-  Ocgtk_gdk.Gdk.Wrappers.Content_formats.t ->
-  Ocgtk_gdk.Gdk.dragaction ->
-  unit = "ml_gtk_icon_view_enable_model_drag_dest"
+  t -> Ocgdk_raw.Content_formats.t -> Ocgdk_enums.dragaction -> unit
+  = "ml_gtk_icon_view_enable_model_drag_dest"
 (** Turns [icon_view] into a drop destination for automatic DND. Calling this
     method sets [GtkIconView]:reorderable to [FALSE]. *)
 
-external create_drag_icon :
-  t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option
+external create_drag_icon : t -> Tree_path.t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_icon_view_create_drag_icon"
 (** Creates a [GdkPaintable] representation of the item at [path]. This image is
     used for a drag icon. *)
@@ -375,7 +370,7 @@ let on_move_cursor ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let step =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
         in
         let count =
           let v = Gobject.Closure.nth argv ~pos:2 in

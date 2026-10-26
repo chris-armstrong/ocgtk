@@ -15,7 +15,7 @@ external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
 
 (* Methods *)
 
-external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit
+external set_byte_order : t -> Ocgio_enums.datastreambyteorder -> unit
   = "ml_g_data_output_stream_set_byte_order"
 (** Sets the byte order of the data output stream to [order]. *)
 
@@ -54,7 +54,7 @@ external put_int16 :
   = "ml_g_data_output_stream_put_int16"
 (** Puts a signed 16-bit integer into the output stream. *)
 
-external get_byte_order : t -> Gio_enums.datastreambyteorder
+external get_byte_order : t -> Ocgio_enums.datastreambyteorder
   = "ml_g_data_output_stream_get_byte_order"
 (** Gets the byte order for the stream. *)
 

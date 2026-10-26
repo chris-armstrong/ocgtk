@@ -8,7 +8,7 @@ type t = [ `zlib_decompressor | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_zlib_decompressor_get_type"
 
-external new_ : Gio_enums.zlibcompressorformat -> t
+external new_ : Ocgio_enums.zlibcompressorformat -> t
   = "ml_g_zlib_decompressor_new"
 (** Create a new ZlibDecompressor *)
 
@@ -20,6 +20,6 @@ external get_file_info : t -> File_info.t option
 
 (* Properties *)
 
-external get_format : t -> Gio_enums.zlibcompressorformat
+external get_format : t -> Ocgio_enums.zlibcompressorformat
   = "ml_g_zlib_decompressor_get_format"
 (** Get property: format *)

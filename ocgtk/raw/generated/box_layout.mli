@@ -18,7 +18,7 @@ type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_box_layout_get_type"
 
-external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"
+external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_box_layout_new"
 (** Create a new BoxLayout *)
 
 (* Methods *)
@@ -30,7 +30,7 @@ external set_homogeneous : t -> bool -> unit
   = "ml_gtk_box_layout_set_homogeneous"
 (** Sets whether the box layout will allocate the same size to all children. *)
 
-external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
+external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_box_layout_set_baseline_position"
 (** Sets the baseline position of a box layout.
 
@@ -51,7 +51,7 @@ external get_spacing : t -> int = "ml_gtk_box_layout_get_spacing"
 external get_homogeneous : t -> bool = "ml_gtk_box_layout_get_homogeneous"
 (** Returns whether the layout is set to be homogeneous. *)
 
-external get_baseline_position : t -> Gtk_enums.baselineposition
+external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_box_layout_get_baseline_position"
 (** Gets the value set by gtk_box_layout_set_baseline_position(). *)
 

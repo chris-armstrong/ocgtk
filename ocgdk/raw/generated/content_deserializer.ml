@@ -41,7 +41,7 @@ external get_mime_type : t -> string
   = "ml_gdk_content_deserializer_get_mime_type"
 (** Gets the mime type to deserialize from. *)
 
-external get_input_stream : t -> Ocgtk_gio.Gio.Wrappers.Input_stream.t
+external get_input_stream : t -> Ocgio_raw.Input_stream.t
   = "ml_gdk_content_deserializer_get_input_stream"
 (** Gets the input stream for the current operation.
 
@@ -51,7 +51,7 @@ external get_gtype : t -> Gobject.Type.t
   = "ml_gdk_content_deserializer_get_gtype"
 (** Gets the [GType] to create an instance of. *)
 
-external get_cancellable : t -> Ocgtk_gio.Gio.Wrappers.Cancellable.t option
+external get_cancellable : t -> Ocgio_raw.Cancellable.t option
   = "ml_gdk_content_deserializer_get_cancellable"
 (** Gets the cancellable for the current operation.
 

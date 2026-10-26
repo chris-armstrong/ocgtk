@@ -30,7 +30,7 @@ external new_union : t array option -> Gsize.t -> t
 (* Methods *)
 
 external write_mime_type_finish :
-  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
   = "ml_gdk_content_provider_write_mime_type_finish"
 (** Finishes an asynchronous write operation.
 

@@ -14,7 +14,7 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gdk_toplevel_from_gobject"
 
 (* Methods *)
 
-external titlebar_gesture : t -> Gdk_enums.titlebargesture -> bool
+external titlebar_gesture : t -> Ocgdk_enums.titlebargesture -> bool
   = "ml_gdk_toplevel_titlebar_gesture"
 (** Performs a title bar gesture. *)
 
@@ -76,7 +76,7 @@ external set_icon_list : t -> Texture.t list -> unit
 
     Note that some platforms don't support surface icons. *)
 
-external set_gravity : t -> Gdk_enums.gravity -> unit
+external set_gravity : t -> Ocgdk_enums.gravity -> unit
   = "ml_gdk_toplevel_set_gravity"
 (** Sets the gravity that is used when changing the toplevel size
     programmatically. *)
@@ -145,15 +145,16 @@ external inhibit_system_shortcuts :
     The caller can be notified whenever the request is granted or revoked by
     listening to the [Gdk.Toplevel:shortcuts-inhibited] property. *)
 
-external get_state : t -> Gdk_enums.toplevelstate = "ml_gdk_toplevel_get_state"
+external get_state : t -> Ocgdk_enums.toplevelstate
+  = "ml_gdk_toplevel_get_state"
 (** Gets the bitwise or of the currently active surface state flags, from the
     [GdkToplevelState] enumeration. *)
 
-external get_gravity : t -> Gdk_enums.gravity = "ml_gdk_toplevel_get_gravity"
+external get_gravity : t -> Ocgdk_enums.gravity = "ml_gdk_toplevel_get_gravity"
 (** Returns the gravity that is used when changing the toplevel size
     programmatically. *)
 
-external get_capabilities : t -> Gdk_enums.toplevelcapabilities
+external get_capabilities : t -> Ocgdk_enums.toplevelcapabilities
   = "ml_gdk_toplevel_get_capabilities"
 (** The capabilities that are available for this toplevel. *)
 
@@ -165,7 +166,7 @@ external focus : t -> UInt32.t -> unit = "ml_gdk_toplevel_focus"
 
 external begin_resize :
   t ->
-  Gdk_enums.surfaceedge ->
+  Ocgdk_enums.surfaceedge ->
   App_launch_context_cycle_de440b34.Device.t option ->
   int ->
   float ->
@@ -193,11 +194,11 @@ external begin_move :
 
 (* Properties *)
 
-external get_fullscreen_mode : t -> Gdk_enums.fullscreenmode
+external get_fullscreen_mode : t -> Ocgdk_enums.fullscreenmode
   = "ml_gdk_toplevel_get_fullscreen_mode"
 (** Get property: fullscreen-mode *)
 
-external set_fullscreen_mode : t -> Gdk_enums.fullscreenmode -> unit
+external set_fullscreen_mode : t -> Ocgdk_enums.fullscreenmode -> unit
   = "ml_gdk_toplevel_set_fullscreen_mode"
 (** Set property: fullscreen-mode *)
 

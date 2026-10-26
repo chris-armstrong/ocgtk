@@ -93,12 +93,12 @@ type t = [ `size_group | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_size_group_get_type"
 
-external new_ : Gtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
+external new_ : Ocgtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
 (** Create a new SizeGroup *)
 
 (* Methods *)
 
-external set_mode : t -> Gtk_enums.sizegroupmode -> unit
+external set_mode : t -> Ocgtk_enums.sizegroupmode -> unit
   = "ml_gtk_size_group_set_mode"
 (** Sets the [GtkSizeGroupMode] of the size group.
 
@@ -124,7 +124,8 @@ external get_widgets :
   list = "ml_gtk_size_group_get_widgets"
 (** Returns the list of widgets associated with [size_group]. *)
 
-external get_mode : t -> Gtk_enums.sizegroupmode = "ml_gtk_size_group_get_mode"
+external get_mode : t -> Ocgtk_enums.sizegroupmode
+  = "ml_gtk_size_group_get_mode"
 (** Gets the current mode of the size group. *)
 
 external add_widget :

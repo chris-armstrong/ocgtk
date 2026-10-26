@@ -5,20 +5,20 @@ class type tls_certificate_t = object
   method is_same : tls_certificate_t -> bool
 
   method verify :
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
     option ->
     tls_certificate_t option ->
-    Gio_enums.tlscertificateflags
+    Enums.tlscertificateflags
 
   method certificate_pem : string
   method pkcs11_uri : string
   method private_key_pem : string
   method private_key_pkcs11_uri : string
-  method as_tls_certificate : Tls_certificate.t
+  method as_tls_certificate : Raw.Tls_certificate.t
 end
 
-class tls_certificate : Tls_certificate.t -> tls_certificate_t
+class tls_certificate : Raw.Tls_certificate.t -> tls_certificate_t
 
 val new_from_file : string -> (tls_certificate_t, GError.t) result
 

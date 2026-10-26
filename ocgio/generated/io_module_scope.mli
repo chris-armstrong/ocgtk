@@ -1,6 +1,6 @@
 class type io_module_scope_t = object
   method block : string -> unit
-  method as_io_module_scope : Io_module_scope.t
+  method as_io_module_scope : Raw.Io_module_scope.t
 end
 
-class io_module_scope : Io_module_scope.t -> io_module_scope_t
+class io_module_scope : Raw.Io_module_scope.t -> io_module_scope_t

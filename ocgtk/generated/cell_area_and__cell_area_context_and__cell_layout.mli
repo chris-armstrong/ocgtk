@@ -1,112 +1,110 @@
 class type cell_area_t = object
-  inherit GBuildable.buildable_t
+  inherit Buildable.buildable_t
 
   method on_focus_changed :
     ?after:bool ->
-    callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->
+    callback:(renderer:Cell_renderer.cell_renderer_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_remove_editable :
     ?after:bool ->
     callback:
-      (renderer:GCell_renderer.cell_renderer_t ->
-      editable:GCell_editable.cell_editable_t ->
+      (renderer:Cell_renderer.cell_renderer_t ->
+      editable:Cell_editable.cell_editable_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method activate :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk.Rectangle.rectangle_t ->
+    Enums.cellrendererstate ->
     bool ->
     bool
 
   method activate_cell :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GCell_renderer.cell_renderer_t ->
-    Ocgtk_gdk.Gdk.Event.event_t ->
-    Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
-    Gtk_enums.cellrendererstate ->
+    Cell_renderer.cell_renderer_t ->
+    Ocgdk.Event.event_t ->
+    Ocgdk.Rectangle.rectangle_t ->
+    Enums.cellrendererstate ->
     bool
 
-  method add : GCell_renderer.cell_renderer_t -> unit
+  method add : Cell_renderer.cell_renderer_t -> unit
 
   method add_focus_sibling :
-    GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> unit
+    Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t -> unit
 
   method apply_attributes :
-    GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit
+    Tree_model.tree_model_t -> Raw.Tree_iter.t -> bool -> bool -> unit
 
   method attribute_connect :
-    GCell_renderer.cell_renderer_t -> string -> int -> unit
+    Cell_renderer.cell_renderer_t -> string -> int -> unit
 
-  method attribute_disconnect : GCell_renderer.cell_renderer_t -> string -> unit
-  method attribute_get_column : GCell_renderer.cell_renderer_t -> string -> int
+  method attribute_disconnect : Cell_renderer.cell_renderer_t -> string -> unit
+  method attribute_get_column : Cell_renderer.cell_renderer_t -> string -> int
 
   method cell_get_property :
-    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+    Cell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
 
   method cell_set_property :
-    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+    Cell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
 
   method copy_context : cell_area_context_t -> cell_area_context_t
   method create_context : unit -> cell_area_context_t
 
   method event :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    Ocgtk_gdk.Gdk.Event.event_t ->
-    Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
-    Gtk_enums.cellrendererstate ->
+    Ocgdk.Event.event_t ->
+    Ocgdk.Rectangle.rectangle_t ->
+    Enums.cellrendererstate ->
     int
 
-  method focus : Gtk_enums.directiontype -> bool
+  method focus : Enums.directiontype -> bool
   method get_current_path_string : unit -> string
-  method get_edit_widget : unit -> GCell_editable.cell_editable_t option
-  method get_edited_cell : unit -> GCell_renderer.cell_renderer_t option
-  method get_focus_cell : unit -> GCell_renderer.cell_renderer_t option
+  method get_edit_widget : unit -> Cell_editable.cell_editable_t option
+  method get_edited_cell : unit -> Cell_renderer.cell_renderer_t option
+  method get_focus_cell : unit -> Cell_renderer.cell_renderer_t option
 
   method get_focus_from_sibling :
-    GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t option
+    Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t option
 
   method get_focus_siblings :
-    GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t list
+    Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t list
 
-  method get_request_mode : unit -> Gtk_enums.sizerequestmode
-  method has_renderer : GCell_renderer.cell_renderer_t -> bool
+  method get_request_mode : unit -> Enums.sizerequestmode
+  method has_renderer : Cell_renderer.cell_renderer_t -> bool
   method is_activatable : unit -> bool
 
   method is_focus_sibling :
-    GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> bool
+    Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t -> bool
 
-  method remove : GCell_renderer.cell_renderer_t -> unit
+  method remove : Cell_renderer.cell_renderer_t -> unit
 
   method remove_focus_sibling :
-    GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> unit
+    Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t -> unit
 
-  method set_focus_cell : GCell_renderer.cell_renderer_t option -> unit
+  method set_focus_cell : Cell_renderer.cell_renderer_t option -> unit
 
   method snapshot :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GSnapshot.snapshot_t ->
-    Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
-    Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
-    Gtk_enums.cellrendererstate ->
+    Snapshot.snapshot_t ->
+    Ocgdk.Rectangle.rectangle_t ->
+    Ocgdk.Rectangle.rectangle_t ->
+    Enums.cellrendererstate ->
     bool ->
     unit
 
   method stop_editing : bool -> unit
-
-  method as_cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
+  method as_cell_area : Raw.Cell_area.t
 end
 
 and cell_area_context_t = object
@@ -119,33 +117,23 @@ and cell_area_context_t = object
   method minimum_width : int
   method natural_height : int
   method natural_width : int
-
-  method as_cell_area_context :
-    Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t
+  method as_cell_area_context : Raw.Cell_area_context.t
 end
 
 and cell_layout_t = object
-  method add_attribute : GCell_renderer.cell_renderer_t -> string -> int -> unit
+  method add_attribute : Cell_renderer.cell_renderer_t -> string -> int -> unit
   method clear : unit -> unit
-  method clear_attributes : GCell_renderer.cell_renderer_t -> unit
+  method clear_attributes : Cell_renderer.cell_renderer_t -> unit
   method get_area : unit -> cell_area_t option
-  method get_cells : unit -> GCell_renderer.cell_renderer_t list
-  method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit
-  method pack_start : GCell_renderer.cell_renderer_t -> bool -> unit
-  method reorder : GCell_renderer.cell_renderer_t -> int -> unit
-
-  method as_cell_layout :
-    Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.t
+  method get_cells : unit -> Cell_renderer.cell_renderer_t list
+  method pack_end : Cell_renderer.cell_renderer_t -> bool -> unit
+  method pack_start : Cell_renderer.cell_renderer_t -> bool -> unit
+  method reorder : Cell_renderer.cell_renderer_t -> int -> unit
+  method as_cell_layout : Raw.Cell_layout.t
 end
 
-class cell_area :
-  Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t ->
-  cell_area_t
+class cell_area : Raw.Cell_area.t -> cell_area_t
 
-and cell_area_context :
-  Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t ->
-  cell_area_context_t
+and cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
 
-and cell_layout :
-  Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.t ->
-  cell_layout_t
+and cell_layout : Raw.Cell_layout.t -> cell_layout_t

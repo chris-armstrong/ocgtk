@@ -1,21 +1,21 @@
 class type datagram_based_t = object
   method receive_messages :
-    Input_message.t array ->
+    Raw.Input_message.t array ->
     int ->
     int ->
     int64 ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (int, GError.t) result
 
   method send_messages :
-    Output_message.t array ->
+    Raw.Output_message.t array ->
     int ->
     int ->
     int64 ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (int, GError.t) result
 
-  method as_datagram_based : Datagram_based.t
+  method as_datagram_based : Raw.Datagram_based.t
 end
 
-class datagram_based : Datagram_based.t -> datagram_based_t
+class datagram_based : Raw.Datagram_based.t -> datagram_based_t

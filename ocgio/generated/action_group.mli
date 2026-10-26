@@ -36,7 +36,7 @@ class type action_group_t = object
   method get_action_state_type : string -> Gvariant_type.t option
   method has_action : string -> bool
   method list_actions : unit -> string array
-  method as_action_group : Action_group.t
+  method as_action_group : Raw.Action_group.t
 end
 
-class action_group : Action_group.t -> action_group_t
+class action_group : Raw.Action_group.t -> action_group_t

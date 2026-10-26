@@ -30,7 +30,7 @@ external get_stylus_only : t -> bool = "ml_gtk_gesture_stylus_get_stylus_only"
     Stylus-only gestures will signal events exclusively from stylus input
     devices. *)
 
-external get_device_tool : t -> Ocgtk_gdk.Gdk.Wrappers.Device_tool.t option
+external get_device_tool : t -> Ocgdk_raw.Device_tool.t option
   = "ml_gtk_gesture_stylus_get_device_tool"
 (** Returns the [GdkDeviceTool] currently driving input through this gesture.
 
@@ -38,8 +38,7 @@ external get_device_tool : t -> Ocgtk_gdk.Gdk.Wrappers.Device_tool.t option
     [Gtk.GestureStylus::down], [Gtk.GestureStylus::motion],
     [Gtk.GestureStylus::up] or [Gtk.GestureStylus::proximity] signals. *)
 
-external get_backlog :
-  t -> bool * Ocgtk_gdk.Gdk.Wrappers.Time_coord.t array * int
+external get_backlog : t -> bool * Ocgdk_raw.Time_coord.t array * int
   = "ml_gtk_gesture_stylus_get_backlog"
 (** Returns the accumulated backlog of tracking information.
 
@@ -55,7 +54,7 @@ external get_backlog :
 
     The [backlog] is provided in chronological order. *)
 
-external get_axis : t -> Ocgtk_gdk.Gdk.axisuse -> bool * float
+external get_axis : t -> Ocgdk_enums.axisuse -> bool * float
   = "ml_gtk_gesture_stylus_get_axis"
 (** Returns the current value for the requested [axis].
 

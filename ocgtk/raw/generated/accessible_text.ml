@@ -29,7 +29,7 @@ external update_selection_bound : t -> unit
     technologies. *)
 
 external update_contents :
-  t -> Gtk_enums.accessibletextcontentchange -> int -> int -> unit
+  t -> Ocgtk_enums.accessibletextcontentchange -> int -> int -> unit
   = "ml_gtk_accessible_text_update_contents"
 (** Notifies assistive technologies of a change in contents.
 

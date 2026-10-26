@@ -61,8 +61,8 @@ external new_for_bus_finish : Async_result.t -> (t, GError.t) result
 (** Create a new DBusProxy *)
 
 external new_for_bus_sync :
-  Gio_enums.bustype ->
-  Gio_enums.dbusproxyflags ->
+  Ocgio_enums.bustype ->
+  Ocgio_enums.dbusproxyflags ->
   D_bus_interface_info.t option ->
   string ->
   string ->
@@ -75,7 +75,7 @@ external new_for_bus_sync :
 
 external new_sync :
   D_bus_connection.t ->
-  Gio_enums.dbusproxyflags ->
+  Ocgio_enums.dbusproxyflags ->
   D_bus_interface_info.t option ->
   string option ->
   string ->
@@ -156,7 +156,8 @@ external get_interface_info : t -> D_bus_interface_info.t option
     [proxy] conforms to. See the [GDBusProxy:g]-interface-info property for more
     details. *)
 
-external get_flags : t -> Gio_enums.dbusproxyflags = "ml_g_dbus_proxy_get_flags"
+external get_flags : t -> Ocgio_enums.dbusproxyflags
+  = "ml_g_dbus_proxy_get_flags"
 (** Gets the flags that [proxy] was constructed with. *)
 
 external get_default_timeout : t -> int = "ml_g_dbus_proxy_get_default_timeout"
@@ -187,7 +188,7 @@ external call_sync :
   t ->
   string ->
   Gvariant.t option ->
-  Gio_enums.dbuscallflags ->
+  Ocgio_enums.dbuscallflags ->
   int ->
   Cancellable.t option ->
   (Gvariant.t, GError.t) result
@@ -241,7 +242,7 @@ external set_g_default_timeout : t -> int -> unit
   = "ml_g_d_bus_proxy_set_g_default_timeout"
 (** Set property: g-default-timeout *)
 
-external get_g_flags : t -> Gio_enums.dbusproxyflags
+external get_g_flags : t -> Ocgio_enums.dbusproxyflags
   = "ml_g_d_bus_proxy_get_g_flags"
 (** Get property: g-flags *)
 

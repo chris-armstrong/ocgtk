@@ -1,41 +1,41 @@
 class type emblemed_icon_t = object
-  inherit GIcon.icon_t
-  method add_emblem : GEmblem.emblem_t -> unit
+  inherit Icon.icon_t
+  method add_emblem : Emblem.emblem_t -> unit
   method clear_emblems : unit -> unit
-  method get_emblems : unit -> GEmblem.emblem_t list
-  method get_icon : unit -> GIcon.icon_t
-  method gicon : GIcon.icon_t
-  method as_emblemed_icon : Emblemed_icon.t
+  method get_emblems : unit -> Emblem.emblem_t list
+  method get_icon : unit -> Icon.icon_t
+  method gicon : Icon.icon_t
+  method as_emblemed_icon : Raw.Emblemed_icon.t
 end
 
 (* High-level class for EmblemedIcon *)
-class emblemed_icon (obj : Emblemed_icon.t) : emblemed_icon_t =
+class emblemed_icon (obj : Raw.Emblemed_icon.t) : emblemed_icon_t =
   object (self)
-    inherit GIcon.icon (Icon.from_gobject obj)
+    inherit Icon.icon (Raw.Icon.from_gobject obj)
 
-    method add_emblem : GEmblem.emblem_t -> unit =
+    method add_emblem : Emblem.emblem_t -> unit =
       fun emblem ->
         let emblem = emblem#as_emblem in
-        Emblemed_icon.add_emblem obj emblem
+        Raw.Emblemed_icon.add_emblem obj emblem
 
     method clear_emblems : unit -> unit =
-      fun () -> Emblemed_icon.clear_emblems obj
+      fun () -> Raw.Emblemed_icon.clear_emblems obj
 
-    method get_emblems : unit -> GEmblem.emblem_t list =
+    method get_emblems : unit -> Emblem.emblem_t list =
       fun () ->
-        (List.map (fun ret -> new GEmblem.emblem ret))
-          (Emblemed_icon.get_emblems obj)
+        (List.map (fun ret -> new Emblem.emblem ret))
+          (Raw.Emblemed_icon.get_emblems obj)
 
-    method get_icon : unit -> GIcon.icon_t =
-      fun () -> new GIcon.icon (Emblemed_icon.get_icon obj)
+    method get_icon : unit -> Icon.icon_t =
+      fun () -> new Icon.icon (Raw.Emblemed_icon.get_icon obj)
 
-    method gicon = new GIcon.icon (Emblemed_icon.get_gicon obj)
+    method gicon = new Icon.icon (Raw.Emblemed_icon.get_gicon obj)
     method as_emblemed_icon = obj
   end
 
-let new_ (icon : GIcon.icon_t) (emblem : GEmblem.emblem_t option) :
+let new_ (icon : Icon.icon_t) (emblem : Emblem.emblem_t option) :
     emblemed_icon_t =
   let icon = icon#as_icon in
   let emblem = Option.map (fun c -> c#as_emblem) emblem in
-  let obj_ = Emblemed_icon.new_ icon emblem in
+  let obj_ = Raw.Emblemed_icon.new_ icon emblem in
   new emblemed_icon obj_

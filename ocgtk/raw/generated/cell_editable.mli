@@ -17,7 +17,7 @@ external from_gobject : 'a Gobject.obj -> t
 
 (* Methods *)
 
-external start_editing : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> unit
+external start_editing : t -> Ocgdk_raw.Event.t option -> unit
   = "ml_gtk_cell_editable_start_editing"
 (** Begins editing on a [cell_editable].
 

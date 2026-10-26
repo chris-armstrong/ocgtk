@@ -1,9 +1,9 @@
 class type file_chooser_widget_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GFile_chooser.file_chooser_t
+  inherit File_chooser.file_chooser_t
 
   method on_desktop_folder :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -51,9 +51,9 @@ class type file_chooser_widget_t = object
   method set_search_mode : bool -> unit
   method show_time : bool
   method subtitle : string
-  method as_file_chooser_widget : File_chooser_widget.t
+  method as_file_chooser_widget : Raw.File_chooser_widget.t
 end
 
-class file_chooser_widget : File_chooser_widget.t -> file_chooser_widget_t
+class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
 
-val new_ : Gtk_enums.filechooseraction -> file_chooser_widget_t
+val new_ : Enums.filechooseraction -> file_chooser_widget_t

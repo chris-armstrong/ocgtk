@@ -53,7 +53,7 @@ external get_start_index : t -> int = "ml_pango_layout_line_get_start_index"
 (** Returns the start index of the line, as byte index into the text of the
     layout. *)
 
-external get_resolved_direction : t -> Pango_enums.direction
+external get_resolved_direction : t -> Ocpango_enums.direction
   = "ml_pango_layout_line_get_resolved_direction"
 (** Returns the resolved direction of the line. *)
 

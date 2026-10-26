@@ -10,13 +10,12 @@ type t = [ `css_section ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_css_section_get_type"
 
-external new_ :
-  Ocgtk_gio.Gio.Wrappers.File.t option -> Css_location.t -> Css_location.t -> t
+external new_ : Ocgio_raw.File.t option -> Css_location.t -> Css_location.t -> t
   = "ml_gtk_css_section_new"
 (** Create a new CssSection *)
 
 external new_with_bytes :
-  Ocgtk_gio.Gio.Wrappers.File.t option ->
+  Ocgio_raw.File.t option ->
   Glib_bytes.t option ->
   Css_location.t ->
   Css_location.t ->
@@ -46,8 +45,7 @@ external get_parent : t -> t option = "ml_gtk_css_section_get_parent"
     [GTK_CSS_SECTION_IMPORT] if it was loaded with an [@import] rule from a
     different file. *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_css_section_get_file"
+external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_css_section_get_file"
 (** Gets the file that [section] was parsed from.
 
     If no such file exists, for example because the CSS was loaded via

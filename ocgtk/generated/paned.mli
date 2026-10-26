@@ -1,10 +1,10 @@
 class type paned_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GAccessible_range.accessible_range_t
-  inherit GOrientable.orientable_t
+  inherit Accessible_range.accessible_range_t
+  inherit Orientable.orientable_t
 
   method on_accept_position :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
@@ -26,7 +26,7 @@ class type paned_t = object
 
   method on_move_handle :
     ?after:bool ->
-    callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+    callback:(scroll_type:Enums.scrolltype -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -35,7 +35,7 @@ class type paned_t = object
 
   method get_end_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -47,14 +47,14 @@ class type paned_t = object
 
   method get_start_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_wide_handle : unit -> bool
 
   method set_end_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -66,7 +66,7 @@ class type paned_t = object
   method set_shrink_start_child : bool -> unit
 
   method set_start_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -76,9 +76,9 @@ class type paned_t = object
   method min_position : int
   method position_set : bool
   method set_position_set : bool -> unit
-  method as_paned : Paned.t
+  method as_paned : Raw.Paned.t
 end
 
-class paned : Paned.t -> paned_t
+class paned : Raw.Paned.t -> paned_t
 
-val new_ : Gtk_enums.orientation -> paned_t
+val new_ : Enums.orientation -> paned_t

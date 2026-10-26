@@ -2,14 +2,14 @@
 (* Combined classes for cyclic dependencies *)
 
 class type socket_t = object
-  inherit GDatagram_based.datagram_based_t
-  inherit GInitable.initable_t
+  inherit Datagram_based.datagram_based_t
+  inherit Initable.initable_t
 
   method accept :
-    GCancellable.cancellable_t option -> (socket_t, GError.t) result
+    Cancellable.cancellable_t option -> (socket_t, GError.t) result
 
   method bind :
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_t ->
     bool ->
     (bool, GError.t) result
@@ -18,66 +18,66 @@ class type socket_t = object
   method close : unit -> (bool, GError.t) result
 
   method connect :
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_t ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (bool, GError.t) result
 
   method connection_factory_create_connection : unit -> socket_connection_t
   method get_available_bytes : unit -> int
   method get_blocking : unit -> bool
   method get_broadcast : unit -> bool
-  method get_credentials : unit -> (GCredentials.credentials_t, GError.t) result
-  method get_family : unit -> Gio_enums.socketfamily
+  method get_credentials : unit -> (Credentials.credentials_t, GError.t) result
+  method get_family : unit -> Enums.socketfamily
   method get_fd : unit -> int
   method get_keepalive : unit -> bool
   method get_listen_backlog : unit -> int
 
   method get_local_address :
     unit ->
-    ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
       .socket_address_t,
       GError.t )
     result
 
   method get_multicast_loopback : unit -> bool
   method get_multicast_ttl : unit -> int
-  method get_protocol : unit -> Gio_enums.socketprotocol
+  method get_protocol : unit -> Enums.socketprotocol
 
   method get_remote_address :
     unit ->
-    ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
       .socket_address_t,
       GError.t )
     result
 
-  method get_socket_type : unit -> Gio_enums.sockettype
+  method get_socket_type : unit -> Enums.sockettype
   method get_timeout : unit -> int
   method get_ttl : unit -> int
   method is_closed : unit -> bool
   method is_connected : unit -> bool
 
   method join_multicast_group :
-    GInet_address.inet_address_t ->
+    Inet_address.inet_address_t ->
     bool ->
     string option ->
     (bool, GError.t) result
 
   method join_multicast_group_ssm :
-    GInet_address.inet_address_t ->
-    GInet_address.inet_address_t option ->
+    Inet_address.inet_address_t ->
+    Inet_address.inet_address_t option ->
     string option ->
     (bool, GError.t) result
 
   method leave_multicast_group :
-    GInet_address.inet_address_t ->
+    Inet_address.inet_address_t ->
     bool ->
     string option ->
     (bool, GError.t) result
 
   method leave_multicast_group_ssm :
-    GInet_address.inet_address_t ->
-    GInet_address.inet_address_t option ->
+    Inet_address.inet_address_t ->
+    Inet_address.inet_address_t option ->
     string option ->
     (bool, GError.t) result
 
@@ -86,19 +86,19 @@ class type socket_t = object
   method receive_bytes :
     Gsize.t ->
     int64 ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (Glib_bytes.t, GError.t) result
 
   method send_message :
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_t
     option ->
-    Output_vector.t array ->
+    Raw.Output_vector.t array ->
     int ->
-    Socket_control_message.t array option ->
+    Raw.Socket_control_message.t array option ->
     int ->
     int ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (int, GError.t) result
 
   method set_blocking : bool -> unit
@@ -112,118 +112,108 @@ class type socket_t = object
   method set_ttl : int -> unit
   method shutdown : bool -> bool -> (bool, GError.t) result
   method speaks_ipv4 : unit -> bool
-  method type_ : Gio_enums.sockettype
-  method as_socket : Socket_and__socket_connection.Socket.t
+  method type_ : Enums.sockettype
+  method as_socket : Raw.Socket.t
 end
 
 and socket_connection_t = object
-  inherit GIo_stream.io_stream_t
+  inherit Io_stream.io_stream_t
 
   method connect :
-    GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_t ->
-    GCancellable.cancellable_t option ->
+    Cancellable.cancellable_t option ->
     (bool, GError.t) result
 
-  method connect_finish :
-    GAsync_result.async_result_t -> (bool, GError.t) result
+  method connect_finish : Async_result.async_result_t -> (bool, GError.t) result
 
   method get_local_address :
     unit ->
-    ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
       .socket_address_t,
       GError.t )
     result
 
   method get_remote_address :
     unit ->
-    ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
       .socket_address_t,
       GError.t )
     result
 
   method get_socket : unit -> socket_t
   method is_connected : unit -> bool
-
-  method as_socket_connection :
-    Socket_and__socket_connection.Socket_connection.t
+  method as_socket_connection : Raw.Socket_connection.t
 end
 
-class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t =
+class socket (obj : Raw.Socket.t) : socket_t =
   object (self)
-    inherit GDatagram_based.datagram_based (Datagram_based.from_gobject obj)
-    inherit GInitable.initable (Initable.from_gobject obj)
+    inherit Datagram_based.datagram_based (Raw.Datagram_based.from_gobject obj)
+    inherit Initable.initable (Raw.Initable.from_gobject obj)
 
     method accept :
-        GCancellable.cancellable_t option -> (socket_t, GError.t) result =
+        Cancellable.cancellable_t option -> (socket_t, GError.t) result =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new socket ret)
-          (Socket_and__socket_connection.Socket.accept obj cancellable)
+          (Raw.Socket.accept obj cancellable)
 
     method bind :
-        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        Socket_address_and__socket_address_enumerator_and__socket_connectable
         .socket_address_t ->
         bool ->
         (bool, GError.t) result =
       fun address allow_reuse ->
         let address = address#as_socket_address in
-        Socket_and__socket_connection.Socket.bind obj address allow_reuse
+        Raw.Socket.bind obj address allow_reuse
 
     method check_connect_result : unit -> (bool, GError.t) result =
-      fun () -> Socket_and__socket_connection.Socket.check_connect_result obj
+      fun () -> Raw.Socket.check_connect_result obj
 
     method close : unit -> (bool, GError.t) result =
-      fun () -> Socket_and__socket_connection.Socket.close obj
+      fun () -> Raw.Socket.close obj
 
     method connect :
-        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        Socket_address_and__socket_address_enumerator_and__socket_connectable
         .socket_address_t ->
-        GCancellable.cancellable_t option ->
+        Cancellable.cancellable_t option ->
         (bool, GError.t) result =
       fun address cancellable ->
         let address = address#as_socket_address in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        Socket_and__socket_connection.Socket.connect obj address cancellable
+        Raw.Socket.connect obj address cancellable
 
     method connection_factory_create_connection : unit -> socket_connection_t =
       fun () ->
         new socket_connection
-          (Socket_and__socket_connection.Socket
-           .connection_factory_create_connection obj)
+          (Raw.Socket.connection_factory_create_connection obj)
 
     method get_available_bytes : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_available_bytes obj
+      fun () -> Raw.Socket.get_available_bytes obj
 
-    method get_blocking : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.get_blocking obj
-
-    method get_broadcast : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.get_broadcast obj
+    method get_blocking : unit -> bool = fun () -> Raw.Socket.get_blocking obj
+    method get_broadcast : unit -> bool = fun () -> Raw.Socket.get_broadcast obj
 
     method get_credentials :
-        unit -> (GCredentials.credentials_t, GError.t) result =
+        unit -> (Credentials.credentials_t, GError.t) result =
       fun () ->
         Result.map
-          (fun ret -> new GCredentials.credentials ret)
-          (Socket_and__socket_connection.Socket.get_credentials obj)
+          (fun ret -> new Credentials.credentials ret)
+          (Raw.Socket.get_credentials obj)
 
-    method get_family : unit -> Gio_enums.socketfamily =
-      fun () -> Socket_and__socket_connection.Socket.get_family obj
+    method get_family : unit -> Enums.socketfamily =
+      fun () -> Raw.Socket.get_family obj
 
-    method get_fd : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_fd obj
-
-    method get_keepalive : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.get_keepalive obj
+    method get_fd : unit -> int = fun () -> Raw.Socket.get_fd obj
+    method get_keepalive : unit -> bool = fun () -> Raw.Socket.get_keepalive obj
 
     method get_listen_backlog : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_listen_backlog obj
+      fun () -> Raw.Socket.get_listen_backlog obj
 
     method get_local_address :
         unit ->
-        ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
           .socket_address_t,
           GError.t )
         result =
@@ -231,23 +221,23 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t =
         Result.map
           (fun ret ->
             new
-              GSocket_address_and__socket_address_enumerator_and__socket_connectable
+              Socket_address_and__socket_address_enumerator_and__socket_connectable
               .socket_address
               ret)
-          (Socket_and__socket_connection.Socket.get_local_address obj)
+          (Raw.Socket.get_local_address obj)
 
     method get_multicast_loopback : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.get_multicast_loopback obj
+      fun () -> Raw.Socket.get_multicast_loopback obj
 
     method get_multicast_ttl : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_multicast_ttl obj
+      fun () -> Raw.Socket.get_multicast_ttl obj
 
-    method get_protocol : unit -> Gio_enums.socketprotocol =
-      fun () -> Socket_and__socket_connection.Socket.get_protocol obj
+    method get_protocol : unit -> Enums.socketprotocol =
+      fun () -> Raw.Socket.get_protocol obj
 
     method get_remote_address :
         unit ->
-        ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
           .socket_address_t,
           GError.t )
         result =
@@ -255,39 +245,31 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t =
         Result.map
           (fun ret ->
             new
-              GSocket_address_and__socket_address_enumerator_and__socket_connectable
+              Socket_address_and__socket_address_enumerator_and__socket_connectable
               .socket_address
               ret)
-          (Socket_and__socket_connection.Socket.get_remote_address obj)
+          (Raw.Socket.get_remote_address obj)
 
-    method get_socket_type : unit -> Gio_enums.sockettype =
-      fun () -> Socket_and__socket_connection.Socket.get_socket_type obj
+    method get_socket_type : unit -> Enums.sockettype =
+      fun () -> Raw.Socket.get_socket_type obj
 
-    method get_timeout : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_timeout obj
-
-    method get_ttl : unit -> int =
-      fun () -> Socket_and__socket_connection.Socket.get_ttl obj
-
-    method is_closed : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.is_closed obj
-
-    method is_connected : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.is_connected obj
+    method get_timeout : unit -> int = fun () -> Raw.Socket.get_timeout obj
+    method get_ttl : unit -> int = fun () -> Raw.Socket.get_ttl obj
+    method is_closed : unit -> bool = fun () -> Raw.Socket.is_closed obj
+    method is_connected : unit -> bool = fun () -> Raw.Socket.is_connected obj
 
     method join_multicast_group :
-        GInet_address.inet_address_t ->
+        Inet_address.inet_address_t ->
         bool ->
         string option ->
         (bool, GError.t) result =
       fun group source_specific iface ->
         let group = group#as_inet_address in
-        Socket_and__socket_connection.Socket.join_multicast_group obj group
-          source_specific iface
+        Raw.Socket.join_multicast_group obj group source_specific iface
 
     method join_multicast_group_ssm :
-        GInet_address.inet_address_t ->
-        GInet_address.inet_address_t option ->
+        Inet_address.inet_address_t ->
+        Inet_address.inet_address_t option ->
         string option ->
         (bool, GError.t) result =
       fun group source_specific iface ->
@@ -295,22 +277,20 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t =
         let source_specific =
           Option.map (fun c -> c#as_inet_address) source_specific
         in
-        Socket_and__socket_connection.Socket.join_multicast_group_ssm obj group
-          source_specific iface
+        Raw.Socket.join_multicast_group_ssm obj group source_specific iface
 
     method leave_multicast_group :
-        GInet_address.inet_address_t ->
+        Inet_address.inet_address_t ->
         bool ->
         string option ->
         (bool, GError.t) result =
       fun group source_specific iface ->
         let group = group#as_inet_address in
-        Socket_and__socket_connection.Socket.leave_multicast_group obj group
-          source_specific iface
+        Raw.Socket.leave_multicast_group obj group source_specific iface
 
     method leave_multicast_group_ssm :
-        GInet_address.inet_address_t ->
-        GInet_address.inet_address_t option ->
+        Inet_address.inet_address_t ->
+        Inet_address.inet_address_t option ->
         string option ->
         (bool, GError.t) result =
       fun group source_specific iface ->
@@ -318,111 +298,95 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t =
         let source_specific =
           Option.map (fun c -> c#as_inet_address) source_specific
         in
-        Socket_and__socket_connection.Socket.leave_multicast_group_ssm obj group
-          source_specific iface
+        Raw.Socket.leave_multicast_group_ssm obj group source_specific iface
 
     method listen : unit -> (bool, GError.t) result =
-      fun () -> Socket_and__socket_connection.Socket.listen obj
+      fun () -> Raw.Socket.listen obj
 
     method receive_bytes :
         Gsize.t ->
         int64 ->
-        GCancellable.cancellable_t option ->
+        Cancellable.cancellable_t option ->
         (Glib_bytes.t, GError.t) result =
       fun size timeout_us cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        Socket_and__socket_connection.Socket.receive_bytes obj size timeout_us
-          cancellable
+        Raw.Socket.receive_bytes obj size timeout_us cancellable
 
     method send_message :
-        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        Socket_address_and__socket_address_enumerator_and__socket_connectable
         .socket_address_t
         option ->
-        Output_vector.t array ->
+        Raw.Output_vector.t array ->
         int ->
-        Socket_control_message.t array option ->
+        Raw.Socket_control_message.t array option ->
         int ->
         int ->
-        GCancellable.cancellable_t option ->
+        Cancellable.cancellable_t option ->
         (int, GError.t) result =
       fun address vectors num_vectors messages num_messages flags cancellable ->
         let address = Option.map (fun c -> c#as_socket_address) address in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        Socket_and__socket_connection.Socket.send_message obj address vectors
-          num_vectors messages num_messages flags cancellable
+        Raw.Socket.send_message obj address vectors num_vectors messages
+          num_messages flags cancellable
 
     method set_blocking : bool -> unit =
-      fun blocking ->
-        Socket_and__socket_connection.Socket.set_blocking obj blocking
+      fun blocking -> Raw.Socket.set_blocking obj blocking
 
     method set_broadcast : bool -> unit =
-      fun broadcast ->
-        Socket_and__socket_connection.Socket.set_broadcast obj broadcast
+      fun broadcast -> Raw.Socket.set_broadcast obj broadcast
 
     method set_keepalive : bool -> unit =
-      fun keepalive ->
-        Socket_and__socket_connection.Socket.set_keepalive obj keepalive
+      fun keepalive -> Raw.Socket.set_keepalive obj keepalive
 
     method set_listen_backlog : int -> unit =
-      fun backlog ->
-        Socket_and__socket_connection.Socket.set_listen_backlog obj backlog
+      fun backlog -> Raw.Socket.set_listen_backlog obj backlog
 
     method set_multicast_loopback : bool -> unit =
-      fun loopback ->
-        Socket_and__socket_connection.Socket.set_multicast_loopback obj loopback
+      fun loopback -> Raw.Socket.set_multicast_loopback obj loopback
 
     method set_multicast_ttl : int -> unit =
-      fun ttl -> Socket_and__socket_connection.Socket.set_multicast_ttl obj ttl
+      fun ttl -> Raw.Socket.set_multicast_ttl obj ttl
 
     method set_option : int -> int -> int -> (bool, GError.t) result =
-      fun level optname value ->
-        Socket_and__socket_connection.Socket.set_option obj level optname value
+      fun level optname value -> Raw.Socket.set_option obj level optname value
 
     method set_timeout : int -> unit =
-      fun timeout ->
-        Socket_and__socket_connection.Socket.set_timeout obj timeout
+      fun timeout -> Raw.Socket.set_timeout obj timeout
 
-    method set_ttl : int -> unit =
-      fun ttl -> Socket_and__socket_connection.Socket.set_ttl obj ttl
+    method set_ttl : int -> unit = fun ttl -> Raw.Socket.set_ttl obj ttl
 
     method shutdown : bool -> bool -> (bool, GError.t) result =
       fun shutdown_read shutdown_write ->
-        Socket_and__socket_connection.Socket.shutdown obj shutdown_read
-          shutdown_write
+        Raw.Socket.shutdown obj shutdown_read shutdown_write
 
-    method speaks_ipv4 : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket.speaks_ipv4 obj
-
-    method type_ = Socket_and__socket_connection.Socket.get_type obj
+    method speaks_ipv4 : unit -> bool = fun () -> Raw.Socket.speaks_ipv4 obj
+    method type_ = Raw.Socket.get_type obj
     method as_socket = obj
   end
 
-and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) :
-  socket_connection_t =
+and socket_connection (obj : Raw.Socket_connection.t) : socket_connection_t =
   object (self)
-    inherit GIo_stream.io_stream (obj :> Io_stream.t)
+    inherit Io_stream.io_stream (obj :> Raw.Io_stream.t)
 
     method connect :
-        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        Socket_address_and__socket_address_enumerator_and__socket_connectable
         .socket_address_t ->
-        GCancellable.cancellable_t option ->
+        Cancellable.cancellable_t option ->
         (bool, GError.t) result =
       fun address cancellable ->
         let address = address#as_socket_address in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        Socket_and__socket_connection.Socket_connection.connect obj address
-          cancellable
+        Raw.Socket_connection.connect obj address cancellable
 
     method connect_finish :
-        GAsync_result.async_result_t -> (bool, GError.t) result =
+        Async_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        Socket_and__socket_connection.Socket_connection.connect_finish obj
-          result
+        Raw.Socket_connection.connect_finish obj result
 
     method get_local_address :
         unit ->
-        ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
           .socket_address_t,
           GError.t )
         result =
@@ -430,14 +394,14 @@ and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) 
         Result.map
           (fun ret ->
             new
-              GSocket_address_and__socket_address_enumerator_and__socket_connectable
+              Socket_address_and__socket_address_enumerator_and__socket_connectable
               .socket_address
               ret)
-          (Socket_and__socket_connection.Socket_connection.get_local_address obj)
+          (Raw.Socket_connection.get_local_address obj)
 
     method get_remote_address :
         unit ->
-        ( GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
           .socket_address_t,
           GError.t )
         result =
@@ -445,28 +409,25 @@ and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) 
         Result.map
           (fun ret ->
             new
-              GSocket_address_and__socket_address_enumerator_and__socket_connectable
+              Socket_address_and__socket_address_enumerator_and__socket_connectable
               .socket_address
               ret)
-          (Socket_and__socket_connection.Socket_connection.get_remote_address
-             obj)
+          (Raw.Socket_connection.get_remote_address obj)
 
     method get_socket : unit -> socket_t =
-      fun () ->
-        new socket
-          (Socket_and__socket_connection.Socket_connection.get_socket obj)
+      fun () -> new socket (Raw.Socket_connection.get_socket obj)
 
     method is_connected : unit -> bool =
-      fun () -> Socket_and__socket_connection.Socket_connection.is_connected obj
+      fun () -> Raw.Socket_connection.is_connected obj
 
     method as_socket_connection = obj
   end
 
-let new_ (family : Gio_enums.socketfamily) (type_ : Gio_enums.sockettype)
-    (protocol : Gio_enums.socketprotocol) : (socket_t, GError.t) result =
-  let obj_ = Socket_and__socket_connection.Socket.new_ family type_ protocol in
+let new_ (family : Enums.socketfamily) (type_ : Enums.sockettype)
+    (protocol : Enums.socketprotocol) : (socket_t, GError.t) result =
+  let obj_ = Raw.Socket.new_ family type_ protocol in
   Result.map (fun obj_ -> new socket obj_) obj_
 
 let new_from_fd (fd : int) : (socket_t, GError.t) result =
-  let obj_ = Socket_and__socket_connection.Socket.new_from_fd fd in
+  let obj_ = Raw.Socket.new_from_fd fd in
   Result.map (fun obj_ -> new socket obj_) obj_

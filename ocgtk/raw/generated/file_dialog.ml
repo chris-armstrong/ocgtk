@@ -34,12 +34,12 @@ external set_initial_name : t -> string option -> unit
     If a file with this name already exists in the directory set via
     [Gtk.FileDialog:initial-folder], the dialog will preselect it. *)
 
-external set_initial_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_initial_folder : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_file_dialog_set_initial_folder"
 (** Sets the folder that will be set as the initial folder in the file chooser
     dialog. *)
 
-external set_initial_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_initial_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_file_dialog_set_initial_file"
 (** Sets the file that will be initially selected in the file chooser dialog.
 
@@ -47,7 +47,7 @@ external set_initial_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
     [Gtk.FileDialog.set_initial_folder] and [Gtk.FileDialog.set_initial_name]
     with the directory and name of [file], respectively. *)
 
-external set_filters : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
+external set_filters : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_file_dialog_set_filters"
 (** Sets the filters that will be offered to the user in the file chooser
     dialog. *)
@@ -67,9 +67,7 @@ external set_accept_label : t -> string option -> unit
     default label, depending on what API is used to launch the file dialog. *)
 
 external select_multiple_folders_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.List_model.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.List_model.t, GError.t) result
   = "ml_gtk_file_dialog_select_multiple_folders_finish"
 (** Finishes the [Gtk.FileDialog.select_multiple_folders] call.
 
@@ -77,9 +75,7 @@ external select_multiple_folders_finish :
     user cancels the dialog. *)
 
 external select_folder_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.File.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.File.t, GError.t) result
   = "ml_gtk_file_dialog_select_folder_finish"
 (** Finishes the [Gtk.FileDialog.select_folder] call.
 
@@ -87,9 +83,7 @@ external select_folder_finish :
     user cancels the dialog. *)
 
 external save_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.File.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.File.t, GError.t) result
   = "ml_gtk_file_dialog_save_finish"
 (** Finishes the [Gtk.FileDialog.save] call.
 
@@ -97,9 +91,7 @@ external save_finish :
     user cancels the dialog. *)
 
 external open_multiple_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.List_model.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.List_model.t, GError.t) result
   = "ml_gtk_file_dialog_open_multiple_finish"
 (** Finishes the [Gtk.FileDialog.open] call.
 
@@ -107,9 +99,7 @@ external open_multiple_finish :
     user cancels the dialog. *)
 
 external open_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.File.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgio_raw.File.t, GError.t) result
   = "ml_gtk_file_dialog_open_finish"
 (** Finishes the [Gtk.FileDialog.open] call.
 
@@ -127,16 +117,16 @@ external get_initial_name : t -> string option
   = "ml_gtk_file_dialog_get_initial_name"
 (** Gets the filename that will be initially selected. *)
 
-external get_initial_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_initial_folder : t -> Ocgio_raw.File.t option
   = "ml_gtk_file_dialog_get_initial_folder"
 (** Gets the folder that will be set as the initial folder in the file chooser
     dialog. *)
 
-external get_initial_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
+external get_initial_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_file_dialog_get_initial_file"
 (** Gets the file that will be initially selected in the file chooser dialog. *)
 
-external get_filters : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_filters : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_file_dialog_get_filters"
 (** Gets the filters that will be offered to the user in the file chooser
     dialog. *)

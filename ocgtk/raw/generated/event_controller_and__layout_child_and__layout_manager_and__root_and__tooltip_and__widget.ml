@@ -12,14 +12,14 @@ module rec Event_controller : sig
     = "ml_gtk_event_controller_set_static_name"
   (** Sets a name on the controller that can be used for debugging. *)
 
-  external set_propagation_phase : t -> Gtk_enums.propagationphase -> unit
+  external set_propagation_phase : t -> Ocgtk_enums.propagationphase -> unit
     = "ml_gtk_event_controller_set_propagation_phase"
   (** Sets the propagation phase at which a controller handles events.
 
       If [phase] is [GTK_PHASE_NONE], no automatic event handling will be
       performed, but other additional gesture maintenance will. *)
 
-  external set_propagation_limit : t -> Gtk_enums.propagationlimit -> unit
+  external set_propagation_limit : t -> Ocgtk_enums.propagationlimit -> unit
     = "ml_gtk_event_controller_set_propagation_limit"
   (** Sets the event propagation limit on the event controller.
 
@@ -38,11 +38,11 @@ module rec Event_controller : sig
     = "ml_gtk_event_controller_get_widget"
   (** Returns the [GtkWidget] this controller relates to. *)
 
-  external get_propagation_phase : t -> Gtk_enums.propagationphase
+  external get_propagation_phase : t -> Ocgtk_enums.propagationphase
     = "ml_gtk_event_controller_get_propagation_phase"
   (** Gets the propagation phase at which [controller] handles events. *)
 
-  external get_propagation_limit : t -> Gtk_enums.propagationlimit
+  external get_propagation_limit : t -> Ocgtk_enums.propagationlimit
     = "ml_gtk_event_controller_get_propagation_limit"
   (** Gets the propagation limit of the event controller. *)
 
@@ -56,22 +56,21 @@ module rec Event_controller : sig
 
       At other times, 0 is returned. *)
 
-  external get_current_event_state : t -> Ocgtk_gdk.Gdk.modifiertype
+  external get_current_event_state : t -> Ocgdk_enums.modifiertype
     = "ml_gtk_event_controller_get_current_event_state"
   (** Returns the modifier state of the event that is currently being handled by
       the controller.
 
       At other times, 0 is returned. *)
 
-  external get_current_event_device :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Device.t option
+  external get_current_event_device : t -> Ocgdk_raw.Device.t option
     = "ml_gtk_event_controller_get_current_event_device"
   (** Returns the device of the event that is currently being handled by the
       controller.
 
       At other times, [NULL] is returned. *)
 
-  external get_current_event : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option
+  external get_current_event : t -> Ocgdk_raw.Event.t option
     = "ml_gtk_event_controller_get_current_event"
   (** Returns the event that is currently being handled by the controller.
 
@@ -89,14 +88,14 @@ end = struct
     = "ml_gtk_event_controller_set_static_name"
   (** Sets a name on the controller that can be used for debugging. *)
 
-  external set_propagation_phase : t -> Gtk_enums.propagationphase -> unit
+  external set_propagation_phase : t -> Ocgtk_enums.propagationphase -> unit
     = "ml_gtk_event_controller_set_propagation_phase"
   (** Sets the propagation phase at which a controller handles events.
 
       If [phase] is [GTK_PHASE_NONE], no automatic event handling will be
       performed, but other additional gesture maintenance will. *)
 
-  external set_propagation_limit : t -> Gtk_enums.propagationlimit -> unit
+  external set_propagation_limit : t -> Ocgtk_enums.propagationlimit -> unit
     = "ml_gtk_event_controller_set_propagation_limit"
   (** Sets the event propagation limit on the event controller.
 
@@ -115,11 +114,11 @@ end = struct
     = "ml_gtk_event_controller_get_widget"
   (** Returns the [GtkWidget] this controller relates to. *)
 
-  external get_propagation_phase : t -> Gtk_enums.propagationphase
+  external get_propagation_phase : t -> Ocgtk_enums.propagationphase
     = "ml_gtk_event_controller_get_propagation_phase"
   (** Gets the propagation phase at which [controller] handles events. *)
 
-  external get_propagation_limit : t -> Gtk_enums.propagationlimit
+  external get_propagation_limit : t -> Ocgtk_enums.propagationlimit
     = "ml_gtk_event_controller_get_propagation_limit"
   (** Gets the propagation limit of the event controller. *)
 
@@ -133,22 +132,21 @@ end = struct
 
       At other times, 0 is returned. *)
 
-  external get_current_event_state : t -> Ocgtk_gdk.Gdk.modifiertype
+  external get_current_event_state : t -> Ocgdk_enums.modifiertype
     = "ml_gtk_event_controller_get_current_event_state"
   (** Returns the modifier state of the event that is currently being handled by
       the controller.
 
       At other times, 0 is returned. *)
 
-  external get_current_event_device :
-    t -> Ocgtk_gdk.Gdk.Wrappers.Device.t option
+  external get_current_event_device : t -> Ocgdk_raw.Device.t option
     = "ml_gtk_event_controller_get_current_event_device"
   (** Returns the device of the event that is currently being handled by the
       controller.
 
       At other times, [NULL] is returned. *)
 
-  external get_current_event : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option
+  external get_current_event : t -> Ocgdk_raw.Event.t option
     = "ml_gtk_event_controller_get_current_event"
   (** Returns the event that is currently being handled by the controller.
 
@@ -201,7 +199,7 @@ and Layout_manager : sig
   (* Methods *)
 
   external measure :
-    t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int
+    t -> Widget.t -> Ocgtk_enums.orientation -> int -> int * int * int * int
     = "ml_gtk_layout_manager_measure"
   (** Measures the size of the [widget] using [manager], for the given
       [orientation] and size.
@@ -219,7 +217,7 @@ and Layout_manager : sig
     = "ml_gtk_layout_manager_get_widget"
   (** Retrieves the [GtkWidget] using the given [GtkLayoutManager]. *)
 
-  external get_request_mode : t -> Gtk_enums.sizerequestmode
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
     = "ml_gtk_layout_manager_get_request_mode"
   (** Retrieves the request mode of [manager]. *)
 
@@ -247,7 +245,7 @@ end = struct
   (* Methods *)
 
   external measure :
-    t -> Widget.t -> Gtk_enums.orientation -> int -> int * int * int * int
+    t -> Widget.t -> Ocgtk_enums.orientation -> int -> int * int * int * int
     = "ml_gtk_layout_manager_measure"
   (** Measures the size of the [widget] using [manager], for the given
       [orientation] and size.
@@ -265,7 +263,7 @@ end = struct
     = "ml_gtk_layout_manager_get_widget"
   (** Retrieves the [GtkWidget] using the given [GtkLayoutManager]. *)
 
-  external get_request_mode : t -> Gtk_enums.sizerequestmode
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
     = "ml_gtk_layout_manager_get_request_mode"
   (** Retrieves the request mode of [manager]. *)
 
@@ -311,8 +309,7 @@ and Root : sig
       active; if the root is not focused then [gtk_widget_has_focus (widget)]
       will be [FALSE] for the widget. *)
 
-  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
-    = "ml_gtk_root_get_display"
+  external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_root_get_display"
   (** Returns the display that this [GtkRoot] is on. *)
 end = struct
   type t = [ `root ] Gobject.obj
@@ -338,8 +335,7 @@ end = struct
       active; if the root is not focused then [gtk_widget_has_focus (widget)]
       will be [FALSE] for the widget. *)
 
-  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
-    = "ml_gtk_root_get_display"
+  external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_root_get_display"
   (** Returns the display that this [GtkRoot] is on. *)
 end
 
@@ -350,7 +346,7 @@ and Tooltip : sig
 
   (* Methods *)
 
-  external set_tip_area : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> unit
+  external set_tip_area : t -> Ocgdk_raw.Rectangle.t -> unit
     = "ml_gtk_tooltip_set_tip_area"
   (** Sets the area of the widget, where the contents of this tooltip apply, to
       be [rect] (in widget coordinates). This is especially useful for properly
@@ -378,14 +374,13 @@ and Tooltip : sig
       icon indicated by [icon_name] with the size indicated by [size]. If
       [icon_name] is [NULL], the image will be hidden. *)
 
-  external set_icon_from_gicon :
-    t -> Ocgtk_gio.Gio.Wrappers.Icon.t option -> unit
+  external set_icon_from_gicon : t -> Ocgio_raw.Icon.t option -> unit
     = "ml_gtk_tooltip_set_icon_from_gicon"
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [gicon] with the size indicated by [size]. If [gicon] is
       [NULL], the image will be hidden. *)
 
-  external set_icon : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit
+  external set_icon : t -> Ocgdk_raw.Paintable.t option -> unit
     = "ml_gtk_tooltip_set_icon"
   (** Sets the icon of the tooltip (which is in front of the text) to be
       [paintable]. If [paintable] is [NULL], the image will be hidden. *)
@@ -404,7 +399,7 @@ end = struct
 
   (* Methods *)
 
-  external set_tip_area : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> unit
+  external set_tip_area : t -> Ocgdk_raw.Rectangle.t -> unit
     = "ml_gtk_tooltip_set_tip_area"
   (** Sets the area of the widget, where the contents of this tooltip apply, to
       be [rect] (in widget coordinates). This is especially useful for properly
@@ -432,14 +427,13 @@ end = struct
       icon indicated by [icon_name] with the size indicated by [size]. If
       [icon_name] is [NULL], the image will be hidden. *)
 
-  external set_icon_from_gicon :
-    t -> Ocgtk_gio.Gio.Wrappers.Icon.t option -> unit
+  external set_icon_from_gicon : t -> Ocgio_raw.Icon.t option -> unit
     = "ml_gtk_tooltip_set_icon_from_gicon"
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [gicon] with the size indicated by [size]. If [gicon] is
       [NULL], the image will be hidden. *)
 
-  external set_icon : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit
+  external set_icon : t -> Ocgdk_raw.Paintable.t option -> unit
     = "ml_gtk_tooltip_set_icon"
   (** Sets the icon of the tooltip (which is in front of the text) to be
       [paintable]. If [paintable] is [NULL], the image will be hidden. *)
@@ -460,7 +454,7 @@ and Widget : sig
 
   (* Methods *)
 
-  external unset_state_flags : t -> Gtk_enums.stateflags -> unit
+  external unset_state_flags : t -> Ocgtk_enums.stateflags -> unit
     = "ml_gtk_widget_unset_state_flags"
   (** Turns off flag values for the current widget state.
 
@@ -550,7 +544,7 @@ and Widget : sig
 
       See [Gtk.Widget.set_hexpand] for more detail. *)
 
-  external set_valign : t -> Gtk_enums.align -> unit
+  external set_valign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_valign"
   (** Sets the vertical alignment of the widget. *)
 
@@ -578,7 +572,7 @@ and Widget : sig
 
       See also [Gtk.Tooltip.set_markup]. *)
 
-  external set_state_flags : t -> Gtk_enums.stateflags -> bool -> unit
+  external set_state_flags : t -> Ocgtk_enums.stateflags -> bool -> unit
     = "ml_gtk_widget_set_state_flags"
   (** Turns on flag values in the current widget state.
 
@@ -645,7 +639,7 @@ and Widget : sig
       This function is useful only when implementing subclasses of [GtkWidget].
   *)
 
-  external set_overflow : t -> Gtk_enums.overflow -> unit
+  external set_overflow : t -> Ocgtk_enums.overflow -> unit
     = "ml_gtk_widget_set_overflow"
   (** Sets how the widget treats content that is drawn outside the it's content
       area.
@@ -758,20 +752,18 @@ and Widget : sig
   external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
   (** Sets the [has-tooltip] property on the widget. *)
 
-  external set_halign : t -> Gtk_enums.align -> unit
+  external set_halign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_halign"
   (** Sets the horizontal alignment of the widget. *)
 
-  external set_font_options :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option -> unit
+  external set_font_options : t -> Occairo_raw.Font_options.t option -> unit
     = "ml_gtk_widget_set_font_options"
   (** Sets the [cairo_font_options_t] used for text rendering in the widget.
 
       When not set, the default font options for the [GdkDisplay] will be used.
   *)
 
-  external set_font_map :
-    t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit
+  external set_font_map : t -> Ocpango_raw.Font_map.t option -> unit
     = "ml_gtk_widget_set_font_map"
   (** Sets the font map to use for text rendering in the widget.
 
@@ -812,7 +804,7 @@ and Widget : sig
       certain widget to get the input focus, call [Gtk.Widget.grab_focus] on it.
   *)
 
-  external set_direction : t -> Gtk_enums.textdirection -> unit
+  external set_direction : t -> Ocgtk_enums.textdirection -> unit
     = "ml_gtk_widget_set_direction"
   (** Sets the reading direction on the widget.
 
@@ -841,7 +833,7 @@ and Widget : sig
       On top of that, this function allows [name] to be [NULL], which will do
       the same as calling [Gtk.Widget.set_cursor] with a [NULL] cursor. *)
 
-  external set_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option -> unit
+  external set_cursor : t -> Ocgdk_raw.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
@@ -966,7 +958,7 @@ and Widget : sig
 
       This function is only for use in widget implementations. *)
 
-  external pick : t -> float -> float -> Gtk_enums.pickflags -> t option
+  external pick : t -> float -> float -> Ocgtk_enums.pickflags -> t option
     = "ml_gtk_widget_pick"
   (** Finds the descendant of the widget closest to a point.
 
@@ -981,7 +973,7 @@ and Widget : sig
       This function is used on the toplevel to determine the widget below the
       mouse cursor for purposes of hover highlighting and delivering events. *)
 
-  external observe_controllers : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external observe_controllers : t -> Ocgio_raw.List_model.t
     = "ml_gtk_widget_observe_controllers"
   (** Returns a list model to track the event controllers of the widget.
 
@@ -992,7 +984,7 @@ and Widget : sig
       Applications should try hard to avoid calling this function because of the
       slowdowns. *)
 
-  external observe_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external observe_children : t -> Ocgio_raw.List_model.t
     = "ml_gtk_widget_observe_children"
   (** Returns a list model to track the children of the widget.
 
@@ -1007,7 +999,8 @@ and Widget : sig
     = "ml_gtk_widget_mnemonic_activate"
   (** Emits the [Gtk.Widget::mnemonic-activate] signal. *)
 
-  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int
+  external measure :
+    t -> Ocgtk_enums.orientation -> int -> int * int * int * int
     = "ml_gtk_widget_measure"
   (** Measures [widget] in the orientation [orientation] and for the given
       [for_size].
@@ -1037,7 +1030,7 @@ and Widget : sig
       [g_list_foreach (result, (GFunc)g_object_ref, NULL)] first, and then unref
       all the widgets afterwards. *)
 
-  external keynav_failed : t -> Gtk_enums.directiontype -> bool
+  external keynav_failed : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_keynav_failed"
   (** Emits the [Gtk.Widget::keynav-failed] signal on the widget.
 
@@ -1132,7 +1125,7 @@ and Widget : sig
       just using a widget, you {i must} use its own API for adding children. *)
 
   external insert_action_group :
-    t -> string -> Ocgtk_gio.Gio.Wrappers.Action_group.t option -> unit
+    t -> string -> Ocgio_raw.Action_group.t option -> unit
     = "ml_gtk_widget_insert_action_group"
   (** Inserts an action group into the widget's actions.
 
@@ -1245,7 +1238,7 @@ and Widget : sig
 
       See [Gtk.Widget.get_hexpand] for more detail. *)
 
-  external get_valign : t -> Gtk_enums.align = "ml_gtk_widget_get_valign"
+  external get_valign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_valign"
   (** Gets the vertical alignment of the widget. *)
 
   external get_tooltip_text : t -> string option
@@ -1282,7 +1275,7 @@ and Widget : sig
       The returned object is guaranteed to be the same for the lifetime of
       [widget]. *)
 
-  external get_state_flags : t -> Gtk_enums.stateflags
+  external get_state_flags : t -> Ocgtk_enums.stateflags
     = "ml_gtk_widget_get_state_flags"
   (** Returns the widget state as a flag set.
 
@@ -1306,7 +1299,7 @@ and Widget : sig
       To get the size a widget will actually request, call [Gtk.Widget.measure]
       instead of this function. *)
 
-  external get_size : t -> Gtk_enums.orientation -> int
+  external get_size : t -> Ocgtk_enums.orientation -> int
     = "ml_gtk_widget_get_size"
   (** Returns the content width or height of the widget.
 
@@ -1359,7 +1352,7 @@ and Widget : sig
 
       [GtkRoot] widgets will return themselves here. *)
 
-  external get_request_mode : t -> Gtk_enums.sizerequestmode
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
     = "ml_gtk_widget_get_request_mode"
   (** Gets whether the widget prefers a height-for-width layout or a
       width-for-height layout.
@@ -1379,7 +1372,7 @@ and Widget : sig
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
   (** Determines whether the widget is realized. *)
 
-  external get_primary_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
+  external get_primary_clipboard : t -> Ocgdk_raw.Clipboard.t
     = "ml_gtk_widget_get_primary_clipboard"
   (** Gets the primary clipboard of the widget.
 
@@ -1414,7 +1407,7 @@ and Widget : sig
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
   (** Returns the parent widget of the widget. *)
 
-  external get_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+  external get_pango_context : t -> Ocpango_raw.Context.t
     = "ml_gtk_widget_get_pango_context"
   (** Gets a [PangoContext] that is configured for the widget.
 
@@ -1428,7 +1421,8 @@ and Widget : sig
       tracked by listening to changes of the [Gtk.Widget:root] property on the
       widget. *)
 
-  external get_overflow : t -> Gtk_enums.overflow = "ml_gtk_widget_get_overflow"
+  external get_overflow : t -> Ocgtk_enums.overflow
+    = "ml_gtk_widget_get_overflow"
   (** Returns the widget’s overflow value. *)
 
   external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
@@ -1524,7 +1518,7 @@ and Widget : sig
   external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
   (** Returns the current value of the [has-tooltip] property. *)
 
-  external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
+  external get_halign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_halign"
   (** Gets the horizontal alignment of the widget.
 
       For backwards compatibility reasons this method will never return one of
@@ -1533,7 +1527,7 @@ and Widget : sig
 
       Baselines are not supported for horizontal alignment. *)
 
-  external get_frame_clock : t -> Ocgtk_gdk.Gdk.Wrappers.Frame_clock.t option
+  external get_frame_clock : t -> Ocgdk_raw.Frame_clock.t option
     = "ml_gtk_widget_get_frame_clock"
   (** Obtains the frame clock for a widget.
 
@@ -1558,14 +1552,13 @@ and Widget : sig
 
       Unrealized widgets do not have a frame clock. *)
 
-  external get_font_options :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option
+  external get_font_options : t -> Occairo_raw.Font_options.t option
     = "ml_gtk_widget_get_font_options"
   (** Returns the [cairo_font_options_t] of the widget.
 
       Seee [Gtk.Widget.set_font_options]. *)
 
-  external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
+  external get_font_map : t -> Ocpango_raw.Font_map.t option
     = "ml_gtk_widget_get_font_map"
   (** Gets the font map of the widget.
 
@@ -1590,8 +1583,7 @@ and Widget : sig
 
       This function is primarily meant for widget implementations. *)
 
-  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
-    = "ml_gtk_widget_get_display"
+  external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_widget_get_display"
   (** Get the display for the window that the widget belongs to.
 
       This function can only be called after the widget has been added to a
@@ -1601,13 +1593,13 @@ and Widget : sig
       widget has been realized, and you should free those resources when the
       widget is unrealized. *)
 
-  external get_direction : t -> Gtk_enums.textdirection
+  external get_direction : t -> Ocgtk_enums.textdirection
     = "ml_gtk_widget_get_direction"
   (** Gets the reading direction for the widget.
 
       See [Gtk.Widget.set_direction]. *)
 
-  external get_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option
+  external get_cursor : t -> Ocgdk_raw.Cursor.t option
     = "ml_gtk_widget_get_cursor"
   (** Gets the cursor set on the widget.
 
@@ -1619,14 +1611,13 @@ and Widget : sig
   external get_css_classes : t -> string array = "ml_gtk_widget_get_css_classes"
   (** Returns the list of style classes applied to the widget. *)
 
-  external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-    = "ml_gtk_widget_get_color"
+  external get_color : t -> Ocgdk_raw.Rgb_a.t = "ml_gtk_widget_get_color"
   (** Gets the current foreground color for the widget’s style.
 
       This function should only be used in snapshot implementations that need to
       do custom drawing with the foreground color. *)
 
-  external get_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
+  external get_clipboard : t -> Ocgdk_raw.Clipboard.t
     = "ml_gtk_widget_get_clipboard"
   (** Gets the clipboard object for the widget.
 
@@ -1733,8 +1724,7 @@ and Widget : sig
       }
       ]} *)
 
-  external create_pango_layout :
-    t -> string option -> Ocgtk_pango.Pango.Wrappers.Layout.t
+  external create_pango_layout : t -> string option -> Ocpango_raw.Layout.t
     = "ml_gtk_widget_create_pango_layout"
   (** Creates a new [PangoLayout] that is configured for the widget.
 
@@ -1746,7 +1736,7 @@ and Widget : sig
       tracked by listening to changes of the [Gtk.Widget:root] property on the
       widget. *)
 
-  external create_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+  external create_pango_context : t -> Ocpango_raw.Context.t
     = "ml_gtk_widget_create_pango_context"
   (** Creates a new [PangoContext] that is configured for the widget.
 
@@ -1761,8 +1751,7 @@ and Widget : sig
       The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
       assumed to be the top left of [widget]'s content area. *)
 
-  external compute_transform :
-    t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Matrix.t
+  external compute_transform : t -> t -> bool * Ocgraphene_raw.Matrix.t
     = "ml_gtk_widget_compute_transform"
   (** Computes a matrix suitable to describe a transformation from [widget]'s
       coordinate system into [target]'s coordinate system.
@@ -1775,10 +1764,7 @@ and Widget : sig
       overview. *)
 
   external compute_point :
-    t ->
-    t ->
-    Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-    bool * Ocgtk_graphene.Graphene.Wrappers.Point.t
+    t -> t -> Ocgraphene_raw.Point.t -> bool * Ocgraphene_raw.Point.t
     = "ml_gtk_widget_compute_point"
   (** Translates the given [point] in [widget]'s coordinates to coordinates in
       [target]’s coordinate system.
@@ -1787,7 +1773,7 @@ and Widget : sig
       ancestor. If that is not the case, [out_point] is set to (0, 0) and false
       is returned. *)
 
-  external compute_expand : t -> Gtk_enums.orientation -> bool
+  external compute_expand : t -> Ocgtk_enums.orientation -> bool
     = "ml_gtk_widget_compute_expand"
   (** Computes whether a parent widget should give this widget extra space when
       possible.
@@ -1803,8 +1789,7 @@ and Widget : sig
       the widget itself, or, if none has been explicitly set, the widget may
       expand if some of its children do. *)
 
-  external compute_bounds :
-    t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external compute_bounds : t -> t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gtk_widget_compute_bounds"
   (** Computes the bounds for [widget] in the coordinate space of [target].
 
@@ -1818,7 +1803,7 @@ and Widget : sig
 
       It is valid for [widget] and [target] to be the same widget. *)
 
-  external child_focus : t -> Gtk_enums.directiontype -> bool
+  external child_focus : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_child_focus"
   (** Called by widgets as the user moves around the window using keyboard
       shortcuts.
@@ -1842,7 +1827,7 @@ and Widget : sig
       particular widget. *)
 
   external allocate :
-    t -> int -> int -> int -> Ocgtk_gsk.Gsk.Wrappers.Transform.t option -> unit
+    t -> int -> int -> int -> Ocgsk_raw.Transform.t option -> unit
     = "ml_gtk_widget_allocate"
   (** Assigns size, position, (optionally) a baseline and transform to a child
       widget.
@@ -1945,7 +1930,7 @@ and Widget : sig
   val on_direction_changed :
     ?after:bool ->
     t ->
-    callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    callback:(previous_direction:Ocgtk_enums.textdirection -> unit) ->
     Gobject.Signal.handler_id
 
   val on_hide :
@@ -1954,7 +1939,7 @@ and Widget : sig
   val on_keynav_failed :
     ?after:bool ->
     t ->
-    callback:(direction:Gtk_enums.directiontype -> bool) ->
+    callback:(direction:Ocgtk_enums.directiontype -> bool) ->
     Gobject.Signal.handler_id
 
   val on_map :
@@ -1969,7 +1954,7 @@ and Widget : sig
   val on_move_focus :
     ?after:bool ->
     t ->
-    callback:(direction:Gtk_enums.directiontype -> unit) ->
+    callback:(direction:Ocgtk_enums.directiontype -> unit) ->
     Gobject.Signal.handler_id
 
   val on_query_tooltip :
@@ -1987,7 +1972,7 @@ and Widget : sig
   val on_state_flags_changed :
     ?after:bool ->
     t ->
-    callback:(flags:Gtk_enums.stateflags -> unit) ->
+    callback:(flags:Ocgtk_enums.stateflags -> unit) ->
     Gobject.Signal.handler_id
 
   val on_unmap :
@@ -2002,7 +1987,7 @@ end = struct
 
   (* Methods *)
 
-  external unset_state_flags : t -> Gtk_enums.stateflags -> unit
+  external unset_state_flags : t -> Ocgtk_enums.stateflags -> unit
     = "ml_gtk_widget_unset_state_flags"
   (** Turns off flag values for the current widget state.
 
@@ -2092,7 +2077,7 @@ end = struct
 
       See [Gtk.Widget.set_hexpand] for more detail. *)
 
-  external set_valign : t -> Gtk_enums.align -> unit
+  external set_valign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_valign"
   (** Sets the vertical alignment of the widget. *)
 
@@ -2120,7 +2105,7 @@ end = struct
 
       See also [Gtk.Tooltip.set_markup]. *)
 
-  external set_state_flags : t -> Gtk_enums.stateflags -> bool -> unit
+  external set_state_flags : t -> Ocgtk_enums.stateflags -> bool -> unit
     = "ml_gtk_widget_set_state_flags"
   (** Turns on flag values in the current widget state.
 
@@ -2187,7 +2172,7 @@ end = struct
       This function is useful only when implementing subclasses of [GtkWidget].
   *)
 
-  external set_overflow : t -> Gtk_enums.overflow -> unit
+  external set_overflow : t -> Ocgtk_enums.overflow -> unit
     = "ml_gtk_widget_set_overflow"
   (** Sets how the widget treats content that is drawn outside the it's content
       area.
@@ -2300,20 +2285,18 @@ end = struct
   external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
   (** Sets the [has-tooltip] property on the widget. *)
 
-  external set_halign : t -> Gtk_enums.align -> unit
+  external set_halign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_halign"
   (** Sets the horizontal alignment of the widget. *)
 
-  external set_font_options :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option -> unit
+  external set_font_options : t -> Occairo_raw.Font_options.t option -> unit
     = "ml_gtk_widget_set_font_options"
   (** Sets the [cairo_font_options_t] used for text rendering in the widget.
 
       When not set, the default font options for the [GdkDisplay] will be used.
   *)
 
-  external set_font_map :
-    t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit
+  external set_font_map : t -> Ocpango_raw.Font_map.t option -> unit
     = "ml_gtk_widget_set_font_map"
   (** Sets the font map to use for text rendering in the widget.
 
@@ -2354,7 +2337,7 @@ end = struct
       certain widget to get the input focus, call [Gtk.Widget.grab_focus] on it.
   *)
 
-  external set_direction : t -> Gtk_enums.textdirection -> unit
+  external set_direction : t -> Ocgtk_enums.textdirection -> unit
     = "ml_gtk_widget_set_direction"
   (** Sets the reading direction on the widget.
 
@@ -2383,7 +2366,7 @@ end = struct
       On top of that, this function allows [name] to be [NULL], which will do
       the same as calling [Gtk.Widget.set_cursor] with a [NULL] cursor. *)
 
-  external set_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option -> unit
+  external set_cursor : t -> Ocgdk_raw.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
@@ -2508,7 +2491,7 @@ end = struct
 
       This function is only for use in widget implementations. *)
 
-  external pick : t -> float -> float -> Gtk_enums.pickflags -> t option
+  external pick : t -> float -> float -> Ocgtk_enums.pickflags -> t option
     = "ml_gtk_widget_pick"
   (** Finds the descendant of the widget closest to a point.
 
@@ -2523,7 +2506,7 @@ end = struct
       This function is used on the toplevel to determine the widget below the
       mouse cursor for purposes of hover highlighting and delivering events. *)
 
-  external observe_controllers : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external observe_controllers : t -> Ocgio_raw.List_model.t
     = "ml_gtk_widget_observe_controllers"
   (** Returns a list model to track the event controllers of the widget.
 
@@ -2534,7 +2517,7 @@ end = struct
       Applications should try hard to avoid calling this function because of the
       slowdowns. *)
 
-  external observe_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
+  external observe_children : t -> Ocgio_raw.List_model.t
     = "ml_gtk_widget_observe_children"
   (** Returns a list model to track the children of the widget.
 
@@ -2549,7 +2532,8 @@ end = struct
     = "ml_gtk_widget_mnemonic_activate"
   (** Emits the [Gtk.Widget::mnemonic-activate] signal. *)
 
-  external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int
+  external measure :
+    t -> Ocgtk_enums.orientation -> int -> int * int * int * int
     = "ml_gtk_widget_measure"
   (** Measures [widget] in the orientation [orientation] and for the given
       [for_size].
@@ -2579,7 +2563,7 @@ end = struct
       [g_list_foreach (result, (GFunc)g_object_ref, NULL)] first, and then unref
       all the widgets afterwards. *)
 
-  external keynav_failed : t -> Gtk_enums.directiontype -> bool
+  external keynav_failed : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_keynav_failed"
   (** Emits the [Gtk.Widget::keynav-failed] signal on the widget.
 
@@ -2674,7 +2658,7 @@ end = struct
       just using a widget, you {i must} use its own API for adding children. *)
 
   external insert_action_group :
-    t -> string -> Ocgtk_gio.Gio.Wrappers.Action_group.t option -> unit
+    t -> string -> Ocgio_raw.Action_group.t option -> unit
     = "ml_gtk_widget_insert_action_group"
   (** Inserts an action group into the widget's actions.
 
@@ -2787,7 +2771,7 @@ end = struct
 
       See [Gtk.Widget.get_hexpand] for more detail. *)
 
-  external get_valign : t -> Gtk_enums.align = "ml_gtk_widget_get_valign"
+  external get_valign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_valign"
   (** Gets the vertical alignment of the widget. *)
 
   external get_tooltip_text : t -> string option
@@ -2824,7 +2808,7 @@ end = struct
       The returned object is guaranteed to be the same for the lifetime of
       [widget]. *)
 
-  external get_state_flags : t -> Gtk_enums.stateflags
+  external get_state_flags : t -> Ocgtk_enums.stateflags
     = "ml_gtk_widget_get_state_flags"
   (** Returns the widget state as a flag set.
 
@@ -2848,7 +2832,7 @@ end = struct
       To get the size a widget will actually request, call [Gtk.Widget.measure]
       instead of this function. *)
 
-  external get_size : t -> Gtk_enums.orientation -> int
+  external get_size : t -> Ocgtk_enums.orientation -> int
     = "ml_gtk_widget_get_size"
   (** Returns the content width or height of the widget.
 
@@ -2901,7 +2885,7 @@ end = struct
 
       [GtkRoot] widgets will return themselves here. *)
 
-  external get_request_mode : t -> Gtk_enums.sizerequestmode
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
     = "ml_gtk_widget_get_request_mode"
   (** Gets whether the widget prefers a height-for-width layout or a
       width-for-height layout.
@@ -2921,7 +2905,7 @@ end = struct
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
   (** Determines whether the widget is realized. *)
 
-  external get_primary_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
+  external get_primary_clipboard : t -> Ocgdk_raw.Clipboard.t
     = "ml_gtk_widget_get_primary_clipboard"
   (** Gets the primary clipboard of the widget.
 
@@ -2956,7 +2940,7 @@ end = struct
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
   (** Returns the parent widget of the widget. *)
 
-  external get_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+  external get_pango_context : t -> Ocpango_raw.Context.t
     = "ml_gtk_widget_get_pango_context"
   (** Gets a [PangoContext] that is configured for the widget.
 
@@ -2970,7 +2954,8 @@ end = struct
       tracked by listening to changes of the [Gtk.Widget:root] property on the
       widget. *)
 
-  external get_overflow : t -> Gtk_enums.overflow = "ml_gtk_widget_get_overflow"
+  external get_overflow : t -> Ocgtk_enums.overflow
+    = "ml_gtk_widget_get_overflow"
   (** Returns the widget’s overflow value. *)
 
   external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
@@ -3066,7 +3051,7 @@ end = struct
   external get_has_tooltip : t -> bool = "ml_gtk_widget_get_has_tooltip"
   (** Returns the current value of the [has-tooltip] property. *)
 
-  external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
+  external get_halign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_halign"
   (** Gets the horizontal alignment of the widget.
 
       For backwards compatibility reasons this method will never return one of
@@ -3075,7 +3060,7 @@ end = struct
 
       Baselines are not supported for horizontal alignment. *)
 
-  external get_frame_clock : t -> Ocgtk_gdk.Gdk.Wrappers.Frame_clock.t option
+  external get_frame_clock : t -> Ocgdk_raw.Frame_clock.t option
     = "ml_gtk_widget_get_frame_clock"
   (** Obtains the frame clock for a widget.
 
@@ -3100,14 +3085,13 @@ end = struct
 
       Unrealized widgets do not have a frame clock. *)
 
-  external get_font_options :
-    t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option
+  external get_font_options : t -> Occairo_raw.Font_options.t option
     = "ml_gtk_widget_get_font_options"
   (** Returns the [cairo_font_options_t] of the widget.
 
       Seee [Gtk.Widget.set_font_options]. *)
 
-  external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
+  external get_font_map : t -> Ocpango_raw.Font_map.t option
     = "ml_gtk_widget_get_font_map"
   (** Gets the font map of the widget.
 
@@ -3132,8 +3116,7 @@ end = struct
 
       This function is primarily meant for widget implementations. *)
 
-  external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
-    = "ml_gtk_widget_get_display"
+  external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_widget_get_display"
   (** Get the display for the window that the widget belongs to.
 
       This function can only be called after the widget has been added to a
@@ -3143,13 +3126,13 @@ end = struct
       widget has been realized, and you should free those resources when the
       widget is unrealized. *)
 
-  external get_direction : t -> Gtk_enums.textdirection
+  external get_direction : t -> Ocgtk_enums.textdirection
     = "ml_gtk_widget_get_direction"
   (** Gets the reading direction for the widget.
 
       See [Gtk.Widget.set_direction]. *)
 
-  external get_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option
+  external get_cursor : t -> Ocgdk_raw.Cursor.t option
     = "ml_gtk_widget_get_cursor"
   (** Gets the cursor set on the widget.
 
@@ -3161,14 +3144,13 @@ end = struct
   external get_css_classes : t -> string array = "ml_gtk_widget_get_css_classes"
   (** Returns the list of style classes applied to the widget. *)
 
-  external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-    = "ml_gtk_widget_get_color"
+  external get_color : t -> Ocgdk_raw.Rgb_a.t = "ml_gtk_widget_get_color"
   (** Gets the current foreground color for the widget’s style.
 
       This function should only be used in snapshot implementations that need to
       do custom drawing with the foreground color. *)
 
-  external get_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
+  external get_clipboard : t -> Ocgdk_raw.Clipboard.t
     = "ml_gtk_widget_get_clipboard"
   (** Gets the clipboard object for the widget.
 
@@ -3275,8 +3257,7 @@ end = struct
       }
       ]} *)
 
-  external create_pango_layout :
-    t -> string option -> Ocgtk_pango.Pango.Wrappers.Layout.t
+  external create_pango_layout : t -> string option -> Ocpango_raw.Layout.t
     = "ml_gtk_widget_create_pango_layout"
   (** Creates a new [PangoLayout] that is configured for the widget.
 
@@ -3288,7 +3269,7 @@ end = struct
       tracked by listening to changes of the [Gtk.Widget:root] property on the
       widget. *)
 
-  external create_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+  external create_pango_context : t -> Ocpango_raw.Context.t
     = "ml_gtk_widget_create_pango_context"
   (** Creates a new [PangoContext] that is configured for the widget.
 
@@ -3303,8 +3284,7 @@ end = struct
       The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
       assumed to be the top left of [widget]'s content area. *)
 
-  external compute_transform :
-    t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Matrix.t
+  external compute_transform : t -> t -> bool * Ocgraphene_raw.Matrix.t
     = "ml_gtk_widget_compute_transform"
   (** Computes a matrix suitable to describe a transformation from [widget]'s
       coordinate system into [target]'s coordinate system.
@@ -3317,10 +3297,7 @@ end = struct
       overview. *)
 
   external compute_point :
-    t ->
-    t ->
-    Ocgtk_graphene.Graphene.Wrappers.Point.t ->
-    bool * Ocgtk_graphene.Graphene.Wrappers.Point.t
+    t -> t -> Ocgraphene_raw.Point.t -> bool * Ocgraphene_raw.Point.t
     = "ml_gtk_widget_compute_point"
   (** Translates the given [point] in [widget]'s coordinates to coordinates in
       [target]’s coordinate system.
@@ -3329,7 +3306,7 @@ end = struct
       ancestor. If that is not the case, [out_point] is set to (0, 0) and false
       is returned. *)
 
-  external compute_expand : t -> Gtk_enums.orientation -> bool
+  external compute_expand : t -> Ocgtk_enums.orientation -> bool
     = "ml_gtk_widget_compute_expand"
   (** Computes whether a parent widget should give this widget extra space when
       possible.
@@ -3345,8 +3322,7 @@ end = struct
       the widget itself, or, if none has been explicitly set, the widget may
       expand if some of its children do. *)
 
-  external compute_bounds :
-    t -> t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  external compute_bounds : t -> t -> bool * Ocgraphene_raw.Rect.t
     = "ml_gtk_widget_compute_bounds"
   (** Computes the bounds for [widget] in the coordinate space of [target].
 
@@ -3360,7 +3336,7 @@ end = struct
 
       It is valid for [widget] and [target] to be the same widget. *)
 
-  external child_focus : t -> Gtk_enums.directiontype -> bool
+  external child_focus : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_child_focus"
   (** Called by widgets as the user moves around the window using keyboard
       shortcuts.
@@ -3384,7 +3360,7 @@ end = struct
       particular widget. *)
 
   external allocate :
-    t -> int -> int -> int -> Ocgtk_gsk.Gsk.Wrappers.Transform.t option -> unit
+    t -> int -> int -> int -> Ocgsk_raw.Transform.t option -> unit
     = "ml_gtk_widget_allocate"
   (** Assigns size, position, (optionally) a baseline and transform to a child
       widget.
@@ -3490,7 +3466,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let previous_direction =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gtk_enums.textdirection_of_int (Gobject.Value.get_enum_int v)
+            Ocgtk_enums.textdirection_of_int (Gobject.Value.get_enum_int v)
           in
           callback ~previous_direction)
     in
@@ -3506,7 +3482,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let direction =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+            Ocgtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
           in
           let result = callback ~direction in
           let v = Gobject.Closure.result argv in
@@ -3540,7 +3516,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let direction =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+            Ocgtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
           in
           callback ~direction)
     in
@@ -3587,7 +3563,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let flags =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gtk_enums.stateflags_of_int (Gobject.Value.get_flags_int v)
+            Ocgtk_enums.stateflags_of_int (Gobject.Value.get_flags_int v)
           in
           callback ~flags)
     in

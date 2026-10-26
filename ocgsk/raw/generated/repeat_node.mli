@@ -8,15 +8,13 @@ type t = [ `repeat_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_repeat_node_get_type"
 
 external new_ :
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
-  Render_node.t ->
-  Ocgtk_graphene.Graphene.Wrappers.Rect.t option ->
-  t = "ml_gsk_repeat_node_new"
+  Ocgraphene_raw.Rect.t -> Render_node.t -> Ocgraphene_raw.Rect.t option -> t
+  = "ml_gsk_repeat_node_new"
 (** Create a new RepeatNode *)
 
 (* Methods *)
 
-external get_child_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t
+external get_child_bounds : t -> Ocgraphene_raw.Rect.t
   = "ml_gsk_repeat_node_get_child_bounds"
 (** Retrieves the bounding rectangle of the child of [node]. *)
 

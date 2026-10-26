@@ -120,7 +120,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_file_chooser_native_get_type"
 external new_ :
   string option ->
   Application_and__window_and__window_group.Window.t option ->
-  Gtk_enums.filechooseraction ->
+  Ocgtk_enums.filechooseraction ->
   string option ->
   string option ->
   t = "ml_gtk_file_chooser_native_new"

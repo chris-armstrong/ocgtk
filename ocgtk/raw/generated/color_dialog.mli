@@ -43,9 +43,7 @@ external get_modal : t -> bool = "ml_gtk_color_dialog_get_modal"
     window while it is presented. *)
 
 external choose_rgba_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t, GError.t) result
+  t -> Ocgio_raw.Async_result.t -> (Ocgdk_raw.Rgb_a.t, GError.t) result
   = "ml_gtk_color_dialog_choose_rgba_finish"
 (** Finishes the [Gtk.ColorDialog.choose_rgba] call
 

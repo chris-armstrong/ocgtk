@@ -71,7 +71,7 @@ external load_from_path : t -> string -> unit
 
     This clears any previously loaded information. *)
 
-external load_from_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> unit
+external load_from_file : t -> Ocgio_raw.File.t -> unit
   = "ml_gtk_css_provider_load_from_file"
 (** Loads the data contained in [file] into [css_provider].
 
@@ -91,18 +91,19 @@ external load_from_bytes : t -> Glib_bytes.t -> unit
 
 (* Properties *)
 
-external get_prefers_color_scheme : t -> Gtk_enums.interfacecolorscheme
+external get_prefers_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_css_provider_get_prefers_color_scheme"
 (** Get property: prefers-color-scheme *)
 
-external set_prefers_color_scheme : t -> Gtk_enums.interfacecolorscheme -> unit
+external set_prefers_color_scheme :
+  t -> Ocgtk_enums.interfacecolorscheme -> unit
   = "ml_gtk_css_provider_set_prefers_color_scheme"
 (** Set property: prefers-color-scheme *)
 
-external get_prefers_contrast : t -> Gtk_enums.interfacecontrast
+external get_prefers_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_css_provider_get_prefers_contrast"
 (** Get property: prefers-contrast *)
 
-external set_prefers_contrast : t -> Gtk_enums.interfacecontrast -> unit
+external set_prefers_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_css_provider_set_prefers_contrast"
 (** Set property: prefers-contrast *)

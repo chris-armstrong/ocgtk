@@ -141,7 +141,7 @@ external get_restrict_to_fill_level : t -> bool
   = "ml_gtk_range_get_restrict_to_fill_level"
 (** Gets whether the range is restricted to the fill level. *)
 
-external get_range_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+external get_range_rect : t -> Ocgdk_raw.Rectangle.t
   = "ml_gtk_range_get_range_rect"
 (** This function returns the area that contains the range’s trough, in
     coordinates relative to [range]'s origin.
@@ -183,7 +183,7 @@ let on_change_value ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let scroll =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
         in
         let value =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -202,7 +202,7 @@ let on_move_slider ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let step =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~step)
   in

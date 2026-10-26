@@ -7,9 +7,9 @@ module rec Socket : sig
   external gtype : unit -> Gobject.Type.t = "ml_gio_socket_get_type"
 
   external new_ :
-    Gio_enums.socketfamily ->
-    Gio_enums.sockettype ->
-    Gio_enums.socketprotocol ->
+    Ocgio_enums.socketfamily ->
+    Ocgio_enums.sockettype ->
+    Ocgio_enums.socketprotocol ->
     (t, GError.t) result = "ml_g_socket_new"
   (** Create a new Socket *)
 
@@ -189,7 +189,7 @@ module rec Socket : sig
     int ->
     int64 ->
     Cancellable.t option ->
-    (Gio_enums.pollablereturn * Gsize.t, GError.t) result
+    (Ocgio_enums.pollablereturn * Gsize.t, GError.t) result
     = "ml_g_socket_send_message_with_timeout_bytecode"
       "ml_g_socket_send_message_with_timeout_native"
   (** This behaves exactly the same as g_socket_send_message(), except that the
@@ -424,7 +424,7 @@ module rec Socket : sig
   (** Gets the timeout setting of the socket. For details on this, see
       g_socket_set_timeout(). *)
 
-  external get_socket_type : t -> Gio_enums.sockettype
+  external get_socket_type : t -> Ocgio_enums.sockettype
     = "ml_g_socket_get_socket_type"
   (** Gets the socket type of the socket. *)
 
@@ -438,7 +438,7 @@ module rec Socket : sig
   (** Try to get the remote address of a connected socket. This is only useful
       for connection oriented sockets that have been connected. *)
 
-  external get_protocol : t -> Gio_enums.socketprotocol
+  external get_protocol : t -> Ocgio_enums.socketprotocol
     = "ml_g_socket_get_protocol"
   (** Gets the socket protocol id the socket was created with. In case the
       protocol is unknown, -1 is returned. *)
@@ -492,7 +492,7 @@ module rec Socket : sig
       useful for doing platform specific or otherwise unusual operations on the
       socket. *)
 
-  external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_get_family"
+  external get_family : t -> Ocgio_enums.socketfamily = "ml_g_socket_get_family"
   (** Gets the socket family of the socket. *)
 
   external get_credentials : t -> (Credentials.t, GError.t) result
@@ -643,7 +643,7 @@ module rec Socket : sig
 
   (* Properties *)
 
-  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
+  external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_get_type"
   (** Get property: type *)
 end
 

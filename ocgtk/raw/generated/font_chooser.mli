@@ -24,15 +24,14 @@ external set_preview_text : t -> string -> unit
 
     The [text] is used to show how the selected font looks. *)
 
-external set_level : t -> Gtk_enums.fontchooserlevel -> unit
+external set_level : t -> Ocgtk_enums.fontchooserlevel -> unit
   = "ml_gtk_font_chooser_set_level"
 (** Sets the desired level of granularity for selecting fonts. *)
 
 external set_language : t -> string -> unit = "ml_gtk_font_chooser_set_language"
 (** Sets the language to use for font features. *)
 
-external set_font_map :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit
+external set_font_map : t -> Ocpango_raw.Font_map.t option -> unit
   = "ml_gtk_font_chooser_set_font_map"
 (** Sets a custom font map to use for this font chooser widget.
 
@@ -60,8 +59,7 @@ external set_font_map :
     pango_context_set_font_map (context, fontmap)
     ]} *)
 
-external set_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit
+external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_font_chooser_set_font_desc"
 (** Sets the currently-selected font from [font_desc]. *)
 
@@ -75,7 +73,7 @@ external get_show_preview_entry : t -> bool
 external get_preview_text : t -> string = "ml_gtk_font_chooser_get_preview_text"
 (** Gets the text displayed in the preview area. *)
 
-external get_level : t -> Gtk_enums.fontchooserlevel
+external get_level : t -> Ocgtk_enums.fontchooserlevel
   = "ml_gtk_font_chooser_get_level"
 (** Returns the current level of granularity for selecting fonts. *)
 
@@ -85,7 +83,7 @@ external get_language : t -> string = "ml_gtk_font_chooser_get_language"
 external get_font_size : t -> int = "ml_gtk_font_chooser_get_font_size"
 (** The selected font size. *)
 
-external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
+external get_font_map : t -> Ocpango_raw.Font_map.t option
   = "ml_gtk_font_chooser_get_font_map"
 (** Gets the custom font map of this font chooser widget, or [NULL] if it does
     not have one. *)
@@ -99,7 +97,7 @@ external get_font_features : t -> string
      font-feature-settings property}. It can be passed to
     [Pango.AttrFontFeatures.new]. *)
 
-external get_font_family : t -> Ocgtk_pango.Pango.Wrappers.Font_family.t option
+external get_font_family : t -> Ocpango_raw.Font_family.t option
   = "ml_gtk_font_chooser_get_font_family"
 (** Gets the [PangoFontFamily] representing the selected font family.
 
@@ -107,15 +105,14 @@ external get_font_family : t -> Ocgtk_pango.Pango.Wrappers.Font_family.t option
 
     If the selected font is not installed, returns [NULL]. *)
 
-external get_font_face : t -> Ocgtk_pango.Pango.Wrappers.Font_face.t option
+external get_font_face : t -> Ocpango_raw.Font_face.t option
   = "ml_gtk_font_chooser_get_font_face"
 (** Gets the [PangoFontFace] representing the selected font group details (i.e.
     family, slant, weight, width, etc).
 
     If the selected font is not installed, returns [NULL]. *)
 
-external get_font_desc :
-  t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option
+external get_font_desc : t -> Ocpango_raw.Font_description.t option
   = "ml_gtk_font_chooser_get_font_desc"
 (** Gets the currently-selected font.
 

@@ -24,10 +24,10 @@ external from_gobject : 'a Gobject.obj -> t
 
 external snapshot_symbolic :
   t ->
-  Ocgtk_gdk.Gdk.Wrappers.Snapshot.t ->
+  Ocgdk_raw.Snapshot.t ->
   float ->
   float ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array ->
+  Ocgdk_raw.Rgb_a.t array ->
   Gsize.t ->
   unit
   = "ml_gtk_symbolic_paintable_snapshot_symbolic_bytecode"

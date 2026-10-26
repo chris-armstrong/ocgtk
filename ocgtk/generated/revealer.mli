@@ -1,31 +1,31 @@
 class type revealer_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_child_revealed : unit -> bool
   method get_reveal_child : unit -> bool
   method get_transition_duration : unit -> int
-  method get_transition_type : unit -> Gtk_enums.revealertransitiontype
+  method get_transition_type : unit -> Enums.revealertransitiontype
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_reveal_child : bool -> unit
   method set_transition_duration : int -> unit
-  method set_transition_type : Gtk_enums.revealertransitiontype -> unit
-  method as_revealer : Revealer.t
+  method set_transition_type : Enums.revealertransitiontype -> unit
+  method as_revealer : Raw.Revealer.t
 end
 
-class revealer : Revealer.t -> revealer_t
+class revealer : Raw.Revealer.t -> revealer_t
 
 val new_ : unit -> revealer_t

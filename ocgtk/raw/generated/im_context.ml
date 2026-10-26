@@ -56,7 +56,7 @@ external set_surrounding : t -> string -> int -> int -> unit
     [Gtk.IMContext::retrieve-surrounding] signal, and will likely have no effect
     if called at other times. *)
 
-external set_cursor_location : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> unit
+external set_cursor_location : t -> Ocgdk_raw.Rectangle.t -> unit
   = "ml_gtk_im_context_set_cursor_location"
 (** Notify the input method that a change in cursor position has been made.
 
@@ -95,7 +95,7 @@ external focus_in : t -> unit = "ml_gtk_im_context_focus_in"
     The input method may, for example, change the displayed feedback to reflect
     this change. *)
 
-external filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool
+external filter_keypress : t -> Ocgdk_raw.Event.t -> bool
   = "ml_gtk_im_context_filter_keypress"
 (** Allow an input method to internally handle key press and release events.
 
@@ -105,11 +105,11 @@ external filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool
 external filter_key :
   t ->
   bool ->
-  Ocgtk_gdk.Gdk.Wrappers.Surface.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Device.t ->
+  Ocgdk_raw.Surface.t ->
+  Ocgdk_raw.Device.t ->
   UInt32.t ->
   int ->
-  Ocgtk_gdk.Gdk.modifiertype ->
+  Ocgdk_enums.modifiertype ->
   int ->
   bool
   = "ml_gtk_im_context_filter_key_bytecode"
@@ -136,7 +136,7 @@ external delete_surrounding : t -> int -> int -> bool
     the existing text in response to new input. It is not useful for
     applications. *)
 
-external activate_osk : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> bool
+external activate_osk : t -> Ocgdk_raw.Event.t option -> bool
   = "ml_gtk_im_context_activate_osk"
 (** Requests the platform to show an on-screen keyboard for user input.
 
@@ -146,19 +146,19 @@ external activate_osk : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> bool
 
 (* Properties *)
 
-external get_input_hints : t -> Gtk_enums.inputhints
+external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_im_context_get_input_hints"
 (** Get property: input-hints *)
 
-external set_input_hints : t -> Gtk_enums.inputhints -> unit
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_im_context_set_input_hints"
 (** Set property: input-hints *)
 
-external get_input_purpose : t -> Gtk_enums.inputpurpose
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_im_context_get_input_purpose"
 (** Get property: input-purpose *)
 
-external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_im_context_set_input_purpose"
 (** Set property: input-purpose *)
 

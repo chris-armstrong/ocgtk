@@ -40,7 +40,7 @@ external set_username : t -> string option -> unit
 external set_pim : t -> int -> unit = "ml_g_mount_operation_set_pim"
 (** Sets the mount operation's PIM to [pim]. *)
 
-external set_password_save : t -> Gio_enums.passwordsave -> unit
+external set_password_save : t -> Ocgio_enums.passwordsave -> unit
   = "ml_g_mount_operation_set_password_save"
 (** Sets the state of saving passwords for the mount operation. *)
 
@@ -70,7 +70,7 @@ external set_anonymous : t -> bool -> unit
 (** Sets the mount operation to use an anonymous user if [anonymous] is [TRUE].
 *)
 
-external reply : t -> Gio_enums.mountoperationresult -> unit
+external reply : t -> Ocgio_enums.mountoperationresult -> unit
   = "ml_g_mount_operation_reply"
 (** Emits the [GMountOperation::reply] signal. *)
 
@@ -80,7 +80,7 @@ external get_username : t -> string option = "ml_g_mount_operation_get_username"
 external get_pim : t -> int = "ml_g_mount_operation_get_pim"
 (** Gets a PIM from the mount operation. *)
 
-external get_password_save : t -> Gio_enums.passwordsave
+external get_password_save : t -> Ocgio_enums.passwordsave
   = "ml_g_mount_operation_get_password_save"
 (** Gets the state of saving passwords for the mount operation. *)
 
@@ -130,7 +130,7 @@ let on_ask_password ?after obj ~callback =
         in
         let flags =
           let v = Gobject.Closure.nth argv ~pos:4 in
-          Gio_enums.askpasswordflags_of_int (Gobject.Value.get_flags_int v)
+          Ocgio_enums.askpasswordflags_of_int (Gobject.Value.get_flags_int v)
         in
         callback ~message ~default_user ~default_domain ~flags)
   in
@@ -142,7 +142,7 @@ let on_reply ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let result =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gio_enums.mountoperationresult_of_int (Gobject.Value.get_enum_int v)
+          Ocgio_enums.mountoperationresult_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~result)
   in

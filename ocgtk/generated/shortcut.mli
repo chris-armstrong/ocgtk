@@ -1,16 +1,16 @@
 class type shortcut_t = object
-  method get_action : unit -> GShortcut_action.shortcut_action_t option
+  method get_action : unit -> Shortcut_action.shortcut_action_t option
   method get_arguments : unit -> Gvariant.t option
-  method get_trigger : unit -> GShortcut_trigger.shortcut_trigger_t option
-  method set_action : GShortcut_action.shortcut_action_t option -> unit
+  method get_trigger : unit -> Shortcut_trigger.shortcut_trigger_t option
+  method set_action : Shortcut_action.shortcut_action_t option -> unit
   method set_arguments : Gvariant.t option -> unit
-  method set_trigger : GShortcut_trigger.shortcut_trigger_t option -> unit
-  method as_shortcut : Shortcut.t
+  method set_trigger : Shortcut_trigger.shortcut_trigger_t option -> unit
+  method as_shortcut : Raw.Shortcut.t
 end
 
-class shortcut : Shortcut.t -> shortcut_t
+class shortcut : Raw.Shortcut.t -> shortcut_t
 
 val new_ :
-  GShortcut_trigger.shortcut_trigger_t option ->
-  GShortcut_action.shortcut_action_t option ->
+  Shortcut_trigger.shortcut_trigger_t option ->
+  Shortcut_action.shortcut_action_t option ->
   shortcut_t

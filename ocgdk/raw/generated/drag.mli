@@ -27,7 +27,7 @@ external get_surface : t -> App_launch_context_cycle_de440b34.Surface.t
   = "ml_gdk_drag_get_surface"
 (** Returns the [GdkSurface] where the drag originates. *)
 
-external get_selected_action : t -> Gdk_enums.dragaction
+external get_selected_action : t -> Ocgdk_enums.dragaction
   = "ml_gdk_drag_get_selected_action"
 (** Determines the action chosen by the drag destination. *)
 
@@ -56,7 +56,7 @@ external get_device : t -> App_launch_context_cycle_de440b34.Device.t
 external get_content : t -> Content_provider.t = "ml_gdk_drag_get_content"
 (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
 
-external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drag_get_actions"
+external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drag_get_actions"
 (** Determines the bitmask of possible actions proposed by the source. *)
 
 external drop_done : t -> bool -> unit = "ml_gdk_drag_drop_done"
@@ -76,7 +76,7 @@ external drop_done : t -> bool -> unit = "ml_gdk_drag_drop_done"
 val on_cancel :
   ?after:bool ->
   t ->
-  callback:(reason:Gdk_enums.dragcancelreason -> unit) ->
+  callback:(reason:Ocgdk_enums.dragcancelreason -> unit) ->
   Gobject.Signal.handler_id
 
 val on_dnd_finished :

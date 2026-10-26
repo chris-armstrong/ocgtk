@@ -12,7 +12,7 @@ class type column_view_row_t = object
   method set_activatable : bool -> unit
   method set_focusable : bool -> unit
   method set_selectable : bool -> unit
-  method as_column_view_row : Column_view_row.t
+  method as_column_view_row : Raw.Column_view_row.t
 end
 
-class column_view_row : Column_view_row.t -> column_view_row_t
+class column_view_row : Raw.Column_view_row.t -> column_view_row_t

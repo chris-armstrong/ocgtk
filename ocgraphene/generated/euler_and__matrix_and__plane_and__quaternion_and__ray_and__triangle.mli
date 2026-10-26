@@ -1,75 +1,36 @@
 class type euler_t = object
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
-    bool
-
+  method equal : Raw.Euler.t -> bool
   method get_alpha : unit -> float
   method get_beta : unit -> float
   method get_gamma : unit -> float
-  method get_order : unit -> Graphene_enums.eulerorder
+  method get_order : unit -> Enums.eulerorder
   method get_x : unit -> float
   method get_y : unit -> float
   method get_z : unit -> float
-
-  method init :
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
-
-  method init_from_euler :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
-    option ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+  method init : float -> float -> float -> Raw.Euler.t
+  method init_from_euler : Raw.Euler.t option -> Raw.Euler.t
 
   method init_from_matrix :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-    option ->
-    Graphene_enums.eulerorder ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+    Raw.Matrix.t option -> Enums.eulerorder -> Raw.Euler.t
 
   method init_from_quaternion :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-    option ->
-    Graphene_enums.eulerorder ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+    Raw.Quaternion.t option -> Enums.eulerorder -> Raw.Euler.t
 
   method init_from_radians :
-    float ->
-    float ->
-    float ->
-    Graphene_enums.eulerorder ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+    float -> float -> float -> Enums.eulerorder -> Raw.Euler.t
 
-  method init_from_vec3 :
-    Vec3_and__vec4.Vec3.t option ->
-    Graphene_enums.eulerorder ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+  method init_from_vec3 : Raw.Vec3.t option -> Enums.eulerorder -> Raw.Euler.t
 
   method init_with_order :
-    float ->
-    float ->
-    float ->
-    Graphene_enums.eulerorder ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+    float -> float -> float -> Enums.eulerorder -> Raw.Euler.t
 
-  method as_euler :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t
+  method as_euler : Raw.Euler.t
 end
 
 and matrix_t = object
   method determinant : unit -> float
-
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-    bool
-
-  method equal_fast :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-    bool
-
+  method equal : Raw.Matrix.t -> bool
+  method equal_fast : Raw.Matrix.t -> bool
   method get_value : int -> int -> float
   method get_x_scale : unit -> float
   method get_x_translation : unit -> float
@@ -79,107 +40,37 @@ and matrix_t = object
   method get_z_translation : unit -> float
 
   method init_from_2d :
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+    float -> float -> float -> float -> float -> float -> Raw.Matrix.t
 
-  method init_from_float :
-    float array ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_from_matrix :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+  method init_from_float : float array -> Raw.Matrix.t
+  method init_from_matrix : Raw.Matrix.t -> Raw.Matrix.t
 
   method init_from_vec4 :
-    Vec3_and__vec4.Vec4.t ->
-    Vec3_and__vec4.Vec4.t ->
-    Vec3_and__vec4.Vec4.t ->
-    Vec3_and__vec4.Vec4.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+    Raw.Vec4.t -> Raw.Vec4.t -> Raw.Vec4.t -> Raw.Vec4.t -> Raw.Matrix.t
 
   method init_frustum :
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+    float -> float -> float -> float -> float -> float -> Raw.Matrix.t
 
-  method init_identity :
-    unit ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_look_at :
-    Vec3_and__vec4.Vec3.t ->
-    Vec3_and__vec4.Vec3.t ->
-    Vec3_and__vec4.Vec3.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+  method init_identity : unit -> Raw.Matrix.t
+  method init_look_at : Raw.Vec3.t -> Raw.Vec3.t -> Raw.Vec3.t -> Raw.Matrix.t
 
   method init_ortho :
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+    float -> float -> float -> float -> float -> float -> Raw.Matrix.t
 
-  method init_perspective :
-    float ->
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_rotate :
-    float ->
-    Vec3_and__vec4.Vec3.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_scale :
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_skew :
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
-  method init_translate :
-    Point3_d.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
-
+  method init_perspective : float -> float -> float -> float -> Raw.Matrix.t
+  method init_rotate : float -> Raw.Vec3.t -> Raw.Matrix.t
+  method init_scale : float -> float -> float -> Raw.Matrix.t
+  method init_skew : float -> float -> Raw.Matrix.t
+  method init_translate : Raw.Point3_d.t -> Raw.Matrix.t
   method is_2d : unit -> bool
   method is_backface_visible : unit -> bool
   method is_identity : unit -> bool
   method is_singular : unit -> bool
-
-  method near :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-    float ->
-    bool
-
+  method near : Raw.Matrix.t -> float -> bool
   method print : unit -> unit
-  method rotate : float -> Vec3_and__vec4.Vec3.t -> unit
-
-  method rotate_euler :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
-    unit
-
-  method rotate_quaternion :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t ->
-    unit
-
+  method rotate : float -> Raw.Vec3.t -> unit
+  method rotate_euler : Raw.Euler.t -> unit
+  method rotate_quaternion : Raw.Quaternion.t -> unit
   method rotate_x : float -> unit
   method rotate_y : float -> unit
   method rotate_z : float -> unit
@@ -187,229 +78,87 @@ and matrix_t = object
   method skew_xy : float -> unit
   method skew_xz : float -> unit
   method skew_yz : float -> unit
-  method translate : Point3_d.t -> unit
-
-  method as_matrix :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t
+  method translate : Raw.Point3_d.t -> unit
+  method as_matrix : Raw.Matrix.t
 end
 
 and plane_t = object
-  method distance : Point3_d.t -> float
-
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
-    bool
-
+  method distance : Raw.Point3_d.t -> float
+  method equal : Raw.Plane.t -> bool
   method get_constant : unit -> float
-
-  method init :
-    Vec3_and__vec4.Vec3.t option ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
-
-  method init_from_plane :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
-
-  method init_from_point :
-    Vec3_and__vec4.Vec3.t ->
-    Point3_d.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
+  method init : Raw.Vec3.t option -> float -> Raw.Plane.t
+  method init_from_plane : Raw.Plane.t -> Raw.Plane.t
+  method init_from_point : Raw.Vec3.t -> Raw.Point3_d.t -> Raw.Plane.t
 
   method init_from_points :
-    Point3_d.t ->
-    Point3_d.t ->
-    Point3_d.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
+    Raw.Point3_d.t -> Raw.Point3_d.t -> Raw.Point3_d.t -> Raw.Plane.t
 
-  method init_from_vec4 :
-    Vec3_and__vec4.Vec4.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
-
-  method as_plane :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t
+  method init_from_vec4 : Raw.Vec4.t -> Raw.Plane.t
+  method as_plane : Raw.Plane.t
 end
 
 and quaternion_t = object
-  method dot :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t ->
-    float
-
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t ->
-    bool
-
-  method init :
-    float ->
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_angle_vec3 :
-    float ->
-    Vec3_and__vec4.Vec3.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_angles :
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_euler :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_matrix :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_quaternion :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_radians :
-    float ->
-    float ->
-    float ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_from_vec4 :
-    Vec3_and__vec4.Vec4.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method init_identity :
-    unit ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
-
-  method as_quaternion :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
-    .Quaternion
-    .t
+  method dot : Raw.Quaternion.t -> float
+  method equal : Raw.Quaternion.t -> bool
+  method init : float -> float -> float -> float -> Raw.Quaternion.t
+  method init_from_angle_vec3 : float -> Raw.Vec3.t -> Raw.Quaternion.t
+  method init_from_angles : float -> float -> float -> Raw.Quaternion.t
+  method init_from_euler : Raw.Euler.t -> Raw.Quaternion.t
+  method init_from_matrix : Raw.Matrix.t -> Raw.Quaternion.t
+  method init_from_quaternion : Raw.Quaternion.t -> Raw.Quaternion.t
+  method init_from_radians : float -> float -> float -> Raw.Quaternion.t
+  method init_from_vec4 : Raw.Vec4.t -> Raw.Quaternion.t
+  method init_identity : unit -> Raw.Quaternion.t
+  method as_quaternion : Raw.Quaternion.t
 end
 
 and ray_t = object
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t ->
-    bool
-
-  method get_distance_to_plane :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
-    float
-
-  method get_distance_to_point : Point3_d.t -> float
-
-  method init :
-    Point3_d.t option ->
-    Vec3_and__vec4.Vec3.t option ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t
-
-  method init_from_ray :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t
-
-  method init_from_vec3 :
-    Vec3_and__vec4.Vec3.t option ->
-    Vec3_and__vec4.Vec3.t option ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t
-
-  method intersects_box : Box_and__sphere.Box.t -> bool
-  method intersects_sphere : Box_and__sphere.Sphere.t -> bool
-
-  method intersects_triangle :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t ->
-    bool
-
-  method as_ray :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t
+  method equal : Raw.Ray.t -> bool
+  method get_distance_to_plane : Raw.Plane.t -> float
+  method get_distance_to_point : Raw.Point3_d.t -> float
+  method init : Raw.Point3_d.t option -> Raw.Vec3.t option -> Raw.Ray.t
+  method init_from_ray : Raw.Ray.t -> Raw.Ray.t
+  method init_from_vec3 : Raw.Vec3.t option -> Raw.Vec3.t option -> Raw.Ray.t
+  method intersects_box : Raw.Box.t -> bool
+  method intersects_sphere : Raw.Sphere.t -> bool
+  method intersects_triangle : Raw.Triangle.t -> bool
+  method as_ray : Raw.Ray.t
 end
 
 and triangle_t = object
-  method contains_point : Point3_d.t -> bool
-
-  method equal :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t ->
-    bool
-
+  method contains_point : Raw.Point3_d.t -> bool
+  method equal : Raw.Triangle.t -> bool
   method get_area : unit -> float
 
   method init_from_float :
-    float array ->
-    float array ->
-    float array ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t
+    float array -> float array -> float array -> Raw.Triangle.t
 
   method init_from_point3d :
-    Point3_d.t option ->
-    Point3_d.t option ->
-    Point3_d.t option ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t
+    Raw.Point3_d.t option ->
+    Raw.Point3_d.t option ->
+    Raw.Point3_d.t option ->
+    Raw.Triangle.t
 
   method init_from_vec3 :
-    Vec3_and__vec4.Vec3.t option ->
-    Vec3_and__vec4.Vec3.t option ->
-    Vec3_and__vec4.Vec3.t option ->
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t
+    Raw.Vec3.t option ->
+    Raw.Vec3.t option ->
+    Raw.Vec3.t option ->
+    Raw.Triangle.t
 
-  method as_triangle :
-    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
-    .t
+  method as_triangle : Raw.Triangle.t
 end
 
-class euler :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
-  euler_t
+class euler : Raw.Euler.t -> euler_t
 
-and matrix :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
-  matrix_t
+and matrix : Raw.Matrix.t -> matrix_t
 
-and plane :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
-  plane_t
+and plane : Raw.Plane.t -> plane_t
 
-and quaternion :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion
-  .t ->
-  quaternion_t
+and quaternion : Raw.Quaternion.t -> quaternion_t
 
-and ray :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t ->
-  ray_t
+and ray : Raw.Ray.t -> ray_t
 
-and triangle :
-  Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle.t ->
-  triangle_t
+and triangle : Raw.Triangle.t -> triangle_t
 
 val alloc : unit -> euler_t
 val alloc : unit -> matrix_t

@@ -192,7 +192,7 @@ external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
 
     See the [Gtk.Label:xalign] property. *)
 
-external set_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode -> unit
+external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_label_set_wrap_mode"
 (** Controls how line wrapping is done.
 
@@ -246,7 +246,7 @@ external set_text : t -> string -> unit = "ml_gtk_label_set_text"
 
     Also see [Gtk.Label.set_markup]. *)
 
-external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option -> unit
+external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_label_set_tabs"
 (** Sets tab stops for the label. *)
 
@@ -260,7 +260,7 @@ external set_selectable : t -> bool -> unit = "ml_gtk_label_set_selectable"
     Selectable labels allow the user to select text from the label, for
     copy-and-paste. *)
 
-external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit
+external set_natural_wrap_mode : t -> Ocgtk_enums.naturalwrapmode -> unit
   = "ml_gtk_label_set_natural_wrap_mode"
 (** Selects the line wrapping for the natural size request.
 
@@ -341,7 +341,7 @@ external set_label : t -> string -> unit = "ml_gtk_label_set_label"
     markup depending on the values of the [Gtk.Label:use-underline] and
     [Gtk.Label:use-markup] properties. *)
 
-external set_justify : t -> Gtk_enums.justification -> unit
+external set_justify : t -> Ocgtk_enums.justification -> unit
   = "ml_gtk_label_set_justify"
 (** Sets the alignment of lines in the label relative to each other.
 
@@ -353,20 +353,18 @@ external set_justify : t -> Gtk_enums.justification -> unit
     If you instead want to set the alignment of the label as a whole, use
     [Gtk.Widget.set_halign] instead. *)
 
-external set_extra_menu :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_label_set_extra_menu"
 (** Sets a menu model to add to the context menu of the label. *)
 
-external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit
+external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
   = "ml_gtk_label_set_ellipsize"
 (** Sets the mode used to ellipsize the text.
 
     The text will be ellipsized if there is not enough space to render the
     entire string. *)
 
-external set_attributes :
-  t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option -> unit
+external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
   = "ml_gtk_label_set_attributes"
 (** Apply attributes to the label text.
 
@@ -395,7 +393,7 @@ external get_xalign : t -> float = "ml_gtk_label_get_xalign"
 
     See the [Gtk.Label:xalign] property. *)
 
-external get_wrap_mode : t -> Ocgtk_pango.Pango.wrapmode
+external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_label_get_wrap_mode"
 (** Returns line wrap mode used by the label.
 
@@ -428,7 +426,7 @@ external get_text : t -> string = "ml_gtk_label_get_text"
     embedded underlines indicating mnemonics or Pango markup. (See
     [Gtk.Label.get_label]) *)
 
-external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
+external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_label_get_tabs"
 (** Gets the tab stops for the label.
 
@@ -446,7 +444,7 @@ external get_selection_bounds : t -> bool * int * int
 external get_selectable : t -> bool = "ml_gtk_label_get_selectable"
 (** Returns whether the label is selectable. *)
 
-external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode
+external get_natural_wrap_mode : t -> Ocgtk_enums.naturalwrapmode
   = "ml_gtk_label_get_natural_wrap_mode"
 (** Returns natural line wrap mode used by the label.
 
@@ -488,8 +486,7 @@ external get_layout_offsets : t -> int * int = "ml_gtk_label_get_layout_offsets"
     clicked. Remember when using the [Pango.Layout] functions you need to
     convert to and from pixels using [PANGO_PIXELS()] or [Pango.SCALE]. *)
 
-external get_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t
-  = "ml_gtk_label_get_layout"
+external get_layout : t -> Ocpango_raw.Layout.t = "ml_gtk_label_get_layout"
 (** Gets the Pango layout used to display the label.
 
     The layout is useful to e.g. convert text positions to pixel positions, in
@@ -503,18 +500,19 @@ external get_label : t -> string = "ml_gtk_label_get_label"
     The returned text includes any embedded underlines indicating mnemonics and
     Pango markup. (See [Gtk.Label.get_text]). *)
 
-external get_justify : t -> Gtk_enums.justification = "ml_gtk_label_get_justify"
+external get_justify : t -> Ocgtk_enums.justification
+  = "ml_gtk_label_get_justify"
 (** Returns the justification of the label.
 
     See [Gtk.Label.set_justify]. *)
 
-external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_label_get_extra_menu"
 (** Gets the extra menu model of the label.
 
     See [Gtk.Label.set_extra_menu]. *)
 
-external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode
+external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_label_get_ellipsize"
 (** Returns the ellipsization mode of the label.
 
@@ -529,7 +527,7 @@ external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
     This function is intended for use in a [Gtk.Label::activate-link] handler or
     for use in a [Gtk.Widget::query-tooltip] handler. *)
 
-external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
+external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_label_get_attributes"
 (** Gets the label's attribute list.
 
@@ -554,5 +552,8 @@ val on_move_cursor :
   ?after:bool ->
   t ->
   callback:
-    (step:Gtk_enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
+    (step:Ocgtk_enums.movementstep ->
+    count:int ->
+    extend_selection:bool ->
+    unit) ->
   Gobject.Signal.handler_id

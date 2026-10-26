@@ -9,7 +9,7 @@ class type editable_t = object
     Gobject.Signal.handler_id
 
   method delegate_get_accessible_platform_state :
-    Gtk_enums.accessibleplatformstate -> bool
+    Enums.accessibleplatformstate -> bool
 
   method delete_selection : unit -> unit
   method delete_text : int -> int -> unit
@@ -33,7 +33,7 @@ class type editable_t = object
   method set_text : string -> unit
   method set_width_chars : int -> unit
   method selection_bound : int
-  method as_editable : Editable.t
+  method as_editable : Raw.Editable.t
 end
 
-class editable : Editable.t -> editable_t
+class editable : Raw.Editable.t -> editable_t

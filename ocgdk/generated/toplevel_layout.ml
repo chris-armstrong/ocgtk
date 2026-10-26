@@ -1,51 +1,53 @@
 class type toplevel_layout_t = object
-  method equal : Toplevel_layout.t -> bool
+  method equal : Raw.Toplevel_layout.t -> bool
 
   method get_fullscreen_monitor :
-    unit -> GApp_launch_context_cycle_de440b34.monitor_t option
+    unit -> App_launch_context_cycle_de440b34.monitor_t option
 
   method get_resizable : unit -> bool
-  method ref : unit -> Toplevel_layout.t
+  method ref : unit -> Raw.Toplevel_layout.t
 
   method set_fullscreen :
-    bool -> GApp_launch_context_cycle_de440b34.monitor_t option -> unit
+    bool -> App_launch_context_cycle_de440b34.monitor_t option -> unit
 
   method set_maximized : bool -> unit
   method set_resizable : bool -> unit
-  method as_toplevel_layout : Toplevel_layout.t
+  method as_toplevel_layout : Raw.Toplevel_layout.t
 end
 
 (* High-level class for ToplevelLayout *)
-class toplevel_layout (obj : Toplevel_layout.t) : toplevel_layout_t =
+class toplevel_layout (obj : Raw.Toplevel_layout.t) : toplevel_layout_t =
   object (self)
-    method equal : Toplevel_layout.t -> bool =
-      fun other -> Toplevel_layout.equal obj other
+    method equal : Raw.Toplevel_layout.t -> bool =
+      fun other -> Raw.Toplevel_layout.equal obj other
 
     method get_fullscreen_monitor :
-        unit -> GApp_launch_context_cycle_de440b34.monitor_t option =
+        unit -> App_launch_context_cycle_de440b34.monitor_t option =
       fun () ->
         Option.map
-          (fun ret -> new GApp_launch_context_cycle_de440b34.monitor ret)
-          (Toplevel_layout.get_fullscreen_monitor obj)
+          (fun ret -> new App_launch_context_cycle_de440b34.monitor ret)
+          (Raw.Toplevel_layout.get_fullscreen_monitor obj)
 
     method get_resizable : unit -> bool =
-      fun () -> Toplevel_layout.get_resizable obj
+      fun () -> Raw.Toplevel_layout.get_resizable obj
 
-    method ref : unit -> Toplevel_layout.t = fun () -> Toplevel_layout.ref obj
+    method ref : unit -> Raw.Toplevel_layout.t =
+      fun () -> Raw.Toplevel_layout.ref obj
 
     method set_fullscreen :
-        bool -> GApp_launch_context_cycle_de440b34.monitor_t option -> unit =
+        bool -> App_launch_context_cycle_de440b34.monitor_t option -> unit =
       fun fullscreen monitor ->
         let monitor = Option.map (fun c -> c#as_monitor) monitor in
-        Toplevel_layout.set_fullscreen obj fullscreen monitor
+        Raw.Toplevel_layout.set_fullscreen obj fullscreen monitor
 
     method set_maximized : bool -> unit =
-      fun maximized -> Toplevel_layout.set_maximized obj maximized
+      fun maximized -> Raw.Toplevel_layout.set_maximized obj maximized
 
     method set_resizable : bool -> unit =
-      fun resizable -> Toplevel_layout.set_resizable obj resizable
+      fun resizable -> Raw.Toplevel_layout.set_resizable obj resizable
 
     method as_toplevel_layout = obj
   end
 
-let new_ () : toplevel_layout_t = new toplevel_layout (Toplevel_layout.new_ ())
+let new_ () : toplevel_layout_t =
+  new toplevel_layout (Raw.Toplevel_layout.new_ ())

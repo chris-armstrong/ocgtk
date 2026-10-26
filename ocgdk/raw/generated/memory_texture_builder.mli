@@ -38,8 +38,7 @@ external set_update_texture : t -> Texture.t option -> unit
 
     See [Gdk.MemoryTextureBuilder.set_update_region] for an explanation. *)
 
-external set_update_region :
-  t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+external set_update_region : t -> Occairo_raw.Region.t option -> unit
   = "ml_gdk_memory_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture.
 
@@ -76,7 +75,7 @@ external set_height : t -> int -> unit
     The height must be set before calling [Gdk.MemoryTextureBuilder.build] and
     conform to size requirements of the provided format. *)
 
-external set_format : t -> Gdk_enums.memoryformat -> unit
+external set_format : t -> Ocgdk_enums.memoryformat -> unit
   = "ml_gdk_memory_texture_builder_set_format"
 (** Sets the format of the bytes.
 
@@ -106,7 +105,7 @@ external get_update_texture : t -> Texture.t option
     gdk_memory_texture_builder_set_update_texture() or [NULL] if none was set.
 *)
 
-external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
+external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_memory_texture_builder_get_update_region"
 (** Gets the region previously set via
     gdk_memory_texture_builder_set_update_region() or [NULL] if none was set. *)
@@ -129,7 +128,7 @@ external get_height : t -> int = "ml_gdk_memory_texture_builder_get_height"
 (** Gets the height previously set via gdk_memory_texture_builder_set_height()
     or 0 if the height wasn't set. *)
 
-external get_format : t -> Gdk_enums.memoryformat
+external get_format : t -> Ocgdk_enums.memoryformat
   = "ml_gdk_memory_texture_builder_get_format"
 (** Gets the format previously set via gdk_memory_texture_builder_set_format().
 *)

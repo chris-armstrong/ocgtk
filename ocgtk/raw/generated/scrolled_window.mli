@@ -108,7 +108,8 @@ external set_propagate_natural_height : t -> bool -> unit
 (** Sets whether the natural height of the child should be calculated and
     propagated through the scrolled window’s requested natural height. *)
 
-external set_policy : t -> Gtk_enums.policytype -> Gtk_enums.policytype -> unit
+external set_policy :
+  t -> Ocgtk_enums.policytype -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_policy"
 (** Sets the scrollbar policy for the horizontal and vertical scrollbars.
 
@@ -119,7 +120,7 @@ external set_policy : t -> Gtk_enums.policytype -> Gtk_enums.policytype -> unit
     the slider part of the bar would be smaller than the trough — the display is
     larger than the page size). *)
 
-external set_placement : t -> Gtk_enums.cornertype -> unit
+external set_placement : t -> Ocgtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_placement"
 (** Sets the placement of the contents with respect to the scrollbars for the
     scrolled window.
@@ -228,14 +229,14 @@ external get_propagate_natural_height : t -> bool
 (** Reports whether the natural height of the child will be calculated and
     propagated through the scrolled window’s requested natural height. *)
 
-external get_policy : t -> Gtk_enums.policytype * Gtk_enums.policytype
+external get_policy : t -> Ocgtk_enums.policytype * Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_policy"
 (** Retrieves the current policy values for the horizontal and vertical
     scrollbars.
 
     See [Gtk.ScrolledWindow.set_policy]. *)
 
-external get_placement : t -> Gtk_enums.cornertype
+external get_placement : t -> Ocgtk_enums.cornertype
   = "ml_gtk_scrolled_window_get_placement"
 (** Gets the placement of the contents with respect to the scrollbars. *)
 
@@ -294,42 +295,42 @@ external get_child :
 
 (* Properties *)
 
-external get_hscrollbar_policy : t -> Gtk_enums.policytype
+external get_hscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_hscrollbar_policy"
 (** Get property: hscrollbar-policy *)
 
-external set_hscrollbar_policy : t -> Gtk_enums.policytype -> unit
+external set_hscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_hscrollbar_policy"
 (** Set property: hscrollbar-policy *)
 
-external get_vscrollbar_policy : t -> Gtk_enums.policytype
+external get_vscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_vscrollbar_policy"
 (** Get property: vscrollbar-policy *)
 
-external set_vscrollbar_policy : t -> Gtk_enums.policytype -> unit
+external set_vscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_vscrollbar_policy"
 (** Set property: vscrollbar-policy *)
 
 val on_edge_overshot :
   ?after:bool ->
   t ->
-  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  callback:(pos:Ocgtk_enums.positiontype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_edge_reached :
   ?after:bool ->
   t ->
-  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  callback:(pos:Ocgtk_enums.positiontype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_move_focus_out :
   ?after:bool ->
   t ->
-  callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+  callback:(direction_type:Ocgtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_scroll_child :
   ?after:bool ->
   t ->
-  callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+  callback:(scroll:Ocgtk_enums.scrolltype -> horizontal:bool -> bool) ->
   Gobject.Signal.handler_id

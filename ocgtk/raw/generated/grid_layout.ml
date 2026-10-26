@@ -31,7 +31,7 @@ external set_row_homogeneous : t -> bool -> unit
 (** Sets whether all rows of [grid] should have the same height. *)
 
 external set_row_baseline_position :
-  t -> int -> Gtk_enums.baselineposition -> unit
+  t -> int -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_grid_layout_set_row_baseline_position"
 (** Sets how the baseline should be positioned on [row] of the grid, in case
     that row is assigned more space than is requested. *)
@@ -58,7 +58,7 @@ external get_row_homogeneous : t -> bool
   = "ml_gtk_grid_layout_get_row_homogeneous"
 (** Checks whether all rows of [grid] should have the same height. *)
 
-external get_row_baseline_position : t -> int -> Gtk_enums.baselineposition
+external get_row_baseline_position : t -> int -> Ocgtk_enums.baselineposition
   = "ml_gtk_grid_layout_get_row_baseline_position"
 (** Returns the baseline position of [row].
 

@@ -1,48 +1,48 @@
 class type debug_controller_d_bus_t = object
-  inherit GDebug_controller.debug_controller_t
-  inherit GInitable.initable_t
+  inherit Debug_controller.debug_controller_t
+  inherit Initable.initable_t
 
   method on_authorize :
     ?after:bool ->
     callback:
-      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
+      (invocation:D_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method stop : unit -> unit
-  method connection : GD_bus_connection.d_bus_connection_t
-  method as_debug_controller_d_bus : Debug_controller_d_bus.t
+  method connection : D_bus_connection.d_bus_connection_t
+  method as_debug_controller_d_bus : Raw.Debug_controller_d_bus.t
 end
 
 (* High-level class for DebugControllerDBus *)
-class debug_controller_d_bus (obj : Debug_controller_d_bus.t) :
+class debug_controller_d_bus (obj : Raw.Debug_controller_d_bus.t) :
   debug_controller_d_bus_t =
   object (self)
     inherit
-      GDebug_controller.debug_controller (Debug_controller.from_gobject obj)
+      Debug_controller.debug_controller (Raw.Debug_controller.from_gobject obj)
 
-    inherit GInitable.initable (Initable.from_gobject obj)
+    inherit Initable.initable (Raw.Initable.from_gobject obj)
 
     method on_authorize ?(after = false) ~callback () =
-      Debug_controller_d_bus.on_authorize ~after self#as_debug_controller_d_bus
-        ~callback:(fun ~invocation ->
+      Raw.Debug_controller_d_bus.on_authorize ~after
+        self#as_debug_controller_d_bus ~callback:(fun ~invocation ->
           callback
             ~invocation:
-              (new GD_bus_method_invocation.d_bus_method_invocation invocation))
+              (new D_bus_method_invocation.d_bus_method_invocation invocation))
 
-    method stop : unit -> unit = fun () -> Debug_controller_d_bus.stop obj
+    method stop : unit -> unit = fun () -> Raw.Debug_controller_d_bus.stop obj
 
     method connection =
-      new GD_bus_connection.d_bus_connection
-        (Debug_controller_d_bus.get_connection obj)
+      new D_bus_connection.d_bus_connection
+        (Raw.Debug_controller_d_bus.get_connection obj)
 
     method as_debug_controller_d_bus = obj
   end
 
-let new_ (connection : GD_bus_connection.d_bus_connection_t)
-    (cancellable : GCancellable.cancellable_t option) :
+let new_ (connection : D_bus_connection.d_bus_connection_t)
+    (cancellable : Cancellable.cancellable_t option) :
     (debug_controller_d_bus_t, GError.t) result =
   let connection = connection#as_d_bus_connection in
   let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-  let obj_ = Debug_controller_d_bus.new_ connection cancellable in
+  let obj_ = Raw.Debug_controller_d_bus.new_ connection cancellable in
   Result.map (fun obj_ -> new debug_controller_d_bus obj_) obj_

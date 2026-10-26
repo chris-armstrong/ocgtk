@@ -64,7 +64,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_print_context_get_type"
 (* Methods *)
 
 external set_cairo_context :
-  t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> float -> float -> unit
+  t -> Occairo_raw.Context.t -> float -> float -> unit
   = "ml_gtk_print_context_set_cairo_context"
 (** Sets a new cairo context on a print context.
 
@@ -75,7 +75,7 @@ external set_cairo_context :
 external get_width : t -> float = "ml_gtk_print_context_get_width"
 (** Obtains the width of the [GtkPrintContext], in pixels. *)
 
-external get_pango_fontmap : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t
+external get_pango_fontmap : t -> Ocpango_raw.Font_map.t
   = "ml_gtk_print_context_get_pango_fontmap"
 (** Returns a [PangoFontMap] that is suitable for use with the
     [GtkPrintContext]. *)
@@ -100,15 +100,15 @@ external get_dpi_x : t -> float = "ml_gtk_print_context_get_dpi_x"
 (** Obtains the horizontal resolution of the [GtkPrintContext], in dots per
     inch. *)
 
-external get_cairo_context : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t
+external get_cairo_context : t -> Occairo_raw.Context.t
   = "ml_gtk_print_context_get_cairo_context"
 (** Obtains the cairo context that is associated with the [GtkPrintContext]. *)
 
-external create_pango_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t
+external create_pango_layout : t -> Ocpango_raw.Layout.t
   = "ml_gtk_print_context_create_pango_layout"
 (** Creates a new [PangoLayout] that is suitable for use with the
     [GtkPrintContext]. *)
 
-external create_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+external create_pango_context : t -> Ocpango_raw.Context.t
   = "ml_gtk_print_context_create_pango_context"
 (** Creates a new [PangoContext] that can be used with the [GtkPrintContext]. *)

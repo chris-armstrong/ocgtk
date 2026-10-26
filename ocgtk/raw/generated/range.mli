@@ -141,7 +141,7 @@ external get_restrict_to_fill_level : t -> bool
   = "ml_gtk_range_get_restrict_to_fill_level"
 (** Gets whether the range is restricted to the fill level. *)
 
-external get_range_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+external get_range_rect : t -> Ocgdk_raw.Rectangle.t
   = "ml_gtk_range_get_range_rect"
 (** This function returns the area that contains the range’s trough, in
     coordinates relative to [range]'s origin.
@@ -175,13 +175,13 @@ val on_adjust_bounds :
 val on_change_value :
   ?after:bool ->
   t ->
-  callback:(scroll:Gtk_enums.scrolltype -> value:float -> bool) ->
+  callback:(scroll:Ocgtk_enums.scrolltype -> value:float -> bool) ->
   Gobject.Signal.handler_id
 
 val on_move_slider :
   ?after:bool ->
   t ->
-  callback:(step:Gtk_enums.scrolltype -> unit) ->
+  callback:(step:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_value_changed :

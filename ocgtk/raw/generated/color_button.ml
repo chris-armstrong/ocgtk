@@ -27,7 +27,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_color_button_get_type"
 external new_ : unit -> t = "ml_gtk_color_button_new"
 (** Create a new ColorButton *)
 
-external new_with_rgba : Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> t
+external new_with_rgba : Ocgdk_raw.Rgb_a.t -> t
   = "ml_gtk_color_button_new_with_rgba"
 (** Create a new ColorButton *)
 

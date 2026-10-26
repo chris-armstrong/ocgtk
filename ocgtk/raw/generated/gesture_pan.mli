@@ -26,16 +26,16 @@ type t =
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_pan_get_type"
 
-external new_ : Gtk_enums.orientation -> t = "ml_gtk_gesture_pan_new"
+external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_gesture_pan_new"
 (** Create a new GesturePan *)
 
 (* Methods *)
 
-external set_orientation : t -> Gtk_enums.orientation -> unit
+external set_orientation : t -> Ocgtk_enums.orientation -> unit
   = "ml_gtk_gesture_pan_set_orientation"
 (** Sets the orientation to be expected on pan gestures. *)
 
-external get_orientation : t -> Gtk_enums.orientation
+external get_orientation : t -> Ocgtk_enums.orientation
   = "ml_gtk_gesture_pan_get_orientation"
 (** Returns the orientation of the pan gestures that this [gesture] expects. *)
 
@@ -44,5 +44,5 @@ external get_orientation : t -> Gtk_enums.orientation
 val on_pan :
   ?after:bool ->
   t ->
-  callback:(direction:Gtk_enums.pandirection -> offset:float -> unit) ->
+  callback:(direction:Ocgtk_enums.pandirection -> offset:float -> unit) ->
   Gobject.Signal.handler_id

@@ -28,7 +28,7 @@ external set_expression : t -> Expression.t option -> unit
 
     The expression must have the type [G_TYPE_STRING]. *)
 
-external set_collation : t -> Gtk_enums.collation -> unit
+external set_collation : t -> Ocgtk_enums.collation -> unit
   = "ml_gtk_string_sorter_set_collation"
 (** Sets the collation method to use for sorting. *)
 
@@ -39,7 +39,7 @@ external get_expression : t -> Expression.t option
   = "ml_gtk_string_sorter_get_expression"
 (** Gets the expression that is evaluated to obtain strings from items. *)
 
-external get_collation : t -> Gtk_enums.collation
+external get_collation : t -> Ocgtk_enums.collation
   = "ml_gtk_string_sorter_get_collation"
 (** Gets which collation method the sorter uses. *)
 

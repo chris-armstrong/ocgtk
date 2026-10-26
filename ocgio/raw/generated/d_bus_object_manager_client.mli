@@ -94,7 +94,7 @@ external get_name : t -> string = "ml_g_dbus_object_manager_client_get_name"
 (** Gets the name that [manager] is for, or [NULL] if not a message bus
     connection. *)
 
-external get_flags : t -> Gio_enums.dbusobjectmanagerclientflags
+external get_flags : t -> Ocgio_enums.dbusobjectmanagerclientflags
   = "ml_g_dbus_object_manager_client_get_flags"
 (** Gets the flags that [manager] was constructed with. *)
 

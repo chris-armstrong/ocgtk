@@ -15,13 +15,13 @@ type t = [ `inet_address | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_inet_address_get_type"
 
-external new_any : Gio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
+external new_any : Ocgio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
 (** Create a new InetAddress *)
 
 external new_from_string : string -> t = "ml_g_inet_address_new_from_string"
 (** Create a new InetAddress *)
 
-external new_loopback : Gio_enums.socketfamily -> t
+external new_loopback : Ocgio_enums.socketfamily -> t
   = "ml_g_inet_address_new_loopback"
 (** Create a new InetAddress *)
 
@@ -78,7 +78,7 @@ external get_is_any : t -> bool = "ml_g_inet_address_get_is_any"
 external get_flowinfo : t -> UInt32.t = "ml_g_inet_address_get_flowinfo"
 (** Gets the value of [Gio.InetAddress:flowinfo]. *)
 
-external get_family : t -> Gio_enums.socketfamily
+external get_family : t -> Ocgio_enums.socketfamily
   = "ml_g_inet_address_get_family"
 (** Gets [address]'s family *)
 

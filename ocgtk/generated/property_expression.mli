@@ -1,13 +1,13 @@
 class type property_expression_t = object
-  inherit GExpression.expression_t
-  method get_expression : unit -> GExpression.expression_t option
-  method as_property_expression : Property_expression.t
+  inherit Expression.expression_t
+  method get_expression : unit -> Expression.expression_t option
+  method as_property_expression : Raw.Property_expression.t
 end
 
-class property_expression : Property_expression.t -> property_expression_t
+class property_expression : Raw.Property_expression.t -> property_expression_t
 
 val new_ :
   Gobject.Type.t ->
-  GExpression.expression_t option ->
+  Expression.expression_t option ->
   string ->
   property_expression_t

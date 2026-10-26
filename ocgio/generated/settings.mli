@@ -23,13 +23,13 @@ class type settings_t = object
     string ->
     [ `object_ ] Gobject.obj ->
     string ->
-    Gio_enums.settingsbindflags ->
+    Enums.settingsbindflags ->
     unit
 
   method bind_writable :
     string -> [ `object_ ] Gobject.obj -> string -> bool -> unit
 
-  method create_action : string -> GAction.action_t
+  method create_action : string -> Action.action_t
   method delay : unit -> unit
   method get_boolean : string -> bool
   method get_child : string -> settings_t
@@ -68,11 +68,11 @@ class type settings_t = object
   method path : string
   method schema : string
   method schema_id : string
-  method settings_schema : Settings_schema.t
-  method as_settings : Settings.t
+  method settings_schema : Raw.Settings_schema.t
+  method as_settings : Raw.Settings.t
 end
 
-class settings : Settings.t -> settings_t
+class settings : Raw.Settings.t -> settings_t
 
 val new_ : string -> settings_t
 val new_with_path : string -> string -> settings_t

@@ -5,7 +5,7 @@
  (targets cflag-pango.sexp clink-pango.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    cairo-gobject
    --pkg
@@ -19,12 +19,18 @@
    --libs-out
    clink-pango.sexp)))
 
+(rule
+ (copy generated/pango_decls.h pango_decls.h))
+
+(rule
+ (copy core/pango_core.h pango_core.h))
+
 (library
- (name ocgtk_pango_generated_stubs)
- (public_name ocgtk.pango.generated_stubs)
+ (name ocpango_raw_stubs)
+ (public_name ocpango.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gio ocgtk.cairo ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgio.raw occairo.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names

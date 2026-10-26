@@ -1,71 +1,71 @@
 class type size_group_t = object
-  inherit GBuildable.buildable_t
+  inherit Buildable.buildable_t
 
   method add_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
-  method get_mode : unit -> Gtk_enums.sizegroupmode
+  method get_mode : unit -> Enums.sizegroupmode
 
   method get_widgets :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     list
 
   method remove_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
-  method set_mode : Gtk_enums.sizegroupmode -> unit
-  method as_size_group : Size_group.t
+  method set_mode : Enums.sizegroupmode -> unit
+  method as_size_group : Raw.Size_group.t
 end
 
 (* High-level class for SizeGroup *)
-class size_group (obj : Size_group.t) : size_group_t =
+class size_group (obj : Raw.Size_group.t) : size_group_t =
   object (self)
-    inherit GBuildable.buildable (Buildable.from_gobject obj)
+    inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 
     method add_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
         let widget = widget#as_widget in
-        Size_group.add_widget obj widget
+        Raw.Size_group.add_widget obj widget
 
-    method get_mode : unit -> Gtk_enums.sizegroupmode =
-      fun () -> Size_group.get_mode obj
+    method get_mode : unit -> Enums.sizegroupmode =
+      fun () -> Raw.Size_group.get_mode obj
 
     method get_widgets :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         list =
       fun () ->
         (List.map (fun ret ->
              new
-               GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+               Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
                .widget
                ret))
-          (Size_group.get_widgets obj)
+          (Raw.Size_group.get_widgets obj)
 
     method remove_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
         let widget = widget#as_widget in
-        Size_group.remove_widget obj widget
+        Raw.Size_group.remove_widget obj widget
 
-    method set_mode : Gtk_enums.sizegroupmode -> unit =
-      fun mode -> Size_group.set_mode obj mode
+    method set_mode : Enums.sizegroupmode -> unit =
+      fun mode -> Raw.Size_group.set_mode obj mode
 
     method as_size_group = obj
   end
 
-let new_ (mode : Gtk_enums.sizegroupmode) : size_group_t =
-  let obj_ = Size_group.new_ mode in
+let new_ (mode : Enums.sizegroupmode) : size_group_t =
+  let obj_ = Raw.Size_group.new_ mode in
   new size_group obj_

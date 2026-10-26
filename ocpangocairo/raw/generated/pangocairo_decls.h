@@ -8,9 +8,9 @@
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "generated/gio_decls.h"
-#include "generated/pango_decls.h"
-#include "generated/cairo_decls.h"
+#include "gio_decls.h"
+#include "pango_decls.h"
+#include "cairo_decls.h"
 
 /* Class-specific conversion macros (shared) */
 /* Interface-specific conversion macros (shared) */
@@ -35,6 +35,6 @@
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
 
-#include "../core/pangocairo_core.h"
+#include "pangocairo_core.h"
 
 #endif /* _pangocairo_decls_h_ */

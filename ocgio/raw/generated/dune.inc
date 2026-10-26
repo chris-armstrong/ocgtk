@@ -5,7 +5,7 @@
  (targets cflag-gio.sexp clink-gio.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    gio-2.0
    --pkg-optional
@@ -15,9 +15,15 @@
    --libs-out
    clink-gio.sexp)))
 
+(rule
+ (copy generated/gio_decls.h gio_decls.h))
+
+(rule
+ (copy core/gio_core.h gio_core.h))
+
 (library
- (name ocgtk_gio_generated_stubs_batch_0)
- (public_name ocgtk.gio.generated_stubs_batch_0)
+ (name ocgio_raw_stubs_batch_0)
+ (public_name ocgio.raw.stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocglib)  ; Depend on ocglib for header files
@@ -109,8 +115,8 @@
  (c_library_flags (:include clink-gio.sexp)))
 
 (library
- (name ocgtk_gio_generated_stubs_batch_1)
- (public_name ocgtk.gio.generated_stubs_batch_1)
+ (name ocgio_raw_stubs_batch_1)
+ (public_name ocgio.raw.stubs_batch_1)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocglib)  ; Depend on ocglib for header files
@@ -202,8 +208,8 @@
  (c_library_flags (:include clink-gio.sexp)))
 
 (library
- (name ocgtk_gio_generated_stubs_batch_2)
- (public_name ocgtk.gio.generated_stubs_batch_2)
+ (name ocgio_raw_stubs_batch_2)
+ (public_name ocgio.raw.stubs_batch_2)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocglib)  ; Depend on ocglib for header files
@@ -225,8 +231,8 @@
  (c_library_flags (:include clink-gio.sexp)))
 
 (library
- (name ocgtk_gio_generated_stubs)
- (public_name ocgtk.gio.generated_stubs)
+ (name ocgio_raw_stubs)
+ (public_name ocgio.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk_gio_generated_stubs_batch_0 ocgtk_gio_generated_stubs_batch_1 ocgtk_gio_generated_stubs_batch_2))
+ (libraries ocgio_raw_stubs_batch_0 ocgio_raw_stubs_batch_1 ocgio_raw_stubs_batch_2))

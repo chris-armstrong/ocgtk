@@ -88,8 +88,7 @@ external set_update_texture : t -> Texture.t option -> unit
 (** Sets the texture to be updated by this texture. See
     [Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
 
-external set_update_region :
-  t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
+external set_update_region : t -> Occairo_raw.Region.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
     [Gdk.DmabufTextureBuilder:update-texture] this describes an update of a
@@ -172,7 +171,7 @@ external get_update_texture : t -> Texture.t option
     gdk_dmabuf_texture_builder_set_update_texture() or [NULL] if none was set.
 *)
 
-external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
+external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_region"
 (** Gets the region previously set via
     gdk_dmabuf_texture_builder_set_update_region() or [NULL] if none was set. *)

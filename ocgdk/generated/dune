@@ -1,0 +1,16 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgdk)
+ (public_name ocgdk)
+ (synopsis "OCaml bindings for Gdk")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries
+  ocglib
+  ocgdk.raw
+  ocgdk.enums
+  ocgdkpixbuf
+  ocgio
+  ocpango
+  ocpangocairo
+  occairo))

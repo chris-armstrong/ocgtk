@@ -15,7 +15,7 @@ external new_ : Expression.t option -> t = "ml_gtk_numeric_sorter_new"
 
 (* Methods *)
 
-external set_sort_order : t -> Gtk_enums.sorttype -> unit
+external set_sort_order : t -> Ocgtk_enums.sorttype -> unit
   = "ml_gtk_numeric_sorter_set_sort_order"
 (** Sets whether to sort smaller numbers before larger ones. *)
 
@@ -29,7 +29,7 @@ external set_expression : t -> Expression.t option -> unit
     The expression must have a return type that can be compared numerically,
     such as [G_TYPE_INT] or [G_TYPE_DOUBLE]. *)
 
-external get_sort_order : t -> Gtk_enums.sorttype
+external get_sort_order : t -> Ocgtk_enums.sorttype
   = "ml_gtk_numeric_sorter_get_sort_order"
 (** Gets whether this sorter will sort smaller numbers first. *)
 

@@ -9,7 +9,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_key_event_get_type"
 
 (* Methods *)
 
-external matches : t -> int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
+external matches : t -> int -> Ocgdk_enums.modifiertype -> Ocgdk_enums.keymatch
   = "ml_gdk_key_event_matches"
 (** Matches a key event against a keyval and modifiers.
 
@@ -23,7 +23,7 @@ external matches : t -> int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
 external is_modifier : t -> bool = "ml_gdk_key_event_is_modifier"
 (** Extracts whether the key event is for a modifier key. *)
 
-external get_match : t -> bool * int * Gdk_enums.modifiertype
+external get_match : t -> bool * int * Ocgdk_enums.modifiertype
   = "ml_gdk_key_event_get_match"
 (** Gets a keyval and modifier combination that will match the event.
 
@@ -41,6 +41,6 @@ external get_keyval : t -> int = "ml_gdk_key_event_get_keyval"
 external get_keycode : t -> int = "ml_gdk_key_event_get_keycode"
 (** Extracts the keycode from a key event. *)
 
-external get_consumed_modifiers : t -> Gdk_enums.modifiertype
+external get_consumed_modifiers : t -> Ocgdk_enums.modifiertype
   = "ml_gdk_key_event_get_consumed_modifiers"
 (** Extracts the consumed modifiers from a key event. *)

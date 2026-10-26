@@ -68,7 +68,7 @@ external get_depth : t -> int = "ml_gtk_tree_list_row_get_depth"
     The depth of a row never changes until the row is removed from its model at
     which point it will forever return 0. *)
 
-external get_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
+external get_children : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_tree_list_row_get_children"
 (** If the row is expanded, gets the model holding the children of [self].
 

@@ -22,7 +22,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_video_get_type"
 external new_ : unit -> t = "ml_gtk_video_new"
 (** Create a new Video *)
 
-external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t option -> t
+external new_for_file : Ocgio_raw.File.t option -> t
   = "ml_gtk_video_new_for_file"
 (** Create a new Video *)
 
@@ -56,7 +56,7 @@ external set_media_stream : t -> Media_stream.t option -> unit
 external set_loop : t -> bool -> unit = "ml_gtk_video_set_loop"
 (** Sets whether new files loaded by [self] should be set to loop. *)
 
-external set_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled -> unit
+external set_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled -> unit
   = "ml_gtk_video_set_graphics_offload"
 (** Sets whether to enable graphics offload.
 
@@ -67,7 +67,7 @@ external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 
     This is a utility function that calls gtk_video_set_file(), *)
 
-external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
+external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_video_set_file"
 (** Makes [self] play the given [file]. *)
 
@@ -82,14 +82,13 @@ external get_media_stream : t -> Media_stream.t option
 external get_loop : t -> bool = "ml_gtk_video_get_loop"
 (** Returns [TRUE] if videos have been set to loop. *)
 
-external get_graphics_offload : t -> Gtk_enums.graphicsoffloadenabled
+external get_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled
   = "ml_gtk_video_get_graphics_offload"
 (** Returns whether graphics offload is enabled.
 
     See [Gtk.GraphicsOffload] for more information on graphics offload. *)
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_video_get_file"
+external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_video_get_file"
 (** Gets the file played by [self] or [NULL] if not playing back a file. *)
 
 external get_autoplay : t -> bool = "ml_gtk_video_get_autoplay"

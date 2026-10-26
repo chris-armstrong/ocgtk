@@ -29,7 +29,7 @@ external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"
 
 (* Methods *)
 
-external set_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
+external set_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_color_dialog_button_set_rgba"
 (** Sets the color of the button. *)
 
@@ -38,7 +38,7 @@ external set_dialog : t -> Color_dialog.t -> unit
 (** Sets a [GtkColorDialog] object to use for creating the color chooser dialog
     that is presented when the user clicks the button. *)
 
-external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_color_dialog_button_get_rgba"
 [@@ocaml.doc
   "Returns the color of the button.\n\n\

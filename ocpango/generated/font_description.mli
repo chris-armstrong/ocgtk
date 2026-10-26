@@ -1,42 +1,44 @@
 class type font_description_t = object
-  method better_match : Font_description.t option -> Font_description.t -> bool
-  method copy_static : unit -> Font_description.t option
-  method equal : Font_description.t -> bool
-  method get_color : unit -> Pango_enums.fontcolor
+  method better_match :
+    Raw.Font_description.t option -> Raw.Font_description.t -> bool
+
+  method copy_static : unit -> Raw.Font_description.t option
+  method equal : Raw.Font_description.t -> bool
+  method get_color : unit -> Enums.fontcolor
   method get_family : unit -> string option
   method get_features : unit -> string option
-  method get_gravity : unit -> Pango_enums.gravity
-  method get_set_fields : unit -> Pango_enums.fontmask
+  method get_gravity : unit -> Enums.gravity
+  method get_set_fields : unit -> Enums.fontmask
   method get_size : unit -> int
   method get_size_is_absolute : unit -> bool
-  method get_stretch : unit -> Pango_enums.stretch
-  method get_style : unit -> Pango_enums.style
-  method get_variant : unit -> Pango_enums.variant
+  method get_stretch : unit -> Enums.stretch
+  method get_style : unit -> Enums.style
+  method get_variant : unit -> Enums.variant
   method get_variations : unit -> string option
-  method get_weight : unit -> Pango_enums.weight
+  method get_weight : unit -> Enums.weight
   method hash : unit -> int
-  method merge : Font_description.t option -> bool -> unit
-  method merge_static : Font_description.t -> bool -> unit
+  method merge : Raw.Font_description.t option -> bool -> unit
+  method merge_static : Raw.Font_description.t -> bool -> unit
   method set_absolute_size : float -> unit
-  method set_color : Pango_enums.fontcolor -> unit
+  method set_color : Enums.fontcolor -> unit
   method set_family : string -> unit
   method set_family_static : string -> unit
   method set_features : string option -> unit
   method set_features_static : string -> unit
-  method set_gravity : Pango_enums.gravity -> unit
+  method set_gravity : Enums.gravity -> unit
   method set_size : int -> unit
-  method set_stretch : Pango_enums.stretch -> unit
-  method set_style : Pango_enums.style -> unit
-  method set_variant : Pango_enums.variant -> unit
+  method set_stretch : Enums.stretch -> unit
+  method set_style : Enums.style -> unit
+  method set_variant : Enums.variant -> unit
   method set_variations : string option -> unit
   method set_variations_static : string -> unit
-  method set_weight : Pango_enums.weight -> unit
+  method set_weight : Enums.weight -> unit
   method to_filename : unit -> string option
   method to_string : unit -> string
-  method unset_fields : Pango_enums.fontmask -> unit
-  method as_font_description : Font_description.t
+  method unset_fields : Enums.fontmask -> unit
+  method as_font_description : Raw.Font_description.t
 end
 
-class font_description : Font_description.t -> font_description_t
+class font_description : Raw.Font_description.t -> font_description_t
 
 val new_ : unit -> font_description_t

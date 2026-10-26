@@ -1,5 +1,5 @@
 class type about_dialog_t = object
-  inherit GApplication_and__window_and__window_group.window_t
+  inherit Application_and__window_and__window_group.window_t
 
   method on_activate_link :
     ?after:bool ->
@@ -14,7 +14,7 @@ class type about_dialog_t = object
   method get_copyright : unit -> string option
   method get_documenters : unit -> string array
   method get_license : unit -> string option
-  method get_logo : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
+  method get_logo : unit -> Ocgdk.Paintable.paintable_t option
   method get_logo_icon_name : unit -> string option
   method get_program_name : unit -> string option
   method get_system_information : unit -> string option
@@ -29,7 +29,7 @@ class type about_dialog_t = object
   method set_copyright : string option -> unit
   method set_documenters : string array -> unit
   method set_license : string option -> unit
-  method set_logo : Ocgtk_gdk.Gdk.Paintable.paintable_t option -> unit
+  method set_logo : Ocgdk.Paintable.paintable_t option -> unit
   method set_logo_icon_name : string option -> unit
   method set_program_name : string option -> unit
   method set_system_information : string option -> unit
@@ -38,9 +38,9 @@ class type about_dialog_t = object
   method set_website : string option -> unit
   method set_website_label : string -> unit
   method set_wrap_license : bool -> unit
-  method as_about_dialog : About_dialog.t
+  method as_about_dialog : Raw.About_dialog.t
 end
 
-class about_dialog : About_dialog.t -> about_dialog_t
+class about_dialog : Raw.About_dialog.t -> about_dialog_t
 
 val new_ : unit -> about_dialog_t

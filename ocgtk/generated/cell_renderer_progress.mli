@@ -1,6 +1,6 @@
 class type cell_renderer_progress_t = object
-  inherit GCell_renderer.cell_renderer_t
-  inherit GOrientable.orientable_t
+  inherit Cell_renderer.cell_renderer_t
+  inherit Orientable.orientable_t
   method inverted : bool
   method set_inverted : bool -> unit
   method pulse : int
@@ -13,11 +13,11 @@ class type cell_renderer_progress_t = object
   method set_text_yalign : float -> unit
   method value : int
   method set_value : int -> unit
-  method as_cell_renderer_progress : Cell_renderer_progress.t
+  method as_cell_renderer_progress : Raw.Cell_renderer_progress.t
 end
 
 class cell_renderer_progress :
-  Cell_renderer_progress.t ->
+  Raw.Cell_renderer_progress.t ->
   cell_renderer_progress_t
 
 val new_ : unit -> cell_renderer_progress_t

@@ -149,7 +149,7 @@ external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
     called. This mode is useful when the scene changes seldom, but takes a long
     time to redraw. *)
 
-external set_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi -> unit
+external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
   = "ml_gtk_gl_area_set_allowed_apis"
 (** Sets the allowed APIs to create a context with.
 
@@ -198,19 +198,19 @@ external get_has_depth_buffer : t -> bool
 external get_error : t -> GError.t option = "ml_gtk_gl_area_get_error"
 (** Gets the current error set on the [area]. *)
 
-external get_context : t -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option
+external get_context : t -> Ocgdk_raw.Gl_context.t option
   = "ml_gtk_gl_area_get_context"
 (** Retrieves the [GdkGLContext] used by [area]. *)
 
 external get_auto_render : t -> bool = "ml_gtk_gl_area_get_auto_render"
 (** Returns whether the area is in auto render mode or not. *)
 
-external get_api : t -> Ocgtk_gdk.Gdk.glapi = "ml_gtk_gl_area_get_api"
+external get_api : t -> Ocgdk_enums.glapi = "ml_gtk_gl_area_get_api"
 (** Gets the API that is currently in use.
 
     If the GL area has not been realized yet, 0 is returned. *)
 
-external get_allowed_apis : t -> Ocgtk_gdk.Gdk.glapi
+external get_allowed_apis : t -> Ocgdk_enums.glapi
   = "ml_gtk_gl_area_get_allowed_apis"
 (** Gets the allowed APIs.
 
@@ -235,9 +235,7 @@ let on_create_context ?after obj ~callback =
         let result = callback () in
         let v = Gobject.Closure.result argv in
         let x = result in
-        Gobject.Value.set_object_exn v
-          (Ocgtk_gdk.Gdk.Wrappers.Gl_context.gtype ())
-          x)
+        Gobject.Value.set_object_exn v (Ocgdk_raw.Gl_context.gtype ()) x)
   in
   Gobject.Signal.connect obj ~name:"create-context" ~callback:closure
     ~after:(Option.value after ~default:false)
@@ -247,8 +245,7 @@ let on_render ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v
-            (Ocgtk_gdk.Gdk.Wrappers.Gl_context.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Gl_context.gtype ())
         in
         let result = callback ~context in
         let v = Gobject.Closure.result argv in

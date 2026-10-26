@@ -55,7 +55,7 @@ external new_ : Selection_model.t option -> List_item_factory.t option -> t
 
 (* Methods *)
 
-external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
+external set_tab_behavior : t -> Ocgtk_enums.listtabbehavior -> unit
   = "ml_gtk_grid_view_set_tab_behavior"
 (** Sets the behavior of the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
     keys. *)
@@ -96,7 +96,7 @@ external set_enable_rubberband : t -> bool -> unit
 (** Sets whether selections can be changed by dragging with the mouse. *)
 
 external scroll_to :
-  t -> int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
+  t -> int -> Ocgtk_enums.listscrollflags -> Scroll_info.t option -> unit
   = "ml_gtk_grid_view_scroll_to"
 (** Scrolls to the item at the given position and performs the actions specified
     in [flags].
@@ -104,7 +104,7 @@ external scroll_to :
     This function works no matter if the gridview is shown or focused. If it
     isn't, then the changes will take effect once that happens. *)
 
-external get_tab_behavior : t -> Gtk_enums.listtabbehavior
+external get_tab_behavior : t -> Ocgtk_enums.listtabbehavior
   = "ml_gtk_grid_view_get_tab_behavior"
 (** Gets the behavior set for the <kbd>Tab</kbd> key. *)
 

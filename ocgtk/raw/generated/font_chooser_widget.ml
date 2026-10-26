@@ -30,6 +30,6 @@ external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
 (* Methods *)
 (* Properties *)
 
-external get_tweak_action : t -> Ocgtk_gio.Gio.Wrappers.Action.t
+external get_tweak_action : t -> Ocgio_raw.Action.t
   = "ml_gtk_font_chooser_widget_get_tweak_action"
 (** Get property: tweak-action *)

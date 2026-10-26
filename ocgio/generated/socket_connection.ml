@@ -2,6 +2,6 @@
 (* Shim module for SocketConnection from cyclic group Socket_and__socket_connection *)
 
 class type socket_connection_t =
-  GSocket_and__socket_connection.socket_connection_t
+  Socket_and__socket_connection.socket_connection_t
 
-class socket_connection = GSocket_and__socket_connection.socket_connection
+class socket_connection = Socket_and__socket_connection.socket_connection

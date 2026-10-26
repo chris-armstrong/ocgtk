@@ -1,10 +1,10 @@
 class type keyval_trigger_t = object
-  inherit GShortcut_trigger.shortcut_trigger_t
+  inherit Shortcut_trigger.shortcut_trigger_t
   method get_keyval : unit -> int
-  method get_modifiers : unit -> Ocgtk_gdk.Gdk.modifiertype
-  method as_keyval_trigger : Keyval_trigger.t
+  method get_modifiers : unit -> Ocgdk.Enums.modifiertype
+  method as_keyval_trigger : Raw.Keyval_trigger.t
 end
 
-class keyval_trigger : Keyval_trigger.t -> keyval_trigger_t
+class keyval_trigger : Raw.Keyval_trigger.t -> keyval_trigger_t
 
-val new_ : int -> Ocgtk_gdk.Gdk.modifiertype -> keyval_trigger_t
+val new_ : int -> Ocgdk.Enums.modifiertype -> keyval_trigger_t

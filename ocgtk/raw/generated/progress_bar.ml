@@ -99,7 +99,7 @@ external set_fraction : t -> float -> unit = "ml_gtk_progress_bar_set_fraction"
 
     The fraction should be between 0.0 and 1.0, inclusive. *)
 
-external set_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode -> unit
+external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
   = "ml_gtk_progress_bar_set_ellipsize"
 (** Sets the mode used to ellipsize the text.
 
@@ -136,7 +136,7 @@ external get_inverted : t -> bool = "ml_gtk_progress_bar_get_inverted"
 external get_fraction : t -> float = "ml_gtk_progress_bar_get_fraction"
 (** Returns the current fraction of the task that’s been completed. *)
 
-external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode
+external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_progress_bar_get_ellipsize"
 (** Returns the ellipsizing position of the progress bar.
 

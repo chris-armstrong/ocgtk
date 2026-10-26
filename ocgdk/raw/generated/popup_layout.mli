@@ -38,13 +38,13 @@ type t = [ `popup_layout ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gdk_popup_layout_get_type"
 
-external new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> t
+external new_ : Rectangle.t -> Ocgdk_enums.gravity -> Ocgdk_enums.gravity -> t
   = "ml_gdk_popup_layout_new"
 (** Create a new PopupLayout *)
 
 (* Methods *)
 
-external set_surface_anchor : t -> Gdk_enums.gravity -> unit
+external set_surface_anchor : t -> Ocgdk_enums.gravity -> unit
   = "ml_gdk_popup_layout_set_surface_anchor"
 (** Set the anchor on the popup surface. *)
 
@@ -56,7 +56,7 @@ external set_shadow_width : t -> int -> int -> int -> int -> unit
     would consist of the shadow margin surrounding the window, would there be
     any. *)
 
-external set_rect_anchor : t -> Gdk_enums.gravity -> unit
+external set_rect_anchor : t -> Ocgdk_enums.gravity -> unit
   = "ml_gdk_popup_layout_set_rect_anchor"
 (** Set the anchor on the anchor rectangle. *)
 
@@ -67,7 +67,7 @@ external set_anchor_rect : t -> Rectangle.t -> unit
   = "ml_gdk_popup_layout_set_anchor_rect"
 (** Set the anchor rectangle. *)
 
-external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit
+external set_anchor_hints : t -> Ocgdk_enums.anchorhints -> unit
   = "ml_gdk_popup_layout_set_anchor_hints"
 (** Set new anchor hints.
 
@@ -79,7 +79,7 @@ external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit
 external ref : t -> t = "ml_gdk_popup_layout_ref"
 (** Increases the reference count of [value]. *)
 
-external get_surface_anchor : t -> Gdk_enums.gravity
+external get_surface_anchor : t -> Ocgdk_enums.gravity
   = "ml_gdk_popup_layout_get_surface_anchor"
 (** Returns the anchor position on the popup surface. *)
 
@@ -87,7 +87,7 @@ external get_shadow_width : t -> int * int * int * int
   = "ml_gdk_popup_layout_get_shadow_width"
 (** Obtains the shadow widths of this layout. *)
 
-external get_rect_anchor : t -> Gdk_enums.gravity
+external get_rect_anchor : t -> Ocgdk_enums.gravity
   = "ml_gdk_popup_layout_get_rect_anchor"
 (** Returns the anchor position on the anchor rectangle. *)
 
@@ -98,7 +98,7 @@ external get_anchor_rect : t -> Rectangle.t
   = "ml_gdk_popup_layout_get_anchor_rect"
 (** Get the anchor rectangle. *)
 
-external get_anchor_hints : t -> Gdk_enums.anchorhints
+external get_anchor_hints : t -> Ocgdk_enums.anchorhints
   = "ml_gdk_popup_layout_get_anchor_hints"
 (** Get the anchor hints. *)
 

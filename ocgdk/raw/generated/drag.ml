@@ -27,7 +27,7 @@ external get_surface : t -> App_launch_context_cycle_de440b34.Surface.t
   = "ml_gdk_drag_get_surface"
 (** Returns the [GdkSurface] where the drag originates. *)
 
-external get_selected_action : t -> Gdk_enums.dragaction
+external get_selected_action : t -> Ocgdk_enums.dragaction
   = "ml_gdk_drag_get_selected_action"
 (** Determines the action chosen by the drag destination. *)
 
@@ -56,7 +56,7 @@ external get_device : t -> App_launch_context_cycle_de440b34.Device.t
 external get_content : t -> Content_provider.t = "ml_gdk_drag_get_content"
 (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
 
-external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drag_get_actions"
+external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drag_get_actions"
 (** Determines the bitmask of possible actions proposed by the source. *)
 
 external drop_done : t -> bool -> unit = "ml_gdk_drag_drop_done"
@@ -78,7 +78,7 @@ let on_cancel ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let reason =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gdk_enums.dragcancelreason_of_int (Gobject.Value.get_enum_int v)
+          Ocgdk_enums.dragcancelreason_of_int (Gobject.Value.get_enum_int v)
         in
         callback ~reason)
   in

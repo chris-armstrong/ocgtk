@@ -67,7 +67,7 @@ type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_paned_get_type"
 
-external new_ : Gtk_enums.orientation -> t = "ml_gtk_paned_new"
+external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_paned_new"
 (** Create a new Paned *)
 
 (* Methods *)
@@ -223,7 +223,7 @@ let on_move_handle ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let scroll_type =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
         in
         let result = callback ~scroll_type in
         let v = Gobject.Closure.result argv in

@@ -3,22 +3,22 @@ class type resource_t = object
   method _unregister : unit -> unit
 
   method enumerate_children :
-    string -> Gio_enums.resourcelookupflags -> (string array, GError.t) result
+    string -> Enums.resourcelookupflags -> (string array, GError.t) result
 
   method has_children : string -> bool
 
   method lookup_data :
-    string -> Gio_enums.resourcelookupflags -> (Glib_bytes.t, GError.t) result
+    string -> Enums.resourcelookupflags -> (Glib_bytes.t, GError.t) result
 
   method open_stream :
     string ->
-    Gio_enums.resourcelookupflags ->
-    (GInput_stream.input_stream_t, GError.t) result
+    Enums.resourcelookupflags ->
+    (Input_stream.input_stream_t, GError.t) result
 
-  method ref : unit -> Resource.t
-  method as_resource : Resource.t
+  method ref : unit -> Raw.Resource.t
+  method as_resource : Raw.Resource.t
 end
 
-class resource : Resource.t -> resource_t
+class resource : Raw.Resource.t -> resource_t
 
 val new_from_data : Glib_bytes.t -> (resource_t, GError.t) result

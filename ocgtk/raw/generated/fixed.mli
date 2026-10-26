@@ -51,7 +51,7 @@ external set_child_transform :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Ocgtk_gsk.Gsk.Wrappers.Transform.t option ->
+  Ocgsk_raw.Transform.t option ->
   unit = "ml_gtk_fixed_set_child_transform"
 (** Sets the transformation for [widget].
 
@@ -93,7 +93,7 @@ external get_child_transform :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Ocgtk_gsk.Gsk.Wrappers.Transform.t option = "ml_gtk_fixed_get_child_transform"
+  Ocgsk_raw.Transform.t option = "ml_gtk_fixed_get_child_transform"
 (** Retrieves the transformation for [widget] set using
     gtk_fixed_set_child_transform(). *)
 

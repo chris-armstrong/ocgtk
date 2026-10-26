@@ -1,73 +1,77 @@
 class type d_bus_object_skeleton_t = object
-  inherit GD_bus_interface_and__d_bus_object.d_bus_object_t
+  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 
   method on_authorize_method :
     ?after:bool ->
     callback:
-      (interface:GD_bus_interface_skeleton.d_bus_interface_skeleton_t ->
-      invocation:GD_bus_method_invocation.d_bus_method_invocation_t ->
+      (interface:D_bus_interface_skeleton.d_bus_interface_skeleton_t ->
+      invocation:D_bus_method_invocation.d_bus_method_invocation_t ->
       bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method add_interface :
-    GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
+    D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
 
   method flush : unit -> unit
 
   method remove_interface :
-    GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
+    D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
 
   method remove_interface_by_name : string -> unit
   method set_object_path : string -> unit
   method g_object_path : string
   method set_g_object_path : string -> unit
-  method as_d_bus_object_skeleton : D_bus_object_skeleton.t
+  method as_d_bus_object_skeleton : Raw.D_bus_object_skeleton.t
 end
 
 (* High-level class for DBusObjectSkeleton *)
-class d_bus_object_skeleton (obj : D_bus_object_skeleton.t) :
+class d_bus_object_skeleton (obj : Raw.D_bus_object_skeleton.t) :
   d_bus_object_skeleton_t =
   object (self)
     inherit
-      GD_bus_interface_and__d_bus_object.d_bus_object
-        (D_bus_interface_and__d_bus_object.D_bus_object.from_gobject obj)
+      D_bus_interface_and__d_bus_object.d_bus_object
+        (Raw.D_bus_object.from_gobject obj)
 
     method on_authorize_method ?(after = false) ~callback () =
-      D_bus_object_skeleton.on_authorize_method ~after
+      Raw.D_bus_object_skeleton.on_authorize_method ~after
         self#as_d_bus_object_skeleton ~callback:(fun ~interface ~invocation ->
           callback
             ~interface:
-              (new GD_bus_interface_skeleton.d_bus_interface_skeleton interface)
+              (new D_bus_interface_skeleton.d_bus_interface_skeleton interface)
             ~invocation:
-              (new GD_bus_method_invocation.d_bus_method_invocation invocation))
+              (new D_bus_method_invocation.d_bus_method_invocation invocation))
 
     method add_interface :
-        GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =
+        D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =
       fun interface_ ->
         let interface_ = interface_#as_d_bus_interface_skeleton in
-        D_bus_object_skeleton.add_interface obj interface_
+        Raw.D_bus_object_skeleton.add_interface obj interface_
 
-    method flush : unit -> unit = fun () -> D_bus_object_skeleton.flush obj
+    method flush : unit -> unit = fun () -> Raw.D_bus_object_skeleton.flush obj
 
     method remove_interface :
-        GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =
+        D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =
       fun interface_ ->
         let interface_ = interface_#as_d_bus_interface_skeleton in
-        D_bus_object_skeleton.remove_interface obj interface_
+        Raw.D_bus_object_skeleton.remove_interface obj interface_
 
     method remove_interface_by_name : string -> unit =
       fun interface_name ->
-        D_bus_object_skeleton.remove_interface_by_name obj interface_name
+        Raw.D_bus_object_skeleton.remove_interface_by_name obj interface_name
 
     method set_object_path : string -> unit =
-      fun object_path -> D_bus_object_skeleton.set_object_path obj object_path
+      fun object_path ->
+        Raw.D_bus_object_skeleton.set_object_path obj object_path
 
-    method g_object_path = D_bus_object_skeleton.get_g_object_path obj
-    method set_g_object_path v = D_bus_object_skeleton.set_g_object_path obj v
+    method g_object_path = Raw.D_bus_object_skeleton.get_g_object_path obj
+
+    method set_g_object_path v =
+      Raw.D_bus_object_skeleton.set_g_object_path obj v
+
     method as_d_bus_object_skeleton = obj
   end
 
 let new_ (object_path : string) : d_bus_object_skeleton_t =
-  let obj_ = D_bus_object_skeleton.new_ object_path in
+  let obj_ = Raw.D_bus_object_skeleton.new_ object_path in
   new d_bus_object_skeleton obj_

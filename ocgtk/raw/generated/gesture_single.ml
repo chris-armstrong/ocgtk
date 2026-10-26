@@ -51,8 +51,7 @@ external get_exclusive : t -> bool = "ml_gtk_gesture_single_get_exclusive"
 
     For more information, see [Gtk.GestureSingle.set_exclusive]. *)
 
-external get_current_sequence :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event_sequence.t option
+external get_current_sequence : t -> Ocgdk_raw.Event_sequence.t option
   = "ml_gtk_gesture_single_get_current_sequence"
 (** Returns the event sequence currently interacting with [gesture].
 

@@ -28,7 +28,7 @@ external set_parent :
   = "ml_gtk_mount_operation_set_parent"
 (** Sets the transient parent for windows shown by the [GtkMountOperation]. *)
 
-external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
+external set_display : t -> Ocgdk_raw.Display.t -> unit
   = "ml_gtk_mount_operation_set_display"
 (** Sets the display to show windows of the [GtkMountOperation] on. *)
 
@@ -40,7 +40,7 @@ external get_parent :
   = "ml_gtk_mount_operation_get_parent"
 (** Gets the transient parent used by the [GtkMountOperation]. *)
 
-external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
+external get_display : t -> Ocgdk_raw.Display.t
   = "ml_gtk_mount_operation_get_display"
 (** Gets the display on which windows of the [GtkMountOperation] will be shown.
 *)

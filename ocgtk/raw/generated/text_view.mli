@@ -91,7 +91,7 @@ external new_with_buffer :
 (* Methods *)
 
 external window_to_buffer_coords :
-  t -> Gtk_enums.textwindowtype -> int -> int -> int * int
+  t -> Ocgtk_enums.textwindowtype -> int -> int -> int * int
   = "ml_gtk_text_view_window_to_buffer_coords"
 (** Converts coordinates on the window identified by [win] to buffer
     coordinates. *)
@@ -104,7 +104,7 @@ external starts_display_line :
     See [Gtk.TextView.forward_display_line] for an explanation of display lines
     vs. paragraphs. *)
 
-external set_wrap_mode : t -> Gtk_enums.wrapmode -> unit
+external set_wrap_mode : t -> Ocgtk_enums.wrapmode -> unit
   = "ml_gtk_text_view_set_wrap_mode"
 (** Sets the line wrapping for the view. *)
 
@@ -114,7 +114,7 @@ external set_top_margin : t -> int -> unit = "ml_gtk_text_view_set_top_margin"
     Note that this function is confusingly named. In CSS terms, the value set
     here is padding. *)
 
-external set_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t -> unit
+external set_tabs : t -> Ocpango_raw.Tab_array.t -> unit
   = "ml_gtk_text_view_set_tabs"
 (** Sets the default tab stops for paragraphs in [text_view].
 
@@ -163,20 +163,20 @@ external set_left_margin : t -> int -> unit = "ml_gtk_text_view_set_left_margin"
     Note that this function is confusingly named. In CSS terms, the value set
     here is padding. *)
 
-external set_justification : t -> Gtk_enums.justification -> unit
+external set_justification : t -> Ocgtk_enums.justification -> unit
   = "ml_gtk_text_view_set_justification"
 (** Sets the default justification of text in [text_view].
 
     Tags in the view’s buffer may override the default. *)
 
-external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_text_view_set_input_purpose"
 (** Sets the [input-purpose] of the [GtkTextView].
 
     The [input-purpose] can be used by on-screen keyboards and other input
     methods to adjust their behaviour. *)
 
-external set_input_hints : t -> Gtk_enums.inputhints -> unit
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_text_view_set_input_hints"
 (** Sets the [input-hints] of the [GtkTextView].
 
@@ -189,7 +189,7 @@ external set_indent : t -> int -> unit = "ml_gtk_text_view_set_indent"
 
 external set_gutter :
   t ->
-  Gtk_enums.textwindowtype ->
+  Ocgtk_enums.textwindowtype ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
@@ -200,8 +200,7 @@ external set_gutter :
     [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
     [GTK_TEXT_WINDOW_TOP], or [GTK_TEXT_WINDOW_BOTTOM]. *)
 
-external set_extra_menu :
-  t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_text_view_set_extra_menu"
 (** Sets a menu model to add when constructing the context menu for [text_view].
 
@@ -359,8 +358,7 @@ external move_mark_onscreen :
 (** Moves a mark within the buffer so that it's located within the
     currently-visible text area. *)
 
-external im_context_filter_keypress :
-  t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool
+external im_context_filter_keypress : t -> Ocgdk_raw.Event.t -> bool
   = "ml_gtk_text_view_im_context_filter_keypress"
 (** Allow the [GtkTextView] input method to internally handle key press and
     release events.
@@ -394,11 +392,11 @@ external im_context_filter_keypress :
     }
     ]} *)
 
-external get_wrap_mode : t -> Gtk_enums.wrapmode
+external get_wrap_mode : t -> Ocgtk_enums.wrapmode
   = "ml_gtk_text_view_get_wrap_mode"
 (** Gets the line wrapping for the view. *)
 
-external get_visible_rect : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+external get_visible_rect : t -> Ocgdk_raw.Rectangle.t
   = "ml_gtk_text_view_get_visible_rect"
 (** Fills [visible_rect] with the currently-visible region of the buffer, in
     buffer coordinates.
@@ -421,7 +419,7 @@ external get_visible_offset : t -> float option * float option
 external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 (** Gets the top margin for text in the [text_view]. *)
 
-external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
+external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_text_view_get_tabs"
 (** Gets the default tabs for [text_view].
 
@@ -429,7 +427,7 @@ external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
     [NULL] if “standard” (8-space) tabs are used. Free the return value with
     [Pango.TabArray.free]. *)
 
-external get_rtl_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+external get_rtl_context : t -> Ocpango_raw.Context.t
   = "ml_gtk_text_view_get_rtl_context"
 (** Gets the [PangoContext] that is used for rendering RTL directed text
     layouts.
@@ -466,7 +464,7 @@ external get_overwrite : t -> bool = "ml_gtk_text_view_get_overwrite"
 external get_monospace : t -> bool = "ml_gtk_text_view_get_monospace"
 (** Gets whether the [GtkTextView] uses monospace styling. *)
 
-external get_ltr_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
+external get_ltr_context : t -> Ocpango_raw.Context.t
   = "ml_gtk_text_view_get_ltr_context"
 (** Gets the [PangoContext] that is used for rendering LTR directed text
     layouts.
@@ -497,7 +495,7 @@ external get_left_margin : t -> int = "ml_gtk_text_view_get_left_margin"
 
     Tags in the buffer may override the default. *)
 
-external get_justification : t -> Gtk_enums.justification
+external get_justification : t -> Ocgtk_enums.justification
   = "ml_gtk_text_view_get_justification"
 (** Gets the default justification of paragraphs in [text_view].
 
@@ -506,7 +504,7 @@ external get_justification : t -> Gtk_enums.justification
 external get_iter_location :
   t ->
   Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_text_view_get_iter_location"
+  Ocgdk_raw.Rectangle.t = "ml_gtk_text_view_get_iter_location"
 (** Gets a rectangle which roughly contains the character at [iter].
 
     The rectangle position is in buffer coordinates; use
@@ -543,11 +541,11 @@ external get_iter_at_location :
     to convert those to buffer coordinates with
     [Gtk.TextView.window_to_buffer_coords]. *)
 
-external get_input_purpose : t -> Gtk_enums.inputpurpose
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_text_view_get_input_purpose"
 (** Gets the [input-purpose] of the [GtkTextView]. *)
 
-external get_input_hints : t -> Gtk_enums.inputhints
+external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_text_view_get_input_hints"
 (** Gets the [input-hints] of the [GtkTextView]. *)
 
@@ -559,7 +557,7 @@ external get_indent : t -> int = "ml_gtk_text_view_get_indent"
 
 external get_gutter :
   t ->
-  Gtk_enums.textwindowtype ->
+  Ocgtk_enums.textwindowtype ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
@@ -571,7 +569,7 @@ external get_gutter :
     [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
     [GTK_TEXT_WINDOW_TOP], or [GTK_TEXT_WINDOW_BOTTOM]. *)
 
-external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t
   = "ml_gtk_text_view_get_extra_menu"
 (** Gets the menu model that gets added to the context menu or [NULL] if none
     has been set. *)
@@ -587,7 +585,7 @@ external get_cursor_visible : t -> bool = "ml_gtk_text_view_get_cursor_visible"
 external get_cursor_locations :
   t ->
   Text_buffer_and__text_iter_and__text_mark.Text_iter.t option ->
-  Ocgtk_gdk.Gdk.Wrappers.Rectangle.t * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
+  Ocgdk_raw.Rectangle.t * Ocgdk_raw.Rectangle.t
   = "ml_gtk_text_view_get_cursor_locations"
 (** Determine the positions of the strong and weak cursors if the insertion
     point is at [iter].
@@ -650,7 +648,7 @@ external forward_display_line :
     views, since they depend on the contents of the [GtkTextBuffer]. *)
 
 external buffer_to_window_coords :
-  t -> Gtk_enums.textwindowtype -> int -> int -> int * int
+  t -> Ocgtk_enums.textwindowtype -> int -> int -> int * int
   = "ml_gtk_text_view_buffer_to_window_coords"
 (** Converts buffer coordinates to window coordinates. *)
 
@@ -725,7 +723,7 @@ val on_cut_clipboard :
 val on_delete_from_cursor :
   ?after:bool ->
   t ->
-  callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+  callback:(type_:Ocgtk_enums.deletetype -> count:int -> unit) ->
   Gobject.Signal.handler_id
 
 val on_insert_at_cursor :
@@ -741,13 +739,16 @@ val on_move_cursor :
   ?after:bool ->
   t ->
   callback:
-    (step:Gtk_enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
+    (step:Ocgtk_enums.movementstep ->
+    count:int ->
+    extend_selection:bool ->
+    unit) ->
   Gobject.Signal.handler_id
 
 val on_move_viewport :
   ?after:bool ->
   t ->
-  callback:(step:Gtk_enums.scrollstep -> count:int -> unit) ->
+  callback:(step:Ocgtk_enums.scrollstep -> count:int -> unit) ->
   Gobject.Signal.handler_id
 
 val on_paste_clipboard :

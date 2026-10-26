@@ -1,6 +1,6 @@
 class type nothing_action_t = object
-  inherit GShortcut_action.shortcut_action_t
-  method as_nothing_action : Nothing_action.t
+  inherit Shortcut_action.shortcut_action_t
+  method as_nothing_action : Raw.Nothing_action.t
 end
 
-class nothing_action : Nothing_action.t -> nothing_action_t
+class nothing_action : Raw.Nothing_action.t -> nothing_action_t

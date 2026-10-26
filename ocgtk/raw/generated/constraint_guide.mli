@@ -21,7 +21,7 @@ external new_ : unit -> t = "ml_gtk_constraint_guide_new"
 
 (* Methods *)
 
-external set_strength : t -> Gtk_enums.constraintstrength -> unit
+external set_strength : t -> Ocgtk_enums.constraintstrength -> unit
   = "ml_gtk_constraint_guide_set_strength"
 (** Sets the strength of the constraint on the natural size of the given
     [GtkConstraintGuide]. *)
@@ -53,7 +53,7 @@ external set_max_size : t -> int -> int -> unit
     If [guide] is attached to a [GtkConstraintLayout], the constraints will be
     updated to reflect the new size. *)
 
-external get_strength : t -> Gtk_enums.constraintstrength
+external get_strength : t -> Ocgtk_enums.constraintstrength
   = "ml_gtk_constraint_guide_get_strength"
 (** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
 

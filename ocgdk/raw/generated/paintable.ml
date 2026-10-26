@@ -129,7 +129,7 @@ external get_intrinsic_aspect_ratio : t -> float
     If the [paintable] does not have a preferred aspect ratio, it returns 0.
     Negative values are never returned. *)
 
-external get_flags : t -> Gdk_enums.paintableflags
+external get_flags : t -> Ocgdk_enums.paintableflags
   = "ml_gdk_paintable_get_flags"
 (** Get flags for the paintable.
 

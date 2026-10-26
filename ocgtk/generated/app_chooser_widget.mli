@@ -1,19 +1,19 @@
 class type app_chooser_widget_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit GApp_chooser.app_chooser_t
+  inherit App_chooser.app_chooser_t
 
   method on_application_activated :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    callback:(application:Ocgio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_application_selected :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    callback:(application:Ocgio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -29,9 +29,9 @@ class type app_chooser_widget_t = object
   method set_show_fallback : bool -> unit
   method set_show_other : bool -> unit
   method set_show_recommended : bool -> unit
-  method as_app_chooser_widget : App_chooser_widget.t
+  method as_app_chooser_widget : Raw.App_chooser_widget.t
 end
 
-class app_chooser_widget : App_chooser_widget.t -> app_chooser_widget_t
+class app_chooser_widget : Raw.App_chooser_widget.t -> app_chooser_widget_t
 
 val new_ : string -> app_chooser_widget_t

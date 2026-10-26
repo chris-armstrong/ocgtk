@@ -42,7 +42,7 @@ external to_string : t -> string = "ml_gtk_shortcut_action_to_string"
 
 external activate :
   t ->
-  Gtk_enums.shortcutactionflags ->
+  Ocgtk_enums.shortcutactionflags ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->

@@ -95,17 +95,18 @@ type t =
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_scale_get_type"
 
-external new_ : Gtk_enums.orientation -> Adjustment.t option -> t
+external new_ : Ocgtk_enums.orientation -> Adjustment.t option -> t
   = "ml_gtk_scale_new"
 (** Create a new Scale *)
 
-external new_with_range : Gtk_enums.orientation -> float -> float -> float -> t
+external new_with_range :
+  Ocgtk_enums.orientation -> float -> float -> float -> t
   = "ml_gtk_scale_new_with_range"
 (** Create a new Scale *)
 
 (* Methods *)
 
-external set_value_pos : t -> Gtk_enums.positiontype -> unit
+external set_value_pos : t -> Ocgtk_enums.positiontype -> unit
   = "ml_gtk_scale_set_value_pos"
 (** Sets the position in which the current value is displayed. *)
 
@@ -133,7 +134,7 @@ external set_digits : t -> int -> unit = "ml_gtk_scale_set_digits"
     autoscrolling that is built into [GtkScale]. As an alternative, you can use
     [Gtk.Scale.set_format_value_func] to format the displayed value yourself. *)
 
-external get_value_pos : t -> Gtk_enums.positiontype
+external get_value_pos : t -> Ocgtk_enums.positiontype
   = "ml_gtk_scale_get_value_pos"
 (** Gets the position in which the current value is displayed. *)
 
@@ -147,7 +148,7 @@ external get_layout_offsets : t -> int * int = "ml_gtk_scale_get_layout_offsets"
     If the [Gtk.Scale:draw-value] property is [FALSE], the return values are
     undefined. *)
 
-external get_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t option
+external get_layout : t -> Ocpango_raw.Layout.t option
   = "ml_gtk_scale_get_layout"
 (** Gets the [PangoLayout] used to display the scale.
 
@@ -168,7 +169,7 @@ external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 (** Removes any marks that have been added. *)
 
 external add_mark :
-  t -> float -> Gtk_enums.positiontype -> string option -> unit
+  t -> float -> Ocgtk_enums.positiontype -> string option -> unit
   = "ml_gtk_scale_add_mark"
 (** Adds a mark at [value].
 

@@ -1,5 +1,5 @@
 class type list_store_t = object
-  inherit GList_model.list_model_t
+  inherit List_model.list_model_t
   method append : [ `object_ ] Gobject.obj -> unit
   method insert : int -> [ `object_ ] Gobject.obj -> unit
   method remove : int -> unit
@@ -7,9 +7,9 @@ class type list_store_t = object
   method splice : int -> int -> [ `object_ ] Gobject.obj array -> int -> unit
   method item_type : Gobject.Type.t
   method n_items : int
-  method as_list_store : List_store.t
+  method as_list_store : Raw.List_store.t
 end
 
-class list_store : List_store.t -> list_store_t
+class list_store : Raw.List_store.t -> list_store_t
 
 val new_ : Gobject.Type.t -> list_store_t

@@ -8,8 +8,8 @@
 #include <caml/mlvalues.h>
 
 /* Dependency headers for cross-namespace types */
-#include "generated/gio_decls.h"
-#include "generated/cairo_decls.h"
+#include "gio_decls.h"
+#include "cairo_decls.h"
 
 /* Class-specific conversion macros (shared) */
 #ifndef Val_PangoContext
@@ -347,6 +347,6 @@ PangoShowFlags PangoShowFlags_val(value list);
 #endif
 
 
-#include "../core/pango_core.h"
+#include "pango_core.h"
 
 #endif /* _pango_decls_h_ */

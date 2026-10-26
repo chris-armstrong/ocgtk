@@ -89,7 +89,7 @@ external set_center_widget :
 
     To remove the existing center widget, pass [NULL]. *)
 
-external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
+external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_center_box_set_baseline_position"
 (** Sets the baseline position of a center box.
 
@@ -126,7 +126,7 @@ external get_center_widget :
   option = "ml_gtk_center_box_get_center_widget"
 (** Gets the center widget. *)
 
-external get_baseline_position : t -> Gtk_enums.baselineposition
+external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_center_box_get_baseline_position"
 (** Gets the baseline position of the center box.
 

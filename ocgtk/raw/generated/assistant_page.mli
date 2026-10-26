@@ -24,11 +24,11 @@ external get_complete : t -> bool = "ml_gtk_assistant_page_get_complete"
 external set_complete : t -> bool -> unit = "ml_gtk_assistant_page_set_complete"
 (** Set property: complete *)
 
-external get_page_type : t -> Gtk_enums.assistantpagetype
+external get_page_type : t -> Ocgtk_enums.assistantpagetype
   = "ml_gtk_assistant_page_get_page_type"
 (** Get property: page-type *)
 
-external set_page_type : t -> Gtk_enums.assistantpagetype -> unit
+external set_page_type : t -> Ocgtk_enums.assistantpagetype -> unit
   = "ml_gtk_assistant_page_set_page_type"
 (** Set property: page-type *)
 

@@ -20,7 +20,7 @@ let on_event ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let event =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v (Ocgtk_gdk.Gdk.Wrappers.Event.gtype ())
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Event.gtype ())
         in
         let result = callback ~event in
         let v = Gobject.Closure.result argv in

@@ -1,5 +1,5 @@
 class type shadow_t = object
-  method as_shadow : Shadow.t
+  method as_shadow : Raw.Shadow.t
 end
 
-class shadow : Shadow.t -> shadow_t
+class shadow : Raw.Shadow.t -> shadow_t

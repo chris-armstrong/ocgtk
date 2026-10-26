@@ -5,7 +5,7 @@
  (targets cflag-gdkpixbuf.sexp clink-gdkpixbuf.sexp)
  (action
   (run
-   %{exe:../../../configurator/config_flags.exe}
+   %{exe:../../configurator/config_flags.exe}
    --pkg
    gdk-pixbuf-2.0
    --pkg
@@ -17,12 +17,18 @@
    --libs-out
    clink-gdkpixbuf.sexp)))
 
+(rule
+ (copy generated/gdkpixbuf_decls.h gdkpixbuf_decls.h))
+
+(rule
+ (copy core/gdkpixbuf_core.h gdkpixbuf_core.h))
+
 (library
- (name ocgtk_gdk_pixbuf_generated_stubs)
- (public_name ocgtk.gdk_pixbuf.generated_stubs)
+ (name ocgdkpixbuf_raw_stubs)
+ (public_name ocgdkpixbuf.raw.stubs)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
- (libraries ocgtk.gio ocglib)  ; Dependencies and ocglib for header files
+ (libraries ocgio.raw ocglib)  ; Dependencies and ocglib for header files
  (foreign_stubs
   (language c)
   (names

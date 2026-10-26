@@ -85,7 +85,7 @@ external set_vadjustment : t -> Adjustment.t -> unit
     The adjustments have to be in pixel units and in the same coordinate system
     as the allocation for immediate children of the box. *)
 
-external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
+external set_selection_mode : t -> Ocgtk_enums.selectionmode -> unit
   = "ml_gtk_flow_box_set_selection_mode"
 (** Sets how selection works in [box]. *)
 
@@ -193,7 +193,7 @@ external insert :
     If [position] is -1, or larger than the total number of children in the
     [box], then the [widget] will be appended to the end. *)
 
-external get_selection_mode : t -> Gtk_enums.selectionmode
+external get_selection_mode : t -> Ocgtk_enums.selectionmode
   = "ml_gtk_flow_box_get_selection_mode"
 (** Gets the selection mode of [box]. *)
 
@@ -276,7 +276,7 @@ let on_move_cursor ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let step =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+          Ocgtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
         in
         let count =
           let v = Gobject.Closure.nth argv ~pos:2 in

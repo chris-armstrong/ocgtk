@@ -1,5 +1,5 @@
 class type bookmark_list_t = object
-  inherit Ocgtk_gio.Gio.List_model.list_model_t
+  inherit Ocgio.List_model.list_model_t
   method get_attributes : unit -> string option
   method get_filename : unit -> string
   method get_io_priority : unit -> int
@@ -8,9 +8,9 @@ class type bookmark_list_t = object
   method set_io_priority : int -> unit
   method item_type : Gobject.Type.t
   method n_items : int
-  method as_bookmark_list : Bookmark_list.t
+  method as_bookmark_list : Raw.Bookmark_list.t
 end
 
-class bookmark_list : Bookmark_list.t -> bookmark_list_t
+class bookmark_list : Raw.Bookmark_list.t -> bookmark_list_t
 
 val new_ : string option -> string option -> bookmark_list_t
