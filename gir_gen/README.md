@@ -25,8 +25,9 @@ GIR XML (e.g., Gtk-4.0.gir)
     │   (Layer 0 C)          (Layer 1 ML)         (Layer 2 ML)
     │         │                    │                    │
     │         ▼                    ▼                    ▼
-    │   ml_*_gen.c          widget.mli             gWidget.ml
-    │   C FFI stubs         Low-level bindings     High-level wrappers
+    │   ml_*_gen.c          raw/generated/       generated/widget.ml
+    │   C FFI stubs         widget.mli            High-level wrappers
+    │                       Low-level bindings
 ```
 
 ### Key Files
@@ -38,6 +39,7 @@ GIR XML (e.g., Gtk-4.0.gir)
 | `type_mappings.ml` | Maps C types to OCaml types (`gint` → `int`, etc.) + cross-namespace resolution |
 | `override_types.ml` / `override_parser.ml` / `override_apply.ml` | Override sexp parsing and application |
 | `dependency_analysis.ml` | Tarjan SCC for cyclic dependency resolution |
+| `module_paths.ml` | Package, library and module names; module paths by target library (raw or main) |
 | `generate/c_stubs.ml` | C FFI code orchestration (Layer 0) |
 | `generate/c_stub_method.ml` | C method stub generation |
 | `generate/c_stub_property.ml` | C property getter/setter generation |
@@ -46,7 +48,7 @@ GIR XML (e.g., Gtk-4.0.gir)
 | `generate/class_gen.ml` | High-level wrapper orchestration (Layer 2) |
 | `generate/signal_gen.ml` / `signal_marshaller.ml` | Signal handler generation |
 | `generate/enum_code.ml` | Enum/bitfield type and converter generation |
-| `generate/constant_code.ml` | GIR `<constant>` → pure-OCaml `let` bindings (`<ns>_constants.ml/.mli`) |
+| `generate/constant_code.ml` | GIR `<constant>` → pure-OCaml `let` bindings (`constants.ml/.mli` in the main library) |
 | `generate/dune_file.ml` | Build configuration generation |
 
 ### Type Resolution Flow
@@ -87,14 +89,14 @@ gir_gen has three commands:
 **Recommended approach - run from the repository root:**
 
 ```bash
-# Generate GTK bindings to ocgtk/src/gtk/generated/
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
+# Generate GTK bindings into the ocgtk package directory
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk
 ```
 
 ### Generate Command Options
 
 - `GIR_FILE`: Path to GIR file (e.g. `gir/Gtk-4.0.gir`)
-- `OUTPUT_DIR`: Where to write generated files (relative to repo root, e.g. `ocgtk/src/gtk`)
+- `OUTPUT_DIR`: The namespace's package directory (relative to repo root, e.g. `ocgtk`, `ocgio`); it must exist
 - `-f, --filter FILE`: Optional filter file specifying which classes to generate
 - `-r, --reference FILE`: Optional reference file(s) for cross-namespace type validation (can be specified multiple times)
 - `-o, --overrides FILE`: Optional override sexp file controlling which entities are ignored and their version guards (see [Override System](#override-system))
@@ -107,36 +109,45 @@ dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
 
 ### Overrides Command
 
-Extracts `Since` version annotations from GIR documentation into a starter override file. The output should be committed to `ocgtk/overrides/<ns>.sexp` and then augmented with manually-authored `(ignore)` entries.
+Extracts `Since` version annotations from GIR documentation into a starter override file. The output should be committed to `overrides/<ns>.sexp` and then augmented with manually-authored `(ignore)` entries.
 
 ```bash
 # Extract version annotations for GTK into the overrides directory (from repo root)
 dune exec gir_gen -- overrides \
-  gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp
+  gir/Gtk-4.0.gir overrides/gtk.sexp
 ```
 
 ### ⚠️ IMPORTANT: Output Directory Convention
 
-**The output directory should be the PARENT of the `generated/` directory, NOT the `generated/` directory itself.**
+**The output directory is the namespace's package directory** (`ocgio`,
+`ocgtk`, ...), not a `generated/` directory. The generator writes the three
+libraries of the package under it:
 
-The generator automatically creates a `generated/` subdirectory inside the output directory you specify.
+```
+<pkg>/raw/generated/    library oc<ns>.raw: layer 1, C stubs, <ns>_decls.h, dune.inc
+<pkg>/enums/generated/  library oc<ns>.enums: oc<ns>_enums.ml/.mli, dune
+<pkg>/generated/        library oc<ns>: layer 2, raw.ml, enums.ml, constants.ml/.mli, dune
+```
+
+`<pkg>/raw/core/` holds hand-written C and layer 1 OCaml, and `<pkg>/raw/dune`
+declares the raw library and includes `generated/dune.inc`; the generator
+reads the former and writes neither.
+
+The three generated directories hold generated files only: after writing, the
+generator deletes every file in them that the run did not write, so renamed or
+newly ignored types leave nothing behind.
 
 ✅ **Correct (from repo root):**
 ```bash
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk
 ```
-This creates files in `ocgtk/src/gtk/generated/`
+This creates files in `ocgtk/generated/`, `ocgtk/raw/generated/` and `ocgtk/enums/generated/`.
 
 ❌ **Wrong:**
 ```bash
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk/generated
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/generated
 ```
-This creates files in `ocgtk/src/gtk/generated/generated/` (nested directory problem)
-
-**Examples (from repo root):**
-- For GTK: Use `ocgtk/src/gtk` → generates to `ocgtk/src/gtk/generated/`
-- For GDK: Use `ocgtk/src/gdk` → generates to `ocgtk/src/gdk/generated/`
-- For GIO: Use `ocgtk/src/gio` → generates to `ocgtk/src/gio/generated/`
+This creates `ocgtk/generated/generated/`, `ocgtk/generated/raw/generated/`, ...
 
 ## Testing
 
@@ -149,21 +160,21 @@ dune exec gir_gen -- generate -f output/test/filter.txt \
   gir/Gtk-4.0.gir output/test
 
 # Verify files generated
-ls output/test/generated/label.mli output/test/generated/ml_label_gen.c
+ls output/test/raw/generated/label.mli output/test/raw/generated/ml_label_gen.c
 ```
 
 ### Verify C Compilation
 ```bash
 # Check generated C compiles (headers only)
-gcc -c output/test/generated/ml_label_gen.c \
+gcc -c output/test/raw/generated/ml_label_gen.c \
   -I$(ocamlc -where) $(pkg-config --cflags gtk4) \
   -fsyntax-only
 ```
 
 ### Full Rebuild
 ```bash
-# Regenerate all GTK bindings and rebuild library (from repo root)
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
+# Regenerate all bindings and rebuild (from repo root)
+bash scripts/generate-bindings.sh
 dune build
 ```
 
@@ -171,37 +182,62 @@ dune build
 ```bash
 # Generate reference list for type validation (from repo root)
 dune exec gir_gen -- references \
-  gir/Gtk-4.0.gir gtk_refs.txt
+  gir/Gdk-4.0.gir gdk-references.sexp
 
 # Use references when generating bindings
 dune exec gir_gen -- generate \
-  -r gtk_refs.txt -r gdk_refs.txt \
-  gir/Gtk-4.0.gir ocgtk/src/gtk
+  -r gdk-references.sexp \
+  gir/Gtk-4.0.gir ocgtk
 ```
+
+A reference file lists the namespace's classes, interfaces, records, enums
+and constants. A class in a cycle carries its combined module (`cr_cluster`),
+which layer 1 of other namespaces must name: `Ocgio_raw.App_info_cycle_64c425a0.File.t`.
 
 ### Generate with Override File
 
 ```bash
 # Apply overrides while generating (from repo root)
 dune exec gir_gen -- generate \
-  -o ocgtk/overrides/gtk.sexp \
-  -r gdk_refs.txt \
-  gir/Gtk-4.0.gir ocgtk/src/gtk
+  -o overrides/gtk.sexp \
+  -r gdk-references.sexp \
+  gir/Gtk-4.0.gir ocgtk
 ```
 
 ## Output Files
 
-Generated files are written to `ocgtk/src/<ns>/generated/` (e.g., `ocgtk/src/gtk/generated/`):
+For namespace `<Ns>` with package directory `<pkg>` (`oc` + the lowercased
+namespace, e.g. `ocgdkpixbuf` for GdkPixbuf):
 
-- **C FFI stubs**: `ml_*_gen.c` - C bindings for classes, interfaces, enums
-- **Layer 1 (low-level)**: `<class_name>.ml/.mli` - External declarations (snake_case)
-- **Layer 2 (high-level)**: `g<Class>.ml/.mli` - OCaml wrapper classes (PascalCase)
-- **Enums**: `<ns>_enums.ml/.mli` - Enumeration and bitfield types for this namespace
-- **Constants**: `<ns>_constants.ml/.mli` - Pure-OCaml `let` bindings for GIR `<constant>` elements (omitted when the namespace has none, e.g. Cairo/Gsk/PangoCairo)
-- **Library module**: `<Ns>.ml/.mli` - Combined library module with all re-exports
-- **Wrapper module**: `ocgtk_<ns>.ml` - Library wrapper: `module <Ns> = <Ns>; include <Ns>` + core module aliases
-- **Declaration header**: `<ns>_decls.h` - C type converter declarations, includes dependency headers
-- **Combined cyclic modules**: `<class1>_and__<class2>_and__<class3>.ml/.mli` - Single module combining mutually-recursive classes (see dependency resolution below)
+| File | Directory | Library | Contents |
+|---|---|---|---|
+| `ml_*_gen.c` | `raw/generated/` | `oc<ns>.raw` (via the stubs library) | C bindings for classes, interfaces, records, enums |
+| `<class_name>.ml/.mli` | `raw/generated/` | `oc<ns>.raw` | Layer 1: abstract `t` and external declarations |
+| `<a>_and__<b>.ml/.mli`, `<a>_cycle_<hash>.ml/.mli` | `raw/generated/` | `oc<ns>.raw` | Layer 1 combined module for a cycle of classes (see dependency resolution below) |
+| `<ns>_decls.h` | `raw/generated/` | `oc<ns>.raw` (installed) | C type converter declarations; includes dependency namespaces' headers |
+| `dune.inc` | `raw/generated/` | | pkg-config rule, header copies, C stubs library `oc<ns>_raw_stubs` (in batches when large) |
+| `oc<ns>_enums.ml/.mli`, `dune` | `enums/generated/` | `oc<ns>.enums` | Enumeration and bitfield types (written even when empty) |
+| `<class_name>.ml/.mli` | `generated/` | `oc<ns>` | Layer 2: OCaml wrapper classes, one module per class (no prefix); members of a cycle have a combined module plus one shim each |
+| `raw.ml` | `generated/` | `oc<ns>` | `module Point = Ocgraphene_raw.Point`, one alias per layer 1 module (clusters flattened) and per `raw/core` module |
+| `enums.ml` | `generated/` | `oc<ns>` | `include Oc<ns>_enums` |
+| `constants.ml/.mli` | `generated/` | `oc<ns>` | Pure-OCaml `let` bindings for GIR `<constant>` elements (omitted when the namespace has none, e.g. Cairo/Gsk/PangoCairo) |
+| `dune` | `generated/` | `oc<ns>` | The main library: depends on its raw and enums libraries and other namespaces' main libraries, opens `Ocglib` |
+
+The main library's main module is generated by dune, so users write
+`Ocgtk.Button`, `Ocgtk.Raw.Button`, `Ocgtk.Enums.orientation` and
+`Ocgtk.Constants`.
+
+Module paths in generated code depend on the library the code belongs to
+(see `module_paths.ml`):
+
+| Reference | Layer 1 (raw library) | Layer 2 (main library) |
+|---|---|---|
+| Same-namespace class | `Point.t`, `Box_and__sphere.Box.t` | `Raw.Point.t`, `Raw.Box.t` |
+| Same-namespace layer 2 class | | `Point.point_t` |
+| Other namespace's class | `Ocgio_raw.Icon.t` | `Ocgio.Raw.Icon.t`, layer 2 `Ocgio.Icon.icon_t` |
+| Same-namespace enum | `Ocgtk_enums.orientation` | `Enums.orientation` |
+| Other namespace's enum | `Ocgdk_enums.modifiertype` | `Ocgdk.Enums.modifiertype` |
+| Constants | | `Constants.x`, `Ocgdk.Constants.x` |
 
 ## Override System
 
@@ -209,36 +245,36 @@ See [architecture/gir_gen/overrides.md](../architecture/gir_gen/overrides.md) fo
 
 ## Constructor Wrapper Generation
 
-Each G* module (Layer 2 high-level wrapper) generated by `class_gen.ml` exports
+Each layer 2 module generated by `class_gen.ml` exports
 constructor wrapper functions in addition to the class definition:
 
 ```ocaml
-(* Example from gButton.ml *)
+(* Example from ocgtk/generated/button.ml *)
 let new_ () : button_t =
-  new button (Button.new_ ())
+  new button (Raw.Button.new_ ())
 
 let new_with_label (label : string) : button_t =
-  new button (Button.new_with_label label)
+  new button (Raw.Button.new_with_label label)
 
 let new_from_icon_name (icon_name : string) : button_t =
-  new button (Button.new_from_icon_name icon_name)
+  new button (Raw.Button.new_from_icon_name icon_name)
 ```
 
 These constructors wrap the low-level FFI constructors from the Layer 1 module
 with the high-level class wrapper. They are used to support the ergonomic API:
 
 ```ocaml
-let btn = GButton.new_with_label "Click"
+let btn = Ocgtk.Button.new_with_label "Click"
 ```
 
 instead of the more verbose:
 
 ```ocaml
-let btn = new GButton.button (Button.new_with_label "Click")
+let btn = new Ocgtk.Button.button (Ocgtk.Raw.Button.new_with_label "Click")
 ```
 
 When classes with different constructor names are used (e.g., `Button` has
-`new_`, `new_with_label`, etc.), each is wrapped individually in the G* module.
+`new_`, `new_with_label`, etc.), each is wrapped individually in the layer 2 module.
 
 ## Cyclic Dependency Resolution and Shim Modules
 
@@ -288,7 +324,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - **Smart type resolution for cyclic modules** - automatically uses simple names within a cycle (`Window.t`) and fully-qualified names for external references (`Application_and__window_and__window_group.Window.t`)
 - Over 600 generated binding files
 
-### Layer 3: High-Level Wrapper Classes (`g<Class>.ml/.mli`)
+### Layer 3: High-Level Wrapper Classes (`generated/<class_name>.ml/.mli`)
 - Skeleton classes (`<widget>_skel`) inheriting from `GObj.widget_impl` or parent skeleton (see `generate/class_gen.ml`)
 - Concrete widget classes with method syntax for properties and methods
 - Property wrapper methods with automatic type coercion
@@ -306,16 +342,16 @@ the full signal architecture, marshalling, and generation details.
 - Handles namespaced enums and digit-prefixed variant names (see `generate/enum_code.ml`)
 
 ### Constants
-- GIR `<constant>` elements become pure-OCaml `let` bindings in `<ns>_constants.ml/.mli` (no C FFI stubs)
+- GIR `<constant>` elements become pure-OCaml `let` bindings in the main library's `constants.ml/.mli` (no C FFI stubs)
 - snake_case names (e.g. `ACCESSIBLE_ATTRIBUTE_BACKGROUND` → `accessible_attribute_background`)
 - Type mapping from the constant's `<type name=.../>`: `gint`/`guint`/`Glyph`/`PangoGlyph` → `int`, `gdouble`/`gfloat` → `float`, `utf8` → `string`, `gboolean` → `bool`; constants with unmappable types are skipped with a warning
 - OCamldoc from the GIR `<doc>`, with `@since X.Y` appended from the native `version` XML attribute
-- Re-exported from the library module and wrapper; no constants module is emitted for namespaces with no constants
+- Reached as `Constants` within the namespace and `Oc<ns>.Constants` from outside; no constants module is emitted for namespaces with no constants
 - Emitted in the `references` command as `cr_type = Crt_Constant` (see [cross-namespace references](#generate-cross-namespace-references))
 - No override workflow: pure-OCaml constants cannot use C `#if` OS guards, and the version is already available from the native XML attribute, so the `overrides` command's `Since`-extraction is not used for constants
 
 ### Build Integration
-- Automatic `dune-generated.inc` generation with C stubs list and module names (see `generate/dune_file.ml`)
+- Automatic generation of `raw/generated/dune.inc` (C stubs libraries, header copies) and the enums and main libraries' `dune` files (see `generate/dune_file.ml`)
 
 ---
 
@@ -725,7 +761,8 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 - `generate/signal_marshaller.ml` (~320 lines) - Signal parameter marshalling to/from `Gobject.Value`
 - `generate/enum_code.ml` (~380 lines) - Enum/bitfield OCaml type definitions and C converters for all namespaces
 - `generate/dune_file.ml` (~230 lines) - Build configuration generation with cross-namespace library dependencies
-- `generate/library_module.ml` (~222 lines) - Combined library module (`Gtk.ml`) generation
+- `generate/library_module.ml` - The main library's `raw.ml` (layer 1 aliases) and `enums.ml`
+- `module_paths.ml` - Package, library and module names; module paths by target library (raw or main)
 - `generate/common.ml` - Shared types (`StringSet`, `module_names`) for class generation
 
 ### Filtering and Utilities
@@ -739,12 +776,12 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 - `scripts/generate-bindings.sh` - Two-phase generation: reference files then bindings for all 9 namespaces
 
 ### Example Generated Code (for reference patterns)
-- `src/gtk/generated/button.ml/.mli` - Low-level FFI with polymorphic variant types
-- `src/gtk/generated/gButton.ml/.mli` - High-level class wrapper
-- `src/gtk/generated/gtk_enums.ml/.mli` - Enum/bitfield type examples
-- `src/gtk/generated/application_and__window_and__window_group.ml/.mli` - Combined cyclic module
-- `src/pangocairo/generated/font.ml` - Cross-namespace type example (`Ocgtk_cairo.Cairo.Wrappers.Scaled_font.t`)
-- `src/gtk/generated/ocgtk_gtk.ml` - Library wrapper module (`module Gtk = Gtk; include Gtk; module GMain = GMain`)
+- `ocgtk/raw/generated/button.ml/.mli` - Low-level FFI with polymorphic variant types
+- `ocgtk/generated/button.ml/.mli` - High-level class wrapper
+- `ocgtk/enums/generated/ocgtk_enums.ml/.mli` - Enum/bitfield type examples
+- `ocgtk/raw/generated/application_and__window_and__window_group.ml/.mli` - Combined cyclic module
+- `ocpangocairo/raw/generated/font.ml` - Cross-namespace type example (`Occairo_raw.Scaled_font.t`)
+- `ocgtk/generated/raw.ml` - Layer 1 aliases (`module Button = Ocgtk_raw.Button`)
 
 ### Runtime Dependencies
 - `ocglib/gobject.ml` - GObject type system, signal connection infrastructure
