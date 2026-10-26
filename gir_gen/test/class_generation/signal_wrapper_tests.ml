@@ -291,11 +291,11 @@ let test_mixed_params_key_pressed_shape () =
   in
   Alcotest.(check string)
     "getter_expr"
-    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    "Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
     third_m.getter_expr;
   Alcotest.(check string)
     "setter_expr"
-    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    "Gobject.Value.set_flags_int v (Ocgdk_enums.modifiertype_to_int x)"
     third_m.setter_expr
 
 (* ========================================================================= *)
@@ -676,11 +676,13 @@ let test_l2_class_body_contains_on_signal_method () =
   Helpers.expect_some "could not extract body of method 'on_clicked'"
     (Ml_ast_helpers.get_method_body cf)
   @@ fun body ->
-  (* Body must forward to Button.on_clicked *)
-  if not (Ml_ast_helpers.method_body_calls_function body "Button" "on_clicked")
+  (* Body must forward to Raw.Button.on_clicked *)
+  if
+    not
+      (Ml_ast_helpers.method_body_calls_function body "Raw.Button" "on_clicked")
   then
     Alcotest.fail
-      "on_clicked body should call Button.on_clicked (L1 forwarder missing)";
+      "on_clicked body should call Raw.Button.on_clicked (L1 forwarder missing)";
   (* Body must reference self#as_button *)
   if not (Ml_ast_helpers.contains_method_send body "as_button") then
     Alcotest.fail "on_clicked body should reference self#as_button"

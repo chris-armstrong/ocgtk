@@ -7,10 +7,28 @@ val assert_head : string -> 'a list -> 'a
 val file_exists : string -> bool
 val delete_if_exists : string -> unit
 val read_file : string -> string
-val generated_dir : string -> string
+
+val raw_generated_dir : string -> string
+(** [<output_dir>/raw/generated]: layer 1, C stubs and the decls header. *)
+
+val enums_generated_dir : string -> string
+(** [<output_dir>/enums/generated]. *)
+
+val main_generated_dir : string -> string
+(** [<output_dir>/generated]: layer 2. *)
+
+val remove_tree : string -> unit
+(** Delete a file, or a directory and everything under it; nothing if absent. *)
+
 val stub_c_file : string -> string -> string
-val g_wrapper_file : string -> string -> string
+
+val layer2_file : string -> string -> string
+(** The layer 2 module of a class: [layer2_file dir "Button"] is
+    [<dir>/generated/button.ml]. *)
+
 val ml_file : string -> string -> string
+(** A layer 1 module, by file stem. *)
+
 val mli_file : string -> string -> string
 val enum_file : string -> string
 val enum_ml_file : string -> string

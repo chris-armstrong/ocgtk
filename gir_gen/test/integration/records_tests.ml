@@ -93,7 +93,7 @@ let test_non_opaque_record_functions () =
       ~test_name:"non_opaque_record" ()
   in
   let header_file =
-    Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
+    Filename.concat (raw_generated_dir output_dir) "gtk_decls.h"
   in
   assert_true "gtk_decls.h should exist" (file_exists header_file);
   let header_content = read_file header_file in
@@ -128,7 +128,7 @@ let test_non_opaque_vs_opaque_records () =
       ~test_name:"opaque_vs_non_opaque" ()
   in
   let header_file =
-    Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
+    Filename.concat (raw_generated_dir output_dir) "gtk_decls.h"
   in
   let header_content = read_file header_file in
 

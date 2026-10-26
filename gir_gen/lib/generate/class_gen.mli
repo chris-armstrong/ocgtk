@@ -415,12 +415,10 @@ val generate_cyclic_shim_module :
   ctx:Types.generation_context ->
   entity:Types.entity ->
   combined_module_name:string ->
-  g_combined_module_name:string ->
   string
 
 val generate_cyclic_shim_signature :
   ctx:Types.generation_context ->
   entity:Types.entity ->
   combined_module_name:string ->
-  g_combined_module_name:string ->
   string

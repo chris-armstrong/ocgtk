@@ -70,6 +70,7 @@ let build_context ?(cross_references = StringMap.empty)
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references;
+    target_library = Raw_library;
   }
 
 (* ================================================================= *)

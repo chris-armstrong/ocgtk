@@ -7,7 +7,7 @@ let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
 let calculate_layer2_class ~class_module ~class_name =
   {
-    class_module = "G" ^ class_module;
+    class_module;
     class_type = class_name ^ "_t";
     class_ml_name = class_name;
     class_layer1_accessor = "as_" ^ class_name;
@@ -15,19 +15,20 @@ let calculate_layer2_class ~class_module ~class_name =
 
 (** Map a cross-namespace type reference to a type mapping. This function is
     used to convert a cross-reference to a type mapping.*)
-let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
+let map_cross_reference_to_type_mapping ~ctx ~namespace
     (cr : cross_reference_entity) : type_mapping =
-  let external_namespace = Utils.external_namespace_to_module_name namespace in
-
+  let layer2_module =
+    Module_paths.cross_ns_layer2_module ~namespace cr.cr_name
+  in
   {
     ocaml_type =
       (match cr.cr_type with
       | Crt_Class _ | Crt_Record _ | Crt_Interface ->
-          external_namespace ^ ".Wrappers."
-          ^ Utils.module_name_of_class cr.cr_name
-          ^ ".t"
+          Module_paths.cross_ns_layer1_module ~ctx ~namespace cr.cr_name ^ ".t"
       | Crt_Bitfield | Crt_Enum | Crt_Constant ->
-          external_namespace ^ "." ^ String.lowercase_ascii cr.cr_name);
+          Module_paths.namespace_enums_module ~ctx namespace
+          ^ "."
+          ^ String.lowercase_ascii cr.cr_name);
     c_type = cr.cr_c_type;
     c_to_ml =
       (match cr.cr_type with
@@ -45,8 +46,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_class_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -55,8 +55,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_interface_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -65,8 +64,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_record_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -550,22 +548,7 @@ let lookup_record ~records ~lookup_str =
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
 
 let calculate_class_or_interface_or_record_module_name ~ctx ~name =
-  (* Check if this interface is in the current cycle being generated *)
-  if List.mem name ~set:ctx.current_cycle_classes then
-    (* Within the same cycle, use just the submodule name *)
-    Utils.module_name_of_class name
-  else
-    match Hashtbl.find_opt ctx.module_groups name with
-    | Some combined_module_name ->
-        let simple_module_name = Utils.module_name_of_class name in
-        (* Check if this is a cyclic module by comparing names *)
-        if not (String.equal combined_module_name simple_module_name) then
-          (* For cyclic modules, we need CombinedModule.InterfaceName.t *)
-          combined_module_name ^ "." ^ simple_module_name
-        else
-          (* Single module *)
-          combined_module_name
-    | None -> Utils.module_name_of_class name
+  Module_paths.same_ns_layer1_module ~ctx name
 
 (* Attempt to find a class mapping in the context in the current namespace *)
 let find_class_mapping ~ctx ~lookup_str =
@@ -668,7 +651,9 @@ let find_enum_mapping ~ctx ~lookup_str =
       ctx.enums
   in
   (* Use the context's namespace for enums from the current library *)
-  let namespace = Utils.enums_module_name ctx enum in
+  let namespace =
+    Module_paths.namespace_enums_module ~ctx ctx.namespace.namespace_name
+  in
   let c_namespace = ctx.namespace.namespace_name in
   Some
     {
@@ -692,7 +677,9 @@ let find_bitfield_mapping ~ctx ~lookup_str =
       ctx.bitfields
   in
   (* Use the context's namespace for bitfields from the current library *)
-  let namespace = Utils.bitfields_module_name ctx bitfield in
+  let namespace =
+    Module_paths.namespace_enums_module ~ctx ctx.namespace.namespace_name
+  in
   let c_namespace = ctx.namespace.namespace_name in
   Some
     {

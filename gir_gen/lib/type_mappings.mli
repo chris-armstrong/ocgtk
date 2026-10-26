@@ -4,7 +4,7 @@ val calculate_layer2_class :
   class_module:string -> class_name:string -> Types.ocaml_class
 
 val map_cross_reference_to_type_mapping :
-  ctx:'a ->
+  ctx:Types.generation_context ->
   namespace:string ->
   Types.cross_reference_entity ->
   Types.type_mapping

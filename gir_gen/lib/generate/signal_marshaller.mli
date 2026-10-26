@@ -17,11 +17,13 @@ type marshaller = {
 
           Examples:
           - ["bool"] for [gboolean]
-          - ["Gtk_enums.orientation"] for a same-namespace enum
-          - ["Ocgtk_gdk.Gdk_enums.modifiertype"] for a cross-namespace bitfield
+          - ["Ocgtk_enums.orientation"] for a same-namespace enum (layer 1)
+          - ["Ocgdk_enums.modifiertype"] for a cross-namespace bitfield (layer
+            1)
           - ["Widget.t"] for a non-nullable same-namespace GObject class
           - ["Widget.t option"] for a nullable same-namespace GObject class
-          - ["Ocgtk_gio.Gio.Wrappers.File.t"] for a non-nullable cross-namespace
+          - ["Ocgio_raw.File.t"] for a non-nullable cross-namespace class (layer
+            1)
           - ["Gvariant.t"] for [GLib.Variant]
 
           Object types render as ["<Mod>.t"] or ["<Mod>.t option"] — not
@@ -60,10 +62,10 @@ type marshaller = {
           [gtype ()] evaluates to the parameter class's registered GType.
           Same-namespace classes use their L1 module path (bare submodule name
           when the target is inside the cycle currently being generated),
-          cross-namespace classes use the external library wrapper path
-          ([Ocgtk_gdk.Gdk.Wrappers.Drop]). At emit time [substitute_gtype]
-          resolves the [%GTYPE%] placeholder in the getter/setter expressions,
-          collapsing a self-reference to the bare local [gtype]. *)
+          cross-namespace classes use the other namespace.s layer 1 path
+          ([Ocgdk_raw.Drop]). At emit time [substitute_gtype] resolves the
+          [%GTYPE%] placeholder in the getter/setter expressions, collapsing a
+          self-reference to the bare local [gtype]. *)
 }
 (** A resolved marshalling specification for a single signal parameter or return
     type. *)

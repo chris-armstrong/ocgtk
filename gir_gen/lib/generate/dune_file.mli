@@ -25,7 +25,10 @@ val transitively_includes :
   Types.StringMap.key ->
   bool
 
-val library_name_of_namespace : string -> string
+val dependency_namespaces :
+  ctx:Types.generation_context -> repository:Types.gir_repository -> string list
+(** The namespace's GIR includes and theirs, transitively, without the base
+    namespaces that ocglib covers (GLib, GObject, ...). Sorted. *)
 
 val emit_pkg_config_rule :
   Buffer.t ->
@@ -34,6 +37,10 @@ val emit_pkg_config_rule :
   all_packages:string list ->
   is_optional:(string -> bool) ->
   unit
+
+val emit_header_copy_rules : Buffer.t -> namespace:string -> unit
+(** Rules copying [<ns>_decls.h] and [<ns>_core.h] into [<pkg>/raw/], where the
+    raw library's [install_c_headers] finds them. *)
 
 val emit_stub_library :
   Buffer.t ->
@@ -45,9 +52,25 @@ val emit_stub_library :
   clink_file:string ->
   unit
 
-val generate_dune_library :
+val generate_raw_dune_inc :
   ctx:Types.generation_context ->
-  lib_name:string ->
+  namespace:string ->
   stub_names:string list ->
   repository:Types.gir_repository ->
   string
+(** Content of [<pkg>/raw/generated/dune.inc], included by the hand-written
+    [<pkg>/raw/dune] that declares the raw library: the pkg-config rule, the
+    header copies, and the C stubs library [oc<ns>_raw_stubs] (split into
+    batches when large), which depends on the other namespaces' raw libraries
+    for their headers. *)
+
+val generate_enums_dune : namespace:string -> string
+(** Content of [<pkg>/enums/generated/dune]: library [oc<ns>.enums]. *)
+
+val generate_main_dune :
+  ctx:Types.generation_context ->
+  namespace:string ->
+  repository:Types.gir_repository ->
+  string
+(** Content of [<pkg>/generated/dune]: library [oc<ns>], depending on its own
+    raw and enums libraries and the other namespaces' main libraries. *)

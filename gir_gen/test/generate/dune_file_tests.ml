@@ -95,7 +95,7 @@ let test_pkg_config_rule_uses_root_configurator () =
   emit_pkg_config_rule buf ~cflag_file:"cflag-x.sexp" ~clink_file:"clink-x.sexp"
     ~all_packages:[ "glib-2.0" ] ~is_optional:(fun _ -> false);
   check_has_line "configurator at the repository root"
-    "   %{exe:../../../configurator/config_flags.exe}"
+    "   %{exe:../../configurator/config_flags.exe}"
     (String.split_on_char '\n' (Buffer.contents buf))
 
 let tests =

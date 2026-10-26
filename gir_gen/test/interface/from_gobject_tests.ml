@@ -56,19 +56,7 @@ let run_and_parse_c gir_content entity_snake =
   Fun.protect
     ~finally:(fun () ->
       (try Sys.remove gir_file with Sys_error _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with Sys_error _ | Unix.Unix_error _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with Sys_error _ | Unix.Unix_error _ -> ())
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
@@ -227,26 +215,14 @@ let run_and_parse_l1_mli gir_content entity_snake =
   Fun.protect
     ~finally:(fun () ->
       (try Sys.remove gir_file with Sys_error _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with Sys_error _ | Unix.Unix_error _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with Sys_error _ | Unix.Unix_error _ -> ())
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let mli_path =
         Filename.concat
-          (Helpers.generated_dir output_dir)
+          (Helpers.raw_generated_dir output_dir)
           (entity_snake ^ ".mli")
       in
       if not (Helpers.file_exists mli_path) then
@@ -265,25 +241,15 @@ let run_and_parse_l1_ml gir_content entity_snake =
   Fun.protect
     ~finally:(fun () ->
       (try Sys.remove gir_file with Sys_error _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with Sys_error _ | Unix.Unix_error _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with Sys_error _ | Unix.Unix_error _ -> ())
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let ml_path =
-        Filename.concat (Helpers.generated_dir output_dir) (entity_snake ^ ".ml")
+        Filename.concat
+          (Helpers.raw_generated_dir output_dir)
+          (entity_snake ^ ".ml")
       in
       if not (Helpers.file_exists ml_path) then
         Alcotest.failf "Expected .ml file not found: %s" ml_path;

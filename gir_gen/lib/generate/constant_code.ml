@@ -106,28 +106,3 @@ let generate_constants_implementation ~namespace constants =
       bprintf buf "let %s = %s\n" ocaml_name value)
     constants;
   Buffer.contents buf
-
-(** Generate both <ns>_constants.mli and <ns>_constants.ml under [output_dir]
-    for the constants carried by [ctx]. Does nothing when there are no
-    constants, so namespaces without constants (e.g. Cairo) produce no constants
-    module. *)
-let generate_constants_files ~ctx ~namespace ~output_dir =
-  let constants = ctx.constants in
-  if List.length constants = 0 then ()
-  else begin
-    let ns_lower = String.lowercase_ascii namespace in
-    let mli_path =
-      Filename.concat output_dir (Fmt.str "%s_constants.mli" ns_lower)
-    in
-    let ml_path =
-      Filename.concat output_dir (Fmt.str "%s_constants.ml" ns_lower)
-    in
-    let write path content =
-      let oc = open_out path in
-      output_string oc content;
-      close_out oc;
-      Fmt.pr "Writing %s...\n" path
-    in
-    write mli_path (generate_constants_interface ~namespace constants);
-    write ml_path (generate_constants_implementation ~namespace constants)
-  end
