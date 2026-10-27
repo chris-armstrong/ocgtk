@@ -228,3 +228,12 @@
 ;  (name test_window)
 ;  (modules test_window)
 ;  (libraries ocgtk alcotest))
+
+; Reproduces a crash: plain (non-boxed) records in a returned array are wrapped
+; as interior pointers, then the array is freed. Built but not run, because it
+; crashes until the stub is fixed; make it a test again then. Run it by hand
+; with: dune exec ocgtk/tests/test_plain_record_array.exe
+(executable
+ (name test_plain_record_array)
+ (modules test_plain_record_array)
+ (libraries ocgtk alcotest))
