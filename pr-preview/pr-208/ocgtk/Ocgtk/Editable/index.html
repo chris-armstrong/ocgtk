@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Editable (ocgtk.Ocgtk.Editable)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgtk</a> &#x00BB; <a href="../index.html">Ocgtk</a> &#x00BB; Editable</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgtk.Editable</span></code></h1><p>Interface for single-line text editing widgets.</p><p>Typical examples of editable widgets are <code>Gtk.Entry</code> and <code>Gtk.SpinButton</code>. It contains functions for generically manipulating an editable widget, a large number of action signals used for key bindings, and several signals that an application can connect to modify the behavior of a widget.</p><p>As an example of the latter usage, by connecting the following handler to <code>Gtk.Editable::insert-text</code>, an application can convert all entry into a widget into uppercase.</p><p><b>Forcing entry to uppercase.</b></p><pre class="language-ocaml"><code>#include &lt;ctype.h&gt;
+
+void
+insert_text_handler (GtkEditable *editable,
+                     const char  *text,
+                     int          length,
+                     int         *position,
+                     gpointer     data)
+{
+  char *result = g_utf8_strup (text, length);
+
+  g_signal_handlers_block_by_func (editable,
+                               (gpointer) insert_text_handler, data);
+  gtk_editable_insert_text (editable, result, length, position);
+  g_signal_handlers_unblock_by_func (editable,
+                                     (gpointer) insert_text_handler, data);
+
+  g_signal_stop_emission_by_name (editable, &quot;insert_text&quot;);
+
+  g_free (result);
+}</code></pre><p><b>Implementing GtkEditable</b></p><p>The most likely scenario for implementing <code>GtkEditable</code> on your own widget is that you will embed a <code>GtkText</code> inside a complex widget, and want to delegate the editable functionality to that text widget. <code>GtkEditable</code> provides some utility functions to make this easy.</p><p>In your class_init function, call <code>Gtk.Editable.install_properties</code>, passing the first available property ID:</p><pre class="language-ocaml"><code>static void
+my_class_init (MyClass *class)
+{
+  ...
+  g_object_class_install_properties (object_class, NUM_PROPERTIES, props);
+  gtk_editable_install_properties (object_clas, NUM_PROPERTIES);
+  ...
+}</code></pre><p>In your interface_init function for the <code>GtkEditable</code> interface, provide an implementation for the get_delegate vfunc that returns your text widget:</p><pre class="language-ocaml"><code>GtkEditable *
+get_editable_delegate (GtkEditable *editable)
+{
+  return GTK_EDITABLE (MY_WIDGET (editable)-&gt;text_widget);
+}
+
+static void
+my_editable_init (GtkEditableInterface *iface)
+{
+  iface-&gt;get_delegate = get_editable_delegate;
+}</code></pre><p>You don't need to provide any other vfuncs. The default implementations work by forwarding to the delegate that the GtkEditableInterface.get_delegate() vfunc returns.</p><p>In your instance_init function, create your text widget, and then call <code>Gtk.Editable.init_delegate</code>:</p><pre class="language-ocaml"><code>static void
+my_widget_init (MyWidget *self)
+{
+  ...
+  self-&gt;text_widget = gtk_text_new ();
+  gtk_editable_init_delegate (GTK_EDITABLE (self));
+  ...
+}</code></pre><p>In your dispose function, call <code>Gtk.Editable.finish_delegate</code> before destroying your text widget:</p><pre class="language-ocaml"><code>static void
+my_widget_dispose (GObject *object)
+{
+  ...
+  gtk_editable_finish_delegate (GTK_EDITABLE (self));
+  g_clear_pointer (&amp;self-&gt;text_widget, gtk_widget_unparent);
+  ...
+}</code></pre><p>Finally, use <code>Gtk.Editable.delegate_set_property</code> in your <code>set_property</code> function (and similar for <code>get_property</code>), to set the editable properties:</p><pre class="language-ocaml"><code>  ...
+  if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
+    return;
+
+  switch (prop_id)
+  ...</code></pre><p>It is important to note that if you create a <code>GtkEditable</code> that uses a delegate, the low level <code>Gtk.Editable::insert-text</code> and <code>Gtk.Editable::delete-text</code> signals will be propagated from the &quot;wrapper&quot; editable to the delegate, but they will not be propagated from the delegate to the &quot;wrapper&quot; editable, as they would cause an infinite recursion. If you wish to connect to the <code>Gtk.Editable::insert-text</code> and <code>Gtk.Editable::delete-text</code> signals, you will need to connect to them on the delegate obtained via <code>Gtk.Editable.get_delegate</code>.</p><p>Its methods, signals and properties are on <a href="class-type-editable_t/index.html"><code>editable_t</code></a>. The functions it is built on are in <a href="../../Ocgtk_raw/Editable/index.html"><code>Ocgtk.Raw.Editable</code></a>.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec class-type anchored" id="class-type-editable_t"><a href="#class-type-editable_t" class="anchor"></a><code><span><span class="keyword">class</span> <span class="keyword">type</span>  </span><span><a href="class-type-editable_t/index.html">editable_t</a></span><span> = <span class="keyword">object</span> ... <span class="keyword">end</span></span></code></div><div class="spec-doc"><p>The methods, signals and properties of a <code>GtkEditable</code>.</p></div></div><div class="odoc-spec"><div class="spec class anchored" id="class-editable"><a href="#class-editable" class="anchor"></a><code><span><span class="keyword">class</span> </span><span><a href="class-editable/index.html">editable</a></span><span> : <span><a href="../../Ocgtk_raw/Editable/index.html#type-t">Ocgtk.Raw.Editable.t</a> <span class="arrow">&#45;&gt;</span></span> <a href="class-type-editable_t/index.html">editable_t</a></span></code></div><div class="spec-doc"><p>Wraps a layer 1 handle, <a href="../../Ocgtk_raw/Editable/index.html#type-t"><code>Ocgtk.Raw.Editable.t</code></a>. Apply it directly only to convert a handle obtained from layer 1: constructors, and methods that return a <code>GtkEditable</code>, give one already wrapped.</p></div></div></div></body></html>

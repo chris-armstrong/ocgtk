@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Simple_async_result (ocgio.Ocgio.Simple_async_result)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgio</a> &#x00BB; <a href="../index.html">Ocgio</a> &#x00BB; Simple_async_result</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgio.Simple_async_result</span></code></h1><p>As of GLib 2.46, <code>GSimpleAsyncResult</code> is deprecated in favor of <code>Gio.Task</code>, which provides a simpler API.</p><p><code>GSimpleAsyncResult</code> implements <code>Gio.AsyncResult</code>.</p><p><code>GSimpleAsyncResult</code> handles <code>Gio.AsyncReadyCallback</code>s, error reporting, operation cancellation and the final state of an operation, completely transparent to the application. Results can be returned as a pointer e.g. for functions that return data that is collected asynchronously, a boolean value for checking the success or failure of an operation, or a <code>gssize</code> for operations which return the number of bytes modified by the operation; all of the simple return cases are covered.</p><p>Most of the time, an application will not need to know of the details of this API; it is handled transparently, and any necessary operations are handled by <code>Gio.AsyncResult</code>’s interface. However, if implementing a new GIO module, for writing language bindings, or for complex applications that need better control of how asynchronous operations are completed, it is important to understand this functionality.</p><p><code>GSimpleAsyncResult</code>s are tagged with the calling function to ensure that asynchronous functions and their finishing functions are used together correctly.</p><p>To create a new <code>GSimpleAsyncResult</code>, call <code>Gio.SimpleAsyncResult.new</code>. If the result needs to be created for a <code>GError</code>, use <code>Gio.SimpleAsyncResult.new_from_error</code> or <code>Gio.SimpleAsyncResult.new_take_error</code>. If a <code>GError</code> is not available (e.g. the asynchronous operation doesn’t take a <code>GError</code> argument), but the result still needs to be created for an error condition, use <code>Gio.SimpleAsyncResult.new_error</code> (or <code>Gio.SimpleAsyncResult.set_error_va</code> if your application or binding requires passing a variable argument list directly), and the error can then be propagated through the use of <code>Gio.SimpleAsyncResult.propagate_error</code>.</p><p>An asynchronous operation can be made to ignore a cancellation event by calling <code>Gio.SimpleAsyncResult.set_handle_cancellation</code> with a <code>GSimpleAsyncResult</code> for the operation and <code>FALSE</code>. This is useful for operations that are dangerous to cancel, such as close (which would cause a leak if cancelled before being run).</p><p><code>GSimpleAsyncResult</code> can integrate into GLib’s event loop, <code>GLib.MainLoop</code>, or it can use <code>GLib.Thread</code>s. <code>Gio.SimpleAsyncResult.complete</code> will finish an I/O task directly from the point where it is called. <code>Gio.SimpleAsyncResult.complete_in_idle</code> will finish it from an idle handler in the thread-default main context (see <code>GLib.MainContext.push_thread_default</code>) where the <code>GSimpleAsyncResult</code> was created. <code>Gio.SimpleAsyncResult.run_in_thread</code> will run the job in a separate thread and then use <code>Gio.SimpleAsyncResult.complete_in_idle</code> to deliver the result.</p><p>To set the results of an asynchronous function, <code>Gio.SimpleAsyncResult.set_op_res_gpointer</code>, <code>Gio.SimpleAsyncResult.set_op_res_gboolean</code>, and <code>Gio.SimpleAsyncResult.set_op_res_gssize</code> are provided, setting the operation's result to a <code>gpointer</code>, <code>gboolean</code>, or <code>gssize</code>, respectively.</p><p>Likewise, to get the result of an asynchronous function, <code>Gio.SimpleAsyncResult.get_op_res_gpointer</code>, <code>Gio.SimpleAsyncResult.get_op_res_gboolean</code>, and <code>Gio.SimpleAsyncResult.get_op_res_gssize</code> are provided, getting the operation’s result as a <code>gpointer</code>, <code>gboolean</code>, and <code>gssize</code>, respectively.</p><p>For the details of the requirements implementations must respect, see <code>Gio.AsyncResult</code>. A typical implementation of an asynchronous operation using <code>GSimpleAsyncResult</code> looks something like this:</p><pre class="language-ocaml"><code>static void
+baked_cb (Cake    *cake,
+          gpointer user_data)
+{
+  // In this example, this callback is not given a reference to the cake,
+  // so the GSimpleAsyncResult has to take a reference to it.
+  GSimpleAsyncResult *result = user_data;
+
+  if (cake == NULL)
+    g_simple_async_result_set_error (result,
+                                     BAKER_ERRORS,
+                                     BAKER_ERROR_NO_FLOUR,
+                                     &quot;Go to the supermarket&quot;);
+  else
+    g_simple_async_result_set_op_res_gpointer (result,
+                                               g_object_ref (cake),
+                                               g_object_unref);
+
+
+  // In this example, we assume that baked_cb is called as a callback from
+  // the mainloop, so it's safe to complete the operation synchronously here.
+  // If, however, _baker_prepare_cake () might call its callback without
+  // first returning to the mainloop — inadvisable, but some APIs do so —
+  // we would need to use g_simple_async_result_complete_in_idle().
+  g_simple_async_result_complete (result);
+  g_object_unref (result);
+}
+
+void
+baker_bake_cake_async (Baker              *self,
+                       guint               radius,
+                       GAsyncReadyCallback callback,
+                       gpointer            user_data)
+{
+  GSimpleAsyncResult *simple;
+  Cake               *cake;
+
+  if (radius &lt; 3)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (self),
+                                           callback,
+                                           user_data,
+                                           BAKER_ERRORS,
+                                           BAKER_ERROR_TOO_SMALL,
+                                           &quot;%ucm radius cakes are silly&quot;,
+                                           radius);
+      return;
+    }
+
+  simple = g_simple_async_result_new (G_OBJECT (self),
+                                      callback,
+                                      user_data,
+                                      baker_bake_cake_async);
+  cake = _baker_get_cached_cake (self, radius);
+
+  if (cake != NULL)
+    {
+      g_simple_async_result_set_op_res_gpointer (simple,
+                                                 g_object_ref (cake),
+                                                 g_object_unref);
+      g_simple_async_result_complete_in_idle (simple);
+      g_object_unref (simple);
+      // Drop the reference returned by _baker_get_cached_cake();
+      // the GSimpleAsyncResult has taken its own reference.
+      g_object_unref (cake);
+      return;
+    }
+
+  _baker_prepare_cake (self, radius, baked_cb, simple);
+}
+
+Cake *
+baker_bake_cake_finish (Baker        *self,
+                        GAsyncResult *result,
+                        GError      **error)
+{
+  GSimpleAsyncResult *simple;
+  Cake               *cake;
+
+  g_return_val_if_fail (g_simple_async_result_is_valid (result,
+                                                        G_OBJECT (self),
+                                                        baker_bake_cake_async),
+                        NULL);
+
+  simple = (GSimpleAsyncResult *\) result;
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
+  cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
+  return g_object_ref (cake);
+}</code></pre><p>Its methods, signals and properties are on <a href="class-type-simple_async_result_t/index.html"><code>simple_async_result_t</code></a>. The functions it is built on are in <a href="../../Ocgio_raw/Simple_async_result/index.html"><code>Ocgio.Raw.Simple_async_result</code></a>.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec class-type anchored" id="class-type-simple_async_result_t"><a href="#class-type-simple_async_result_t" class="anchor"></a><code><span><span class="keyword">class</span> <span class="keyword">type</span>  </span><span><a href="class-type-simple_async_result_t/index.html">simple_async_result_t</a></span><span> = <span class="keyword">object</span> ... <span class="keyword">end</span></span></code></div><div class="spec-doc"><p>The methods, signals and properties of a <code>GSimpleAsyncResult</code>.</p></div></div><div class="odoc-spec"><div class="spec class anchored" id="class-simple_async_result"><a href="#class-simple_async_result" class="anchor"></a><code><span><span class="keyword">class</span> </span><span><a href="class-simple_async_result/index.html">simple_async_result</a></span><span> : <span><a href="../../Ocgio_raw/Simple_async_result/index.html#type-t">Ocgio.Raw.Simple_async_result.t</a> <span class="arrow">&#45;&gt;</span></span> <a href="class-type-simple_async_result_t/index.html">simple_async_result_t</a></span></code></div><div class="spec-doc"><p>Wraps a layer 1 handle, <a href="../../Ocgio_raw/Simple_async_result/index.html#type-t"><code>Ocgio.Raw.Simple_async_result.t</code></a>. Apply it directly only to convert a handle obtained from layer 1: constructors, and methods that return a <code>GSimpleAsyncResult</code>, give one already wrapped.</p></div></div></div></body></html>
