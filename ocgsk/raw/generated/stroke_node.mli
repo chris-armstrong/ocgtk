@@ -2,7 +2,9 @@
 (* StrokeNode: StrokeNode *)
 
 (** A render node that will fill the area determined by stroking the the given
-    [Gsk.Path] using the [Gsk.Stroke] attributes. *)
+    [Gsk.Path] using the [Gsk.Stroke] attributes.
+
+    The class built on this module is in {!Ocgsk.Stroke_node}. *)
 
 type t = [ `stroke_node | `render_node ] Gobject.obj
 

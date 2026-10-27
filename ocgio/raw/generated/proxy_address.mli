@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyAddress: ProxyAddress *)
 
-(** A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
+(** A [Gio.InetSocketAddress] representing a connection via a proxy server.
+
+    The class built on this module is in {!Ocgio.Proxy_address}. *)
 
 type t =
   [ `proxy_address | `inet_socket_address | `socket_address | `object_ ]

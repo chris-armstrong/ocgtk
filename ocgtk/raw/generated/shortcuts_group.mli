@@ -15,7 +15,9 @@
     with one or more [Gtk.ShortcutsShortcut] instances.
 
     If you need to add a shortcut programmatically, use
-    [Gtk.ShortcutsGroup.add_shortcut]. *)
+    [Gtk.ShortcutsGroup.add_shortcut].
+
+    The class built on this module is in {!Ocgtk.Shortcuts_group}. *)
 
 type t =
   [ `shortcuts_group | `box | `widget | `initially_unowned | `object_ ]

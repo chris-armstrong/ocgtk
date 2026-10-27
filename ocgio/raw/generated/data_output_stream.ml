@@ -2,7 +2,9 @@
 (* DataOutputStream: DataOutputStream *)
 
 (** Data output stream implements [Gio.OutputStream] and includes functions for
-    writing data directly to an output stream. *)
+    writing data directly to an output stream.
+
+    The class built on this module is in {!Ocgio.Data_output_stream}. *)
 
 type t =
   [ `data_output_stream | `filter_output_stream | `output_stream | `object_ ]

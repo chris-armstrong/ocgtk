@@ -1,3 +1,19 @@
+(** Asynchronous API to open a file with an application.
+
+    [GtkFileLauncher] collects the arguments that are needed to open the file.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.FileLauncher.launch] function.
+
+    To launch uris that don't represent files, use [Gtk.UriLauncher].
+
+    Its methods, signals and properties are on {!class-type-file_launcher_t}.
+    The functions it is built on are in {!Ocgtk.Raw.File_launcher}. *)
+
+(** The methods, signals and properties of a [GtkFileLauncher]. *)
 class type file_launcher_t = object
   method get_always_ask : unit -> bool
   method get_file : unit -> Ocgio.File.file_t option
@@ -16,5 +32,8 @@ class type file_launcher_t = object
 end
 
 class file_launcher : Raw.File_launcher.t -> file_launcher_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_launcher.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkFileLauncher], give one already wrapped. *)
 
 val new_ : Ocgio.File.file_t option -> file_launcher_t

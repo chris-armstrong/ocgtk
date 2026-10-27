@@ -64,7 +64,9 @@
     child level (2 levels deeper) are visible, you are on your own. In this
     case, either rely on [GtkTreeStore] to emit all signals because it does not
     implement reference counting, or for models that do implement reference
-    counting, obtain references on these child levels yourself. *)
+    counting, obtain references on these child levels yourself.
+
+    The class built on this module is in {!Ocgtk.Tree_model_filter}. *)
 
 type t = [ `tree_model_filter | `object_ ] Gobject.obj
 

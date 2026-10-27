@@ -11,7 +11,9 @@
     like any other widget and use [Gtk.DragIcon.set_child] to set whatever
     widget should be used for the drag icon.
 
-    Keep in mind that drag icons do not allow user input. *)
+    Keep in mind that drag icons do not allow user input.
+
+    The class built on this module is in {!Ocgtk.Drag_icon}. *)
 
 type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 

@@ -1,3 +1,19 @@
+(** A visible column in a [Gtk.TreeView] widget
+
+    The [GtkTreeViewColumn] object represents a visible column in a
+    [GtkTreeView] widget. It allows to set properties of the column header, and
+    functions as a holding pen for the cell renderers which determine how the
+    data in the column is displayed.
+
+    Please refer to the tree widget conceptual overview for an overview of all
+    the objects and data types related to the tree widget and how they work
+    together, and to the [Gtk.TreeView] documentation for specifics about the
+    CSS node structure for treeviews and their headers.
+
+    Its methods, signals and properties are on {!class-type-tree_view_column_t}.
+    The functions it is built on are in {!Ocgtk.Raw.Tree_view_column}. *)
+
+(** The methods, signals and properties of a [GtkTreeViewColumn]. *)
 class type tree_view_column_t = object
   inherit Buildable.buildable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
@@ -79,6 +95,9 @@ class type tree_view_column_t = object
 end
 
 class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_view_column.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkTreeViewColumn], give one already wrapped. *)
 
 val new_ : unit -> tree_view_column_t
 

@@ -1,3 +1,20 @@
+(** Constructs [Gdk.Texture] objects from GL textures.
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
+    [Gdk.GLTextureBuilder:width], and [Gdk.GLTextureBuilder:height] are
+    mandatory - and then call [Gdk.GLTextureBuilder.build] to create the new
+    texture.
+
+    [GdkGLTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+
+    Its methods, signals and properties are on
+    {!class-type-gl_texture_builder_t}. The functions it is built on are in
+    {!Ocgdk.Raw.Gl_texture_builder}. *)
+
+(** The methods, signals and properties of a [GdkGLTextureBuilder]. *)
 class type gl_texture_builder_t = object
   method get_color_state : unit -> Raw.Color_state.t
 
@@ -27,5 +44,8 @@ class type gl_texture_builder_t = object
 end
 
 class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Gl_texture_builder.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GdkGLTextureBuilder], give one already wrapped. *)
 
 val new_ : unit -> gl_texture_builder_t

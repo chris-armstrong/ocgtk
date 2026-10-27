@@ -2,7 +2,9 @@
 (* RecentInfo: RecentInfo *)
 
 (** Contains the metadata associated with an item in the recently used files
-    list. *)
+    list.
+
+    The class built on this module is in {!Ocgtk.Recent_info}. *)
 
 type t = [ `recent_info ] Gobject.obj
 

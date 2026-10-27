@@ -145,7 +145,7 @@ let test_constructor_signature () =
   let ctx = { ctx with classes = button_class :: ctx.classes } in
 
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[]
       ~constructors:[ ctor_no_params; ctor_with_param ]

@@ -6,7 +6,9 @@
     [GtkBinLayout] will stack each child of a widget on top of each other, using
     the [Gtk.Widget:hexpand], [Gtk.Widget:vexpand], [Gtk.Widget:halign], and
     [Gtk.Widget:valign] properties of each child to determine where they should
-    be positioned. *)
+    be positioned.
+
+    The class built on this module is in {!Ocgtk.Bin_layout}. *)
 
 type t = [ `bin_layout | `layout_manager | `object_ ] Gobject.obj
 

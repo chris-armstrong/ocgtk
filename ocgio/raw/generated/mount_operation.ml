@@ -22,7 +22,9 @@
     {{:https://en.wikipedia.org/wiki/TrueCrypt}TrueCrypt} is a discontinued
     system for encrypting file containers, partitions or whole disks, typically
     used with Windows. {{:https://www.veracrypt.fr/}VeraCrypt} is a maintained
-    fork of TrueCrypt with various improvements and auditing fixes. *)
+    fork of TrueCrypt with various improvements and auditing fixes.
+
+    The class built on this module is in {!Ocgio.Mount_operation}. *)
 
 type t = [ `mount_operation | `object_ ] Gobject.obj
 

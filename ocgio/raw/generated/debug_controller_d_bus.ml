@@ -105,7 +105,8 @@
 \      }\n\n\
 \    return polkit_authorization_result_get_is_authorized (auth_result);\n\
 \  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.Debug_controller_d_bus}."]
 
 type t = [ `debug_controller_d_bus | `object_ ] Gobject.obj
 

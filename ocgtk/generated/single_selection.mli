@@ -1,3 +1,14 @@
+(** A selection model that allows selecting a single item.
+
+    Note that the selection is {i persistent} -- if the selected item is removed
+    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
+    selected. In particular, this means that changing the sort order of an
+    underlying sort model will preserve the selection.
+
+    Its methods, signals and properties are on {!class-type-single_selection_t}.
+    The functions it is built on are in {!Ocgtk.Raw.Single_selection}. *)
+
+(** The methods, signals and properties of a [GtkSingleSelection]. *)
 class type single_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -17,5 +28,8 @@ class type single_selection_t = object
 end
 
 class single_selection : Raw.Single_selection.t -> single_selection_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Single_selection.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkSingleSelection], give one already wrapped. *)
 
 val new_ : Ocgio.List_model.list_model_t option -> single_selection_t

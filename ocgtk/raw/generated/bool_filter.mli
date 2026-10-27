@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoolFilter: BoolFilter *)
 
-(** Evaluates a boolean expression to determine whether to include items. *)
+(** Evaluates a boolean expression to determine whether to include items.
+
+    The class built on this module is in {!Ocgtk.Bool_filter}. *)
 
 type t = [ `bool_filter | `filter | `object_ ] Gobject.obj
 

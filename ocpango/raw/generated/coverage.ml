@@ -7,7 +7,9 @@
     It is often necessary in Pango to determine if a particular font can
     represent a particular character, and also how well it can represent that
     character. The [PangoCoverage] is a data structure that is used to represent
-    that information. It is an opaque structure with no public fields. *)
+    that information. It is an opaque structure with no public fields.
+
+    The class built on this module is in {!Ocpango.Coverage}. *)
 
 type t = [ `coverage | `object_ ] Gobject.obj
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextNode: TextNode *)
 
-(** A render node drawing a set of glyphs. *)
+(** A render node drawing a set of glyphs.
+
+    The class built on this module is in {!Ocgsk.Text_node}. *)
 
 type t = [ `text_node | `render_node ] Gobject.obj
 

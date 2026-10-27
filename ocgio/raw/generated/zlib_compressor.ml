@@ -2,7 +2,9 @@
 (* ZlibCompressor: ZlibCompressor *)
 
 (** [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
-    data using zlib. *)
+    data using zlib.
+
+    The class built on this module is in {!Ocgio.Zlib_compressor}. *)
 
 type t = [ `zlib_compressor | `object_ ] Gobject.obj
 

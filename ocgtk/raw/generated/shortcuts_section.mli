@@ -28,7 +28,9 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page] *)
+    - [Gtk.ShortcutsSection::change-current-page]
+
+    The class built on this module is in {!Ocgtk.Shortcuts_section}. *)
 
 type t =
   [ `shortcuts_section | `box | `widget | `initially_unowned | `object_ ]

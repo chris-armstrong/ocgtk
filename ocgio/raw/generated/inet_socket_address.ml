@@ -5,7 +5,9 @@
     [Gio.InetAddress] and a port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
-    or [struct sockaddr_in]). *)
+    or [struct sockaddr_in]).
+
+    The class built on this module is in {!Ocgio.Inet_socket_address}. *)
 
 type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
 

@@ -7,7 +7,9 @@
     so that icons can be looked up quickly. [GThemedIcon] does not provide
     actual pixmaps for icons, just the icon names. Ideally something like
     [Gtk.IconTheme.choose_icon] should be used to resolve the list of names so
-    that fallback icons work nicely with themes that inherit other themes. *)
+    that fallback icons work nicely with themes that inherit other themes.
+
+    The class built on this module is in {!Ocgio.Themed_icon}. *)
 
 type t = [ `themed_icon | `object_ ] Gobject.obj
 

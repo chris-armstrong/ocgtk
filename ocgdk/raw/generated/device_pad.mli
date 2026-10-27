@@ -16,7 +16,9 @@
     (current) for each given group, different groups may have different current
     modes. The number of available modes in a group can be found out through
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
-    will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+    will be notified through events of type [GDK_PAD_GROUP_MODE].
+
+    The class built on this module is in {!Ocgdk.Device_pad}. *)
 
 type t = [ `device_pad ] Gobject.obj
 

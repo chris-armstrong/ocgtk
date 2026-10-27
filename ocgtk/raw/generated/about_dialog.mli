@@ -40,7 +40,8 @@
  - <kbd>Escape</kbd> closes the window.\n\n\
  {b CSS nodes}\n\n\
  [GtkAboutDialog] has a single CSS node with the name [window] and style\n\
- class [.aboutdialog]."]
+ class [.aboutdialog].\n\n\
+ The class built on this module is in {!Ocgtk.About_dialog}."]
 
 type t =
   [ `about_dialog | `window | `widget | `initially_unowned | `object_ ]

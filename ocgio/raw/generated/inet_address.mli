@@ -9,7 +9,9 @@
 
     To actually connect to a remote host, you will need a
     [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
-    number). *)
+    number).
+
+    The class built on this module is in {!Ocgio.Inet_address}. *)
 
 type t = [ `inet_address | `object_ ] Gobject.obj
 

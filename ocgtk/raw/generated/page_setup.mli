@@ -41,7 +41,9 @@
 
       page_setup = new_page_setup;
     }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Page_setup}. *)
 
 type t = [ `page_setup | `object_ ] Gobject.obj
 

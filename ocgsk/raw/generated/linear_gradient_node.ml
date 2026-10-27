@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LinearGradientNode: LinearGradientNode *)
 
-(** A render node for a linear gradient. *)
+(** A render node for a linear gradient.
+
+    The class built on this module is in {!Ocgsk.Linear_gradient_node}. *)
 
 type t = [ `linear_gradient_node | `render_node ] Gobject.obj
 

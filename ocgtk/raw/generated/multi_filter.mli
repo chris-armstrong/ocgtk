@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiFilter: MultiFilter *)
 
-(** Base class for filters that combine multiple filters. *)
+(** Base class for filters that combine multiple filters.
+
+    The class built on this module is in {!Ocgtk.Multi_filter}. *)
 
 type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
 

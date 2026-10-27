@@ -42,7 +42,8 @@
  [GtkDropDown] has a single CSS node with name dropdown,\n\
  with the button and popover nodes as children.\n\n\
  {b Accessibility}\n\n\
- [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role."]
+ [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role.\n\n\
+ The class built on this module is in {!Ocgtk.Drop_down}."]
 
 type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
 

@@ -1,3 +1,9 @@
+(** The classes of {!Ocgio.Tls_connection}, {!Ocgio.Tls_database},
+    {!Ocgio.Tls_interaction}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** The methods, signals and properties of a [GTlsConnection]. *)
 class type tls_connection_t = object
   inherit Io_stream.io_stream_t
 
@@ -40,6 +46,7 @@ class type tls_connection_t = object
   method as_tls_connection : Raw.Tls_connection.t
 end
 
+(** The methods, signals and properties of a [GTlsDatabase]. *)
 and tls_database_t = object
   method create_certificate_handle :
     Tls_certificate.tls_certificate_t -> string option
@@ -87,6 +94,7 @@ and tls_database_t = object
   method as_tls_database : Raw.Tls_database.t
 end
 
+(** The methods, signals and properties of a [GTlsInteraction]. *)
 and tls_interaction_t = object
   method ask_password :
     Tls_password.tls_password_t ->
@@ -119,8 +127,17 @@ and tls_interaction_t = object
   method as_tls_interaction : Raw.Tls_interaction.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_connection.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GTlsConnection], give one already wrapped. *)
 class tls_connection : Raw.Tls_connection.t -> tls_connection_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_database.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GTlsDatabase], give one already wrapped. *)
 
 and tls_database : Raw.Tls_database.t -> tls_database_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_interaction.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GTlsInteraction], give one already wrapped. *)
 
 and tls_interaction : Raw.Tls_interaction.t -> tls_interaction_t

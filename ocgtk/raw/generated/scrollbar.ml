@@ -40,7 +40,9 @@
 
     {b Accessibility}
 
-    [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role. *)
+    [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role.
+
+    The class built on this module is in {!Ocgtk.Scrollbar}. *)
 
 type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

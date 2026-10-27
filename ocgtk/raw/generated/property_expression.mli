@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PropertyExpression: PropertyExpression *)
 
-(** A [GObject] property value in a [GtkExpression]. *)
+(** A [GObject] property value in a [GtkExpression].
+
+    The class built on this module is in {!Ocgtk.Property_expression}. *)
 
 type t = [ `property_expression | `expression ] Gobject.obj
 

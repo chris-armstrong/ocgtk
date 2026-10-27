@@ -39,7 +39,8 @@
     .emoji-searchbar style class itself. The bottom toolbar used to switch
     between different emoji categories consists of buttons with the
     .emoji-section style class and gets the .emoji-toolbar style class itself.
-*)
+
+    The class built on this module is in {!Ocgtk.Emoji_chooser}. *)
 
 type t =
   [ `emoji_chooser | `popover | `widget | `initially_unowned | `object_ ]

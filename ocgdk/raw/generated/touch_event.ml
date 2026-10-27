@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TouchEvent: TouchEvent *)
 
-(** An event related to a touch-based device. *)
+(** An event related to a touch-based device.
+
+    The class built on this module is in {!Ocgdk.Touch_event}. *)
 
 type t = [ `touch_event | `event ] Gobject.obj
 

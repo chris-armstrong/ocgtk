@@ -1,3 +1,8 @@
+(** The classes of {!Ocgtk.Tree_selection}, {!Ocgtk.Tree_view}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [GtkTreeSelection]. *)
 class type tree_selection_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -19,6 +24,7 @@ class type tree_selection_t = object
   method as_tree_selection : Raw.Tree_selection.t
 end
 
+(** The methods, signals and properties of a [GtkTreeView]. *)
 and tree_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -194,7 +200,13 @@ and tree_view_t = object
   method as_tree_view : Raw.Tree_view.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_selection.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkTreeSelection], give one already wrapped. *)
 class tree_selection : Raw.Tree_selection.t -> tree_selection_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_view.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTreeView], give one already wrapped. *)
 
 and tree_view : Raw.Tree_view.t -> tree_view_t
 

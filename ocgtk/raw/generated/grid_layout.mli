@@ -11,7 +11,8 @@
  grid cell is undefined.\n\n\
  [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\
  attached to the same row or column; however, if you only ever need a\n\
- single row or column, you should consider using [GtkBoxLayout]."]
+ single row or column, you should consider using [GtkBoxLayout].\n\n\
+ The class built on this module is in {!Ocgtk.Grid_layout}."]
 
 type t = [ `grid_layout | `layout_manager | `object_ ] Gobject.obj
 

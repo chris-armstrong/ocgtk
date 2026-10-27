@@ -2,7 +2,9 @@
 (* FillNode: FillNode *)
 
 (** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
-    the child node. *)
+    the child node.
+
+    The class built on this module is in {!Ocgsk.Fill_node}. *)
 
 type t = [ `fill_node | `render_node ] Gobject.obj
 

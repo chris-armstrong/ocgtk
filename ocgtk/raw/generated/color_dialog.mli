@@ -10,7 +10,9 @@
     The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
 
     See [Gtk.ColorDialogButton] for a convenient control that uses
-    [GtkColorDialog] and presents the results. *)
+    [GtkColorDialog] and presents the results.
+
+    The class built on this module is in {!Ocgtk.Color_dialog}. *)
 
 type t = [ `color_dialog | `object_ ] Gobject.obj
 

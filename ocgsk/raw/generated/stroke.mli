@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Stroke: Stroke *)
 
-(** Collects the parameters that are needed when stroking a path. *)
+(** Collects the parameters that are needed when stroking a path.
+
+    The class built on this module is in {!Ocgsk.Stroke}. *)
 
 type t = [ `stroke ] Gobject.obj
 

@@ -14,7 +14,9 @@
 
     Note that unless [Gtk.BuilderCScope.add_callback_symbol] is called for all
     signal callbacks which are referenced by the loaded XML, this functionality
-    will require that [GModule] be supported on the platform. *)
+    will require that [GModule] be supported on the platform.
+
+    The class built on this module is in {!Ocgtk.Builder_c_scope}. *)
 
 type t = [ `builder_c_scope | `object_ ] Gobject.obj
 

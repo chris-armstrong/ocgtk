@@ -15,7 +15,9 @@
       to [NULL].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ColumnViewCell:item] property is not [NULL]. *)
+      [Gtk.ColumnViewCell:item] property is not [NULL].
+
+    The class built on this module is in {!Ocgtk.Column_view_cell}. *)
 
 type t = [ `column_view_cell | `list_item | `object_ ] Gobject.obj
 

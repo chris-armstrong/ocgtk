@@ -11,7 +11,9 @@
     widgets ancestors. Most commonly, these will be the actions with the “win.”
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
-    [Gtk.Widget.insert_action_group] will be consulted as well. *)
+    [Gtk.Widget.insert_action_group] will be consulted as well.
+
+    The class built on this module is in {!Ocgtk.Actionable}. *)
 
 type t = [ `actionable ] Gobject.obj
 

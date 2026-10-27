@@ -6,7 +6,9 @@
     Note that the selection is {i persistent} -- if the selected item is removed
     and re-added in the same [Gio.ListModel::items-changed] emission, it stays
     selected. In particular, this means that changing the sort order of an
-    underlying sort model will preserve the selection. *)
+    underlying sort model will preserve the selection.
+
+    The class built on this module is in {!Ocgtk.Single_selection}. *)
 
 type t = [ `single_selection | `object_ ] Gobject.obj
 

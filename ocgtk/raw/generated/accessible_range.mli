@@ -25,7 +25,9 @@
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_MAX]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_MIN]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_NOW]
-    - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT] *)
+    - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT]
+
+    The class built on this module is in {!Ocgtk.Accessible_range}. *)
 
 type t = [ `accessible_range ] Gobject.obj
 

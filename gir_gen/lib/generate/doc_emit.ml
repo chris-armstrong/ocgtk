@@ -53,9 +53,18 @@ let string_literal_body s =
     s;
   Buffer.contents buf
 
-let item_doc ~indent ?since ?fallback ~context doc =
+(* The suffix is a paragraph of its own after the prose, and alone it is
+   trusted text like a fallback. *)
+let with_suffix ?suffix prose =
+  match (prose, suffix) with
+  | Some (text, from_fallback), Some suffix ->
+      Some (text ^ "\n\n" ^ suffix, from_fallback)
+  | None, Some suffix -> Some (suffix, true)
+  | prose, None -> prose
+
+let item_doc ~indent ?since ?fallback ?suffix ~context doc =
   let body =
-    match (prose_of ~context ~doc ~fallback, since) with
+    match (with_suffix ?suffix (prose_of ~context ~doc ~fallback), since) with
     | Some (prose, false), Some v ->
         Some (prose ^ "\n" ^ indent ^ "    @since " ^ v)
     | Some (prose, true), Some v -> Some (prose ^ " @since " ^ v)

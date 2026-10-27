@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CrossingEvent: CrossingEvent *)
 
-(** An event caused by a pointing device moving between surfaces. *)
+(** An event caused by a pointing device moving between surfaces.
+
+    The class built on this module is in {!Ocgdk.Crossing_event}. *)
 
 type t = [ `crossing_event | `event ] Gobject.obj
 

@@ -15,7 +15,9 @@
     or guide.
 
     The source and target, as well as their attributes, of a [GtkConstraint]
-    instance are immutable after creation. *)
+    instance are immutable after creation.
+
+    The class built on this module is in {!Ocgtk.Constraint}. *)
 
 type t = [ `constraint_ | `object_ ] Gobject.obj
 

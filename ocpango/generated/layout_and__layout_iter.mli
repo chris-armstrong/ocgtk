@@ -1,3 +1,8 @@
+(** The classes of {!Ocpango.Layout}, {!Ocpango.Layout_iter}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [PangoLayout]. *)
 class type layout_t = object
   method context_changed : unit -> unit
   method copy : unit -> layout_t
@@ -59,6 +64,7 @@ class type layout_t = object
   method as_layout : Raw.Layout.t
 end
 
+(** The methods, signals and properties of a [PangoLayoutIter]. *)
 and layout_iter_t = object
   method at_last_line : unit -> bool
   method get_baseline : unit -> int
@@ -74,7 +80,13 @@ and layout_iter_t = object
   method as_layout_iter : Raw.Layout_iter.t
 end
 
+(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [PangoLayout], give one already wrapped. *)
 class layout : Raw.Layout.t -> layout_t
+(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout_iter.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [PangoLayoutIter], give one already wrapped. *)
 
 and layout_iter : Raw.Layout_iter.t -> layout_iter_t
 

@@ -1,3 +1,16 @@
+(** Contains information that is necessary to present a sovereign window on
+    screen.
+
+    The [GdkToplevelLayout] struct is necessary for using
+    [Gdk.Toplevel.present].
+
+    Toplevel surfaces are sovereign windows that can be presented to the user in
+    various states (maximized, on all workspaces, etc).
+
+    Its methods, signals and properties are on {!class-type-toplevel_layout_t}.
+    The functions it is built on are in {!Ocgdk.Raw.Toplevel_layout}. *)
+
+(** The methods, signals and properties of a [GdkToplevelLayout]. *)
 class type toplevel_layout_t = object
   method equal : Raw.Toplevel_layout.t -> bool
 
@@ -16,5 +29,8 @@ class type toplevel_layout_t = object
 end
 
 class toplevel_layout : Raw.Toplevel_layout.t -> toplevel_layout_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Toplevel_layout.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GdkToplevelLayout], give one already wrapped. *)
 
 val new_ : unit -> toplevel_layout_t

@@ -6,7 +6,9 @@
     The [GdkPopup] is positioned relative to its parent surface.
 
     [GdkPopup]s are typically used to implement menus and similar popups. They
-    can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
+    can be modal, which is indicated by the [Gdk.Popup:autohide] property.
+
+    The class built on this module is in {!Ocgdk.Popup}. *)
 
 type t = [ `popup ] Gobject.obj
 

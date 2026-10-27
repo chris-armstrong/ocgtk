@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventControllerKey: EventControllerKey *)
 
-(** Provides access to key events. *)
+(** Provides access to key events.
+
+    The class built on this module is in {!Ocgtk.Event_controller_key}. *)
 
 type t = [ `event_controller_key | `event_controller | `object_ ] Gobject.obj
 

@@ -1,3 +1,16 @@
+(** Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
+    method calls. It provides a way to asynchronously return results and errors.
+
+    The normal way to obtain a [GDBusMethodInvocation] object is to receive it
+    as an argument to the [handle_method_call()] function in a
+    [Gio.DBusInterfaceVTable] that was passed to
+    [Gio.DBusConnection.register_object].
+
+    Its methods, signals and properties are on
+    {!class-type-d_bus_method_invocation_t}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_method_invocation}. *)
+
+(** The methods, signals and properties of a [GDBusMethodInvocation]. *)
 class type d_bus_method_invocation_t = object
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   method get_interface_name : unit -> string option
@@ -21,3 +34,6 @@ end
 class d_bus_method_invocation :
   Raw.D_bus_method_invocation.t ->
   d_bus_method_invocation_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_method_invocation.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GDBusMethodInvocation], give one already wrapped. *)

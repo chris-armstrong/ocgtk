@@ -693,7 +693,7 @@ let test_l2_class_type_contains_on_signal_method_sig () =
   let clicked_signal = make_clicked_signal () in
   (* Act: generate the L2 class signature (.mli) *)
   let mli_code =
-    Class_gen.generate_class_signature ~ctx ~class_name:"Button"
+    Class_gen.generate_class_signature ~ctx ~class_doc:None ~class_name:"Button"
       ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class

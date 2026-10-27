@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShadowNode: ShadowNode *)
 
-(** A render node drawing one or more shadows behind its single child node. *)
+(** A render node drawing one or more shadows behind its single child node.
+
+    The class built on this module is in {!Ocgsk.Shadow_node}. *)
 
 type t = [ `shadow_node | `render_node ] Gobject.obj
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryTexture: MemoryTexture *)
 
-(** A [GdkTexture] representing image data in memory. *)
+(** A [GdkTexture] representing image data in memory.
+
+    The class built on this module is in {!Ocgdk.Memory_texture}. *)
 
 type t = [ `memory_texture | `texture | `object_ ] Gobject.obj
 

@@ -6,7 +6,9 @@
     [GtkCellRendererToggle] renders a toggle button in a cell. The button is
     drawn as a radio or a checkbutton, depending on the
     [GtkCellRendererToggle:radio] property. When activated, it emits the
-    [GtkCellRendererToggle::toggled] signal. *)
+    [GtkCellRendererToggle::toggled] signal.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_toggle}. *)
 
 type t =
   [ `cell_renderer_toggle | `cell_renderer | `initially_unowned | `object_ ]

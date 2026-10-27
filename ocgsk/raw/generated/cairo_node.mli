@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CairoNode: CairoNode *)
 
-(** A render node for a Cairo surface. *)
+(** A render node for a Cairo surface.
+
+    The class built on this module is in {!Ocgsk.Cairo_node}. *)
 
 type t = [ `cairo_node | `render_node ] Gobject.obj
 

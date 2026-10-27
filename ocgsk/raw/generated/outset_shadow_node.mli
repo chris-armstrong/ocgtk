@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OutsetShadowNode: OutsetShadowNode *)
 
-(** A render node for an outset shadow. *)
+(** A render node for an outset shadow.
+
+    The class built on this module is in {!Ocgsk.Outset_shadow_node}. *)
 
 type t = [ `outset_shadow_node | `render_node ] Gobject.obj
 

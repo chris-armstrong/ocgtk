@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BlendNode: BlendNode *)
 
-(** A render node applying a blending function between its two child nodes. *)
+(** A render node applying a blending function between its two child nodes.
+
+    The class built on this module is in {!Ocgsk.Blend_node}. *)
 
 type t = [ `blend_node | `render_node ] Gobject.obj
 

@@ -5,7 +5,9 @@
 
     The [GtkAlternativeTrigger] triggers when either of the two trigger.
 
-    This can be cascaded to combine more than two triggers. *)
+    This can be cascaded to combine more than two triggers.
+
+    The class built on this module is in {!Ocgtk.Alternative_trigger}. *)
 
 type t = [ `alternative_trigger | `shortcut_trigger | `object_ ] Gobject.obj
 

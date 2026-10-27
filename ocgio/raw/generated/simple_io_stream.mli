@@ -9,7 +9,9 @@
     [Gio.OutputStream] by other means, for instance creating them with platform
     specific methods as [g_unix_input_stream_new()] (from [gio-unix-2.0.pc] /
     [GioUnix-2.0]), and you want to take advantage of the methods provided by
-    [Gio.IOStream]. *)
+    [Gio.IOStream].
+
+    The class built on this module is in {!Ocgio.Simple_io_stream}. *)
 
 type t = [ `simple_io_stream | `io_stream | `object_ ] Gobject.obj
 

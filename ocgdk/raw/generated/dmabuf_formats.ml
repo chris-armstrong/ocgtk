@@ -17,7 +17,9 @@
 
     See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
 
-    Note that DMA buffers only exist on Linux. *)
+    Note that DMA buffers only exist on Linux.
+
+    The class built on this module is in {!Ocgdk.Dmabuf_formats}. *)
 
 type t = [ `dmabuf_formats ] Gobject.obj
 

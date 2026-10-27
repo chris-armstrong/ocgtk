@@ -319,7 +319,8 @@
  [<description>] elements, and also any [<default>] elements which have a\n\
  [l10n] attribute set.\n\n\
  Translations {b must not} be included in the [.gschema.xml] file by the build\n\
- system, for example by using a rule to generate the XML file from a template."]
+ system, for example by using a rule to generate the XML file from a template.\n\n\
+ The class built on this module is in {!Ocgio.Settings}."]
 
 type t = [ `settings | `object_ ] Gobject.obj
 

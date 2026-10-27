@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgraphene.Raw.Box}, {!Ocgraphene.Raw.Sphere},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** A 3D box, described as the volume between a minimum and a maximum vertices.
+
+    The class built on this module is in {!Ocgraphene.Box}. *)
 module rec Box : sig
   type t = [ `box ] Gobject.obj
 
@@ -107,6 +114,9 @@ module rec Box : sig
       [b]. *)
 end
 
+(** A sphere, represented by its center and radius.
+
+    The class built on this module is in {!Ocgraphene.Sphere}. *)
 and Sphere : sig
   type t = [ `sphere ] Gobject.obj
 

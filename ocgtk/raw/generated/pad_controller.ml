@@ -49,7 +49,8 @@
  value 120 represents one logical scroll wheel detent in the positive direction.\n\
  Devices that support high-resolution scrolling may send events with fractions \
  of\n\
- 120 to signify a smaller motion."]
+ 120 to signify a smaller motion.\n\n\
+ The class built on this module is in {!Ocgtk.Pad_controller}."]
 
 type t = [ `pad_controller | `event_controller | `object_ ] Gobject.obj
 

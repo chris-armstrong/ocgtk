@@ -4,7 +4,9 @@
 (** Combines multiple sorters by trying them in turn.
 
     If the first sorter compares two items as equal, the second is tried next,
-    and so on. *)
+    and so on.
+
+    The class built on this module is in {!Ocgtk.Multi_sorter}. *)
 
 type t = [ `multi_sorter | `sorter | `object_ ] Gobject.obj
 

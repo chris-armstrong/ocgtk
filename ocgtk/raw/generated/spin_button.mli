@@ -116,7 +116,9 @@
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role.
+
+    The class built on this module is in {!Ocgtk.Spin_button}. *)
 
 type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 

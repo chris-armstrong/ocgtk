@@ -17,7 +17,9 @@
 
     {b CSS nodes}
 
-    [GtkFontChooserWidget] has a single CSS node with name fontchooser. *)
+    [GtkFontChooserWidget] has a single CSS node with name fontchooser.
+
+    The class built on this module is in {!Ocgtk.Font_chooser_widget}. *)
 
 type t =
   [ `font_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj

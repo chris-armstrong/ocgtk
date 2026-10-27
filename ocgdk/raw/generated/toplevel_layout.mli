@@ -8,7 +8,9 @@
     [Gdk.Toplevel.present].
 
     Toplevel surfaces are sovereign windows that can be presented to the user in
-    various states (maximized, on all workspaces, etc). *)
+    various states (maximized, on all workspaces, etc).
+
+    The class built on this module is in {!Ocgdk.Toplevel_layout}. *)
 
 type t = [ `toplevel_layout ] Gobject.obj
 

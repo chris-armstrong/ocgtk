@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Size: Size *)
 
-(** A size. *)
+(** A size.
+
+    The class built on this module is in {!Ocgraphene.Size}. *)
 
 type t = [ `size ] Gobject.obj
 

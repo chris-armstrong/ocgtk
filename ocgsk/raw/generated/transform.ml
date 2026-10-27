@@ -9,7 +9,9 @@
 
     [GskTransform] objects are immutable and cannot be changed after creation.
     This means code can safely expose them as properties of objects without
-    having to worry about others changing them. *)
+    having to worry about others changing them.
+
+    The class built on this module is in {!Ocgsk.Transform}. *)
 
 type t = [ `transform ] Gobject.obj
 

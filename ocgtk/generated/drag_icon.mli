@@ -1,3 +1,19 @@
+(** A [GtkRoot] implementation for drag icons.
+
+    A drag icon moves with the pointer during a Drag-and-Drop operation and is
+    destroyed when the drag ends.
+
+    To set up a drag icon and associate it with an ongoing drag operation, use
+    [Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use it
+    like any other widget and use [Gtk.DragIcon.set_child] to set whatever
+    widget should be used for the drag icon.
+
+    Keep in mind that drag icons do not allow user input.
+
+    Its methods, signals and properties are on {!class-type-drag_icon_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Drag_icon}. *)
+
+(** The methods, signals and properties of a [GtkDragIcon]. *)
 class type drag_icon_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -25,5 +41,8 @@ class type drag_icon_t = object
 end
 
 class drag_icon : Raw.Drag_icon.t -> drag_icon_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drag_icon.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkDragIcon], give one already wrapped. *)
 
 val get_for_drag : Ocgdk.Drag.drag_t -> drag_icon_t

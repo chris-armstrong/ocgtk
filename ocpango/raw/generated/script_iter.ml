@@ -2,7 +2,9 @@
 (* ScriptIter: ScriptIter *)
 
 (** A [PangoScriptIter] is used to iterate through a string and identify ranges
-    in different scripts. *)
+    in different scripts.
+
+    The class built on this module is in {!Ocpango.Script_iter}. *)
 
 type t = [ `script_iter ] Gobject.obj
 

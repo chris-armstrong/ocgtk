@@ -49,7 +49,9 @@
 
     {b Accessibility}
 
-    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
+    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role.
+
+    The class built on this module is in {!Ocgtk.Search_bar}. *)
 
 type t = [ `search_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

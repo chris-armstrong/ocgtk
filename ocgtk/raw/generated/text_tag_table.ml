@@ -18,7 +18,8 @@
 \   <object class=\"GtkTextTag\"/>\n\
 \ </child>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Text_tag_table}."]
 
 type t = [ `text_tag_table | `object_ ] Gobject.obj
 

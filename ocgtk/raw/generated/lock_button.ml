@@ -35,7 +35,9 @@
     The text (and tooltips) that are shown in the various cases can be adjusted
     with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
     [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
-    [Gtk.LockButton:tooltip-not-authorized] properties. *)
+    [Gtk.LockButton:tooltip-not-authorized] properties.
+
+    The class built on this module is in {!Ocgtk.Lock_button}. *)
 
 type t =
   [ `lock_button | `button | `widget | `initially_unowned | `object_ ]

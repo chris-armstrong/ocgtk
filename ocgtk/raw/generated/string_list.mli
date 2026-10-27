@@ -22,7 +22,8 @@
 \    <item translatable=\"yes\">Subway</item>\n\
 \  </items>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.String_list}."]
 
 type t = [ `string_list | `object_ ] Gobject.obj
 

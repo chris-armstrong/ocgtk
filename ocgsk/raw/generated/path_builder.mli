@@ -37,7 +37,9 @@
     This is similar to how paths are drawn in Cairo.
 
     Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
-    much as possible, to simplify rendering. *)
+    much as possible, to simplify rendering.
+
+    The class built on this module is in {!Ocgsk.Path_builder}. *)
 
 type t = [ `path_builder ] Gobject.obj
 

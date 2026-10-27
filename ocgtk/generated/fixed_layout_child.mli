@@ -1,3 +1,10 @@
+(** [GtkLayoutChild] subclass for children in a [GtkFixedLayout].
+
+    Its methods, signals and properties are on
+    {!class-type-fixed_layout_child_t}. The functions it is built on are in
+    {!Ocgtk.Raw.Fixed_layout_child}. *)
+
+(** The methods, signals and properties of a [GtkFixedLayoutChild]. *)
 class type fixed_layout_child_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -9,3 +16,6 @@ class type fixed_layout_child_t = object
 end
 
 class fixed_layout_child : Raw.Fixed_layout_child.t -> fixed_layout_child_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Fixed_layout_child.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkFixedLayoutChild], give one already wrapped. *)

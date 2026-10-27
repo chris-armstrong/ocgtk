@@ -1,3 +1,10 @@
+(** The classes of {!Ocgraphene.Euler}, {!Ocgraphene.Matrix},
+    {!Ocgraphene.Plane}, {!Ocgraphene.Quaternion}, {!Ocgraphene.Ray},
+    {!Ocgraphene.Triangle}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** The methods, signals and properties of a [graphene_euler_t]. *)
 class type euler_t = object
   method equal : Raw.Euler.t -> bool
   method get_alpha : unit -> float
@@ -27,6 +34,7 @@ class type euler_t = object
   method as_euler : Raw.Euler.t
 end
 
+(** The methods, signals and properties of a [graphene_matrix_t]. *)
 and matrix_t = object
   method determinant : unit -> float
   method equal : Raw.Matrix.t -> bool
@@ -82,6 +90,7 @@ and matrix_t = object
   method as_matrix : Raw.Matrix.t
 end
 
+(** The methods, signals and properties of a [graphene_plane_t]. *)
 and plane_t = object
   method distance : Raw.Point3_d.t -> float
   method equal : Raw.Plane.t -> bool
@@ -97,6 +106,7 @@ and plane_t = object
   method as_plane : Raw.Plane.t
 end
 
+(** The methods, signals and properties of a [graphene_quaternion_t]. *)
 and quaternion_t = object
   method dot : Raw.Quaternion.t -> float
   method equal : Raw.Quaternion.t -> bool
@@ -112,6 +122,7 @@ and quaternion_t = object
   method as_quaternion : Raw.Quaternion.t
 end
 
+(** The methods, signals and properties of a [graphene_ray_t]. *)
 and ray_t = object
   method equal : Raw.Ray.t -> bool
   method get_distance_to_plane : Raw.Plane.t -> float
@@ -125,6 +136,7 @@ and ray_t = object
   method as_ray : Raw.Ray.t
 end
 
+(** The methods, signals and properties of a [graphene_triangle_t]. *)
 and triangle_t = object
   method contains_point : Raw.Point3_d.t -> bool
   method equal : Raw.Triangle.t -> bool
@@ -148,15 +160,33 @@ and triangle_t = object
   method as_triangle : Raw.Triangle.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Euler.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_euler_t], give one already wrapped. *)
 class euler : Raw.Euler.t -> euler_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Matrix.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_matrix_t], give one already wrapped. *)
 
 and matrix : Raw.Matrix.t -> matrix_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Plane.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_plane_t], give one already wrapped. *)
 
 and plane : Raw.Plane.t -> plane_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Quaternion.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [graphene_quaternion_t], give one already wrapped. *)
 
 and quaternion : Raw.Quaternion.t -> quaternion_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Ray.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_ray_t], give one already wrapped. *)
 
 and ray : Raw.Ray.t -> ray_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Triangle.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_triangle_t], give one already wrapped. *)
 
 and triangle : Raw.Triangle.t -> triangle_t
 

@@ -12,7 +12,8 @@
 
     [GdkGLTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
-*)
+
+    The class built on this module is in {!Ocgdk.Gl_texture_builder}. *)
 
 type t = [ `gl_texture_builder | `object_ ] Gobject.obj
 

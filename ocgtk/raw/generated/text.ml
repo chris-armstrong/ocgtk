@@ -110,7 +110,9 @@
     [GtkText] uses the [Gtk.AccessibleRole.none] role, which causes it to be
     skipped for accessibility. This is because [GtkText] is expected to be used
     as a delegate for a [GtkEditable] implementation that will be represented to
-    accessibility. *)
+    accessibility.
+
+    The class built on this module is in {!Ocgtk.Text}. *)
 
 type t = [ `text | `widget | `initially_unowned | `object_ ] Gobject.obj
 

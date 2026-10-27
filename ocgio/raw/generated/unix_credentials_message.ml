@@ -18,7 +18,8 @@
     Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
     UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
     pkg-config file when using it. This is no longer necessary since GLib 2.72.
-*)
+
+    The class built on this module is in {!Ocgio.Unix_credentials_message}. *)
 
 type t =
   [ `unix_credentials_message | `socket_control_message | `object_ ] Gobject.obj

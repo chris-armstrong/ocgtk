@@ -1,3 +1,14 @@
+(** An IPv4 or IPv6 socket address. That is, the combination of a
+    [Gio.InetAddress] and a port number.
+
+    In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
+    or [struct sockaddr_in]).
+
+    Its methods, signals and properties are on
+    {!class-type-inet_socket_address_t}. The functions it is built on are in
+    {!Ocgio.Raw.Inet_socket_address}. *)
+
+(** The methods, signals and properties of a [GInetSocketAddress]. *)
 class type inet_socket_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -11,6 +22,9 @@ class type inet_socket_address_t = object
 end
 
 class inet_socket_address : Raw.Inet_socket_address.t -> inet_socket_address_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Inet_socket_address.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GInetSocketAddress], give one already wrapped. *)
 
 val new_ : Inet_address.inet_address_t -> UInt16.t -> inet_socket_address_t
 val new_from_string : string -> int -> inet_socket_address_t

@@ -1,3 +1,14 @@
+(** A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
+    The set of exported interfaces on the object may be dynamic and change at
+    runtime.
+
+    This type is intended to be used with [Gio.DBusObjectManager].
+
+    Its methods, signals and properties are on
+    {!class-type-d_bus_object_skeleton_t}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_object_skeleton}. *)
+
+(** The methods, signals and properties of a [GDBusObjectSkeleton]. *)
 class type d_bus_object_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 
@@ -28,5 +39,8 @@ end
 class d_bus_object_skeleton :
   Raw.D_bus_object_skeleton.t ->
   d_bus_object_skeleton_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_object_skeleton.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GDBusObjectSkeleton], give one already wrapped. *)
 
 val new_ : string -> d_bus_object_skeleton_t

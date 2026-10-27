@@ -19,7 +19,9 @@
     sorting by clicking on list headers.
 
     Of course, in particular for large lists, it is also possible to subclass
-    [GtkSorter] and provide one's own sorter. *)
+    [GtkSorter] and provide one's own sorter.
+
+    The class built on this module is in {!Ocgtk.Sorter}. *)
 
 type t = [ `sorter | `object_ ] Gobject.obj
 

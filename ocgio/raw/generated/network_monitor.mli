@@ -5,7 +5,9 @@
     network connectivity. On Linux, the available implementations are based on
     the kernel's netlink interface and on NetworkManager.
 
-    There is also an implementation for use inside Flatpak sandboxes. *)
+    There is also an implementation for use inside Flatpak sandboxes.
+
+    The class built on this module is in {!Ocgio.Network_monitor}. *)
 
 type t = [ `network_monitor ] Gobject.obj
 

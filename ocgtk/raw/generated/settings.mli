@@ -26,7 +26,9 @@
 
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
-    use [Gtk.Widget.get_settings]. *)
+    use [Gtk.Widget.get_settings].
+
+    The class built on this module is in {!Ocgtk.Settings}. *)
 
 type t = [ `settings | `object_ ] Gobject.obj
 

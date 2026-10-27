@@ -29,7 +29,8 @@
  [.normal-icons] or [.large-icons] may appear, depending on the\n\
  [Gtk.Image:icon-size] property.\n\n\
  {b Accessibility}\n\n\
- [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
+ [GtkImage] uses the [Gtk.AccessibleRole.img] role.\n\n\
+ The class built on this module is in {!Ocgtk.Image}."]
 
 type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
 

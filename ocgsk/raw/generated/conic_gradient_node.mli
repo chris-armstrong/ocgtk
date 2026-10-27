@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConicGradientNode: ConicGradientNode *)
 
-(** A render node for a conic gradient. *)
+(** A render node for a conic gradient.
+
+    The class built on this module is in {!Ocgsk.Conic_gradient_node}. *)
 
 type t = [ `conic_gradient_node | `render_node ] Gobject.obj
 

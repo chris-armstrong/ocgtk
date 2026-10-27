@@ -10,7 +10,9 @@
     long.
 
     See [Gio.SocketConnectable] for an example of using the connectable
-    interface. *)
+    interface.
+
+    The class built on this module is in {!Ocgio.Network_address}. *)
 
 type t = [ `network_address | `object_ ] Gobject.obj
 

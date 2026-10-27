@@ -92,7 +92,8 @@
  }\n\
  ]}\n\n\
  If you need to change the options for creating the [GdkGLContext]\n\
- you should use the [Gtk.GLArea::create-context] signal."]
+ you should use the [Gtk.GLArea::create-context] signal.\n\n\
+ The class built on this module is in {!Ocgtk.Gl_area}."]
 
 type t = [ `gl_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 

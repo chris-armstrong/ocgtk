@@ -5,7 +5,9 @@
     class as an array of fonts.
 
     When creating a [PangoFontsetSimple], you have to provide the array of fonts
-    that make up the fontset. *)
+    that make up the fontset.
+
+    The class built on this module is in {!Ocpango.Fontset_simple}. *)
 
 type t = [ `fontset_simple | `fontset | `object_ ] Gobject.obj
 

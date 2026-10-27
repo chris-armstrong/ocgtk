@@ -105,7 +105,8 @@
  a number of file formats. The formatted data can be written to a\n\
  file or to a memory buffer. [GdkPixbuf] can also call a user-defined\n\
  callback on the data, which allows to e.g. write the image\n\
- to a socket or store it in a database."]
+ to a socket or store it in a database.\n\n\
+ The class built on this module is in {!Ocgdkpixbuf.Pixbuf}."]
 
 type t = [ `pixbuf | `object_ ] Gobject.obj
 

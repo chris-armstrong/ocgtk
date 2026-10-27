@@ -365,6 +365,7 @@ val generate_class_module :
 val generate_class_signature :
   ctx:Types.generation_context ->
   class_name:string ->
+  class_doc:string option ->
   c_type:string ->
   parent_chain:string list ->
   methods:Types.gir_method list ->

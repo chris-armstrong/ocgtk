@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeDragDest: TreeDragDest *)
 
-(** Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
+(** Interface for Drag-and-Drop destinations in [GtkTreeView].
+
+    The class built on this module is in {!Ocgtk.Tree_drag_dest}. *)
 
 type t = [ `tree_drag_dest ] Gobject.obj
 

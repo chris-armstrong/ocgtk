@@ -34,7 +34,9 @@
     The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
     [Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
-    motion that was received. *)
+    motion that was received.
+
+    The class built on this module is in {!Ocgtk.Event_controller_scroll}. *)
 
 type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
 

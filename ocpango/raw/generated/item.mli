@@ -4,7 +4,9 @@
 (** The [PangoItem] structure stores information about a segment of text.
 
     You typically obtain [PangoItems] by itemizing a piece of text with
-    [itemize]. *)
+    [itemize].
+
+    The class built on this module is in {!Ocpango.Item}. *)
 
 type t = [ `item ] Gobject.obj
 

@@ -2,7 +2,9 @@
 (* ClosureExpression: ClosureExpression *)
 
 (** An expression using a custom [GClosure] to compute the value from its
-    parameters. *)
+    parameters.
+
+    The class built on this module is in {!Ocgtk.Closure_expression}. *)
 
 type t = [ `closure_expression | `expression ] Gobject.obj
 

@@ -7,7 +7,9 @@
     There are some convenience functions to allow you to directly add items
     (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
     [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
-    submenu, use [Gio.Menu.insert_submenu]. *)
+    submenu, use [Gio.Menu.insert_submenu].
+
+    The class built on this module is in {!Ocgio.Menu}. *)
 
 type t = [ `menu | `menu_model | `object_ ] Gobject.obj
 

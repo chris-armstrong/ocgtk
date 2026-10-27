@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DeviceTool: DeviceTool *)
 
-(** A physical tool associated to a [GdkDevice]. *)
+(** A physical tool associated to a [GdkDevice].
+
+    The class built on this module is in {!Ocgdk.Device_tool}. *)
 
 type t = [ `device_tool | `object_ ] Gobject.obj
 

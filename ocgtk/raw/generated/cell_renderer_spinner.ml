@@ -12,7 +12,9 @@
     property to [TRUE] and increment the [GtkCellRendererSpinner:pulse] property
     at regular intervals. The usual way to set the cell renderer properties for
     each cell is to bind them to columns in your tree model using e.g.
-    gtk_tree_view_column_add_attribute(). *)
+    gtk_tree_view_column_add_attribute().
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_spinner}. *)
 
 type t =
   [ `cell_renderer_spinner | `cell_renderer | `initially_unowned | `object_ ]

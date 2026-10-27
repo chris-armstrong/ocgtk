@@ -8,7 +8,9 @@
     Implementations of [GProxyResolver] based on
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
     found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
-    GIO comes with an implementation for use inside Flatpak portals. *)
+    GIO comes with an implementation for use inside Flatpak portals.
+
+    The class built on this module is in {!Ocgio.Proxy_resolver}. *)
 
 type t = [ `proxy_resolver ] Gobject.obj
 

@@ -9,7 +9,9 @@
     property allows it.
 
     If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
-    [GtkCellRendererText] allows to edit its text using an entry. *)
+    [GtkCellRendererText] allows to edit its text using an entry.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_text}. *)
 
 type t =
   [ `cell_renderer_text | `cell_renderer | `initially_unowned | `object_ ]

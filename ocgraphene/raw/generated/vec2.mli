@@ -4,7 +4,9 @@
 (** A structure capable of holding a vector with two dimensions, x and y.
 
     The contents of the #graphene_vec2_t structure are private and should never
-    be accessed directly. *)
+    be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Vec2}. *)
 
 type t = [ `vec2 ] Gobject.obj
 

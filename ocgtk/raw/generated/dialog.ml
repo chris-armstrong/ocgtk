@@ -98,7 +98,8 @@
  </object>\n\
  ]}\n\n\
  {b Accessibility}\n\n\
- [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role."]
+ [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role.\n\n\
+ The class built on this module is in {!Ocgtk.Dialog}."]
 
 type t =
   [ `dialog | `window | `widget | `initially_unowned | `object_ ] Gobject.obj

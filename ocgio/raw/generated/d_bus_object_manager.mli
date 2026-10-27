@@ -6,7 +6,9 @@
     interface.
 
     See [Gio.DBusObjectManagerClient] for the client-side implementation and
-    [Gio.DBusObjectManagerServer] for the service-side implementation. *)
+    [Gio.DBusObjectManagerServer] for the service-side implementation.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager}. *)
 
 type t = [ `d_bus_object_manager ] Gobject.obj
 

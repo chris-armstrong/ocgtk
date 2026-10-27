@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLShaderNode: GLShaderNode *)
 
-(** A render node using a GL shader when drawing its children nodes. *)
+(** A render node using a GL shader when drawing its children nodes.
+
+    The class built on this module is in {!Ocgsk.Gl_shader_node}. *)
 
 type t = [ `gl_shader_node | `render_node ] Gobject.obj
 

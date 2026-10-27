@@ -44,7 +44,8 @@
  ]}\n\n\
  [GtkComboBoxText] has a single CSS node with name combobox. It adds\n\
  the style class .combo to the main CSS nodes of its entry and button\n\
- children, and the .linked class to the node of its internal box."]
+ children, and the .linked class to the node of its internal box.\n\n\
+ The class built on this module is in {!Ocgtk.Combo_box_text}."]
 
 type t =
   [ `combo_box_text | `combo_box | `widget | `initially_unowned | `object_ ]

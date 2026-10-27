@@ -1,3 +1,18 @@
+(** [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
+    which takes the [Gio.SocketAddress] instances returned by the
+    [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]
+    instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
+
+    This enumerator will be returned (for example, by
+    [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
+    configured; there should be no need to manually wrap a
+    [Gio.SocketAddressEnumerator] instance with one.
+
+    Its methods, signals and properties are on
+    {!class-type-proxy_address_enumerator_t}. The functions it is built on are
+    in {!Ocgio.Raw.Proxy_address_enumerator}. *)
+
+(** The methods, signals and properties of a [GProxyAddressEnumerator]. *)
 class type proxy_address_enumerator_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -17,3 +32,7 @@ end
 class proxy_address_enumerator :
   Raw.Proxy_address_enumerator.t ->
   proxy_address_enumerator_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Proxy_address_enumerator.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GProxyAddressEnumerator], give one already wrapped.
+*)

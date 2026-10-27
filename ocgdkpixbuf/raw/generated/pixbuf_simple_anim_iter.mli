@@ -1,6 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufSimpleAnimIter: PixbufSimpleAnimIter *)
 
+(** Bindings for [GdkPixbufSimpleAnimIter].
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_simple_anim_iter}.
+*)
+
 type t =
   [ `pixbuf_simple_anim_iter | `pixbuf_animation_iter | `object_ ] Gobject.obj
 

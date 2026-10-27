@@ -2,7 +2,9 @@
 (* FileAttributeInfoList: FileAttributeInfoList *)
 
 (** Acts as a lightweight registry for possible valid file attributes. The
-    registry stores Key-Value pair formats as [GFileAttributeInfos]. *)
+    registry stores Key-Value pair formats as [GFileAttributeInfos].
+
+    The class built on this module is in {!Ocgio.File_attribute_info_list}. *)
 
 type t = [ `file_attribute_info_list ] Gobject.obj
 

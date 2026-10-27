@@ -67,7 +67,10 @@
     [GDBusObjectManagerClient] object was constructed in. Additionally, the
     [Gio.DBusObjectProxy] and [Gio.DBusProxy] objects originating from the
     [GDBusObjectManagerClient] object will be created in the same context and,
-    consequently, will deliver signals in the same main loop. *)
+    consequently, will deliver signals in the same main loop.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager_client}.
+*)
 
 type t = [ `d_bus_object_manager_client | `object_ ] Gobject.obj
 

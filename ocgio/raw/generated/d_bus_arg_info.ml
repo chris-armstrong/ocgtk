@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusArgInfo: DBusArgInfo *)
 
-(** Information about an argument for a method or a signal. *)
+(** Information about an argument for a method or a signal.
+
+    The class built on this module is in {!Ocgio.D_bus_arg_info}. *)
 
 type t = [ `d_bus_arg_info ] Gobject.obj
 

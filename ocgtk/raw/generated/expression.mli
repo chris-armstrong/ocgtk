@@ -152,7 +152,8 @@
 \      <lookup name='string'>some_other_object</lookup>\n\
 \    </binding>\n\
 \  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Expression}."]
 
 type t = [ `expression ] Gobject.obj
 

@@ -9,7 +9,8 @@
  with signals on the [GdkDrag] object.\n\n\
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
- \"Drag and Drop\" section of the GTK documentation for more information."]
+ \"Drag and Drop\" section of the GTK documentation for more information.\n\n\
+ The class built on this module is in {!Ocgdk.Drag}."]
 
 type t = [ `drag | `object_ ] Gobject.obj
 

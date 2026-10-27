@@ -304,7 +304,8 @@
  the UI definition when instantiating the type, and bind children and\n\
  signal handlers to instance fields and function symbols.\n\n\
  For more information, see the [GtkWidget] documentation\n\
- for details."]
+ for details.\n\n\
+ The class built on this module is in {!Ocgtk.Builder}."]
 
 type t = [ `builder | `object_ ] Gobject.obj
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorNode: ColorNode *)
 
-(** A render node for a solid color. *)
+(** A render node for a solid color.
+
+    The class built on this module is in {!Ocgsk.Color_node}. *)
 
 type t = [ `color_node | `render_node ] Gobject.obj
 

@@ -19,7 +19,9 @@
     Until GTK 4.10, [GtkViewport] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
-    role. *)
+    role.
+
+    The class built on this module is in {!Ocgtk.Viewport}. *)
 
 type t = [ `viewport | `widget | `initially_unowned | `object_ ] Gobject.obj
 

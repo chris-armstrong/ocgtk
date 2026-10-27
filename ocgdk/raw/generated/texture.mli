@@ -24,7 +24,9 @@
     and resources that are shipped with the toolkit or application. It is
     recommended that you use a dedicated image loading framework such as
     {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
-    data. *)
+    data.
+
+    The class built on this module is in {!Ocgdk.Texture}. *)
 
 type t = [ `texture | `object_ ] Gobject.obj
 

@@ -2,7 +2,9 @@
 (* DataInputStream: DataInputStream *)
 
 (** Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream. *)
+    reading structured data directly from a binary input stream.
+
+    The class built on this module is in {!Ocgio.Data_input_stream}. *)
 
 type t =
   [ `data_input_stream

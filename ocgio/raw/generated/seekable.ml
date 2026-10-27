@@ -12,7 +12,9 @@
 
     [GSeekable] on resizable streams is approximately the same as POSIX
     [lseek()]) on a normal file. Seeking past the end and writing data will
-    usually cause the stream to resize by introducing zero bytes. *)
+    usually cause the stream to resize by introducing zero bytes.
+
+    The class built on this module is in {!Ocgio.Seekable}. *)
 
 type t = [ `seekable ] Gobject.obj
 

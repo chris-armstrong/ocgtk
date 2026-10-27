@@ -39,7 +39,9 @@
 
     {b Accessibility}
 
-    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role.
+
+    The class built on this module is in {!Ocgtk.Link_button}. *)
 
 type t =
   [ `link_button | `button | `widget | `initially_unowned | `object_ ]

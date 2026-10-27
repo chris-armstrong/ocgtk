@@ -10,7 +10,9 @@
     [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
 
     The [GtkAdjustment] object does not update the value itself. Instead it is
-    left up to the owner of the [GtkAdjustment] to control the value. *)
+    left up to the owner of the [GtkAdjustment] to control the value.
+
+    The class built on this module is in {!Ocgtk.Adjustment}. *)
 
 type t = [ `adjustment | `initially_unowned | `object_ ] Gobject.obj
 

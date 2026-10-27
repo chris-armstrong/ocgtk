@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PadEvent: PadEvent *)
 
-(** An event related to a pad-based device. *)
+(** An event related to a pad-based device.
+
+    The class built on this module is in {!Ocgdk.Pad_event}. *)
 
 type t = [ `pad_event | `event ] Gobject.obj
 

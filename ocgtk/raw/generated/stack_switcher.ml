@@ -31,7 +31,8 @@
 
     Since GTK 4.4, [GtkStackSwitcher] implements [GtkOrientable] allowing the
     stack switcher to be made vertical with [gtk_orientable_set_orientation()].
-*)
+
+    The class built on this module is in {!Ocgtk.Stack_switcher}. *)
 
 type t =
   [ `stack_switcher | `widget | `initially_unowned | `object_ ] Gobject.obj

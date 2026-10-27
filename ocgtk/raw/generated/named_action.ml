@@ -4,7 +4,9 @@
 (** Activates a named action.
 
     See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
-    for ways to associate named actions with widgets. *)
+    for ways to associate named actions with widgets.
+
+    The class built on this module is in {!Ocgtk.Named_action}. *)
 
 type t = [ `named_action | `shortcut_action | `object_ ] Gobject.obj
 

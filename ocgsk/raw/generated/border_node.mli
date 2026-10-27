@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BorderNode: BorderNode *)
 
-(** A render node for a border. *)
+(** A render node for a border.
+
+    The class built on this module is in {!Ocgsk.Border_node}. *)
 
 type t = [ `border_node | `render_node ] Gobject.obj
 

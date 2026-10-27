@@ -55,7 +55,8 @@
 \  gtk_window_set_child (GTK_WINDOW (window), box);\n\
 \  gtk_window_present (GTK_WINDOW (window));\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Toggle_button}."]
 
 type t =
   [ `toggle_button | `button | `widget | `initially_unowned | `object_ ]

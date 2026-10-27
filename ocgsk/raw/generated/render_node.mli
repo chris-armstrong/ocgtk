@@ -12,7 +12,9 @@
     Render nodes are meant to be transient; once they have been associated to a
     [Gsk.Renderer] it's safe to release any reference you have on them. All
     [Gsk.RenderNode]s are immutable, you can only specify their properties
-    during construction. *)
+    during construction.
+
+    The class built on this module is in {!Ocgsk.Render_node}. *)
 
 type t = [ `render_node ] Gobject.obj
 

@@ -17,7 +17,9 @@
     various widgets to easily allow searches.
 
     However, in particular for large lists or complex search methods, it is also
-    possible to subclass [GtkFilter] and provide one's own filter. *)
+    possible to subclass [GtkFilter] and provide one's own filter.
+
+    The class built on this module is in {!Ocgtk.Filter}. *)
 
 type t = [ `filter | `object_ ] Gobject.obj
 

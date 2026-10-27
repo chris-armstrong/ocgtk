@@ -13,7 +13,9 @@
     connection it will be a [Gio.TcpConnection].
 
     As [GSocketClient] is a lightweight object, you don't need to cache it. You
-    can just create a new one any time you need one. *)
+    can just create a new one any time you need one.
+
+    The class built on this module is in {!Ocgio.Socket_client}. *)
 
 type t = [ `socket_client | `object_ ] Gobject.obj
 

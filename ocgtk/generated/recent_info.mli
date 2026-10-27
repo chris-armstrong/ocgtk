@@ -1,3 +1,10 @@
+(** Contains the metadata associated with an item in the recently used files
+    list.
+
+    Its methods, signals and properties are on {!class-type-recent_info_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Recent_info}. *)
+
+(** The methods, signals and properties of a [GtkRecentInfo]. *)
 class type recent_info_t = object
   method create_app_info :
     string option -> (Ocgio.App_info.app_info_t option, GError.t) result
@@ -22,3 +29,6 @@ class type recent_info_t = object
 end
 
 class recent_info : Raw.Recent_info.t -> recent_info_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Recent_info.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkRecentInfo], give one already wrapped. *)

@@ -30,7 +30,9 @@
     [GtkMapListModel] will attempt to discard the mapped objects as soon as they
     are no longer needed and recreate them if necessary.
 
-    [GtkMapListModel] passes through sections from the underlying model. *)
+    [GtkMapListModel] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.Map_list_model}. *)
 
 type t = [ `map_list_model | `object_ ] Gobject.obj
 

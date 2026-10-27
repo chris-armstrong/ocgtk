@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InsetShadowNode: InsetShadowNode *)
 
-(** A render node for an inset shadow. *)
+(** A render node for an inset shadow.
+
+    The class built on this module is in {!Ocgsk.Inset_shadow_node}. *)
 
 type t = [ `inset_shadow_node | `render_node ] Gobject.obj
 

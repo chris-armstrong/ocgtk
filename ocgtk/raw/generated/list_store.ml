@@ -124,7 +124,8 @@
 \    </row>\n\
 \  </data>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.List_store}."]
 
 type t = [ `list_store | `object_ ] Gobject.obj
 

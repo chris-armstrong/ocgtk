@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NotebookPage: NotebookPage *)
 
-(** An auxiliary object used by [GtkNotebook]. *)
+(** An auxiliary object used by [GtkNotebook].
+
+    The class built on this module is in {!Ocgtk.Notebook_page}. *)
 
 type t = [ `notebook_page | `object_ ] Gobject.obj
 

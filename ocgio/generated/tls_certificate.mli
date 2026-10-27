@@ -1,3 +1,12 @@
+(** A certificate used for TLS authentication and encryption. This can represent
+    either a certificate only (eg, the certificate received by a client from a
+    server), or the combination of a certificate and a private key (which is
+    needed when acting as a [Gio.TlsServerConnection]).
+
+    Its methods, signals and properties are on {!class-type-tls_certificate_t}.
+    The functions it is built on are in {!Ocgio.Raw.Tls_certificate}. *)
+
+(** The methods, signals and properties of a [GTlsCertificate]. *)
 class type tls_certificate_t = object
   method get_issuer : unit -> tls_certificate_t option
   method get_issuer_name : unit -> string option
@@ -19,6 +28,9 @@ class type tls_certificate_t = object
 end
 
 class tls_certificate : Raw.Tls_certificate.t -> tls_certificate_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_certificate.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GTlsCertificate], give one already wrapped. *)
 
 val new_from_file : string -> (tls_certificate_t, GError.t) result
 

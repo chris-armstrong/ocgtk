@@ -46,7 +46,9 @@
 
     An example using a proxy for a well-known name can be found in
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c}
-     [gdbus-example-watch-proxy.c]}. *)
+     [gdbus-example-watch-proxy.c]}.
+
+    The class built on this module is in {!Ocgio.D_bus_proxy}. *)
 
 type t = [ `d_bus_proxy | `object_ ] Gobject.obj
 

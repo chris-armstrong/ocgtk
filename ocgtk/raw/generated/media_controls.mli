@@ -5,7 +5,9 @@
 
     An example GtkMediaControls
 
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+    Usually, [GtkMediaControls] is used as part of [Gtk.Video].
+
+    The class built on this module is in {!Ocgtk.Media_controls}. *)
 
 type t =
   [ `media_controls | `widget | `initially_unowned | `object_ ] Gobject.obj

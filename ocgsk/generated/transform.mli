@@ -1,3 +1,17 @@
+(** Describes a 3D transform.
+
+    Unlike [graphene_matrix_t], [GskTransform] retains the steps in how a
+    transform was constructed, and allows inspecting them. It is modeled after
+    the way CSS describes transforms.
+
+    [GskTransform] objects are immutable and cannot be changed after creation.
+    This means code can safely expose them as properties of objects without
+    having to worry about others changing them.
+
+    Its methods, signals and properties are on {!class-type-transform_t}. The
+    functions it is built on are in {!Ocgsk.Raw.Transform}. *)
+
+(** The methods, signals and properties of a [GskTransform]. *)
 class type transform_t = object
   method equal : Raw.Transform.t option -> bool
   method get_category : unit -> Enums.transformcategory
@@ -22,5 +36,8 @@ class type transform_t = object
 end
 
 class transform : Raw.Transform.t -> transform_t
+(** Wraps a layer 1 handle, {!Ocgsk.Raw.Transform.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GskTransform], give one already wrapped. *)
 
 val new_ : unit -> transform_t

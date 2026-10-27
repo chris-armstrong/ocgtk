@@ -8,7 +8,9 @@
     functions.
 
     Note that the transfer function is applied to un-premultiplied values, and
-    all results are clamped to the \[0, 1\] range. *)
+    all results are clamped to the \[0, 1\] range.
+
+    The class built on this module is in {!Ocgsk.Component_transfer}. *)
 
 type t = [ `component_transfer ] Gobject.obj
 

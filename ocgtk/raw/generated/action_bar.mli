@@ -38,7 +38,9 @@
     at the start and end of the action bar, with [start] and [end] style classes
     respectively, as well as a center node that represents the center child.
 
-    Each of the boxes contains children packed for that side. *)
+    Each of the boxes contains children packed for that side.
+
+    The class built on this module is in {!Ocgtk.Action_bar}. *)
 
 type t = [ `action_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

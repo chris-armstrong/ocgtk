@@ -17,7 +17,9 @@
     The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
 
     The main use case for [GtkBitset] is implementing complex selections for
-    [Gtk.SelectionModel]. *)
+    [Gtk.SelectionModel].
+
+    The class built on this module is in {!Ocgtk.Bitset}. *)
 
 type t = [ `bitset ] Gobject.obj
 

@@ -69,7 +69,8 @@
  i.e. the expand/collapse arrow; then the label widget if any. The arrow of an\n\
  expander that is showing its child gets the [:checked] pseudoclass set on it.\n\n\
  {b Accessibility}\n\n\
- [GtkExpander] uses the [Gtk.AccessibleRole.button] role."]
+ [GtkExpander] uses the [Gtk.AccessibleRole.button] role.\n\n\
+ The class built on this module is in {!Ocgtk.Expander}."]
 
 type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 

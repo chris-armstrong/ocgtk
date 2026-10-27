@@ -1,3 +1,10 @@
+(** A type for representing D-Bus messages that can be sent or received on a
+    [Gio.DBusConnection].
+
+    Its methods, signals and properties are on {!class-type-d_bus_message_t}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_message}. *)
+
+(** The methods, signals and properties of a [GDBusMessage]. *)
 class type d_bus_message_t = object
   method copy : unit -> (d_bus_message_t, GError.t) result
   method get_arg0 : unit -> string option
@@ -44,6 +51,9 @@ class type d_bus_message_t = object
 end
 
 class d_bus_message : Raw.D_bus_message.t -> d_bus_message_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_message.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GDBusMessage], give one already wrapped. *)
 
 val new_ : unit -> d_bus_message_t
 

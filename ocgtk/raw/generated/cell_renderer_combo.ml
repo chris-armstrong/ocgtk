@@ -13,7 +13,9 @@
     combo box and sets it to display the column specified by its
     [GtkCellRendererCombo]:text-column property. Further properties of the combo
     box can be set in a handler for the [GtkCellRenderer::editing-started]
-    signal. *)
+    signal.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_combo}. *)
 
 type t =
   [ `cell_renderer_combo

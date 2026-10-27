@@ -11,7 +11,9 @@
 
     All [GtkShortcutTriggers] are immutable, you can only specify their
     properties during construction. If you want to change a trigger, you have to
-    replace it with a new one. *)
+    replace it with a new one.
+
+    The class built on this module is in {!Ocgtk.Shortcut_trigger}. *)
 
 type t = [ `shortcut_trigger | `object_ ] Gobject.obj
 

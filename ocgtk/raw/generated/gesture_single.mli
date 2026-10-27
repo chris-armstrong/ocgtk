@@ -12,7 +12,9 @@
     Callers may also specify a different mouse button number to interact with
     through [Gtk.GestureSingle.set_button], or react to any mouse button by
     setting it to 0. While the gesture is active, the button being currently
-    pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
+    pressed can be known through [Gtk.GestureSingle.get_current_button].
+
+    The class built on this module is in {!Ocgtk.Gesture_single}. *)
 
 type t =
   [ `gesture_single | `gesture | `event_controller | `object_ ] Gobject.obj

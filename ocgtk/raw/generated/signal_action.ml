@@ -4,7 +4,9 @@
 (** Emits a signal on a widget.
 
     Signals that are used in this way are referred to as keybinding signals, and
-    they are expected to be defined with the [G_SIGNAL_ACTION] flag. *)
+    they are expected to be defined with the [G_SIGNAL_ACTION] flag.
+
+    The class built on this module is in {!Ocgtk.Signal_action}. *)
 
 type t = [ `signal_action | `shortcut_action | `object_ ] Gobject.obj
 

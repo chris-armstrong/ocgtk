@@ -7,7 +7,8 @@
     [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
 
     GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
-*)
+
+    The class built on this module is in {!Ocgtk.Style_provider}. *)
 
 type t = [ `style_provider ] Gobject.obj
 

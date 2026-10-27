@@ -1,3 +1,14 @@
+(** [PangoRenderer] is a base class for objects that can render text provided as
+    [PangoGlyphString] or [PangoLayout].
+
+    By subclassing [PangoRenderer] and overriding operations such as
+    [draw_glyphs] and [draw_rectangle], renderers for particular font backends
+    and destinations can be created.
+
+    Its methods, signals and properties are on {!class-type-renderer_t}. The
+    functions it is built on are in {!Ocpango.Raw.Renderer}. *)
+
+(** The methods, signals and properties of a [PangoRenderer]. *)
 class type renderer_t = object
   method activate : unit -> unit
   method deactivate : unit -> unit
@@ -47,3 +58,6 @@ class type renderer_t = object
 end
 
 class renderer : Raw.Renderer.t -> renderer_t
+(** Wraps a layer 1 handle, {!Ocpango.Raw.Renderer.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [PangoRenderer], give one already wrapped. *)

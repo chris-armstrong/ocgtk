@@ -13,7 +13,9 @@
     [Gio.Seekable.can_seek].To position a file output stream, use
     [Gio.Seekable.seek]. To find out if a file output stream supports
     truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
-    stream, use [Gio.Seekable.truncate]. *)
+    stream, use [Gio.Seekable.truncate].
+
+    The class built on this module is in {!Ocgio.File_output_stream}. *)
 
 type t = [ `file_output_stream | `output_stream | `object_ ] Gobject.obj
 

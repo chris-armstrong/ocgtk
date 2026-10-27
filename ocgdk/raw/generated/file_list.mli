@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileList: FileList *)
 
-(** An opaque type representing a list of files. *)
+(** An opaque type representing a list of files.
+
+    The class built on this module is in {!Ocgdk.File_list}. *)
 
 type t = [ `file_list ] Gobject.obj
 

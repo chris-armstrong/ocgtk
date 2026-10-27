@@ -18,7 +18,9 @@
     {b CSS nodes}
 
     [GtkFontChooserDialog] has a single CSS node with the name [window] and
-    style class [.fontchooser]. *)
+    style class [.fontchooser].
+
+    The class built on this module is in {!Ocgtk.Font_chooser_dialog}. *)
 
 type t =
   [ `font_chooser_dialog

@@ -6,7 +6,9 @@
     This model is meant to be used as a simple wrapper around a [GListModel]
     when a [GtkSelectionModel] is required.
 
-    [GtkNoSelection] passes through sections from the underlying model. *)
+    [GtkNoSelection] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.No_selection}. *)
 
 type t = [ `no_selection | `object_ ] Gobject.obj
 

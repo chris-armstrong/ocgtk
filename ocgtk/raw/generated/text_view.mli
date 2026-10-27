@@ -74,7 +74,9 @@
 
     {b Accessibility}
 
-    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role.
+
+    The class built on this module is in {!Ocgtk.Text_view}. *)
 
 type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 

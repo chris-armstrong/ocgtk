@@ -65,7 +65,8 @@
 \    all-am:\n\
 \            $(GLIB_COMPILE_SCHEMAS) .\n\n\
 \    CLEANFILES += gschemas.compiled\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.Test_d_bus}."]
 
 type t = [ `test_d_bus | `object_ ] Gobject.obj
 

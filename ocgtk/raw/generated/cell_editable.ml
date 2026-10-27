@@ -6,7 +6,9 @@
     The [GtkCellEditable] interface must be implemented for widgets to be usable
     to edit the contents of a [GtkTreeView] cell. It provides a way to specify
     how temporary widgets should be configured for editing, get the new value,
-    etc. *)
+    etc.
+
+    The class built on this module is in {!Ocgtk.Cell_editable}. *)
 
 type t = [ `cell_editable ] Gobject.obj
 

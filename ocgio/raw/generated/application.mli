@@ -106,7 +106,8 @@
  For an example of using actions with [GApplication], see\n\
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-actions.c}gapplication-example-actions.c}.\n\n\
  For an example of using extra D-Bus hooks with [GApplication], see\n\
- {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}."]
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}.\n\n\
+ The class built on this module is in {!Ocgio.Application}."]
 
 type t = [ `application | `object_ ] Gobject.obj
 

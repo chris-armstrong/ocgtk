@@ -139,6 +139,14 @@ let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
         in
         bprintf buf "val %s : %s%s\n" ocaml_ctor_name sig_str return_type
 
+(* A doc written before an item, or as an attribute after the text the
+   caller gives as the item's end. *)
+let doc_around doc ~item =
+  Doc_emit.before_item doc ^ item ^ Doc_emit.after_item doc
+
+let floating_doc buf doc =
+  Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc)) doc
+
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~entity_kind ~properties ~signals ~constructors =
@@ -182,17 +190,24 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
   Buffer.contents buf
 
 (** Generate a class signature *)
-let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
-    ~entity_kind ~properties ~signals ~constructors =
+let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
+    ~methods ~entity_kind ~properties ~signals ~constructors =
   let ctx = Module_paths.main_library_ctx ctx in
+  let namespace = ctx.namespace.namespace_name in
   let buf = Buffer.create 1024 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
   let class_type_name = Utils.class_type_name class_name in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
+  let class_type_doc = Entity_doc.class_type ~c_type in
+
+  floating_doc buf
+    (Entity_doc.l2_module ~namespace ~class_name ~c_type ~class_doc);
 
   (* Class type definition *)
-  bprintf buf "class type %s = object\n" class_type_name;
+  bprintf buf "%sclass type %s = object\n"
+    (Doc_emit.before_item class_type_doc)
+    class_type_name;
 
   generate_class_signature_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
@@ -200,11 +215,15 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~methods ~entity_kind ~properties ~signals
     ~same_cluster_classes:[ class_name ] ~parent_name ();
 
-  bprintf buf "end\n\n";
+  bprintf buf "end\n%s\n" (Doc_emit.after_item class_type_doc);
 
   (* Class declaration referencing the class type *)
-  bprintf buf "class %s : %s.t -> %s\n\n" class_snake module_names.layer1
-    class_type_name;
+  bprintf buf "%s\n"
+    (doc_around
+       (Entity_doc.class_ ~namespace ~class_name ~c_type)
+       ~item:
+         (Fmt.str "class %s : %s.t -> %s\n" class_snake module_names.layer1
+            class_type_name));
 
   (* Constructor wrappers *)
   List.iter constructors
@@ -324,15 +343,25 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 let generate_combined_class_signature ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
   let ctx = Module_paths.main_library_ctx ctx in
+  let namespace = ctx.namespace.namespace_name in
   let buf = Buffer.create 4096 in
+
+  floating_doc buf
+    (Entity_doc.combined_module ~namespace ~layer:Entity_doc.Layer2
+       ~class_names:(List.map entities ~f:(fun e -> e.name)));
 
   (* Pass 1: class type definitions *)
   let generate_class_type ~buf ~i ~class_snake ~module_name:_
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
       ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
-    if i = 0 then bprintf buf "class type %s = object\n" class_type_name
-    else bprintf buf "\nand %s = object\n" class_type_name;
+    let doc = Entity_doc.class_type ~c_type in
+    if i = 0 then
+      bprintf buf "%sclass type %s = object\n" (Doc_emit.before_item doc)
+        class_type_name
+    else
+      bprintf buf "\n%sand %s = object\n" (Doc_emit.before_item doc)
+        class_type_name;
 
     generate_class_signature_body ~ctx ~buf
       ~layer1_module_name:
@@ -340,7 +369,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
       ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
 
-    bprintf buf "end\n"
+    bprintf buf "end\n%s" (Doc_emit.after_item doc)
   in
 
   let class_types_text =
@@ -353,15 +382,16 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
   (* Pass 2: class declarations referencing class types *)
   let generate_class_decl ~buf ~i ~class_snake ~module_name
-      ~current_layer2_module:_ ~class_name ~c_type:_ ~methods:_ ~entity_kind:_
+      ~current_layer2_module:_ ~class_name ~c_type ~methods:_ ~entity_kind:_
       ~properties:_ ~signals:_ ~same_cluster_classes:_ ~parent_name:_ =
     let class_type_name = Utils.class_type_name class_name in
-    if i = 0 then
-      bprintf buf "class %s : %s.t -> %s\n" class_snake module_name
-        class_type_name
-    else
-      bprintf buf "\nand %s : %s.t -> %s\n" class_snake module_name
-        class_type_name
+    let keyword = if i = 0 then "class" else "\nand" in
+    bprintf buf "%s"
+      (doc_around
+         (Entity_doc.class_ ~namespace ~class_name ~c_type)
+         ~item:
+           (Fmt.str "%s %s : %s.t -> %s\n" keyword class_snake module_name
+              class_type_name))
   in
 
   let class_decls_text =
@@ -431,13 +461,26 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   (* Use the shim module as current_layer2_module so sibling types get qualified *)
   let current_layer2_module = Module_paths.layer2_module_name entity.name in
 
+  let namespace = ctx.namespace.namespace_name in
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Shim module for %s from cyclic group %s *)\n\n" entity.name
     combined_module_name;
-  bprintf buf "class type %s = %s.%s\n\n" entity_type_name combined_module_name
-    entity_type_name;
-  bprintf buf "class %s : %s.t -> %s\n" entity_snake layer1_module_name
-    entity_type_name;
+  floating_doc buf
+    (Entity_doc.l2_module ~namespace ~class_name:entity.name
+       ~c_type:entity.c_type ~class_doc:entity.doc);
+  bprintf buf "%s\n"
+    (doc_around
+       (Entity_doc.class_type ~c_type:entity.c_type)
+       ~item:
+         (Fmt.str "class type %s = %s.%s\n" entity_type_name
+            combined_module_name entity_type_name));
+  bprintf buf "%s"
+    (doc_around
+       (Entity_doc.class_ ~namespace ~class_name:entity.name
+          ~c_type:entity.c_type)
+       ~item:
+         (Fmt.str "class %s : %s.t -> %s\n" entity_snake layer1_module_name
+            entity_type_name));
 
   (* Constructor wrapper signatures *)
   List.iter entity.constructors

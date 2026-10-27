@@ -5,7 +5,8 @@
 
     Scrolling functions usually allow passing a [NULL] scroll info which will
     cause the default values to be used and just scroll the element into view.
-*)
+
+    The class built on this module is in {!Ocgtk.Scroll_info}. *)
 
 type t = [ `scroll_info ] Gobject.obj
 

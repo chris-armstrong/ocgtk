@@ -1,3 +1,18 @@
+(** Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+
+    Typically you will use a [GskRenderer] instance to repeatedly call
+    [Gsk.Renderer.render] to update the contents of its associated
+    [Gdk.Surface].
+
+    It is necessary to realize a [GskRenderer] instance using
+    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
+    create the appropriate windowing system resources needed to render the
+    scene.
+
+    Its methods, signals and properties are on {!class-type-renderer_t}. The
+    functions it is built on are in {!Ocgsk.Raw.Renderer}. *)
+
+(** The methods, signals and properties of a [GskRenderer]. *)
 class type renderer_t = object
   method get_surface : unit -> Ocgdk.Surface.surface_t option
   method is_realized : unit -> bool
@@ -19,5 +34,8 @@ class type renderer_t = object
 end
 
 class renderer : Raw.Renderer.t -> renderer_t
+(** Wraps a layer 1 handle, {!Ocgsk.Raw.Renderer.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GskRenderer], give one already wrapped. *)
 
 val new_for_surface : Ocgdk.Surface.surface_t -> renderer_t

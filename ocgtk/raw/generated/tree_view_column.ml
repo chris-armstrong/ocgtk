@@ -11,7 +11,9 @@
     Please refer to the tree widget conceptual overview for an overview of all
     the objects and data types related to the tree widget and how they work
     together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers. *)
+    CSS node structure for treeviews and their headers.
+
+    The class built on this module is in {!Ocgtk.Tree_view_column}. *)
 
 type t = [ `tree_view_column | `initially_unowned | `object_ ] Gobject.obj
 

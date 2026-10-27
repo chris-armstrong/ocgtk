@@ -14,7 +14,9 @@
 
     The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
     dragging, or initiating the drag with a long-press will enable the
-    fine-tuning mode. *)
+    fine-tuning mode.
+
+    The class built on this module is in {!Ocgtk.Range}. *)
 
 type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 

@@ -18,7 +18,9 @@
 
     [GtkColorButton] has a single CSS node with name colorbutton which contains
     a button node. To differentiate it from a plain [GtkButton], it gets the
-    .color style class. *)
+    .color style class.
+
+    The class built on this module is in {!Ocgtk.Color_button}. *)
 
 type t = [ `color_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 

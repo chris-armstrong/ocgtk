@@ -95,7 +95,9 @@
                           -1);
       g_free (modified_data);
     }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Tree_model_sort}. *)
 
 type t = [ `tree_model_sort | `object_ ] Gobject.obj
 

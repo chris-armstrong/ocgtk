@@ -7,7 +7,9 @@
 
     This is not a reusable layout manager, since it expects its widget to be a
     [GtkOverlay]. It is only listed here so that its layout properties get
-    documented. *)
+    documented.
+
+    The class built on this module is in {!Ocgtk.Overlay_layout}. *)
 
 type t = [ `overlay_layout | `layout_manager | `object_ ] Gobject.obj
 

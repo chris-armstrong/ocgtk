@@ -5,7 +5,9 @@
 
     A [GtkStringObject] is a wrapper around a [const char*]; it has a
     [Gtk.StringObject:string] property that can be used for property bindings
-    and expressions. *)
+    and expressions.
+
+    The class built on this module is in {!Ocgtk.String_object}. *)
 
 type t = [ `string_object | `object_ ] Gobject.obj
 

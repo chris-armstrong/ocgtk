@@ -69,7 +69,8 @@
  touchpad gesture events. The only precautions users of [GtkGesture] should\n\
  do to enable this support are:\n\n\
  - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
- [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
+ [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]\n\n\
+ The class built on this module is in {!Ocgtk.Gesture}."]
 
 type t = [ `gesture | `event_controller | `object_ ] Gobject.obj
 

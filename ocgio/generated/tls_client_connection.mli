@@ -1,3 +1,11 @@
+(** [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
+    representing a client-side TLS connection.
+
+    Its methods, signals and properties are on
+    {!class-type-tls_client_connection_t}. The functions it is built on are in
+    {!Ocgio.Raw.Tls_client_connection}. *)
+
+(** The methods, signals and properties of a [GTlsClientConnection]. *)
 class type tls_client_connection_t = object
   method copy_session_state : tls_client_connection_t -> unit
 
@@ -23,3 +31,6 @@ end
 class tls_client_connection :
   Raw.Tls_client_connection.t ->
   tls_client_connection_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_client_connection.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GTlsClientConnection], give one already wrapped. *)

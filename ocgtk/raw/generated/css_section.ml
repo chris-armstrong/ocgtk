@@ -4,7 +4,9 @@
 (** Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region. *)
+    [CssSection.get_parent] to get the containing region.
+
+    The class built on this module is in {!Ocgtk.Css_section}. *)
 
 type t = [ `css_section ] Gobject.obj
 

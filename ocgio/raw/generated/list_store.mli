@@ -5,7 +5,9 @@
     items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a
-    fast path for the common case of iterating the list linearly. *)
+    fast path for the common case of iterating the list linearly.
+
+    The class built on this module is in {!Ocgio.List_store}. *)
 
 type t = [ `list_store | `object_ ] Gobject.obj
 

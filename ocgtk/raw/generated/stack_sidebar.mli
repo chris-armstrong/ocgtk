@@ -16,7 +16,9 @@
     class .sidebar.
 
     When circumstances require it, [GtkStackSidebar] adds the .needs-attention
-    style class to the widgets representing the stack pages. *)
+    style class to the widgets representing the stack pages.
+
+    The class built on this module is in {!Ocgtk.Stack_sidebar}. *)
 
 type t =
   [ `stack_sidebar | `widget | `initially_unowned | `object_ ] Gobject.obj

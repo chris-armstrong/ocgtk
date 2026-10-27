@@ -13,7 +13,8 @@
 
     [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
-*)
+
+    The class built on this module is in {!Ocgdk.Memory_texture_builder}. *)
 
 type t = [ `memory_texture_builder | `object_ ] Gobject.obj
 

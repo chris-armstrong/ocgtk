@@ -20,7 +20,10 @@
 
     See [Gio.DBusObjectManagerClient] for the client-side code that is intended
     to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
-    the [org.freedesktop.DBus.ObjectManager] interface. *)
+    the [org.freedesktop.DBus.ObjectManager] interface.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager_server}.
+*)
 
 type t = [ `d_bus_object_manager_server | `object_ ] Gobject.obj
 

@@ -19,7 +19,9 @@
 
     Before GLib 2.72, [<gio/gunixsocketaddress.h>] belonged to the UNIX-specific
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
-    when using it. This is no longer necessary since GLib 2.72. *)
+    when using it. This is no longer necessary since GLib 2.72.
+
+    The class built on this module is in {!Ocgio.Unix_socket_address}. *)
 
 type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
 

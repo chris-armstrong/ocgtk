@@ -12,7 +12,8 @@
  [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].\n\n\
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
- \"Drag and Drop\" section of the GTK documentation for more information."]
+ \"Drag and Drop\" section of the GTK documentation for more information.\n\n\
+ The class built on this module is in {!Ocgdk.Drop}."]
 
 type t = [ `drop | `object_ ] Gobject.obj
 

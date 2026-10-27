@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContainerNode: ContainerNode *)
 
-(** A render node that can contain other render nodes. *)
+(** A render node that can contain other render nodes.
+
+    The class built on this module is in {!Ocgsk.Container_node}. *)
 
 type t = [ `container_node | `render_node ] Gobject.obj
 

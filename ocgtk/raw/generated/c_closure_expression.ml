@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CClosureExpression: CClosureExpression *)
 
-(** A variant of [GtkClosureExpression] using a C closure. *)
+(** A variant of [GtkClosureExpression] using a C closure.
+
+    The class built on this module is in {!Ocgtk.C_closure_expression}. *)
 
 type t = [ `c_closure_expression | `expression ] Gobject.obj
 

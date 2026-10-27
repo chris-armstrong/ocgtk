@@ -1,3 +1,10 @@
+(** A render node for a radial gradient.
+
+    Its methods, signals and properties are on
+    {!class-type-radial_gradient_node_t}. The functions it is built on are in
+    {!Ocgsk.Raw.Radial_gradient_node}. *)
+
+(** The methods, signals and properties of a [GskRadialGradientNode]. *)
 class type radial_gradient_node_t = object
   inherit Render_node.render_node_t
   method get_center : unit -> Ocgraphene.Point.point_t
@@ -12,6 +19,9 @@ end
 class radial_gradient_node :
   Raw.Radial_gradient_node.t ->
   radial_gradient_node_t
+(** Wraps a layer 1 handle, {!Ocgsk.Raw.Radial_gradient_node.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GskRadialGradientNode], give one already wrapped. *)
 
 val new_ :
   Ocgraphene.Rect.rect_t ->

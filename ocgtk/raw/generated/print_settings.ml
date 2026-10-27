@@ -11,7 +11,9 @@
     Its also possible to enumerate the settings so that you can easily save the
     settings for the next time your app runs, or even store them in a document.
     The predefined keys try to use shared values as much as possible so that
-    moving such a document between systems still works. *)
+    moving such a document between systems still works.
+
+    The class built on this module is in {!Ocgtk.Print_settings}. *)
 
 type t = [ `print_settings | `object_ ] Gobject.obj
 

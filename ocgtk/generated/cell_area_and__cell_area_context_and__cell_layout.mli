@@ -1,3 +1,9 @@
+(** The classes of {!Ocgtk.Cell_area}, {!Ocgtk.Cell_area_context},
+    {!Ocgtk.Cell_layout}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** The methods, signals and properties of a [GtkCellArea]. *)
 class type cell_area_t = object
   inherit Buildable.buildable_t
 
@@ -107,6 +113,7 @@ class type cell_area_t = object
   method as_cell_area : Raw.Cell_area.t
 end
 
+(** The methods, signals and properties of a [GtkCellAreaContext]. *)
 and cell_area_context_t = object
   method allocate : int -> int -> unit
   method get_area : unit -> cell_area_t
@@ -120,6 +127,7 @@ and cell_area_context_t = object
   method as_cell_area_context : Raw.Cell_area_context.t
 end
 
+(** The methods, signals and properties of a [GtkCellLayout]. *)
 and cell_layout_t = object
   method add_attribute : Cell_renderer.cell_renderer_t -> string -> int -> unit
   method clear : unit -> unit
@@ -132,8 +140,17 @@ and cell_layout_t = object
   method as_cell_layout : Raw.Cell_layout.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkCellArea], give one already wrapped. *)
 class cell_area : Raw.Cell_area.t -> cell_area_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area_context.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkCellAreaContext], give one already wrapped. *)
 
 and cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_layout.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkCellLayout], give one already wrapped. *)
 
 and cell_layout : Raw.Cell_layout.t -> cell_layout_t

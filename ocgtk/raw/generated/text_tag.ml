@@ -17,7 +17,9 @@
     “font-set” corresponds to “font”. These “set” properties reflect whether a
     property has been set or not.
 
-    They are maintained by GTK and you should not set them independently. *)
+    They are maintained by GTK and you should not set them independently.
+
+    The class built on this module is in {!Ocgtk.Text_tag}. *)
 
 type t = [ `text_tag | `object_ ] Gobject.obj
 

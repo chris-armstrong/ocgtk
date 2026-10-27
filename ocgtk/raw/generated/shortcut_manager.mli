@@ -11,7 +11,9 @@
     [Gtk.Popover].
 
     Every widget that implements [GtkShortcutManager] will be used as a
-    [GTK_SHORTCUT_SCOPE_MANAGED]. *)
+    [GTK_SHORTCUT_SCOPE_MANAGED].
+
+    The class built on this module is in {!Ocgtk.Shortcut_manager}. *)
 
 type t = [ `shortcut_manager ] Gobject.obj
 

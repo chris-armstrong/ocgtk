@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusInterfaceSkeleton: DBusInterfaceSkeleton *)
 
-(** Abstract base class for D-Bus interfaces on the service side. *)
+(** Abstract base class for D-Bus interfaces on the service side.
+
+    The class built on this module is in {!Ocgio.D_bus_interface_skeleton}. *)
 
 type t = [ `d_bus_interface_skeleton | `object_ ] Gobject.obj
 

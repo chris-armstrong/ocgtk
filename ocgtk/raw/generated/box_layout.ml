@@ -12,7 +12,9 @@
     [Gtk.BoxLayout:homogeneous] property.
 
     If you want to specify the amount of space placed between each child, you
-    can use the [Gtk.BoxLayout:spacing] property. *)
+    can use the [Gtk.BoxLayout:spacing] property.
+
+    The class built on this module is in {!Ocgtk.Box_layout}. *)
 
 type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 

@@ -4,7 +4,9 @@
 (** A 3D volume delimited by 2D clip planes.
 
     The contents of the [graphene_frustum_t] are private, and should not be
-    modified directly. *)
+    modified directly.
+
+    The class built on this module is in {!Ocgraphene.Frustum}. *)
 
 type t = [ `frustum ] Gobject.obj
 

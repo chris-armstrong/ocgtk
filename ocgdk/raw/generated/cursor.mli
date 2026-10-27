@@ -32,7 +32,9 @@
     it will try the fallback cursor. Fallback cursors can themselves have
     fallback cursors again, so it is possible to provide a chain of
     progressively easier to support cursors. If none of the provided cursors can
-    be supported, the default cursor will be the ultimate fallback. *)
+    be supported, the default cursor will be the ultimate fallback.
+
+    The class built on this module is in {!Ocgdk.Cursor}. *)
 
 type t = [ `cursor | `object_ ] Gobject.obj
 

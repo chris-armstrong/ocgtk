@@ -2,7 +2,9 @@
 (* CharsetConverter: CharsetConverter *)
 
 (** [GCharsetConverter] is an implementation of [Gio.Converter] based on
-    [GLib.IConv]. *)
+    [GLib.IConv].
+
+    The class built on this module is in {!Ocgio.Charset_converter}. *)
 
 type t = [ `charset_converter | `object_ ] Gobject.obj
 

@@ -142,7 +142,8 @@
  Substitutions must start with a slash, and must not contain a trailing slash\n\
  before the [=].  The path after the slash should ideally be absolute, but\n\
  this is not strictly required.  It is possible to overlay the location of a\n\
- single resource with an individual file."]
+ single resource with an individual file.\n\n\
+ The class built on this module is in {!Ocgio.Resource}."]
 
 type t = [ `resource ] Gobject.obj
 

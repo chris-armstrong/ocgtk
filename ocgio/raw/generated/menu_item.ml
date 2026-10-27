@@ -2,7 +2,9 @@
 (* MenuItem: MenuItem *)
 
 (** [GMenuItem] is an opaque structure type. You must access it using the
-    functions below. *)
+    functions below.
+
+    The class built on this module is in {!Ocgio.Menu_item}. *)
 
 type t = [ `menu_item | `object_ ] Gobject.obj
 

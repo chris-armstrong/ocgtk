@@ -15,7 +15,8 @@
     properties for the [GtkCellRendererSpin:climb-rate] and the number of
     [GtkCellRendererSpin:digits] to display. Other [GtkSpinButton] properties
     can be set in a handler for the [GtkCellRenderer::editing-started] signal.
-*)
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_spin}. *)
 
 type t =
   [ `cell_renderer_spin

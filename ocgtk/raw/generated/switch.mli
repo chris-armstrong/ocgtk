@@ -26,7 +26,8 @@
  subnodes for the slider and the on and off images. Neither of them is\n\
  using any style classes.\n\n\
  {b Accessibility}\n\n\
- [GtkSwitch] uses the [Gtk.AccessibleRole.switch] role."]
+ [GtkSwitch] uses the [Gtk.AccessibleRole.switch] role.\n\n\
+ The class built on this module is in {!Ocgtk.Switch}."]
 
 type t = [ `switch | `widget | `initially_unowned | `object_ ] Gobject.obj
 

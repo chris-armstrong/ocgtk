@@ -6,7 +6,9 @@
 
     [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
     and are only valid until the text, attributes, or settings of the parent
-    [PangoLayout] are modified. *)
+    [PangoLayout] are modified.
+
+    The class built on this module is in {!Ocpango.Layout_line}. *)
 
 type t = [ `layout_line ] Gobject.obj
 

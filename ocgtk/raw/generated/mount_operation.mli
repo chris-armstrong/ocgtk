@@ -11,7 +11,9 @@
     [Gio.Mount.unmount_with_operation] and others.
 
     When necessary, [GtkMountOperation] shows dialogs to let the user enter
-    passwords, ask questions or show processes blocking unmount. *)
+    passwords, ask questions or show processes blocking unmount.
+
+    The class built on this module is in {!Ocgtk.Mount_operation}. *)
 
 type t = [ `mount_operation | `object_ ] Gobject.obj
 

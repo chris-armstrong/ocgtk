@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RadialGradientNode: RadialGradientNode *)
 
-(** A render node for a radial gradient. *)
+(** A render node for a radial gradient.
+
+    The class built on this module is in {!Ocgsk.Radial_gradient_node}. *)
 
 type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 

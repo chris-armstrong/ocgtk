@@ -35,7 +35,8 @@
  {b CSS nodes}\n\n\
  [GtkPicture] has a single CSS node with the name [picture].\n\n\
  {b Accessibility}\n\n\
- [GtkPicture] uses the [Gtk.AccessibleRole.img] role."]
+ [GtkPicture] uses the [Gtk.AccessibleRole.img] role.\n\n\
+ The class built on this module is in {!Ocgtk.Picture}."]
 
 type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
 

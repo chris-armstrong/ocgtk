@@ -58,7 +58,8 @@
  Each of the boxes contains a [windowcontrols] subnode, see\n\
  [Gtk.WindowControls] for details, as well as other children.\n\n\
  {b Accessibility}\n\n\
- [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role."]
+ [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ The class built on this module is in {!Ocgtk.Header_bar}."]
 
 type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

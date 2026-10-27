@@ -2,7 +2,8 @@
 (* DragSurfaceSize: DragSurfaceSize *)
 
 (** Contains information that is useful to compute the size of a drag surface.
-*)
+
+    The class built on this module is in {!Ocgdk.Drag_surface_size}. *)
 
 type t = [ `drag_surface_size ] Gobject.obj
 

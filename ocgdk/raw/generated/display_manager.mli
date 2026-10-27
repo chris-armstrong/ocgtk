@@ -37,7 +37,8 @@
 \  else\n\
  #endif\n\
 \  g_error (\"Unsupported GDK backend\");\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgdk.Display_manager}."]
 
 type t = [ `display_manager | `object_ ] Gobject.obj
 

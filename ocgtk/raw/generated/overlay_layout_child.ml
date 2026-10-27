@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OverlayLayoutChild: OverlayLayoutChild *)
 
-(** [GtkLayoutChild] subclass for children in a [GtkOverlayLayout]. *)
+(** [GtkLayoutChild] subclass for children in a [GtkOverlayLayout].
+
+    The class built on this module is in {!Ocgtk.Overlay_layout_child}. *)
 
 type t = [ `overlay_layout_child | `layout_child | `object_ ] Gobject.obj
 

@@ -7,7 +7,8 @@
     to the user, such as a title for the dialog and whether it should be modal.
 
     The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
-*)
+
+    The class built on this module is in {!Ocgtk.File_dialog}. *)
 
 type t = [ `file_dialog | `object_ ] Gobject.obj
 

@@ -26,7 +26,8 @@
 \    <column type=\"gint\"/>\n\
 \  </columns>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Tree_store}."]
 
 type t = [ `tree_store | `object_ ] Gobject.obj
 

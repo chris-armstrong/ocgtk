@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureNode: TextureNode *)
 
-(** A render node for a [GdkTexture]. *)
+(** A render node for a [GdkTexture].
+
+    The class built on this module is in {!Ocgsk.Texture_node}. *)
 
 type t = [ `texture_node | `render_node ] Gobject.obj
 

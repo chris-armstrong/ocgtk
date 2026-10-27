@@ -24,7 +24,9 @@
     [GLib.MainContext.push_thread_default]) of the thread it is created in, and
     is not threadsafe in general. However, the calls to start and stop the
     service are thread-safe so these can be used from threads that handle
-    incoming clients. *)
+    incoming clients.
+
+    The class built on this module is in {!Ocgio.Socket_service}. *)
 
 type t = [ `socket_service | `socket_listener | `object_ ] Gobject.obj
 

@@ -9,7 +9,9 @@
     Some classes may implement [GPollableOutputStream] but have only certain
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
     returns false, then the behavior of other [GPollableOutputStream] methods is
-    undefined. *)
+    undefined.
+
+    The class built on this module is in {!Ocgio.Pollable_output_stream}. *)
 
 type t = [ `pollable_output_stream ] Gobject.obj
 

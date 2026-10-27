@@ -10,7 +10,8 @@
  names of actions from various action groups to unique,\n\
  prefixed names (e.g. by prepending \"app.\" or \"win.\").\n\
  This is the motivation for the ‘Map’ part of the interface\n\
- name."]
+ name.\n\n\
+ The class built on this module is in {!Ocgio.Action_map}."]
 
 type t = [ `action_map ] Gobject.obj
 

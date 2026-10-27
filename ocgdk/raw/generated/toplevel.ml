@@ -5,7 +5,9 @@
 
     The [GdkToplevel] interface provides useful APIs for interacting with the
     windowing system, such as controlling maximization and size of the surface,
-    setting icons and transient parents for dialogs. *)
+    setting icons and transient parents for dialogs.
+
+    The class built on this module is in {!Ocgdk.Toplevel}. *)
 
 type t = [ `toplevel ] Gobject.obj
 

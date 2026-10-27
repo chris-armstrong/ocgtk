@@ -1,3 +1,23 @@
+(** Draws a horizontal or vertical line to separate other widgets.
+
+    An example GtkSeparator
+
+    A [GtkSeparator] can be used to group the widgets within a window. It
+    displays a line with a shadow to make it appear sunken into the interface.
+
+    {b CSS nodes}
+
+    [GtkSeparator] has a single CSS node with name separator. The node gets one
+    of the .horizontal or .vertical style classes.
+
+    {b Accessibility}
+
+    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role.
+
+    Its methods, signals and properties are on {!class-type-separator_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Separator}. *)
+
+(** The methods, signals and properties of a [GtkSeparator]. *)
 class type separator_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -8,5 +28,8 @@ class type separator_t = object
 end
 
 class separator : Raw.Separator.t -> separator_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Separator.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkSeparator], give one already wrapped. *)
 
 val new_ : Enums.orientation -> separator_t

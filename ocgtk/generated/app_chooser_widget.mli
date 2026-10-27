@@ -1,3 +1,29 @@
+(** [GtkAppChooserWidget] is a widget for selecting applications.
+
+    It is the main building block for [Gtk.AppChooserDialog]. Most applications
+    only need to use the latter; but you can use this widget as part of a larger
+    widget if you have special needs.
+
+    [GtkAppChooserWidget] offers detailed control over what applications are
+    shown, using the [Gtk.AppChooserWidget:show-default],
+    [Gtk.AppChooserWidget:show-recommended],
+    [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
+    [Gtk.AppChooserWidget:show-all] properties. See the [Gtk.AppChooser]
+    documentation for more information about these groups of applications.
+
+    To keep track of the selected application, use the
+    [Gtk.AppChooserWidget::application-selected] and
+    [Gtk.AppChooserWidget::application-activated] signals.
+
+    {b CSS nodes}
+
+    [GtkAppChooserWidget] has a single CSS node with name appchooser.
+
+    Its methods, signals and properties are on
+    {!class-type-app_chooser_widget_t}. The functions it is built on are in
+    {!Ocgtk.Raw.App_chooser_widget}. *)
+
+(** The methods, signals and properties of a [GtkAppChooserWidget]. *)
 class type app_chooser_widget_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -33,5 +59,8 @@ class type app_chooser_widget_t = object
 end
 
 class app_chooser_widget : Raw.App_chooser_widget.t -> app_chooser_widget_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.App_chooser_widget.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkAppChooserWidget], give one already wrapped. *)
 
 val new_ : string -> app_chooser_widget_t

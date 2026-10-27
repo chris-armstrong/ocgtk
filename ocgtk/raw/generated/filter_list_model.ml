@@ -10,7 +10,9 @@
     lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
     details.
 
-    [GtkFilterListModel] passes through sections from the underlying model. *)
+    [GtkFilterListModel] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.Filter_list_model}. *)
 
 type t = [ `filter_list_model | `object_ ] Gobject.obj
 

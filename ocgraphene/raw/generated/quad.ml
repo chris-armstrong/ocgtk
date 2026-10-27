@@ -4,7 +4,9 @@
 (** A 4 vertex quadrilateral, as represented by four #graphene_point_t.
 
     The contents of a #graphene_quad_t are private and should never be accessed
-    directly. *)
+    directly.
+
+    The class built on this module is in {!Ocgraphene.Quad}. *)
 
 type t = [ `quad ] Gobject.obj
 

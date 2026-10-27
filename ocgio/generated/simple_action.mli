@@ -1,3 +1,11 @@
+(** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
+    interface. This is the easiest way to create an action for purposes of
+    adding it to a [Gio.SimpleActionGroup].
+
+    Its methods, signals and properties are on {!class-type-simple_action_t}.
+    The functions it is built on are in {!Ocgio.Raw.Simple_action}. *)
+
+(** The methods, signals and properties of a [GSimpleAction]. *)
 class type simple_action_t = object
   inherit Action.action_t
 
@@ -23,6 +31,9 @@ class type simple_action_t = object
 end
 
 class simple_action : Raw.Simple_action.t -> simple_action_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Simple_action.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GSimpleAction], give one already wrapped. *)
 
 val new_ : string -> Gvariant_type.t option -> simple_action_t
 

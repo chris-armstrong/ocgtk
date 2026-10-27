@@ -16,7 +16,9 @@
     {b CSS nodes}
 
     [GtkAppChooserDialog] has a single CSS node with the name [window] and style
-    class [.appchooser]. *)
+    class [.appchooser].
+
+    The class built on this module is in {!Ocgtk.App_chooser_dialog}. *)
 
 type t =
   [ `app_chooser_dialog

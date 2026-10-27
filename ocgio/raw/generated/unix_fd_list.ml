@@ -12,7 +12,9 @@
     interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file when
     using it.
 
-    Since 2.74, the API is available for Windows. *)
+    Since 2.74, the API is available for Windows.
+
+    The class built on this module is in {!Ocgio.Unix_fd_list}. *)
 
 type t = [ `unix_fd_list | `object_ ] Gobject.obj
 

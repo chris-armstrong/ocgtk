@@ -1,3 +1,9 @@
+(** A render node repeating its single child node.
+
+    Its methods, signals and properties are on {!class-type-repeat_node_t}. The
+    functions it is built on are in {!Ocgsk.Raw.Repeat_node}. *)
+
+(** The methods, signals and properties of a [GskRepeatNode]. *)
 class type repeat_node_t = object
   inherit Render_node.render_node_t
   method get_child : unit -> Render_node.render_node_t
@@ -6,6 +12,9 @@ class type repeat_node_t = object
 end
 
 class repeat_node : Raw.Repeat_node.t -> repeat_node_t
+(** Wraps a layer 1 handle, {!Ocgsk.Raw.Repeat_node.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GskRepeatNode], give one already wrapped. *)
 
 val new_ :
   Ocgraphene.Rect.rect_t ->

@@ -29,7 +29,9 @@
 
     {b CSS nodes}
 
-    [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
+    [GtkFileChooserWidget] has a single CSS node with name filechooser.
+
+    The class built on this module is in {!Ocgtk.File_chooser_widget}. *)
 
 type t =
   [ `file_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj

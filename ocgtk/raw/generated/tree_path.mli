@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreePath: TreePath *)
 
-(** An opaque structure representing a path to a row in a model. *)
+(** An opaque structure representing a path to a row in a model.
+
+    The class built on this module is in {!Ocgtk.Tree_path}. *)
 
 type t = [ `tree_path ] Gobject.obj
 

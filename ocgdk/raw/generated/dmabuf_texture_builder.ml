@@ -65,7 +65,8 @@
 
     - The header file
       {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
-*)
+
+    The class built on this module is in {!Ocgdk.Dmabuf_texture_builder}. *)
 
 type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
 

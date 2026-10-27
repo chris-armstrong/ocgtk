@@ -5,7 +5,9 @@
     a module.
 
     Only modules should access the fields directly, applications should use the
-    [gdk_pixbuf_format_*] family of functions. *)
+    [gdk_pixbuf_format_*] family of functions.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_format}. *)
 
 type t = [ `pixbuf_format ] Gobject.obj
 

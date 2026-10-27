@@ -18,7 +18,9 @@
 
     {b Accessibility}
 
-    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role.
+
+    The class built on this module is in {!Ocgtk.Spinner}. *)
 
 type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 

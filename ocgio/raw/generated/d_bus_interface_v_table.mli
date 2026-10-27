@@ -37,7 +37,8 @@
  If you have writable properties specified in your interface info,\n\
  you must ensure that you either provide a non-[NULL] [set_property]()\n\
  function or provide an implementation of the [Set] call. If implementing\n\
- the call, you must return the value of type [G_VARIANT_TYPE_UNIT]."]
+ the call, you must return the value of type [G_VARIANT_TYPE_UNIT].\n\n\
+ The class built on this module is in {!Ocgio.D_bus_interface_v_table}."]
 
 type t = [ `d_bus_interface_v_table ] Gobject.obj
 

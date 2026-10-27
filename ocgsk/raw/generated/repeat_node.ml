@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RepeatNode: RepeatNode *)
 
-(** A render node repeating its single child node. *)
+(** A render node repeating its single child node.
+
+    The class built on this module is in {!Ocgsk.Repeat_node}. *)
 
 type t = [ `repeat_node | `render_node ] Gobject.obj
 

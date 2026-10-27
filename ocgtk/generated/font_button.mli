@@ -1,3 +1,24 @@
+(** The [GtkFontButton] allows to open a font chooser dialog to change the font.
+
+    An example GtkFontButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontButton] has a single CSS node with name fontbutton which contains a
+    button node with the .font style class.
+
+    Its methods, signals and properties are on {!class-type-font_button_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Font_button}. *)
+
+(** The methods, signals and properties of a [GtkFontButton]. *)
 class type font_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -23,6 +44,9 @@ class type font_button_t = object
 end
 
 class font_button : Raw.Font_button.t -> font_button_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Font_button.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkFontButton], give one already wrapped. *)
 
 val new_ : unit -> font_button_t
 val new_with_font : string -> font_button_t

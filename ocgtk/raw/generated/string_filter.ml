@@ -13,7 +13,9 @@
     [Gtk.StringFilter.set_match_mode] choose a mode.
 
     It is also possible to make case-insensitive comparisons, with
-    [Gtk.StringFilter.set_ignore_case]. *)
+    [Gtk.StringFilter.set_ignore_case].
+
+    The class built on this module is in {!Ocgtk.String_filter}. *)
 
 type t = [ `string_filter | `filter | `object_ ] Gobject.obj
 

@@ -69,7 +69,8 @@
  except for one case: when the supported actions include\n\
  [GDK_ACTION_MOVE], you need to listen for the\n\
  [Gtk.DragSource::drag-end] signal and delete the\n\
- data after it has been transferred."]
+ data after it has been transferred.\n\n\
+ The class built on this module is in {!Ocgtk.Drag_source}."]
 
 type t =
   [ `drag_source | `gesture_single | `gesture | `event_controller | `object_ ]

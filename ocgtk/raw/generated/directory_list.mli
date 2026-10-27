@@ -19,7 +19,8 @@
  g_file_enumerator_get_child().\n\
  This means you do not need access to the [GtkDirectoryList], but can access\n\
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
- or similar."]
+ or similar.\n\n\
+ The class built on this module is in {!Ocgtk.Directory_list}."]
 
 type t = [ `directory_list | `object_ ] Gobject.obj
 

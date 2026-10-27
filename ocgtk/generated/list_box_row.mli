@@ -1,3 +1,12 @@
+(** The kind of widget that can be added to a [GtkListBox].
+
+    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
+    necessary.
+
+    Its methods, signals and properties are on {!class-type-list_box_row_t}. The
+    functions it is built on are in {!Ocgtk.Raw.List_box_row}. *)
+
+(** The methods, signals and properties of a [GtkListBoxRow]. *)
 class type list_box_row_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -45,5 +54,8 @@ class type list_box_row_t = object
 end
 
 class list_box_row : Raw.List_box_row.t -> list_box_row_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_box_row.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkListBoxRow], give one already wrapped. *)
 
 val new_ : unit -> list_box_row_t

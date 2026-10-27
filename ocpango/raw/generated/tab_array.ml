@@ -5,7 +5,9 @@
 
     [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
     stop has an alignment, a position, and optionally a character to use as
-    decimal point. *)
+    decimal point.
+
+    The class built on this module is in {!Ocpango.Tab_array}. *)
 
 type t = [ `tab_array ] Gobject.obj
 

@@ -62,7 +62,9 @@
     {b Accessibility}
 
     [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
-    uses the [Gtk.AccessibleRole.list_item] role. *)
+    uses the [Gtk.AccessibleRole.list_item] role.
+
+    The class built on this module is in {!Ocgtk.List_box}. *)
 
 type t = [ `list_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 

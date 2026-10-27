@@ -6,7 +6,9 @@
 
     As an example of the usage of [PangoGlyphItem], the results of shaping text
     with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
-    list of [PangoGlyphItem]. *)
+    list of [PangoGlyphItem].
+
+    The class built on this module is in {!Ocpango.Glyph_item}. *)
 
 type t = [ `glyph_item ] Gobject.obj
 

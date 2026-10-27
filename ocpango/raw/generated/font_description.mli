@@ -6,7 +6,9 @@
 
     [PangoFontDescription] structures are used both to list what fonts are
     available on the system and also for specifying the characteristics of a
-    font to load. *)
+    font to load.
+
+    The class built on this module is in {!Ocpango.Font_description}. *)
 
 type t = [ `font_description ] Gobject.obj
 

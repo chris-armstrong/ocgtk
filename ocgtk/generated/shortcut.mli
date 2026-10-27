@@ -1,3 +1,22 @@
+(** Describes a keyboard shortcut.
+
+    It contains a description of how to trigger the shortcut via a
+    [Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget via a
+    [Gtk.ShortcutAction].
+
+    The actual work is usually done via [Gtk.ShortcutController], which decides
+    if and when to activate a shortcut. Using that controller directly however
+    is rarely necessary as various higher level convenience APIs exist on
+    [GtkWidget]s that make it easier to use shortcuts in GTK.
+
+    [GtkShortcut] does provide functionality to make it easy for users to work
+    with shortcuts, either by providing informational strings for display
+    purposes or by allowing shortcuts to be configured.
+
+    Its methods, signals and properties are on {!class-type-shortcut_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Shortcut}. *)
+
+(** The methods, signals and properties of a [GtkShortcut]. *)
 class type shortcut_t = object
   method get_action : unit -> Shortcut_action.shortcut_action_t option
   method get_arguments : unit -> Gvariant.t option
@@ -9,6 +28,9 @@ class type shortcut_t = object
 end
 
 class shortcut : Raw.Shortcut.t -> shortcut_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkShortcut], give one already wrapped. *)
 
 val new_ :
   Shortcut_trigger.shortcut_trigger_t option ->

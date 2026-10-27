@@ -13,7 +13,9 @@
 
     To display an animation you don't need to understand its representation,
     however; you just ask [GdkPixbuf] what should be displayed at a given point
-    in time. *)
+    in time.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_animation}. *)
 
 type t = [ `pixbuf_animation | `object_ ] Gobject.obj
 

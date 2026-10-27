@@ -28,7 +28,9 @@
 
     Finally, fixed positioning makes it kind of annoying to add/remove UI
     elements, since you have to reposition all the other elements. This is a
-    long-term maintenance problem for your application. *)
+    long-term maintenance problem for your application.
+
+    The class built on this module is in {!Ocgtk.Fixed_layout}. *)
 
 type t = [ `fixed_layout | `layout_manager | `object_ ] Gobject.obj
 

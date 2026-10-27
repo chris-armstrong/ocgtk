@@ -41,7 +41,8 @@
 \    <suffix>png</suffix>\n\
 \  </suffixes>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.File_filter}."]
 
 type t = [ `file_filter | `filter | `object_ ] Gobject.obj
 

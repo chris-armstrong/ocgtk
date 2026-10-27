@@ -13,7 +13,9 @@
 
     If you want to implement a network server, also look at [Gio.SocketService]
     and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
-    that make this even easier. *)
+    that make this even easier.
+
+    The class built on this module is in {!Ocgio.Socket_listener}. *)
 
 type t = [ `socket_listener | `object_ ] Gobject.obj
 

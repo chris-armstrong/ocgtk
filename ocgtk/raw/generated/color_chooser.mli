@@ -8,7 +8,9 @@
     (translucency).
 
     In GTK, the main widgets that implement this interface are
-    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton].
+
+    The class built on this module is in {!Ocgtk.Color_chooser}. *)
 
 type t = [ `color_chooser ] Gobject.obj
 

@@ -1,3 +1,44 @@
+(** Stores information about a file system object referenced by a [Gio.File].
+
+    Functionality for manipulating basic metadata for files. [GFileInfo]
+    implements methods for getting information that all files should contain,
+    and allows for manipulation of extended attributes.
+
+    See the file attributes document for more information on how GIO handles
+    file attributes.
+
+    To obtain a [GFileInfo] for a [Gio.File], use [Gio.File.query_info] (or its
+    async variant). To obtain a [GFileInfo] for a file input or output stream,
+    use [Gio.FileInputStream.query_info] or [Gio.FileOutputStream.query_info]
+    (or their async variants).
+
+    To change the actual attributes of a file, you should then set the attribute
+    in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
+    [Gio.File.set_attributes_async] on a [GFile].
+
+    However, not all attributes can be changed in the file. For instance, the
+    actual size of a file cannot be changed via [Gio.FileInfo.set_size]. You may
+    call [Gio.File.query_settable_attributes] and
+    [Gio.File.query_writable_namespaces] to discover the settable attributes of
+    a particular file at runtime.
+
+    The direct accessors, such as [Gio.FileInfo.get_name], are slightly more
+    optimized than the generic attribute accessors, such as
+    [Gio.FileInfo.get_attribute_byte_string].This optimization will matter only
+    if calling the API in a tight loop.
+
+    It is an error to call these accessors without specifying their required
+    file attributes when creating the [GFileInfo]. Use
+    [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
+    attributes are specified for a [GFileInfo].
+
+    [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
+    attributes.
+
+    Its methods, signals and properties are on {!class-type-file_info_t}. The
+    functions it is built on are in {!Ocgio.Raw.File_info}. *)
+
+(** The methods, signals and properties of a [GFileInfo]. *)
 class type file_info_t = object
   method clear_status : unit -> unit
   method copy_into : file_info_t -> unit
@@ -62,5 +103,8 @@ class type file_info_t = object
 end
 
 class file_info : Raw.File_info.t -> file_info_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.File_info.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GFileInfo], give one already wrapped. *)
 
 val new_ : unit -> file_info_t

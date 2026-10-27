@@ -1,3 +1,14 @@
+(** Asynchronous API to present a file chooser dialog.
+
+    [GtkFileDialog] collects the arguments that are needed to present the dialog
+    to the user, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
+
+    Its methods, signals and properties are on {!class-type-file_dialog_t}. The
+    functions it is built on are in {!Ocgtk.Raw.File_dialog}. *)
+
+(** The methods, signals and properties of a [GtkFileDialog]. *)
 class type file_dialog_t = object
   method get_accept_label : unit -> string option
   method get_default_filter : unit -> File_filter.file_filter_t option
@@ -37,5 +48,8 @@ class type file_dialog_t = object
 end
 
 class file_dialog : Raw.File_dialog.t -> file_dialog_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_dialog.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkFileDialog], give one already wrapped. *)
 
 val new_ : unit -> file_dialog_t

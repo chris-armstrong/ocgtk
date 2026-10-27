@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Point: Point *)
 
-(** A point with two coordinates. *)
+(** A point with two coordinates.
+
+    The class built on this module is in {!Ocgraphene.Point}. *)
 
 type t = [ `point ] Gobject.obj
 

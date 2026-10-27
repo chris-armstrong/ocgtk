@@ -14,7 +14,9 @@
     [GtkCellRendererPixbuf:pixbuf-expander-open] property is set to a pixbuf, it
     renders that pixbuf, if the [GtkCellRenderer:is-expanded] property is
     [FALSE] and the [GtkCellRendererPixbuf:pixbuf-expander-closed] property is
-    set to a pixbuf, it renders that one. *)
+    set to a pixbuf, it renders that one.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_pixbuf}. *)
 
 type t =
   [ `cell_renderer_pixbuf | `cell_renderer | `initially_unowned | `object_ ]

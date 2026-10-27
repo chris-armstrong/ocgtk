@@ -2,7 +2,9 @@
 (* BytesIcon: BytesIcon *)
 
 (** [GBytesIcon] specifies an image held in memory in a common format (usually
-    PNG) to be used as icon. *)
+    PNG) to be used as icon.
+
+    The class built on this module is in {!Ocgio.Bytes_icon}. *)
 
 type t = [ `bytes_icon | `object_ ] Gobject.obj
 

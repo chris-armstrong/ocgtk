@@ -45,7 +45,9 @@
     virtual functions [Gio.ActionGroup.list_actions] and
     [Gio.ActionGroup.query_action]. The other virtual functions should not be
     implemented — their ‘wrappers’ are actually implemented with calls to
-    [Gio.ActionGroup.query_action]. *)
+    [Gio.ActionGroup.query_action].
+
+    The class built on this module is in {!Ocgio.Action_group}. *)
 
 type t = [ `action_group ] Gobject.obj
 

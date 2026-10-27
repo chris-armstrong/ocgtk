@@ -16,7 +16,9 @@
 
     {b CSS nodes}
 
-    [GtkInscription] has a single CSS node with the name label. *)
+    [GtkInscription] has a single CSS node with the name label.
+
+    The class built on this module is in {!Ocgtk.Inscription}. *)
 
 type t = [ `inscription | `widget | `initially_unowned | `object_ ] Gobject.obj
 

@@ -36,7 +36,9 @@
 
     {b CSS node}
 
-    [GtkStatusbar] has a single CSS node with name [statusbar]. *)
+    [GtkStatusbar] has a single CSS node with name [statusbar].
+
+    The class built on this module is in {!Ocgtk.Statusbar}. *)
 
 type t = [ `statusbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

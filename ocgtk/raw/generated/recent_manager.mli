@@ -45,7 +45,8 @@
  [Gtk.RecentInfo].\n\n\
  Note that the maximum age of the recently used files list is\n\
  controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
- property."]
+ property.\n\n\
+ The class built on this module is in {!Ocgtk.Recent_manager}."]
 
 type t = [ `recent_manager | `object_ ] Gobject.obj
 

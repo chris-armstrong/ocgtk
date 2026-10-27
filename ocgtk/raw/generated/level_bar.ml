@@ -77,7 +77,8 @@
  In horizontal orientation, the nodes are always arranged from left to right,\n\
  regardless of text direction.\n\n\
  {b Accessibility}\n\n\
- [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role."]
+ [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role.\n\n\
+ The class built on this module is in {!Ocgtk.Level_bar}."]
 
 type t = [ `level_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

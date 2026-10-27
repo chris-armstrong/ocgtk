@@ -6,7 +6,9 @@
 
     By subclassing [PangoRenderer] and overriding operations such as
     [draw_glyphs] and [draw_rectangle], renderers for particular font backends
-    and destinations can be created. *)
+    and destinations can be created.
+
+    The class built on this module is in {!Ocpango.Renderer}. *)
 
 type t = [ `renderer | `object_ ] Gobject.obj
 

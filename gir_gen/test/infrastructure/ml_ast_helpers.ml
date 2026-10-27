@@ -77,6 +77,21 @@ let doc_of_attributes (attributes : attributes) : string option =
       | _ -> None)
     attributes
 
+let module_preamble (ast : signature) : string option =
+  List.find_map
+    (fun item ->
+      match item.psig_desc with
+      | Psig_attribute ({ attr_name = { txt = "ocaml.text"; _ }; _ } as attr) ->
+          doc_of_attributes
+            [
+              {
+                attr with
+                attr_name = { attr.attr_name with txt = "ocaml.doc" };
+              };
+            ]
+      | _ -> None)
+    ast
+
 let type_declaration_doc (td : type_declaration) : string option =
   doc_of_attributes td.ptype_attributes
 

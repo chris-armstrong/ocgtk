@@ -4,7 +4,8 @@
 (** Sorts items numerically.
 
     To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
-*)
+
+    The class built on this module is in {!Ocgtk.Numeric_sorter}. *)
 
 type t = [ `numeric_sorter | `sorter | `object_ ] Gobject.obj
 

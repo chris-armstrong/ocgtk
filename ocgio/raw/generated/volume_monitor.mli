@@ -10,7 +10,9 @@
     than from the main thread, with no thread-default-context active.
 
     In order to receive updates about volumes and mounts monitored through GVFS,
-    a main loop must be running. *)
+    a main loop must be running.
+
+    The class built on this module is in {!Ocgio.Volume_monitor}. *)
 
 type t = [ `volume_monitor | `object_ ] Gobject.obj
 

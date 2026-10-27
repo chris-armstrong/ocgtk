@@ -6,7 +6,9 @@
     [Gio.EmblemedIcon].
 
     Currently, only metainformation about the emblem's origin is supported. More
-    may be added in the future. *)
+    may be added in the future.
+
+    The class built on this module is in {!Ocgio.Emblem}. *)
 
 type t = [ `emblem | `object_ ] Gobject.obj
 

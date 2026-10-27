@@ -1,3 +1,14 @@
+(** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
+
+    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
+    iterator is created, it can be advanced through the style changes in the
+    text using [Pango.AttrIterator.next]. At each style change, the range of the
+    current style segment and the attributes currently in effect can be queried.
+
+    Its methods, signals and properties are on {!class-type-attr_iterator_t}.
+    The functions it is built on are in {!Ocpango.Raw.Attr_iterator}. *)
+
+(** The methods, signals and properties of a [PangoAttrIterator]. *)
 class type attr_iterator_t = object
   method destroy : unit -> unit
   method get : Enums.attrtype -> Raw.Attribute.t option
@@ -7,3 +18,6 @@ class type attr_iterator_t = object
 end
 
 class attr_iterator : Raw.Attr_iterator.t -> attr_iterator_t
+(** Wraps a layer 1 handle, {!Ocpango.Raw.Attr_iterator.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [PangoAttrIterator], give one already wrapped. *)

@@ -1,3 +1,12 @@
+(** A 3D volume delimited by 2D clip planes.
+
+    The contents of the [graphene_frustum_t] are private, and should not be
+    modified directly.
+
+    Its methods, signals and properties are on {!class-type-frustum_t}. The
+    functions it is built on are in {!Ocgraphene.Raw.Frustum}. *)
+
+(** The methods, signals and properties of a [graphene_frustum_t]. *)
 class type frustum_t = object
   method contains_point : Raw.Point3_d.t -> bool
   method equal : Raw.Frustum.t -> bool
@@ -19,5 +28,8 @@ class type frustum_t = object
 end
 
 class frustum : Raw.Frustum.t -> frustum_t
+(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Frustum.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [graphene_frustum_t], give one already wrapped. *)
 
 val alloc : unit -> frustum_t

@@ -52,7 +52,8 @@
 
     Here is an example for exporting a [GObject]:
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-export.c}gdbus-example-export.c}
-*)
+
+    The class built on this module is in {!Ocgio.D_bus_connection}. *)
 
 type t = [ `d_bus_connection | `object_ ] Gobject.obj
 

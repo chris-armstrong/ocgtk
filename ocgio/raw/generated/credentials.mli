@@ -38,7 +38,9 @@
     [G_CREDENTIALS_TYPE_SOLARIS_UCRED].
 
     Since GLib 2.72, on Windows, the native credentials may contain the PID of a
-    process. This corresponds to [G_CREDENTIALS_TYPE_WIN32_PID]. *)
+    process. This corresponds to [G_CREDENTIALS_TYPE_WIN32_PID].
+
+    The class built on this module is in {!Ocgio.Credentials}. *)
 
 type t = [ `credentials | `object_ ] Gobject.obj
 

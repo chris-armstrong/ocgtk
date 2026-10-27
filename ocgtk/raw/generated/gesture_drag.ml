@@ -7,7 +7,9 @@
     [Gtk.GestureDrag::drag-begin], [Gtk.GestureDrag::drag-update] and
     [Gtk.GestureDrag::drag-end] signals, and the relevant coordinates can be
     extracted through [Gtk.GestureDrag.get_offset] and
-    [Gtk.GestureDrag.get_start_point]. *)
+    [Gtk.GestureDrag.get_start_point].
+
+    The class built on this module is in {!Ocgtk.Gesture_drag}. *)
 
 type t =
   [ `gesture_drag | `gesture_single | `gesture | `event_controller | `object_ ]

@@ -9,7 +9,9 @@
     construct custom paper sizes with arbitrary dimensions.
 
     The [GtkPaperSize] object stores not only the dimensions (width and height)
-    of a paper size and its name, it also provides default print margins. *)
+    of a paper size and its name, it also provides default print margins.
+
+    The class built on this module is in {!Ocgtk.Paper_size}. *)
 
 type t = [ `paper_size ] Gobject.obj
 

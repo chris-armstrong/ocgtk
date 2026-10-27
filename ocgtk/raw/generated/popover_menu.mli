@@ -99,7 +99,8 @@
  [GtkPopoverMenu] uses the [Gtk.AccessibleRole.menu] role, and its\n\
  items use the [Gtk.AccessibleRole.menu_item],\n\
  [Gtk.AccessibleRole.checkbox] or [Gtk.AccessibleRole.menu_item_radio]\n\
- roles, depending on the action they are connected to."]
+ roles, depending on the action they are connected to.\n\n\
+ The class built on this module is in {!Ocgtk.Popover_menu}."]
 
 type t =
   [ `popover_menu | `popover | `widget | `initially_unowned | `object_ ]

@@ -32,7 +32,9 @@
     by looking at the difference in time between an initial value from
     [Gdk.FrameClock.get_frame_time] and the value inside the
     [Gdk.FrameClock::update] signal of the clock, they will stay exactly
-    synchronized. *)
+    synchronized.
+
+    The class built on this module is in {!Ocgdk.Frame_clock}. *)
 
 type t = [ `frame_clock | `object_ ] Gobject.obj
 

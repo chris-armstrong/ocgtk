@@ -1,3 +1,18 @@
+(** Holds the text that is displayed in a single-line text entry widget.
+
+    A single [GtkEntryBuffer] object can be shared by multiple widgets which
+    will then share the same text content, but not the cursor position,
+    visibility attributes, icon etc.
+
+    [GtkEntryBuffer] may be derived from. Such a derived class might allow text
+    to be stored in an alternate location, such as non-pageable memory, useful
+    in the case of important passwords. Or a derived class could integrate with
+    an application’s concept of undo/redo.
+
+    Its methods, signals and properties are on {!class-type-entry_buffer_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Entry_buffer}. *)
+
+(** The methods, signals and properties of a [GtkEntryBuffer]. *)
 class type entry_buffer_t = object
   method on_deleted_text :
     ?after:bool ->
@@ -25,5 +40,8 @@ class type entry_buffer_t = object
 end
 
 class entry_buffer : Raw.Entry_buffer.t -> entry_buffer_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Entry_buffer.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkEntryBuffer], give one already wrapped. *)
 
 val new_ : string option -> int -> entry_buffer_t

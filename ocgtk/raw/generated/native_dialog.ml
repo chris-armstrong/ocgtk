@@ -15,7 +15,9 @@
 
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
-    a reference until you are done with the object. *)
+    a reference until you are done with the object.
+
+    The class built on this module is in {!Ocgtk.Native_dialog}. *)
 
 type t = [ `native_dialog | `object_ ] Gobject.obj
 

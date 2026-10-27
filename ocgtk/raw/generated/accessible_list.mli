@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AccessibleList: AccessibleList *)
 
-(** Wraps a list of references to [Gtk.Accessible] objects. *)
+(** Wraps a list of references to [Gtk.Accessible] objects.
+
+    The class built on this module is in {!Ocgtk.Accessible_list}. *)
 
 type t = [ `accessible_list ] Gobject.obj
 

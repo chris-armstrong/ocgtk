@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SelectionFilterModel: SelectionFilterModel *)
 
-(** A list model that presents the selection from a [GtkSelectionModel]. *)
+(** A list model that presents the selection from a [GtkSelectionModel].
+
+    The class built on this module is in {!Ocgtk.Selection_filter_model}. *)
 
 type t = [ `selection_filter_model | `object_ ] Gobject.obj
 

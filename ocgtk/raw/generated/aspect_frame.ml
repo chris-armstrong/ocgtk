@@ -15,7 +15,9 @@
     Until GTK 4.10, [GtkAspectFrame] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkAspectFrame] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    [Gtk.AccessibleRole.generic] role.
+
+    The class built on this module is in {!Ocgtk.Aspect_frame}. *)
 
 type t = [ `aspect_frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 

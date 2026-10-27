@@ -7,7 +7,8 @@
     iterator is created, it can be advanced through the style changes in the
     text using [Pango.AttrIterator.next]. At each style change, the range of the
     current style segment and the attributes currently in effect can be queried.
-*)
+
+    The class built on this module is in {!Ocpango.Attr_iterator}. *)
 
 type t = [ `attr_iterator ] Gobject.obj
 

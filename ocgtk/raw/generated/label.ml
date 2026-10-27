@@ -167,7 +167,8 @@
  ]}\n\n\
  It is possible to implement custom handling for links and their tooltips\n\
  with the [Gtk.Label::activate-link] signal and the\n\
- [Gtk.Label.get_current_uri] function."]
+ [Gtk.Label.get_current_uri] function.\n\n\
+ The class built on this module is in {!Ocgtk.Label}."]
 
 type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
 

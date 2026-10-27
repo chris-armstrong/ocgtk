@@ -3,7 +3,9 @@
 
 (** Completes partial file and directory names given a partial string by looking
     in the file system for clues. Can return a list of possible completion
-    strings for widget implementations. *)
+    strings for widget implementations.
+
+    The class built on this module is in {!Ocgio.Filename_completer}. *)
 
 type t = [ `filename_completer | `object_ ] Gobject.obj
 

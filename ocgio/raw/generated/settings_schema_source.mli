@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchemaSource: SettingsSchemaSource *)
 
-(** This is an opaque structure type. You may not access it directly. *)
+(** This is an opaque structure type. You may not access it directly.
+
+    The class built on this module is in {!Ocgio.Settings_schema_source}. *)
 
 type t = [ `settings_schema_source ] Gobject.obj
 

@@ -5,7 +5,8 @@
     for GIO streaming input operations.
 
     As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
-*)
+
+    The class built on this module is in {!Ocgio.Memory_input_stream}. *)
 
 type t = [ `memory_input_stream | `input_stream | `object_ ] Gobject.obj
 

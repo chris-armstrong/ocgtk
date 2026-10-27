@@ -1,3 +1,8 @@
+(** The classes of {!Ocgtk.Column_view}, {!Ocgtk.Column_view_column}, defined
+    together because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [GtkColumnView]. *)
 class type column_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -52,6 +57,7 @@ class type column_view_t = object
   method as_column_view : Raw.Column_view.t
 end
 
+(** The methods, signals and properties of a [GtkColumnViewColumn]. *)
 and column_view_column_t = object
   method get_column_view : unit -> column_view_t option
   method get_expand : unit -> bool
@@ -75,7 +81,13 @@ and column_view_column_t = object
   method as_column_view_column : Raw.Column_view_column.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Column_view.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkColumnView], give one already wrapped. *)
 class column_view : Raw.Column_view.t -> column_view_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Column_view_column.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkColumnViewColumn], give one already wrapped. *)
 
 and column_view_column : Raw.Column_view_column.t -> column_view_column_t
 

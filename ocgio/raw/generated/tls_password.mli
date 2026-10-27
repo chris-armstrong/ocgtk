@@ -2,7 +2,9 @@
 (* TlsPassword: TlsPassword *)
 
 (** An abstract interface representing a password used in TLS. Often used in
-    user interaction such as unlocking a key storage token. *)
+    user interaction such as unlocking a key storage token.
+
+    The class built on this module is in {!Ocgio.Tls_password}. *)
 
 type t = [ `tls_password | `object_ ] Gobject.obj
 

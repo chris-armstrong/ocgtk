@@ -34,7 +34,9 @@
     [Gtk.TreeModel.get], this will make no difference to you. If for some
     reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
     Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
-    obtain a matching iter. *)
+    obtain a matching iter.
+
+    The class built on this module is in {!Ocgtk.Entry_completion}. *)
 
 type t = [ `entry_completion | `object_ ] Gobject.obj
 

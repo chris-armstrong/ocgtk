@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackPage: StackPage *)
 
-(** An auxiliary class used by [GtkStack]. *)
+(** An auxiliary class used by [GtkStack].
+
+    The class built on this module is in {!Ocgtk.Stack_page}. *)
 
 type t = [ `stack_page | `object_ ] Gobject.obj
 

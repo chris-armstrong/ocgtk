@@ -4,7 +4,9 @@
 (** Provides raw access to the event stream.
 
     It should only be used as a last resort if none of the other event
-    controllers or gestures do the job. *)
+    controllers or gestures do the job.
+
+    The class built on this module is in {!Ocgtk.Event_controller_legacy}. *)
 
 type t = [ `event_controller_legacy | `event_controller | `object_ ] Gobject.obj
 

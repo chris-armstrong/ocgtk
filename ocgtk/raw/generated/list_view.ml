@@ -81,7 +81,8 @@
  .rich-list, .navigation-sidebar or .data-table.\n\n\
  {b Accessibility}\n\n\
  [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list\n\
- items use the [Gtk.AccessibleRole.list_item] role."]
+ items use the [Gtk.AccessibleRole.list_item] role.\n\n\
+ The class built on this module is in {!Ocgtk.List_view}."]
 
 type t =
   [ `list_view | `list_base | `widget | `initially_unowned | `object_ ]

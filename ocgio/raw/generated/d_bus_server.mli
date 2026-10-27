@@ -20,7 +20,8 @@
     user that is running the [GDBusServer]. Since GLib 2.68 this can be achieved
     more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
-*)
+
+    The class built on this module is in {!Ocgio.D_bus_server}. *)
 
 type t = [ `d_bus_server | `object_ ] Gobject.obj
 

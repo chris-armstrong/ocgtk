@@ -10,7 +10,9 @@
     It is necessary to realize a [GskRenderer] instance using
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
     create the appropriate windowing system resources needed to render the
-    scene. *)
+    scene.
+
+    The class built on this module is in {!Ocgsk.Renderer}. *)
 
 type t = [ `renderer | `object_ ] Gobject.obj
 

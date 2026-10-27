@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureScaleNode: TextureScaleNode *)
 
-(** A render node for a [GdkTexture], with control over scaling. *)
+(** A render node for a [GdkTexture], with control over scaling.
+
+    The class built on this module is in {!Ocgsk.Texture_scale_node}. *)
 
 type t = [ `texture_scale_node | `render_node ] Gobject.obj
 

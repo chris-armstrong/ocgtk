@@ -88,7 +88,9 @@
 
     {b Accessibility}
 
-    [GtkScale] uses the [Gtk.AccessibleRole.slider] role. *)
+    [GtkScale] uses the [Gtk.AccessibleRole.slider] role.
+
+    The class built on this module is in {!Ocgtk.Scale}. *)
 
 type t =
   [ `scale | `range | `widget | `initially_unowned | `object_ ] Gobject.obj

@@ -1,3 +1,19 @@
+(** Collects the settings of a print dialog in a system-independent way.
+
+    The main use for this object is that once you’ve printed you can get a
+    settings object that represents the settings the user chose, and the next
+    time you print you can pass that object in so that the user doesn’t have to
+    re-set all his settings.
+
+    Its also possible to enumerate the settings so that you can easily save the
+    settings for the next time your app runs, or even store them in a document.
+    The predefined keys try to use shared values as much as possible so that
+    moving such a document between systems still works.
+
+    Its methods, signals and properties are on {!class-type-print_settings_t}.
+    The functions it is built on are in {!Ocgtk.Raw.Print_settings}. *)
+
+(** The methods, signals and properties of a [GtkPrintSettings]. *)
 class type print_settings_t = object
   method copy : unit -> print_settings_t
   method get : string -> string option
@@ -71,6 +87,9 @@ class type print_settings_t = object
 end
 
 class print_settings : Raw.Print_settings.t -> print_settings_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_settings.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkPrintSettings], give one already wrapped. *)
 
 val new_ : unit -> print_settings_t
 val new_from_file : string -> (print_settings_t, GError.t) result

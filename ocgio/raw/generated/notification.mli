@@ -44,7 +44,9 @@
     because the object will not exist if the application is autostarted as a
     result of a notification being clicked.
 
-    A notification can be sent with [Gio.Application.send_notification]. *)
+    A notification can be sent with [Gio.Application.send_notification].
+
+    The class built on this module is in {!Ocgio.Notification}. *)
 
 type t = [ `notification | `object_ ] Gobject.obj
 

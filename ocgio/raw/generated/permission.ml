@@ -14,7 +14,9 @@
     write to a [Gio.Settings] object. This [GPermission] object could then be
     used to decide if it is appropriate to show a “Click here to unlock” button
     in a dialog and to provide the mechanism to invoke when that button is
-    clicked. *)
+    clicked.
+
+    The class built on this module is in {!Ocgio.Permission}. *)
 
 type t = [ `permission | `object_ ] Gobject.obj
 

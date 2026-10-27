@@ -18,7 +18,9 @@
     exported [Gio.ActionGroup] implements [GRemoteActionGroup] and use the
     [_full] variants of the calls if available. This provides a mechanism by
     which to receive platform data for action invocations that arrive by way of
-    D-Bus. *)
+    D-Bus.
+
+    The class built on this module is in {!Ocgio.Remote_action_group}. *)
 
 type t = [ `remote_action_group ] Gobject.obj
 

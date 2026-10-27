@@ -3,7 +3,9 @@
 
 (** A GtkTreeRowReference tracks model changes so that it always refers to the
     same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
-    new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
+    new GtkTreeRowReference with gtk_tree_row_reference_new().
+
+    The class built on this module is in {!Ocgtk.Tree_row_reference}. *)
 
 type t = [ `tree_row_reference ] Gobject.obj
 

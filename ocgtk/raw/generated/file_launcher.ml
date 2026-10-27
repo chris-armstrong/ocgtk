@@ -11,7 +11,9 @@
 
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
-    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+    To launch uris that don't represent files, use [Gtk.UriLauncher].
+
+    The class built on this module is in {!Ocgtk.File_launcher}. *)
 
 type t = [ `file_launcher | `object_ ] Gobject.obj
 

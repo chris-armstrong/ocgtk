@@ -10,7 +10,9 @@
 
     The actual printing can be done with [Gtk.PrintDialog.print] or
     [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
-    the results can be obtained by calling the corresponding finish methods. *)
+    the results can be obtained by calling the corresponding finish methods.
+
+    The class built on this module is in {!Ocgtk.Print_dialog}. *)
 
 type t = [ `print_dialog | `object_ ] Gobject.obj
 

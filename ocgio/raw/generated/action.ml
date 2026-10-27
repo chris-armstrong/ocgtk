@@ -27,7 +27,9 @@
     [Gio.Action.change_state] for type safety and for the state being enabled.
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
-    a [Gio.SimpleActionGroup]. *)
+    a [Gio.SimpleActionGroup].
+
+    The class built on this module is in {!Ocgio.Action}. *)
 
 type t = [ `action ] Gobject.obj
 

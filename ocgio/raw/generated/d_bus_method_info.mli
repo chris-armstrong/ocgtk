@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusMethodInfo: DBusMethodInfo *)
 
-(** Information about a method on a D-Bus interface. *)
+(** Information about a method on a D-Bus interface.
+
+    The class built on this module is in {!Ocgio.D_bus_method_info}. *)
 
 type t = [ `d_bus_method_info ] Gobject.obj
 

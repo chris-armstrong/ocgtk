@@ -26,7 +26,9 @@
     [GtkSectionModel] and when [Gtk.SortListModel:section-sorter] is set, it
     will sort all items with that sorter and items comparing equal with it will
     be put into the same section. The [Gtk.SortListModel:sorter] will then be
-    used to sort items inside their sections. *)
+    used to sort items inside their sections.
+
+    The class built on this module is in {!Ocgtk.Sort_list_model}. *)
 
 type t = [ `sort_list_model | `object_ ] Gobject.obj
 

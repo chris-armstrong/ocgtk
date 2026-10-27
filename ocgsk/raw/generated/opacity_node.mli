@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OpacityNode: OpacityNode *)
 
-(** A render node controlling the opacity of its single child node. *)
+(** A render node controlling the opacity of its single child node.
+
+    The class built on this module is in {!Ocgsk.Opacity_node}. *)
 
 type t = [ `opacity_node | `render_node ] Gobject.obj
 

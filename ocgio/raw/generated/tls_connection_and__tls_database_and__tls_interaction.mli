@@ -1,6 +1,19 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgio.Raw.Tls_connection},
+    {!Ocgio.Raw.Tls_database}, {!Ocgio.Raw.Tls_interaction}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** [GTlsConnection] is the base TLS connection class type, which wraps a
+    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
+    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
+    client-side and server-side TLS, respectively.
+
+    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection].
+
+    The class built on this module is in {!Ocgio.Tls_connection}. *)
 module rec Tls_connection : sig
   type t = [ `tls_connection | `io_stream | `object_ ] Gobject.obj
 
@@ -238,6 +251,17 @@ module rec Tls_connection : sig
     Gobject.Signal.handler_id
 end
 
+(** [GTlsDatabase] is used to look up certificates and other information from a
+    certificate or key store. It is an abstract base class which TLS library
+    specific subtypes override.
+
+    A [GTlsDatabase] may be accessed from multiple threads by the TLS backend.
+    All implementations are required to be fully thread-safe.
+
+    Most common client applications will not directly interact with
+    [GTlsDatabase]. It is used internally by [Gio.TlsConnection].
+
+    The class built on this module is in {!Ocgio.Tls_database}. *)
 and Tls_database : sig
   type t = [ `tls_database | `object_ ] Gobject.obj
 
@@ -418,6 +442,28 @@ and Tls_database : sig
   *)
 end
 
+(** [GTlsInteraction] provides a mechanism for the TLS connection and database
+    code to interact with the user. It can be used to ask the user for
+    passwords.
+
+    To use a [GTlsInteraction] with a TLS connection use
+    [Gio.TlsConnection.set_interaction].
+
+    Callers should instantiate a derived class that implements the various
+    interaction methods to show the required dialogs.
+
+    Callers should use the 'invoke' functions like
+    [Gio.TlsInteraction.invoke_ask_password] to run interaction methods. These
+    functions make sure that the interaction is invoked in the main loop and not
+    in the current thread, if the current thread is not running the main loop.
+
+    Derived classes can choose to implement whichever interactions methods
+    they’d like to support by overriding those virtual methods in their class
+    initialization function. Any interactions not implemented will return
+    [G_TLS_INTERACTION_UNHANDLED]. If a derived class implements an async
+    method, it must also implement the corresponding finish method.
+
+    The class built on this module is in {!Ocgio.Tls_interaction}. *)
 and Tls_interaction : sig
   type t = [ `tls_interaction | `object_ ] Gobject.obj
 

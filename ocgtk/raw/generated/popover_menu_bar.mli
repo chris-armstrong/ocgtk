@@ -27,7 +27,9 @@
 
     [GtkPopoverMenuBar] uses the [Gtk.AccessibleRole.menu_bar] role, the menu
     items use the [Gtk.AccessibleRole.menu_item] role and the menus use the
-    [Gtk.AccessibleRole.menu] role. *)
+    [Gtk.AccessibleRole.menu] role.
+
+    The class built on this module is in {!Ocgtk.Popover_menu_bar}. *)
 
 type t =
   [ `popover_menu_bar | `widget | `initially_unowned | `object_ ] Gobject.obj

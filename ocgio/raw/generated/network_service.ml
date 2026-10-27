@@ -8,7 +8,8 @@
 
     See [Gio.SrvTarget] for more information about SRV records, and see
     [Gio.SocketConnectable] for an example of using the connectable interface.
-*)
+
+    The class built on this module is in {!Ocgio.Network_service}. *)
 
 type t = [ `network_service | `object_ ] Gobject.obj
 

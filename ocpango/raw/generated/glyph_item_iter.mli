@@ -41,7 +41,8 @@
     end variables is not.
 
     None of the members of a [PangoGlyphItemIter] should be modified manually.
-*)
+
+    The class built on this module is in {!Ocpango.Glyph_item_iter}. *)
 
 type t = [ `glyph_item_iter ] Gobject.obj
 

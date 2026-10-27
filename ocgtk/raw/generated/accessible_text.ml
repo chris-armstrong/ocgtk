@@ -9,7 +9,9 @@
 
     You should use the [Gtk.AccessibleProperty.LABEL] or the
     [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
-    containing simple, unformatted text. *)
+    containing simple, unformatted text.
+
+    The class built on this module is in {!Ocgtk.Accessible_text}. *)
 
 type t = [ `accessible_text ] Gobject.obj
 

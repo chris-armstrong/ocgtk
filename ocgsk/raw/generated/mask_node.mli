@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MaskNode: MaskNode *)
 
-(** A render node masking one child node with another. *)
+(** A render node masking one child node with another.
+
+    The class built on this module is in {!Ocgsk.Mask_node}. *)
 
 type t = [ `mask_node | `render_node ] Gobject.obj
 

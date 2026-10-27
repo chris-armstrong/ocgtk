@@ -125,7 +125,8 @@
 \  // width of button1 must be equal to width of button2\n\
 \  // divided by 2 plus 12\n\
 \  [button1(button2 / 2 + 12)]\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Constraint_layout}."]
 
 type t = [ `constraint_layout | `layout_manager | `object_ ] Gobject.obj
 

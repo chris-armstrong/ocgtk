@@ -39,7 +39,9 @@
     entry is in editing mode, it gets the .editing style class.
 
     For all the subnodes added to the text node in various situations, see
-    [Gtk.Text]. *)
+    [Gtk.Text].
+
+    The class built on this module is in {!Ocgtk.Editable_label}. *)
 
 type t =
   [ `editable_label | `widget | `initially_unowned | `object_ ] Gobject.obj

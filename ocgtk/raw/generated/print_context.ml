@@ -55,7 +55,8 @@
 \  cairo_fill (cr);\n\n\
 \  g_object_unref (layout);\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Print_context}."]
 
 type t = [ `print_context | `object_ ] Gobject.obj
 

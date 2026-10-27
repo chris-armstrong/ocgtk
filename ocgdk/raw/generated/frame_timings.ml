@@ -7,7 +7,9 @@
     [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
     is useful for precise synchronization of video with the event or audio
     streams, and for measuring quality metrics for the application’s display,
-    such as latency and jitter. *)
+    such as latency and jitter.
+
+    The class built on this module is in {!Ocgdk.Frame_timings}. *)
 
 type t = [ `frame_timings ] Gobject.obj
 

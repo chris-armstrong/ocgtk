@@ -14,7 +14,9 @@
     [Gio.BufferedInputStream.get_buffer_size]. To change the size of a buffered
     input stream's buffer, use [Gio.BufferedInputStream.set_buffer_size]. Note
     that the buffer's size cannot be reduced below the size of the data within
-    the buffer. *)
+    the buffer.
+
+    The class built on this module is in {!Ocgio.Buffered_input_stream}. *)
 
 type t =
   [ `buffered_input_stream | `filter_input_stream | `input_stream | `object_ ]

@@ -30,7 +30,8 @@
  paintable = GDK_PAINTABLE (icon);\n\
  // Use the paintable\n\
  g_object_unref (icon);\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Icon_theme}."]
 
 type t = [ `icon_theme | `object_ ] Gobject.obj
 

@@ -5,7 +5,9 @@
     of data of various types during reading.
 
     As of GLib 2.34, [GConverterOutputStream] implements
-    [Gio.PollableOutputStream]. *)
+    [Gio.PollableOutputStream].
+
+    The class built on this module is in {!Ocgio.Converter_output_stream}. *)
 
 type t =
   [ `converter_output_stream

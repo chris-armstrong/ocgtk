@@ -15,7 +15,9 @@
 
     {b Accessibility}
 
-    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role. *)
+    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role.
+
+    The class built on this module is in {!Ocgtk.Separator}. *)
 
 type t = [ `separator | `widget | `initially_unowned | `object_ ] Gobject.obj
 

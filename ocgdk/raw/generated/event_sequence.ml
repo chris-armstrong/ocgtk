@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventSequence: EventSequence *)
 
-(** An opaque type representing a sequence of related events. *)
+(** An opaque type representing a sequence of related events.
+
+    The class built on this module is in {!Ocgdk.Event_sequence}. *)
 
 type t = [ `event_sequence ] Gobject.obj
 

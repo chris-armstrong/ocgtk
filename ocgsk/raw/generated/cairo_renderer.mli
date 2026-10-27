@@ -3,7 +3,9 @@
 
 (** Renders a GSK rendernode tree with cairo.
 
-    Since it is using cairo, this renderer cannot support 3D transformations. *)
+    Since it is using cairo, this renderer cannot support 3D transformations.
+
+    The class built on this module is in {!Ocgsk.Cairo_renderer}. *)
 
 type t = [ `cairo_renderer | `renderer | `object_ ] Gobject.obj
 

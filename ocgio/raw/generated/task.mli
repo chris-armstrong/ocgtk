@@ -453,7 +453,8 @@
  - Clear task data in a signal handler for [notify::completed]\n\
  - Keep iterating a main context in the main thread and defer\n\
  dropping the reference to the source object to that main\n\
- context when the task is finalized"]
+ context when the task is finalized\n\n\
+ The class built on this module is in {!Ocgio.Task}."]
 
 type t = [ `task | `object_ ] Gobject.obj
 

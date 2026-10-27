@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufSimpleAnim: PixbufSimpleAnim *)
 
-(** An opaque struct representing a simple animation. *)
+(** An opaque struct representing a simple animation.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_simple_anim}. *)
 
 type t = [ `pixbuf_simple_anim | `pixbuf_animation | `object_ ] Gobject.obj
 

@@ -35,7 +35,9 @@
 
     If you know none of these things are an issue for your application, and
     prefer the simplicity of [GtkFixed], by all means use the widget. But you
-    should be aware of the tradeoffs. *)
+    should be aware of the tradeoffs.
+
+    The class built on this module is in {!Ocgtk.Fixed}. *)
 
 type t = [ `fixed | `widget | `initially_unowned | `object_ ] Gobject.obj
 

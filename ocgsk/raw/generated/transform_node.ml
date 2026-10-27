@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TransformNode: TransformNode *)
 
-(** A render node applying a [GskTransform] to its single child node. *)
+(** A render node applying a [GskTransform] to its single child node.
+
+    The class built on this module is in {!Ocgsk.Transform_node}. *)
 
 type t = [ `transform_node | `render_node ] Gobject.obj
 

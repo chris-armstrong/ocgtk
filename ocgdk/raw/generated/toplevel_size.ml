@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ToplevelSize: ToplevelSize *)
 
-(** Contains information that is useful to compute the size of a toplevel. *)
+(** Contains information that is useful to compute the size of a toplevel.
+
+    The class built on this module is in {!Ocgdk.Toplevel_size}. *)
 
 type t = [ `toplevel_size ] Gobject.obj
 

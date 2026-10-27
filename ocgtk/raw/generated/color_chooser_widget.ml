@@ -31,7 +31,9 @@
 
     {b CSS names}
 
-    [GtkColorChooserWidget] has a single CSS node with name colorchooser. *)
+    [GtkColorChooserWidget] has a single CSS node with name colorchooser.
+
+    The class built on this module is in {!Ocgtk.Color_chooser_widget}. *)
 
 type t =
   [ `color_chooser_widget | `widget | `initially_unowned | `object_ ]

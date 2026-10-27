@@ -9,7 +9,9 @@
 
     GDK knows how to handle common text and image formats out-of-the-box. See
     [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats. *)
+    support for application-specific data formats.
+
+    The class built on this module is in {!Ocgdk.Content_provider}. *)
 
 type t = [ `content_provider | `object_ ] Gobject.obj
 

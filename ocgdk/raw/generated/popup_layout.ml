@@ -32,7 +32,9 @@
     popup has been presented. This can be used to adjust the rendering. For
     example, GtkPopover changes its arrow position accordingly. But you have to
     be careful avoid changing the size of the popover, or it has to be presented
-    again. *)
+    again.
+
+    The class built on this module is in {!Ocgdk.Popup_layout}. *)
 
 type t = [ `popup_layout ] Gobject.obj
 

@@ -20,7 +20,9 @@
     [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
 
     The child of [GtkRevealer], if set, is always available in the accessibility
-    tree, regardless of the state of the revealer widget. *)
+    tree, regardless of the state of the revealer widget.
+
+    The class built on this module is in {!Ocgtk.Revealer}. *)
 
 type t = [ `revealer | `widget | `initially_unowned | `object_ ] Gobject.obj
 

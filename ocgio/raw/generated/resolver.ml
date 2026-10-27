@@ -18,7 +18,9 @@
     timeouts.
 
     This is an abstract type; subclasses of it implement different resolvers for
-    different platforms and situations. *)
+    different platforms and situations.
+
+    The class built on this module is in {!Ocgio.Resolver}. *)
 
 type t = [ `resolver | `object_ ] Gobject.obj
 

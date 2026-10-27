@@ -24,7 +24,9 @@
 
     Don’t forget to disconnect the [GObject.Object::notify] signal for
     [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
-    [GPowerProfileMonitor] itself when exiting. *)
+    [GPowerProfileMonitor] itself when exiting.
+
+    The class built on this module is in {!Ocgio.Power_profile_monitor}. *)
 
 type t = [ `power_profile_monitor ] Gobject.obj
 

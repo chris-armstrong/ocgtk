@@ -23,7 +23,9 @@
     - [Gtk.ActivateAction]: a shortcut action that calls gtk_widget_activate()
     - [Gtk.NamedAction]: a shortcut action that calls
       gtk_widget_activate_action()
-    - [Gtk.NothingAction]: a shortcut action that does nothing *)
+    - [Gtk.NothingAction]: a shortcut action that does nothing
+
+    The class built on this module is in {!Ocgtk.Shortcut_action}. *)
 
 type t = [ `shortcut_action | `object_ ] Gobject.obj
 

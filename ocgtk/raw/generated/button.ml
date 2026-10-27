@@ -34,7 +34,9 @@
 
     {b Accessibility}
 
-    [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkButton] uses the [Gtk.AccessibleRole.button] role.
+
+    The class built on this module is in {!Ocgtk.Button}. *)
 
 type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
 

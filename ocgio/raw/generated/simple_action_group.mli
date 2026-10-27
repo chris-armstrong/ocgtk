@@ -2,7 +2,9 @@
 (* SimpleActionGroup: SimpleActionGroup *)
 
 (** [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
-    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
+    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces.
+
+    The class built on this module is in {!Ocgio.Simple_action_group}. *)
 
 type t = [ `simple_action_group | `object_ ] Gobject.obj
 

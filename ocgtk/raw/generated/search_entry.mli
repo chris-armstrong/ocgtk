@@ -50,7 +50,9 @@
 
     {b Accessibility}
 
-    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
+    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role.
+
+    The class built on this module is in {!Ocgtk.Search_entry}. *)
 
 type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 

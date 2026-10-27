@@ -13,7 +13,9 @@
     etc. It supports autoplay, looping, and simple media controls. It does not
     have support for video overlays, multichannel audio, device selection, or
     input. If you are writing a full-fledged video player, you may want to use
-    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
+    the [Gdk.Paintable] API and a media framework such as Gstreamer directly.
+
+    The class built on this module is in {!Ocgtk.Video}. *)
 
 type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
 

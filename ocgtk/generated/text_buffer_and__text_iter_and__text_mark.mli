@@ -1,3 +1,8 @@
+(** The classes of {!Ocgtk.Text_buffer}, {!Ocgtk.Text_iter}, {!Ocgtk.Text_mark},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [GtkTextBuffer]. *)
 class type text_buffer_t = object
   method on_begin_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -120,6 +125,7 @@ class type text_buffer_t = object
   method as_text_buffer : Raw.Text_buffer.t
 end
 
+(** The methods, signals and properties of a [GtkTextIter]. *)
 and text_iter_t = object
   method assign : Raw.Text_iter.t -> unit
   method backward_char : unit -> bool
@@ -208,6 +214,7 @@ and text_iter_t = object
   method as_text_iter : Raw.Text_iter.t
 end
 
+(** The methods, signals and properties of a [GtkTextMark]. *)
 and text_mark_t = object
   method get_buffer : unit -> text_buffer_t option
   method get_deleted : unit -> bool
@@ -218,9 +225,18 @@ and text_mark_t = object
   method as_text_mark : Raw.Text_mark.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_buffer.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTextBuffer], give one already wrapped. *)
 class text_buffer : Raw.Text_buffer.t -> text_buffer_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_iter.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTextIter], give one already wrapped. *)
 
 and text_iter : Raw.Text_iter.t -> text_iter_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_mark.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTextMark], give one already wrapped. *)
 
 and text_mark : Raw.Text_mark.t -> text_mark_t
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DebugNode: DebugNode *)
 
-(** A render node that emits a debugging message when drawing its child node. *)
+(** A render node that emits a debugging message when drawing its child node.
+
+    The class built on this module is in {!Ocgsk.Debug_node}. *)
 
 type t = [ `debug_node | `render_node ] Gobject.obj
 

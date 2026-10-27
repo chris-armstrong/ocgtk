@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorMatrixNode: ColorMatrixNode *)
 
-(** A render node controlling the color matrix of its single child node. *)
+(** A render node controlling the color matrix of its single child node.
+
+    The class built on this module is in {!Ocgsk.Color_matrix_node}. *)
 
 type t = [ `color_matrix_node | `render_node ] Gobject.obj
 

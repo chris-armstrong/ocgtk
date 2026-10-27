@@ -1,3 +1,27 @@
+(** The [GtkFontChooserDialog] widget is a dialog for selecting a font.
+
+    An example GtkFontChooserDialog
+
+    [GtkFontChooserDialog] implements the [Gtk.FontChooser] interface and does
+    not provide much API of its own.
+
+    To create a [GtkFontChooserDialog], use [Gtk.FontChooserDialog.new].
+
+    {b GtkFontChooserDialog as GtkBuildable}
+
+    The [GtkFontChooserDialog] implementation of the [GtkBuildable] interface
+    exposes the buttons with the names “select_button” and “cancel_button”.
+
+    {b CSS nodes}
+
+    [GtkFontChooserDialog] has a single CSS node with the name [window] and
+    style class [.fontchooser].
+
+    Its methods, signals and properties are on
+    {!class-type-font_chooser_dialog_t}. The functions it is built on are in
+    {!Ocgtk.Raw.Font_chooser_dialog}. *)
+
+(** The methods, signals and properties of a [GtkFontChooserDialog]. *)
 class type font_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Font_chooser.font_chooser_t
@@ -5,6 +29,9 @@ class type font_chooser_dialog_t = object
 end
 
 class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Font_chooser_dialog.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GtkFontChooserDialog], give one already wrapped. *)
 
 val new_ :
   string option ->

@@ -55,7 +55,9 @@
 
     {b Accessibility}
 
-    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role.
+
+    The class built on this module is in {!Ocgtk.Menu_button}. *)
 
 type t = [ `menu_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 

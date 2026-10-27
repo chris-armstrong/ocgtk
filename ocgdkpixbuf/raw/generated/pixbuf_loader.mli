@@ -42,7 +42,9 @@
     [GdkPixbuf.PixbufAnimation] instance, and then call and
     [GdkPixbuf.PixbufAnimation.get_iter] to get a
     [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
-    stamp. *)
+    stamp.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_loader}. *)
 
 type t = [ `pixbuf_loader | `object_ ] Gobject.obj
 

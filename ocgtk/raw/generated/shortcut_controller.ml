@@ -41,7 +41,9 @@
     signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
     syntax for other kinds of [Gtk.ShortcutAction]. See
     [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
-    triggers. *)
+    triggers.
+
+    The class built on this module is in {!Ocgtk.Shortcut_controller}. *)
 
 type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
 

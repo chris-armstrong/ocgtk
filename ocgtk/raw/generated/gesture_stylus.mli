@@ -4,7 +4,8 @@
 (** Recognizes tablet stylus input.
 
     The provided signals just relay the basic information of the stylus events.
-*)
+
+    The class built on this module is in {!Ocgtk.Gesture_stylus}. *)
 
 type t =
   [ `gesture_stylus | `gesture_single | `gesture | `event_controller | `object_ ]

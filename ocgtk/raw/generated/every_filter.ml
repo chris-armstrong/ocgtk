@@ -3,7 +3,9 @@
 
 (** Matches an item when each of its filters matches.
 
-    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append]. *)
+    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append].
+
+    The class built on this module is in {!Ocgtk.Every_filter}. *)
 
 type t = [ `every_filter | `multi_filter | `filter | `object_ ] Gobject.obj
 

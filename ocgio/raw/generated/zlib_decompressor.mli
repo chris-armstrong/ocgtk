@@ -2,7 +2,9 @@
 (* ZlibDecompressor: ZlibDecompressor *)
 
 (** [GZlibDecompressor] is an implementation of [Gio.Converter] that
-    decompresses data compressed with zlib. *)
+    decompresses data compressed with zlib.
+
+    The class built on this module is in {!Ocgio.Zlib_decompressor}. *)
 
 type t = [ `zlib_decompressor | `object_ ] Gobject.obj
 

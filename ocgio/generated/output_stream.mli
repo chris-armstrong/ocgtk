@@ -1,3 +1,25 @@
+(** [GOutputStream] is a base class for implementing streaming output.
+
+    It has functions to write to a stream ([Gio.OutputStream.write]), to close a
+    stream ([Gio.OutputStream.close]) and to flush pending writes
+    ([Gio.OutputStream.flush]).
+
+    To copy the content of an input stream to an output stream without manually
+    handling the reads and writes, use [Gio.OutputStream.splice].
+
+    See the documentation for [Gio.IOStream] for details of thread safety of
+    streaming APIs.
+
+    All of these functions have async variants too.
+
+    All classes derived from [GOutputStream] {i should} implement synchronous
+    writing, splicing, flushing and closing streams, but {i may} implement
+    asynchronous versions.
+
+    Its methods, signals and properties are on {!class-type-output_stream_t}.
+    The functions it is built on are in {!Ocgio.Raw.Output_stream}. *)
+
+(** The methods, signals and properties of a [GOutputStream]. *)
 class type output_stream_t = object
   method clear_pending : unit -> unit
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
@@ -28,3 +50,6 @@ class type output_stream_t = object
 end
 
 class output_stream : Raw.Output_stream.t -> output_stream_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Output_stream.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GOutputStream], give one already wrapped. *)

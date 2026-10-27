@@ -4,7 +4,9 @@
 (** [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 
-    It implements [Gio.LoadableIcon]. *)
+    It implements [Gio.LoadableIcon].
+
+    The class built on this module is in {!Ocgio.File_icon}. *)
 
 type t = [ `file_icon | `object_ ] Gobject.obj
 

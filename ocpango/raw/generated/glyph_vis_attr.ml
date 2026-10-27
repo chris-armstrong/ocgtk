@@ -9,7 +9,9 @@
 
     Clusters are stored in visual order, within the cluster, glyphs are always
     ordered in logical order, since visual order is meaningless; that is, in
-    Arabic text, accent glyphs follow the glyphs for the base character. *)
+    Arabic text, accent glyphs follow the glyphs for the base character.
+
+    The class built on this module is in {!Ocpango.Glyph_vis_attr}. *)
 
 type t = [ `glyph_vis_attr ] Gobject.obj
 

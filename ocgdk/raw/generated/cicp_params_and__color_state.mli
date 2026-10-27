@@ -1,6 +1,30 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgdk.Raw.Cicp_params}, {!Ocgdk.Raw.Color_state},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** Contains the parameters that define a colorstate with cicp parameters.
+
+    Cicp parameters are specified in the ITU-T H.273
+    {{:https://www.itu.int/rec/T-REC-H.273/en}specification}.
+
+    See the documentation of individual properties for supported values.
+
+    The 'unspecified' value (2) is not treated in any special way, and must be
+    replaced by a different value before creating a color state.
+
+    [GdkCicpParams] can be used as a builder object to construct a color state
+    from Cicp data with [Gdk.CicpParams.build_color_state]. The function will
+    return an error if the given parameters are not supported.
+
+    You can obtain a [GdkCicpParams] object from a color state with
+    [Gdk.ColorState.create_cicp_params]. This can be used to create a variant of
+    a color state, by changing just one of the cicp parameters, or just to
+    obtain information about the color state.
+
+    The class built on this module is in {!Ocgdk.Cicp_params}. *)
 module rec Cicp_params : sig
   type t = [ `cicp_params | `object_ ] Gobject.obj
 
@@ -55,6 +79,16 @@ module rec Cicp_params : sig
   (* Properties *)
 end
 
+(** Provides information to interpret colors and pixels in a variety of ways.
+
+    They are also known as
+    {{:https://en.wikipedia.org/wiki/Color_space}{i color spaces}}.
+
+    Crucially, GTK knows how to convert colors from one color state to another.
+
+    [GdkColorState] objects are immutable and therefore threadsafe.
+
+    The class built on this module is in {!Ocgdk.Color_state}. *)
 and Color_state : sig
   type t = [ `color_state ] Gobject.obj
 

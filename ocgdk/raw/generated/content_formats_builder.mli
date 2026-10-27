@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContentFormatsBuilder: ContentFormatsBuilder *)
 
-(** Creates [GdkContentFormats] objects. *)
+(** Creates [GdkContentFormats] objects.
+
+    The class built on this module is in {!Ocgdk.Content_formats_builder}. *)
 
 type t = [ `content_formats_builder ] Gobject.obj
 

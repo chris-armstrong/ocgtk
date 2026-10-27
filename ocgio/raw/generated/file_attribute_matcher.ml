@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileAttributeMatcher: FileAttributeMatcher *)
 
-(** Determines if a string matches a file attribute. *)
+(** Determines if a string matches a file attribute.
+
+    The class built on this module is in {!Ocgio.File_attribute_matcher}. *)
 
 type t = [ `file_attribute_matcher ] Gobject.obj
 

@@ -92,7 +92,8 @@
  - [Gtk.AccessibleRole.group] for the notebook widget\n\
  - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
  - [Gtk.AccessibleRole.tab] role for each tab\n\
- - [Gtk.AccessibleRole.tab_panel] for each page"]
+ - [Gtk.AccessibleRole.tab_panel] for each page\n\n\
+ The class built on this module is in {!Ocgtk.Notebook}."]
 
 type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
 

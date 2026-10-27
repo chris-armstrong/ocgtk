@@ -1,3 +1,25 @@
+(** Can be applied to text contained in a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
+    using them with that buffer.
+
+    [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
+    for numerous examples.
+
+    For each property of [GtkTextTag], there is a “set” property, e.g.
+    “font-set” corresponds to “font”. These “set” properties reflect whether a
+    property has been set or not.
+
+    They are maintained by GTK and you should not set them independently.
+
+    Its methods, signals and properties are on {!class-type-text_tag_t}. The
+    functions it is built on are in {!Ocgtk.Raw.Text_tag}. *)
+
+(** The methods, signals and properties of a [GtkTextTag]. *)
 class type text_tag_t = object
   method changed : bool -> unit
   method get_priority : unit -> int
@@ -180,5 +202,8 @@ class type text_tag_t = object
 end
 
 class text_tag : Raw.Text_tag.t -> text_tag_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_tag.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTextTag], give one already wrapped. *)
 
 val new_ : string option -> text_tag_t

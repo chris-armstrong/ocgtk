@@ -7,7 +7,9 @@
 
     It does the comparison in a linguistically correct way using the current
     locale by normalizing Unicode strings and possibly case-folding them before
-    performing the comparison. *)
+    performing the comparison.
+
+    The class built on this module is in {!Ocgtk.String_sorter}. *)
 
 type t = [ `string_sorter | `sorter | `object_ ] Gobject.obj
 

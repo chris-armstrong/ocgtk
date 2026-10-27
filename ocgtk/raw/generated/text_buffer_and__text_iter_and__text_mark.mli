@@ -1,6 +1,21 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgtk.Raw.Text_buffer}, {!Ocgtk.Raw.Text_iter},
+    {!Ocgtk.Raw.Text_mark}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** Stores text and attributes for display in a [GtkTextView].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    GtkTextBuffer can support undoing changes to the buffer content, see
+    [Gtk.TextBuffer.set_enable_undo].
+
+    The class built on this module is in {!Ocgtk.Text_buffer}. *)
 module rec Text_buffer : sig
   type t = [ `text_buffer | `object_ ] Gobject.obj
 
@@ -655,6 +670,13 @@ module rec Text_buffer : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
+(** Iterates over the contents of a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    The class built on this module is in {!Ocgtk.Text_iter}. *)
 and Text_iter : sig
   type t = [ `text_iter ] Gobject.obj
 
@@ -1349,6 +1371,38 @@ and Text_iter : sig
       The function is used by language bindings. *)
 end
 
+(** Marks a position in a [GtkTextbuffer] that is preserved across
+    modifications.
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    A [GtkTextMark] is like a bookmark in a text buffer; it preserves a position
+    in the text. You can convert the mark to an iterator using
+    [Gtk.TextBuffer.get_iter_at_mark]. Unlike iterators, marks remain valid
+    across buffer mutations, because their behavior is defined when text is
+    inserted or deleted. When text containing a mark is deleted, the mark
+    remains in the position originally occupied by the deleted text. When text
+    is inserted at a mark, a mark with “left gravity” will be moved to the
+    beginning of the newly-inserted text, and a mark with “right gravity” will
+    be moved to the end.
+
+    Note that “left” and “right” here refer to logical direction (left is the
+    toward the start of the buffer); in some languages such as Hebrew the
+    logically-leftmost text is not actually on the left when displayed.
+
+    Marks are reference counted, but the reference count only controls the
+    validity of the memory; marks can be deleted from the buffer at any time
+    with [Gtk.TextBuffer.delete_mark]. Once deleted from the buffer, a mark is
+    essentially useless.
+
+    Marks optionally have names; these can be convenient to avoid passing the
+    [GtkTextMark] object around.
+
+    Marks are typically created using the [Gtk.TextBuffer.create_mark] function.
+
+    The class built on this module is in {!Ocgtk.Text_mark}. *)
 and Text_mark : sig
   type t = [ `text_mark | `object_ ] Gobject.obj
 

@@ -4,7 +4,9 @@
 (** Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 
-    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable].
+
+    The class built on this module is in {!Ocgtk.Icon_paintable}. *)
 
 type t = [ `icon_paintable | `object_ ] Gobject.obj
 

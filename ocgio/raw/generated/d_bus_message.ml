@@ -2,7 +2,9 @@
 (* DBusMessage: DBusMessage *)
 
 (** A type for representing D-Bus messages that can be sent or received on a
-    [Gio.DBusConnection]. *)
+    [Gio.DBusConnection].
+
+    The class built on this module is in {!Ocgio.D_bus_message}. *)
 
 type t = [ `d_bus_message | `object_ ] Gobject.obj
 

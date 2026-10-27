@@ -35,7 +35,9 @@
     {b CSS nodes}
 
     [GtkAssistant] has a single CSS node with the name window and style class
-    .assistant. *)
+    .assistant.
+
+    The class built on this module is in {!Ocgtk.Assistant}. *)
 
 type t =
   [ `assistant | `window | `widget | `initially_unowned | `object_ ] Gobject.obj

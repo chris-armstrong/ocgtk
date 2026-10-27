@@ -16,7 +16,9 @@
 
     As with [Gio.SocketService], you may connect to
     [Gio.ThreadedSocketService::run], or subclass and override the default
-    handler. *)
+    handler.
+
+    The class built on this module is in {!Ocgio.Threaded_socket_service}. *)
 
 type t =
   [ `threaded_socket_service | `socket_service | `socket_listener | `object_ ]

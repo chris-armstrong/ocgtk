@@ -2,7 +2,9 @@
 (* IOExtension: IOExtension *)
 
 (** [GIOExtension] is an opaque data structure and can only be accessed using
-    the following functions. *)
+    the following functions.
+
+    The class built on this module is in {!Ocgio.Io_extension}. *)
 
 type t = [ `io_extension ] Gobject.obj
 

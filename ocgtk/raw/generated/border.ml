@@ -3,7 +3,9 @@
 
 (** Specifies a border around a rectangular area.
 
-    Each side can have a different width. *)
+    Each side can have a different width.
+
+    The class built on this module is in {!Ocgtk.Border}. *)
 
 type t = [ `border ] Gobject.obj
 

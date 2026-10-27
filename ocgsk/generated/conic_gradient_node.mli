@@ -1,3 +1,10 @@
+(** A render node for a conic gradient.
+
+    Its methods, signals and properties are on
+    {!class-type-conic_gradient_node_t}. The functions it is built on are in
+    {!Ocgsk.Raw.Conic_gradient_node}. *)
+
+(** The methods, signals and properties of a [GskConicGradientNode]. *)
 class type conic_gradient_node_t = object
   inherit Render_node.render_node_t
   method get_angle : unit -> float
@@ -8,6 +15,9 @@ class type conic_gradient_node_t = object
 end
 
 class conic_gradient_node : Raw.Conic_gradient_node.t -> conic_gradient_node_t
+(** Wraps a layer 1 handle, {!Ocgsk.Raw.Conic_gradient_node.t}. Apply it
+    directly only to convert a handle obtained from layer 1: constructors, and
+    methods that return a [GskConicGradientNode], give one already wrapped. *)
 
 val new_ :
   Ocgraphene.Rect.rect_t ->

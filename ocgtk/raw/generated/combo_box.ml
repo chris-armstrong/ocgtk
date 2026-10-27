@@ -58,7 +58,9 @@
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role.
+
+    The class built on this module is in {!Ocgtk.Combo_box}. *)
 
 type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 

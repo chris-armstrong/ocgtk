@@ -1,3 +1,11 @@
+(** [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
+
+    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+
+    Its methods, signals and properties are on {!class-type-shortcut_label_t}.
+    The functions it is built on are in {!Ocgtk.Raw.Shortcut_label}. *)
+
+(** The methods, signals and properties of a [GtkShortcutLabel]. *)
 class type shortcut_label_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -11,5 +19,8 @@ class type shortcut_label_t = object
 end
 
 class shortcut_label : Raw.Shortcut_label.t -> shortcut_label_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut_label.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkShortcutLabel], give one already wrapped. *)
 
 val new_ : string -> shortcut_label_t

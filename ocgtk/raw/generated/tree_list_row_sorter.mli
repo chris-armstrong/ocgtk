@@ -12,7 +12,9 @@
     sort_model = gtk_sort_list_model_new (tree_model, sorter);
     selection = gtk_single_selection_new sort_model;
     gtk_column_view_set_model (view, G_LIST_MODEL selection)
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Tree_list_row_sorter}. *)
 
 type t = [ `tree_list_row_sorter | `sorter | `object_ ] Gobject.obj
 

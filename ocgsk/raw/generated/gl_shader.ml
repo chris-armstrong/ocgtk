@@ -91,7 +91,8 @@
 \  vec4 source2 = GskTexture(u_texture2, uv);\n\n\
 \  fragColor = position * source1 + (1.0 - position) * source2;\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgsk.Gl_shader}."]
 
 type t = [ `gl_shader | `object_ ] Gobject.obj
 

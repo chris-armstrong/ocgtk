@@ -12,7 +12,9 @@
     [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
     [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
     [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
-    [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
+    [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist].
+
+    The class built on this module is in {!Ocgtk.Media_stream}. *)
 
 type t = [ `media_stream | `object_ ] Gobject.obj
 

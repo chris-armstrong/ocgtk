@@ -1,6 +1,75 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgtk.Raw.Column_view},
+    {!Ocgtk.Raw.Column_view_column}, defined together because they refer to each
+    other. Each has a module of its own that re-exports it; use that module
+    rather than this one. *)
+
+(** Presents a large dynamic list of items using multiple columns with headers.
+
+    [GtkColumnView] uses the factories of its columns to generate a cell widget
+    for each column, for each visible item and displays them together as the row
+    for this item.
+
+    The [Gtk.ColumnView:show-row-separators] and
+    [Gtk.ColumnView:show-column-separators] properties offer a simple way to
+    display separators between the rows or columns.
+
+    [GtkColumnView] allows the user to select items according to the selection
+    characteristics of the model. For models that allow multiple selected items,
+    it is possible to turn on {i rubberband selection}, using
+    [Gtk.ColumnView:enable-rubberband].
+
+    The column view supports sorting that can be customized by the user by
+    clicking on column headers. To set this up, the [GtkSorter] returned by
+    [Gtk.ColumnView.get_sorter] must be attached to a sort model for the data
+    that the view is showing, and the columns must have sorters attached to them
+    by calling [Gtk.ColumnViewColumn.set_sorter]. The initial sort order can be
+    set with [Gtk.ColumnView.sort_by_column].
+
+    The column view also supports interactive resizing and reordering of
+    columns, via Drag-and-Drop of the column headers. This can be enabled or
+    disabled with the [Gtk.ColumnView:reorderable] and
+    [Gtk.ColumnViewColumn:resizable] properties.
+
+    To learn more about the list widget framework, see the overview.
+
+    {b CSS nodes}
+
+    {[
+    columnview[.column-separators][.rich-list][.navigation-sidebar][.data-table]
+    ├── header
+    │   ├── <column header>
+    ┊   ┊
+    │   ╰── <column header>
+    │
+    ├── listview
+    │
+    ┊
+    ╰── [rubberband]
+    ]}
+
+    [GtkColumnView] uses a single CSS node named columnview. It may carry the
+    .column-separators style class, when [Gtk.ColumnView:show-column-separators]
+    property is set. Header widgets appear below a node with name header. The
+    rows are contained in a [GtkListView] widget, so there is a listview node
+    with the same structure as for a standalone [GtkListView] widget. If
+    [Gtk.ColumnView:show-row-separators] is set, it will be passed on to the
+    list view, causing its CSS node to carry the .separators style class. For
+    rubberband selection, a node with name rubberband is used.
+
+    The main columnview node may also carry style classes to select the style of
+    list presentation: .rich-list, .navigation-sidebar or .data-table.
+
+    {b Accessibility}
+
+    [GtkColumnView] uses the [Gtk.AccessibleRole.tree_grid] role, header title
+    widgets are using the [Gtk.AccessibleRole.column_header] role. The row
+    widgets are using the [Gtk.AccessibleRole.row] role, and individual cells
+    are using the [Gtk.AccessibleRole.grid_cell] role
+
+    The class built on this module is in {!Ocgtk.Column_view}. *)
 module rec Column_view : sig
   type t =
     [ `column_view | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -184,6 +253,20 @@ module rec Column_view : sig
     Gobject.Signal.handler_id
 end
 
+(** Represents the columns in a [GtkColumnView].
+
+    The main ingredient for a [GtkColumnViewColumn] is the [GtkListItemFactory]
+    that tells the columnview how to create cells for this column from items in
+    the model.
+
+    Columns have a title, and can optionally have a header menu set with
+    [Gtk.ColumnViewColumn.set_header_menu].
+
+    A sorter can be associated with a column using
+    [Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
+    clicking on the column header.
+
+    The class built on this module is in {!Ocgtk.Column_view_column}. *)
 and Column_view_column : sig
   type t = [ `column_view_column | `object_ ] Gobject.obj
 

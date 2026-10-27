@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CustomFilter: CustomFilter *)
 
-(** Determines whether to include items with a callback. *)
+(** Determines whether to include items with a callback.
+
+    The class built on this module is in {!Ocgtk.Custom_filter}. *)
 
 type t = [ `custom_filter | `filter | `object_ ] Gobject.obj
 

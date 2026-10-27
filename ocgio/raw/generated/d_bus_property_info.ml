@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusPropertyInfo: DBusPropertyInfo *)
 
-(** Information about a D-Bus property on a D-Bus interface. *)
+(** Information about a D-Bus property on a D-Bus interface.
+
+    The class built on this module is in {!Ocgio.D_bus_property_info}. *)
 
 type t = [ `d_bus_property_info ] Gobject.obj
 

@@ -4,7 +4,9 @@
 (** [GCancellable] allows operations to be cancelled.
 
     [GCancellable] is a thread-safe operation cancellation stack used throughout
-    GIO to allow for cancellation of synchronous and asynchronous operations. *)
+    GIO to allow for cancellation of synchronous and asynchronous operations.
+
+    The class built on this module is in {!Ocgio.Cancellable}. *)
 
 type t = [ `cancellable | `object_ ] Gobject.obj
 

@@ -23,7 +23,8 @@
  loadable modules. An input method module is a small shared library which\n\
  provides a [GIOExtension] for the extension point named \"gtk-im-module\".\n\n\
  To connect a widget to the users preferred input method, you should use\n\
- [Gtk.IMMulticontext]."]
+ [Gtk.IMMulticontext].\n\n\
+ The class built on this module is in {!Ocgtk.Im_context}."]
 
 type t = [ `im_context | `object_ ] Gobject.obj
 

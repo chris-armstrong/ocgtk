@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Point3D: Point3D *)
 
-(** A point with three components: X, Y, and Z. *)
+(** A point with three components: X, Y, and Z.
+
+    The class built on this module is in {!Ocgraphene.Point3_d}. *)
 
 type t = [ `point3_d ] Gobject.obj
 

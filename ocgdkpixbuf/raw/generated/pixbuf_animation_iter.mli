@@ -2,7 +2,10 @@
 (* PixbufAnimationIter: PixbufAnimationIter *)
 
 (** An opaque object representing an iterator which points to a certain position
-    in an animation. *)
+    in an animation.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_animation_iter}.
+*)
 
 type t = [ `pixbuf_animation_iter | `object_ ] Gobject.obj
 

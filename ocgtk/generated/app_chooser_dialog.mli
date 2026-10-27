@@ -1,3 +1,25 @@
+(** [GtkAppChooserDialog] shows a [GtkAppChooserWidget] inside a [GtkDialog].
+
+    An example GtkAppChooserDialog
+
+    Note that [GtkAppChooserDialog] does not have any interesting methods of its
+    own. Instead, you should get the embedded [GtkAppChooserWidget] using
+    [Gtk.AppChooserDialog.get_widget] and call its methods if the generic
+    [Gtk.AppChooser] interface is not sufficient for your needs.
+
+    To set the heading that is shown above the [GtkAppChooserWidget], use
+    [Gtk.AppChooserDialog.set_heading].
+
+    {b CSS nodes}
+
+    [GtkAppChooserDialog] has a single CSS node with the name [window] and style
+    class [.appchooser].
+
+    Its methods, signals and properties are on
+    {!class-type-app_chooser_dialog_t}. The functions it is built on are in
+    {!Ocgtk.Raw.App_chooser_dialog}. *)
+
+(** The methods, signals and properties of a [GtkAppChooserDialog]. *)
 class type app_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit App_chooser.app_chooser_t
@@ -14,6 +36,9 @@ class type app_chooser_dialog_t = object
 end
 
 class app_chooser_dialog : Raw.App_chooser_dialog.t -> app_chooser_dialog_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.App_chooser_dialog.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkAppChooserDialog], give one already wrapped. *)
 
 val new_ :
   Application_and__window_and__window_group.window_t option ->

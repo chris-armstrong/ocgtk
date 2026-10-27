@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* KeyvalTrigger: KeyvalTrigger *)
 
-(** Triggers when a specific keyval and modifiers are pressed. *)
+(** Triggers when a specific keyval and modifiers are pressed.
+
+    The class built on this module is in {!Ocgtk.Keyval_trigger}. *)
 
 type t = [ `keyval_trigger | `shortcut_trigger | `object_ ] Gobject.obj
 

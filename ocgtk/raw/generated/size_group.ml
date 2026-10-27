@@ -87,7 +87,8 @@
 \    <widget name=\"radio2\"/>\n\
 \  </widgets>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Size_group}."]
 
 type t = [ `size_group | `object_ ] Gobject.obj
 

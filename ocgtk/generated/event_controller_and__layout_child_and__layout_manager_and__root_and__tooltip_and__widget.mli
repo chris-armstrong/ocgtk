@@ -1,3 +1,9 @@
+(** The classes of {!Ocgtk.Event_controller}, {!Ocgtk.Layout_child},
+    {!Ocgtk.Layout_manager}, {!Ocgtk.Root}, {!Ocgtk.Tooltip}, {!Ocgtk.Widget},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [GtkEventController]. *)
 class type event_controller_t = object
   method get_current_event : unit -> Ocgdk.Event.event_t option
   method get_current_event_device : unit -> Ocgdk.Device.device_t option
@@ -15,12 +21,14 @@ class type event_controller_t = object
   method as_event_controller : Raw.Event_controller.t
 end
 
+(** The methods, signals and properties of a [GtkLayoutChild]. *)
 and layout_child_t = object
   method get_child_widget : unit -> widget_t
   method get_layout_manager : unit -> layout_manager_t
   method as_layout_child : Raw.Layout_child.t
 end
 
+(** The methods, signals and properties of a [GtkLayoutManager]. *)
 and layout_manager_t = object
   method allocate : widget_t -> int -> int -> int -> unit
   method get_layout_child : widget_t -> layout_child_t
@@ -30,6 +38,7 @@ and layout_manager_t = object
   method as_layout_manager : Raw.Layout_manager.t
 end
 
+(** The methods, signals and properties of a [GtkRoot]. *)
 and root_t = object
   method get_display : unit -> Ocgdk.Display.display_t
   method get_focus : unit -> widget_t option
@@ -37,6 +46,7 @@ and root_t = object
   method as_root : Raw.Root.t
 end
 
+(** The methods, signals and properties of a [GtkTooltip]. *)
 and tooltip_t = object
   method set_custom : widget_t option -> unit
   method set_icon : Ocgdk.Paintable.paintable_t option -> unit
@@ -48,6 +58,7 @@ and tooltip_t = object
   method as_tooltip : Raw.Tooltip.t
 end
 
+(** The methods, signals and properties of a [GtkWidget]. *)
 and widget_t = object
   inherit At_context_and__accessible.accessible_t
   inherit Buildable.buildable_t
@@ -278,14 +289,32 @@ and widget_t = object
   method as_widget : Raw.Widget.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkEventController], give one already wrapped. *)
 class event_controller : Raw.Event_controller.t -> event_controller_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Layout_child.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkLayoutChild], give one already wrapped. *)
 
 and layout_child : Raw.Layout_child.t -> layout_child_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Layout_manager.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GtkLayoutManager], give one already wrapped. *)
 
 and layout_manager : Raw.Layout_manager.t -> layout_manager_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Root.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkRoot], give one already wrapped. *)
 
 and root : Raw.Root.t -> root_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tooltip.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkTooltip], give one already wrapped. *)
 
 and tooltip : Raw.Tooltip.t -> tooltip_t
+(** Wraps a layer 1 handle, {!Ocgtk.Raw.Widget.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GtkWidget], give one already wrapped. *)
 
 and widget : Raw.Widget.t -> widget_t

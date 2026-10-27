@@ -7,7 +7,9 @@
     returned from that function.
 
     The [GFileInfo]s in the list have some attributes in the recent namespace
-    added: [recent::private] (boolean) and [recent:applications] (stringv). *)
+    added: [recent::private] (boolean) and [recent:applications] (stringv).
+
+    The class built on this module is in {!Ocgtk.Bookmark_list}. *)
 
 type t = [ `bookmark_list | `object_ ] Gobject.obj
 

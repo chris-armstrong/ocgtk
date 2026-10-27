@@ -58,7 +58,9 @@
     [SIGPIPE] to be ignored for the remainder of the program. If you are writing
     a command-line utility that uses [GSubprocess], you may need to take into
     account the fact that your program will not automatically be killed if it
-    tries to write to [stdout] after it has been closed. *)
+    tries to write to [stdout] after it has been closed.
+
+    The class built on this module is in {!Ocgio.Subprocess}. *)
 
 type t = [ `subprocess | `object_ ] Gobject.obj
 

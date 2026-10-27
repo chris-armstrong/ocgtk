@@ -143,7 +143,8 @@
 \  cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));\n\
 \  return g_object_ref (cake);\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.Simple_async_result}."]
 
 type t = [ `simple_async_result | `object_ ] Gobject.obj
 

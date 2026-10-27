@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiSelection: MultiSelection *)
 
-(** A selection model that allows selecting multiple elements. *)
+(** A selection model that allows selecting multiple elements.
+
+    The class built on this module is in {!Ocgtk.Multi_selection}. *)
 
 type t = [ `multi_selection | `object_ ] Gobject.obj
 

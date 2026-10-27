@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AssistantPage: AssistantPage *)
 
-(** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
+(** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant].
+
+    The class built on this module is in {!Ocgtk.Assistant_page}. *)
 
 type t = [ `assistant_page | `object_ ] Gobject.obj
 

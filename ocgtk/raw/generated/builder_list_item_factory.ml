@@ -28,7 +28,8 @@
  A common approach is to embed such templates as CDATA marked sections into\n\
  a surrounding UI file. Note that if you use this approach, extracting\n\
  translatable strings with xgettext will not work for strings inside the\n\
- marked section."]
+ marked section.\n\n\
+ The class built on this module is in {!Ocgtk.Builder_list_item_factory}."]
 
 type t =
   [ `builder_list_item_factory | `list_item_factory | `object_ ] Gobject.obj

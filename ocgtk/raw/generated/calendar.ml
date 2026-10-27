@@ -50,7 +50,9 @@
     Day labels that belong to the previous or next month get the .other-month
     style class. The label of the current day get the .today style class.
 
-    Marked day labels get the :selected state assigned. *)
+    Marked day labels get the :selected state assigned.
+
+    The class built on this module is in {!Ocgtk.Calendar}. *)
 
 type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
 

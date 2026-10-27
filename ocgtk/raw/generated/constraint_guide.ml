@@ -10,7 +10,9 @@
     constraints that are applied, they can act like a guideline that widgets can
     be aligned to, or like {i flexible space}.
 
-    Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn. *)
+    Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn.
+
+    The class built on this module is in {!Ocgtk.Constraint_guide}. *)
 
 type t = [ `constraint_guide | `object_ ] Gobject.obj
 

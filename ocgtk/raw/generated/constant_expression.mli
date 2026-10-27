@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConstantExpression: ConstantExpression *)
 
-(** A constant value in a [GtkExpression]. *)
+(** A constant value in a [GtkExpression].
+
+    The class built on this module is in {!Ocgtk.Constant_expression}. *)
 
 type t = [ `constant_expression | `expression ] Gobject.obj
 

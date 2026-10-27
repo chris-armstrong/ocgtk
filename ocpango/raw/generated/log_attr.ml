@@ -2,7 +2,9 @@
 (* LogAttr: LogAttr *)
 
 (** The [PangoLogAttr] structure stores information about the attributes of a
-    single character. *)
+    single character.
+
+    The class built on this module is in {!Ocpango.Log_attr}. *)
 
 type t = [ `log_attr ] Gobject.obj
 

@@ -31,7 +31,9 @@
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
     created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor. *)
+    endeavor.
+
+    The class built on this module is in {!Ocgdk.Content_formats}. *)
 
 type t = [ `content_formats ] Gobject.obj
 

@@ -4,7 +4,8 @@
 (** Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
 
     The anchor can have multiple widgets anchored, to allow for multiple views.
-*)
+
+    The class built on this module is in {!Ocgtk.Text_child_anchor}. *)
 
 type t = [ `text_child_anchor | `object_ ] Gobject.obj
 

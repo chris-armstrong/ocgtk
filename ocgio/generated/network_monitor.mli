@@ -1,3 +1,13 @@
+(** [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
+    network connectivity. On Linux, the available implementations are based on
+    the kernel's netlink interface and on NetworkManager.
+
+    There is also an implementation for use inside Flatpak sandboxes.
+
+    Its methods, signals and properties are on {!class-type-network_monitor_t}.
+    The functions it is built on are in {!Ocgio.Raw.Network_monitor}. *)
+
+(** The methods, signals and properties of a [GNetworkMonitor]. *)
 class type network_monitor_t = object
   method on_network_changed :
     ?after:bool ->
@@ -21,3 +31,6 @@ class type network_monitor_t = object
 end
 
 class network_monitor : Raw.Network_monitor.t -> network_monitor_t
+(** Wraps a layer 1 handle, {!Ocgio.Raw.Network_monitor.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GNetworkMonitor], give one already wrapped. *)

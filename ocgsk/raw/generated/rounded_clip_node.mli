@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RoundedClipNode: RoundedClipNode *)
 
-(** A render node applying a rounded rectangle clip to its single child. *)
+(** A render node applying a rounded rectangle clip to its single child.
+
+    The class built on this module is in {!Ocgsk.Rounded_clip_node}. *)
 
 type t = [ `rounded_clip_node | `render_node ] Gobject.obj
 

@@ -39,7 +39,9 @@
 
     Selections may happen asynchronously, so the only reliable way to find out
     when an item was selected is to listen to the signals that indicate
-    selection. *)
+    selection.
+
+    The class built on this module is in {!Ocgtk.Selection_model}. *)
 
 type t = [ `selection_model ] Gobject.obj
 

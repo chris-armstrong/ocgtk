@@ -4,7 +4,9 @@
 (** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 
-    An example GtkVolumeButton *)
+    An example GtkVolumeButton
+
+    The class built on this module is in {!Ocgtk.Volume_button}. *)
 
 type t =
   [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]

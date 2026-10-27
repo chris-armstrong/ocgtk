@@ -9,7 +9,9 @@
 
     [GdkTextureDownloader] can be used to convert data between different
     formats. Create a [GdkTexture] for the existing format and then download it
-    in a different format. *)
+    in a different format.
+
+    The class built on this module is in {!Ocgdk.Texture_downloader}. *)
 
 type t = [ `texture_downloader ] Gobject.obj
 

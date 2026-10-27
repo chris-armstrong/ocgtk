@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BlurNode: BlurNode *)
 
-(** A render node applying a blur effect to its single child. *)
+(** A render node applying a blur effect to its single child.
+
+    The class built on this module is in {!Ocgsk.Blur_node}. *)
 
 type t = [ `blur_node | `render_node ] Gobject.obj
 

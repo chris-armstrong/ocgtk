@@ -2,7 +2,9 @@
 (* StaticResource: StaticResource *)
 
 (** [GStaticResource] is an opaque data structure and can only be accessed using
-    the following functions. *)
+    the following functions.
+
+    The class built on this module is in {!Ocgio.Static_resource}. *)
 
 type t = [ `static_resource ] Gobject.obj
 

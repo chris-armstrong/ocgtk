@@ -5,7 +5,9 @@
 
     Whenever the distance between both tracked sequences changes, the
     [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor. *)
+    factor.
+
+    The class built on this module is in {!Ocgtk.Gesture_zoom}. *)
 
 type t = [ `gesture_zoom | `gesture | `event_controller | `object_ ] Gobject.obj
 

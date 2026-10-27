@@ -8,7 +8,9 @@
     GTK provides a GIO extension point for [GtkMediaFile] implementations to
     allow for external implementations using various media frameworks.
 
-    GTK itself includes an implementation using GStreamer. *)
+    GTK itself includes an implementation using GStreamer.
+
+    The class built on this module is in {!Ocgtk.Media_file}. *)
 
 type t = [ `media_file | `media_stream | `object_ ] Gobject.obj
 

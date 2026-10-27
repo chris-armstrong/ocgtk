@@ -24,7 +24,9 @@
     ]}
 
     [GtkIconView] has a single CSS node with name iconview and style class
-    .view. For rubberband selection, a subnode with name rubberband is used. *)
+    .view. For rubberband selection, a subnode with name rubberband is used.
+
+    The class built on this module is in {!Ocgtk.Icon_view}. *)
 
 type t = [ `icon_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 

@@ -76,7 +76,9 @@
     role.
 
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    [Gtk.AccessibleRole.generic] role.
+
+    The class built on this module is in {!Ocgtk.Scrolled_window}. *)
 
 type t =
   [ `scrolled_window | `widget | `initially_unowned | `object_ ] Gobject.obj

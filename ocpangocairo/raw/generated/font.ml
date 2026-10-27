@@ -4,7 +4,9 @@
 (** [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
     The actual type of the font will depend on the particular font technology
-    Cairo was compiled to use. *)
+    Cairo was compiled to use.
+
+    The class built on this module is in {!Ocpangocairo.Font}. *)
 
 type t = [ `font ] Gobject.obj
 

@@ -1,3 +1,11 @@
+(** The classes of {!Ocgdk.App_launch_context}, {!Ocgdk.Cairo_context},
+    {!Ocgdk.Clipboard}, {!Ocgdk.Device}, {!Ocgdk.Display},
+    {!Ocgdk.Draw_context}, {!Ocgdk.Event}, {!Ocgdk.Gl_context},
+    {!Ocgdk.Monitor}, {!Ocgdk.Seat}, {!Ocgdk.Surface}, {!Ocgdk.Vulkan_context},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** The methods, signals and properties of a [GdkAppLaunchContext]. *)
 class type app_launch_context_t = object
   inherit Ocgio.App_launch_context.app_launch_context_t
   method set_desktop : int -> unit
@@ -7,11 +15,13 @@ class type app_launch_context_t = object
   method display : display_t
 end
 
+(** The methods, signals and properties of a [GdkCairoContext]. *)
 and cairo_context_t = object
   method cairo_create : unit -> Occairo.Context.context_t option
   method as_cairo_context : Raw.Cairo_context.t
 end
 
+(** The methods, signals and properties of a [GdkClipboard]. *)
 and clipboard_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -40,6 +50,7 @@ and clipboard_t = object
   method as_clipboard : Raw.Clipboard.t
 end
 
+(** The methods, signals and properties of a [GdkDevice]. *)
 and device_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -72,6 +83,7 @@ and device_t = object
   method as_device : Raw.Device.t
 end
 
+(** The methods, signals and properties of a [GdkDisplay]. *)
 and display_t = object
   method on_closed :
     ?after:bool ->
@@ -128,6 +140,7 @@ and display_t = object
   method as_display : Raw.Display.t
 end
 
+(** The methods, signals and properties of a [GdkDrawContext]. *)
 and draw_context_t = object
   method begin_frame : Occairo.Region.region_t -> unit
   method end_frame : unit -> unit
@@ -138,6 +151,7 @@ and draw_context_t = object
   method as_draw_context : Raw.Draw_context.t
 end
 
+(** The methods, signals and properties of a [GdkEvent]. *)
 and event_t = object
   method get_device : unit -> device_t option
   method get_device_tool : unit -> Device_tool.device_tool_t option
@@ -155,6 +169,7 @@ and event_t = object
   method as_event : Raw.Event.t
 end
 
+(** The methods, signals and properties of a [GdkGLContext]. *)
 and gl_context_t = object
   method get_allowed_apis : unit -> Enums.glapi
   method get_api : unit -> Enums.glapi
@@ -174,6 +189,7 @@ and gl_context_t = object
   method as_gl_context : Raw.Gl_context.t
 end
 
+(** The methods, signals and properties of a [GdkMonitor]. *)
 and monitor_t = object
   method on_invalidate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -193,6 +209,7 @@ and monitor_t = object
   method as_monitor : Raw.Monitor.t
 end
 
+(** The methods, signals and properties of a [GdkSeat]. *)
 and seat_t = object
   method on_device_added :
     ?after:bool ->
@@ -227,6 +244,7 @@ and seat_t = object
   method as_seat : Raw.Seat.t
 end
 
+(** The methods, signals and properties of a [GdkSurface]. *)
 and surface_t = object
   method on_enter_monitor :
     ?after:bool ->
@@ -281,6 +299,7 @@ and surface_t = object
   method as_surface : Raw.Surface.t
 end
 
+(** The methods, signals and properties of a [GdkVulkanContext]. *)
 and vulkan_context_t = object
   method on_images_updated :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -288,27 +307,63 @@ and vulkan_context_t = object
   method as_vulkan_context : Raw.Vulkan_context.t
 end
 
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.App_launch_context.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GdkAppLaunchContext], give one already wrapped. *)
 class app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Cairo_context.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkCairoContext], give one already wrapped. *)
 
 and cairo_context : Raw.Cairo_context.t -> cairo_context_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Clipboard.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkClipboard], give one already wrapped. *)
 
 and clipboard : Raw.Clipboard.t -> clipboard_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Device.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkDevice], give one already wrapped. *)
 
 and device : Raw.Device.t -> device_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Display.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkDisplay], give one already wrapped. *)
 
 and display : Raw.Display.t -> display_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Draw_context.t}. Apply it directly only
+    to convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkDrawContext], give one already wrapped. *)
 
 and draw_context : Raw.Draw_context.t -> draw_context_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Event.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkEvent], give one already wrapped. *)
 
 and event : Raw.Event.t -> event_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Gl_context.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkGLContext], give one already wrapped. *)
 
 and gl_context : Raw.Gl_context.t -> gl_context_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Monitor.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkMonitor], give one already wrapped. *)
 
 and monitor : Raw.Monitor.t -> monitor_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Seat.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkSeat], give one already wrapped. *)
 
 and seat : Raw.Seat.t -> seat_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Surface.t}. Apply it directly only to
+    convert a handle obtained from layer 1: constructors, and methods that
+    return a [GdkSurface], give one already wrapped. *)
 
 and surface : Raw.Surface.t -> surface_t
+(** Wraps a layer 1 handle, {!Ocgdk.Raw.Vulkan_context.t}. Apply it directly
+    only to convert a handle obtained from layer 1: constructors, and methods
+    that return a [GdkVulkanContext], give one already wrapped. *)
 
 and vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
 

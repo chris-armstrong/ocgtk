@@ -7,7 +7,9 @@
 
     While the [Gio.Subprocess] class has high level functions covering popular
     cases, use of this class allows access to more advanced options. It can also
-    be used to launch multiple subprocesses with a similar configuration. *)
+    be used to launch multiple subprocesses with a similar configuration.
+
+    The class built on this module is in {!Ocgio.Subprocess_launcher}. *)
 
 type t = [ `subprocess_launcher | `object_ ] Gobject.obj
 

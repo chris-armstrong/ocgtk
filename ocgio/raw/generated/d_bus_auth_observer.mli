@@ -54,7 +54,8 @@
 \    }\n\n\
 \  return authorized;\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.D_bus_auth_observer}."]
 
 type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
 

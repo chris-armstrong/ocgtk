@@ -16,7 +16,9 @@
     Until GTK 4.10, [GtkWindowHandle] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkWindowHandle] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    [Gtk.AccessibleRole.generic] role.
+
+    The class built on this module is in {!Ocgtk.Window_handle}. *)
 
 type t =
   [ `window_handle | `widget | `initially_unowned | `object_ ] Gobject.obj

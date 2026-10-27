@@ -1,6 +1,21 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocpango.Raw.Context}, {!Ocpango.Raw.Font},
+    {!Ocpango.Raw.Font_map}, {!Ocpango.Raw.Fontset}, defined together because
+    they refer to each other. Each has a module of its own that re-exports it;
+    use that module rather than this one. *)
+
+(** A [PangoContext] stores global information used to control the itemization
+    process.
+
+    The information stored by [PangoContext] includes the fontmap used to look
+    up fonts, and default values such as the default language, default gravity,
+    or default font.
+
+    To obtain a [PangoContext], use [Pango.FontMap.create_context].
+
+    The class built on this module is in {!Ocpango.Context}. *)
 module rec Context : sig
   type t = [ `context | `object_ ] Gobject.obj
 
@@ -179,6 +194,10 @@ module rec Context : sig
       they have attached extra data to the context and such data is changed. *)
 end
 
+(** A [PangoFont] is used to represent a font in a rendering-system-independent
+    manner.
+
+    The class built on this module is in {!Ocpango.Font}. *)
 and Font : sig
   type t = [ `font | `object_ ] Gobject.obj
 
@@ -263,6 +282,13 @@ and Font : sig
       device units. *)
 end
 
+(** A [PangoFontMap] represents the set of fonts available for a particular
+    rendering system.
+
+    This is a virtual object with implementations being specific to particular
+    rendering systems.
+
+    The class built on this module is in {!Ocpango.Font_map}. *)
 and Font_map : sig
   type t = [ `font_map | `object_ ] Gobject.obj
 
@@ -355,6 +381,14 @@ and Font_map : sig
   (** Get property: n-items *)
 end
 
+(** A [PangoFontset] represents a set of [PangoFont] to use when rendering text.
+
+    A [PangoFontset] is the result of resolving a [PangoFontDescription] against
+    a particular [PangoContext]. It has operations for finding the component
+    font for a particular Unicode character, and for finding a composite set of
+    metrics for the entire fontset.
+
+    The class built on this module is in {!Ocpango.Fontset}. *)
 and Fontset : sig
   type t = [ `fontset | `object_ ] Gobject.obj
 

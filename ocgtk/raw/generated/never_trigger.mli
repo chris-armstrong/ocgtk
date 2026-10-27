@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NeverTrigger: NeverTrigger *)
 
-(** A [GtkShortcutTrigger] that never triggers. *)
+(** A [GtkShortcutTrigger] that never triggers.
+
+    The class built on this module is in {!Ocgtk.Never_trigger}. *)
 
 type t = [ `never_trigger | `shortcut_trigger | `object_ ] Gobject.obj
 

@@ -4,7 +4,9 @@
 (** A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
     with a short text.
 
-    This widget is only meant to be used with [GtkShortcutsWindow]. *)
+    This widget is only meant to be used with [GtkShortcutsWindow].
+
+    The class built on this module is in {!Ocgtk.Shortcuts_shortcut}. *)
 
 type t =
   [ `shortcuts_shortcut | `widget | `initially_unowned | `object_ ] Gobject.obj

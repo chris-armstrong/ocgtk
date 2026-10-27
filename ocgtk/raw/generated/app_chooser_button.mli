@@ -27,7 +27,9 @@
     {b CSS nodes}
 
     [GtkAppChooserButton] has a single CSS node with the name
-    “appchooserbutton”. *)
+    “appchooserbutton”.
+
+    The class built on this module is in {!Ocgtk.App_chooser_button}. *)
 
 type t =
   [ `app_chooser_button | `widget | `initially_unowned | `object_ ] Gobject.obj

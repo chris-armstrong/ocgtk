@@ -5,7 +5,9 @@
 
     [GtkFlattenListModel] takes a list model containing list models, and
     flattens it into a single model. Each list model becomes a section in the
-    single model. *)
+    single model.
+
+    The class built on this module is in {!Ocgtk.Flatten_list_model}. *)
 
 type t = [ `flatten_list_model | `object_ ] Gobject.obj
 

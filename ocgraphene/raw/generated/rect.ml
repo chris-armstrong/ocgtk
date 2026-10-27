@@ -12,7 +12,9 @@
     this function will ensure that the width and height of a rectangle are
     positive values. All functions taking a #graphene_rect_t as an argument will
     internally operate on a normalized copy; all functions returning a
-    #graphene_rect_t will always return a normalized rectangle. *)
+    #graphene_rect_t will always return a normalized rectangle.
+
+    The class built on this module is in {!Ocgraphene.Rect}. *)
 
 type t = [ `rect ] Gobject.obj
 

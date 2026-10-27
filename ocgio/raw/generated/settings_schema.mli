@@ -71,7 +71,8 @@
  It's also possible that the plugin system expects the schema source\n\
  files (ie: [.gschema.xml] files) instead of a [gschemas.compiled] file.\n\
  In that case, the plugin loading system must compile the schemas for\n\
- itself before attempting to create the settings source."]
+ itself before attempting to create the settings source.\n\n\
+ The class built on this module is in {!Ocgio.Settings_schema}."]
 
 type t = [ `settings_schema ] Gobject.obj
 

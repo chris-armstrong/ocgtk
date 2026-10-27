@@ -20,7 +20,9 @@
 
     {b CSS nodes}
 
-    GtkCellView has a single CSS node with name cellview. *)
+    GtkCellView has a single CSS node with name cellview.
+
+    The class built on this module is in {!Ocgtk.Cell_view}. *)
 
 type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 

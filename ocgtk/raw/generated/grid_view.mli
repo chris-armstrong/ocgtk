@@ -41,7 +41,9 @@
     {b Accessibility}
 
     [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role. *)
+    [Gtk.AccessibleRole.grid_cell] role.
+
+    The class built on this module is in {!Ocgtk.Grid_view}. *)
 
 type t =
   [ `grid_view | `list_base | `widget | `initially_unowned | `object_ ]

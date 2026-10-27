@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusNodeInfo: DBusNodeInfo *)
 
-(** Information about nodes in a remote object hierarchy. *)
+(** Information about nodes in a remote object hierarchy.
+
+    The class built on this module is in {!Ocgio.D_bus_node_info}. *)
 
 type t = [ `d_bus_node_info ] Gobject.obj
 

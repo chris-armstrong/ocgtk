@@ -4,7 +4,9 @@
 (** The kind of widget that can be added to a [GtkListBox].
 
     [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
-    necessary. *)
+    necessary.
+
+    The class built on this module is in {!Ocgtk.List_box_row}. *)
 
 type t = [ `list_box_row | `widget | `initially_unowned | `object_ ] Gobject.obj
 
