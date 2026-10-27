@@ -22,4 +22,8 @@
   <span><span class="label">parent_chain_for_entity</span>:<span>(<span>string <span class="arrow">&#45;&gt;</span></span> <span>string list</span>)</span> <span class="arrow">&#45;&gt;</span></span>
   <span><span class="optlabel">?from_gobject_c_name_for_entity</span>:<span>(<span><a href="../../../Types/index.html#type-entity">Types.entity</a> <span class="arrow">&#45;&gt;</span></span> <span>string option</span>)</span> <span class="arrow">&#45;&gt;</span></span>
   <span>unit <span class="arrow">&#45;&gt;</span></span>
-  string</span></code></div><div class="spec-doc"><p>Generate combined <code>module rec / and</code> ML text for a set of entities that have cyclic dependencies.</p></div></div></div></body></html>
+  string</span></code></div><div class="spec-doc"><p>Generate combined <code>module rec / and</code> ML text for a set of entities that have cyclic dependencies.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-generate_cycle_member_shim"><a href="#val-generate_cycle_member_shim" class="anchor"></a><code><span><span class="keyword">val</span> generate_cycle_member_shim : 
+  <span><span class="label">output_mode</span>:<a href="../Layer1_helpers/index.html#type-output_mode">Layer1_helpers.output_mode</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">combined_module_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">member_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div><div class="spec-doc"><p>The layer 1 module of a member of a cycle, outside the combined module: <code>include App_info_cycle_&lt;hash&gt;.File</code>, with a signature that keeps its types equal to the combined module's. Gives other namespaces the path <code>Ocgio_raw.File</code>.</p></div></div></div></body></html>

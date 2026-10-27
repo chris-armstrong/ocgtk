@@ -120,7 +120,12 @@
   <span><span class="label">ml_name</span>:string <span class="arrow">&#45;&gt;</span></span>
   <span><span class="label">version</span>:<a href="../../Version_guard/index.html#type-version">Version_guard.version</a> <span class="arrow">&#45;&gt;</span></span>
   <span><a href="../../Types/index.html#type-gir_method">Types.gir_method</a> <span class="arrow">&#45;&gt;</span></span>
-  string</span></code></div><div class="spec-doc"><p>Emit a fallback stub for a record method when class version check fails</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-emit_with_member_guard"><a href="#val-emit_with_member_guard" class="anchor"></a><code><span><span class="keyword">val</span> emit_with_member_guard : 
+  string</span></code></div><div class="spec-doc"><p>Emit a fallback stub for a record method when class version check fails</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-emit_fallback_get_type_stub"><a href="#val-emit_fallback_get_type_stub" class="anchor"></a><code><span><span class="keyword">val</span> emit_fallback_get_type_stub : 
+  <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">class_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">ml_name</span>:string <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="label">version</span>:<a href="../../Version_guard/index.html#type-version">Version_guard.version</a> <span class="arrow">&#45;&gt;</span></span>
+  string</span></code></div><div class="spec-doc"><p>Emit a fallback stub for the <code>get_type</code> wrapper when the class version check fails, so the OCaml <code>gtype</code> external still links against an older library.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-emit_with_member_guard"><a href="#val-emit_with_member_guard" class="anchor"></a><code><span><span class="keyword">val</span> emit_with_member_guard : 
   <span><span class="label">ctx</span>:<a href="../../Types/index.html#type-generation_context">Types.generation_context</a> <span class="arrow">&#45;&gt;</span></span>
   <span><span class="optlabel">?version_namespace</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
   <span><span class="label">class_version</span>:<span>string option</span> <span class="arrow">&#45;&gt;</span></span>
