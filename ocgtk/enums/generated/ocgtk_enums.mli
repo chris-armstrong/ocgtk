@@ -16,6 +16,8 @@ type accessibleannouncementpriority =
         complete their current task, authors SHOULD NOT use high priority
         announcements unless the interruption is imperative. An example would be
         a notification about a critical battery power level. *) ]
+(** The priority of an accessibility announcement.
+    @since 4.14 *)
 
 val accessibleannouncementpriority_of_int :
   int -> accessibleannouncementpriority
@@ -24,6 +26,7 @@ val accessibleannouncementpriority_to_int :
   accessibleannouncementpriority -> int
 
 (* AccessibleAutocomplete - enumeration *)
+
 type accessibleautocomplete =
   [ `NONE  (** Automatic suggestions are not displayed. *)
   | `INLINE
@@ -38,30 +41,42 @@ type accessibleautocomplete =
         displayed, one value in the collection is automatically selected, and
         the text needed to complete the automatically selected value appears
         after the caret in the input. *) ]
+(** The possible values for the [GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE]
+    accessible property. *)
 
 val accessibleautocomplete_of_int : int -> accessibleautocomplete
 val accessibleautocomplete_to_int : accessibleautocomplete -> int
 
 (* AccessibleInvalidState - enumeration *)
+
 type accessibleinvalidstate =
   [ `FALSE  (** There are no detected errors in the value *)
   | `TRUE  (** The value entered by the user has failed validation *)
   | `GRAMMAR  (** A grammatical error was detected *)
   | `SPELLING  (** A spelling error was detected *) ]
+(** The possible values for the [GTK_ACCESSIBLE_STATE_INVALID] accessible state.
+
+    Note that the [GTK_ACCESSIBLE_INVALID_FALSE] and
+    [GTK_ACCESSIBLE_INVALID_TRUE] have the same values as [FALSE] and [TRUE]. *)
 
 val accessibleinvalidstate_of_int : int -> accessibleinvalidstate
 val accessibleinvalidstate_to_int : accessibleinvalidstate -> int
 
 (* AccessiblePlatformState - enumeration *)
+
 type accessibleplatformstate =
   [ `FOCUSABLE  (** whether the accessible can be focused *)
   | `FOCUSED  (** whether the accessible has focus *)
   | `ACTIVE  (** whether the accessible is active *) ]
+(** The various platform states which can be queried using
+    [Gtk.Accessible.get_platform_state].
+    @since 4.10 *)
 
 val accessibleplatformstate_of_int : int -> accessibleplatformstate
 val accessibleplatformstate_to_int : accessibleplatformstate -> int
 
 (* AccessibleProperty - enumeration *)
+
 type accessibleproperty =
   [ `AUTOCOMPLETE
     (** Indicates whether inputting text could trigger display of one or more
@@ -131,11 +146,13 @@ type accessibleproperty =
   | `HELP_TEXT
     (** Defines a string value that provides a description of non-standard
         keyboard interactions of the current element. Value type: string *) ]
+(** The possible accessible properties of a [Accessible]. *)
 
 val accessibleproperty_of_int : int -> accessibleproperty
 val accessibleproperty_to_int : accessibleproperty -> int
 
 (* AccessibleRelation - enumeration *)
+
 type accessiblerelation =
   [ `ACTIVE_DESCENDANT
     (** Identifies the currently active element when focus is on a composite
@@ -235,11 +252,16 @@ type accessiblerelation =
 
         This relation is managed by GTK and should not be set from application
         code. *) ]
+(** The possible accessible relations of a [Accessible].
+
+    Accessible relations can be references to other widgets, integers or
+    strings. *)
 
 val accessiblerelation_of_int : int -> accessiblerelation
 val accessiblerelation_to_int : accessiblerelation -> int
 
 (* AccessibleRole - enumeration *)
+
 type accessiblerole =
   [ `ALERT
     (** An element with important, and usually time-sensitive, information *)
@@ -373,11 +395,16 @@ type accessiblerole =
   | `COMMENT
     (** A comment contains content expressing reaction to other content. *)
   | `TERMINAL  (** A virtual terminal. *) ]
+(** The accessible role for a [Accessible] implementation.
+
+    Abstract roles are only used as part of the ontology; application developers
+    must not use abstract roles in their code. *)
 
 val accessiblerole_of_int : int -> accessiblerole
 val accessiblerole_to_int : accessiblerole -> int
 
 (* AccessibleSort - enumeration *)
+
 type accessiblesort =
   [ `NONE  (** There is no defined sort applied to the column. *)
   | `ASCENDING  (** Items are sorted in ascending order by this column. *)
@@ -385,11 +412,14 @@ type accessiblesort =
   | `OTHER
     (** A sort algorithm other than ascending or descending has been applied. *)
   ]
+(** The possible values for the [GTK_ACCESSIBLE_PROPERTY_SORT] accessible
+    property. *)
 
 val accessiblesort_of_int : int -> accessiblesort
 val accessiblesort_to_int : accessiblesort -> int
 
 (* AccessibleState - enumeration *)
+
 type accessiblestate =
   [ `BUSY  (** A “busy” state. This state has boolean values *)
   | `CHECKED
@@ -419,19 +449,24 @@ type accessiblestate =
   | `VISITED
     (** Indicates that a widget with the GTK_ACCESSIBLE_ROLE_LINK has been
         visited. Value type: boolean. *) ]
+(** The possible accessible states of a [Accessible]. *)
 
 val accessiblestate_of_int : int -> accessiblestate
 val accessiblestate_to_int : accessiblestate -> int
 
 (* AccessibleTextContentChange - enumeration *)
+
 type accessibletextcontentchange =
   [ `INSERT  (** contents change as the result of an insert operation *)
   | `REMOVE  (** contents change as the result of a remove operation *) ]
+(** The type of contents change operation.
+    @since 4.14 *)
 
 val accessibletextcontentchange_of_int : int -> accessibletextcontentchange
 val accessibletextcontentchange_to_int : accessibletextcontentchange -> int
 
 (* AccessibleTextGranularity - enumeration *)
+
 type accessibletextgranularity =
   [ `CHARACTER
     (** Use the boundary between characters (including non-printing characters)
@@ -449,20 +484,30 @@ type accessibletextgranularity =
     (** Use the boundary between paragraphs, starting from the beginning of the
         current paragraph and ending at the beginning of the next paragraph *)
   ]
+(** The granularity for queries about the text contents of a
+    [Gtk.AccessibleText] implementation.
+    @since 4.14 *)
 
 val accessibletextgranularity_of_int : int -> accessibletextgranularity
 val accessibletextgranularity_to_int : accessibletextgranularity -> int
 
 (* AccessibleTristate - enumeration *)
+
 type accessibletristate =
   [ `FALSE  (** The state is [false] *)
   | `TRUE  (** The state is [true] *)
   | `MIXED  (** The state is [mixed] *) ]
+(** The possible values for the [GTK_ACCESSIBLE_STATE_PRESSED] accessible state.
+
+    Note that the [GTK_ACCESSIBLE_TRISTATE_FALSE] and
+    [GTK_ACCESSIBLE_TRISTATE_TRUE] have the same values as [FALSE] and [TRUE].
+*)
 
 val accessibletristate_of_int : int -> accessibletristate
 val accessibletristate_to_int : accessibletristate -> int
 
 (* Align - enumeration *)
+
 type align =
   [ `FILL
     (** stretch to fill all space if possible, center if no meaningful way to
@@ -474,22 +519,42 @@ type align =
   | `BASELINE  (** align the widget according to the baseline. *)
   | `BASELINE_CENTER  (** stretch to fill all space, but align the baseline. *)
   ]
+(** Controls how a widget deals with extra space in a single dimension.
+
+    Alignment only matters if the widget receives a “too large” allocation, for
+    example if you packed the widget with the [Gtk.Widget:hexpand] property
+    inside a [Box], then the widget might get extra space. If you have for
+    example a 16x16 icon inside a 32x32 space, the icon could be scaled and
+    stretched, it could be centered, or it could be positioned to one side of
+    the space.
+
+    Note that in horizontal context [GTK_ALIGN_START] and [GTK_ALIGN_END] are
+    interpreted relative to text direction.
+
+    Baseline support is optional for containers and widgets, and is only
+    available for vertical alignment. [GTK_ALIGN_BASELINE_CENTER] and
+    [GTK_ALIGN_BASELINE_FILL] are treated similar to [GTK_ALIGN_CENTER] and
+    [GTK_ALIGN_FILL], except that it positions the widget to line up the
+    baselines, where that is supported. *)
 
 val align_of_int : int -> align
 val align_to_int : align -> int
 
 (* ArrowType - enumeration *)
+
 type arrowtype =
   [ `UP  (** Represents an upward pointing arrow. *)
   | `DOWN  (** Represents a downward pointing arrow. *)
   | `LEFT  (** Represents a left pointing arrow. *)
   | `RIGHT  (** Represents a right pointing arrow. *)
   | `NONE  (** No arrow. *) ]
+(** Indicates the direction in which an arrow should point. *)
 
 val arrowtype_of_int : int -> arrowtype
 val arrowtype_to_int : arrowtype -> int
 
 (* AssistantPageType - enumeration *)
+
 type assistantpagetype =
   [ `CONTENT
     (** The page has regular contents. Both the Back and forward buttons will be
@@ -511,20 +576,39 @@ type assistantpagetype =
     (** Used for when other page types are not appropriate. No buttons will be
         shown, and the application must add its own buttons through
         gtk_assistant_add_action_widget(). *) ]
+(** Determines the role of a page inside a [GtkAssistant].
+
+    The role is used to handle buttons sensitivity and visibility.
+
+    Note that an assistant needs to end its page flow with a page of type
+    [GTK_ASSISTANT_PAGE_CONFIRM], [GTK_ASSISTANT_PAGE_SUMMARY] or
+    [GTK_ASSISTANT_PAGE_PROGRESS] to be correct.
+
+    The Cancel button will only be shown if the page isn’t “committed”. See
+    gtk_assistant_commit() for details. *)
 
 val assistantpagetype_of_int : int -> assistantpagetype
 val assistantpagetype_to_int : assistantpagetype -> int
 
 (* BaselinePosition - enumeration *)
+
 type baselineposition =
   [ `TOP  (** Align the baseline at the top *)
   | `CENTER  (** Center the baseline *)
   | `BOTTOM  (** Align the baseline at the bottom *) ]
+(** Baseline position in a row of widgets.
+
+    Whenever a container has some form of natural row it may align children in
+    that row along a common typographical baseline. If the amount of vertical
+    space in the row is taller than the total requested height of the
+    baseline-aligned children then it can use a [GtkBaselinePosition] to select
+    where to put the baseline inside the extra available space. *)
 
 val baselineposition_of_int : int -> baselineposition
 val baselineposition_to_int : baselineposition -> int
 
 (* BorderStyle - enumeration *)
+
 type borderstyle =
   [ `NONE  (** No visible border *)
   | `HIDDEN  (** Same as [GTK_BORDER_STYLE_NONE] *)
@@ -536,11 +620,13 @@ type borderstyle =
   | `DOUBLE  (** Two parallel lines with some space between them *)
   | `GROOVE  (** Looks as if it were carved in the canvas *)
   | `RIDGE  (** Looks as if it were coming out of the canvas *) ]
+(** Describes how the border of a UI element should be rendered. *)
 
 val borderstyle_of_int : int -> borderstyle
 val borderstyle_to_int : borderstyle -> int
 
 (* BuilderError - enumeration *)
+
 type buildererror =
   [ `INVALID_TYPE_FUNCTION
     (** A type-func attribute didn’t name a function that returns a [GType]. *)
@@ -569,11 +655,14 @@ type buildererror =
     (** A function could not be found. This often happens when symbols are set
         to be kept private. Compiling code with -rdynamic or using the
         [gmodule-export-2.0] pkgconfig module can fix this problem. *) ]
+(** Error codes that identify various errors that can occur while using
+    [GtkBuilder]. *)
 
 val buildererror_of_int : int -> buildererror
 val buildererror_to_int : buildererror -> int
 
 (* ButtonsType - enumeration *)
+
 type buttonstype =
   [ `NONE  (** no buttons at all *)
   | `OK  (** an OK button *)
@@ -581,18 +670,29 @@ type buttonstype =
   | `CANCEL  (** a Cancel button *)
   | `YES_NO  (** Yes and No buttons *)
   | `OK_CANCEL  (** OK and Cancel buttons *) ]
+(** Prebuilt sets of buttons for [GtkDialog].
+
+    If none of these choices are appropriate, simply use [GTK_BUTTONS_NONE] and
+    call [Gtk.Dialog.add_buttons].
+
+    Please note that [GTK_BUTTONS_OK], [GTK_BUTTONS_YES_NO] and
+    [GTK_BUTTONS_OK_CANCEL] are discouraged by the
+    {{:https://developer.gnome.org/hig/}GNOME Human Interface Guidelines}. *)
 
 val buttonstype_of_int : int -> buttonstype
 val buttonstype_to_int : buttonstype -> int
 
 (* CellRendererAccelMode - enumeration *)
+
 type cellrendereraccelmode =
   [ `GTK  (** GTK accelerators mode *) | `OTHER  (** Other accelerator mode *) ]
+(** The available modes for [Gtk.CellRendererAccel:accel-mode]. *)
 
 val cellrendereraccelmode_of_int : int -> cellrendereraccelmode
 val cellrendereraccelmode_to_int : cellrendereraccelmode -> int
 
 (* CellRendererMode - enumeration *)
+
 type cellrenderermode =
   [ `INERT
     (** The cell is just for display and cannot be interacted with. Note that
@@ -600,20 +700,29 @@ type cellrenderermode =
         that a particular element of it cannot be individually modified. *)
   | `ACTIVATABLE  (** The cell can be clicked. *)
   | `EDITABLE  (** The cell can be edited or otherwise modified. *) ]
+(** Identifies how the user can interact with a particular cell. *)
 
 val cellrenderermode_of_int : int -> cellrenderermode
 val cellrenderermode_to_int : cellrenderermode -> int
 
 (* Collation - enumeration *)
+
 type collation =
   [ `NONE  (** Don't do any collation *)
   | `UNICODE  (** Use [GLib.utf8_collate_key] *)
   | `FILENAME  (** Use [GLib.utf8_collate_key_for_filename] *) ]
+(** Describes how a [Gtk.StringSorter] turns strings into sort keys to compare
+    them.
+
+    Note that the result of sorting will in general depend on the current locale
+    unless the mode is \@GTK_COLLATION_NONE.
+    @since 4.10 *)
 
 val collation_of_int : int -> collation
 val collation_to_int : collation -> int
 
 (* ConstraintAttribute - enumeration *)
+
 type constraintattribute =
   [ `NONE  (** No attribute, used for constant relations *)
   | `LEFT  (** The left edge of a widget, regardless of text direction *)
@@ -633,30 +742,39 @@ type constraintattribute =
   | `CENTER_X  (** The center of a widget, on the horizontal axis *)
   | `CENTER_Y  (** The center of a widget, on the vertical axis *)
   | `BASELINE  (** The baseline of a widget *) ]
+(** The widget attributes that can be used when creating a [Constraint]. *)
 
 val constraintattribute_of_int : int -> constraintattribute
 val constraintattribute_to_int : constraintattribute -> int
 
 (* ConstraintRelation - enumeration *)
+
 type constraintrelation =
   [ `LE  (** Less than, or equal *)
   | `EQ  (** Equal *)
   | `GE  (** Greater than, or equal *) ]
+(** The relation between two terms of a constraint. *)
 
 val constraintrelation_of_int : int -> constraintrelation
 val constraintrelation_to_int : constraintrelation -> int
 
 (* ConstraintStrength - enumeration *)
+
 type constraintstrength =
   [ `REQUIRED  (** The constraint is required towards solving the layout *)
   | `STRONG  (** A strong constraint *)
   | `MEDIUM  (** A medium constraint *)
   | `WEAK  (** A weak constraint *) ]
+(** The strength of a constraint, expressed as a symbolic constant.
+
+    The strength of a [Constraint] can be expressed with any positive integer;
+    the values of this enumeration can be used for readability. *)
 
 val constraintstrength_of_int : int -> constraintstrength
 val constraintstrength_to_int : constraintstrength -> int
 
 (* ConstraintVflParserError - enumeration *)
+
 type constraintvflparsererror =
   [ `SYMBOL  (** Invalid or unknown symbol *)
   | `ATTRIBUTE  (** Invalid or unknown attribute *)
@@ -664,11 +782,13 @@ type constraintvflparsererror =
   | `METRIC  (** Invalid or unknown metric *)
   | `PRIORITY  (** Invalid or unknown priority *)
   | `RELATION  (** Invalid or unknown relation *) ]
+(** Domain for VFL parsing errors. *)
 
 val constraintvflparsererror_of_int : int -> constraintvflparsererror
 val constraintvflparsererror_to_int : constraintvflparsererror -> int
 
 (* ContentFit - enumeration *)
+
 type contentfit =
   [ `FILL
     (** Make the content fill the entire allocation, without taking its aspect
@@ -685,11 +805,14 @@ type contentfit =
   | `SCALE_DOWN
     (** The content is scaled down to fit the allocation, if needed, otherwise
         its original size is used. *) ]
+(** Controls how a content should be made to fit inside an allocation.
+    @since 4.8 *)
 
 val contentfit_of_int : int -> contentfit
 val contentfit_to_int : contentfit -> int
 
 (* CornerType - enumeration *)
+
 type cornertype =
   [ `TOP_LEFT
     (** Place the scrollbars on the right and bottom of the widget (default
@@ -700,33 +823,48 @@ type cornertype =
     (** Place the scrollbars on the left and bottom of the widget. *)
   | `BOTTOM_RIGHT
     (** Place the scrollbars on the top and left of the widget. *) ]
+(** Specifies which corner a child widget should be placed in when packed into a
+    [GtkScrolledWindow.]
+
+    This is effectively the opposite of where the scroll bars are placed. *)
 
 val cornertype_of_int : int -> cornertype
 val cornertype_to_int : cornertype -> int
 
 (* CssParserError - enumeration *)
+
 type cssparsererror =
   [ `FAILED  (** Unknown failure. *)
   | `SYNTAX  (** The given text does not form valid syntax *)
   | `IMPORT  (** Failed to import a resource *)
   | `NAME  (** The given name has not been defined *)
   | `UNKNOWN_VALUE  (** The given value is not correct *) ]
+(** Errors that can occur while parsing CSS.
+
+    These errors are unexpected and will cause parts of the given CSS to be
+    ignored. *)
 
 val cssparsererror_of_int : int -> cssparsererror
 val cssparsererror_to_int : cssparsererror -> int
 
 (* CssParserWarning - enumeration *)
+
 type cssparserwarning =
   [ `DEPRECATED
     (** The given construct is deprecated and will be removed in a future
         version *)
   | `SYNTAX  (** A syntax construct was used that should be avoided *)
   | `UNIMPLEMENTED  (** A feature is not implemented *) ]
+(** Warnings that can occur while parsing CSS.
+
+    Unlike [GtkCssParserError]s, warnings do not cause the parser to skip any
+    input, but they indicate issues that should be fixed. *)
 
 val cssparserwarning_of_int : int -> cssparserwarning
 val cssparserwarning_to_int : cssparserwarning -> int
 
 (* DeleteType - enumeration *)
+
 type deletetype =
   [ `CHARS  (** Delete characters. *)
   | `WORD_ENDS
@@ -745,11 +883,13 @@ type deletetype =
     *)
   | `PARAGRAPHS  (** Delete entire line. Like C-k in pico. *)
   | `WHITESPACE  (** Delete only whitespace. Like M-\ in Emacs. *) ]
+(** Passed to various keybinding signals for deleting text. *)
 
 val deletetype_of_int : int -> deletetype
 val deletetype_to_int : deletetype -> int
 
 (* DialogError - enumeration *)
+
 type dialogerror =
   [ `FAILED
     (** Generic error condition for when an operation fails and no more specific
@@ -759,11 +899,15 @@ type dialogerror =
   | `DISMISSED
     (** The operation was cancelled by the user (via a Cancel or Close button)
     *) ]
+(** Error codes in the [GTK_DIALOG_ERROR] domain that can be returned by async
+    dialog functions.
+    @since 4.10 *)
 
 val dialogerror_of_int : int -> dialogerror
 val dialogerror_to_int : dialogerror -> int
 
 (* DirectionType - enumeration *)
+
 type directiontype =
   [ `TAB_FORWARD  (** Move forward. *)
   | `TAB_BACKWARD  (** Move backward. *)
@@ -771,11 +915,13 @@ type directiontype =
   | `DOWN  (** Move down. *)
   | `LEFT  (** Move left. *)
   | `RIGHT  (** Move right. *) ]
+(** Focus movement types. *)
 
 val directiontype_of_int : int -> directiontype
 val directiontype_to_int : directiontype -> int
 
 (* EditableProperties - enumeration *)
+
 type editableproperties =
   [ `PROP_TEXT  (** the property id for [Gtk.Editable:text] *)
   | `PROP_CURSOR_POSITION
@@ -789,30 +935,39 @@ type editableproperties =
   | `PROP_XALIGN  (** the property id for [Gtk.Editable:xalign] *)
   | `PROP_ENABLE_UNDO  (** the property id for [Gtk.Editable:enable-undo] *)
   | `NUM_PROPERTIES  (** the number of properties *) ]
+(** The identifiers for [Gtk.Editable] properties.
+
+    See [Gtk.Editable.install_properties] for details on how to implement the
+    [GtkEditable] interface. *)
 
 val editableproperties_of_int : int -> editableproperties
 val editableproperties_to_int : editableproperties -> int
 
 (* EntryIconPosition - enumeration *)
+
 type entryiconposition =
   [ `PRIMARY
     (** At the beginning of the entry (depending on the text direction). *)
   | `SECONDARY
     (** At the end of the entry (depending on the text direction). *) ]
+(** Specifies the side of the entry at which an icon is placed. *)
 
 val entryiconposition_of_int : int -> entryiconposition
 val entryiconposition_to_int : entryiconposition -> int
 
 (* EventSequenceState - enumeration *)
+
 type eventsequencestate =
   [ `NONE  (** The sequence is handled, but not grabbed. *)
   | `CLAIMED  (** The sequence is handled and grabbed. *)
   | `DENIED  (** The sequence is denied. *) ]
+(** Describes the state of a [Gdk.EventSequence] in a [Gesture]. *)
 
 val eventsequencestate_of_int : int -> eventsequencestate
 val eventsequencestate_to_int : eventsequencestate -> int
 
 (* FileChooserAction - enumeration *)
+
 type filechooseraction =
   [ `OPEN
     (** Indicates open mode. The file chooser will only let the user pick an
@@ -823,11 +978,14 @@ type filechooseraction =
   | `SELECT_FOLDER
     (** Indicates an Open mode for selecting folders. The file chooser will let
         the user pick an existing folder. *) ]
+(** Describes whether a [GtkFileChooser] is being used to open existing files or
+    to save to a possibly new file. *)
 
 val filechooseraction_of_int : int -> filechooseraction
 val filechooseraction_to_int : filechooseraction -> int
 
 (* FileChooserError - enumeration *)
+
 type filechoosererror =
   [ `NONEXISTENT  (** Indicates that a file does not exist. *)
   | `BAD_FILENAME  (** Indicates a malformed filename. *)
@@ -837,11 +995,14 @@ type filechoosererror =
     [@ocaml.doc
       "Indicates an incomplete hostname\n\
        (e.g. \"http://foo\" without a slash after that)."] ]
+(** These identify the various errors that can occur while calling
+    [GtkFileChooser] functions. *)
 
 val filechoosererror_of_int : int -> filechoosererror
 val filechoosererror_to_int : filechoosererror -> int
 
 (* FilterChange - enumeration *)
+
 type filterchange =
   [ `DIFFERENT
     (** The filter change cannot be described with any of the other enumeration
@@ -864,11 +1025,19 @@ type filterchange =
     (** Similar to [Gtk.FilterChange.MORE_STRICT], but signs that item watches
         should be recreated. This is used by [Gtk.FilterListModel] to keep the
         list up-to-date when items change. *) ]
+(** Describes changes in a filter in more detail and allows objects using the
+    filter to optimize refiltering items.
+
+    If you are writing an implementation and are not sure which value to pass,
+    [GTK_FILTER_CHANGE_DIFFERENT] is always a correct choice.
+
+    New values may be added in the future. *)
 
 val filterchange_of_int : int -> filterchange
 val filterchange_to_int : filterchange -> int
 
 (* FilterMatch - enumeration *)
+
 type filtermatch =
   [ `SOME
     (** The filter matches some items, [Gtk.Filter.match] may return true or
@@ -879,22 +1048,34 @@ type filtermatch =
   | `ALL
     (** The filter matches all items, [Gtk.Filter.match] will alays return true
     *) ]
+(** Describes the known strictness of a filter.
+
+    Note that for filters where the strictness is not known,
+    [GTK_FILTER_MATCH_SOME] is always an acceptable value, even if a filter does
+    match all or no items. *)
 
 val filtermatch_of_int : int -> filtermatch
 val filtermatch_to_int : filtermatch -> int
 
 (* FontLevel - enumeration *)
+
 type fontlevel =
   [ `FAMILY  (** Select a font family *)
   | `FACE  (** Select a font face (i.e. a family and a style) *)
   | `FONT
     (** Select a font (i.e. a face with a size, and possibly font variations) *)
   | `FEATURES  (** Select a font and font features *) ]
+(** The level of granularity for the font selection.
+
+    Depending on this value, the [PangoFontDescription] that is returned by
+    [Gtk.FontDialogButton.get_font_desc] will have more or less fields set.
+    @since 4.10 *)
 
 val fontlevel_of_int : int -> fontlevel
 val fontlevel_to_int : fontlevel -> int
 
 (* FontRendering - enumeration *)
+
 type fontrendering =
   [ `AUTOMATIC
     (** Set up font rendering automatically, taking factors like screen
@@ -902,36 +1083,54 @@ type fontrendering =
   | `MANUAL
     (** Follow low-level font-related settings when configuring font rendering
     *) ]
+(** Values for the [Gtk.Settings:gtk-font-rendering] setting that influence how
+    GTK renders fonts.
+    @since 4.16 *)
 
 val fontrendering_of_int : int -> fontrendering
 val fontrendering_to_int : fontrendering -> int
 
 (* GraphicsOffloadEnabled - enumeration *)
+
 type graphicsoffloadenabled =
   [ `ENABLED  (** Graphics offloading is enabled. *)
   | `DISABLED  (** Graphics offloading is disabled. *) ]
+(** Represents the state of graphics offloading.
+    @since 4.14 *)
 
 val graphicsoffloadenabled_of_int : int -> graphicsoffloadenabled
 val graphicsoffloadenabled_to_int : graphicsoffloadenabled -> int
 
 (* IconSize - enumeration *)
+
 type iconsize =
   [ `INHERIT  (** Keep the size of the parent element *)
   | `NORMAL  (** Size similar to text size *)
   | `LARGE  (** Large size, for example in an icon view *) ]
+(** Built-in icon sizes.
+
+    Icon sizes default to being inherited. Where they cannot be inherited, text
+    size is the default.
+
+    All widgets which use [GtkIconSize] set the normal-icons or large-icons
+    style classes correspondingly, and let themes determine the actual size to
+    be used with the [-gtk-icon-size] CSS property. *)
 
 val iconsize_of_int : int -> iconsize
 val iconsize_to_int : iconsize -> int
 
 (* IconThemeError - enumeration *)
+
 type iconthemeerror =
   [ `NOT_FOUND  (** The icon specified does not exist in the theme *)
   | `FAILED  (** An unspecified error occurred. *) ]
+(** Error codes for [GtkIconTheme] operations. *)
 
 val iconthemeerror_of_int : int -> iconthemeerror
 val iconthemeerror_to_int : iconthemeerror -> int
 
 (* IconViewDropPosition - enumeration *)
+
 type iconviewdropposition =
   [ `NO_DROP  (** no drop possible *)
   | `DROP_INTO  (** dropped item replaces the item *)
@@ -939,6 +1138,7 @@ type iconviewdropposition =
   | `DROP_RIGHT  (** dropped item is inserted to the right *)
   | `DROP_ABOVE  (** dropped item is inserted above *)
   | `DROP_BELOW  (** dropped item is inserted below *) ]
+(** An enum for determining where a dropped item goes. *)
 
 val iconviewdropposition_of_int : int -> iconviewdropposition
 val iconviewdropposition_to_int : iconviewdropposition -> int
@@ -949,11 +1149,20 @@ type imagetype =
   | `ICON_NAME  (** the widget contains a named icon *)
   | `GICON  (** the widget contains a [GIcon] *)
   | `PAINTABLE  (** the widget contains a [GdkPaintable] *) ]
+[@@ocaml.doc
+  "Describes the image data representation used by a [Gtk.Image].\n\n\
+   If you want to get the image from the widget, you can only get the\n\
+   currently-stored representation; for instance, if the \
+   gtk_image_get_storage_type()\n\
+   returns [GTK_IMAGE_PAINTABLE], then you can call gtk_image_get_paintable().\n\n\
+   For empty images, you can request any storage type (call any of the \"get\"\n\
+   functions), but they will all return [NULL] values."]
 
 val imagetype_of_int : int -> imagetype
 val imagetype_to_int : imagetype -> int
 
 (* InputPurpose - enumeration *)
+
 type inputpurpose =
   [ `FREE_FORM  (** Allow any character *)
   | `ALPHA  (** Allow only alphabetic characters *)
@@ -967,59 +1176,109 @@ type inputpurpose =
     (** Like [GTK_INPUT_PURPOSE_FREE_FORM], but characters are hidden *)
   | `PIN  (** Like [GTK_INPUT_PURPOSE_DIGITS], but characters are hidden *)
   | `TERMINAL  (** Allow any character, in addition to control codes *) ]
+(** Describes primary purpose of the input widget.
+
+    This information is useful for on-screen keyboards and similar input methods
+    to decide which keys should be presented to the user.
+
+    Note that the purpose is not meant to impose a totally strict rule about
+    allowed characters, and does not replace input validation. It is fine for an
+    on-screen keyboard to let the user override the character set restriction
+    that is expressed by the purpose. The application is expected to validate
+    the entry contents, even if it specified a purpose.
+
+    The difference between [GTK_INPUT_PURPOSE_DIGITS] and
+    [GTK_INPUT_PURPOSE_NUMBER] is that the former accepts only digits while the
+    latter also some punctuation (like commas or points, plus, minus) and “e” or
+    “E” as in 3.14E+000.
+
+    This enumeration may be extended in the future; input methods should
+    interpret unknown values as “free form”. *)
 
 val inputpurpose_of_int : int -> inputpurpose
 val inputpurpose_to_int : inputpurpose -> int
 
 (* InscriptionOverflow - enumeration *)
+
 type inscriptionoverflow =
   [ `CLIP  (** Clip the remaining text *)
   | `ELLIPSIZE_START  (** Omit characters at the start of the text *)
   | `ELLIPSIZE_MIDDLE  (** Omit characters at the middle of the text *)
   | `ELLIPSIZE_END  (** Omit characters at the end of the text *) ]
+(** The different methods to handle text in [GtkInscription] when it doesn't fit
+    the available space.
+    @since 4.8 *)
 
 val inscriptionoverflow_of_int : int -> inscriptionoverflow
 val inscriptionoverflow_to_int : inscriptionoverflow -> int
 
 (* InterfaceColorScheme - enumeration *)
+
 type interfacecolorscheme =
   [ `UNSUPPORTED  (** The system doesn't support color schemes *)
   | `DEFAULT  (** The default color scheme is used *)
   | `DARK  (** A dark color scheme is used *)
   | `LIGHT  (** A light color scheme is used *) ]
+(** Values for the [Gtk.Settings:gtk-interface-color-scheme] and
+    [Gtk.CssProvider:prefers-color-scheme] properties that indicates what color
+    scheme is used.
+
+    This information can be used inside CSS via media queries.
+
+    More values may be added to this enumeration. Unknown values should be
+    treated the same as [GTK_INTERFACE_COLOR_SCHEME_DEFAULT].
+    @since 4.20 *)
 
 val interfacecolorscheme_of_int : int -> interfacecolorscheme
 val interfacecolorscheme_to_int : interfacecolorscheme -> int
 
 (* InterfaceContrast - enumeration *)
+
 type interfacecontrast =
   [ `UNSUPPORTED  (** The system doesn't support contrast levels *)
   | `NO_PREFERENCE  (** No particular preference for contrast *)
   | `MORE  (** More contrast is preferred *)
   | `LESS  (** Less contrast is preferred *) ]
+(** Values for the [Gtk.Settings:gtk-interface-contrast] and
+    [Gtk.CssProvider:prefers-contrast] properties that indicates the preferred
+    level of contrast.
+
+    This information can be used inside CSS via media queries.
+
+    More values may be added to this enumeration. Unknown values should be
+    treated the same as [GTK_INTERFACE_CONTRAST_NO_PREFERENCE].
+    @since 4.20 *)
 
 val interfacecontrast_of_int : int -> interfacecontrast
 val interfacecontrast_to_int : interfacecontrast -> int
 
 (* Justification - enumeration *)
+
 type justification =
   [ `LEFT  (** The text is placed at the left edge of the label. *)
   | `RIGHT  (** The text is placed at the right edge of the label. *)
   | `CENTER  (** The text is placed in the center of the label. *)
   | `FILL  (** The text is placed is distributed across the label. *) ]
+(** Used for justifying the text inside a [Label] widget. *)
 
 val justification_of_int : int -> justification
 val justification_to_int : justification -> int
 
 (* LevelBarMode - enumeration *)
+
 type levelbarmode =
   [ `CONTINUOUS  (** the bar has a continuous mode *)
   | `DISCRETE  (** the bar has a discrete mode *) ]
+(** Describes how [LevelBar] contents should be rendered.
+
+    Note that this enumeration could be extended with additional modes in the
+    future. *)
 
 val levelbarmode_of_int : int -> levelbarmode
 val levelbarmode_to_int : levelbarmode -> int
 
 (* ListTabBehavior - enumeration *)
+
 type listtabbehavior =
   [ `ALL  (** Cycle through all focusable items of the list *)
   | `ITEM
@@ -1030,22 +1289,29 @@ type listtabbehavior =
         Moving focus between cells needs to be done with the arrow keys. This is
         only relevant for cell-based widgets like [GtkColumnView], otherwise it
         behaves like [GTK_LIST_TAB_ITEM]. *) ]
+(** Used to configure the focus behavior in the [GTK_DIR_TAB_FORWARD] and
+    [GTK_DIR_TAB_BACKWARD] direction, like the <kbd>Tab</kbd> key in a
+    [Gtk.ListView].
+    @since 4.12 *)
 
 val listtabbehavior_of_int : int -> listtabbehavior
 val listtabbehavior_to_int : listtabbehavior -> int
 
 (* MessageType - enumeration *)
+
 type messagetype =
   [ `INFO  (** Informational message *)
   | `WARNING  (** Non-fatal warning message *)
   | `QUESTION  (** Question requiring a choice *)
   | `ERROR  (** Fatal error message *)
   | `OTHER  (** None of the above *) ]
+(** The type of message being displayed in a [MessageDialog]. *)
 
 val messagetype_of_int : int -> messagetype
 val messagetype_to_int : messagetype -> int
 
 (* MovementStep - enumeration *)
+
 type movementstep =
   [ `LOGICAL_POSITIONS  (** Move forward or back by graphemes *)
   | `VISUAL_POSITIONS  (** Move left or right by graphemes *)
@@ -1057,11 +1323,14 @@ type movementstep =
   | `PAGES  (** Move by pages *)
   | `BUFFER_ENDS  (** Move to ends of the buffer *)
   | `HORIZONTAL_PAGES  (** Move horizontally by pages *) ]
+(** Passed as argument to various keybinding signals for moving the cursor
+    position. *)
 
 val movementstep_of_int : int -> movementstep
 val movementstep_to_int : movementstep -> int
 
 (* NaturalWrapMode - enumeration *)
+
 type naturalwrapmode =
   [ `INHERIT
     (** Inherit the minimum size request. In particular, this should be used
@@ -1073,101 +1342,139 @@ type naturalwrapmode =
   | `WORD
     (** Attempt to wrap at word boundaries. This is useful in particular when
         using [PANGO_WRAP_WORD_CHAR] as the wrap mode. *) ]
+(** Options for selecting a different wrap mode for natural size requests.
+
+    See for example the [Gtk.Label:natural-wrap-mode] property.
+    @since 4.6 *)
 
 val naturalwrapmode_of_int : int -> naturalwrapmode
 val naturalwrapmode_to_int : naturalwrapmode -> int
 
 (* NotebookTab - enumeration *)
+
 type notebooktab =
   [ `FIRST  (** the first tab in the notebook *)
   | `LAST  (** the last tab in the notebook *) ]
+(** The parameter used in the action signals of [GtkNotebook]. *)
 
 val notebooktab_of_int : int -> notebooktab
 val notebooktab_to_int : notebooktab -> int
 
 (* NumberUpLayout - enumeration *)
+
 type numberuplayout =
   [ `LRTB | `LRBT | `RLTB | `RLBT | `TBLR | `TBRL | `BTLR | `BTRL ]
+(** Used to determine the layout of pages on a sheet when printing multiple
+    pages per sheet. *)
 
 val numberuplayout_of_int : int -> numberuplayout
 val numberuplayout_to_int : numberuplayout -> int
 
 (* Ordering - enumeration *)
+
 type ordering =
   [ `SMALLER  (** the first value is smaller than the second *)
   | `EQUAL  (** the two values are equal *)
   | `LARGER  (** the first value is larger than the second *) ]
+(** Describes the way two values can be compared.
+
+    These values can be used with a [GLib.CompareFunc]. However, a
+    [GCompareFunc] is allowed to return any integer values. For converting such
+    a value to a [GtkOrdering] value, use [Gtk.Ordering.from_cmpfunc]. *)
 
 val ordering_of_int : int -> ordering
 val ordering_to_int : ordering -> int
 
 (* Orientation - enumeration *)
+
 type orientation =
   [ `HORIZONTAL  (** The element is in horizontal orientation. *)
   | `VERTICAL  (** The element is in vertical orientation. *) ]
+(** Represents the orientation of widgets and other objects.
+
+    Typical examples are [Box] or [GesturePan]. *)
 
 val orientation_of_int : int -> orientation
 val orientation_to_int : orientation -> int
 
 (* Overflow - enumeration *)
+
 type overflow =
   [ `VISIBLE
     (** No change is applied. Content is drawn at the specified position. *)
   | `HIDDEN
     (** Content is clipped to the bounds of the area. Content outside the area
         is not drawn and cannot be interacted with. *) ]
+(** Defines how content overflowing a given area should be handled.
+
+    This is used in [Gtk.Widget.set_overflow]. The [Gtk.Widget:overflow]
+    property is modeled after the CSS overflow property, but implements it only
+    partially. *)
 
 val overflow_of_int : int -> overflow
 val overflow_to_int : overflow -> int
 
 (* PackType - enumeration *)
+
 type packtype =
   [ `START  (** The child is packed into the start of the widget *)
   | `END  (** The child is packed into the end of the widget *) ]
+(** Represents the packing location of a children in its parent.
+
+    See [WindowControls] for example. *)
 
 val packtype_of_int : int -> packtype
 val packtype_to_int : packtype -> int
 
 (* PadActionType - enumeration *)
+
 type padactiontype =
   [ `BUTTON  (** Action is triggered by a pad button *)
   | `RING  (** Action is triggered by a pad ring *)
   | `STRIP  (** Action is triggered by a pad strip *)
   | `DIAL  (** Action is triggered by a pad dial *) ]
+(** The type of a pad action. *)
 
 val padactiontype_of_int : int -> padactiontype
 val padactiontype_to_int : padactiontype -> int
 
 (* PageOrientation - enumeration *)
+
 type pageorientation =
   [ `PORTRAIT  (** Portrait mode. *)
   | `LANDSCAPE  (** Landscape mode. *)
   | `REVERSE_PORTRAIT  (** Reverse portrait mode. *)
   | `REVERSE_LANDSCAPE  (** Reverse landscape mode. *) ]
+(** See also gtk_print_settings_set_orientation(). *)
 
 val pageorientation_of_int : int -> pageorientation
 val pageorientation_to_int : pageorientation -> int
 
 (* PageSet - enumeration *)
+
 type pageset =
   [ `ALL  (** All pages. *)
   | `EVEN  (** Even pages. *)
   | `ODD  (** Odd pages. *) ]
+(** See also gtk_print_job_set_page_set(). *)
 
 val pageset_of_int : int -> pageset
 val pageset_to_int : pageset -> int
 
 (* PanDirection - enumeration *)
+
 type pandirection =
   [ `LEFT  (** panned towards the left *)
   | `RIGHT  (** panned towards the right *)
   | `UP  (** panned upwards *)
   | `DOWN  (** panned downwards *) ]
+(** Describes the panning direction of a [GesturePan]. *)
 
 val pandirection_of_int : int -> pandirection
 val pandirection_to_int : pandirection -> int
 
 (* PolicyType - enumeration *)
+
 type policytype =
   [ `ALWAYS
     (** The scrollbar is always visible. The view size is independent of the
@@ -1182,30 +1489,39 @@ type policytype =
     (** Don't show a scrollbar, but don't force the size to follow the content.
         This can be used e.g. to make multiple scrolled windows share a
         scrollbar. *) ]
+(** Determines how the size should be computed to achieve the one of the
+    visibility mode for the scrollbars. *)
 
 val policytype_of_int : int -> policytype
 val policytype_to_int : policytype -> int
 
 (* PositionType - enumeration *)
+
 type positiontype =
   [ `LEFT  (** The feature is at the left edge. *)
   | `RIGHT  (** The feature is at the right edge. *)
   | `TOP  (** The feature is at the top edge. *)
   | `BOTTOM  (** The feature is at the bottom edge. *) ]
+(** Describes which edge of a widget a certain feature is positioned at.
+
+    For examples, see the tabs of a [Notebook], or the label of a [Scale]. *)
 
 val positiontype_of_int : int -> positiontype
 val positiontype_to_int : positiontype -> int
 
 (* PrintDuplex - enumeration *)
+
 type printduplex =
   [ `SIMPLEX  (** No duplex. *)
   | `HORIZONTAL  (** Horizontal duplex. *)
   | `VERTICAL  (** Vertical duplex. *) ]
+(** See also gtk_print_settings_set_duplex(). *)
 
 val printduplex_of_int : int -> printduplex
 val printduplex_to_int : printduplex -> int
 
 (* PrintError - enumeration *)
+
 type printerror =
   [ `GENERAL  (** An unspecified error occurred. *)
   | `INTERNAL_ERROR  (** An internal error occurred. *)
@@ -1213,11 +1529,14 @@ type printerror =
   | `INVALID_FILE
     (** An error occurred while loading a page setup or paper size from a key
         file. *) ]
+(** Error codes that identify various errors that can occur while using the GTK
+    printing support. *)
 
 val printerror_of_int : int -> printerror
 val printerror_to_int : printerror -> int
 
 (* PrintOperationAction - enumeration *)
+
 type printoperationaction =
   [ `PRINT_DIALOG  (** Show the print dialog. *)
   | `PRINT
@@ -1228,11 +1547,15 @@ type printoperationaction =
   | `EXPORT
     (** Export to a file. This requires the export-filename property to be set.
     *) ]
+(** Determines what action the print operation should perform.
+
+    A parameter of this typs is passed to [Gtk.PrintOperation.run]. *)
 
 val printoperationaction_of_int : int -> printoperationaction
 val printoperationaction_to_int : printoperationaction -> int
 
 (* PrintOperationResult - enumeration *)
+
 type printoperationresult =
   [ `ERROR  (** An error has occurred. *)
   | `APPLY  (** The print settings should be stored. *)
@@ -1242,31 +1565,39 @@ type printoperationresult =
   | `IN_PROGRESS
     (** The print operation is not complete yet. This value will only be
         returned when running asynchronously. *) ]
+(** The result of a print operation.
+
+    A value of this type is returned by [Gtk.PrintOperation.run]. *)
 
 val printoperationresult_of_int : int -> printoperationresult
 val printoperationresult_to_int : printoperationresult -> int
 
 (* PrintPages - enumeration *)
+
 type printpages =
   [ `ALL  (** All pages. *)
   | `CURRENT  (** Current page. *)
   | `RANGES  (** Range of pages. *)
   | `SELECTION  (** Selected pages. *) ]
+(** See also gtk_print_job_set_pages() *)
 
 val printpages_of_int : int -> printpages
 val printpages_to_int : printpages -> int
 
 (* PrintQuality - enumeration *)
+
 type printquality =
   [ `LOW  (** Low quality. *)
   | `NORMAL  (** Normal quality. *)
   | `HIGH  (** High quality. *)
   | `DRAFT  (** Draft quality. *) ]
+(** See also gtk_print_settings_set_quality(). *)
 
 val printquality_of_int : int -> printquality
 val printquality_to_int : printquality -> int
 
 (* PrintStatus - enumeration *)
+
 type printstatus =
   [ `INITIAL
     (** The printing has not started yet; this status is set initially, and
@@ -1285,11 +1616,14 @@ type printstatus =
   | `PRINTING  (** The printer is processing the print job. *)
   | `FINISHED  (** The printing has been completed successfully. *)
   | `FINISHED_ABORTED  (** The printing has been aborted. *) ]
+(** The status gives a rough indication of the completion of a running print
+    operation. *)
 
 val printstatus_of_int : int -> printstatus
 val printstatus_to_int : printstatus -> int
 
 (* PropagationLimit - enumeration *)
+
 type propagationlimit =
   [ `NONE  (** Events are handled regardless of what their target is. *)
   | `SAME_NATIVE
@@ -1297,11 +1631,14 @@ type propagationlimit =
         widget with [Gtk.Widget:limit-events] set) as the event controllers
         widget. Note that some event types have two targets (origin and
         destination). *) ]
+(** Describes limits of a [EventController] for handling events targeting other
+    widgets. *)
 
 val propagationlimit_of_int : int -> propagationlimit
 val propagationlimit_to_int : propagationlimit -> int
 
 (* PropagationPhase - enumeration *)
+
 type propagationphase =
   [ `NONE  (** Events are not delivered. *)
   | `CAPTURE
@@ -1317,11 +1654,13 @@ type propagationphase =
     (** Events are delivered in the default widget event handlers, note that
         widget implementations must chain up on button, motion, touch and grab
         broken handlers for controllers in this phase to be run. *) ]
+(** Describes the stage at which events are fed into a [EventController]. *)
 
 val propagationphase_of_int : int -> propagationphase
 val propagationphase_to_int : propagationphase -> int
 
 (* RecentManagerError - enumeration *)
+
 type recentmanagererror =
   [ `NOT_FOUND
     (** the URI specified does not exists in the recently used resources list.
@@ -1332,11 +1671,13 @@ type recentmanagererror =
   | `READ  (** failure while reading the recently used resources file. *)
   | `WRITE  (** failure while writing the recently used resources file. *)
   | `UNKNOWN  (** unspecified error. *) ]
+(** Error codes for [GtkRecentManager] operations *)
 
 val recentmanagererror_of_int : int -> recentmanagererror
 val recentmanagererror_to_int : recentmanagererror -> int
 
 (* ResponseType - enumeration *)
+
 type responsetype =
   [ `NONE
     (** Returned if an action widget has no response id, or if the dialog gets
@@ -1351,11 +1692,16 @@ type responsetype =
   | `NO  (** Returned by No buttons in GTK dialogs *)
   | `APPLY  (** Returned by Apply buttons in GTK dialogs *)
   | `HELP  (** Returned by Help buttons in GTK dialogs *) ]
+(** Predefined values for use as response ids in gtk_dialog_add_button().
+
+    All predefined values are negative; GTK leaves values of 0 or greater for
+    application-defined response ids. *)
 
 val responsetype_of_int : int -> responsetype
 val responsetype_to_int : responsetype -> int
 
 (* RevealerTransitionType - enumeration *)
+
 type revealertransitiontype =
   [ `NONE  (** No transition *)
   | `CROSSFADE  (** Fade in *)
@@ -1367,11 +1713,14 @@ type revealertransitiontype =
   | `SWING_LEFT  (** Floop in from the right *)
   | `SWING_UP  (** Floop in from the bottom *)
   | `SWING_DOWN  (** Floop in from the top *) ]
+(** These enumeration values describe the possible transitions when the child of
+    a [GtkRevealer] widget is shown or hidden. *)
 
 val revealertransitiontype_of_int : int -> revealertransitiontype
 val revealertransitiontype_to_int : revealertransitiontype -> int
 
 (* ScrollStep - enumeration *)
+
 type scrollstep =
   [ `STEPS  (** Scroll in steps. *)
   | `PAGES  (** Scroll by pages. *)
@@ -1379,11 +1728,13 @@ type scrollstep =
   | `HORIZONTAL_STEPS  (** Scroll in horizontal steps. *)
   | `HORIZONTAL_PAGES  (** Scroll by horizontal pages. *)
   | `HORIZONTAL_ENDS  (** Scroll to the horizontal ends. *) ]
+(** Passed as argument to various keybinding signals. *)
 
 val scrollstep_of_int : int -> scrollstep
 val scrollstep_to_int : scrollstep -> int
 
 (* ScrollType - enumeration *)
+
 type scrolltype =
   [ `NONE  (** No scrolling. *)
   | `JUMP  (** Jump to new location. *)
@@ -1401,19 +1752,24 @@ type scrolltype =
   | `PAGE_RIGHT  (** Page to the right. *)
   | `START  (** Scroll to start. *)
   | `END  (** Scroll to end. *) ]
+(** Scrolling types. *)
 
 val scrolltype_of_int : int -> scrolltype
 val scrolltype_to_int : scrolltype -> int
 
 (* ScrollablePolicy - enumeration *)
+
 type scrollablepolicy =
   [ `MINIMUM  (** Scrollable adjustments are based on the minimum size *)
   | `NATURAL  (** Scrollable adjustments are based on the natural size *) ]
+(** Defines the policy to be used in a scrollable widget when updating the
+    scrolled window adjustments in a given orientation. *)
 
 val scrollablepolicy_of_int : int -> scrollablepolicy
 val scrollablepolicy_to_int : scrollablepolicy -> int
 
 (* SelectionMode - enumeration *)
+
 type selectionmode =
   [ `NONE  (** No selection is possible. *)
   | `SINGLE  (** Zero or one element may be selected. *)
@@ -1428,20 +1784,25 @@ type selectionmode =
         enlarge the selection, and Shift key to select between the focus and the
         child pointed to. Some widgets may also allow Click-drag to select a
         range of elements. *) ]
+(** Used to control what selections users are allowed to make. *)
 
 val selectionmode_of_int : int -> selectionmode
 val selectionmode_to_int : selectionmode -> int
 
 (* SensitivityType - enumeration *)
+
 type sensitivitytype =
   [ `AUTO  (** The control is made insensitive if no action can be triggered *)
   | `ON  (** The control is always sensitive *)
   | `OFF  (** The control is always insensitive *) ]
+(** Determines how GTK handles the sensitivity of various controls, such as
+    combo box buttons. *)
 
 val sensitivitytype_of_int : int -> sensitivitytype
 val sensitivitytype_to_int : sensitivitytype -> int
 
 (* ShortcutScope - enumeration *)
+
 type shortcutscope =
   [ `LOCAL
     (** Shortcuts are handled inside the widget the controller belongs to. *)
@@ -1449,11 +1810,13 @@ type shortcutscope =
     (** Shortcuts are handled by the first ancestor that is a [ShortcutManager]
     *)
   | `GLOBAL  (** Shortcuts are handled by the root widget. *) ]
+(** Describes where [Shortcut]s added to a [ShortcutController] get handled. *)
 
 val shortcutscope_of_int : int -> shortcutscope
 val shortcutscope_to_int : shortcutscope -> int
 
 (* ShortcutType - enumeration *)
+
 type shortcuttype =
   [ `ACCELERATOR
     (** The shortcut is a keyboard accelerator. The
@@ -1482,38 +1845,50 @@ type shortcuttype =
   | `GESTURE_SWIPE_RIGHT
     (** The shortcut is a swipe gesture. GTK provides an icon and subtitle. *)
   ]
+(** GtkShortcutType specifies the kind of shortcut that is being described.
+
+    More values may be added to this enumeration over time. *)
 
 val shortcuttype_of_int : int -> shortcuttype
 val shortcuttype_to_int : shortcuttype -> int
 
 (* SizeGroupMode - enumeration *)
+
 type sizegroupmode =
   [ `NONE  (** group has no effect *)
   | `HORIZONTAL  (** group affects horizontal requisition *)
   | `VERTICAL  (** group affects vertical requisition *)
   | `BOTH  (** group affects both horizontal and vertical requisition *) ]
+(** The mode of the size group determines the directions in which the size group
+    affects the requested sizes of its component widgets. *)
 
 val sizegroupmode_of_int : int -> sizegroupmode
 val sizegroupmode_to_int : sizegroupmode -> int
 
 (* SizeRequestMode - enumeration *)
+
 type sizerequestmode =
   [ `HEIGHT_FOR_WIDTH  (** Prefer height-for-width geometry management *)
   | `WIDTH_FOR_HEIGHT  (** Prefer width-for-height geometry management *)
   | `CONSTANT_SIZE  (** Don’t trade height-for-width or width-for-height *) ]
+(** Specifies a preference for height-for-width or width-for-height geometry
+    management. *)
 
 val sizerequestmode_of_int : int -> sizerequestmode
 val sizerequestmode_to_int : sizerequestmode -> int
 
 (* SortType - enumeration *)
+
 type sorttype =
   [ `ASCENDING  (** Sorting is in ascending order. *)
   | `DESCENDING  (** Sorting is in descending order. *) ]
+(** Determines the direction of a sort. *)
 
 val sorttype_of_int : int -> sorttype
 val sorttype_to_int : sorttype -> int
 
 (* SorterChange - enumeration *)
+
 type sorterchange =
   [ `DIFFERENT
     (** The sorter change cannot be described by any of the other enumeration
@@ -1528,11 +1903,14 @@ type sorterchange =
   | `MORE_STRICT
     (** The sorter is more strict: Comparisons that did return
         [GTK_ORDERING_EQUAL] may not do so anymore. *) ]
+(** Describes changes in a sorter in more detail and allows users to optimize
+    resorting. *)
 
 val sorterchange_of_int : int -> sorterchange
 val sorterchange_to_int : sorterchange -> int
 
 (* SorterOrder - enumeration *)
+
 type sorterorder =
   [ `PARTIAL  (** A partial order. Any [GtkOrdering] is possible. *)
   | `NONE
@@ -1542,22 +1920,29 @@ type sorterorder =
     (** A total order. gtk_sorter_compare() will only return
         [GTK_ORDERING_EQUAL] if an item is compared with itself. Two different
         items will never cause this value to be returned. *) ]
+(** Describes the type of order that a [GtkSorter] may produce. *)
 
 val sorterorder_of_int : int -> sorterorder
 val sorterorder_to_int : sorterorder -> int
 
 (* SpinButtonUpdatePolicy - enumeration *)
+
 type spinbuttonupdatepolicy =
   [ `ALWAYS
     (** When refreshing your [GtkSpinButton], the value is always displayed *)
   | `IF_VALID
     (** When refreshing your [GtkSpinButton], the value is only displayed if it
         is valid within the bounds of the spin button's adjustment *) ]
+(** Determines whether the spin button displays values outside the adjustment
+    bounds.
+
+    See [Gtk.SpinButton.set_update_policy]. *)
 
 val spinbuttonupdatepolicy_of_int : int -> spinbuttonupdatepolicy
 val spinbuttonupdatepolicy_to_int : spinbuttonupdatepolicy -> int
 
 (* SpinType - enumeration *)
+
 type spintype =
   [ `STEP_FORWARD  (** Increment by the adjustments step increment. *)
   | `STEP_BACKWARD  (** Decrement by the adjustments step increment. *)
@@ -1566,11 +1951,14 @@ type spintype =
   | `HOME  (** Go to the adjustments lower bound. *)
   | `END  (** Go to the adjustments upper bound. *)
   | `USER_DEFINED  (** Change by a specified amount. *) ]
+(** The values of the GtkSpinType enumeration are used to specify the change to
+    make in gtk_spin_button_spin(). *)
 
 val spintype_of_int : int -> spintype
 val spintype_to_int : spintype -> int
 
 (* StackTransitionType - enumeration *)
+
 type stacktransitiontype =
   [ `NONE  (** No transition *)
   | `CROSSFADE  (** A cross-fade *)
@@ -1611,31 +1999,43 @@ type stacktransitiontype =
   | `ROTATE_LEFT_RIGHT
     (** Pretend the pages are sides of a cube and rotate that cube to the left
         or right according to the children order *) ]
+(** Possible transitions between pages in a [GtkStack] widget.
+
+    New values may be added to this enumeration over time. *)
 
 val stacktransitiontype_of_int : int -> stacktransitiontype
 val stacktransitiontype_to_int : stacktransitiontype -> int
 
 (* StringFilterMatchMode - enumeration *)
+
 type stringfiltermatchmode =
   [ `EXACT  (** The search string and text must match exactly *)
   | `SUBSTRING
     (** The search string must be contained as a substring inside the text *)
   | `PREFIX  (** The text must begin with the search string *) ]
+(** Specifies how search strings are matched inside text. *)
 
 val stringfiltermatchmode_of_int : int -> stringfiltermatchmode
 val stringfiltermatchmode_to_int : stringfiltermatchmode -> int
 
 (* SymbolicColor - enumeration *)
+
 type symboliccolor =
   [ `FOREGROUND  (** The default foreground color *)
   | `ERROR  (** Indication color for errors *)
   | `WARNING  (** Indication color for warnings *)
   | `SUCCESS  (** Indication color for success *) ]
+(** The indexes of colors passed to symbolic color rendering, such as
+    [Gtk.SymbolicPaintable.snapshot_symbolic].
+
+    More values may be added over time.
+    @since 4.6 *)
 
 val symboliccolor_of_int : int -> symboliccolor
 val symboliccolor_to_int : symboliccolor -> int
 
 (* SystemSetting - enumeration *)
+
 type systemsetting =
   [ `DPI  (** the [Gtk.Settings:gtk-xft-dpi] setting has changed *)
   | `FONT_NAME  (** The [Gtk.Settings:gtk-font-name] setting has changed *)
@@ -1649,20 +2049,31 @@ type systemsetting =
   | `ICON_THEME
     (** The icon theme has changed in a way that requires icons to be looked up
         again *) ]
+(** Values that can be passed to the [Gtk.Widget.system_setting_changed] vfunc.
+
+    The values indicate which system setting has changed. Widgets may need to
+    drop caches, or react otherwise.
+
+    Most of the values correspond to [Settings] properties.
+
+    More values may be added over time. *)
 
 val systemsetting_of_int : int -> systemsetting
 val systemsetting_to_int : systemsetting -> int
 
 (* TextDirection - enumeration *)
+
 type textdirection =
   [ `NONE  (** No direction. *)
   | `LTR  (** Left to right text direction. *)
   | `RTL  (** Right to left text direction. *) ]
+(** Reading directions for text. *)
 
 val textdirection_of_int : int -> textdirection
 val textdirection_to_int : textdirection -> int
 
 (* TextExtendSelection - enumeration *)
+
 type textextendselection =
   [ `WORD
     (** Selects the current word. It is triggered by a double-click for example.
@@ -1670,20 +2081,26 @@ type textextendselection =
   | `LINE
     (** Selects the current line. It is triggered by a triple-click for example.
     *) ]
+(** Granularity types that extend the text selection. Use the
+    [GtkTextView::extend-selection] signal to customize the selection. *)
 
 val textextendselection_of_int : int -> textextendselection
 val textextendselection_to_int : textextendselection -> int
 
 (* TextViewLayer - enumeration *)
+
 type textviewlayer =
   [ `BELOW_TEXT
     (** The layer rendered below the text (but above the background). *)
   | `ABOVE_TEXT  (** The layer rendered above the text. *) ]
+(** Used to reference the layers of [GtkTextView] for the purpose of customized
+    drawing with the ::snapshot_layer vfunc. *)
 
 val textviewlayer_of_int : int -> textviewlayer
 val textviewlayer_to_int : textviewlayer -> int
 
 (* TextWindowType - enumeration *)
+
 type textwindowtype =
   [ `WIDGET  (** Window that floats over scrolling areas. *)
   | `TEXT  (** Scrollable text window. *)
@@ -1691,52 +2108,64 @@ type textwindowtype =
   | `RIGHT  (** Right side border window. *)
   | `TOP  (** Top border window. *)
   | `BOTTOM  (** Bottom border window. *) ]
+(** Used to reference the parts of [GtkTextView]. *)
 
 val textwindowtype_of_int : int -> textwindowtype
 val textwindowtype_to_int : textwindowtype -> int
 
 (* TreeViewColumnSizing - enumeration *)
+
 type treeviewcolumnsizing =
   [ `GROW_ONLY
     (** Columns only get bigger in reaction to changes in the model *)
   | `AUTOSIZE
     (** Columns resize to be the optimal size every time the model changes. *)
   | `FIXED  (** Columns are a fixed numbers of pixels wide. *) ]
+(** The sizing method the column uses to determine its width. Please note that
+    [GTK_TREE_VIEW_COLUMN_AUTOSIZE] are inefficient for large views, and can
+    make columns appear choppy. *)
 
 val treeviewcolumnsizing_of_int : int -> treeviewcolumnsizing
 val treeviewcolumnsizing_to_int : treeviewcolumnsizing -> int
 
 (* TreeViewDropPosition - enumeration *)
+
 type treeviewdropposition =
   [ `BEFORE  (** dropped row is inserted before *)
   | `AFTER  (** dropped row is inserted after *)
   | `INTO_OR_BEFORE  (** dropped row becomes a child or is inserted before *)
   | `INTO_OR_AFTER  (** dropped row becomes a child or is inserted after *) ]
+(** An enum for determining where a dropped row goes. *)
 
 val treeviewdropposition_of_int : int -> treeviewdropposition
 val treeviewdropposition_to_int : treeviewdropposition -> int
 
 (* TreeViewGridLines - enumeration *)
+
 type treeviewgridlines =
   [ `NONE  (** No grid lines. *)
   | `HORIZONTAL  (** Horizontal grid lines. *)
   | `VERTICAL  (** Vertical grid lines. *)
   | `BOTH  (** Horizontal and vertical grid lines. *) ]
+(** Used to indicate which grid lines to draw in a tree view. *)
 
 val treeviewgridlines_of_int : int -> treeviewgridlines
 val treeviewgridlines_to_int : treeviewgridlines -> int
 
 (* Unit - enumeration *)
+
 type unit =
   [ `NONE  (** No units. *)
   | `POINTS  (** Dimensions in points. *)
   | `INCH  (** Dimensions in inches. *)
   | `MM  (** Dimensions in millimeters *) ]
+(** See also gtk_print_settings_set_paper_width(). *)
 
 val unit_of_int : int -> unit
 val unit_to_int : unit -> int
 
 (* WindowGravity - enumeration *)
+
 type windowgravity =
   [ `TOP_LEFT  (** The top left corner *)
   | `TOP  (** The top edge *)
@@ -1758,11 +2187,15 @@ type windowgravity =
   | `BOTTOM_END
     (** The bottom right or top left corner, depending on the text direction *)
   ]
+(** Determines which point or edge of a window is meant to remain fixed when a
+    window changes size.
+    @since 4.20 *)
 
 val windowgravity_of_int : int -> windowgravity
 val windowgravity_to_int : windowgravity -> int
 
 (* WrapMode - enumeration *)
+
 type wrapmode =
   [ `NONE  (** do not wrap lines; just make the text area wider *)
   | `CHAR
@@ -1773,11 +2206,13 @@ type wrapmode =
   | `WORD_CHAR
     (** wrap text, breaking lines in between words, or if that is not enough,
         also between graphemes *) ]
+(** Describes a type of line wrapping. *)
 
 val wrapmode_of_int : int -> wrapmode
 val wrapmode_to_int : wrapmode -> int
 
 (* ApplicationInhibitFlags - bitfield/flags *)
+
 type applicationinhibitflags_flag =
   [ `LOGOUT
     (** Inhibit ending the user session by logging out or by shutting down the
@@ -1786,6 +2221,9 @@ type applicationinhibitflags_flag =
   | `SUSPEND  (** Inhibit suspending the session or computer *)
   | `IDLE  (** Inhibit the session being marked as idle (and possibly locked) *)
   ]
+(** Types of user actions that may be blocked by [GtkApplication].
+
+    See [Gtk.Application.inhibit]. *)
 
 type applicationinhibitflags = applicationinhibitflags_flag list
 
@@ -1793,10 +2231,17 @@ val applicationinhibitflags_of_int : int -> applicationinhibitflags
 val applicationinhibitflags_to_int : applicationinhibitflags -> int
 
 (* BuilderClosureFlags - bitfield/flags *)
+
 type builderclosureflags_flag =
   [ `SWAPPED
     (** The closure should be created swapped. See g_cclosure_new_swap() for
         details. *) ]
+(** The list of flags that can be passed to gtk_builder_create_closure().
+
+    New values may be added in the future for new features, so external
+    implementations of [Gtk.BuilderScope] should test the flags for unknown
+    values and raise a [GTK_BUILDER_ERROR_INVALID_ATTRIBUTE] error when they
+    encounter one. *)
 
 type builderclosureflags = builderclosureflags_flag list
 
@@ -1804,6 +2249,7 @@ val builderclosureflags_of_int : int -> builderclosureflags
 val builderclosureflags_to_int : builderclosureflags -> int
 
 (* CellRendererState - bitfield/flags *)
+
 type cellrendererstate_flag =
   [ `SELECTED
     (** The cell is currently selected, and probably has a selection colored
@@ -1814,6 +2260,7 @@ type cellrendererstate_flag =
   | `FOCUSED  (** The cell is in the focus row. *)
   | `EXPANDABLE  (** The cell is in a row that can be expanded *)
   | `EXPANDED  (** The cell is in a row that is expanded *) ]
+(** Tells how a cell is to be rendered. *)
 
 type cellrendererstate = cellrendererstate_flag list
 
@@ -1821,6 +2268,7 @@ val cellrendererstate_of_int : int -> cellrendererstate
 val cellrendererstate_to_int : cellrendererstate -> int
 
 (* DebugFlags - bitfield/flags *)
+
 type debugflags_flag =
   [ `TEXT  (** Information about GtkTextView *)
   | `TREE  (** Information about GtkTreeView *)
@@ -1844,6 +2292,11 @@ type debugflags_flag =
   | `INVERT_TEXT_DIR  (** Inverts the default text-direction. *)
   | `CSS  (** Information about deprecated CSS features. *)
   | `BUILDER  (** Information about deprecated GtkBuilder features. *) ]
+(** Flags to use with gtk_set_debug_flags().
+
+    Settings these flags causes GTK to print out different types of debugging
+    information. Some of these flags are only available when GTK has been
+    configured with [-Ddebug=true]. *)
 
 type debugflags = debugflags_flag list
 
@@ -1851,11 +2304,13 @@ val debugflags_of_int : int -> debugflags
 val debugflags_to_int : debugflags -> int
 
 (* DialogFlags - bitfield/flags *)
+
 type dialogflags_flag =
   [ `MODAL  (** Make the constructed dialog modal *)
   | `DESTROY_WITH_PARENT  (** Destroy the dialog when its parent is destroyed *)
   | `USE_HEADER_BAR
     (** Create dialog with actions in header bar instead of action area *) ]
+(** Flags used to influence dialog construction. *)
 
 type dialogflags = dialogflags_flag list
 
@@ -1863,6 +2318,7 @@ val dialogflags_of_int : int -> dialogflags
 val dialogflags_to_int : dialogflags -> int
 
 (* EventControllerScrollFlags - bitfield/flags *)
+
 type eventcontrollerscrollflags_flag =
   [ `NONE  (** Don't emit scroll. *)
   | `VERTICAL  (** Emit scroll with vertical deltas. *)
@@ -1873,6 +2329,7 @@ type eventcontrollerscrollflags_flag =
     (** A [GtkEventControllerScrollFlags] value to prefer physical direction
         over logical direction (i.e. oblivious to natural scroll). *)
   | `BOTH_AXES  (** Emit scroll on both axes. *) ]
+(** Describes the behavior of a [GtkEventControllerScroll]. *)
 
 type eventcontrollerscrollflags = eventcontrollerscrollflags_flag list
 
@@ -1880,12 +2337,18 @@ val eventcontrollerscrollflags_of_int : int -> eventcontrollerscrollflags
 val eventcontrollerscrollflags_to_int : eventcontrollerscrollflags -> int
 
 (* FontChooserLevel - bitfield/flags *)
+
 type fontchooserlevel_flag =
   [ `FAMILY  (** Allow selecting a font family *)
   | `STYLE  (** Allow selecting a specific font face *)
   | `SIZE  (** Allow selecting a specific font size *)
   | `VARIATIONS  (** Allow changing OpenType font variation axes *)
   | `FEATURES  (** Allow selecting specific OpenType font features *) ]
+(** Specifies the granularity of font selection that is desired in a
+    [GtkFontChooser].
+
+    This enumeration may be extended in the future; applications should ignore
+    unknown values. *)
 
 type fontchooserlevel = fontchooserlevel_flag list
 
@@ -1893,6 +2356,7 @@ val fontchooserlevel_of_int : int -> fontchooserlevel
 val fontchooserlevel_to_int : fontchooserlevel -> int
 
 (* IconLookupFlags - bitfield/flags *)
+
 type iconlookupflags_flag =
   [ `NONE  (** Perform a regular lookup. *)
   | `FORCE_REGULAR
@@ -1904,6 +2368,7 @@ type iconlookupflags_flag =
   | `PRELOAD
     (** Starts loading the texture in the background so it is ready when later
         needed. *) ]
+(** Used to specify options for gtk_icon_theme_lookup_icon(). *)
 
 type iconlookupflags = iconlookupflags_flag list
 
@@ -1911,6 +2376,7 @@ val iconlookupflags_of_int : int -> iconlookupflags
 val iconlookupflags_to_int : iconlookupflags -> int
 
 (* InputHints - bitfield/flags *)
+
 type inputhints_flag =
   [ `NONE  (** No special behaviour suggested *)
   | `SPELLCHECK  (** Suggest checking for typos *)
@@ -1931,6 +2397,17 @@ type inputhints_flag =
   | `PRIVATE
     (** Request that the input method should not update personalized data (like
         typing history) *) ]
+(** Describes hints that might be taken into account by input methods or
+    applications.
+
+    Note that input methods may already tailor their behaviour according to the
+    [InputPurpose] of the entry.
+
+    Some common sense is expected when using these flags - mixing
+    [GTK_INPUT_HINT_LOWERCASE] with any of the uppercase hints makes no sense.
+
+    This enumeration may be extended in the future; input methods should ignore
+    unknown values. *)
 
 type inputhints = inputhints_flag list
 
@@ -1938,10 +2415,13 @@ val inputhints_of_int : int -> inputhints
 val inputhints_to_int : inputhints -> int
 
 (* ListScrollFlags - bitfield/flags *)
+
 type listscrollflags_flag =
   [ `NONE  (** Don't do anything extra *)
   | `FOCUS  (** Focus the target item *)
   | `SELECT  (** Select the target item and unselect all other items. *) ]
+(** List of actions to perform when scrolling to items in a list widget.
+    @since 4.12 *)
 
 type listscrollflags = listscrollflags_flag list
 
@@ -1949,6 +2429,7 @@ val listscrollflags_of_int : int -> listscrollflags
 val listscrollflags_to_int : listscrollflags -> int
 
 (* PickFlags - bitfield/flags *)
+
 type pickflags_flag =
   [ `DEFAULT
     (** The default behavior, include widgets that are receiving events *)
@@ -1956,6 +2437,7 @@ type pickflags_flag =
   | `NON_TARGETABLE
     (** Include widgets that are marked as non-targetable. See
         [Widget:can-target] *) ]
+(** Flags that influence the behavior of [Widget.pick]. *)
 
 type pickflags = pickflags_flag list
 
@@ -1963,11 +2445,14 @@ val pickflags_of_int : int -> pickflags
 val pickflags_to_int : pickflags -> int
 
 (* PopoverMenuFlags - bitfield/flags *)
+
 type popovermenuflags_flag =
   [ `SLIDING
     (** Submenus are presented as sliding submenus that replace the main menu.
     *)
   | `NESTED  (** Submenus are presented as traditional, nested popovers. *) ]
+(** Flags that affect how [Gtk.PopoverMenu] widgets built from a [Gio.MenuModel]
+    are created and displayed. *)
 
 type popovermenuflags = popovermenuflags_flag list
 
@@ -1975,10 +2460,14 @@ val popovermenuflags_of_int : int -> popovermenuflags
 val popovermenuflags_to_int : popovermenuflags -> int
 
 (* ShortcutActionFlags - bitfield/flags *)
+
 type shortcutactionflags_flag =
   [ `EXCLUSIVE
     (** The action is the only action that can be activated. If this flag is not
         set, a future activation may select a different action. *) ]
+(** Flags that can be passed to action activation.
+
+    More flags may be added in the future. *)
 
 type shortcutactionflags = shortcutactionflags_flag list
 
@@ -1986,6 +2475,7 @@ val shortcutactionflags_of_int : int -> shortcutactionflags
 val shortcutactionflags_to_int : shortcutactionflags -> int
 
 (* StateFlags - bitfield/flags *)
+
 type stateflags_flag =
   [ `NORMAL  (** State during normal operation *)
   | `ACTIVE  (** Widget is active *)
@@ -2003,6 +2493,11 @@ type stateflags_flag =
   | `DROP_ACTIVE  (** Widget is highlighted as a drop target for DND *)
   | `FOCUS_VISIBLE  (** Widget has the visible focus *)
   | `FOCUS_WITHIN  (** Widget contains the keyboard focus *) ]
+(** Describes a widget state.
+
+    Widget states are used to match the widget against CSS pseudo-classes. Note
+    that GTK extends the regular CSS classes and sometimes uses different names.
+*)
 
 type stateflags = stateflags_flag list
 
@@ -2010,6 +2505,7 @@ val stateflags_of_int : int -> stateflags
 val stateflags_to_int : stateflags -> int
 
 (* StyleContextPrintFlags - bitfield/flags *)
+
 type stylecontextprintflags_flag =
   [ `NONE  (** Default value. *)
   | `RECURSE
@@ -2018,6 +2514,9 @@ type stylecontextprintflags_flag =
   | `SHOW_STYLE  (** Show the values of the CSS properties for each node *)
   | `SHOW_CHANGE  (** Show information about what changes affect the styles *)
   ]
+(** Flags that modify the behavior of gtk_style_context_to_string().
+
+    New values may be added to this enumeration. *)
 
 type stylecontextprintflags = stylecontextprintflags_flag list
 
@@ -2025,6 +2524,7 @@ val stylecontextprintflags_of_int : int -> stylecontextprintflags
 val stylecontextprintflags_to_int : stylecontextprintflags -> int
 
 (* TextBufferNotifyFlags - bitfield/flags *)
+
 type textbuffernotifyflags_flag =
   [ `BEFORE_INSERT
     (** Be notified before text is inserted into the underlying buffer. *)
@@ -2035,6 +2535,9 @@ type textbuffernotifyflags_flag =
   | `AFTER_DELETE
     (** Be notified after text has been deleted from the underlying buffer. *)
   ]
+(** Values for [Gtk.TextBufferCommitNotify] to denote the point of the
+    notification.
+    @since 4.16 *)
 
 type textbuffernotifyflags = textbuffernotifyflags_flag list
 
@@ -2042,6 +2545,7 @@ val textbuffernotifyflags_of_int : int -> textbuffernotifyflags
 val textbuffernotifyflags_to_int : textbuffernotifyflags -> int
 
 (* TextSearchFlags - bitfield/flags *)
+
 type textsearchflags_flag =
   [ `VISIBLE_ONLY
     (** Search only visible data. A search match may have invisible text
@@ -2051,6 +2555,11 @@ type textsearchflags_flag =
         inside the matched range. *)
   | `CASE_INSENSITIVE
     (** The text will be matched regardless of what case it is in. *) ]
+(** Flags affecting how a search is done.
+
+    If neither [GTK_TEXT_SEARCH_VISIBLE_ONLY] nor [GTK_TEXT_SEARCH_TEXT_ONLY]
+    are enabled, the match must be exact; the special 0xFFFC character will
+    match embedded paintables or child widgets. *)
 
 type textsearchflags = textsearchflags_flag list
 
@@ -2058,9 +2567,16 @@ val textsearchflags_of_int : int -> textsearchflags
 val textsearchflags_to_int : textsearchflags -> int
 
 (* TreeModelFlags - bitfield/flags *)
+
 type treemodelflags_flag =
   [ `ITERS_PERSIST  (** iterators survive all signals emitted by the tree *)
   | `LIST_ONLY  (** the model is a list only, and never has children *) ]
+(** These flags indicate various properties of a [GtkTreeModel].
+
+    They are returned by [Gtk.TreeModel.get_flags], and must be static for the
+    lifetime of the object. A more complete description of
+    [GTK_TREE_MODEL_ITERS_PERSIST] can be found in the overview of this section.
+*)
 
 type treemodelflags = treemodelflags_flag list
 

@@ -26,6 +26,7 @@ let () =
       ("Signatures (ML)", Signature_tests.tests);
       (* Constants generation (pure unit) *)
       ("Constant Code", Constant_code_tests.tests);
+      ("Enum Code", Enum_code_tests.tests);
       (* Doc_translate — pure translation engine (no wiring) *)
       ("Doc Parse", Doc_parse_tests.tests);
       ("Doc Render", Doc_render_tests.tests);

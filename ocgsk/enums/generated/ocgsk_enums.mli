@@ -41,21 +41,30 @@ type blendmode =
   | `LUMINOSITY
     (** Creates a color with the luminosity of the source color and the hue and
         saturation of the destination color *) ]
+(** The blend modes available for render nodes.
+
+    The implementation of each blend mode is deferred to the rendering pipeline.
+
+    See <https://www.w3.org/TR/compositing-1/#blending> for more information on
+    blending and blend modes. *)
 
 val blendmode_of_int : int -> blendmode
 val blendmode_to_int : blendmode -> int
 
 (* Corner - enumeration *)
+
 type corner =
   [ `TOP_LEFT  (** The top left corner *)
   | `TOP_RIGHT  (** The top right corner *)
   | `BOTTOM_RIGHT  (** The bottom right corner *)
   | `BOTTOM_LEFT  (** The bottom left corner *) ]
+(** The corner indices used by [GskRoundedRect]. *)
 
 val corner_of_int : int -> corner
 val corner_to_int : corner -> int
 
 (* FillRule - enumeration *)
+
 type fillrule =
   [ `WINDING
     (** If the path crosses the ray from left-to-right, counts +1. If the path
@@ -67,11 +76,25 @@ type fillrule =
     (** Counts the total number of intersections, without regard to the
         orientation of the contour. If the total number of intersections is odd,
         the point will be filled. *) ]
+(** Specifies how paths are filled.
+
+    Whether or not a point is included in the fill is determined by taking a ray
+    from that point to infinity and looking at intersections with the path. The
+    ray can be in any direction, as long as it doesn't pass through the end
+    point of a segment or have a tricky intersection such as intersecting
+    tangent to the path.
+
+    (Note that filling is not actually implemented in this way. This is just a
+    description of the rule that is applied.)
+
+    New entries may be added in future versions.
+    @since 4.14 *)
 
 val fillrule_of_int : int -> fillrule
 val fillrule_to_int : fillrule -> int
 
 (* GLUniformType - enumeration *)
+
 type gluniformtype =
   [ `NONE  (** No type, used for uninitialized or unspecified values. *)
   | `FLOAT  (** A float uniform *)
@@ -81,11 +104,16 @@ type gluniformtype =
   | `VEC2  (** A GLSL vec2 / graphene_vec2_t uniform *)
   | `VEC3  (** A GLSL vec3 / graphene_vec3_t uniform *)
   | `VEC4  (** A GLSL vec4 / graphene_vec4_t uniform *) ]
+(** Defines the types of the uniforms that [GskGLShaders] declare.
+
+    It defines both what the type is called in the GLSL shader code, and what
+    the corresponding C type is on the Gtk side. *)
 
 val gluniformtype_of_int : int -> gluniformtype
 val gluniformtype_to_int : gluniformtype -> int
 
 (* LineCap - enumeration *)
+
 type linecap =
   [ `BUTT  (** Start and stop the line exactly at the start and end point *)
   | `ROUND
@@ -94,33 +122,65 @@ type linecap =
   | `SQUARE
     (** use squared ending, the center of the square is the start or end point
     *) ]
+(** Specifies how to render the start and end points of contours or dashes when
+    stroking.
+
+    The default line cap style is [GSK_LINE_CAP_BUTT].
+
+    New entries may be added in future versions.
+
+    <figure>
+
+    Line Cap Styles
+
+    <figcaption>GSK_LINE_CAP_BUTT, GSK_LINE_CAP_ROUND,
+    GSK_LINE_CAP_SQUARE</figcaption> </figure>
+    @since 4.14 *)
 
 val linecap_of_int : int -> linecap
 val linecap_to_int : linecap -> int
 
 (* LineJoin - enumeration *)
+
 type linejoin =
   [ `MITER  (** Use a sharp angled corner *)
   | `ROUND  (** Use a round join, the center of the circle is the join point *)
   | `BEVEL
     (** use a cut-off join, the join is cut off at half the line width from the
         joint point *) ]
+(** Specifies how to render the junction of two lines when stroking.
+
+    The default line join style is [GSK_LINE_JOIN_MITER].
+
+    New entries may be added in future versions.
+
+    <figure>
+
+    Line Join Styles
+
+    <figcaption>GSK_LINE_JOINT_MITER, GSK_LINE_JOINT_ROUND,
+    GSK_LINE_JOIN_BEVEL</figcaption> </figure>
+    @since 4.14 *)
 
 val linejoin_of_int : int -> linejoin
 val linejoin_to_int : linejoin -> int
 
 (* MaskMode - enumeration *)
+
 type maskmode =
   [ `ALPHA  (** Use the alpha channel of the mask *)
   | `INVERTED_ALPHA  (** Use the inverted alpha channel of the mask *)
   | `LUMINANCE  (** Use the luminance of the mask, multiplied by mask alpha *)
   | `INVERTED_LUMINANCE
     (** Use the inverted luminance of the mask, multiplied by mask alpha *) ]
+(** The mask modes available for mask nodes.
+    @since 4.10 *)
 
 val maskmode_of_int : int -> maskmode
 val maskmode_to_int : maskmode -> int
 
 (* PathDirection - enumeration *)
+
 type pathdirection =
   [ `FROM_START
     (** The tangent in path direction of the incoming side of the path *)
@@ -131,21 +191,33 @@ type pathdirection =
   | `FROM_END
     (** The tangent against path direction of the outgoing side of the path *)
   ]
+(** Used to pick one of the four tangents at a given point on the path.
+
+    Note that the directions for \@GSK_PATH_FROM_START/@GSK_PATH_TO_END and
+    \@GSK_PATH_TO_START/@GSK_PATH_FROM_END will coincide for smooth points. Only
+    sharp turns will exhibit four different directions.
+
+    Path Tangents
+    @since 4.14 *)
 
 val pathdirection_of_int : int -> pathdirection
 val pathdirection_to_int : pathdirection -> int
 
 (* PathIntersection - enumeration *)
+
 type pathintersection =
   [ `NONE  (** No intersection *)
   | `NORMAL  (** A normal intersection, where the two paths cross each other *)
   | `START  (** The start of a segment where the two paths coincide *)
   | `END  (** The end of a segment where the two paths coincide *) ]
+(** The values of this enumeration classify intersections between paths.
+    @since 4.20 *)
 
 val pathintersection_of_int : int -> pathintersection
 val pathintersection_to_int : pathintersection -> int
 
 (* PathOperation - enumeration *)
+
 type pathoperation =
   [ `MOVE  (** A move-to operation, with 1 point describing the target point. *)
   | `CLOSE
@@ -166,11 +238,16 @@ type pathoperation =
     (** A rational quadratic Bézier curve with 3 points describing the start
         point, control point and end point of the curve. A weight for the curve
         will be passed, too. *) ]
+(** Describes the segments of a [GskPath].
+
+    More values may be added in the future.
+    @since 4.14 *)
 
 val pathoperation_of_int : int -> pathoperation
 val pathoperation_to_int : pathoperation -> int
 
 (* RenderNodeType - enumeration *)
+
 type rendernodetype =
   [ `NOT_A_RENDER_NODE  (** Error type. No node will ever have this type. *)
   | `CONTAINER_NODE  (** A node containing a stack of children *)
@@ -212,32 +289,41 @@ type rendernodetype =
     *)
   | `COMPONENT_TRANSFER_NODE
     (** A node that applies some function to each color component. *) ]
+(** The type of a node determines what the node is rendering. *)
 
 val rendernodetype_of_int : int -> rendernodetype
 val rendernodetype_to_int : rendernodetype -> int
 
 (* ScalingFilter - enumeration *)
+
 type scalingfilter =
   [ `LINEAR  (** linear interpolation filter *)
   | `NEAREST  (** nearest neighbor interpolation filter *)
   | `TRILINEAR
     (** linear interpolation along each axis, plus mipmap generation, with
         linear interpolation along the mipmap levels *) ]
+(** The filters used when scaling texture data.
+
+    The actual implementation of each filter is deferred to the rendering
+    pipeline. *)
 
 val scalingfilter_of_int : int -> scalingfilter
 val scalingfilter_to_int : scalingfilter -> int
 
 (* SerializationError - enumeration *)
+
 type serializationerror =
   [ `UNSUPPORTED_FORMAT  (** The format can not be identified *)
   | `UNSUPPORTED_VERSION  (** The version of the data is not understood *)
   | `INVALID_DATA  (** The given data may not exist in a proper serialization *)
   ]
+(** Errors that can happen during (de)serialization. *)
 
 val serializationerror_of_int : int -> serializationerror
 val serializationerror_to_int : serializationerror -> int
 
 (* TransformCategory - enumeration *)
+
 type transformcategory =
   [ `UNKNOWN  (** The category of the matrix has not been determined. *)
   | `ANY
@@ -256,16 +342,35 @@ type transformcategory =
         using this matrix. *)
   | `V2D_TRANSLATE  (** The matrix is a 2D translation. *)
   | `IDENTITY  (** The matrix is the identity matrix. *) ]
+(** The categories of matrices relevant for GSK and GTK.
+
+    Note that any category includes matrices of all later categories. So if you
+    want to for example check if a matrix is a 2D matrix,
+    [category >= GSK_TRANSFORM_CATEGORY_2D] is the way to do this.
+
+    Also keep in mind that rounding errors may cause matrices to not conform to
+    their categories. Otherwise, matrix operations done via multiplication will
+    not worsen categories. So for the matrix multiplication [C = A * B],
+    [category(C) = MIN (category(A), category(B))]. *)
 
 val transformcategory_of_int : int -> transformcategory
 val transformcategory_to_int : transformcategory -> int
 
 (* PathForeachFlags - bitfield/flags *)
+
 type pathforeachflags_flag =
   [ `ONLY_LINES  (** The default behavior, only allow lines. *)
   | `QUAD  (** Allow emission of [GSK_PATH_QUAD] operations *)
   | `CUBIC  (** Allow emission of [GSK_PATH_CUBIC] operations. *)
   | `CONIC  (** Allow emission of [GSK_PATH_CONIC] operations. *) ]
+(** Flags that can be passed to gsk_path_foreach() to influence what kinds of
+    operations the path is decomposed into.
+
+    By default, [Gsk.Path.foreach] will only emit a path with all operations
+    flattened to straight lines to allow for maximum compatibility. The only
+    operations emitted will be [GSK_PATH_MOVE], [GSK_PATH_LINE] and
+    [GSK_PATH_CLOSE].
+    @since 4.14 *)
 
 type pathforeachflags = pathforeachflags_flag list
 

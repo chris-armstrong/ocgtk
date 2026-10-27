@@ -942,16 +942,6 @@ let guard_converters ~namespace_name version_opt converters =
    written even when empty, so that every namespace has an enums library. *)
 let generate_enum_files ~dirs ~generated_stubs namespace enums bitfields =
   begin
-    (* Enum and bitfield type-level docs are suppressed so the generated enum
-       files stay stable; member-level docs are still emitted. *)
-    let enums =
-      List.map ~f:(fun (e : gir_enum) -> { e with enum_doc = None }) enums
-    in
-    let bitfields =
-      List.map
-        ~f:(fun (b : gir_bitfield) -> { b with bitfield_doc = None })
-        bitfields
-    in
     (* Generate OCaml .mli file with type definitions *)
     let enum_file =
       Filename.concat dirs.enums_generated

@@ -73,15 +73,23 @@ type eulerorder =
   | `RZYZ
     (** Defines a relative rotation along the Z, Y, and Z axes (Since: 1.10) *)
   ]
+(** Specify the order of the rotations on each axis.
+
+    The [GRAPHENE_EULER_ORDER_DEFAULT] value is special, and is used as an alias
+    for one of the other orders.
+    @since 1.2 *)
 
 val eulerorder_of_int : int -> eulerorder
 val eulerorder_to_int : eulerorder -> int
 
 (* RayIntersectionKind - enumeration *)
+
 type rayintersectionkind =
   [ `NONE  (** No intersection *)
   | `ENTER  (** The ray is entering the intersected object *)
   | `LEAVE  (** The ray is leaving the intersected object *) ]
+(** The type of intersection.
+    @since 1.10 *)
 
 val rayintersectionkind_of_int : int -> rayintersectionkind
 val rayintersectionkind_to_int : rayintersectionkind -> int

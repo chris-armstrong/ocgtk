@@ -4,11 +4,16 @@
 (* Colorspace - enumeration *)
 type colorspace =
   [ `RGB  (** Indicates a red/green/blue additive color space. *) ]
+(** This enumeration defines the color spaces that are supported by the
+    gdk-pixbuf library.
+
+    Currently only RGB is supported. *)
 
 val colorspace_of_int : int -> colorspace
 val colorspace_to_int : colorspace -> int
 
 (* InterpType - enumeration *)
+
 type interptype =
   [ `NEAREST
     (** Nearest neighbor sampling; this is the fastest and lowest quality mode.
@@ -35,11 +40,20 @@ type interptype =
        {b Deprecated}: this interpolation filter is deprecated, as in reality\n\
        it has a lower quality than the \\@GDK_INTERP_BILINEAR filter\n\
        (Since: 2.38)"] ]
+(** Interpolation modes for scaling functions.
+
+    The [GDK_INTERP_NEAREST] mode is the fastest scaling method, but has
+    horrible quality when scaling down; [GDK_INTERP_BILINEAR] is the best choice
+    if you aren't sure what to choose, it has a good speed/quality balance.
+
+    {b Note}: Cubic filtering is missing from the list; hyperbolic interpolation
+    is just as fast and results in higher quality. *)
 
 val interptype_of_int : int -> interptype
 val interptype_to_int : interptype -> int
 
 (* PixbufAlphaMode - enumeration *)
+
 type pixbufalphamode =
   [ `BILEVEL
     (** A bilevel clipping mask (black and white) will be created and used to
@@ -48,11 +62,24 @@ type pixbufalphamode =
   | `FULL
     (** For now falls back to [GDK_PIXBUF_ALPHA_BILEVEL]. In the future it will
         do full alpha compositing. *) ]
+(** Control the alpha channel for drawables.
+
+    These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
+    gdk-pixbuf-xlib to control how the alpha channel of an image should be
+    handled.
+
+    This function can create a bilevel clipping mask (black and white) and use
+    it while painting the image.
+
+    In the future, when the X Window System gets an alpha channel extension, it
+    will be possible to do full alpha compositing onto arbitrary drawables. For
+    now both cases fall back to a bilevel clipping mask. *)
 
 val pixbufalphamode_of_int : int -> pixbufalphamode
 val pixbufalphamode_to_int : pixbufalphamode -> int
 
 (* PixbufError - enumeration *)
+
 type pixbuferror =
   [ `CORRUPT_IMAGE  (** An image file was broken somehow. *)
   | `INSUFFICIENT_MEMORY  (** Not enough memory. *)
@@ -63,27 +90,40 @@ type pixbuferror =
         hand. *)
   | `FAILED  (** Generic failure code, something went wrong. *)
   | `INCOMPLETE_ANIMATION  (** Only part of the animation was loaded. *) ]
+(** An error code in the [GDK_PIXBUF_ERROR] domain.
+
+    Many gdk-pixbuf operations can cause errors in this domain, or in the
+    [G_FILE_ERROR] domain. *)
 
 val pixbuferror_of_int : int -> pixbuferror
 val pixbuferror_to_int : pixbuferror -> int
 
 (* PixbufRotation - enumeration *)
+
 type pixbufrotation =
   [ `NONE  (** No rotation. *)
   | `COUNTERCLOCKWISE  (** Rotate by 90 degrees. *)
   | `UPSIDEDOWN  (** Rotate by 180 degrees. *)
   | `CLOCKWISE  (** Rotate by 270 degrees. *) ]
+(** The possible rotations which can be passed to gdk_pixbuf_rotate_simple().
+
+    To make them easier to use, their numerical values are the actual degrees.
+*)
 
 val pixbufrotation_of_int : int -> pixbufrotation
 val pixbufrotation_to_int : pixbufrotation -> int
 
 (* PixbufFormatFlags - bitfield/flags *)
+
 type pixbufformatflags_flag =
   [ `WRITABLE  (** the module can write out images in the format. *)
   | `SCALABLE  (** the image format is scalable *)
   | `THREADSAFE
     (** the module is threadsafe. gdk-pixbuf ignores modules that are not marked
         as threadsafe. (Since 2.28). *) ]
+(** Flags which allow a module to specify further details about the supported
+    operations.
+    @since 2.2 *)
 
 type pixbufformatflags = pixbufformatflags_flag list
 
