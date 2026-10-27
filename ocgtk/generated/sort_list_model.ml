@@ -65,7 +65,11 @@ class type sort_list_model_t = object
   (** Sets a new sorter on [self]. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_sort_list_model : Raw.Sort_list_model.t
 end
 

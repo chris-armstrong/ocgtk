@@ -59,620 +59,712 @@ external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
 
 external get_accumulative_margin : t -> bool
   = "ml_gtk_text_tag_get_accumulative_margin"
-(** Get property: accumulative-margin *)
+(** Whether the margins accumulate or override each other.
+
+    When set to [TRUE] the margins of this tag are added to the margins of any
+    other non-accumulative margins present. When set to [FALSE] the margins
+    override one another (the default). *)
 
 external set_accumulative_margin : t -> bool -> unit
   = "ml_gtk_text_tag_set_accumulative_margin"
-(** Set property: accumulative-margin *)
+(** Whether the margins accumulate or override each other.
+
+    When set to [TRUE] the margins of this tag are added to the margins of any
+    other non-accumulative margins present. When set to [FALSE] the margins
+    override one another (the default). *)
 
 external get_allow_breaks : t -> bool = "ml_gtk_text_tag_get_allow_breaks"
-(** Get property: allow-breaks *)
+(** Whether breaks are allowed. *)
 
 external set_allow_breaks : t -> bool -> unit
   = "ml_gtk_text_tag_set_allow_breaks"
-(** Set property: allow-breaks *)
+(** Whether breaks are allowed. *)
 
 external get_allow_breaks_set : t -> bool
   = "ml_gtk_text_tag_get_allow_breaks_set"
-(** Get property: allow-breaks-set *)
+(** Whether the [allow-breaks] property is set. *)
 
 external set_allow_breaks_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_allow_breaks_set"
-(** Set property: allow-breaks-set *)
+(** Whether the [allow-breaks] property is set. *)
 
 external set_background : t -> string -> unit = "ml_gtk_text_tag_set_background"
-(** Set property: background *)
+(** Background color as a string. *)
 
 external get_background_full_height : t -> bool
   = "ml_gtk_text_tag_get_background_full_height"
-(** Get property: background-full-height *)
+(** Whether the background color fills the entire line height or only the height
+    of the tagged characters. *)
 
 external set_background_full_height : t -> bool -> unit
   = "ml_gtk_text_tag_set_background_full_height"
-(** Set property: background-full-height *)
+(** Whether the background color fills the entire line height or only the height
+    of the tagged characters. *)
 
 external get_background_full_height_set : t -> bool
   = "ml_gtk_text_tag_get_background_full_height_set"
-(** Get property: background-full-height-set *)
+(** Whether the [background-full-height] property is set. *)
 
 external set_background_full_height_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_background_full_height_set"
-(** Set property: background-full-height-set *)
+(** Whether the [background-full-height] property is set. *)
 
 external get_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_background_rgba"
-(** Get property: background-rgba *)
+(** Background color as a [GdkRGBA]. *)
 
 external set_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_background_rgba"
-(** Set property: background-rgba *)
+(** Background color as a [GdkRGBA]. *)
 
 external get_background_set : t -> bool = "ml_gtk_text_tag_get_background_set"
-(** Get property: background-set *)
+(** Whether the [background] property is set. *)
 
 external set_background_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_background_set"
-(** Set property: background-set *)
+(** Whether the [background] property is set. *)
 
 external get_direction : t -> Ocgtk_enums.textdirection
   = "ml_gtk_text_tag_get_direction"
-(** Get property: direction *)
+(** Text direction, e.g. right-to-left or left-to-right. *)
 
 external set_direction : t -> Ocgtk_enums.textdirection -> unit
   = "ml_gtk_text_tag_set_direction"
-(** Set property: direction *)
+(** Text direction, e.g. right-to-left or left-to-right. *)
 
 external get_editable : t -> bool = "ml_gtk_text_tag_get_editable"
-(** Get property: editable *)
+(** Whether the text can be modified by the user. *)
 
 external set_editable : t -> bool -> unit = "ml_gtk_text_tag_set_editable"
-(** Set property: editable *)
+(** Whether the text can be modified by the user. *)
 
 external get_editable_set : t -> bool = "ml_gtk_text_tag_get_editable_set"
-(** Get property: editable-set *)
+(** Whether the [editable] property is set. *)
 
 external set_editable_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_editable_set"
-(** Set property: editable-set *)
+(** Whether the [editable] property is set. *)
 
 external get_fallback : t -> bool = "ml_gtk_text_tag_get_fallback"
-(** Get property: fallback *)
+(** Whether font fallback is enabled.
+
+    When set to [TRUE], other fonts will be substituted where the current font
+    is missing glyphs. *)
 
 external set_fallback : t -> bool -> unit = "ml_gtk_text_tag_set_fallback"
-(** Set property: fallback *)
+(** Whether font fallback is enabled.
+
+    When set to [TRUE], other fonts will be substituted where the current font
+    is missing glyphs. *)
 
 external get_fallback_set : t -> bool = "ml_gtk_text_tag_get_fallback_set"
-(** Get property: fallback-set *)
+(** Whether the [fallback] property is set. *)
 
 external set_fallback_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_fallback_set"
-(** Set property: fallback-set *)
+(** Whether the [fallback] property is set. *)
 
 external get_family : t -> string = "ml_gtk_text_tag_get_family"
-(** Get property: family *)
+(** Name of the font family, e.g. Sans, Helvetica, Times, Monospace. *)
 
 external set_family : t -> string -> unit = "ml_gtk_text_tag_set_family"
-(** Set property: family *)
+(** Name of the font family, e.g. Sans, Helvetica, Times, Monospace. *)
 
 external get_family_set : t -> bool = "ml_gtk_text_tag_get_family_set"
-(** Get property: family-set *)
+(** Whether the [family] property is set. *)
 
 external set_family_set : t -> bool -> unit = "ml_gtk_text_tag_set_family_set"
-(** Set property: family-set *)
+(** Whether the [family] property is set. *)
 
 external get_font : t -> string = "ml_gtk_text_tag_get_font"
-(** Get property: font *)
+[@@ocaml.doc
+  "Font description as string, e.g. \\\"Sans Italic 12\\\".\n\n\
+   Note that the initial value of this property depends on\n\
+   the internals of [PangoFontDescription]."]
 
 external set_font : t -> string -> unit = "ml_gtk_text_tag_set_font"
-(** Set property: font *)
+[@@ocaml.doc
+  "Font description as string, e.g. \\\"Sans Italic 12\\\".\n\n\
+   Note that the initial value of this property depends on\n\
+   the internals of [PangoFontDescription]."]
 
 external get_font_desc : t -> Ocpango_raw.Font_description.t
   = "ml_gtk_text_tag_get_font_desc"
-(** Get property: font-desc *)
+(** Font description as a [PangoFontDescription]. *)
 
 external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_text_tag_set_font_desc"
-(** Set property: font-desc *)
+(** Font description as a [PangoFontDescription]. *)
 
 external get_font_features : t -> string = "ml_gtk_text_tag_get_font_features"
-(** Get property: font-features *)
+(** OpenType font features, as a string. *)
 
 external set_font_features : t -> string -> unit
   = "ml_gtk_text_tag_set_font_features"
-(** Set property: font-features *)
+(** OpenType font features, as a string. *)
 
 external get_font_features_set : t -> bool
   = "ml_gtk_text_tag_get_font_features_set"
-(** Get property: font-features-set *)
+(** Whether the [font-features] property is set. *)
 
 external set_font_features_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_font_features_set"
-(** Set property: font-features-set *)
+(** Whether the [font-features] property is set. *)
 
 external set_foreground : t -> string -> unit = "ml_gtk_text_tag_set_foreground"
-(** Set property: foreground *)
+(** Foreground color as a string. *)
 
 external get_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_foreground_rgba"
-(** Get property: foreground-rgba *)
+(** Foreground color as a [GdkRGBA]. *)
 
 external set_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_foreground_rgba"
-(** Set property: foreground-rgba *)
+(** Foreground color as a [GdkRGBA]. *)
 
 external get_foreground_set : t -> bool = "ml_gtk_text_tag_get_foreground_set"
-(** Get property: foreground-set *)
+(** Whether the [foreground] property is set. *)
 
 external set_foreground_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_foreground_set"
-(** Set property: foreground-set *)
+(** Whether the [foreground] property is set. *)
 
 external get_indent : t -> int = "ml_gtk_text_tag_get_indent"
-(** Get property: indent *)
+(** Amount to indent the paragraph, in pixels.
+
+    A negative value of indent will produce a hanging indentation. That is, the
+    first line will have the full width, and subsequent lines will be indented
+    by the absolute value of indent. *)
 
 external set_indent : t -> int -> unit = "ml_gtk_text_tag_set_indent"
-(** Set property: indent *)
+(** Amount to indent the paragraph, in pixels.
+
+    A negative value of indent will produce a hanging indentation. That is, the
+    first line will have the full width, and subsequent lines will be indented
+    by the absolute value of indent. *)
 
 external get_indent_set : t -> bool = "ml_gtk_text_tag_get_indent_set"
-(** Get property: indent-set *)
+(** Whether the [indent] property is set. *)
 
 external set_indent_set : t -> bool -> unit = "ml_gtk_text_tag_set_indent_set"
-(** Set property: indent-set *)
+(** Whether the [indent] property is set. *)
 
 external get_insert_hyphens : t -> bool = "ml_gtk_text_tag_get_insert_hyphens"
-(** Get property: insert-hyphens *)
+(** Whether to insert hyphens at breaks. *)
 
 external set_insert_hyphens : t -> bool -> unit
   = "ml_gtk_text_tag_set_insert_hyphens"
-(** Set property: insert-hyphens *)
+(** Whether to insert hyphens at breaks. *)
 
 external get_insert_hyphens_set : t -> bool
   = "ml_gtk_text_tag_get_insert_hyphens_set"
-(** Get property: insert-hyphens-set *)
+(** Whether the [insert-hyphens] property is set. *)
 
 external set_insert_hyphens_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_insert_hyphens_set"
-(** Set property: insert-hyphens-set *)
+(** Whether the [insert-hyphens] property is set. *)
 
 external get_invisible : t -> bool = "ml_gtk_text_tag_get_invisible"
-(** Get property: invisible *)
+(** Whether this text is hidden.
+
+    Note that there may still be problems with the support for invisible text,
+    in particular when navigating programmatically inside a buffer containing
+    invisible segments. *)
 
 external set_invisible : t -> bool -> unit = "ml_gtk_text_tag_set_invisible"
-(** Set property: invisible *)
+(** Whether this text is hidden.
+
+    Note that there may still be problems with the support for invisible text,
+    in particular when navigating programmatically inside a buffer containing
+    invisible segments. *)
 
 external get_invisible_set : t -> bool = "ml_gtk_text_tag_get_invisible_set"
-(** Get property: invisible-set *)
+(** Whether the [invisible] property is set. *)
 
 external set_invisible_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_invisible_set"
-(** Set property: invisible-set *)
+(** Whether the [invisible] property is set. *)
 
 external get_justification : t -> Ocgtk_enums.justification
   = "ml_gtk_text_tag_get_justification"
-(** Get property: justification *)
+(** Left, right, or center justification. *)
 
 external set_justification : t -> Ocgtk_enums.justification -> unit
   = "ml_gtk_text_tag_set_justification"
-(** Set property: justification *)
+(** Left, right, or center justification. *)
 
 external get_justification_set : t -> bool
   = "ml_gtk_text_tag_get_justification_set"
-(** Get property: justification-set *)
+(** Whether the [justification] property is set. *)
 
 external set_justification_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_justification_set"
-(** Set property: justification-set *)
+(** Whether the [justification] property is set. *)
 
 external get_language : t -> string = "ml_gtk_text_tag_get_language"
-(** Get property: language *)
+(** The language this text is in, as an ISO code.
+
+    Pango can use this as a hint when rendering the text. If not set, an
+    appropriate default will be used.
+
+    Note that the initial value of this property depends on the current locale,
+    see also [Gtk.get_default_language]. *)
 
 external set_language : t -> string -> unit = "ml_gtk_text_tag_set_language"
-(** Set property: language *)
+(** The language this text is in, as an ISO code.
+
+    Pango can use this as a hint when rendering the text. If not set, an
+    appropriate default will be used.
+
+    Note that the initial value of this property depends on the current locale,
+    see also [Gtk.get_default_language]. *)
 
 external get_language_set : t -> bool = "ml_gtk_text_tag_get_language_set"
-(** Get property: language-set *)
+(** Whether the [language] property is set. *)
 
 external set_language_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_language_set"
-(** Set property: language-set *)
+(** Whether the [language] property is set. *)
 
 external get_left_margin : t -> int = "ml_gtk_text_tag_get_left_margin"
-(** Get property: left-margin *)
+(** Width of the left margin in pixels. *)
 
 external set_left_margin : t -> int -> unit = "ml_gtk_text_tag_set_left_margin"
-(** Set property: left-margin *)
+(** Width of the left margin in pixels. *)
 
 external get_left_margin_set : t -> bool = "ml_gtk_text_tag_get_left_margin_set"
-(** Get property: left-margin-set *)
+(** Whether the [left-margin] property is set. *)
 
 external set_left_margin_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_left_margin_set"
-(** Set property: left-margin-set *)
+(** Whether the [left-margin] property is set. *)
 
 external get_letter_spacing : t -> int = "ml_gtk_text_tag_get_letter_spacing"
-(** Get property: letter-spacing *)
+(** Extra spacing between graphemes, in Pango units. *)
 
 external set_letter_spacing : t -> int -> unit
   = "ml_gtk_text_tag_set_letter_spacing"
-(** Set property: letter-spacing *)
+(** Extra spacing between graphemes, in Pango units. *)
 
 external get_letter_spacing_set : t -> bool
   = "ml_gtk_text_tag_get_letter_spacing_set"
-(** Get property: letter-spacing-set *)
+(** Whether the [letter-spacing] property is set. *)
 
 external set_letter_spacing_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_letter_spacing_set"
-(** Set property: letter-spacing-set *)
+(** Whether the [letter-spacing] property is set. *)
 
 external get_line_height : t -> float = "ml_gtk_text_tag_get_line_height"
-(** Get property: line-height *)
+(** Factor to scale line height by. *)
 
 external set_line_height : t -> float -> unit
   = "ml_gtk_text_tag_set_line_height"
-(** Set property: line-height *)
+(** Factor to scale line height by. *)
 
 external get_line_height_set : t -> bool = "ml_gtk_text_tag_get_line_height_set"
-(** Get property: line-height-set *)
+(** Whether the [line-height] property is set. *)
 
 external set_line_height_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_line_height_set"
-(** Set property: line-height-set *)
+(** Whether the [line-height] property is set. *)
 
 external get_name : t -> string = "ml_gtk_text_tag_get_name"
-(** Get property: name *)
+(** The name used to refer to the tag.
+
+    [NULL] for anonymous tags. *)
 
 external get_overline : t -> Ocpango_enums.overline
   = "ml_gtk_text_tag_get_overline"
-(** Get property: overline *)
+(** Style of overline for this text. *)
 
 external set_overline : t -> Ocpango_enums.overline -> unit
   = "ml_gtk_text_tag_set_overline"
-(** Set property: overline *)
+(** Style of overline for this text. *)
 
 external get_overline_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_overline_rgba"
-(** Get property: overline-rgba *)
+(** This property modifies the color of overlines.
+
+    If not set, overlines will use the foreground color. *)
 
 external set_overline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_overline_rgba"
-(** Set property: overline-rgba *)
+(** This property modifies the color of overlines.
+
+    If not set, overlines will use the foreground color. *)
 
 external get_overline_rgba_set : t -> bool
   = "ml_gtk_text_tag_get_overline_rgba_set"
-(** Get property: overline-rgba-set *)
+(** Whether the [overline-rgba] property is set. *)
 
 external set_overline_rgba_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_overline_rgba_set"
-(** Set property: overline-rgba-set *)
+(** Whether the [overline-rgba] property is set. *)
 
 external get_overline_set : t -> bool = "ml_gtk_text_tag_get_overline_set"
-(** Get property: overline-set *)
+(** Whether the [overline] property is set. *)
 
 external set_overline_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_overline_set"
-(** Set property: overline-set *)
+(** Whether the [overline] property is set. *)
 
 external set_paragraph_background : t -> string -> unit
   = "ml_gtk_text_tag_set_paragraph_background"
-(** Set property: paragraph-background *)
+(** The paragraph background color as a string. *)
 
 external get_paragraph_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_paragraph_background_rgba"
-(** Get property: paragraph-background-rgba *)
+(** The paragraph background color as a [GdkRGBA]. *)
 
 external set_paragraph_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_paragraph_background_rgba"
-(** Set property: paragraph-background-rgba *)
+(** The paragraph background color as a [GdkRGBA]. *)
 
 external get_paragraph_background_set : t -> bool
   = "ml_gtk_text_tag_get_paragraph_background_set"
-(** Get property: paragraph-background-set *)
+(** Whether the [paragraph-background] property is set. *)
 
 external set_paragraph_background_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_paragraph_background_set"
-(** Set property: paragraph-background-set *)
+(** Whether the [paragraph-background] property is set. *)
 
 external get_pixels_above_lines : t -> int
   = "ml_gtk_text_tag_get_pixels_above_lines"
-(** Get property: pixels-above-lines *)
+(** Pixels of blank space above paragraphs. *)
 
 external set_pixels_above_lines : t -> int -> unit
   = "ml_gtk_text_tag_set_pixels_above_lines"
-(** Set property: pixels-above-lines *)
+(** Pixels of blank space above paragraphs. *)
 
 external get_pixels_above_lines_set : t -> bool
   = "ml_gtk_text_tag_get_pixels_above_lines_set"
-(** Get property: pixels-above-lines-set *)
+(** Whether the [pixels-above-lines] property is set. *)
 
 external set_pixels_above_lines_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_pixels_above_lines_set"
-(** Set property: pixels-above-lines-set *)
+(** Whether the [pixels-above-lines] property is set. *)
 
 external get_pixels_below_lines : t -> int
   = "ml_gtk_text_tag_get_pixels_below_lines"
-(** Get property: pixels-below-lines *)
+(** Pixels of blank space below paragraphs. *)
 
 external set_pixels_below_lines : t -> int -> unit
   = "ml_gtk_text_tag_set_pixels_below_lines"
-(** Set property: pixels-below-lines *)
+(** Pixels of blank space below paragraphs. *)
 
 external get_pixels_below_lines_set : t -> bool
   = "ml_gtk_text_tag_get_pixels_below_lines_set"
-(** Get property: pixels-below-lines-set *)
+(** Whether the [pixels-below-lines] property is set. *)
 
 external set_pixels_below_lines_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_pixels_below_lines_set"
-(** Set property: pixels-below-lines-set *)
+(** Whether the [pixels-below-lines] property is set. *)
 
 external get_pixels_inside_wrap : t -> int
   = "ml_gtk_text_tag_get_pixels_inside_wrap"
-(** Get property: pixels-inside-wrap *)
+(** Pixels of blank space between wrapped lines in a paragraph. *)
 
 external set_pixels_inside_wrap : t -> int -> unit
   = "ml_gtk_text_tag_set_pixels_inside_wrap"
-(** Set property: pixels-inside-wrap *)
+(** Pixels of blank space between wrapped lines in a paragraph. *)
 
 external get_pixels_inside_wrap_set : t -> bool
   = "ml_gtk_text_tag_get_pixels_inside_wrap_set"
-(** Get property: pixels-inside-wrap-set *)
+(** Whether the [pixels-inside-wrap] property is set. *)
 
 external set_pixels_inside_wrap_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_pixels_inside_wrap_set"
-(** Set property: pixels-inside-wrap-set *)
+(** Whether the [pixels-inside-wrap] property is set. *)
 
 external get_right_margin : t -> int = "ml_gtk_text_tag_get_right_margin"
-(** Get property: right-margin *)
+(** Width of the right margin, in pixels. *)
 
 external set_right_margin : t -> int -> unit
   = "ml_gtk_text_tag_set_right_margin"
-(** Set property: right-margin *)
+(** Width of the right margin, in pixels. *)
 
 external get_right_margin_set : t -> bool
   = "ml_gtk_text_tag_get_right_margin_set"
-(** Get property: right-margin-set *)
+(** Whether the [right-margin] property is set. *)
 
 external set_right_margin_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_right_margin_set"
-(** Set property: right-margin-set *)
+(** Whether the [right-margin] property is set. *)
 
 external get_rise : t -> int = "ml_gtk_text_tag_get_rise"
-(** Get property: rise *)
+(** Offset of text above the baseline, in Pango units.
+
+    Negative values go below the baseline. *)
 
 external set_rise : t -> int -> unit = "ml_gtk_text_tag_set_rise"
-(** Set property: rise *)
+(** Offset of text above the baseline, in Pango units.
+
+    Negative values go below the baseline. *)
 
 external get_rise_set : t -> bool = "ml_gtk_text_tag_get_rise_set"
-(** Get property: rise-set *)
+(** Whether the [rise] property is set. *)
 
 external set_rise_set : t -> bool -> unit = "ml_gtk_text_tag_set_rise_set"
-(** Set property: rise-set *)
+(** Whether the [rise] property is set. *)
 
 external get_scale : t -> float = "ml_gtk_text_tag_get_scale"
-(** Get property: scale *)
+(** Font size as a scale factor relative to the default font size.
+
+    This properly adapts to theme changes, etc. so is recommended. Pango
+    predefines some scales such as [PANGO_SCALE_X_LARGE]. *)
 
 external set_scale : t -> float -> unit = "ml_gtk_text_tag_set_scale"
-(** Set property: scale *)
+(** Font size as a scale factor relative to the default font size.
+
+    This properly adapts to theme changes, etc. so is recommended. Pango
+    predefines some scales such as [PANGO_SCALE_X_LARGE]. *)
 
 external get_scale_set : t -> bool = "ml_gtk_text_tag_get_scale_set"
-(** Get property: scale-set *)
+(** Whether the [scale] property is set. *)
 
 external set_scale_set : t -> bool -> unit = "ml_gtk_text_tag_set_scale_set"
-(** Set property: scale-set *)
+(** Whether the [scale] property is set. *)
 
 external get_sentence : t -> bool = "ml_gtk_text_tag_get_sentence"
-(** Get property: sentence *)
+(** Whether this tag represents a single sentence.
+
+    This affects cursor movement. *)
 
 external set_sentence : t -> bool -> unit = "ml_gtk_text_tag_set_sentence"
-(** Set property: sentence *)
+(** Whether this tag represents a single sentence.
+
+    This affects cursor movement. *)
 
 external get_sentence_set : t -> bool = "ml_gtk_text_tag_get_sentence_set"
-(** Get property: sentence-set *)
+(** Whether the [sentence] property is set. *)
 
 external set_sentence_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_sentence_set"
-(** Set property: sentence-set *)
+(** Whether the [sentence] property is set. *)
 
 external get_show_spaces : t -> Ocpango_enums.showflags
   = "ml_gtk_text_tag_get_show_spaces"
-(** Get property: show-spaces *)
+(** How to render invisible characters. *)
 
 external set_show_spaces : t -> Ocpango_enums.showflags -> unit
   = "ml_gtk_text_tag_set_show_spaces"
-(** Set property: show-spaces *)
+(** How to render invisible characters. *)
 
 external get_show_spaces_set : t -> bool = "ml_gtk_text_tag_get_show_spaces_set"
-(** Get property: show-spaces-set *)
+(** Whether the [show-spaces] property is set. *)
 
 external set_show_spaces_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_show_spaces_set"
-(** Set property: show-spaces-set *)
+(** Whether the [show-spaces] property is set. *)
 
 external get_size : t -> int = "ml_gtk_text_tag_get_size"
-(** Get property: size *)
+(** Font size in Pango units. *)
 
 external set_size : t -> int -> unit = "ml_gtk_text_tag_set_size"
-(** Set property: size *)
+(** Font size in Pango units. *)
 
 external get_size_points : t -> float = "ml_gtk_text_tag_get_size_points"
-(** Get property: size-points *)
+(** Font size in points. *)
 
 external set_size_points : t -> float -> unit
   = "ml_gtk_text_tag_set_size_points"
-(** Set property: size-points *)
+(** Font size in points. *)
 
 external get_size_set : t -> bool = "ml_gtk_text_tag_get_size_set"
-(** Get property: size-set *)
+(** Whether the [size] property is set. *)
 
 external set_size_set : t -> bool -> unit = "ml_gtk_text_tag_set_size_set"
-(** Set property: size-set *)
+(** Whether the [size] property is set. *)
 
 external get_stretch : t -> Ocpango_enums.stretch
   = "ml_gtk_text_tag_get_stretch"
-(** Get property: stretch *)
+(** Font stretch as a [PangoStretch], e.g. [PANGO_STRETCH_CONDENSED]. *)
 
 external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_gtk_text_tag_set_stretch"
-(** Set property: stretch *)
+(** Font stretch as a [PangoStretch], e.g. [PANGO_STRETCH_CONDENSED]. *)
 
 external get_stretch_set : t -> bool = "ml_gtk_text_tag_get_stretch_set"
-(** Get property: stretch-set *)
+(** Whether the [stretch] property is set. *)
 
 external set_stretch_set : t -> bool -> unit = "ml_gtk_text_tag_set_stretch_set"
-(** Set property: stretch-set *)
+(** Whether the [stretch] property is set. *)
 
 external get_strikethrough : t -> bool = "ml_gtk_text_tag_get_strikethrough"
-(** Get property: strikethrough *)
+(** Whether to strike through the text. *)
 
 external set_strikethrough : t -> bool -> unit
   = "ml_gtk_text_tag_set_strikethrough"
-(** Set property: strikethrough *)
+(** Whether to strike through the text. *)
 
 external get_strikethrough_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_strikethrough_rgba"
-(** Get property: strikethrough-rgba *)
+(** This property modifies the color of strikeouts.
+
+    If not set, strikeouts will use the foreground color. *)
 
 external set_strikethrough_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_strikethrough_rgba"
-(** Set property: strikethrough-rgba *)
+(** This property modifies the color of strikeouts.
+
+    If not set, strikeouts will use the foreground color. *)
 
 external get_strikethrough_rgba_set : t -> bool
   = "ml_gtk_text_tag_get_strikethrough_rgba_set"
-(** Get property: strikethrough-rgba-set *)
+(** If the [strikethrough-rgba] property has been set. *)
 
 external set_strikethrough_rgba_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_strikethrough_rgba_set"
-(** Set property: strikethrough-rgba-set *)
+(** If the [strikethrough-rgba] property has been set. *)
 
 external get_strikethrough_set : t -> bool
   = "ml_gtk_text_tag_get_strikethrough_set"
-(** Get property: strikethrough-set *)
+(** Whether the [strikethrough] property is set. *)
 
 external set_strikethrough_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_strikethrough_set"
-(** Set property: strikethrough-set *)
+(** Whether the [strikethrough] property is set. *)
 
 external get_style : t -> Ocpango_enums.style = "ml_gtk_text_tag_get_style"
-(** Get property: style *)
+(** Font style as a [PangoStyle], e.g. [PANGO_STYLE_ITALIC]. *)
 
 external set_style : t -> Ocpango_enums.style -> unit
   = "ml_gtk_text_tag_set_style"
-(** Set property: style *)
+(** Font style as a [PangoStyle], e.g. [PANGO_STYLE_ITALIC]. *)
 
 external get_style_set : t -> bool = "ml_gtk_text_tag_get_style_set"
-(** Get property: style-set *)
+(** Whether the [style] property is set. *)
 
 external set_style_set : t -> bool -> unit = "ml_gtk_text_tag_set_style_set"
-(** Set property: style-set *)
+(** Whether the [style] property is set. *)
 
 external get_tabs : t -> Ocpango_raw.Tab_array.t = "ml_gtk_text_tag_get_tabs"
-(** Get property: tabs *)
+(** Custom tabs for this text. *)
 
 external set_tabs : t -> Ocpango_raw.Tab_array.t -> unit
   = "ml_gtk_text_tag_set_tabs"
-(** Set property: tabs *)
+(** Custom tabs for this text. *)
 
 external get_tabs_set : t -> bool = "ml_gtk_text_tag_get_tabs_set"
-(** Get property: tabs-set *)
+(** Whether the [tabs] property is set. *)
 
 external set_tabs_set : t -> bool -> unit = "ml_gtk_text_tag_set_tabs_set"
-(** Set property: tabs-set *)
+(** Whether the [tabs] property is set. *)
 
 external get_text_transform : t -> Ocpango_enums.texttransform
   = "ml_gtk_text_tag_get_text_transform"
-(** Get property: text-transform *)
+(** How to transform the text for display. *)
 
 external set_text_transform : t -> Ocpango_enums.texttransform -> unit
   = "ml_gtk_text_tag_set_text_transform"
-(** Set property: text-transform *)
+(** How to transform the text for display. *)
 
 external get_text_transform_set : t -> bool
   = "ml_gtk_text_tag_get_text_transform_set"
-(** Get property: text-transform-set *)
+(** Whether the [text-transform] property is set. *)
 
 external set_text_transform_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_text_transform_set"
-(** Set property: text-transform-set *)
+(** Whether the [text-transform] property is set. *)
 
 external get_underline : t -> Ocpango_enums.underline
   = "ml_gtk_text_tag_get_underline"
-(** Get property: underline *)
+(** Style of underline for this text. *)
 
 external set_underline : t -> Ocpango_enums.underline -> unit
   = "ml_gtk_text_tag_set_underline"
-(** Set property: underline *)
+(** Style of underline for this text. *)
 
 external get_underline_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_text_tag_get_underline_rgba"
-(** Get property: underline-rgba *)
+(** This property modifies the color of underlines.
+
+    If not set, underlines will use the foreground color.
+
+    If [Gtk.TextTag:underline] is set to [PANGO_UNDERLINE_ERROR], an alternate
+    color may be applied instead of the foreground. Setting this property will
+    always override those defaults. *)
 
 external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_underline_rgba"
-(** Set property: underline-rgba *)
+(** This property modifies the color of underlines.
+
+    If not set, underlines will use the foreground color.
+
+    If [Gtk.TextTag:underline] is set to [PANGO_UNDERLINE_ERROR], an alternate
+    color may be applied instead of the foreground. Setting this property will
+    always override those defaults. *)
 
 external get_underline_rgba_set : t -> bool
   = "ml_gtk_text_tag_get_underline_rgba_set"
-(** Get property: underline-rgba-set *)
+(** If the [underline-rgba] property has been set. *)
 
 external set_underline_rgba_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_underline_rgba_set"
-(** Set property: underline-rgba-set *)
+(** If the [underline-rgba] property has been set. *)
 
 external get_underline_set : t -> bool = "ml_gtk_text_tag_get_underline_set"
-(** Get property: underline-set *)
+(** Whether the [underline] property is set. *)
 
 external set_underline_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_underline_set"
-(** Set property: underline-set *)
+(** Whether the [underline] property is set. *)
 
 external get_variant : t -> Ocpango_enums.variant
   = "ml_gtk_text_tag_get_variant"
-(** Get property: variant *)
+(** Font variant as a [PangoVariant], e.g. [PANGO_VARIANT_SMALL_CAPS]. *)
 
 external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_gtk_text_tag_set_variant"
-(** Set property: variant *)
+(** Font variant as a [PangoVariant], e.g. [PANGO_VARIANT_SMALL_CAPS]. *)
 
 external get_variant_set : t -> bool = "ml_gtk_text_tag_get_variant_set"
-(** Get property: variant-set *)
+(** Whether the [variant] property is set. *)
 
 external set_variant_set : t -> bool -> unit = "ml_gtk_text_tag_set_variant_set"
-(** Set property: variant-set *)
+(** Whether the [variant] property is set. *)
 
 external get_weight : t -> int = "ml_gtk_text_tag_get_weight"
-(** Get property: weight *)
+(** Font weight as an integer. *)
 
 external set_weight : t -> int -> unit = "ml_gtk_text_tag_set_weight"
-(** Set property: weight *)
+(** Font weight as an integer. *)
 
 external get_weight_set : t -> bool = "ml_gtk_text_tag_get_weight_set"
-(** Get property: weight-set *)
+(** Whether the [weight] property is set. *)
 
 external set_weight_set : t -> bool -> unit = "ml_gtk_text_tag_set_weight_set"
-(** Set property: weight-set *)
+(** Whether the [weight] property is set. *)
 
 external get_word : t -> bool = "ml_gtk_text_tag_get_word"
-(** Get property: word *)
+(** Whether this tag represents a single word.
+
+    This affects line breaks and cursor movement. *)
 
 external set_word : t -> bool -> unit = "ml_gtk_text_tag_set_word"
-(** Set property: word *)
+(** Whether this tag represents a single word.
+
+    This affects line breaks and cursor movement. *)
 
 external get_word_set : t -> bool = "ml_gtk_text_tag_get_word_set"
-(** Get property: word-set *)
+(** Whether the [word] property is set. *)
 
 external set_word_set : t -> bool -> unit = "ml_gtk_text_tag_set_word_set"
-(** Set property: word-set *)
+(** Whether the [word] property is set. *)
 
 external get_wrap_mode : t -> Ocgtk_enums.wrapmode
   = "ml_gtk_text_tag_get_wrap_mode"
-(** Get property: wrap-mode *)
+(** Whether to wrap lines never, at word boundaries, or at character boundaries.
+*)
 
 external set_wrap_mode : t -> Ocgtk_enums.wrapmode -> unit
   = "ml_gtk_text_tag_set_wrap_mode"
-(** Set property: wrap-mode *)
+(** Whether to wrap lines never, at word boundaries, or at character boundaries.
+*)
 
 external get_wrap_mode_set : t -> bool = "ml_gtk_text_tag_get_wrap_mode_set"
-(** Get property: wrap-mode-set *)
+(** Whether the [wrap-mode] property is set. *)
 
 external set_wrap_mode_set : t -> bool -> unit
   = "ml_gtk_text_tag_set_wrap_mode_set"
-(** Set property: wrap-mode-set *)
+(** Whether the [wrap-mode] property is set. *)

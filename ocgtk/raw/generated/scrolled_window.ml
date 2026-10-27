@@ -299,19 +299,27 @@ external get_child :
 
 external get_hscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_hscrollbar_policy"
-(** Get property: hscrollbar-policy *)
+(** When the horizontal scrollbar is displayed.
+
+    Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
 
 external set_hscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_hscrollbar_policy"
-(** Set property: hscrollbar-policy *)
+(** When the horizontal scrollbar is displayed.
+
+    Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
 
 external get_vscrollbar_policy : t -> Ocgtk_enums.policytype
   = "ml_gtk_scrolled_window_get_vscrollbar_policy"
-(** Get property: vscrollbar-policy *)
+(** When the vertical scrollbar is displayed.
+
+    Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
 
 external set_vscrollbar_policy : t -> Ocgtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_vscrollbar_policy"
-(** Set property: vscrollbar-policy *)
+(** When the vertical scrollbar is displayed.
+
+    Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
 
 let on_edge_overshot ?after obj ~callback =
   let closure =

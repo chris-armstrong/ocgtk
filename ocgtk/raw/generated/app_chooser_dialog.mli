@@ -72,4 +72,7 @@ external get_heading : t -> string option
 
 external get_gfile : t -> Ocgio_raw.File.t
   = "ml_gtk_app_chooser_dialog_get_gfile"
-(** Get property: gfile *)
+(** The GFile used by the [GtkAppChooserDialog].
+
+    The dialog's [GtkAppChooserWidget] content type will be guessed from the
+    file, if present. *)

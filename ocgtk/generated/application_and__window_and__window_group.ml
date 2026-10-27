@@ -186,8 +186,22 @@ class type application_t = object
       Inhibitors are also cleared when the application exits. *)
 
   method register_session : bool
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
+
   method set_register_session : bool -> unit
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
+
   method screensaver_active : bool
+  (** This property is true if GTK believes that the screensaver is currently
+      active.
+
+      Tracking the screensaver state is currently only supported on Linux. *)
 end
 
 and window_t = object
@@ -694,9 +708,17 @@ and window_t = object
       property. *)
 
   method default_height : int
+  (** The default height of the window. *)
+
   method set_default_height : int -> unit
+  (** The default height of the window. *)
+
   method default_width : int
+  (** The default width of the window. *)
+
   method set_default_width : int -> unit
+  (** The default width of the window. *)
+
   method as_window : Raw.Window.t
 end
 

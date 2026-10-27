@@ -465,7 +465,13 @@ class type notebook_t = object
   *)
 
   method enable_popup : bool
+  (** If [TRUE], pressing the right mouse button on the notebook shows a page
+      switching menu. *)
+
   method set_enable_popup : bool -> unit
+  (** If [TRUE], pressing the right mouse button on the notebook shows a page
+      switching menu. *)
+
   method as_notebook : Raw.Notebook.t
 end
 

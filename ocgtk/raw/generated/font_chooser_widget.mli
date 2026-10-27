@@ -34,4 +34,9 @@ external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
 
 external get_tweak_action : t -> Ocgio_raw.Action.t
   = "ml_gtk_font_chooser_widget_get_tweak_action"
-(** Get property: tweak-action *)
+(** A toggle action that can be used to switch to the tweak page of the font
+    chooser widget, which lets the user tweak the OpenType features and
+    variation axes of the selected font.
+
+    The action will be enabled or disabled depending on whether the selected
+    font has any features or axes. *)

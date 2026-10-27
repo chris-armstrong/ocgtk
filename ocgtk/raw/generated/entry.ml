@@ -491,179 +491,309 @@ external get_activates_default : t -> bool
 
 external get_enable_emoji_completion : t -> bool
   = "ml_gtk_entry_get_enable_emoji_completion"
-(** Get property: enable-emoji-completion *)
+(** Whether to suggest Emoji replacements for :-delimited names like [:heart:].
+*)
 
 external set_enable_emoji_completion : t -> bool -> unit
   = "ml_gtk_entry_set_enable_emoji_completion"
-(** Set property: enable-emoji-completion *)
+(** Whether to suggest Emoji replacements for :-delimited names like [:heart:].
+*)
 
 external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
-(** Get property: im-module *)
+(** Which IM (input method) module should be used for this entry.
+
+    See [Gtk.IMContext].
+
+    Setting this to a non-[NULL] value overrides the system-wide IM module
+    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
-(** Set property: im-module *)
+(** Which IM (input method) module should be used for this entry.
+
+    See [Gtk.IMContext].
+
+    Setting this to a non-[NULL] value overrides the system-wide IM module
+    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external get_invisible_char_set : t -> bool
   = "ml_gtk_entry_get_invisible_char_set"
-(** Get property: invisible-char-set *)
+(** Whether the invisible char has been set for the [GtkEntry]. *)
 
 external set_invisible_char_set : t -> bool -> unit
   = "ml_gtk_entry_set_invisible_char_set"
-(** Set property: invisible-char-set *)
+(** Whether the invisible char has been set for the [GtkEntry]. *)
 
 external get_menu_entry_icon_primary_text : t -> string
   = "ml_gtk_entry_get_menu_entry_icon_primary_text"
-(** Get property: menu-entry-icon-primary-text *)
+(** Text for an item in the context menu to activate the primary icon action.
+
+    When the primary icon is activatable and this property has been set, a new
+    entry in the context menu of this GtkEntry will appear with this text.
+    Selecting that menu entry will result in the primary icon being activated,
+    exactly in the same way as it would be activated from a mouse click.
+
+    This simplifies adding accessibility support to applications using
+    activatable icons. The activatable icons aren't focusable when navigating
+    the interface with the keyboard This is why Gtk recommends to also add those
+    actions in the context menu. This set of methods greatly simplifies this, by
+    adding a menu item that, when enabled, calls the same callback than clicking
+    on the icon. *)
 
 external set_menu_entry_icon_primary_text : t -> string -> unit
   = "ml_gtk_entry_set_menu_entry_icon_primary_text"
-(** Set property: menu-entry-icon-primary-text *)
+(** Text for an item in the context menu to activate the primary icon action.
+
+    When the primary icon is activatable and this property has been set, a new
+    entry in the context menu of this GtkEntry will appear with this text.
+    Selecting that menu entry will result in the primary icon being activated,
+    exactly in the same way as it would be activated from a mouse click.
+
+    This simplifies adding accessibility support to applications using
+    activatable icons. The activatable icons aren't focusable when navigating
+    the interface with the keyboard This is why Gtk recommends to also add those
+    actions in the context menu. This set of methods greatly simplifies this, by
+    adding a menu item that, when enabled, calls the same callback than clicking
+    on the icon. *)
 
 external get_menu_entry_icon_secondary_text : t -> string
   = "ml_gtk_entry_get_menu_entry_icon_secondary_text"
-(** Get property: menu-entry-icon-secondary-text *)
+(** Text for an item in the context menu to activate the secondary icon action.
+
+    When the primary icon is activatable and this property has been set, a new
+    entry in the context menu of this GtkEntry will appear with this text.
+    Selecting that menu entry will result in the primary icon being activated,
+    exactly in the same way as it would be activated from a mouse click.
+
+    This simplifies adding accessibility support to applications using
+    activatable icons. The activatable icons aren't focusable when navigating
+    the interface with the keyboard This is why Gtk recommends to also add those
+    actions in the context menu. This set of methods greatly simplifies this, by
+    adding a menu item that, when enabled, calls the same callback than clicking
+    on the icon. *)
 
 external set_menu_entry_icon_secondary_text : t -> string -> unit
   = "ml_gtk_entry_set_menu_entry_icon_secondary_text"
-(** Set property: menu-entry-icon-secondary-text *)
+(** Text for an item in the context menu to activate the secondary icon action.
+
+    When the primary icon is activatable and this property has been set, a new
+    entry in the context menu of this GtkEntry will appear with this text.
+    Selecting that menu entry will result in the primary icon being activated,
+    exactly in the same way as it would be activated from a mouse click.
+
+    This simplifies adding accessibility support to applications using
+    activatable icons. The activatable icons aren't focusable when navigating
+    the interface with the keyboard This is why Gtk recommends to also add those
+    actions in the context menu. This set of methods greatly simplifies this, by
+    adding a menu item that, when enabled, calls the same callback than clicking
+    on the icon. *)
 
 external get_primary_icon_activatable : t -> bool
   = "ml_gtk_entry_get_primary_icon_activatable"
-(** Get property: primary-icon-activatable *)
+(** Whether the primary icon is activatable.
+
+    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
+    only on sensitive, activatable icons.
+
+    Sensitive, but non-activatable icons can be used for purely informational
+    purposes. *)
 
 external set_primary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_primary_icon_activatable"
-(** Set property: primary-icon-activatable *)
+(** Whether the primary icon is activatable.
+
+    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
+    only on sensitive, activatable icons.
+
+    Sensitive, but non-activatable icons can be used for purely informational
+    purposes. *)
 
 external get_primary_icon_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_entry_get_primary_icon_gicon"
-(** Get property: primary-icon-gicon *)
+(** The [GIcon] to use for the primary icon for the entry. *)
 
 external set_primary_icon_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_entry_set_primary_icon_gicon"
-(** Set property: primary-icon-gicon *)
+(** The [GIcon] to use for the primary icon for the entry. *)
 
 external get_primary_icon_name : t -> string
   = "ml_gtk_entry_get_primary_icon_name"
-(** Get property: primary-icon-name *)
+(** The icon name to use for the primary icon for the entry. *)
 
 external set_primary_icon_name : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_name"
-(** Set property: primary-icon-name *)
+(** The icon name to use for the primary icon for the entry. *)
 
 external get_primary_icon_paintable : t -> Ocgdk_raw.Paintable.t
   = "ml_gtk_entry_get_primary_icon_paintable"
-(** Get property: primary-icon-paintable *)
+(** A [GdkPaintable] to use as the primary icon for the entry. *)
 
 external set_primary_icon_paintable : t -> Ocgdk_raw.Paintable.t -> unit
   = "ml_gtk_entry_set_primary_icon_paintable"
-(** Set property: primary-icon-paintable *)
+(** A [GdkPaintable] to use as the primary icon for the entry. *)
 
 external get_primary_icon_sensitive : t -> bool
   = "ml_gtk_entry_get_primary_icon_sensitive"
-(** Get property: primary-icon-sensitive *)
+(** Whether the primary icon is sensitive.
+
+    An insensitive icon appears grayed out. GTK does not emit the
+    [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
+    allow DND from insensitive icons.
+
+    An icon should be set insensitive if the action that would trigger when
+    clicked is currently not available. *)
 
 external set_primary_icon_sensitive : t -> bool -> unit
   = "ml_gtk_entry_set_primary_icon_sensitive"
-(** Set property: primary-icon-sensitive *)
+(** Whether the primary icon is sensitive.
+
+    An insensitive icon appears grayed out. GTK does not emit the
+    [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
+    allow DND from insensitive icons.
+
+    An icon should be set insensitive if the action that would trigger when
+    clicked is currently not available. *)
 
 external get_primary_icon_storage_type : t -> Ocgtk_enums.imagetype
   = "ml_gtk_entry_get_primary_icon_storage_type"
-(** Get property: primary-icon-storage-type *)
+(** The representation which is used for the primary icon of the entry. *)
 
 external get_primary_icon_tooltip_markup : t -> string
   = "ml_gtk_entry_get_primary_icon_tooltip_markup"
-(** Get property: primary-icon-tooltip-markup *)
+(** The contents of the tooltip on the primary icon, with markup.
+
+    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
 
 external set_primary_icon_tooltip_markup : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_tooltip_markup"
-(** Set property: primary-icon-tooltip-markup *)
+(** The contents of the tooltip on the primary icon, with markup.
+
+    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
 
 external get_primary_icon_tooltip_text : t -> string
   = "ml_gtk_entry_get_primary_icon_tooltip_text"
-(** Get property: primary-icon-tooltip-text *)
+(** The contents of the tooltip on the primary icon.
+
+    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
 
 external set_primary_icon_tooltip_text : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_tooltip_text"
-(** Set property: primary-icon-tooltip-text *)
+(** The contents of the tooltip on the primary icon.
+
+    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
 
 external get_scroll_offset : t -> int = "ml_gtk_entry_get_scroll_offset"
-(** Get property: scroll-offset *)
+(** Number of pixels of the entry scrolled off the screen to the left. *)
 
 external get_secondary_icon_activatable : t -> bool
   = "ml_gtk_entry_get_secondary_icon_activatable"
-(** Get property: secondary-icon-activatable *)
+(** Whether the secondary icon is activatable.
+
+    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
+    only on sensitive, activatable icons.
+
+    Sensitive, but non-activatable icons can be used for purely informational
+    purposes. *)
 
 external set_secondary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_secondary_icon_activatable"
-(** Set property: secondary-icon-activatable *)
+(** Whether the secondary icon is activatable.
+
+    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
+    only on sensitive, activatable icons.
+
+    Sensitive, but non-activatable icons can be used for purely informational
+    purposes. *)
 
 external get_secondary_icon_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_entry_get_secondary_icon_gicon"
-(** Get property: secondary-icon-gicon *)
+(** The [GIcon] to use for the secondary icon for the entry. *)
 
 external set_secondary_icon_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_entry_set_secondary_icon_gicon"
-(** Set property: secondary-icon-gicon *)
+(** The [GIcon] to use for the secondary icon for the entry. *)
 
 external get_secondary_icon_name : t -> string
   = "ml_gtk_entry_get_secondary_icon_name"
-(** Get property: secondary-icon-name *)
+(** The icon name to use for the secondary icon for the entry. *)
 
 external set_secondary_icon_name : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_name"
-(** Set property: secondary-icon-name *)
+(** The icon name to use for the secondary icon for the entry. *)
 
 external get_secondary_icon_paintable : t -> Ocgdk_raw.Paintable.t
   = "ml_gtk_entry_get_secondary_icon_paintable"
-(** Get property: secondary-icon-paintable *)
+(** A [GdkPaintable] to use as the secondary icon for the entry. *)
 
 external set_secondary_icon_paintable : t -> Ocgdk_raw.Paintable.t -> unit
   = "ml_gtk_entry_set_secondary_icon_paintable"
-(** Set property: secondary-icon-paintable *)
+(** A [GdkPaintable] to use as the secondary icon for the entry. *)
 
 external get_secondary_icon_sensitive : t -> bool
   = "ml_gtk_entry_get_secondary_icon_sensitive"
-(** Get property: secondary-icon-sensitive *)
+(** Whether the secondary icon is sensitive.
+
+    An insensitive icon appears grayed out. GTK does not emit the
+    \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
+    does not allow DND from insensitive icons.
+
+    An icon should be set insensitive if the action that would trigger when
+    clicked is currently not available. *)
 
 external set_secondary_icon_sensitive : t -> bool -> unit
   = "ml_gtk_entry_set_secondary_icon_sensitive"
-(** Set property: secondary-icon-sensitive *)
+(** Whether the secondary icon is sensitive.
+
+    An insensitive icon appears grayed out. GTK does not emit the
+    \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
+    does not allow DND from insensitive icons.
+
+    An icon should be set insensitive if the action that would trigger when
+    clicked is currently not available. *)
 
 external get_secondary_icon_storage_type : t -> Ocgtk_enums.imagetype
   = "ml_gtk_entry_get_secondary_icon_storage_type"
-(** Get property: secondary-icon-storage-type *)
+(** The representation which is used for the secondary icon of the entry. *)
 
 external get_secondary_icon_tooltip_markup : t -> string
   = "ml_gtk_entry_get_secondary_icon_tooltip_markup"
-(** Get property: secondary-icon-tooltip-markup *)
+(** The contents of the tooltip on the secondary icon, with markup.
+
+    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
 
 external set_secondary_icon_tooltip_markup : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_tooltip_markup"
-(** Set property: secondary-icon-tooltip-markup *)
+(** The contents of the tooltip on the secondary icon, with markup.
+
+    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
 
 external get_secondary_icon_tooltip_text : t -> string
   = "ml_gtk_entry_get_secondary_icon_tooltip_text"
-(** Get property: secondary-icon-tooltip-text *)
+(** The contents of the tooltip on the secondary icon.
+
+    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
 
 external set_secondary_icon_tooltip_text : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_tooltip_text"
-(** Set property: secondary-icon-tooltip-text *)
+(** The contents of the tooltip on the secondary icon.
+
+    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
 
 external get_show_emoji_icon : t -> bool = "ml_gtk_entry_get_show_emoji_icon"
-(** Get property: show-emoji-icon *)
+(** Whether the entry will show an Emoji icon in the secondary icon position to
+    open the Emoji chooser. *)
 
 external set_show_emoji_icon : t -> bool -> unit
   = "ml_gtk_entry_set_show_emoji_icon"
-(** Set property: show-emoji-icon *)
+(** Whether the entry will show an Emoji icon in the secondary icon position to
+    open the Emoji chooser. *)
 
 external get_truncate_multiline : t -> bool
   = "ml_gtk_entry_get_truncate_multiline"
-(** Get property: truncate-multiline *)
+(** When [TRUE], pasted multi-line text is truncated to the first line. *)
 
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_entry_set_truncate_multiline"
-(** Set property: truncate-multiline *)
+(** When [TRUE], pasted multi-line text is truncated to the first line. *)
 
 let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback

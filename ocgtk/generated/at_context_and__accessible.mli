@@ -16,7 +16,11 @@ class type at_context_t = object
   (** Retrieves the accessible role of this context. *)
 
   method display : Ocgdk.Display.display_t
+  (** The [GdkDisplay] for the [GtkATContext]. *)
+
   method set_display : Ocgdk.Display.display_t -> unit
+  (** The [GdkDisplay] for the [GtkATContext]. *)
+
   method as_at_context : Raw.At_context.t
 end
 

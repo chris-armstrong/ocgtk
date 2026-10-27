@@ -331,21 +331,31 @@ external compute_cursor_extents :
 (* Properties *)
 
 external get_im_module : t -> string = "ml_gtk_text_get_im_module"
-(** Get property: im-module *)
+(** Which input method module should be used.
+
+    See [Gtk.IMMulticontext].
+
+    Setting this to a non-[NULL] value overrides the system-wide input method.
+    See the [Gtk.Settings:gtk-im-module] setting. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
-(** Set property: im-module *)
+(** Which input method module should be used.
+
+    See [Gtk.IMMulticontext].
+
+    Setting this to a non-[NULL] value overrides the system-wide input method.
+    See the [Gtk.Settings:gtk-im-module] setting. *)
 
 external get_invisible_char_set : t -> bool
   = "ml_gtk_text_get_invisible_char_set"
-(** Get property: invisible-char-set *)
+(** Whether the invisible char has been set. *)
 
 external set_invisible_char_set : t -> bool -> unit
   = "ml_gtk_text_set_invisible_char_set"
-(** Set property: invisible-char-set *)
+(** Whether the invisible char has been set. *)
 
 external get_scroll_offset : t -> int = "ml_gtk_text_get_scroll_offset"
-(** Get property: scroll-offset *)
+(** Number of pixels scrolled of the screen to the left. *)
 
 let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback

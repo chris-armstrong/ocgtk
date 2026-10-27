@@ -42,7 +42,11 @@ class type tree_model_filter_t = object
       given filter model. *)
 
   method child_model : Tree_model.tree_model_t
+  (** The child model of the tree model filter. *)
+
   method virtual_root : Raw.Tree_path.t
+  (** The virtual root of the tree model filter. *)
+
   method as_tree_model_filter : Raw.Tree_model_filter.t
 end
 

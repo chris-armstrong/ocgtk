@@ -51,17 +51,41 @@ class type constraint_guide_t = object
       [GtkConstraintGuide]. *)
 
   method max_height : int
+  (** The maximum height of the guide. *)
+
   method set_max_height : int -> unit
+  (** The maximum height of the guide. *)
+
   method max_width : int
+  (** The maximum width of the guide. *)
+
   method set_max_width : int -> unit
+  (** The maximum width of the guide. *)
+
   method min_height : int
+  (** The minimum height of the guide. *)
+
   method set_min_height : int -> unit
+  (** The minimum height of the guide. *)
+
   method min_width : int
+  (** The minimum width of the guide. *)
+
   method set_min_width : int -> unit
+  (** The minimum width of the guide. *)
+
   method nat_height : int
+  (** The preferred, or natural, height of the guide. *)
+
   method set_nat_height : int -> unit
+  (** The preferred, or natural, height of the guide. *)
+
   method nat_width : int
+  (** The preferred, or natural, width of the guide. *)
+
   method set_nat_width : int -> unit
+  (** The preferred, or natural, width of the guide. *)
+
   method as_constraint_guide : Raw.Constraint_guide.t
 end
 

@@ -698,7 +698,21 @@ class type text_view_t = object
       lines vs. paragraphs. *)
 
   method im_module : string
+  (** Which IM (input method) module should be used for this text_view.
+
+      See [Gtk.IMMulticontext].
+
+      Setting this to a non-[NULL] value overrides the system-wide IM module
+      setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+
   method set_im_module : string -> unit
+  (** Which IM (input method) module should be used for this text_view.
+
+      See [Gtk.IMMulticontext].
+
+      Setting this to a non-[NULL] value overrides the system-wide IM module
+      setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+
   method as_text_view : Raw.Text_view.t
 end
 

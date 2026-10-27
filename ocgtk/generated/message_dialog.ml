@@ -16,15 +16,47 @@ class type message_dialog_t = object
   (** Sets the text of the message dialog. *)
 
   method message_type : Enums.messagetype
+  (** The type of the message. *)
+
   method set_message_type : Enums.messagetype -> unit
+  (** The type of the message. *)
+
   method secondary_text : string
+  (** The secondary text of the message dialog. *)
+
   method set_secondary_text : string -> unit
+  (** The secondary text of the message dialog. *)
+
   method secondary_use_markup : bool
+  (** [TRUE] if the secondary text of the dialog includes Pango markup.
+
+      See [Pango.parse_markup]. *)
+
   method set_secondary_use_markup : bool -> unit
+  (** [TRUE] if the secondary text of the dialog includes Pango markup.
+
+      See [Pango.parse_markup]. *)
+
   method text : string
+  (** The primary text of the message dialog.
+
+      If the dialog has a secondary text, this will appear as the title. *)
+
   method set_text : string -> unit
+  (** The primary text of the message dialog.
+
+      If the dialog has a secondary text, this will appear as the title. *)
+
   method use_markup : bool
+  (** [TRUE] if the primary text of the dialog includes Pango markup.
+
+      See [Pango.parse_markup]. *)
+
   method set_use_markup : bool -> unit
+  (** [TRUE] if the primary text of the dialog includes Pango markup.
+
+      See [Pango.parse_markup]. *)
+
   method as_message_dialog : Raw.Message_dialog.t
 end
 

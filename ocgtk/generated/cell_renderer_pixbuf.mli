@@ -21,19 +21,54 @@
 (** The methods, signals and properties of a [CellRendererPixbuf]. *)
 class type cell_renderer_pixbuf_t = object
   inherit Cell_renderer.cell_renderer_t
+
   method gicon : Ocgio.Icon.icon_t
+  (** The GIcon representing the icon to display. If the icon theme is changed,
+      the image will be updated automatically. *)
+
   method set_gicon : Ocgio.Icon.icon_t -> unit
+  (** The GIcon representing the icon to display. If the icon theme is changed,
+      the image will be updated automatically. *)
+
   method icon_name : string
+  [@@ocaml.doc
+    "The name of the themed icon to display.\n\
+     This property only has an effect if not overridden by the \"pixbuf\" \
+     property."]
+
   method set_icon_name : string -> unit
+  [@@ocaml.doc
+    "The name of the themed icon to display.\n\
+     This property only has an effect if not overridden by the \"pixbuf\" \
+     property."]
+
   method icon_size : Enums.iconsize
+  (** The [GtkIconSize] value that specifies the size of the rendered icon. *)
+
   method set_icon_size : Enums.iconsize -> unit
+  (** The [GtkIconSize] value that specifies the size of the rendered icon. *)
+
   method set_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
+  (** Set property: pixbuf *)
+
   method pixbuf_expander_closed : Ocgdkpixbuf.Pixbuf.pixbuf_t
+  (** Get property: pixbuf-expander-closed *)
+
   method set_pixbuf_expander_closed : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
+  (** Set property: pixbuf-expander-closed *)
+
   method pixbuf_expander_open : Ocgdkpixbuf.Pixbuf.pixbuf_t
+  (** Get property: pixbuf-expander-open *)
+
   method set_pixbuf_expander_open : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
+  (** Set property: pixbuf-expander-open *)
+
   method texture : Ocgdk.Texture.texture_t
+  (** Get property: texture *)
+
   method set_texture : Ocgdk.Texture.texture_t -> unit
+  (** Set property: texture *)
+
   method as_cell_renderer_pixbuf : Raw.Cell_renderer_pixbuf.t
 end
 

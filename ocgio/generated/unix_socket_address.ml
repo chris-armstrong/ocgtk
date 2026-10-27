@@ -23,6 +23,8 @@ class type unix_socket_address_t = object
       For details, see g_unix_socket_address_get_path(). *)
 
   method abstract : bool
+  (** Whether or not this is an abstract address *)
+
   method as_unix_socket_address : Raw.Unix_socket_address.t
 end
 

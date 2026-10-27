@@ -19,7 +19,11 @@ class type multi_selection_t = object
       If [model] is [NULL], [self] will be empty. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_multi_selection : Raw.Multi_selection.t
 end
 

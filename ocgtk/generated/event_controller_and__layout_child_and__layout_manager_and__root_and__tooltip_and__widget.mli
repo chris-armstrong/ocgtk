@@ -1597,9 +1597,25 @@ and widget_t = object
       This function is for use in widget implementations. *)
 
   method height_request : int
+  (** Overrides for height request of the widget.
+
+      If this is -1, the natural request will be used. *)
+
   method set_height_request : int -> unit
+  (** Overrides for height request of the widget.
+
+      If this is -1, the natural request will be used. *)
+
   method width_request : int
+  (** Overrides for width request of the widget.
+
+      If this is -1, the natural request will be used. *)
+
   method set_width_request : int -> unit
+  (** Overrides for width request of the widget.
+
+      If this is -1, the natural request will be used. *)
+
   method as_widget : Raw.Widget.t
 end
 

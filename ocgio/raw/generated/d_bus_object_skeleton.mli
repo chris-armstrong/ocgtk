@@ -52,11 +52,11 @@ external add_interface : t -> D_bus_interface_skeleton.t -> unit
 
 external get_g_object_path : t -> string
   = "ml_g_d_bus_object_skeleton_get_g_object_path"
-(** Get property: g-object-path *)
+(** The object path where the object is exported. *)
 
 external set_g_object_path : t -> string -> unit
   = "ml_g_d_bus_object_skeleton_set_g_object_path"
-(** Set property: g-object-path *)
+(** The object path where the object is exported. *)
 
 val on_authorize_method :
   ?after:bool ->

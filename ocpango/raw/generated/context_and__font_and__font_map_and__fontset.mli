@@ -385,10 +385,10 @@ and Font_map : sig
 
   external get_item_type : t -> Gobject.Type.t
     = "ml_pango_font_map_get_item_type"
-  (** Get property: item-type *)
+  (** The type of items contained in this list. *)
 
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"
-  (** Get property: n-items *)
+  (** The number of items contained in this list. *)
 end
 
 (** A [PangoFontset] represents a set of [PangoFont] to use when rendering text.

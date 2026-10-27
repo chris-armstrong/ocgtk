@@ -37,27 +37,35 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_pixbuf_new"
 
 external get_gicon : t -> Ocgio_raw.Icon.t
   = "ml_gtk_cell_renderer_pixbuf_get_gicon"
-(** Get property: gicon *)
+(** The GIcon representing the icon to display. If the icon theme is changed,
+    the image will be updated automatically. *)
 
 external set_gicon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_gicon"
-(** Set property: gicon *)
+(** The GIcon representing the icon to display. If the icon theme is changed,
+    the image will be updated automatically. *)
 
 external get_icon_name : t -> string
   = "ml_gtk_cell_renderer_pixbuf_get_icon_name"
-(** Get property: icon-name *)
+[@@ocaml.doc
+  "The name of the themed icon to display.\n\
+   This property only has an effect if not overridden by the \"pixbuf\" \
+   property."]
 
 external set_icon_name : t -> string -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_icon_name"
-(** Set property: icon-name *)
+[@@ocaml.doc
+  "The name of the themed icon to display.\n\
+   This property only has an effect if not overridden by the \"pixbuf\" \
+   property."]
 
 external get_icon_size : t -> Ocgtk_enums.iconsize
   = "ml_gtk_cell_renderer_pixbuf_get_icon_size"
-(** Get property: icon-size *)
+(** The [GtkIconSize] value that specifies the size of the rendered icon. *)
 
 external set_icon_size : t -> Ocgtk_enums.iconsize -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_icon_size"
-(** Set property: icon-size *)
+(** The [GtkIconSize] value that specifies the size of the rendered icon. *)
 
 external set_pixbuf : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf"

@@ -55,7 +55,11 @@ class type single_selection_t = object
       [Gtk.SingleSelection:can-unselect] is set to [FALSE]. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_single_selection : Raw.Single_selection.t
 end
 

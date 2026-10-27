@@ -185,25 +185,65 @@ class type cell_renderer_t = object
       [GtkCellEditable]. *)
 
   method set_cell_background : string -> unit
+  (** Set property: cell-background *)
+
   method cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t
+  (** Cell background as a [GdkRGBA] *)
+
   method set_cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit
+  (** Cell background as a [GdkRGBA] *)
+
   method cell_background_set : bool
+  (** Get property: cell-background-set *)
+
   method set_cell_background_set : bool -> unit
+  (** Set property: cell-background-set *)
+
   method editing : bool
+  (** Get property: editing *)
+
   method height : int
+  (** Get property: height *)
+
   method set_height : int -> unit
+  (** Set property: height *)
+
   method mode : Enums.cellrenderermode
+  (** Get property: mode *)
+
   method set_mode : Enums.cellrenderermode -> unit
+  (** Set property: mode *)
+
   method width : int
+  (** Get property: width *)
+
   method set_width : int -> unit
+  (** Set property: width *)
+
   method xalign : float
+  (** Get property: xalign *)
+
   method set_xalign : float -> unit
+  (** Set property: xalign *)
+
   method xpad : int
+  (** Get property: xpad *)
+
   method set_xpad : int -> unit
+  (** Set property: xpad *)
+
   method yalign : float
+  (** Get property: yalign *)
+
   method set_yalign : float -> unit
+  (** Set property: yalign *)
+
   method ypad : int
+  (** Get property: ypad *)
+
   method set_ypad : int -> unit
+  (** Set property: ypad *)
+
   method as_cell_renderer : Raw.Cell_renderer.t
 end
 

@@ -156,16 +156,22 @@ external get_end_child :
 (* Properties *)
 
 external get_max_position : t -> int = "ml_gtk_paned_get_max_position"
-(** Get property: max-position *)
+(** The largest possible value for the [Gtk.Paned:position] property.
+
+    This property is derived from the size and shrinkability of the widget's
+    children. *)
 
 external get_min_position : t -> int = "ml_gtk_paned_get_min_position"
-(** Get property: min-position *)
+(** The smallest possible value for the [Gtk.Paned:position] property.
+
+    This property is derived from the size and shrinkability of the widget's
+    children. *)
 
 external get_position_set : t -> bool = "ml_gtk_paned_get_position_set"
-(** Get property: position-set *)
+(** Whether the [Gtk.Paned:position] property has been set. *)
 
 external set_position_set : t -> bool -> unit = "ml_gtk_paned_set_position_set"
-(** Set property: position-set *)
+(** Whether the [Gtk.Paned:position] property has been set. *)
 
 let on_accept_position ?after obj ~callback =
   let closure =

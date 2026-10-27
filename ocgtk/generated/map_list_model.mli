@@ -51,7 +51,11 @@ class type map_list_model_t = object
       are doing and have set up an appropriate map function. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_map_list_model : Raw.Map_list_model.t
 end
 

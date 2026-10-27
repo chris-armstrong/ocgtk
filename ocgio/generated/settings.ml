@@ -425,10 +425,35 @@ class type settings_t = object
       If [value] is floating then this function consumes the reference. *)
 
   method delay_apply : bool
+  (** Whether the [Gio.Settings] object is in ‘delay-apply’ mode. *)
+
   method path : string
+  (** The path within the backend where the settings are stored. *)
+
   method schema : string
+  (** The name of the schema that describes the types of keys for this
+      [Gio.Settings] object.
+
+      The type of this property is {i not} [Gio.SettingsSchema].
+      [Gio.SettingsSchema] has only existed since version 2.32 and unfortunately
+      this name was used in previous versions to refer to the schema ID rather
+      than the schema itself. Take care to use the
+      [Gio.Settings:settings-schema] property if you wish to pass in a
+      [Gio.SettingsSchema]. *)
+
   method schema_id : string
+  (** The name of the schema that describes the types of keys for this
+      [Gio.Settings] object. *)
+
   method settings_schema : Raw.Settings_schema.t
+  (** The [Gio.SettingsSchema] describing the types of keys for this
+      [Gio.Settings] object.
+
+      Ideally, this property would be called [Gio.Settings:schema].
+      [Gio.SettingsSchema] has only existed since version 2.32, however, and
+      before then the [Gio.Settings:schema] property was used to refer to the ID
+      of the schema rather than the schema itself. Take care. *)
+
   method as_settings : Raw.Settings.t
 end
 

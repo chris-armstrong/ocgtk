@@ -474,6 +474,8 @@ class type socket_t = object
       speaking IPv4. *)
 
   method type_ : Enums.sockettype
+  (** The socket’s type. *)
+
   method as_socket : Raw.Socket.t
 end
 

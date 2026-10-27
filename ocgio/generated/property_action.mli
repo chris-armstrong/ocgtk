@@ -57,12 +57,32 @@
 (** The methods, signals and properties of a [PropertyAction]. *)
 class type property_action_t = object
   inherit Action.action_t
+
   method enabled : bool
+  (** If [action] is currently enabled.
+
+      If the action is disabled then calls to g_action_activate() and
+      g_action_change_state() have no effect. *)
+
   method invert_boolean : bool
+  (** If [TRUE], the state of the action will be the negation of the property
+      value, provided the property is boolean. *)
+
   method name : string
+  (** The name of the action. This is mostly meaningful for identifying the
+      action once it has been added to a [GActionMap]. *)
+
   method parameter_type : Gvariant_type.t
+  (** The type of the parameter that must be given when activating the action.
+  *)
+
   method state : Gvariant.t
+  (** The state of the action, or [NULL] if the action is stateless. *)
+
   method state_type : Gvariant_type.t
+  (** The [GVariantType] of the state that the action has, or [NULL] if the
+      action is stateless. *)
+
   method as_property_action : Raw.Property_action.t
 end
 

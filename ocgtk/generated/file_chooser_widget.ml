@@ -148,9 +148,17 @@ class type file_chooser_widget_t = object
       The default binding for this signal is <kbd>Alt</kbd>-<kbd>Up</kbd>. *)
 
   method search_mode : bool
+  (** Whether search mode is enabled. *)
+
   method set_search_mode : bool -> unit
+  (** Whether search mode is enabled. *)
+
   method show_time : bool
+  (** Whether to show the time. *)
+
   method subtitle : string
+  (** The subtitle of the file chooser widget. *)
+
   method as_file_chooser_widget : Raw.File_chooser_widget.t
 end
 

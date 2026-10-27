@@ -60,7 +60,19 @@ class type color_button_t = object
   (** Sets the title for the color chooser dialog. *)
 
   method show_editor : bool
+  (** Whether the color chooser should open in editor mode.
+
+      This property should be used in cases where the palette in the editor
+      would be redundant, such as when the color button is already part of a
+      palette. *)
+
   method set_show_editor : bool -> unit
+  (** Whether the color chooser should open in editor mode.
+
+      This property should be used in cases where the palette in the editor
+      would be redundant, such as when the color button is already part of a
+      palette. *)
+
   method as_color_button : Raw.Color_button.t
 end
 

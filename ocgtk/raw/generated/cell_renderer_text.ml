@@ -50,11 +50,19 @@ external set_align_set : t -> bool -> unit
 
 external get_alignment : t -> Ocpango_enums.alignment
   = "ml_gtk_cell_renderer_text_get_alignment"
-(** Get property: alignment *)
+[@@ocaml.doc
+  "Specifies how to align the lines of text with respect to each other.\n\n\
+   Note that this property describes how to align the lines of text in\n\
+   case there are several of them. The \"xalign\" property of [GtkCellRenderer],\n\
+   on the other hand, sets the horizontal alignment of the whole text."]
 
 external set_alignment : t -> Ocpango_enums.alignment -> unit
   = "ml_gtk_cell_renderer_text_set_alignment"
-(** Set property: alignment *)
+[@@ocaml.doc
+  "Specifies how to align the lines of text with respect to each other.\n\n\
+   Note that this property describes how to align the lines of text in\n\
+   case there are several of them. The \"xalign\" property of [GtkCellRenderer],\n\
+   on the other hand, sets the horizontal alignment of the whole text."]
 
 external get_attributes : t -> Ocpango_raw.Attr_list.t
   = "ml_gtk_cell_renderer_text_get_attributes"
@@ -70,11 +78,11 @@ external set_background : t -> string -> unit
 
 external get_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_background_rgba"
-(** Get property: background-rgba *)
+(** Background color as a [GdkRGBA] *)
 
 external set_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_text_set_background_rgba"
-(** Set property: background-rgba *)
+(** Background color as a [GdkRGBA] *)
 
 external get_background_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_background_set"
@@ -101,11 +109,17 @@ external set_editable_set : t -> bool -> unit
 
 external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_cell_renderer_text_get_ellipsize"
-(** Get property: ellipsize *)
+(** Specifies the preferred place to ellipsize the string, if the cell renderer
+    does not have enough room to display the entire string. Setting it to
+    [PANGO_ELLIPSIZE_NONE] turns off ellipsizing. See the wrap-width property
+    for another way of making the text fit into a given width. *)
 
 external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
   = "ml_gtk_cell_renderer_text_set_ellipsize"
-(** Set property: ellipsize *)
+(** Specifies the preferred place to ellipsize the string, if the cell renderer
+    does not have enough room to display the entire string. Setting it to
+    [PANGO_ELLIPSIZE_NONE] turns off ellipsizing. See the wrap-width property
+    for another way of making the text fit into a given width. *)
 
 external get_ellipsize_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_ellipsize_set"
@@ -149,11 +163,11 @@ external set_foreground : t -> string -> unit
 
 external get_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_foreground_rgba"
-(** Get property: foreground-rgba *)
+(** Foreground color as a [GdkRGBA] *)
 
 external set_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_text_set_foreground_rgba"
-(** Set property: foreground-rgba *)
+(** Foreground color as a [GdkRGBA] *)
 
 external get_foreground_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_foreground_set"
@@ -184,19 +198,33 @@ external set_markup : t -> string -> unit
 
 external get_max_width_chars : t -> int
   = "ml_gtk_cell_renderer_text_get_max_width_chars"
-(** Get property: max-width-chars *)
+(** The desired maximum width of the cell, in characters. If this property is
+    set to -1, the width will be calculated automatically.
+
+    For cell renderers that ellipsize or wrap text; this property controls the
+    maximum reported width of the cell. The cell should not receive any greater
+    allocation unless it is set to expand in its [GtkCellLayout] and all of the
+    cell's siblings have received their natural width. *)
 
 external set_max_width_chars : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_max_width_chars"
-(** Set property: max-width-chars *)
+(** The desired maximum width of the cell, in characters. If this property is
+    set to -1, the width will be calculated automatically.
+
+    For cell renderers that ellipsize or wrap text; this property controls the
+    maximum reported width of the cell. The cell should not receive any greater
+    allocation unless it is set to expand in its [GtkCellLayout] and all of the
+    cell's siblings have received their natural width. *)
 
 external get_placeholder_text : t -> string
   = "ml_gtk_cell_renderer_text_get_placeholder_text"
-(** Get property: placeholder-text *)
+(** The text that will be displayed in the [GtkCellRenderer] if
+    [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
 
 external set_placeholder_text : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_placeholder_text"
-(** Set property: placeholder-text *)
+(** The text that will be displayed in the [GtkCellRenderer] if
+    [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
 
 external get_rise : t -> int = "ml_gtk_cell_renderer_text_get_rise"
 (** Get property: rise *)
@@ -353,26 +381,38 @@ external set_weight_set : t -> bool -> unit
 
 external get_width_chars : t -> int
   = "ml_gtk_cell_renderer_text_get_width_chars"
-(** Get property: width-chars *)
+(** The desired width of the cell, in characters. If this property is set to -1,
+    the width will be calculated automatically, otherwise the cell will request
+    either 3 characters or the property value, whichever is greater. *)
 
 external set_width_chars : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_width_chars"
-(** Set property: width-chars *)
+(** The desired width of the cell, in characters. If this property is set to -1,
+    the width will be calculated automatically, otherwise the cell will request
+    either 3 characters or the property value, whichever is greater. *)
 
 external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_cell_renderer_text_get_wrap_mode"
-(** Get property: wrap-mode *)
+(** Specifies how to break the string into multiple lines, if the cell renderer
+    does not have enough room to display the entire string. This property has no
+    effect unless the wrap-width property is set. *)
 
 external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_cell_renderer_text_set_wrap_mode"
-(** Set property: wrap-mode *)
+(** Specifies how to break the string into multiple lines, if the cell renderer
+    does not have enough room to display the entire string. This property has no
+    effect unless the wrap-width property is set. *)
 
 external get_wrap_width : t -> int = "ml_gtk_cell_renderer_text_get_wrap_width"
-(** Get property: wrap-width *)
+(** Specifies the minimum width at which the text is wrapped. The wrap-mode
+    property can be used to influence at what character positions the line
+    breaks can be placed. Setting wrap-width to -1 turns wrapping off. *)
 
 external set_wrap_width : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_wrap_width"
-(** Set property: wrap-width *)
+(** Specifies the minimum width at which the text is wrapped. The wrap-mode
+    property can be used to influence at what character positions the line
+    breaks can be placed. Setting wrap-width to -1 turns wrapping off. *)
 
 let on_edited ?after obj ~callback =
   let closure =

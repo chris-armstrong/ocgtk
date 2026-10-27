@@ -274,9 +274,25 @@ and cell_area_context_t = object
       gtk_cell_area_get_preferred_height_for_width(). *)
 
   method minimum_height : int
+  (** The minimum height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_height(). *)
+
   method minimum_width : int
+  (** The minimum width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_width(). *)
+
   method natural_height : int
+  (** The natural height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_height(). *)
+
   method natural_width : int
+  (** The natural width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_width(). *)
+
   method as_cell_area_context : Raw.Cell_area_context.t
 end
 

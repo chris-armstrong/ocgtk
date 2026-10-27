@@ -39,23 +39,41 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_combo_new"
 (* Properties *)
 
 external get_has_entry : t -> bool = "ml_gtk_cell_renderer_combo_get_has_entry"
-(** Get property: has-entry *)
+(** If [TRUE], the cell renderer will include an entry and allow to enter values
+    other than the ones in the popup list. *)
 
 external set_has_entry : t -> bool -> unit
   = "ml_gtk_cell_renderer_combo_set_has_entry"
-(** Set property: has-entry *)
+(** If [TRUE], the cell renderer will include an entry and allow to enter values
+    other than the ones in the popup list. *)
 
 external get_model : t -> Tree_model.t = "ml_gtk_cell_renderer_combo_get_model"
-(** Get property: model *)
+(** Holds a tree model containing the possible values for the combo box. Use the
+    text_column property to specify the column holding the values. *)
 
 external set_model : t -> Tree_model.t -> unit
   = "ml_gtk_cell_renderer_combo_set_model"
-(** Set property: model *)
+(** Holds a tree model containing the possible values for the combo box. Use the
+    text_column property to specify the column holding the values. *)
 
 external get_text_column : t -> int
   = "ml_gtk_cell_renderer_combo_get_text_column"
-(** Get property: text-column *)
+(** Specifies the model column which holds the possible values for the combo
+    box.
+
+    Note that this refers to the model specified in the model property, not the
+    model backing the tree view to which this cell renderer is attached.
+
+    [GtkCellRendererCombo] automatically adds a text cell renderer for this
+    column to its combo box. *)
 
 external set_text_column : t -> int -> unit
   = "ml_gtk_cell_renderer_combo_set_text_column"
-(** Set property: text-column *)
+(** Specifies the model column which holds the possible values for the combo
+    box.
+
+    Note that this refers to the model specified in the model property, not the
+    model backing the tree view to which this cell renderer is attached.
+
+    [GtkCellRendererCombo] automatically adds a text cell renderer for this
+    column to its combo box. *)

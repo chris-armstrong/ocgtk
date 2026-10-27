@@ -57,8 +57,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_list_base_get_type"
 
 external get_orientation : t -> Ocgtk_enums.orientation
   = "ml_gtk_list_base_get_orientation"
-(** Get property: orientation *)
+(** The orientation of the list. See GtkOrientable:orientation for details. *)
 
 external set_orientation : t -> Ocgtk_enums.orientation -> unit
   = "ml_gtk_list_base_set_orientation"
-(** Set property: orientation *)
+(** The orientation of the list. See GtkOrientable:orientation for details. *)

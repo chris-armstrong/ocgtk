@@ -97,3 +97,11 @@ let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
   Doc_emit.item_doc ~indent:""
     ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." class_name wrapped)
     ~context:Doc_translate.Member ctor.ctor_doc
+
+type accessor = Getter | Setter
+
+let property ~accessor (prop : Types.gir_property) =
+  let verb = match accessor with Getter -> "Get" | Setter -> "Set" in
+  Doc_emit.item_doc ~indent:""
+    ~fallback:(Fmt.str "%s property: %s" verb prop.prop_name)
+    ~context:Doc_translate.Member prop.prop_doc

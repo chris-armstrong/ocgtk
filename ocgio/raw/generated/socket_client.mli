@@ -338,11 +338,11 @@ external add_application_proxy : t -> string -> unit
 (* Properties *)
 
 external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_client_get_type"
-(** Get property: type *)
+(** The type to use for socket construction. *)
 
 external set_type : t -> Ocgio_enums.sockettype -> unit
   = "ml_g_socket_client_set_type"
-(** Set property: type *)
+(** The type to use for socket construction. *)
 
 val on_event :
   ?after:bool ->

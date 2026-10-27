@@ -40,11 +40,11 @@ module rec At_context : sig
 
   external get_display : t -> Ocgdk_raw.Display.t
     = "ml_gtk_at_context_get_display"
-  (** Get property: display *)
+  (** The [GdkDisplay] for the [GtkATContext]. *)
 
   external set_display : t -> Ocgdk_raw.Display.t -> unit
     = "ml_gtk_at_context_set_display"
-  (** Set property: display *)
+  (** The [GdkDisplay] for the [GtkATContext]. *)
 
   val on_state_change :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

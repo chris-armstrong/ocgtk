@@ -66,7 +66,11 @@ and font_family_t = object
       [Pango.FontDescription.set_variations] for more information. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items contained in this list. *)
+
   method n_items : int
+  (** The number of items contained in this list. *)
+
   method as_font_family : Raw.Font_family.t
 end
 

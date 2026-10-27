@@ -235,6 +235,12 @@ class type assistant_t = object
       assistant. *)
 
   method use_header_bar : int
+  (** [TRUE] if the assistant uses a [GtkHeaderBar] for action buttons instead
+      of the action-area.
+
+      For technical reasons, this property is declared as an integer property,
+      but you should only set it to [TRUE] or [FALSE]. *)
+
   method as_assistant : Raw.Assistant.t
 end
 

@@ -8,15 +8,35 @@ class type lock_button_t = object
   (** Sets the [GPermission] object that controls [button]. *)
 
   method text_lock : string
+  (** The text to display when prompting the user to lock. *)
+
   method set_text_lock : string -> unit
+  (** The text to display when prompting the user to lock. *)
+
   method text_unlock : string
+  (** The text to display when prompting the user to unlock. *)
+
   method set_text_unlock : string -> unit
+  (** The text to display when prompting the user to unlock. *)
+
   method tooltip_lock : string
+  (** The tooltip to display when prompting the user to lock. *)
+
   method set_tooltip_lock : string -> unit
+  (** The tooltip to display when prompting the user to lock. *)
+
   method tooltip_not_authorized : string
+  (** The tooltip to display when the user cannot obtain authorization. *)
+
   method set_tooltip_not_authorized : string -> unit
+  (** The tooltip to display when the user cannot obtain authorization. *)
+
   method tooltip_unlock : string
+  (** The tooltip to display when prompting the user to unlock. *)
+
   method set_tooltip_unlock : string -> unit
+  (** The tooltip to display when prompting the user to unlock. *)
+
   method as_lock_button : Raw.Lock_button.t
 end
 

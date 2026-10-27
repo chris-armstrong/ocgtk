@@ -47,425 +47,775 @@ external reset_property : t -> string -> unit = "ml_gtk_settings_reset_property"
 
 external get_gtk_alternative_button_order : t -> bool
   = "ml_gtk_settings_get_gtk_alternative_button_order"
-(** Get property: gtk-alternative-button-order *)
+(** Whether buttons in dialogs should use the alternative button order. *)
 
 external set_gtk_alternative_button_order : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_alternative_button_order"
-(** Set property: gtk-alternative-button-order *)
+(** Whether buttons in dialogs should use the alternative button order. *)
 
 external get_gtk_alternative_sort_arrows : t -> bool
   = "ml_gtk_settings_get_gtk_alternative_sort_arrows"
-(** Get property: gtk-alternative-sort-arrows *)
+(** Controls the direction of the sort indicators in sorted list and tree views.
+
+    By default an arrow pointing down means the column is sorted in ascending
+    order. When set to [TRUE], this order will be inverted. *)
 
 external set_gtk_alternative_sort_arrows : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_alternative_sort_arrows"
-(** Set property: gtk-alternative-sort-arrows *)
+(** Controls the direction of the sort indicators in sorted list and tree views.
+
+    By default an arrow pointing down means the column is sorted in ascending
+    order. When set to [TRUE], this order will be inverted. *)
 
 external get_gtk_application_prefer_dark_theme : t -> bool
   = "ml_gtk_settings_get_gtk_application_prefer_dark_theme"
-(** Get property: gtk-application-prefer-dark-theme *)
+(** Whether the application prefers to use a dark theme.
+
+    If a GTK theme includes a dark variant, it will be used instead of the
+    configured theme.
+
+    Some applications benefit from minimizing the amount of light pollution that
+    interferes with the content. Good candidates for dark themes are photo and
+    video editors that make the actual content get all the attention and
+    minimize the distraction of the chrome.
+
+    Dark themes should not be used for documents, where large spaces are
+    white/light and the dark chrome creates too much contrast (web browser, text
+    editor...). *)
 
 external set_gtk_application_prefer_dark_theme : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_application_prefer_dark_theme"
-(** Set property: gtk-application-prefer-dark-theme *)
+(** Whether the application prefers to use a dark theme.
+
+    If a GTK theme includes a dark variant, it will be used instead of the
+    configured theme.
+
+    Some applications benefit from minimizing the amount of light pollution that
+    interferes with the content. Good candidates for dark themes are photo and
+    video editors that make the actual content get all the attention and
+    minimize the distraction of the chrome.
+
+    Dark themes should not be used for documents, where large spaces are
+    white/light and the dark chrome creates too much contrast (web browser, text
+    editor...). *)
 
 external get_gtk_cursor_aspect_ratio : t -> float
   = "ml_gtk_settings_get_gtk_cursor_aspect_ratio"
-(** Get property: gtk-cursor-aspect-ratio *)
+(** The aspect ratio of the text caret. *)
 
 external set_gtk_cursor_aspect_ratio : t -> float -> unit
   = "ml_gtk_settings_set_gtk_cursor_aspect_ratio"
-(** Set property: gtk-cursor-aspect-ratio *)
+(** The aspect ratio of the text caret. *)
 
 external get_gtk_cursor_blink : t -> bool
   = "ml_gtk_settings_get_gtk_cursor_blink"
-(** Get property: gtk-cursor-blink *)
+(** Whether the cursor should blink.
+
+    Also see the [Gtk.Settings:gtk-cursor-blink-timeout] setting, which allows
+    more flexible control over cursor blinking. *)
 
 external set_gtk_cursor_blink : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink"
-(** Set property: gtk-cursor-blink *)
+(** Whether the cursor should blink.
+
+    Also see the [Gtk.Settings:gtk-cursor-blink-timeout] setting, which allows
+    more flexible control over cursor blinking. *)
 
 external get_gtk_cursor_blink_time : t -> int
   = "ml_gtk_settings_get_gtk_cursor_blink_time"
-(** Get property: gtk-cursor-blink-time *)
+(** Length of the cursor blink cycle, in milliseconds. *)
 
 external set_gtk_cursor_blink_time : t -> int -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink_time"
-(** Set property: gtk-cursor-blink-time *)
+(** Length of the cursor blink cycle, in milliseconds. *)
 
 external get_gtk_cursor_blink_timeout : t -> int
   = "ml_gtk_settings_get_gtk_cursor_blink_timeout"
-(** Get property: gtk-cursor-blink-timeout *)
+(** Time after which the cursor stops blinking, in seconds.
+
+    The timer is reset after each user interaction.
+
+    Setting this to zero has the same effect as setting
+    [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
 
 external set_gtk_cursor_blink_timeout : t -> int -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink_timeout"
-(** Set property: gtk-cursor-blink-timeout *)
+(** Time after which the cursor stops blinking, in seconds.
+
+    The timer is reset after each user interaction.
+
+    Setting this to zero has the same effect as setting
+    [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
 
 external get_gtk_cursor_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_cursor_theme_name"
-(** Get property: gtk-cursor-theme-name *)
+(** Name of the cursor theme to use.
+
+    Use [NULL] to use the default theme. *)
 
 external set_gtk_cursor_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_cursor_theme_name"
-(** Set property: gtk-cursor-theme-name *)
+(** Name of the cursor theme to use.
+
+    Use [NULL] to use the default theme. *)
 
 external get_gtk_cursor_theme_size : t -> int
   = "ml_gtk_settings_get_gtk_cursor_theme_size"
-(** Get property: gtk-cursor-theme-size *)
+(** The size to use for cursors.
+
+    0 means to use the default size. *)
 
 external set_gtk_cursor_theme_size : t -> int -> unit
   = "ml_gtk_settings_set_gtk_cursor_theme_size"
-(** Set property: gtk-cursor-theme-size *)
+(** The size to use for cursors.
+
+    0 means to use the default size. *)
 
 external get_gtk_decoration_layout : t -> string
   = "ml_gtk_settings_get_gtk_decoration_layout"
-(** Get property: gtk-decoration-layout *)
+[@@ocaml.doc
+  "Determines which buttons should be put in the\n\
+   titlebar of client-side decorated windows, and whether they\n\
+   should be placed on the left or right.\n\n\
+   The format of the string is button names, separated by commas.\n\
+   A colon separates the buttons that should appear on the left\n\
+   from those on the right. Recognized button names are minimize,\n\
+   maximize, close, icon (the window icon) and menu (a menu button\n\
+   for the fallback app menu).\n\n\
+   For example, \"menu:minimize,maximize,close\" specifies a menu\n\
+   on the left, and minimize, maximize and close buttons on the right.\n\n\
+   Note that buttons will only be shown when they are meaningful.\n\
+   E.g. a menu button only appears when the desktop shell does not\n\
+   show the app menu, and a close button only appears on a window\n\
+   that can be closed.\n\n\
+   Also note that the setting can be overridden with the\n\
+   [Gtk.HeaderBar:decoration-layout] property."]
 
 external set_gtk_decoration_layout : t -> string -> unit
   = "ml_gtk_settings_set_gtk_decoration_layout"
-(** Set property: gtk-decoration-layout *)
+[@@ocaml.doc
+  "Determines which buttons should be put in the\n\
+   titlebar of client-side decorated windows, and whether they\n\
+   should be placed on the left or right.\n\n\
+   The format of the string is button names, separated by commas.\n\
+   A colon separates the buttons that should appear on the left\n\
+   from those on the right. Recognized button names are minimize,\n\
+   maximize, close, icon (the window icon) and menu (a menu button\n\
+   for the fallback app menu).\n\n\
+   For example, \"menu:minimize,maximize,close\" specifies a menu\n\
+   on the left, and minimize, maximize and close buttons on the right.\n\n\
+   Note that buttons will only be shown when they are meaningful.\n\
+   E.g. a menu button only appears when the desktop shell does not\n\
+   show the app menu, and a close button only appears on a window\n\
+   that can be closed.\n\n\
+   Also note that the setting can be overridden with the\n\
+   [Gtk.HeaderBar:decoration-layout] property."]
 
 external get_gtk_dialogs_use_header : t -> bool
   = "ml_gtk_settings_get_gtk_dialogs_use_header"
-(** Get property: gtk-dialogs-use-header *)
+(** Whether builtin GTK dialogs such as the file chooser, the color chooser or
+    the font chooser will use a header bar at the top to show action widgets, or
+    an action area at the bottom.
+
+    This setting does not affect custom dialogs using [GtkDialog] directly, or
+    message dialogs. *)
 
 external set_gtk_dialogs_use_header : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_dialogs_use_header"
-(** Set property: gtk-dialogs-use-header *)
+(** Whether builtin GTK dialogs such as the file chooser, the color chooser or
+    the font chooser will use a header bar at the top to show action widgets, or
+    an action area at the bottom.
+
+    This setting does not affect custom dialogs using [GtkDialog] directly, or
+    message dialogs. *)
 
 external get_gtk_dnd_drag_threshold : t -> int
   = "ml_gtk_settings_get_gtk_dnd_drag_threshold"
-(** Get property: gtk-dnd-drag-threshold *)
+(** The number of pixels the cursor can move before dragging. *)
 
 external set_gtk_dnd_drag_threshold : t -> int -> unit
   = "ml_gtk_settings_set_gtk_dnd_drag_threshold"
-(** Set property: gtk-dnd-drag-threshold *)
+(** The number of pixels the cursor can move before dragging. *)
 
 external get_gtk_double_click_distance : t -> int
   = "ml_gtk_settings_get_gtk_double_click_distance"
-(** Get property: gtk-double-click-distance *)
+(** The maximum distance allowed between two clicks for them to be considered a
+    double click, in pixels. *)
 
 external set_gtk_double_click_distance : t -> int -> unit
   = "ml_gtk_settings_set_gtk_double_click_distance"
-(** Set property: gtk-double-click-distance *)
+(** The maximum distance allowed between two clicks for them to be considered a
+    double click, in pixels. *)
 
 external get_gtk_double_click_time : t -> int
   = "ml_gtk_settings_get_gtk_double_click_time"
-(** Get property: gtk-double-click-time *)
+(** The maximum time to allow between two clicks for them to be considered a
+    double click, in milliseconds. *)
 
 external set_gtk_double_click_time : t -> int -> unit
   = "ml_gtk_settings_set_gtk_double_click_time"
-(** Set property: gtk-double-click-time *)
+(** The maximum time to allow between two clicks for them to be considered a
+    double click, in milliseconds. *)
 
 external get_gtk_enable_accels : t -> bool
   = "ml_gtk_settings_get_gtk_enable_accels"
-(** Get property: gtk-enable-accels *)
+(** Whether menu items should have visible accelerators which can be activated.
+*)
 
 external set_gtk_enable_accels : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_enable_accels"
-(** Set property: gtk-enable-accels *)
+(** Whether menu items should have visible accelerators which can be activated.
+*)
 
 external get_gtk_enable_animations : t -> bool
   = "ml_gtk_settings_get_gtk_enable_animations"
-(** Get property: gtk-enable-animations *)
+(** Whether to enable toolkit-wide animations. *)
 
 external set_gtk_enable_animations : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_enable_animations"
-(** Set property: gtk-enable-animations *)
+(** Whether to enable toolkit-wide animations. *)
 
 external get_gtk_enable_event_sounds : t -> bool
   = "ml_gtk_settings_get_gtk_enable_event_sounds"
-(** Get property: gtk-enable-event-sounds *)
+(** Whether to play any event sounds at all.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external set_gtk_enable_event_sounds : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_enable_event_sounds"
-(** Set property: gtk-enable-event-sounds *)
+(** Whether to play any event sounds at all.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external get_gtk_enable_input_feedback_sounds : t -> bool
   = "ml_gtk_settings_get_gtk_enable_input_feedback_sounds"
-(** Get property: gtk-enable-input-feedback-sounds *)
+(** Whether to play event sounds as feedback to user input.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external set_gtk_enable_input_feedback_sounds : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_enable_input_feedback_sounds"
-(** Set property: gtk-enable-input-feedback-sounds *)
+(** Whether to play event sounds as feedback to user input.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external get_gtk_enable_primary_paste : t -> bool
   = "ml_gtk_settings_get_gtk_enable_primary_paste"
-(** Get property: gtk-enable-primary-paste *)
+(** Whether a middle click on a mouse should paste the 'PRIMARY' clipboard
+    content at the cursor location. *)
 
 external set_gtk_enable_primary_paste : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_enable_primary_paste"
-(** Set property: gtk-enable-primary-paste *)
+(** Whether a middle click on a mouse should paste the 'PRIMARY' clipboard
+    content at the cursor location. *)
 
 external get_gtk_entry_password_hint_timeout : t -> int
   = "ml_gtk_settings_get_gtk_entry_password_hint_timeout"
-(** Get property: gtk-entry-password-hint-timeout *)
+(** How long to show the last input character in hidden entries.
+
+    This value is in milliseconds. 0 disables showing the last char. 600 is a
+    good value for enabling it. *)
 
 external set_gtk_entry_password_hint_timeout : t -> int -> unit
   = "ml_gtk_settings_set_gtk_entry_password_hint_timeout"
-(** Set property: gtk-entry-password-hint-timeout *)
+(** How long to show the last input character in hidden entries.
+
+    This value is in milliseconds. 0 disables showing the last char. 600 is a
+    good value for enabling it. *)
 
 external get_gtk_entry_select_on_focus : t -> bool
   = "ml_gtk_settings_get_gtk_entry_select_on_focus"
-(** Get property: gtk-entry-select-on-focus *)
+(** Whether to select the contents of an entry when it is focused. *)
 
 external set_gtk_entry_select_on_focus : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_entry_select_on_focus"
-(** Set property: gtk-entry-select-on-focus *)
+(** Whether to select the contents of an entry when it is focused. *)
 
 external get_gtk_error_bell : t -> bool = "ml_gtk_settings_get_gtk_error_bell"
-(** Get property: gtk-error-bell *)
+(** When [TRUE], keyboard navigation and other input-related errors will cause a
+    beep.
+
+    Since the error bell is implemented using gdk_surface_beep(), the windowing
+    system may offer ways to configure the error bell in many ways, such as
+    flashing the window or similar visual effects. *)
 
 external set_gtk_error_bell : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_error_bell"
-(** Set property: gtk-error-bell *)
+(** When [TRUE], keyboard navigation and other input-related errors will cause a
+    beep.
+
+    Since the error bell is implemented using gdk_surface_beep(), the windowing
+    system may offer ways to configure the error bell in many ways, such as
+    flashing the window or similar visual effects. *)
 
 external get_gtk_font_name : t -> string = "ml_gtk_settings_get_gtk_font_name"
-(** Get property: gtk-font-name *)
+(** The default font to use.
+
+    GTK uses the family name and size from this string. *)
 
 external set_gtk_font_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_font_name"
-(** Set property: gtk-font-name *)
+(** The default font to use.
+
+    GTK uses the family name and size from this string. *)
 
 external get_gtk_font_rendering : t -> Ocgtk_enums.fontrendering
   = "ml_gtk_settings_get_gtk_font_rendering"
-(** Get property: gtk-font-rendering *)
+(** How GTK font rendering is set up.
+
+    When set to [Gtk.FontRendering.MANUAL], GTK respects the low-level
+    font-related settings ([Gtk.Settings:gtk-hint-font-metrics],
+    [Gtk.Settings:gtk-xft-antialias], [Gtk.Settings:gtk-xft-hinting],
+    [Gtk.Settings:gtk-xft-hintstyle] and [Gtk.Settings:gtk-xft-rgba]) as much as
+    practical.
+
+    When set to [Gtk.FontRendering.AUTOMATIC], GTK will consider factors such as
+    screen resolution and scale in deciding how to render fonts. *)
 
 external set_gtk_font_rendering : t -> Ocgtk_enums.fontrendering -> unit
   = "ml_gtk_settings_set_gtk_font_rendering"
-(** Set property: gtk-font-rendering *)
+(** How GTK font rendering is set up.
+
+    When set to [Gtk.FontRendering.MANUAL], GTK respects the low-level
+    font-related settings ([Gtk.Settings:gtk-hint-font-metrics],
+    [Gtk.Settings:gtk-xft-antialias], [Gtk.Settings:gtk-xft-hinting],
+    [Gtk.Settings:gtk-xft-hintstyle] and [Gtk.Settings:gtk-xft-rgba]) as much as
+    practical.
+
+    When set to [Gtk.FontRendering.AUTOMATIC], GTK will consider factors such as
+    screen resolution and scale in deciding how to render fonts. *)
 
 external get_gtk_fontconfig_timestamp : t -> int
   = "ml_gtk_settings_get_gtk_fontconfig_timestamp"
-(** Get property: gtk-fontconfig-timestamp *)
+(** Timestamp of the current fontconfig configuration. *)
 
 external set_gtk_fontconfig_timestamp : t -> int -> unit
   = "ml_gtk_settings_set_gtk_fontconfig_timestamp"
-(** Set property: gtk-fontconfig-timestamp *)
+(** Timestamp of the current fontconfig configuration. *)
 
 external get_gtk_hint_font_metrics : t -> bool
   = "ml_gtk_settings_get_gtk_hint_font_metrics"
-(** Get property: gtk-hint-font-metrics *)
+(** Whether hinting should be applied to font metrics.
+
+    Note that this also turns off subpixel positioning of glyphs, since it
+    conflicts with metrics hinting. *)
 
 external set_gtk_hint_font_metrics : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_hint_font_metrics"
-(** Set property: gtk-hint-font-metrics *)
+(** Whether hinting should be applied to font metrics.
+
+    Note that this also turns off subpixel positioning of glyphs, since it
+    conflicts with metrics hinting. *)
 
 external get_gtk_icon_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_icon_theme_name"
-(** Get property: gtk-icon-theme-name *)
+(** Name of the icon theme to use.
+
+    See [Gtk.IconTheme] for details about how GTK handles icon themes. *)
 
 external set_gtk_icon_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_icon_theme_name"
-(** Set property: gtk-icon-theme-name *)
+(** Name of the icon theme to use.
+
+    See [Gtk.IconTheme] for details about how GTK handles icon themes. *)
 
 external get_gtk_im_module : t -> string = "ml_gtk_settings_get_gtk_im_module"
-(** Get property: gtk-im-module *)
+(** Which IM (input method) module should be used by default.
+
+    This is the input method that will be used if the user has not explicitly
+    chosen another input method from the IM context menu. This also can be a
+    colon-separated list of input methods, which GTK will try in turn until it
+    finds one available on the system.
+
+    See [Gtk.IMContext]. *)
 
 external set_gtk_im_module : t -> string -> unit
   = "ml_gtk_settings_set_gtk_im_module"
-(** Set property: gtk-im-module *)
+(** Which IM (input method) module should be used by default.
+
+    This is the input method that will be used if the user has not explicitly
+    chosen another input method from the IM context menu. This also can be a
+    colon-separated list of input methods, which GTK will try in turn until it
+    finds one available on the system.
+
+    See [Gtk.IMContext]. *)
 
 external get_gtk_interface_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_settings_get_gtk_interface_color_scheme"
-(** Get property: gtk-interface-color-scheme *)
+(** The color scheme used for rendering the user interface.
+
+    This setting communicates the system-wide preference. The color scheme that
+    is actually used when applying CSS styles can be set with the
+    [Gtk.CssProvider:prefers-color-scheme] property. *)
 
 external set_gtk_interface_color_scheme :
   t -> Ocgtk_enums.interfacecolorscheme -> unit
   = "ml_gtk_settings_set_gtk_interface_color_scheme"
-(** Set property: gtk-interface-color-scheme *)
+(** The color scheme used for rendering the user interface.
+
+    This setting communicates the system-wide preference. The color scheme that
+    is actually used when applying CSS styles can be set with the
+    [Gtk.CssProvider:prefers-color-scheme] property. *)
 
 external get_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_settings_get_gtk_interface_contrast"
-(** Get property: gtk-interface-contrast *)
+(** The level of contrast to use for the user interface.
+
+    This setting communicates the system-wide preference. The contrast level
+    that is actually used when applying CSS styles can be set with the
+    [Gtk.CssProvider:prefers-contrast] property. *)
 
 external set_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_settings_set_gtk_interface_contrast"
-(** Set property: gtk-interface-contrast *)
+(** The level of contrast to use for the user interface.
+
+    This setting communicates the system-wide preference. The contrast level
+    that is actually used when applying CSS styles can be set with the
+    [Gtk.CssProvider:prefers-contrast] property. *)
 
 external get_gtk_keynav_use_caret : t -> bool
   = "ml_gtk_settings_get_gtk_keynav_use_caret"
-(** Get property: gtk-keynav-use-caret *)
+(** Whether GTK should make sure that text can be navigated with a caret, even
+    if it is not editable.
+
+    This is useful when using a screen reader. *)
 
 external set_gtk_keynav_use_caret : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_keynav_use_caret"
-(** Set property: gtk-keynav-use-caret *)
+(** Whether GTK should make sure that text can be navigated with a caret, even
+    if it is not editable.
+
+    This is useful when using a screen reader. *)
 
 external get_gtk_label_select_on_focus : t -> bool
   = "ml_gtk_settings_get_gtk_label_select_on_focus"
-(** Get property: gtk-label-select-on-focus *)
+(** Whether to select the contents of a selectable label when it is focused. *)
 
 external set_gtk_label_select_on_focus : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_label_select_on_focus"
-(** Set property: gtk-label-select-on-focus *)
+(** Whether to select the contents of a selectable label when it is focused. *)
 
 external get_gtk_long_press_time : t -> int
   = "ml_gtk_settings_get_gtk_long_press_time"
-(** Get property: gtk-long-press-time *)
+(** The time for a button or touch press to be considered a “long press”.
+
+    See [Gtk.GestureLongPress]. *)
 
 external set_gtk_long_press_time : t -> int -> unit
   = "ml_gtk_settings_set_gtk_long_press_time"
-(** Set property: gtk-long-press-time *)
+(** The time for a button or touch press to be considered a “long press”.
+
+    See [Gtk.GestureLongPress]. *)
 
 external get_gtk_overlay_scrolling : t -> bool
   = "ml_gtk_settings_get_gtk_overlay_scrolling"
-(** Get property: gtk-overlay-scrolling *)
+(** Whether scrolled windows may use overlaid scrolling indicators.
+
+    If this is set to [FALSE], scrolled windows will have permanent scrollbars.
+*)
 
 external set_gtk_overlay_scrolling : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_overlay_scrolling"
-(** Set property: gtk-overlay-scrolling *)
+(** Whether scrolled windows may use overlaid scrolling indicators.
+
+    If this is set to [FALSE], scrolled windows will have permanent scrollbars.
+*)
 
 external get_gtk_primary_button_warps_slider : t -> bool
   = "ml_gtk_settings_get_gtk_primary_button_warps_slider"
-(** Get property: gtk-primary-button-warps-slider *)
+(** If the value of this setting is [TRUE], clicking the primary button in a
+    [GtkRange] trough will move the slider, and hence set the range’s value, to
+    the point that you clicked.
+
+    If it is [FALSE], a primary click will cause the slider/value to move by the
+    range’s page-size towards the point clicked.
+
+    Whichever action you choose for the primary button, the other action will be
+    available by holding Shift and primary-clicking, or clicking the middle
+    mouse button. *)
 
 external set_gtk_primary_button_warps_slider : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_primary_button_warps_slider"
-(** Set property: gtk-primary-button-warps-slider *)
+(** If the value of this setting is [TRUE], clicking the primary button in a
+    [GtkRange] trough will move the slider, and hence set the range’s value, to
+    the point that you clicked.
+
+    If it is [FALSE], a primary click will cause the slider/value to move by the
+    range’s page-size towards the point clicked.
+
+    Whichever action you choose for the primary button, the other action will be
+    available by holding Shift and primary-clicking, or clicking the middle
+    mouse button. *)
 
 external get_gtk_print_backends : t -> string
   = "ml_gtk_settings_get_gtk_print_backends"
-(** Get property: gtk-print-backends *)
+[@@ocaml.doc
+  "A comma-separated list of print backends to use in the print\n\
+   dialog.\n\n\
+   Available print backends depend on the GTK installation,\n\
+   and may include \"file\", \"cups\", \"lpr\" or \"papi\"."]
 
 external set_gtk_print_backends : t -> string -> unit
   = "ml_gtk_settings_set_gtk_print_backends"
-(** Set property: gtk-print-backends *)
+[@@ocaml.doc
+  "A comma-separated list of print backends to use in the print\n\
+   dialog.\n\n\
+   Available print backends depend on the GTK installation,\n\
+   and may include \"file\", \"cups\", \"lpr\" or \"papi\"."]
 
 external get_gtk_print_preview_command : t -> string
   = "ml_gtk_settings_get_gtk_print_preview_command"
-(** Get property: gtk-print-preview-command *)
+(** A command to run for displaying the print preview.
+
+    The command should contain a [%f] placeholder, which will get replaced by
+    the path to the pdf file. The command may also contain a [%s] placeholder,
+    which will get replaced by the path to a file containing the print settings
+    in the format produced by [Gtk.PrintSettings.to_file].
+
+    The preview application is responsible for removing the pdf file and the
+    print settings file when it is done. *)
 
 external set_gtk_print_preview_command : t -> string -> unit
   = "ml_gtk_settings_set_gtk_print_preview_command"
-(** Set property: gtk-print-preview-command *)
+(** A command to run for displaying the print preview.
+
+    The command should contain a [%f] placeholder, which will get replaced by
+    the path to the pdf file. The command may also contain a [%s] placeholder,
+    which will get replaced by the path to a file containing the print settings
+    in the format produced by [Gtk.PrintSettings.to_file].
+
+    The preview application is responsible for removing the pdf file and the
+    print settings file when it is done. *)
 
 external get_gtk_recent_files_enabled : t -> bool
   = "ml_gtk_settings_get_gtk_recent_files_enabled"
-(** Get property: gtk-recent-files-enabled *)
+(** Whether GTK should keep track of items inside the recently used resources
+    list.
+
+    If set to [FALSE], the list will always be empty. *)
 
 external set_gtk_recent_files_enabled : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_recent_files_enabled"
-(** Set property: gtk-recent-files-enabled *)
+(** Whether GTK should keep track of items inside the recently used resources
+    list.
+
+    If set to [FALSE], the list will always be empty. *)
 
 external get_gtk_recent_files_max_age : t -> int
   = "ml_gtk_settings_get_gtk_recent_files_max_age"
-(** Get property: gtk-recent-files-max-age *)
+(** The maximum age, in days, of the items inside the recently used resources
+    list.
+
+    Items older than this setting will be excised from the list. If set to 0,
+    the list will always be empty; if set to -1, no item will be removed. *)
 
 external set_gtk_recent_files_max_age : t -> int -> unit
   = "ml_gtk_settings_set_gtk_recent_files_max_age"
-(** Set property: gtk-recent-files-max-age *)
+(** The maximum age, in days, of the items inside the recently used resources
+    list.
+
+    Items older than this setting will be excised from the list. If set to 0,
+    the list will always be empty; if set to -1, no item will be removed. *)
 
 external get_gtk_shell_shows_app_menu : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_app_menu"
-(** Get property: gtk-shell-shows-app-menu *)
+(** Set to [TRUE] if the desktop environment is displaying the app menu, [FALSE]
+    if the app should display it itself. *)
 
 external set_gtk_shell_shows_app_menu : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_app_menu"
-(** Set property: gtk-shell-shows-app-menu *)
+(** Set to [TRUE] if the desktop environment is displaying the app menu, [FALSE]
+    if the app should display it itself. *)
 
 external get_gtk_shell_shows_desktop : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_desktop"
-(** Get property: gtk-shell-shows-desktop *)
+(** Set to [TRUE] if the desktop environment is displaying the desktop folder,
+    [FALSE] if not. *)
 
 external set_gtk_shell_shows_desktop : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_desktop"
-(** Set property: gtk-shell-shows-desktop *)
+(** Set to [TRUE] if the desktop environment is displaying the desktop folder,
+    [FALSE] if not. *)
 
 external get_gtk_shell_shows_menubar : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_menubar"
-(** Get property: gtk-shell-shows-menubar *)
+(** Set to [TRUE] if the desktop environment is displaying the menubar, [FALSE]
+    if the app should display it itself. *)
 
 external set_gtk_shell_shows_menubar : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_menubar"
-(** Set property: gtk-shell-shows-menubar *)
+(** Set to [TRUE] if the desktop environment is displaying the menubar, [FALSE]
+    if the app should display it itself. *)
 
 external get_gtk_show_status_shapes : t -> bool
   = "ml_gtk_settings_get_gtk_show_status_shapes"
-(** Get property: gtk-show-status-shapes *)
+(** When [TRUE], widgets like switches include shapes to indicate their on/off
+    state. *)
 
 external set_gtk_show_status_shapes : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_show_status_shapes"
-(** Set property: gtk-show-status-shapes *)
+(** When [TRUE], widgets like switches include shapes to indicate their on/off
+    state. *)
 
 external get_gtk_sound_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_sound_theme_name"
-(** Get property: gtk-sound-theme-name *)
+(** The XDG sound theme to use for event sounds.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external set_gtk_sound_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_sound_theme_name"
-(** Set property: gtk-sound-theme-name *)
+(** The XDG sound theme to use for event sounds.
+
+    See the Sound Theme Specifications for more information on event sounds and
+    sound themes.
+
+    GTK itself does not support event sounds, you have to use a loadable module
+    like the one that comes with libcanberra. *)
 
 external get_gtk_split_cursor : t -> bool
   = "ml_gtk_settings_get_gtk_split_cursor"
-(** Get property: gtk-split-cursor *)
+(** Whether two cursors should be displayed for mixed left-to-right and
+    right-to-left text. *)
 
 external set_gtk_split_cursor : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_split_cursor"
-(** Set property: gtk-split-cursor *)
+(** Whether two cursors should be displayed for mixed left-to-right and
+    right-to-left text. *)
 
 external get_gtk_theme_name : t -> string = "ml_gtk_settings_get_gtk_theme_name"
-(** Get property: gtk-theme-name *)
+(** Name of the theme to load.
+
+    See [Gtk.CssProvider] for details about how GTK finds the CSS stylesheet for
+    a theme. *)
 
 external set_gtk_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_theme_name"
-(** Set property: gtk-theme-name *)
+(** Name of the theme to load.
+
+    See [Gtk.CssProvider] for details about how GTK finds the CSS stylesheet for
+    a theme. *)
 
 external get_gtk_titlebar_double_click : t -> string
   = "ml_gtk_settings_get_gtk_titlebar_double_click"
-(** Get property: gtk-titlebar-double-click *)
+(** Determines the action to take when a double-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external set_gtk_titlebar_double_click : t -> string -> unit
   = "ml_gtk_settings_set_gtk_titlebar_double_click"
-(** Set property: gtk-titlebar-double-click *)
+(** Determines the action to take when a double-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external get_gtk_titlebar_middle_click : t -> string
   = "ml_gtk_settings_get_gtk_titlebar_middle_click"
-(** Get property: gtk-titlebar-middle-click *)
+(** Determines the action to take when a middle-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external set_gtk_titlebar_middle_click : t -> string -> unit
   = "ml_gtk_settings_set_gtk_titlebar_middle_click"
-(** Set property: gtk-titlebar-middle-click *)
+(** Determines the action to take when a middle-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external get_gtk_titlebar_right_click : t -> string
   = "ml_gtk_settings_get_gtk_titlebar_right_click"
-(** Get property: gtk-titlebar-right-click *)
+(** Determines the action to take when a right-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external set_gtk_titlebar_right_click : t -> string -> unit
   = "ml_gtk_settings_set_gtk_titlebar_right_click"
-(** Set property: gtk-titlebar-right-click *)
+(** Determines the action to take when a right-click occurs on the titlebar of
+    client-side decorated windows.
+
+    Recognized actions are minimize, toggle-maximize, menu, lower or none. *)
 
 external get_gtk_xft_antialias : t -> int
   = "ml_gtk_settings_get_gtk_xft_antialias"
-(** Get property: gtk-xft-antialias *)
+(** Whether to antialias fonts.
+
+    The values are 0 for no, 1 for yes, or -1 for the system default. *)
 
 external set_gtk_xft_antialias : t -> int -> unit
   = "ml_gtk_settings_set_gtk_xft_antialias"
-(** Set property: gtk-xft-antialias *)
+(** Whether to antialias fonts.
+
+    The values are 0 for no, 1 for yes, or -1 for the system default. *)
 
 external get_gtk_xft_dpi : t -> int = "ml_gtk_settings_get_gtk_xft_dpi"
-(** Get property: gtk-xft-dpi *)
+(** The font resolution, in 1024 * dots/inch.
+
+    -1 to use the default value. *)
 
 external set_gtk_xft_dpi : t -> int -> unit = "ml_gtk_settings_set_gtk_xft_dpi"
-(** Set property: gtk-xft-dpi *)
+(** The font resolution, in 1024 * dots/inch.
+
+    -1 to use the default value. *)
 
 external get_gtk_xft_hinting : t -> int = "ml_gtk_settings_get_gtk_xft_hinting"
-(** Get property: gtk-xft-hinting *)
+(** Whether to enable font hinting.
+
+    The values are 0 for no, 1 for yes, or -1 for the system default. *)
 
 external set_gtk_xft_hinting : t -> int -> unit
   = "ml_gtk_settings_set_gtk_xft_hinting"
-(** Set property: gtk-xft-hinting *)
+(** Whether to enable font hinting.
+
+    The values are 0 for no, 1 for yes, or -1 for the system default. *)
 
 external get_gtk_xft_hintstyle : t -> string
   = "ml_gtk_settings_get_gtk_xft_hintstyle"
-(** Get property: gtk-xft-hintstyle *)
+(** What degree of font hinting to use.
+
+    The possible vaues are hintnone, hintslight, hintmedium, hintfull. *)
 
 external set_gtk_xft_hintstyle : t -> string -> unit
   = "ml_gtk_settings_set_gtk_xft_hintstyle"
-(** Set property: gtk-xft-hintstyle *)
+(** What degree of font hinting to use.
+
+    The possible vaues are hintnone, hintslight, hintmedium, hintfull. *)
 
 external get_gtk_xft_rgba : t -> string = "ml_gtk_settings_get_gtk_xft_rgba"
-(** Get property: gtk-xft-rgba *)
+(** The type of subpixel antialiasing to use.
+
+    The possible values are none, rgb, bgr, vrgb, vbgr.
+
+    Note that GSK does not support subpixel antialiasing, and this setting has
+    no effect on font rendering in GTK. *)
 
 external set_gtk_xft_rgba : t -> string -> unit
   = "ml_gtk_settings_set_gtk_xft_rgba"
-(** Set property: gtk-xft-rgba *)
+(** The type of subpixel antialiasing to use.
+
+    The possible values are none, rgb, bgr, vrgb, vbgr.
+
+    Note that GSK does not support subpixel antialiasing, and this setting has
+    no effect on font rendering in GTK. *)

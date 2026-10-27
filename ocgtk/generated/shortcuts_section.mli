@@ -55,13 +55,63 @@ class type shortcuts_section_t = object
       [GtkShortcutsSection] manages its children internally. *)
 
   method max_height : int
+  (** The maximum number of lines to allow per column.
+
+      This property can be used to influence how the groups in this section are
+      distributed across pages and columns. The default value of 15 should work
+      in most cases. *)
+
   method set_max_height : int -> unit
+  (** The maximum number of lines to allow per column.
+
+      This property can be used to influence how the groups in this section are
+      distributed across pages and columns. The default value of 15 should work
+      in most cases. *)
+
   method section_name : string
+  (** A unique name to identify this section among the sections added to the
+      [GtkShortcutsWindow].
+
+      Setting the [Gtk.ShortcutsWindow:section-name] property to this string
+      will make this section shown in the [GtkShortcutsWindow]. *)
+
   method set_section_name : string -> unit
+  (** A unique name to identify this section among the sections added to the
+      [GtkShortcutsWindow].
+
+      Setting the [Gtk.ShortcutsWindow:section-name] property to this string
+      will make this section shown in the [GtkShortcutsWindow]. *)
+
   method title : string
+  (** The string to show in the section selector of the [GtkShortcutsWindow] for
+      this section.
+
+      If there is only one section, you don't need to set a title, since the
+      section selector will not be shown in this case. *)
+
   method set_title : string -> unit
+  (** The string to show in the section selector of the [GtkShortcutsWindow] for
+      this section.
+
+      If there is only one section, you don't need to set a title, since the
+      section selector will not be shown in this case. *)
+
   method view_name : string
+  (** A view name to filter the groups in this section by.
+
+      See [Gtk.ShortcutsGroup:view].
+
+      Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+      property for this purpose. *)
+
   method set_view_name : string -> unit
+  (** A view name to filter the groups in this section by.
+
+      See [Gtk.ShortcutsGroup:view].
+
+      Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+      property for this purpose. *)
+
   method as_shortcuts_section : Raw.Shortcuts_section.t
 end
 

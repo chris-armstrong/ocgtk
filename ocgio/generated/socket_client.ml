@@ -341,7 +341,11 @@ class type socket_client_t = object
       information. *)
 
   method type_ : Enums.sockettype
+  (** The type to use for socket construction. *)
+
   method set_type : Enums.sockettype -> unit
+  (** The type to use for socket construction. *)
+
   method as_socket_client : Raw.Socket_client.t
 end
 

@@ -53,6 +53,25 @@ let test_constructor_gir_doc_wins () =
     (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
        (ctor ~ctor_doc:"Creates a labelled button." ()))
 
+let label_property ?prop_doc () =
+  Type_factory.make_gir_property ~prop_name:"label"
+    ~prop_type:(Type_factory.make_gir_type ~name:"utf8" ~c_type:"gchar*" ())
+    ~readable:true ~writable:true ?prop_doc ()
+
+let test_property_gir_doc_on_both_accessors () =
+  let prop = label_property ~prop_doc:"Text of the label." () in
+  check_text "getter" "(** Text of the label. *)"
+    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+  check_text "setter" "(** Text of the label. *)"
+    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+
+let test_property_fallback () =
+  let prop = label_property () in
+  check_text "getter" "(** Get property: label *)"
+    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+  check_text "setter" "(** Set property: label *)"
+    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+
 let test_l1_module_points_to_layer2 () =
   check_text "class doc, then the layer 2 module"
     "(** A button.\n\nThe class built on this module is in {!Ocgtk.Button}. *)"
@@ -72,12 +91,12 @@ let test_combined_module_links_members_sorted () =
     (Entity_doc.combined_module ~namespace:"Gtk" ~layer:Entity_doc.Layer2
        ~class_names:[ "Window"; "WidgetPaintable" ])
 
-let signature ?(methods = []) ~class_doc () =
+let signature ?(methods = []) ?(properties = []) ~class_doc () =
   Class_gen.generate_class_signature
     ~ctx:(Helpers.create_test_context ())
     ~class_doc ~class_name:"Button" ~c_type:"GtkButton"
-    ~parent_chain:[ "Widget" ] ~methods ~properties:[] ~signals:[]
-    ~constructors:[] ~entity_kind:Filtering.Class
+    ~parent_chain:[ "Widget" ] ~methods ~properties ~signals:[] ~constructors:[]
+    ~entity_kind:Filtering.Class
   |> Ml_ast_helpers.parse_interface
 
 let check_has msg ~sub doc =
@@ -116,6 +135,26 @@ let test_signature_carries_method_docs () =
     "the method's translated doc" (Some " Emits the clicked signal. ")
     method_doc
 
+let class_type_method_doc ast name =
+  Helpers.expect_some "class type button_t"
+    (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+      Helpers.expect_some ("method " ^ name)
+        (Ml_ast_helpers.find_method_in_class_type ct.pci_expr name)
+        (fun field -> Ml_ast_helpers.doc_of_attributes field.pctf_attributes))
+
+let test_signature_carries_property_docs () =
+  let ast =
+    signature
+      ~properties:[ label_property ~prop_doc:"Text of the label." () ]
+      ~class_doc:None ()
+  in
+  Alcotest.(check (option string))
+    "getter" (Some " Text of the label. ")
+    (class_type_method_doc ast "label");
+  Alcotest.(check (option string))
+    "setter" (Some " Text of the label. ")
+    (class_type_method_doc ast "set_label")
+
 let tests =
   [
     ( "layer 2 module doc with a class doc",
@@ -131,6 +170,13 @@ let tests =
       `Quick,
       test_constructor_fallback_without_upstream_site );
     ("constructor GIR doc wins", `Quick, test_constructor_gir_doc_wins);
+    ( "property GIR doc on both accessors",
+      `Quick,
+      test_property_gir_doc_on_both_accessors );
+    ("property fallback", `Quick, test_property_fallback);
+    ( "layer 2 signature carries property docs",
+      `Quick,
+      test_signature_carries_property_docs );
     ( "layer 1 module doc points to layer 2",
       `Quick,
       test_l1_module_points_to_layer2 );

@@ -301,7 +301,11 @@ external add_attribute : t -> Cell_renderer.t -> string -> int -> unit
 external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_tree_view_column_get_cell_area"
-(** Get property: cell-area *)
+(** The [GtkCellArea] used to layout cell renderers for this column.
+
+    If no area is specified when creating the tree view column with
+    gtk_tree_view_column_new_with_area() a horizontally oriented
+    [GtkCellAreaBox] will be used. *)
 
 let on_clicked ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"clicked" ~callback

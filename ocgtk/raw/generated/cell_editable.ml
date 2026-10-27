@@ -45,11 +45,11 @@ external editing_done : t -> unit = "ml_gtk_cell_editable_editing_done"
 
 external get_editing_canceled : t -> bool
   = "ml_gtk_cell_editable_get_editing_canceled"
-(** Get property: editing-canceled *)
+(** Indicates whether editing on the cell has been canceled. *)
 
 external set_editing_canceled : t -> bool -> unit
   = "ml_gtk_cell_editable_set_editing_canceled"
-(** Set property: editing-canceled *)
+(** Indicates whether editing on the cell has been canceled. *)
 
 let on_editing_done ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"editing-done" ~callback

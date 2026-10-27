@@ -44,8 +44,12 @@ external new_ :
 
 external get_show_editor : t -> bool
   = "ml_gtk_color_chooser_dialog_get_show_editor"
-(** Get property: show-editor *)
+(** Whether the color chooser dialog is showing the single-color editor.
+
+    It can be set to switch the color chooser into single-color editing mode. *)
 
 external set_show_editor : t -> bool -> unit
   = "ml_gtk_color_chooser_dialog_set_show_editor"
-(** Set property: show-editor *)
+(** Whether the color chooser dialog is showing the single-color editor.
+
+    It can be set to switch the color chooser into single-color editing mode. *)

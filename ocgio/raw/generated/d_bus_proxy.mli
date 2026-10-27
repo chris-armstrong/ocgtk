@@ -259,40 +259,96 @@ external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
 
 external get_g_connection : t -> D_bus_connection.t
   = "ml_g_d_bus_proxy_get_g_connection"
-(** Get property: g-connection *)
+(** The [GDBusConnection] the proxy is for. *)
 
 external get_g_default_timeout : t -> int
   = "ml_g_d_bus_proxy_get_g_default_timeout"
-(** Get property: g-default-timeout *)
+(** The timeout to use if -1 (specifying default timeout) is passed as
+    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    functions.
+
+    This allows applications to set a proxy-wide timeout for all remote method
+    invocations on the proxy. If this property is -1, the default timeout
+    (typically 25 seconds) is used. If set to [G_MAXINT], then no timeout is
+    used. *)
 
 external set_g_default_timeout : t -> int -> unit
   = "ml_g_d_bus_proxy_set_g_default_timeout"
-(** Set property: g-default-timeout *)
+(** The timeout to use if -1 (specifying default timeout) is passed as
+    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    functions.
+
+    This allows applications to set a proxy-wide timeout for all remote method
+    invocations on the proxy. If this property is -1, the default timeout
+    (typically 25 seconds) is used. If set to [G_MAXINT], then no timeout is
+    used. *)
 
 external get_g_flags : t -> Ocgio_enums.dbusproxyflags
   = "ml_g_d_bus_proxy_get_g_flags"
-(** Get property: g-flags *)
+(** Flags from the [GDBusProxyFlags] enumeration. *)
 
 external get_g_interface_info : t -> D_bus_interface_info.t
   = "ml_g_d_bus_proxy_get_g_interface_info"
-(** Get property: g-interface-info *)
+[@@ocaml.doc
+  "Ensure that interactions with this proxy conform to the given\n\
+   interface. This is mainly to ensure that malformed data received\n\
+   from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+   said to be the \"expected interface\".\n\n\
+   The checks performed are:\n\n\
+   - When completing a method call, if the type signature of\n\
+   the reply message isn't what's expected, the reply is\n\
+   discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   - Received signals that have a type signature mismatch are dropped and\n\
+   a warning is logged via g_warning().\n\n\
+   - Properties received via the initial [GetAll()] call or via the\n\
+   [::PropertiesChanged] signal (on the\n\
+   org.freedesktop.DBus.Properties\n\
+   interface) or set using g_dbus_proxy_set_cached_property()\n\
+   with a type signature mismatch are ignored and a warning is\n\
+   logged via g_warning().\n\n\
+   Note that these checks are never done on methods, signals and\n\
+   properties that are not referenced in the given\n\
+   [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+   service-side is not considered an ABI break."]
 
 external set_g_interface_info : t -> D_bus_interface_info.t -> unit
   = "ml_g_d_bus_proxy_set_g_interface_info"
-(** Set property: g-interface-info *)
+[@@ocaml.doc
+  "Ensure that interactions with this proxy conform to the given\n\
+   interface. This is mainly to ensure that malformed data received\n\
+   from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+   said to be the \"expected interface\".\n\n\
+   The checks performed are:\n\n\
+   - When completing a method call, if the type signature of\n\
+   the reply message isn't what's expected, the reply is\n\
+   discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   - Received signals that have a type signature mismatch are dropped and\n\
+   a warning is logged via g_warning().\n\n\
+   - Properties received via the initial [GetAll()] call or via the\n\
+   [::PropertiesChanged] signal (on the\n\
+   org.freedesktop.DBus.Properties\n\
+   interface) or set using g_dbus_proxy_set_cached_property()\n\
+   with a type signature mismatch are ignored and a warning is\n\
+   logged via g_warning().\n\n\
+   Note that these checks are never done on methods, signals and\n\
+   properties that are not referenced in the given\n\
+   [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+   service-side is not considered an ABI break."]
 
 external get_g_interface_name : t -> string
   = "ml_g_d_bus_proxy_get_g_interface_name"
-(** Get property: g-interface-name *)
+(** The D-Bus interface name the proxy is for. *)
 
 external get_g_name : t -> string = "ml_g_d_bus_proxy_get_g_name"
-(** Get property: g-name *)
+(** The well-known or unique name that the proxy is for. *)
 
 external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
-(** Get property: g-name-owner *)
+(** The unique name that owns [GDBusProxy:g]-name or [NULL] if no-one currently
+    owns that name. You may connect to [GObject::notify] signal to track changes
+    to this property. *)
 
 external get_g_object_path : t -> string = "ml_g_d_bus_proxy_get_g_object_path"
-(** Get property: g-object-path *)
+(** The object path the proxy is for. *)
 
 val on_g_signal :
   ?after:bool ->

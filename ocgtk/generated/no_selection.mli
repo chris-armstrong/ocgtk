@@ -24,7 +24,11 @@ class type no_selection_t = object
       If [model] is [NULL], this model will be empty. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_no_selection : Raw.No_selection.t
 end
 

@@ -27,9 +27,33 @@ class type shortcuts_window_t = object
       manages its children internally. *)
 
   method section_name : string
+  (** The name of the section to show.
+
+      This should be the section-name of one of the [GtkShortcutsSection]
+      objects that are in this shortcuts window. *)
+
   method set_section_name : string -> unit
+  (** The name of the section to show.
+
+      This should be the section-name of one of the [GtkShortcutsSection]
+      objects that are in this shortcuts window. *)
+
   method view_name : string
+  (** The view name by which to filter the contents.
+
+      This should correspond to the [Gtk.ShortcutsGroup:view] property of some
+      of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+      Set this to [NULL] to show all groups. *)
+
   method set_view_name : string -> unit
+  (** The view name by which to filter the contents.
+
+      This should correspond to the [Gtk.ShortcutsGroup:view] property of some
+      of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+      Set this to [NULL] to show all groups. *)
+
   method as_shortcuts_window : Raw.Shortcuts_window.t
 end
 

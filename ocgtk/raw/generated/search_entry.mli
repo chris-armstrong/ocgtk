@@ -129,11 +129,11 @@ external get_input_hints : t -> Ocgtk_enums.inputhints
 
 external get_activates_default : t -> bool
   = "ml_gtk_search_entry_get_activates_default"
-(** Get property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_search_entry_set_activates_default"
-(** Set property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

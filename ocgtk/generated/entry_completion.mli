@@ -171,6 +171,11 @@ class type entry_completion_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] used to layout cell renderers in the treeview column.
+
+      If no area is specified when creating the entry completion with
+      [Gtk.EntryCompletion.new_with_area], a horizontally oriented
+      [Gtk.CellAreaBox] will be used. *)
 
   method as_entry_completion : Raw.Entry_completion.t
 end

@@ -718,10 +718,20 @@ external add_child_at_anchor :
 (* Properties *)
 
 external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
-(** Get property: im-module *)
+(** Which IM (input method) module should be used for this text_view.
+
+    See [Gtk.IMMulticontext].
+
+    Setting this to a non-[NULL] value overrides the system-wide IM module
+    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
-(** Set property: im-module *)
+(** Which IM (input method) module should be used for this text_view.
+
+    See [Gtk.IMMulticontext].
+
+    Setting this to a non-[NULL] value overrides the system-wide IM module
+    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 let on_backspace ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"backspace" ~callback

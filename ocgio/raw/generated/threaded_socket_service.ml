@@ -3,8 +3,8 @@
 
 (** A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
     handles incoming connections by creating a worker thread and dispatching the
-    connection to it by emitting the [Gio.ThreadedSocketService::run signal] in
-    the new thread.
+    connection to it by emitting the \[signal@Gio.ThreadedSocketService::run
+    signal\] in the new thread.
 
     The signal handler may perform blocking I/O and need not return until the
     connection is closed.
@@ -37,4 +37,4 @@ external new_ : int -> t = "ml_g_threaded_socket_service_new"
 
 external get_max_threads : t -> int
   = "ml_g_threaded_socket_service_get_max_threads"
-(** Get property: max-threads *)
+(** The maximum number of threads handling clients for this service. *)

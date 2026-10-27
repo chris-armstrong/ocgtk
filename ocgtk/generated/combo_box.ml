@@ -219,8 +219,19 @@ class type combo_box_t = object
       width of the combo box. *)
 
   method has_frame : bool
+  (** The [has-frame] property controls whether a frame is drawn around the
+      entry. *)
+
   method set_has_frame : bool -> unit
+  (** The [has-frame] property controls whether a frame is drawn around the
+      entry. *)
+
   method popup_shown : bool
+  (** Whether the combo boxes dropdown is popped up.
+
+      Note that this property is mainly useful, because it allows you to connect
+      to notify::popup-shown. *)
+
   method as_combo_box : Raw.Combo_box.t
 end
 

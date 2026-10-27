@@ -76,9 +76,28 @@ class type cell_view_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] rendering cells
+
+      If no area is specified when creating the cell view with
+      gtk_cell_view_new_with_context() a horizontally oriented [GtkCellArea]Box
+      will be used.
+
+      since 3.0 *)
 
   method cell_area_context :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
+  (** The [GtkCellAreaContext] used to compute the geometry of the cell view.
+
+      A group of cell views can be assigned the same context in order to ensure
+      the sizes and cell alignments match across all the views with the same
+      context.
+
+      [GtkComboBox] menus uses this to assign the same context to all cell views
+      in the menu items for a single menu (each submenu creates its own context
+      since the size of each submenu does not depend on parent or sibling
+      menus).
+
+      since 3.0 *)
 
   method as_cell_view : Raw.Cell_view.t
 end

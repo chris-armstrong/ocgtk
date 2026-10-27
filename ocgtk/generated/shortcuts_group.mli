@@ -29,12 +29,44 @@ class type shortcuts_group_t = object
       [GtkShortcutsGroup] manages its children internally. *)
 
   method set_accel_size_group : Size_group.size_group_t -> unit
+  (** The size group for the accelerator portion of shortcuts in this group.
+
+      This is used internally by GTK, and must not be modified by applications.
+  *)
+
   method height : int
+  (** A rough measure for the number of lines in this group.
+
+      This is used internally by GTK, and is not useful for applications. *)
+
   method title : string
+  (** The title for this group of shortcuts. *)
+
   method set_title : string -> unit
+  (** The title for this group of shortcuts. *)
+
   method set_title_size_group : Size_group.size_group_t -> unit
+  (** The size group for the textual portion of shortcuts in this group.
+
+      This is used internally by GTK, and must not be modified by applications.
+  *)
+
   method view : string
+  (** An optional view that the shortcuts in this group are relevant for.
+
+      The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
+      does not match the view of this group.
+
+      Set this to [NULL] to make the group always visible. *)
+
   method set_view : string -> unit
+  (** An optional view that the shortcuts in this group are relevant for.
+
+      The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
+      does not match the view of this group.
+
+      Set this to [NULL] to make the group always visible. *)
+
   method as_shortcuts_group : Raw.Shortcuts_group.t
 end
 

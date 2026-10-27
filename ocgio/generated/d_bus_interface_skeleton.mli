@@ -103,7 +103,11 @@ class type d_bus_interface_skeleton_t = object
       g_dbus_interface_skeleton_unexport(). *)
 
   method g_flags : Enums.dbusinterfaceskeletonflags
+  (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
   method set_g_flags : Enums.dbusinterfaceskeletonflags -> unit
+  (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
   method as_d_bus_interface_skeleton : Raw.D_bus_interface_skeleton.t
 end
 

@@ -28,19 +28,20 @@ external get_connectable :
   Socket_address_and__socket_address_enumerator_and__socket_connectable
   .Socket_connectable
   .t = "ml_g_proxy_address_enumerator_get_connectable"
-(** Get property: connectable *)
+(** The connectable being enumerated. *)
 
 external get_default_port : t -> int
   = "ml_g_proxy_address_enumerator_get_default_port"
-(** Get property: default-port *)
+(** The default port to use if [GProxyAddressEnumerator:uri] does not specify
+    one. *)
 
 external get_proxy_resolver : t -> Proxy_resolver.t
   = "ml_g_proxy_address_enumerator_get_proxy_resolver"
-(** Get property: proxy-resolver *)
+(** The proxy resolver to use. *)
 
 external set_proxy_resolver : t -> Proxy_resolver.t -> unit
   = "ml_g_proxy_address_enumerator_set_proxy_resolver"
-(** Set property: proxy-resolver *)
+(** The proxy resolver to use. *)
 
 external get_uri : t -> string = "ml_g_proxy_address_enumerator_get_uri"
-(** Get property: uri *)
+(** The destination URI. Use [none://] for a generic socket. *)

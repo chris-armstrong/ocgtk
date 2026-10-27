@@ -63,7 +63,11 @@ class type tree_list_model_t = object
       underlying models or via [Gtk.TreeListRow.set_expanded]. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_tree_list_model : Raw.Tree_list_model.t
 end
 

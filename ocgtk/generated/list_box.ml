@@ -235,7 +235,11 @@ class type list_box_t = object
   (** Unselects a single row of [box], if the selection mode allows it. *)
 
   method accept_unpaired_release : bool
+  (** Whether to accept unpaired release events. *)
+
   method set_accept_unpaired_release : bool -> unit
+  (** Whether to accept unpaired release events. *)
+
   method as_list_box : Raw.List_box.t
 end
 

@@ -249,6 +249,12 @@ class type tls_connection_t = object
       [GTlsClientConnection:validation]-flags). *)
 
   method base_io_stream : Io_stream.io_stream_t
+  (** The [GIOStream] that the connection wraps. The connection holds a
+      reference to this stream, and may run operations on the stream from other
+      threads throughout its lifetime. Consequently, after the [GIOStream] has
+      been constructed, application code may only run its own operations on this
+      stream when no [GIOStream] operations are running. *)
+
   method as_tls_connection : Raw.Tls_connection.t
 end
 

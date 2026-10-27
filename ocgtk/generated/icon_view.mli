@@ -378,6 +378,10 @@ class type icon_view_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] used to layout cell renderers for this view.
+
+      If no area is specified when creating the icon view with
+      gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
 
   method as_icon_view : Raw.Icon_view.t
 end

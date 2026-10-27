@@ -7,7 +7,7 @@
 
     Once an instance of this type has been created, you can connect to the
     [Gio.DBusObjectManager::object-added] and
-    [Gio.DBusObjectManager::object-removed signals] and inspect the
+    \[signal@Gio.DBusObjectManager::object-removed signals\] and inspect the
     [Gio.DBusObjectProxy] objects returned by
     [Gio.DBusObjectManager.get_objects].
 
@@ -110,7 +110,7 @@ external get_connection : t -> D_bus_connection.t
 
 external get_object_path : t -> string
   = "ml_g_d_bus_object_manager_client_get_object_path"
-(** Get property: object-path *)
+(** The object path the manager is for. *)
 
 let on_interface_proxy_signal ?after obj ~callback =
   let closure =

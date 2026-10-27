@@ -1,7 +1,7 @@
 (** A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
     handles incoming connections by creating a worker thread and dispatching the
-    connection to it by emitting the [Gio.ThreadedSocketService::run signal] in
-    the new thread.
+    connection to it by emitting the \[signal@Gio.ThreadedSocketService::run
+    signal\] in the new thread.
 
     The signal handler may perform blocking I/O and need not return until the
     connection is closed.
@@ -23,7 +23,10 @@
 (** The methods, signals and properties of a [ThreadedSocketService]. *)
 class type threaded_socket_service_t = object
   inherit Socket_service.socket_service_t
+
   method max_threads : int
+  (** The maximum number of threads handling clients for this service. *)
+
   method as_threaded_socket_service : Raw.Threaded_socket_service.t
 end
 

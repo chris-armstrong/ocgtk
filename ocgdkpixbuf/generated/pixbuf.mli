@@ -391,6 +391,8 @@ class type pixbuf_t = object
       the new value is ignored and [FALSE] is returned. *)
 
   method pixel_bytes : Glib_bytes.t
+  (** Get property: pixel-bytes *)
+
   method as_pixbuf : Raw.Pixbuf.t
 end
 

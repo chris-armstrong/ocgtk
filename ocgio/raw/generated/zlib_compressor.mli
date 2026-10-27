@@ -42,7 +42,10 @@ external get_file_info : t -> File_info.t option
 
 external get_format : t -> Ocgio_enums.zlibcompressorformat
   = "ml_g_zlib_compressor_get_format"
-(** Get property: format *)
+(** The format of the compressed data. *)
 
 external get_level : t -> int = "ml_g_zlib_compressor_get_level"
-(** Get property: level *)
+(** The level of compression from [0] (no compression) to [9] (most
+    compression).
+
+    [-1] for the default level. *)

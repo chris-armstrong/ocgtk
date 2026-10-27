@@ -129,11 +129,11 @@ external get_input_hints : t -> Ocgtk_enums.inputhints
 
 external get_activates_default : t -> bool
   = "ml_gtk_search_entry_get_activates_default"
-(** Get property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_search_entry_set_activates_default"
-(** Set property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback

@@ -109,9 +109,25 @@ external get_displayed_row : t -> Tree_path.t option
 external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_cell_view_get_cell_area"
-(** Get property: cell-area *)
+(** The [GtkCellArea] rendering cells
+
+    If no area is specified when creating the cell view with
+    gtk_cell_view_new_with_context() a horizontally oriented [GtkCellArea]Box
+    will be used.
+
+    since 3.0 *)
 
 external get_cell_area_context :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t
   = "ml_gtk_cell_view_get_cell_area_context"
-(** Get property: cell-area-context *)
+(** The [GtkCellAreaContext] used to compute the geometry of the cell view.
+
+    A group of cell views can be assigned the same context in order to ensure
+    the sizes and cell alignments match across all the views with the same
+    context.
+
+    [GtkComboBox] menus uses this to assign the same context to all cell views
+    in the menu items for a single menu (each submenu creates its own context
+    since the size of each submenu does not depend on parent or sibling menus).
+
+    since 3.0 *)

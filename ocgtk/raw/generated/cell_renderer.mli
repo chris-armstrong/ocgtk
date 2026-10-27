@@ -239,11 +239,11 @@ external set_cell_background : t -> string -> unit
 
 external get_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_get_cell_background_rgba"
-(** Get property: cell-background-rgba *)
+(** Cell background as a [GdkRGBA] *)
 
 external set_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_cell_renderer_set_cell_background_rgba"
-(** Set property: cell-background-rgba *)
+(** Cell background as a [GdkRGBA] *)
 
 external get_cell_background_set : t -> bool
   = "ml_gtk_cell_renderer_get_cell_background_set"

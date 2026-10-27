@@ -4,7 +4,7 @@
 
     Once an instance of this type has been created, you can connect to the
     [Gio.DBusObjectManager::object-added] and
-    [Gio.DBusObjectManager::object-removed signals] and inspect the
+    \[signal@Gio.DBusObjectManager::object-removed signals\] and inspect the
     [Gio.DBusObjectProxy] objects returned by
     [Gio.DBusObjectManager.get_objects].
 
@@ -114,6 +114,8 @@ class type d_bus_object_manager_client_t = object
       property. *)
 
   method object_path : string
+  (** The object path the manager is for. *)
+
   method as_d_bus_object_manager_client : Raw.D_bus_object_manager_client.t
 end
 

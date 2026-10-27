@@ -45,7 +45,12 @@ class type list_store_t = object
       the time this function is called). *)
 
   method item_type : Gobject.Type.t
+  (** The type of items contained in this list store. Items must be subclasses
+      of [GObject]. *)
+
   method n_items : int
+  (** The number of items contained in this list store. *)
+
   method as_list_store : Raw.List_store.t
 end
 

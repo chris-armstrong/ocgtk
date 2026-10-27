@@ -292,6 +292,9 @@ class type editable_t = object
       reverts to the default size. *)
 
   method selection_bound : int
+  (** The position of the opposite end of the selection from the cursor in
+      chars. *)
+
   method as_editable : Raw.Editable.t
 end
 

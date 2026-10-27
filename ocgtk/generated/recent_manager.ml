@@ -63,7 +63,12 @@ class type recent_manager_t = object
       handled by a recent manager. *)
 
   method filename : string
+  (** The full path to the file to be used to store and read the recently used
+      resources list *)
+
   method size : int
+  (** The size of the recently used resources list. *)
+
   method as_recent_manager : Raw.Recent_manager.t
 end
 

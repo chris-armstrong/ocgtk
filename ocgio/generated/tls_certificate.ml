@@ -53,9 +53,45 @@ class type tls_certificate_t = object
       connection is to let [GTlsConnection] handle the verification. *)
 
   method certificate_pem : string
+  (** The PEM (ASCII) encoded representation of the certificate. This property
+      and the [GTlsCertificate:certificate] property represent the same data,
+      just in different forms. *)
+
   method pkcs11_uri : string
+  (** A URI referencing the
+      {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
+       #11} objects containing an X.509 certificate and optionally a private
+      key.
+
+      If [NULL], the certificate is either not backed by PKCS #11 or the
+      [GTlsBackend] does not support PKCS #11. *)
+
   method private_key_pem : string
+  [@@ocaml.doc
+    "The PEM (ASCII) encoded representation of the certificate's\n\
+     private key in either \
+     {{:https://datatracker.ietf.org/doc/html/rfc8017}PKCS #1 format}\n\
+     (\"[BEGIN RSA PRIVATE KEY]\") or unencrypted\n\
+     {{:https://datatracker.ietf.org/doc/html/rfc5208}PKCS #8 format}\n\
+     (\"[BEGIN PRIVATE KEY]\"). PKCS #8 format is supported since 2.32;\n\
+     earlier releases only support PKCS #1. You can use the [openssl rsa]\n\
+     tool to convert PKCS #8 keys to PKCS #1.\n\n\
+     This property (or the [GTlsCertificate:private]-key property)\n\
+     can be set when constructing a key (for example, from a file).\n\
+     Since GLib 2.70, it is now also readable; however, be aware that if\n\
+     the private key is backed by a PKCS #11 URI - for example, if it\n\
+     is stored on a smartcard - then this property will be [NULL]. If so,\n\
+     the private key must be referenced via its PKCS #11 URI,\n\
+     [GTlsCertificate:private]-key-pkcs11-uri. You must check both\n\
+     properties to see if the certificate really has a private key.\n\
+     When this property is read, the output format will be unencrypted\n\
+     PKCS #8."]
+
   method private_key_pkcs11_uri : string
+  (** A URI referencing a
+      {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
+       #11} object containing a private key. *)
+
   method as_tls_certificate : Raw.Tls_certificate.t
 end
 

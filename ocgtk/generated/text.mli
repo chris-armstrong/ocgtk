@@ -415,10 +415,30 @@ class type text_t = object
       After calling this, the default invisible char is used again. *)
 
   method im_module : string
+  (** Which input method module should be used.
+
+      See [Gtk.IMMulticontext].
+
+      Setting this to a non-[NULL] value overrides the system-wide input method.
+      See the [Gtk.Settings:gtk-im-module] setting. *)
+
   method set_im_module : string -> unit
+  (** Which input method module should be used.
+
+      See [Gtk.IMMulticontext].
+
+      Setting this to a non-[NULL] value overrides the system-wide input method.
+      See the [Gtk.Settings:gtk-im-module] setting. *)
+
   method invisible_char_set : bool
+  (** Whether the invisible char has been set. *)
+
   method set_invisible_char_set : bool -> unit
+  (** Whether the invisible char has been set. *)
+
   method scroll_offset : int
+  (** Number of pixels scrolled of the screen to the left. *)
+
   method as_text : Raw.Text.t
 end
 

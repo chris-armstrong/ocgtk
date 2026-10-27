@@ -18,7 +18,15 @@ class type multi_filter_t = object
       If [position] is larger than the number of filters, nothing happens. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items.
+
+      See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items.
+
+      See [Gio.ListModel.get_n_items]. *)
+
   method as_multi_filter : Raw.Multi_filter.t
 end
 

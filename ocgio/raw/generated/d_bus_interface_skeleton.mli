@@ -88,11 +88,11 @@ external export : t -> D_bus_connection.t -> string -> (bool, GError.t) result
 
 external get_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags
   = "ml_g_d_bus_interface_skeleton_get_g_flags"
-(** Get property: g-flags *)
+(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
 
 external set_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_d_bus_interface_skeleton_set_g_flags"
-(** Set property: g-flags *)
+(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
 
 val on_g_authorize_method :
   ?after:bool ->

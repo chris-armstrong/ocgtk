@@ -85,4 +85,4 @@ external export : t -> D_bus_object_skeleton.t -> unit
 
 external get_object_path : t -> string
   = "ml_g_d_bus_object_manager_server_get_object_path"
-(** Get property: object-path *)
+(** The object path to register the manager object at. *)

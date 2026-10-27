@@ -183,7 +183,11 @@ external complete : t -> unit = "ml_gtk_entry_completion_complete"
 external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_entry_completion_get_cell_area"
-(** Get property: cell-area *)
+(** The [GtkCellArea] used to layout cell renderers in the treeview column.
+
+    If no area is specified when creating the entry completion with
+    [Gtk.EntryCompletion.new_with_area], a horizontally oriented
+    [Gtk.CellAreaBox] will be used. *)
 
 let on_insert_prefix ?after obj ~callback =
   let closure =

@@ -271,4 +271,4 @@ external get_bounding_box : t -> bool * Ocgdk_raw.Rectangle.t
 (* Properties *)
 
 external get_n_points : t -> int = "ml_gtk_gesture_get_n_points"
-(** Get property: n-points *)
+(** The number of touch points that trigger recognition on this gesture. *)

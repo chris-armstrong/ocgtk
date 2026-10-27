@@ -5,6 +5,8 @@ class type zlib_decompressor_t = object
   (** Gets the [Gio.ZlibDecompressor:file-info] property. *)
 
   method format : Enums.zlibcompressorformat
+  (** The format of the compressed data. *)
+
   method as_zlib_decompressor : Raw.Zlib_decompressor.t
 end
 

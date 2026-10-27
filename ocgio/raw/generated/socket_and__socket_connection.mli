@@ -744,7 +744,7 @@ module rec Socket : sig
   (* Properties *)
 
   external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_get_type"
-  (** Get property: type *)
+  (** The socket’s type. *)
 end
 
 (** [GSocketConnection] is a [Gio.IOStream] for a connected socket. They can be

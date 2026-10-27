@@ -22,7 +22,14 @@ class type zlib_compressor_t = object
       [compressor], or after resetting it with [Gio.Converter.reset]. *)
 
   method format : Enums.zlibcompressorformat
+  (** The format of the compressed data. *)
+
   method level : int
+  (** The level of compression from [0] (no compression) to [9] (most
+      compression).
+
+      [-1] for the default level. *)
+
   method as_zlib_compressor : Raw.Zlib_compressor.t
 end
 

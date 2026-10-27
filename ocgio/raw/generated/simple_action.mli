@@ -58,15 +58,17 @@ external set_enabled : t -> bool -> unit = "ml_g_simple_action_set_enabled"
 (* Properties *)
 
 external get_name : t -> string = "ml_g_simple_action_get_name"
-(** Get property: name *)
+(** The name of the action. This is mostly meaningful for identifying the action
+    once it has been added to a [GSimpleActionGroup]. *)
 
 external get_parameter_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_parameter_type"
-(** Get property: parameter-type *)
+(** The type of the parameter that must be given when activating the action. *)
 
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_state_type"
-(** Get property: state-type *)
+(** The [GVariantType] of the state that the action has, or [NULL] if the action
+    is stateless. *)
 
 val on_activate :
   ?after:bool ->

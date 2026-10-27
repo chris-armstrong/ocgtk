@@ -30,6 +30,22 @@ class type themed_icon_t = object
       g_icon_hash(). *)
 
   method use_default_fallbacks : bool
+  [@@ocaml.doc
+    "Whether to use the default fallbacks found by shortening the icon name\n\
+     at '-' characters. If the \"names\" array has more than one element,\n\
+     ignores any past the first.\n\n\
+     For example, if the icon name was \"gnome-dev-cdrom-audio\", the array\n\
+     would become\n\n\
+     {[\n\
+     {\n\
+    \  \"gnome-dev-cdrom-audio\",\n\
+    \  \"gnome-dev-cdrom\",\n\
+    \  \"gnome-dev\",\n\
+    \  \"gnome\",\n\
+    \  NULL\n\
+     };\n\
+     ]}"]
+
   method as_themed_icon : Raw.Themed_icon.t
 end
 

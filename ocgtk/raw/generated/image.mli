@@ -213,7 +213,15 @@ external clear : t -> unit = "ml_gtk_image_clear"
 (* Properties *)
 
 external get_use_fallback : t -> bool = "ml_gtk_image_get_use_fallback"
-(** Get property: use-fallback *)
+(** Whether the icon displayed in the [GtkImage] will use standard icon names
+    fallback.
+
+    The value of this property is only relevant for images of type
+    [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
 
 external set_use_fallback : t -> bool -> unit = "ml_gtk_image_set_use_fallback"
-(** Set property: use-fallback *)
+(** Whether the icon displayed in the [GtkImage] will use standard icon names
+    fallback.
+
+    The value of this property is only relevant for images of type
+    [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)

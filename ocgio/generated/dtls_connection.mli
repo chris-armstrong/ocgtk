@@ -309,6 +309,9 @@ class type dtls_connection_t = object
       g_dtls_connection_shutdown() for more information. *)
 
   method base_socket : Datagram_based.datagram_based_t
+  (** The [GDatagramBased] that the connection wraps. Note that this may be any
+      implementation of [GDatagramBased], not just a [GSocket]. *)
+
   method as_dtls_connection : Raw.Dtls_connection.t
 end
 

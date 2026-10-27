@@ -53,6 +53,7 @@ class type app_launch_context_t = object
       This is also known as 'focus stealing prevention'. *)
 
   method display : display_t
+  (** The display that the [GdkAppLaunchContext] is on. *)
 end
 
 (** The methods, signals and properties of a [CairoContext]. *)
@@ -272,6 +273,8 @@ and device_t = object
       This is only relevant for keyboard devices. *)
 
   method n_axes : int
+  (** Number of axes in the device. *)
+
   method as_device : Raw.Device.t
 end
 

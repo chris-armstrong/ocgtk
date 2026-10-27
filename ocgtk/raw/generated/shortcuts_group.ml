@@ -39,23 +39,39 @@ external add_shortcut : t -> Shortcuts_shortcut.t -> unit
 
 external set_accel_size_group : t -> Size_group.t -> unit
   = "ml_gtk_shortcuts_group_set_accel_size_group"
-(** Set property: accel-size-group *)
+(** The size group for the accelerator portion of shortcuts in this group.
+
+    This is used internally by GTK, and must not be modified by applications. *)
 
 external get_height : t -> int = "ml_gtk_shortcuts_group_get_height"
-(** Get property: height *)
+(** A rough measure for the number of lines in this group.
+
+    This is used internally by GTK, and is not useful for applications. *)
 
 external get_title : t -> string = "ml_gtk_shortcuts_group_get_title"
-(** Get property: title *)
+(** The title for this group of shortcuts. *)
 
 external set_title : t -> string -> unit = "ml_gtk_shortcuts_group_set_title"
-(** Set property: title *)
+(** The title for this group of shortcuts. *)
 
 external set_title_size_group : t -> Size_group.t -> unit
   = "ml_gtk_shortcuts_group_set_title_size_group"
-(** Set property: title-size-group *)
+(** The size group for the textual portion of shortcuts in this group.
+
+    This is used internally by GTK, and must not be modified by applications. *)
 
 external get_view : t -> string = "ml_gtk_shortcuts_group_get_view"
-(** Get property: view *)
+(** An optional view that the shortcuts in this group are relevant for.
+
+    The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
+    does not match the view of this group.
+
+    Set this to [NULL] to make the group always visible. *)
 
 external set_view : t -> string -> unit = "ml_gtk_shortcuts_group_set_view"
-(** Set property: view *)
+(** An optional view that the shortcuts in this group are relevant for.
+
+    The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
+    does not match the view of this group.
+
+    Set this to [NULL] to make the group always visible. *)

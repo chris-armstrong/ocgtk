@@ -34,9 +34,17 @@ class type icon_paintable_t = object
       determining this. This behaviour may change in the future. *)
 
   method scale : int
+  (** Get property: scale *)
+
   method set_scale : int -> unit
+  (** Set property: scale *)
+
   method size : int
+  (** Get property: size *)
+
   method set_size : int -> unit
+  (** Set property: size *)
+
   method as_icon_paintable : Raw.Icon_paintable.t
 end
 

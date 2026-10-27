@@ -246,13 +246,18 @@ external get_active : t -> int = "ml_gtk_combo_box_get_active"
 (* Properties *)
 
 external get_has_frame : t -> bool = "ml_gtk_combo_box_get_has_frame"
-(** Get property: has-frame *)
+(** The [has-frame] property controls whether a frame is drawn around the entry.
+*)
 
 external set_has_frame : t -> bool -> unit = "ml_gtk_combo_box_set_has_frame"
-(** Set property: has-frame *)
+(** The [has-frame] property controls whether a frame is drawn around the entry.
+*)
 
 external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
-(** Get property: popup-shown *)
+(** Whether the combo boxes dropdown is popped up.
+
+    Note that this property is mainly useful, because it allows you to connect
+    to notify::popup-shown. *)
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

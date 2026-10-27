@@ -55,11 +55,17 @@ external get_modal : t -> bool = "ml_gtk_color_button_get_modal"
 (* Properties *)
 
 external get_show_editor : t -> bool = "ml_gtk_color_button_get_show_editor"
-(** Get property: show-editor *)
+(** Whether the color chooser should open in editor mode.
+
+    This property should be used in cases where the palette in the editor would
+    be redundant, such as when the color button is already part of a palette. *)
 
 external set_show_editor : t -> bool -> unit
   = "ml_gtk_color_button_set_show_editor"
-(** Set property: show-editor *)
+(** Whether the color chooser should open in editor mode.
+
+    This property should be used in cases where the palette in the editor would
+    be redundant, such as when the color button is already part of a palette. *)
 
 let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback

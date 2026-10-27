@@ -49,3 +49,10 @@ val constructor :
 (** A constructor's doc at either layer: its translated GIR doc, else "Create a
     new [class_name]. Wraps [c_function]." with the C function linked to its
     gi-docgen page when the namespace has a gi-docgen site. *)
+
+type accessor = Getter | Setter
+
+val property : accessor:accessor -> Types.gir_property -> Doc_emit.t option
+(** A property accessor's doc at either layer: the property's translated GIR
+    doc, the same on its getter and setter, else "Get property: <name>" or "Set
+    property: <name>". *)

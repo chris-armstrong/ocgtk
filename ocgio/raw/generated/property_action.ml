@@ -74,22 +74,28 @@ external new_ : string -> [ `object_ ] Gobject.obj -> string -> t
 (* Properties *)
 
 external get_enabled : t -> bool = "ml_g_property_action_get_enabled"
-(** Get property: enabled *)
+(** If [action] is currently enabled.
+
+    If the action is disabled then calls to g_action_activate() and
+    g_action_change_state() have no effect. *)
 
 external get_invert_boolean : t -> bool
   = "ml_g_property_action_get_invert_boolean"
-(** Get property: invert-boolean *)
+(** If [TRUE], the state of the action will be the negation of the property
+    value, provided the property is boolean. *)
 
 external get_name : t -> string = "ml_g_property_action_get_name"
-(** Get property: name *)
+(** The name of the action. This is mostly meaningful for identifying the action
+    once it has been added to a [GActionMap]. *)
 
 external get_parameter_type : t -> Gvariant_type.t
   = "ml_g_property_action_get_parameter_type"
-(** Get property: parameter-type *)
+(** The type of the parameter that must be given when activating the action. *)
 
 external get_state : t -> Gvariant.t = "ml_g_property_action_get_state"
-(** Get property: state *)
+(** The state of the action, or [NULL] if the action is stateless. *)
 
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_property_action_get_state_type"
-(** Get property: state-type *)
+(** The [GVariantType] of the state that the action has, or [NULL] if the action
+    is stateless. *)

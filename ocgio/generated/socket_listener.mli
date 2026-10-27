@@ -107,7 +107,11 @@ class type socket_listener_t = object
       See g_socket_set_listen_backlog() for details *)
 
   method listen_backlog : int
+  (** The number of outstanding connections in the listen queue. *)
+
   method set_listen_backlog : int -> unit
+  (** The number of outstanding connections in the listen queue. *)
+
   method as_socket_listener : Raw.Socket_listener.t
 end
 

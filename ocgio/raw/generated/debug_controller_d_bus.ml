@@ -148,7 +148,11 @@ external stop : t -> unit = "ml_g_debug_controller_dbus_stop"
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_debug_controller_d_bus_get_connection"
-(** Get property: connection *)
+(** The D-Bus connection to expose the debugging interface on.
+
+    Typically this will be the same connection (to the system or session bus)
+    which the rest of the application or service’s D-Bus objects are registered
+    on. *)
 
 let on_authorize ?after obj ~callback =
   let closure =

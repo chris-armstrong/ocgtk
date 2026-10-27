@@ -21,11 +21,21 @@ class type proxy_address_enumerator_t = object
   method connectable :
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
+  (** The connectable being enumerated. *)
 
   method default_port : int
+  (** The default port to use if [GProxyAddressEnumerator:uri] does not specify
+      one. *)
+
   method proxy_resolver : Proxy_resolver.proxy_resolver_t
+  (** The proxy resolver to use. *)
+
   method set_proxy_resolver : Proxy_resolver.proxy_resolver_t -> unit
+  (** The proxy resolver to use. *)
+
   method uri : string
+  (** The destination URI. Use [none://] for a generic socket. *)
+
   method as_proxy_address_enumerator : Raw.Proxy_address_enumerator.t
 end
 

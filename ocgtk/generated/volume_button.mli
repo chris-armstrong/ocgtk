@@ -10,8 +10,19 @@
 (** The methods, signals and properties of a [VolumeButton]. *)
 class type volume_button_t = object
   inherit Scale_button.scale_button_t
+
   method use_symbolic : bool
+  (** Whether to use symbolic icons as the icons.
+
+      Note that if the symbolic icons are not available in your installed theme,
+      then the normal (potentially colorful) icons will be used. *)
+
   method set_use_symbolic : bool -> unit
+  (** Whether to use symbolic icons as the icons.
+
+      Note that if the symbolic icons are not available in your installed theme,
+      then the normal (potentially colorful) icons will be used. *)
+
   method as_volume_button : Raw.Volume_button.t
 end
 

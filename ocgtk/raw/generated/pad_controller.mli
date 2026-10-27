@@ -99,7 +99,7 @@ external set_action :
 
 external get_action_group : t -> Ocgio_raw.Action_group.t
   = "ml_gtk_pad_controller_get_action_group"
-(** Get property: action-group *)
+(** The action group of the controller. *)
 
 external get_pad : t -> Ocgdk_raw.Device.t = "ml_gtk_pad_controller_get_pad"
-(** Get property: pad *)
+(** The pad of the controller. *)

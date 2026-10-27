@@ -512,11 +512,13 @@ external append_page :
 (* Properties *)
 
 external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
-(** Get property: enable-popup *)
+(** If [TRUE], pressing the right mouse button on the notebook shows a page
+    switching menu. *)
 
 external set_enable_popup : t -> bool -> unit
   = "ml_gtk_notebook_set_enable_popup"
-(** Set property: enable-popup *)
+(** If [TRUE], pressing the right mouse button on the notebook shows a page
+    switching menu. *)
 
 val on_change_current_page :
   ?after:bool -> t -> callback:(page:int -> bool) -> Gobject.Signal.handler_id

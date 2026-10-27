@@ -12,7 +12,11 @@ class type charset_converter_t = object
   (** Sets the [GCharsetConverter:use]-fallback property. *)
 
   method from_charset : string
+  (** The character encoding to convert from. *)
+
   method to_charset : string
+  (** The character encoding to convert to. *)
+
   method as_charset_converter : Raw.Charset_converter.t
 end
 

@@ -144,7 +144,11 @@ class type popover_menu_t = object
       populated with new contents according to [model]. *)
 
   method visible_submenu : string
+  (** The name of the visible submenu. *)
+
   method set_visible_submenu : string -> unit
+  (** The name of the visible submenu. *)
+
   method as_popover_menu : Raw.Popover_menu.t
 end
 

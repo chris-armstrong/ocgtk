@@ -76,7 +76,12 @@ class type d_bus_server_t = object
   (** Stops [server]. *)
 
   method address : string
+  (** The D-Bus address to listen on. *)
+
   method authentication_observer : D_bus_auth_observer.d_bus_auth_observer_t
+  (** A [GDBusAuthObserver] object to assist in the authentication process or
+      [NULL]. *)
+
   method as_d_bus_server : Raw.D_bus_server.t
 end
 

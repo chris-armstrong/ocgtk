@@ -119,7 +119,7 @@ external add_shortcut : t -> Shortcut.t -> unit
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_shortcut_controller_get_item_type"
-(** Get property: item-type *)
+(** The type of items. See [Gio.ListModel.get_item_type]. *)
 
 external get_n_items : t -> int = "ml_gtk_shortcut_controller_get_n_items"
-(** Get property: n-items *)
+(** The number of items. See [Gio.ListModel.get_n_items]. *)

@@ -308,9 +308,25 @@ class type scrolled_window_t = object
       [GTK_CORNER_TOP_LEFT]. *)
 
   method hscrollbar_policy : Enums.policytype
+  (** When the horizontal scrollbar is displayed.
+
+      Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
   method set_hscrollbar_policy : Enums.policytype -> unit
+  (** When the horizontal scrollbar is displayed.
+
+      Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
   method vscrollbar_policy : Enums.policytype
+  (** When the vertical scrollbar is displayed.
+
+      Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
   method set_vscrollbar_policy : Enums.policytype -> unit
+  (** When the vertical scrollbar is displayed.
+
+      Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
   method as_scrolled_window : Raw.Scrolled_window.t
 end
 

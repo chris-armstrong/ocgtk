@@ -38,7 +38,11 @@ class type cell_renderer_toggle_t = object
       to associate model columns with cell renderer properties). *)
 
   method inconsistent : bool
+  (** Get property: inconsistent *)
+
   method set_inconsistent : bool -> unit
+  (** Set property: inconsistent *)
+
   method as_cell_renderer_toggle : Raw.Cell_renderer_toggle.t
 end
 

@@ -78,7 +78,8 @@ external append : t -> [ `object_ ] Gobject.obj -> unit
 (* Properties *)
 
 external get_item_type : t -> Gobject.Type.t = "ml_g_list_store_get_item_type"
-(** Get property: item-type *)
+(** The type of items contained in this list store. Items must be subclasses of
+    [GObject]. *)
 
 external get_n_items : t -> int = "ml_g_list_store_get_n_items"
-(** Get property: n-items *)
+(** The number of items contained in this list store. *)

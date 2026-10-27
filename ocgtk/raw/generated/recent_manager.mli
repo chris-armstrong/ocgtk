@@ -128,10 +128,11 @@ external add_full : t -> string -> Recent_data.t -> bool
 (* Properties *)
 
 external get_filename : t -> string = "ml_gtk_recent_manager_get_filename"
-(** Get property: filename *)
+(** The full path to the file to be used to store and read the recently used
+    resources list *)
 
 external get_size : t -> int = "ml_gtk_recent_manager_get_size"
-(** Get property: size *)
+(** The size of the recently used resources list. *)
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

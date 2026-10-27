@@ -45,11 +45,11 @@ external editing_done : t -> unit = "ml_gtk_cell_editable_editing_done"
 
 external get_editing_canceled : t -> bool
   = "ml_gtk_cell_editable_get_editing_canceled"
-(** Get property: editing-canceled *)
+(** Indicates whether editing on the cell has been canceled. *)
 
 external set_editing_canceled : t -> bool -> unit
   = "ml_gtk_cell_editable_set_editing_canceled"
-(** Set property: editing-canceled *)
+(** Indicates whether editing on the cell has been canceled. *)
 
 val on_editing_done :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

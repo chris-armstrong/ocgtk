@@ -164,7 +164,11 @@ class type search_entry_t = object
       [Gtk.SearchEntry::search-changed] signal being emitted. *)
 
   method activates_default : bool
+  (** Whether to activate the default widget when Enter is pressed. *)
+
   method set_activates_default : bool -> unit
+  (** Whether to activate the default widget when Enter is pressed. *)
+
   method as_search_entry : Raw.Search_entry.t
 end
 

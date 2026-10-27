@@ -492,7 +492,11 @@ and tree_view_t = object
       this method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
   method enable_grid_lines : Enums.treeviewgridlines
+  (** Get property: enable-grid-lines *)
+
   method set_enable_grid_lines : Enums.treeviewgridlines -> unit
+  (** Set property: enable-grid-lines *)
+
   method as_tree_view : Raw.Tree_view.t
 end
 

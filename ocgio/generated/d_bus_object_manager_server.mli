@@ -64,6 +64,8 @@ class type d_bus_object_manager_server_t = object
       for [manager]. *)
 
   method object_path : string
+  (** The object path to register the manager object at. *)
+
   method as_d_bus_object_manager_server : Raw.D_bus_object_manager_server.t
 end
 

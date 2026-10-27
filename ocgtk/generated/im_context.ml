@@ -148,9 +148,23 @@ class type im_context_t = object
       child of the root window. *)
 
   method input_hints : Enums.inputhints
+  (** Additional hints that allow input methods to fine-tune their behaviour. *)
+
   method set_input_hints : Enums.inputhints -> unit
+  (** Additional hints that allow input methods to fine-tune their behaviour. *)
+
   method input_purpose : Enums.inputpurpose
+  (** The purpose of the text field that the `GtkIMContext is connected to.
+
+      This property can be used by on-screen keyboards and other input methods
+      to adjust their behaviour. *)
+
   method set_input_purpose : Enums.inputpurpose -> unit
+  (** The purpose of the text field that the `GtkIMContext is connected to.
+
+      This property can be used by on-screen keyboards and other input methods
+      to adjust their behaviour. *)
+
   method as_im_context : Raw.Im_context.t
 end
 

@@ -122,7 +122,19 @@ class type image_t = object
       size set by [Gtk.Image.set_icon_size]. *)
 
   method use_fallback : bool
+  (** Whether the icon displayed in the [GtkImage] will use standard icon names
+      fallback.
+
+      The value of this property is only relevant for images of type
+      [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+
   method set_use_fallback : bool -> unit
+  (** Whether the icon displayed in the [GtkImage] will use standard icon names
+      fallback.
+
+      The value of this property is only relevant for images of type
+      [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+
   method as_image : Raw.Image.t
 end
 

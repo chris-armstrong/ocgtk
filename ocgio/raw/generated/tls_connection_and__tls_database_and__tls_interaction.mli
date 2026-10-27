@@ -239,7 +239,11 @@ module rec Tls_connection : sig
 
   external get_base_io_stream : t -> Io_stream.t
     = "ml_g_tls_connection_get_base_io_stream"
-  (** Get property: base-io-stream *)
+  (** The [GIOStream] that the connection wraps. The connection holds a
+      reference to this stream, and may run operations on the stream from other
+      threads throughout its lifetime. Consequently, after the [GIOStream] has
+      been constructed, application code may only run its own operations on this
+      stream when no [GIOStream] operations are running. *)
 
   val on_accept_certificate :
     ?after:bool ->

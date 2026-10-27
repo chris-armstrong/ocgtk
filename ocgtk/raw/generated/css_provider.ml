@@ -95,17 +95,77 @@ external load_from_bytes : t -> Glib_bytes.t -> unit
 
 external get_prefers_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_css_provider_get_prefers_color_scheme"
-(** Get property: prefers-color-scheme *)
+(** Define the color scheme used for rendering the user interface.
+
+    The UI can be set to either [Gtk.InterfaceColorScheme.LIGHT], or
+    [Gtk.InterfaceColorScheme.DARK] mode. Other values will be interpreted the
+    same as [Gtk.InterfaceColorScheme.LIGHT].
+
+    This setting is be available for media queries in CSS:
+
+    {[
+    @media (prefers-color-scheme: dark) {
+      // some dark mode styling
+    }
+    ]}
+
+    Changing this setting will cause a re-render of the style sheet. *)
 
 external set_prefers_color_scheme :
   t -> Ocgtk_enums.interfacecolorscheme -> unit
   = "ml_gtk_css_provider_set_prefers_color_scheme"
-(** Set property: prefers-color-scheme *)
+(** Define the color scheme used for rendering the user interface.
+
+    The UI can be set to either [Gtk.InterfaceColorScheme.LIGHT], or
+    [Gtk.InterfaceColorScheme.DARK] mode. Other values will be interpreted the
+    same as [Gtk.InterfaceColorScheme.LIGHT].
+
+    This setting is be available for media queries in CSS:
+
+    {[
+    @media (prefers-color-scheme: dark) {
+      // some dark mode styling
+    }
+    ]}
+
+    Changing this setting will cause a re-render of the style sheet. *)
 
 external get_prefers_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_css_provider_get_prefers_contrast"
-(** Get property: prefers-contrast *)
+(** Define the contrast mode to use for the user interface.
+
+    When set to [Gtk.InterfaceContrast.MORE] or [Gtk.InterfaceContrast.LESS],
+    the UI is rendered in high or low contrast.
+
+    When set to [Gtk.InterfaceContrast.NO_PREFERENCE] (the default), the user
+    interface will be rendered in default mode.
+
+    This setting is be available for media queries in CSS:
+
+    {[
+    @media (prefers-contrast: more) {
+      // some style with high contrast
+    }
+    ]}
+
+    Changing this setting will cause a re-render of the style sheet. *)
 
 external set_prefers_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_css_provider_set_prefers_contrast"
-(** Set property: prefers-contrast *)
+(** Define the contrast mode to use for the user interface.
+
+    When set to [Gtk.InterfaceContrast.MORE] or [Gtk.InterfaceContrast.LESS],
+    the UI is rendered in high or low contrast.
+
+    When set to [Gtk.InterfaceContrast.NO_PREFERENCE] (the default), the user
+    interface will be rendered in default mode.
+
+    This setting is be available for media queries in CSS:
+
+    {[
+    @media (prefers-contrast: more) {
+      // some style with high contrast
+    }
+    ]}
+
+    Changing this setting will cause a re-render of the style sheet. *)

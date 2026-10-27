@@ -60,7 +60,11 @@ class type cell_editable_t = object
       cells. *)
 
   method editing_canceled : bool
+  (** Indicates whether editing on the cell has been canceled. *)
+
   method set_editing_canceled : bool -> unit
+  (** Indicates whether editing on the cell has been canceled. *)
+
   method as_cell_editable : Raw.Cell_editable.t
 end
 

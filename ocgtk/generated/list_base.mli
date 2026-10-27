@@ -54,7 +54,10 @@ class type list_base_t = object
 
   inherit Orientable.orientable_t
   inherit Scrollable.scrollable_t
+
   method orientation : Enums.orientation
+  (** The orientation of the list. See GtkOrientable:orientation for details. *)
+
   method as_list_base : Raw.List_base.t
 end
 

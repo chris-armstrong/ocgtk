@@ -355,7 +355,10 @@ external create_drag_icon : t -> Tree_path.t -> Ocgdk_raw.Paintable.t option
 external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_icon_view_get_cell_area"
-(** Get property: cell-area *)
+(** The [GtkCellArea] used to layout cell renderers for this view.
+
+    If no area is specified when creating the icon view with
+    gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
 
 val on_activate_cursor_item :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

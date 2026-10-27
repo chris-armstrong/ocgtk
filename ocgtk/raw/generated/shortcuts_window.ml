@@ -87,18 +87,34 @@ external add_section : t -> Shortcuts_section.t -> unit
 
 external get_section_name : t -> string
   = "ml_gtk_shortcuts_window_get_section_name"
-(** Get property: section-name *)
+(** The name of the section to show.
+
+    This should be the section-name of one of the [GtkShortcutsSection] objects
+    that are in this shortcuts window. *)
 
 external set_section_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_section_name"
-(** Set property: section-name *)
+(** The name of the section to show.
+
+    This should be the section-name of one of the [GtkShortcutsSection] objects
+    that are in this shortcuts window. *)
 
 external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
-(** Get property: view-name *)
+(** The view name by which to filter the contents.
+
+    This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
+    the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+    Set this to [NULL] to show all groups. *)
 
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_view_name"
-(** Set property: view-name *)
+(** The view name by which to filter the contents.
+
+    This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
+    the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+    Set this to [NULL] to show all groups. *)
 
 let on_close ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"close" ~callback

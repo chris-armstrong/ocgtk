@@ -26,6 +26,8 @@ class type emblemed_icon_t = object
   (** Gets the main icon for [emblemed]. *)
 
   method gicon : Icon.icon_t
+  (** The [Gio.Icon] to attach emblems to. *)
+
   method as_emblemed_icon : Raw.Emblemed_icon.t
 end
 
