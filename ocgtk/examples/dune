@@ -13,7 +13,7 @@
 (executable
  (name counter)
  (modules counter)
- (libraries ocgtk.gtk ocgtk.gio))
+ (libraries ocgtk ocgio))
 
 (executable
  (name settings_panel)
@@ -33,9 +33,13 @@
 (executable
  (name form_example)
  (modules form_example)
- (libraries ocgtk))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib ocgtk ocgdk))
 
 (executable
  (name picture_test)
  (modules picture_test)
- (libraries ocgtk ocgtk.gdk ocgtk.common))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocgtk ocgdk ocglib))

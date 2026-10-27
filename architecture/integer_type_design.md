@@ -63,7 +63,7 @@ Key findings:
 
 ## Decision: Custom `bounded_int` Module
 
-A purpose-built `src/common/bounded_int.ml` provides opaque bounded integer types backed by
+A purpose-built `ocglib/bounded_int.ml` provides opaque bounded integer types backed by
 `private int`. This gives:
 
 - **Type safety at the OCaml level.** `UInt16.of_int` raises `Invalid_argument` on out-of-range
@@ -77,7 +77,7 @@ A purpose-built `src/common/bounded_int.ml` provides opaque bounded integer type
 
 ### Module Set
 
-Defined as flat top-level modules within the `Ocgtk_common` library (deliberately shadowing
+Defined as modules of the wrapped `ocglib` library, opened with `-open Ocglib` (deliberately shadowing
 stdlib `Int32` etc. — users requiring both can qualify as `Stdlib.Int32`):
 
 | Module  | Type alias   | Range                       | GLib types   |
@@ -107,7 +107,7 @@ val minus_one : t  (* signed modules only *)
 
 ### C Macro Layer
 
-Added to `src/common/wrappers.h`:
+Added to `ocglib/wrappers.h`:
 
 ```c
 /* Bounded integer types — all backed by OCaml int (private int representation).

@@ -1,0 +1,146 @@
+class type drop_down_t = object
+  inherit
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method get_enable_search : unit -> bool
+  method get_expression : unit -> Expression.expression_t option
+  method get_factory : unit -> List_item_factory.list_item_factory_t option
+
+  method get_header_factory :
+    unit -> List_item_factory.list_item_factory_t option
+
+  method get_list_factory : unit -> List_item_factory.list_item_factory_t option
+  method get_model : unit -> Ocgio.List_model.list_model_t option
+  method get_search_match_mode : unit -> Enums.stringfiltermatchmode
+  method get_selected : unit -> int
+  method get_selected_item : unit -> [ `object_ ] Gobject.obj option
+  method get_show_arrow : unit -> bool
+  method set_enable_search : bool -> unit
+  method set_expression : Expression.expression_t option -> unit
+  method set_factory : List_item_factory.list_item_factory_t option -> unit
+
+  method set_header_factory :
+    List_item_factory.list_item_factory_t option -> unit
+
+  method set_list_factory : List_item_factory.list_item_factory_t option -> unit
+  method set_model : Ocgio.List_model.list_model_t option -> unit
+  method set_search_match_mode : Enums.stringfiltermatchmode -> unit
+  method set_selected : int -> unit
+  method set_show_arrow : bool -> unit
+  method as_drop_down : Raw.Drop_down.t
+end
+
+(* High-level class for DropDown *)
+class drop_down (obj : Raw.Drop_down.t) : drop_down_t =
+  object (self)
+    inherit
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      .widget
+        (obj :> Raw.Widget.t)
+
+    method on_activate ?(after = false) ~callback () =
+      Raw.Drop_down.on_activate ~after self#as_drop_down ~callback
+
+    method get_enable_search : unit -> bool =
+      fun () -> Raw.Drop_down.get_enable_search obj
+
+    method get_expression : unit -> Expression.expression_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Expression.expression ret)
+          (Raw.Drop_down.get_expression obj)
+
+    method get_factory : unit -> List_item_factory.list_item_factory_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new List_item_factory.list_item_factory ret)
+          (Raw.Drop_down.get_factory obj)
+
+    method get_header_factory :
+        unit -> List_item_factory.list_item_factory_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new List_item_factory.list_item_factory ret)
+          (Raw.Drop_down.get_header_factory obj)
+
+    method get_list_factory :
+        unit -> List_item_factory.list_item_factory_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new List_item_factory.list_item_factory ret)
+          (Raw.Drop_down.get_list_factory obj)
+
+    method get_model : unit -> Ocgio.List_model.list_model_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Ocgio.List_model.list_model ret)
+          (Raw.Drop_down.get_model obj)
+
+    method get_search_match_mode : unit -> Enums.stringfiltermatchmode =
+      fun () -> Raw.Drop_down.get_search_match_mode obj
+
+    method get_selected : unit -> int = fun () -> Raw.Drop_down.get_selected obj
+
+    method get_selected_item : unit -> [ `object_ ] Gobject.obj option =
+      fun () -> Raw.Drop_down.get_selected_item obj
+
+    method get_show_arrow : unit -> bool =
+      fun () -> Raw.Drop_down.get_show_arrow obj
+
+    method set_enable_search : bool -> unit =
+      fun enable_search -> Raw.Drop_down.set_enable_search obj enable_search
+
+    method set_expression : Expression.expression_t option -> unit =
+      fun expression ->
+        let expression = Option.map (fun c -> c#as_expression) expression in
+        Raw.Drop_down.set_expression obj expression
+
+    method set_factory : List_item_factory.list_item_factory_t option -> unit =
+      fun factory ->
+        let factory = Option.map (fun c -> c#as_list_item_factory) factory in
+        Raw.Drop_down.set_factory obj factory
+
+    method set_header_factory :
+        List_item_factory.list_item_factory_t option -> unit =
+      fun factory ->
+        let factory = Option.map (fun c -> c#as_list_item_factory) factory in
+        Raw.Drop_down.set_header_factory obj factory
+
+    method set_list_factory :
+        List_item_factory.list_item_factory_t option -> unit =
+      fun factory ->
+        let factory = Option.map (fun c -> c#as_list_item_factory) factory in
+        Raw.Drop_down.set_list_factory obj factory
+
+    method set_model : Ocgio.List_model.list_model_t option -> unit =
+      fun model ->
+        let model = Option.map (fun c -> c#as_list_model) model in
+        Raw.Drop_down.set_model obj model
+
+    method set_search_match_mode : Enums.stringfiltermatchmode -> unit =
+      fun search_match_mode ->
+        Raw.Drop_down.set_search_match_mode obj search_match_mode
+
+    method set_selected : int -> unit =
+      fun position -> Raw.Drop_down.set_selected obj position
+
+    method set_show_arrow : bool -> unit =
+      fun show_arrow -> Raw.Drop_down.set_show_arrow obj show_arrow
+
+    method as_drop_down = obj
+  end
+
+let new_ (model : Ocgio.List_model.list_model_t option)
+    (expression : Expression.expression_t option) : drop_down_t =
+  let model = Option.map (fun c -> c#as_list_model) model in
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  let obj_ = Raw.Drop_down.new_ model expression in
+  new drop_down obj_
+
+let new_from_strings (strings : string array) : drop_down_t =
+  let obj_ = Raw.Drop_down.new_from_strings strings in
+  new drop_down obj_

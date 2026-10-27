@@ -73,7 +73,7 @@ let test_void_zero_param_emits_connect_simple_in_l1_let () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.assert_some "on_clicked let binding"
     (Ml_ast_helpers.find_let_binding ast "on_clicked");
@@ -126,7 +126,7 @@ let test_void_primitive_params_uses_closure_create () =
     expect_ok "pressed classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   (* L1 let body must contain Gobject.Closure.create *)
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_pressed binding"
     (Ml_ast_helpers.find_let_binding ast "on_pressed")
@@ -185,7 +185,7 @@ let test_bool_return_zero_param_uses_closure_create () =
   | `Connect_simple ->
       Alcotest.fail
         "close-request: expected strategy=Closure but got Connect_simple");
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_close_request binding"
     (Ml_ast_helpers.find_let_binding ast "on_close_request")
@@ -234,7 +234,7 @@ let test_bool_return_bool_param_round_trip () =
   Alcotest.(check string)
     "l1_callback_type" "state:bool -> bool"
     (Signal_gen.l1_callback_type ~current_class:"Button" emission);
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_state_set binding"
     (Ml_ast_helpers.find_let_binding ast "on_state_set")
@@ -291,11 +291,11 @@ let test_mixed_params_key_pressed_shape () =
   in
   Alcotest.(check string)
     "getter_expr"
-    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    "Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
     third_m.getter_expr;
   Alcotest.(check string)
     "setter_expr"
-    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    "Gobject.Value.set_flags_int v (Ocgdk_enums.modifiertype_to_int x)"
     third_m.setter_expr
 
 (* ========================================================================= *)
@@ -343,7 +343,7 @@ let test_sender_not_at_pos_0 () =
   let emission =
     expect_ok "pressed classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   (* pos 0 (sender) should never appear in any Gobject.Closure.nth call *)
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_pressed binding for pos check"
@@ -373,7 +373,7 @@ let test_keyword_param_name_sanitised () =
   let emission =
     expect_ok "typed classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_typed binding"
     (Ml_ast_helpers.find_let_binding ast "on_typed")
@@ -468,7 +468,7 @@ let test_l2_forwarder_shape () =
       ~layer1_module_name:"Window" ~class_snake:"window" emission
   in
   (* Parse as a class body fragment by wrapping it *)
-  let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
+  let wrapped = Fmt.str "class test_class = object\n%send\n" l2 in
   let ast = Ml_ast_helpers.parse_implementation wrapped in
   Helpers.expect_some "test_class declaration"
     (Ml_ast_helpers.find_class_declaration ast "test_class")
@@ -586,7 +586,7 @@ let test_l2_has_no_inherit_signals_line () =
     Signal_gen.emit_l2_method ~current_layer2_module:"GButton"
       ~layer1_module_name:"Button" ~class_snake:"button" emission
   in
-  let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
+  let wrapped = Fmt.str "class test_class = object\n%send\n" l2 in
   let ast = Ml_ast_helpers.parse_implementation wrapped in
   Helpers.expect_some "test_class declaration"
     (Ml_ast_helpers.find_class_declaration ast "test_class")
@@ -676,11 +676,13 @@ let test_l2_class_body_contains_on_signal_method () =
   Helpers.expect_some "could not extract body of method 'on_clicked'"
     (Ml_ast_helpers.get_method_body cf)
   @@ fun body ->
-  (* Body must forward to Button.on_clicked *)
-  if not (Ml_ast_helpers.method_body_calls_function body "Button" "on_clicked")
+  (* Body must forward to Raw.Button.on_clicked *)
+  if
+    not
+      (Ml_ast_helpers.method_body_calls_function body "Raw.Button" "on_clicked")
   then
     Alcotest.fail
-      "on_clicked body should call Button.on_clicked (L1 forwarder missing)";
+      "on_clicked body should call Raw.Button.on_clicked (L1 forwarder missing)";
   (* Body must reference self#as_button *)
   if not (Ml_ast_helpers.contains_method_send body "as_button") then
     Alcotest.fail "on_clicked body should reference self#as_button"
@@ -791,7 +793,7 @@ let test_class_param_marshaller_type_correct () =
   in
   Alcotest.(check string) "ocaml_type" "Widget.t" m.ocaml_type;
   Alcotest.(check string)
-    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr
+    "getter_expr" "Gobject.Value.get_object_exn v %GTYPE%" m.getter_expr
 
 let test_class_param_nullable_marshaller_type_has_option () =
   (* Nullable same-NS class param → ocaml_type = "Widget.t option" *)
@@ -821,7 +823,7 @@ let test_class_param_nullable_marshaller_type_has_option () =
   in
   Alcotest.(check string) "ocaml_type" "Widget.t option" m.ocaml_type;
   Alcotest.(check string)
-    "getter_expr" "Gobject.Value.get_object v" m.getter_expr
+    "getter_expr" "Gobject.Value.get_object v %GTYPE%" m.getter_expr
 
 let test_class_param_l1_let_parses () =
   (* emit_l1_let for a class-param signal produces valid OCaml *)
@@ -841,7 +843,7 @@ let test_class_param_l1_let_parses () =
   let emission =
     expect_ok "child-notify classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_let = Signal_gen.emit_l1_let emission in
+  let l1_let = Signal_gen.emit_l1_let ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.assert_some "on_child_notify binding should be present"
     (Ml_ast_helpers.find_let_binding ast "on_child_notify")

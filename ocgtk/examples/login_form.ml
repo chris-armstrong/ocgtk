@@ -1,57 +1,51 @@
-open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
+open Ocgtk
+module Main = Ocgtk.Main
 (* Login Form Application
    Demonstrates: Entry, PasswordEntry, Button, Label with markup *)
 
 let () =
-  ignore (GMain.init ());
+  ignore (Main.init ());
 
-  let window_obj = Wrappers.Window.new_ () in
+  let window_obj = Raw.Window.new_ () in
   let window = new Window.window window_obj in
   window#set_title (Some "Login Form");
   window#set_default_size 350 200;
   ignore
     (window#on_close_request
        ~callback:(fun () ->
-         GMain.quit ();
+         Main.quit ();
          false)
        ());
 
   (* Create vertical box for layout *)
-  let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 15) in
+  let vbox = new Box.box (Raw.Box.new_ `VERTICAL 15) in
   window#set_child (Some (vbox :> Widget.widget_t));
 
   (* Title *)
-  let title_label =
-    new Label.label (Wrappers.Label.new_ (Some "Please log in"))
-  in
+  let title_label = new Label.label (Raw.Label.new_ (Some "Please log in")) in
   title_label#set_markup "<big><b>Please log in</b></big>";
   vbox#append (title_label :> Widget.widget_t);
 
   (* Username field *)
-  let username_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 10) in
+  let username_box = new Box.box (Raw.Box.new_ `HORIZONTAL 10) in
   vbox#append (username_box :> Widget.widget_t);
 
-  let username_label =
-    new Label.label (Wrappers.Label.new_ (Some "Username:"))
-  in
+  let username_label = new Label.label (Raw.Label.new_ (Some "Username:")) in
   username_box#append (username_label :> Widget.widget_t);
 
-  let username_entry = new Entry.entry (Wrappers.Entry.new_ ()) in
+  let username_entry = new Entry.entry (Raw.Entry.new_ ()) in
   username_entry#set_placeholder_text (Some "Enter username");
   username_box#append (username_entry :> Widget.widget_t);
 
   (* Password field *)
-  let password_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 10) in
+  let password_box = new Box.box (Raw.Box.new_ `HORIZONTAL 10) in
   vbox#append (password_box :> Widget.widget_t);
 
-  let password_label =
-    new Label.label (Wrappers.Label.new_ (Some "Password:"))
-  in
+  let password_label = new Label.label (Raw.Label.new_ (Some "Password:")) in
   password_box#append (password_label :> Widget.widget_t);
 
   let password_entry =
-    new Password_entry.password_entry (Wrappers.Password_entry.new_ ())
+    new Password_entry.password_entry (Raw.Password_entry.new_ ())
   in
   password_entry#set_placeholder_text "Enter password";
   password_entry#set_show_peek_icon true;
@@ -60,21 +54,21 @@ let () =
   (* Remember me checkbox *)
   let remember_check =
     new Check_button.check_button
-      (Wrappers.Check_button.new_with_label (Some "Remember me"))
+      (Raw.Check_button.new_with_label (Some "Remember me"))
   in
   vbox#append (remember_check :> Widget.widget_t);
 
   (* Status label *)
-  let status_label = new Label.label (Wrappers.Label.new_ None) in
+  let status_label = new Label.label (Raw.Label.new_ None) in
   status_label#set_label "";
   vbox#append (status_label :> Widget.widget_t);
 
   (* Button row *)
-  let button_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 10) in
+  let button_box = new Box.box (Raw.Box.new_ `HORIZONTAL 10) in
   vbox#append (button_box :> Widget.widget_t);
 
   (* Login button *)
-  let login_btn = new Button.button (Wrappers.Button.new_with_label "Login") in
+  let login_btn = new Button.button (Raw.Button.new_with_label "Login") in
   button_box#append (login_btn :> Widget.widget_t);
 
   ignore
@@ -97,9 +91,7 @@ let () =
        ());
 
   (* Cancel button *)
-  let cancel_btn =
-    new Button.button (Wrappers.Button.new_with_label "Cancel")
-  in
+  let cancel_btn = new Button.button (Raw.Button.new_with_label "Cancel") in
   button_box#append (cancel_btn :> Widget.widget_t);
 
   ignore
@@ -113,4 +105,4 @@ let () =
 
   (* Show window and run main loop *)
   window#present ();
-  GMain.main ()
+  Main.main ()

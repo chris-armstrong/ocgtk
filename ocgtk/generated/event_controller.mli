@@ -1,0 +1,8 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Shim module for EventController from cyclic group Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget *)
+
+class type event_controller_t =
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .event_controller_t
+
+class event_controller : Raw.Event_controller.t -> event_controller_t

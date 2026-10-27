@@ -1,0 +1,20 @@
+class type recent_manager_t = object
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method add_full : string -> Raw.Recent_data.t -> bool
+  method add_item : string -> bool
+  method get_items : unit -> Raw.Recent_info.t list
+  method has_item : string -> bool
+  method lookup_item : string -> (Raw.Recent_info.t option, GError.t) result
+  method move_item : string -> string option -> (bool, GError.t) result
+  method purge_items : unit -> (int, GError.t) result
+  method remove_item : string -> (bool, GError.t) result
+  method filename : string
+  method size : int
+  method as_recent_manager : Raw.Recent_manager.t
+end
+
+class recent_manager : Raw.Recent_manager.t -> recent_manager_t
+
+val new_ : unit -> recent_manager_t

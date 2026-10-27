@@ -1,0 +1,40 @@
+; ocglib: hand-written GLib/GObject bindings and shared runtime support
+
+(rule
+ (targets cflag-glib.sexp clink-glib.sexp)
+ (action
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   glib-2.0
+   --pkg
+   gobject-2.0
+   --cflags-out
+   cflag-glib.sexp
+   --libs-out
+   clink-glib.sexp)))
+
+(library
+ (name ocglib)
+ (public_name ocglib)
+ (synopsis "OCaml bindings for GLib and GObject")
+ (libraries)
+ (foreign_stubs
+  (language c)
+  (names
+   wrappers
+   ml_glib
+   ml_gobject
+   ml_gvariant
+   ml_gvariant_type
+   ml_glib_bytes)
+  (flags
+   -fPIC
+   (:include cflag-glib.sexp)
+   -Wno-deprecated-declarations))
+ (c_library_flags
+  (:include clink-glib.sexp))
+ (install_c_headers wrappers value_kinds))
+
+(documentation
+ (package ocglib))

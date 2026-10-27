@@ -14,7 +14,7 @@ let test_modules_exist () =
   let _ = Event_controller_key.new_ in
   let _ = Event_controller_motion.new_ in
   let _ = Gesture_click.new_ in
-  let _ = GMain.init () in
+  let _ = Main.init () in
   check bool "Modules accessible" true true
 
 let test_callback_types_compile () =
@@ -29,7 +29,7 @@ let test_callback_types_compile () =
 
 let test_controller_creation () =
   (* SKIPPED: Requires X display server *)
-  (*  Future: Create controllers with GMain.init() and verify they work *)
+  (*  Future: Create controllers with Main.init() and verify they work *)
   skip ()
 
 let test_signal_connection () =

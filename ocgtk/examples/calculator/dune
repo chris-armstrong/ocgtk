@@ -1,18 +1,21 @@
 (library
  (name calc_core)
- (modules calc_expr calc_state))
+ (modules calc_expr calc_state)
+ (libraries))
 
 (executable
  (name calculator)
  (modules calculator calc_ui)
- (libraries calc_core ocgtk.gtk ocgtk.gio ocgtk.pango))
+ (libraries calc_core ocgtk ocgio ocpango))
 
 (test
  (name test_calc_expr)
+ (package ocgtk)
  (modules test_calc_expr)
  (libraries calc_core alcotest))
 
 (test
  (name test_calc_state)
+ (package ocgtk)
  (modules test_calc_state)
  (libraries calc_core alcotest))

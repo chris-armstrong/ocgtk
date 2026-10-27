@@ -1,0 +1,7 @@
+; Tests for ocgraphene
+
+(test
+ (name test_ocgraphene)
+ (package ocgraphene)
+ (modules test_ocgraphene)
+ (libraries ocgraphene ocgraphene.enums alcotest))

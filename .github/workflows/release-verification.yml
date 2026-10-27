@@ -3,16 +3,11 @@ name: Release Verification
 # Manually triggered, or automatically on release tags.
 on:
   workflow_dispatch:
-    inputs:
-      windows_only:
-        description: 'Run Windows job only (skip all other platforms)'
-        type: boolean
-        default: false
   push:
     tags: ['v*']
 
 env:
-  OCAML_VERSION: '5.3.0'
+  OCAML_VERSION: '5.5.2'
   OPAM_VERSION: '2.5.0'
 
 permissions:
@@ -23,7 +18,6 @@ jobs:
   # ── Ubuntu 22.04 (native runner) ────────────────────────────────────────────
   ubuntu-22:
     name: Ubuntu 22.04
-    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -37,21 +31,20 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocgtk/
+      - name: Test the bindings
+        run: opam exec -- xvfb-run -a dune test
 
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
     name: Ubuntu 24.04
-    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -65,21 +58,46 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- xvfb-run -a dune test ocgtk/
+      - name: Test the bindings
+        run: opam exec -- xvfb-run -a dune test
 
-  # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
+  # ── OCaml 4.14 (oldest supported compiler) ──────────────────────────────────
+  # The packages declare `ocaml >= 4.14`; every other job uses OCAML_VERSION.
+  # gir_gen needs OCaml >= 5.3, so this job installs only the binding packages,
+  # as opam would for a user: each built with `dune build -p <pkg>` against
+  # the ones before it, running its own tests (no display: the GTK tests that
+  # need one skip themselves).
+  ocaml-4-14:
+    name: OCaml 4.14 (Ubuntu 24.04)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc make m4 patch unzip bzip2 curl git pkg-config perl diffutils rsync \
+            libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: '4.14'
+          opam-pin: false
+      - name: Pin the conf packages
+        run: for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+      - name: Install every package with its tests
+        run: opam install -y --with-test .
+
+  # ── APT-based containers (Ubuntu 26.04, 26.10, Debian 12, 13) ───────────────
   linux-apt:
     name: ${{ matrix.name }}
-    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     env:
@@ -88,10 +106,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 25.04
-            image: ubuntu:25.04
+          - name: Ubuntu 26.04
+            image: ubuntu:26.04
+          - name: Ubuntu 26.10
+            image: ubuntu:26.10
           - name: Debian 12
             image: debian:12
+          - name: Debian 13
+            image: debian:13
     steps:
       - name: Install git and curl
         run: apt-get update && apt-get install -y git curl ca-certificates
@@ -102,6 +124,10 @@ jobs:
             gcc make m4 patch unzip bzip2 pkg-config perl diffutils rsync \
             libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
             libgirepository1.0-dev gir1.2-gtk-4.0 xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -112,11 +138,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -125,25 +151,24 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test
 
-  # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
+  # ── Fedora containers (Fedora 43, Fedora 44) ─────────────────────────────────
   linux-fedora:
     name: ${{ matrix.name }}
-    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: Fedora 40
-            image: fedora:40
           - name: Fedora 43
             image: fedora:43
+          - name: Fedora 44
+            image: fedora:44
     steps:
       - name: Install git and curl
         run: dnf install -y git curl
@@ -154,6 +179,10 @@ jobs:
             gcc make m4 patch unzip bzip2 pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
             gobject-introspection-devel xorg-x11-server-Xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -164,11 +193,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -177,21 +206,35 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test
 
-  # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
-  centos-9:
-    name: CentOS Stream 9
-    if: ${{ !inputs.windows_only }}
+  # ── CentOS Stream containers (Stream 9, Stream 10) ───────────────────────────
+  #
+  # Stream 10 has no Xvfb (RHEL 10 dropped the Xorg server): its tests run
+  # under xwfb-run (xwayland-run) with mutter as the headless compositor.
+  linux-centos:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    container: quay.io/centos/centos:stream9
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: CentOS Stream 9
+            image: quay.io/centos/centos:stream9
+            display_packages: xorg-x11-server-Xvfb
+            display_run: xvfb-run -a
+          - name: CentOS Stream 10
+            image: quay.io/centos/centos:stream10
+            display_packages: xwayland-run mutter
+            display_run: xwfb-run -c mutter --
     steps:
       - name: Enable EPEL + CRB and install git/curl
         run: |
-          dnf install -y epel-release
+          dnf install -y epel-release dnf-plugins-core
           dnf config-manager --set-enabled crb
           dnf install -y --allowerasing git curl
       - uses: actions/checkout@v4
@@ -200,7 +243,11 @@ jobs:
           dnf install -y --allowerasing \
             gcc make m4 patch unzip bzip2 pkgconf-pkg-config perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
-            gobject-introspection-devel xorg-x11-server-Xvfb
+            gobject-introspection-devel ${{ matrix.display_packages }}
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -211,11 +258,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -224,17 +271,28 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          ${{ matrix.display_run }} dune test
 
-  # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
-  opensuse-15:
-    name: openSUSE Leap 15.6
-    if: ${{ !inputs.windows_only }}
+  # ── openSUSE containers (Leap 16.0, Tumbleweed) ──────────────────────────────
+  linux-opensuse:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    container: opensuse/leap:15.6
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: openSUSE Leap 16.0
+            image: opensuse/leap:16.0
+            extra_packages: ''
+          # gdk-pixbuf 2.44 loads PNG through glycin, whose loaders are a
+          # separate package; the ocgdkpixbuf tests load a PNG.
+          - name: openSUSE Tumbleweed
+            image: opensuse/tumbleweed:latest
+            extra_packages: glycin-loaders
     steps:
       - name: Install git and curl
         run: zypper install -y git curl
@@ -244,7 +302,12 @@ jobs:
           zypper install -y \
             gcc make m4 patch unzip bzip2 gzip tar pkg-config pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
-            gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
+            gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run \
+            ${{ matrix.extra_packages }}
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install opam
         run: |
           curl -fsSL \
@@ -255,11 +318,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: |
           eval $(opam env)
@@ -268,15 +331,108 @@ jobs:
         run: |
           eval $(opam env)
           dune test gir_gen/
-      - name: Test ocgtk
+      - name: Test the bindings
         run: |
           eval $(opam env)
-          xvfb-run -a dune test ocgtk/
+          xvfb-run -a dune test
+
+  # ── Alpine 3.24 ──────────────────────────────────────────────────────────────
+  linux-alpine:
+    name: Alpine 3.24
+    runs-on: ubuntu-latest
+    container: alpine:3.24
+    steps:
+      - name: Install git and curl
+        run: apk add git curl bash
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          apk add \
+            build-base m4 patch unzip bzip2 pkgconf perl diffutils rsync \
+            gtk4.0-dev cairo-dev pango-dev gdk-pixbuf-dev glib-dev \
+            gobject-introspection-dev xvfb-run
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin the conf packages and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
+      - name: Build
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test gir_gen
+        run: |
+          eval $(opam env)
+          dune test gir_gen/
+      - name: Test the bindings
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test
+
+  # ── Arch Linux (rolling) ─────────────────────────────────────────────────────
+  linux-arch:
+    name: Arch Linux
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install git and curl
+        run: pacman -Syu --noconfirm --needed git curl
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          pacman -S --noconfirm --needed \
+            base-devel unzip rsync \
+            gtk4 cairo pango gdk-pixbuf2 glib2 \
+            gobject-introspection xorg-server-xvfb
+      # The checkout is owned by the runner user, not the container's root,
+      # and opam pins the repository root with git, which refuses it then.
+      - name: Trust the checkout for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin the conf packages and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
+      - name: Build
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test gir_gen
+        run: |
+          eval $(opam env)
+          dune test gir_gen/
+      - name: Test the bindings
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test
 
   # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
   macos:
     name: macOS (Homebrew)
-    if: ${{ !inputs.windows_only }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -285,29 +441,58 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin the conf packages and install dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only --with-test -y . ./gir_gen
       - name: Build
         run: opam exec -- dune build
       - name: Test gir_gen
         run: opam exec -- dune test gir_gen/
-      - name: Test ocgtk
-        run: opam exec -- dune test ocgtk/
+      - name: Test the bindings
+        run: opam exec -- dune test
 
-  # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
+  # ── macOS conf packages (Homebrew depexts) ───────────────────────────────────
+  #
+  # Installs each conf package through opam's Homebrew depexts, without
+  # installing the libraries first, and checks that Homebrew's glib provides
+  # every GLib module conf-glib-2 stands for.
+  macos-conf:
+    name: macOS conf packages (Homebrew)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+          opam-pin: false
+      - name: Libraries already installed
+        run: brew list --versions glib cairo pango gdk-pixbuf graphene gtk4 || true
+      - name: Install each conf package through depexts
+        run: |
+          for pkg in conf-cairo-gobject conf-pangocairo conf-gdk-pixbuf-2 conf-graphene-1 conf-gtk4; do
+            opam install --confirm-level=unsafe-yes "./$pkg"
+          done
+      - name: GLib modules
+        run: opam exec -- pkg-config --print-errors glib-2.0 gobject-2.0 gio-2.0 gio-unix-2.0
+
+  # ── FreeBSD 14, 15 ───────────────────────────────────────────────────────────
   # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
   # virtualisation extensions, making it too slow and prone to timeouts.
   freebsd:
-    name: FreeBSD 14
+    name: FreeBSD ${{ matrix.release }}
     if: false
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        release: ['14', '15']
     steps:
       - uses: actions/checkout@v4
       - name: Build and test on FreeBSD
         uses: vmactions/freebsd-vm@v1
         with:
+          release: ${{ matrix.release }}
           usesh: true
           prepare: |
             pkg install -y \
@@ -323,87 +508,95 @@ jobs:
             opam init --disable-sandboxing -y --bare
             opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
             eval $(opam env)
-            opam pin add -n conf-gtk4 conf-gtk4
-            opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+            for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+            opam install --deps-only --with-test -y . ./gir_gen
             dune build
             dune test gir_gen/
             # xvfb-run is not available on FreeBSD; start Xvfb manually
             Xvfb :99 -screen 0 1280x1024x24 &
             sleep 1
-            DISPLAY=:99 dune test ocgtk/
+            DISPLAY=:99 dune test
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
-  # Setup model: MSYS2 shell + MinGW64 compiler + MSYS2 GTK4 libraries.
+  # Disabled: no MSYS2 environment currently has both GTK4 and an opam OCaml.
+  # MSYS2 deprecated MINGW64 and no longer ships mingw-w64-x86_64-gtk4; GTK4 is
+  # in UCRT64, but opam-repository's mingw compiler packages still require
+  # msys2-mingw64 (ocaml/opam-repository#29795 starts the UCRT64 work) and the
+  # msys2 package rejects UCRT64 (ocaml/opam-repository#29447). setup-ocaml's
+  # msys2 mode installs only the MINGW64 gcc.
   #
-  # windows-environment: msys2 tells setup-ocaml to use the pre-installed MSYS2
-  # on the GitHub runner instead of Cygwin. Combined with windows-compiler: mingw,
-  # the OCaml compiler, shell, and GTK4 libraries all live in the same MSYS2
-  # MINGW64 prefix — no cross-environment pkg-config bridging required.
+  # Before re-enabling: the OCaml compiler, shell and GTK4 libraries must all
+  # live in the UCRT64 prefix, so setup-ocaml and opam need UCRT64 support,
+  # and conf-gtk4 needs its MSYS2 depext back.
   #
   # Build only: GTK tests require a display; Windows CI validates compilation.
   windows:
-    name: Windows (MSYS2/MinGW64)
+    name: Windows (MSYS2/UCRT64)
+    if: false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Install GTK4 and its dependencies into the MSYS2 MINGW64 prefix.
-      - name: Install GTK4 via MSYS2 MINGW64
+      # Install GTK4 and its dependencies into the MSYS2 UCRT64 prefix.
+      - name: Install GTK4 via MSYS2 UCRT64
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
           install: >-
-            mingw-w64-x86_64-gtk4
-            mingw-w64-x86_64-gobject-introspection
-            mingw-w64-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-gtk4
+            mingw-w64-ucrt-x86_64-gobject-introspection
+            mingw-w64-ucrt-x86_64-pkgconf
 
       # windows-environment: msys2 uses the pre-installed MSYS2 as the build
-      # shell, so pkg-config sees MINGW64 packages without any path bridging.
-      - name: Set up OCaml (MinGW64 compiler, MSYS2 shell)
+      # shell, so pkg-config sees the MSYS2 packages without any path bridging.
+      - name: Set up OCaml (mingw-w64 compiler, MSYS2 shell)
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
           windows-environment: msys2
 
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin the conf packages and install OCaml dependencies
         run: |
-          opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only -y ./ocgtk
+          for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+          opam install --deps-only -y .
 
       - name: Build
-        run: opam exec -- dune build @ocgtk/install
+        run: opam exec -- dune build @install
 
   # ── Package + publish release ────────────────────────────────────────────────
   #
   # Only fires on an actual tag push (not workflow_dispatch), and only after
-  # every platform verification job above has passed. Builds a tarball whose
-  # root is the `ocgtk/` subtree (so dune-project / *.install end up at the
-  # tarball root, where opam expects them) plus LICENSE/LGPL, and publishes it
-  # as a GitHub Release asset. opam-repository submissions must point url.src
-  # at this asset, not GitHub's auto-generated "Source code" archive, which
-  # still contains the whole monorepo.
+  # every platform verification job above has passed. Builds a tarball of the
+  # repository root (the dune-project and every package's .opam file) without
+  # the development-only directories, and publishes it as a GitHub Release
+  # asset. opam-repository submissions must point url.src at this asset, not
+  # GitHub's auto-generated "Source code" archive, which still contains the
+  # generator and the GIR files.
   package:
     name: Package release tarball
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
       - ubuntu-22
       - ubuntu-24
+      - ocaml-4-14
       - linux-apt
       - linux-fedora
-      - centos-9
-      - opensuse-15
+      - linux-centos
+      - linux-opensuse
+      - linux-alpine
+      - linux-arch
       - macos
-      - windows
+      - macos-conf
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build ocgtk-only release tarball
+      - name: Build release tarball
         run: |
           set -euo pipefail
           VERSION="${GITHUB_REF_NAME#v}"
@@ -411,11 +604,13 @@ jobs:
           STAGE="$(mktemp -d)/$PKG"
           mkdir -p "$STAGE"
 
-          # ocgtk/ subtree becomes the tarball root (fixes dune-project /
-          # *.install being one directory too deep for opam).
-          git archive "$GITHUB_REF_NAME:ocgtk" | tar -x -C "$STAGE"
-          # Fold in the repo-root license files alongside it.
-          git archive "$GITHUB_REF_NAME" -- LICENSE LGPL | tar -x -C "$STAGE"
+          # The repository root, holding the dune-project and .opam files of
+          # every package, less what only development needs (gir_gen/, gir/,
+          # overrides/, CI, docs). An allow-list, so a new development
+          # directory stays out unless added here.
+          git archive "$GITHUB_REF_NAME" -- \
+            dune-project ':(glob)*.opam' configurator ':(glob)oc*/**' \
+            LICENSE LGPL README.md CHANGELOG.md | tar -x -C "$STAGE"
 
           tar -czf "$PKG.tar.gz" -C "$(dirname "$STAGE")" "$PKG"
           sha256sum "$PKG.tar.gz" > "$PKG.tar.gz.sha256"

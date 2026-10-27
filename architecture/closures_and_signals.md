@@ -283,12 +283,12 @@ method on_activate ?(after = false) ~callback () =
 
 ```ocaml
 method on_child_changed ?(after = false) ~callback () =
-  Widget.on_child_changed ~after self#as_widget
+  Raw.Widget.on_child_changed ~after self#as_widget
     ~callback:(fun ~child ->
-      callback ~child:(new GWidget.widget child))
+      callback ~child:(new Widget.widget child))
 ```
 
-The L2 method signature shows `widget_t` instead of `Widget.t`; the adapter
+The L2 method signature shows `widget_t` instead of `Raw.Widget.t`; the adapter
 bridges between the two representations transparently.
 
 The return value is always `Gobject.Signal.handler_id` — an integer that can

@@ -1,0 +1,29 @@
+class type d_bus_interface_t = object
+  method dup_object : unit -> d_bus_object_t option
+  method get_info : unit -> Raw.D_bus_interface_info.t
+  method set_object : d_bus_object_t option -> unit
+  method as_d_bus_interface : Raw.D_bus_interface.t
+end
+
+and d_bus_object_t = object
+  method on_interface_added :
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method get_interface : string -> d_bus_interface_t option
+  method get_interfaces : unit -> d_bus_interface_t list
+  method get_object_path : unit -> string
+  method as_d_bus_object : Raw.D_bus_object.t
+end
+
+class d_bus_interface : Raw.D_bus_interface.t -> d_bus_interface_t
+
+and d_bus_object : Raw.D_bus_object.t -> d_bus_object_t

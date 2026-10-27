@@ -1,0 +1,24 @@
+; occairo.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name occairo_raw)
+ (public_name occairo.raw)
+ (synopsis "Cairo layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries ocglib occairo.enums occairo.raw.stubs)
+ (foreign_stubs
+  (language c)
+  (names ml_cairo)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-cairo.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers cairo_decls cairo_core))

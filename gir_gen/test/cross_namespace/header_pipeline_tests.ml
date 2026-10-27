@@ -28,8 +28,7 @@ let make_single_ns_ctx namespace_name cross_references =
     ~namespace:
       (Type_factory.make_gir_namespace ~namespace_name ~namespace_version:"4.0"
          ~namespace_shared_library:
-           (Printf.sprintf "lib%s-4.so.1"
-              (String.lowercase_ascii namespace_name))
+           (Fmt.str "lib%s-4.so.1" (String.lowercase_ascii namespace_name))
          ~namespace_c_identifier_prefixes:namespace_name
          ~namespace_c_symbol_prefixes:(String.lowercase_ascii namespace_name)
          ())
@@ -58,7 +57,7 @@ let test_header_generation_with_gdk_cross_references () =
   let ctx = make_single_ns_ctx "Gtk" cross_refs in
   let header_content = generate_header ctx in
   assert_header_guard_format header_content "_gtk_decls_h_";
-  assert_local_include_exists header_content "generated/gdk_decls.h"
+  assert_local_include_exists header_content "gdk_decls.h"
 
 (* Stage 8 Test: Header generation with multiple dependencies *)
 let test_header_generation_with_multiple_dependencies () =
@@ -78,22 +77,22 @@ let test_header_generation_with_multiple_dependencies () =
   in
   let ctx = make_single_ns_ctx "Gtk" cross_refs in
   let header_content = generate_header ctx in
-  assert_local_include_exists header_content "generated/gdk_decls.h";
-  assert_local_include_exists header_content "generated/gio_decls.h"
+  assert_local_include_exists header_content "gdk_decls.h";
+  assert_local_include_exists header_content "gio_decls.h"
 
 (* Stage 8 Test: Header with no dependencies has no includes *)
 let test_header_no_dependencies_no_includes () =
   let ctx = make_single_ns_ctx "Gdk" StringMap.empty in
   let header_content = generate_header ctx in
   (* Verify no cross-namespace dependency includes are present.
-     We check specifically that no generated/<ns>_decls.h includes appear,
+     We check specifically that no <ns>_decls.h includes appear,
      since that is the form all dependency includes take. The core header
-     (#include "../core/<ns>_core.h") is a structural include, not a dependency,
+     (#include "<ns>_core.h") is a structural include, not a dependency,
      so its presence is expected and not checked here. *)
-  assert_local_include_not_exists header_content "generated/gtk_decls.h";
-  assert_local_include_not_exists header_content "generated/gdk_decls.h";
-  assert_local_include_not_exists header_content "generated/gio_decls.h";
-  assert_local_include_not_exists header_content "generated/gsk_decls.h"
+  assert_local_include_not_exists header_content "gtk_decls.h";
+  assert_local_include_not_exists header_content "gdk_decls.h";
+  assert_local_include_not_exists header_content "gio_decls.h";
+  assert_local_include_not_exists header_content "gsk_decls.h"
 
 (* Stage 8 Test: Base namespaces are filtered from dependencies *)
 let test_base_namespaces_filtered () =
@@ -107,7 +106,7 @@ let test_base_namespaces_filtered () =
   in
   let ctx = make_single_ns_ctx "Gtk" cross_refs in
   let header_content = generate_header ctx in
-  assert_local_include_not_exists header_content "generated/glib_decls.h"
+  assert_local_include_not_exists header_content "glib_decls.h"
 
 (* Stage 8 Test: Gsk with Gdk dependency header structure *)
 let test_gsk_with_gdk_dependency () =
@@ -122,7 +121,7 @@ let test_gsk_with_gdk_dependency () =
   let ctx = make_single_ns_ctx "Gsk" cross_refs in
   let header_content = generate_header ctx in
   assert_header_guard_format header_content "_gsk_decls_h_";
-  assert_local_include_exists header_content "generated/gdk_decls.h"
+  assert_local_include_exists header_content "gdk_decls.h"
 
 (* Stage 8 Test: Complete dependency chain Gtk -> Gsk -> Gdk *)
 let test_complete_dependency_chain () =
@@ -142,8 +141,8 @@ let test_complete_dependency_chain () =
   in
   let ctx = make_single_ns_ctx "Gtk" cross_refs in
   let header_content = generate_header ctx in
-  assert_local_include_exists header_content "generated/gdk_decls.h";
-  assert_local_include_exists header_content "generated/gsk_decls.h"
+  assert_local_include_exists header_content "gdk_decls.h";
+  assert_local_include_exists header_content "gsk_decls.h"
 
 (* ========================================================================= *)
 (* Test Suite *)

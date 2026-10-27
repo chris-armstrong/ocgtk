@@ -1,4 +1,4 @@
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 (* ── Types ────────────────────────────────────────────────────────────────── *)
 
@@ -32,8 +32,8 @@ let get_reason_text (view : Text_view.text_view_t) =
   let buf = view#get_buffer () in
   let raw = buf#as_text_buffer in
   buf#get_text
-    (Wrappers.Text_buffer.get_start_iter raw)
-    (Wrappers.Text_buffer.get_end_iter raw)
+    (Raw.Text_buffer.get_start_iter raw)
+    (Raw.Text_buffer.get_end_iter raw)
     false
 
 (* ── UI actions ───────────────────────────────────────────────────────────── *)
@@ -49,7 +49,7 @@ let reset_form ~fields ~status_label ~dirty =
 
 let load_signature ~path ~picture ~label ~dirty =
   Printf.printf "load_signature: loading %s\n%!" path;
-  match Ocgtk_gdk.Gdk.Texture.new_from_filename path with
+  match Ocgdk.Texture.new_from_filename path with
   | Error e ->
       Printf.printf "load_signature: ERROR %s\n%!" (GError.message e);
       label#set_markup
@@ -57,8 +57,7 @@ let load_signature ~path ~picture ~label ~dirty =
            (GError.message e))
   | Ok texture ->
       Printf.printf "load_signature: texture ok, calling set_paintable\n%!";
-      picture#set_paintable
-        (Some (texture :> Ocgtk_gdk.Gdk.Paintable.paintable_t));
+      picture#set_paintable (Some (texture :> Ocgdk.Paintable.paintable_t));
       Printf.printf "load_signature: set_paintable done, paintable=%s\n%!"
         (match picture#get_paintable () with
         | Some _ -> "Some"
@@ -193,7 +192,7 @@ let build_signature_section ~window ~dirty =
          dialog#show ())
        ());
 
-  let fl_type = Ocgtk_gdk.Gdk.Wrappers.File_list.get_type () in
+  let fl_type = Ocgdk.Raw.File_list.gtype () in
 
   let drop_target = Drop_target.new_ Gobject.Type.invalid [ `COPY ] in
   drop_target#set_gtypes (Some [| fl_type |]) (Gsize.of_int 1);
@@ -233,10 +232,8 @@ let build_signature_section ~window ~dirty =
            | None -> None
            | Some v ->
                if Gobject.Type.equal (Gobject.Value.get_type v) fl_type then
-                 let raw : Ocgtk_gdk.Gdk.Wrappers.File_list.t =
-                   Gobject.Value.get_boxed v
-                 in
-                 let fl = new Ocgtk_gdk.Gdk.File_list.file_list raw in
+                 let raw : Ocgdk.Raw.File_list.t = Gobject.Value.get_boxed v in
+                 let fl = new Ocgdk.File_list.file_list raw in
                  let ( let* ) = Option.bind in
                  let* file = List.nth_opt (fl#get_files ()) 0 in
                  file#get_path ()
@@ -298,7 +295,7 @@ let setup_key_controller ~window ~fields ~status_label ~dirty =
        ~callback:(fun ~keyval ~keycode:_ ~state ->
          let is_ctrl_q =
            keyval = Char.code 'q'
-           && List.mem `CONTROL_MASK (state :> Ocgtk_gdk.Gdk_enums.modifiertype)
+           && List.mem `CONTROL_MASK (state :> Ocgdk.Enums.modifiertype)
          in
          if is_ctrl_q then begin
            reset_form ~fields ~status_label ~dirty;

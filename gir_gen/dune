@@ -1,2 +1,6 @@
 (documentation
  (package gir_gen))
+
+(env
+ (dev
+  (flags :standard %{dune-warnings})))

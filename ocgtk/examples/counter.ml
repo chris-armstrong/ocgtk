@@ -1,4 +1,4 @@
-open Ocgtk_gtk.Gtk
+open Ocgtk
 (* Simple Counter Application
    Demonstrates: GtkApplication lifecycle, Button, Label, event handling *)
 
@@ -10,7 +10,7 @@ let activate app =
   (app :> Application.application_t)#add_window window;
 
   (* Create vertical box for layout *)
-  let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 10) in
+  let vbox = new Box.box (Raw.Box.new_ `VERTICAL 10) in
   window#set_child (Some (vbox :> Widget.widget_t));
 
   (* Counter state *)
@@ -18,29 +18,28 @@ let activate app =
 
   (* Create label to display count *)
   let label =
-    new Label.label
-      (Wrappers.Label.new_ (Some (Printf.sprintf "Count: %d" !count)))
+    new Label.label (Raw.Label.new_ (Some ("Count: " ^ string_of_int !count)))
   in
   vbox#append (label :> Widget.widget_t);
 
   (* Create button to increment *)
-  let button = new Button.button (Wrappers.Button.new_with_label "Click Me!") in
+  let button = new Button.button (Raw.Button.new_with_label "Click Me!") in
   vbox#append (button :> Widget.widget_t);
   ignore
     (button#on_clicked
        ~callback:(fun () ->
          count := !count + 1;
-         label#set_label (Printf.sprintf "Count: %d" !count))
+         label#set_label ("Count: " ^ string_of_int !count))
        ());
 
   (* Create reset button *)
-  let reset_btn = new Button.button (Wrappers.Button.new_with_label "Reset") in
+  let reset_btn = new Button.button (Raw.Button.new_with_label "Reset") in
   vbox#append (reset_btn :> Widget.widget_t);
   ignore
     (reset_btn#on_clicked
        ~callback:(fun () ->
          count := 0;
-         label#set_label (Printf.sprintf "Count: %d" !count))
+         label#set_label ("Count: " ^ string_of_int !count))
        ());
 
   (* Show window *)

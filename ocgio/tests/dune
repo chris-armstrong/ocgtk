@@ -1,0 +1,7 @@
+; Tests for ocgio
+
+(test
+ (name test_gio_volume_monitor)
+ (package ocgio)
+ (modules test_gio_volume_monitor)
+ (libraries ocgio alcotest))

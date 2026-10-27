@@ -209,6 +209,11 @@ type gir_bitfield = {
 type gir_class = {
   class_name : string;
   c_type : string;
+  (* glib:get-type — the C function returning the class's registered GType.
+     Classes and interfaces always carry one in practice, so generated code
+     can emit per-class [get_type] stubs used by signal marshallers to pass
+     the expected type to [Gobject.Value.get_object]/[set_object]. *)
+  glib_get_type : string option;
   parent : string option;
   implements : string list;
   introspectable : bool;
@@ -311,6 +316,12 @@ let entity_of_record (rec_ : gir_record) : entity =
     os = rec_.os;
     deprecation = rec_.deprecation;
   }
+
+let entity_glib_get_type (e : entity) : string option =
+  match e.kind with
+  | Class cls -> cls.glib_get_type
+  | Interface intf -> intf.glib_get_type
+  | Record rec_ -> rec_.glib_get_type
 
 (* A generated OCaml class for a GIR Class or Interface *)
 type ocaml_class = {
@@ -501,6 +512,11 @@ type generation_context_namespace_cross_references = {
   ncr_entities : cross_reference_entity StringMap.t;
 }
 
+(** Each namespace's generated OCaml lives in two libraries: layer 1 in the raw
+    library ([Ocgio_raw]), layer 2 in the main library ([Ocgio]). The same type
+    is named differently from each (see [Module_paths]). *)
+type target_library = Raw_library | Main_library
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -515,4 +531,6 @@ type generation_context = {
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
   cross_references : generation_context_namespace_cross_references StringMap.t;
+  target_library : target_library;
+      (* Library the code being generated belongs to; decides module paths *)
 }

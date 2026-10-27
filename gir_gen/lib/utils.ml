@@ -1,9 +1,8 @@
 (* Utility Functions for GIR Code Generator *)
 
 open StdLabels
-open Printf
 
-let stripLeadingNumbers name =
+let strip_leading_numbers name =
   if String.length name = 0 then name
   else
     match name.[0] with
@@ -12,8 +11,10 @@ let stripLeadingNumbers name =
     | _ -> name
 
 (* Convert CamelCase to snake_case *)
-let uppercaseStartRe = Str.regexp "^\\([A-Z]*\\)\\(.*\\)$"
-let uppercaseRe = Str.regexp "\\([A-Z][A-Z0-9]+[A-Z]\\|[A-Z]+\\)\\([^A-Z]*\\)"
+let uppercase_start_re = Re.Str.regexp "^\\([A-Z]*\\)\\(.*\\)$"
+
+let uppercase_re =
+  Re.Str.regexp "\\([A-Z][A-Z0-9]+[A-Z]\\|[A-Z]+\\)\\([^A-Z]*\\)"
 
 let to_snake_case name =
   let start_pos = ref 0 in
@@ -22,7 +23,7 @@ let to_snake_case name =
 
   while !start_pos < name_len do
     try
-      let next_pos = Str.search_forward uppercaseRe name !start_pos in
+      let next_pos = Re.Str.search_forward uppercase_re name !start_pos in
       if not (Int.equal next_pos !start_pos) then begin
         (*first section not uppercase - add first section as_is*)
         let len = next_pos - !start_pos in
@@ -31,13 +32,13 @@ let to_snake_case name =
         start_pos := next_pos
       end;
 
-      let upperpart = Str.matched_group 1 name in
-      let lowerpart = Str.matched_group 2 name in
+      let upperpart = Re.Str.matched_group 1 name in
+      let lowerpart = Re.Str.matched_group 2 name in
       if String.length upperpart > 1 then (
         (* sequence of uppercase characters - convert all but one to their own group *)
         let group_len = String.length upperpart - 1 in
         let group =
-          Str.string_before upperpart group_len |> String.lowercase_ascii
+          Re.Str.string_before upperpart group_len |> String.lowercase_ascii
         in
         components := group :: !components;
         start_pos := !start_pos + group_len)
@@ -48,10 +49,10 @@ let to_snake_case name =
         components := group :: !components;
         start_pos := !start_pos + group_len
     with Stdlib.Not_found ->
-      components := Str.string_after name !start_pos :: !components;
+      components := Re.Str.string_after name !start_pos :: !components;
       start_pos := name_len + 1
   done;
-  !components |> List.rev |> String.concat ~sep:"_" |> stripLeadingNumbers
+  !components |> List.rev |> String.concat ~sep:"_" |> strip_leading_numbers
 
 let sanitize_doc s =
   (* Prevent premature comment termination when GIR doc contains "*\)" or "(\*" *)
@@ -90,7 +91,7 @@ let parse_bool ?(default = false) attr =
   | Some "true" | Some "1" -> true
   | Some "false" | Some "0" -> false
   | Some "" -> default
-  | Some x -> failwith (sprintf "Invalid boolean attribute value: %s" x)
+  | Some x -> Fmt.failwith "Invalid boolean attribute value: %s" x
   | None -> default
 
 (* Check if a GIR type represents a void/unit return type.
@@ -168,30 +169,6 @@ let internal_namespace_to_module_name (namespace : string) : string =
         (String.sub namespace ~pos:1 ~len:(String.length namespace - 1))
     in
     first ^ rest
-
-(** Convert a namespace name to the dune library wrapper name. This is the
-    lowercase form used for filenames and dune library names. e.g., "Cairo" ->
-    "ocgtk_cairo", "PangoCairo" -> "ocgtk_pangocairo" *)
-let library_wrapper_name (namespace : string) : string =
-  "ocgtk_" ^ String.lowercase_ascii namespace
-
-(** Convert a namespace name to a fully-qualified module path for external
-    references. The wrapper module re-exports the library module as a submodule,
-    so the path is [Ocgtk_<ns>.<Ns>]. e.g., "Cairo" -> "Ocgtk_cairo.Cairo",
-    "Gdk" -> "Ocgtk_gdk.Gdk", "GdkPixbuf" -> "Ocgtk_gdkpixbuf.GdkPixbuf" *)
-let external_namespace_to_module_name (namespace : string) : string =
-  String.capitalize_ascii (library_wrapper_name namespace)
-  ^ "."
-  ^ String.capitalize_ascii namespace
-
-(* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
-let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =
-  internal_namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
-
-(* Get the name of the bitfields module (FIXME: doesn't handle cross-namespace enums) *)
-let bitfields_module_name (ctx : Types.generation_context)
-    (_ : Types.gir_bitfield) =
-  internal_namespace_to_module_name ctx.namespace.namespace_name ^ "_enums"
 
 (* Read filter file and return set of class names to generate *)
 let read_filter_file filename =
@@ -362,7 +339,7 @@ let ml_property_name ~ctx ~class_name (prop : Types.gir_property) =
   in
   let prop_snake = to_snake_case prop_name_cleaned in
   let class_snake = to_snake_case class_name in
-  sprintf "%s%s_get_%s" (extract_ml_prefix ctx) class_snake prop_snake
+  Fmt.str "%s%s_get_%s" (extract_ml_prefix ctx) class_snake prop_snake
 
 let ml_property_setter_name ~ctx ~class_name (prop : Types.gir_property) =
   let prop_name_cleaned =
@@ -370,21 +347,13 @@ let ml_property_setter_name ~ctx ~class_name (prop : Types.gir_property) =
   in
   let prop_snake = to_snake_case prop_name_cleaned in
   let class_snake = to_snake_case class_name in
-  sprintf "%s%s_set_%s" (extract_ml_prefix ctx) class_snake prop_snake
+  Fmt.str "%s%s_set_%s" (extract_ml_prefix ctx) class_snake prop_snake
 
 let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
   String.lowercase_ascii bitfield.bitfield_name
 
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
-
-(** Layer 2 module name for a class: "G" ^ Module_name. e.g., "Button" ->
-    "GButton", "Window" -> "GWindow" *)
-let layer2_module_name class_name = "G" ^ module_name_of_class class_name
-
-(** Layer 2 module filename (lowercase first char): "g" ^ Module_name. e.g.,
-    "Button" -> "gButton", "Window" -> "gWindow" *)
-let layer2_module_filename class_name = "g" ^ module_name_of_class class_name
 
 (** Class type name with _t suffix from a class name. e.g., "Button" ->
     "button_t", "TextView" -> "text_view_t" *)

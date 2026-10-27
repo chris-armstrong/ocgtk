@@ -1,0 +1,44 @@
+class type event_controller_key_t = object
+  inherit
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .event_controller_t
+
+  method on_im_update :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_key_pressed :
+    ?after:bool ->
+    callback:
+      (keyval:int -> keycode:int -> state:Ocgdk.Enums.modifiertype -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_key_released :
+    ?after:bool ->
+    callback:
+      (keyval:int -> keycode:int -> state:Ocgdk.Enums.modifiertype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_modifiers :
+    ?after:bool ->
+    callback:(state:Ocgdk.Enums.modifiertype -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method forward :
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t ->
+    bool
+
+  method get_group : unit -> int
+  method get_im_context : unit -> Im_context.im_context_t option
+  method set_im_context : Im_context.im_context_t option -> unit
+  method as_event_controller_key : Raw.Event_controller_key.t
+end
+
+class event_controller_key :
+  Raw.Event_controller_key.t ->
+  event_controller_key_t
+
+val new_ : unit -> event_controller_key_t

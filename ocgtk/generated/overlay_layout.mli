@@ -1,0 +1,11 @@
+class type overlay_layout_t = object
+  inherit
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .layout_manager_t
+
+  method as_overlay_layout : Raw.Overlay_layout.t
+end
+
+class overlay_layout : Raw.Overlay_layout.t -> overlay_layout_t
+
+val new_ : unit -> overlay_layout_t

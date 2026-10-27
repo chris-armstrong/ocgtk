@@ -1,9 +1,9 @@
 (* High-level class generation (Step 3) - Main orchestration module *)
 
-[@@@warning "-32"]
+(*E110-removed*)
 
 open StdLabels
-open Printf
+open Gen_buffer
 open Types
 
 (* Re-export Common module and helper functions *)
@@ -85,7 +85,7 @@ let generate_param_unwrapping ~ctx ~buf params =
 let calculate_return_type ~class_type_name ctor =
   let return_type =
     match ctor.throws with
-    | true -> sprintf "(%s, GError.t) result" class_type_name
+    | true -> Fmt.str "(%s, GError.t) result" class_type_name
     | false -> class_type_name
   in
   return_type
@@ -107,7 +107,7 @@ let generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
         let sig_str =
           String.concat ~sep:" "
             (List.map params ~f:(fun pi ->
-                 sprintf "(%s : %s)" pi.cp_name pi.cp_type))
+                 Fmt.str "(%s : %s)" pi.cp_name pi.cp_type))
         in
         bprintf buf "let %s %s : %s =\n" ocaml_ctor_name sig_str return_type;
         generate_param_unwrapping ~ctx ~buf params;
@@ -135,13 +135,14 @@ let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
     | _ ->
         let sig_str =
           String.concat ~sep:""
-            (List.map params ~f:(fun pi -> sprintf "%s -> " pi.cp_type))
+            (List.map params ~f:(fun pi -> Fmt.str "%s -> " pi.cp_type))
         in
         bprintf buf "val %s : %s%s\n" ocaml_ctor_name sig_str return_type
 
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~entity_kind ~properties ~signals ~constructors =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 2048 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -183,6 +184,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
 (** Generate a class signature *)
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~entity_kind ~properties ~signals ~constructors =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 1024 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -218,7 +220,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
   let buf = Buffer.create 4096 in
   bprintf buf "%s\n" header_text;
 
-  let current_layer2_module = "G" ^ combined_module_name in
+  let current_layer2_module = combined_module_name in
   let sorted_entities =
     List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities
   in
@@ -246,6 +248,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
 (** Generate combined class modules for cyclic dependencies *)
 let generate_combined_class_module ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 4096 in
   bprintf buf
     "(* GENERATED CODE - DO NOT EDIT *)\n\
@@ -303,7 +306,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
   Buffer.add_string buf classes_text;
 
   (* Constructor wrappers for each entity *)
-  let current_layer2_module = "G" ^ combined_module_name in
+  let current_layer2_module = combined_module_name in
   List.iter entities ~f:(fun entity ->
       let class_snake = sanitize_name entity.name in
       let class_type_name = Utils.class_type_name entity.name in
@@ -320,6 +323,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 (** Generate combined class signatures for cyclic dependencies *)
 let generate_combined_class_signature ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 4096 in
 
   (* Pass 1: class type definitions *)
@@ -368,7 +372,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   Buffer.add_string buf class_decls_text;
 
   (* Constructor wrappers for each entity *)
-  let current_layer2_module = "G" ^ combined_module_name in
+  let current_layer2_module = combined_module_name in
   List.iter entities ~f:(fun entity ->
       let class_type_name = Utils.class_type_name entity.name in
       List.iter entity.constructors
@@ -379,33 +383,31 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   Buffer.contents buf
 
 (** Generate cyclic shim module (implementation) *)
-let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name
-    ~g_combined_module_name =
+let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 512 in
-
-  (* Get the layer 1 module name for this entity *)
-  let layer1_module_name = Utils.module_name_of_class entity.name in
+  let layer1_module_name =
+    Class_utils.get_qualified_module_name ~ctx entity.name
+  in
 
   (* Generate the entity's lowercase name (e.g., "window" from "Window") *)
   let entity_snake = sanitize_name entity.name in
 
   (* Use the shim module as current_layer2_module so sibling types in the same
      cycle get qualified through the combined module, not left unqualified *)
-  let current_layer2_module = Utils.layer2_module_name entity.name in
+  let current_layer2_module = Module_paths.layer2_module_name entity.name in
   let entity_type_name = Utils.class_type_name entity.name in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Shim module for %s from cyclic group %s *)\n\n" entity.name
     combined_module_name;
-  bprintf buf "class type %s = %s.%s\n\n" entity_type_name
-    g_combined_module_name entity_type_name;
-  bprintf buf "class %s = %s.%s\n" entity_snake g_combined_module_name
+  bprintf buf "class type %s = %s.%s\n\n" entity_type_name combined_module_name
+    entity_type_name;
+  bprintf buf "class %s = %s.%s\n" entity_snake combined_module_name
     entity_snake;
 
   (* Constructor wrappers *)
-  let layer1_ctor_prefix =
-    sprintf "%s.%s" combined_module_name layer1_module_name
-  in
+  let layer1_ctor_prefix = layer1_module_name in
   List.iter entity.constructors
     ~f:
       (generate_constructor_impl ~ctx ~buf ~class_snake:entity_snake
@@ -415,27 +417,27 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name
   Buffer.contents buf
 
 (** Generate cyclic shim signature *)
-let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name
-    ~g_combined_module_name =
+let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
+  let ctx = Module_paths.main_library_ctx ctx in
   let buf = Buffer.create 512 in
-
-  (* Get the layer 1 module name for this entity *)
-  let layer1_module_name = Utils.module_name_of_class entity.name in
+  let layer1_module_name =
+    Class_utils.get_qualified_module_name ~ctx entity.name
+  in
 
   (* Generate the entity's lowercase name (e.g., "window" from "Window") *)
   let entity_snake = sanitize_name entity.name in
   let entity_type_name = Utils.class_type_name entity.name in
 
   (* Use the shim module as current_layer2_module so sibling types get qualified *)
-  let current_layer2_module = Utils.layer2_module_name entity.name in
+  let current_layer2_module = Module_paths.layer2_module_name entity.name in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Shim module for %s from cyclic group %s *)\n\n" entity.name
     combined_module_name;
-  bprintf buf "class type %s = %s.%s\n\n" entity_type_name
-    g_combined_module_name entity_type_name;
-  bprintf buf "class %s : %s.%s.t -> %s\n" entity_snake combined_module_name
-    layer1_module_name entity_type_name;
+  bprintf buf "class type %s = %s.%s\n\n" entity_type_name combined_module_name
+    entity_type_name;
+  bprintf buf "class %s : %s.t -> %s\n" entity_snake layer1_module_name
+    entity_type_name;
 
   (* Constructor wrapper signatures *)
   List.iter entity.constructors

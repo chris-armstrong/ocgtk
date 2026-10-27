@@ -1,13 +1,11 @@
 # Unresolved `inherit` links in the odoc output — root cause and options
 
-> **Status: known problem, fix deferred.** The `inherit` lines on L2 class
-> type pages render as plain, unlinked text for every class in the gtk library.
-> The full fix belongs with the library layout change described in
-> [library-layout-proposal.md](./library-layout-proposal.md), which is not
-> scheduled. Deleting the hand-written main module (option 1 below) is an
-> accepted intermediate step while the documentation generation is being
-> developed. This note records the investigation so it does not have to be
-> repeated.
+> **Status: fixed by the library layout change** (2026-10-26,
+> [library-layout.md](../plans/library-layout.md)). Each namespace is its own
+> package with a dune-generated main module, and all 942 `inherit` lines in
+> the bindings now link. The layout change was made in one step, not through
+> option 1 below as an intermediate. The rest of this note is the original
+> investigation, kept as written.
 
 ## Symptom
 

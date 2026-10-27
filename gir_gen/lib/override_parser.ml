@@ -19,19 +19,17 @@ type parse_error =
   | Invalid_version of { name : string; version : string; reason : string }
 
 let format_error = function
-  | Invalid_format { location; message } ->
-      Printf.sprintf "%s: %s" location message
-  | Unknown_entity_kind kind -> Printf.sprintf "Unknown entity kind: %s" kind
+  | Invalid_format { location; message } -> Fmt.str "%s: %s" location message
+  | Unknown_entity_kind kind -> Fmt.str "Unknown entity kind: %s" kind
   | Unknown_component_kind { entity_name; kind; valid_kinds } ->
-      Printf.sprintf "%s: Unknown component kind '%s' (expected one of: %s)"
+      Fmt.str "%s: Unknown component kind '%s' (expected one of: %s)"
         entity_name kind
         (String.concat ", " valid_kinds)
-  | Duplicate_entity { kind; name } ->
-      Printf.sprintf "Duplicate %s '%s'" kind name
+  | Duplicate_entity { kind; name } -> Fmt.str "Duplicate %s '%s'" kind name
   | Duplicate_component { entity; component_kind; name } ->
-      Printf.sprintf "Duplicate %s '%s' in %s" component_kind name entity
+      Fmt.str "Duplicate %s '%s' in %s" component_kind name entity
   | Invalid_version { name; version; reason } ->
-      Printf.sprintf "Invalid version '%s' for '%s': %s" version name reason
+      Fmt.str "Invalid version '%s' for '%s': %s" version name reason
 
 module Sexp = Sexplib.Sexp
 
@@ -56,10 +54,7 @@ let parse_version_spec ~comp_name sexp_args =
       | Error msg ->
           Error
             (Invalid_format
-               {
-                 location = Printf.sprintf "%s (version)" comp_name;
-                 message = msg;
-               })
+               { location = Fmt.str "%s (version)" comp_name; message = msg })
       | Ok ns -> (
           match validate_version ~name:comp_name ~version_str:v with
           | Error e -> Error e
@@ -69,7 +64,7 @@ let parse_version_spec ~comp_name sexp_args =
       Error
         (Invalid_format
            {
-             location = Printf.sprintf "%s (version)" comp_name;
+             location = Fmt.str "%s (version)" comp_name;
              message = "Expected (version \"X.Y\") or (version (lib \"X.Y\"))";
            })
 
@@ -114,9 +109,9 @@ let parse_component_qualifiers ~comp_name body =
         Error
           (Invalid_format
              {
-               location = Printf.sprintf "%s" comp_name;
+               location = Fmt.str "%s" comp_name;
                message =
-                 Printf.sprintf
+                 Fmt.str
                    "Unknown qualifier '%s'; expected ignore, version, os, or \
                     not_os"
                    k;
@@ -144,7 +139,7 @@ let parse_component ~entity_name sexp =
           Error
             (Invalid_format
                {
-                 location = Printf.sprintf "%s %s" entity_name comp_name;
+                 location = Fmt.str "%s %s" entity_name comp_name;
                  message =
                    "Expected at least one qualifier: (ignore), (version \
                     \"X.Y\"), or (os \"...\")";
@@ -219,23 +214,52 @@ let validate_body_elements ~entity_name ~valid_kinds body =
   in
   check body
 
+let entity_action_error ~entity_name message =
+  Error (Invalid_format { location = entity_name; message })
+
+(** Extract the entity-level [(ignore)] or [(version "X.Y")] marker from an
+    entity body. The cross-namespace form is rejected: the entity-level guard
+    always uses the entity's own namespace, so the qualifier would be dropped.
+*)
+let extract_entity_action ~entity_name body =
+  let version_args =
+    List.filter_map
+      (function
+        | Sexp.List (Sexp.Atom "version" :: args) -> Some args | _ -> None)
+      body
+  in
+  match (has_ignore_marker body, version_args) with
+  | false, [] -> Ok None
+  | true, [] -> Ok (Some Ignore)
+  | true, _ :: _ ->
+      entity_action_error ~entity_name
+        "Cannot combine (ignore) and (version ...) on the same entity"
+  | false, _ :: _ :: _ ->
+      entity_action_error ~entity_name
+        "Expected at most one (version ...) on an entity"
+  | false, [ args ] -> (
+      let* action = parse_version_spec ~comp_name:entity_name args in
+      match action with
+      | Set_version { vs_namespace = Some _; _ } ->
+          entity_action_error ~entity_name
+            "Entity-level (version (lib \"X.Y\")) is not supported; use \
+             (version \"X.Y\")"
+      | Set_version { vs_namespace = None; _ } | Ignore -> Ok (Some action))
+
 (** Parse the common header shared by all entity overrides: the entity name and
-    optional ignore/action marker. Returns [(name, action_opt, body)] on
+    optional ignore/version marker. Returns [(name, action_opt, os, body)] on
     success. *)
 let parse_entity_header ~kind sexp =
   match sexp with
   | Sexp.List (Sexp.Atom k :: Sexp.Atom name :: body) when String.equal k kind
     ->
-      let action = if has_ignore_marker body then Some Ignore else None in
+      let* action = extract_entity_action ~entity_name:name body in
       let* os = extract_os_from_body ~context:name body in
       Ok (name, action, os, body)
   | _ ->
       Error
         (Invalid_format
-           {
-             location = kind;
-             message = Printf.sprintf "Expected (%s Name ...)" kind;
-           })
+           { location = kind; message = Fmt.str "Expected (%s Name ...)" kind })
 
 let parse_class_override sexp =
   let* name, class_action, class_os, body =

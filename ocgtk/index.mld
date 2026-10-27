@@ -1,9 +1,9 @@
-{0 ocgtk index}
+{0 ocgtk}
 
-The {b ocgtk} package provides OCaml bindings to GTK4 and its supporting
-libraries. Each namespace below is a separate sub-library; the
-[.generated_stubs*] libraries (pure C stubs with no OCaml modules, used
-internally to link the generated bindings) are omitted from this index.
+The {b ocgtk} package provides OCaml bindings for GTK 4: the widget toolkit,
+with windows, widgets, layout and the application model. They are generated
+from GTK's GObject introspection data, apart from {!Ocgtk.Main} and
+{!Ocgtk.Version}, which are hand-written.
 
 {1 Reference}
 
@@ -11,61 +11,37 @@ internally to link the generated bindings) are omitted from this index.
   and where to find classes, methods, types and signals, and how they are
   mapped in OCaml.
 
-{1 Libraries}
+{1 Modules}
 
-{2 {!Ocgtk} }
-The top-level module: re-exports every namespace below as a sub-module
-(e.g. [Ocgtk.Gtk.Widget]), plus {!Ocgtk_common} as [Ocgtk.Common].
-
-{2 {!Ocgtk_cairo} }
-2D vector graphics: drawing contexts, paths, patterns and surfaces.
-
-{2 {!Ocgtk_gdk} }
-Low-level windowing, displays, input and events that Gtk is built on.
-
-{2 {!Ocgtk_gdkpixbuf} }
-Image loading, scaling and pixel-buffer manipulation.
-
-{2 {!Ocgtk_gio} }
-I/O, files, and the application/networking abstractions from GLib's
-application framework.
-
-{2 {!Ocgtk_graphene} }
-Lightweight 3D transform and geometry types (vectors, matrices, rectangles)
-used by Gsk and Gtk.
-
-{2 {!Ocgtk_gsk} }
-The GTK scene graph: render nodes and transforms for drawing widgets.
-
-{2 {!Ocgtk_gtk} }
-The widget toolkit: windows, widgets, layout and the application model.
-
-{2 {!Ocgtk_pango} }
-Text layout and internationalized font rendering.
-
-{2 {!Ocgtk_pangocairo} }
-Glue between Pango text layout and Cairo rendering.
-
-{1 Common utility modules (ocgtk.common)}
-
-Hand-written modules shared across the binding libraries, also available as
-a single {!Ocgtk_common} namespace.
+The library is reached as {!Ocgtk}, with one module per class, interface or
+record, such as {!Ocgtk.Window}, {!Ocgtk.Button} and {!Ocgtk.Application}.
 
 {ul
-{- {!Bounded_int} — namespace re-exporting all the bounded integer modules below. }
-{- {!GError} — the error type for GTK/GLib functions. }
-{- {!Glib} — GLib's main event loop, timeouts and idle callbacks. }
-{- {!Glib_bytes} — [GBytes], an immutable reference-counted byte buffer. }
-{- {!Gobject} — the GObject type system, properties and signals. }
-{- {!Gsize} — a non-negative [gsize] ([size_t]). }
-{- {!Gvariant} — [GVariant] structured data serialization. }
-{- {!Gvariant_type} — [GVariant] type descriptions. }
-{- {!Int16} — signed 16-bit integer ([gint16]). }
-{- {!Int32} — signed 32-bit integer ([gint32]). }
-{- {!Int8} — signed 8-bit integer ([gint8]). }
-{- {!Ocgtk_common} — this library's own top module. }
-{- {!UInt16} — unsigned 16-bit integer ([guint16]). }
-{- {!UInt32} — unsigned 32-bit integer ([guint32]). }
-{- {!UInt64} — unsigned 64-bit integer ([guint64]). }
-{- {!UInt8} — unsigned 8-bit integer ([guint8]). }
+{- {!Ocgtk.Main} — initialising GTK and running the main loop. }
+{- {!Ocgtk.Version} — the GTK version, at run time and at compile time. }
+{- {!Ocgtk.Enums} — enumerations and bitfields. }
+{- {!Ocgtk.Constants} — constants. }
+{- {!Ocgtk.Raw} — the C externals and abstract types the modules above are
+   built on. }
+}
+
+{1 Dependencies}
+
+GTK's supporting libraries are separate packages, each with its own index:
+
+{ul
+{- {!Ocglib} — GLib and GObject. }
+{- {!Occairo} — 2D vector graphics: drawing contexts, paths, patterns and
+   surfaces. }
+{- {!Ocgdk} — low-level windowing, displays, input and events that GTK is
+   built on. }
+{- {!Ocgdkpixbuf} — image loading, scaling and pixel-buffer manipulation. }
+{- {!Ocgio} — I/O, files, and the application and networking abstractions
+   from GLib's application framework. }
+{- {!Ocgraphene} — lightweight 3D transform and geometry types (vectors,
+   matrices, rectangles) used by Gsk and Gtk. }
+{- {!Ocgsk} — the GTK scene graph: render nodes and transforms for drawing
+   widgets. }
+{- {!Ocpango} — text layout and internationalized font rendering. }
+{- {!Ocpangocairo} — glue between Pango text layout and Cairo rendering. }
 }

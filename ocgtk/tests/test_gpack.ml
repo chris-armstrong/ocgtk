@@ -5,9 +5,9 @@ open Alcotest
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     true
-  with GMain.Error _ -> false
+  with Main.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()
@@ -16,17 +16,17 @@ let require_gtk f () = if not gtk_available then skip () else f ()
 
 let test_hbox_pack_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = GPack.hbox_pack [] in
     check int "spacing" 0 box#spacing;
     check bool "homogeneous" false box#homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_hbox_pack_with_widgets () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
@@ -39,22 +39,22 @@ let test_hbox_pack_with_widgets () =
     check int "spacing" 10 box#spacing;
     check bool "homogeneous" true box#homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_vbox_pack_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = GPack.vbox_pack [] in
     check int "spacing" 0 box#spacing;
     check bool "homogeneous" false box#homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_vbox_pack_with_widgets () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
@@ -63,24 +63,24 @@ let test_vbox_pack_with_widgets () =
     check int "spacing" 5 box#spacing;
     check bool "homogeneous" false box#homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid packing conveniences *)
 
 let test_grid_attach_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let grid = GPack.grid_attach [] in
     check int "row_spacing" 0 grid#row_spacing;
     check int "column_spacing" 0 grid#column_spacing
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_grid_attach_with_widgets () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
@@ -96,23 +96,23 @@ let test_grid_attach_with_widgets () =
     check bool "row_homogeneous" true grid#row_homogeneous;
     check bool "column_homogeneous" false grid#column_homogeneous
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test paned conveniences *)
 
 let test_hpaned_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let _paned = GPack.hpaned () in
     ()
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_hpaned_with_children () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
@@ -122,21 +122,21 @@ let test_hpaned_with_children () =
 
     check int "position" 100 paned#position
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_vpaned_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let _paned = GPack.vpaned () in
     ()
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_vpaned_with_children () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
@@ -146,25 +146,25 @@ let test_vpaned_with_children () =
 
     check int "position" 200 paned#position
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test notebook conveniences *)
 
 let test_notebook_empty () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let nb = GPack.notebook [] in
     check int "n_pages" 0 nb#n_pages;
     check bool "show_tabs" true nb#show_tabs;
     check bool "show_border" true nb#show_border
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_with_pages () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let page1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let page2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let page3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
@@ -178,14 +178,14 @@ let test_notebook_with_pages () =
     check bool "show_tabs" false nb#show_tabs;
     check bool "show_border" false nb#show_border
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test complex composition *)
 
 let test_composition_hbox_in_vbox () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
@@ -200,12 +200,12 @@ let test_composition_hbox_in_vbox () =
     check int "vbox_spacing" 10 vbox#spacing;
     check int "hbox_spacing" 5 hbox#spacing
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_composition_grid_in_paned () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
@@ -220,7 +220,7 @@ let test_composition_grid_in_paned () =
 
     ()
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test suite *)
@@ -229,7 +229,7 @@ let test_composition_grid_in_paned () =
 
 let test_window_convenience () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let window = GPack.window ~title:"Test" ~width:400 ~height:300 box in
 
@@ -238,14 +238,14 @@ let test_window_convenience () =
     check int "GPack window width" 400 w;
     check int "GPack window height" 300 h
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test scrolled window convenience *)
 
 let test_scrolled_convenience () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let box = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let sw = GPack.scrolled ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC box in
 
@@ -253,7 +253,7 @@ let test_scrolled_convenience () =
     check bool "GPack scrolled hpolicy" (`ALWAYS = h) true;
     check bool "GPack scrolled vpolicy" (`AUTOMATIC = v) true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

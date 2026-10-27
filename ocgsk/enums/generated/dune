@@ -1,0 +1,7 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgsk_enums)
+ (public_name ocgsk.enums)
+ (synopsis "Gsk enumerations and bitfields")
+ (flags :standard -w -3-6-9-27-32-33-34-50))

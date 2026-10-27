@@ -1,0 +1,4 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Event, a member of the cyclic module App_launch_context_cycle_de440b34 *)
+
+include App_launch_context_cycle_de440b34.Event

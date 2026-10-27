@@ -1,0 +1,31 @@
+; ocpango.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name ocpango_raw)
+ (public_name ocpango.raw)
+ (synopsis "Pango layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries
+  ocglib
+  ocpango.enums
+  ocpango.raw.stubs
+  occairo.raw
+  occairo.enums
+  ocgio.raw
+  ocgio.enums)
+ (foreign_stubs
+  (language c)
+  (names ml_pango)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-pango.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers pango_decls pango_core))

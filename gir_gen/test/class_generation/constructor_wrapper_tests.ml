@@ -6,13 +6,13 @@ let create_test_context = Helpers.create_test_context_with_hierarchy
 
 let find_let_binding_or_fail ast name =
   Helpers.expect_some
-    (Printf.sprintf "Let binding '%s' not found" name)
+    (Fmt.str "Let binding '%s' not found" name)
     (Ml_ast_helpers.find_let_binding ast name)
     Fun.id
 
 let find_val_or_fail ast name =
   Helpers.expect_some
-    (Printf.sprintf "Val declaration '%s' not found" name)
+    (Fmt.str "Val declaration '%s' not found" name)
     (Ml_ast_helpers.find_value_declaration_sig ast name)
     Fun.id
 
@@ -41,7 +41,7 @@ let test_zero_param_constructor () =
 
   (* Should generate: let new_ () : button_t = new button (Button.new_ ()) *)
   let _binding = find_let_binding_or_fail ast "new_" in
-  Ml_ast_helpers.assert_let_binding_calls_function ast "Button.new_" "new_"
+  Ml_ast_helpers.assert_let_binding_calls_function ast "Raw.Button.new_" "new_"
 
 (* ========================================================================= *)
 (* Test 2: Single string param constructor                                   *)
@@ -70,8 +70,8 @@ let test_single_string_param_constructor () =
 
   (* Should generate: let new_with_label (label : string) : button_t = ... *)
   let _binding = find_let_binding_or_fail ast "new_with_label" in
-  Ml_ast_helpers.assert_let_binding_calls_function ast "Button.new_with_label"
-    "new_with_label"
+  Ml_ast_helpers.assert_let_binding_calls_function ast
+    "Raw.Button.new_with_label" "new_with_label"
 
 (* ========================================================================= *)
 (* Test 3: Class-typed param constructor (unwrapping)                        *)
@@ -211,7 +211,6 @@ let test_cyclic_shim_constructors () =
   let ml_code =
     Gir_gen_lib.Generate.Class_gen.generate_cyclic_shim_module ~ctx ~entity
       ~combined_module_name:"Application_and__window_and__window_group"
-      ~g_combined_module_name:"GApplication_and__window_and__window_group"
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 

@@ -55,20 +55,8 @@ let run_and_parse_c gir_content entity_snake =
   Unix.mkdir output_dir 0o755;
   Fun.protect
     ~finally:(fun () ->
-      (try Sys.remove gir_file with _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with _ -> ())
+      (try Sys.remove gir_file with Sys_error _ -> ());
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
@@ -166,7 +154,7 @@ let test_from_gobject_present_when_type_name_set () =
   let fn_name = "ml_gtk_my_iface_from_gobject" in
   let f =
     Helpers.expect_some
-      (Printf.sprintf "%s not found in parsed C AST" fn_name)
+      (Fmt.str "%s not found in parsed C AST" fn_name)
       (C_ast.find_function functions fn_name)
       Fun.id
   in
@@ -204,7 +192,7 @@ let test_from_gobject_inside_version_guard () =
   let fn_name = "ml_gtk_my_iface_from_gobject" in
   let f =
     Helpers.expect_some
-      (Printf.sprintf "%s not found in parsed C AST" fn_name)
+      (Fmt.str "%s not found in parsed C AST" fn_name)
       (C_ast.find_function functions fn_name)
       Fun.id
   in
@@ -226,27 +214,15 @@ let run_and_parse_l1_mli gir_content entity_snake =
   Unix.mkdir output_dir 0o755;
   Fun.protect
     ~finally:(fun () ->
-      (try Sys.remove gir_file with _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with _ -> ())
+      (try Sys.remove gir_file with Sys_error _ -> ());
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let mli_path =
         Filename.concat
-          (Helpers.generated_dir output_dir)
+          (Helpers.raw_generated_dir output_dir)
           (entity_snake ^ ".mli")
       in
       if not (Helpers.file_exists mli_path) then
@@ -264,26 +240,16 @@ let run_and_parse_l1_ml gir_content entity_snake =
   Unix.mkdir output_dir 0o755;
   Fun.protect
     ~finally:(fun () ->
-      (try Sys.remove gir_file with _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with _ -> ())
+      (try Sys.remove gir_file with Sys_error _ -> ());
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let ml_path =
-        Filename.concat (Helpers.generated_dir output_dir) (entity_snake ^ ".ml")
+        Filename.concat
+          (Helpers.raw_generated_dir output_dir)
+          (entity_snake ^ ".ml")
       in
       if not (Helpers.file_exists ml_path) then
         Alcotest.failf "Expected .ml file not found: %s" ml_path;

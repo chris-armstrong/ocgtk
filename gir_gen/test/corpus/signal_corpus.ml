@@ -70,6 +70,7 @@ let build_context ?(cross_references = StringMap.empty)
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references;
+    target_library = Raw_library;
   }
 
 (* ================================================================= *)
@@ -170,8 +171,7 @@ let compare_coverage (baseline : signal_coverage) (live : signal_coverage) :
   let check_field label expected actual =
     if not (Int.equal expected actual) then
       mismatches :=
-        Printf.sprintf "%s: expected %d, got %d" label expected actual
-        :: !mismatches
+        Fmt.str "%s: expected %d, got %d" label expected actual :: !mismatches
   in
   check_field "supported" baseline.supported live.supported;
   check_field "unsupported" baseline.unsupported live.unsupported;
@@ -182,30 +182,27 @@ let compare_coverage (baseline : signal_coverage) (live : signal_coverage) :
     | [], [] -> ()
     | [], (reason, count) :: _ ->
         mismatches :=
-          Printf.sprintf "extra reason in live: %s (%d)" reason count
-          :: !mismatches
+          Fmt.str "extra reason in live: %s (%d)" reason count :: !mismatches
     | (reason, count) :: _, [] ->
         mismatches :=
-          Printf.sprintf "missing reason in live: %s (%d)" reason count
-          :: !mismatches
+          Fmt.str "missing reason in live: %s (%d)" reason count :: !mismatches
     | (b_reason, b_count) :: bs, (l_reason, l_count) :: ls ->
         if String.equal b_reason l_reason then begin
           if not (Int.equal b_count l_count) then
             mismatches :=
-              Printf.sprintf "reason %s: expected %d, got %d" b_reason b_count
-                l_count
+              Fmt.str "reason %s: expected %d, got %d" b_reason b_count l_count
               :: !mismatches;
           compare_reasons bs ls
         end
         else if String.compare b_reason l_reason < 0 then begin
           mismatches :=
-            Printf.sprintf "missing reason in live: %s (%d)" b_reason b_count
+            Fmt.str "missing reason in live: %s (%d)" b_reason b_count
             :: !mismatches;
           compare_reasons bs ((l_reason, l_count) :: ls)
         end
         else begin
           mismatches :=
-            Printf.sprintf "extra reason in live: %s (%d)" l_reason l_count
+            Fmt.str "extra reason in live: %s (%d)" l_reason l_count
             :: !mismatches;
           compare_reasons ((b_reason, b_count) :: bs) ls
         end

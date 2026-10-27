@@ -117,25 +117,13 @@ let run_and_parse_layer2_ml gir_content class_name =
   Unix.mkdir output_dir 0o755;
   Fun.protect
     ~finally:(fun () ->
-      (try Sys.remove gir_file with _ -> ());
-      let generated_dir = Helpers.generated_dir output_dir in
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat generated_dir f))
-           (Sys.readdir generated_dir);
-         Unix.rmdir generated_dir
-       with _ -> ());
-      try
-        Array.iter
-          (fun f -> Sys.remove (Filename.concat output_dir f))
-          (Sys.readdir output_dir);
-        Unix.rmdir output_dir
-      with _ -> ())
+      (try Sys.remove gir_file with Sys_error _ -> ());
+      Helpers.remove_tree output_dir)
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
-      let ml_path = Helpers.g_wrapper_file output_dir class_name in
+      let ml_path = Helpers.layer2_file output_dir class_name in
       if not (Helpers.file_exists ml_path) then
         Alcotest.failf "Expected Layer 2 file not found: %s" ml_path;
       let content = Helpers.read_file ml_path in
@@ -151,7 +139,7 @@ let test_class_type_inherits_interface_type () =
     run_and_parse_layer2_ml gir_class_implements_iface "MyClass"
   in
   Ml_validation.assert_class_type_inherits ml_ast ~class_type:"my_class_t"
-    ~parent:"GMy_iface.my_iface_t"
+    ~parent:"My_iface.my_iface_t"
 
 (** The class implementation must inherit the interface class (with
     from_gobject). *)
@@ -160,7 +148,7 @@ let test_class_impl_inherits_interface_class () =
     run_and_parse_layer2_ml gir_class_implements_iface "MyClass"
   in
   Ml_validation.assert_class_impl_inherits ml_ast ~class_name:"my_class"
-    ~parent_class_name:"GMy_iface.my_iface"
+    ~parent_class_name:"My_iface.my_iface"
 
 (* ========================================================================= *)
 (* Tests: class without implements has no interface inherits                  *)
@@ -186,7 +174,7 @@ let test_method_conflict_not_duplicated () =
   in
   (* The class type should still inherit the interface type *)
   Ml_validation.assert_class_type_inherits ml_ast ~class_type:"my_class_t"
-    ~parent:"GMy_iface.my_iface_t";
+    ~parent:"My_iface.my_iface_t";
   (* do_thing must NOT appear as a separate method declaration in my_class_t,
      since it comes via inheritance — verify by checking the ctd has no
      method fields named do_thing *)

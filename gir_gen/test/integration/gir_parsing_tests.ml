@@ -61,7 +61,7 @@ let test_c_code_generation () =
     (* Class converters are #define macros in the header, not functions in the stub.
        Check the header file for Val_* / *_val declarations. *)
     let header_file =
-      Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
+      Filename.concat (raw_generated_dir output_dir) "gtk_decls.h"
     in
     assert_true "Should define type converter macro"
       (file_exists header_file
