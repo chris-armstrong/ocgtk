@@ -72,10 +72,29 @@ class type volume_monitor_t = object
     Gobject.Signal.handler_id
 
   method get_connected_drives : unit -> App_info_cycle_64c425a0.drive_t list
+  (** Gets a list of drives connected to the system.
+
+      The returned list should be freed with g_list_free(), after its elements
+      have been unreffed with g_object_unref(). *)
+
   method get_mount_for_uuid : string -> App_info_cycle_64c425a0.mount_t option
+  (** Finds a [GMount] object by its UUID (see g_mount_get_uuid()) *)
+
   method get_mounts : unit -> App_info_cycle_64c425a0.mount_t list
+  (** Gets a list of the mounts on the system.
+
+      The returned list should be freed with g_list_free(), after its elements
+      have been unreffed with g_object_unref(). *)
+
   method get_volume_for_uuid : string -> App_info_cycle_64c425a0.volume_t option
+  (** Finds a [GVolume] object by its UUID (see g_volume_get_uuid()) *)
+
   method get_volumes : unit -> App_info_cycle_64c425a0.volume_t list
+  (** Gets a list of the volumes on the system.
+
+      The returned list should be freed with g_list_free(), after its elements
+      have been unreffed with g_object_unref(). *)
+
   method as_volume_monitor : Raw.Volume_monitor.t
 end
 

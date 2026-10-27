@@ -8,6 +8,14 @@ class type shortcuts_section_t = object
     Gobject.Signal.handler_id
 
   method add_group : Shortcuts_group.shortcuts_group_t -> unit
+  (** Adds a group to the shortcuts section.
+
+      This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+      tag to add the child.
+
+      Adding children with the [GtkBox] API is not appropriate, as
+      [GtkShortcutsSection] manages its children internally. *)
+
   method max_height : int
   method set_max_height : int -> unit
   method section_name : string

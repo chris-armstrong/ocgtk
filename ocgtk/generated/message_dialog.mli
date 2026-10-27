@@ -56,8 +56,16 @@ class type message_dialog_t = object
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Returns the message area of the dialog.
+
+      This is the box where the dialog’s primary and secondary labels are
+      packed. You can add your own extra content to that box and it will appear
+      below those labels. See [Gtk.Dialog.get_content_area] for the
+      corresponding function in the parent [Gtk.Dialog]. *)
 
   method set_markup : string -> unit
+  (** Sets the text of the message dialog. *)
+
   method message_type : Enums.messagetype
   method set_message_type : Enums.messagetype -> unit
   method secondary_text : string

@@ -34,22 +34,33 @@ class type viewport_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [viewport]. *)
 
   method get_scroll_to_focus : unit -> bool
+  (** Gets whether the viewport is scrolling to keep the focused child in view.
+  *)
 
   method scroll_to :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Raw.Scroll_info.t option ->
     unit
+  (** Scrolls a descendant of the viewport into view.
+
+      The viewport and the descendant must be visible and mapped for this
+      function to work, otherwise no scrolling will be performed. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [viewport]. *)
 
   method set_scroll_to_focus : bool -> unit
+  (** Sets whether the viewport should automatically scroll to keep the focused
+      child in view. *)
+
   method as_viewport : Raw.Viewport.t
 end
 

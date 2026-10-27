@@ -62,8 +62,18 @@ class type event_controller_scroll_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_flags : unit -> Enums.eventcontrollerscrollflags
+  (** Gets the flags conditioning the scroll controller behavior. *)
+
   method get_unit : unit -> Ocgdk.Enums.scrollunit
+  (** Gets the scroll unit of the last [Gtk.EventControllerScroll::scroll]
+      signal received.
+
+      Always returns [GDK_SCROLL_UNIT_WHEEL] if the
+      [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE] flag is set. *)
+
   method set_flags : Enums.eventcontrollerscrollflags -> unit
+  (** Sets the flags conditioning scroll controller behavior. *)
+
   method as_event_controller_scroll : Raw.Event_controller_scroll.t
 end
 

@@ -6,12 +6,14 @@ class type widget_paintable_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Returns the widget that is observed or [NULL] if none. *)
 
   method set_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the widget that should be observed. *)
 
   method as_widget_paintable : Raw.Widget_paintable.t
 end

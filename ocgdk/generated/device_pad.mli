@@ -21,9 +21,23 @@
 (** The methods, signals and properties of a [GdkDevicePad]. *)
 class type device_pad_t = object
   method get_feature_group : Enums.devicepadfeature -> int -> int
+  (** Returns the group the given [feature] and [idx] belong to.
+
+      f the feature or index do not exist in [pad], -1 is returned. *)
+
   method get_group_n_modes : int -> int
+  (** Returns the number of modes that [group] may have. *)
+
   method get_n_features : Enums.devicepadfeature -> int
+  (** Returns the number of features a tablet pad has. *)
+
   method get_n_groups : unit -> int
+  (** Returns the number of groups this pad device has.
+
+      Pads have at least one group. A pad group is a subcollection of
+      buttons/strip/rings that is affected collectively by a same current mode.
+  *)
+
   method as_device_pad : Raw.Device_pad.t
 end
 

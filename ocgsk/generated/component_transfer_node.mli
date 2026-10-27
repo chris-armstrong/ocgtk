@@ -7,8 +7,13 @@
 (** The methods, signals and properties of a [GskComponentTransferNode]. *)
 class type component_transfer_node_t = object
   inherit Render_node.render_node_t
+
   method get_child : unit -> Render_node.render_node_t
+  (** Gets the child node that is getting drawn by the given [node]. *)
+
   method get_transfer : int -> Raw.Component_transfer.t
+  (** Gets the component transfer for one of the components. *)
+
   method as_component_transfer_node : Raw.Component_transfer_node.t
 end
 

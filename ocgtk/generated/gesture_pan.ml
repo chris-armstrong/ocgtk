@@ -8,7 +8,12 @@ class type gesture_pan_t = object
     Gobject.Signal.handler_id
 
   method get_orientation : unit -> Enums.orientation
+  (** Returns the orientation of the pan gestures that this [gesture] expects.
+  *)
+
   method set_orientation : Enums.orientation -> unit
+  (** Sets the orientation to be expected on pan gestures. *)
+
   method as_gesture_pan : Raw.Gesture_pan.t
 end
 

@@ -16,8 +16,20 @@
 (** The methods, signals and properties of a [GtkPrintSetup]. *)
 class type print_setup_t = object
   method get_page_setup : unit -> Page_setup.page_setup_t
+  (** Returns the page setup of [setup].
+
+      It may be different from the [GtkPrintDialog]'s page setup if the user
+      changed it during the setup process. *)
+
   method get_print_settings : unit -> Print_settings.print_settings_t
+  (** Returns the print settings of [setup].
+
+      They may be different from the [GtkPrintDialog]'s settings if the user
+      changed them during the setup process. *)
+
   method ref : unit -> Raw.Print_setup.t
+  (** Increase the reference count of [setup]. *)
+
   method as_print_setup : Raw.Print_setup.t
 end
 

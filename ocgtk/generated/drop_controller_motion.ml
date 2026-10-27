@@ -19,8 +19,17 @@ class type drop_controller_motion_t = object
     Gobject.Signal.handler_id
 
   method contains_pointer : unit -> bool
+  (** Returns if a Drag-and-Drop operation is within the widget [self] or one of
+      its children. *)
+
   method get_drop : unit -> Ocgdk.Drop.drop_t option
+  (** Returns the [GdkDrop] of a current Drag-and-Drop operation over the widget
+      of [self]. *)
+
   method is_pointer : unit -> bool
+  (** Returns if a Drag-and-Drop operation is within the widget [self], not one
+      of its children. *)
+
   method as_drop_controller_motion : Raw.Drop_controller_motion.t
 end
 

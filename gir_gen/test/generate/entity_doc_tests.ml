@@ -45,11 +45,11 @@ let test_combined_module_links_members_sorted () =
     (Entity_doc.combined_module ~namespace:"Gtk" ~layer:Entity_doc.Layer2
        ~class_names:[ "Window"; "WidgetPaintable" ])
 
-let signature ~class_doc =
+let signature ?(methods = []) ~class_doc () =
   Class_gen.generate_class_signature
     ~ctx:(Helpers.create_test_context ())
     ~class_doc ~class_name:"Button" ~c_type:"GtkButton"
-    ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[] ~signals:[]
+    ~parent_chain:[ "Widget" ] ~methods ~properties:[] ~signals:[]
     ~constructors:[] ~entity_kind:Filtering.Class
   |> Ml_ast_helpers.parse_interface
 
@@ -63,13 +63,31 @@ let check_has msg ~sub doc =
   | None -> Alcotest.fail (msg ^ ": no doc")
 
 let test_signature_carries_docs () =
-  let ast = signature ~class_doc:(Some "A button.") in
+  let ast = signature ~class_doc:(Some "A button.") () in
   check_has "module preamble" ~sub:"A button."
     (Ml_ast_helpers.module_preamble ast);
   check_has "class type" ~sub:"The methods, signals and properties of a"
     (Helpers.expect_some "class type button_t"
        (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
          Ml_ast_helpers.doc_of_attributes ct.pci_attributes))
+
+let test_signature_carries_method_docs () =
+  let clicked =
+    Type_factory.make_gir_method ~method_name:"clicked"
+      ~c_identifier:"gtk_button_clicked" ~return_type:Type_factory.void_type
+      ~doc:"Emits the clicked signal." ()
+  in
+  let ast = signature ~methods:[ clicked ] ~class_doc:None () in
+  let method_doc =
+    Helpers.expect_some "class type button_t"
+      (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+        Helpers.expect_some "method clicked"
+          (Ml_ast_helpers.find_method_in_class_type ct.pci_expr "clicked")
+          (fun field -> Ml_ast_helpers.doc_of_attributes field.pctf_attributes))
+  in
+  Alcotest.(check (option string))
+    "the method's translated doc" (Some " Emits the clicked signal. ")
+    method_doc
 
 let tests =
   [
@@ -88,4 +106,7 @@ let tests =
     ( "layer 2 signature carries the module, class type docs",
       `Quick,
       test_signature_carries_docs );
+    ( "layer 2 signature carries method docs",
+      `Quick,
+      test_signature_carries_method_docs );
   ]

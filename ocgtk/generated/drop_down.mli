@@ -53,30 +53,80 @@ class type drop_down_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_enable_search : unit -> bool
+  (** Returns whether search is enabled. *)
+
   method get_expression : unit -> Expression.expression_t option
+  (** Gets the expression set that is used to obtain strings from items.
+
+      See [Gtk.DropDown.set_expression]. *)
+
   method get_factory : unit -> List_item_factory.list_item_factory_t option
+  (** Gets the factory that's currently used to populate list items.
+
+      The factory returned by this function is always used for the item in the
+      button. It is also used for items in the popup if
+      [Gtk.DropDown:list-factory] is not set. *)
 
   method get_header_factory :
     unit -> List_item_factory.list_item_factory_t option
+  (** Gets the factory that's currently used to create header widgets for the
+      popup. *)
 
   method get_list_factory : unit -> List_item_factory.list_item_factory_t option
+  (** Gets the factory that's currently used to populate list items in the
+      popup. *)
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
+  (** Gets the model that provides the displayed items. *)
+
   method get_search_match_mode : unit -> Enums.stringfiltermatchmode
+  (** Returns the match mode that the search filter is using. *)
+
   method get_selected : unit -> int
+  (** Gets the position of the selected item. *)
+
   method get_selected_item : unit -> [ `object_ ] Gobject.obj option
+  (** Gets the selected item. If no item is selected, [NULL] is returned. *)
+
   method get_show_arrow : unit -> bool
+  (** Returns whether to show an arrow within the widget. *)
+
   method set_enable_search : bool -> unit
+  (** Sets whether a search entry will be shown in the popup that allows to
+      search for items in the list.
+
+      Note that [Gtk.DropDown:expression] must be set for search to work. *)
+
   method set_expression : Expression.expression_t option -> unit
+  (** Sets the expression that gets evaluated to obtain strings from items.
+
+      This is used for search in the popup. The expression must have a value
+      type of [G_TYPE_STRING]. *)
+
   method set_factory : List_item_factory.list_item_factory_t option -> unit
+  (** Sets the [GtkListItemFactory] to use for populating list items. *)
 
   method set_header_factory :
     List_item_factory.list_item_factory_t option -> unit
+  (** Sets the [GtkListItemFactory] to use for creating header widgets for the
+      popup. *)
 
   method set_list_factory : List_item_factory.list_item_factory_t option -> unit
+  (** Sets the [GtkListItemFactory] to use for populating list items in the
+      popup. *)
+
   method set_model : Ocgio.List_model.list_model_t option -> unit
+  (** Sets the [GListModel] to use. *)
+
   method set_search_match_mode : Enums.stringfiltermatchmode -> unit
+  (** Sets the match mode for the search filter. *)
+
   method set_selected : int -> unit
+  (** Selects the item at the given position. *)
+
   method set_show_arrow : bool -> unit
+  (** Sets whether an arrow will be displayed within the widget. *)
+
   method as_drop_down : Raw.Drop_down.t
 end
 

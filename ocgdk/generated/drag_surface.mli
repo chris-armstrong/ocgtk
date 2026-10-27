@@ -6,6 +6,8 @@
 (** The methods, signals and properties of a [GdkDragSurface]. *)
 class type drag_surface_t = object
   method present : int -> int -> bool
+  (** Present [drag_surface]. *)
+
   method as_drag_surface : Raw.Drag_surface.t
 end
 

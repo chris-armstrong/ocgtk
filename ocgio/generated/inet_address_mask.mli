@@ -10,12 +10,25 @@
 (** The methods, signals and properties of a [GInetAddressMask]. *)
 class type inet_address_mask_t = object
   inherit Initable.initable_t
+
   method equal : inet_address_mask_t -> bool
+  (** Tests if [mask] and [mask2] are the same mask. *)
+
   method get_address : unit -> Inet_address.inet_address_t
+  (** Gets [mask]'s base address *)
+
   method get_family : unit -> Enums.socketfamily
+  (** Gets the [GSocketFamily] of [mask]'s address *)
+
   method get_length : unit -> int
+  (** Gets [mask]'s length *)
+
   method matches : Inet_address.inet_address_t -> bool
+  (** Tests if [address] falls within the range described by [mask]. *)
+
   method to_string : unit -> string
+  (** Converts [mask] back to its corresponding string form. *)
+
   method as_inet_address_mask : Raw.Inet_address_mask.t
 end
 

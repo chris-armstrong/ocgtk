@@ -51,31 +51,109 @@ class type entry_completion_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method complete : unit -> unit
+  (** Requests a completion operation, or in other words a refiltering of the
+      current list with completions, using the current key.
+
+      The completion list view will be updated accordingly. *)
+
   method compute_prefix : string -> string option
+  (** Computes the common prefix that is shared by all rows in [completion] that
+      start with [key].
+
+      If no row matches [key], [NULL] will be returned. Note that a text column
+      must have been set for this function to work, see
+      [Gtk.EntryCompletion.set_text_column] for details. *)
+
   method get_completion_prefix : unit -> string option
+  (** Get the original text entered by the user that triggered the completion or
+      [NULL] if there’s no completion ongoing. *)
 
   method get_entry :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Gets the entry [completion] has been attached to. *)
 
   method get_inline_completion : unit -> bool
+  (** Returns whether the common prefix of the possible completions should be
+      automatically inserted in the entry. *)
+
   method get_inline_selection : unit -> bool
+  (** Returns [TRUE] if inline-selection mode is turned on. *)
+
   method get_minimum_key_length : unit -> int
+  (** Returns the minimum key length as set for [completion]. *)
+
   method get_model : unit -> Tree_model.tree_model_t option
+  (** Returns the model the [GtkEntryCompletion] is using as data source.
+
+      Returns [NULL] if the model is unset. *)
+
   method get_popup_completion : unit -> bool
+  (** Returns whether the completions should be presented in a popup window. *)
+
   method get_popup_set_width : unit -> bool
+  (** Returns whether the completion popup window will be resized to the width
+      of the entry. *)
+
   method get_popup_single_match : unit -> bool
+  (** Returns whether the completion popup window will appear even if there is
+      only a single match. *)
+
   method get_text_column : unit -> int
+  (** Returns the column in the model of [completion] to get strings from. *)
+
   method insert_prefix : unit -> unit
+  (** Requests a prefix insertion. *)
+
   method set_inline_completion : bool -> unit
+  (** Sets whether the common prefix of the possible completions should be
+      automatically inserted in the entry. *)
+
   method set_inline_selection : bool -> unit
+  (** Sets whether it is possible to cycle through the possible completions
+      inside the entry. *)
+
   method set_minimum_key_length : int -> unit
+  (** Requires the length of the search key for [completion] to be at least
+      [length].
+
+      This is useful for long lists, where completing using a small key takes a
+      lot of time and will come up with meaningless results anyway (ie, a too
+      large dataset). *)
+
   method set_model : Tree_model.tree_model_t option -> unit
+  (** Sets the model for a [GtkEntryCompletion].
+
+      If [completion] already has a model set, it will remove it before setting
+      the new model. If model is [NULL], then it will unset the model. *)
+
   method set_popup_completion : bool -> unit
+  (** Sets whether the completions should be presented in a popup window. *)
+
   method set_popup_set_width : bool -> unit
+  (** Sets whether the completion popup window will be resized to be the same
+      width as the entry. *)
+
   method set_popup_single_match : bool -> unit
+  (** Sets whether the completion popup window will appear even if there is only
+      a single match.
+
+      You may want to set this to [FALSE] if you are using
+      [Gtk.EntryCompletion:inline-completion]. *)
+
   method set_text_column : int -> unit
+  (** Convenience function for setting up the most used case of this code: a
+      completion list with just strings.
+
+      This function will set up [completion] to have a list displaying all (and
+      just) strings in the completion list, and to get those strings from
+      [column] in the model of [completion].
+
+      This functions creates and adds a [GtkCellRendererText] for the selected
+      column. If you need to set the text column, but don't want the cell
+      renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
+      property directly. *)
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t

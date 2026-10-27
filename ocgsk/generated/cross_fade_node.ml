@@ -1,8 +1,15 @@
 class type cross_fade_node_t = object
   inherit Render_node.render_node_t
+
   method get_end_child : unit -> Render_node.render_node_t
+  (** Retrieves the child [GskRenderNode] at the end of the cross-fade. *)
+
   method get_progress : unit -> float
+  (** Retrieves the progress value of the cross fade. *)
+
   method get_start_child : unit -> Render_node.render_node_t
+  (** Retrieves the child [GskRenderNode] at the beginning of the cross-fade. *)
+
   method as_cross_fade_node : Raw.Cross_fade_node.t
 end
 

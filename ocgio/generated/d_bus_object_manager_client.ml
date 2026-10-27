@@ -16,9 +16,21 @@ class type d_bus_object_manager_client_t = object
     Gobject.Signal.handler_id
 
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
+  (** Gets the [GDBusConnection] used by [manager]. *)
+
   method get_flags : unit -> Enums.dbusobjectmanagerclientflags
+  (** Gets the flags that [manager] was constructed with. *)
+
   method get_name : unit -> string
+  (** Gets the name that [manager] is for, or [NULL] if not a message bus
+      connection. *)
+
   method get_name_owner : unit -> string option
+  (** The unique name that owns the name that [manager] is for or [NULL] if
+      no-one currently owns that name. You can connect to the [GObject::notify]
+      signal to track changes to the [GDBusObjectManagerClient:name]-owner
+      property. *)
+
   method object_path : string
   method as_d_bus_object_manager_client : Raw.D_bus_object_manager_client.t
 end

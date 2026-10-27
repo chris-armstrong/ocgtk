@@ -53,24 +53,68 @@ class type mount_operation_t = object
     Gobject.Signal.handler_id
 
   method get_anonymous : unit -> bool
+  (** Check to see whether the mount operation is being used for an anonymous
+      user. *)
+
   method get_choice : unit -> int
+  (** Gets a choice from the mount operation. *)
+
   method get_domain : unit -> string option
+  (** Gets the domain of the mount operation. *)
+
   method get_is_tcrypt_hidden_volume : unit -> bool
+  (** Check to see whether the mount operation is being used for a TCRYPT hidden
+      volume. *)
+
   method get_is_tcrypt_system_volume : unit -> bool
+  (** Check to see whether the mount operation is being used for a TCRYPT system
+      volume. *)
+
   method get_password : unit -> string option
+  (** Gets a password from the mount operation. *)
+
   method get_password_save : unit -> Enums.passwordsave
+  (** Gets the state of saving passwords for the mount operation. *)
+
   method get_pim : unit -> int
+  (** Gets a PIM from the mount operation. *)
+
   method get_username : unit -> string option
+  (** Get the user name from the mount operation. *)
+
   method reply : Enums.mountoperationresult -> unit
+  (** Emits the [GMountOperation::reply] signal. *)
+
   method set_anonymous : bool -> unit
+  (** Sets the mount operation to use an anonymous user if [anonymous] is
+      [TRUE]. *)
+
   method set_choice : int -> unit
+  (** Sets a default choice for the mount operation. *)
+
   method set_domain : string option -> unit
+  (** Sets the mount operation's domain. *)
+
   method set_is_tcrypt_hidden_volume : bool -> unit
+  (** Sets the mount operation to use a hidden volume if [hidden_volume] is
+      [TRUE]. *)
+
   method set_is_tcrypt_system_volume : bool -> unit
+  (** Sets the mount operation to use a system volume if [system_volume] is
+      [TRUE]. *)
+
   method set_password : string option -> unit
+  (** Sets the mount operation's password to [password]. *)
+
   method set_password_save : Enums.passwordsave -> unit
+  (** Sets the state of saving passwords for the mount operation. *)
+
   method set_pim : int -> unit
+  (** Sets the mount operation's PIM to [pim]. *)
+
   method set_username : string option -> unit
+  (** Sets the user name within [op] to [username]. *)
+
   method as_mount_operation : Raw.Mount_operation.t
 end
 

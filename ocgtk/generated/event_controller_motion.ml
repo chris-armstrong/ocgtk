@@ -19,7 +19,11 @@ class type event_controller_motion_t = object
     Gobject.Signal.handler_id
 
   method contains_pointer : unit -> bool
+  (** Returns if a pointer is within [self] or one of its children. *)
+
   method is_pointer : unit -> bool
+  (** Returns if a pointer is within [self], but not one of its children. *)
+
   method as_event_controller_motion : Raw.Event_controller_motion.t
 end
 

@@ -57,10 +57,29 @@ class type statusbar_t = object
     Gobject.Signal.handler_id
 
   method get_context_id : string -> int
+  (** Returns a new context identifier, given a description of the actual
+      context.
+
+      Note that the description is not shown in the UI. *)
+
   method pop : int -> unit
+  (** Removes the first message in the [GtkStatusbar]’s stack with the given
+      context id.
+
+      Note that this may not change the displayed message, if the message at the
+      top of the stack has a different context id. *)
+
   method push : int -> string -> int
+  (** Pushes a new message onto a statusbar’s stack. *)
+
   method remove : int -> int -> unit
+  (** Forces the removal of a message from a statusbar’s stack. The exact
+      [context_id] and [message_id] must be specified. *)
+
   method remove_all : int -> unit
+  (** Forces the removal of all messages from a statusbar's stack with the exact
+      [context_id]. *)
+
   method as_statusbar : Raw.Statusbar.t
 end
 

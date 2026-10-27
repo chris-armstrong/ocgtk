@@ -9,9 +9,16 @@
 class type charset_converter_t = object
   inherit Converter.converter_t
   inherit Initable.initable_t
+
   method get_num_fallbacks : unit -> int
+  (** Gets the number of fallbacks that [converter] has applied so far. *)
+
   method get_use_fallback : unit -> bool
+  (** Gets the [GCharsetConverter:use]-fallback property. *)
+
   method set_use_fallback : bool -> unit
+  (** Sets the [GCharsetConverter:use]-fallback property. *)
+
   method from_charset : string
   method to_charset : string
   method as_charset_converter : Raw.Charset_converter.t

@@ -1,11 +1,24 @@
 class type radial_gradient_node_t = object
   inherit Render_node.render_node_t
+
   method get_center : unit -> Ocgraphene.Point.point_t
+  (** Retrieves the center pointer for the gradient. *)
+
   method get_end : unit -> float
+  (** Retrieves the end value for the gradient. *)
+
   method get_hradius : unit -> float
+  (** Retrieves the horizontal radius for the gradient. *)
+
   method get_n_color_stops : unit -> Gsize.t
+  (** Retrieves the number of color stops in the gradient. *)
+
   method get_start : unit -> float
+  (** Retrieves the start value for the gradient. *)
+
   method get_vradius : unit -> float
+  (** Retrieves the vertical radius for the gradient. *)
+
   method as_radial_gradient_node : Raw.Radial_gradient_node.t
 end
 

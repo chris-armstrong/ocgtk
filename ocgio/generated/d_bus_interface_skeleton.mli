@@ -17,18 +17,62 @@ class type d_bus_interface_skeleton_t = object
 
   method export :
     D_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
+  (** Exports [interface_] at [object_path] on [connection].
+
+      This can be called multiple times to export the same [interface_] onto
+      multiple connections however the [object_path] provided must be the same
+      for all connections.
+
+      Use g_dbus_interface_skeleton_unexport() to unexport the object. *)
 
   method flush : unit -> unit
+  (** If [interface_] has outstanding changes, request for these changes to be
+      emitted immediately.
+
+      For example, an exported D-Bus interface may queue up property changes and
+      emit the [org.freedesktop.DBus.Properties.PropertiesChanged] signal later
+      (e.g. in an idle handler). This technique is useful for collapsing
+      multiple property changes into one. *)
+
   method get_connection : unit -> D_bus_connection.d_bus_connection_t option
+  (** Gets the first connection that [interface_] is exported on, if any. *)
+
   method get_connections : unit -> D_bus_connection.d_bus_connection_t list
+  (** Gets a list of the connections that [interface_] is exported on. *)
+
   method get_flags : unit -> Enums.dbusinterfaceskeletonflags
+  (** Gets the [GDBusInterfaceSkeletonFlags] that describes what the behavior of
+      [interface_] *)
+
   method get_object_path : unit -> string option
+  (** Gets the object path that [interface_] is exported on, if any. *)
+
   method get_properties : unit -> Gvariant.t
+  (** Gets all D-Bus properties for [interface_]. *)
+
   method get_vtable : unit -> Raw.D_bus_interface_v_table.t
+  (** Gets the interface vtable for the D-Bus interface implemented by
+      [interface_]. The returned function pointers should expect [interface_]
+      itself to be passed as [user_data]. *)
+
   method has_connection : D_bus_connection.d_bus_connection_t -> bool
+  (** Checks if [interface_] is exported on [connection]. *)
+
   method set_flags : Enums.dbusinterfaceskeletonflags -> unit
+  (** Sets flags describing what the behavior of [skeleton] should be. *)
+
   method unexport : unit -> unit
+  (** Stops exporting [interface_] on all connections it is exported on.
+
+      To unexport [interface_] from only a single connection, use
+      g_dbus_interface_skeleton_unexport_from_connection() *)
+
   method unexport_from_connection : D_bus_connection.d_bus_connection_t -> unit
+  (** Stops exporting [interface_] on [connection].
+
+      To stop exporting on all connections the interface is exported on, use
+      g_dbus_interface_skeleton_unexport(). *)
+
   method g_flags : Enums.dbusinterfaceskeletonflags
   method set_g_flags : Enums.dbusinterfaceskeletonflags -> unit
   method as_d_bus_interface_skeleton : Raw.D_bus_interface_skeleton.t

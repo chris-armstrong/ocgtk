@@ -27,9 +27,17 @@ class type spinner_t = object
     .widget_t
 
   method get_spinning : unit -> bool
+  (** Returns whether the spinner is spinning. *)
+
   method set_spinning : bool -> unit
+  (** Sets the activity of the spinner. *)
+
   method start : unit -> unit
+  (** Starts the animation of the spinner. *)
+
   method stop : unit -> unit
+  (** Stops the animation of the spinner. *)
+
   method as_spinner : Raw.Spinner.t
 end
 

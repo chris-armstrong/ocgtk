@@ -84,38 +84,76 @@ class type expander_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [expander]. *)
 
   method get_expanded : unit -> bool
+  (** Queries a [GtkExpander] and returns its current state.
+
+      Returns [TRUE] if the child widget is revealed. *)
+
   method get_label : unit -> string option
+  (** Fetches the text from a label widget.
+
+      This is including any embedded underlines indicating mnemonics and Pango
+      markup, as set by [Gtk.Expander.set_label]. If the label text has not been
+      set the return value will be [NULL]. This will be the case if you create
+      an empty button with gtk_button_new() to use as a container. *)
 
   method get_label_widget :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Retrieves the label widget for the frame. *)
 
   method get_resize_toplevel : unit -> bool
+  (** Returns whether the expander will resize the toplevel widget containing
+      the expander upon resizing and collapsing. *)
+
   method get_use_markup : unit -> bool
+  (** Returns whether the label’s text is interpreted as Pango markup. *)
+
   method get_use_underline : unit -> bool
+  (** Returns whether an underline in the text indicates a mnemonic. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [expander]. *)
 
   method set_expanded : bool -> unit
+  (** Sets the state of the expander.
+
+      Set to [TRUE], if you want the child widget to be revealed, and [FALSE] if
+      you want the child widget to be hidden. *)
+
   method set_label : string option -> unit
+  (** Sets the text of the label of the expander to [label].
+
+      This will also clear any previously set labels. *)
 
   method set_label_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Set the label widget for the expander.
+
+      This is the widget that will appear embedded alongside the expander arrow.
+  *)
 
   method set_resize_toplevel : bool -> unit
+  (** Sets whether the expander will resize the toplevel widget containing the
+      expander upon resizing and collapsing. *)
+
   method set_use_markup : bool -> unit
+  (** Sets whether the text of the label contains Pango markup. *)
+
   method set_use_underline : bool -> unit
+  (** If true, an underline in the text indicates a mnemonic. *)
+
   method as_expander : Raw.Expander.t
 end
 

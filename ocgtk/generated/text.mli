@@ -167,38 +167,173 @@ class type text_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_activates_default : unit -> bool
+  (** Returns whether pressing <kbd>Enter</kbd> will activate the default widget
+      for the window containing the widget.
+
+      See [Gtk.Text.set_activates_default]. *)
+
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
+  (** Gets the attribute list that was set on the text widget.
+
+      See [Gtk.Text.set_attributes]. *)
+
   method get_buffer : unit -> Entry_buffer.entry_buffer_t
+  (** Get the entry buffer object which holds the text for this widget. *)
+
   method get_enable_emoji_completion : unit -> bool
+  (** Returns whether Emoji completion is enabled. *)
+
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
+  (** Gets the extra menu model of the text widget.
+
+      See [Gtk.Text.set_extra_menu]. *)
+
   method get_input_hints : unit -> Enums.inputhints
+  (** Gets the input hints of the text widget. *)
+
   method get_input_purpose : unit -> Enums.inputpurpose
+  (** Gets the input purpose of the text widget. *)
+
   method get_invisible_char : unit -> int
+  (** Retrieves the character displayed when visibility is set to false.
+
+      Note that GTK does not compute this value unless it needs it, so the value
+      returned by this function is not very useful unless it has been explicitly
+      set with [Gtk.Text.set_invisible_char]. *)
+
   method get_max_length : unit -> int
+  (** Retrieves the maximum allowed length of the contents.
+
+      See [Gtk.Text.set_max_length].
+
+      This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+      [Gtk.EntryBuffer.get_max_length] on it. *)
+
   method get_overwrite_mode : unit -> bool
+  (** Gets whether text is overwritten when typing.
+
+      See [Gtk.Text.set_overwrite_mode]. *)
+
   method get_placeholder_text : unit -> string option
+  (** Retrieves the text that will be displayed when the text widget is empty
+      and unfocused
+
+      See [Gtk.Text.set_placeholder_text]. *)
+
   method get_propagate_text_width : unit -> bool
+  (** Returns whether the text widget will grow and shrink with the content. *)
+
   method get_tabs : unit -> Ocpango.Tab_array.tab_array_t option
+  (** Gets the tab stops for the text widget.
+
+      See [Gtk.Text.set_tabs]. *)
+
   method get_text_length : unit -> UInt16.t
+  (** Retrieves the length of the contents.
+
+      This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+      [Gtk.EntryBuffer.get_length] on it. *)
+
   method get_truncate_multiline : unit -> bool
+  (** Returns whether pasted text will be truncated to the first line. *)
+
   method get_visibility : unit -> bool
+  (** Retrieves whether the text is visible. *)
+
   method grab_focus_without_selecting : unit -> bool
+  (** Causes the text widget to have the keyboard focus.
+
+      It behaves like [Gtk.Widget.grab_focus], except that it does not select
+      the contents of [self].
+
+      You only want to call this on some special entries which the user usually
+      doesn't want to replace all text in, such as search-as-you-type entries.
+  *)
+
   method set_activates_default : bool -> unit
+  (** Sets whether pressing <kbd>Enter</kbd> will activate the default widget.
+
+      This usually means that the dialog containing [self] will be closed, since
+      the default widget is usually one of the dialog buttons. *)
+
   method set_attributes : Ocpango.Attr_list.attr_list_t option -> unit
+  (** Apply attributes to the contents of the text widget. *)
+
   method set_buffer : Entry_buffer.entry_buffer_t -> unit
+  (** Set the entry buffer object which holds the text for this widget. *)
+
   method set_enable_emoji_completion : bool -> unit
+  (** Sets whether Emoji completion is enabled.
+
+      If it is, typing ':', followed by a recognized keyword, will pop up a
+      window with suggested Emojis matching the keyword. *)
+
   method set_extra_menu : Ocgio.Menu_model.menu_model_t option -> unit
+  (** Sets a menu model to add to the context menu of the text widget. *)
+
   method set_input_hints : Enums.inputhints -> unit
+  (** Sets hints that allow input methods to fine-tune their behaviour. *)
+
   method set_input_purpose : Enums.inputpurpose -> unit
+  (** Sets the input purpose of the text widget.
+
+      The input purpose can be used by on-screen keyboards and other input
+      methods to adjust their behaviour. *)
+
   method set_invisible_char : int -> unit
+  (** Sets the character to use when in “password mode”.
+
+      By default, GTK picks the best invisible char available in the current
+      font. If you set the invisible char to 0, then the user will get no
+      feedback at all; there will be no text on the screen as they type. *)
+
   method set_max_length : int -> unit
+  (** Sets the maximum allowed length of the contents.
+
+      If the current contents are longer than the given length, they will be
+      truncated to fit.
+
+      This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+      [Gtk.EntryBuffer.set_max_length] on it. *)
+
   method set_overwrite_mode : bool -> unit
+  (** Sets whether the text is overwritten when typing. *)
+
   method set_placeholder_text : string option -> unit
+  (** Sets the text to be displayed when the text widget is empty and unfocused.
+
+      This can be used to give a visual hint of the expected contents of the
+      text widget. *)
+
   method set_propagate_text_width : bool -> unit
+  (** Sets whether the text widget should grow and shrink with the content. *)
+
   method set_tabs : Ocpango.Tab_array.tab_array_t option -> unit
+  (** Sets tab stops for the text widget. *)
+
   method set_truncate_multiline : bool -> unit
+  (** Sets whether pasted text should be truncated to the first line. *)
+
   method set_visibility : bool -> unit
+  (** Sets whether the contents of the text widget are visible or not.
+
+      When visibility is set to false, characters are displayed as the invisible
+      char, and it will also appear that way when the text in the widget is
+      copied to the clipboard.
+
+      By default, GTK picks the best invisible character available in the
+      current font, but it can be changed with [Gtk.Text.set_invisible_char].
+
+      Note that you probably want to set [Gtk.Text:input-purpose] to
+      [Gtk.InputPurpose.password] or [Gtk.InputPurpose.pin] to inform input
+      methods about the purpose of this widget, in addition to setting
+      visibility to false. *)
+
   method unset_invisible_char : unit -> unit
+  (** Unsets the invisible char.
+
+      After calling this, the default invisible char is used again. *)
+
   method im_module : string
   method set_im_module : string -> unit
   method invisible_char_set : bool

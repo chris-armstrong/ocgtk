@@ -1,8 +1,18 @@
 class type pixbuf_simple_anim_t = object
   inherit Pixbuf_animation.pixbuf_animation_t
+
   method add_frame : Pixbuf.pixbuf_t -> unit
+  (** Adds a new frame to [animation]. The [pixbuf] must have the dimensions
+      specified when the animation was constructed. *)
+
   method get_loop : unit -> bool
+  (** Gets whether [animation] should loop indefinitely when it reaches the end.
+  *)
+
   method set_loop : bool -> unit
+  (** Sets whether [animation] should loop indefinitely when it reaches the end.
+  *)
+
   method as_pixbuf_simple_anim : Raw.Pixbuf_simple_anim.t
 end
 

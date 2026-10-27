@@ -6,9 +6,16 @@
 (** The methods, signals and properties of a [GskMaskNode]. *)
 class type mask_node_t = object
   inherit Render_node.render_node_t
+
   method get_mask : unit -> Render_node.render_node_t
+  (** Retrieves the mask [GskRenderNode] child of the [node]. *)
+
   method get_mask_mode : unit -> Enums.maskmode
+  (** Retrieves the mask mode used by [node]. *)
+
   method get_source : unit -> Render_node.render_node_t
+  (** Retrieves the source [GskRenderNode] child of the [node]. *)
+
   method as_mask_node : Raw.Mask_node.t
 end
 

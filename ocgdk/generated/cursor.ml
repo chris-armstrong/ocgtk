@@ -1,9 +1,41 @@
 class type cursor_t = object
   method get_fallback : unit -> cursor_t option
+  (** Returns the fallback for this [cursor].
+
+      The fallback will be used if this cursor is not available on a given
+      [GdkDisplay]. For named cursors, this can happen when using nonstandard
+      names or when using an incomplete cursor theme. For textured cursors, this
+      can happen when the texture is too large or when the [GdkDisplay] it is
+      used on does not support textured cursors. *)
+
   method get_hotspot_x : unit -> int
+  (** Returns the horizontal offset of the hotspot.
+
+      The hotspot indicates the pixel that will be directly above the cursor.
+
+      Note that named cursors may have a nonzero hotspot, but this function will
+      only return the hotspot position for cursors created with
+      [Gdk.Cursor.new_from_texture]. *)
+
   method get_hotspot_y : unit -> int
+  (** Returns the vertical offset of the hotspot.
+
+      The hotspot indicates the pixel that will be directly above the cursor.
+
+      Note that named cursors may have a nonzero hotspot, but this function will
+      only return the hotspot position for cursors created with
+      [Gdk.Cursor.new_from_texture]. *)
+
   method get_name : unit -> string option
+  (** Returns the name of the cursor.
+
+      If the cursor is not a named cursor, [NULL] will be returned. *)
+
   method get_texture : unit -> Texture.texture_t option
+  (** Returns the texture for the cursor.
+
+      If the cursor is a named cursor, [NULL] will be returned. *)
+
   method as_cursor : Raw.Cursor.t
 end
 

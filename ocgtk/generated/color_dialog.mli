@@ -16,13 +16,31 @@
 class type color_dialog_t = object
   method choose_rgba_finish :
     Ocgio.Async_result.async_result_t -> (Ocgdk.Rgb_a.rgb_a_t, GError.t) result
+  (** Finishes the [Gtk.ColorDialog.choose_rgba] call
+
+      Note that this function returns a [Gtk.DialogError.DISMISSED] error if the
+      user cancels the dialog. *)
 
   method get_modal : unit -> bool
+  (** Returns whether the color chooser dialog blocks interaction with the
+      parent window while it is presented. *)
+
   method get_title : unit -> string
+  (** Returns the title that will be shown on the color chooser dialog. *)
+
   method get_with_alpha : unit -> bool
+  (** Returns whether colors may have alpha. *)
+
   method set_modal : bool -> unit
+  (** Sets whether the color chooser dialog blocks interaction with the parent
+      window while it is presented. *)
+
   method set_title : string -> unit
+  (** Sets the title that will be shown on the color chooser dialog. *)
+
   method set_with_alpha : bool -> unit
+  (** Sets whether colors may have alpha. *)
+
   method as_color_dialog : Raw.Color_dialog.t
 end
 

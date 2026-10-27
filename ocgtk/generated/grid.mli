@@ -86,6 +86,10 @@ class type grid_t = object
     int ->
     int ->
     unit
+  (** Adds a widget to the grid.
+
+      The position of [child] is determined by [column] and [row]. The number of
+      “cells” that [child] will occupy is determined by [width] and [height]. *)
 
   method attach_next_to :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -97,8 +101,18 @@ class type grid_t = object
     int ->
     int ->
     unit
+  (** Adds a widget to the grid.
+
+      The widget is placed next to [sibling], on the side determined by [side].
+      When [sibling] is [NULL], the widget is placed in row (for left or right
+      placement) or column 0 (for top or bottom placement), at the end indicated
+      by [side].
+
+      Attaching widgets labeled \[1\], \[2\], \[3\] with [@sibling == %NULL] and
+      [@side == %GTK_POS_LEFT] yields a layout of \[3\]\[2\]\[1\]. *)
 
   method get_baseline_row : unit -> int
+  (** Returns which row defines the global baseline of [grid]. *)
 
   method get_child_at :
     int ->
@@ -106,35 +120,100 @@ class type grid_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child of [grid] whose area covers the grid cell at [column],
+      [row]. *)
 
   method get_column_homogeneous : unit -> bool
+  (** Returns whether all columns of [grid] have the same width. *)
+
   method get_column_spacing : unit -> int
+  (** Returns the amount of space between the columns of [grid]. *)
+
   method get_row_baseline_position : int -> Enums.baselineposition
+  (** Returns the baseline position of [row].
+
+      See [Gtk.Grid.set_row_baseline_position]. *)
+
   method get_row_homogeneous : unit -> bool
+  (** Returns whether all rows of [grid] have the same height. *)
+
   method get_row_spacing : unit -> int
+  (** Returns the amount of space between the rows of [grid]. *)
+
   method insert_column : int -> unit
+  (** Inserts a column at the specified position.
+
+      Children which are attached at or to the right of this position are moved
+      one column to the right. Children which span across this position are
+      grown to span the new column. *)
 
   method insert_next_to :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Enums.positiontype ->
     unit
+  (** Inserts a row or column at the specified position.
+
+      The new row or column is placed next to [sibling], on the side determined
+      by [side]. If [side] is [GTK_POS_TOP] or [GTK_POS_BOTTOM], a row is
+      inserted. If [side] is [GTK_POS_LEFT] of [GTK_POS_RIGHT], a column is
+      inserted. *)
 
   method insert_row : int -> unit
+  (** Inserts a row at the specified position.
+
+      Children which are attached at or below this position are moved one row
+      down. Children which span across this position are grown to span the new
+      row. *)
 
   method remove :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Removes a child from [grid].
+
+      The child must have been added with [Gtk.Grid.attach] or
+      [Gtk.Grid.attach_next_to]. *)
 
   method remove_column : int -> unit
+  (** Removes a column from the grid.
+
+      Children that are placed in this column are removed, spanning children
+      that overlap this column have their width reduced by one, and children
+      after the column are moved to the left. *)
+
   method remove_row : int -> unit
+  (** Removes a row from the grid.
+
+      Children that are placed in this row are removed, spanning children that
+      overlap this row have their height reduced by one, and children below the
+      row are moved up. *)
+
   method set_baseline_row : int -> unit
+  (** Sets which row defines the global baseline for the entire grid.
+
+      Each row in the grid can have its own local baseline, but only one of
+      those is global, meaning it will be the baseline in the parent of the
+      [grid]. *)
+
   method set_column_homogeneous : bool -> unit
+  (** Sets whether all columns of [grid] will have the same width. *)
+
   method set_column_spacing : int -> unit
+  (** Sets the amount of space between columns of [grid]. *)
+
   method set_row_baseline_position : int -> Enums.baselineposition -> unit
+  (** Sets how the baseline should be positioned on [row] of the grid, in case
+      that row is assigned more space than is requested.
+
+      The default baseline position is [GTK_BASELINE_POSITION_CENTER]. *)
+
   method set_row_homogeneous : bool -> unit
+  (** Sets whether all rows of [grid] will have the same height. *)
+
   method set_row_spacing : int -> unit
+  (** Sets the amount of space between rows of [grid]. *)
+
   method as_grid : Raw.Grid.t
 end
 

@@ -12,7 +12,14 @@
 (** The methods, signals and properties of a [GtkBitsetIter]. *)
 class type bitset_iter_t = object
   method get_value : unit -> int
+  (** Gets the current value that [iter] points to.
+
+      If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [FALSE], this
+      function returns 0. *)
+
   method is_valid : unit -> bool
+  (** Checks if [iter] points to a valid value. *)
+
   method as_bitset_iter : Raw.Bitset_iter.t
 end
 

@@ -10,7 +10,16 @@
 (** The methods, signals and properties of a [PangoGlyphString]. *)
 class type glyph_string_t = object
   method get_width : unit -> int
+  (** Computes the logical width of the glyph string.
+
+      This can also be computed using [Pango.GlyphString.extents]. However,
+      since this only computes the width, it's much faster. This is in fact only
+      a convenience function that computes the sum of \@geometry.width for each
+      glyph in the [glyphs]. *)
+
   method set_size : int -> unit
+  (** Resize a glyph string to the given length. *)
+
   method as_glyph_string : Raw.Glyph_string.t
 end
 

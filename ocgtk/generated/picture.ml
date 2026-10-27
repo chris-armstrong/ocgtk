@@ -4,20 +4,104 @@ class type picture_t = object
     .widget_t
 
   method get_alternative_text : unit -> string option
+  (** Gets the alternative textual description of the picture.
+
+      The returned string will be [NULL] if the picture cannot be described
+      textually. *)
+
   method get_can_shrink : unit -> bool
+  (** Returns whether the [GtkPicture] respects its contents size. *)
+
   method get_content_fit : unit -> Enums.contentfit
+  (** Returns the fit mode for the content of the [GtkPicture].
+
+      See [Gtk.ContentFit] for details. *)
+
   method get_file : unit -> Ocgio.File.file_t option
+  (** Gets the [GFile] currently displayed if [self] is displaying a file.
+
+      If [self] is not displaying a file, for example when
+      [Gtk.Picture.set_paintable] was used, then [NULL] is returned. *)
+
   method get_keep_aspect_ratio : unit -> bool
+  (** Returns whether the [GtkPicture] preserves its contents aspect ratio. *)
+
   method get_paintable : unit -> Ocgdk.Paintable.paintable_t option
+  (** Gets the [GdkPaintable] being displayed by the [GtkPicture]. *)
+
   method set_alternative_text : string option -> unit
+  [@@ocaml.doc
+    "Sets an alternative textual description for the picture contents.\n\n\
+     It is equivalent to the \"alt\" attribute for images on websites.\n\n\
+     This text will be made available to accessibility tools.\n\n\
+     If the picture cannot be described textually, set this property to [NULL]."]
+
   method set_can_shrink : bool -> unit
+  (** If set to [TRUE], the [self] can be made smaller than its contents.
+
+      The contents will then be scaled down when rendering.
+
+      If you want to still force a minimum size manually, consider using
+      [Gtk.Widget.set_size_request].
+
+      Also of note is that a similar function for growing does not exist because
+      the grow behavior can be controlled via [Gtk.Widget.set_halign] and
+      [Gtk.Widget.set_valign]. *)
+
   method set_content_fit : Enums.contentfit -> unit
+  (** Sets how the content should be resized to fit the [GtkPicture].
+
+      See [Gtk.ContentFit] for details. *)
+
   method set_file : Ocgio.File.file_t option -> unit
+  (** Makes [self] load and display [file].
+
+      See [Gtk.Picture.new_for_file] for details.
+
+      Note that this function should not be used with untrusted data. Use a
+      proper image loading framework such as libglycin, which can load many
+      image formats into a [GdkTexture], and then use
+      [Gtk.Image.set_from_paintable]. *)
+
   method set_filename : string option -> unit
+  (** Makes [self] load and display the given [filename].
+
+      This is a utility function that calls [Gtk.Picture.set_file].
+
+      Note that this function should not be used with untrusted data. Use a
+      proper image loading framework such as libglycin, which can load many
+      image formats into a [GdkTexture], and then use
+      [Gtk.Image.set_from_paintable]. *)
+
   method set_keep_aspect_ratio : bool -> unit
+  (** If set to [TRUE], the [self] will render its contents according to their
+      aspect ratio.
+
+      That means that empty space may show up at the top/bottom or left/right of
+      [self].
+
+      If set to [FALSE] or if the contents provide no aspect ratio, the contents
+      will be stretched over the picture's whole area. *)
+
   method set_paintable : Ocgdk.Paintable.paintable_t option -> unit
+  (** Makes [self] display the given [paintable].
+
+      If [paintable] is [NULL], nothing will be displayed.
+
+      See [Gtk.Picture.new_for_paintable] for details. *)
+
   method set_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> unit
+  (** Sets a [GtkPicture] to show a [GdkPixbuf].
+
+      See [Gtk.Picture.new_for_pixbuf] for details.
+
+      This is a utility function that calls [Gtk.Picture.set_paintable]. *)
+
   method set_resource : string option -> unit
+  (** Makes [self] load and display the resource at the given [resource_path].
+
+      This is a utility function that calls [Gtk.Picture.set_file]. *)
+
   method as_picture : Raw.Picture.t
 end
 

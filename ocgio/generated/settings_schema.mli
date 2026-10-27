@@ -75,12 +75,44 @@
 (** The methods, signals and properties of a [GSettingsSchema]. *)
 class type settings_schema_t = object
   method get_id : unit -> string
+  (** Get the ID of [schema]. *)
+
   method get_key : string -> Raw.Settings_schema_key.t
+  (** Gets the key named [name] from [schema].
+
+      It is a programmer error to request a key that does not exist. See
+      g_settings_schema_list_keys(). *)
+
   method get_path : unit -> string option
+  (** Gets the path associated with [schema], or [NULL].
+
+      Schemas may be single-instance or relocatable. Single-instance schemas
+      correspond to exactly one set of keys in the backend database: those
+      located at the path returned by this function.
+
+      Relocatable schemas can be referenced by other schemas and can therefore
+      describe multiple sets of keys at different locations. For relocatable
+      schemas, this function will return [NULL]. *)
+
   method has_key : string -> bool
+  (** Checks if [schema] has a key named [name]. *)
+
   method list_children : unit -> string array
+  (** Gets the list of children in [schema].
+
+      You should free the return value with g_strfreev() when you are done with
+      it. *)
+
   method list_keys : unit -> string array
+  [@@ocaml.doc
+    "Introspects the list of keys on [schema].\n\n\
+     You should probably not be calling this function from \"normal\" code\n\
+     (since you should already know what keys are in your schema).  This\n\
+     function is intended for introspection reasons."]
+
   method ref : unit -> Raw.Settings_schema.t
+  (** Increase the reference count of [schema], returning a new reference. *)
+
   method as_settings_schema : Raw.Settings_schema.t
 end
 

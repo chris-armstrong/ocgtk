@@ -8,6 +8,14 @@ class type shortcuts_window_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_section : Shortcuts_section.shortcuts_section_t -> unit
+  (** Adds a section to the shortcuts window.
+
+      This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+      tag to add the child.
+
+      Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
+      manages its children internally. *)
+
   method section_name : string
   method set_section_name : string -> unit
   method view_name : string

@@ -9,6 +9,13 @@
 (** The methods, signals and properties of a [GtkTextChildAnchor]. *)
 class type text_child_anchor_t = object
   method get_deleted : unit -> bool
+  (** Determines whether a child anchor has been deleted from the buffer.
+
+      Keep in mind that the child anchor will be unreferenced when removed from
+      the buffer, so you need to hold your own reference (with g_object_ref())
+      if you plan to use this function — otherwise all deleted child anchors
+      will also be finalized. *)
+
   method as_text_child_anchor : Raw.Text_child_anchor.t
 end
 

@@ -74,10 +74,25 @@ class type drop_target_async_t = object
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgdk.Enums.dragaction
+  (** Gets the actions that this drop target supports. *)
+
   method get_formats : unit -> Ocgdk.Content_formats.content_formats_t option
+  (** Gets the data formats that this drop target accepts.
+
+      If the result is [NULL], all formats are expected to be supported. *)
+
   method reject_drop : Ocgdk.Drop.drop_t -> unit
+  (** Sets the [drop] as not accepted on this drag site.
+
+      This function should be used when delaying the decision on whether to
+      accept a drag or not until after reading the data. *)
+
   method set_actions : Ocgdk.Enums.dragaction -> unit
+  (** Sets the actions that this drop target supports. *)
+
   method set_formats : Ocgdk.Content_formats.content_formats_t option -> unit
+  (** Sets the data formats that this drop target will accept. *)
+
   method as_drop_target_async : Raw.Drop_target_async.t
 end
 

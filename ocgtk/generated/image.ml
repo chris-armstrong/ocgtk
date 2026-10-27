@@ -4,20 +4,89 @@ class type image_t = object
     .widget_t
 
   method clear : unit -> unit
+  (** Resets the image to be empty. *)
+
   method get_gicon : unit -> Ocgio.Icon.icon_t option
+  (** Gets the [GIcon] being displayed by the [GtkImage].
+
+      The storage type of the image must be [GTK_IMAGE_EMPTY] or
+      [GTK_IMAGE_GICON] (see [Gtk.Image.get_storage_type]). The caller of this
+      function does not own a reference to the returned [GIcon]. *)
+
   method get_icon_name : unit -> string option
+  (** Gets the icon name and size being displayed by the [GtkImage].
+
+      The storage type of the image must be [GTK_IMAGE_EMPTY] or
+      [GTK_IMAGE_ICON_NAME] (see [Gtk.Image.get_storage_type]). The returned
+      string is owned by the [GtkImage] and should not be freed. *)
+
   method get_icon_size : unit -> Enums.iconsize
+  (** Gets the icon size used by the [image] when rendering icons. *)
+
   method get_paintable : unit -> Ocgdk.Paintable.paintable_t option
+  (** Gets the image [GdkPaintable] being displayed by the [GtkImage].
+
+      The storage type of the image must be [GTK_IMAGE_EMPTY] or
+      [GTK_IMAGE_PAINTABLE] (see [Gtk.Image.get_storage_type]). The caller of
+      this function does not own a reference to the returned paintable. *)
+
   method get_pixel_size : unit -> int
+  (** Gets the pixel size used for named icons. *)
+
   method get_storage_type : unit -> Enums.imagetype
+  (** Gets the type of representation being used by the [GtkImage] to store
+      image data.
+
+      If the [GtkImage] has no image data, the return value will be
+      [GTK_IMAGE_EMPTY]. *)
+
   method set_from_file : string option -> unit
+  (** Sets a [GtkImage] to show a file.
+
+      See [Gtk.Image.new_from_file] for details.
+
+      Note that this function should not be used with untrusted data. Use a
+      proper image loading framework such as libglycin, which can load many
+      image formats into a [GdkTexture], and then use
+      [Gtk.Image.set_from_paintable]. *)
+
   method set_from_gicon : Ocgio.Icon.icon_t -> unit
+  (** Sets a [GtkImage] to show a [GIcon].
+
+      See [Gtk.Image.new_from_gicon] for details. *)
+
   method set_from_icon_name : string option -> unit
+  (** Sets a [GtkImage] to show a named icon.
+
+      See [Gtk.Image.new_from_icon_name] for details. *)
+
   method set_from_paintable : Ocgdk.Paintable.paintable_t option -> unit
+  (** Sets a [GtkImage] to show a [GdkPaintable].
+
+      See [Gtk.Image.new_from_paintable] for details. *)
+
   method set_from_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> unit
+  (** Sets a [GtkImage] to show a [GdkPixbuf].
+
+      See [Gtk.Image.new_from_pixbuf] for details.
+
+      Note: This is a helper for [Gtk.Image.set_from_paintable], and you can't
+      get back the exact pixbuf once this is called, only a paintable. *)
+
   method set_from_resource : string option -> unit
+  (** Sets a [GtkImage] to show a resource.
+
+      See [Gtk.Image.new_from_resource] for details. *)
+
   method set_icon_size : Enums.iconsize -> unit
+  (** Suggests an icon size to the theme for named icons. *)
+
   method set_pixel_size : int -> unit
+  (** Sets the pixel size to use for named icons.
+
+      If the pixel size is set to a value != -1, it is used instead of the icon
+      size set by [Gtk.Image.set_icon_size]. *)
+
   method use_fallback : bool
   method set_use_fallback : bool -> unit
   method as_image : Raw.Image.t

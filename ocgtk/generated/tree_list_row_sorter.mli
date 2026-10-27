@@ -18,8 +18,16 @@
 (** The methods, signals and properties of a [GtkTreeListRowSorter]. *)
 class type tree_list_row_sorter_t = object
   inherit Sorter.sorter_t
+
   method get_sorter : unit -> Sorter.sorter_t option
+  (** Returns the sorter used by [self]. *)
+
   method set_sorter : Sorter.sorter_t option -> unit
+  (** Sets the sorter to use for items with the same parent.
+
+      This sorter will be passed the [Gtk.TreeListRow:item] of the tree list
+      rows passed to [self]. *)
+
   method as_tree_list_row_sorter : Raw.Tree_list_row_sorter.t
 end
 

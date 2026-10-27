@@ -14,8 +14,31 @@ class type simple_action_t = object
     Gobject.Signal.handler_id
 
   method set_enabled : bool -> unit
+  (** Sets the action as enabled or not.
+
+      An action must be enabled in order to be activated or in order to have its
+      state changed from outside callers.
+
+      This should only be called by the implementor of the action. Users of the
+      action should not attempt to modify its enabled flag. *)
+
   method set_state : Gvariant.t -> unit
+  (** Sets the state of the action.
+
+      This directly updates the 'state' property to the given value.
+
+      This should only be called by the implementor of the action. Users of the
+      action should not attempt to directly modify the 'state' property.
+      Instead, they should call g_action_change_state() to request the change.
+
+      If the [value] GVariant is floating, it is consumed. *)
+
   method set_state_hint : Gvariant.t option -> unit
+  (** Sets the state hint for the action.
+
+      See g_action_get_state_hint() for more information about action state
+      hints. *)
+
   method name : string
   method parameter_type : Gvariant_type.t
   method state_type : Gvariant_type.t

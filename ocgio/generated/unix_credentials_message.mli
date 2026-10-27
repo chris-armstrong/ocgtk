@@ -23,7 +23,10 @@
 (** The methods, signals and properties of a [GUnixCredentialsMessage]. *)
 class type unix_credentials_message_t = object
   inherit Socket_control_message.socket_control_message_t
+
   method get_credentials : unit -> Credentials.credentials_t
+  (** Gets the credentials stored in [message]. *)
+
   method as_unix_credentials_message : Raw.Unix_credentials_message.t
 end
 

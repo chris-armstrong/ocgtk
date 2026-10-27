@@ -21,14 +21,39 @@ class type box_layout_t = object
     .layout_manager_t
 
   inherit Orientable.orientable_t
+
   method get_baseline_child : unit -> int
+  (** Gets the value set by gtk_box_layout_set_baseline_child(). *)
+
   method get_baseline_position : unit -> Enums.baselineposition
+  (** Gets the value set by gtk_box_layout_set_baseline_position(). *)
+
   method get_homogeneous : unit -> bool
+  (** Returns whether the layout is set to be homogeneous. *)
+
   method get_spacing : unit -> int
+  (** Returns the space that [box_layout] puts between children. *)
+
   method set_baseline_child : int -> unit
+  (** Sets the index of the child that determines the baseline in vertical
+      layout. *)
+
   method set_baseline_position : Enums.baselineposition -> unit
+  (** Sets the baseline position of a box layout.
+
+      The baseline position affects only horizontal boxes with at least one
+      baseline aligned child. If there is more vertical space available than
+      requested, and the baseline is not allocated by the parent then the given
+      [position] is used to allocate the baseline within the extra space
+      available. *)
+
   method set_homogeneous : bool -> unit
+  (** Sets whether the box layout will allocate the same size to all children.
+  *)
+
   method set_spacing : int -> unit
+  (** Sets how much spacing to put between children. *)
+
   method as_box_layout : Raw.Box_layout.t
 end
 

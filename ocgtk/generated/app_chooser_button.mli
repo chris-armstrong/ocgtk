@@ -51,16 +51,58 @@ class type app_chooser_button_t = object
     Gobject.Signal.handler_id
 
   method append_custom_item : string -> string -> Ocgio.Icon.icon_t -> unit
+  (** Appends a custom item to the list of applications that is shown in the
+      popup.
+
+      The item name must be unique per-widget. Clients can use the provided name
+      as a detail for the [Gtk.AppChooserButton::custom-item-activated] signal,
+      to add a callback for the activation of a particular custom item in the
+      list.
+
+      See also [Gtk.AppChooserButton.append_separator]. *)
+
   method append_separator : unit -> unit
+  (** Appends a separator to the list of applications that is shown in the
+      popup. *)
+
   method get_heading : unit -> string option
+  (** Returns the text to display at the top of the dialog. *)
+
   method get_modal : unit -> bool
+  (** Gets whether the dialog is modal. *)
+
   method get_show_default_item : unit -> bool
+  (** Returns whether the dropdown menu should show the default application at
+      the top. *)
+
   method get_show_dialog_item : unit -> bool
+  (** Returns whether the dropdown menu shows an item for a
+      [GtkAppChooserDialog]. *)
+
   method set_active_custom_item : string -> unit
+  (** Selects a custom item.
+
+      See [Gtk.AppChooserButton.append_custom_item].
+
+      Use [Gtk.AppChooser.refresh] to bring the selection to its initial state.
+  *)
+
   method set_heading : string -> unit
+  (** Sets the text to display at the top of the dialog.
+
+      If the heading is not set, the dialog displays a default text. *)
+
   method set_modal : bool -> unit
+  (** Sets whether the dialog should be modal. *)
+
   method set_show_default_item : bool -> unit
+  (** Sets whether the dropdown menu of this button should show the default
+      application for the given content type at top. *)
+
   method set_show_dialog_item : bool -> unit
+  (** Sets whether the dropdown menu of this button should show an entry to
+      trigger a [GtkAppChooserDialog]. *)
+
   method as_app_chooser_button : Raw.App_chooser_button.t
 end
 

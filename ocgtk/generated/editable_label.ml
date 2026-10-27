@@ -4,9 +4,21 @@ class type editable_label_t = object
     .widget_t
 
   inherit Editable.editable_t
+
   method get_editing : unit -> bool
+  (** Returns whether the label is currently in “editing mode”. *)
+
   method start_editing : unit -> unit
+  (** Switches the label into “editing mode”. *)
+
   method stop_editing : bool -> unit
+  (** Switches the label out of “editing mode”.
+
+      If [commit] is [TRUE], the resulting text is kept as the
+      [Gtk.Editable:text] property value, otherwise the resulting text is
+      discarded and the label will keep its previous [Gtk.Editable:text]
+      property value. *)
+
   method as_editable_label : Raw.Editable_label.t
 end
 

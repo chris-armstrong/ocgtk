@@ -31,14 +31,52 @@
 (** The methods, signals and properties of a [GtkCssProvider]. *)
 class type css_provider_t = object
   inherit Style_provider.style_provider_t
+
   method load_from_bytes : Glib_bytes.t -> unit
+  (** Loads [data] into [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_from_data : string -> int -> unit
+  (** Loads [data] into [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_from_file : Ocgio.File.file_t -> unit
+  (** Loads the data contained in [file] into [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_from_path : string -> unit
+  (** Loads the data contained in [path] into [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_from_resource : string -> unit
+  (** Loads the data contained in the resource at [resource_path] into the
+      [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_from_string : string -> unit
+  (** Loads [string] into [css_provider].
+
+      This clears any previously loaded information. *)
+
   method load_named : string -> string option -> unit
+  (** Loads a theme from the usual theme paths.
+
+      The actual process of finding the theme might change between releases, but
+      it is guaranteed that this function uses the same mechanism to load the
+      theme that GTK uses for loading its own theme. *)
+
   method to_string : unit -> string
+  (** Converts the [provider] into a string representation in CSS format.
+
+      Using [Gtk.CssProvider.load_from_string] with the return value from this
+      function on a new provider created with [Gtk.CssProvider.new] will
+      basically create a duplicate of this [provider]. *)
+
   method prefers_color_scheme : Enums.interfacecolorscheme
   method set_prefers_color_scheme : Enums.interfacecolorscheme -> unit
   method prefers_contrast : Enums.interfacecontrast

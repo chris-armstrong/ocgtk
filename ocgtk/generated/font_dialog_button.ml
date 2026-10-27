@@ -7,22 +7,64 @@ class type font_dialog_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_dialog : unit -> Font_dialog.font_dialog_t option
+  (** Returns the [GtkFontDialog] of [self]. *)
 
   method get_font_desc :
     unit -> Ocpango.Font_description.font_description_t option
+  [@@ocaml.doc
+    "Returns the font of the button.\n\n\
+     This function is what should be used to obtain\n\
+     the font that was chosen by the user. To get\n\
+     informed about changes, listen to \"notify::font-desc\"."]
 
   method get_font_features : unit -> string option
+  [@@ocaml.doc
+    "Returns the font features of the button.\n\n\
+     This function is what should be used to obtain the font features\n\
+     that were chosen by the user. To get informed about changes, listen\n\
+     to \"notify::font-features\".\n\n\
+     Note that the button will only let users choose font features\n\
+     if [Gtk.FontDialogButton:level] is set to\n\
+     [GTK_FONT_LEVEL_FEATURES]."]
+
   method get_language : unit -> Ocpango.Language.language_t option
+  (** Returns the language that is used for font features. *)
+
   method get_level : unit -> Enums.fontlevel
+  (** Returns the level of detail at which this dialog lets the user select
+      fonts. *)
+
   method get_use_font : unit -> bool
+  (** Returns whether the selected font is used in the label. *)
+
   method get_use_size : unit -> bool
+  (** Returns whether the selected font size is used in the label. *)
+
   method set_dialog : Font_dialog.font_dialog_t -> unit
+  (** Sets a [GtkFontDialog] object to use for creating the font chooser dialog
+      that is presented when the user clicks the button. *)
+
   method set_font_desc : Ocpango.Font_description.font_description_t -> unit
+  (** Sets the font of the button. *)
+
   method set_font_features : string option -> unit
+  (** Sets the font features of the button. *)
+
   method set_language : Ocpango.Language.language_t option -> unit
+  (** Sets the language to use for font features. *)
+
   method set_level : Enums.fontlevel -> unit
+  (** Sets the level of detail at which this dialog lets the user select fonts.
+  *)
+
   method set_use_font : bool -> unit
+  (** If [use_font] is [TRUE], the font name will be written using the selected
+      font. *)
+
   method set_use_size : bool -> unit
+  (** If [use_size] is [TRUE], the font name will be written using the selected
+      font size. *)
+
   method as_font_dialog_button : Raw.Font_dialog_button.t
 end
 

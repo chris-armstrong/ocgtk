@@ -6,17 +6,39 @@ class type popover_menu_t = object
     .widget_t ->
     string ->
     bool
+  (** Adds a custom widget to a generated menu.
+
+      For this to work, the menu model of [popover] must have an item with a
+      [custom] attribute that matches [id]. *)
 
   method get_flags : unit -> Enums.popovermenuflags
+  (** Returns the flags that [popover] uses to create/display a menu from its
+      model. *)
+
   method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option
+  (** Returns the menu model used to populate the popover. *)
 
   method remove_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Removes a widget that has previously been added with
+      [Gtk.PopoverMenu.add_child] *)
 
   method set_flags : Enums.popovermenuflags -> unit
+  (** Sets the flags that [popover] uses to create/display a menu from its
+      model.
+
+      If a model is set and the flags change, contents are rebuilt, so if
+      setting properties individually, set flags before model to avoid a
+      redundant rebuild. *)
+
   method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
+  (** Sets a new menu model on [popover].
+
+      The existing contents of [popover] are removed, and the [popover] is
+      populated with new contents according to [model]. *)
+
   method visible_submenu : string
   method set_visible_submenu : string -> unit
   method as_popover_menu : Raw.Popover_menu.t

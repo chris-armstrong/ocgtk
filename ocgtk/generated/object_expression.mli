@@ -7,7 +7,10 @@
 (** The methods, signals and properties of a [GtkObjectExpression]. *)
 class type object_expression_t = object
   inherit Expression.expression_t
+
   method get_object : unit -> [ `object_ ] Gobject.obj option
+  (** Gets the object that the expression evaluates to. *)
+
   method as_object_expression : Raw.Object_expression.t
 end
 

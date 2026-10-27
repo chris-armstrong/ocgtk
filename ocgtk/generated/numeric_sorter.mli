@@ -8,10 +8,25 @@
 (** The methods, signals and properties of a [GtkNumericSorter]. *)
 class type numeric_sorter_t = object
   inherit Sorter.sorter_t
+
   method get_expression : unit -> Expression.expression_t option
+  (** Gets the expression that is evaluated to obtain numbers from items. *)
+
   method get_sort_order : unit -> Enums.sorttype
+  (** Gets whether this sorter will sort smaller numbers first. *)
+
   method set_expression : Expression.expression_t option -> unit
+  (** Sets the expression that is evaluated to obtain numbers from items.
+
+      Unless an expression is set on [self], the sorter will always compare
+      items as invalid.
+
+      The expression must have a return type that can be compared numerically,
+      such as [G_TYPE_INT] or [G_TYPE_DOUBLE]. *)
+
   method set_sort_order : Enums.sorttype -> unit
+  (** Sets whether to sort smaller numbers before larger ones. *)
+
   method as_numeric_sorter : Raw.Numeric_sorter.t
 end
 

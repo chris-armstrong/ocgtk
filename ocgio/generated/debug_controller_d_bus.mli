@@ -120,6 +120,24 @@ class type debug_controller_d_bus_t = object
     Gobject.Signal.handler_id
 
   method stop : unit -> unit
+  (** Stop the debug controller, unregistering its object from the bus.
+
+      Any pending method calls to the object will complete successfully, but new
+      ones will return an error. This method will block until all pending
+      [GDebugControllerDBus::authorize] signals have been handled. This is
+      expected to not take long, as it will just be waiting for threads to join.
+      If any [GDebugControllerDBus::authorize] signal handlers are still
+      executing in other threads, this will block until after they have
+      returned.
+
+      This method will be called automatically when the final reference to the
+      [GDebugControllerDBus] is dropped. You may want to call it explicitly to
+      know when the controller has been fully removed from the bus, or to break
+      reference count cycles.
+
+      Calling this method from within a [GDebugControllerDBus::authorize] signal
+      handler will cause a deadlock and must not be done. *)
+
   method connection : D_bus_connection.d_bus_connection_t
   method as_debug_controller_d_bus : Raw.Debug_controller_d_bus.t
 end

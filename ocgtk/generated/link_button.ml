@@ -5,9 +5,26 @@ class type link_button_t = object
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method get_uri : unit -> string
+  (** Retrieves the URI of the [GtkLinkButton]. *)
+
   method get_visited : unit -> bool
+  (** Retrieves the “visited” state of the [GtkLinkButton].
+
+      The button becomes visited when it is clicked. If the URI is changed on
+      the button, the “visited” state is unset again.
+
+      The state may also be changed using [Gtk.LinkButton.set_visited]. *)
+
   method set_uri : string -> unit
+  (** Sets [uri] as the URI where the [GtkLinkButton] points.
+
+      As a side-effect this unsets the “visited” state of the button. *)
+
   method set_visited : bool -> unit
+  (** Sets the “visited” state of the [GtkLinkButton].
+
+      See [Gtk.LinkButton.get_visited] for more details. *)
+
   method as_link_button : Raw.Link_button.t
 end
 

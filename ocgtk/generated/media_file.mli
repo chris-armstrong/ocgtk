@@ -13,13 +13,47 @@
 (** The methods, signals and properties of a [GtkMediaFile]. *)
 class type media_file_t = object
   inherit Media_stream.media_stream_t
+
   method clear : unit -> unit
+  (** Resets the media file to be empty. *)
+
   method get_file : unit -> Ocgio.File.file_t option
+  (** Returns the file that [self] is currently playing from.
+
+      When [self] is not playing or not playing from a file, [NULL] is returned.
+  *)
+
   method get_input_stream : unit -> Ocgio.Input_stream.input_stream_t option
+  (** Returns the stream that [self] is currently playing from.
+
+      When [self] is not playing or not playing from a stream, [NULL] is
+      returned. *)
+
   method set_file : Ocgio.File.file_t option -> unit
+  (** Sets the [GtkMediaFile] to play the given file.
+
+      If any file is still playing, stop playing it. *)
+
   method set_filename : string option -> unit
+  (** Sets the [GtkMediaFile] to play the given file.
+
+      This is a utility function that converts the given [filename] to a [GFile]
+      and calls [Gtk.MediaFile.set_file]. *)
+
   method set_input_stream : Ocgio.Input_stream.input_stream_t option -> unit
+  (** Sets the [GtkMediaFile] to play the given stream.
+
+      If anything is still playing, stop playing it.
+
+      Full control about the [stream] is assumed for the duration of playback.
+      The stream will not be closed. *)
+
   method set_resource : string option -> unit
+  (** Sets the [GtkMediaFile] to play the given resource.
+
+      This is a utility function that converts the given [resource_path] to a
+      [GFile] and calls [Gtk.MediaFile.set_file]. *)
+
   method as_media_file : Raw.Media_file.t
 end
 

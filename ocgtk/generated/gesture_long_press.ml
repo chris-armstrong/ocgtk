@@ -11,7 +11,14 @@ class type gesture_long_press_t = object
     Gobject.Signal.handler_id
 
   method get_delay_factor : unit -> float
+  (** Returns the delay factor. *)
+
   method set_delay_factor : float -> unit
+  (** Applies the given delay factor.
+
+      The default long press time will be multiplied by this value. Valid values
+      are in the range \[0.5..2.0\]. *)
+
   method as_gesture_long_press : Raw.Gesture_long_press.t
 end
 

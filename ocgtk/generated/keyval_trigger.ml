@@ -1,7 +1,12 @@
 class type keyval_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
+
   method get_keyval : unit -> int
+  (** Gets the keyval that must be pressed to succeed triggering [self]. *)
+
   method get_modifiers : unit -> Ocgdk.Enums.modifiertype
+  (** Gets the modifiers that must be present to succeed triggering [self]. *)
+
   method as_keyval_trigger : Raw.Keyval_trigger.t
 end
 

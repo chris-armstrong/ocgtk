@@ -9,7 +9,10 @@
 (** The methods, signals and properties of a [GtkNamedAction]. *)
 class type named_action_t = object
   inherit Shortcut_action.shortcut_action_t
+
   method get_action_name : unit -> string
+  (** Returns the name of the action that will be activated. *)
+
   method as_named_action : Raw.Named_action.t
 end
 

@@ -10,9 +10,32 @@ class type drawing_area_t = object
     Gobject.Signal.handler_id
 
   method get_content_height : unit -> int
+  (** Retrieves the content height of the [GtkDrawingArea]. *)
+
   method get_content_width : unit -> int
+  (** Retrieves the content width of the [GtkDrawingArea]. *)
+
   method set_content_height : int -> unit
+  (** Sets the desired height of the contents of the drawing area.
+
+      Note that because widgets may be allocated larger sizes than they
+      requested, it is possible that the actual height passed to your draw
+      function is larger than the height set here. You can use
+      [Gtk.Widget.set_valign] to avoid that.
+
+      If the height is set to 0 (the default), the drawing area may disappear.
+  *)
+
   method set_content_width : int -> unit
+  (** Sets the desired width of the contents of the drawing area.
+
+      Note that because widgets may be allocated larger sizes than they
+      requested, it is possible that the actual width passed to your draw
+      function is larger than the width set here. You can use
+      [Gtk.Widget.set_halign] to avoid that.
+
+      If the width is set to 0 (the default), the drawing area may disappear. *)
+
   method as_drawing_area : Raw.Drawing_area.t
 end
 

@@ -6,6 +6,9 @@
 (** The methods, signals and properties of a [GDBusArgInfo]. *)
 class type d_bus_arg_info_t = object
   method ref : unit -> Raw.D_bus_arg_info.t
+  (** If [info] is statically allocated does nothing. Otherwise increases the
+      reference count. *)
+
   method as_d_bus_arg_info : Raw.D_bus_arg_info.t
 end
 

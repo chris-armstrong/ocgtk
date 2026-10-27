@@ -58,14 +58,66 @@ class type frame_clock_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method begin_updating : unit -> unit
+  (** Starts updates for an animation.
+
+      Until a matching call to [Gdk.FrameClock.end_updating] is made, the frame
+      clock will continually request a new frame with the
+      [GDK_FRAME_CLOCK_PHASE_UPDATE] phase. This function may be called multiple
+      times and frames will be requested until gdk_frame_clock_end_updating() is
+      called the same number of times. *)
+
   method end_updating : unit -> unit
+  (** Stops updates for an animation.
+
+      See the documentation for [Gdk.FrameClock.begin_updating]. *)
+
   method get_current_timings : unit -> Raw.Frame_timings.t option
+  (** Gets the frame timings for the current frame. *)
+
   method get_fps : unit -> float
+  (** Calculates the current frames-per-second, based on the frame timings of
+      [frame_clock]. *)
+
   method get_frame_counter : unit -> int64
+  (** [GdkFrameClock] maintains a 64-bit counter that increments for each frame
+      drawn. *)
+
   method get_frame_time : unit -> int64
+  (** Gets the time that should currently be used for animations.
+
+      Inside the processing of a frame, it’s the time used to compute the
+      animation position of everything in a frame. Outside of a frame, it's the
+      time of the conceptual “previous frame,” which may be either the actual
+      previous frame time, or if that’s too old, an updated time. *)
+
   method get_history_start : unit -> int64
+  (** Returns the frame counter for the oldest frame available in history.
+
+      [GdkFrameClock] internally keeps a history of [GdkFrameTimings] objects
+      for recent frames that can be retrieved with [Gdk.FrameClock.get_timings].
+      The set of stored frames is the set from the counter values given by
+      [Gdk.FrameClock.get_history_start] and [Gdk.FrameClock.get_frame_counter],
+      inclusive. *)
+
   method get_timings : int64 -> Raw.Frame_timings.t option
+  (** Retrieves a [GdkFrameTimings] object holding timing information for the
+      current frame or a recent frame.
+
+      The [GdkFrameTimings] object may not yet be complete: see
+      [Gdk.FrameTimings.get_complete] and [Gdk.FrameClock.get_history_start]. *)
+
   method request_phase : Enums.frameclockphase -> unit
+  (** Asks the frame clock to run a particular phase.
+
+      The signal corresponding the requested phase will be emitted the next time
+      the frame clock processes. Multiple calls to
+      gdk_frame_clock_request_phase() will be combined together and only one
+      frame processed. If you are displaying animated content and want to
+      continually request the [GDK_FRAME_CLOCK_PHASE_UPDATE] phase for a period
+      of time, you should use [Gdk.FrameClock.begin_updating] instead, since
+      this allows GTK to adjust system parameters to get maximally smooth
+      animations. *)
+
   method as_frame_clock : Raw.Frame_clock.t
 end
 

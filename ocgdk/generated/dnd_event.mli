@@ -6,7 +6,10 @@
 (** The methods, signals and properties of a [GdkDNDEvent]. *)
 class type dnd_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
+
   method get_drop : unit -> Drop.drop_t option
+  (** Gets the [GdkDrop] object from a DND event. *)
+
   method as_dnd_event : Raw.Dnd_event.t
 end
 

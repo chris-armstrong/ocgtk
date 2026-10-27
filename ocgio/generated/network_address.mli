@@ -19,8 +19,15 @@ class type network_address_t = object
     .socket_connectable_t
 
   method get_hostname : unit -> string
+  (** Gets [addr]'s hostname. This might be either UTF-8 or ASCII-encoded,
+      depending on what [addr] was created with. *)
+
   method get_port : unit -> UInt16.t
+  (** Gets [addr]'s port number *)
+
   method get_scheme : unit -> string option
+  (** Gets [addr]'s scheme *)
+
   method as_network_address : Raw.Network_address.t
 end
 

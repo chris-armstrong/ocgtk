@@ -1,6 +1,9 @@
 class type constant_expression_t = object
   inherit Expression.expression_t
+
   method get_value : unit -> Gobject.Value.t
+  (** Gets the value that a constant expression evaluates to. *)
+
   method as_constant_expression : Raw.Constant_expression.t
 end
 

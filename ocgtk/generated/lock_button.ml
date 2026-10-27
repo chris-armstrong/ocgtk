@@ -1,7 +1,12 @@
 class type lock_button_t = object
   inherit Button.button_t
+
   method get_permission : unit -> Ocgio.Permission.permission_t option
+  (** Obtains the [GPermission] object that controls [button]. *)
+
   method set_permission : Ocgio.Permission.permission_t option -> unit
+  (** Sets the [GPermission] object that controls [button]. *)
+
   method text_lock : string
   method set_text_lock : string -> unit
   method text_unlock : string

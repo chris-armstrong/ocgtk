@@ -15,13 +15,40 @@
 (** The methods, signals and properties of a [GtkConstraintGuide]. *)
 class type constraint_guide_t = object
   inherit Constraint_target.constraint_target_t
+
   method get_name : unit -> string option
+  (** Retrieves the name set using gtk_constraint_guide_set_name(). *)
+
   method get_strength : unit -> Enums.constraintstrength
+  (** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
+
   method set_max_size : int -> int -> unit
+  (** Sets the maximum size of [guide].
+
+      If [guide] is attached to a [GtkConstraintLayout], the constraints will be
+      updated to reflect the new size. *)
+
   method set_min_size : int -> int -> unit
+  (** Sets the minimum size of [guide].
+
+      If [guide] is attached to a [GtkConstraintLayout], the constraints will be
+      updated to reflect the new size. *)
+
   method set_name : string option -> unit
+  (** Sets a name for the given [GtkConstraintGuide].
+
+      The name is useful for debugging purposes. *)
+
   method set_nat_size : int -> int -> unit
+  (** Sets the natural size of [guide].
+
+      If [guide] is attached to a [GtkConstraintLayout], the constraints will be
+      updated to reflect the new size. *)
+
   method set_strength : Enums.constraintstrength -> unit
+  (** Sets the strength of the constraint on the natural size of the given
+      [GtkConstraintGuide]. *)
+
   method max_height : int
   method set_max_height : int -> unit
   method max_width : int

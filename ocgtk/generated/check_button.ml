@@ -12,28 +12,78 @@ class type check_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_active : unit -> bool
+  (** Returns whether the check button is active. *)
 
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
+  *)
 
   method get_inconsistent : unit -> bool
+  (** Returns whether the check button is in an inconsistent state. *)
+
   method get_label : unit -> string option
+  (** Returns the label of the check button or [NULL] if [CheckButton:child] is
+      set. *)
+
   method get_use_underline : unit -> bool
+  (** Returns whether underlines in the label indicate mnemonics. *)
+
   method set_active : bool -> unit
+  (** Changes the check buttons active state. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [button].
+
+      Note that by using this API, you take full responsibility for setting up
+      the proper accessibility label and description information for [button].
+      Most likely, you'll either set the accessibility label or description for
+      [button] explicitly, or you'll set a labelled-by or described-by relations
+      from [child] to [button]. *)
 
   method set_group : check_button_t option -> unit
+  (** Adds [self] to the group of [group].
+
+      In a group of multiple check buttons, only one button can be active at a
+      time. The behavior of a checkbutton in a group is also commonly known as a
+      {i radio button}.
+
+      Setting the group of a check button also changes the css name of the
+      indicator widget's CSS node to 'radio'.
+
+      Setting up groups in a cycle leads to undefined behavior.
+
+      Note that the same effect can be achieved via the [Gtk.Actionable] API, by
+      using the same action with parameter type and state type 's' for all
+      buttons in the group, and giving each button its own target value. *)
+
   method set_inconsistent : bool -> unit
+  (** Sets the [GtkCheckButton] to inconsistent state.
+
+      You should turn off the inconsistent state again if the user checks the
+      check button. This has to be done manually. *)
+
   method set_label : string option -> unit
+  (** Sets the text of [self].
+
+      If [Gtk.CheckButton:use-underline] is [TRUE], an underscore in [label] is
+      interpreted as mnemonic indicator, see [Gtk.CheckButton.set_use_underline]
+      for details on this behavior. *)
+
   method set_use_underline : bool -> unit
+  (** Sets whether underlines in the label indicate mnemonics.
+
+      If [setting] is [TRUE], an underscore character in [self]'s label
+      indicates a mnemonic accelerator key. This behavior is similar to
+      [Gtk.Label:use-underline]. *)
+
   method as_check_button : Raw.Check_button.t
 end
 

@@ -15,9 +15,12 @@ class type d_bus_auth_observer_t = object
     Gobject.Signal.handler_id
 
   method allow_mechanism : string -> bool
+  (** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
 
   method authorize_authenticated_peer :
     Io_stream.io_stream_t -> Credentials.credentials_t option -> bool
+  (** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
+      [observer]. *)
 
   method as_d_bus_auth_observer : Raw.D_bus_auth_observer.t
 end

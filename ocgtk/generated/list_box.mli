@@ -112,56 +112,159 @@ class type list_box_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Append a widget to the list.
+
+      If a sort function is set, the widget will actually be inserted at the
+      calculated position. *)
 
   method drag_highlight_row : List_box_row.list_box_row_t -> unit
+  (** Add a drag highlight to a row.
+
+      This is a helper function for implementing DnD onto a [GtkListBox]. The
+      passed in [row] will be highlighted by setting the
+      [GTK_STATE_FLAG_DROP_ACTIVE] state and any previously highlighted row will
+      be unhighlighted.
+
+      The row will also be unhighlighted when the widget gets a drag leave
+      event. *)
+
   method drag_unhighlight_row : unit -> unit
+  (** If a row has previously been highlighted via
+      gtk_list_box_drag_highlight_row(), it will have the highlight removed. *)
+
   method get_activate_on_single_click : unit -> bool
+  (** Returns whether rows activate on single clicks. *)
+
   method get_adjustment : unit -> Adjustment.adjustment_t option
+  (** Gets the adjustment (if any) that the widget uses to for vertical
+      scrolling. *)
+
   method get_row_at_index : int -> List_box_row.list_box_row_t option
+  (** Gets the n-th child in the list (not counting headers).
+
+      If [index_] is negative or larger than the number of items in the list,
+      [NULL] is returned. *)
+
   method get_row_at_y : int -> List_box_row.list_box_row_t option
+  (** Gets the row at the [y] position. *)
+
   method get_selected_row : unit -> List_box_row.list_box_row_t option
+  (** Gets the selected row, or [NULL] if no rows are selected.
+
+      Note that the box may allow multiple selection, in which case you should
+      use [Gtk.ListBox.selected_foreach] to find all selected rows. *)
+
   method get_selected_rows : unit -> List_box_row.list_box_row_t list
+  (** Creates a list of all selected children. *)
+
   method get_selection_mode : unit -> Enums.selectionmode
+  (** Gets the selection mode of the listbox. *)
+
   method get_show_separators : unit -> bool
+  (** Returns whether the list box should show separators between rows. *)
+
   method get_tab_behavior : unit -> Enums.listtabbehavior
+  (** Returns the behavior of the <kbd>Tab</kbd> and
+      <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
 
   method insert :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
+  (** Insert the [child] into the [box] at [position].
+
+      If a sort function is set, the widget will actually be inserted at the
+      calculated position.
+
+      If [position] is -1, or larger than the total number of items in the
+      [box], then the [child] will be appended to the end. *)
 
   method invalidate_filter : unit -> unit
+  (** Update the filtering for all rows.
+
+      Call this when result of the filter function on the [box] is changed due
+      to an external factor. For instance, this would be used if the filter
+      function just looked for a specific search string and the entry with the
+      search string has changed. *)
+
   method invalidate_headers : unit -> unit
+  (** Update the separators for all rows.
+
+      Call this when result of the header function on the [box] is changed due
+      to an external factor. *)
+
   method invalidate_sort : unit -> unit
+  (** Update the sorting for all rows.
+
+      Call this when result of the sort function on the [box] is changed due to
+      an external factor. *)
 
   method prepend :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Prepend a widget to the list.
+
+      If a sort function is set, the widget will actually be inserted at the
+      calculated position. *)
 
   method remove :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit
+  (** Removes all rows from [box].
+
+      This function does nothing if [box] is backed by a model. *)
+
   method select_all : unit -> unit
+  (** Select all children of [box], if the selection mode allows it. *)
+
   method select_row : List_box_row.list_box_row_t option -> unit
+  (** Make [row] the currently selected row. *)
+
   method set_activate_on_single_click : bool -> unit
+  (** If [single] is [TRUE], rows will be activated when you click on them,
+      otherwise you need to double-click. *)
+
   method set_adjustment : Adjustment.adjustment_t option -> unit
+  (** Sets the adjustment (if any) that the widget uses to for vertical
+      scrolling.
+
+      For instance, this is used to get the page size for PageUp/Down key
+      handling.
+
+      In the normal case when the [box] is packed inside a [GtkScrolledWindow]
+      the adjustment from that will be picked up automatically, so there is no
+      need to manually do that. *)
 
   method set_placeholder :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the placeholder widget that is shown in the list when it doesn't
+      display any visible children. *)
 
   method set_selection_mode : Enums.selectionmode -> unit
+  (** Sets how selection works in the listbox. *)
+
   method set_show_separators : bool -> unit
+  (** Sets whether the list box should show separators between rows. *)
+
   method set_tab_behavior : Enums.listtabbehavior -> unit
+  (** Sets the behavior of the <kbd>Tab</kbd> and
+      <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
+
   method unselect_all : unit -> unit
+  (** Unselect all children of [box], if the selection mode allows it. *)
+
   method unselect_row : List_box_row.list_box_row_t -> unit
+  (** Unselects a single row of [box], if the selection mode allows it. *)
+
   method accept_unpaired_release : bool
   method set_accept_unpaired_release : bool -> unit
   method as_list_box : Raw.List_box.t

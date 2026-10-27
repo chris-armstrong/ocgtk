@@ -9,13 +9,23 @@
 (** The methods, signals and properties of a [graphene_quad_t]. *)
 class type quad_t = object
   method contains : Raw.Point.t -> bool
+  (** Checks if the given #graphene_quad_t contains the given #graphene_point_t.
+  *)
+
   method get_point : int -> Raw.Point.t
+  (** Retrieves the point of a #graphene_quad_t at the given index. *)
 
   method init :
     Raw.Point.t -> Raw.Point.t -> Raw.Point.t -> Raw.Point.t -> Raw.Quad.t
+  (** Initializes a #graphene_quad_t with the given points. *)
 
   method init_from_points : Raw.Point.t array -> Raw.Quad.t
+  (** Initializes a #graphene_quad_t using an array of points. *)
+
   method init_from_rect : Raw.Rect.t -> Raw.Quad.t
+  (** Initializes a #graphene_quad_t using the four corners of the given
+      #graphene_rect_t. *)
+
   method as_quad : Raw.Quad.t
 end
 

@@ -7,6 +7,11 @@
 (** The methods, signals and properties of a [PangoScriptIter]. *)
 class type script_iter_t = object
   method next : unit -> bool
+  (** Advances a [PangoScriptIter] to the next range.
+
+      If [iter] is already at the end, it is left unchanged and [FALSE] is
+      returned. *)
+
   method as_script_iter : Raw.Script_iter.t
 end
 

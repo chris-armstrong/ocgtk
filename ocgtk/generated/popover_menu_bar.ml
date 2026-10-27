@@ -8,15 +8,24 @@ class type popover_menu_bar_t = object
     .widget_t ->
     string ->
     bool
+  (** Adds a custom widget to a generated menubar.
+
+      For this to work, the menu model of [bar] must have an item with a
+      [custom] attribute that matches [id]. *)
 
   method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option
+  (** Returns the model from which the contents of [bar] are taken. *)
 
   method remove_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Removes a widget that has previously been added with
+      gtk_popover_menu_bar_add_child(). *)
 
   method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
+  (** Sets a menu model from which [bar] should take its contents. *)
+
   method as_popover_menu_bar : Raw.Popover_menu_bar.t
 end
 

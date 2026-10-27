@@ -14,19 +14,47 @@
 (** The methods, signals and properties of a [GtkPaperSize]. *)
 class type paper_size_t = object
   method get_default_bottom_margin : Enums.unit -> float
+  (** Gets the default bottom margin for the [GtkPaperSize]. *)
+
   method get_default_left_margin : Enums.unit -> float
+  (** Gets the default left margin for the [GtkPaperSize]. *)
+
   method get_default_right_margin : Enums.unit -> float
+  (** Gets the default right margin for the [GtkPaperSize]. *)
+
   method get_default_top_margin : Enums.unit -> float
+  (** Gets the default top margin for the [GtkPaperSize]. *)
+
   method get_display_name : unit -> string
+  (** Gets the human-readable name of the [GtkPaperSize]. *)
+
   method get_height : Enums.unit -> float
+  (** Gets the paper height of the [GtkPaperSize], in units of [unit]. *)
+
   method get_name : unit -> string
+  (** Gets the name of the [GtkPaperSize]. *)
+
   method get_ppd_name : unit -> string
+  (** Gets the PPD name of the [GtkPaperSize], which may be [NULL]. *)
+
   method get_width : Enums.unit -> float
+  (** Gets the paper width of the [GtkPaperSize], in units of [unit]. *)
+
   method is_custom : unit -> bool
+  (** Returns [TRUE] if [size] is not a standard paper size. *)
+
   method is_equal : Raw.Paper_size.t -> bool
+  (** Compares two [GtkPaperSize] objects. *)
+
   method is_ipp : unit -> bool
+  (** Returns [TRUE] if [size] is an IPP standard paper size. *)
+
   method set_size : float -> float -> Enums.unit -> unit
+  (** Changes the dimensions of a [size] to [width] x [height]. *)
+
   method to_gvariant : unit -> Gvariant.t
+  (** Serialize a paper size to an [a{sv}] variant. *)
+
   method as_paper_size : Raw.Paper_size.t
 end
 

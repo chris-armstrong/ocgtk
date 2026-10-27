@@ -75,7 +75,19 @@
 (** The methods, signals and properties of a [GAsyncResult]. *)
 class type async_result_t = object
   method get_source_object : unit -> [ `object_ ] Gobject.obj option
+  (** Gets the source object from a [Gio.AsyncResult]. *)
+
   method legacy_propagate_error : unit -> (bool, GError.t) result
+  (** If [res] is a [Gio.SimpleAsyncResult], this is equivalent to
+      [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [FALSE].
+
+      This can be used for legacy error handling in async [*_finish()] wrapper
+      functions that traditionally handled [Gio.SimpleAsyncResult] error returns
+      themselves rather than calling into the virtual method. This should not be
+      used in new code; [Gio.AsyncResult] errors that are set by virtual methods
+      should also be extracted by virtual methods, to enable subclasses to chain
+      up correctly. *)
+
   method as_async_result : Raw.Async_result.t
 end
 

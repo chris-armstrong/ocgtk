@@ -6,8 +6,13 @@
 (** The methods, signals and properties of a [GskRepeatNode]. *)
 class type repeat_node_t = object
   inherit Render_node.render_node_t
+
   method get_child : unit -> Render_node.render_node_t
+  (** Retrieves the child of [node]. *)
+
   method get_child_bounds : unit -> Ocgraphene.Rect.rect_t
+  (** Retrieves the bounding rectangle of the child of [node]. *)
+
   method as_repeat_node : Raw.Repeat_node.t
 end
 

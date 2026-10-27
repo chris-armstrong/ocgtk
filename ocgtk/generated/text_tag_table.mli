@@ -42,9 +42,26 @@ class type text_tag_table_t = object
     Gobject.Signal.handler_id
 
   method add : Text_tag.text_tag_t -> bool
+  (** Add a tag to the table.
+
+      The tag is assigned the highest priority in the table.
+
+      [tag] must not be in a tag table already, and may not have the same name
+      as an already-added tag. *)
+
   method get_size : unit -> int
+  (** Returns the size of the table (number of tags) *)
+
   method lookup : string -> Text_tag.text_tag_t option
+  (** Look up a named tag. *)
+
   method remove : Text_tag.text_tag_t -> unit
+  (** Remove a tag from the table.
+
+      If a [GtkTextBuffer] has [table] as its tag table, the tag is removed from
+      the buffer. The table’s reference to the tag is removed, so the tag will
+      end up destroyed if you don’t have a reference to it. *)
+
   method as_text_tag_table : Raw.Text_tag_table.t
 end
 

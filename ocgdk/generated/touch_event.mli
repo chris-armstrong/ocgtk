@@ -6,7 +6,10 @@
 (** The methods, signals and properties of a [GdkTouchEvent]. *)
 class type touch_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
+
   method get_emulating_pointer : unit -> bool
+  (** Extracts whether a touch event is emulating a pointer event. *)
+
   method as_touch_event : Raw.Touch_event.t
 end
 

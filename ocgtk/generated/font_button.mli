@@ -33,13 +33,31 @@ class type font_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_modal : unit -> bool
+  (** Gets whether the dialog is modal. *)
+
   method get_title : unit -> string
+  (** Retrieves the title of the font chooser dialog. *)
+
   method get_use_font : unit -> bool
+  (** Returns whether the selected font is used in the label. *)
+
   method get_use_size : unit -> bool
+  (** Returns whether the selected size is used in the label. *)
+
   method set_modal : bool -> unit
+  (** Sets whether the dialog should be modal. *)
+
   method set_title : string -> unit
+  (** Sets the title for the font chooser dialog. *)
+
   method set_use_font : bool -> unit
+  (** If [use_font] is [TRUE], the font name will be written using the selected
+      font. *)
+
   method set_use_size : bool -> unit
+  (** If [use_size] is [TRUE], the font name will be written using the selected
+      size. *)
+
   method as_font_button : Raw.Font_button.t
 end
 

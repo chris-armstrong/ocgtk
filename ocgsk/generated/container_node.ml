@@ -1,7 +1,12 @@
 class type container_node_t = object
   inherit Render_node.render_node_t
+
   method get_child : int -> Render_node.render_node_t
+  (** Gets one of the children of [container]. *)
+
   method get_n_children : unit -> int
+  (** Retrieves the number of direct children of [node]. *)
+
   method as_container_node : Raw.Container_node.t
 end
 

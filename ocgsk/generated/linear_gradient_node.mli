@@ -7,9 +7,16 @@
 (** The methods, signals and properties of a [GskLinearGradientNode]. *)
 class type linear_gradient_node_t = object
   inherit Render_node.render_node_t
+
   method get_end : unit -> Ocgraphene.Point.point_t
+  (** Retrieves the final point of the linear gradient. *)
+
   method get_n_color_stops : unit -> Gsize.t
+  (** Retrieves the number of color stops in the gradient. *)
+
   method get_start : unit -> Ocgraphene.Point.point_t
+  (** Retrieves the initial point of the linear gradient. *)
+
   method as_linear_gradient_node : Raw.Linear_gradient_node.t
 end
 

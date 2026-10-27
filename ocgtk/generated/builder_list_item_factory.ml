@@ -1,8 +1,16 @@
 class type builder_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
+
   method get_bytes : unit -> Glib_bytes.t
+  (** Gets the data used as the [GtkBuilder] UI template for constructing
+      listitems. *)
+
   method get_resource : unit -> string option
+  (** If the data references a resource, gets the path of that resource. *)
+
   method get_scope : unit -> Builder_scope.builder_scope_t option
+  (** Gets the scope used when constructing listitems. *)
+
   method as_builder_list_item_factory : Raw.Builder_list_item_factory.t
 end
 

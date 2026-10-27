@@ -25,18 +25,54 @@ class type drag_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method drop_done : bool -> unit
+  (** Informs GDK that the drop ended.
+
+      Passing [FALSE] for [success] may trigger a drag cancellation animation.
+
+      This function is called by the drag source, and should be the last call
+      before dropping the reference to the [drag].
+
+      The [GdkDrag] will only take the first [Gdk.Drag.drop_done] call as
+      effective, if this function is called multiple times, all subsequent calls
+      will be ignored. *)
+
   method get_actions : unit -> Enums.dragaction
+  (** Determines the bitmask of possible actions proposed by the source. *)
+
   method get_content : unit -> Content_provider.content_provider_t
+  (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
+
   method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  (** Returns the [GdkDevice] associated to the [GdkDrag] object. *)
+
   method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  (** Gets the [GdkDisplay] that the drag object was created for. *)
 
   method get_drag_surface :
     unit -> App_launch_context_cycle_de440b34.surface_t option
+  (** Returns the surface on which the drag icon should be rendered during the
+      drag operation.
+
+      Note that the surface may not be available until the drag operation has
+      begun. GDK will move the surface in accordance with the ongoing drag
+      operation. The surface is owned by [drag] and will be destroyed when the
+      drag operation is over. *)
 
   method get_formats : unit -> Raw.Content_formats.t
+  (** Retrieves the formats supported by this [GdkDrag] object. *)
+
   method get_selected_action : unit -> Enums.dragaction
+  (** Determines the action chosen by the drag destination. *)
+
   method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  (** Returns the [GdkSurface] where the drag originates. *)
+
   method set_hotspot : int -> int -> unit
+  (** Sets the position of the drag surface that will be kept under the cursor
+      hotspot.
+
+      Initially, the hotspot is at the top left corner of the drag surface. *)
+
   method as_drag : Raw.Drag.t
 end
 

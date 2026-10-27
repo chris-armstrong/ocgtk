@@ -1,6 +1,10 @@
 class type orientable_t = object
   method get_orientation : unit -> Enums.orientation
+  (** Retrieves the orientation of the [orientable]. *)
+
   method set_orientation : Enums.orientation -> unit
+  (** Sets the orientation of the [orientable]. *)
+
   method as_orientable : Raw.Orientable.t
 end
 

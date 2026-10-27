@@ -14,21 +14,59 @@
 (** The methods, signals and properties of a [GInetAddress]. *)
 class type inet_address_t = object
   method equal : inet_address_t -> bool
+  (** Checks if two [GInetAddress] instances are equal, e.g. the same address.
+  *)
+
   method get_family : unit -> Enums.socketfamily
+  (** Gets [address]'s family *)
+
   method get_flowinfo : unit -> UInt32.t
+  (** Gets the value of [Gio.InetAddress:flowinfo]. *)
+
   method get_is_any : unit -> bool
+  [@@ocaml.doc "Tests whether [address] is the \"any\" address for its family."]
+
   method get_is_link_local : unit -> bool
+  (** Tests whether [address] is a link-local address (that is, if it identifies
+      a host on a local network that is not connected to the Internet). *)
+
   method get_is_loopback : unit -> bool
+  (** Tests whether [address] is the loopback address for its family. *)
+
   method get_is_mc_global : unit -> bool
+  (** Tests whether [address] is a global multicast address. *)
+
   method get_is_mc_link_local : unit -> bool
+  (** Tests whether [address] is a link-local multicast address. *)
+
   method get_is_mc_node_local : unit -> bool
+  (** Tests whether [address] is a node-local multicast address. *)
+
   method get_is_mc_org_local : unit -> bool
+  (** Tests whether [address] is an organization-local multicast address. *)
+
   method get_is_mc_site_local : unit -> bool
+  (** Tests whether [address] is a site-local multicast address. *)
+
   method get_is_multicast : unit -> bool
+  (** Tests whether [address] is a multicast address. *)
+
   method get_is_site_local : unit -> bool
+  (** Tests whether [address] is a site-local address such as 10.0.0.1 (that is,
+      the address identifies a host on a local network that can not be reached
+      directly from the Internet, but which may have outgoing Internet
+      connectivity via a NAT or firewall). *)
+
   method get_native_size : unit -> Gsize.t
+  (** Gets the size of the native raw binary address for [address]. This is the
+      size of the data that you get from g_inet_address_to_bytes(). *)
+
   method get_scope_id : unit -> UInt32.t
+  (** Gets the value of [Gio.InetAddress:scope-id]. *)
+
   method to_string : unit -> string
+  (** Converts [address] to string form. *)
+
   method as_inet_address : Raw.Inet_address.t
 end
 

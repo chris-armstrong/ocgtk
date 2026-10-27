@@ -8,21 +8,51 @@ class type revealer_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [revealer]. *)
 
   method get_child_revealed : unit -> bool
+  (** Returns whether the child is fully revealed.
+
+      In other words, this returns whether the transition to the revealed state
+      is completed. *)
+
   method get_reveal_child : unit -> bool
+  (** Returns whether the child is currently revealed.
+
+      This function returns [TRUE] as soon as the transition is to the revealed
+      state is started. To learn whether the child is fully revealed (ie the
+      transition is completed), use [Gtk.Revealer.get_child_revealed]. *)
+
   method get_transition_duration : unit -> int
+  (** Returns the amount of time (in milliseconds) that transitions will take.
+  *)
+
   method get_transition_type : unit -> Enums.revealertransitiontype
+  (** Gets the type of animation that will be used for transitions in
+      [revealer]. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [revealer]. *)
 
   method set_reveal_child : bool -> unit
+  (** Tells the [GtkRevealer] to reveal or conceal its child.
+
+      The transition will be animated with the current transition type of
+      [revealer]. *)
+
   method set_transition_duration : int -> unit
+  (** Sets the duration that transitions will take. *)
+
   method set_transition_type : Enums.revealertransitiontype -> unit
+  (** Sets the type of animation that will be used for transitions in
+      [revealer].
+
+      Available types include various kinds of fades and slides. *)
+
   method as_revealer : Raw.Revealer.t
 end
 

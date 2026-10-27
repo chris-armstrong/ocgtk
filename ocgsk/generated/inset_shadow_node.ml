@@ -1,11 +1,27 @@
 class type inset_shadow_node_t = object
   inherit Render_node.render_node_t
+
   method get_blur_radius : unit -> float
+  (** Retrieves the blur radius to apply to the shadow. *)
+
   method get_color : unit -> Ocgdk.Rgb_a.rgb_a_t
+  (** Retrieves the color of the inset shadow.
+
+      The value returned by this function will not be correct if the render node
+      was created for a non-sRGB color. *)
+
   method get_dx : unit -> float
+  (** Retrieves the horizontal offset of the inset shadow. *)
+
   method get_dy : unit -> float
+  (** Retrieves the vertical offset of the inset shadow. *)
+
   method get_outline : unit -> Raw.Rounded_rect.t
+  (** Retrieves the outline rectangle of the inset shadow. *)
+
   method get_spread : unit -> float
+  (** Retrieves how much the shadow spreads inwards. *)
+
   method as_inset_shadow_node : Raw.Inset_shadow_node.t
 end
 

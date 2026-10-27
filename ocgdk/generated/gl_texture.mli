@@ -6,7 +6,13 @@
 (** The methods, signals and properties of a [GdkGLTexture]. *)
 class type gl_texture_t = object
   inherit Texture.texture_t
+
   method release : unit -> unit
+  (** Releases the GL resources held by a [GdkGLTexture].
+
+      The texture contents are still available via the [Gdk.Texture.download]
+      function, after this function has been called. *)
+
   method as_gl_texture : Raw.Gl_texture.t
 end
 

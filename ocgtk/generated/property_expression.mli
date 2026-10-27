@@ -7,7 +7,10 @@
 (** The methods, signals and properties of a [GtkPropertyExpression]. *)
 class type property_expression_t = object
   inherit Expression.expression_t
+
   method get_expression : unit -> Expression.expression_t option
+  (** Gets the expression specifying the object of a property expression. *)
+
   method as_property_expression : Raw.Property_expression.t
 end
 

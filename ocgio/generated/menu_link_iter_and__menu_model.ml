@@ -3,8 +3,23 @@
 
 class type menu_link_iter_t = object
   method get_name : unit -> string
+  (** Gets the name of the link at the current iterator position.
+
+      The iterator is not advanced. *)
+
   method get_value : unit -> menu_model_t
+  (** Gets the linked [GMenuModel] at the current iterator position.
+
+      The iterator is not advanced. *)
+
   method next : unit -> bool
+  (** Attempts to advance the iterator to the next (possibly first) link.
+
+      [TRUE] is returned on success, or [FALSE] if there are no more links.
+
+      You must call this function when you first acquire the iterator to advance
+      it to the first link (and determine if the first link exists at all). *)
+
   method as_menu_link_iter : Raw.Menu_link_iter.t
 end
 
@@ -17,16 +32,64 @@ and menu_model_t = object
 
   method get_item_attribute_value :
     int -> string -> Gvariant_type.t option -> Gvariant.t option
+  (** Queries the item at position [item_index] in [model] for the attribute
+      specified by [attribute].
+
+      If [expected_type] is non-[NULL] then it specifies the expected type of
+      the attribute. If it is [NULL] then any type will be accepted.
+
+      If the attribute exists and matches [expected_type] (or if the expected
+      type is unspecified) then the value is returned.
+
+      If the attribute does not exist, or does not match the expected type then
+      [NULL] is returned. *)
 
   method get_item_link : int -> string -> menu_model_t option
+  (** Queries the item at position [item_index] in [model] for the link
+      specified by [link].
+
+      If the link exists, the linked [GMenuModel] is returned. If the link does
+      not exist, [NULL] is returned. *)
+
   method get_n_items : unit -> int
+  (** Query the number of items in [model]. *)
+
   method is_mutable : unit -> bool
+  (** Queries if [model] is mutable.
+
+      An immutable [GMenuModel] will never emit the [GMenuModel::items]-changed
+      signal. Consumers of the model may make optimisations accordingly. *)
+
   method items_changed : int -> int -> int -> unit
+  (** Requests emission of the [GMenuModel::items]-changed signal on [model].
+
+      This function should never be called except by [GMenuModel] subclasses.
+      Any other calls to this function will very likely lead to a violation of
+      the interface of the model.
+
+      The implementation should update its internal representation of the menu
+      before emitting the signal. The implementation should further expect to
+      receive queries about the new state of the menu (and particularly added
+      menu items) while signal handlers are running.
+
+      The implementation must dispatch this call directly from a mainloop entry
+      and not in response to calls -- particularly those from the [GMenuModel]
+      API. Said another way: the menu must not change while user code is running
+      without returning to the mainloop. *)
 
   method iterate_item_attributes :
     int -> Menu_attribute_iter.menu_attribute_iter_t
+  (** Creates a [GMenuAttributeIter] to iterate over the attributes of the item
+      at position [item_index] in [model].
+
+      You must free the iterator with g_object_unref() when you are done. *)
 
   method iterate_item_links : int -> menu_link_iter_t
+  (** Creates a [GMenuLinkIter] to iterate over the links of the item at
+      position [item_index] in [model].
+
+      You must free the iterator with g_object_unref() when you are done. *)
+
   method as_menu_model : Raw.Menu_model.t
 end
 

@@ -3,11 +3,25 @@ class type content_provider_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method content_changed : unit -> unit
+  (** Emits the ::content-changed signal. *)
+
   method ref_formats : unit -> Raw.Content_formats.t
+  (** Gets the formats that the provider can provide its current contents in. *)
+
   method ref_storable_formats : unit -> Raw.Content_formats.t
+  (** Gets the formats that the provider suggests other applications to store
+      the data in.
+
+      An example of such an application would be a clipboard manager.
+
+      This can be assumed to be a subset of [Gdk.ContentProvider.ref_formats].
+  *)
 
   method write_mime_type_finish :
     Ocgio.Async_result.async_result_t -> (bool, GError.t) result
+  (** Finishes an asynchronous write operation.
+
+      See [Gdk.ContentProvider.write_mime_type_async]. *)
 
   method as_content_provider : Raw.Content_provider.t
 end

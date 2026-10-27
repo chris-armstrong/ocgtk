@@ -8,8 +8,15 @@ class type multi_filter_t = object
   inherit Filter.filter_t
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
+
   method append : Filter.filter_t -> unit
+  (** Adds a filter. *)
+
   method remove : int -> unit
+  (** Removes a filter.
+
+      If [position] is larger than the number of filters, nothing happens. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_multi_filter : Raw.Multi_filter.t

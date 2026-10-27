@@ -11,9 +11,17 @@ class type overlay_layout_child_t = object
     .layout_child_t
 
   method get_clip_overlay : unit -> bool
+  (** Retrieves whether the child is clipped. *)
+
   method get_measure : unit -> bool
+  (** Retrieves whether the child is measured. *)
+
   method set_clip_overlay : bool -> unit
+  (** Sets whether to clip this child. *)
+
   method set_measure : bool -> unit
+  (** Sets whether to measure this child. *)
+
   method as_overlay_layout_child : Raw.Overlay_layout_child.t
 end
 

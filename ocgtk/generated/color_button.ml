@@ -12,9 +12,17 @@ class type color_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_modal : unit -> bool
+  (** Gets whether the dialog is modal. *)
+
   method get_title : unit -> string
+  (** Gets the title of the color chooser dialog. *)
+
   method set_modal : bool -> unit
+  (** Sets whether the dialog should be modal. *)
+
   method set_title : string -> unit
+  (** Sets the title for the color chooser dialog. *)
+
   method show_editor : bool
   method set_show_editor : bool -> unit
   method as_color_button : Raw.Color_button.t

@@ -23,16 +23,69 @@
 (** The methods, signals and properties of a [GtkDirectoryList]. *)
 class type directory_list_t = object
   inherit Ocgio.List_model.list_model_t
+
   method get_attributes : unit -> string option
+  (** Gets the attributes queried on the children. *)
+
   method get_error : unit -> GError.t option
+  (** Gets the loading error, if any.
+
+      If an error occurs during the loading process, the loading process will
+      finish and this property allows querying the error that happened. This
+      error will persist until a file is loaded again.
+
+      An error being set does not mean that no files were loaded, and all
+      successfully queried files will remain in the list. *)
+
   method get_file : unit -> Ocgio.File.file_t option
+  (** Gets the file whose children are currently enumerated. *)
+
   method get_io_priority : unit -> int
+  (** Gets the IO priority set via gtk_directory_list_set_io_priority(). *)
+
   method get_monitored : unit -> bool
+  (** Returns whether the directory list is monitoring the directory for
+      changes. *)
+
   method is_loading : unit -> bool
+  (** Returns [TRUE] if the children enumeration is currently in progress.
+
+      Files will be added to [self] from time to time while loading is going on.
+      The order in which are added is undefined and may change in between runs.
+  *)
+
   method set_attributes : string option -> unit
+  (** Sets the [attributes] to be enumerated and starts the enumeration.
+
+      If [attributes] is [NULL], the list of file infos will still be created,
+      it will just not contain any extra attributes. *)
+
   method set_file : Ocgio.File.file_t option -> unit
+  (** Sets the [file] to be enumerated and starts the enumeration.
+
+      If [file] is [NULL], the result will be an empty list. *)
+
   method set_io_priority : int -> unit
+  (** Sets the IO priority to use while loading directories.
+
+      Setting the priority while [self] is loading will reprioritize the ongoing
+      load as soon as possible.
+
+      The default IO priority is [G_PRIORITY_DEFAULT], which is higher than the
+      GTK redraw priority. If you are loading a lot of directories in parallel,
+      lowering it to something like [G_PRIORITY_DEFAULT_IDLE] may increase
+      responsiveness. *)
+
   method set_monitored : bool -> unit
+  (** Sets whether the directory list will monitor the directory for changes.
+
+      If monitoring is enabled, the ::items-changed signal will be emitted when
+      the directory contents change.
+
+      When monitoring is turned on after the initial creation of the directory
+      list, the directory is reloaded to avoid missing files that appeared
+      between the initial loading and when monitoring was turned on. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_directory_list : Raw.Directory_list.t

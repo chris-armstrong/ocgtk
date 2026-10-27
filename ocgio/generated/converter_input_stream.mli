@@ -12,7 +12,10 @@
 class type converter_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Pollable_input_stream.pollable_input_stream_t
+
   method get_converter : unit -> Converter.converter_t
+  (** Gets the [GConverter] that is used by [converter_stream]. *)
+
   method as_converter_input_stream : Raw.Converter_input_stream.t
 end
 

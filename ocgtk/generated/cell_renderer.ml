@@ -17,11 +17,22 @@ class type cell_renderer_t = object
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
     bool
+  (** Passes an activate event to the cell renderer for possible processing.
+      Some cell renderers may use events; for example, [GtkCellRendererToggle]
+      toggles when it gets a mouse click. *)
 
   method get_is_expanded : unit -> bool
+  (** Checks whether the given [GtkCellRenderer] is expanded. *)
+
   method get_is_expander : unit -> bool
+  (** Checks whether the given [GtkCellRenderer] is an expander. *)
+
   method get_request_mode : unit -> Enums.sizerequestmode
+  (** Gets whether the cell renderer prefers a height-for-width layout or a
+      width-for-height layout. *)
+
   method get_sensitive : unit -> bool
+  (** Returns the cell renderer’s sensitivity. *)
 
   method get_state :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -29,16 +40,36 @@ class type cell_renderer_t = object
     option ->
     Enums.cellrendererstate ->
     Enums.stateflags
+  (** Translates the cell renderer state to [GtkStateFlags], based on the cell
+      renderer and widget sensitivity, and the given [GtkCellRenderer]State. *)
 
   method get_visible : unit -> bool
+  (** Returns the cell renderer’s visibility. *)
+
   method is_activatable : unit -> bool
+  (** Checks whether the cell renderer can do something when activated. *)
+
   method set_alignment : float -> float -> unit
+  (** Sets the renderer’s alignment within its available space. *)
+
   method set_fixed_size : int -> int -> unit
+  (** Sets the renderer size to be explicit, independent of the properties set.
+  *)
+
   method set_is_expanded : bool -> unit
+  (** Sets whether the given [GtkCellRenderer] is expanded. *)
+
   method set_is_expander : bool -> unit
+  (** Sets whether the given [GtkCellRenderer] is an expander. *)
+
   method set_padding : int -> int -> unit
+  (** Sets the renderer’s padding. *)
+
   method set_sensitive : bool -> unit
+  (** Sets the cell renderer’s sensitivity. *)
+
   method set_visible : bool -> unit
+  (** Sets the cell renderer’s visibility. *)
 
   method snapshot :
     Snapshot.snapshot_t ->
@@ -48,6 +79,13 @@ class type cell_renderer_t = object
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
     unit
+  (** Invokes the virtual render function of the [GtkCellRenderer]. The three
+      passed-in rectangles are areas in [cr]. Most renderers will draw within
+      [cell_area]; the xalign, yalign, xpad, and ypad fields of the
+      [GtkCellRenderer] should be honored with respect to [cell_area].
+      [background_area] includes the blank space around the cell, and also the
+      area containing the tree expander; so the [background_area] rectangles for
+      all cells tile to cover the entire [window]. *)
 
   method start_editing :
     Ocgdk.Event.event_t option ->
@@ -58,8 +96,19 @@ class type cell_renderer_t = object
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
     Cell_editable.cell_editable_t option
+  (** Starts editing the contents of this [cell], through a new
+      [GtkCellEditable] widget created by the
+      [GtkCellRenderer]Class.start_editing virtual function. *)
 
   method stop_editing : bool -> unit
+  (** Informs the cell renderer that the editing is stopped. If [canceled] is
+      [TRUE], the cell renderer will emit the
+      [GtkCellRenderer]::editing-canceled signal.
+
+      This function should be called by cell renderer implementations in
+      response to the [GtkCellEditable::editing-done] signal of
+      [GtkCellEditable]. *)
+
   method set_cell_background : string -> unit
   method cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t
   method set_cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit

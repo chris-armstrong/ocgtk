@@ -1,7 +1,12 @@
 class type clip_node_t = object
   inherit Render_node.render_node_t
+
   method get_child : unit -> Render_node.render_node_t
+  (** Gets the child node that is getting clipped by the given [node]. *)
+
   method get_clip : unit -> Ocgraphene.Rect.rect_t
+  (** Retrieves the clip rectangle for [node]. *)
+
   method as_clip_node : Raw.Clip_node.t
 end
 

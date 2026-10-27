@@ -9,6 +9,7 @@ class type notebook_page_t = object
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Returns the notebook child to which [page] belongs. *)
 
   method detachable : bool
   method set_detachable : bool -> unit

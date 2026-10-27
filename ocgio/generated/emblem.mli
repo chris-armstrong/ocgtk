@@ -11,8 +11,13 @@
 (** The methods, signals and properties of a [GEmblem]. *)
 class type emblem_t = object
   inherit Icon.icon_t
+
   method get_icon : unit -> Icon.icon_t
+  (** Gives back the icon from [emblem]. *)
+
   method get_origin : unit -> Enums.emblemorigin
+  (** Gets the origin of the emblem. *)
+
   method as_emblem : Raw.Emblem.t
 end
 

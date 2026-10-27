@@ -48,15 +48,64 @@
 (** The methods, signals and properties of a [GtkComboBoxText]. *)
 class type combo_box_text_t = object
   inherit Combo_box.combo_box_t
+
   method append : string option -> string -> unit
+  (** Appends [text] to the list of strings stored in [combo_box].
+
+      If [id] is non-[NULL] then it is used as the ID of the row.
+
+      This is the same as calling [Gtk.ComboBoxText.insert] with a position of
+      -1. *)
+
   method append_text : string -> unit
+  (** Appends [text] to the list of strings stored in [combo_box].
+
+      This is the same as calling [Gtk.ComboBoxText.insert_text] with a position
+      of -1. *)
+
   method get_active_text : unit -> string option
+  (** Returns the currently active string in [combo_box].
+
+      If no row is currently selected, [NULL] is returned. If [combo_box]
+      contains an entry, this function will return its contents (which will not
+      necessarily be an item from the list). *)
+
   method insert : int -> string option -> string -> unit
+  (** Inserts [text] at [position] in the list of strings stored in [combo_box].
+
+      If [id] is non-[NULL] then it is used as the ID of the row. See
+      [Gtk.ComboBox:id-column].
+
+      If [position] is negative then [text] is appended. *)
+
   method insert_text : int -> string -> unit
+  (** Inserts [text] at [position] in the list of strings stored in [combo_box].
+
+      If [position] is negative then [text] is appended.
+
+      This is the same as calling [Gtk.ComboBoxText.insert] with a [NULL] ID
+      string. *)
+
   method prepend : string option -> string -> unit
+  (** Prepends [text] to the list of strings stored in [combo_box].
+
+      If [id] is non-[NULL] then it is used as the ID of the row.
+
+      This is the same as calling [Gtk.ComboBoxText.insert] with a position of
+      0. *)
+
   method prepend_text : string -> unit
+  (** Prepends [text] to the list of strings stored in [combo_box].
+
+      This is the same as calling [Gtk.ComboBoxText.insert_text] with a position
+      of 0. *)
+
   method remove : int -> unit
+  (** Removes the string at [position] from [combo_box]. *)
+
   method remove_all : unit -> unit
+  (** Removes all the text entries from the combo box. *)
+
   method as_combo_box_text : Raw.Combo_box_text.t
 end
 

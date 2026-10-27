@@ -20,7 +20,14 @@
 (** The methods, signals and properties of a [GtkShortcutsGroup]. *)
 class type shortcuts_group_t = object
   inherit Box.box_t
+
   method add_shortcut : Shortcuts_shortcut.shortcuts_shortcut_t -> unit
+  (** Adds a shortcut to the shortcuts group.
+
+      This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+      tag to add the child. Adding children with other API is not appropriate as
+      [GtkShortcutsGroup] manages its children internally. *)
+
   method set_accel_size_group : Size_group.size_group_t -> unit
   method height : int
   method title : string

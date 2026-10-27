@@ -48,23 +48,46 @@ class type graphics_offload_t = object
     .widget_t
 
   method get_black_background : unit -> bool
+  (** Returns whether the widget draws a black background.
+
+      See [Gtk.GraphicsOffload.set_black_background]. *)
 
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child of [self]. *)
 
   method get_enabled : unit -> Enums.graphicsoffloadenabled
+  (** Returns whether offload is enabled for [self]. *)
+
   method set_black_background : bool -> unit
+  (** Sets whether this GtkGraphicsOffload widget will draw a black background.
+
+      A main use case for this is {b _letterboxing_} where black bars are
+      visible next to the content if the aspect ratio of the content does not
+      match the dimensions of the monitor.
+
+      Using this property for letterboxing instead of CSS allows compositors to
+      show content with maximum efficiency, using direct scanout to avoid extra
+      copies in the compositor.
+
+      On Wayland, this is implemented using the
+      {{:https://wayland.app/protocols/single-pixel-buffer-v1}single-pixel
+       buffer} protocol. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child of [self]. *)
 
   method set_enabled : Enums.graphicsoffloadenabled -> unit
+  (** Sets whether this GtkGraphicsOffload widget will attempt to offload the
+      content of its child widget. *)
+
   method as_graphics_offload : Raw.Graphics_offload.t
 end
 

@@ -95,15 +95,47 @@ class type drop_target_t = object
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgdk.Enums.dragaction
+  (** Gets the actions that this drop target supports. *)
+
   method get_current_drop : unit -> Ocgdk.Drop.drop_t option
+  (** Gets the currently handled drop operation.
+
+      If no drop operation is going on, [NULL] is returned. *)
+
   method get_drop : unit -> Ocgdk.Drop.drop_t option
+  (** Gets the currently handled drop operation.
+
+      If no drop operation is going on, [NULL] is returned. *)
+
   method get_formats : unit -> Ocgdk.Content_formats.content_formats_t option
+  (** Gets the data formats that this drop target accepts.
+
+      If the result is [NULL], all formats are expected to be supported. *)
+
   method get_preload : unit -> bool
+  (** Gets whether data should be preloaded on hover. *)
+
   method get_value : unit -> Gobject.Value.t option
+  (** Gets the current drop data, as a [GValue]. *)
+
   method reject : unit -> unit
+  (** Rejects the ongoing drop operation.
+
+      If no drop operation is ongoing, i.e when [Gtk.DropTarget:current-drop] is
+      [NULL], this function does nothing.
+
+      This function should be used when delaying the decision on whether to
+      accept a drag or not until after reading the data. *)
+
   method set_actions : Ocgdk.Enums.dragaction -> unit
+  (** Sets the actions that this drop target supports. *)
+
   method set_gtypes : Gobject.Type.t array option -> Gsize.t -> unit
+  (** Sets the supported [GType]s for this drop target. *)
+
   method set_preload : bool -> unit
+  (** Sets whether data should be preloaded on hover. *)
+
   method as_drop_target : Raw.Drop_target.t
 end
 

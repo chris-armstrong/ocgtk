@@ -9,9 +9,21 @@ class type password_entry_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
+  (** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)
+
   method get_show_peek_icon : unit -> bool
+  (** Returns whether the entry is showing an icon to reveal the contents. *)
+
   method set_extra_menu : Ocgio.Menu_model.menu_model_t option -> unit
+  (** Sets a menu model to add when constructing the context menu for [entry].
+  *)
+
   method set_show_peek_icon : bool -> unit
+  (** Sets whether the entry should have a clickable icon to reveal the
+      contents.
+
+      Setting this to [FALSE] also hides the text again. *)
+
   method activates_default : bool
   method set_activates_default : bool -> unit
   method placeholder_text : string

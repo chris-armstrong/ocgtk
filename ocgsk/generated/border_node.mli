@@ -6,9 +6,16 @@
 (** The methods, signals and properties of a [GskBorderNode]. *)
 class type border_node_t = object
   inherit Render_node.render_node_t
+
   method get_colors : unit -> Ocgdk.Raw.Rgb_a.t array
+  (** Retrieves the colors of the border. *)
+
   method get_outline : unit -> Raw.Rounded_rect.t
+  (** Retrieves the outline of the border. *)
+
   method get_widths : unit -> float array
+  (** Retrieves the stroke widths of the border. *)
+
   method as_border_node : Raw.Border_node.t
 end
 

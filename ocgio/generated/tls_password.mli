@@ -7,11 +7,27 @@
 (** The methods, signals and properties of a [GTlsPassword]. *)
 class type tls_password_t = object
   method get_description : unit -> string
+  (** Get a description string about what the password will be used for. *)
+
   method get_flags : unit -> Enums.tlspasswordflags
+  (** Get flags about the password. *)
+
   method get_warning : unit -> string
+  (** Get a user readable translated warning. Usually this warning is a
+      representation of the password flags returned from
+      g_tls_password_get_flags(). *)
+
   method set_description : string -> unit
+  (** Set a description string about what the password will be used for. *)
+
   method set_flags : Enums.tlspasswordflags -> unit
+  (** Set flags about the password. *)
+
   method set_warning : string -> unit
+  (** Set a user readable translated warning. Usually this warning is a
+      representation of the password flags returned from
+      g_tls_password_get_flags(). *)
+
   method as_tls_password : Raw.Tls_password.t
 end
 

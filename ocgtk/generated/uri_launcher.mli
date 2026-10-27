@@ -17,13 +17,22 @@
 class type uri_launcher_t = object
   method can_launch :
     Application_and__window_and__window_group.window_t option -> bool
+  (** Returns whether the launcher is likely to succeed in launching an
+      application for its uri.
+
+      This can be used to disable controls that trigger the launcher when they
+      are known not to work. *)
 
   method get_uri : unit -> string option
+  (** Gets the uri that will be opened. *)
 
   method launch_finish :
     Ocgio.Async_result.async_result_t -> (bool, GError.t) result
+  (** Finishes the [Gtk.UriLauncher.launch] call and returns the result. *)
 
   method set_uri : string option -> unit
+  (** Sets the uri that will be opened. *)
+
   method as_uri_launcher : Raw.Uri_launcher.t
 end
 

@@ -7,6 +7,8 @@
 (** The methods, signals and properties of a [GdkDragSurfaceSize]. *)
 class type drag_surface_size_t = object
   method set_size : int -> int -> unit
+  (** Sets the size the drag surface prefers to be resized to. *)
+
   method as_drag_surface_size : Raw.Drag_surface_size.t
 end
 

@@ -28,8 +28,30 @@ class type filter_t = object
     Gobject.Signal.handler_id
 
   method changed : Enums.filterchange -> unit
+  (** Notifies all users of the filter that it has changed.
+
+      This emits the [Gtk.Filter::changed] signal. Users of the filter should
+      then check items again via [Gtk.Filter.match].
+
+      Depending on the [change] parameter, not all items need to be changed, but
+      only some. Refer to the [Gtk.FilterChange] documentation for details.
+
+      This function is intended for implementers of [GtkFilter] subclasses and
+      should not be called from other functions. *)
+
   method get_strictness : unit -> Enums.filtermatch
+  (** Gets the known strictness of a filter.
+
+      If the strictness is not known, [Gtk.FilterMatch.some] is returned.
+
+      This value may change after emission of the [Gtk.Filter::changed] signal.
+
+      This function is meant purely for optimization purposes. Filters can
+      choose to omit implementing it, but [GtkFilterListModel] uses it. *)
+
   method match_ : [ `object_ ] Gobject.obj -> bool
+  (** Checks if the given [item] is matched by the filter or not. *)
+
   method as_filter : Raw.Filter.t
 end
 

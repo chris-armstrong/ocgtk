@@ -10,7 +10,11 @@ class type event_controller_focus_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method contains_focus : unit -> bool
+  (** Returns [TRUE] if focus is within [self] or one of its children. *)
+
   method is_focus : unit -> bool
+  (** Returns [TRUE] if focus is within [self], but not one of its children. *)
+
   method as_event_controller_focus : Raw.Event_controller_focus.t
 end
 

@@ -8,30 +8,48 @@ class type frame_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [frame]. *)
 
   method get_label : unit -> string option
+  (** Returns the frame labels text.
+
+      If the frame's label widget is not a [GtkLabel], [NULL] is returned. *)
+
   method get_label_align : unit -> float
+  (** Retrieves the X alignment of the frame’s label. *)
 
   method get_label_widget :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Retrieves the label widget for the frame. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [frame]. *)
 
   method set_label : string option -> unit
+  (** Creates a new [GtkLabel] with the [label] and sets it as the frame's label
+      widget. *)
+
   method set_label_align : float -> unit
+  (** Sets the X alignment of the frame widget’s label.
+
+      The default value for a newly created frame is 0.0. *)
 
   method set_label_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the label widget for the frame.
+
+      This is the widget that will appear embedded in the top edge of the frame
+      as a title. *)
 
   method as_frame : Raw.Frame.t
 end

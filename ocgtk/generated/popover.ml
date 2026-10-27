@@ -13,40 +13,109 @@ class type popover_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_autohide : unit -> bool
+  (** Returns whether the popover is modal.
+
+      See [Gtk.Popover.set_autohide] for the implications of this. *)
+
   method get_cascade_popdown : unit -> bool
+  (** Returns whether the popover will close after a modal child is closed. *)
 
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [popover]. *)
 
   method get_has_arrow : unit -> bool
+  (** Gets whether this popover is showing an arrow pointing at the widget that
+      it is relative to. *)
+
   method get_mnemonics_visible : unit -> bool
+  (** Gets whether mnemonics are visible. *)
+
   method get_position : unit -> Enums.positiontype
+  (** Returns the preferred position of [popover]. *)
+
   method popdown : unit -> unit
+  (** Pops [popover] down.
+
+      This may have the side-effect of closing a parent popover as well. See
+      [Gtk.Popover:cascade-popdown]. *)
+
   method popup : unit -> unit
+  (** Pops [popover] up. *)
+
   method present : unit -> unit
+  (** Allocate a size for the [GtkPopover].
+
+      This function needs to be called in size-allocate by widgets who have a
+      [GtkPopover] as child. When using a layout manager, this is happening
+      automatically.
+
+      To make a popover appear on screen, use [Gtk.Popover.popup]. *)
+
   method set_autohide : bool -> unit
+  (** Sets whether [popover] is modal.
+
+      A modal popover will grab the keyboard focus on it when being displayed.
+      Focus will wrap around within the popover. Clicking outside the popover
+      area or pressing Esc will dismiss the popover.
+
+      Called this function on an already showing popup with a new autohide value
+      different from the current one, will cause the popup to be hidden. *)
+
   method set_cascade_popdown : bool -> unit
+  (** If [cascade_popdown] is [TRUE], the popover will be closed when a child
+      modal popover is closed.
+
+      If [FALSE], [popover] will stay visible. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [popover]. *)
 
   method set_default_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the default widget of a [GtkPopover].
+
+      The default widget is the widget that’s activated when the user presses
+      Enter in a dialog (for example). This function sets or unsets the default
+      widget for a [GtkPopover]. *)
 
   method set_has_arrow : bool -> unit
+  (** Sets whether this popover should draw an arrow pointing at the widget it
+      is relative to. *)
+
   method set_mnemonics_visible : bool -> unit
+  (** Sets whether mnemonics should be visible. *)
+
   method set_offset : int -> int -> unit
+  (** Sets the offset to use when calculating the position of the popover.
+
+      These values are used when preparing the [Gdk.PopupLayout] for positioning
+      the popover. *)
+
   method set_pointing_to : Ocgdk.Rectangle.rectangle_t option -> unit
+  (** Sets the rectangle that [popover] points to.
+
+      This is in the coordinate space of the [popover] parent. *)
+
   method set_position : Enums.positiontype -> unit
+  (** Sets the preferred position for [popover] to appear.
+
+      If the [popover] is currently visible, it will be immediately updated.
+
+      This preference will be respected where possible, although on lack of
+      space (eg. if close to the window edges), the [GtkPopover] may choose to
+      appear on the opposite side. *)
+
   method as_popover : Raw.Popover.t
 end
 

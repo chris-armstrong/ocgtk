@@ -1,7 +1,13 @@
 class type rounded_clip_node_t = object
   inherit Render_node.render_node_t
+
   method get_child : unit -> Render_node.render_node_t
+  (** Gets the child node that is getting clipped by the given [node]. *)
+
   method get_clip : unit -> Raw.Rounded_rect.t
+  (** Retrieves the rounded rectangle used to clip the contents of the [node].
+  *)
+
   method as_rounded_clip_node : Raw.Rounded_clip_node.t
 end
 

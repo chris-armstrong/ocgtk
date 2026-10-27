@@ -2,11 +2,34 @@ class type application_window_t = object
   inherit Application_and__window_and__window_group.window_t
   inherit Ocgio.Action_group.action_group_t
   inherit Ocgio.Action_map.action_map_t
+
   method get_help_overlay : unit -> Shortcuts_window.shortcuts_window_t option
+  (** Gets the [GtkShortcutsWindow] that is associated with [window].
+
+      See [Gtk.ApplicationWindow.set_help_overlay]. *)
+
   method get_id : unit -> int
+  (** Returns the unique ID of the window.
+
+      If the window has not yet been added to a [GtkApplication], returns [0].
+  *)
+
   method get_show_menubar : unit -> bool
+  (** Returns whether the window will display a menubar for the app menu and
+      menubar as needed. *)
+
   method set_help_overlay : Shortcuts_window.shortcuts_window_t option -> unit
+  (** Associates a shortcuts window with the application window.
+
+      Additionally, sets up an action with the name [win.show-help-overlay] to
+      present it.
+
+      The window takes responsibility for destroying the help overlay. *)
+
   method set_show_menubar : bool -> unit
+  (** Sets whether the window will display a menubar for the app menu and
+      menubar as needed. *)
+
   method as_application_window : Raw.Application_window.t
 end
 

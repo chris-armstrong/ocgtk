@@ -52,12 +52,53 @@ class type shortcut_controller_t = object
 
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
+
   method add_shortcut : Shortcut.shortcut_t -> unit
+  (** Adds [shortcut] to the list of shortcuts handled by [self].
+
+      If this controller uses an external shortcut list, this function does
+      nothing. *)
+
   method get_mnemonics_modifiers : unit -> Ocgdk.Enums.modifiertype
+  (** Gets the mnemonics modifiers for when this controller activates its
+      shortcuts. *)
+
   method get_scope : unit -> Enums.shortcutscope
+  (** Gets the scope for when this controller activates its shortcuts.
+
+      See [Gtk.ShortcutController.set_scope] for details. *)
+
   method remove_shortcut : Shortcut.shortcut_t -> unit
+  (** Removes [shortcut] from the list of shortcuts handled by [self].
+
+      If [shortcut] had not been added to [controller] or this controller uses
+      an external shortcut list, this function does nothing. *)
+
   method set_mnemonics_modifiers : Ocgdk.Enums.modifiertype -> unit
+  (** Sets the controller to use the given modifier for mnemonics.
+
+      The mnemonics modifiers determines which modifiers need to be pressed to
+      allow activation of shortcuts with mnemonics triggers.
+
+      GTK normally uses the Alt modifier for mnemonics, except in
+      [GtkPopoverMenu]s, where mnemonics can be triggered without any modifiers.
+      It should be very rarely necessary to change this, and doing so is likely
+      to interfere with other shortcuts.
+
+      This value is only relevant for local shortcut controllers. Global and
+      managed shortcut controllers will have their shortcuts activated from
+      other places which have their own modifiers for activating mnemonics. *)
+
   method set_scope : Enums.shortcutscope -> unit
+  (** Sets the controller to have the given [scope].
+
+      The scope allows shortcuts to be activated outside of the normal event
+      propagation. In particular, it allows installing global keyboard shortcuts
+      that can be activated even when a widget does not have focus.
+
+      With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
+      widget has focus. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_shortcut_controller : Raw.Shortcut_controller.t

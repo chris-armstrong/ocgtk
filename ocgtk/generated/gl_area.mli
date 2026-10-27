@@ -118,23 +118,116 @@ class type gl_area_t = object
     Gobject.Signal.handler_id
 
   method attach_buffers : unit -> unit
+  (** Binds buffers to the framebuffer.
+
+      Ensures that the [area] framebuffer object is made the current draw and
+      read target, and that all the required buffers for the [area] are created
+      and bound to the framebuffer.
+
+      This function is automatically called before emitting the
+      [Gtk.GLArea::render] signal, and doesn't normally need to be called by
+      application code. *)
+
   method get_allowed_apis : unit -> Ocgdk.Enums.glapi
+  (** Gets the allowed APIs.
+
+      See [Gtk.GLArea.set_allowed_apis]. *)
+
   method get_api : unit -> Ocgdk.Enums.glapi
+  (** Gets the API that is currently in use.
+
+      If the GL area has not been realized yet, 0 is returned. *)
+
   method get_auto_render : unit -> bool
+  (** Returns whether the area is in auto render mode or not. *)
+
   method get_context : unit -> Ocgdk.Gl_context.gl_context_t option
+  (** Retrieves the [GdkGLContext] used by [area]. *)
+
   method get_error : unit -> GError.t option
+  (** Gets the current error set on the [area]. *)
+
   method get_has_depth_buffer : unit -> bool
+  (** Returns whether the area has a depth buffer. *)
+
   method get_has_stencil_buffer : unit -> bool
+  (** Returns whether the area has a stencil buffer. *)
+
   method get_use_es : unit -> bool
+  (** Returns whether the [GtkGLArea] should use OpenGL ES.
+
+      See [Gtk.GLArea.set_use_es]. *)
+
   method make_current : unit -> unit
+  (** Ensures that the [GdkGLContext] used by [area] is associated with the
+      [GtkGLArea].
+
+      This function is automatically called before emitting the
+      [Gtk.GLArea::render] signal, and doesn't normally need to be called by
+      application code. *)
+
   method queue_render : unit -> unit
+  (** Marks the currently rendered data (if any) as invalid, and queues a redraw
+      of the widget.
+
+      This ensures that the [Gtk.GLArea::render] signal is emitted during the
+      draw.
+
+      This is only needed when [Gtk.GLArea.set_auto_render] has been called with
+      a [FALSE] value. The default behaviour is to emit [Gtk.GLArea::render] on
+      each draw. *)
+
   method set_allowed_apis : Ocgdk.Enums.glapi -> unit
+  (** Sets the allowed APIs to create a context with.
+
+      You should check [Gtk.GLArea:api] before drawing with either API.
+
+      By default, all APIs are allowed. *)
+
   method set_auto_render : bool -> unit
+  (** Sets whether the [GtkGLArea] is in auto render mode.
+
+      If [auto_render] is [TRUE] the [Gtk.GLArea::render] signal will be emitted
+      every time the widget draws. This is the default and is useful if drawing
+      the widget is faster.
+
+      If [auto_render] is [FALSE] the data from previous rendering is kept
+      around and will be used for drawing the widget the next time, unless the
+      window is resized. In order to force a rendering [Gtk.GLArea.queue_render]
+      must be called. This mode is useful when the scene changes seldom, but
+      takes a long time to redraw. *)
+
   method set_error : GError.t option -> unit
+  (** Sets an error on the area which will be shown instead of the GL rendering.
+
+      This is useful in the [Gtk.GLArea::create-context] signal if GL context
+      creation fails. *)
+
   method set_has_depth_buffer : bool -> unit
+  (** Sets whether the [GtkGLArea] should use a depth buffer.
+
+      If [has_depth_buffer] is [TRUE] the widget will allocate and enable a
+      depth buffer for the target framebuffer. Otherwise there will be none. *)
+
   method set_has_stencil_buffer : bool -> unit
+  (** Sets whether the [GtkGLArea] should use a stencil buffer.
+
+      If [has_stencil_buffer] is [TRUE] the widget will allocate and enable a
+      stencil buffer for the target framebuffer. Otherwise there will be none.
+  *)
+
   method set_required_version : int -> int -> unit
+  (** Sets the required version of OpenGL to be used when creating the context
+      for the widget.
+
+      This function must be called before the area has been realized. *)
+
   method set_use_es : bool -> unit
+  (** Sets whether the [area] should create an OpenGL or an OpenGL ES context.
+
+      You should check the capabilities of the [GdkGLContext] before drawing
+      with either API. *)
+
   method as_gl_area : Raw.Gl_area.t
 end
 

@@ -1,5 +1,8 @@
 class type d_bus_method_info_t = object
   method ref : unit -> Raw.D_bus_method_info.t
+  (** If [info] is statically allocated does nothing. Otherwise increases the
+      reference count. *)
+
   method as_d_bus_method_info : Raw.D_bus_method_info.t
 end
 

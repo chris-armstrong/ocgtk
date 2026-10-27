@@ -23,14 +23,21 @@
 class type app_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit App_chooser.app_chooser_t
+
   method get_heading : unit -> string option
+  (** Returns the text to display at the top of the dialog. *)
 
   method get_widget :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Returns the [GtkAppChooserWidget] of this dialog. *)
 
   method set_heading : string -> unit
+  (** Sets the text to display at the top of the dialog.
+
+      If the heading is not set, the dialog displays a default text. *)
+
   method gfile : Ocgio.File.file_t
   method as_app_chooser_dialog : Raw.App_chooser_dialog.t
 end

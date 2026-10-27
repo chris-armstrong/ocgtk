@@ -37,17 +37,51 @@
 (** The methods, signals and properties of a [GdkPopupLayout]. *)
 class type popup_layout_t = object
   method equal : Raw.Popup_layout.t -> bool
+  (** Check whether [layout] and [other] has identical layout properties. *)
+
   method get_anchor_hints : unit -> Enums.anchorhints
+  (** Get the anchor hints. *)
+
   method get_anchor_rect : unit -> Raw.Rectangle.t
+  (** Get the anchor rectangle. *)
+
   method get_rect_anchor : unit -> Enums.gravity
+  (** Returns the anchor position on the anchor rectangle. *)
+
   method get_surface_anchor : unit -> Enums.gravity
+  (** Returns the anchor position on the popup surface. *)
+
   method ref : unit -> Raw.Popup_layout.t
+  (** Increases the reference count of [value]. *)
+
   method set_anchor_hints : Enums.anchorhints -> unit
+  (** Set new anchor hints.
+
+      The set [anchor_hints] determines how [surface] will be moved if the
+      anchor points cause it to move off-screen. For example,
+      [GDK_ANCHOR_FLIP_X] will replace [GDK_GRAVITY_NORTH_WEST] with
+      [GDK_GRAVITY_NORTH_EAST] and vice versa if [surface] extends beyond the
+      left or right edges of the monitor. *)
+
   method set_anchor_rect : Raw.Rectangle.t -> unit
+  (** Set the anchor rectangle. *)
+
   method set_offset : int -> int -> unit
+  (** Offset the position of the anchor rectangle with the given delta. *)
+
   method set_rect_anchor : Enums.gravity -> unit
+  (** Set the anchor on the anchor rectangle. *)
+
   method set_shadow_width : int -> int -> int -> int -> unit
+  (** Sets the shadow width of the popup.
+
+      The shadow width corresponds to the part of the computed surface size that
+      would consist of the shadow margin surrounding the window, would there be
+      any. *)
+
   method set_surface_anchor : Enums.gravity -> unit
+  (** Set the anchor on the popup surface. *)
+
   method as_popup_layout : Raw.Popup_layout.t
 end
 

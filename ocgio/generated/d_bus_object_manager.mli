@@ -45,14 +45,18 @@ class type d_bus_object_manager_t = object
     string ->
     string ->
     D_bus_interface_and__d_bus_object.d_bus_interface_t option
+  (** Gets the interface proxy for [interface_name] at [object_path], if any. *)
 
   method get_object :
     string -> D_bus_interface_and__d_bus_object.d_bus_object_t option
+  (** Gets the [GDBusObject] at [object_path], if any. *)
 
   method get_object_path : unit -> string
+  (** Gets the object path that [manager] is for. *)
 
   method get_objects :
     unit -> D_bus_interface_and__d_bus_object.d_bus_object_t list
+  (** Gets all [GDBusObject] objects known to [manager]. *)
 
   method as_d_bus_object_manager : Raw.D_bus_object_manager.t
 end

@@ -9,11 +9,21 @@ class type box_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Adds a child at the end. *)
 
   method get_baseline_child : unit -> int
+  (** Gets the value set by [Gtk.Box.set_baseline_child]. *)
+
   method get_baseline_position : unit -> Enums.baselineposition
+  (** Gets the value set by [Gtk.Box.set_baseline_position]. *)
+
   method get_homogeneous : unit -> bool
+  (** Returns whether the box is homogeneous.
+
+      In a homogeneous box all children are the same size. *)
+
   method get_spacing : unit -> int
+  (** Gets the value set by [Gtk.Box.set_spacing]. *)
 
   method insert_child_after :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -22,16 +32,26 @@ class type box_t = object
     .widget_t
     option ->
     unit
+  (** Inserts a child at a specific position.
+
+      The child is added after [sibling] in the list of [box] children.
+
+      If [sibling] is [NULL], the [child] is placed at the beginning. *)
 
   method prepend :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Adds a child at the beginning. *)
 
   method remove :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Removes a child widget from the box.
+
+      The child must have been added before with [Gtk.Box.append],
+      [Gtk.Box.prepend], or [Gtk.Box.insert_child_after]. *)
 
   method reorder_child_after :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -40,11 +60,32 @@ class type box_t = object
     .widget_t
     option ->
     unit
+  (** Moves a child to a different position.
+
+      The child is moved to the position after [sibling] in the list of [box]
+      children.
+
+      If [sibling] is [NULL], the child is placed at the beginning. *)
 
   method set_baseline_child : int -> unit
+  (** Sets the baseline child of a box.
+
+      This affects only vertical boxes. *)
+
   method set_baseline_position : Enums.baselineposition -> unit
+  (** Sets the baseline position of a box.
+
+      This affects only horizontal boxes with at least one baseline aligned
+      child. If there is more vertical space available than requested, and the
+      baseline is not allocated by the parent then [position] is used to
+      allocate the baseline with respect to the extra space available. *)
+
   method set_homogeneous : bool -> unit
+  (** Sets whether or not all children are given equal space in the box. *)
+
   method set_spacing : int -> unit
+  (** Sets the number of pixels to place between children. *)
+
   method as_box : Raw.Box.t
 end
 

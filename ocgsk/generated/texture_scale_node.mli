@@ -7,8 +7,14 @@
 (** The methods, signals and properties of a [GskTextureScaleNode]. *)
 class type texture_scale_node_t = object
   inherit Render_node.render_node_t
+
   method get_filter : unit -> Enums.scalingfilter
+  (** Retrieves the [GskScalingFilter] used when creating this [GskRenderNode].
+  *)
+
   method get_texture : unit -> Ocgdk.Texture.texture_t
+  (** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)
+
   method as_texture_scale_node : Raw.Texture_scale_node.t
 end
 

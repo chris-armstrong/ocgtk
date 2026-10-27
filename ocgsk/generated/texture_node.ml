@@ -1,6 +1,9 @@
 class type texture_node_t = object
   inherit Render_node.render_node_t
+
   method get_texture : unit -> Ocgdk.Texture.texture_t
+  (** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)
+
   method as_texture_node : Raw.Texture_node.t
 end
 

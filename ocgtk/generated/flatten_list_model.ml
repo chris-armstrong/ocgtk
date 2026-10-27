@@ -1,9 +1,16 @@
 class type flatten_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
+  (** Gets the model set via gtk_flatten_list_model_set_model(). *)
+
   method get_model_for_item : int -> Ocgio.List_model.list_model_t option
+  (** Returns the model containing the item at the given position. *)
+
   method set_model : Ocgio.List_model.list_model_t option -> unit
+  (** Sets a new model to be flattened. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_flatten_list_model : Raw.Flatten_list_model.t

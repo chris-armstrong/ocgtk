@@ -22,8 +22,30 @@
 (** The methods, signals and properties of a [GtkTextTag]. *)
 class type text_tag_t = object
   method changed : bool -> unit
+  (** Emits the [Gtk.TextTagTable::tag-changed] signal on the [GtkTextTagTable]
+      where the tag is included.
+
+      The signal is already emitted when setting a [GtkTextTag] property. This
+      function is useful for a [GtkTextTag] subclass. *)
+
   method get_priority : unit -> int
+  (** Get the tag priority. *)
+
   method set_priority : int -> unit
+  (** Sets the priority of a [GtkTextTag].
+
+      Valid priorities start at 0 and go to one less than
+      [Gtk.TextTagTable.get_size]. Each tag in a table has a unique priority;
+      setting the priority of one tag shifts the priorities of all the other
+      tags in the table to maintain a unique priority for each tag.
+
+      Higher priority tags “win” if two tags both set the same text attribute.
+      When adding a tag to a tag table, it will be assigned the highest priority
+      in the table by default; so normally the precedence of a set of tags is
+      the order in which they were added to the table, or created with
+      [Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s table
+      automatically. *)
+
   method accumulative_margin : bool
   method set_accumulative_margin : bool -> unit
   method allow_breaks : bool

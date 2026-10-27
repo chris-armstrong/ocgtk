@@ -20,7 +20,11 @@
 (** The methods, signals and properties of a [GdkRectangle]. *)
 class type rectangle_t = object
   method contains_point : int -> int -> bool
+  (** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
+
   method equal : Raw.Rectangle.t -> bool
+  (** Checks if the two given rectangles are equal. *)
+
   method as_rectangle : Raw.Rectangle.t
 end
 

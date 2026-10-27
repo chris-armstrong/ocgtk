@@ -4,9 +4,25 @@ class type inet_socket_address_t = object
     .socket_address_t
 
   method get_address : unit -> Inet_address.inet_address_t
+  (** Gets [address]'s [GInetAddress]. *)
+
   method get_flowinfo : unit -> UInt32.t
+  (** Gets the [sin6_flowinfo] field from [address], which must be an IPv6
+      address.
+
+      If not overridden this value will be inherited from
+      [Gio.InetSocketAddress:address]. *)
+
   method get_port : unit -> UInt16.t
+  (** Gets [address]'s port. *)
+
   method get_scope_id : unit -> UInt32.t
+  (** Gets the [sin6_scope_id] field from [address], which must be an IPv6
+      address.
+
+      If not overridden this value will be inherited from
+      [Gio.InetSocketAddress:address]. *)
+
   method as_inet_socket_address : Raw.Inet_socket_address.t
 end
 

@@ -4,9 +4,24 @@ class type unix_socket_address_t = object
     .socket_address_t
 
   method get_address_type : unit -> Enums.unixsocketaddresstype
+  (** Gets [address]'s type. *)
+
   method get_is_abstract : unit -> bool
+  (** Tests if [address] is abstract. *)
+
   method get_path : unit -> string
+  [@@ocaml.doc
+    "Gets [address]'s path, or for abstract sockets the \"name\".\n\n\
+     Guaranteed to be zero-terminated, but an abstract socket\n\
+     may contain embedded zeros, and thus you should use\n\
+     g_unix_socket_address_get_path_len() to get the true length\n\
+     of this string."]
+
   method get_path_len : unit -> Gsize.t
+  (** Gets the length of [address]'s path.
+
+      For details, see g_unix_socket_address_get_path(). *)
+
   method abstract : bool
   method as_unix_socket_address : Raw.Unix_socket_address.t
 end

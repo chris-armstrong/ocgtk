@@ -1,17 +1,34 @@
 class type file_launcher_t = object
   method get_always_ask : unit -> bool
+  (** Returns whether to ask the user which app to use. *)
+
   method get_file : unit -> Ocgio.File.file_t option
+  (** Gets the file that will be opened. *)
+
   method get_writable : unit -> bool
+  (** Returns whether to make the file writable for the handler. *)
 
   method launch_finish :
     Ocgio.Async_result.async_result_t -> (bool, GError.t) result
+  (** Finishes the [Gtk.FileLauncher.launch] call and returns the result. *)
 
   method open_containing_folder_finish :
     Ocgio.Async_result.async_result_t -> (bool, GError.t) result
+  (** Finishes the [Gtk.FileLauncher.open_containing_folder] call and returns
+      the result. *)
 
   method set_always_ask : bool -> unit
+  (** Sets whether to always ask the user which app to use.
+
+      If false, the file might be opened with a default app or the previous
+      choice. *)
+
   method set_file : Ocgio.File.file_t option -> unit
+  (** Sets the file that will be opened. *)
+
   method set_writable : bool -> unit
+  (** Sets whether to make the file writable for the handler. *)
+
   method as_file_launcher : Raw.File_launcher.t
 end
 

@@ -17,6 +17,12 @@ class type gesture_rotate_t = object
     Gobject.Signal.handler_id
 
   method get_angle_delta : unit -> float
+  (** Gets the angle delta in radians.
+
+      If [gesture] is active, this function returns the angle difference in
+      radians since the gesture was first recognized. If [gesture] is not
+      active, 0 is returned. *)
+
   method as_gesture_rotate : Raw.Gesture_rotate.t
 end
 

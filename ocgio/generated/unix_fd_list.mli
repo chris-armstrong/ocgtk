@@ -17,8 +17,36 @@
 (** The methods, signals and properties of a [GUnixFDList]. *)
 class type unix_fd_list_t = object
   method append : int -> (int, GError.t) result
+  (** Adds a file descriptor to [list].
+
+      The file descriptor is duplicated using dup(). You keep your copy of the
+      descriptor and the copy contained in [list] will be closed when [list] is
+      finalized.
+
+      A possible cause of failure is exceeding the per-process or system-wide
+      file descriptor limit.
+
+      The index of the file descriptor in the list is returned. If you use this
+      index with g_unix_fd_list_get() then you will receive back a duplicated
+      copy of the same file descriptor. *)
+
   method get : int -> (int, GError.t) result
+  (** Gets a file descriptor out of [list].
+
+      [index_] specifies the index of the file descriptor to get. It is a
+      programmer error for [index_] to be out of range; see
+      g_unix_fd_list_get_length().
+
+      The file descriptor is duplicated using dup() and set as close-on-exec
+      before being returned. You must call close() on it when you are done.
+
+      A possible cause of failure is exceeding the per-process or system-wide
+      file descriptor limit. *)
+
   method get_length : unit -> int
+  (** Gets the length of [list] (ie: the number of file descriptors contained
+      within). *)
+
   method as_unix_fd_list : Raw.Unix_fd_list.t
 end
 

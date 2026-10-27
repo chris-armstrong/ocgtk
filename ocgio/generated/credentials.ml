@@ -1,6 +1,15 @@
 class type credentials_t = object
   method is_same_user : credentials_t -> (bool, GError.t) result
+  (** Checks if [credentials] and [other_credentials] is the same user.
+
+      This operation can fail if [GCredentials] is not supported on the the OS.
+  *)
+
   method to_string : unit -> string
+  (** Creates a human-readable textual representation of [credentials] that can
+      be used in logging and debug messages. The format of the returned string
+      may change in future GLib release. *)
+
   method as_credentials : Raw.Credentials.t
 end
 

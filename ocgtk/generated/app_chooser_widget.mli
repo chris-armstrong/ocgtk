@@ -44,17 +44,53 @@ class type app_chooser_widget_t = object
     Gobject.Signal.handler_id
 
   method get_default_text : unit -> string option
+  (** Returns the text that is shown if there are not applications that can
+      handle the content type. *)
+
   method get_show_all : unit -> bool
+  (** Gets whether the app chooser should show all applications in a flat list.
+  *)
+
   method get_show_default : unit -> bool
+  (** Gets whether the app chooser should show the default handler for the
+      content type in a separate section. *)
+
   method get_show_fallback : unit -> bool
+  (** Gets whether the app chooser should show related applications for the
+      content type in a separate section. *)
+
   method get_show_other : unit -> bool
+  (** Gets whether the app chooser should show applications which are unrelated
+      to the content type. *)
+
   method get_show_recommended : unit -> bool
+  (** Gets whether the app chooser should show recommended applications for the
+      content type in a separate section. *)
+
   method set_default_text : string -> unit
+  (** Sets the text that is shown if there are not applications that can handle
+      the content type. *)
+
   method set_show_all : bool -> unit
+  (** Sets whether the app chooser should show all applications in a flat list.
+  *)
+
   method set_show_default : bool -> unit
+  (** Sets whether the app chooser should show the default handler for the
+      content type in a separate section. *)
+
   method set_show_fallback : bool -> unit
+  (** Sets whether the app chooser should show related applications for the
+      content type in a separate section. *)
+
   method set_show_other : bool -> unit
+  (** Sets whether the app chooser should show applications which are unrelated
+      to the content type. *)
+
   method set_show_recommended : bool -> unit
+  (** Sets whether the app chooser should show recommended applications for the
+      content type in a separate section. *)
+
   method as_app_chooser_widget : Raw.App_chooser_widget.t
 end
 

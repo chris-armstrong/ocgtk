@@ -6,7 +6,11 @@
 (** The methods, signals and properties of a [GdkFocusEvent]. *)
 class type focus_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
+
   method get_in : unit -> bool
+  (** Extracts whether this event is about focus entering or leaving the
+      surface. *)
+
   method as_focus_event : Raw.Focus_event.t
 end
 

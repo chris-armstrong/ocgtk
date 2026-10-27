@@ -11,9 +11,20 @@
 (** The methods, signals and properties of a [PangoAttrIterator]. *)
 class type attr_iterator_t = object
   method destroy : unit -> unit
+  (** Destroy a [PangoAttrIterator] and free all associated memory. *)
+
   method get : Enums.attrtype -> Raw.Attribute.t option
+  (** Find the current attribute of a particular type at the iterator location.
+
+      When multiple attributes of the same type overlap, the attribute whose
+      range starts closest to the current location is used. *)
+
   method get_attrs : unit -> Raw.Attribute.t list
+  (** Gets a list of all attributes at the current position of the iterator. *)
+
   method next : unit -> bool
+  (** Advance the iterator until the next change of style. *)
+
   method as_attr_iterator : Raw.Attr_iterator.t
 end
 

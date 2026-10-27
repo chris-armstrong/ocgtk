@@ -148,29 +148,103 @@ class type spin_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method configure : Adjustment.adjustment_t option -> float -> int -> unit
+  (** Changes the properties of an existing spin button.
+
+      The adjustment, climb rate, and number of decimal places are updated
+      accordingly. *)
+
   method get_activates_default : unit -> bool
+  (** Retrieves the value set by [Gtk.SpinButton.set_activates_default]. *)
+
   method get_adjustment : unit -> Adjustment.adjustment_t
+  (** Get the adjustment associated with a [GtkSpinButton]. *)
+
   method get_climb_rate : unit -> float
+  (** Returns the acceleration rate for repeated changes. *)
+
   method get_digits : unit -> int
+  (** Fetches the precision of [spin_button]. *)
+
   method get_numeric : unit -> bool
+  (** Returns whether non-numeric text can be typed into the spin button. *)
+
   method get_snap_to_ticks : unit -> bool
+  (** Returns whether the values are corrected to the nearest step. *)
+
   method get_update_policy : unit -> Enums.spinbuttonupdatepolicy
+  (** Gets the update behavior of a spin button.
+
+      See [Gtk.SpinButton.set_update_policy]. *)
+
   method get_value : unit -> float
+  (** Get the value in the [spin_button]. *)
+
   method get_value_as_int : unit -> int
+  (** Get the value [spin_button] represented as an integer. *)
+
   method get_wrap : unit -> bool
+  (** Returns whether the spin button’s value wraps around to the opposite limit
+      when the upper or lower limit of the range is exceeded. *)
+
   method set_activates_default : bool -> unit
+  (** Sets whether activating the spin button will activate the default widget
+      for the window containing the spin button.
+
+      See [Gtk.SpinButton::activate] for what counts as activation. *)
+
   method set_adjustment : Adjustment.adjustment_t -> unit
+  (** Replaces the [GtkAdjustment] associated with [spin_button]. *)
+
   method set_climb_rate : float -> unit
+  (** Sets the acceleration rate for repeated changes when you hold down a
+      button or key. *)
+
   method set_digits : int -> unit
+  (** Set the precision to be displayed by [spin_button].
+
+      Up to 20 digit precision is allowed. *)
+
   method set_increments : float -> float -> unit
+  (** Sets the step and page increments for spin_button.
+
+      This affects how quickly the value changes when the spin button’s arrows
+      are activated. *)
+
   method set_numeric : bool -> unit
+  (** Sets the flag that determines if non-numeric text can be typed into the
+      spin button. *)
+
   method set_range : float -> float -> unit
+  (** Sets the minimum and maximum allowable values for [spin_button].
+
+      If the current value is outside this range, it will be adjusted to fit
+      within the range, otherwise it will remain unchanged. *)
+
   method set_snap_to_ticks : bool -> unit
+  (** Sets the policy as to whether values are corrected to the nearest step
+      increment when a spin button is activated after providing an invalid
+      value. *)
+
   method set_update_policy : Enums.spinbuttonupdatepolicy -> unit
+  (** Sets the update behavior of a spin button.
+
+      This determines whether the spin button is always updated or only when a
+      valid value is set. *)
+
   method set_value : float -> unit
+  (** Sets the value of [spin_button]. *)
+
   method set_wrap : bool -> unit
+  (** Sets the flag that determines if a spin button value wraps around to the
+      opposite limit when the upper or lower limit of the range is exceeded. *)
+
   method spin : Enums.spintype -> float -> unit
+  (** Increment or decrement a spin button’s value in a specified direction by a
+      specified amount. *)
+
   method update : unit -> unit
+  (** Manually force an update of the spin button. *)
+
   method as_spin_button : Raw.Spin_button.t
 end
 

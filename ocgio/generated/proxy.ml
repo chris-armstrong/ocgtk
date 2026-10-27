@@ -4,11 +4,23 @@ class type proxy_t = object
     Proxy_address.proxy_address_t ->
     Cancellable.cancellable_t option ->
     (Io_stream.io_stream_t, GError.t) result
+  (** Given [connection] to communicate with a proxy (eg, a [GSocketConnection]
+      that is connected to the proxy server), this does the necessary handshake
+      to connect to [proxy_address], and if required, wraps the [GIOStream] to
+      handle proxy payload. *)
 
   method connect_finish :
     Async_result.async_result_t -> (Io_stream.io_stream_t, GError.t) result
+  (** See g_proxy_connect(). *)
 
   method supports_hostname : unit -> bool
+  (** Some proxy protocols expect to be passed a hostname, which they will
+      resolve to an IP address themselves. Others, like SOCKS4, do not allow
+      this. This function will return [FALSE] if [proxy] is implementing such a
+      protocol. When [FALSE] is returned, the caller should resolve the
+      destination hostname first, and then pass a [GProxyAddress] containing the
+      stringified IP address to g_proxy_connect() or g_proxy_connect_async(). *)
+
   method as_proxy : Raw.Proxy.t
 end
 

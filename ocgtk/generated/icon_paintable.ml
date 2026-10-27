@@ -1,9 +1,28 @@
 class type icon_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
   inherit Symbolic_paintable.symbolic_paintable_t
+
   method get_file : unit -> Ocgio.File.file_t option
+  (** Gets the [GFile] that was used to load the icon.
+
+      Returns [NULL] if the icon was not loaded from a file. *)
+
   method get_icon_name : unit -> string option
+  [@@ocaml.doc
+    "Get the icon name being used for this icon.\n\n\
+     When an icon looked up in the icon theme was not available, the\n\
+     icon theme may use fallback icons - either those specified to\n\
+     gtk_icon_theme_lookup_icon() or the always-available\n\
+     \"image-missing\". The icon chosen is returned by this function.\n\n\
+     If the icon was created without an icon theme, this function\n\
+     returns [NULL]."]
+
   method is_symbolic : unit -> bool
+  (** Checks if the icon is symbolic or not.
+
+      This currently uses only the file name and not the file contents for
+      determining this. This behaviour may change in the future. *)
+
   method scale : int
   method set_scale : int -> unit
   method size : int

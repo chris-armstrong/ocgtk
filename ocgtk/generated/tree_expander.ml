@@ -8,23 +8,51 @@ class type tree_expander_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget displayed by [self]. *)
 
   method get_hide_expander : unit -> bool
+  (** Gets whether the TreeExpander should be hidden in a GtkTreeListRow. *)
+
   method get_indent_for_depth : unit -> bool
+  (** TreeExpander indents each level of depth with an additional indent. *)
+
   method get_indent_for_icon : unit -> bool
+  (** TreeExpander indents the child by the width of an expander-icon if it is
+      not expandable. *)
+
   method get_item : unit -> [ `object_ ] Gobject.obj option
+  (** Forwards the item set on the [GtkTreeListRow] that [self] is managing.
+
+      This call is essentially equivalent to calling:
+
+      {[
+      gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+      ]} *)
+
   method get_list_row : unit -> Tree_list_row.tree_list_row_t option
+  (** Gets the list row managed by [self]. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the content widget to display. *)
 
   method set_hide_expander : bool -> unit
+  (** Sets whether the expander icon should be visible in a GtkTreeListRow. *)
+
   method set_indent_for_depth : bool -> unit
+  (** Sets if the TreeExpander should indent the child according to its depth.
+  *)
+
   method set_indent_for_icon : bool -> unit
+  (** Sets if the TreeExpander should indent the child by the width of an
+      expander-icon when it is not expandable. *)
+
   method set_list_row : Tree_list_row.tree_list_row_t option -> unit
+  (** Sets the tree list row that this expander should manage. *)
+
   method as_tree_expander : Raw.Tree_expander.t
 end
 

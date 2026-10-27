@@ -7,45 +7,64 @@ class type overlay_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Adds [widget] to [overlay].
+
+      The widget will be stacked on top of the main widget added with
+      [Gtk.Overlay.set_child].
+
+      The position at which [widget] is placed is determined from its
+      [Gtk.Widget:halign] and [Gtk.Widget:valign] properties. *)
 
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [overlay]. *)
 
   method get_clip_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Gets whether [widget] should be clipped within the parent. *)
 
   method get_measure_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Gets whether [widget]'s size is included in the measurement of [overlay].
+  *)
 
   method remove_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Removes an overlay that was added with gtk_overlay_add_overlay(). *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [overlay]. *)
 
   method set_clip_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
+  (** Sets whether [widget] should be clipped within the parent. *)
 
   method set_measure_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
+  (** Sets whether [widget] is included in the measured size of [overlay].
+
+      The overlay will request the size of the largest child that has this
+      property set to [TRUE]. Children who are not included may be drawn outside
+      of [overlay]'s allocation if they are too large. *)
 
   method as_overlay : Raw.Overlay.t
 end

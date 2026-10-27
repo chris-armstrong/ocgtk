@@ -1,8 +1,18 @@
 class type io_extension_point_t = object
   method get_extension_by_name : string -> Raw.Io_extension.t
+  (** Finds a [GIOExtension] for an extension point by name. *)
+
   method get_extensions : unit -> Raw.Io_extension.t list
+  (** Gets a list of all extensions that implement this extension point. The
+      list is sorted by priority, beginning with the highest priority. *)
+
   method get_required_type : unit -> Gobject.Type.t
+  (** Gets the required type for [extension_point]. *)
+
   method set_required_type : Gobject.Type.t -> unit
+  (** Sets the required type for [extension_point] to [type]. All
+      implementations must henceforth have this type. *)
+
   method as_io_extension_point : Raw.Io_extension_point.t
 end
 

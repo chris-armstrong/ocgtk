@@ -1,8 +1,20 @@
 class type native_t = object
   method get_renderer : unit -> Ocgsk.Renderer.renderer_t option
+  (** Returns the renderer that is used for this [GtkNative]. *)
+
   method get_surface : unit -> Ocgdk.Surface.surface_t option
+  (** Returns the surface of this [GtkNative]. *)
+
   method realize : unit -> unit
+  (** Realizes a [GtkNative].
+
+      This should only be used by subclasses. *)
+
   method unrealize : unit -> unit
+  (** Unrealizes a [GtkNative].
+
+      This should only be used by subclasses. *)
+
   method as_native : Raw.Native.t
 end
 

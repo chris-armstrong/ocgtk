@@ -101,12 +101,51 @@ class type drag_source_t = object
     Gobject.Signal.handler_id
 
   method drag_cancel : unit -> unit
+  (** Cancels a currently ongoing drag operation. *)
+
   method get_actions : unit -> Ocgdk.Enums.dragaction
+  (** Gets the actions that are currently set on the [GtkDragSource]. *)
+
   method get_content : unit -> Ocgdk.Content_provider.content_provider_t option
+  (** Gets the current content provider of a [GtkDragSource]. *)
+
   method get_drag : unit -> Ocgdk.Drag.drag_t option
+  (** Returns the underlying [GdkDrag] object for an ongoing drag. *)
+
   method set_actions : Ocgdk.Enums.dragaction -> unit
+  (** Sets the actions on the [GtkDragSource].
+
+      During a DND operation, the actions are offered to potential drop targets.
+      If [actions] include [GDK_ACTION_MOVE], you need to listen to the
+      [Gtk.DragSource::drag-end] signal and handle [delete_data] being [TRUE].
+
+      This function can be called before a drag is started, or in a handler for
+      the [Gtk.DragSource::prepare] signal. *)
+
   method set_content : Ocgdk.Content_provider.content_provider_t option -> unit
+  (** Sets a content provider on a [GtkDragSource].
+
+      When the data is requested in the cause of a DND operation, it will be
+      obtained from the content provider.
+
+      This function can be called before a drag is started, or in a handler for
+      the [Gtk.DragSource::prepare] signal.
+
+      You may consider setting the content provider back to [NULL] in a
+      [Gtk.DragSource::drag-end] signal handler. *)
+
   method set_icon : Ocgdk.Paintable.paintable_t option -> int -> int -> unit
+  (** Sets a paintable to use as icon during DND operations.
+
+      The hotspot coordinates determine the point on the icon that gets aligned
+      with the hotspot of the cursor.
+
+      If [paintable] is [NULL], a default icon is used.
+
+      This function can be called before a drag is started, or in a
+      [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler.
+  *)
+
   method as_drag_source : Raw.Drag_source.t
 end
 

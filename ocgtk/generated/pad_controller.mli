@@ -58,8 +58,21 @@ class type pad_controller_t = object
 
   method set_action :
     Enums.padactiontype -> int -> int -> string -> string -> unit
+  (** Adds an individual action to [controller].
+
+      This action will only be activated if the given button/ring/strip number
+      in [index] is interacted while the current mode is [mode]. -1 may be used
+      for simple cases, so the action is triggered on all modes.
+
+      The given [label] should be considered user-visible, so
+      internationalization rules apply. Some windowing systems may be able to
+      use those for user feedback. *)
 
   method set_action_entries : Raw.Pad_action_entry.t array -> int -> unit
+  (** A convenience function to add a group of action entries on [controller].
+
+      See [Gtk.PadActionEntry] and [Gtk.PadController.set_action]. *)
+
   method action_group : Ocgio.Action_group.action_group_t
   method pad : Ocgdk.Device.device_t
   method as_pad_controller : Raw.Pad_controller.t

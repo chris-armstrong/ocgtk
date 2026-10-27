@@ -11,7 +11,10 @@
 (** The methods, signals and properties of a [GTcpWrapperConnection]. *)
 class type tcp_wrapper_connection_t = object
   inherit Tcp_connection.tcp_connection_t
+
   method get_base_io_stream : unit -> Io_stream.io_stream_t
+  (** Gets [conn]'s base [GIOStream] *)
+
   method as_tcp_wrapper_connection : Raw.Tcp_wrapper_connection.t
 end
 

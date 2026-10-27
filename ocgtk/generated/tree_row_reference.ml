@@ -1,7 +1,15 @@
 class type tree_row_reference_t = object
   method get_model : unit -> Tree_model.tree_model_t
+  (** Returns the model that the row reference is monitoring. *)
+
   method get_path : unit -> Raw.Tree_path.t option
+  (** Returns a path that the row reference currently points to, or [NULL] if
+      the path pointed to is no longer valid. *)
+
   method valid : unit -> bool
+  (** Returns [TRUE] if the [reference] is non-[NULL] and refers to a current
+      valid path. *)
+
   method as_tree_row_reference : Raw.Tree_row_reference.t
 end
 

@@ -38,40 +38,69 @@ class type paned_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Retrieves the end child of the given [GtkPaned]. *)
 
   method get_position : unit -> int
+  (** Obtains the position of the divider between the two panes. *)
+
   method get_resize_end_child : unit -> bool
+  (** Returns whether the [Gtk.Paned:end-child] can be resized. *)
+
   method get_resize_start_child : unit -> bool
+  (** Returns whether the [Gtk.Paned:start-child] can be resized. *)
+
   method get_shrink_end_child : unit -> bool
+  (** Returns whether the [Gtk.Paned:end-child] can shrink. *)
+
   method get_shrink_start_child : unit -> bool
+  (** Returns whether the [Gtk.Paned:start-child] can shrink. *)
 
   method get_start_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Retrieves the start child of the given [GtkPaned]. *)
 
   method get_wide_handle : unit -> bool
+  (** Gets whether the separator should be wide. *)
 
   method set_end_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the end child of [paned] to [child].
+
+      If [child] is [NULL], the existing child will be removed. *)
 
   method set_position : int -> unit
+  (** Sets the position of the divider between the two panes. *)
+
   method set_resize_end_child : bool -> unit
+  (** Sets whether the [Gtk.Paned:end-child] can be resized. *)
+
   method set_resize_start_child : bool -> unit
+  (** Sets whether the [Gtk.Paned:start-child] can be resized. *)
+
   method set_shrink_end_child : bool -> unit
+  (** Sets whether the [Gtk.Paned:end-child] can shrink. *)
+
   method set_shrink_start_child : bool -> unit
+  (** Sets whether the [Gtk.Paned:start-child] can shrink. *)
 
   method set_start_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the start child of [paned] to [child].
+
+      If [child] is [NULL], the existing child will be removed. *)
 
   method set_wide_handle : bool -> unit
+  (** Sets whether the separator should be wide. *)
+
   method max_position : int
   method min_position : int
   method position_set : bool

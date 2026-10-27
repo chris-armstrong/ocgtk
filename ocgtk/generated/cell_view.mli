@@ -30,14 +30,48 @@ class type cell_view_t = object
 
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
   inherit Orientable.orientable_t
+
   method get_displayed_row : unit -> Raw.Tree_path.t option
+  (** Returns a [GtkTreePath] referring to the currently displayed row. If no
+      row is currently displayed, [NULL] is returned. *)
+
   method get_draw_sensitive : unit -> bool
+  (** Gets whether [cell_view] is configured to draw all of its cells in a
+      sensitive state. *)
+
   method get_fit_model : unit -> bool
+  (** Gets whether [cell_view] is configured to request space to fit the entire
+      [GtkTreeModel]. *)
+
   method get_model : unit -> Tree_model.tree_model_t option
+  (** Returns the model for [cell_view]. If no model is used [NULL] is returned.
+  *)
+
   method set_displayed_row : Raw.Tree_path.t option -> unit
+  (** Sets the row of the model that is currently displayed by the
+      [GtkCellView]. If the path is unset, then the contents of the cellview
+      “stick” at their last value; this is not normally a desired result, but
+      may be a needed intermediate state if say, the model for the [GtkCellView]
+      becomes temporarily empty. *)
+
   method set_draw_sensitive : bool -> unit
+  (** Sets whether [cell_view] should draw all of its cells in a sensitive
+      state, this is used by [GtkComboBox] menus to ensure that rows with
+      insensitive cells that contain children appear sensitive in the parent
+      menu item. *)
+
   method set_fit_model : bool -> unit
+  (** Sets whether [cell_view] should request space to fit the entire
+      [GtkTreeModel].
+
+      This is used by [GtkComboBox] to ensure that the cell view displayed on
+      the combo box’s button always gets enough space and does not resize when
+      selection changes. *)
+
   method set_model : Tree_model.tree_model_t option -> unit
+  (** Sets the model for [cell_view]. If [cell_view] already has a model set, it
+      will remove it before setting the new model. If [model] is [NULL], then it
+      will unset the old model. *)
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t

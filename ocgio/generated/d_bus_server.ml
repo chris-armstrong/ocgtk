@@ -8,11 +8,28 @@ class type d_bus_server_t = object
     Gobject.Signal.handler_id
 
   method get_client_address : unit -> string
+  (** Gets a
+      {{:https://dbus.freedesktop.org/doc/dbus-specification.html#addresses}D-Bus
+       address} string that can be used by clients to connect to [server].
+
+      This is valid and non-empty if initializing the [GDBusServer] succeeded.
+  *)
+
   method get_flags : unit -> Enums.dbusserverflags
+  (** Gets the flags for [server]. *)
+
   method get_guid : unit -> string
+  (** Gets the GUID for [server], as provided to g_dbus_server_new_sync(). *)
+
   method is_active : unit -> bool
+  (** Gets whether [server] is active. *)
+
   method start : unit -> unit
+  (** Starts [server]. *)
+
   method stop : unit -> unit
+  (** Stops [server]. *)
+
   method address : string
   method authentication_observer : D_bus_auth_observer.d_bus_auth_observer_t
   method as_d_bus_server : Raw.D_bus_server.t

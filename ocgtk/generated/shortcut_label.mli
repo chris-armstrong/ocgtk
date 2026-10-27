@@ -12,9 +12,17 @@ class type shortcut_label_t = object
     .widget_t
 
   method get_accelerator : unit -> string option
+  (** Retrieves the current accelerator of [self]. *)
+
   method get_disabled_text : unit -> string option
+  (** Retrieves the text that is displayed when no accelerator is set. *)
+
   method set_accelerator : string -> unit
+  (** Sets the accelerator to be displayed by [self]. *)
+
   method set_disabled_text : string -> unit
+  (** Sets the text to be displayed by [self] when no accelerator is set. *)
+
   method as_shortcut_label : Raw.Shortcut_label.t
 end
 

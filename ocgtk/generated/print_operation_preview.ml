@@ -15,8 +15,26 @@ class type print_operation_preview_t = object
     Gobject.Signal.handler_id
 
   method end_preview : unit -> unit
+  (** Ends a preview.
+
+      This function must be called to finish a custom print preview. *)
+
   method is_selected : int -> bool
+  (** Returns whether the given page is included in the set of pages that have
+      been selected for printing. *)
+
   method render_page : int -> unit
+  (** Renders a page to the preview.
+
+      This is using the print context that was passed to the
+      [Gtk.PrintOperation::preview] handler together with [preview].
+
+      A custom print preview should use this function to render the currently
+      selected page.
+
+      Note that this function requires a suitable cairo context to be associated
+      with the print context. *)
+
   method as_print_operation_preview : Raw.Print_operation_preview.t
 end
 

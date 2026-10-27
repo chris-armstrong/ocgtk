@@ -45,9 +45,22 @@ class type switch_t = object
     Gobject.Signal.handler_id
 
   method get_active : unit -> bool
+  (** Gets whether the [GtkSwitch] is in its “on” or “off” state. *)
+
   method get_state : unit -> bool
+  (** Gets the underlying state of the [GtkSwitch]. *)
+
   method set_active : bool -> unit
+  (** Changes the state of [self] to the desired one. *)
+
   method set_state : bool -> unit
+  (** Sets the underlying state of the [GtkSwitch].
+
+      This function is typically called from a [Gtk.Switch::state-set] signal
+      handler in order to set up delayed state changes.
+
+      See [Gtk.Switch::state-set] for details. *)
+
   method as_switch : Raw.Switch.t
 end
 
