@@ -5,6 +5,10 @@ class type font_dialog_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the font dialog button is activated.
+
+      The [::activate] signal on [GtkFontDialogButton] is an action signal and
+      emitting it causes the button to pop up its dialog. *)
 
   method get_dialog : unit -> Font_dialog.font_dialog_t option
   (** Returns the [GtkFontDialog] of [self]. *)

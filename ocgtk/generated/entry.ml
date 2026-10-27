@@ -8,18 +8,24 @@ class type entry_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the entry is activated.
+
+      The keybindings for this signal are all forms of the Enter key. *)
 
   method on_icon_press :
     ?after:bool ->
     callback:(icon_pos:Enums.entryiconposition -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an activatable icon is clicked. *)
 
   method on_icon_release :
     ?after:bool ->
     callback:(icon_pos:Enums.entryiconposition -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the button release from a mouse click over an activatable icon.
+  *)
 
   method get_activates_default : unit -> bool
   (** Retrieves the value set by gtk_entry_set_activates_default(). *)

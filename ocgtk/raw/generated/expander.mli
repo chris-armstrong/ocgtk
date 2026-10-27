@@ -179,3 +179,4 @@ external get_child :
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Activates the [GtkExpander]. *)

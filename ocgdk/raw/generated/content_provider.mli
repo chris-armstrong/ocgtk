@@ -84,3 +84,4 @@ external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
 
 val on_content_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever the content provided by this provider has changed. *)

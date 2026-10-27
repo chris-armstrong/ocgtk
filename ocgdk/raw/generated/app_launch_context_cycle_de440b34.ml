@@ -238,6 +238,7 @@ and Clipboard : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the clipboard changes ownership. *)
 end = struct
   type t = [ `clipboard | `object_ ] Gobject.obj
 
@@ -461,12 +462,19 @@ and Device : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted either when the number of either axes or keys changes.
+
+      On X11 this will normally happen when the physical device routing events
+      through the logical device changes (for example, user switches from the
+      USB mouse to a tablet); in that case the logical device will change to
+      reflect the axes and keys on the new physical device. *)
 
   val on_tool_changed :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted on pen/eraser devices whenever tools enter or leave proximity. *)
 end = struct
   type t = [ `device | `object_ ] Gobject.obj
 
@@ -880,27 +888,34 @@ and Display : sig
     t ->
     callback:(is_error:bool -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      closed. *)
 
   val on_opened :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      opened. *)
 
   val on_seat_added :
     ?after:bool ->
     t ->
     callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new seat is made known to the windowing system. *)
 
   val on_seat_removed :
     ?after:bool ->
     t ->
     callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a seat is removed by the windowing system. *)
 
   val on_setting_changed :
     ?after:bool ->
     t ->
     callback:(setting:string -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a setting changes its value. *)
 end = struct
   type t = [ `display | `object_ ] Gobject.obj
 
@@ -2026,6 +2041,7 @@ and Monitor : sig
 
   val on_invalidate :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the output represented by [monitor] gets disconnected. *)
 end = struct
   type t = [ `monitor | `object_ ] Gobject.obj
 
@@ -2151,24 +2167,34 @@ and Seat : sig
     t ->
     callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when a new input device is related to this seat. *)
 
   val on_device_removed :
     ?after:bool ->
     t ->
     callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when an input device is removed (e.g. unplugged). *)
 
   val on_tool_added :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new tool is made known to the seat.
+
+      The tool may later be assigned to a device (i.e. on proximity with a
+      tablet). The device will emit the [Gdk.Device::tool-changed] signal
+      accordingly.
+
+      A same tool may be used by several devices. *)
 
   val on_tool_removed :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a tool is no longer known to this [seat]. *)
 end = struct
   type t = [ `seat | `object_ ] Gobject.obj
 
@@ -2486,24 +2512,32 @@ and Surface : sig
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] starts being present on the monitor. *)
 
   val on_event :
     ?after:bool ->
     t ->
     callback:(event:Event.t -> bool) ->
     Gobject.Signal.handler_id
+  (** Emitted when GDK receives an input event for [surface]. *)
 
   val on_layout :
     ?after:bool ->
     t ->
     callback:(width:int -> height:int -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when the size of [surface] is changed, or when relayout should be
+      performed.
+
+      Surface size is reported in ”application pixels”, not ”device pixels” (see
+      gdk_surface_get_scale_factor()). *)
 
   val on_leave_monitor :
     ?after:bool ->
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] stops being present on the monitor. *)
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
 
@@ -2800,8 +2834,13 @@ and Vulkan_context : sig
   external gtype : unit -> Gobject.Type.t = "ml_gdk_vulkan_context_get_type"
 
   (* Methods *)
+
   val on_images_updated :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the images managed by this context have changed.
+
+      Usually this means that the swapchain had to be recreated, for example in
+      response to a change of the surface size. *)
 end = struct
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 

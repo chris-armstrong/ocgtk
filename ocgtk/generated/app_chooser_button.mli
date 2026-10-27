@@ -41,15 +41,23 @@ class type app_chooser_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to when the button is activated.
+
+      The [::activate] signal on [GtkAppChooserButton] is an action signal and
+      emitting it causes the button to pop up its dialog. *)
 
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the active application changes. *)
 
   method on_custom_item_activated :
     ?after:bool ->
     callback:(item_name:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a custom item is activated.
+
+      Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)
 
   method append_custom_item : string -> string -> Ocgio.Icon.icon_t -> unit
   (** Appends a custom item to the list of applications that is shown in the

@@ -29,6 +29,10 @@ class type color_dialog_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the color dialog button is activated.
+
+      The [::activate] signal on [GtkColorDialogButton] is an action signal and
+      emitting it causes the button to pop up its dialog. *)
 
   method get_dialog : unit -> Color_dialog.color_dialog_t option
   (** Returns the [GtkColorDialog] of [self]. *)

@@ -8,24 +8,54 @@ class type scrolled_window_t = object
     callback:(pos:Enums.positiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever user initiated scrolling makes the scrolled window firmly
+      surpass the limits defined by the adjustment in that orientation.
+
+      A similar behavior without edge resistance is provided by the
+      [Gtk.ScrolledWindow::edge-reached] signal.
+
+      Note: The [pos] argument is LTR/RTL aware, so callers should be aware too
+      if intending to provide behavior on horizontal edges. *)
 
   method on_edge_reached :
     ?after:bool ->
     callback:(pos:Enums.positiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever user-initiated scrolling makes the scrolled window
+      exactly reach the lower or upper limits defined by the adjustment in that
+      orientation.
+
+      A similar behavior with edge resistance is provided by the
+      [Gtk.ScrolledWindow::edge-overshot] signal.
+
+      Note: The [pos] argument is LTR/RTL aware, so callers should be aware too
+      if intending to provide behavior on horizontal edges. *)
 
   method on_move_focus_out :
     ?after:bool ->
     callback:(direction_type:Enums.directiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when focus is moved away from the scrolled window by a keybinding.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd> to
+      move forward and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>` to move
+      backward. *)
 
   method on_scroll_child :
     ?after:bool ->
     callback:(scroll:Enums.scrolltype -> horizontal:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a keybinding that scrolls is pressed.
+
+      This is a keybinding signal.
+
+      The horizontal or vertical adjustment is updated which triggers a signal
+      that the scrolled window’s child may listen to and scroll itself. *)
 
   method get_child :
     unit ->

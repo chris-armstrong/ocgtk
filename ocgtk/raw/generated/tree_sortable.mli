@@ -49,3 +49,6 @@ external get_sort_column_id : t -> bool * int * Ocgtk_enums.sorttype
 
 val on_sort_column_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** The ::sort-column-changed signal is emitted when the sort column or sort
+    order of [sortable] is changed. The signal is emitted before the contents of
+    [sortable] are resorted. *)

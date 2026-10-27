@@ -59,6 +59,19 @@ external get_active : t -> bool = "ml_gtk_switch_get_active"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to animate the switch.
+
+    Applications should never connect to this signal, but use the
+    [Gtk.Switch:active] property. *)
 
 val on_state_set :
   ?after:bool -> t -> callback:(state:bool -> bool) -> Gobject.Signal.handler_id
+(** Emitted to change the underlying state.
+
+    The ::state-set signal is emitted when the user changes the switch position.
+    The default handler calls [Gtk.Switch.set_state] with the value of [state].
+
+    To implement delayed state change, applications can connect to this signal,
+    initiate the change of the underlying state, and call [Gtk.Switch.set_state]
+    when the underlying state change is complete. The signal handler should
+    return [TRUE] to prevent the default handler from running. *)

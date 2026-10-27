@@ -19,6 +19,11 @@ class type cell_renderer_toggle_t = object
     callback:(path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::toggled signal is emitted when the cell is toggled.
+
+      It is the responsibility of the application to update the model with the
+      correct value to store at [path]. Often this is simply the opposite of the
+      value currently stored at [path]. *)
 
   method get_activatable : unit -> bool
   (** Returns whether the cell renderer is activatable. See

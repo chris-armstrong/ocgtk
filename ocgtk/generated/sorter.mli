@@ -28,6 +28,16 @@ class type sorter_t = object
     callback:(change:Enums.sorterchange -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever the sorter changed.
+
+      Users of the sorter should then update the sort order again via
+      gtk_sorter_compare().
+
+      [Gtk.SortListModel] handles this signal automatically.
+
+      Depending on the [change] parameter, it may be possible to update the sort
+      order without a full resorting. Refer to the [Gtk.SorterChange]
+      documentation for details. *)
 
   method changed : Enums.sorterchange -> unit
   (** Notifies all users of the sorter that it has changed.

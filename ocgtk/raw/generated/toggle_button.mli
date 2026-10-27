@@ -115,3 +115,4 @@ external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
 
 val on_toggled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever the [GtkToggleButton]'s state is changed. *)

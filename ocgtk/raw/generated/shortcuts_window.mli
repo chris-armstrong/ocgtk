@@ -102,6 +102,16 @@ external set_view_name : t -> string -> unit
 
 val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user uses a keybinding to close the window.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is the <kbd>Escape</kbd> key. *)
 
 val on_search :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user uses a keybinding to start a search.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is <kbd>Control</kbd>+<kbd>F</kbd>. *)

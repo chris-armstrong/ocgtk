@@ -66,6 +66,10 @@ class type menu_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to when the menu button is activated.
+
+      The [::activate] signal on [GtkMenuButton] is an action signal and
+      emitting it causes the button to pop up its menu. *)
 
   method get_active : unit -> bool
   (** Returns whether the menu button is active. *)

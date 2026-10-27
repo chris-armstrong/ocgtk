@@ -72,3 +72,4 @@ val on_display_opened :
   t ->
   callback:(display:App_launch_context_cycle_de440b34.Display.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a display is opened. *)

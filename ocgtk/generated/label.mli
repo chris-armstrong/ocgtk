@@ -179,15 +179,33 @@ class type label_t = object
 
   method on_activate_current_link :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted when the user activates a link in the label.
+
+      The [::activate-current-link] is a keybinding signal.
+
+      Applications may also emit the signal with g_signal_emit_by_name() if they
+      need to control activation of URIs programmatically.
+
+      The default bindings for this signal are all forms of the <kbd>Enter</kbd>
+      key. *)
 
   method on_activate_link :
     ?after:bool ->
     callback:(uri:string -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted to activate a URI.
+
+      Applications may connect to it to override the default behaviour, which is
+      to call [Gtk.FileLauncher.launch]. *)
 
   method on_copy_clipboard :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to copy the selection to the clipboard.
+
+      The [::copy-clipboard] signal is a keybinding signal.
+
+      The default binding for this signal is <kbd>Ctrl</kbd>+<kbd>c</kbd>. *)
 
   method on_move_cursor :
     ?after:bool ->
@@ -195,6 +213,24 @@ class type label_t = object
       (step:Enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user initiates a cursor movement.
+
+      The [::move-cursor] signal is a keybinding signal. If the cursor is not
+      visible in [entry], this signal causes the viewport to be moved instead.
+
+      Applications should not connect to it, but may emit it with
+      [GObject.signal_emit_by_name] if they need to control the cursor
+      programmatically.
+
+      The default bindings for this signal come in two variants, the variant
+      with the <kbd>Shift</kbd> modifier extends the selection, the variant
+      without the <kbd>Shift</kbd> modifier does not. There are too many key
+      combinations to list them all here.
+
+      - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by
+        individual characters/lines
+      - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
+      - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the label's attribute list.

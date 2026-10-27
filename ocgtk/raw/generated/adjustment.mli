@@ -131,6 +131,12 @@ external clamp_page : t -> float -> float -> unit
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when one or more of the [GtkAdjustment] properties have been
+    changed.
+
+    Note that the [Gtk.Adjustment:value] property is covered by the
+    [Gtk.Adjustment::value-changed] signal. *)
 
 val on_value_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the value has been changed. *)

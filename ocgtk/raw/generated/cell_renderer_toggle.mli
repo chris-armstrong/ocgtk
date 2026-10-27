@@ -69,3 +69,8 @@ val on_toggled :
   t ->
   callback:(path:string -> unit) ->
   Gobject.Signal.handler_id
+(** The ::toggled signal is emitted when the cell is toggled.
+
+    It is the responsibility of the application to update the model with the
+    correct value to store at [path]. Often this is simply the opposite of the
+    value currently stored at [path]. *)

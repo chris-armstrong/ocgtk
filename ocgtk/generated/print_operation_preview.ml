@@ -7,12 +7,21 @@ class type print_operation_preview_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted once for each page that gets rendered to the preview.
+
+      A handler for this signal should update the [context] according to
+      [page_setup] and set up a suitable cairo context, using
+      [Gtk.PrintContext.set_cairo_context]. *)
 
   method on_ready :
     ?after:bool ->
     callback:(context:Print_context.print_context_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::ready signal gets emitted once per preview operation, before the
+      first page is rendered.
+
+      A handler for this signal can be used for setup tasks. *)
 
   method end_preview : unit -> unit
   (** Ends a preview.

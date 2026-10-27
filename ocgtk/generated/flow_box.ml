@@ -7,12 +7,16 @@ class type flow_box_t = object
 
   method on_activate_cursor_child :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user activates the [box].
+
+      This is a keybinding signal. *)
 
   method on_child_activated :
     ?after:bool ->
     callback:(child:Flow_box_child.flow_box_child_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a child has been activated by the user. *)
 
   method on_move_cursor :
     ?after:bool ->
@@ -24,18 +28,56 @@ class type flow_box_t = object
       bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user initiates a cursor movement.
+
+      This is a keybinding signal. Applications should not connect to it, but
+      may emit it with g_signal_emit_by_name() if they need to control the
+      cursor programmatically.
+
+      The default bindings for this signal come in two variants, the variant
+      with the Shift modifier extends the selection, the variant without the
+      Shift modifier does not. There are too many key combinations to list them
+      all here.
+
+      - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by
+        individual children
+      - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+      - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages *)
 
   method on_select_all :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to select all children of the box, if the selection mode permits
+      it.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>. *)
 
   method on_selected_children_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the set of selected children changes.
+
+      Use [Gtk.FlowBox.selected_foreach] or [Gtk.FlowBox.get_selected_children]
+      to obtain the selected children. *)
 
   method on_toggle_cursor_child :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to toggle the selection of the child that has the focus.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>.
+  *)
 
   method on_unselect_all :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to unselect all children of the box, if the selection mode permits
+      it.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal is
+      <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)
 
   method append :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

@@ -218,6 +218,12 @@ external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
 
 val on_activate_default :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whend the user activates the default widget.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is <kbd>Enter</kbd>. *)
 
 val on_closed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the popover is closed. *)

@@ -38,24 +38,55 @@
 class type frame_clock_t = object
   method on_after_paint :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** This signal ends processing of the frame.
+
+      Applications should generally not handle this signal. *)
 
   method on_before_paint :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Begins processing of the frame.
+
+      Applications should generally not handle this signal. *)
 
   method on_flush_events :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Used to flush pending motion events that are being batched up and
+      compressed together.
+
+      Applications should not handle this signal. *)
 
   method on_layout :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted as the second step of toolkit and application processing of the
+      frame.
+
+      Any work to update sizes and positions of application elements should be
+      performed. GTK normally handles this internally. *)
 
   method on_paint :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted as the third step of toolkit and application processing of the
+      frame.
+
+      The frame is repainted. GDK normally handles this internally and emits
+      [Gdk.Surface::render] signals which are turned into GtkWidget::snapshot
+      signals by GTK. *)
 
   method on_resume_events :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted after processing of the frame is finished.
+
+      This signal is handled internally by GTK to resume normal event
+      processing. Applications should not handle this signal. *)
 
   method on_update :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted as the first step of toolkit and application processing of the
+      frame.
+
+      Animations should be updated using [Gdk.FrameClock.get_frame_time].
+      Applications can connect directly to this signal, or use
+      gtk_widget_add_tick_callback() as a more convenient interface. *)
 
   method begin_updating : unit -> unit
   (** Starts updates for an animation.

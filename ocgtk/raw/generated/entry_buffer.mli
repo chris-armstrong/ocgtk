@@ -96,9 +96,14 @@ val on_deleted_text :
   t ->
   callback:(position:int -> n_chars:int -> unit) ->
   Gobject.Signal.handler_id
+(** The text is altered in the default handler for this signal.
+
+    If you want access to the text after the text has been modified, use
+    [G_CONNECT_AFTER]. *)
 
 val on_inserted_text :
   ?after:bool ->
   t ->
   callback:(position:int -> chars:string -> n_chars:int -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted after text is inserted into the buffer. *)

@@ -35,12 +35,15 @@ val on_enter :
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Signals that the pointer has entered the widget. *)
 
 val on_leave :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Signals that the pointer has left the widget. *)
 
 val on_motion :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the pointer moves inside the widget. *)

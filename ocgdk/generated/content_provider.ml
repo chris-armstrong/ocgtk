@@ -1,6 +1,7 @@
 class type content_provider_t = object
   method on_content_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever the content provided by this provider has changed. *)
 
   method content_changed : unit -> unit
   (** Emits the ::content-changed signal. *)

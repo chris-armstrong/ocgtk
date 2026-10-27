@@ -259,12 +259,16 @@ external set_accept_unpaired_release : t -> bool -> unit
 
 val on_activate_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user activates the [box].
+
+    This is a keybinding signal. *)
 
 val on_child_activated :
   ?after:bool ->
   t ->
   callback:(child:Flow_box_child.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a child has been activated by the user. *)
 
 val on_move_cursor :
   ?after:bool ->
@@ -276,15 +280,51 @@ val on_move_cursor :
     modify:bool ->
     bool) ->
   Gobject.Signal.handler_id
+(** Emitted when the user initiates a cursor movement.
+
+    This is a keybinding signal. Applications should not connect to it, but may
+    emit it with g_signal_emit_by_name() if they need to control the cursor
+    programmatically.
+
+    The default bindings for this signal come in two variants, the variant with
+    the Shift modifier extends the selection, the variant without the Shift
+    modifier does not. There are too many key combinations to list them all
+    here.
+
+    - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+      children
+    - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+    - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages *)
 
 val on_select_all :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to select all children of the box, if the selection mode permits it.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>. *)
 
 val on_selected_children_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the set of selected children changes.
+
+    Use [Gtk.FlowBox.selected_foreach] or [Gtk.FlowBox.get_selected_children] to
+    obtain the selected children. *)
 
 val on_toggle_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to toggle the selection of the child that has the focus.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>. *)
 
 val on_unselect_all :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to unselect all children of the box, if the selection mode permits
+    it.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal is
+    <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)

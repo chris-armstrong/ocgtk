@@ -74,30 +74,70 @@ class type paned_t = object
 
   method on_accept_position :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to accept the current position of the handle when moving it using
+      key bindings.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Return</kbd> or
+      <kbd>Space</kbd>. *)
 
   method on_cancel_position :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to cancel moving the position of the handle using key bindings.
+
+      The position of the handle will be reset to the value prior to moving it.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Escape</kbd>. *)
 
   method on_cycle_child_focus :
     ?after:bool ->
     callback:(reversed:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to cycle the focus between the children of the paned.
+
+      This is a keybinding signal.
+
+      The default binding is <kbd>F6</kbd>. *)
 
   method on_cycle_handle_focus :
     ?after:bool ->
     callback:(reversed:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to cycle whether the paned should grab focus to allow the user to
+      change position of the handle by using key bindings.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>F8</kbd>. *)
 
   method on_move_handle :
     ?after:bool ->
     callback:(scroll_type:Enums.scrolltype -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to move the handle with key bindings.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>←</kbd>,
+      <kbd>←</kbd>, <kbd>Ctrl</kbd>+<kbd>→</kbd>, <kbd>→</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>↑</kbd>, <kbd>↑</kbd>, <kbd>Ctrl</kbd>+<kbd>↓</kbd>,
+      <kbd>↓</kbd>, <kbd>PgUp</kbd>, <kbd>PgDn</kbd>, <kbd>Home</kbd>,
+      <kbd>End</kbd>. *)
 
   method on_toggle_handle_focus :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to accept the current position of the handle and then move focus
+      to the next widget in the focus chain.
+
+      This is a keybinding signal.
+
+      The default binding is <kbd>Tab</kbd>. *)
 
   method get_end_child :
     unit ->

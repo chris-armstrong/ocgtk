@@ -46,9 +46,18 @@ val on_got_page_size :
   t ->
   callback:(context:Print_context.t -> page_setup:Page_setup.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted once for each page that gets rendered to the preview.
+
+    A handler for this signal should update the [context] according to
+    [page_setup] and set up a suitable cairo context, using
+    [Gtk.PrintContext.set_cairo_context]. *)
 
 val on_ready :
   ?after:bool ->
   t ->
   callback:(context:Print_context.t -> unit) ->
   Gobject.Signal.handler_id
+(** The ::ready signal gets emitted once per preview operation, before the first
+    page is rendered.
+
+    A handler for this signal can be used for setup tasks. *)

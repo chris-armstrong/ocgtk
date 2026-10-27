@@ -5,6 +5,7 @@ class type expander_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Activates the [GtkExpander]. *)
 
   method get_child :
     unit ->

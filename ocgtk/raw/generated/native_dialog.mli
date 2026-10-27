@@ -99,3 +99,9 @@ val on_response :
   t ->
   callback:(response_id:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user responds to the dialog.
+
+    When this is called the dialog has been hidden.
+
+    If you call [Gtk.NativeDialog.hide] before the user responds to the dialog
+    this signal will not be emitted. *)

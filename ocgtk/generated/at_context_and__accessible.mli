@@ -6,6 +6,8 @@
 class type at_context_t = object
   method on_state_change :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the attributes of the accessible for the [GtkATContext]
+      instance change. *)
 
   method get_accessible : unit -> accessible_t
   (** Retrieves the [GtkAccessible] using this context. *)

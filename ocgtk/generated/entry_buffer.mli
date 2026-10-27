@@ -20,12 +20,17 @@ class type entry_buffer_t = object
     callback:(position:int -> n_chars:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The text is altered in the default handler for this signal.
+
+      If you want access to the text after the text has been modified, use
+      [G_CONNECT_AFTER]. *)
 
   method on_inserted_text :
     ?after:bool ->
     callback:(position:int -> chars:string -> n_chars:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** This signal is emitted after text is inserted into the buffer. *)
 
   method delete_text : int -> int -> int
   (** Deletes a sequence of characters from the buffer.

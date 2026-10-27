@@ -15,6 +15,15 @@ class type flow_box_child_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user activates a child widget in a [GtkFlowBox].
+
+      This can happen either by clicking or double-clicking, or via a
+      keybinding.
+
+      This is a keybinding signal, but it can be used by applications for their
+      own purposes.
+
+      The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>. *)
 
   method changed : unit -> unit
   (** Marks [child] as changed, causing any state that depends on this to be

@@ -9,6 +9,12 @@ class type cell_area_t = object
     callback:(renderer:Cell_renderer.cell_renderer_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Indicates that focus changed on this [area]. This signal is emitted either
+      as a result of focus handling or event handling.
+
+      It's possible that the signal is emitted even if the currently focused
+      renderer did not change, this is because focus may change to the same
+      renderer in the same cell area for a different row of data. *)
 
   method on_remove_editable :
     ?after:bool ->
@@ -18,6 +24,8 @@ class type cell_area_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Indicates that editing finished on [renderer] and that [editable] should
+      be removed from the owning cell-layouting widget. *)
 
   method activate :
     cell_area_context_t ->

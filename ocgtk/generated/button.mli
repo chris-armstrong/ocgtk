@@ -47,9 +47,17 @@ class type button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to animate press then release.
+
+      This is an action signal. Applications should never connect to this
+      signal, but use the [Gtk.Button::clicked] signal.
+
+      The default bindings for this signal are all forms of the <kbd>␣</kbd> and
+      <kbd>Enter</kbd> keys. *)
 
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the button has been activated (pressed and released). *)
 
   method get_can_shrink : unit -> bool
   (** Retrieves whether the button can be smaller than the natural size of its

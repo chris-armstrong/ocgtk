@@ -1,9 +1,21 @@
 class type paintable_t = object
   method on_invalidate_contents :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the contents of the [paintable] change.
+
+      Examples for such an event would be videos changing to the next frame or
+      the icon theme for an icon changing. *)
 
   method on_invalidate_size :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the intrinsic size of the [paintable] changes.
+
+      This means the values reported by at least one of
+      [Gdk.Paintable.get_intrinsic_width], [Gdk.Paintable.get_intrinsic_height]
+      or [Gdk.Paintable.get_intrinsic_aspect_ratio] has changed.
+
+      Examples for such an event would be a paintable displaying the contents of
+      a toplevel surface being resized. *)
 
   method get_current_image : unit -> paintable_t
   (** Gets an immutable paintable for the current contents displayed by

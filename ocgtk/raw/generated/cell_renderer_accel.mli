@@ -60,6 +60,7 @@ val on_accel_cleared :
   t ->
   callback:(path_string:string -> unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted when the user has removed the accelerator. *)
 
 val on_accel_edited :
   ?after:bool ->
@@ -71,3 +72,4 @@ val on_accel_edited :
     hardware_keycode:int ->
     unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted when the user has selected a new accelerator. *)

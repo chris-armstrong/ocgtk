@@ -88,6 +88,14 @@ class type d_bus_object_manager_client_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a D-Bus signal is received on [interface_proxy].
+
+      This signal exists purely as a convenience to avoid having to connect
+      signals to all interface proxies managed by [manager].
+
+      This signal is emitted in the thread-default main context (see
+      [GLib.MainContext.push_thread_default]) that [manager] was constructed in.
+  *)
 
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] used by [manager]. *)

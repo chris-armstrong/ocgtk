@@ -17,9 +17,15 @@
 class type adjustment_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when one or more of the [GtkAdjustment] properties have been
+      changed.
+
+      Note that the [Gtk.Adjustment:value] property is covered by the
+      [Gtk.Adjustment::value-changed] signal. *)
 
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the value has been changed. *)
 
   method clamp_page : float -> float -> unit
   (** Updates the value of the adjustment to ensure that the given range is

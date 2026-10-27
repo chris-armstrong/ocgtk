@@ -8,18 +8,30 @@ class type application_t = object
 
   method on_query_end :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the session manager is about to end the session.
+
+      Applications can connect to this signal and call [Gtk.Application.inhibit]
+      with [Gtk.ApplicationInhibitFlags.logout] to delay the end of the session
+      until state has been saved. *)
 
   method on_window_added :
     ?after:bool ->
     callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a window is added to an application.
+
+      See [Gtk.Application.add_window]. *)
 
   method on_window_removed :
     ?after:bool ->
     callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a window is removed from an application.
+
+      This can happen as a side-effect of the window being destroyed or
+      explicitly through [Gtk.Application.remove_window]. *)
 
   method add_window : window_t -> unit
   (** Adds a window to the application.
@@ -196,21 +208,45 @@ and window_t = object
 
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user activates the default widget.
+
+      This is a keybinding signal.
+
+      The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+  *)
 
   method on_activate_focus :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user activates the currently focused widget of [window].
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>␣</kbd>. *)
 
   method on_close_request :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user clicks on the close button of the window. *)
 
   method on_enable_debugging :
     ?after:bool ->
     callback:(toggle:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user enables or disables interactive debugging.
+
+      When [toggle] is true, interactive debugging is toggled on or off, when it
+      is false, the debugger will be pointed at the widget under the pointer.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> and
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>. *)
 
   method on_keys_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the set of accelerators or mnemonics that are associated with
+      the window changes. *)
 
   method close : unit -> unit
   (** Requests that the window is closed.

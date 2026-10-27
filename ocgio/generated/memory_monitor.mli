@@ -52,6 +52,14 @@ class type memory_monitor_t = object
     callback:(level:Enums.memorymonitorwarninglevel -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the system is running low on free memory.
+
+      The signal handler should then take the appropriate action depending on
+      the warning level. See the [GMemoryMonitorWarningLevel] documentation for
+      details.
+
+      Since the [Gio.MemoryMonitor] is a singleton, this signal will be emitted
+      in the [GLib.MainContext.default]\[global-default main context\]. *)
 
   method as_memory_monitor : Raw.Memory_monitor.t
 end

@@ -52,8 +52,10 @@ external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
 (** Creates a new [GtkEmojiChooser]. *)
 
 (* Methods *)
+
 val on_emoji_picked :
   ?after:bool ->
   t ->
   callback:(text:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user selects an Emoji. *)

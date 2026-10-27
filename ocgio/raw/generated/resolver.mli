@@ -190,3 +190,5 @@ external get_timeout : t -> int = "ml_g_resolver_get_timeout"
 
 val on_reload :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the resolver notices that the system resolver configuration has
+    changed. *)

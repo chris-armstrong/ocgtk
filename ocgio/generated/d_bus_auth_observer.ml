@@ -4,6 +4,7 @@ class type d_bus_auth_observer_t = object
     callback:(mechanism:string -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to check if [mechanism] is allowed to be used. *)
 
   method on_authorize_authenticated_peer :
     ?after:bool ->
@@ -13,6 +14,8 @@ class type d_bus_auth_observer_t = object
       bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to check if a peer that is successfully authenticated is
+      authorized. *)
 
   method allow_mechanism : string -> bool
   (** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)

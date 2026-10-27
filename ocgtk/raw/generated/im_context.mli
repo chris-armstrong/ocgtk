@@ -165,21 +165,45 @@ external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
 
 val on_commit :
   ?after:bool -> t -> callback:(str:string -> unit) -> Gobject.Signal.handler_id
+(** The ::commit signal is emitted when a complete input sequence has been
+    entered by the user.
+
+    If the commit comes after a preediting sequence, the ::commit signal is
+    emitted after ::preedit-end.
+
+    This can be a single character immediately after a key press or the final
+    result of preediting. *)
 
 val on_delete_surrounding :
   ?after:bool ->
   t ->
   callback:(offset:int -> n_chars:int -> bool) ->
   Gobject.Signal.handler_id
+(** The ::delete-surrounding signal is emitted when the input method needs to
+    delete all or part of the context surrounding the cursor. *)
 
 val on_preedit_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** The ::preedit-changed signal is emitted whenever the preedit sequence
+    currently being entered has changed.
+
+    It is also emitted at the end of a preedit sequence, in which case
+    [Gtk.IMContext.get_preedit_string] returns the empty string. *)
 
 val on_preedit_end :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** The ::preedit-end signal is emitted when a preediting sequence has been
+    completed or canceled. *)
 
 val on_preedit_start :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** The ::preedit-start signal is emitted when a new preediting sequence starts.
+*)
 
 val on_retrieve_surrounding :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+(** The ::retrieve-surrounding signal is emitted when the input method requires
+    the context surrounding the cursor.
+
+    The callback should set the input method surrounding context by calling the
+    [Gtk.IMContext.set_surrounding] method. *)

@@ -6,6 +6,7 @@ class type gesture_pan_t = object
     callback:(direction:Enums.pandirection -> offset:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted once a panning gesture along the expected axis is detected. *)
 
   method get_orientation : unit -> Enums.orientation
   (** Returns the orientation of the pan gestures that this [gesture] expects.

@@ -3,6 +3,7 @@ class type toggle_button_t = object
 
   method on_toggled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever the [GtkToggleButton]'s state is changed. *)
 
   method get_active : unit -> bool
   (** Queries a [GtkToggleButton] and returns its current state.

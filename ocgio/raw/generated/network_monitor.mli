@@ -86,3 +86,4 @@ val on_network_changed :
   t ->
   callback:(network_available:bool -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the network configuration changes. *)

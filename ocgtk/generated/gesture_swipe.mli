@@ -23,6 +23,9 @@ class type gesture_swipe_t = object
     callback:(velocity_x:float -> velocity_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the recognized gesture is finished.
+
+      Velocity and direction are a product of previously recorded events. *)
 
   method as_gesture_swipe : Raw.Gesture_swipe.t
 end

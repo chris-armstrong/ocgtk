@@ -77,9 +77,11 @@ val on_text_popped :
   t ->
   callback:(context_id:int -> text:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a new message is popped off a statusbar's stack. *)
 
 val on_text_pushed :
   ?after:bool ->
   t ->
   callback:(context_id:int -> text:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a new message gets pushed onto a statusbar's stack. *)

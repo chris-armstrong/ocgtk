@@ -11,6 +11,7 @@
 class type filename_completer_t = object
   method on_got_completion_data :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the file name completion information comes available. *)
 
   method get_completion_suffix : string -> string option
   (** Obtains a suffix completion for [initial_text] from [completer].

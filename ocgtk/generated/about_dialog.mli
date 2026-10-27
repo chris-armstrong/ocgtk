@@ -51,6 +51,10 @@ class type about_dialog_t = object
     callback:(uri:string -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted every time a URL is activated.
+
+      Applications may connect to it to override the default behaviour, which is
+      to call [Gtk.FileLauncher.launch]. *)
 
   method add_credit_section : string -> string array -> unit
   [@@ocaml.doc "Creates a new section in the \"Credits\" page."]

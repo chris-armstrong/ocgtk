@@ -79,9 +79,14 @@ val on_cancel :
   t ->
   callback:(reason:Ocgdk_enums.dragcancelreason -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the drag operation is cancelled. *)
 
 val on_dnd_finished :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the destination side has finished reading all data.
+
+    The drag object can now free all miscellaneous data. *)
 
 val on_drop_performed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the drop operation is performed on an accepting client. *)

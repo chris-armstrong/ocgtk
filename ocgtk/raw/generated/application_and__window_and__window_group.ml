@@ -213,18 +213,30 @@ module rec Application : sig
 
   val on_query_end :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the session manager is about to end the session.
+
+      Applications can connect to this signal and call [Gtk.Application.inhibit]
+      with [Gtk.ApplicationInhibitFlags.logout] to delay the end of the session
+      until state has been saved. *)
 
   val on_window_added :
     ?after:bool ->
     t ->
     callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when a window is added to an application.
+
+      See [Gtk.Application.add_window]. *)
 
   val on_window_removed :
     ?after:bool ->
     t ->
     callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when a window is removed from an application.
+
+      This can happen as a side-effect of the window being destroyed or
+      explicitly through [Gtk.Application.remove_window]. *)
 end = struct
   type t = [ `application | `object_ ] Gobject.obj
 
@@ -1016,21 +1028,45 @@ and Window : sig
 
   val on_activate_default :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the user activates the default widget.
+
+      This is a keybinding signal.
+
+      The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+  *)
 
   val on_activate_focus :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the user activates the currently focused widget of [window].
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>␣</kbd>. *)
 
   val on_close_request :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+  (** Emitted when the user clicks on the close button of the window. *)
 
   val on_enable_debugging :
     ?after:bool ->
     t ->
     callback:(toggle:bool -> bool) ->
     Gobject.Signal.handler_id
+  (** Emitted when the user enables or disables interactive debugging.
+
+      When [toggle] is true, interactive debugging is toggled on or off, when it
+      is false, the debugger will be pointed at the widget under the pointer.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> and
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>. *)
 
   val on_keys_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the set of accelerators or mnemonics that are associated with
+      the window changes. *)
 end = struct
   type t = [ `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 

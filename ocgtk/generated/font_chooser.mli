@@ -14,6 +14,11 @@ class type font_chooser_t = object
     callback:(fontname:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a font is activated.
+
+      This usually happens when the user double clicks an item, or an item is
+      selected and the user presses one of the keys Space, Shift+Space, Return
+      or Enter. *)
 
   method get_font : unit -> string option
   (** Gets the currently-selected font name.

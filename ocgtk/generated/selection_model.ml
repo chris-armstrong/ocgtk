@@ -4,6 +4,12 @@ class type selection_model_t = object
     callback:(position:int -> n_items:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the selection state of some of the items in [model] changes.
+
+      Note that this signal does not specify the new selection state of the
+      items, they need to be queried manually. It is also not necessary for a
+      model to change the selection state of any of the items in the selection
+      model, though it would be rather useless to emit such a signal. *)
 
   method get_selection : unit -> Raw.Bitset.t
   (** Gets the set containing all currently selected items in the model.

@@ -146,3 +146,8 @@ val on_font_activated :
   t ->
   callback:(fontname:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a font is activated.
+
+    This usually happens when the user double clicks an item, or an item is
+    selected and the user presses one of the keys Space, Shift+Space, Return or
+    Enter. *)

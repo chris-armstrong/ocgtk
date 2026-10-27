@@ -123,3 +123,7 @@ val on_event :
     socket:Socket_and__socket_connection.Socket.t ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [listener]'s activity on [socket] changes state. Note that when
+    [listener] is used to listen on both IPv4 and IPv6, a separate set of
+    signals will be emitted for each, and the order they happen in is undefined.
+*)

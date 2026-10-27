@@ -98,9 +98,15 @@ val on_application_activated :
   t ->
   callback:(application:Ocgio_raw.App_info.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an application item is activated from the widget's list.
+
+    This usually happens when the user double clicks an item, or an item is
+    selected and the user presses one of the keys Space, Shift+Space, Return or
+    Enter. *)
 
 val on_application_selected :
   ?after:bool ->
   t ->
   callback:(application:Ocgio_raw.App_info.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an application item is selected from the widget's list. *)

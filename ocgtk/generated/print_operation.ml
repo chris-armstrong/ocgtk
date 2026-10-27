@@ -6,6 +6,12 @@ class type print_operation_t = object
     callback:(context:Print_context.print_context_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted after the user has finished changing print settings in the dialog,
+      before the actual rendering starts.
+
+      A typical use for ::begin-print is to use the parameters from the
+      [Gtk.PrintContext] and paginate the document accordingly, and then set the
+      number of pages with [Gtk.PrintOperation.set_n_pages]. *)
 
   method on_custom_widget_apply :
     ?after:bool ->
@@ -16,30 +22,111 @@ class type print_operation_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted right before ::begin-print if you added a custom widget in the
+      ::create-custom-widget handler.
+
+      When you get this signal you should read the information from the custom
+      widgets, as the widgets are not guaranteed to be around at a later time.
+  *)
 
   method on_done_ :
     ?after:bool ->
     callback:(result:Enums.printoperationresult -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the print operation run has finished doing everything
+      required for printing.
+
+      [result] gives you information about what happened during the run. If
+      [result] is [GTK_PRINT_OPERATION_RESULT_ERROR] then you can call
+      [Gtk.PrintOperation.get_error] for more information.
+
+      If you enabled print status tracking then [Gtk.PrintOperation.is_finished]
+      may still return [FALSE] after the ::done signal was emitted. *)
 
   method on_draw_page :
     ?after:bool ->
     callback:(context:Print_context.print_context_t -> page_nr:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted for every page that is printed.\n\n\
+     The signal handler must render the [page_nr]'s page onto the cairo\n\
+     context obtained from [context] using\n\
+     [Gtk.PrintContext.get_cairo_context].\n\n\
+     {[\n\
+     static void\n\
+     draw_page (GtkPrintOperation *operation,\n\
+    \           GtkPrintContext   *context,\n\
+    \           int                page_nr,\n\
+    \           gpointer           user_data)\n\
+     {\n\
+    \  cairo_t *cr;\n\
+    \  PangoLayout *layout;\n\
+    \  double width, text_height;\n\
+    \  int layout_height;\n\
+    \  PangoFontDescription *desc;\n\
+    \  \n\
+    \  cr = gtk_print_context_get_cairo_context (context);\n\
+    \  width = gtk_print_context_get_width (context);\n\
+    \  \n\
+    \  cairo_rectangle (cr, 0, 0, width, HEADER_HEIGHT);\n\
+    \  \n\
+    \  cairo_set_source_rgb (cr, 0.8, 0.8, 0.8);\n\
+    \  cairo_fill (cr);\n\
+    \  \n\
+    \  layout = gtk_print_context_create_pango_layout (context);\n\
+    \  \n\
+    \  desc = pango_font_description_from_string (\"sans 14\");\n\
+    \  pango_layout_set_font_description (layout, desc);\n\
+    \  pango_font_description_free (desc);\n\
+    \  \n\
+    \  pango_layout_set_text (layout, \"some text\", -1);\n\
+    \  pango_layout_set_width (layout, width * PANGO_SCALE);\n\
+    \  pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);\n\
+    \     \t\t      \n\
+    \  pango_layout_get_size (layout, NULL, &layout_height);\n\
+    \  text_height = (double)layout_height / PANGO_SCALE;\n\
+    \  \n\
+    \  cairo_move_to (cr, width / 2,  (HEADER_HEIGHT - text_height) / 2);\n\
+    \  pango_cairo_show_layout (cr, layout);\n\
+    \  \n\
+    \  g_object_unref (layout);\n\
+     }\n\
+     ]}\n\n\
+     Use [Gtk.PrintOperation.set_use_full_page] and\n\
+     [Gtk.PrintOperation.set_unit] before starting the print\n\
+     operation to set up the transformation of the cairo context\n\
+     according to your needs."]
 
   method on_end_print :
     ?after:bool ->
     callback:(context:Print_context.print_context_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted after all pages have been rendered.
+
+      A handler for this signal can clean up any resources that have been
+      allocated in the [Gtk.PrintOperation::begin-print] handler. *)
 
   method on_paginate :
     ?after:bool ->
     callback:(context:Print_context.print_context_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted after the ::begin-print signal, but before the actual rendering
+      starts.
+
+      It keeps getting emitted until a connected signal handler returns [TRUE].
+
+      The ::paginate signal is intended to be used for paginating a document in
+      small chunks, to avoid blocking the user interface for a long time. The
+      signal handler should update the number of pages using
+      [Gtk.PrintOperation.set_n_pages], and return [TRUE] if the document has
+      been completely paginated.
+
+      If you don't need to do pagination in chunks, you can simply do it all in
+      the ::begin-print handler, and set the number of pages from there. *)
 
   method on_preview :
     ?after:bool ->
@@ -50,6 +137,22 @@ class type print_operation_t = object
       bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when a preview is requested from the native dialog.
+
+      The default handler for this signal uses an external viewer application to
+      preview.
+
+      To implement a custom print preview, an application must return [TRUE]
+      from its handler for this signal. In order to use the provided [context]
+      for the preview implementation, it must be given a suitable cairo context
+      with [Gtk.PrintContext.set_cairo_context].
+
+      The custom preview implementation can use
+      [Gtk.PrintOperationPreview.is_selected] and
+      [Gtk.PrintOperationPreview.render_page] to find pages which are selected
+      for print and render them. The preview must be finished by calling
+      [Gtk.PrintOperationPreview.end_preview] (typically in response to the user
+      clicking a close button). *)
 
   method on_request_page_setup :
     ?after:bool ->
@@ -60,9 +163,17 @@ class type print_operation_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted once for every page that is printed.
+
+      This gives the application a chance to modify the page setup. Any changes
+      done to [setup] will be in force only for printing this page. *)
 
   method on_status_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted at between the various phases of the print operation.
+
+      See [Gtk.PrintStatus] for the phases that are being discriminated. Use
+      [Gtk.PrintOperation.get_status] to find out the current status. *)
 
   method on_update_custom_widget :
     ?after:bool ->
@@ -75,6 +186,10 @@ class type print_operation_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted after change of selected printer.
+
+      The actual page setup and print settings are passed to the custom widget,
+      which can actualize itself according to this change. *)
 
   method cancel : unit -> unit
   (** Cancels a running print operation.

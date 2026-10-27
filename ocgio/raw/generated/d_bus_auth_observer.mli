@@ -81,9 +81,12 @@ val on_allow_mechanism :
   t ->
   callback:(mechanism:string -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted to check if [mechanism] is allowed to be used. *)
 
 val on_authorize_authenticated_peer :
   ?after:bool ->
   t ->
   callback:(stream:Io_stream.t -> credentials:Credentials.t option -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted to check if a peer that is successfully authenticated is authorized.
+*)

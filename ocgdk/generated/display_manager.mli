@@ -45,6 +45,7 @@ class type display_manager_t = object
     callback:(display:App_launch_context_cycle_de440b34.display_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a display is opened. *)
 
   method get_default_display :
     unit -> App_launch_context_cycle_de440b34.display_t option

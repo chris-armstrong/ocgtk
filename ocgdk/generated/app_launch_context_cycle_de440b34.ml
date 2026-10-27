@@ -67,6 +67,7 @@ end
 and clipboard_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the clipboard changes ownership. *)
 
   method get_content : unit -> Content_provider.content_provider_t option
   (** Returns the [GdkContentProvider] currently set on [clipboard].
@@ -138,12 +139,19 @@ end
 and device_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted either when the number of either axes or keys changes.
+
+      On X11 this will normally happen when the physical device routing events
+      through the logical device changes (for example, user switches from the
+      USB mouse to a tablet); in that case the logical device will change to
+      reflect the axes and keys on the new physical device. *)
 
   method on_tool_changed :
     ?after:bool ->
     callback:(tool:Device_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on pen/eraser devices whenever tools enter or leave proximity. *)
 
   method get_active_layout_index : unit -> int
   (** Retrieves the index of the active layout of the keyboard.
@@ -265,27 +273,34 @@ and display_t = object
     callback:(is_error:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      closed. *)
 
   method on_opened :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      opened. *)
 
   method on_seat_added :
     ?after:bool ->
     callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new seat is made known to the windowing system. *)
 
   method on_seat_removed :
     ?after:bool ->
     callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a seat is removed by the windowing system. *)
 
   method on_setting_changed :
     ?after:bool ->
     callback:(setting:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a setting changes its value. *)
 
   method beep : unit -> unit
   (** Emits a short beep on [display] *)
@@ -729,6 +744,7 @@ end
 and monitor_t = object
   method on_invalidate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the output represented by [monitor] gets disconnected. *)
 
   method get_connector : unit -> string option
   [@@ocaml.doc
@@ -806,24 +822,34 @@ and seat_t = object
     callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a new input device is related to this seat. *)
 
   method on_device_removed :
     ?after:bool ->
     callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an input device is removed (e.g. unplugged). *)
 
   method on_tool_added :
     ?after:bool ->
     callback:(tool:Device_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new tool is made known to the seat.
+
+      The tool may later be assigned to a device (i.e. on proximity with a
+      tablet). The device will emit the [Gdk.Device::tool-changed] signal
+      accordingly.
+
+      A same tool may be used by several devices. *)
 
   method on_tool_removed :
     ?after:bool ->
     callback:(tool:Device_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a tool is no longer known to this [seat]. *)
 
   method get_capabilities : unit -> Enums.seatcapabilities
   (** Returns the capabilities this [GdkSeat] currently has. *)
@@ -852,24 +878,32 @@ and surface_t = object
     callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] starts being present on the monitor. *)
 
   method on_event :
     ?after:bool ->
     callback:(event:event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when GDK receives an input event for [surface]. *)
 
   method on_layout :
     ?after:bool ->
     callback:(width:int -> height:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the size of [surface] is changed, or when relayout should be
+      performed.
+
+      Surface size is reported in ”application pixels”, not ”device pixels” (see
+      gdk_surface_get_scale_factor()). *)
 
   method on_leave_monitor :
     ?after:bool ->
     callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] stops being present on the monitor. *)
 
   method beep : unit -> unit
   (** Emits a short beep associated to [surface].
@@ -1068,6 +1102,10 @@ end
 and vulkan_context_t = object
   method on_images_updated :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the images managed by this context have changed.
+
+      Usually this means that the swapchain had to be recreated, for example in
+      response to a change of the surface size. *)
 
   method as_vulkan_context : Raw.Vulkan_context.t
 end

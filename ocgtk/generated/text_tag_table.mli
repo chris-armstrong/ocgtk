@@ -29,18 +29,24 @@ class type text_tag_table_t = object
     callback:(tag:Text_tag.text_tag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted every time a new tag is added in the [GtkTextTagTable]. *)
 
   method on_tag_changed :
     ?after:bool ->
     callback:(tag:Text_tag.text_tag_t -> size_changed:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted every time a tag in the [GtkTextTagTable] changes. *)
 
   method on_tag_removed :
     ?after:bool ->
     callback:(tag:Text_tag.text_tag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted every time a tag is removed from the [GtkTextTagTable].
+
+      The [tag] is still valid by the time the signal is emitted, but it is not
+      associated with a tag table any more. *)
 
   method add : Text_tag.text_tag_t -> bool
   (** Add a tag to the table.

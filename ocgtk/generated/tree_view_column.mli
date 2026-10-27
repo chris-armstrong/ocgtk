@@ -21,6 +21,7 @@ class type tree_view_column_t = object
 
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the column's header has been clicked. *)
 
   method cell_is_visible : unit -> bool
   (** Returns [TRUE] if any of the cells packed into the [tree_column] are

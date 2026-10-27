@@ -119,6 +119,25 @@ class type debug_controller_d_bus_t = object
       (invocation:D_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a D-Bus peer is trying to change the debug settings and used
+      to determine if that is authorized.
+
+      This signal is emitted in a dedicated worker thread, so handlers are
+      allowed to perform blocking I/O. This means that, for example, it is
+      appropriate to call [polkit_authority_check_authorization_sync()] to check
+      authorization using polkit.
+
+      If [FALSE] is returned then no further handlers are run and the request to
+      change the debug settings is rejected.
+
+      Otherwise, if [TRUE] is returned, signal emission continues. If no
+      handlers return [FALSE], then the debug settings are allowed to be
+      changed.
+
+      Signal handlers must not modify [invocation], or cause it to return a
+      value.
+
+      The default class handler just returns [TRUE]. *)
 
   method stop : unit -> unit
   (** Stop the debug controller, unregistering its object from the bus.

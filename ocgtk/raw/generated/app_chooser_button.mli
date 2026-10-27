@@ -106,12 +106,20 @@ external append_custom_item : t -> string -> string -> Ocgio_raw.Icon.t -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the button is activated.
+
+    The [::activate] signal on [GtkAppChooserButton] is an action signal and
+    emitting it causes the button to pop up its dialog. *)
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the active application changes. *)
 
 val on_custom_item_activated :
   ?after:bool ->
   t ->
   callback:(item_name:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a custom item is activated.
+
+    Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)

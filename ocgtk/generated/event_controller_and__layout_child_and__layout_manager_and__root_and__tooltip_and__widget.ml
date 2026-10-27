@@ -180,60 +180,122 @@ and widget_t = object
 
   method on_destroy :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Signals that all holders of a reference to the widget should release the
+      reference that they hold.
+
+      May result in finalization of the widget if all references are released.
+
+      This signal is not suitable for saving widget state. *)
 
   method on_direction_changed :
     ?after:bool ->
     callback:(previous_direction:Enums.textdirection -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the text direction of a widget changes. *)
 
   method on_hide :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when [widget] is hidden. *)
 
   method on_keynav_failed :
     ?after:bool ->
     callback:(direction:Enums.directiontype -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted if keyboard navigation fails.
+
+      See [Gtk.Widget.keynav_failed] for details. *)
 
   method on_map :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when [widget] is going to be mapped.
+
+      A widget is mapped when the widget is visible (which is controlled with
+      [Gtk.Widget:visible]) and all its parents up to the toplevel widget are
+      also visible.
+
+      The [::map] signal can be used to determine whether a widget will be
+      drawn, for instance it can resume an animation that was stopped during the
+      emission of [Gtk.Widget::unmap]. *)
 
   method on_mnemonic_activate :
     ?after:bool ->
     callback:(group_cycling:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a widget is activated via a mnemonic.
+
+      The default handler for this signal activates [widget] if [group_cycling]
+      is false, or just makes [widget] grab focus if [group_cycling] is true. *)
 
   method on_move_focus :
     ?after:bool ->
     callback:(direction:Enums.directiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the focus is moved.
+
+      The [::move-focus] signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Tab</kbd> to move forward,
+      and <kbd>Shift</kbd>+<kbd>Tab</kbd> to move backward. *)
 
   method on_query_tooltip :
     ?after:bool ->
     callback:(x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the widget’s tooltip is about to be shown.
+
+      This happens when the [Gtk.Widget:has-tooltip] property is true and the
+      hover timeout has expired with the cursor hovering above [widget]; or
+      emitted when [widget] got focus in keyboard mode.
+
+      Using the given coordinates, the signal handler should determine whether a
+      tooltip should be shown for [widget]. If this is the case true should be
+      returned, false otherwise. Note that if [keyboard_mode] is true, the
+      values of [x] and [y] are undefined and should not be used.
+
+      The signal handler is free to manipulate [tooltip] with the therefore
+      destined function calls. *)
 
   method on_realize :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when [widget] is associated with a [GdkSurface].
+
+      This means that [Gtk.Widget.realize] has been called or the widget has
+      been mapped (that is, it is going to be drawn). *)
 
   method on_show :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when [widget] is shown. *)
 
   method on_state_flags_changed :
     ?after:bool ->
     callback:(flags:Enums.stateflags -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the widget state changes.
+
+      See [Gtk.Widget.get_state_flags]. *)
 
   method on_unmap :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when [widget] is going to be unmapped.
+
+      A widget is unmapped when either it or any of its parents up to the
+      toplevel widget have been set as hidden.
+
+      As [::unmap] indicates that a widget will not be shown any longer, it can
+      be used to, for example, stop an animation on the widget. *)
 
   method on_unrealize :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the [GdkSurface] associated with [widget] is destroyed.
+
+      This means that [Gtk.Widget.unrealize] has been called or the widget has
+      been unmapped (that is, it is going to be hidden). *)
 
   method action_set_enabled : string -> bool -> unit
   (** Enables or disables an action installed with

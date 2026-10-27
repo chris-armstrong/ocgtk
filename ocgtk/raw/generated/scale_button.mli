@@ -97,12 +97,24 @@ external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 
 val on_popdown :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to dismiss the popup.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is <kbd>Escape</kbd>. *)
 
 val on_popup :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to popup the scale widget.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Space</kbd>, <kbd>Enter</kbd>
+    and <kbd>Return</kbd>. *)
 
 val on_value_changed :
   ?after:bool ->
   t ->
   callback:(value:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the value field has changed. *)

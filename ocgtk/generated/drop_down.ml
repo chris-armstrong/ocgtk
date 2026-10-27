@@ -5,6 +5,10 @@ class type drop_down_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to when the drop down is activated.
+
+      The [::activate] signal on [GtkDropDown] is an action signal and emitting
+      it causes the drop down to pop up its dropdown. *)
 
   method get_enable_search : unit -> bool
   (** Returns whether search is enabled. *)

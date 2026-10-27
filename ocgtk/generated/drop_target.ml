@@ -8,27 +8,57 @@ class type drop_target_t = object
     callback:(drop:Ocgdk.Drop.drop_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the drop site when a drop operation is about to begin.
+
+      If the drop is not accepted, [FALSE] will be returned and the drop target
+      will ignore the drop. If [TRUE] is returned, the drop is accepted for now
+      but may be rejected later via a call to [Gtk.DropTarget.reject] or
+      ultimately by returning [FALSE] from a [Gtk.DropTarget::drop] handler.
+
+      The default handler for this signal decides whether to accept the drop
+      based on the formats provided by the [drop].
+
+      If the decision whether the drop will be accepted or rejected depends on
+      the data, this function should return [TRUE], the [Gtk.DropTarget:preload]
+      property should be set and the value should be inspected via the
+      ::notify:value signal, calling [Gtk.DropTarget.reject] if required. *)
 
   method on_drop :
     ?after:bool ->
     callback:(value:Gobject.Value.t -> x:float -> y:float -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the drop site when the user drops the data onto the widget.
+
+      The signal handler must determine whether the pointer position is in a
+      drop zone or not. If it is not in a drop zone, it returns [FALSE] and no
+      further processing is necessary.
+
+      Otherwise, the handler returns [TRUE]. In this case, this handler will
+      accept the drop. The handler is responsible for using the given [value]
+      and performing the drop operation. *)
 
   method on_enter :
     ?after:bool ->
     callback:(x:float -> y:float -> Ocgdk.Enums.dragaction) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the drop site when the pointer enters the widget.
+
+      It can be used to set up custom highlighting. *)
 
   method on_leave :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted on the drop site when the pointer leaves the widget.
+
+      Its main purpose it to undo things done in [Gtk.DropTarget::enter]. *)
 
   method on_motion :
     ?after:bool ->
     callback:(x:float -> y:float -> Ocgdk.Enums.dragaction) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted while the pointer is moving over the drop target. *)
 
   method get_actions : unit -> Ocgdk.Enums.dragaction
   (** Gets the actions that this drop target supports. *)

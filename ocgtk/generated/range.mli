@@ -30,21 +30,39 @@ class type range_t = object
     callback:(value:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted before clamping a value, to give the application a chance to
+      adjust the bounds. *)
 
   method on_change_value :
     ?after:bool ->
     callback:(scroll:Enums.scrolltype -> value:float -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a scroll action is performed on a range.
+
+      It allows an application to determine the type of scroll event that
+      occurred and the resultant new value. The application can handle the event
+      itself and return [TRUE] to prevent further processing. Or, by returning
+      [FALSE], it can pass the event to other handlers until the default GTK
+      handler is reached.
+
+      The value parameter is unrounded. An application that overrides the
+      ::change-value signal is responsible for clamping the value to the desired
+      number of decimal digits; the default GTK handler clamps the value based
+      on [Gtk.Range:round-digits]. *)
 
   method on_move_slider :
     ?after:bool ->
     callback:(step:Enums.scrolltype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Virtual function that moves the slider.
+
+      Used for keybindings. *)
 
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the range value changes. *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Get the adjustment which is the “model” object for [GtkRange]. *)

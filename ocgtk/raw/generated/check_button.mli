@@ -147,6 +147,17 @@ external get_active : t -> bool = "ml_gtk_check_button_get_active"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the check button is activated.
+
+    The [::activate] signal on [GtkCheckButton] is an action signal and emitting
+    it causes the button to animate press then release.
+
+    Applications should never connect to this signal, but use the
+    [Gtk.CheckButton::toggled] signal.
+
+    The default bindings for this signal are all forms of the <kbd>␣</kbd> and
+    <kbd>Enter</kbd> keys. *)
 
 val on_toggled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the buttons's [Gtk.CheckButton:active] property changes. *)

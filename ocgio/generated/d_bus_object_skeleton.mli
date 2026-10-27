@@ -21,6 +21,14 @@ class type d_bus_object_skeleton_t = object
       bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a method is invoked by a remote caller and used to determine
+      if the method call is authorized.
+
+      This signal is like [GDBusInterfaceSkeleton]'s
+      [GDBusInterfaceSkeleton::g]-authorize-method signal, except that it is for
+      the enclosing object.
+
+      The default class handler just returns [TRUE]. *)
 
   method add_interface :
     D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit

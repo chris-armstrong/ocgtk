@@ -641,33 +641,64 @@ module rec Text_buffer : sig
 
   val on_begin_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted at the beginning of a single user-visible operation on a
+      [GtkTextBuffer].
+
+      See also: [Gtk.TextBuffer.begin_user_action],
+      [Gtk.TextBuffer.insert_interactive],
+      [Gtk.TextBuffer.insert_range_interactive],
+      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
+      [Gtk.TextBuffer.delete_selection]. *)
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the content of a [GtkTextBuffer] has changed. *)
 
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted at the end of a single user-visible operation on the
+      [GtkTextBuffer].
+
+      See also: [Gtk.TextBuffer.end_user_action],
+      [Gtk.TextBuffer.insert_interactive],
+      [Gtk.TextBuffer.insert_range_interactive],
+      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
+      [Gtk.TextBuffer.delete_selection], [Gtk.TextBuffer.backspace]. *)
 
   val on_mark_deleted :
     ?after:bool ->
     t ->
     callback:(mark:Text_mark.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted as notification after a [GtkTextMark] is deleted.
+
+      See also: [Gtk.TextBuffer.delete_mark]. *)
 
   val on_modified_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the modified bit of a [GtkTextBuffer] flips.
+
+      See also: [Gtk.TextBuffer.set_modified]. *)
 
   val on_paste_done :
     ?after:bool ->
     t ->
     callback:(clipboard:Ocgdk_raw.Clipboard.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted after paste operation has been completed.
+
+      This is useful to properly scroll the view to the end of the pasted text.
+      See [Gtk.TextBuffer.paste_clipboard] for more details. *)
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when a request has been made to redo the previously undone
+      operation. *)
 
   val on_undo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when a request has been made to undo the previous operation or set
+      of operations that have been grouped together. *)
 end
 
 (** Iterates over the contents of a [GtkTextBuffer].

@@ -26,12 +26,14 @@ and d_bus_object_t = object
     callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is added to [object]. *)
 
   method on_interface_removed :
     ?after:bool ->
     callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is removed from [object]. *)
 
   method get_interface : string -> d_bus_interface_t option
   (** Gets the D-Bus interface with name [interface_name] associated with

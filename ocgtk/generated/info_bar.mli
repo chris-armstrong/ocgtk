@@ -69,12 +69,22 @@ class type info_bar_t = object
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted when the user uses a keybinding to dismiss the info bar.
+
+      The ::close signal is a keybinding signal.
+
+      The default binding for this signal is the Escape key. *)
 
   method on_response :
     ?after:bool ->
     callback:(response_id:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an action widget is clicked.
+
+      The signal is also emitted when the application programmer calls
+      [Gtk.InfoBar.response]. The [response_id] depends on which action widget
+      was clicked. *)
 
   method add_action_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

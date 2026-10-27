@@ -3,12 +3,16 @@ class type gesture_long_press_t = object
 
   method on_cancelled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever a press moved too far, or was released before
+      [Gtk.GestureLongPress::pressed] happened. *)
 
   method on_pressed :
     ?after:bool ->
     callback:(x:float -> y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a press goes unmoved/unreleased longer than what the GTK
+      defaults tell. *)
 
   method get_delay_factor : unit -> float
   (** Returns the delay factor. *)

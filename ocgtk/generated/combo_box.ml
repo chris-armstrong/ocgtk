@@ -8,27 +8,76 @@ class type combo_box_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to when the combo box is activated.
+
+      The [::activate] signal on [GtkComboBox] is an action signal and emitting
+      it causes the combo box to pop up its dropdown. *)
 
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the active item is changed.
+
+      The can be due to the user selecting a different item from the list, or
+      due to a call to [Gtk.ComboBox.set_active_iter]. It will also be emitted
+      while typing into the entry of a combo box with an entry. *)
 
   method on_format_entry_text :
     ?after:bool ->
     callback:(path:string -> string) ->
     unit ->
     Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted to allow changing how the text in a combo box's entry is \
+     displayed.\n\n\
+     See [Gtk.ComboBox:has-entry].\n\n\
+     Connect a signal handler which returns an allocated string representing\n\
+     [path]. That string will then be used to set the text in the combo box's\n\
+     entry. The default signal handler uses the text from the\n\
+     [Gtk.ComboBox:entry-text-column] model column.\n\n\
+     Here's an example signal handler which fetches data from the model and\n\
+     displays it in the entry.\n\n\
+     {[\n\
+     static char *\n\
+     format_entry_text_callback (GtkComboBox *combo,\n\
+    \                            const char *path,\n\
+    \                            gpointer     user_data)\n\
+     {\n\
+    \  GtkTreeIter iter;\n\
+    \  GtkTreeModel model;\n\
+    \  double       value;\n\n\
+    \  model = gtk_combo_box_get_model (combo);\n\n\
+    \  gtk_tree_model_get_iter_from_string (model, &iter, path);\n\
+    \  gtk_tree_model_get (model, &iter,\n\
+    \                      THE_DOUBLE_VALUE_COLUMN, &value,\n\
+    \                      -1);\n\n\
+    \  return g_strdup_printf (\"%g\", value);\n\
+     }\n\
+     ]}"]
 
   method on_move_active :
     ?after:bool ->
     callback:(scroll_type:Enums.scrolltype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted to move the active selection.
+
+      This is an keybinding signal. *)
 
   method on_popdown :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to popdown the combo box list.
+
+      This is an keybinding signal.
+
+      The default bindings for this signal are Alt+Up and Escape. *)
 
   method on_popup :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to popup the combo box list.
+
+      This is an keybinding signal.
+
+      The default binding for this signal is Alt+Down. *)
 
   method get_active : unit -> int
   (** Returns the index of the currently active item.

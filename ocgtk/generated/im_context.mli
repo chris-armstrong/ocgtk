@@ -31,24 +31,48 @@ class type im_context_t = object
     callback:(str:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::commit signal is emitted when a complete input sequence has been
+      entered by the user.
+
+      If the commit comes after a preediting sequence, the ::commit signal is
+      emitted after ::preedit-end.
+
+      This can be a single character immediately after a key press or the final
+      result of preediting. *)
 
   method on_delete_surrounding :
     ?after:bool ->
     callback:(offset:int -> n_chars:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::delete-surrounding signal is emitted when the input method needs to
+      delete all or part of the context surrounding the cursor. *)
 
   method on_preedit_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::preedit-changed signal is emitted whenever the preedit sequence
+      currently being entered has changed.
+
+      It is also emitted at the end of a preedit sequence, in which case
+      [Gtk.IMContext.get_preedit_string] returns the empty string. *)
 
   method on_preedit_end :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::preedit-end signal is emitted when a preediting sequence has been
+      completed or canceled. *)
 
   method on_preedit_start :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::preedit-start signal is emitted when a new preediting sequence
+      starts. *)
 
   method on_retrieve_surrounding :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** The ::retrieve-surrounding signal is emitted when the input method
+      requires the context surrounding the cursor.
+
+      The callback should set the input method surrounding context by calling
+      the [Gtk.IMContext.set_surrounding] method. *)
 
   method activate_osk : Ocgdk.Event.event_t option -> bool
   (** Requests the platform to show an on-screen keyboard for user input.

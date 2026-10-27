@@ -26,6 +26,10 @@ class type socket_listener_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [listener]'s activity on [socket] changes state. Note that
+      when [listener] is used to listen on both IPv4 and IPv6, a separate set of
+      signals will be emitted for each, and the order they happen in is
+      undefined. *)
 
   method add_any_inet_port :
     [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result

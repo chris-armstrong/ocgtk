@@ -24,6 +24,12 @@ class type native_dialog_t = object
     callback:(response_id:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user responds to the dialog.
+
+      When this is called the dialog has been hidden.
+
+      If you call [Gtk.NativeDialog.hide] before the user responds to the dialog
+      this signal will not be emitted. *)
 
   method destroy : unit -> unit
   (** Destroys a dialog.

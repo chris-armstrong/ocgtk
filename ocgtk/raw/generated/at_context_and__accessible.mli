@@ -48,6 +48,8 @@ module rec At_context : sig
 
   val on_state_change :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the attributes of the accessible for the [GtkATContext]
+      instance change. *)
 end
 
 (** An interface for describing UI elements for Assistive Technologies.

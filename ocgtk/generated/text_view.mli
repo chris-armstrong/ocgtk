@@ -88,27 +88,67 @@ class type text_view_t = object
 
   method on_backspace :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted when the user asks for it.
+
+      The ::backspace signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Backspace</kbd> and
+      <kbd>Shift</kbd>+<kbd>Backspace</kbd>. *)
 
   method on_copy_clipboard :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to copy the selection to the clipboard.
+
+      The ::copy-clipboard signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>c</kbd> and
+      <kbd>Ctrl</kbd>+<kbd>Insert</kbd>. *)
 
   method on_cut_clipboard :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to cut the selection to the clipboard.
+
+      The ::cut-clipboard signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>x</kbd> and
+      <kbd>Shift</kbd>+<kbd>Delete</kbd>. *)
 
   method on_delete_from_cursor :
     ?after:bool ->
     callback:(type_:Enums.deletetype -> count:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user initiates a text deletion.
+
+      The ::delete-from-cursor signal is a keybinding signal.
+
+      If the [type] is [GTK_DELETE_CHARS], GTK deletes the selection if there is
+      one, otherwise it deletes the requested number of characters.
+
+      The default bindings for this signal are <kbd>Delete</kbd> for deleting a
+      character, <kbd>Ctrl</kbd>+<kbd>Delete</kbd> for deleting a word and
+      <kbd>Ctrl</kbd>+<kbd>Backspace</kbd> for deleting a word backwards. *)
 
   method on_insert_at_cursor :
     ?after:bool ->
     callback:(string:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user initiates the insertion of a fixed string at
+      the cursor.
+
+      The ::insert-at-cursor signal is a keybinding signal.
+
+      This signal has no default bindings. *)
 
   method on_insert_emoji :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to present the Emoji chooser for the [text_view].
+
+      The ::insert-emoji signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>.</kbd> and
+      <kbd>Ctrl</kbd>+<kbd>;</kbd> *)
 
   method on_move_cursor :
     ?after:bool ->
@@ -116,36 +156,104 @@ class type text_view_t = object
       (step:Enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user initiates a cursor movement.
+
+      The ::move-cursor signal is a keybinding signal. If the cursor is not
+      visible in [text_view], this signal causes the viewport to be moved
+      instead.
+
+      Applications should not connect to it, but may emit it with
+      g_signal_emit_by_name() if they need to control the cursor
+      programmatically.
+
+      The default bindings for this signal come in two variants, the variant
+      with the <kbd>Shift</kbd> modifier extends the selection, the variant
+      without it does not. There are too many key combinations to list them all
+      here.
+
+      - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by
+        individual characters/lines
+      - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
+      - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer
+      - <kbd>PgUp</kbd> and <kbd>PgDn</kbd> move vertically by pages
+      - <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> and <kbd>Ctrl</kbd>+<kbd>PgDn</kbd> move
+        horizontally by pages *)
 
   method on_move_viewport :
     ?after:bool ->
     callback:(step:Enums.scrollstep -> count:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted to move the viewport.
+
+      The ::move-viewport signal is a keybinding signal, which can be bound to
+      key combinations to allow the user to move the viewport, i.e. change what
+      part of the text view is visible in a containing scrolled window.
+
+      There are no default bindings for this signal. *)
 
   method on_paste_clipboard :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to paste the contents of the clipboard into the text view.
+
+      The ::paste-clipboard signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>v</kbd> and
+      <kbd>Shift</kbd>+<kbd>Insert</kbd>. *)
 
   method on_preedit_changed :
     ?after:bool ->
     callback:(preedit:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when preedit text of the active IM changes.
+
+      If an input method is used, the typed text will not immediately be
+      committed to the buffer. So if you are interested in the text, connect to
+      this signal.
+
+      This signal is only emitted if the text at the given position is actually
+      editable. *)
 
   method on_select_all :
     ?after:bool ->
     callback:(select:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted to select or unselect the complete contents of the text view.
+
+      The ::select-all signal is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>a</kbd> and
+      <kbd>Ctrl</kbd>+<kbd>/</kbd> for selecting and
+      <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>a</kbd> and
+      <kbd>Ctrl</kbd>+<kbd></kbd> for unselecting. *)
 
   method on_set_anchor :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Gets emitted when the user initiates settings the \"anchor\" mark.\n\n\
+     The ::set-anchor signal is a keybinding signal\n\
+     which gets emitted when the user initiates setting the \"anchor\"\n\
+     mark. The \"anchor\" mark gets placed at the same position as the\n\
+     \"insert\" mark.\n\n\
+     This signal has no default bindings."]
 
   method on_toggle_cursor_visible :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to toggle the [cursor-visible] property.
+
+      The ::toggle-cursor-visible signal is a keybinding signal.
+
+      The default binding for this signal is <kbd>F7</kbd>. *)
 
   method on_toggle_overwrite :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Gets emitted to toggle the overwrite mode of the text view.
+
+      The ::toggle-overwrite signal is a keybinding signal.
+
+      The default binding for this signal is <kbd>Insert</kbd>. *)
 
   method add_child_at_anchor :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

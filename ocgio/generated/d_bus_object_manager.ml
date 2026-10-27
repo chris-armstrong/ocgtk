@@ -7,6 +7,10 @@ class type d_bus_object_manager_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is added to [object].
+
+      This signal exists purely as a convenience to avoid having to connect
+      signals to all objects managed by [manager]. *)
 
   method on_interface_removed :
     ?after:bool ->
@@ -16,18 +20,24 @@ class type d_bus_object_manager_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] has been removed from [object].
+
+      This signal exists purely as a convenience to avoid having to connect
+      signals to all objects managed by [manager]. *)
 
   method on_object_added :
     ?after:bool ->
     callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [object] is added to [manager]. *)
 
   method on_object_removed :
     ?after:bool ->
     callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when [object] is removed from [manager]. *)
 
   method get_interface :
     string ->

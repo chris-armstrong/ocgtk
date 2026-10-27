@@ -17,8 +17,10 @@ external new_ : unit -> t = "ml_gtk_event_controller_legacy_new"
 (** Creates a new legacy event controller. *)
 
 (* Methods *)
+
 val on_event :
   ?after:bool ->
   t ->
   callback:(event:Ocgdk_raw.Event.t -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted for each GDK event delivered to [controller]. *)

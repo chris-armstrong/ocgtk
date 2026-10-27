@@ -137,18 +137,50 @@ external set_activates_default : t -> bool -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the entry is activated.
+
+    The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+*)
 
 val on_next_match :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user initiates a move to the next match for the current
+    search string.
+
+    This is a keybinding signal.
+
+    Applications should connect to it, to implement moving between matches.
+
+    The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>g</kbd>. *)
 
 val on_previous_match :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user initiates a move to the previous match for the current
+    search string.
+
+    This is a keybinding signal.
+
+    Applications should connect to it, to implement moving between matches.
+
+    The default bindings for this signal is
+    <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd>. *)
 
 val on_search_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted with a delay. The length of the delay can be changed with the
+    [Gtk.SearchEntry:search-delay] property. *)
 
 val on_search_started :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user initiated a search on the entry. *)
 
 val on_stop_search :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user stops a search via keyboard input.
+
+    This is a keybinding signal.
+
+    Applications should connect to it, to implement hiding the search entry in
+    this case.
+
+    The default bindings for this signal is <kbd>Escape</kbd>. *)

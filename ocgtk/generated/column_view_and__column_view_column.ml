@@ -13,6 +13,11 @@ class type column_view_t = object
     callback:(position:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a row has been activated by the user, usually via activating
+      the GtkListBase|list.activate-item action.
+
+      This allows for a convenient way to handle activation in a columnview. See
+      [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
 
   method append_column : column_view_column_t -> unit
   (** Appends the [column] to the end of the columns in [self]. *)

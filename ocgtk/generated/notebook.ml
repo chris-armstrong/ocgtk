@@ -8,6 +8,12 @@ class type notebook_t = object
     callback:(page:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the current page should be changed.
+
+      The default bindings for this signal are
+      <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgDn</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> and <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>. *)
 
   method on_create_window :
     ?after:bool ->
@@ -18,18 +24,32 @@ class type notebook_t = object
       notebook_t option) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::create-window signal is emitted when a detachable tab is dropped on
+      the root window.
+
+      A handler for this signal can create a window containing a notebook where
+      the tab will be attached. It is also responsible for moving/resizing the
+      window and adding the necessary properties to the notebook (e.g. the
+      [GtkNotebook]:group-name ). *)
 
   method on_focus_tab :
     ?after:bool ->
     callback:(tab:Enums.notebooktab -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a tab should be focused. *)
 
   method on_move_focus_out :
     ?after:bool ->
     callback:(direction:Enums.directiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when focus was moved out.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>←</kbd>, <kbd>Ctrl</kbd>+<kbd>→</kbd>,
+      <kbd>Ctrl</kbd>+<kbd>↑</kbd> and <kbd>Ctrl</kbd>+<kbd>↓</kbd>. *)
 
   method on_page_added :
     ?after:bool ->
@@ -41,6 +61,8 @@ class type notebook_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** the ::page-added signal is emitted in the notebook right after a page is
+      added to the notebook. *)
 
   method on_page_removed :
     ?after:bool ->
@@ -52,6 +74,8 @@ class type notebook_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** the ::page-removed signal is emitted in the notebook right after a page is
+      removed from the notebook. *)
 
   method on_page_reordered :
     ?after:bool ->
@@ -63,18 +87,30 @@ class type notebook_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** the ::page-reordered signal is emitted in the notebook right after a page
+      has been reordered. *)
 
   method on_reorder_tab :
     ?after:bool ->
     callback:(direction:Enums.directiontype -> move_to_last:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the tab should be reordered.
+
+      The default bindings for this signal are <kbd>Alt</kbd>+<kbd>Home</kbd>,
+      <kbd>Alt</kbd>+<kbd>End</kbd>, <kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+      <kbd>Alt</kbd>+<kbd>PgDn</kbd>, <kbd>Alt</kbd>+<kbd>←</kbd>,
+      <kbd>Alt</kbd>+<kbd>→</kbd>, <kbd>Alt</kbd>+<kbd>↑</kbd> and
+      <kbd>Alt</kbd>+<kbd>↓</kbd>. *)
 
   method on_select_page :
     ?after:bool ->
     callback:(move_focus:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a page should be selected.
+
+      The default binding for this signal is <kbd>␣</kbd>. *)
 
   method on_switch_page :
     ?after:bool ->
@@ -86,6 +122,7 @@ class type notebook_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user or a function changes the current page. *)
 
   method append_page :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

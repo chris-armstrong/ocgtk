@@ -667,15 +667,21 @@ external set_truncate_multiline : t -> bool -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the entry is activated.
+
+    The keybindings for this signal are all forms of the Enter key. *)
 
 val on_icon_press :
   ?after:bool ->
   t ->
   callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an activatable icon is clicked. *)
 
 val on_icon_release :
   ?after:bool ->
   t ->
   callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted on the button release from a mouse click over an activatable icon.
+*)

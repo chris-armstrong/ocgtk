@@ -4,6 +4,10 @@
 class type tree_selection_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever the selection has (possibly) changed. Please note that
+      this signal is mostly a hint. It may only be emitted once when a range of
+      rows are selected, and it may occasionally be emitted when nothing has
+      happened. *)
 
   method count_selected_rows : unit -> int
   (** Returns the number of rows that have been selected in [tree]. *)
@@ -66,9 +70,11 @@ and tree_view_t = object
 
   method on_columns_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The number of columns of the treeview has changed. *)
 
   method on_cursor_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The position of the cursor (focused cell) has changed. *)
 
   method on_expand_collapse_cursor_row :
     ?after:bool ->
@@ -86,6 +92,15 @@ and tree_view_t = object
       bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The [GtkTreeView]::move-cursor signal is a \[keybinding
+      signal\][Gtk.SignalAction] which gets emitted when the user presses one of
+      the cursor keys.
+
+      Applications should not connect to it, but may emit it with
+      g_signal_emit_by_name() if they need to control the cursor
+      programmatically. In contrast to gtk_tree_view_set_cursor() and
+      gtk_tree_view_set_cursor_on_cell() when moving horizontally
+      [GtkTreeView]::move-cursor does not reset the current selection. *)
 
   method on_select_all :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id

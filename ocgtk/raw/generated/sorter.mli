@@ -72,3 +72,13 @@ val on_changed :
   t ->
   callback:(change:Ocgtk_enums.sorterchange -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the sorter changed.
+
+    Users of the sorter should then update the sort order again via
+    gtk_sorter_compare().
+
+    [Gtk.SortListModel] handles this signal automatically.
+
+    Depending on the [change] parameter, it may be possible to update the sort
+    order without a full resorting. Refer to the [Gtk.SorterChange]
+    documentation for details. *)

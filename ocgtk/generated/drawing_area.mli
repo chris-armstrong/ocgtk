@@ -91,6 +91,11 @@ class type drawing_area_t = object
     callback:(width:int -> height:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted once when the widget is realized, and then each time the widget is
+      changed while realized.
+
+      This is useful in order to keep state up to date with the widget size,
+      like for instance a backing surface. *)
 
   method get_content_height : unit -> int
   (** Retrieves the content height of the [GtkDrawingArea]. *)

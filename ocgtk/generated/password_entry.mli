@@ -45,6 +45,9 @@ class type password_entry_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the entry is activated.
+
+      The keybindings for this signal are all forms of the Enter key. *)
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
   (** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)

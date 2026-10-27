@@ -110,12 +110,27 @@
 class type editable_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted at the end of a single user-visible operation on the contents.
+
+      E.g., a paste operation that replaces the contents of the selection will
+      cause only one signal emission (even though it is implemented by first
+      deleting the selection, then inserting the new content, and may cause
+      multiple ::notify::text signals to be emitted). *)
 
   method on_delete_text :
     ?after:bool ->
     callback:(start_pos:int -> end_pos:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when text is deleted from the widget by the user.
+
+      The default handler for this signal will normally be responsible for
+      deleting the text, so by connecting to this signal and then stopping the
+      signal with g_signal_stop_emission(), it is possible to modify the range
+      of deleted text, or prevent it from being deleted entirely.
+
+      The [start_pos] and [end_pos] parameters are interpreted as for
+      [Gtk.Editable.delete_text]. *)
 
   method delegate_get_accessible_platform_state :
     Enums.accessibleplatformstate -> bool

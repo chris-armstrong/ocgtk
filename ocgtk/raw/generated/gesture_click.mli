@@ -21,17 +21,25 @@ external new_ : unit -> t = "ml_gtk_gesture_click_new"
     presses. *)
 
 (* Methods *)
+
 val on_pressed :
   ?after:bool ->
   t ->
   callback:(n_press:int -> x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a button or touch press happens. *)
 
 val on_released :
   ?after:bool ->
   t ->
   callback:(n_press:int -> x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a button or touch is released.
+
+    [n_press] will report the number of press that is paired to this event, note
+    that [Gtk.GestureClick::stopped] may have been emitted between the press and
+    its release, [n_press] will only start over at the next press. *)
 
 val on_stopped :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever any time/distance threshold has been exceeded. *)

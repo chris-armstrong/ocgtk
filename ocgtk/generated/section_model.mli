@@ -23,6 +23,17 @@ class type section_model_t = object
     callback:(position:int -> n_items:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the start-of-section state of some of the items in [model]
+      changes.
+
+      Note that this signal does not specify the new section state of the items,
+      they need to be queried manually. It is also not necessary for a model to
+      change the section state of any of the items in the section model, though
+      it would be rather useless to emit such a signal.
+
+      The [Gio.ListModel::items-changed] implies the effect of the
+      [Gtk.SectionModel::sections-changed] signal for all the items it covers.
+  *)
 
   method sections_changed : int -> int -> unit
   (** This function emits the [Gtk.SectionModel::sections-changed] signal to

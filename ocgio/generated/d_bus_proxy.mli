@@ -64,6 +64,12 @@ class type d_bus_proxy_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a signal from the remote object and interface that [proxy] is
+      for, has been received.
+
+      Since 2.72 this signal supports detailed connections. You can connect to
+      the detailed signal [g-signal::x] in order to receive callbacks only when
+      signal [x] is received from the remote object. *)
 
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result

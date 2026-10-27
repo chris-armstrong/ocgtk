@@ -6,6 +6,10 @@ class type drag_source_t = object
     callback:(drag:Ocgdk.Drag.drag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the drag source when a drag is started.
+
+      It can be used to e.g. set a custom drag icon with
+      [Gtk.DragSource.set_icon]. *)
 
   method on_drag_cancel :
     ?after:bool ->
@@ -13,12 +17,21 @@ class type drag_source_t = object
       (drag:Ocgdk.Drag.drag_t -> reason:Ocgdk.Enums.dragcancelreason -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted on the drag source when a drag has failed.\n\n\
+     The signal handler may handle a failed drag operation based on\n\
+     the type of error. It should return [TRUE] if the failure has been handled\n\
+     and the default \"drag operation failed\" animation should not be shown."]
 
   method on_drag_end :
     ?after:bool ->
     callback:(drag:Ocgdk.Drag.drag_t -> delete_data:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted on the drag source when a drag is finished.
+
+      A typical reason to connect to this signal is to undo things done in
+      [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] handlers. *)
 
   method on_prepare :
     ?after:bool ->
@@ -26,6 +39,12 @@ class type drag_source_t = object
       (x:float -> y:float -> Ocgdk.Content_provider.content_provider_t option) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a drag is about to be initiated.
+
+      It returns the [GdkContentProvider] to use for the drag that is about to
+      start. The default handler for this signal returns the value of the
+      [Gtk.DragSource:content] property, so if you set up that property ahead of
+      time, you don't need to connect to this signal. *)
 
   method drag_cancel : unit -> unit
   (** Cancels a currently ongoing drag operation. *)

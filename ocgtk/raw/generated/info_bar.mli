@@ -178,9 +178,19 @@ external add_action_widget :
 
 val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted when the user uses a keybinding to dismiss the info bar.
+
+    The ::close signal is a keybinding signal.
+
+    The default binding for this signal is the Escape key. *)
 
 val on_response :
   ?after:bool ->
   t ->
   callback:(response_id:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an action widget is clicked.
+
+    The signal is also emitted when the application programmer calls
+    [Gtk.InfoBar.response]. The [response_id] depends on which action widget was
+    clicked. *)

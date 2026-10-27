@@ -82,3 +82,7 @@ external set_view_name : t -> string -> unit
 
 val on_change_current_page :
   ?after:bool -> t -> callback:(offset:int -> bool) -> Gobject.Signal.handler_id
+(** Emitted when we change the current page.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
+    <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>. *)

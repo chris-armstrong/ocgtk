@@ -18,15 +18,23 @@ class type gesture_click_t = object
     callback:(n_press:int -> x:float -> y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a button or touch press happens. *)
 
   method on_released :
     ?after:bool ->
     callback:(n_press:int -> x:float -> y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a button or touch is released.
+
+      [n_press] will report the number of press that is paired to this event,
+      note that [Gtk.GestureClick::stopped] may have been emitted between the
+      press and its release, [n_press] will only start over at the next press.
+  *)
 
   method on_stopped :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever any time/distance threshold has been exceeded. *)
 
   method as_gesture_click : Raw.Gesture_click.t
 end

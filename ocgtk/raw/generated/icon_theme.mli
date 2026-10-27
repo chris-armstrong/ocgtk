@@ -173,3 +173,8 @@ external add_resource_path : t -> string -> unit
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the icon theme changes.
+
+    This can happen because current icon theme is switched or because GTK
+    detects that a change has occurred in the contents of the current icon
+    theme. *)

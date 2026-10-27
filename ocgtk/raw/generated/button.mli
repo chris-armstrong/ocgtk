@@ -152,6 +152,14 @@ external get_can_shrink : t -> bool = "ml_gtk_button_get_can_shrink"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to animate press then release.
+
+    This is an action signal. Applications should never connect to this signal,
+    but use the [Gtk.Button::clicked] signal.
+
+    The default bindings for this signal are all forms of the <kbd>␣</kbd> and
+    <kbd>Enter</kbd> keys. *)
 
 val on_clicked :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the button has been activated (pressed and released). *)

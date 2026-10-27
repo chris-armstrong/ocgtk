@@ -6,6 +6,7 @@ class type cell_renderer_accel_t = object
     callback:(path_string:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user has removed the accelerator. *)
 
   method on_accel_edited :
     ?after:bool ->
@@ -17,6 +18,7 @@ class type cell_renderer_accel_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Gets emitted when the user has selected a new accelerator. *)
 
   method accel_key : int
   method set_accel_key : int -> unit

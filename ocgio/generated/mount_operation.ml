@@ -1,6 +1,11 @@
 class type mount_operation_t = object
   method on_aborted :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted by the backend when e.g. a device becomes unavailable while a
+      mount operation is in progress.
+
+      Implementations of GMountOperation should handle this signal by dismissing
+      open password dialogs. *)
 
   method on_ask_password :
     ?after:bool ->
@@ -12,18 +17,41 @@ class type mount_operation_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a mount operation asks the user for a password.
+
+      If the message contains a line break, the first line should be presented
+      as a heading. For example, it may be used as the primary text in a
+      [GtkMessageDialog]. *)
 
   method on_reply :
     ?after:bool ->
     callback:(result:Enums.mountoperationresult -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user has replied to the mount operation. *)
 
   method on_show_unmount_progress :
     ?after:bool ->
     callback:(message:string -> time_left:Int64.t -> bytes_left:Int64.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an unmount operation has been busy for more than some time
+      (typically 1.5 seconds).
+
+      When unmounting or ejecting a volume, the kernel might need to flush
+      pending data in its buffers to the volume stable storage, and this
+      operation can take a considerable amount of time. This signal may be
+      emitted several times as long as the unmount operation is outstanding, and
+      then one last time when the operation is completed, with [bytes_left] set
+      to zero.
+
+      Implementations of GMountOperation should handle this signal by showing an
+      UI notification, and then dismiss it, or show another notification of
+      completion, when [bytes_left] reaches zero.
+
+      If the message contains a line break, the first line should be presented
+      as a heading. For example, it may be used as the primary text in a
+      [GtkMessageDialog]. *)
 
   method get_anonymous : unit -> bool
   (** Check to see whether the mount operation is being used for an anonymous

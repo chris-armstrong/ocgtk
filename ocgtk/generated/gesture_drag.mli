@@ -19,18 +19,21 @@ class type gesture_drag_t = object
     callback:(start_x:float -> start_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever dragging starts. *)
 
   method on_drag_end :
     ?after:bool ->
     callback:(offset_x:float -> offset_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever the dragging is finished. *)
 
   method on_drag_update :
     ?after:bool ->
     callback:(offset_x:float -> offset_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever the dragging point moves. *)
 
   method as_gesture_drag : Raw.Gesture_drag.t
 end

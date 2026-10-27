@@ -3,12 +3,23 @@ class type dialog_t = object
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user uses a keybinding to close the dialog.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is the Escape key. *)
 
   method on_response :
     ?after:bool ->
     callback:(response_id:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an action widget is clicked.
+
+      The signal is also emitted when the dialog receives a delete event, and
+      when [Gtk.Dialog.response] is called. On a delete event, the response ID
+      is [GTK_RESPONSE_DELETE_EVENT]. Otherwise, it depends on which action
+      widget was clicked. *)
 
   method add_action_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

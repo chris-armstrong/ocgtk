@@ -138,15 +138,20 @@ external clear_marks : t -> unit = "ml_gtk_calendar_clear_marks"
 
 val on_day_selected :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user selects a day. *)
 
 val on_next_month :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user switches to the next month. *)
 
 val on_next_year :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when user switches to the next year. *)
 
 val on_prev_month :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user switches to the previous month. *)
 
 val on_prev_year :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when user switches to the previous year. *)

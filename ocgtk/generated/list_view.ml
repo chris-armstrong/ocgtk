@@ -6,6 +6,13 @@ class type list_view_t = object
     callback:(position:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a row has been activated by the user.
+
+      Activation usually happens via the list.activate-item action of the
+      [GtkListView].
+
+      This allows for a convenient way to handle activation in a listview. See
+      [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)

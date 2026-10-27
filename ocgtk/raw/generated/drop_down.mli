@@ -153,3 +153,7 @@ external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the drop down is activated.
+
+    The [::activate] signal on [GtkDropDown] is an action signal and emitting it
+    causes the drop down to pop up its dropdown. *)

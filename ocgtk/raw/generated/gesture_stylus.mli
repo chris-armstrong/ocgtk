@@ -70,21 +70,25 @@ val on_down :
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the stylus touches the device. *)
 
 val on_motion :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the stylus moves while touching the device. *)
 
 val on_proximity :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the stylus is in proximity of the device. *)
 
 val on_up :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the stylus no longer touches the device. *)

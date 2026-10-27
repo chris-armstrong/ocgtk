@@ -68,3 +68,11 @@ external changed : t -> unit = "ml_gtk_flow_box_child_changed"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user activates a child widget in a [GtkFlowBox].
+
+    This can happen either by clicking or double-clicking, or via a keybinding.
+
+    This is a keybinding signal, but it can be used by applications for their
+    own purposes.
+
+    The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>. *)

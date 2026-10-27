@@ -17,12 +17,17 @@ class type drag_t = object
     callback:(reason:Enums.dragcancelreason -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the drag operation is cancelled. *)
 
   method on_dnd_finished :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the destination side has finished reading all data.
+
+      The drag object can now free all miscellaneous data. *)
 
   method on_drop_performed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the drop operation is performed on an accepting client. *)
 
   method drop_done : bool -> unit
   (** Informs GDK that the drop ended.

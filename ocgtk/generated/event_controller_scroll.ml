@@ -8,18 +8,34 @@ class type event_controller_scroll_t = object
     callback:(vel_x:float -> vel_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted after scroll is finished if the
+      [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag is set.
+
+      [vel_x] and [vel_y] express the initial velocity that was imprinted by the
+      scroll events. [vel_x] and [vel_y] are expressed in pixels/ms. *)
 
   method on_scroll :
     ?after:bool ->
     callback:(dx:float -> dy:float -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that the widget should scroll by the amount specified by [dx] and
+      [dy].
+
+      For the representation unit of the deltas, see
+      [Gtk.EventControllerScroll.get_unit]. *)
 
   method on_scroll_begin :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Signals that a new scrolling operation has begun.
+
+      It will only be emitted on devices capable of it. *)
 
   method on_scroll_end :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Signals that a scrolling operation has finished.
+
+      It will only be emitted on devices capable of it. *)
 
   method get_flags : unit -> Enums.eventcontrollerscrollflags
   (** Gets the flags conditioning the scroll controller behavior. *)

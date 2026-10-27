@@ -230,3 +230,7 @@ external get_active : t -> bool = "ml_gtk_menu_button_get_active"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the menu button is activated.
+
+    The [::activate] signal on [GtkMenuButton] is an action signal and emitting
+    it causes the button to pop up its menu. *)

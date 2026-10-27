@@ -50,12 +50,14 @@ class type statusbar_t = object
     callback:(context_id:int -> text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new message is popped off a statusbar's stack. *)
 
   method on_text_pushed :
     ?after:bool ->
     callback:(context_id:int -> text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new message gets pushed onto a statusbar's stack. *)
 
   method get_context_id : string -> int
   (** Returns a new context identifier, given a description of the actual

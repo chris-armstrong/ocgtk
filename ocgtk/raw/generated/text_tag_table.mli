@@ -59,15 +59,21 @@ val on_tag_added :
   t ->
   callback:(tag:Text_tag.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted every time a new tag is added in the [GtkTextTagTable]. *)
 
 val on_tag_changed :
   ?after:bool ->
   t ->
   callback:(tag:Text_tag.t -> size_changed:bool -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted every time a tag in the [GtkTextTagTable] changes. *)
 
 val on_tag_removed :
   ?after:bool ->
   t ->
   callback:(tag:Text_tag.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted every time a tag is removed from the [GtkTextTagTable].
+
+    The [tag] is still valid by the time the signal is emitted, but it is not
+    associated with a tag table any more. *)

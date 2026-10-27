@@ -135,3 +135,8 @@ external get_size : t -> int = "ml_gtk_recent_manager_get_size"
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the current recently used resources manager changes its
+    contents.
+
+    This can happen either by calling [Gtk.RecentManager.add_item] or by another
+    application. *)

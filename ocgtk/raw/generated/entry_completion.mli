@@ -190,6 +190,18 @@ val on_insert_prefix :
   t ->
   callback:(prefix:string -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when the inline autocompletion is triggered.
+
+    The default behaviour is to make the entry display the whole prefix and
+    select the newly inserted part.
+
+    Applications may connect to this signal in order to insert only a smaller
+    part of the [prefix] into the entry - e.g. the entry used in the
+    [GtkFileChooser] inserts only the part of the prefix up to the next '/'. *)
 
 val on_no_matches :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the filter model has zero number of rows in completion_complete
+    method.
+
+    In other words when [GtkEntryCompletion] is out of suggestions. *)

@@ -520,6 +520,12 @@ external set_enable_popup : t -> bool -> unit
 
 val on_change_current_page :
   ?after:bool -> t -> callback:(page:int -> bool) -> Gobject.Signal.handler_id
+(** Emitted when the current page should be changed.
+
+    The default bindings for this signal are
+    <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+    <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgDn</kbd>,
+    <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> and <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>. *)
 
 val on_create_window :
   ?after:bool ->
@@ -531,18 +537,32 @@ val on_create_window :
        .t ->
     t option) ->
   Gobject.Signal.handler_id
+(** The ::create-window signal is emitted when a detachable tab is dropped on
+    the root window.
+
+    A handler for this signal can create a window containing a notebook where
+    the tab will be attached. It is also responsible for moving/resizing the
+    window and adding the necessary properties to the notebook (e.g. the
+    [GtkNotebook]:group-name ). *)
 
 val on_focus_tab :
   ?after:bool ->
   t ->
   callback:(tab:Ocgtk_enums.notebooktab -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a tab should be focused. *)
 
 val on_move_focus_out :
   ?after:bool ->
   t ->
   callback:(direction:Ocgtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when focus was moved out.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd>,
+    <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>,
+    <kbd>Ctrl</kbd>+<kbd>←</kbd>, <kbd>Ctrl</kbd>+<kbd>→</kbd>,
+    <kbd>Ctrl</kbd>+<kbd>↑</kbd> and <kbd>Ctrl</kbd>+<kbd>↓</kbd>. *)
 
 val on_page_added :
   ?after:bool ->
@@ -555,6 +575,8 @@ val on_page_added :
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
+(** the ::page-added signal is emitted in the notebook right after a page is
+    added to the notebook. *)
 
 val on_page_removed :
   ?after:bool ->
@@ -567,6 +589,8 @@ val on_page_removed :
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
+(** the ::page-removed signal is emitted in the notebook right after a page is
+    removed from the notebook. *)
 
 val on_page_reordered :
   ?after:bool ->
@@ -579,18 +603,30 @@ val on_page_reordered :
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
+(** the ::page-reordered signal is emitted in the notebook right after a page
+    has been reordered. *)
 
 val on_reorder_tab :
   ?after:bool ->
   t ->
   callback:(direction:Ocgtk_enums.directiontype -> move_to_last:bool -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when the tab should be reordered.
+
+    The default bindings for this signal are <kbd>Alt</kbd>+<kbd>Home</kbd>,
+    <kbd>Alt</kbd>+<kbd>End</kbd>, <kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+    <kbd>Alt</kbd>+<kbd>PgDn</kbd>, <kbd>Alt</kbd>+<kbd>←</kbd>,
+    <kbd>Alt</kbd>+<kbd>→</kbd>, <kbd>Alt</kbd>+<kbd>↑</kbd> and
+    <kbd>Alt</kbd>+<kbd>↓</kbd>. *)
 
 val on_select_page :
   ?after:bool ->
   t ->
   callback:(move_focus:bool -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a page should be selected.
+
+    The default binding for this signal is <kbd>␣</kbd>. *)
 
 val on_switch_page :
   ?after:bool ->
@@ -603,3 +639,4 @@ val on_switch_page :
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user or a function changes the current page. *)

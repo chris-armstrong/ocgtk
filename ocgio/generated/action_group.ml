@@ -4,24 +4,34 @@ class type action_group_t = object
     callback:(action_name:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that a new action was just added to the group.
+
+      This signal is emitted after the action has been added and is now visible.
+  *)
 
   method on_action_enabled_changed :
     ?after:bool ->
     callback:(action_name:string -> enabled:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that the enabled status of the named action has changed. *)
 
   method on_action_removed :
     ?after:bool ->
     callback:(action_name:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that an action is just about to be removed from the group.
+
+      This signal is emitted before the action is removed, so the action is
+      still visible and can be queried from the signal handler. *)
 
   method on_action_state_changed :
     ?after:bool ->
     callback:(action_name:string -> value:Gvariant.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that the state of the named action has changed. *)
 
   method action_added : string -> unit
   (** Emits the [Gio.ActionGroup::action-added] signal on [action_group].

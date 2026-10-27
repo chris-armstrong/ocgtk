@@ -102,3 +102,8 @@ external changed : t -> unit = "ml_gtk_list_box_row_changed"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** This is a keybinding signal, which will cause this row to be activated.
+
+    If you want to be notified when the user activates a row (by key or not),
+    use the [Gtk.ListBox::row-activated] signal on the row’s parent
+    [GtkListBox]. *)

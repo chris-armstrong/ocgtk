@@ -185,6 +185,11 @@ module rec Column_view : sig
     t ->
     callback:(position:int -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when a row has been activated by the user, usually via activating
+      the GtkListBase|list.activate-item action.
+
+      This allows for a convenient way to handle activation in a columnview. See
+      [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
 end = struct
   type t =
     [ `column_view | `widget | `initially_unowned | `object_ ] Gobject.obj

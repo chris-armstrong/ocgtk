@@ -17,6 +17,7 @@ class type gesture_zoom_t = object
     callback:(scale:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever the distance between both tracked sequences changes. *)
 
   method get_scale_delta : unit -> float
   (** Gets the scale delta.

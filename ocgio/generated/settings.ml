@@ -4,18 +4,55 @@ class type settings_t = object
     callback:(key:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a key has potentially changed.
+
+      You should call one of the [Gio.Settings.get] calls to check the new
+      value.
+
+      This signal supports detailed connections. You can connect to the detailed
+      signal [changed::x] in order to only receive callbacks when key [x]
+      changes.
+
+      Note that [settings] only emits this signal if you have read [key] at
+      least once while a signal handler was already connected for [key]. *)
 
   method on_writable_change_event :
     ?after:bool ->
     callback:(key:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted once per writability change event that affects this settings
+      object.
+
+      You should connect to this signal if you are interested in viewing groups
+      of changes before they are split out into multiple emissions of the
+      [Gio.Settings::writable-changed] signal. For most use cases it is more
+      appropriate to use the [Gio.Settings::writable-changed] signal.
+
+      In the event that the writability change applies only to a single key,
+      [key] will be set to the [GLib.Quark] for that key. In the event that the
+      writability change affects the entire settings object, [key] will be [0].
+
+      The default handler for this signal invokes the
+      [Gio.Settings::writable-changed] and [Gio.Settings::changed] signals for
+      each affected key. This is done because changes in writability might also
+      imply changes in value (if for example, a new mandatory setting is
+      introduced). If any other connected handler returns true then this default
+      functionality will be suppressed. *)
 
   method on_writable_changed :
     ?after:bool ->
     callback:(key:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the writability of a key has potentially changed.
+
+      You should call [Gio.Settings.is_writable] in order to determine the new
+      status.
+
+      This signal supports detailed connections. You can connect to the detailed
+      signal [writable-changed::x] in order to only receive callbacks when the
+      writability of [x] changes. *)
 
   method apply : unit -> unit
   (** Applies any changes that have been made to the settings.

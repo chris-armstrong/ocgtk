@@ -31,6 +31,26 @@ class type d_bus_server_t = object
     callback:(connection:D_bus_connection.d_bus_connection_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a new authenticated connection has been made. Use
+      g_dbus_connection_get_peer_credentials() to figure out what identity (if
+      any), was authenticated.
+
+      If you want to accept the connection, take a reference to the [connection]
+      object and return [TRUE]. When you are done with the connection call
+      g_dbus_connection_close() and give up your reference. Note that the other
+      peer may disconnect at any time - a typical thing to do when accepting a
+      connection is to listen to the [GDBusConnection::closed] signal.
+
+      If [GDBusServer:flags] contains [G_DBUS_SERVER_FLAGS_RUN_IN_THREAD] then
+      the signal is emitted in a new thread dedicated to the connection.
+      Otherwise the signal is emitted in the thread-default main context (see
+      [GLib.MainContext.push_thread_default]) of the thread that [server] was
+      constructed in.
+
+      You are guaranteed that signal handlers for this signal runs before
+      incoming messages on [connection] are processed. This means that it's
+      suitable to call g_dbus_connection_register_object() or similar from the
+      signal handler. *)
 
   method get_client_address : unit -> string
   (** Gets a

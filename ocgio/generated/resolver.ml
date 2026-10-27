@@ -1,6 +1,8 @@
 class type resolver_t = object
   method on_reload :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the resolver notices that the system resolver configuration
+      has changed. *)
 
   method get_timeout : unit -> int
   (** Get the timeout applied to all resolver lookups. See [GResolver:timeout].

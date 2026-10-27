@@ -53,6 +53,11 @@ class type grid_view_t = object
     callback:(position:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a cell has been activated by the user, usually via activating
+      the GtkGridView|list.activate-item action.
+
+      This allows for a convenient way to handle activation in a gridview. See
+      [Gtk.ListItem:activatable] for details on how to use this signal. *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)

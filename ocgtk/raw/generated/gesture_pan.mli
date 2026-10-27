@@ -48,3 +48,4 @@ val on_pan :
   t ->
   callback:(direction:Ocgtk_enums.pandirection -> offset:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted once a panning gesture along the expected axis is detected. *)

@@ -349,45 +349,123 @@ external get_scroll_offset : t -> int = "ml_gtk_text_get_scroll_offset"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user hits the <kbd>Enter</kbd> key.
+
+    The default bindings for this signal are all forms of the <kbd>Enter</kbd>
+    key. *)
 
 val on_backspace :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user asks for it.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Backspace</kbd> and
+    <kbd>Shift</kbd>+<kbd>Backspace</kbd>. *)
 
 val on_copy_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to copy the selection to the clipboard.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>c</kbd> and
+    <kbd>Ctrl</kbd>+<kbd>Insert</kbd>. *)
 
 val on_cut_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to cut the selection to the clipboard.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>x</kbd> and
+    <kbd>Shift</kbd>+<kbd>Delete</kbd>. *)
 
 val on_delete_from_cursor :
   ?after:bool ->
   t ->
   callback:(type_:Ocgtk_enums.deletetype -> count:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user initiates a text deletion.
+
+    This is a keybinding signal.
+
+    If the [type] is [Gtk.DeleteType.chars], GTK deletes the selection if there
+    is one, otherwise it deletes the requested number of characters.
+
+    The default bindings for this signal are <kbd>Delete</kbd> for deleting a
+    character and <kbd>Ctrl</kbd>+<kbd>Delete</kbd> for deleting a word. *)
 
 val on_insert_at_cursor :
   ?after:bool ->
   t ->
   callback:(string:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user initiates the insertion of a fixed string at the
+    cursor.
+
+    This is a keybinding signal.
+
+    This signal has no default bindings. *)
 
 val on_insert_emoji :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to present the Emoji chooser.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>.</kbd> and
+    <kbd>Ctrl</kbd>+<kbd>;</kbd> *)
 
 val on_move_cursor :
   ?after:bool ->
   t ->
   callback:(step:Ocgtk_enums.movementstep -> count:int -> extend:bool -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user initiates a cursor movement.
+
+    If the cursor is not visible in [self], this signal causes the viewport to
+    be moved instead.
+
+    This is a keybinding signal.
+
+    Applications should not connect to it, but may emit it with
+    [GObject.signal_emit_by_name] if they need to control the cursor
+    programmatically.
+
+    The default bindings for this signal come in two variants, the variant with
+    the <kbd>Shift</kbd> modifier extends the selection, the variant without it
+    does not. There are too many key combinations to list them all here.
+
+    - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+      characters/lines
+    - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
+    - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer *)
 
 val on_paste_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to paste the contents of the clipboard.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>v</kbd> and
+    <kbd>Shift</kbd>+<kbd>Insert</kbd>. *)
 
 val on_preedit_changed :
   ?after:bool ->
   t ->
   callback:(preedit:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the preedit text changes.
+
+    If an input method is used, the typed text will not immediately be committed
+    to the buffer. So if you are interested in the text, connect to this signal.
+*)
 
 val on_toggle_overwrite :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to toggle the overwrite mode.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal is <kbd>Insert</kbd>. *)

@@ -5,18 +5,23 @@ class type calendar_t = object
 
   method on_day_selected :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user selects a day. *)
 
   method on_next_month :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user switches to the next month. *)
 
   method on_next_year :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when user switches to the next year. *)
 
   method on_prev_month :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user switches to the previous month. *)
 
   method on_prev_year :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when user switches to the previous year. *)
 
   method clear_marks : unit -> unit
   (** Remove all visual markers. *)

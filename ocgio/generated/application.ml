@@ -4,6 +4,8 @@ class type application_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::activate signal is emitted on the primary instance when an
+      activation occurs. See g_application_activate(). *)
 
   method on_command_line :
     ?after:bool ->
@@ -11,15 +13,27 @@ class type application_t = object
       (command_line:Application_command_line.application_command_line_t -> int) ->
     unit ->
     Gobject.Signal.handler_id
+  (** The ::command-line signal is emitted on the primary instance when a
+      commandline is not handled locally. See g_application_run() and the
+      [GApplicationCommandLine] documentation for more information. *)
 
   method on_name_lost :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** The ::name-lost signal is emitted only on the registered primary instance
+      when a new instance has taken over. This can only happen if the
+      application is using the [G_APPLICATION_ALLOW_REPLACEMENT] flag.
+
+      The default handler for this signal calls g_application_quit(). *)
 
   method on_shutdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::shutdown signal is emitted only on the registered primary instance
+      immediately after the main loop terminates. *)
 
   method on_startup :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** The ::startup signal is emitted on the primary instance immediately after
+      registration. See g_application_register(). *)
 
   method activate : unit -> unit
   (** Activates the application.

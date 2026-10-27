@@ -22,6 +22,10 @@ class type cell_renderer_text_t = object
     callback:(path:string -> new_text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** This signal is emitted after [renderer] has been edited.
+
+      It is the responsibility of the application to update the model and store
+      [new_text] at the position indicated by [path]. *)
 
   method set_fixed_height_from_font : int -> unit
   (** Sets the height of a renderer to explicitly be determined by the “font”

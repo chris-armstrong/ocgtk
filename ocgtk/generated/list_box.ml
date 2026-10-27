@@ -5,6 +5,7 @@ class type list_box_t = object
 
   method on_activate_cursor_row :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the cursor row is activated. *)
 
   method on_move_cursor :
     ?after:bool ->
@@ -16,30 +17,65 @@ class type list_box_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user initiates a cursor movement.
+
+      The default bindings for this signal come in two variants, the variant
+      with the Shift modifier extends the selection, the variant without the
+      Shift modifier does not. There are too many key combinations to list them
+      all here.
+
+      - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by
+        individual children
+      - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+      - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages *)
 
   method on_row_activated :
     ?after:bool ->
     callback:(row:List_box_row.list_box_row_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a row has been activated by the user. *)
 
   method on_row_selected :
     ?after:bool ->
     callback:(row:List_box_row.list_box_row_t option -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a new row is selected, or (with a [NULL] [row]) when the
+      selection is cleared.
+
+      When the [box] is using [GTK_SELECTION_MULTIPLE], this signal will not
+      give you the full picture of selection changes, and you should use the
+      [Gtk.ListBox::selected-rows-changed] signal instead. *)
 
   method on_select_all :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to select all children of the box, if the selection mode permits
+      it.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>. *)
 
   method on_selected_rows_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the set of selected rows changes. *)
 
   method on_toggle_cursor_row :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the cursor row is toggled.
+
+      The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>␣</kbd>. *)
 
   method on_unselect_all :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to unselect all children of the box, if the selection mode permits
+      it.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is
+      <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)
 
   method append :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

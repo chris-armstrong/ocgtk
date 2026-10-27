@@ -305,3 +305,4 @@ external get_cell_area :
 
 val on_clicked :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the column's header has been clicked. *)

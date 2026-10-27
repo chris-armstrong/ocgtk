@@ -235,15 +235,39 @@ val on_create_context :
   t ->
   callback:(unit -> Ocgdk_raw.Gl_context.t) ->
   Gobject.Signal.handler_id
+(** Emitted when the widget is being realized.
+
+    This allows you to override how the GL context is created. This is useful
+    when you want to reuse an existing GL context, or if you want to try
+    creating different kinds of GL options.
+
+    If context creation fails then the signal handler can use
+    [Gtk.GLArea.set_error] to register a more detailed error of how the
+    construction failed. *)
 
 val on_render :
   ?after:bool ->
   t ->
   callback:(context:Ocgdk_raw.Gl_context.t -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted every time the contents of the [GtkGLArea] should be redrawn.
+
+    The [context] is bound to the [area] prior to emitting this function, and
+    the buffers are painted to the window once the emission terminates. *)
 
 val on_resize :
   ?after:bool ->
   t ->
   callback:(width:int -> height:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted once when the widget is realized, and then each time the widget is
+    changed while realized.
+
+    This is useful in order to keep GL state up to date with the widget size,
+    like for instance camera properties which may depend on the width/height
+    ratio.
+
+    The GL context for the area is guaranteed to be current when this signal is
+    emitted.
+
+    The default handler sets up the GL viewport. *)

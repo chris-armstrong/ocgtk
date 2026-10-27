@@ -125,3 +125,9 @@ val on_items_changed :
   t ->
   callback:(position:int -> removed:int -> added:int -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted whenever items were added to or removed from [list].
+    At [position], [removed] items were removed and [added] items were added in
+    their place.
+
+    Note: If [removed != added], the positions of all later items in the model
+    change. *)

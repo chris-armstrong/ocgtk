@@ -51,6 +51,11 @@
 class type recent_manager_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the current recently used resources manager changes its
+      contents.
+
+      This can happen either by calling [Gtk.RecentManager.add_item] or by
+      another application. *)
 
   method add_full : string -> Raw.Recent_data.t -> bool
   (** Adds a new resource, pointed by [uri], into the recently used resources

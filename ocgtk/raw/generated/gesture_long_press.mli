@@ -48,9 +48,13 @@ external get_delay_factor : t -> float
 
 val on_cancelled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever a press moved too far, or was released before
+    [Gtk.GestureLongPress::pressed] happened. *)
 
 val on_pressed :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a press goes unmoved/unreleased longer than what the GTK
+    defaults tell. *)

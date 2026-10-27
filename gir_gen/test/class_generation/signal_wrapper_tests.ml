@@ -103,6 +103,50 @@ let test_void_zero_param_emits_val_in_l1_val () =
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
 
 (* ========================================================================= *)
+(* Signal docs on the L1 val and the L2 method                               *)
+(* ========================================================================= *)
+
+let documented_clicked_emission () =
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"clicked"
+      ~return_type:Type_factory.void_type ~doc:"Emitted when clicked." ()
+  in
+  expect_ok "clicked classify"
+    (Signal_gen.classify ~ctx:shared_ctx signal)
+    Fun.id
+
+let test_signal_doc_on_l1_val () =
+  let ast =
+    Ml_ast_helpers.parse_interface
+      (Signal_gen.emit_l1_val ~current_class:"Button"
+         (documented_clicked_emission ()))
+  in
+  Helpers.expect_some "val on_clicked"
+    (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
+  @@ fun vd ->
+  Alcotest.(check (option string))
+    "translated signal doc" (Some " Emitted when clicked. ")
+    (Ml_ast_helpers.doc_of_attributes vd.pval_attributes)
+
+let test_signal_doc_on_l2_method () =
+  let class_type =
+    "class type button_t = object\n"
+    ^ Signal_gen.emit_l2_method_sig ~current_layer2_module:"Button"
+        (documented_clicked_emission ())
+    ^ "end\n"
+  in
+  let ast = Ml_ast_helpers.parse_interface class_type in
+  Helpers.expect_some "class type button_t"
+    (Ml_ast_helpers.find_class_type_declaration ast "button_t")
+  @@ fun ct ->
+  Helpers.expect_some "method on_clicked"
+    (Ml_ast_helpers.find_method_in_class_type ct.pci_expr "on_clicked")
+  @@ fun field ->
+  Alcotest.(check (option string))
+    "translated signal doc" (Some " Emitted when clicked. ")
+    (Ml_ast_helpers.doc_of_attributes field.pctf_attributes)
+
+(* ========================================================================= *)
 (* Case 2: void signal with primitive params uses Closure.create             *)
 (* ========================================================================= *)
 
@@ -906,6 +950,10 @@ let test_e2e_cross_ns_class_param_l1_interface () =
 
 let tests =
   [
+    Alcotest.test_case "signal doc on the L1 val" `Quick
+      test_signal_doc_on_l1_val;
+    Alcotest.test_case "signal doc on the L2 method" `Quick
+      test_signal_doc_on_l2_method;
     Alcotest.test_case "void zero-param: connect_simple in L1 let" `Quick
       test_void_zero_param_emits_connect_simple_in_l1_let;
     Alcotest.test_case "void zero-param: val on_clicked in L1 val" `Quick

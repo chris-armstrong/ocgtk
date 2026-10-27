@@ -89,9 +89,15 @@ class type popover_t = object
 
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whend the user activates the default widget.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Enter</kbd>. *)
 
   method on_closed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the popover is closed. *)
 
   method get_autohide : unit -> bool
   (** Returns whether the popover is modal.

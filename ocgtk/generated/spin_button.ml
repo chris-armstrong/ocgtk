@@ -10,21 +10,59 @@ class type spin_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the spin button is activated.
+
+      The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+
+      If the <kbd>Enter</kbd> key results in the value being committed to the
+      spin button, then activation does not occur until <kbd>Enter</kbd> is
+      pressed again. *)
 
   method on_change_value :
     ?after:bool ->
     callback:(scroll:Enums.scrolltype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user initiates a value change.
+
+      This is a keybinding signal.
+
+      Applications should not connect to it, but may emit it with
+      g_signal_emit_by_name() if they need to control the cursor
+      programmatically.
+
+      The default bindings for this signal are Up/Down and PageUp/PageDown. *)
 
   method on_output :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted to tweak the formatting of the value for display.\n\n\
+     {[\n\
+     // show leading zeros\n\
+     static gboolean\n\
+     on_output (GtkSpinButton *spin,\n\
+    \           gpointer       data)\n\
+     {\n\
+    \   char *text;\n\
+    \   int value;\n\n\
+    \   value = gtk_spin_button_get_value_as_int (spin);\n\
+    \   text = g_strdup_printf (\"%02d\", value);\n\
+    \   gtk_editable_set_text (GTK_EDITABLE (spin), text):\n\
+    \   g_free (text);\n\n\
+    \   return TRUE;\n\
+     }\n\
+     ]}"]
 
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the value is changed.
+
+      Also see the [Gtk.SpinButton::output] signal. *)
 
   method on_wrapped :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted right after the spinbutton wraps from its maximum to its minimum
+      value or vice-versa. *)
 
   method configure : Adjustment.adjustment_t option -> float -> int -> unit
   (** Changes the properties of an existing spin button.

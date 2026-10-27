@@ -59,3 +59,7 @@ external get_dialog : t -> Color_dialog.t option
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the color dialog button is activated.
+
+    The [::activate] signal on [GtkColorDialogButton] is an action signal and
+    emitting it causes the button to pop up its dialog. *)

@@ -1,6 +1,11 @@
 class type icon_theme_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the icon theme changes.
+
+      This can happen because current icon theme is switched or because GTK
+      detects that a change has occurred in the contents of the current icon
+      theme. *)
 
   method add_resource_path : string -> unit
   (** Adds a resource path that will be looked at when looking for icons,

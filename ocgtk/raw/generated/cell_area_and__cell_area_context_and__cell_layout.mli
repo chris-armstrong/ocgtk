@@ -362,12 +362,20 @@ module rec Cell_area : sig
     t ->
     callback:(renderer:Cell_renderer.t -> path:string -> unit) ->
     Gobject.Signal.handler_id
+  (** Indicates that focus changed on this [area]. This signal is emitted either
+      as a result of focus handling or event handling.
+
+      It's possible that the signal is emitted even if the currently focused
+      renderer did not change, this is because focus may change to the same
+      renderer in the same cell area for a different row of data. *)
 
   val on_remove_editable :
     ?after:bool ->
     t ->
     callback:(renderer:Cell_renderer.t -> editable:Cell_editable.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Indicates that editing finished on [renderer] and that [editable] should
+      be removed from the owning cell-layouting widget. *)
 end
 [@@ocaml.doc
   "An abstract class for laying out [GtkCellRenderer]s\n\n\

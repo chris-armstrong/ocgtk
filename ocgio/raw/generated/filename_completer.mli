@@ -38,3 +38,4 @@ external get_completion_suffix : t -> string -> string option
 
 val on_got_completion_data :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the file name completion information comes available. *)

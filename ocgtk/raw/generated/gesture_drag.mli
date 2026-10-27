@@ -42,15 +42,18 @@ val on_drag_begin :
   t ->
   callback:(start_x:float -> start_y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever dragging starts. *)
 
 val on_drag_end :
   ?after:bool ->
   t ->
   callback:(offset_x:float -> offset_y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the dragging is finished. *)
 
 val on_drag_update :
   ?after:bool ->
   t ->
   callback:(offset_x:float -> offset_y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the dragging point moves. *)

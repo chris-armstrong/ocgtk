@@ -26,6 +26,14 @@ class type filter_t = object
     callback:(change:Enums.filterchange -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted whenever the filter changed.
+
+      Users of the filter should then check items again via [Gtk.Filter.match].
+
+      [GtkFilterListModel] handles this signal automatically.
+
+      Depending on the [change] parameter, not all items need to be checked, but
+      only some. Refer to the [Gtk.FilterChange] documentation for details. *)
 
   method changed : Enums.filterchange -> unit
   (** Notifies all users of the filter that it has changed.

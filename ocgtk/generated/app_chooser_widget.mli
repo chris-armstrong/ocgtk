@@ -37,12 +37,18 @@ class type app_chooser_widget_t = object
     callback:(application:Ocgio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an application item is activated from the widget's list.
+
+      This usually happens when the user double clicks an item, or an item is
+      selected and the user presses one of the keys Space, Shift+Space, Return
+      or Enter. *)
 
   method on_application_selected :
     ?after:bool ->
     callback:(application:Ocgio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an application item is selected from the widget's list. *)
 
   method get_default_text : unit -> string option
   (** Returns the text that is shown if there are not applications that can

@@ -31,3 +31,4 @@ val on_angle_changed :
   t ->
   callback:(angle:float -> angle_delta:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the angle between both tracked points changes. *)

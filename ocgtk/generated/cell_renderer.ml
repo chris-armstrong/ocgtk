@@ -1,12 +1,47 @@
 class type cell_renderer_t = object
   method on_editing_canceled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** This signal gets emitted when the user cancels the process of editing a
+      cell. For example, an editable cell renderer could be written to cancel
+      editing when the user presses Escape.
+
+      See also: gtk_cell_renderer_stop_editing(). *)
 
   method on_editing_started :
     ?after:bool ->
     callback:(editable:Cell_editable.cell_editable_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** This signal gets emitted when a cell starts to be edited. The intended use
+      of this signal is to do special setup on [editable], e.g. adding a
+      [GtkEntryCompletion] or setting up additional columns in a [GtkComboBox].
+
+      See gtk_cell_editable_start_editing() for information on the lifecycle of
+      the [editable] and a way to do setup that doesn’t depend on the
+      [renderer].
+
+      Note that GTK doesn't guarantee that cell renderers will continue to use
+      the same kind of widget for editing in future releases, therefore you
+      should check the type of [editable] before doing any specific setup, as in
+      the following example:
+
+      {[
+      static void
+      text_editing_started (GtkCellRenderer *cell,
+                            GtkCellEditable *editable,
+                            const char      *path,
+                            gpointer         data)
+      {
+        if (GTK_IS_ENTRY (editable))
+          {
+            GtkEntry *entry = GTK_ENTRY (editable);
+
+            // ... create a GtkEntryCompletion
+
+            gtk_entry_set_completion (entry, completion);
+          }
+      }
+      ]} *)
 
   method activate :
     Ocgdk.Event.event_t ->

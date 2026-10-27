@@ -14,6 +14,7 @@ class type network_monitor_t = object
     callback:(network_available:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the network configuration changes. *)
 
   method can_reach :
     Socket_address_and__socket_address_enumerator_and__socket_connectable

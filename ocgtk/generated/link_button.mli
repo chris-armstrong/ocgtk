@@ -48,6 +48,14 @@ class type link_button_t = object
 
   method on_activate_link :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+  (** Emitted each time the [GtkLinkButton] is clicked.
+
+      The default handler will call [Gtk.FileLauncher.launch] with the URI
+      stored inside the [Gtk.LinkButton:uri] property.
+
+      To override the default behavior, you can connect to the ::activate-link
+      signal and stop the propagation of the signal by returning [TRUE] from
+      your handler. *)
 
   method get_uri : unit -> string
   (** Retrieves the URI of the [GtkLinkButton]. *)

@@ -84,3 +84,6 @@ external set_placeholder_text : t -> string -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the entry is activated.
+
+    The keybindings for this signal are all forms of the Enter key. *)

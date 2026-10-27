@@ -407,18 +407,65 @@ and App_launch_context : sig
     t ->
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launch-failed] signal is emitted when a
+      [Gio.AppInfo] launch fails. The startup notification id is provided, so
+      that the launcher can cancel the startup notification.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one for each spawned instance. *)
 
   val on_launch_started :
     ?after:bool ->
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launch-started] signal is emitted when a
+      [Gio.AppInfo] is about to be launched. If non-null the [platform_data] is
+      an GVariant dictionary mapping strings to variants (ie [a{sv}]), which
+      contains additional, platform-specific data about this launch. On UNIX, at
+      least the [startup-notification-id] keys will be present.
+
+      The value of the [startup-notification-id] key (type [s]) is a startup
+      notification ID corresponding to the format from the
+      \[startup-notification
+      specification\](https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt).
+      It allows tracking the progress of the launchee through startup.
+
+      It is guaranteed that this signal is followed by either a
+      [Gio.AppLaunchContext::launched] or [Gio.AppLaunchContext::launch-failed]
+      signal.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one for each spawned instance. *)
 
   val on_launched :
     ?after:bool ->
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launched] signal is emitted when a
+      [Gio.AppInfo] is successfully launched.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one time for each spawned instance.
+
+      The [platform_data] is an GVariant dictionary mapping strings to variants
+      (ie [a{sv}]), which contains additional, platform-specific data about this
+      launch. On UNIX, at least the [pid] and [startup-notification-id] keys
+      will be present.
+
+      Since 2.72 the [pid] may be 0 if the process id wasn’t known (for example
+      if the process was launched via D-Bus). The [pid] may not be set at all in
+      subsequent releases.
+
+      On Windows, [pid] is guaranteed to be valid only for the duration of the
+      [Gio.AppLaunchContext::launched] signal emission; after the signal is
+      emitted, GLib will call [GLib.spawn_close_pid]. If you need to keep the
+      [GLib.Pid] after the signal has been emitted, then you can duplicate [pid]
+      using [DuplicateHandle()]. *)
 end = struct
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
@@ -626,15 +673,23 @@ and Drive : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the drive's state has changed. *)
 
   val on_disconnected :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GDrive] have been disconnected. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 
   val on_eject_button :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the physical eject button (if any) of a drive has been
+      pressed. *)
 
   val on_stop_button :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the physical stop button (if any) of a drive has been
+      pressed. *)
 end = struct
   type t = [ `drive ] Gobject.obj
 
@@ -2984,6 +3039,33 @@ and File_monitor : sig
       event_type:Ocgio_enums.filemonitorevent ->
       unit) ->
     Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted when [file] has been changed.\n\n\
+    \  If using [G_FILE_MONITOR_WATCH_MOVES] on a directory monitor, and\n\
+    \  the information is available (and if supported by the backend),\n\
+    \  [event_type] may be [G_FILE_MONITOR_EVENT_RENAMED],\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED_IN] or [G_FILE_MONITOR_EVENT_MOVED_OUT].\n\n\
+    \  In all cases [file] will be a child of the monitored directory.  For\n\
+    \  renames, [file] will be the old name and [other_file] is the new\n\
+    \  name.  For \"moved in\" events, [file] is the name of the file that\n\
+    \  appeared and [other_file] is the old name that it was moved from (in\n\
+    \  another directory).  For \"moved out\" events, [file] is the name of\n\
+    \  the file that used to be in this directory and [other_file] is the\n\
+    \  name of the file at its new location.\n\n\
+    \  It makes sense to treat [G_FILE_MONITOR_EVENT_MOVED_IN] as\n\
+    \  equivalent to [G_FILE_MONITOR_EVENT_CREATED] and\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED_OUT] as equivalent to\n\
+    \  [G_FILE_MONITOR_EVENT_DELETED], with extra information.\n\
+    \  [G_FILE_MONITOR_EVENT_RENAMED] is equivalent to a delete/create\n\
+    \  pair.  This is exactly how the events will be reported in the case\n\
+    \  that the [G_FILE_MONITOR_WATCH_MOVES] flag is not in use.\n\n\
+    \  If using the deprecated flag [G_FILE_MONITOR_SEND_MOVED] flag and \
+     [event_type] is\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED], [file] will be set to a [GFile] \
+     containing the\n\
+    \  old path, and [other_file] will be set to a [GFile] containing the new \
+     path.\n\n\
+    \  In all the other cases, [other_file] will be set to [NULL]."]
 end = struct
   type t = [ `file_monitor | `object_ ] Gobject.obj
 
@@ -3169,12 +3251,20 @@ and Mount : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the mount has been changed. *)
 
   val on_pre_unmount :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal may be emitted when the [GMount] is about to be unmounted.
+
+      This signal depends on the backend and is only emitted if GIO was used to
+      unmount. *)
 
   val on_unmounted :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GMount] have been unmounted. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 end = struct
   type t = [ `mount ] Gobject.obj
 
@@ -3423,9 +3513,13 @@ and Volume : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the volume has been changed. *)
 
   val on_removed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GVolume] have been removed. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 end = struct
   type t = [ `volume ] Gobject.obj
 

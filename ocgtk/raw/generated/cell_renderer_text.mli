@@ -379,3 +379,7 @@ val on_edited :
   t ->
   callback:(path:string -> new_text:string -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted after [renderer] has been edited.
+
+    It is the responsibility of the application to update the model and store
+    [new_text] at the position indicated by [path]. *)

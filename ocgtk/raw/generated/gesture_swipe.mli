@@ -39,3 +39,6 @@ val on_swipe :
   t ->
   callback:(velocity_x:float -> velocity_y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the recognized gesture is finished.
+
+    Velocity and direction are a product of previously recorded events. *)

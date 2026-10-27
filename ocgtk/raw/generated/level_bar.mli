@@ -160,3 +160,10 @@ val on_offset_changed :
   t ->
   callback:(name:string -> unit) ->
   Gobject.Signal.handler_id
+[@@ocaml.doc
+  "Emitted when an offset specified on the bar changes value.\n\n\
+   This typically is the result of a [Gtk.LevelBar.add_offset_value]\n\
+   call.\n\n\
+   The signal supports detailed connections; you can connect to the\n\
+   detailed signal \"changed::x\" in order to only receive callbacks when\n\
+   the value of offset \"x\" changes."]

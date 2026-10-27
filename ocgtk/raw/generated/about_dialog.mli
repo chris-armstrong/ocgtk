@@ -212,3 +212,7 @@ external add_credit_section : t -> string -> string array -> unit
 
 val on_activate_link :
   ?after:bool -> t -> callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+(** Emitted every time a URL is activated.
+
+    Applications may connect to it to override the default behaviour, which is
+    to call [Gtk.FileLauncher.launch]. *)

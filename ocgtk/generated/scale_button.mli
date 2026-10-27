@@ -36,15 +36,27 @@ class type scale_button_t = object
 
   method on_popdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to dismiss the popup.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Escape</kbd>. *)
 
   method on_popup :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to popup the scale widget.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Space</kbd>,
+      <kbd>Enter</kbd> and <kbd>Return</kbd>. *)
 
   method on_value_changed :
     ?after:bool ->
     callback:(value:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the value field has changed. *)
 
   method get_active : unit -> bool
   (** Queries a [GtkScaleButton] and returns its current state.

@@ -30,3 +30,4 @@ val on_scale_changed :
   t ->
   callback:(scale:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the distance between both tracked sequences changes. *)

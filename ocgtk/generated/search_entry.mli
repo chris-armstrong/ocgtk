@@ -63,21 +63,53 @@ class type search_entry_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the entry is activated.
+
+      The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+  *)
 
   method on_next_match :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiates a move to the next match for the current
+      search string.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement moving between matches.
+
+      The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>g</kbd>. *)
 
   method on_previous_match :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiates a move to the previous match for the
+      current search string.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement moving between matches.
+
+      The default bindings for this signal is
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd>. *)
 
   method on_search_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted with a delay. The length of the delay can be changed with the
+      [Gtk.SearchEntry:search-delay] property. *)
 
   method on_search_started :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiated a search on the entry. *)
 
   method on_stop_search :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user stops a search via keyboard input.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement hiding the search entry in
+      this case.
+
+      The default bindings for this signal is <kbd>Escape</kbd>. *)
 
   method get_input_hints : unit -> Enums.inputhints
   (** Gets the input purpose for [entry]. *)
