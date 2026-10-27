@@ -1,0 +1,12 @@
+; Local cache of rendered odoc HTML, one artifact per commit. See
+; scripts/README.md.
+
+(library
+ (name doc_artifacts_lib)
+ (modules artifact_key manifest odoc_warnings cache_layout)
+ (libraries yojson))
+
+(executable
+ (name doc_artifacts)
+ (modules doc_artifacts host)
+ (libraries doc_artifacts_lib unix cmdliner))
