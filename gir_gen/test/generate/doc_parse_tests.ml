@@ -24,6 +24,18 @@ let test_fragment () =
   has "fragment degrades to [endpoint]" out "[Gtk.Widget.show]";
   has_fallback "fragment counted as degraded" `Sym_ref_degraded fbs
 
+(* Upstream typo in Gtk.Entry:secondary-icon-sensitive: the first fragment is
+   closed with [[]. Taking it up to the next [[]] put an unbalanced bracket in
+   a code span, which odoc rejects. *)
+let test_unclosed_fragment_is_literal_text () =
+  let out =
+    translate Member
+      "does not emit the [signal@Gtk.Entry::icon-press[ and \
+       [signal@Gtk.Entry::icon-release] signals"
+  in
+  has "the closed fragment still degrades" out "[Gtk.Entry::icon-release]";
+  lacks "no code span holds the unclosed one" out "[Gtk.Entry::icon-press["
+
 let test_fragment_kind_parsed () =
   let t = parse Entity "[class@Foo]" in
   match t.blocks with
@@ -144,6 +156,9 @@ let tests =
   [
     ("fragment degradation", `Quick, test_fragment);
     ("fragment kind parsed", `Quick, test_fragment_kind_parsed);
+    ( "unclosed fragment is literal text",
+      `Quick,
+      test_unclosed_fragment_is_literal_text );
     ( "fragment anchors and backticks",
       `Quick,
       test_fragment_anchor_and_backticks );
