@@ -134,6 +134,20 @@ else
     echo "  Run 'ocamlformat -i' on each package's generated .ml/.mli manually."
 fi
 
+# The generated dune files are committed as 'dune fmt' leaves them, so a
+# regeneration must format them too or the tree is never clean.
+for entry in "${NAMESPACES[@]}"; do
+    read -r _ns _gir pkg <<< "$entry"
+    for sub in enums/generated generated; do
+        dune_file="$REPO_ROOT/$pkg/$sub/dune"
+        if [ -f "$dune_file" ]; then
+            dune format-dune-file "$dune_file" > "$dune_file.fmt"
+            mv "$dune_file.fmt" "$dune_file"
+        fi
+    done
+done
+echo "  dune format-dune-file applied to the generated dune files."
+
 echo ""
 echo "==================================="
 echo "✓ Code generation complete!"
