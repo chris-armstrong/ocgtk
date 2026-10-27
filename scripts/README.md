@@ -62,8 +62,8 @@ DOC_PREVIEW_REF=main DOC_PREVIEW_SHA=$(git rev-parse HEAD) \
 Copy the tree out first: dune leaves `_build` read-only. All environment
 variables are optional; see the script header for the list.
 
-## doc_artifacts
+## doc_diff
 
-The doc artifact cache, which keeps the rendered odoc HTML of each commit for
-comparison, lives in the generator project. See
-[gir_gen/tools/doc_artifacts/README.md](../gir_gen/tools/doc_artifacts/README.md).
+The diff of the rendered odoc HTML of a base commit and the working tree
+lives in the generator project. See
+[gir_gen/tools/doc_diff/README.md](../gir_gen/tools/doc_diff/README.md).

@@ -39,8 +39,6 @@
    (>= 0.7))
   (cmdliner
    (>= 1.3))
-  (yojson
-   (>= 2.0))
   (sexplib
    (>= 0.16))
   (ppx_sexp_conv
