@@ -1,8 +1,8 @@
-; Local cache of rendered odoc HTML, one artifact per commit. See
-; scripts/README.md.
+; Local cache of rendered odoc HTML, one artifact per commit. See README.md.
 
 (library
  (name doc_artifacts_lib)
+ (package gir_gen)
  (modules artifact_key manifest odoc_warnings cache_layout)
  (libraries yojson))
 

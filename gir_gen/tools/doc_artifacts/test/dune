@@ -1,3 +1,4 @@
 (test
  (name test_doc_artifacts)
+ (package gir_gen)
  (libraries doc_artifacts_lib alcotest yojson))

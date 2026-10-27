@@ -516,10 +516,10 @@ the Phase 3 status), so Phase 5's wiring diff is reviewed against it.
 
 **Driver interface** (as built: a dune executable rather than an `ocaml`
 toplevel script, so its pure parts are unit-tested; full usage in
-[scripts/README.md](../../../scripts/README.md#doc_artifacts)):
+[gir_gen/tools/doc_artifacts/README.md](../../tools/doc_artifacts/README.md)):
 
 ```bash
-DA="dune exec scripts/doc_artifacts/doc_artifacts.exe --"
+DA="dune exec gir_gen/tools/doc_artifacts/doc_artifacts.exe --"
 $DA build [note]                 # ensure artifact for the working tree
 $DA build --force [note]         # rebuild even on hit
 $DA list                         # print index.tsv
@@ -742,7 +742,7 @@ legitimate comment syntax — any hit is a Phase-2 failure.
 ### Phase 3 — Doc artifact cache driver (local)
 
 **Status: done** (branch `m3-phase3`). Differences from the text below:
-the driver is `scripts/doc_artifacts/` (a dune executable and a small tested
+the driver is `gir_gen/tools/doc_artifacts/` (a dune executable and a small tested
 library) rather than a toplevel script; the manifest is written with
 `yojson`, added to `gir_gen`'s dependencies (every build that compiles
 `scripts/` installs them); and the first baseline is the Phase 3 commit,
