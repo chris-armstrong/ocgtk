@@ -48,50 +48,68 @@ closures are an internal detail).
 
 {1 Libraries and namespaces}
 
-ocgtk is a single opam package, but internally it contains one
-library per GObject namespace, such as [Ocgtk_gtk]. Add the dune library
-name to the [libraries] field of your dune file.
+Each GObject namespace (apart from GLib and GObject, which share [ocglib])
+is its own opam package, containing one library of
+the same name. The name is [oc] followed by the namespace name in lower
+case, and the library's top-level module is that name capitalised. Add the
+library for each namespace you use to the [libraries] field of your dune
+file, for example [(libraries ocgtk ocgio)].
 
-{t | Namespace | Dune library | Top-level module |
-   | --------- | ------------ | ---------------- |
-   | Gtk       | [ocgtk.gtk]  | [Ocgtk_gtk] |
-   | Gdk       | [ocgtk.gdk]  | [Ocgtk_gdk] |
-   | Gsk       | [ocgtk.gsk]  | [Ocgtk_gsk] |
-   | Gio       | [ocgtk.gio]  | [Ocgtk_gio] |
-   | Pango     | [ocgtk.pango] | [Ocgtk_pango] |
-   | PangoCairo | [ocgtk.pangocairo] | [Ocgtk_pangocairo] |
-   | cairo     | [ocgtk.cairo] | [Ocgtk_cairo] |
-   | GdkPixbuf | [ocgtk.gdkpixbuf] | [Ocgtk_gdkpixbuf] |
-   | Graphene  | [ocgtk.graphene] | [Ocgtk_graphene] |}
+{t | Namespace | opam package and dune library | Top-level module |
+   | --------- | ----------------------------- | ---------------- |
+   | Gtk       | [ocgtk]        | {!Ocgtk} |
+   | Gdk       | [ocgdk]        | {!Ocgdk} |
+   | Gsk       | [ocgsk]        | {!Ocgsk} |
+   | Gio       | [ocgio]        | {!Ocgio} |
+   | Pango     | [ocpango]      | {!Ocpango} |
+   | PangoCairo | [ocpangocairo] | {!Ocpangocairo} |
+   | cairo     | [occairo]      | {!Occairo} |
+   | GdkPixbuf | [ocgdkpixbuf]  | {!Ocgdkpixbuf} |
+   | Graphene  | [ocgraphene]   | {!Ocgraphene} |
+   | GLib and GObject | [ocglib] | {!Ocglib} |}
 
-In each library, you'll find a layout like the following:
+Installing [ocgtk] installs all of these, because GTK depends on them.
+
+Every generated library has the same layout:
 
 {[
-Ocgtk_<namespace>
-  +- <Namespace>             (* class and interface modules (layer 2) *)
-  |    +- Wrappers           (* functional modules (layer 1) *)
-  +- <Namespace>_enums       (* enumerations *)
-  +- <Namespace>_constants   (* constants *)
+Oc<namespace>
+  +- <Class>                 (* one module per class, interface or record (layer 2) *)
+  +- Raw                     (* functional modules (layer 1) *)
+  |    +- <Class>
+  +- Enums                   (* enumerations and bitfields *)
+  +- Constants               (* constants *)
 ]}
 
-For example, GTK has a layout like the following:
+For example, GTK's library {!Ocgtk} looks like this:
 
 {[
-Ocgtk_gtk
-  +- Gtk                     (* class and interface modules (layer 2) *)
-  |    +- Wrappers           (* functional modules (layer 1) *)
-  +- Gtk_enums
-  +- Gtk_constants
-  +- GMain                   (* GTK only: initialisation and main loop *)
-  +- GVersion                (* GTK only: version information *)
+Ocgtk
+  +- Window, Button, Application, ...
+  +- Raw                     (* Raw.Window, Raw.Button, ... *)
+  +- Enums
+  +- Constants
+  +- Main                    (* GTK only: initialisation and main loop *)
+  +- Version                 (* GTK only: version information *)
 ]}
 
-These are designed so that you can open [Ocgtk_gtk] and [Ocgtk_gtk.Gtk], and then refer to
-each class module directly, e.g.:
+See {!Ocgtk.Raw}, {!Ocgtk.Enums}, {!Ocgtk.Constants}, {!Ocgtk.Main} and
+{!Ocgtk.Version}.
+
+{!Ocglib} is different: it is written by hand rather than generated, and has
+no [Raw] layer. It holds the GLib and GObject modules ({!Ocglib.Glib},
+{!Ocglib.Gobject}, {!Ocglib.GError} and others) and the fixed-width integer
+types (see {{!section-integers}Integers}). The examples on this page assume
+it is opened, so they write [Gobject] for {!Ocglib.Gobject} and [Glib] for
+{!Ocglib.Glib}. Either add [open Ocglib] to your file or
+[(flags (:standard -open Ocglib))] to your dune stanza. Short examples that
+don't show their [open] lines also assume [open Ocgtk].
+
+The libraries are designed so that you can open the top-level module and
+then refer to each class module directly, e.g.:
 
 {[
-open Ocgtk_gtk
-open Gtk
+open Ocgtk
 
 let activate app =
   let window = Window.new_ () in
@@ -125,9 +143,9 @@ declaration), not as a method of a class. So ocgtk is built in two layers:
 {@mermaid[
 flowchart TD
   C["C library (libgtk-4, libgio-2.0, ...)"]
-  L1["Layer 1: Gtk.Wrappers.Button
+  L1["Layer 1: Ocgtk.Raw.Button
   type t, one function per C function"]
-  L2["Layer 2: Gtk.Button
+  L2["Layer 2: Ocgtk.Button
   class type button_t, class button, new_* constructors"]
   APP["Your code"]
   C --> L1 --> L2
@@ -152,16 +170,16 @@ turning a Layer 1 handle into an object; see
 
 Each class and its type is declared in a separate module. The module is named after the GObject class. It will also contain one or more constructor functions that instantiate an object of that class for you.
 
-For example the [Gtk.Window] class, class type and constructors are available in the [Ocgtk_gtk.Gtk.Window] module, which looks like this:
+For example the [Window] class, class type and constructors are available in the {!Ocgtk.Window} module, which looks like this:
 
 {@ocaml[
 (* The class type, returned by a constructor function *)
 class type window_t 
 
 (* The class itself, never used directly (only if you are bridging L1 -> L2).
-   It takes the Layer 1 handle, Wrappers.Window.t, which is
+   It takes the Layer 1 handle, Raw.Window.t, which is
    [ `window | `widget | `initially_unowned | `object_ ] Gobject.obj *)
-class window : Wrappers.Window.t -> window_t
+class window : Raw.Window.t -> window_t
 
 (* Constructor, used to create a new instance *)
 val new_ : unit -> window_t
@@ -172,16 +190,16 @@ and type-preview via LSP/merlin.
 
 {@mermaid[
 flowchart LR
-  subgraph NS["Ocgtk_gtk.Gtk (namespace module)"]
+  subgraph NS["Ocgtk (library top-level module)"]
     direction TB
     subgraph L2M["Button (Layer 2)"]
       CT["class type button_t
       methods, signals, properties"]
-      CL["class button : Wrappers.Button.t -> button_t"]
+      CL["class button : Raw.Button.t -> button_t"]
       CTOR["new_ / new_with_label / ...
       return button_t"]
     end
-    subgraph W["Wrappers"]
+    subgraph W["Raw"]
       L1M["Button (Layer 1)
       type t, new_, get_label, set_label, ..."]
     end
@@ -211,17 +229,17 @@ methods, which return the [t] handle for use in Layer 1.
 For example:
 
 {[
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 let () =
   let window = Window.new_ () in
-  (* as_window gives us Wrappers.Window.t *)
+  (* as_window gives us Raw.Window.t *)
   let window_handle = window#as_window in
-  Wrappers.Window.unminimize window_handle;
+  Raw.Window.unminimize window_handle;
 
-  (* Window inherits from Widget, so as_widget gives us a Wrappers.Widget.t *)
+  (* Window inherits from Widget, so as_widget gives us a Raw.Widget.t *)
   let widget_handle = window#as_widget in
-  let direction = Wrappers.Widget.get_direction widget_handle in
+  let direction = Raw.Widget.get_direction widget_handle in
   Printf.printf "Window text direction: %s\n" (match direction with
     | `NONE -> "none" | `LTR -> "left-to-right" | `RTL -> "right-to-left");
 ]}
@@ -230,7 +248,7 @@ NOTE: a Layer 1 handle can also be upcast directly to the handle type of any
 of its parent classes or interfaces, without calling [as_*], e.g.
 
 {[
-  let widget_handle = (window_handle :> Wrappers.Widget.t) in
+  let widget_handle = (window_handle :> Raw.Widget.t) in
   ...
 ]}
 
@@ -240,10 +258,10 @@ You can promote a handle from Layer 1 to Layer 2 by simply instantiating
 its class with the handle as the first argument to the constructor, e.g.:
 
 {[
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 let () =
-  let window_handle = Wrappers.Window.new_ () in
+  let window_handle = Raw.Window.new_ () in
   let window = new Window.window window_handle in
   window#unminimize ();
 ]}
@@ -270,8 +288,7 @@ identity, so you can use them as keys in a [Hashtbl] or [Map].
 
 Use a constructor in a class's module to instantiate it, for example:
 {[
-open Ocgtk_gtk
-open Gtk
+open Ocgtk
 
 let window = Window.new_ () in
 let button = Button.new_with_label "Click me" in
@@ -280,7 +297,7 @@ let button = Button.new_with_label "Click me" in
 
 GTK must be initialised before you create any widget. [Application] does
 this for you before it emits [activate], so create your widgets in (or after)
-your [on_activate] handler. Without an [Application], call [GMain.init] first
+your [on_activate] handler. Without an [Application], call {!Ocgtk.Main.init} first
 (see {{!section-mainloop}The main loop and threads}).
 
 {b Interfaces} are also classes in OCaml, but they won't have constructor functions. The same applies to {b abstract classes}. For both of these, you will get values indirectly as the result (return values) of calling methods on other objects or as parameters in signal handlers.
@@ -322,7 +339,7 @@ For example, [Box#append] takes a [widget_t], so a button must be upcast before
 it can be added to a box:
 
 {[
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 let build_layout () =
   let box = Box.new_ `VERTICAL 10 in
@@ -351,7 +368,7 @@ You can write one with the GObject type system, which knows the real class of
 every object at runtime:
 
 {[
-open Ocgtk_gtk.Gtk
+open Ocgtk
 
 let button_of_widget (w : Widget.widget_t) : Button.button_t option =
   let handle = w#as_widget in
@@ -373,13 +390,13 @@ How it works:
 
 - [w#as_widget] gets the Layer 1 handle (see
   {{!section-converting}Converting between the layers}).
-- [Gobject.get_type] returns the object's actual runtime type, and
-  [Gobject.Type.is_a] checks it against the type you want. It returns [true]
+- {!Ocglib.Gobject.get_type} returns the object's actual runtime type, and
+  {!Ocglib.Gobject.Type.is_a} checks it against the type you want. It returns [true]
   for subclasses too (a [GtkToggleButton] is a [GtkButton]), and works for
   interfaces such as ["GtkRoot"].
-- [Gobject.Type.from_name] takes the {i C} type name: [GtkButton], not
+- {!Ocglib.Gobject.Type.from_name} takes the {i C} type name: [GtkButton], not
   [Button] or [button_t].
-- [Gobject.unsafe_cast] changes the handle's type without any check, and
+- {!Ocglib.Gobject.unsafe_cast} changes the handle's type without any check, and
   [new Button.button] wraps it in a Layer 2 object.
 
 Always do the [is_a] check first. Without it, [unsafe_cast] lets you call
@@ -388,7 +405,7 @@ memory instead of raising an exception.
 
 {2 Cyclic groups and top-level classes}
 
-You may notice references to modules like [Application_and__window_and__window_group] in the documentation and the source code. This is because some GObject classes and/or interfaces have mutually recursive dependencies between them.
+You may notice references to modules like [Application_and__window_and__window_group] (in {!Ocgtk}) or [App_launch_context_cycle_de440b34] (in {!Ocgdk}, where the joined name would be too long) in the documentation and the source code. This is because some GObject classes and/or interfaces have mutually recursive dependencies between them.
 
 In OCaml, these can't be declared in separate files, but instead need to be declared in an OCaml recursive cluster in the same file i.e. [class type c1 ... and c2 ... end] / [class c1 ... and c2 ... end]. Each individual class is then aliased in a separate module to "flatten" the namespace and hide the recursive classes.
 
@@ -416,16 +433,16 @@ The Layer 1 functions take the object as an argument and need no trailing
 [()]:
 
 {[
-let id = Wrappers.Button.on_clicked handle ~callback:(fun () -> print_endline "clicked") in
+let id = Raw.Button.on_clicked handle ~callback:(fun () -> print_endline "clicked") in
 ...
 ]}
 
-The return type is a {b signal handler ID} ([Gobject.Signal.handler_id]). You
+The return type is a {b signal handler ID} ({!Ocglib.Gobject.Signal.handler_id}). You
 can ignore it (e.g. [let _ = b#on_clicked ~callback ()] or
 [ignore (b#on_clicked ~callback ())]), but you should keep it if you will need
 to disconnect the handler, for example when the object it updates goes away.
 
-The functions for working with a handler ID live in [Gobject.Signal]. They
+The functions for working with a handler ID live in {!Ocglib.Gobject.Signal}. They
 take the Layer 1 handle, which you get from the [as_<class>] method (see
 {{!section-converting}Converting between the layers}):
 
@@ -433,7 +450,8 @@ take the Layer 1 handle, which you get from the [as_<class>] method (see
 Gobject.Signal.disconnect button#as_button id
 ]}
 
-[Gobject.Signal.handler_block], [handler_unblock] and [handler_is_connected]
+{!Ocglib.Gobject.Signal.handler_block}, {!Ocglib.Gobject.Signal.handler_unblock} and
+{!Ocglib.Gobject.Signal.handler_is_connected}
 take the same arguments.
 
 The callback function's arguments are labelled e.g. [~x ~y ~width ~height].
@@ -475,22 +493,21 @@ There are three ways to run the loop. They all run the same GLib loop
 underneath, so timeouts, idle callbacks and signals work the same with any
 of them:
 
-- [Gtk.Application]: the standard way to write a GTK 4 application. Use
+- {!Ocgtk.Application}: the standard way to write a GTK 4 application. Use
   this unless you have a reason not to.
-- [GMain]: a small module for running GTK without an application object.
+- {!Ocgtk.Main}: a small module for running GTK without an application object.
   Useful for tests, examples and short scripts.
-- [Glib.Main]: the GLib main loop itself, for running a nested loop or
+- {!Ocglib.Glib.Main}: the GLib main loop itself, for running a nested loop or
   creating your own loop objects.
 
 {2 Running an application}
 
-[Gtk.Application] initialises GTK, runs the main loop, and quits when its
+{!Ocgtk.Application} initialises GTK, runs the main loop, and quits when its
 last window closes. Create your windows in the [activate] signal handler
 and register them with [add_window] (or create an [Application_window]):
 
 {[
-open Ocgtk_gtk
-open Gtk
+open Ocgtk
 
 let activate app =
   let window = Window.new_ () in
@@ -520,33 +537,32 @@ let () =
   [shutdown] signals let you run code once, before the first [activate] and
   after the loop ends.
 
-{2 Without an application: GMain}
+{2 Without an application: Main}
 
-[GMain] runs GTK without an application object:
+{!Ocgtk.Main} runs GTK without an application object:
 
 {[
-open Ocgtk_gtk
-open Gtk
+open Ocgtk
 
 let () =
-  let _ = GMain.init () in
+  let _ = Main.init () in
   let window = Window.new_ () in
   window#set_default_size 300 200;
-  ignore (window#on_close_request ~callback:(fun () -> GMain.quit (); false) ());
+  ignore (window#on_close_request ~callback:(fun () -> Main.quit (); false) ());
   window#present ();
-  GMain.main ()
+  Main.main ()
 ]}
 
-- [GMain.init] initialises GTK. Call it before creating any widget. 
-- [GMain.main] runs the loop until [GMain.quit] is called. Unlike an
+- {!Ocgtk.Main.init} initialises GTK. Call it before creating any widget. 
+- {!Ocgtk.Main.main} runs the loop until {!Ocgtk.Main.quit} is called. Unlike an
   [Application], nothing quits automatically when the last window closes,
   so connect [close-request] as above.
 
 {2 GLib main loops}
 
-[GMain.main] and [GMain.quit] are shortcuts for a single [Glib.Main.t]
-loop that gives more control than [GMain.main] on its own. Use 
-[Glib.Main] directly when you need a loop of your own,
+{!Ocgtk.Main.main} and {!Ocgtk.Main.quit} are shortcuts for a single {!Ocglib.Glib.Main.t}
+loop that gives more control than {!Ocgtk.Main.main} on its own. Use 
+{!Ocglib.Glib.Main} directly when you need a loop of your own,
 for example to wait for something while keeping the UI responsive:
 
 {[
@@ -559,36 +575,36 @@ let wait_until (ready : bool ref) =
   Glib.Main.run loop   (* returns once [ready] is set *)
 ]}
 
-NOTE: [Glib.Main] doesn't initialise GTK - you will still need to do
-that manually with [GMain.init] first.
+NOTE: {!Ocglib.Glib.Main} doesn't initialise GTK - you will still need to do
+that manually with {!Ocgtk.Main.init} first.
 
 
 {2 Timeouts and idle callbacks}
 
-[Glib.Timeout.add] runs a function every [ms] milliseconds, and
-[Glib.Idle.add] runs a function when the event loop is idle (i.e. no higher priority
+{!Ocglib.Glib.Timeout.add} runs a function every [ms] milliseconds, and
+{!Ocglib.Glib.Idle.add} runs a function when the event loop is idle (i.e. no higher priority
 tasks are waiting to run). 
 
 The return value in your callback functions controls whether the timeout is
 repeating (rescheduled on the event loop) or just run once. Return [true] from
 your callback to have it repeat, or return [false] to remove it (don't schedule again).
 
-Both also return an id you can pass to [Glib.Timeout.remove] or [Glib.Idle.remove]
+Both also return an id you can pass to {!Ocglib.Glib.Timeout.remove} or {!Ocglib.Glib.Idle.remove}
 (useful if you need to cancel the timeout/idle based on the result of another process).
 
 {[
 let () =
-  let _ = GMain.init () in
+  let _ = Main.init () in
   let ticks = ref 0 in
   let _ =
     Glib.Timeout.add ~ms:50 ~callback:(fun () ->
       incr ticks;
       Printf.printf "tick %d\n%!" !ticks;
-      if !ticks = 3 then (GMain.quit (); false) else true) ()
+      if !ticks = 3 then (Main.quit (); false) else true) ()
   in
   let _ = Glib.Idle.add (fun () -> print_endline "idle"; false) in
-  GMain.main ()
-(* idle / tick 1 / tick 2 / tick 3, then GMain.main returns *)
+  Main.main ()
+(* idle / tick 1 / tick 2 / tick 3, then Main.main returns *)
 ]}
 
 Callbacks run on the main loop, so a slow callback freezes the UI. Keep them
@@ -601,10 +617,10 @@ GTK is not thread safe. Treat every ocgtk call as main-thread-only: create
 and modify widgets, connect signals and so on from the thread that is
 running the main loop. GLib's [g_idle_add] can be called from
 any thread, which is why handing results back to the main thread through
-[Glib.Idle.add] is the recommended pattern (see below).
+{!Ocglib.Glib.Idle.add} is the recommended pattern (see below).
 
 There is also an OCaml-specific caveat. None of the main loops ([app#run],
-[GMain.main] or [Glib.Main.run]) release the OCaml runtime lock while they
+{!Ocgtk.Main.main} or {!Ocglib.Glib.Main.run}) release the OCaml runtime lock while they
 wait for events. Other OCaml threads (from the [Thread] module) are
 therefore {b starved} for as long as the loop is running. This is tracked
 in {{:https://github.com/chris-armstrong/ocgtk/issues/203}issue #203}.
@@ -615,7 +631,7 @@ To let worker threads make progress, give them a chance to run by calling
 
 {[
 let () =
-  let _ = GMain.init () in
+  let _ = Main.init () in
   let _ = Glib.Timeout.add ~ms:20 ~callback:(fun () -> Thread.yield (); true) () in
   let _ =
     Thread.create (fun () ->
@@ -623,10 +639,10 @@ let () =
       (* hand the result back to the main thread *)
       ignore (Glib.Idle.add (fun () ->
         Printf.printf "result: %d\n%!" result;  (* safe to touch widgets here *)
-        GMain.quit (); false)))
+        Main.quit (); false)))
       ()
   in
-  GMain.main ()
+  Main.main ()
 ]}
 
 The program needs [threads.posix] in its dune [libraries] to use [Thread].
@@ -638,7 +654,7 @@ threads run between iterations:
 
 {[
 while not !finished do
-  ignore (GMain.iteration false);
+  ignore (Main.iteration false);
   Thread.delay 0.01
 done
 ]}
@@ -737,11 +753,11 @@ The following table shows how various things are mapped between GObject (in the 
 
 {t | Component | GObject | C | Class Layer (L2) | Module Layer (L1) |
    | --------- | ------- | --- | ---------------- | ----------------- |
-   | Methods   | set_label | [gtk_button_set_label(b, "x")] | [b#set_label "x"] | [Wrappers.Button.set_label b "x"] |
-   | Instance Type | Button | [GtkButton] | [Gtk.Button.button_t] | [Gtk.Wrappers.Button.t] |
-   | Constructors | new_with_label | [gtk_button_new_with_label("x")] | [Gtk.Button.new_with_label "x"] | [Gtk.Wrappers.Button.new_with_label "x"] |
-   | Signals | clicked | [g_signal_connect(button, "clicked", ...)] | [b#on_clicked ~callback:(fun () -> ...) ()] |  [Wrappers.Button.on_clicked b ~callback:(fun () -> ...)] |
-   | Properties (setters) | icon-name | [g_value_set_string(&sv, "question"); g_object_set_property(G_OBJECT(b), "icon-name", sv)] | [b#set_icon_name "question"] | [Wrappers.Button.set_icon_name b "question"] |}
+   | Methods   | set_label | [gtk_button_set_label(b, "x")] | [b#set_label "x"] | [Raw.Button.set_label b "x"] |
+   | Instance Type | Button | [GtkButton] | [Ocgtk.Button.button_t] | [Ocgtk.Raw.Button.t] |
+   | Constructors | new_with_label | [gtk_button_new_with_label("x")] | [Ocgtk.Button.new_with_label "x"] | [Ocgtk.Raw.Button.new_with_label "x"] |
+   | Signals | clicked | [g_signal_connect(button, "clicked", ...)] | [b#on_clicked ~callback:(fun () -> ...) ()] |  [Raw.Button.on_clicked b ~callback:(fun () -> ...)] |
+   | Properties (setters) | icon-name | [g_value_set_string(&sv, "question"); g_object_set_property(G_OBJECT(b), "icon-name", sv)] | [b#set_icon_name "question"] | [Raw.Button.set_icon_name b "question"] |}
 
 Other rules to note:
 - When a GObject method or type is a reserved word in OCaml, it is suffixed with an additional underscore e.g. [new] -> [new_], [type] -> [type_]
@@ -751,17 +767,17 @@ Other rules to note:
 
 Constants are a name for a fixed value in GObject (derived directly from the GIR).
 
-You'll find all constants in the top-level [<Namespace>_constants] module (e.g. [Gtk_constants]), converted to snake_case in OCaml. As they are just OCaml values, you can use them with both the classes layer and the module layer.
+You'll find all constants in each library's [Constants] module (e.g. {!Ocgtk.Constants}), converted to snake_case in OCaml. As they are just OCaml values, you can use them with both the classes layer and the module layer.
 
 {t
    | GObject | C | OCaml |
    | ------- | --- | ----- |
-   | BINARY_AGE | [GTK_BINARY_AGE] | [Gtk_constants.binary_age] |
-   | MAX_COMPOSE_LEN | [GTK_MAX_COMPOSE_LEN] | [Gtk_constants.max_compose_len] |}
+   | BINARY_AGE | [GTK_BINARY_AGE] | {!Ocgtk.Constants.binary_age} |
+   | MAX_COMPOSE_LEN | [GTK_MAX_COMPOSE_LEN] | {!Ocgtk.Constants.max_compose_len} |}
 
 {2:enumerations Enumerations}
 
-Enumerations are mapped into the top-level [<Namespace>_enums] module (e.g. [Gtk_enums]).
+Enumerations are mapped into each library's [Enums] module (e.g. {!Ocgtk.Enums}).
 Each enumeration is a polymorphic variant type.
 
 The enumeration type is mapped to lowercase without spaces e.g. [AccessibleProperty] in GIR becomes [type accessibleproperty] in OCaml.
@@ -778,7 +794,7 @@ There are also converter functions to convert them to integer form ([<enum>_to_i
 
 {2:bitfields Bitfields}
 
-Bitfields are also mapped to the top-level [<Namespace>_enums] module (e.g. [Gtk_enums]).
+Bitfields are also mapped to each library's [Enums] module (e.g. {!Ocgtk.Enums}).
 A bitfield is represented in OCaml as a list, where each entry is a value of an associated polymorphic type.
 
 For example, the GObject StyleContextPrintFlags bitfield will be declared as such:
@@ -807,7 +823,7 @@ with the object itself first in Layer 1 (and as the receiver in Layer 2):
 
 {[
 window#set_default_size 300 200                         (* Layer 2 *)
-Wrappers.Window.set_default_size handle 300 200         (* Layer 1 *)
+Raw.Window.set_default_size handle 300 200         (* Layer 1 *)
 ]}
 
 {b Nullable parameters and return values} use [option], in both
@@ -828,8 +844,8 @@ arguments at all.
 
 {t | C | OCaml (Layer 1) |
    | --- | --------------- |
-   | [void gtk_window_get_default_size (GtkWindow *w, int *width, int *height)] | [Wrappers.Window.get_default_size : t -> int * int] |
-   | [gboolean gtk_label_get_selection_bounds (GtkLabel *l, int *start, int *end)] | [Wrappers.Label.get_selection_bounds : t -> bool * int * int] |}
+   | [void gtk_window_get_default_size (GtkWindow *w, int *width, int *height)] | [Raw.Window.get_default_size : t -> int * int] |
+   | [gboolean gtk_label_get_selection_bounds (GtkLabel *l, int *start, int *end)] | [Raw.Label.get_selection_bounds : t -> bool * int * int] |}
 
 When the C function returns a [gboolean] to say whether the out-parameters
 were filled in, as [get_selection_bounds] does, check it before using the
@@ -837,7 +853,7 @@ other values:
 
 {[
 let has_selection, start, end_ =
-  Wrappers.Label.get_selection_bounds label#as_label
+  Raw.Label.get_selection_bounds label#as_label
 in
 if has_selection then Printf.printf "selected %d-%d\n" start end_
 ]}
@@ -852,17 +868,17 @@ Methods that can fail return a [result] instead; see
 
 {2:errors Error values}
 
-Any GLib.Error type as a return value or parameter is mapped to [GError.t] in OCaml.
+Any GLib.Error type as a return value or parameter is mapped to {!Ocglib.GError.t} in OCaml.
 
-However, when a method is specified with the [throws] attribute, the OCaml return type will be an OCaml [result] type with [GError.t] as the [Error] part of the type.
+However, when a method is specified with the [throws] attribute, the OCaml return type will be an OCaml [result] type with {!Ocglib.GError.t} as the [Error] part of the type.
 
-For example, [Gdk.Clipboard.read_value_finish] declares a return type of [GObject.Value], so its OCaml signature becomes:
+For example, {!Ocgdk.Clipboard.clipboard_t.read_value_finish} declares a return type of [GObject.Value], so its OCaml signature becomes:
 
 {[
 class type clipboard_t = object
   ...
   method read_value_finish :
-    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    Ocgio.Async_result.async_result_t ->
     (Gobject.Value.t, GError.t) result
 end
 ]}
@@ -874,7 +890,7 @@ end
 
 OCaml strings are mapped transparently in parameters and return types. They are copied in full between GObject strings and OCaml strings in the C layer.
 
-{2 Integers}
+{2:integers Integers}
 
 Plain C [int] and [uint] values ([gint], [guint]) are 32-bit and become ordinary OCaml
 [int]. Out-of-range values are not checked.
@@ -883,20 +899,20 @@ Similarly, [gssize], [gulong] and [gchar] are converted to [int] and are not che
 
 A [gint64] becomes an OCaml [int64] and maps with no range issues.
 
-Fixed-width integers get their own types, defined as top-level modules in the
-[ocgtk.common] library, so that the range is part of the type and a value that
+Fixed-width integers get their own types, defined as modules in the
+{!Ocglib} library, so that the range is part of the type and a value that
 doesn't fit is caught when you convert it:
 
 {t | C type | OCaml type | Range |
    | ------ | ---------- | ----- |
-   | [guint8]  | [UInt8.t]  | 0 to 255 |
-   | [gint8]   | [Int8.t]   | -128 to 127 |
-   | [guint16] | [UInt16.t] | 0 to 65535 |
-   | [gint16]  | [Int16.t]  | -32768 to 32767 |
-   | [guint32] | [UInt32.t] | 0 to 4294967295 |
-   | [gint32]  | [Int32.t]  | -2147483648 to 2147483647 |
-   | [guint64] | [UInt64.t] | 0 to 2{^64}-1 |
-   | [gsize]   | [Gsize.t]  | 0 to [max_int] |}
+   | [guint8]  | {!Ocglib.UInt8.t}  | 0 to 255 |
+   | [gint8]   | {!Ocglib.Int8.t}   | -128 to 127 |
+   | [guint16] | {!Ocglib.UInt16.t} | 0 to 65535 |
+   | [gint16]  | {!Ocglib.Int16.t}  | -32768 to 32767 |
+   | [guint32] | {!Ocglib.UInt32.t} | 0 to 4294967295 |
+   | [gint32]  | {!Ocglib.Int32.t}  | -2147483648 to 2147483647 |
+   | [guint64] | {!Ocglib.UInt64.t} | 0 to 2{^64}-1 |
+   | [gsize]   | {!Ocglib.Gsize.t}  | 0 to [max_int] |}
 
 Apart from [UInt64], these are all [private int], so they cost nothing at
 runtime. You can read them as an [int] with [to_int], but you can only create
@@ -920,11 +936,11 @@ let width : int = UInt16.to_int n + 1 in
 ignore (UInt8.of_int 256) (* raises Invalid_argument *)
 ]}
 
-Because these are top-level modules, [Int32] deliberately shadows
-[Stdlib.Int32] in any code that depends on [ocgtk.common] (directly or through
-another ocgtk library). If you need OCaml's boxed [int32], write
-[Stdlib.Int32]. The fixed-width modules (all except [Gsize]) are also grouped
-under [Bounded_int], for example [Bounded_int.UInt16].
+Like the rest of {!Ocglib}, they are reached as [Ocglib.UInt8],
+[Ocglib.Int32], and so on. If you [open Ocglib], [Int32] shadows
+[Stdlib.Int32], so write [Stdlib.Int32] if you need OCaml's boxed
+[int32]. The fixed-width modules (all except [Gsize]) are also grouped
+under {!Ocglib.Bounded_int}, for example [Ocglib.Bounded_int.UInt16].
 
 {2 Lists and arrays}
 
@@ -992,27 +1008,27 @@ runtime when used on older systems.
 {2 Checking the newer version in your code}
 
 If your application should work on older GTK releases, check the version
-before calling a newer API instead of catching [Failure]. The [GVersion]
+before calling a newer API instead of catching [Failure]. The {!Ocgtk.Version}
 module gives you both versions:
 
 {[
-open Ocgtk_gtk
+open Ocgtk
 
 let place_window window =
-  if GVersion.runtime_at_least 4 20 0 then
+  if Version.runtime_at_least 4 20 0 then
     window#set_gravity `TOP_LEFT
 ]}
 
-- [GVersion.runtime ()] and [GVersion.runtime_at_least] give the version
+- {!Ocgtk.Version.runtime} and {!Ocgtk.Version.runtime_at_least} give the version
   of the GTK library that is actually loaded.
-- [GVersion.compile_time ()] gives the version of the headers ocgtk was
+- {!Ocgtk.Version.compile_time} gives the version of the headers ocgtk was
   built against. Stubs above this version always raise [Failure], even if
   the runtime library is newer.
 
 To be safe, check both: an API works only if the compile-time version and
 the runtime version are each at least the version that added it.
 
-{b NOTE:} GVersion is currently only available in ocgtk - other libraries
+{b NOTE:} [Version] is currently only available in ocgtk - other libraries
 don't currently have a similar module.
 
 {2 How versioning works}
