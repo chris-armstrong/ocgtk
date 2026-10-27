@@ -71,6 +71,20 @@ fi
   <body>
     <main class="content">
       <h1>${TITLE}</h1>
+EOF
+    # The conventions page covers every package but odoc renders it in
+    # ocgtk's page tree, and no package's pages can link another's.
+    if [ -f "$HTML_DIR/ocgtk/conventions.html" ]; then
+        cat <<EOF
+      <h2>Reference</h2>
+      <ul>
+        <li><a href="ocgtk/conventions.html">Conventions</a>: how each
+          library is structured, where to find classes, methods, types and
+          signals, and how they are mapped in OCaml.</li>
+      </ul>
+EOF
+    fi
+    cat <<EOF
       <h2>Packages</h2>
       <ul>
 EOF

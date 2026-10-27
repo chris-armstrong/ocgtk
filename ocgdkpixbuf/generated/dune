@@ -6,3 +6,7 @@
  (synopsis "OCaml bindings for GdkPixbuf")
  (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
  (libraries ocglib ocgdkpixbuf.raw ocgdkpixbuf.enums ocgio))
+
+(documentation
+ (package ocgdkpixbuf)
+ (mld_files modules))

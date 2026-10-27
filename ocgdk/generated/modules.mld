@@ -1,0 +1,82 @@
+{0 Gdk modules}
+
+{!Ocgdk} has one module for each Gdk class, interface and record. The externals they are built on are in {!Ocgdk.Raw}.
+
+{1 Classes}
+
+{!modules:
+  Ocgdk.App_launch_context
+  Ocgdk.Button_event
+  Ocgdk.Cairo_context
+  Ocgdk.Cicp_params
+  Ocgdk.Clipboard
+  Ocgdk.Content_deserializer
+  Ocgdk.Content_provider
+  Ocgdk.Content_serializer
+  Ocgdk.Crossing_event
+  Ocgdk.Cursor
+  Ocgdk.Delete_event
+  Ocgdk.Device
+  Ocgdk.Device_tool
+  Ocgdk.Display
+  Ocgdk.Display_manager
+  Ocgdk.Dmabuf_texture
+  Ocgdk.Dmabuf_texture_builder
+  Ocgdk.Dnd_event
+  Ocgdk.Drag
+  Ocgdk.Draw_context
+  Ocgdk.Drop
+  Ocgdk.Event
+  Ocgdk.Focus_event
+  Ocgdk.Frame_clock
+  Ocgdk.Gl_context
+  Ocgdk.Gl_texture
+  Ocgdk.Gl_texture_builder
+  Ocgdk.Grab_broken_event
+  Ocgdk.Key_event
+  Ocgdk.Memory_texture
+  Ocgdk.Memory_texture_builder
+  Ocgdk.Monitor
+  Ocgdk.Motion_event
+  Ocgdk.Pad_event
+  Ocgdk.Proximity_event
+  Ocgdk.Scroll_event
+  Ocgdk.Seat
+  Ocgdk.Snapshot
+  Ocgdk.Surface
+  Ocgdk.Texture
+  Ocgdk.Touch_event
+  Ocgdk.Touchpad_event
+  Ocgdk.Vulkan_context
+}
+
+{1 Interfaces}
+
+{!modules:
+  Ocgdk.Device_pad
+  Ocgdk.Drag_surface
+  Ocgdk.Paintable
+  Ocgdk.Popup
+  Ocgdk.Toplevel
+}
+
+{1 Records}
+
+{!modules:
+  Ocgdk.Color_state
+  Ocgdk.Content_formats
+  Ocgdk.Content_formats_builder
+  Ocgdk.Dmabuf_formats
+  Ocgdk.Drag_surface_size
+  Ocgdk.Event_sequence
+  Ocgdk.File_list
+  Ocgdk.Frame_timings
+  Ocgdk.Keymap_key
+  Ocgdk.Popup_layout
+  Ocgdk.Rectangle
+  Ocgdk.Rgb_a
+  Ocgdk.Texture_downloader
+  Ocgdk.Time_coord
+  Ocgdk.Toplevel_layout
+  Ocgdk.Toplevel_size
+}

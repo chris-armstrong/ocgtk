@@ -5,18 +5,14 @@ with windows, widgets, layout and the application model. They are generated
 from GTK's GObject introspection data, apart from {!Ocgtk.Main} and
 {!Ocgtk.Version}, which are hand-written.
 
-{1 Reference}
-
-- {b {{!page-conventions}Conventions}}: Learn how each library is structured
-  and where to find classes, methods, types and signals, and how they are
-  mapped in OCaml.
-
 {1 Modules}
 
 The library is reached as {!Ocgtk}, with one module per class, interface or
 record, such as {!Ocgtk.Window}, {!Ocgtk.Button} and {!Ocgtk.Application}.
 
 {ul
+{- {{!page-modules}All modules} — every class, interface and record,
+   grouped by kind. }
 {- {!Ocgtk.Main} — initialising GTK and running the main loop. }
 {- {!Ocgtk.Version} — the GTK version, at run time and at compile time. }
 {- {!Ocgtk.Enums} — enumerations and bitfields. }

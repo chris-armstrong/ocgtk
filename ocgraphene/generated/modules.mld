@@ -1,0 +1,27 @@
+{0 Graphene modules}
+
+{!Ocgraphene} has one module for each Graphene class, interface and record. The externals they are built on are in {!Ocgraphene.Raw}.
+
+{1 Records}
+
+{!modules:
+  Ocgraphene.Box
+  Ocgraphene.Euler
+  Ocgraphene.Frustum
+  Ocgraphene.Matrix
+  Ocgraphene.Plane
+  Ocgraphene.Point
+  Ocgraphene.Point3_d
+  Ocgraphene.Quad
+  Ocgraphene.Quaternion
+  Ocgraphene.Ray
+  Ocgraphene.Rect
+  Ocgraphene.Simd4_f
+  Ocgraphene.Simd4_x4_f
+  Ocgraphene.Size
+  Ocgraphene.Sphere
+  Ocgraphene.Triangle
+  Ocgraphene.Vec2
+  Ocgraphene.Vec3
+  Ocgraphene.Vec4
+}
