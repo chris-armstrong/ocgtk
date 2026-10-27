@@ -47,7 +47,7 @@ type t = [ `action_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_action_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_action_bar_new"
-(** Create a new ActionBar *)
+(** Creates a new action bar widget. *)
 
 (* Methods *)
 

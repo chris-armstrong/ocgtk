@@ -5,7 +5,8 @@
     [Gio.PollableOutputStream].
 
     Its methods, signals and properties are on
-    {!class-type-converter_output_stream_t}. The functions it is built on are in
+    {!class-type-converter_output_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Converter_output_stream}. *)
 
 (** The methods, signals and properties of a [GConverterOutputStream]. *)
@@ -26,7 +27,10 @@ class converter_output_stream :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GConverterOutputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Output_stream.output_stream_t ->
   Converter.converter_t ->
   converter_output_stream_t
+(** Creates a new converter output stream for the [base_stream]. *)

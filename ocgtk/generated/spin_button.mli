@@ -115,8 +115,9 @@
 
     [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role.
 
-    Its methods, signals and properties are on {!class-type-spin_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Spin_button}. *)
+    Its methods, signals and properties are on {!class-type-spin_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Spin_button}. *)
 
 (** The methods, signals and properties of a [GtkSpinButton]. *)
 class type spin_button_t = object
@@ -253,5 +254,20 @@ class spin_button : Raw.Spin_button.t -> spin_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSpinButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Adjustment.adjustment_t option -> float -> int -> spin_button_t
+(** Creates a new [GtkSpinButton]. *)
+
 val new_with_range : float -> float -> float -> spin_button_t
+(** Creates a new [GtkSpinButton] with the given properties.
+
+    This is a convenience constructor that allows creation of a numeric
+    [GtkSpinButton] without manually creating an adjustment. The value is
+    initially set to the minimum value and a page increment of 10 * [step] is
+    the default. The precision of the spin button is equivalent to the precision
+    of [step].
+
+    Note that the way in which the precision is derived works best if [step] is
+    a power of ten. If the resulting precision is not suitable for your needs,
+    use [Gtk.SpinButton.set_digits] to correct it. *)

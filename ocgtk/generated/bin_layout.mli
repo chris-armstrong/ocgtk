@@ -5,8 +5,9 @@
     [Gtk.Widget:valign] properties of each child to determine where they should
     be positioned.
 
-    Its methods, signals and properties are on {!class-type-bin_layout_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Bin_layout}. *)
+    Its methods, signals and properties are on {!class-type-bin_layout_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Bin_layout}. *)
 
 (** The methods, signals and properties of a [GtkBinLayout]. *)
 class type bin_layout_t = object
@@ -22,4 +23,7 @@ class bin_layout : Raw.Bin_layout.t -> bin_layout_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBinLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> bin_layout_t
+(** Creates a new [GtkBinLayout] instance. *)

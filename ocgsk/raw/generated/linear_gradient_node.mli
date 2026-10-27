@@ -16,7 +16,8 @@ external new_ :
   Color_stop.t array ->
   Gsize.t ->
   t = "ml_gsk_linear_gradient_node_new"
-(** Create a new LinearGradientNode *)
+(** Creates a [GskRenderNode] that will create a linear gradient from the given
+    points and color stops, and render that into the area given by [bounds]. *)
 
 (* Methods *)
 

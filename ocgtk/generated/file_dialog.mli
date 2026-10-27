@@ -5,8 +5,9 @@
 
     The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
 
-    Its methods, signals and properties are on {!class-type-file_dialog_t}. The
-    functions it is built on are in {!Ocgtk.Raw.File_dialog}. *)
+    Its methods, signals and properties are on {!class-type-file_dialog_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.File_dialog}. *)
 
 (** The methods, signals and properties of a [GtkFileDialog]. *)
 class type file_dialog_t = object
@@ -128,4 +129,7 @@ class file_dialog : Raw.File_dialog.t -> file_dialog_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFileDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> file_dialog_t
+(** Creates a new [GtkFileDialog] object. *)

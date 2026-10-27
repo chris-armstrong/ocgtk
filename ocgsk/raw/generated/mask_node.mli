@@ -11,7 +11,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_mask_node_get_type"
 
 external new_ : Render_node.t -> Render_node.t -> Ocgsk_enums.maskmode -> t
   = "ml_gsk_mask_node_new"
-(** Create a new MaskNode *)
+(** Creates a [GskRenderNode] that will mask a given node by another.
+
+    The [mask_mode] determines how the 'mask values' are derived from the colors
+    of the [mask]. Applying the mask consists of multiplying the 'mask value'
+    with the alpha of the source. *)
 
 (* Methods *)
 

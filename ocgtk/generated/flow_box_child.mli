@@ -4,7 +4,8 @@
     when necessary.
 
     Its methods, signals and properties are on {!class-type-flow_box_child_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Flow_box_child}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Flow_box_child}. *)
 
 (** The methods, signals and properties of a [GtkFlowBoxChild]. *)
 class type flow_box_child_t = object
@@ -64,4 +65,9 @@ class flow_box_child : Raw.Flow_box_child.t -> flow_box_child_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkFlowBoxChild], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> flow_box_child_t
+(** Creates a new [GtkFlowBoxChild].
+
+    This should only be used as a child of a [GtkFlowBox]. *)

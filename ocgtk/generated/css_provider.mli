@@ -25,8 +25,9 @@
     To track errors while loading CSS, connect to the
     [Gtk.CssProvider::parsing-error] signal.
 
-    Its methods, signals and properties are on {!class-type-css_provider_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Css_provider}. *)
+    Its methods, signals and properties are on {!class-type-css_provider_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Css_provider}. *)
 
 (** The methods, signals and properties of a [GtkCssProvider]. *)
 class type css_provider_t = object
@@ -89,4 +90,7 @@ class css_provider : Raw.Css_provider.t -> css_provider_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCssProvider], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> css_provider_t
+(** Returns a newly created [GtkCssProvider]. *)

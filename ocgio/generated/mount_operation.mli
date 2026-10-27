@@ -22,7 +22,8 @@
     fork of TrueCrypt with various improvements and auditing fixes.
 
     Its methods, signals and properties are on {!class-type-mount_operation_t}.
-    The functions it is built on are in {!Ocgio.Raw.Mount_operation}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Mount_operation}. *)
 
 (** The methods, signals and properties of a [GMountOperation]. *)
 class type mount_operation_t = object
@@ -123,4 +124,7 @@ class mount_operation : Raw.Mount_operation.t -> mount_operation_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GMountOperation], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> mount_operation_t
+(** Creates a new mount operation. *)

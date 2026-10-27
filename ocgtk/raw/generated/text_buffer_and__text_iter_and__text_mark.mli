@@ -22,7 +22,7 @@ module rec Text_buffer : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_text_buffer_get_type"
 
   external new_ : Text_tag_table.t option -> t = "ml_gtk_text_buffer_new"
-  (** Create a new TextBuffer *)
+  (** Creates a new text buffer. *)
 
   (* Methods *)
 
@@ -1409,7 +1409,17 @@ and Text_mark : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_text_mark_get_type"
 
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
-  (** Create a new TextMark *)
+  (** Creates a text mark.
+
+      Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [NULL],
+      the mark is anonymous; otherwise, the mark can be retrieved by name using
+      [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is
+      inserted at the mark’s current location, the mark will be moved to the
+      left of the newly-inserted text. If the mark has right gravity
+      ([left_gravity] = [FALSE]), the mark will end up on the right of
+      newly-inserted text. The standard left-to-right cursor is a mark with
+      right gravity (when you type, the cursor stays on the right side of the
+      text you’re typing). *)
 
   (* Methods *)
 

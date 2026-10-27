@@ -1,7 +1,8 @@
 (** A [GObject] value in a [GtkExpression].
 
     Its methods, signals and properties are on
-    {!class-type-object_expression_t}. The functions it is built on are in
+    {!class-type-object_expression_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Object_expression}. *)
 
 (** The methods, signals and properties of a [GtkObjectExpression]. *)
@@ -19,4 +20,15 @@ class object_expression : Raw.Object_expression.t -> object_expression_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkObjectExpression], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : [ `object_ ] Gobject.obj -> object_expression_t
+(** Creates an expression evaluating to the given [object] with a weak
+    reference.
+
+    Once the [object] is disposed, it will fail to evaluate.
+
+    This expression is meant to break reference cycles.
+
+    If you want to keep a reference to [object], use
+    [Gtk.ConstantExpression.new]. *)

@@ -46,7 +46,10 @@ type t = [ `path_builder ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_path_builder_get_type"
 
 external new_ : unit -> t = "ml_gsk_path_builder_new"
-(** Create a new PathBuilder *)
+(** Create a new [GskPathBuilder] object.
+
+    The resulting builder would create an empty [GskPath]. Use addition
+    functions to add types to it. *)
 
 (* Methods *)
 

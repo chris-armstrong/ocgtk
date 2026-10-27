@@ -106,4 +106,15 @@ class vec3 : Raw.Vec3.t -> vec3_t
 and vec4 : Raw.Vec4.t -> vec4_t
 
 val alloc : unit -> vec3_t
+(** Allocates a new #graphene_vec3_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec3_init() to initialize the vector. *)
+
 val alloc : unit -> vec4_t
+(** Allocates a new #graphene_vec4_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec4_init() to initialize the vector. *)

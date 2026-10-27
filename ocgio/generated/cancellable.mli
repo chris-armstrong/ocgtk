@@ -3,8 +3,9 @@
     [GCancellable] is a thread-safe operation cancellation stack used throughout
     GIO to allow for cancellation of synchronous and asynchronous operations.
 
-    Its methods, signals and properties are on {!class-type-cancellable_t}. The
-    functions it is built on are in {!Ocgio.Raw.Cancellable}. *)
+    Its methods, signals and properties are on {!class-type-cancellable_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Cancellable}. *)
 
 (** The methods, signals and properties of a [GCancellable]. *)
 class type cancellable_t = object
@@ -125,4 +126,13 @@ class cancellable : Raw.Cancellable.t -> cancellable_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GCancellable], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cancellable_t
+(** Creates a new [GCancellable] object.
+
+    Applications that want to start one or more operations that should be
+    cancellable should create a [GCancellable] and pass it to the operations.
+
+    One [GCancellable] can be used in multiple consecutive operations or in
+    multiple concurrent operations. *)

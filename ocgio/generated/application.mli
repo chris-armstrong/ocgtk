@@ -104,8 +104,9 @@
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-actions.c}gapplication-example-actions.c}.\n\n\
  For an example of using extra D-Bus hooks with [GApplication], see\n\
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}.\n\n\
- Its methods, signals and properties are on {!class-type-application_t}. The \
- functions it is built on are in {!Ocgio.Raw.Application}."]
+ Its methods, signals and properties are on {!class-type-application_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgio.Raw.Application}."]
 
 (** The methods, signals and properties of a [GApplication]. *)
 class type application_t = object
@@ -537,4 +538,13 @@ class application : Raw.Application.t -> application_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GApplication], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> Enums.applicationflags -> application_t
+(** Creates a new [GApplication] instance.
+
+    If non-[NULL], the application id must be valid. See
+    g_application_id_is_valid().
+
+    If no application ID is given then some features of [GApplication] (most
+    notably application uniqueness) will be disabled. *)

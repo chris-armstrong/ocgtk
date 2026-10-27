@@ -110,7 +110,8 @@
  are not supported:\n\n\
  - Shortcut folders.\n\n\
  Its methods, signals and properties are on \
- {!class-type-file_chooser_native_t}. The functions it is built on are in \
+ {!class-type-file_chooser_native_t}. Its constructors are under \
+ {!section-constructors}. The functions it is built on are in \
  {!Ocgtk.Raw.File_chooser_native}."]
 
 (** The methods, signals and properties of a [GtkFileChooserNative]. *)
@@ -152,6 +153,8 @@ class file_chooser_native : Raw.File_chooser_native.t -> file_chooser_native_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkFileChooserNative], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   string option ->
   Application_and__window_and__window_group.window_t option ->
@@ -159,3 +162,4 @@ val new_ :
   string option ->
   string option ->
   file_chooser_native_t
+(** Creates a new [GtkFileChooserNative]. *)

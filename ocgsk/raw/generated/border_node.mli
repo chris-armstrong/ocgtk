@@ -11,7 +11,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_border_node_get_type"
 
 external new_ : Rounded_rect.t -> float array -> Ocgdk_raw.Rgb_a.t array -> t
   = "ml_gsk_border_node_new"
-(** Create a new BorderNode *)
+(** Creates a [GskRenderNode] that will stroke a border rectangle inside the
+    given [outline].
+
+    The 4 sides of the border can have different widths and colors. *)
 
 (* Methods *)
 

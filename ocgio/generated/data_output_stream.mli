@@ -2,7 +2,8 @@
     writing data directly to an output stream.
 
     Its methods, signals and properties are on
-    {!class-type-data_output_stream_t}. The functions it is built on are in
+    {!class-type-data_output_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_output_stream}. *)
 
 (** The methods, signals and properties of a [GDataOutputStream]. *)
@@ -52,4 +53,7 @@ class data_output_stream : Raw.Data_output_stream.t -> data_output_stream_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GDataOutputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Output_stream.output_stream_t -> data_output_stream_t
+(** Creates a new data output stream for [base_stream]. *)

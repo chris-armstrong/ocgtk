@@ -7,7 +7,9 @@ module rec Box : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_box_get_type"
 
   external alloc : unit -> t = "ml_graphene_box_alloc"
-  (** Create a new Box *)
+  (** Allocates a new #graphene_box_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -111,7 +113,9 @@ end = struct
   external gtype : unit -> Gobject.Type.t = "ml_graphene_box_get_type"
 
   external alloc : unit -> t = "ml_graphene_box_alloc"
-  (** Create a new Box *)
+  (** Allocates a new #graphene_box_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -217,7 +221,9 @@ and Sphere : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_sphere_get_type"
 
   external alloc : unit -> t = "ml_graphene_sphere_alloc"
-  (** Create a new Sphere *)
+  (** Allocates a new #graphene_sphere_t.
+
+      The contents of the newly allocated structure are undefined. *)
 
   (* Methods *)
 
@@ -278,7 +284,9 @@ end = struct
   external gtype : unit -> Gobject.Type.t = "ml_graphene_sphere_get_type"
 
   external alloc : unit -> t = "ml_graphene_sphere_alloc"
-  (** Create a new Sphere *)
+  (** Allocates a new #graphene_sphere_t.
+
+      The contents of the newly allocated structure are undefined. *)
 
   (* Methods *)
 

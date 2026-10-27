@@ -6,8 +6,9 @@
     The contents of the #graphene_matrix_t structure are private and should
     never be accessed directly.
 
-    Its methods, signals and properties are on {!class-type-matrix_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Matrix}. *)
+    Its methods, signals and properties are on {!class-type-matrix_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Matrix}. *)
 
 class type matrix_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.matrix_t
@@ -18,4 +19,7 @@ class matrix : Raw.Matrix.t -> matrix_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_matrix_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> matrix_t
+(** Allocates a new #graphene_matrix_t. *)

@@ -1,7 +1,8 @@
 (** A size.
 
-    Its methods, signals and properties are on {!class-type-size_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Size}. *)
+    Its methods, signals and properties are on {!class-type-size_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Size}. *)
 
 (** The methods, signals and properties of a [graphene_size_t]. *)
 class type size_t = object
@@ -23,4 +24,9 @@ class size : Raw.Size.t -> size_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_size_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> size_t
+(** Allocates a new #graphene_size_t.
+
+    The contents of the returned value are undefined. *)

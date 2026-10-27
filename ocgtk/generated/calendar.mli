@@ -49,8 +49,9 @@
 
     Marked day labels get the :selected state assigned.
 
-    Its methods, signals and properties are on {!class-type-calendar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Calendar}. *)
+    Its methods, signals and properties are on {!class-type-calendar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Calendar}. *)
 
 (** The methods, signals and properties of a [GtkCalendar]. *)
 class type calendar_t = object
@@ -147,4 +148,7 @@ class calendar : Raw.Calendar.t -> calendar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCalendar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> calendar_t
+(** Creates a new calendar, with the current date being selected. *)

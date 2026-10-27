@@ -18,14 +18,20 @@ type t = [ `inet_address | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_inet_address_get_type"
 
 external new_any : Ocgio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
-(** Create a new InetAddress *)
+[@@ocaml.doc
+  "Creates a [GInetAddress] for the \"any\" address (unassigned/\"don't\n\
+   care\") for [family]."]
 
 external new_from_string : string -> t = "ml_g_inet_address_new_from_string"
-(** Create a new InetAddress *)
+(** Parses [string] as an IP address and creates a new [GInetAddress].
+
+    If [address] is an IPv6 address, it can also contain a scope ID (separated
+    from the address by a [%]). Note that currently this behavior is platform
+    specific. This may change in a future release. *)
 
 external new_loopback : Ocgio_enums.socketfamily -> t
   = "ml_g_inet_address_new_loopback"
-(** Create a new InetAddress *)
+(** Creates a [GInetAddress] for the loopback address for [family]. *)
 
 (* Methods *)
 

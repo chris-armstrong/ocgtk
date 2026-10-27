@@ -11,11 +11,13 @@ let generate_type_declaration ~output_mode:_ ~base_type buf : unit =
   bprintf buf "type t = %s\n\n" base_type
 
 (** Generate constructors section *)
-let generate_constructors_section ~ctx ~class_name ~constructors buf : unit =
+let generate_constructors_section ~ctx ~class_name ~c_type ~constructors buf :
+    unit =
   List.iter
     ~f:(fun (ctor : gir_constructor) ->
       if Layer1_constructor.should_generate_constructor ~ctx ctor then
-        Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~buf ctor)
+        Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~c_type
+          ~buf ctor)
     (constructors |> Option.value ~default:[])
 
 (** Generate methods section *)
@@ -80,7 +82,7 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
       bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
         c_name)
   @@ from_gobject_c_name;
-  generate_constructors_section ~ctx ~class_name ~constructors buf;
+  generate_constructors_section ~ctx ~class_name ~c_type ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
     ~entity_kind ~methods buf;
   generate_properties_section ~ctx ~class_name ~methods ~properties buf;

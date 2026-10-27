@@ -10,8 +10,9 @@
     GtkTextBuffer can support undoing changes to the buffer content, see
     [Gtk.TextBuffer.set_enable_undo].
 
-    Its methods, signals and properties are on {!class-type-text_buffer_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Text_buffer}. *)
+    Its methods, signals and properties are on {!class-type-text_buffer_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Text_buffer}. *)
 
 class type text_buffer_t =
   Text_buffer_and__text_iter_and__text_mark.text_buffer_t
@@ -22,4 +23,7 @@ class text_buffer : Raw.Text_buffer.t -> text_buffer_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTextBuffer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Text_tag_table.text_tag_table_t option -> text_buffer_t
+(** Creates a new text buffer. *)

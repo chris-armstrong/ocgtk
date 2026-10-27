@@ -1,7 +1,8 @@
 (** A render node repeating its single child node.
 
-    Its methods, signals and properties are on {!class-type-repeat_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Repeat_node}. *)
+    Its methods, signals and properties are on {!class-type-repeat_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Repeat_node}. *)
 
 (** The methods, signals and properties of a [GskRepeatNode]. *)
 class type repeat_node_t = object
@@ -21,8 +22,12 @@ class repeat_node : Raw.Repeat_node.t -> repeat_node_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GskRepeatNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgraphene.Rect.rect_t ->
   Render_node.render_node_t ->
   Ocgraphene.Rect.rect_t option ->
   repeat_node_t
+(** Creates a [GskRenderNode] that will repeat the drawing of [child] across the
+    given [bounds]. *)

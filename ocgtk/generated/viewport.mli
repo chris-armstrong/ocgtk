@@ -18,8 +18,9 @@
     Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
     role.
 
-    Its methods, signals and properties are on {!class-type-viewport_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Viewport}. *)
+    Its methods, signals and properties are on {!class-type-viewport_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Viewport}. *)
 
 (** The methods, signals and properties of a [GtkViewport]. *)
 class type viewport_t = object
@@ -69,5 +70,11 @@ class viewport : Raw.Viewport.t -> viewport_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkViewport], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Adjustment.adjustment_t option -> Adjustment.adjustment_t option -> viewport_t
+(** Creates a new [GtkViewport].
+
+    The new viewport uses the given adjustments, or default adjustments if none
+    are given. *)

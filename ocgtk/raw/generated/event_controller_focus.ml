@@ -18,7 +18,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_event_controller_focus_get_type"
 
 external new_ : unit -> t = "ml_gtk_event_controller_focus_new"
-(** Create a new EventControllerFocus *)
+(** Creates a new event controller that will handle focus events. *)
 
 (* Methods *)
 

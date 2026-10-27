@@ -85,8 +85,9 @@
 \  </widgets>\n\
  </object>\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-size_group_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Size_group}."]
+ Its methods, signals and properties are on {!class-type-size_group_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Size_group}."]
 
 (** The methods, signals and properties of a [GtkSizeGroup]. *)
 class type size_group_t = object
@@ -140,4 +141,7 @@ class size_group : Raw.Size_group.t -> size_group_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSizeGroup], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.sizegroupmode -> size_group_t
+(** Create a new [GtkSizeGroup]. *)

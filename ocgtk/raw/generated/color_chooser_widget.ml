@@ -42,7 +42,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_color_chooser_widget_get_type"
 
 external new_ : unit -> t = "ml_gtk_color_chooser_widget_new"
-(** Create a new ColorChooserWidget *)
+(** Creates a new [GtkColorChooserWidget]. *)
 
 (* Methods *)
 (* Properties *)

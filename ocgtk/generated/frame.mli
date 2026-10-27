@@ -29,8 +29,9 @@
  like “border-style” on this node.\n\n\
  {b Accessibility}\n\n\
  [GtkFrame] uses the [Gtk.AccessibleRole.group] role.\n\n\
- Its methods, signals and properties are on {!class-type-frame_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Frame}."]
+ Its methods, signals and properties are on {!class-type-frame_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Frame}."]
 
 (** The methods, signals and properties of a [GtkFrame]. *)
 class type frame_t = object
@@ -94,4 +95,9 @@ class frame : Raw.Frame.t -> frame_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFrame], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> frame_t
+(** Creates a new [GtkFrame], with optional label [label].
+
+    If [label] is [NULL], the label is omitted. *)

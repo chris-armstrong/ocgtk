@@ -22,7 +22,9 @@ type t = [ `socket_listener | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_listener_get_type"
 
 external new_ : unit -> t = "ml_g_socket_listener_new"
-(** Create a new SocketListener *)
+(** Creates a new [GSocketListener] with no sockets to listen for. New listeners
+    can be added with e.g. g_socket_listener_add_address() or
+    g_socket_listener_add_inet_port(). *)
 
 (* Methods *)
 

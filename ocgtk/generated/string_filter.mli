@@ -13,7 +13,8 @@
     [Gtk.StringFilter.set_ignore_case].
 
     Its methods, signals and properties are on {!class-type-string_filter_t}.
-    The functions it is built on are in {!Ocgtk.Raw.String_filter}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.String_filter}. *)
 
 (** The methods, signals and properties of a [GtkStringFilter]. *)
 class type string_filter_t = object
@@ -55,4 +56,10 @@ class string_filter : Raw.String_filter.t -> string_filter_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStringFilter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Expression.expression_t option -> string_filter_t
+(** Creates a new string filter.
+
+    You will want to set up the filter by providing a string to search for and
+    by providing a property to look up on the item. *)

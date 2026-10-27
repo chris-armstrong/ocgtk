@@ -19,17 +19,42 @@ let test_l2_module_with_class_doc () =
      Its methods, signals and properties are on {!class-type-button_t}. The \
      functions it is built on are in {!Ocgtk.Raw.Button}. *)"
     (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
-       ~c_type:"GtkButton" ~class_doc:(Some "A button."))
+       ~c_type:"GtkButton" ~has_constructors:false ~class_doc:(Some "A button."))
 
 (* The first paragraph is also the synopsis on the parent's page, where
    [class-type-button_t] does not resolve. *)
 let test_l2_module_without_class_doc_starts_with_synopsis () =
-  check_text "a sentence of its own first"
+  check_text "a sentence of its own first, then the constructors link"
     "(** Bindings for [GtkButton].\n\n\
-     Its methods, signals and properties are on {!class-type-button_t}. The \
-     functions it is built on are in {!Ocgtk.Raw.Button}. *)"
+     Its methods, signals and properties are on {!class-type-button_t}. Its \
+     constructors are under {!section-constructors}. The functions it is built \
+     on are in {!Ocgtk.Raw.Button}. *)"
     (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
-       ~c_type:"GtkButton" ~class_doc:None)
+       ~c_type:"GtkButton" ~has_constructors:true ~class_doc:None)
+
+let ctor ?ctor_doc () =
+  Type_factory.make_gir_constructor ~ctor_name:"new_with_label"
+    ~c_identifier:"gtk_button_new_with_label" ?ctor_doc ()
+
+let test_constructor_fallback_links_upstream () =
+  check_text "C function linked to its gi-docgen page"
+    "(** Create a new [GtkButton]. Wraps \
+     {{:https://docs.gtk.org/gtk4/ctor.Button.new_with_label.html}[gtk_button_new_with_label]}. \
+     *)"
+    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+       ~c_type:"GtkButton" (ctor ()))
+
+let test_constructor_fallback_without_upstream_site () =
+  check_text "C function, not linked"
+    "(** Create a new [GtkButton]. Wraps [gtk_button_new_with_label]. *)"
+    (Entity_doc.constructor ~namespace:"cairo" ~class_name:"Button"
+       ~c_type:"GtkButton" (ctor ()))
+
+let test_constructor_gir_doc_wins () =
+  check_text "translated GIR doc" "(** Creates a labelled button. *)"
+    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+       ~c_type:"GtkButton"
+       (ctor ~ctor_doc:"Creates a labelled button." ()))
 
 let test_l1_module_points_to_layer2 () =
   check_text "class doc, then the layer 2 module"
@@ -97,6 +122,13 @@ let tests =
     ( "layer 2 module doc without a class doc starts with a synopsis",
       `Quick,
       test_l2_module_without_class_doc_starts_with_synopsis );
+    ( "constructor fallback links the gi-docgen page",
+      `Quick,
+      test_constructor_fallback_links_upstream );
+    ( "constructor fallback without a gi-docgen site",
+      `Quick,
+      test_constructor_fallback_without_upstream_site );
+    ("constructor GIR doc wins", `Quick, test_constructor_gir_doc_wins);
     ( "layer 1 module doc points to layer 2",
       `Quick,
       test_l1_module_points_to_layer2 );

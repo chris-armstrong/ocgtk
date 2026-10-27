@@ -18,6 +18,8 @@ external new_ :
   Color_stop.t array ->
   Gsize.t ->
   t = "ml_gsk_repeating_linear_gradient_node_new"
-(** Create a new RepeatingLinearGradientNode *)
+(** Creates a [GskRenderNode] that will create a repeating linear gradient from
+    the given points and color stops, and render that into the area given by
+    [bounds]. *)
 
 (* Methods *)

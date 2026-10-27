@@ -9,8 +9,9 @@
     create the appropriate windowing system resources needed to render the
     scene.
 
-    Its methods, signals and properties are on {!class-type-renderer_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Renderer}. *)
+    Its methods, signals and properties are on {!class-type-renderer_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Renderer}. *)
 
 (** The methods, signals and properties of a [GskRenderer]. *)
 class type renderer_t = object
@@ -78,4 +79,13 @@ class renderer : Raw.Renderer.t -> renderer_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskRenderer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_for_surface : Ocgdk.Surface.surface_t -> renderer_t
+(** Creates an appropriate [GskRenderer] instance for the given surface.
+
+    If the [GSK_RENDERER] environment variable is set, GSK will try that
+    renderer first, before trying the backend-specific default. The ultimate
+    fallback is the cairo renderer.
+
+    The renderer will be realized before it is returned. *)

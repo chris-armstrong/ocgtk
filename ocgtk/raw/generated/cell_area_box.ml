@@ -26,7 +26,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_area_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_area_box_new"
-(** Create a new CellAreaBox *)
+(** Creates a new [GtkCellAreaBox]. *)
 
 (* Methods *)
 

@@ -1,7 +1,8 @@
 (** Information about nodes in a remote object hierarchy.
 
     Its methods, signals and properties are on {!class-type-d_bus_node_info_t}.
-    The functions it is built on are in {!Ocgio.Raw.D_bus_node_info}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.D_bus_node_info}. *)
 
 (** The methods, signals and properties of a [GDBusNodeInfo]. *)
 class type d_bus_node_info_t = object
@@ -22,4 +23,12 @@ class d_bus_node_info : Raw.D_bus_node_info.t -> d_bus_node_info_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GDBusNodeInfo], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_for_xml : string -> (d_bus_node_info_t, GError.t) result
+(** Parses [xml_data] and returns a [GDBusNodeInfo] representing the data.
+
+    The introspection XML must contain exactly one top-level [<node>] element.
+
+    Note that this routine is using a GMarkup-based parser that only accepts a
+    subset of valid XML documents. *)

@@ -1645,3 +1645,7 @@ and mount : Raw.Mount.t -> mount_t
 and volume : Raw.Volume.t -> volume_t
 
 val new_ : unit -> app_launch_context_t
+(** Creates a new application launch context. This is not normally used, instead
+    you instantiate a subclass of this, such as
+    {{:https://docs.gtk.org/gdk4/class.AppLaunchContext.html}[GdkAppLaunchContext]}.
+*)

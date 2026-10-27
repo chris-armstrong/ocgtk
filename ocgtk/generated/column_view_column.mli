@@ -15,7 +15,8 @@
     clicking on the column header.
 
     Its methods, signals and properties are on
-    {!class-type-column_view_column_t}. The functions it is built on are in
+    {!class-type-column_view_column_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Column_view_column}. *)
 
 class type column_view_column_t =
@@ -27,7 +28,18 @@ class column_view_column : Raw.Column_view_column.t -> column_view_column_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkColumnViewColumn], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   string option ->
   List_item_factory.list_item_factory_t option ->
   column_view_column_t
+[@@ocaml.doc
+  "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+   The function takes ownership of the argument, so you can write code like:\n\n\
+   {[\n\
+   column = gtk_column_view_column_new (_(\"Name\"),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/name.ui\"));\n\
+   ]}"]

@@ -9,7 +9,8 @@
     in a different format.
 
     Its methods, signals and properties are on
-    {!class-type-texture_downloader_t}. The functions it is built on are in
+    {!class-type-texture_downloader_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Texture_downloader}. *)
 
 (** The methods, signals and properties of a [GdkTextureDownloader]. *)
@@ -45,4 +46,10 @@ class texture_downloader : Raw.Texture_downloader.t -> texture_downloader_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GdkTextureDownloader], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Texture.texture_t -> texture_downloader_t
+(** Creates a new texture downloader for [texture].
+
+    By default, the downloader will convert the data to the default memory
+    format, and to the sRGB color state. *)

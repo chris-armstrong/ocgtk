@@ -79,7 +79,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drag_source_get_type"
 
 external new_ : unit -> t = "ml_gtk_drag_source_new"
-(** Create a new DragSource *)
+(** Creates a new [GtkDragSource] object. *)
 
 (* Methods *)
 

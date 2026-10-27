@@ -90,8 +90,9 @@
  - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
  - [Gtk.AccessibleRole.tab] role for each tab\n\
  - [Gtk.AccessibleRole.tab_panel] for each page\n\n\
- Its methods, signals and properties are on {!class-type-notebook_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Notebook}."]
+ Its methods, signals and properties are on {!class-type-notebook_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Notebook}."]
 
 (** The methods, signals and properties of a [GtkNotebook]. *)
 class type notebook_t = object
@@ -533,4 +534,7 @@ class notebook : Raw.Notebook.t -> notebook_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkNotebook], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> notebook_t
+(** Creates a new [GtkNotebook] widget with no pages. *)

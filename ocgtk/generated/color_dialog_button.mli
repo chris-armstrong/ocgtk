@@ -17,7 +17,8 @@
     gets the .color style class.
 
     Its methods, signals and properties are on
-    {!class-type-color_dialog_button_t}. The functions it is built on are in
+    {!class-type-color_dialog_button_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_dialog_button}. *)
 
 (** The methods, signals and properties of a [GtkColorDialogButton]. *)
@@ -54,4 +55,10 @@ class color_dialog_button : Raw.Color_dialog_button.t -> color_dialog_button_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkColorDialogButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Color_dialog.color_dialog_t option -> color_dialog_button_t
+(** Creates a new [GtkColorDialogButton] with the given [GtkColorDialog].
+
+    You can pass [NULL] to this function and set a [GtkColorDialog] later. The
+    button will be insensitive until that happens. *)

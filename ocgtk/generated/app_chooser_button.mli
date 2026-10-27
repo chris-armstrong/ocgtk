@@ -27,7 +27,8 @@
     “appchooserbutton”.
 
     Its methods, signals and properties are on
-    {!class-type-app_chooser_button_t}. The functions it is built on are in
+    {!class-type-app_chooser_button_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_button}. *)
 
 (** The methods, signals and properties of a [GtkAppChooserButton]. *)
@@ -111,4 +112,8 @@ class app_chooser_button : Raw.App_chooser_button.t -> app_chooser_button_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkAppChooserButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> app_chooser_button_t
+(** Creates a new [GtkAppChooserButton] for applications that can handle content
+    of the given type. *)

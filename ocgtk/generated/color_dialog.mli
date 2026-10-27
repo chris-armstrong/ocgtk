@@ -9,8 +9,9 @@
     See [Gtk.ColorDialogButton] for a convenient control that uses
     [GtkColorDialog] and presents the results.
 
-    Its methods, signals and properties are on {!class-type-color_dialog_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Color_dialog}. *)
+    Its methods, signals and properties are on {!class-type-color_dialog_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Color_dialog}. *)
 
 (** The methods, signals and properties of a [GtkColorDialog]. *)
 class type color_dialog_t = object
@@ -49,4 +50,7 @@ class color_dialog : Raw.Color_dialog.t -> color_dialog_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkColorDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> color_dialog_t
+(** Creates a new [GtkColorDialog] object. *)

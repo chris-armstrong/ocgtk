@@ -1,7 +1,8 @@
 (** Builds the uniforms data for a [GskGLShader].
 
     Its methods, signals and properties are on
-    {!class-type-shader_args_builder_t}. The functions it is built on are in
+    {!class-type-shader_args_builder_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Shader_args_builder}. *)
 
 (** The methods, signals and properties of a [GskShaderArgsBuilder]. *)
@@ -64,4 +65,8 @@ class shader_args_builder : Raw.Shader_args_builder.t -> shader_args_builder_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GskShaderArgsBuilder], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Gl_shader.gl_shader_t -> Glib_bytes.t option -> shader_args_builder_t
+(** Allocates a builder that can be used to construct a new uniform data chunk.
+*)

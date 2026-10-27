@@ -30,7 +30,8 @@
     stack switcher to be made vertical with [gtk_orientable_set_orientation()].
 
     Its methods, signals and properties are on {!class-type-stack_switcher_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Stack_switcher}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Stack_switcher}. *)
 
 (** The methods, signals and properties of a [GtkStackSwitcher]. *)
 class type stack_switcher_t = object
@@ -54,4 +55,7 @@ class stack_switcher : Raw.Stack_switcher.t -> stack_switcher_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkStackSwitcher], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> stack_switcher_t
+(** Create a new [GtkStackSwitcher]. *)

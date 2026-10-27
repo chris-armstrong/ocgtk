@@ -21,7 +21,11 @@ external new_ :
   t
   = "ml_gsk_radial_gradient_node_new_bytecode"
     "ml_gsk_radial_gradient_node_new_native"
-(** Create a new RadialGradientNode *)
+(** Creates a [GskRenderNode] that draws a radial gradient.
+
+    The radial gradient starts around [center]. The size of the gradient is
+    dictated by [hradius] in horizontal orientation and by [vradius] in vertical
+    orientation. *)
 
 (* Methods *)
 

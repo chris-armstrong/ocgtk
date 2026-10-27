@@ -28,14 +28,20 @@ let l1_module ~namespace ~class_name ~c_type ~class_doc =
          (layer2_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
-let l2_module ~namespace ~class_name ~c_type ~class_doc =
+let l2_module ~namespace ~class_name ~c_type ~has_constructors ~class_doc =
+  let constructors =
+    if has_constructors then
+      " Its constructors are under {!section-constructors}."
+    else ""
+  in
   Doc_emit.item_doc ~indent:""
     ~fallback:(synopsis_fallback ~c_type)
     ~suffix:
       (Fmt.str
-         "Its methods, signals and properties are on {!class-type-%s}. The \
+         "Its methods, signals and properties are on {!class-type-%s}.%s The \
           functions it is built on are in {!%s}."
          (Utils.class_type_name class_name)
+         constructors
          (layer1_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
@@ -70,3 +76,28 @@ let combined_module ~namespace ~layer ~class_names =
         than this one."
        what
        (String.concat ~sep:", " links))
+
+(* gi-docgen sites; cairo and Graphene have none. *)
+let upstream_base_url = function
+  | "Gtk" -> Some "https://docs.gtk.org/gtk4/"
+  | "Gdk" -> Some "https://docs.gtk.org/gdk4/"
+  | "Gsk" -> Some "https://docs.gtk.org/gsk4/"
+  | "Gio" -> Some "https://docs.gtk.org/gio/"
+  | "Pango" -> Some "https://docs.gtk.org/Pango/"
+  | "PangoCairo" -> Some "https://docs.gtk.org/PangoCairo/"
+  | "GdkPixbuf" -> Some "https://docs.gtk.org/gdk-pixbuf/"
+  | _ -> None
+
+let constructors_heading = "(** {2:constructors Constructors} *)"
+
+let constructor ~namespace ~class_name ~c_type (ctor : Types.gir_constructor) =
+  let c_function = Fmt.str "[%s]" ctor.c_identifier in
+  let wrapped =
+    upstream_base_url namespace
+    |> Option.fold ~none:c_function ~some:(fun base ->
+        Fmt.str "{{:%sctor.%s.%s.html}%s}" base class_name ctor.ctor_name
+          c_function)
+  in
+  Doc_emit.item_doc ~indent:""
+    ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." c_type wrapped)
+    ~context:Doc_translate.Member ctor.ctor_doc

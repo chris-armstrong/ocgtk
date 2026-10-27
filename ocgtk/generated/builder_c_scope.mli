@@ -14,7 +14,8 @@
     will require that [GModule] be supported on the platform.
 
     Its methods, signals and properties are on {!class-type-builder_c_scope_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Builder_c_scope}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Builder_c_scope}. *)
 
 (** The methods, signals and properties of a [GtkBuilderCScope]. *)
 class type builder_c_scope_t = object
@@ -27,4 +28,11 @@ class builder_c_scope : Raw.Builder_c_scope.t -> builder_c_scope_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkBuilderCScope], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> builder_c_scope_t
+(** Creates a new [GtkBuilderCScope] object to use with future [GtkBuilder]
+    instances.
+
+    Calling this function is only necessary if you want to add custom callbacks
+    via [Gtk.BuilderCScope.add_callback_symbol]. *)

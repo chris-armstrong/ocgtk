@@ -1,7 +1,8 @@
 (** A point with two coordinates.
 
-    Its methods, signals and properties are on {!class-type-point_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Point}. *)
+    Its methods, signals and properties are on {!class-type-point_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Point}. *)
 
 (** The methods, signals and properties of a [graphene_point_t]. *)
 class type point_t = object
@@ -35,4 +36,26 @@ class point : Raw.Point.t -> point_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_point_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> point_t
+(** Allocates a new #graphene_point_t structure.
+
+    The coordinates of the returned point are (0, 0).
+
+    It's possible to chain this function with graphene_point_init() or
+    graphene_point_init_from_point(), e.g.:
+
+    {[
+      graphene_point_t *
+      point_new (float x, float y)
+      {
+        return graphene_point_init (graphene_point_alloc (), x, y);
+      }
+
+      graphene_point_t *
+      point_copy (const graphene_point_t *p)
+      {
+        return graphene_point_init_from_point (graphene_point_alloc (), p);
+      }
+    ]} *)

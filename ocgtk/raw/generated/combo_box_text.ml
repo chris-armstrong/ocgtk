@@ -54,10 +54,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_combo_box_text_get_type"
 
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"
-(** Create a new ComboBoxText *)
+(** Creates a new [GtkComboBoxText]. *)
 
 external new_with_entry : unit -> t = "ml_gtk_combo_box_text_new_with_entry"
-(** Create a new ComboBoxText *)
+(** Creates a new [GtkComboBoxText] with an entry. *)
 
 (* Methods *)
 

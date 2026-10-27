@@ -32,7 +32,8 @@
     [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role.
 
     Its methods, signals and properties are on {!class-type-password_entry_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Password_entry}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Password_entry}. *)
 
 (** The methods, signals and properties of a [GtkPasswordEntry]. *)
 class type password_entry_t = object
@@ -73,4 +74,7 @@ class password_entry : Raw.Password_entry.t -> password_entry_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkPasswordEntry], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> password_entry_t
+(** Creates a [GtkPasswordEntry]. *)

@@ -37,7 +37,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_button_get_type"
 
 external new_ : string -> t = "ml_gtk_app_chooser_button_new"
-(** Create a new AppChooserButton *)
+(** Creates a new [GtkAppChooserButton] for applications that can handle content
+    of the given type. *)
 
 (* Methods *)
 

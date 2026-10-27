@@ -43,27 +43,48 @@ type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_picture_get_type"
 
 external new_ : unit -> t = "ml_gtk_picture_new"
-(** Create a new Picture *)
+(** Creates a new empty [GtkPicture] widget. *)
 
 external new_for_file : Ocgio_raw.File.t option -> t
   = "ml_gtk_picture_new_for_file"
-(** Create a new Picture *)
+(** Creates a new [GtkPicture] displaying the given [file].
+
+    If the file isn’t found or can’t be loaded, the resulting [GtkPicture] is
+    empty.
+
+    If you need to detect failures to load the file, use an image loading
+    framework such as libglycin to load the file yourself, then create the
+    [GtkPicture] from the texture. *)
 
 external new_for_filename : string option -> t
   = "ml_gtk_picture_new_for_filename"
-(** Create a new Picture *)
+(** Creates a new [GtkPicture] displaying the file [filename].
+
+    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    function for details. *)
 
 external new_for_paintable : Ocgdk_raw.Paintable.t option -> t
   = "ml_gtk_picture_new_for_paintable"
-(** Create a new Picture *)
+(** Creates a new [GtkPicture] displaying [paintable].
+
+    The [GtkPicture] will track changes to the [paintable] and update its size
+    and contents in response to it. *)
 
 external new_for_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t option -> t
   = "ml_gtk_picture_new_for_pixbuf"
-(** Create a new Picture *)
+(** Creates a new [GtkPicture] displaying [pixbuf].
+
+    This is a utility function that calls [Gtk.Picture.new_for_paintable], See
+    that function for details.
+
+    The pixbuf must not be modified after passing it to this function. *)
 
 external new_for_resource : string option -> t
   = "ml_gtk_picture_new_for_resource"
-(** Create a new Picture *)
+(** Creates a new [GtkPicture] displaying the resource at [resource_path].
+
+    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    function for details. *)
 
 (* Methods *)
 

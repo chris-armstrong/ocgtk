@@ -7,7 +7,8 @@
     [GtkSliceListModel] passes through sections from the underlying model.
 
     Its methods, signals and properties are on {!class-type-slice_list_model_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Slice_list_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Slice_list_model}. *)
 
 (** The methods, signals and properties of a [GtkSliceListModel]. *)
 class type slice_list_model_t = object
@@ -50,5 +51,11 @@ class slice_list_model : Raw.Slice_list_model.t -> slice_list_model_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkSliceListModel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.List_model.list_model_t option -> int -> int -> slice_list_model_t
+(** Creates a new slice model.
+
+    It presents the slice from [offset] to offset + [size] of the given [model].
+*)

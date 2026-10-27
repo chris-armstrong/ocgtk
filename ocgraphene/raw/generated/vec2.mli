@@ -13,7 +13,11 @@ type t = [ `vec2 ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_graphene_vec2_get_type"
 
 external alloc : unit -> t = "ml_graphene_vec2_alloc"
-(** Create a new Vec2 *)
+(** Allocates a new #graphene_vec2_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec2_init() to initialize the vector. *)
 
 (* Methods *)
 

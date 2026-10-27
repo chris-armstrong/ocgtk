@@ -40,7 +40,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_file_chooser_widget_get_type"
 
 external new_ : Ocgtk_enums.filechooseraction -> t
   = "ml_gtk_file_chooser_widget_new"
-(** Create a new FileChooserWidget *)
+(** Creates a new [GtkFileChooserWidget].
+
+    This is a file chooser widget that can be embedded in custom windows, and it
+    is the same widget that is used by [GtkFileChooserDialog]. *)
 
 (* Methods *)
 (* Properties *)

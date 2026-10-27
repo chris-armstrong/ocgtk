@@ -12,7 +12,8 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Selection_model.t option -> t
   = "ml_gtk_selection_filter_model_new"
-(** Create a new SelectionFilterModel *)
+(** Creates a new [GtkSelectionFilterModel] that will include the selected items
+    from the underlying selection model. *)
 
 (* Methods *)
 

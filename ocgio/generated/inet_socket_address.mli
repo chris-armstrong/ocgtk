@@ -5,7 +5,8 @@
     or [struct sockaddr_in]).
 
     Its methods, signals and properties are on
-    {!class-type-inet_socket_address_t}. The functions it is built on are in
+    {!class-type-inet_socket_address_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_socket_address}. *)
 
 (** The methods, signals and properties of a [GInetSocketAddress]. *)
@@ -42,5 +43,14 @@ class inet_socket_address : Raw.Inet_socket_address.t -> inet_socket_address_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GInetSocketAddress], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Inet_address.inet_address_t -> UInt16.t -> inet_socket_address_t
+(** Creates a new [GInetSocketAddress] for [address] and [port]. *)
+
 val new_from_string : string -> int -> inet_socket_address_t
+(** Creates a new [GInetSocketAddress] for [address] and [port].
+
+    If [address] is an IPv6 address, it can also contain a scope ID (separated
+    from the address by a [%]). Note that currently this behavior is platform
+    specific. This may change in a future release. *)

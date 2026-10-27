@@ -6,7 +6,8 @@
     underlying sort model will preserve the selection.
 
     Its methods, signals and properties are on {!class-type-single_selection_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Single_selection}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Single_selection}. *)
 
 (** The methods, signals and properties of a [GtkSingleSelection]. *)
 class type single_selection_t = object
@@ -75,4 +76,7 @@ class single_selection : Raw.Single_selection.t -> single_selection_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkSingleSelection], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgio.List_model.list_model_t option -> single_selection_t
+(** Creates a new selection to handle [model]. *)

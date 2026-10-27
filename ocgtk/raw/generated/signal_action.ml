@@ -13,7 +13,10 @@ type t = [ `signal_action | `shortcut_action | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_signal_action_get_type"
 
 external new_ : string -> t = "ml_gtk_signal_action_new"
-(** Create a new SignalAction *)
+(** Creates an action that when activated, emits the given action signal on the
+    provided widget.
+
+    It will also unpack the args into arguments passed to the signal. *)
 
 (* Methods *)
 

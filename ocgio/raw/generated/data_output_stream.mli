@@ -13,7 +13,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gio_data_output_stream_get_type"
 
 external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
-(** Create a new DataOutputStream *)
+(** Creates a new data output stream for [base_stream]. *)
 
 (* Methods *)
 

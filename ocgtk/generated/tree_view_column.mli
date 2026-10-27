@@ -11,7 +11,8 @@
     CSS node structure for treeviews and their headers.
 
     Its methods, signals and properties are on {!class-type-tree_view_column_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_view_column}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_view_column}. *)
 
 (** The methods, signals and properties of a [GtkTreeViewColumn]. *)
 class type tree_view_column_t = object
@@ -239,8 +240,12 @@ class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkTreeViewColumn], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> tree_view_column_t
+(** Creates a new [GtkTreeViewColumn]. *)
 
 val new_with_area :
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
   tree_view_column_t
+(** Creates a new [GtkTreeViewColumn] using [area] to render its cells. *)

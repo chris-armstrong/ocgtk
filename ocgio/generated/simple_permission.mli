@@ -6,7 +6,8 @@
     [GSimplePermission] will result in errors.
 
     Its methods, signals and properties are on
-    {!class-type-simple_permission_t}. The functions it is built on are in
+    {!class-type-simple_permission_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Simple_permission}. *)
 
 (** The methods, signals and properties of a [GSimplePermission]. *)
@@ -20,4 +21,8 @@ class simple_permission : Raw.Simple_permission.t -> simple_permission_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GSimplePermission], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : bool -> simple_permission_t
+(** Creates a new [GPermission] instance that represents an action that is
+    either always or never allowed. *)

@@ -16,7 +16,8 @@
     class [.appchooser].
 
     Its methods, signals and properties are on
-    {!class-type-app_chooser_dialog_t}. The functions it is built on are in
+    {!class-type-app_chooser_dialog_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_dialog}. *)
 
 (** The methods, signals and properties of a [GtkAppChooserDialog]. *)
@@ -47,14 +48,22 @@ class app_chooser_dialog : Raw.App_chooser_dialog.t -> app_chooser_dialog_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkAppChooserDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Application_and__window_and__window_group.window_t option ->
   Enums.dialogflags ->
   Ocgio.File.file_t ->
   app_chooser_dialog_t
+(** Creates a new [GtkAppChooserDialog] for the provided [GFile].
+
+    The dialog will show applications that can open the file. *)
 
 val new_for_content_type :
   Application_and__window_and__window_group.window_t option ->
   Enums.dialogflags ->
   string ->
   app_chooser_dialog_t
+(** Creates a new [GtkAppChooserDialog] for the provided content type.
+
+    The dialog will show applications that can open the content type. *)

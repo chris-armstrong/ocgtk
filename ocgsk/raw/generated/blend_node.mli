@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_blend_node_get_type"
 
 external new_ : Render_node.t -> Render_node.t -> Ocgsk_enums.blendmode -> t
   = "ml_gsk_blend_node_new"
-(** Create a new BlendNode *)
+(** Creates a [GskRenderNode] that will use [blend_mode] to blend the [top] node
+    onto the [bottom] node. *)
 
 (* Methods *)
 

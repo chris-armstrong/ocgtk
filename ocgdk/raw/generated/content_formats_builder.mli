@@ -11,7 +11,10 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gdk_content_formats_builder_get_type"
 
 external new_ : unit -> t = "ml_gdk_content_formats_builder_new"
-(** Create a new ContentFormatsBuilder *)
+(** Create a new [GdkContentFormatsBuilder] object.
+
+    The resulting builder would create an empty [GdkContentFormats]. Use
+    addition functions to add types to it. *)
 
 (* Methods *)
 

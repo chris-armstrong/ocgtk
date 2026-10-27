@@ -74,8 +74,9 @@
  be the same. The arrow also does not support any border shape other than\n\
  solid, no border-radius, only one border width (border-bottom-width is\n\
  used) and no box-shadow.\n\n\
- Its methods, signals and properties are on {!class-type-popover_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Popover}."]
+ Its methods, signals and properties are on {!class-type-popover_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Popover}."]
 
 (** The methods, signals and properties of a [GtkPopover]. *)
 class type popover_t = object
@@ -204,4 +205,7 @@ class popover : Raw.Popover.t -> popover_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPopover], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> popover_t
+(** Creates a new [GtkPopover]. *)

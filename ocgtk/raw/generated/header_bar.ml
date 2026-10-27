@@ -66,7 +66,7 @@ type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_header_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_header_bar_new"
-(** Create a new HeaderBar *)
+(** Creates a new [GtkHeaderBar] widget. *)
 
 (* Methods *)
 external set_use_native_controls : t -> bool -> unit

@@ -7,7 +7,8 @@
     [Gio.SocketConnectable] for an example of using the connectable interface.
 
     Its methods, signals and properties are on {!class-type-network_service_t}.
-    The functions it is built on are in {!Ocgio.Raw.Network_service}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Network_service}. *)
 
 (** The methods, signals and properties of a [GNetworkService]. *)
 class type network_service_t = object
@@ -41,4 +42,9 @@ class network_service : Raw.Network_service.t -> network_service_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GNetworkService], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> string -> string -> network_service_t
+(** Creates a new [GNetworkService] representing the given [service],
+    [protocol], and [domain]. This will initially be unresolved; use the
+    [GSocketConnectable] interface to resolve it. *)

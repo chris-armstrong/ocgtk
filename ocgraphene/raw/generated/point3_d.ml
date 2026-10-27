@@ -10,7 +10,7 @@ type t = [ `point3_d ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_graphene_point3_d_get_type"
 
 external alloc : unit -> t = "ml_graphene_point3d_alloc"
-(** Create a new Point3D *)
+(** Allocates a #graphene_point3d_t structure. *)
 
 (* Methods *)
 

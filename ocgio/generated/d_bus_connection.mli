@@ -51,7 +51,8 @@
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-export.c}gdbus-example-export.c}
 
     Its methods, signals and properties are on {!class-type-d_bus_connection_t}.
-    The functions it is built on are in {!Ocgio.Raw.D_bus_connection}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.D_bus_connection}. *)
 
 (** The methods, signals and properties of a [GDBusConnection]. *)
 class type d_bus_connection_t = object
@@ -315,11 +316,15 @@ class d_bus_connection : Raw.D_bus_connection.t -> d_bus_connection_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GDBusConnection], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_finish :
   Async_result.async_result_t -> (d_bus_connection_t, GError.t) result
+(** Finishes an operation started with g_dbus_connection_new(). *)
 
 val new_for_address_finish :
   Async_result.async_result_t -> (d_bus_connection_t, GError.t) result
+(** Finishes an operation started with g_dbus_connection_new_for_address(). *)
 
 val new_for_address_sync :
   string ->
@@ -327,6 +332,23 @@ val new_for_address_sync :
   D_bus_auth_observer.d_bus_auth_observer_t option ->
   Cancellable.cancellable_t option ->
   (d_bus_connection_t, GError.t) result
+(** Synchronously connects and sets up a D-Bus client connection for exchanging
+    D-Bus messages with an endpoint specified by [address] which must be in the
+    {{:https://dbus.freedesktop.org/doc/dbus-specification.html#addresses}D-Bus
+     address format}.
+
+    This constructor can only be used to initiate client-side connections - use
+    g_dbus_connection_new_sync() if you need to act as the server. In
+    particular, [flags] cannot contain the
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER],
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS] or
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flags.
+
+    This is a synchronous failable constructor. See
+    g_dbus_connection_new_for_address() for the asynchronous version.
+
+    If [observer] is not [NULL] it may be used to control the authentication
+    process. *)
 
 val new_sync :
   Io_stream.io_stream_t ->
@@ -335,3 +357,18 @@ val new_sync :
   D_bus_auth_observer.d_bus_auth_observer_t option ->
   Cancellable.cancellable_t option ->
   (d_bus_connection_t, GError.t) result
+(** Synchronously sets up a D-Bus connection for exchanging D-Bus messages with
+    the end represented by [stream].
+
+    If [stream] is a [GSocketConnection], then the corresponding [GSocket] will
+    be put into non-blocking mode.
+
+    The D-Bus connection will interact with [stream] from a worker thread. As a
+    result, the caller should not interact with [stream] after this method has
+    been called, except by calling g_object_unref() on it.
+
+    If [observer] is not [NULL] it may be used to control the authentication
+    process.
+
+    This is a synchronous failable constructor. See g_dbus_connection_new() for
+    the asynchronous version. *)

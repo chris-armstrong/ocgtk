@@ -126,11 +126,12 @@ and Path_measure : sig
   external gtype : unit -> Gobject.Type.t = "ml_gsk_path_measure_get_type"
 
   external new_ : Path.t -> t = "ml_gsk_path_measure_new"
-  (** Create a new PathMeasure *)
+  (** Creates a measure object for the given [path] with the default tolerance.
+  *)
 
   external new_with_tolerance : Path.t -> float -> t
     = "ml_gsk_path_measure_new_with_tolerance"
-  (** Create a new PathMeasure *)
+  (** Creates a measure object for the given [path] and [tolerance]. *)
 
   (* Methods *)
 

@@ -7,7 +7,8 @@
     added: [recent::private] (boolean) and [recent:applications] (stringv).
 
     Its methods, signals and properties are on {!class-type-bookmark_list_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Bookmark_list}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Bookmark_list}. *)
 
 (** The methods, signals and properties of a [GtkBookmarkList]. *)
 class type bookmark_list_t = object
@@ -50,4 +51,7 @@ class bookmark_list : Raw.Bookmark_list.t -> bookmark_list_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBookmarkList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> string option -> bookmark_list_t
+(** Creates a new [GtkBookmarkList] with the given [attributes]. *)

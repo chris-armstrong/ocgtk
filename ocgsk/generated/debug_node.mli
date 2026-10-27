@@ -1,7 +1,8 @@
 (** A render node that emits a debugging message when drawing its child node.
 
-    Its methods, signals and properties are on {!class-type-debug_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Debug_node}. *)
+    Its methods, signals and properties are on {!class-type-debug_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Debug_node}. *)
 
 (** The methods, signals and properties of a [GskDebugNode]. *)
 class type debug_node_t = object
@@ -21,4 +22,10 @@ class debug_node : Raw.Debug_node.t -> debug_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskDebugNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Render_node.render_node_t -> string -> debug_node_t
+(** Creates a [GskRenderNode] that will add debug information about the given
+    [child].
+
+    Adding this node has no visual effect. *)

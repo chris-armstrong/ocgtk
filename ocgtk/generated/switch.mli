@@ -24,8 +24,9 @@
  using any style classes.\n\n\
  {b Accessibility}\n\n\
  [GtkSwitch] uses the [Gtk.AccessibleRole.switch] role.\n\n\
- Its methods, signals and properties are on {!class-type-switch_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Switch}."]
+ Its methods, signals and properties are on {!class-type-switch_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Switch}."]
 
 (** The methods, signals and properties of a [GtkSwitch]. *)
 class type switch_t = object
@@ -69,4 +70,7 @@ class switch : Raw.Switch.t -> switch_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSwitch], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> switch_t
+(** Creates a new [GtkSwitch] widget. *)

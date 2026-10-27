@@ -5,7 +5,8 @@
     [Gio.PollableOutputStream]: it always polls as ready.
 
     Its methods, signals and properties are on
-    {!class-type-memory_output_stream_t}. The functions it is built on are in
+    {!class-type-memory_output_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Memory_output_stream}. *)
 
 (** The methods, signals and properties of a [GMemoryOutputStream]. *)
@@ -48,4 +49,8 @@ class memory_output_stream :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GMemoryOutputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_resizable : unit -> memory_output_stream_t
+(** Creates a new [GMemoryOutputStream], using g_realloc() and g_free() for
+    memory allocation. *)

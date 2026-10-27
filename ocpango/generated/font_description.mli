@@ -6,7 +6,8 @@
     font to load.
 
     Its methods, signals and properties are on {!class-type-font_description_t}.
-    The functions it is built on are in {!Ocpango.Raw.Font_description}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocpango.Raw.Font_description}. *)
 
 (** The methods, signals and properties of a [PangoFontDescription]. *)
 class type font_description_t = object
@@ -294,4 +295,7 @@ class font_description : Raw.Font_description.t -> font_description_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [PangoFontDescription], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> font_description_t
+(** Creates a new font description structure with all fields unset. *)

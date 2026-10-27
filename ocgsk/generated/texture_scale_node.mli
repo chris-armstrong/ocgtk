@@ -1,7 +1,8 @@
 (** A render node for a [GdkTexture], with control over scaling.
 
     Its methods, signals and properties are on
-    {!class-type-texture_scale_node_t}. The functions it is built on are in
+    {!class-type-texture_scale_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Texture_scale_node}. *)
 
 (** The methods, signals and properties of a [GskTextureScaleNode]. *)
@@ -23,8 +24,20 @@ class texture_scale_node : Raw.Texture_scale_node.t -> texture_scale_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskTextureScaleNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgdk.Texture.texture_t ->
   Ocgraphene.Rect.rect_t ->
   Enums.scalingfilter ->
   texture_scale_node_t
+(** Creates a node that scales the texture to the size given by the bounds using
+    the filter and then places it at the bounds' position.
+
+    Note that further scaling and other transformations which are applied to the
+    node will apply linear filtering to the resulting texture, as usual.
+
+    This node is intended for tight control over scaling applied to a texture,
+    such as in image editors and requires the application to be aware of the
+    whole render tree as further transforms may be applied that conflict with
+    the desired effect of this node. *)

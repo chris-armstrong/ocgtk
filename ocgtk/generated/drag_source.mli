@@ -67,8 +67,9 @@
  [GDK_ACTION_MOVE], you need to listen for the\n\
  [Gtk.DragSource::drag-end] signal and delete the\n\
  data after it has been transferred.\n\n\
- Its methods, signals and properties are on {!class-type-drag_source_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Drag_source}."]
+ Its methods, signals and properties are on {!class-type-drag_source_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Drag_source}."]
 
 (** The methods, signals and properties of a [GtkDragSource]. *)
 class type drag_source_t = object
@@ -154,4 +155,7 @@ class drag_source : Raw.Drag_source.t -> drag_source_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDragSource], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> drag_source_t
+(** Creates a new [GtkDragSource] object. *)

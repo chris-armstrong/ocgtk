@@ -19,8 +19,9 @@
 
     GtkCellView has a single CSS node with name cellview.
 
-    Its methods, signals and properties are on {!class-type-cell_view_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Cell_view}. *)
+    Its methods, signals and properties are on {!class-type-cell_view_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Cell_view}. *)
 
 (** The methods, signals and properties of a [GtkCellView]. *)
 class type cell_view_t = object
@@ -87,13 +88,32 @@ class cell_view : Raw.Cell_view.t -> cell_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCellView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_view_t
+(** Creates a new [GtkCellView] widget. *)
 
 val new_with_context :
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t ->
   cell_view_t
+(** Creates a new [GtkCellView] widget with a specific [GtkCellArea] to layout
+    cells and a specific [GtkCellAreaContext].
+
+    Specifying the same context for a handful of cells lets the underlying area
+    synchronize the geometry for those cells, in this way alignments with
+    cellviews for other rows are possible. *)
 
 val new_with_markup : string -> cell_view_t
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererText] to it, and
+    makes it show [markup]. The text can be marked up with the
+    {{:https://docs.gtk.org/Pango/pango_markup.html}Pango text markup language}.
+*)
+
 val new_with_text : string -> cell_view_t
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererText] to it, and
+    makes it show [text]. *)
+
 val new_with_texture : Ocgdk.Texture.texture_t -> cell_view_t
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererPixbuf] to it,
+    and makes it show [texture]. *)

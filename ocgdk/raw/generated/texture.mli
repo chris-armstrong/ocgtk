@@ -34,22 +34,76 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_texture_get_type"
 
 external new_for_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t -> t
   = "ml_gdk_texture_new_for_pixbuf"
-(** Create a new Texture *)
+(** Creates a new texture object representing the [GdkPixbuf].
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image. *)
 
 external new_from_bytes : Glib_bytes.t -> (t, GError.t) result
   = "ml_gdk_texture_new_from_bytes"
-(** Create a new Texture *)
+(** Creates a new texture by loading an image from memory,
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
 
 external new_from_file : Ocgio_raw.File.t -> (t, GError.t) result
   = "ml_gdk_texture_new_from_file"
-(** Create a new Texture *)
+(** Creates a new texture by loading an image from a file.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
 
 external new_from_filename : string -> (t, GError.t) result
   = "ml_gdk_texture_new_from_filename"
-(** Create a new Texture *)
+(** Creates a new texture by loading an image from a file.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
 
 external new_from_resource : string -> t = "ml_gdk_texture_new_from_resource"
-(** Create a new Texture *)
+(** Creates a new texture by loading an image from a resource.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    It is a fatal error if [resource_path] does not specify a valid image
+    resource and the program will abort if that happens. If you are unsure about
+    the validity of a resource, use [Gdk.Texture.new_from_file] to load it.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image. *)
 
 (* Methods *)
 

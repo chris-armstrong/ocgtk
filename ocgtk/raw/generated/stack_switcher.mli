@@ -40,7 +40,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_stack_switcher_get_type"
 
 external new_ : unit -> t = "ml_gtk_stack_switcher_new"
-(** Create a new StackSwitcher *)
+(** Create a new [GtkStackSwitcher]. *)
 
 (* Methods *)
 

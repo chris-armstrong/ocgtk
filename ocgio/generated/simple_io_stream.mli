@@ -9,7 +9,8 @@
     [Gio.IOStream].
 
     Its methods, signals and properties are on {!class-type-simple_io_stream_t}.
-    The functions it is built on are in {!Ocgio.Raw.Simple_io_stream}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Simple_io_stream}. *)
 
 (** The methods, signals and properties of a [GSimpleIOStream]. *)
 class type simple_io_stream_t = object
@@ -22,7 +23,11 @@ class simple_io_stream : Raw.Simple_io_stream.t -> simple_io_stream_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GSimpleIOStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Input_stream.input_stream_t ->
   Output_stream.output_stream_t ->
   simple_io_stream_t
+(** Creates a new [GSimpleIOStream] wrapping [input_stream] and [output_stream].
+    See also [GIOStream]. *)

@@ -34,8 +34,9 @@
     [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
     [Gtk.LockButton:tooltip-not-authorized] properties.
 
-    Its methods, signals and properties are on {!class-type-lock_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Lock_button}. *)
+    Its methods, signals and properties are on {!class-type-lock_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Lock_button}. *)
 
 (** The methods, signals and properties of a [GtkLockButton]. *)
 class type lock_button_t = object
@@ -65,4 +66,7 @@ class lock_button : Raw.Lock_button.t -> lock_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkLockButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgio.Permission.permission_t option -> lock_button_t
+(** Creates a new lock button which reflects the [permission]. *)

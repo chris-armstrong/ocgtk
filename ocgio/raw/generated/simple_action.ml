@@ -12,11 +12,19 @@ type t = [ `simple_action | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_simple_action_get_type"
 
 external new_ : string -> Gvariant_type.t option -> t = "ml_g_simple_action_new"
-(** Create a new SimpleAction *)
+(** Creates a new action.
+
+    The created action is stateless. See g_simple_action_new_stateful() to
+    create an action that has state. *)
 
 external new_stateful : string -> Gvariant_type.t option -> Gvariant.t -> t
   = "ml_g_simple_action_new_stateful"
-(** Create a new SimpleAction *)
+(** Creates a new stateful action.
+
+    All future state values must have the same [GVariantType] as the initial
+    [state].
+
+    If the [state] [GVariant] is floating, it is consumed. *)
 
 (* Methods *)
 

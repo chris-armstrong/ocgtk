@@ -3,8 +3,9 @@
     Because sections are nested into one another, you can use
     [CssSection.get_parent] to get the containing region.
 
-    Its methods, signals and properties are on {!class-type-css_section_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Css_section}. *)
+    Its methods, signals and properties are on {!class-type-css_section_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Css_section}. *)
 
 (** The methods, signals and properties of a [GtkCssSection]. *)
 class type css_section_t = object
@@ -48,11 +49,15 @@ class css_section : Raw.Css_section.t -> css_section_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCssSection], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.File.file_t option ->
   Raw.Css_location.t ->
   Raw.Css_location.t ->
   css_section_t
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    from the [start] location to the [end] location. *)
 
 val new_with_bytes :
   Ocgio.File.file_t option ->
@@ -60,3 +65,5 @@ val new_with_bytes :
   Raw.Css_location.t ->
   Raw.Css_location.t ->
   css_section_t
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    or the given [bytes] from the [start] location to the [end] location. *)

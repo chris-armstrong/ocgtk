@@ -3,8 +3,9 @@
     You typically obtain [PangoItems] by itemizing a piece of text with
     [itemize].
 
-    Its methods, signals and properties are on {!class-type-item_t}. The
-    functions it is built on are in {!Ocpango.Raw.Item}. *)
+    Its methods, signals and properties are on {!class-type-item_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Item}. *)
 
 (** The methods, signals and properties of a [PangoItem]. *)
 class type item_t = object
@@ -49,4 +50,7 @@ class item : Raw.Item.t -> item_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [PangoItem], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> item_t
+(** Creates a new [PangoItem] structure initialized to default values. *)

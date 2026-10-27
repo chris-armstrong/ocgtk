@@ -8,7 +8,8 @@
     various states (maximized, on all workspaces, etc).
 
     Its methods, signals and properties are on {!class-type-toplevel_layout_t}.
-    The functions it is built on are in {!Ocgdk.Raw.Toplevel_layout}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgdk.Raw.Toplevel_layout}. *)
 
 (** The methods, signals and properties of a [GdkToplevelLayout]. *)
 class type toplevel_layout_t = object
@@ -46,4 +47,13 @@ class toplevel_layout : Raw.Toplevel_layout.t -> toplevel_layout_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GdkToplevelLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> toplevel_layout_t
+(** Create a toplevel layout description.
+
+    Used together with [Gdk.Toplevel.present] to describe how a toplevel surface
+    should be placed and behave on-screen.
+
+    The size is in ”application pixels”, not ”device pixels” (see
+    [Gdk.Surface.get_scale]). *)

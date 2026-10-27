@@ -17,7 +17,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_click_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_click_new"
-(** Create a new GestureClick *)
+(** Returns a newly created [GtkGesture] that recognizes single and multiple
+    presses. *)
 
 (* Methods *)
 val on_pressed :

@@ -116,7 +116,13 @@ external gtype : unit -> Gobject.Type.t
 external new_ :
   D_bus_connection.t -> Cancellable.t option -> (t, GError.t) result
   = "ml_g_debug_controller_dbus_new"
-(** Create a new DebugControllerDBus *)
+(** Create a new [GDebugControllerDBus] and synchronously initialize it.
+
+    Initializing the object will export the debug object on [connection]. The
+    object will remain registered until the last reference to the
+    [GDebugControllerDBus] is dropped.
+
+    Initialization may fail if registering the object on [connection] fails. *)
 
 (* Methods *)
 

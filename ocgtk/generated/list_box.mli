@@ -61,8 +61,9 @@
     [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
     uses the [Gtk.AccessibleRole.list_item] role.
 
-    Its methods, signals and properties are on {!class-type-list_box_t}. The
-    functions it is built on are in {!Ocgtk.Raw.List_box}. *)
+    Its methods, signals and properties are on {!class-type-list_box_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.List_box}. *)
 
 (** The methods, signals and properties of a [GtkListBox]. *)
 class type list_box_t = object
@@ -275,4 +276,7 @@ class list_box : Raw.List_box.t -> list_box_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkListBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> list_box_t
+(** Creates a new [GtkListBox] container. *)

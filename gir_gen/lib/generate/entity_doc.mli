@@ -17,6 +17,7 @@ val l2_module :
   namespace:string ->
   class_name:string ->
   c_type:string ->
+  has_constructors:bool ->
   class_doc:string option ->
   Doc_emit.t option
 (** The layer 2 module's floating doc: the class doc, then where its members are
@@ -38,3 +39,17 @@ val combined_module :
   Doc_emit.t option
 (** The floating doc of a module that defines a cycle's classes together: which
     modules re-export them, and that those are the ones to use. *)
+
+val constructors_heading : string
+(** The floating [Constructors] heading, with the [constructors] label the layer
+    2 module doc links to. *)
+
+val constructor :
+  namespace:string ->
+  class_name:string ->
+  c_type:string ->
+  Types.gir_constructor ->
+  Doc_emit.t option
+(** A constructor's doc at either layer: its translated GIR doc, else "Create a
+    new [c_type]. Wraps [c_function]." with the C function linked to its
+    gi-docgen page when the namespace has a gi-docgen site. *)

@@ -69,7 +69,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_get_type"
 
 external new_ : Gobject.Type.t -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_new"
-(** Create a new DropTarget *)
+(** Creates a new [GtkDropTarget] object.
+
+    If the drop target should support more than 1 type, pass [G_TYPE_INVALID]
+    for [type] and then call [Gtk.DropTarget.set_gtypes]. *)
 
 (* Methods *)
 

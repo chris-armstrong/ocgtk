@@ -58,8 +58,9 @@
  If you are not interested in receiving the drop, but just want to update\n\
  UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
  use [Gtk.DropControllerMotion].\n\n\
- Its methods, signals and properties are on {!class-type-drop_target_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Drop_target}."]
+ Its methods, signals and properties are on {!class-type-drop_target_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Drop_target}."]
 
 (** The methods, signals and properties of a [GtkDropTarget]. *)
 class type drop_target_t = object
@@ -144,4 +145,10 @@ class drop_target : Raw.Drop_target.t -> drop_target_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDropTarget], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Gobject.Type.t -> Ocgdk.Enums.dragaction -> drop_target_t
+(** Creates a new [GtkDropTarget] object.
+
+    If the drop target should support more than 1 type, pass [G_TYPE_INVALID]
+    for [type] and then call [Gtk.DropTarget.set_gtypes]. *)

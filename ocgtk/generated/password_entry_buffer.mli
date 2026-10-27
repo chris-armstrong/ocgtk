@@ -4,7 +4,8 @@
     [GtkPasswordEntry] uses a [GtkPasswordEntryBuffer].
 
     Its methods, signals and properties are on
-    {!class-type-password_entry_buffer_t}. The functions it is built on are in
+    {!class-type-password_entry_buffer_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Password_entry_buffer}. *)
 
 (** The methods, signals and properties of a [GtkPasswordEntryBuffer]. *)
@@ -20,4 +21,7 @@ class password_entry_buffer :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkPasswordEntryBuffer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> password_entry_buffer_t
+(** Creates a new [GtkEntryBuffer] using secure memory allocations. *)

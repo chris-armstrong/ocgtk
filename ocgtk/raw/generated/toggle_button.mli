@@ -65,14 +65,19 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_toggle_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_toggle_button_new"
-(** Create a new ToggleButton *)
+(** Creates a new toggle button.
+
+    A widget should be packed into the button, as in [Gtk.Button.new]. *)
 
 external new_with_label : string -> t = "ml_gtk_toggle_button_new_with_label"
-(** Create a new ToggleButton *)
+(** Creates a new toggle button with a text label. *)
 
 external new_with_mnemonic : string -> t
   = "ml_gtk_toggle_button_new_with_mnemonic"
-(** Create a new ToggleButton *)
+(** Creates a new [GtkToggleButton] containing a label.
+
+    The label will be created using [Gtk.Label.new_with_mnemonic], so
+    underscores in [label] indicate the mnemonic for the button. *)
 
 (* Methods *)
 

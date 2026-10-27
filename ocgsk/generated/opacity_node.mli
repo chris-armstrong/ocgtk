@@ -1,7 +1,8 @@
 (** A render node controlling the opacity of its single child node.
 
-    Its methods, signals and properties are on {!class-type-opacity_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Opacity_node}. *)
+    Its methods, signals and properties are on {!class-type-opacity_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Opacity_node}. *)
 
 (** The methods, signals and properties of a [GskOpacityNode]. *)
 class type opacity_node_t = object
@@ -21,4 +22,8 @@ class opacity_node : Raw.Opacity_node.t -> opacity_node_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GskOpacityNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Render_node.render_node_t -> float -> opacity_node_t
+(** Creates a [GskRenderNode] that will drawn the [child] with reduced
+    [opacity]. *)

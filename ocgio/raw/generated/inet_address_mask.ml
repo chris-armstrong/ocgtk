@@ -14,11 +14,16 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_inet_address_mask_get_type"
 
 external new_ : Inet_address.t -> int -> (t, GError.t) result
   = "ml_g_inet_address_mask_new"
-(** Create a new InetAddressMask *)
+(** Creates a new [GInetAddressMask] representing all addresses whose first
+    [length] bits match [addr]. *)
 
 external new_from_string : string -> (t, GError.t) result
   = "ml_g_inet_address_mask_new_from_string"
-(** Create a new InetAddressMask *)
+[@@ocaml.doc
+  "Parses [mask_string] as an IP address and (optional) length, and\n\
+   creates a new [GInetAddressMask]. The length, if present, is\n\
+   delimited by a \"/\". If it is not present, then the length is\n\
+   assumed to be the full length of the address."]
 
 (* Methods *)
 

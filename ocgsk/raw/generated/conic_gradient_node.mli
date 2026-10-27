@@ -16,7 +16,11 @@ external new_ :
   Color_stop.t array ->
   Gsize.t ->
   t = "ml_gsk_conic_gradient_node_new"
-(** Create a new ConicGradientNode *)
+(** Creates a [GskRenderNode] that draws a conic gradient.
+
+    The conic gradient starts around [center] in the direction of [rotation]. A
+    rotation of 0 means that the gradient points up. Color stops are then added
+    clockwise. *)
 
 (* Methods *)
 

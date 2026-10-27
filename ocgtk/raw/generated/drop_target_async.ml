@@ -43,7 +43,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_async_get_type"
 external new_ :
   Ocgdk_raw.Content_formats.t option -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_async_new"
-(** Create a new DropTargetAsync *)
+(** Creates a new [GtkDropTargetAsync] object. *)
 
 (* Methods *)
 

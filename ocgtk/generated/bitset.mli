@@ -16,8 +16,9 @@
     The main use case for [GtkBitset] is implementing complex selections for
     [Gtk.SelectionModel].
 
-    Its methods, signals and properties are on {!class-type-bitset_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Bitset}. *)
+    Its methods, signals and properties are on {!class-type-bitset_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Bitset}. *)
 
 (** The methods, signals and properties of a [GtkBitset]. *)
 class type bitset_t = object
@@ -164,5 +165,10 @@ class bitset : Raw.Bitset.t -> bitset_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBitset], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_empty : unit -> bitset_t
+(** Creates a new empty bitset. *)
+
 val new_range : int -> int -> bitset_t
+(** Creates a bitset with the given range set. *)

@@ -5,7 +5,8 @@
     Usually, [GtkMediaControls] is used as part of [Gtk.Video].
 
     Its methods, signals and properties are on {!class-type-media_controls_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Media_controls}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Media_controls}. *)
 
 (** The methods, signals and properties of a [GtkMediaControls]. *)
 class type media_controls_t = object
@@ -27,4 +28,7 @@ class media_controls : Raw.Media_controls.t -> media_controls_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkMediaControls], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Media_stream.media_stream_t option -> media_controls_t
+(** Creates a new [GtkMediaControls] managing the [stream] passed to it. *)

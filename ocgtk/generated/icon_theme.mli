@@ -28,8 +28,9 @@
  // Use the paintable\n\
  g_object_unref (icon);\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-icon_theme_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Icon_theme}."]
+ Its methods, signals and properties are on {!class-type-icon_theme_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Icon_theme}."]
 
 (** The methods, signals and properties of a [GtkIconTheme]. *)
 class type icon_theme_t = object
@@ -152,4 +153,11 @@ class icon_theme : Raw.Icon_theme.t -> icon_theme_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkIconTheme], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> icon_theme_t
+(** Creates a new icon theme object.
+
+    Icon theme objects are used to lookup up an icon by name in a particular
+    icon theme. Usually, you’ll want to use [Gtk.IconTheme.get_for_display]
+    rather than creating a new icon theme object for scratch. *)

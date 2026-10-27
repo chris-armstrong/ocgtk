@@ -12,7 +12,8 @@
     gtk_tree_view_column_add_attribute().
 
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_spinner_t}. The functions it is built on are in
+    {!class-type-cell_renderer_spinner_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_spinner}. *)
 
 (** The methods, signals and properties of a [GtkCellRendererSpinner]. *)
@@ -34,4 +35,8 @@ class cell_renderer_spinner :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkCellRendererSpinner], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_renderer_spinner_t
+(** Returns a new cell renderer which will show a spinner to indicate activity.
+*)

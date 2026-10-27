@@ -89,8 +89,9 @@
 \  fragColor = position * source1 + (1.0 - position) * source2;\n\
  }\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-gl_shader_t}. The \
- functions it is built on are in {!Ocgsk.Raw.Gl_shader}."]
+ Its methods, signals and properties are on {!class-type-gl_shader_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgsk.Raw.Gl_shader}."]
 
 (** The methods, signals and properties of a [GskGLShader]. *)
 class type gl_shader_t = object
@@ -184,5 +185,10 @@ class gl_shader : Raw.Gl_shader.t -> gl_shader_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskGLShader], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_bytes : Glib_bytes.t -> gl_shader_t
+(** Creates a [GskGLShader] that will render pixels using the specified code. *)
+
 val new_from_resource : string -> gl_shader_t
+(** Creates a [GskGLShader] that will render pixels using the specified code. *)

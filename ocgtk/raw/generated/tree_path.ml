@@ -10,17 +10,24 @@ type t = [ `tree_path ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_path_get_type"
 
 external new_ : unit -> t = "ml_gtk_tree_path_new"
-(** Create a new TreePath *)
+(** Creates a new [GtkTreePath] This refers to a row. *)
 
 external new_first : unit -> t = "ml_gtk_tree_path_new_first"
-(** Create a new TreePath *)
+(** Creates a new [GtkTreePath].
+
+    The string representation of this path is “0”. *)
 
 external new_from_indicesv : int array -> Gsize.t -> t
   = "ml_gtk_tree_path_new_from_indicesv"
-(** Create a new TreePath *)
+(** Creates a new path with the given [indices] array of [length]. *)
 
 external new_from_string : string -> t = "ml_gtk_tree_path_new_from_string"
-(** Create a new TreePath *)
+(** Creates a new [GtkTreePath] initialized to [path].
+
+    [path] is expected to be a colon separated list of numbers. For example, the
+    string “10:4:0” would create a path of depth 3 pointing to the 11th child of
+    the root node, the 5th child of that 11th child, and the 1st child of that
+    5th child. If an invalid path string is passed in, [NULL] is returned. *)
 
 (* Methods *)
 

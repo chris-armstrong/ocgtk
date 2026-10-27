@@ -2,7 +2,8 @@
     reading structured data directly from a binary input stream.
 
     Its methods, signals and properties are on
-    {!class-type-data_input_stream_t}. The functions it is built on are in
+    {!class-type-data_input_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_input_stream}. *)
 
 (** The methods, signals and properties of a [GDataInputStream]. *)
@@ -99,4 +100,7 @@ class data_input_stream : Raw.Data_input_stream.t -> data_input_stream_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GDataInputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Input_stream.input_stream_t -> data_input_stream_t
+(** Creates a new data input stream for the [base_stream]. *)

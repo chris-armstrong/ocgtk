@@ -26,7 +26,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_stack_sidebar_get_type"
 
 external new_ : unit -> t = "ml_gtk_stack_sidebar_new"
-(** Create a new StackSidebar *)
+(** Creates a new [GtkStackSidebar]. *)
 
 (* Methods *)
 

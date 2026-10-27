@@ -43,8 +43,9 @@
 
     A notification can be sent with [Gio.Application.send_notification].
 
-    Its methods, signals and properties are on {!class-type-notification_t}. The
-    functions it is built on are in {!Ocgio.Raw.Notification}. *)
+    Its methods, signals and properties are on {!class-type-notification_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Notification}. *)
 
 (** The methods, signals and properties of a [GNotification]. *)
 class type notification_t = object
@@ -124,4 +125,12 @@ class notification : Raw.Notification.t -> notification_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GNotification], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> notification_t
+(** Creates a new [GNotification] with [title] as its title.
+
+    After populating [notification] with more details, it can be sent to the
+    desktop shell with g_application_send_notification(). Changing any
+    properties after this call will not have any effect until resending
+    [notification]. *)

@@ -35,8 +35,9 @@
 
     [GtkStatusbar] has a single CSS node with name [statusbar].
 
-    Its methods, signals and properties are on {!class-type-statusbar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Statusbar}. *)
+    Its methods, signals and properties are on {!class-type-statusbar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Statusbar}. *)
 
 (** The methods, signals and properties of a [GtkStatusbar]. *)
 class type statusbar_t = object
@@ -88,4 +89,7 @@ class statusbar : Raw.Statusbar.t -> statusbar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStatusbar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> statusbar_t
+(** Creates a new [GtkStatusbar] ready for messages. *)

@@ -15,7 +15,7 @@ type t = [ `font_description ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_pango_font_description_get_type"
 
 external new_ : unit -> t = "ml_pango_font_description_new"
-(** Create a new FontDescription *)
+(** Creates a new font description structure with all fields unset. *)
 
 (* Methods *)
 

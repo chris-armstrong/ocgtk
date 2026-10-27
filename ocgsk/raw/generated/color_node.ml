@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_color_node_get_type"
 
 external new_ : Ocgdk_raw.Rgb_a.t -> Ocgraphene_raw.Rect.t -> t
   = "ml_gsk_color_node_new"
-(** Create a new ColorNode *)
+(** Creates a [GskRenderNode] that will render the color specified by [rgba]
+    into the area given by [bounds]. *)
 
 (* Methods *)
 

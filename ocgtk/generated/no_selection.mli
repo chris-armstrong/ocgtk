@@ -5,8 +5,9 @@
 
     [GtkNoSelection] passes through sections from the underlying model.
 
-    Its methods, signals and properties are on {!class-type-no_selection_t}. The
-    functions it is built on are in {!Ocgtk.Raw.No_selection}. *)
+    Its methods, signals and properties are on {!class-type-no_selection_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.No_selection}. *)
 
 (** The methods, signals and properties of a [GtkNoSelection]. *)
 class type no_selection_t = object
@@ -32,4 +33,7 @@ class no_selection : Raw.No_selection.t -> no_selection_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkNoSelection], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgio.List_model.list_model_t option -> no_selection_t
+(** Creates a new selection to handle [model]. *)

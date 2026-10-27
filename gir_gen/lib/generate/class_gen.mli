@@ -345,6 +345,8 @@ val generate_constructor_impl :
 val generate_constructor_sig :
   ctx:Types.generation_context ->
   buf:Buffer.t ->
+  class_name:string ->
+  c_type:string ->
   class_type_name:string ->
   current_layer2_module:StdLabels.String.t ->
   Types.gir_constructor ->

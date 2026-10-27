@@ -18,7 +18,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_drag_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_drag_new"
-(** Create a new GestureDrag *)
+(** Returns a newly created [GtkGesture] that recognizes drags. *)
 
 (* Methods *)
 

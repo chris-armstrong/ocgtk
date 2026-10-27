@@ -76,8 +76,9 @@
     If you need more complex control over your widget, you should consider
     creating your own [GtkWidget] subclass.
 
-    Its methods, signals and properties are on {!class-type-drawing_area_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Drawing_area}. *)
+    Its methods, signals and properties are on {!class-type-drawing_area_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Drawing_area}. *)
 
 (** The methods, signals and properties of a [GtkDrawingArea]. *)
 class type drawing_area_t = object
@@ -126,4 +127,7 @@ class drawing_area : Raw.Drawing_area.t -> drawing_area_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDrawingArea], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> drawing_area_t
+(** Creates a new drawing area. *)

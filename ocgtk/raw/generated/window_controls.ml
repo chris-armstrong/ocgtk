@@ -48,7 +48,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_window_controls_get_type"
 
 external new_ : Ocgtk_enums.packtype -> t = "ml_gtk_window_controls_new"
-(** Create a new WindowControls *)
+(** Creates a new [GtkWindowControls]. *)
 
 (* Methods *)
 external set_use_native_controls : t -> bool -> unit

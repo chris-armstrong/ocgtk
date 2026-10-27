@@ -14,7 +14,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_stylus_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_stylus_new"
-(** Create a new GestureStylus *)
+(** Creates a new [GtkGestureStylus]. *)
 
 (* Methods *)
 

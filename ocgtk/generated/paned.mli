@@ -59,8 +59,9 @@
  gtk_paned_set_shrink_end_child (GTK_PANED (hpaned), FALSE);\n\
  gtk_widget_set_size_request (frame2, 50, -1);\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-paned_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Paned}."]
+ Its methods, signals and properties are on {!class-type-paned_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Paned}."]
 
 (** The methods, signals and properties of a [GtkPaned]. *)
 class type paned_t = object
@@ -178,4 +179,7 @@ class paned : Raw.Paned.t -> paned_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPaned], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> paned_t
+(** Creates a new [GtkPaned] widget. *)

@@ -10,8 +10,9 @@
     A [GskPathMeasure] struct is a reference counted struct and should be
     treated as opaque.
 
-    Its methods, signals and properties are on {!class-type-path_measure_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Path_measure}. *)
+    Its methods, signals and properties are on {!class-type-path_measure_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Path_measure}. *)
 
 class type path_measure_t =
   Path_and__path_measure_and__path_point.path_measure_t
@@ -22,5 +23,10 @@ class path_measure : Raw.Path_measure.t -> path_measure_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GskPathMeasure], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Raw.Path.t -> path_measure_t
+(** Creates a measure object for the given [path] with the default tolerance. *)
+
 val new_with_tolerance : Raw.Path.t -> float -> path_measure_t
+(** Creates a measure object for the given [path] and [tolerance]. *)

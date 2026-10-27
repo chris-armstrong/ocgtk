@@ -114,7 +114,12 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_get_type"
 
 external new_ : Ocgdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t
   = "ml_gdk_pixbuf_new"
-(** Create a new Pixbuf *)
+(** Creates a new [GdkPixbuf] structure and allocates a buffer for it.
+
+    If the allocation of the buffer failed, this function will return [NULL].
+
+    The buffer has an optimal rowstride. Note that the buffer is not cleared;
+    you will have to fill it completely yourself. *)
 
 external new_from_bytes :
   Glib_bytes.t ->
@@ -127,35 +132,115 @@ external new_from_bytes :
   t
   = "ml_gdk_pixbuf_new_from_bytes_bytecode"
     "ml_gdk_pixbuf_new_from_bytes_native"
-(** Create a new Pixbuf *)
+(** Creates a new [GdkPixbuf] out of in-memory readonly image data.
+
+    Currently only RGB images with 8 bits per sample are supported.
+
+    This is the [GBytes] variant of gdk_pixbuf_new_from_data(), useful for
+    language bindings. *)
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_file"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from a file.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set. Possible errors are:
+
+    - the file could not be opened
+    - there is no loader for the file's format
+    - there is not enough memory to allocate the image buffer
+    - the image buffer contains invalid data
+
+    The error domains are [GDK_PIXBUF_ERROR] and [G_FILE_ERROR]. *)
 
 external new_from_file_at_scale :
   string -> int -> int -> bool -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_file_at_scale"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from a file.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set. Possible errors are:
+
+    - the file could not be opened
+    - there is no loader for the file's format
+    - there is not enough memory to allocate the image buffer
+    - the image buffer contains invalid data
+
+    The error domains are [GDK_PIXBUF_ERROR] and [G_FILE_ERROR].
+
+    The image will be scaled to fit in the requested size, optionally preserving
+    the image's aspect ratio.
+
+    When preserving the aspect ratio, a [width] of -1 will cause the image to be
+    scaled to the exact given height, and a [height] of -1 will cause the image
+    to be scaled to the exact given width. When not preserving aspect ratio, a
+    [width] or [height] of -1 means to not scale the image at all in that
+    dimension. Negative values for [width] and [height] are allowed since 2.8.
+*)
 
 external new_from_file_at_size : string -> int -> int -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_file_at_size"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from a file.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set. Possible errors are:
+
+    - the file could not be opened
+    - there is no loader for the file's format
+    - there is not enough memory to allocate the image buffer
+    - the image buffer contains invalid data
+
+    The error domains are [GDK_PIXBUF_ERROR] and [G_FILE_ERROR].
+
+    The image will be scaled to fit in the requested size, preserving the
+    image's aspect ratio. Note that the returned pixbuf may be smaller than
+    [width] x [height], if the aspect ratio requires it. To load and image at
+    the requested size, regardless of aspect ratio, use
+    [GdkPixbuf.Pixbuf.new_from_file_at_scale]. *)
 
 external new_from_resource : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_resource"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from an resource.
+
+    The file format is detected automatically. If [NULL] is returned, then
+    [error] will be set. *)
 
 external new_from_resource_at_scale :
   string -> int -> int -> bool -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_resource_at_scale"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from an resource.
+
+    The file format is detected automatically. If [NULL] is returned, then
+    [error] will be set.
+
+    The image will be scaled to fit in the requested size, optionally preserving
+    the image's aspect ratio. When preserving the aspect ratio, a [width] of -1
+    will cause the image to be scaled to the exact given height, and a [height]
+    of -1 will cause the image to be scaled to the exact given width. When not
+    preserving aspect ratio, a [width] or [height] of -1 means to not scale the
+    image at all in that dimension.
+
+    The stream is not closed. *)
 
 external new_from_stream :
   Ocgio_raw.Input_stream.t ->
   Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from an input stream.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set.
+
+    The [cancellable] can be used to abort the operation from another thread. If
+    the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be
+    returned. Other possible errors are in the [GDK_PIXBUF_ERROR] and
+    [G_IO_ERROR] domains.
+
+    The stream is not closed. *)
 
 external new_from_stream_at_scale :
   Ocgio_raw.Input_stream.t ->
@@ -164,16 +249,40 @@ external new_from_stream_at_scale :
   bool ->
   Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_new_from_stream_at_scale"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by loading an image from an input stream.
+
+    The file format is detected automatically. If [NULL] is returned, then
+    [error] will be set. The [cancellable] can be used to abort the operation
+    from another thread. If the operation was cancelled, the error
+    [G_IO_ERROR_CANCELLED] will be returned. Other possible errors are in the
+    [GDK_PIXBUF_ERROR] and [G_IO_ERROR] domains.
+
+    The image will be scaled to fit in the requested size, optionally preserving
+    the image's aspect ratio.
+
+    When preserving the aspect ratio, a [width] of -1 will cause the image to be
+    scaled to the exact given height, and a [height] of -1 will cause the image
+    to be scaled to the exact given width. If both [width] and [height] are
+    given, this function will behave as if the smaller of the two values is
+    passed as -1.
+
+    When not preserving aspect ratio, a [width] or [height] of -1 means to not
+    scale the image at all in that dimension.
+
+    The stream is not closed. *)
 
 external new_from_stream_finish :
   Ocgio_raw.Async_result.t -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_stream_finish"
-(** Create a new Pixbuf *)
+(** Finishes an asynchronous pixbuf creation operation started with
+    gdk_pixbuf_new_from_stream_async(). *)
 
 external new_from_xpm_data : string array -> t
   = "ml_gdk_pixbuf_new_from_xpm_data"
-(** Create a new Pixbuf *)
+(** Creates a new pixbuf by parsing XPM data in memory.
+
+    This data is commonly the result of including an XPM file into a program's C
+    source. *)
 
 (* Methods *)
 

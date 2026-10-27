@@ -1,7 +1,8 @@
 (** A render node applying a blending function between its two child nodes.
 
-    Its methods, signals and properties are on {!class-type-blend_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Blend_node}. *)
+    Its methods, signals and properties are on {!class-type-blend_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Blend_node}. *)
 
 (** The methods, signals and properties of a [GskBlendNode]. *)
 class type blend_node_t = object
@@ -24,8 +25,12 @@ class blend_node : Raw.Blend_node.t -> blend_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskBlendNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t ->
   Render_node.render_node_t ->
   Enums.blendmode ->
   blend_node_t
+(** Creates a [GskRenderNode] that will use [blend_mode] to blend the [top] node
+    onto the [bottom] node. *)

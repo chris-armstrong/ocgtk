@@ -9,8 +9,9 @@
     [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
     the results can be obtained by calling the corresponding finish methods.
 
-    Its methods, signals and properties are on {!class-type-print_dialog_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Print_dialog}. *)
+    Its methods, signals and properties are on {!class-type-print_dialog_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Print_dialog}. *)
 
 (** The methods, signals and properties of a [GtkPrintDialog]. *)
 class type print_dialog_t = object
@@ -90,4 +91,7 @@ class print_dialog : Raw.Print_dialog.t -> print_dialog_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPrintDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> print_dialog_t
+(** Creates a new [GtkPrintDialog] object. *)

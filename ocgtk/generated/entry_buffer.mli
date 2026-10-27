@@ -9,8 +9,9 @@
     in the case of important passwords. Or a derived class could integrate with
     an application’s concept of undo/redo.
 
-    Its methods, signals and properties are on {!class-type-entry_buffer_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Entry_buffer}. *)
+    Its methods, signals and properties are on {!class-type-entry_buffer_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Entry_buffer}. *)
 
 (** The methods, signals and properties of a [GtkEntryBuffer]. *)
 class type entry_buffer_t = object
@@ -93,4 +94,9 @@ class entry_buffer : Raw.Entry_buffer.t -> entry_buffer_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkEntryBuffer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> int -> entry_buffer_t
+(** Create a new [GtkEntryBuffer] object.
+
+    Optionally, specify initial text to set in the buffer. *)

@@ -16,7 +16,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_single_selection_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> t
   = "ml_gtk_single_selection_new"
-(** Create a new SingleSelection *)
+(** Creates a new selection to handle [model]. *)
 
 (* Methods *)
 

@@ -13,7 +13,8 @@
     can just create a new one any time you need one.
 
     Its methods, signals and properties are on {!class-type-socket_client_t}.
-    The functions it is built on are in {!Ocgio.Raw.Socket_client}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Socket_client}. *)
 
 (** The methods, signals and properties of a [GSocketClient]. *)
 class type socket_client_t = object
@@ -319,4 +320,7 @@ class socket_client : Raw.Socket_client.t -> socket_client_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GSocketClient], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> socket_client_t
+(** Creates a new [GSocketClient] with the default options. *)

@@ -5,7 +5,8 @@
     single model.
 
     Its methods, signals and properties are on
-    {!class-type-flatten_list_model_t}. The functions it is built on are in
+    {!class-type-flatten_list_model_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Flatten_list_model}. *)
 
 (** The methods, signals and properties of a [GtkFlattenListModel]. *)
@@ -32,4 +33,7 @@ class flatten_list_model : Raw.Flatten_list_model.t -> flatten_list_model_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkFlattenListModel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgio.List_model.list_model_t option -> flatten_list_model_t
+(** Creates a new [GtkFlattenListModel] that flattens [list]. *)

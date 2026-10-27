@@ -32,7 +32,7 @@ external new_ :
   .t
   option ->
   t = "ml_gtk_widget_paintable_new"
-(** Create a new WidgetPaintable *)
+(** Creates a new widget paintable observing the given widget. *)
 
 (* Methods *)
 

@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_keyval_trigger_get_type"
 
 external new_ : int -> Ocgdk_enums.modifiertype -> t
   = "ml_gtk_keyval_trigger_new"
-(** Create a new KeyvalTrigger *)
+(** Creates a [GtkShortcutTrigger] that will trigger whenever the key with the
+    given [keyval] and [modifiers] is pressed. *)
 
 (* Methods *)
 

@@ -312,16 +312,35 @@ type t = [ `builder | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_builder_get_type"
 
 external new_ : unit -> t = "ml_gtk_builder_new"
-(** Create a new Builder *)
+(** Creates a new empty builder object.
+
+    This function is only useful if you intend to make multiple calls to
+    [Gtk.Builder.add_from_file], [Gtk.Builder.add_from_resource] or
+    [Gtk.Builder.add_from_string] in order to merge multiple UI descriptions
+    into a single builder. *)
 
 external new_from_file : string -> t = "ml_gtk_builder_new_from_file"
-(** Create a new Builder *)
+(** Parses the UI definition in the file [filename].
+
+    If there is an error opening the file or parsing the description then the
+    program will be aborted. You should only ever attempt to parse user
+    interface descriptions that are shipped as part of your program. *)
 
 external new_from_resource : string -> t = "ml_gtk_builder_new_from_resource"
-(** Create a new Builder *)
+(** Parses the UI definition at [resource_path].
+
+    If there is an error locating the resource or parsing the description, then
+    the program will be aborted. *)
 
 external new_from_string : string -> int -> t = "ml_gtk_builder_new_from_string"
-(** Create a new Builder *)
+(** Parses the UI definition in [string].
+
+    If [string] is [NULL]-terminated, then [length] should be -1. If [length] is
+    not -1, then it is the length of [string].
+
+    If there is an error parsing [string] then the program will be aborted. You
+    should not attempt to parse user interface description from untrusted
+    sources. *)
 
 (* Methods *)
 

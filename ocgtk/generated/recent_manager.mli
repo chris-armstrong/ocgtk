@@ -44,7 +44,8 @@
  controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
  property.\n\n\
  Its methods, signals and properties are on {!class-type-recent_manager_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Recent_manager}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Recent_manager}."]
 
 (** The methods, signals and properties of a [GtkRecentManager]. *)
 class type recent_manager_t = object
@@ -116,4 +117,15 @@ class recent_manager : Raw.Recent_manager.t -> recent_manager_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkRecentManager], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> recent_manager_t
+(** Creates a new recent manager object.
+
+    Recent manager objects are used to handle the list of recently used
+    resources. A [GtkRecentManager] object monitors the recently used resources
+    list, and emits the [Gtk.RecentManager::changed] signal each time something
+    inside the list changes.
+
+    [GtkRecentManager] objects are expensive: be sure to create them only when
+    needed. You should use [Gtk.RecentManager.get_default] instead. *)

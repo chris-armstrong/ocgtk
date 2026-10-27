@@ -57,8 +57,9 @@
     account the fact that your program will not automatically be killed if it
     tries to write to [stdout] after it has been closed.
 
-    Its methods, signals and properties are on {!class-type-subprocess_t}. The
-    functions it is built on are in {!Ocgio.Raw.Subprocess}. *)
+    Its methods, signals and properties are on {!class-type-subprocess_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Subprocess}. *)
 
 (** The methods, signals and properties of a [GSubprocess]. *)
 class type subprocess_t = object
@@ -198,5 +199,10 @@ class subprocess : Raw.Subprocess.t -> subprocess_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GSubprocess], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val newv :
   string array -> Enums.subprocessflags -> (subprocess_t, GError.t) result
+(** Create a new process with the given flags and argument list.
+
+    The argument list is expected to be [NULL]-terminated. *)

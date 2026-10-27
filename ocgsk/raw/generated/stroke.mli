@@ -10,7 +10,7 @@ type t = [ `stroke ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_stroke_get_type"
 
 external new_ : float -> t = "ml_gsk_stroke_new"
-(** Create a new Stroke *)
+(** Creates a new [GskStroke] with the given [line_width]. *)
 
 (* Methods *)
 

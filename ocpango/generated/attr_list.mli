@@ -10,8 +10,9 @@
     suitable for storing attributes for large amounts of text. In general, you
     should not use a single [PangoAttrList] for more than one paragraph of text.
 
-    Its methods, signals and properties are on {!class-type-attr_list_t}. The
-    functions it is built on are in {!Ocpango.Raw.Attr_list}. *)
+    Its methods, signals and properties are on {!class-type-attr_list_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Attr_list}. *)
 
 (** The methods, signals and properties of a [PangoAttrList]. *)
 class type attr_list_t = object
@@ -127,4 +128,7 @@ class attr_list : Raw.Attr_list.t -> attr_list_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [PangoAttrList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> attr_list_t
+(** Create a new empty attribute list with a reference count of one. *)

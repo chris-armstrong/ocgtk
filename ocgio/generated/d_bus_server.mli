@@ -18,8 +18,9 @@
     more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
 
-    Its methods, signals and properties are on {!class-type-d_bus_server_t}. The
-    functions it is built on are in {!Ocgio.Raw.D_bus_server}. *)
+    Its methods, signals and properties are on {!class-type-d_bus_server_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.D_bus_server}. *)
 
 (** The methods, signals and properties of a [GDBusServer]. *)
 class type d_bus_server_t = object
@@ -64,6 +65,8 @@ class d_bus_server : Raw.D_bus_server.t -> d_bus_server_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GDBusServer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_sync :
   string ->
   Enums.dbusserverflags ->
@@ -71,3 +74,24 @@ val new_sync :
   D_bus_auth_observer.d_bus_auth_observer_t option ->
   Cancellable.cancellable_t option ->
   (d_bus_server_t, GError.t) result
+(** Creates a new D-Bus server that listens on the first address in [address]
+    that works.
+
+    Once constructed, you can use g_dbus_server_get_client_address() to get a
+    D-Bus address string that clients can use to connect.
+
+    To have control over the available authentication mechanisms and the users
+    that are authorized to connect, it is strongly recommended to provide a
+    non-[NULL] [GDBusAuthObserver].
+
+    Connect to the [GDBusServer::new]-connection signal to handle incoming
+    connections.
+
+    The returned [GDBusServer] isn't active - you have to start it with
+    g_dbus_server_start().
+
+    [GDBusServer] is used in this
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}example}.
+
+    This is a synchronous failable constructor. There is currently no
+    asynchronous version. *)

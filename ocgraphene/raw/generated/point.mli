@@ -10,7 +10,26 @@ type t = [ `point ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_graphene_point_get_type"
 
 external alloc : unit -> t = "ml_graphene_point_alloc"
-(** Create a new Point *)
+(** Allocates a new #graphene_point_t structure.
+
+    The coordinates of the returned point are (0, 0).
+
+    It's possible to chain this function with graphene_point_init() or
+    graphene_point_init_from_point(), e.g.:
+
+    {[
+      graphene_point_t *
+      point_new (float x, float y)
+      {
+        return graphene_point_init (graphene_point_alloc (), x, y);
+      }
+
+      graphene_point_t *
+      point_copy (const graphene_point_t *p)
+      {
+        return graphene_point_init_from_point (graphene_point_alloc (), p);
+      }
+    ]} *)
 
 (* Methods *)
 

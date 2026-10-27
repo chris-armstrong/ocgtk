@@ -19,7 +19,9 @@ type t = [ `entry_buffer | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_buffer_get_type"
 
 external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
-(** Create a new EntryBuffer *)
+(** Create a new [GtkEntryBuffer] object.
+
+    Optionally, specify initial text to set in the buffer. *)
 
 (* Methods *)
 

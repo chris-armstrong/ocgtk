@@ -7,7 +7,8 @@
     be used to launch multiple subprocesses with a similar configuration.
 
     Its methods, signals and properties are on
-    {!class-type-subprocess_launcher_t}. The functions it is built on are in
+    {!class-type-subprocess_launcher_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Subprocess_launcher}. *)
 
 (** The methods, signals and properties of a [GSubprocessLauncher]. *)
@@ -210,4 +211,11 @@ class subprocess_launcher : Raw.Subprocess_launcher.t -> subprocess_launcher_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GSubprocessLauncher], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.subprocessflags -> subprocess_launcher_t
+(** Creates a new [GSubprocessLauncher].
+
+    The launcher is created with the default options. A copy of the environment
+    of the calling process is made at the time of this call and will be used as
+    the environment that the process is launched in. *)

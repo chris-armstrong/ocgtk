@@ -32,8 +32,9 @@
 
     Marks are typically created using the [Gtk.TextBuffer.create_mark] function.
 
-    Its methods, signals and properties are on {!class-type-text_mark_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Text_mark}. *)
+    Its methods, signals and properties are on {!class-type-text_mark_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Text_mark}. *)
 
 class type text_mark_t = Text_buffer_and__text_iter_and__text_mark.text_mark_t
 (** The methods, signals and properties of a [GtkTextMark]. *)
@@ -43,4 +44,16 @@ class text_mark : Raw.Text_mark.t -> text_mark_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTextMark], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> bool -> text_mark_t
+(** Creates a text mark.
+
+    Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [NULL], the
+    mark is anonymous; otherwise, the mark can be retrieved by name using
+    [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is inserted
+    at the mark’s current location, the mark will be moved to the left of the
+    newly-inserted text. If the mark has right gravity ([left_gravity] =
+    [FALSE]), the mark will end up on the right of newly-inserted text. The
+    standard left-to-right cursor is a mark with right gravity (when you type,
+    the cursor stays on the right side of the text you’re typing). *)

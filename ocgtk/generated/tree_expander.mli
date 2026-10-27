@@ -56,8 +56,9 @@
  Until GTK 4.10, [GtkTreeExpander] used the [Gtk.AccessibleRole.group] role.\n\n\
  Since GTK 4.12, [GtkTreeExpander] uses the [Gtk.AccessibleRole.button] role.\n\
  Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state.\n\n\
- Its methods, signals and properties are on {!class-type-tree_expander_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Tree_expander}."]
+ Its methods, signals and properties are on {!class-type-tree_expander_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Tree_expander}."]
 
 (** The methods, signals and properties of a [GtkTreeExpander]. *)
 class type tree_expander_t = object
@@ -123,4 +124,7 @@ class tree_expander : Raw.Tree_expander.t -> tree_expander_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTreeExpander], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> tree_expander_t
+(** Creates a new [GtkTreeExpander] *)

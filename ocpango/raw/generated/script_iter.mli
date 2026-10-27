@@ -11,7 +11,11 @@ type t = [ `script_iter ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_pango_script_iter_get_type"
 
 external new_ : string -> int -> t = "ml_pango_script_iter_new"
-(** Create a new ScriptIter *)
+(** Create a new [PangoScriptIter], used to break a string of Unicode text into
+    runs by Unicode script.
+
+    No copy is made of [text], so the caller needs to make sure it remains valid
+    until the iterator is freed with [Pango.ScriptIter.free]. *)
 
 (* Methods *)
 

@@ -124,7 +124,8 @@
 \  [button1(button2 / 2 + 12)]\n\
  ]}\n\n\
  Its methods, signals and properties are on {!class-type-constraint_layout_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Constraint_layout}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Constraint_layout}."]
 
 (** The methods, signals and properties of a [GtkConstraintLayout]. *)
 class type constraint_layout_t = object
@@ -198,4 +199,7 @@ class constraint_layout : Raw.Constraint_layout.t -> constraint_layout_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkConstraintLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> constraint_layout_t
+(** Creates a new [GtkConstraintLayout] layout manager. *)

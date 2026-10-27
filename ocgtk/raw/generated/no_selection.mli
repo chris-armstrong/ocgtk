@@ -15,7 +15,7 @@ type t = [ `no_selection | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_no_selection_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> t = "ml_gtk_no_selection_new"
-(** Create a new NoSelection *)
+(** Creates a new selection to handle [model]. *)
 
 (* Methods *)
 

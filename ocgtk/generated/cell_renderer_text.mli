@@ -9,7 +9,8 @@
     [GtkCellRendererText] allows to edit its text using an entry.
 
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_text_t}. The functions it is built on are in
+    {!class-type-cell_renderer_text_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_text}. *)
 
 (** The methods, signals and properties of a [GtkCellRendererText]. *)
@@ -127,4 +128,12 @@ class cell_renderer_text : Raw.Cell_renderer_text.t -> cell_renderer_text_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkCellRendererText], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_renderer_text_t
+(** Creates a new [GtkCellRendererText]. Adjust how text is drawn using object
+    properties. Object properties can be set globally (with g_object_set()).
+    Also, with [GtkTreeViewColumn], you can bind a property to a value in a
+    [GtkTreeModel]. For example, you can bind the “text” property on the cell
+    renderer to a string value in the model, thus rendering a different string
+    in each row of the [GtkTreeView]. *)

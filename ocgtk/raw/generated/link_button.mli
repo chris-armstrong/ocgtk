@@ -50,11 +50,11 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_link_button_get_type"
 
 external new_ : string -> t = "ml_gtk_link_button_new"
-(** Create a new LinkButton *)
+(** Creates a new [GtkLinkButton] with the URI as its text. *)
 
 external new_with_label : string -> string option -> t
   = "ml_gtk_link_button_new_with_label"
-(** Create a new LinkButton *)
+(** Creates a new [GtkLinkButton] containing a label. *)
 
 (* Methods *)
 

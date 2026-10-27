@@ -3,8 +3,9 @@
 
     It implements [Gio.LoadableIcon].
 
-    Its methods, signals and properties are on {!class-type-file_icon_t}. The
-    functions it is built on are in {!Ocgio.Raw.File_icon}. *)
+    Its methods, signals and properties are on {!class-type-file_icon_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.File_icon}. *)
 
 (** The methods, signals and properties of a [GFileIcon]. *)
 class type file_icon_t = object
@@ -22,4 +23,7 @@ class file_icon : Raw.File_icon.t -> file_icon_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GFileIcon], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : App_info_cycle_64c425a0.file_t -> file_icon_t
+(** Creates a new icon for a file. *)

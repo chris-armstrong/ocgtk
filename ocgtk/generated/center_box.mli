@@ -33,8 +33,9 @@
     Starting from GTK 4.12, [GtkCenterBox] uses the [Gtk.AccessibleRole.generic]
     role.
 
-    Its methods, signals and properties are on {!class-type-center_box_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Center_box}. *)
+    Its methods, signals and properties are on {!class-type-center_box_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Center_box}. *)
 
 (** The methods, signals and properties of a [GtkCenterBox]. *)
 class type center_box_t = object
@@ -126,4 +127,7 @@ class center_box : Raw.Center_box.t -> center_box_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCenterBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> center_box_t
+(** Creates a new [GtkCenterBox]. *)

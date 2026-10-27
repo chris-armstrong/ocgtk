@@ -31,7 +31,8 @@
     endeavor.
 
     Its methods, signals and properties are on {!class-type-content_formats_t}.
-    The functions it is built on are in {!Ocgdk.Raw.Content_formats}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgdk.Raw.Content_formats}. *)
 
 (** The methods, signals and properties of a [GdkContentFormats]. *)
 class type content_formats_t = object
@@ -96,5 +97,14 @@ class content_formats : Raw.Content_formats.t -> content_formats_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GdkContentFormats], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string array option -> int -> content_formats_t
+(** Creates a new [GdkContentFormats] from an array of mime types.
+
+    The mime types must be valid and different from each other or the behavior
+    of the return value is undefined. If you cannot guarantee this, use
+    [Gdk.ContentFormatsBuilder] instead. *)
+
 val new_for_gtype : Gobject.Type.t -> content_formats_t
+(** Creates a new [GdkContentFormats] for a given [GType]. *)

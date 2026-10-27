@@ -16,7 +16,9 @@ type t = [ `network_service | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_network_service_get_type"
 
 external new_ : string -> string -> string -> t = "ml_g_network_service_new"
-(** Create a new NetworkService *)
+(** Creates a new [GNetworkService] representing the given [service],
+    [protocol], and [domain]. This will initially be unresolved; use the
+    [GSocketConnectable] interface to resolve it. *)
 
 (* Methods *)
 

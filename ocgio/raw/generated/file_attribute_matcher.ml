@@ -11,7 +11,25 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_file_attribute_matcher_get_type"
 
 external new_ : string -> t = "ml_g_file_attribute_matcher_new"
-(** Create a new FileAttributeMatcher *)
+[@@ocaml.doc
+  "Creates a new file attribute matcher, which matches attributes\n\
+   against a given string. [GFileAttributeMatchers] are reference\n\
+   counted structures, and are created with a reference count of 1. If\n\
+   the number of references falls to 0, the [GFileAttributeMatcher] is\n\
+   automatically destroyed.\n\n\
+   The [attributes] string should be formatted with specific keys separated\n\
+   from namespaces with a double colon. Several \"namespace::key\" strings may \
+   be\n\
+   concatenated with a single comma (e.g. \
+   \"standard::type,standard::is-hidden\").\n\
+   The wildcard \"{i \" may be used to match all keys and namespaces, or\n\
+   \"namespace::}\" will match all keys in a given namespace.\n\n\
+   {b Examples of file attribute matcher strings and results}\n\n\
+   - [\"*\"]: matches all attributes.\n\
+   - [\"standard::is-hidden\"]: matches only the key is-hidden in the\n\
+   standard namespace.\n\
+   - [\"standard::type,unix::*\"]: matches the type key in the standard\n\
+   namespace and all keys in the unix namespace."]
 
 (* Methods *)
 

@@ -67,8 +67,9 @@
  {b Accessibility}\n\n\
  Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
  Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role.\n\n\
- Its methods, signals and properties are on {!class-type-grid_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Grid}."]
+ Its methods, signals and properties are on {!class-type-grid_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Grid}."]
 
 (** The methods, signals and properties of a [GtkGrid]. *)
 class type grid_t = object
@@ -222,4 +223,7 @@ class grid : Raw.Grid.t -> grid_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGrid], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> grid_t
+(** Creates a new grid widget. *)

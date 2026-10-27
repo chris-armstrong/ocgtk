@@ -1,7 +1,8 @@
 (** A render node for a Cairo surface.
 
-    Its methods, signals and properties are on {!class-type-cairo_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Cairo_node}. *)
+    Its methods, signals and properties are on {!class-type-cairo_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Cairo_node}. *)
 
 (** The methods, signals and properties of a [GskCairoNode]. *)
 class type cairo_node_t = object
@@ -25,4 +26,10 @@ class cairo_node : Raw.Cairo_node.t -> cairo_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskCairoNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgraphene.Rect.rect_t -> cairo_node_t
+(** Creates a [GskRenderNode] that will render a cairo surface into the area
+    given by [bounds].
+
+    You can draw to the cairo surface using [Gsk.CairoNode.get_draw_context]. *)

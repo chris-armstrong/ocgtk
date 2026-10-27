@@ -12,8 +12,9 @@
     [Gtk.GesturePan::pan] signal will be emitted as input events are received,
     containing the offset in the given axis.
 
-    Its methods, signals and properties are on {!class-type-gesture_pan_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Gesture_pan}. *)
+    Its methods, signals and properties are on {!class-type-gesture_pan_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Gesture_pan}. *)
 
 (** The methods, signals and properties of a [GtkGesturePan]. *)
 class type gesture_pan_t = object
@@ -40,4 +41,7 @@ class gesture_pan : Raw.Gesture_pan.t -> gesture_pan_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGesturePan], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> gesture_pan_t
+(** Returns a newly created [GtkGesture] that recognizes pan gestures. *)

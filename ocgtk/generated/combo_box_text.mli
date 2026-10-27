@@ -43,7 +43,8 @@
  the style class .combo to the main CSS nodes of its entry and button\n\
  children, and the .linked class to the node of its internal box.\n\n\
  Its methods, signals and properties are on {!class-type-combo_box_text_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Combo_box_text}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Combo_box_text}."]
 
 (** The methods, signals and properties of a [GtkComboBoxText]. *)
 class type combo_box_text_t = object
@@ -114,5 +115,10 @@ class combo_box_text : Raw.Combo_box_text.t -> combo_box_text_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkComboBoxText], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> combo_box_text_t
+(** Creates a new [GtkComboBoxText]. *)
+
 val new_with_entry : unit -> combo_box_text_t
+(** Creates a new [GtkComboBoxText] with an entry. *)

@@ -28,8 +28,9 @@
     It is possible, as well, to ignore the 2-D setup, and simply treat the
     results of a [PangoLayout] as a list of lines.
 
-    Its methods, signals and properties are on {!class-type-layout_t}. The
-    functions it is built on are in {!Ocpango.Raw.Layout}. *)
+    Its methods, signals and properties are on {!class-type-layout_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Layout}. *)
 
 class type layout_t = Layout_and__layout_iter.layout_t
 (** The methods, signals and properties of a [PangoLayout]. *)
@@ -39,4 +40,8 @@ class layout : Raw.Layout.t -> layout_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [PangoLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Context_and__font_and__font_map_and__fontset.context_t -> layout_t
+(** Create a new [PangoLayout] object with attributes initialized to default
+    values for a particular [PangoContext]. *)

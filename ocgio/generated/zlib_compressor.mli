@@ -2,7 +2,8 @@
     data using zlib.
 
     Its methods, signals and properties are on {!class-type-zlib_compressor_t}.
-    The functions it is built on are in {!Ocgio.Raw.Zlib_compressor}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Zlib_compressor}. *)
 
 (** The methods, signals and properties of a [GZlibCompressor]. *)
 class type zlib_compressor_t = object
@@ -38,4 +39,7 @@ class zlib_compressor : Raw.Zlib_compressor.t -> zlib_compressor_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GZlibCompressor], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.zlibcompressorformat -> int -> zlib_compressor_t
+(** Creates a compressor. *)

@@ -50,7 +50,8 @@
  [Gtk.PrintOperationPreview.is_selected]\n\
  are useful when implementing a print preview.\n\n\
  Its methods, signals and properties are on {!class-type-print_operation_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Print_operation}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Print_operation}."]
 
 (** The methods, signals and properties of a [GtkPrintOperation]. *)
 class type print_operation_t = object
@@ -386,4 +387,7 @@ class print_operation : Raw.Print_operation.t -> print_operation_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkPrintOperation], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> print_operation_t
+(** Creates a new [GtkPrintOperation]. *)

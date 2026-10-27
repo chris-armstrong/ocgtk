@@ -1,7 +1,8 @@
 (** A [Gio.InetSocketAddress] representing a connection via a proxy server.
 
     Its methods, signals and properties are on {!class-type-proxy_address_t}.
-    The functions it is built on are in {!Ocgio.Raw.Proxy_address}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Proxy_address}. *)
 
 (** The methods, signals and properties of a [GProxyAddress]. *)
 class type proxy_address_t = object
@@ -41,6 +42,8 @@ class proxy_address : Raw.Proxy_address.t -> proxy_address_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GProxyAddress], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Inet_address.inet_address_t ->
   UInt16.t ->
@@ -50,3 +53,9 @@ val new_ :
   string option ->
   string option ->
   proxy_address_t
+(** Creates a new [GProxyAddress] for [inetaddr] with [protocol] that should
+    tunnel through [dest_hostname] and [dest_port].
+
+    (Note that this method doesn't set the [GProxyAddress:uri] or
+    [GProxyAddress:destination]-protocol fields; use g_object_new() directly if
+    you want to set those.) *)

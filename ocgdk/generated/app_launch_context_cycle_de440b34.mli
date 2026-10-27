@@ -1149,4 +1149,10 @@ and surface : Raw.Surface.t -> surface_t
 and vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
 
 val new_popup : surface_t -> bool -> surface_t
+(** Create a new popup surface.
+
+    The surface will be attached to [parent] and can be positioned relative to
+    it using [Gdk.Popup.present]. *)
+
 val new_toplevel : display_t -> surface_t
+(** Creates a new toplevel surface. *)

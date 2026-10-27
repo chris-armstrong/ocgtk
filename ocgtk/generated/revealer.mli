@@ -19,8 +19,9 @@
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget.
 
-    Its methods, signals and properties are on {!class-type-revealer_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Revealer}. *)
+    Its methods, signals and properties are on {!class-type-revealer_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Revealer}. *)
 
 (** The methods, signals and properties of a [GtkRevealer]. *)
 class type revealer_t = object
@@ -86,4 +87,7 @@ class revealer : Raw.Revealer.t -> revealer_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkRevealer], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> revealer_t
+(** Creates a new [GtkRevealer]. *)

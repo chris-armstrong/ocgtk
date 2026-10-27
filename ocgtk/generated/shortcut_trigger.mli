@@ -11,7 +11,8 @@
     replace it with a new one.
 
     Its methods, signals and properties are on {!class-type-shortcut_trigger_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Shortcut_trigger}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Shortcut_trigger}. *)
 
 (** The methods, signals and properties of a [GtkShortcutTrigger]. *)
 class type shortcut_trigger_t = object
@@ -68,4 +69,24 @@ class shortcut_trigger : Raw.Shortcut_trigger.t -> shortcut_trigger_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkShortcutTrigger], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val parse_string : string -> shortcut_trigger_t
+(** Tries to parse the given string into a trigger.
+
+    On success, the parsed trigger is returned. When parsing failed, [NULL] is
+    returned.
+
+    The accepted strings are:
+
+    - [never], for [GtkNeverTrigger]
+    - a string parsed by gtk_accelerator_parse(), for a [GtkKeyvalTrigger], e.g.
+      [<Control>C]
+    - underscore, followed by a single character, for [GtkMnemonicTrigger], e.g.
+      [_l]
+    - two valid trigger strings, separated by a [|] character, for a
+      [GtkAlternativeTrigger]: [<Control>q|<Control>w]
+
+    Note that you will have to escape the [<] and [>] characters when specifying
+    triggers in XML files, such as GtkBuilder ui files. Use [&lt;] instead of
+    [<] and [&gt;] instead of [>]. *)

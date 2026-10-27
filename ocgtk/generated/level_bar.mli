@@ -75,8 +75,9 @@
  regardless of text direction.\n\n\
  {b Accessibility}\n\n\
  [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role.\n\n\
- Its methods, signals and properties are on {!class-type-level_bar_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Level_bar}."]
+ Its methods, signals and properties are on {!class-type-level_bar_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Level_bar}."]
 
 (** The methods, signals and properties of a [GtkLevelBar]. *)
 class type level_bar_t = object
@@ -154,5 +155,10 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkLevelBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> level_bar_t
+(** Creates a new [GtkLevelBar]. *)
+
 val new_for_interval : float -> float -> level_bar_t
+(** Creates a new [GtkLevelBar] for the specified interval. *)

@@ -1,7 +1,8 @@
 (** A render node controlling the color matrix of its single child node.
 
     Its methods, signals and properties are on
-    {!class-type-color_matrix_node_t}. The functions it is built on are in
+    {!class-type-color_matrix_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Color_matrix_node}. *)
 
 (** The methods, signals and properties of a [GskColorMatrixNode]. *)
@@ -26,8 +27,18 @@ class color_matrix_node : Raw.Color_matrix_node.t -> color_matrix_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskColorMatrixNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t ->
   Ocgraphene.Matrix.matrix_t ->
   Ocgraphene.Vec4.vec4_t ->
   color_matrix_node_t
+(** Creates a [GskRenderNode] that will drawn the [child] with [color_matrix].
+
+    In particular, the node will transform colors by applying
+
+    pixel = transpose(color_matrix) * pixel + color_offset
+
+    for every pixel. The transformation operates on unpremultiplied colors, with
+    color components ordered R, G, B, A. *)

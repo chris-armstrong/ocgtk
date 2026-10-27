@@ -1,7 +1,8 @@
 (** A render node cross fading between two child nodes.
 
     Its methods, signals and properties are on {!class-type-cross_fade_node_t}.
-    The functions it is built on are in {!Ocgsk.Raw.Cross_fade_node}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgsk.Raw.Cross_fade_node}. *)
 
 (** The methods, signals and properties of a [GskCrossFadeNode]. *)
 class type cross_fade_node_t = object
@@ -24,8 +25,12 @@ class cross_fade_node : Raw.Cross_fade_node.t -> cross_fade_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskCrossFadeNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t ->
   Render_node.render_node_t ->
   float ->
   cross_fade_node_t
+(** Creates a [GskRenderNode] that will do a cross-fade between [start] and
+    [end]. *)

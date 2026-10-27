@@ -96,8 +96,9 @@
  ]}\n\n\
  {b Accessibility}\n\n\
  [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role.\n\n\
- Its methods, signals and properties are on {!class-type-dialog_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Dialog}."]
+ Its methods, signals and properties are on {!class-type-dialog_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Dialog}."]
 
 (** The methods, signals and properties of a [GtkDialog]. *)
 class type dialog_t = object
@@ -186,4 +187,10 @@ class dialog : Raw.Dialog.t -> dialog_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> dialog_t
+(** Creates a new dialog box.
+
+    Widgets should not be packed into the [GtkWindow] directly, but into the
+    [content_area] and [action_area], as described above. *)

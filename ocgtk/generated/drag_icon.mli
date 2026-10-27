@@ -10,8 +10,9 @@
 
     Keep in mind that drag icons do not allow user input.
 
-    Its methods, signals and properties are on {!class-type-drag_icon_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Drag_icon}. *)
+    Its methods, signals and properties are on {!class-type-drag_icon_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Drag_icon}. *)
 
 (** The methods, signals and properties of a [GtkDragIcon]. *)
 class type drag_icon_t = object
@@ -47,4 +48,9 @@ class drag_icon : Raw.Drag_icon.t -> drag_icon_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDragIcon], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val get_for_drag : Ocgdk.Drag.drag_t -> drag_icon_t
+(** Gets the [GtkDragIcon] in use with [drag].
+
+    If no drag icon exists yet, a new one will be created and shown. *)

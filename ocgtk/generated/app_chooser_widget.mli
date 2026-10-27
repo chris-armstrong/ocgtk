@@ -20,7 +20,8 @@
     [GtkAppChooserWidget] has a single CSS node with name appchooser.
 
     Its methods, signals and properties are on
-    {!class-type-app_chooser_widget_t}. The functions it is built on are in
+    {!class-type-app_chooser_widget_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_widget}. *)
 
 (** The methods, signals and properties of a [GtkAppChooserWidget]. *)
@@ -99,4 +100,8 @@ class app_chooser_widget : Raw.App_chooser_widget.t -> app_chooser_widget_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkAppChooserWidget], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> app_chooser_widget_t
+(** Creates a new [GtkAppChooserWidget] for applications that can handle content
+    of the given type. *)

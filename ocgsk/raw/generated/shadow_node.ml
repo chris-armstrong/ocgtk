@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_shadow_node_get_type"
 
 external new_ : Render_node.t -> Shadow.t array -> Gsize.t -> t
   = "ml_gsk_shadow_node_new"
-(** Create a new ShadowNode *)
+(** Creates a [GskRenderNode] that will draw a [child] with the given [shadows]
+    below it. *)
 
 (* Methods *)
 

@@ -13,7 +13,12 @@ type t = [ `named_action | `shortcut_action | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_named_action_get_type"
 
 external new_ : string -> t = "ml_gtk_named_action_new"
-(** Create a new NamedAction *)
+(** Creates an action that when activated, activates the named action on the
+    widget.
+
+    It also passes the given arguments to it.
+
+    See [Gtk.Widget.insert_action_group] for how to add actions to widgets. *)
 
 (* Methods *)
 

@@ -15,7 +15,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_d_bus_object_skeleton_get_type"
 
 external new_ : string -> t = "ml_g_dbus_object_skeleton_new"
-(** Create a new DBusObjectSkeleton *)
+(** Creates a new [GDBusObjectSkeleton]. *)
 
 (* Methods *)
 

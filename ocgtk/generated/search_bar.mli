@@ -48,8 +48,9 @@
 
     [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role.
 
-    Its methods, signals and properties are on {!class-type-search_bar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Search_bar}. *)
+    Its methods, signals and properties are on {!class-type-search_bar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Search_bar}. *)
 
 (** The methods, signals and properties of a [GtkSearchBar]. *)
 class type search_bar_t = object
@@ -126,4 +127,10 @@ class search_bar : Raw.Search_bar.t -> search_bar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSearchBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> search_bar_t
+(** Creates a [GtkSearchBar].
+
+    You will need to tell it about which widget is going to be your text entry
+    using [Gtk.SearchBar.connect_entry]. *)

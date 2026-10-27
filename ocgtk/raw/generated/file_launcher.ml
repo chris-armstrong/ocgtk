@@ -20,7 +20,7 @@ type t = [ `file_launcher | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_file_launcher_get_type"
 
 external new_ : Ocgio_raw.File.t option -> t = "ml_gtk_file_launcher_new"
-(** Create a new FileLauncher *)
+(** Creates a new [GtkFileLauncher] object. *)
 
 (* Methods *)
 

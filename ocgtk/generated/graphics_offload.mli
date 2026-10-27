@@ -39,7 +39,8 @@
     The GTK inspector provides a visual debugging tool for graphics offload.
 
     Its methods, signals and properties are on {!class-type-graphics_offload_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Graphics_offload}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Graphics_offload}. *)
 
 (** The methods, signals and properties of a [GtkGraphicsOffload]. *)
 class type graphics_offload_t = object
@@ -96,8 +97,11 @@ class graphics_offload : Raw.Graphics_offload.t -> graphics_offload_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkGraphicsOffload], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .widget_t
   option ->
   graphics_offload_t
+(** Creates a new GtkGraphicsOffload widget. *)

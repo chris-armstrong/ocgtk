@@ -3,7 +3,8 @@
     strings for widget implementations.
 
     Its methods, signals and properties are on
-    {!class-type-filename_completer_t}. The functions it is built on are in
+    {!class-type-filename_completer_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Filename_completer}. *)
 
 (** The methods, signals and properties of a [GFilenameCompleter]. *)
@@ -36,4 +37,7 @@ class filename_completer : Raw.Filename_completer.t -> filename_completer_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GFilenameCompleter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> filename_completer_t
+(** Creates a new filename completer. *)

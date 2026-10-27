@@ -4,7 +4,8 @@
     example, [10.0.0.0/8], or [fe80::/10].
 
     Its methods, signals and properties are on
-    {!class-type-inet_address_mask_t}. The functions it is built on are in
+    {!class-type-inet_address_mask_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_address_mask}. *)
 
 (** The methods, signals and properties of a [GInetAddressMask]. *)
@@ -37,7 +38,16 @@ class inet_address_mask : Raw.Inet_address_mask.t -> inet_address_mask_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GInetAddressMask], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Inet_address.inet_address_t -> int -> (inet_address_mask_t, GError.t) result
+(** Creates a new [GInetAddressMask] representing all addresses whose first
+    [length] bits match [addr]. *)
 
 val new_from_string : string -> (inet_address_mask_t, GError.t) result
+[@@ocaml.doc
+  "Parses [mask_string] as an IP address and (optional) length, and\n\
+   creates a new [GInetAddressMask]. The length, if present, is\n\
+   delimited by a \"/\". If it is not present, then the length is\n\
+   assumed to be the full length of the address."]

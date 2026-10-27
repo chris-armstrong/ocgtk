@@ -16,8 +16,9 @@
 
     They are maintained by GTK and you should not set them independently.
 
-    Its methods, signals and properties are on {!class-type-text_tag_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Text_tag}. *)
+    Its methods, signals and properties are on {!class-type-text_tag_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Text_tag}. *)
 
 (** The methods, signals and properties of a [GtkTextTag]. *)
 class type text_tag_t = object
@@ -228,4 +229,7 @@ class text_tag : Raw.Text_tag.t -> text_tag_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTextTag], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> text_tag_t
+(** Creates a [GtkTextTag]. *)

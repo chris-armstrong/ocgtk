@@ -18,7 +18,8 @@
     an infinitely growing widget.
 
     Its methods, signals and properties are on {!class-type-widget_paintable_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Widget_paintable}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Widget_paintable}. *)
 
 (** The methods, signals and properties of a [GtkWidgetPaintable]. *)
 class type widget_paintable_t = object
@@ -46,8 +47,11 @@ class widget_paintable : Raw.Widget_paintable.t -> widget_paintable_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkWidgetPaintable], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .widget_t
   option ->
   widget_paintable_t
+(** Creates a new widget paintable observing the given widget. *)

@@ -14,7 +14,8 @@
     the buffer.
 
     Its methods, signals and properties are on
-    {!class-type-buffered_input_stream_t}. The functions it is built on are in
+    {!class-type-buffered_input_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Buffered_input_stream}. *)
 
 (** The methods, signals and properties of a [GBufferedInputStream]. *)
@@ -89,7 +90,13 @@ class buffered_input_stream :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GBufferedInputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Input_stream.input_stream_t -> buffered_input_stream_t
+(** Creates a new [Gio.InputStream] from the given [base_stream], with a buffer
+    set to the default size (4 kilobytes). *)
 
 val new_sized :
   Input_stream.input_stream_t -> Gsize.t -> buffered_input_stream_t
+(** Creates a new [Gio.BufferedInputStream] from the given [base_stream], with a
+    buffer set to [size]. *)

@@ -16,7 +16,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_cell_renderer_progress_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_progress_new"
-(** Create a new CellRendererProgress *)
+(** Creates a new [GtkCellRendererProgress]. *)
 
 (* Methods *)
 (* Properties *)

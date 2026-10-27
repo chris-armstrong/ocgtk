@@ -77,8 +77,9 @@
  For rubberband selection, a subnode with name [rubberband] is used.\n\n\
  For the drop target location during DND, a subnode with name [dndtarget] is \
  used.\n\n\
- Its methods, signals and properties are on {!class-type-tree_view_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Tree_view}."]
+ Its methods, signals and properties are on {!class-type-tree_view_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Tree_view}."]
 
 class type tree_view_t = Tree_selection_and__tree_view.tree_view_t
 (** The methods, signals and properties of a [GtkTreeView]. *)
@@ -88,5 +89,10 @@ class tree_view : Raw.Tree_view.t -> tree_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTreeView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> tree_view_t
+(** Creates a new [GtkTreeView] widget. *)
+
 val new_with_model : Tree_model.tree_model_t -> tree_view_t
+(** Creates a new [GtkTreeView] widget with the model initialized to [model]. *)

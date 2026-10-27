@@ -7,7 +7,8 @@
     purpose.
 
     Its methods, signals and properties are on
-    {!class-type-drop_controller_motion_t}. The functions it is built on are in
+    {!class-type-drop_controller_motion_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Drop_controller_motion}. *)
 
 (** The methods, signals and properties of a [GtkDropControllerMotion]. *)
@@ -54,4 +55,8 @@ class drop_controller_motion :
     methods that return a [GtkDropControllerMotion], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> drop_controller_motion_t
+(** Creates a new event controller that will handle pointer motion events during
+    drag and drop. *)

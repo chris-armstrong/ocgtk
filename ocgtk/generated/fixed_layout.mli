@@ -27,8 +27,9 @@
     elements, since you have to reposition all the other elements. This is a
     long-term maintenance problem for your application.
 
-    Its methods, signals and properties are on {!class-type-fixed_layout_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Fixed_layout}. *)
+    Its methods, signals and properties are on {!class-type-fixed_layout_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Fixed_layout}. *)
 
 (** The methods, signals and properties of a [GtkFixedLayout]. *)
 class type fixed_layout_t = object
@@ -44,4 +45,7 @@ class fixed_layout : Raw.Fixed_layout.t -> fixed_layout_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFixedLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> fixed_layout_t
+(** Creates a new [GtkFixedLayout]. *)

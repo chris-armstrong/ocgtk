@@ -95,7 +95,8 @@
     ]}
 
     Its methods, signals and properties are on {!class-type-tree_model_sort_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_model_sort}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_model_sort}. *)
 
 (** The methods, signals and properties of a [GtkTreeModelSort]. *)
 class type tree_model_sort_t = object
@@ -146,4 +147,7 @@ class tree_model_sort : Raw.Tree_model_sort.t -> tree_model_sort_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkTreeModelSort], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_with_model : Tree_model.tree_model_t -> tree_model_sort_t
+(** Creates a new [GtkTreeModelSort], with [child_model] as the child model. *)

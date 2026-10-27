@@ -28,7 +28,9 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_threaded_socket_service_get_type"
 
 external new_ : int -> t = "ml_g_threaded_socket_service_new"
-(** Create a new ThreadedSocketService *)
+[@@ocaml.doc
+  "Creates a new [GThreadedSocketService] with no listeners. Listeners\n\
+   must be added with one of the [GSocketListener] \"add\" methods."]
 
 (* Methods *)
 (* Properties *)

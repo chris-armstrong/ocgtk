@@ -26,10 +26,10 @@ type t = [ `bitset ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_bitset_get_type"
 
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
-(** Create a new Bitset *)
+(** Creates a new empty bitset. *)
 
 external new_range : int -> int -> t = "ml_gtk_bitset_new_range"
-(** Create a new Bitset *)
+(** Creates a bitset with the given range set. *)
 
 (* Methods *)
 

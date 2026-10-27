@@ -6,8 +6,9 @@
     The contents of the #graphene_vec3_t structure are private and should never
     be accessed directly.
 
-    Its methods, signals and properties are on {!class-type-vec3_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Vec3}. *)
+    Its methods, signals and properties are on {!class-type-vec3_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Vec3}. *)
 
 class type vec3_t = Vec3_and__vec4.vec3_t
 (** The methods, signals and properties of a [graphene_vec3_t]. *)
@@ -17,4 +18,11 @@ class vec3 : Raw.Vec3.t -> vec3_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_vec3_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> vec3_t
+(** Allocates a new #graphene_vec3_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec3_init() to initialize the vector. *)

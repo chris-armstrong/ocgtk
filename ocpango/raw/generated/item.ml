@@ -13,7 +13,7 @@ type t = [ `item ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_pango_item_get_type"
 
 external new_ : unit -> t = "ml_pango_item_new"
-(** Create a new Item *)
+(** Creates a new [PangoItem] structure initialized to default values. *)
 
 (* Methods *)
 

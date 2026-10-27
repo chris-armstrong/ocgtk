@@ -1,7 +1,8 @@
 (** A constant value in a [GtkExpression].
 
     Its methods, signals and properties are on
-    {!class-type-constant_expression_t}. The functions it is built on are in
+    {!class-type-constant_expression_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Constant_expression}. *)
 
 (** The methods, signals and properties of a [GtkConstantExpression]. *)
@@ -19,4 +20,7 @@ class constant_expression : Raw.Constant_expression.t -> constant_expression_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkConstantExpression], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_for_value : Gobject.Value.t -> constant_expression_t
+(** Creates an expression that always evaluates to the given [value]. *)

@@ -11,8 +11,9 @@
     If you want to specify the amount of space placed between each child, you
     can use the [Gtk.BoxLayout:spacing] property.
 
-    Its methods, signals and properties are on {!class-type-box_layout_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Box_layout}. *)
+    Its methods, signals and properties are on {!class-type-box_layout_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Box_layout}. *)
 
 (** The methods, signals and properties of a [GtkBoxLayout]. *)
 class type box_layout_t = object
@@ -62,4 +63,7 @@ class box_layout : Raw.Box_layout.t -> box_layout_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBoxLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> box_layout_t
+(** Creates a new [GtkBoxLayout]. *)

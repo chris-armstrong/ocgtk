@@ -27,11 +27,16 @@ type t = [ `color_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_color_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_color_button_new"
-(** Create a new ColorButton *)
+(** Creates a new color button.
+
+    This returns a widget in the form of a small button containing a swatch
+    representing the current selected color. When the button is clicked, a color
+    chooser dialog will open, allowing the user to select a color. The swatch
+    will be updated to reflect the new color when the user finishes. *)
 
 external new_with_rgba : Ocgdk_raw.Rgb_a.t -> t
   = "ml_gtk_color_button_new_with_rgba"
-(** Create a new ColorButton *)
+(** Creates a new color button showing the given color. *)
 
 (* Methods *)
 

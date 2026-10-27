@@ -29,7 +29,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_pan_get_type"
 
 external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_gesture_pan_new"
-(** Create a new GesturePan *)
+(** Returns a newly created [GtkGesture] that recognizes pan gestures. *)
 
 (* Methods *)
 

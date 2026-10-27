@@ -26,11 +26,11 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_buffered_output_stream_get_type"
 
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
-(** Create a new BufferedOutputStream *)
+(** Creates a new buffered output stream for a base stream. *)
 
 external new_sized : Output_stream.t -> Gsize.t -> t
   = "ml_g_buffered_output_stream_new_sized"
-(** Create a new BufferedOutputStream *)
+(** Creates a new buffered output stream with a given buffer size. *)
 
 (* Methods *)
 

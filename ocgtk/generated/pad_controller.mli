@@ -48,7 +48,8 @@
  of\n\
  120 to signify a smaller motion.\n\n\
  Its methods, signals and properties are on {!class-type-pad_controller_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Pad_controller}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Pad_controller}."]
 
 (** The methods, signals and properties of a [GtkPadController]. *)
 class type pad_controller_t = object
@@ -83,7 +84,23 @@ class pad_controller : Raw.Pad_controller.t -> pad_controller_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkPadController], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.Action_group.action_group_t ->
   Ocgdk.Device.device_t option ->
   pad_controller_t
+(** Creates a new [GtkPadController] that will associate events from [pad] to
+    actions.
+
+    A [NULL] pad may be provided so the controller manages all pad devices
+    generically, it is discouraged to mix [GtkPadController] objects with [NULL]
+    and non-[NULL] [pad] argument on the same toplevel window, as execution
+    order is not guaranteed.
+
+    The [GtkPadController] is created with no mapped actions. In order to map
+    pad events to actions, use [Gtk.PadController.set_action_entries] or
+    [Gtk.PadController.set_action].
+
+    Be aware that pad events will only be delivered to [GtkWindow]s, so adding a
+    pad controller to any other type of widget will not have an effect. *)

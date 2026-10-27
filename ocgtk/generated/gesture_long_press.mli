@@ -14,7 +14,8 @@
     modified by the [Gtk.GestureLongPress:delay-factor] property.
 
     Its methods, signals and properties are on
-    {!class-type-gesture_long_press_t}. The functions it is built on are in
+    {!class-type-gesture_long_press_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Gesture_long_press}. *)
 
 (** The methods, signals and properties of a [GtkGestureLongPress]. *)
@@ -47,4 +48,7 @@ class gesture_long_press : Raw.Gesture_long_press.t -> gesture_long_press_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkGestureLongPress], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_long_press_t
+(** Returns a newly created [GtkGesture] that recognizes long presses. *)

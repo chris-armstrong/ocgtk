@@ -67,7 +67,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_expander_get_type"
 
 external new_ : unit -> t = "ml_gtk_tree_expander_new"
-(** Create a new TreeExpander *)
+(** Creates a new [GtkTreeExpander] *)
 
 (* Methods *)
 

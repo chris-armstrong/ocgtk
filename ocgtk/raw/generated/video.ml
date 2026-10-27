@@ -22,21 +22,26 @@ type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_video_get_type"
 
 external new_ : unit -> t = "ml_gtk_video_new"
-(** Create a new Video *)
+(** Creates a new empty [GtkVideo]. *)
 
 external new_for_file : Ocgio_raw.File.t option -> t
   = "ml_gtk_video_new_for_file"
-(** Create a new Video *)
+(** Creates a [GtkVideo] to play back the given [file]. *)
 
 external new_for_filename : string option -> t = "ml_gtk_video_new_for_filename"
-(** Create a new Video *)
+(** Creates a [GtkVideo] to play back the given [filename].
+
+    This is a utility function that calls [Gtk.Video.new_for_file], See that
+    function for details. *)
 
 external new_for_media_stream : Media_stream.t option -> t
   = "ml_gtk_video_new_for_media_stream"
-(** Create a new Video *)
+(** Creates a [GtkVideo] to play back the given [stream]. *)
 
 external new_for_resource : string option -> t = "ml_gtk_video_new_for_resource"
-(** Create a new Video *)
+(** Creates a [GtkVideo] to play back the resource at the given [resource_path].
+
+    This is a utility function that calls [Gtk.Video.new_for_file]. *)
 
 (* Methods *)
 

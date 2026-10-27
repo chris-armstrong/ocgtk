@@ -3,7 +3,8 @@
     To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
 
     Its methods, signals and properties are on {!class-type-numeric_sorter_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Numeric_sorter}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Numeric_sorter}. *)
 
 (** The methods, signals and properties of a [GtkNumericSorter]. *)
 class type numeric_sorter_t = object
@@ -35,4 +36,10 @@ class numeric_sorter : Raw.Numeric_sorter.t -> numeric_sorter_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkNumericSorter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Expression.expression_t option -> numeric_sorter_t
+(** Creates a new numeric sorter using the given [expression].
+
+    Smaller numbers will be sorted first. You can call
+    [Gtk.NumericSorter.set_sort_order] to change this. *)

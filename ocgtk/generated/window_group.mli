@@ -17,8 +17,9 @@
     window group and drop their references on the window group; when all window
     have been removed, the window group will be freed.
 
-    Its methods, signals and properties are on {!class-type-window_group_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Window_group}. *)
+    Its methods, signals and properties are on {!class-type-window_group_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Window_group}. *)
 
 class type window_group_t =
   Application_and__window_and__window_group.window_group_t
@@ -29,4 +30,10 @@ class window_group : Raw.Window_group.t -> window_group_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkWindowGroup], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> window_group_t
+(** Creates a new [GtkWindowGroup] object.
+
+    Modality of windows only affects windows within the same [GtkWindowGroup].
+*)

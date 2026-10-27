@@ -26,7 +26,8 @@
     used to sort items inside their sections.
 
     Its methods, signals and properties are on {!class-type-sort_list_model_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Sort_list_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Sort_list_model}. *)
 
 (** The methods, signals and properties of a [GtkSortListModel]. *)
 class type sort_list_model_t = object
@@ -105,7 +106,10 @@ class sort_list_model : Raw.Sort_list_model.t -> sort_list_model_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkSortListModel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.List_model.list_model_t option ->
   Sorter.sorter_t option ->
   sort_list_model_t
+(** Creates a new sort list model that uses the [sorter] to sort [model]. *)

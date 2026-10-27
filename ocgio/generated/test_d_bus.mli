@@ -63,8 +63,9 @@
 \            $(GLIB_COMPILE_SCHEMAS) .\n\n\
 \    CLEANFILES += gschemas.compiled\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-test_d_bus_t}. The \
- functions it is built on are in {!Ocgio.Raw.Test_d_bus}."]
+ Its methods, signals and properties are on {!class-type-test_d_bus_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgio.Raw.Test_d_bus}."]
 
 (** The methods, signals and properties of a [GTestDBus]. *)
 class type test_d_bus_t = object
@@ -115,4 +116,7 @@ class test_d_bus : Raw.Test_d_bus.t -> test_d_bus_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GTestDBus], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.testdbusflags -> test_d_bus_t
+(** Create a new [GTestDBus] object. *)

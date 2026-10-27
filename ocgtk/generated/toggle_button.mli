@@ -53,8 +53,9 @@
 \  gtk_window_present (GTK_WINDOW (window));\n\
  }\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-toggle_button_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Toggle_button}."]
+ Its methods, signals and properties are on {!class-type-toggle_button_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Toggle_button}."]
 
 (** The methods, signals and properties of a [GtkToggleButton]. *)
 class type toggle_button_t = object
@@ -101,6 +102,18 @@ class toggle_button : Raw.Toggle_button.t -> toggle_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkToggleButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> toggle_button_t
+(** Creates a new toggle button.
+
+    A widget should be packed into the button, as in [Gtk.Button.new]. *)
+
 val new_with_label : string -> toggle_button_t
+(** Creates a new toggle button with a text label. *)
+
 val new_with_mnemonic : string -> toggle_button_t
+(** Creates a new [GtkToggleButton] containing a label.
+
+    The label will be created using [Gtk.Label.new_with_mnemonic], so
+    underscores in [label] indicate the mnemonic for the button. *)

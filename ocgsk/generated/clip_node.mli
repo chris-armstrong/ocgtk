@@ -1,7 +1,8 @@
 (** A render node applying a rectangular clip to its single child node.
 
-    Its methods, signals and properties are on {!class-type-clip_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Clip_node}. *)
+    Its methods, signals and properties are on {!class-type-clip_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Clip_node}. *)
 
 (** The methods, signals and properties of a [GskClipNode]. *)
 class type clip_node_t = object
@@ -21,4 +22,8 @@ class clip_node : Raw.Clip_node.t -> clip_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskClipNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Render_node.render_node_t -> Ocgraphene.Rect.rect_t -> clip_node_t
+(** Creates a [GskRenderNode] that will clip the [child] to the area given by
+    [clip]. *)

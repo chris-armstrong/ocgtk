@@ -49,8 +49,9 @@
 
     [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role.
 
-    Its methods, signals and properties are on {!class-type-search_entry_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Search_entry}. *)
+    Its methods, signals and properties are on {!class-type-search_entry_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Search_entry}. *)
 
 (** The methods, signals and properties of a [GtkSearchEntry]. *)
 class type search_entry_t = object
@@ -140,4 +141,7 @@ class search_entry : Raw.Search_entry.t -> search_entry_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSearchEntry], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> search_entry_t
+(** Creates a [GtkSearchEntry]. *)

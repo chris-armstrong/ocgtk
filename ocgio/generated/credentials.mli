@@ -37,8 +37,9 @@
     Since GLib 2.72, on Windows, the native credentials may contain the PID of a
     process. This corresponds to [G_CREDENTIALS_TYPE_WIN32_PID].
 
-    Its methods, signals and properties are on {!class-type-credentials_t}. The
-    functions it is built on are in {!Ocgio.Raw.Credentials}. *)
+    Its methods, signals and properties are on {!class-type-credentials_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Credentials}. *)
 
 (** The methods, signals and properties of a [GCredentials]. *)
 class type credentials_t = object
@@ -61,4 +62,8 @@ class credentials : Raw.Credentials.t -> credentials_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GCredentials], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> credentials_t
+(** Creates a new [GCredentials] object with credentials matching the the
+    current process. *)

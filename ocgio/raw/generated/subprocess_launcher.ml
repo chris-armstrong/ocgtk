@@ -17,7 +17,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_subprocess_launcher_get_type"
 
 external new_ : Ocgio_enums.subprocessflags -> t
   = "ml_g_subprocess_launcher_new"
-(** Create a new SubprocessLauncher *)
+(** Creates a new [GSubprocessLauncher].
+
+    The launcher is created with the default options. A copy of the environment
+    of the calling process is made at the time of this call and will be used as
+    the environment that the process is launched in. *)
 
 (* Methods *)
 

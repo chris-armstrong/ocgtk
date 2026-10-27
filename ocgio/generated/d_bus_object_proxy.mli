@@ -4,7 +4,8 @@
     used to obtain it.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_object_proxy_t}. The functions it is built on are in
+    {!class-type-d_bus_object_proxy_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_proxy}. *)
 
 (** The methods, signals and properties of a [GDBusObjectProxy]. *)
@@ -24,4 +25,8 @@ class d_bus_object_proxy : Raw.D_bus_object_proxy.t -> d_bus_object_proxy_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GDBusObjectProxy], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : D_bus_connection.d_bus_connection_t -> string -> d_bus_object_proxy_t
+(** Creates a new [GDBusObjectProxy] for the given connection and object path.
+*)

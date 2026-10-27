@@ -77,7 +77,7 @@ type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_grid_get_type"
 
 external new_ : unit -> t = "ml_gtk_grid_new"
-(** Create a new Grid *)
+(** Creates a new grid widget. *)
 
 (* Methods *)
 

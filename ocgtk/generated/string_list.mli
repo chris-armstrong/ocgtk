@@ -20,8 +20,9 @@
 \  </items>\n\
  </object>\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-string_list_t}. The \
- functions it is built on are in {!Ocgtk.Raw.String_list}."]
+ Its methods, signals and properties are on {!class-type-string_list_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.String_list}."]
 
 (** The methods, signals and properties of a [GtkStringList]. *)
 class type string_list_t = object
@@ -86,4 +87,7 @@ class string_list : Raw.String_list.t -> string_list_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStringList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string array option -> string_list_t
+(** Creates a new [GtkStringList] with the given [strings]. *)

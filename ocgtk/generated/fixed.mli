@@ -34,8 +34,9 @@
     prefer the simplicity of [GtkFixed], by all means use the widget. But you
     should be aware of the tradeoffs.
 
-    Its methods, signals and properties are on {!class-type-fixed_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Fixed}. *)
+    Its methods, signals and properties are on {!class-type-fixed_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Fixed}. *)
 
 (** The methods, signals and properties of a [GtkFixed]. *)
 class type fixed_t = object
@@ -92,4 +93,7 @@ class fixed : Raw.Fixed.t -> fixed_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFixed], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> fixed_t
+(** Creates a new [GtkFixed]. *)

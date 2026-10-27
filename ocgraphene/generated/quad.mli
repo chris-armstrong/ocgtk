@@ -3,8 +3,9 @@
     The contents of a #graphene_quad_t are private and should never be accessed
     directly.
 
-    Its methods, signals and properties are on {!class-type-quad_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Quad}. *)
+    Its methods, signals and properties are on {!class-type-quad_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Quad}. *)
 
 (** The methods, signals and properties of a [graphene_quad_t]. *)
 class type quad_t = object
@@ -34,4 +35,9 @@ class quad : Raw.Quad.t -> quad_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_quad_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> quad_t
+(** Allocates a new #graphene_quad_t instance.
+
+    The contents of the returned instance are undefined. *)

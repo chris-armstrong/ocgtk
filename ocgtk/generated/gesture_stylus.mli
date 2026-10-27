@@ -3,7 +3,8 @@
     The provided signals just relay the basic information of the stylus events.
 
     Its methods, signals and properties are on {!class-type-gesture_stylus_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Gesture_stylus}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Gesture_stylus}. *)
 
 (** The methods, signals and properties of a [GtkGestureStylus]. *)
 class type gesture_stylus_t = object
@@ -60,4 +61,7 @@ class gesture_stylus : Raw.Gesture_stylus.t -> gesture_stylus_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkGestureStylus], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_stylus_t
+(** Creates a new [GtkGestureStylus]. *)

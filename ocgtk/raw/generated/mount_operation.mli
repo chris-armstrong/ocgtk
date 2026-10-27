@@ -21,7 +21,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_mount_operation_get_type"
 
 external new_ : Application_and__window_and__window_group.Window.t option -> t
   = "ml_gtk_mount_operation_new"
-(** Create a new MountOperation *)
+(** Creates a new [GtkMountOperation]. *)
 
 (* Methods *)
 

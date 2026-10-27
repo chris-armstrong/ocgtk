@@ -2,7 +2,8 @@
     [GLib.IConv].
 
     Its methods, signals and properties are on
-    {!class-type-charset_converter_t}. The functions it is built on are in
+    {!class-type-charset_converter_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Charset_converter}. *)
 
 (** The methods, signals and properties of a [GCharsetConverter]. *)
@@ -29,4 +30,7 @@ class charset_converter : Raw.Charset_converter.t -> charset_converter_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GCharsetConverter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> string -> (charset_converter_t, GError.t) result
+(** Creates a new [GCharsetConverter]. *)

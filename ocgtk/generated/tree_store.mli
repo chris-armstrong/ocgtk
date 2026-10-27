@@ -24,8 +24,9 @@
 \  </columns>\n\
  </object>\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-tree_store_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Tree_store}."]
+ Its methods, signals and properties are on {!class-type-tree_store_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Tree_store}."]
 
 (** The methods, signals and properties of a [GtkTreeStore]. *)
 class type tree_store_t = object
@@ -114,4 +115,9 @@ class tree_store : Raw.Tree_store.t -> tree_store_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTreeStore], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val newv : int -> Gobject.Type.t array -> tree_store_t
+(** Creates a new tree store.
+
+    This constructor is meant for language bindings. *)

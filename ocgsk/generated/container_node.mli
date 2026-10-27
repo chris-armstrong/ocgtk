@@ -1,7 +1,8 @@
 (** A render node that can contain other render nodes.
 
     Its methods, signals and properties are on {!class-type-container_node_t}.
-    The functions it is built on are in {!Ocgsk.Raw.Container_node}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgsk.Raw.Container_node}. *)
 
 (** The methods, signals and properties of a [GskContainerNode]. *)
 class type container_node_t = object
@@ -21,4 +22,9 @@ class container_node : Raw.Container_node.t -> container_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskContainerNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Raw.Render_node.t array -> int -> container_node_t
+(** Creates a new [GskRenderNode] instance for holding the given [children].
+
+    The new node will acquire a reference to each of the children. *)

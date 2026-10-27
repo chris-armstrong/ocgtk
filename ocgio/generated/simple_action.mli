@@ -3,7 +3,8 @@
     adding it to a [Gio.SimpleActionGroup].
 
     Its methods, signals and properties are on {!class-type-simple_action_t}.
-    The functions it is built on are in {!Ocgio.Raw.Simple_action}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Simple_action}. *)
 
 (** The methods, signals and properties of a [GSimpleAction]. *)
 class type simple_action_t = object
@@ -58,7 +59,19 @@ class simple_action : Raw.Simple_action.t -> simple_action_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GSimpleAction], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> Gvariant_type.t option -> simple_action_t
+(** Creates a new action.
+
+    The created action is stateless. See g_simple_action_new_stateful() to
+    create an action that has state. *)
 
 val new_stateful :
   string -> Gvariant_type.t option -> Gvariant.t -> simple_action_t
+(** Creates a new stateful action.
+
+    All future state values must have the same [GVariantType] as the initial
+    [state].
+
+    If the [state] [GVariant] is floating, it is consumed. *)

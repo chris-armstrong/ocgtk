@@ -9,8 +9,9 @@
     See [Gtk.FontDialogButton] for a convenient control that uses
     [GtkFontDialog] and presents the results.
 
-    Its methods, signals and properties are on {!class-type-font_dialog_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Font_dialog}. *)
+    Its methods, signals and properties are on {!class-type-font_dialog_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Font_dialog}. *)
 
 (** The methods, signals and properties of a [GtkFontDialog]. *)
 class type font_dialog_t = object
@@ -86,4 +87,7 @@ class font_dialog : Raw.Font_dialog.t -> font_dialog_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFontDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> font_dialog_t
+(** Creates a new [GtkFontDialog] object. *)

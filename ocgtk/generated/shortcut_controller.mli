@@ -41,7 +41,8 @@
     triggers.
 
     Its methods, signals and properties are on
-    {!class-type-shortcut_controller_t}. The functions it is built on are in
+    {!class-type-shortcut_controller_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Shortcut_controller}. *)
 
 (** The methods, signals and properties of a [GtkShortcutController]. *)
@@ -109,5 +110,15 @@ class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkShortcutController], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> shortcut_controller_t
+(** Creates a new shortcut controller. *)
+
 val new_for_model : Ocgio.List_model.list_model_t -> shortcut_controller_t
+(** Creates a new shortcut controller that takes its shortcuts from the given
+    list model.
+
+    A controller created by this function does not let you add or remove
+    individual shortcuts using the shortcut controller api, but you can change
+    the contents of the model. *)

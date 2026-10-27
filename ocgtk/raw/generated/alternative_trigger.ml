@@ -15,7 +15,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_alternative_trigger_get_type"
 
 external new_ : Shortcut_trigger.t -> Shortcut_trigger.t -> t
   = "ml_gtk_alternative_trigger_new"
-(** Create a new AlternativeTrigger *)
+(** Creates a [GtkShortcutTrigger] that will trigger whenever either of the two
+    given triggers gets triggered.
+
+    Note that nesting is allowed, so if you want more than two alternative,
+    create a new alternative trigger for each option. *)
 
 (* Methods *)
 

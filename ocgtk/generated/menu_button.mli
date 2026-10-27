@@ -54,8 +54,9 @@
 
     [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role.
 
-    Its methods, signals and properties are on {!class-type-menu_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Menu_button}. *)
+    Its methods, signals and properties are on {!class-type-menu_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Menu_button}. *)
 
 (** The methods, signals and properties of a [GtkMenuButton]. *)
 class type menu_button_t = object
@@ -202,4 +203,11 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkMenuButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> menu_button_t
+(** Creates a new [GtkMenuButton] widget with downwards-pointing arrow as the
+    only child.
+
+    You can replace the child widget with another [GtkWidget] should you wish
+    to. *)

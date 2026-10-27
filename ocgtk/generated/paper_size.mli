@@ -8,8 +8,9 @@
     The [GtkPaperSize] object stores not only the dimensions (width and height)
     of a paper size and its name, it also provides default print margins.
 
-    Its methods, signals and properties are on {!class-type-paper_size_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Paper_size}. *)
+    Its methods, signals and properties are on {!class-type-paper_size_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Paper_size}. *)
 
 (** The methods, signals and properties of a [GtkPaperSize]. *)
 class type paper_size_t = object
@@ -63,11 +64,33 @@ class paper_size : Raw.Paper_size.t -> paper_size_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPaperSize], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> paper_size_t
+(** Creates a new [GtkPaperSize] object by parsing a PWG 5101.1-2002 paper name.
+
+    If [name] is [NULL], the default paper size is returned, see
+    [Gtk.PaperSize.get_default]. *)
 
 val new_custom :
   string -> string -> float -> float -> Enums.unit -> paper_size_t
+(** Creates a new [GtkPaperSize] object with the given parameters. *)
 
 val new_from_gvariant : Gvariant.t -> paper_size_t
+(** Deserialize a paper size from a [GVariant].
+
+    The `GVariant must be in the format produced by [Gtk.PaperSize.to_gvariant].
+*)
+
 val new_from_ipp : string -> float -> float -> paper_size_t
+(** Creates a new [GtkPaperSize] object by using IPP information.
+
+    If [ipp_name] is not a recognized paper name, [width] and [height] are used
+    to construct a custom [GtkPaperSize] object. *)
+
 val new_from_ppd : string -> string -> float -> float -> paper_size_t
+(** Creates a new [GtkPaperSize] object by using PPD information.
+
+    If [ppd_name] is not a recognized PPD paper name, [ppd_display_name],
+    [width] and [height] are used to construct a custom [GtkPaperSize] object.
+*)

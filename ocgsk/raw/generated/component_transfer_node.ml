@@ -17,7 +17,8 @@ external new_ :
   Component_transfer.t ->
   Component_transfer.t ->
   t = "ml_gsk_component_transfer_node_new"
-(** Create a new ComponentTransferNode *)
+(** Creates a render node that will apply component transfers to a child node.
+*)
 
 (* Methods *)
 

@@ -73,8 +73,9 @@
 
     [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role.
 
-    Its methods, signals and properties are on {!class-type-text_view_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Text_view}. *)
+    Its methods, signals and properties are on {!class-type-text_view_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Text_view}. *)
 
 (** The methods, signals and properties of a [GtkTextView]. *)
 class type text_view_t = object
@@ -598,7 +599,21 @@ class text_view : Raw.Text_view.t -> text_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkTextView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> text_view_t
+(** Creates a new [GtkTextView].
+
+    If you don’t call [Gtk.TextView.set_buffer] before using the text view, an
+    empty default buffer will be created for you. Get the buffer with
+    [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
+    [Gtk.TextView.new_with_buffer]. *)
 
 val new_with_buffer :
   Text_buffer_and__text_iter_and__text_mark.text_buffer_t -> text_view_t
+(** Creates a new [GtkTextView] widget displaying the buffer [buffer].
+
+    One buffer can be shared among many widgets. [buffer] may be [NULL] to
+    create a default buffer, in which case this function is equivalent to
+    [Gtk.TextView.new]. The text view adds its own reference count to the
+    buffer; it does not take over an existing reference. *)

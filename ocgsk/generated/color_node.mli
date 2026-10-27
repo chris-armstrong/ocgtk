@@ -1,7 +1,8 @@
 (** A render node for a solid color.
 
-    Its methods, signals and properties are on {!class-type-color_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Color_node}. *)
+    Its methods, signals and properties are on {!class-type-color_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Color_node}. *)
 
 (** The methods, signals and properties of a [GskColorNode]. *)
 class type color_node_t = object
@@ -21,4 +22,8 @@ class color_node : Raw.Color_node.t -> color_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskColorNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgdk.Rgb_a.rgb_a_t -> Ocgraphene.Rect.rect_t -> color_node_t
+(** Creates a [GskRenderNode] that will render the color specified by [rgba]
+    into the area given by [bounds]. *)

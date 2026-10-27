@@ -24,7 +24,8 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_cell_renderer_spinner_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_spinner_new"
-(** Create a new CellRendererSpinner *)
+(** Returns a new cell renderer which will show a spinner to indicate activity.
+*)
 
 (* Methods *)
 (* Properties *)

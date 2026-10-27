@@ -90,8 +90,9 @@
  ]}\n\n\
  If you need to change the options for creating the [GdkGLContext]\n\
  you should use the [Gtk.GLArea::create-context] signal.\n\n\
- Its methods, signals and properties are on {!class-type-gl_area_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Gl_area}."]
+ Its methods, signals and properties are on {!class-type-gl_area_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Gl_area}."]
 
 (** The methods, signals and properties of a [GtkGLArea]. *)
 class type gl_area_t = object
@@ -236,4 +237,7 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGLArea], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gl_area_t
+(** Creates a new [GtkGLArea] widget. *)

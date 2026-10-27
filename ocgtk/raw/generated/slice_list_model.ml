@@ -17,7 +17,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_slice_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> int -> int -> t
   = "ml_gtk_slice_list_model_new"
-(** Create a new SliceListModel *)
+(** Creates a new slice model.
+
+    It presents the slice from [offset] to offset + [size] of the given [model].
+*)
 
 (* Methods *)
 

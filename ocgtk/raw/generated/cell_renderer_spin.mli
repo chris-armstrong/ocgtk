@@ -29,7 +29,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_spin_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_spin_new"
-(** Create a new CellRendererSpin *)
+(** Creates a new [GtkCellRendererSpin]. *)
 
 (* Methods *)
 (* Properties *)

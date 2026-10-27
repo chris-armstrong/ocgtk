@@ -16,7 +16,8 @@
     style class to the widgets representing the stack pages.
 
     Its methods, signals and properties are on {!class-type-stack_sidebar_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Stack_sidebar}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Stack_sidebar}. *)
 
 (** The methods, signals and properties of a [GtkStackSidebar]. *)
 class type stack_sidebar_t = object
@@ -41,4 +42,7 @@ class stack_sidebar : Raw.Stack_sidebar.t -> stack_sidebar_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStackSidebar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> stack_sidebar_t
+(** Creates a new [GtkStackSidebar]. *)

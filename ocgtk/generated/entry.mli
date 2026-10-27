@@ -68,8 +68,9 @@
  content instead.\n\n\
  {b Accessibility}\n\n\
  [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role.\n\n\
- Its methods, signals and properties are on {!class-type-entry_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Entry}."]
+ Its methods, signals and properties are on {!class-type-entry_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Entry}."]
 
 (** The methods, signals and properties of a [GtkEntry]. *)
 class type entry_t = object
@@ -478,5 +479,10 @@ class entry : Raw.Entry.t -> entry_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkEntry], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> entry_t
+(** Creates a new entry. *)
+
 val new_with_buffer : Entry_buffer.entry_buffer_t -> entry_t
+(** Creates a new entry with the specified text buffer. *)

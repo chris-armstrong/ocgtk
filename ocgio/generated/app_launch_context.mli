@@ -6,7 +6,8 @@
     on the same screen as the launching window.
 
     Its methods, signals and properties are on
-    {!class-type-app_launch_context_t}. The functions it is built on are in
+    {!class-type-app_launch_context_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.App_launch_context}. *)
 
 class type app_launch_context_t = App_info_cycle_64c425a0.app_launch_context_t
@@ -17,4 +18,10 @@ class app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GAppLaunchContext], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> app_launch_context_t
+(** Creates a new application launch context. This is not normally used, instead
+    you instantiate a subclass of this, such as
+    {{:https://docs.gtk.org/gdk4/class.AppLaunchContext.html}[GdkAppLaunchContext]}.
+*)

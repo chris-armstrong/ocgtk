@@ -35,8 +35,9 @@
     [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
     attributes.
 
-    Its methods, signals and properties are on {!class-type-file_info_t}. The
-    functions it is built on are in {!Ocgio.Raw.File_info}. *)
+    Its methods, signals and properties are on {!class-type-file_info_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.File_info}. *)
 
 (** The methods, signals and properties of a [GFileInfo]. *)
 class type file_info_t = object
@@ -337,4 +338,7 @@ class file_info : Raw.File_info.t -> file_info_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GFileInfo], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> file_info_t
+(** Creates a new file info structure. *)

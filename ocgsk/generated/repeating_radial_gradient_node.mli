@@ -1,8 +1,9 @@
 (** A render node for a repeating radial gradient.
 
     Its methods, signals and properties are on
-    {!class-type-repeating_radial_gradient_node_t}. The functions it is built on
-    are in {!Ocgsk.Raw.Repeating_radial_gradient_node}. *)
+    {!class-type-repeating_radial_gradient_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Repeating_radial_gradient_node}. *)
 
 (** The methods, signals and properties of a [GskRepeatingRadialGradientNode].
 *)
@@ -21,6 +22,8 @@ class repeating_radial_gradient_node :
     and methods that return a [GskRepeatingRadialGradientNode], give one already
     wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgraphene.Rect.rect_t ->
   Ocgraphene.Point.point_t ->
@@ -31,3 +34,8 @@ val new_ :
   Raw.Color_stop.t array ->
   Gsize.t ->
   repeating_radial_gradient_node_t
+(** Creates a [GskRenderNode] that draws a repeating radial gradient.
+
+    The radial gradient starts around [center]. The size of the gradient is
+    dictated by [hradius] in horizontal orientation and by [vradius] in vertical
+    orientation. *)

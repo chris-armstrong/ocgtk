@@ -27,8 +27,9 @@
  translatable strings with xgettext will not work for strings inside the\n\
  marked section.\n\n\
  Its methods, signals and properties are on \
- {!class-type-builder_list_item_factory_t}. The functions it is built on are \
- in {!Ocgtk.Raw.Builder_list_item_factory}."]
+ {!class-type-builder_list_item_factory_t}. Its constructors are under \
+ {!section-constructors}. The functions it is built on are in \
+ {!Ocgtk.Raw.Builder_list_item_factory}."]
 
 (** The methods, signals and properties of a [GtkBuilderListItemFactory]. *)
 class type builder_list_item_factory_t = object
@@ -55,10 +56,16 @@ class builder_list_item_factory :
     methods that return a [GtkBuilderListItemFactory], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_bytes :
   Builder_scope.builder_scope_t option ->
   Glib_bytes.t ->
   builder_list_item_factory_t
+(** Creates a new [GtkBuilderListItemFactory] that instantiates widgets using
+    [bytes] as the data to pass to [GtkBuilder]. *)
 
 val new_from_resource :
   Builder_scope.builder_scope_t option -> string -> builder_list_item_factory_t
+(** Creates a new [GtkBuilderListItemFactory] that instantiates widgets using
+    data read from the given [resource_path] to pass to [GtkBuilder]. *)

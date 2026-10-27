@@ -20,15 +20,24 @@ type t = [ `print_settings | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_print_settings_get_type"
 
 external new_ : unit -> t = "ml_gtk_print_settings_new"
-(** Create a new PrintSettings *)
+(** Creates a new [GtkPrintSettings] object. *)
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_gtk_print_settings_new_from_file"
-(** Create a new PrintSettings *)
+(** Reads the print settings from [file_name].
+
+    Returns a new [GtkPrintSettings] object with the restored settings, or
+    [NULL] if an error occurred. If the file could not be loaded then error is
+    set to either a [GFileError] or [GKeyFileError].
+
+    See [Gtk.PrintSettings.to_file]. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_print_settings_new_from_gvariant"
-(** Create a new PrintSettings *)
+(** Deserialize print settings from an a\{sv\} variant.
+
+    The variant must be in the format produced by
+    [Gtk.PrintSettings.to_gvariant]. *)
 
 (* Methods *)
 

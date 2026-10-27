@@ -51,11 +51,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_down_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> Expression.t option -> t
   = "ml_gtk_drop_down_new"
-(** Create a new DropDown *)
+(** Creates a new [GtkDropDown].
+
+    You may want to call [Gtk.DropDown.set_factory] to set up a way to map its
+    items to widgets. *)
 
 external new_from_strings : string array -> t
   = "ml_gtk_drop_down_new_from_strings"
-(** Create a new DropDown *)
+(** Creates a new [GtkDropDown] that is populated with the strings. *)
 
 (* Methods *)
 

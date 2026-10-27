@@ -11,7 +11,8 @@
     moving such a document between systems still works.
 
     Its methods, signals and properties are on {!class-type-print_settings_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Print_settings}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Print_settings}. *)
 
 (** The methods, signals and properties of a [GtkPrintSettings]. *)
 class type print_settings_t = object
@@ -261,6 +262,22 @@ class print_settings : Raw.Print_settings.t -> print_settings_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkPrintSettings], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> print_settings_t
+(** Creates a new [GtkPrintSettings] object. *)
+
 val new_from_file : string -> (print_settings_t, GError.t) result
+(** Reads the print settings from [file_name].
+
+    Returns a new [GtkPrintSettings] object with the restored settings, or
+    [NULL] if an error occurred. If the file could not be loaded then error is
+    set to either a [GFileError] or [GKeyFileError].
+
+    See [Gtk.PrintSettings.to_file]. *)
+
 val new_from_gvariant : Gvariant.t -> print_settings_t
+(** Deserialize print settings from an a\{sv\} variant.
+
+    The variant must be in the format produced by
+    [Gtk.PrintSettings.to_gvariant]. *)

@@ -16,7 +16,8 @@
     contains a button node with the .font style class.
 
     Its methods, signals and properties are on
-    {!class-type-font_dialog_button_t}. The functions it is built on are in
+    {!class-type-font_dialog_button_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Font_dialog_button}. *)
 
 (** The methods, signals and properties of a [GtkFontDialogButton]. *)
@@ -95,4 +96,10 @@ class font_dialog_button : Raw.Font_dialog_button.t -> font_dialog_button_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkFontDialogButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Font_dialog.font_dialog_t option -> font_dialog_button_t
+(** Creates a new [GtkFontDialogButton] with the given [GtkFontDialog].
+
+    You can pass [NULL] to this function and set a [GtkFontDialog] later. The
+    button will be insensitive until that happens. *)

@@ -21,11 +21,17 @@ type t = [ `unix_fd_list | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_unix_fd_list_get_type"
 
 external new_ : unit -> t = "ml_g_unix_fd_list_new"
-(** Create a new UnixFDList *)
+(** Creates a new [GUnixFDList] containing no file descriptors. *)
 
 external new_from_array : int array -> int -> t
   = "ml_g_unix_fd_list_new_from_array"
-(** Create a new UnixFDList *)
+(** Creates a new [GUnixFDList] containing the file descriptors given in [fds].
+    The file descriptors become the property of the new list and may no longer
+    be used by the caller. The array itself is owned by the caller.
+
+    Each file descriptor in the array should be set to close-on-exec.
+
+    If [n_fds] is -1 then [fds] must be terminated with -1. *)
 
 (* Methods *)
 

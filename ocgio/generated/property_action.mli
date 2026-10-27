@@ -51,7 +51,8 @@
     possibly combine its use with [Gio.Settings.bind].
 
     Its methods, signals and properties are on {!class-type-property_action_t}.
-    The functions it is built on are in {!Ocgio.Raw.Property_action}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Property_action}. *)
 
 (** The methods, signals and properties of a [GPropertyAction]. *)
 class type property_action_t = object
@@ -70,4 +71,14 @@ class property_action : Raw.Property_action.t -> property_action_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GPropertyAction], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> [ `object_ ] Gobject.obj -> string -> property_action_t
+(** Creates a [GAction] corresponding to the value of property [property_name]
+    on [object].
+
+    The property must be existent and readable and writable (and not
+    construct-only).
+
+    This function takes a reference on [object] and doesn't release it until the
+    action is destroyed. *)

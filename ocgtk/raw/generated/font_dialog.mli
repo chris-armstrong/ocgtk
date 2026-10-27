@@ -19,7 +19,7 @@ type t = [ `font_dialog | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_font_dialog_new"
-(** Create a new FontDialog *)
+(** Creates a new [GtkFontDialog] object. *)
 
 (* Methods *)
 

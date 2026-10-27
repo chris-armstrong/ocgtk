@@ -8,7 +8,8 @@
     controllers widget.
 
     Its methods, signals and properties are on
-    {!class-type-event_controller_focus_t}. The functions it is built on are in
+    {!class-type-event_controller_focus_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_focus}. *)
 
 (** The methods, signals and properties of a [GtkEventControllerFocus]. *)
@@ -40,4 +41,7 @@ class event_controller_focus :
     methods that return a [GtkEventControllerFocus], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> event_controller_focus_t
+(** Creates a new event controller that will handle focus events. *)

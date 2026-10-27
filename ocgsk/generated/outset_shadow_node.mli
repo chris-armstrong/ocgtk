@@ -1,7 +1,8 @@
 (** A render node for an outset shadow.
 
     Its methods, signals and properties are on
-    {!class-type-outset_shadow_node_t}. The functions it is built on are in
+    {!class-type-outset_shadow_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Outset_shadow_node}. *)
 
 (** The methods, signals and properties of a [GskOutsetShadowNode]. *)
@@ -37,6 +38,8 @@ class outset_shadow_node : Raw.Outset_shadow_node.t -> outset_shadow_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskOutsetShadowNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Raw.Rounded_rect.t ->
   Ocgdk.Rgb_a.rgb_a_t ->
@@ -45,3 +48,5 @@ val new_ :
   float ->
   float ->
   outset_shadow_node_t
+(** Creates a [GskRenderNode] that will render an outset shadow around the box
+    given by [outline]. *)

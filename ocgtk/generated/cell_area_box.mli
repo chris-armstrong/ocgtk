@@ -15,8 +15,9 @@
  configured by configuring the [GtkCellAreaBox] align child cell property\n\
  with gtk_cell_area_cell_set_property() or by specifying the \"align\"\n\
  argument to gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().\n\n\
- Its methods, signals and properties are on {!class-type-cell_area_box_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Cell_area_box}."]
+ Its methods, signals and properties are on {!class-type-cell_area_box_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Cell_area_box}."]
 
 (** The methods, signals and properties of a [GtkCellAreaBox]. *)
 class type cell_area_box_t = object
@@ -37,4 +38,7 @@ class cell_area_box : Raw.Cell_area_box.t -> cell_area_box_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCellAreaBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_area_box_t
+(** Creates a new [GtkCellAreaBox]. *)

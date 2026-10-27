@@ -16,7 +16,11 @@ type t = [ `string_sorter | `sorter | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_string_sorter_get_type"
 
 external new_ : Expression.t option -> t = "ml_gtk_string_sorter_new"
-(** Create a new StringSorter *)
+(** Creates a new string sorter that compares items using the given
+    [expression].
+
+    Unless an expression is set on it, this sorter will always compare items as
+    invalid. *)
 
 (* Methods *)
 

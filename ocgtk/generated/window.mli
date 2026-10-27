@@ -74,8 +74,9 @@
 
     From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role.
 
-    Its methods, signals and properties are on {!class-type-window_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Window}. *)
+    Its methods, signals and properties are on {!class-type-window_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Window}. *)
 
 class type window_t = Application_and__window_and__window_group.window_t
 (** The methods, signals and properties of a [GtkWindow]. *)
@@ -85,4 +86,17 @@ class window : Raw.Window.t -> window_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkWindow], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> window_t
+(** Creates a new [GtkWindow].
+
+    To get an undecorated window (without window borders), use
+    [Gtk.Window.set_decorated].
+
+    All top-level windows created by this function are stored in an internal
+    top-level window list. This list can be obtained from
+    [Gtk.Window.list_toplevels]. Due to GTK keeping a reference to the window
+    internally, this function does not return a reference to the caller.
+
+    To delete a [GtkWindow], call [Gtk.Window.destroy]. *)

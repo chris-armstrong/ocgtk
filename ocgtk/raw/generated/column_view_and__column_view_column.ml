@@ -8,7 +8,10 @@ module rec Column_view : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_column_view_get_type"
 
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
-  (** Create a new ColumnView *)
+  (** Creates a new [GtkColumnView].
+
+      You most likely want to call [Gtk.ColumnView.append_column] to add columns
+      next. *)
 
   (* Methods *)
 
@@ -189,7 +192,10 @@ end = struct
   external gtype : unit -> Gobject.Type.t = "ml_gtk_column_view_get_type"
 
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
-  (** Create a new ColumnView *)
+  (** Creates a new [GtkColumnView].
+
+      You most likely want to call [Gtk.ColumnView.append_column] to add columns
+      next. *)
 
   (* Methods *)
 
@@ -378,7 +384,16 @@ and Column_view_column : sig
 
   external new_ : string option -> List_item_factory.t option -> t
     = "ml_gtk_column_view_column_new"
-  (** Create a new ColumnViewColumn *)
+  [@@ocaml.doc
+    "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
+    \  mapping items to widgets.\n\n\
+    \  You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+    \  The function takes ownership of the argument, so you can write code \
+     like:\n\n\
+    \  {[\n\
+    \  column = gtk_column_view_column_new (_(\"Name\"),\n\
+    \    gtk_builder_list_item_factory_new_from_resource (\"/name.ui\"));\n\
+    \  ]}"]
 
   (* Methods *)
 
@@ -493,7 +508,16 @@ end = struct
 
   external new_ : string option -> List_item_factory.t option -> t
     = "ml_gtk_column_view_column_new"
-  (** Create a new ColumnViewColumn *)
+  [@@ocaml.doc
+    "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
+    \  mapping items to widgets.\n\n\
+    \  You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+    \  The function takes ownership of the argument, so you can write code \
+     like:\n\n\
+    \  {[\n\
+    \  column = gtk_column_view_column_new (_(\"Name\"),\n\
+    \    gtk_builder_list_item_factory_new_from_resource (\"/name.ui\"));\n\
+    \  ]}"]
 
   (* Methods *)
 

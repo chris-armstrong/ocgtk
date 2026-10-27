@@ -45,7 +45,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Ocgtk_enums.eventcontrollerscrollflags -> t
   = "ml_gtk_event_controller_scroll_new"
-(** Create a new EventControllerScroll *)
+(** Creates a new event controller that will handle scroll events. *)
 
 (* Methods *)
 

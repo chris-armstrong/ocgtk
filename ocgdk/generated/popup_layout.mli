@@ -31,8 +31,9 @@
     be careful avoid changing the size of the popover, or it has to be presented
     again.
 
-    Its methods, signals and properties are on {!class-type-popup_layout_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Popup_layout}. *)
+    Its methods, signals and properties are on {!class-type-popup_layout_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Popup_layout}. *)
 
 (** The methods, signals and properties of a [GdkPopupLayout]. *)
 class type popup_layout_t = object
@@ -90,4 +91,18 @@ class popup_layout : Raw.Popup_layout.t -> popup_layout_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GdkPopupLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Raw.Rectangle.t -> Enums.gravity -> Enums.gravity -> popup_layout_t
+(** Create a popup layout description.
+
+    Used together with [Gdk.Popup.present] to describe how a popup surface
+    should be placed and behave on-screen.
+
+    [anchor_rect] is relative to the top-left corner of the surface's parent.
+    [rect_anchor] and [surface_anchor] determine anchor points on [anchor_rect]
+    and surface to pin together.
+
+    The position of [anchor_rect]'s anchor point can optionally be offset using
+    [Gdk.PopupLayout.set_offset], which is equivalent to offsetting the position
+    of surface. *)

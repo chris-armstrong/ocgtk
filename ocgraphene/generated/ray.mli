@@ -6,8 +6,9 @@
     The contents of the [graphene_ray_t] structure are private, and should not
     be modified directly.
 
-    Its methods, signals and properties are on {!class-type-ray_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Ray}. *)
+    Its methods, signals and properties are on {!class-type-ray_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Ray}. *)
 
 class type ray_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray_t
@@ -18,4 +19,9 @@ class ray : Raw.Ray.t -> ray_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_ray_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> ray_t
+(** Allocates a new #graphene_ray_t structure.
+
+    The contents of the returned structure are undefined. *)

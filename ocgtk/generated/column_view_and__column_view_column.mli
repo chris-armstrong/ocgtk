@@ -264,8 +264,21 @@ class column_view : Raw.Column_view.t -> column_view_t
 and column_view_column : Raw.Column_view_column.t -> column_view_column_t
 
 val new_ : Selection_model.selection_model_t option -> column_view_t
+(** Creates a new [GtkColumnView].
+
+    You most likely want to call [Gtk.ColumnView.append_column] to add columns
+    next. *)
 
 val new_ :
   string option ->
   List_item_factory.list_item_factory_t option ->
   column_view_column_t
+[@@ocaml.doc
+  "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+   The function takes ownership of the argument, so you can write code like:\n\n\
+   {[\n\
+   column = gtk_column_view_column_new (_(\"Name\"),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/name.ui\"));\n\
+   ]}"]

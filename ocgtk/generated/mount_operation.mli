@@ -11,7 +11,8 @@
     passwords, ask questions or show processes blocking unmount.
 
     Its methods, signals and properties are on {!class-type-mount_operation_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Mount_operation}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Mount_operation}. *)
 
 (** The methods, signals and properties of a [GtkMountOperation]. *)
 class type mount_operation_t = object
@@ -42,5 +43,8 @@ class mount_operation : Raw.Mount_operation.t -> mount_operation_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkMountOperation], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Application_and__window_and__window_group.window_t option -> mount_operation_t
+(** Creates a new [GtkMountOperation]. *)

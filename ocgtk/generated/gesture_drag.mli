@@ -6,8 +6,9 @@
     extracted through [Gtk.GestureDrag.get_offset] and
     [Gtk.GestureDrag.get_start_point].
 
-    Its methods, signals and properties are on {!class-type-gesture_drag_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Gesture_drag}. *)
+    Its methods, signals and properties are on {!class-type-gesture_drag_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Gesture_drag}. *)
 
 (** The methods, signals and properties of a [GtkGestureDrag]. *)
 class type gesture_drag_t = object
@@ -39,4 +40,7 @@ class gesture_drag : Raw.Gesture_drag.t -> gesture_drag_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGestureDrag], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_drag_t
+(** Returns a newly created [GtkGesture] that recognizes drags. *)

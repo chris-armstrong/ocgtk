@@ -14,7 +14,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_event_controller_legacy_get_type"
 
 external new_ : unit -> t = "ml_gtk_event_controller_legacy_new"
-(** Create a new EventControllerLegacy *)
+(** Creates a new legacy event controller. *)
 
 (* Methods *)
 let on_event ?after obj ~callback =

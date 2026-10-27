@@ -18,24 +18,37 @@ type t = [ `paper_size ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_paper_size_get_type"
 
 external new_ : string option -> t = "ml_gtk_paper_size_new"
-(** Create a new PaperSize *)
+(** Creates a new [GtkPaperSize] object by parsing a PWG 5101.1-2002 paper name.
+
+    If [name] is [NULL], the default paper size is returned, see
+    [Gtk.PaperSize.get_default]. *)
 
 external new_custom :
   string -> string -> float -> float -> Ocgtk_enums.unit -> t
   = "ml_gtk_paper_size_new_custom"
-(** Create a new PaperSize *)
+(** Creates a new [GtkPaperSize] object with the given parameters. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_paper_size_new_from_gvariant"
-(** Create a new PaperSize *)
+(** Deserialize a paper size from a [GVariant].
+
+    The `GVariant must be in the format produced by [Gtk.PaperSize.to_gvariant].
+*)
 
 external new_from_ipp : string -> float -> float -> t
   = "ml_gtk_paper_size_new_from_ipp"
-(** Create a new PaperSize *)
+(** Creates a new [GtkPaperSize] object by using IPP information.
+
+    If [ipp_name] is not a recognized paper name, [width] and [height] are used
+    to construct a custom [GtkPaperSize] object. *)
 
 external new_from_ppd : string -> string -> float -> float -> t
   = "ml_gtk_paper_size_new_from_ppd"
-(** Create a new PaperSize *)
+(** Creates a new [GtkPaperSize] object by using PPD information.
+
+    If [ppd_name] is not a recognized PPD paper name, [ppd_display_name],
+    [width] and [height] are used to construct a custom [GtkPaperSize] object.
+*)
 
 (* Methods *)
 

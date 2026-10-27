@@ -31,7 +31,7 @@ type t = [ `mount_operation | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_mount_operation_get_type"
 
 external new_ : unit -> t = "ml_g_mount_operation_new"
-(** Create a new MountOperation *)
+(** Creates a new mount operation. *)
 
 (* Methods *)
 

@@ -1262,10 +1262,13 @@ and Surface : sig
   external gtype : unit -> Gobject.Type.t = "ml_gdk_surface_get_type"
 
   external new_popup : t -> bool -> t = "ml_gdk_surface_new_popup"
-  (** Create a new Surface *)
+  (** Create a new popup surface.
+
+      The surface will be attached to [parent] and can be positioned relative to
+      it using [Gdk.Popup.present]. *)
 
   external new_toplevel : Display.t -> t = "ml_gdk_surface_new_toplevel"
-  (** Create a new Surface *)
+  (** Creates a new toplevel surface. *)
 
   (* Methods *)
 

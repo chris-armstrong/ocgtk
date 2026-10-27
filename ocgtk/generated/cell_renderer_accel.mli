@@ -5,7 +5,8 @@
     accelerator can be changed by simply typing the new combination.
 
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_accel_t}. The functions it is built on are in
+    {!class-type-cell_renderer_accel_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_accel}. *)
 
 (** The methods, signals and properties of a [GtkCellRendererAccel]. *)
@@ -45,4 +46,7 @@ class cell_renderer_accel : Raw.Cell_renderer_accel.t -> cell_renderer_accel_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkCellRendererAccel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_renderer_accel_t
+(** Creates a new [GtkCellRendererAccel]. *)

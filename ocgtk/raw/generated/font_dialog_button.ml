@@ -26,7 +26,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_dialog_button_get_type"
 
 external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
-(** Create a new FontDialogButton *)
+(** Creates a new [GtkFontDialogButton] with the given [GtkFontDialog].
+
+    You can pass [NULL] to this function and set a [GtkFontDialog] later. The
+    button will be insensitive until that happens. *)
 
 (* Methods *)
 

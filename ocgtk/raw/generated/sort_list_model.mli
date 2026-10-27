@@ -36,7 +36,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_sort_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> Sorter.t option -> t
   = "ml_gtk_sort_list_model_new"
-(** Create a new SortListModel *)
+(** Creates a new sort list model that uses the [sorter] to sort [model]. *)
 
 (* Methods *)
 

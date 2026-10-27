@@ -79,8 +79,9 @@
  {b Accessibility}\n\n\
  [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list\n\
  items use the [Gtk.AccessibleRole.list_item] role.\n\n\
- Its methods, signals and properties are on {!class-type-list_view_t}. The \
- functions it is built on are in {!Ocgtk.Raw.List_view}."]
+ Its methods, signals and properties are on {!class-type-list_view_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.List_view}."]
 
 (** The methods, signals and properties of a [GtkListView]. *)
 class type list_view_t = object
@@ -163,7 +164,18 @@ class list_view : Raw.List_view.t -> list_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkListView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Selection_model.selection_model_t option ->
   List_item_factory.list_item_factory_t option ->
   list_view_t
+[@@ocaml.doc
+  "Creates a new [GtkListView] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   The function takes ownership of the\n\
+   arguments, so you can write code like\n\n\
+   {[\n\
+   list_view = gtk_list_view_new (create_model (),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/resource.ui\"));\n\
+   ]}"]

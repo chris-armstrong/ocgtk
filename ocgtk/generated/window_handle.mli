@@ -16,7 +16,8 @@
     [Gtk.AccessibleRole.generic] role.
 
     Its methods, signals and properties are on {!class-type-window_handle_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Window_handle}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Window_handle}. *)
 
 (** The methods, signals and properties of a [GtkWindowHandle]. *)
 class type window_handle_t = object
@@ -46,4 +47,7 @@ class window_handle : Raw.Window_handle.t -> window_handle_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkWindowHandle], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> window_handle_t
+(** Creates a new [GtkWindowHandle]. *)

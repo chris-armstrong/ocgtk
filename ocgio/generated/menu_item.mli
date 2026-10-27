@@ -1,8 +1,9 @@
 (** [GMenuItem] is an opaque structure type. You must access it using the
     functions below.
 
-    Its methods, signals and properties are on {!class-type-menu_item_t}. The
-    functions it is built on are in {!Ocgio.Raw.Menu_item}. *)
+    Its methods, signals and properties are on {!class-type-menu_item_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Menu_item}. *)
 
 (** The methods, signals and properties of a [GMenuItem]. *)
 class type menu_item_t = object
@@ -138,13 +139,86 @@ class menu_item : Raw.Menu_item.t -> menu_item_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GMenuItem], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> string option -> menu_item_t
+[@@ocaml.doc
+  "Creates a new [GMenuItem].\n\n\
+   If [label] is non-[NULL] it is used to set the \"label\" attribute of the\n\
+   new item.\n\n\
+   If [detailed_action] is non-[NULL] it is used to set the \"action\" and\n\
+   possibly the \"target\" attribute of the new item.  See\n\
+   g_menu_item_set_detailed_action() for more information."]
 
 val new_from_model :
   Menu_link_iter_and__menu_model.menu_model_t -> int -> menu_item_t
+(** Creates a [GMenuItem] as an exact copy of an existing menu item in a
+    [GMenuModel].
+
+    [item_index] must be valid (ie: be sure to call g_menu_model_get_n_items()
+    first). *)
 
 val new_section :
   string option -> Menu_link_iter_and__menu_model.menu_model_t -> menu_item_t
+[@@ocaml.doc
+  "Creates a new [GMenuItem] representing a section.\n\n\
+   This is a convenience API around g_menu_item_new() and\n\
+   g_menu_item_set_section().\n\n\
+   The effect of having one menu appear as a section of another is\n\
+   exactly as it sounds: the items from [section] become a direct part of\n\
+   the menu that [menu_item] is added to.\n\n\
+   Visual separation is typically displayed between two non-empty\n\
+   sections.  If [label] is non-[NULL] then it will be incorporated into\n\
+   this visual indication.  This allows for labeled subsections of a\n\
+   menu.\n\n\
+   As a simple example, consider a typical \"Edit\" menu from a simple\n\
+   program.  It probably contains an \"Undo\" and \"Redo\" item, followed by\n\
+   a separator, followed by \"Cut\", \"Copy\" and \"Paste\".\n\n\
+   This would be accomplished by creating three [GMenu] instances.  The\n\
+   first would be populated with the \"Undo\" and \"Redo\" items, and the\n\
+   second with the \"Cut\", \"Copy\" and \"Paste\" items.  The first and\n\
+   second menus would then be added as submenus of the third.  In XML\n\
+   format, this would look something like the following:\n\n\
+   {[\n\
+   <menu id='edit-menu'>\n\
+  \  <section>\n\
+  \    <item label='Undo'/>\n\
+  \    <item label='Redo'/>\n\
+  \  </section>\n\
+  \  <section>\n\
+  \    <item label='Cut'/>\n\
+  \    <item label='Copy'/>\n\
+  \    <item label='Paste'/>\n\
+  \  </section>\n\
+   </menu>\n\
+   ]}\n\n\
+   The following example is exactly equivalent.  It is more illustrative\n\
+   of the exact relationship between the menus and items (keeping in\n\
+   mind that the 'link' element defines a new menu that is linked to the\n\
+   containing one).  The style of the second example is more verbose and\n\
+   difficult to read (and therefore not recommended except for the\n\
+   purpose of understanding what is really going on).\n\n\
+   {[\n\
+   <menu id='edit-menu'>\n\
+  \  <item>\n\
+  \    <link name='section'>\n\
+  \      <item label='Undo'/>\n\
+  \      <item label='Redo'/>\n\
+  \    </link>\n\
+  \  </item>\n\
+  \  <item>\n\
+  \    <link name='section'>\n\
+  \      <item label='Cut'/>\n\
+  \      <item label='Copy'/>\n\
+  \      <item label='Paste'/>\n\
+  \    </link>\n\
+  \  </item>\n\
+   </menu>\n\
+   ]}"]
 
 val new_submenu :
   string option -> Menu_link_iter_and__menu_model.menu_model_t -> menu_item_t
+(** Creates a new [GMenuItem] representing a submenu.
+
+    This is a convenience API around g_menu_item_new() and
+    g_menu_item_set_submenu(). *)

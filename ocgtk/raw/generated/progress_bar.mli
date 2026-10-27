@@ -56,7 +56,7 @@ type t = [ `progress_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_progress_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_progress_bar_new"
-(** Create a new ProgressBar *)
+(** Creates a new [GtkProgressBar]. *)
 
 (* Methods *)
 

@@ -41,11 +41,14 @@ type t = [ `cursor | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gdk_cursor_get_type"
 
 external new_from_name : string -> t option -> t = "ml_gdk_cursor_new_from_name"
-(** Create a new Cursor *)
+(** Creates a new cursor by looking up [name] in the current cursor theme.
+
+    A recommended set of cursor names that will work across different platforms
+    can be found in the CSS specification: *)
 
 external new_from_texture : Texture.t -> int -> int -> t option -> t
   = "ml_gdk_cursor_new_from_texture"
-(** Create a new Cursor *)
+(** Creates a new cursor from a [GdkTexture]. *)
 
 (* Methods *)
 

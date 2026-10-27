@@ -17,8 +17,9 @@
     pkg-config file when using it. This is no longer necessary since GLib 2.72.
 
     Its methods, signals and properties are on
-    {!class-type-unix_credentials_message_t}. The functions it is built on are
-    in {!Ocgio.Raw.Unix_credentials_message}. *)
+    {!class-type-unix_credentials_message_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Unix_credentials_message}. *)
 
 (** The methods, signals and properties of a [GUnixCredentialsMessage]. *)
 class type unix_credentials_message_t = object
@@ -38,7 +39,12 @@ class unix_credentials_message :
     methods that return a [GUnixCredentialsMessage], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> unix_credentials_message_t
+(** Creates a new [GUnixCredentialsMessage] with credentials matching the
+    current processes. *)
 
 val new_with_credentials :
   Credentials.credentials_t -> unix_credentials_message_t
+(** Creates a new [GUnixCredentialsMessage] holding [credentials]. *)

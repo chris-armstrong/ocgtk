@@ -49,7 +49,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_emoji_chooser_get_type"
 
 external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
-(** Create a new EmojiChooser *)
+(** Creates a new [GtkEmojiChooser]. *)
 
 (* Methods *)
 let on_emoji_picked ?after obj ~callback =

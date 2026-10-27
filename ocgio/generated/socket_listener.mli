@@ -13,7 +13,8 @@
     that make this even easier.
 
     Its methods, signals and properties are on {!class-type-socket_listener_t}.
-    The functions it is built on are in {!Ocgio.Raw.Socket_listener}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Socket_listener}. *)
 
 (** The methods, signals and properties of a [GSocketListener]. *)
 class type socket_listener_t = object
@@ -111,4 +112,9 @@ class socket_listener : Raw.Socket_listener.t -> socket_listener_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GSocketListener], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> socket_listener_t
+(** Creates a new [GSocketListener] with no sockets to listen for. New listeners
+    can be added with e.g. g_socket_listener_add_address() or
+    g_socket_listener_add_inet_port(). *)

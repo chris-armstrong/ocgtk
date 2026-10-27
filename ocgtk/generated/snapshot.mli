@@ -11,8 +11,9 @@
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
     use [Gtk.Snapshot.new].
 
-    Its methods, signals and properties are on {!class-type-snapshot_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Snapshot}. *)
+    Its methods, signals and properties are on {!class-type-snapshot_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Snapshot}. *)
 
 (** The methods, signals and properties of a [GtkSnapshot]. *)
 class type snapshot_t = object
@@ -443,4 +444,7 @@ class snapshot : Raw.Snapshot.t -> snapshot_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSnapshot], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> snapshot_t
+(** Creates a new [GtkSnapshot]. *)

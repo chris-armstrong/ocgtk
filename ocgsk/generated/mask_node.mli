@@ -1,7 +1,8 @@
 (** A render node masking one child node with another.
 
-    Its methods, signals and properties are on {!class-type-mask_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Mask_node}. *)
+    Its methods, signals and properties are on {!class-type-mask_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Mask_node}. *)
 
 (** The methods, signals and properties of a [GskMaskNode]. *)
 class type mask_node_t = object
@@ -24,8 +25,15 @@ class mask_node : Raw.Mask_node.t -> mask_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskMaskNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t ->
   Render_node.render_node_t ->
   Enums.maskmode ->
   mask_node_t
+(** Creates a [GskRenderNode] that will mask a given node by another.
+
+    The [mask_mode] determines how the 'mask values' are derived from the colors
+    of the [mask]. Applying the mask consists of multiplying the 'mask value'
+    with the alpha of the source. *)

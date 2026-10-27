@@ -8,8 +8,9 @@
     [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
     number).
 
-    Its methods, signals and properties are on {!class-type-inet_address_t}. The
-    functions it is built on are in {!Ocgio.Raw.Inet_address}. *)
+    Its methods, signals and properties are on {!class-type-inet_address_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Inet_address}. *)
 
 (** The methods, signals and properties of a [GInetAddress]. *)
 class type inet_address_t = object
@@ -75,6 +76,19 @@ class inet_address : Raw.Inet_address.t -> inet_address_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GInetAddress], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_any : Enums.socketfamily -> inet_address_t
+[@@ocaml.doc
+  "Creates a [GInetAddress] for the \"any\" address (unassigned/\"don't\n\
+   care\") for [family]."]
+
 val new_from_string : string -> inet_address_t
+(** Parses [string] as an IP address and creates a new [GInetAddress].
+
+    If [address] is an IPv6 address, it can also contain a scope ID (separated
+    from the address by a [%]). Note that currently this behavior is platform
+    specific. This may change in a future release. *)
+
 val new_loopback : Enums.socketfamily -> inet_address_t
+(** Creates a [GInetAddress] for the loopback address for [family]. *)

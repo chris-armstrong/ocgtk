@@ -15,7 +15,8 @@ external new_ :
   Path_and__path_measure_and__path_point.Path.t ->
   Ocgsk_enums.fillrule ->
   t = "ml_gsk_fill_node_new"
-(** Create a new FillNode *)
+(** Creates a [GskRenderNode] that will fill the [child] in the area given by
+    [path] and [fill_rule]. *)
 
 (* Methods *)
 

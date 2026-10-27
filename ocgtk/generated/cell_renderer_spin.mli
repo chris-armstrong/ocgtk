@@ -14,7 +14,8 @@
     can be set in a handler for the [GtkCellRenderer::editing-started] signal.
 
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_spin_t}. The functions it is built on are in
+    {!class-type-cell_renderer_spin_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_spin}. *)
 
 (** The methods, signals and properties of a [GtkCellRendererSpin]. *)
@@ -34,4 +35,7 @@ class cell_renderer_spin : Raw.Cell_renderer_spin.t -> cell_renderer_spin_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkCellRendererSpin], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_renderer_spin_t
+(** Creates a new [GtkCellRendererSpin]. *)

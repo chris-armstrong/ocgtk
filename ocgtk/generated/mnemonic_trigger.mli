@@ -4,7 +4,8 @@
     pressed together with the mnemonic key.
 
     Its methods, signals and properties are on {!class-type-mnemonic_trigger_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Mnemonic_trigger}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Mnemonic_trigger}. *)
 
 (** The methods, signals and properties of a [GtkMnemonicTrigger]. *)
 class type mnemonic_trigger_t = object
@@ -21,4 +22,11 @@ class mnemonic_trigger : Raw.Mnemonic_trigger.t -> mnemonic_trigger_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkMnemonicTrigger], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : int -> mnemonic_trigger_t
+(** Creates a [GtkShortcutTrigger] that will trigger whenever the key with the
+    given [keyval] is pressed and mnemonics have been activated.
+
+    Mnemonics are activated by calling code when a key event with the right
+    modifiers is detected. *)

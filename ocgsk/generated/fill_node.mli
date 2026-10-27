@@ -1,8 +1,9 @@
 (** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
     the child node.
 
-    Its methods, signals and properties are on {!class-type-fill_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Fill_node}. *)
+    Its methods, signals and properties are on {!class-type-fill_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Fill_node}. *)
 
 (** The methods, signals and properties of a [GskFillNode]. *)
 class type fill_node_t = object
@@ -26,5 +27,9 @@ class fill_node : Raw.Fill_node.t -> fill_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskFillNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t -> Raw.Path.t -> Enums.fillrule -> fill_node_t
+(** Creates a [GskRenderNode] that will fill the [child] in the area given by
+    [path] and [fill_rule]. *)

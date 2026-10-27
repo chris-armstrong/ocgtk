@@ -1,7 +1,8 @@
 (** A render node for a border.
 
-    Its methods, signals and properties are on {!class-type-border_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Border_node}. *)
+    Its methods, signals and properties are on {!class-type-border_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Border_node}. *)
 
 (** The methods, signals and properties of a [GskBorderNode]. *)
 class type border_node_t = object
@@ -24,5 +25,11 @@ class border_node : Raw.Border_node.t -> border_node_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GskBorderNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Raw.Rounded_rect.t -> float array -> Ocgdk.Raw.Rgb_a.t array -> border_node_t
+(** Creates a [GskRenderNode] that will stroke a border rectangle inside the
+    given [outline].
+
+    The 4 sides of the border can have different widths and colors. *)

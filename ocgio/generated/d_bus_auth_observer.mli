@@ -53,7 +53,8 @@
  }\n\
  ]}\n\n\
  Its methods, signals and properties are on \
- {!class-type-d_bus_auth_observer_t}. The functions it is built on are in \
+ {!class-type-d_bus_auth_observer_t}. Its constructors are under \
+ {!section-constructors}. The functions it is built on are in \
  {!Ocgio.Raw.D_bus_auth_observer}."]
 
 (** The methods, signals and properties of a [GDBusAuthObserver]. *)
@@ -89,4 +90,7 @@ class d_bus_auth_observer : Raw.D_bus_auth_observer.t -> d_bus_auth_observer_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GDBusAuthObserver], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> d_bus_auth_observer_t
+(** Creates a new [GDBusAuthObserver] object. *)

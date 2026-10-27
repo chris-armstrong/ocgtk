@@ -107,7 +107,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_dialog_new"
-(** Create a new Dialog *)
+(** Creates a new dialog box.
+
+    Widgets should not be packed into the [GtkWindow] directly, but into the
+    [content_area] and [action_area], as described above. *)
 
 (* Methods *)
 

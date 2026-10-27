@@ -38,7 +38,8 @@
     .emoji-section style class and gets the .emoji-toolbar style class itself.
 
     Its methods, signals and properties are on {!class-type-emoji_chooser_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Emoji_chooser}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Emoji_chooser}. *)
 
 (** The methods, signals and properties of a [GtkEmojiChooser]. *)
 class type emoji_chooser_t = object
@@ -58,4 +59,7 @@ class emoji_chooser : Raw.Emoji_chooser.t -> emoji_chooser_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkEmojiChooser], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> emoji_chooser_t
+(** Creates a new [GtkEmojiChooser]. *)

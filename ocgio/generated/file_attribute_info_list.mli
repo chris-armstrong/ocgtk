@@ -2,8 +2,9 @@
     registry stores Key-Value pair formats as [GFileAttributeInfos].
 
     Its methods, signals and properties are on
-    {!class-type-file_attribute_info_list_t}. The functions it is built on are
-    in {!Ocgio.Raw.File_attribute_info_list}. *)
+    {!class-type-file_attribute_info_list_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_attribute_info_list}. *)
 
 (** The methods, signals and properties of a [GFileAttributeInfoList]. *)
 class type file_attribute_info_list_t = object
@@ -31,4 +32,7 @@ class file_attribute_info_list :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GFileAttributeInfoList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> file_attribute_info_list_t
+(** Creates a new file attribute info list. *)

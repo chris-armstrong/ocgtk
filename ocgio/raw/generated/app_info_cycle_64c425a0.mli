@@ -236,7 +236,10 @@ and App_launch_context : sig
   external gtype : unit -> Gobject.Type.t = "ml_gio_app_launch_context_get_type"
 
   external new_ : unit -> t = "ml_g_app_launch_context_new"
-  (** Create a new AppLaunchContext *)
+  (** Creates a new application launch context. This is not normally used,
+      instead you instantiate a subclass of this, such as
+      {{:https://docs.gtk.org/gdk4/class.AppLaunchContext.html}[GdkAppLaunchContext]}.
+  *)
 
   (* Methods *)
 

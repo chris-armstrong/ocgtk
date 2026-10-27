@@ -83,12 +83,22 @@ type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_text_view_get_type"
 
 external new_ : unit -> t = "ml_gtk_text_view_new"
-(** Create a new TextView *)
+(** Creates a new [GtkTextView].
+
+    If you don’t call [Gtk.TextView.set_buffer] before using the text view, an
+    empty default buffer will be created for you. Get the buffer with
+    [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
+    [Gtk.TextView.new_with_buffer]. *)
 
 external new_with_buffer :
   Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> t
   = "ml_gtk_text_view_new_with_buffer"
-(** Create a new TextView *)
+(** Creates a new [GtkTextView] widget displaying the buffer [buffer].
+
+    One buffer can be shared among many widgets. [buffer] may be [NULL] to
+    create a default buffer, in which case this function is equivalent to
+    [Gtk.TextView.new]. The text view adds its own reference count to the
+    buffer; it does not take over an existing reference. *)
 
 (* Methods *)
 

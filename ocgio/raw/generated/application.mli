@@ -115,7 +115,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_application_get_type"
 
 external new_ : string option -> Ocgio_enums.applicationflags -> t
   = "ml_g_application_new"
-(** Create a new Application *)
+(** Creates a new [GApplication] instance.
+
+    If non-[NULL], the application id must be valid. See
+    g_application_id_is_valid().
+
+    If no application ID is given then some features of [GApplication] (most
+    notably application uniqueness) will be disabled. *)
 
 (* Methods *)
 

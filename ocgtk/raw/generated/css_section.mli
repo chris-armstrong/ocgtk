@@ -14,7 +14,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_css_section_get_type"
 
 external new_ : Ocgio_raw.File.t option -> Css_location.t -> Css_location.t -> t
   = "ml_gtk_css_section_new"
-(** Create a new CssSection *)
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    from the [start] location to the [end] location. *)
 
 external new_with_bytes :
   Ocgio_raw.File.t option ->
@@ -22,7 +23,8 @@ external new_with_bytes :
   Css_location.t ->
   Css_location.t ->
   t = "ml_gtk_css_section_new_with_bytes"
-(** Create a new CssSection *)
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    or the given [bytes] from the [start] location to the [end] location. *)
 
 (* Methods *)
 

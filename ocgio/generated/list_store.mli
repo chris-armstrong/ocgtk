@@ -4,8 +4,9 @@
     It provides insertions, deletions, and lookups in logarithmic time with a
     fast path for the common case of iterating the list linearly.
 
-    Its methods, signals and properties are on {!class-type-list_store_t}. The
-    functions it is built on are in {!Ocgio.Raw.List_store}. *)
+    Its methods, signals and properties are on {!class-type-list_store_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.List_store}. *)
 
 (** The methods, signals and properties of a [GListStore]. *)
 class type list_store_t = object
@@ -64,4 +65,8 @@ class list_store : Raw.List_store.t -> list_store_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GListStore], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Gobject.Type.t -> list_store_t
+(** Creates a new [GListStore] with items of type [item_type]. [item_type] must
+    be a subclass of [GObject]. *)

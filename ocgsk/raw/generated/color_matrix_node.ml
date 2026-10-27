@@ -12,7 +12,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_color_matrix_node_get_type"
 external new_ :
   Render_node.t -> Ocgraphene_raw.Matrix.t -> Ocgraphene_raw.Vec4.t -> t
   = "ml_gsk_color_matrix_node_new"
-(** Create a new ColorMatrixNode *)
+(** Creates a [GskRenderNode] that will drawn the [child] with [color_matrix].
+
+    In particular, the node will transform colors by applying
+
+    pixel = transpose(color_matrix) * pixel + color_offset
+
+    for every pixel. The transformation operates on unpremultiplied colors, with
+    color components ordered R, G, B, A. *)
 
 (* Methods *)
 

@@ -17,7 +17,11 @@ module rec Vec3 : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_vec3_get_type"
 
   external alloc : unit -> t = "ml_graphene_vec3_alloc"
-  (** Create a new Vec3 *)
+  (** Allocates a new #graphene_vec3_t structure.
+
+      The contents of the returned structure are undefined.
+
+      Use graphene_vec3_init() to initialize the vector. *)
 
   (* Methods *)
 
@@ -133,7 +137,11 @@ and Vec4 : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_vec4_get_type"
 
   external alloc : unit -> t = "ml_graphene_vec4_alloc"
-  (** Create a new Vec4 *)
+  (** Allocates a new #graphene_vec4_t structure.
+
+      The contents of the returned structure are undefined.
+
+      Use graphene_vec4_init() to initialize the vector. *)
 
   (* Methods *)
 

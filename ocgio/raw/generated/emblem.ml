@@ -15,11 +15,11 @@ type t = [ `emblem | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_emblem_get_type"
 
 external new_ : Icon.t -> t = "ml_g_emblem_new"
-(** Create a new Emblem *)
+(** Creates a new emblem for [icon]. *)
 
 external new_with_origin : Icon.t -> Ocgio_enums.emblemorigin -> t
   = "ml_g_emblem_new_with_origin"
-(** Create a new Emblem *)
+(** Creates a new emblem for [icon]. *)
 
 (* Methods *)
 

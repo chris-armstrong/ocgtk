@@ -12,11 +12,19 @@ type t = [ `text_child_anchor | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_text_child_anchor_get_type"
 
 external new_ : unit -> t = "ml_gtk_text_child_anchor_new"
-(** Create a new TextChildAnchor *)
+(** Creates a new [GtkTextChildAnchor].
+
+    Usually you would then insert it into a [GtkTextBuffer] with
+    [Gtk.TextBuffer.insert_child_anchor]. To perform the creation and insertion
+    in one step, use the convenience function
+    [Gtk.TextBuffer.create_child_anchor]. *)
 
 external new_with_replacement : string -> t
   = "ml_gtk_text_child_anchor_new_with_replacement"
-(** Create a new TextChildAnchor *)
+(** Creates a new [GtkTextChildAnchor] with the given replacement character.
+
+    Usually you would then insert it into a [GtkTextBuffer] with
+    [Gtk.TextBuffer.insert_child_anchor]. *)
 
 (* Methods *)
 

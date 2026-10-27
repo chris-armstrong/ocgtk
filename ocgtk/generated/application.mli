@@ -57,8 +57,9 @@
  {{:https://developer.gnome.org/documentation/tutorials/application.html}Using \
  GtkApplication}\n\
  - Getting Started with GTK: Basics\n\n\
- Its methods, signals and properties are on {!class-type-application_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Application}."]
+ Its methods, signals and properties are on {!class-type-application_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Application}."]
 
 class type application_t =
   Application_and__window_and__window_group.application_t
@@ -69,4 +70,24 @@ class application : Raw.Application.t -> application_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkApplication], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> Ocgio.Enums.applicationflags -> application_t
+(** Creates a new application instance.
+
+    When using [GtkApplication], it is not necessary to call [Gtk.init]
+    manually. It is called as soon as the application gets registered as the
+    primary instance.
+
+    Concretely, [Gtk.init] is called in the default handler for the
+    [GApplication::startup] signal. Therefore, [GtkApplication] subclasses
+    should always chain up in their [GIO.Application.startup] handler before
+    using any GTK API.
+
+    Note that commandline arguments are not passed to [Gtk.init].
+
+    If [application_id] is not [NULL], then it must be valid. See
+    [Gio.Application.id_is_valid].
+
+    If no application ID is given then some features (most notably application
+    uniqueness) will be disabled. *)

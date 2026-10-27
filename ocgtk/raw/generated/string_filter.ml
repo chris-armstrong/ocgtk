@@ -22,7 +22,10 @@ type t = [ `string_filter | `filter | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_string_filter_get_type"
 
 external new_ : Expression.t option -> t = "ml_gtk_string_filter_new"
-(** Create a new StringFilter *)
+(** Creates a new string filter.
+
+    You will want to set up the filter by providing a string to search for and
+    by providing a property to look up on the item. *)
 
 (* Methods *)
 

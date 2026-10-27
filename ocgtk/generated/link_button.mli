@@ -38,8 +38,9 @@
 
     [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role.
 
-    Its methods, signals and properties are on {!class-type-link_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Link_button}. *)
+    Its methods, signals and properties are on {!class-type-link_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Link_button}. *)
 
 (** The methods, signals and properties of a [GtkLinkButton]. *)
 class type link_button_t = object
@@ -77,5 +78,10 @@ class link_button : Raw.Link_button.t -> link_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkLinkButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> link_button_t
+(** Creates a new [GtkLinkButton] with the URI as its text. *)
+
 val new_with_label : string -> string option -> link_button_t
+(** Creates a new [GtkLinkButton] containing a label. *)

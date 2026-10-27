@@ -42,8 +42,9 @@
  is grouped together with other checkbuttons.\n\n\
  {b Accessibility}\n\n\
  [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role.\n\n\
- Its methods, signals and properties are on {!class-type-check_button_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Check_button}."]
+ Its methods, signals and properties are on {!class-type-check_button_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Check_button}."]
 
 (** The methods, signals and properties of a [GtkCheckButton]. *)
 class type check_button_t = object
@@ -140,6 +141,13 @@ class check_button : Raw.Check_button.t -> check_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCheckButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> check_button_t
+(** Creates a new [GtkCheckButton]. *)
+
 val new_with_label : string option -> check_button_t
+(** Creates a new [GtkCheckButton] with the given text. *)
+
 val new_with_mnemonic : string option -> check_button_t
+(** Creates a new [GtkCheckButton] with the given text and a mnemonic. *)

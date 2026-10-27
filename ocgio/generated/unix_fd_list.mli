@@ -11,8 +11,9 @@
 
     Since 2.74, the API is available for Windows.
 
-    Its methods, signals and properties are on {!class-type-unix_fd_list_t}. The
-    functions it is built on are in {!Ocgio.Raw.Unix_fd_list}. *)
+    Its methods, signals and properties are on {!class-type-unix_fd_list_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Unix_fd_list}. *)
 
 (** The methods, signals and properties of a [GUnixFDList]. *)
 class type unix_fd_list_t = object
@@ -55,5 +56,16 @@ class unix_fd_list : Raw.Unix_fd_list.t -> unix_fd_list_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GUnixFDList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> unix_fd_list_t
+(** Creates a new [GUnixFDList] containing no file descriptors. *)
+
 val new_from_array : int array -> int -> unix_fd_list_t
+(** Creates a new [GUnixFDList] containing the file descriptors given in [fds].
+    The file descriptors become the property of the new list and may no longer
+    be used by the caller. The array itself is owned by the caller.
+
+    Each file descriptor in the array should be set to close-on-exec.
+
+    If [n_fds] is -1 then [fds] must be terminated with -1. *)

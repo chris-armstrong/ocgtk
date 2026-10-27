@@ -97,8 +97,9 @@
  items use the [Gtk.AccessibleRole.menu_item],\n\
  [Gtk.AccessibleRole.checkbox] or [Gtk.AccessibleRole.menu_item_radio]\n\
  roles, depending on the action they are connected to.\n\n\
- Its methods, signals and properties are on {!class-type-popover_menu_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Popover_menu}."]
+ Its methods, signals and properties are on {!class-type-popover_menu_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Popover_menu}."]
 
 (** The methods, signals and properties of a [GtkPopoverMenu]. *)
 class type popover_menu_t = object
@@ -152,7 +153,28 @@ class popover_menu : Raw.Popover_menu.t -> popover_menu_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPopoverMenu], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_model : Ocgio.Menu_model.menu_model_t option -> popover_menu_t
+(** Creates a [GtkPopoverMenu] and populates it according to [model].
+
+    The created buttons are connected to actions found in the
+    [GtkApplicationWindow] to which the popover belongs - typically by means of
+    being attached to a widget that is contained within the
+    [GtkApplicationWindow]s widget hierarchy.
+
+    Actions can also be added using [Gtk.Widget.insert_action_group] on the
+    menus attach widget or on any of its parent widgets.
+
+    This function creates menus with sliding submenus. See
+    [Gtk.PopoverMenu.new_from_model_full] for a way to control this. *)
 
 val new_from_model_full :
   Ocgio.Menu_model.menu_model_t -> Enums.popovermenuflags -> popover_menu_t
+(** Creates a [GtkPopoverMenu] and populates it according to [model].
+
+    The created buttons are connected to actions found in the action groups that
+    are accessible from the parent widget. This includes the
+    [GtkApplicationWindow] to which the popover belongs. Actions can also be
+    added using [Gtk.Widget.insert_action_group] on the parent widget or on any
+    of its parent widgets. *)

@@ -54,7 +54,7 @@ external new_ :
   .t
   option ->
   t = "ml_gtk_graphics_offload_new"
-(** Create a new GraphicsOffload *)
+(** Creates a new GtkGraphicsOffload widget. *)
 
 (* Methods *)
 

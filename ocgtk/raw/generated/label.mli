@@ -175,11 +175,26 @@ type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_label_get_type"
 
 external new_ : string option -> t = "ml_gtk_label_new"
-(** Create a new Label *)
+(** Creates a new label with the given text inside it.
+
+    You can pass [NULL] to get an empty label widget. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_label_new_with_mnemonic"
-(** Create a new Label *)
+(** Creates a new label with the given text inside it, and a mnemonic.
+
+    If characters in [str] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use '__' (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic. The mnemonic key can be used to activate
+    another widget, chosen automatically, or explicitly using
+    [Gtk.Label.set_mnemonic_widget].
+
+    If [Gtk.Label.set_mnemonic_widget] is not called, then the first activatable
+    ancestor of the label will be chosen as the mnemonic widget. For instance,
+    if the label is inside a button or menu item, the button or menu item will
+    automatically become the mnemonic widget and be activated by the mnemonic.
+*)
 
 (* Methods *)
 

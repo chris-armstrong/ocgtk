@@ -165,8 +165,9 @@
  It is possible to implement custom handling for links and their tooltips\n\
  with the [Gtk.Label::activate-link] signal and the\n\
  [Gtk.Label.get_current_uri] function.\n\n\
- Its methods, signals and properties are on {!class-type-label_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Label}."]
+ Its methods, signals and properties are on {!class-type-label_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Label}."]
 
 (** The methods, signals and properties of a [GtkLabel]. *)
 class type label_t = object
@@ -525,5 +526,25 @@ class label : Raw.Label.t -> label_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkLabel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> label_t
+(** Creates a new label with the given text inside it.
+
+    You can pass [NULL] to get an empty label widget. *)
+
 val new_with_mnemonic : string option -> label_t
+(** Creates a new label with the given text inside it, and a mnemonic.
+
+    If characters in [str] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use '__' (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic. The mnemonic key can be used to activate
+    another widget, chosen automatically, or explicitly using
+    [Gtk.Label.set_mnemonic_widget].
+
+    If [Gtk.Label.set_mnemonic_widget] is not called, then the first activatable
+    ancestor of the label will be chosen as the mnemonic widget. For instance,
+    if the label is inside a button or menu item, the button or menu item will
+    automatically become the mnemonic widget and be activated by the mnemonic.
+*)

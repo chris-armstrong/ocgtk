@@ -87,8 +87,9 @@
 
     [GtkScale] uses the [Gtk.AccessibleRole.slider] role.
 
-    Its methods, signals and properties are on {!class-type-scale_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Scale}. *)
+    Its methods, signals and properties are on {!class-type-scale_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Scale}. *)
 
 (** The methods, signals and properties of a [GtkScale]. *)
 class type scale_t = object
@@ -163,5 +164,19 @@ class scale : Raw.Scale.t -> scale_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkScale], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> Adjustment.adjustment_t option -> scale_t
+(** Creates a new [GtkScale]. *)
+
 val new_with_range : Enums.orientation -> float -> float -> float -> scale_t
+(** Creates a new scale widget with a range from [min] to [max].
+
+    The returns scale will have the given orientation and will let the user
+    input a number between [min] and [max] (including [min] and [max]) with the
+    increment [step]. [step] must be nonzero; it’s the distance the slider moves
+    when using the arrow keys to adjust the scale value.
+
+    Note that the way in which the precision is derived works best if [step] is
+    a power of ten. If the resulting precision is not suitable for your needs,
+    use [Gtk.Scale.set_digits] to correct it. *)

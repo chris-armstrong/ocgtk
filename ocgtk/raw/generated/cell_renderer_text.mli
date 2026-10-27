@@ -20,7 +20,12 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_text_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
-(** Create a new CellRendererText *)
+(** Creates a new [GtkCellRendererText]. Adjust how text is drawn using object
+    properties. Object properties can be set globally (with g_object_set()).
+    Also, with [GtkTreeViewColumn], you can bind a property to a value in a
+    [GtkTreeModel]. For example, you can bind the “text” property on the cell
+    renderer to a string value in the model, thus rendering a different string
+    in each row of the [GtkTreeView]. *)
 
 (* Methods *)
 

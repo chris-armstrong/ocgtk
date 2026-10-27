@@ -50,6 +50,8 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_signal_list_item_factory_get_type"
 
 external new_ : unit -> t = "ml_gtk_signal_list_item_factory_new"
-(** Create a new SignalListItemFactory *)
+(** Creates a new [GtkSignalListItemFactory].
+
+    You need to connect signal handlers before you use it. *)
 
 (* Methods *)

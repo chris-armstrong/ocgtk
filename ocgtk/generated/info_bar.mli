@@ -57,8 +57,9 @@
  on the message type.\n\
  If the info bar shows a close button, that button will have the .close\n\
  style class applied.\n\n\
- Its methods, signals and properties are on {!class-type-info_bar_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Info_bar}."]
+ Its methods, signals and properties are on {!class-type-info_bar_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Info_bar}."]
 
 (** The methods, signals and properties of a [GtkInfoBar]. *)
 class type info_bar_t = object
@@ -171,4 +172,7 @@ class info_bar : Raw.Info_bar.t -> info_bar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkInfoBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> info_bar_t
+(** Creates a new [GtkInfoBar] object. *)

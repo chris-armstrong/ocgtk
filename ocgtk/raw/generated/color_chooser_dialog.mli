@@ -37,7 +37,7 @@ external new_ :
   string option ->
   Application_and__window_and__window_group.Window.t option ->
   t = "ml_gtk_color_chooser_dialog_new"
-(** Create a new ColorChooserDialog *)
+(** Creates a new [GtkColorChooserDialog]. *)
 
 (* Methods *)
 (* Properties *)

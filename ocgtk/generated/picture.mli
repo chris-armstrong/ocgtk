@@ -33,8 +33,9 @@
  [GtkPicture] has a single CSS node with the name [picture].\n\n\
  {b Accessibility}\n\n\
  [GtkPicture] uses the [Gtk.AccessibleRole.img] role.\n\n\
- Its methods, signals and properties are on {!class-type-picture_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Picture}."]
+ Its methods, signals and properties are on {!class-type-picture_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Picture}."]
 
 (** The methods, signals and properties of a [GtkPicture]. *)
 class type picture_t = object
@@ -149,9 +150,43 @@ class picture : Raw.Picture.t -> picture_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPicture], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> picture_t
+(** Creates a new empty [GtkPicture] widget. *)
+
 val new_for_file : Ocgio.File.file_t option -> picture_t
+(** Creates a new [GtkPicture] displaying the given [file].
+
+    If the file isn’t found or can’t be loaded, the resulting [GtkPicture] is
+    empty.
+
+    If you need to detect failures to load the file, use an image loading
+    framework such as libglycin to load the file yourself, then create the
+    [GtkPicture] from the texture. *)
+
 val new_for_filename : string option -> picture_t
+(** Creates a new [GtkPicture] displaying the file [filename].
+
+    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    function for details. *)
+
 val new_for_paintable : Ocgdk.Paintable.paintable_t option -> picture_t
+(** Creates a new [GtkPicture] displaying [paintable].
+
+    The [GtkPicture] will track changes to the [paintable] and update its size
+    and contents in response to it. *)
+
 val new_for_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> picture_t
+(** Creates a new [GtkPicture] displaying [pixbuf].
+
+    This is a utility function that calls [Gtk.Picture.new_for_paintable], See
+    that function for details.
+
+    The pixbuf must not be modified after passing it to this function. *)
+
 val new_for_resource : string option -> picture_t
+(** Creates a new [GtkPicture] displaying the resource at [resource_path].
+
+    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    function for details. *)

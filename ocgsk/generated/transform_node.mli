@@ -1,7 +1,8 @@
 (** A render node applying a [GskTransform] to its single child node.
 
     Its methods, signals and properties are on {!class-type-transform_node_t}.
-    The functions it is built on are in {!Ocgsk.Raw.Transform_node}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgsk.Raw.Transform_node}. *)
 
 (** The methods, signals and properties of a [GskTransformNode]. *)
 class type transform_node_t = object
@@ -21,4 +22,8 @@ class transform_node : Raw.Transform_node.t -> transform_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskTransformNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Render_node.render_node_t -> Raw.Transform.t -> transform_node_t
+(** Creates a [GskRenderNode] that will transform the given [child] with the
+    given [transform]. *)

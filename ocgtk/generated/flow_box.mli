@@ -54,8 +54,9 @@
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
     uses the [Gtk.AccessibleRole.grid_cell] role.
 
-    Its methods, signals and properties are on {!class-type-flow_box_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Flow_box}. *)
+    Its methods, signals and properties are on {!class-type-flow_box_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Flow_box}. *)
 
 (** The methods, signals and properties of a [GtkFlowBox]. *)
 class type flow_box_t = object
@@ -262,4 +263,7 @@ class flow_box : Raw.Flow_box.t -> flow_box_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFlowBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> flow_box_t
+(** Creates a [GtkFlowBox]. *)

@@ -14,8 +14,9 @@
 
     [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role.
 
-    Its methods, signals and properties are on {!class-type-separator_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Separator}. *)
+    Its methods, signals and properties are on {!class-type-separator_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Separator}. *)
 
 (** The methods, signals and properties of a [GtkSeparator]. *)
 class type separator_t = object
@@ -32,4 +33,7 @@ class separator : Raw.Separator.t -> separator_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSeparator], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> separator_t
+(** Creates a new [GtkSeparator] with the given orientation. *)

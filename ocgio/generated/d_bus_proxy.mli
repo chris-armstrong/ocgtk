@@ -45,8 +45,9 @@
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c}
      [gdbus-example-watch-proxy.c]}.
 
-    Its methods, signals and properties are on {!class-type-d_bus_proxy_t}. The
-    functions it is built on are in {!Ocgio.Raw.D_bus_proxy}. *)
+    Its methods, signals and properties are on {!class-type-d_bus_proxy_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.D_bus_proxy}. *)
 
 (** The methods, signals and properties of a [GDBusProxy]. *)
 class type d_bus_proxy_t = object
@@ -213,10 +214,14 @@ class d_bus_proxy : Raw.D_bus_proxy.t -> d_bus_proxy_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GDBusProxy], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_finish : Async_result.async_result_t -> (d_bus_proxy_t, GError.t) result
+(** Finishes creating a [GDBusProxy]. *)
 
 val new_for_bus_finish :
   Async_result.async_result_t -> (d_bus_proxy_t, GError.t) result
+(** Finishes creating a [GDBusProxy]. *)
 
 val new_for_bus_sync :
   Enums.bustype ->
@@ -227,6 +232,10 @@ val new_for_bus_sync :
   string ->
   Cancellable.cancellable_t option ->
   (d_bus_proxy_t, GError.t) result
+(** Like g_dbus_proxy_new_sync() but takes a [GBusType] instead of a
+    [GDBusConnection].
+
+    [GDBusProxy] is used in this \[example\][Gio.DBusProxy]. *)
 
 val new_sync :
   D_bus_connection.d_bus_connection_t ->
@@ -237,3 +246,26 @@ val new_sync :
   string ->
   Cancellable.cancellable_t option ->
   (d_bus_proxy_t, GError.t) result
+(** Creates a proxy for accessing [interface_name] on the remote object at
+    [object_path] owned by [name] at [connection] and synchronously loads D-Bus
+    properties unless the [G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES] flag is
+    used.
+
+    If the [G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS] flag is not set, also
+    sets up match rules for signals. Connect to the [GDBusProxy::g]-signal
+    signal to handle signals from the remote object.
+
+    If both [G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES] and
+    [G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS] are set, this constructor is
+    guaranteed to return immediately without blocking.
+
+    If [name] is a well-known name and the
+    [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] and
+    [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION] flags aren't set and
+    no name owner currently exists, the message bus will be requested to launch
+    a name owner for the name.
+
+    This is a synchronous failable constructor. See g_dbus_proxy_new() and
+    g_dbus_proxy_new_finish() for the asynchronous version.
+
+    [GDBusProxy] is used in this \[example\][Gio.DBusProxy]. *)

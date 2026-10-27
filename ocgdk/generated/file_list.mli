@@ -1,7 +1,8 @@
 (** An opaque type representing a list of files.
 
-    Its methods, signals and properties are on {!class-type-file_list_t}. The
-    functions it is built on are in {!Ocgdk.Raw.File_list}. *)
+    Its methods, signals and properties are on {!class-type-file_list_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.File_list}. *)
 
 (** The methods, signals and properties of a [GdkFileList]. *)
 class type file_list_t = object
@@ -18,5 +19,15 @@ class file_list : Raw.File_list.t -> file_list_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GdkFileList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_array : Ocgio.Raw.File.t array -> Gsize.t -> file_list_t
+(** Creates a new [GdkFileList] for the given array of files.
+
+    This function is meant to be used by language bindings. *)
+
 val new_from_list : Ocgio.Raw.File.t list -> file_list_t
+(** Creates a new files list container from a singly linked list of [GFile]
+    instances.
+
+    This function is meant to be used by language bindings *)

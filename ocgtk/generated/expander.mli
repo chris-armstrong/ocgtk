@@ -67,8 +67,9 @@
  expander that is showing its child gets the [:checked] pseudoclass set on it.\n\n\
  {b Accessibility}\n\n\
  [GtkExpander] uses the [Gtk.AccessibleRole.button] role.\n\n\
- Its methods, signals and properties are on {!class-type-expander_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Expander}."]
+ Its methods, signals and properties are on {!class-type-expander_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Expander}."]
 
 (** The methods, signals and properties of a [GtkExpander]. *)
 class type expander_t = object
@@ -162,5 +163,17 @@ class expander : Raw.Expander.t -> expander_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkExpander], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> expander_t
+(** Creates a new expander using [label] as the text of the label. *)
+
 val new_with_mnemonic : string option -> expander_t
+(** Creates a new expander using [label] as the text of the label.
+
+    If characters in [label] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use “__” (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic.
+
+    Pressing Alt and that key activates the button. *)

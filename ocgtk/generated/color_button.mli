@@ -17,8 +17,9 @@
     a button node. To differentiate it from a plain [GtkButton], it gets the
     .color style class.
 
-    Its methods, signals and properties are on {!class-type-color_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Color_button}. *)
+    Its methods, signals and properties are on {!class-type-color_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Color_button}. *)
 
 (** The methods, signals and properties of a [GtkColorButton]. *)
 class type color_button_t = object
@@ -56,5 +57,15 @@ class color_button : Raw.Color_button.t -> color_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkColorButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> color_button_t
+(** Creates a new color button.
+
+    This returns a widget in the form of a small button containing a swatch
+    representing the current selected color. When the button is clicked, a color
+    chooser dialog will open, allowing the user to select a color. The swatch
+    will be updated to reflect the new color when the user finishes. *)
+
 val new_with_rgba : Ocgdk.Rgb_a.rgb_a_t -> color_button_t
+(** Creates a new color button showing the given color. *)

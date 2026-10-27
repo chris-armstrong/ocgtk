@@ -102,4 +102,11 @@ class box : Raw.Box.t -> box_t
 and sphere : Raw.Sphere.t -> sphere_t
 
 val alloc : unit -> box_t
+(** Allocates a new #graphene_box_t.
+
+    The contents of the returned structure are undefined. *)
+
 val alloc : unit -> sphere_t
+(** Allocates a new #graphene_sphere_t.
+
+    The contents of the newly allocated structure are undefined. *)

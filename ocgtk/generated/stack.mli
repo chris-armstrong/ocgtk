@@ -36,8 +36,9 @@
  {b Accessibility}\n\n\
  [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack\n\
  pages, which are the accessible parent objects of the child widgets.\n\n\
- Its methods, signals and properties are on {!class-type-stack_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Stack}."]
+ Its methods, signals and properties are on {!class-type-stack_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Stack}."]
 
 (** The methods, signals and properties of a [GtkStack]. *)
 class type stack_t = object
@@ -209,4 +210,7 @@ class stack : Raw.Stack.t -> stack_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStack], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> stack_t
+(** Creates a new [GtkStack]. *)

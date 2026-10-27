@@ -68,7 +68,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_application_window_get_type"
 
 external new_ : Application_and__window_and__window_group.Application.t -> t
   = "ml_gtk_application_window_new"
-(** Create a new ApplicationWindow *)
+(** Creates a new [GtkApplicationWindow]. *)
 
 (* Methods *)
 

@@ -5,7 +5,8 @@
     that make up the fontset.
 
     Its methods, signals and properties are on {!class-type-fontset_simple_t}.
-    The functions it is built on are in {!Ocpango.Raw.Fontset_simple}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocpango.Raw.Fontset_simple}. *)
 
 (** The methods, signals and properties of a [PangoFontsetSimple]. *)
 class type fontset_simple_t = object
@@ -27,4 +28,7 @@ class fontset_simple : Raw.Fontset_simple.t -> fontset_simple_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [PangoFontsetSimple], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Raw.Language.t -> fontset_simple_t
+(** Creates a new [PangoFontsetSimple] for the given language. *)

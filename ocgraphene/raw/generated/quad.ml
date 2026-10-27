@@ -13,7 +13,9 @@ type t = [ `quad ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_graphene_quad_get_type"
 
 external alloc : unit -> t = "ml_graphene_quad_alloc"
-(** Create a new Quad *)
+(** Allocates a new #graphene_quad_t instance.
+
+    The contents of the returned instance are undefined. *)
 
 (* Methods *)
 

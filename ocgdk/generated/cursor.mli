@@ -31,8 +31,9 @@
     progressively easier to support cursors. If none of the provided cursors can
     be supported, the default cursor will be the ultimate fallback.
 
-    Its methods, signals and properties are on {!class-type-cursor_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Cursor}. *)
+    Its methods, signals and properties are on {!class-type-cursor_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Cursor}. *)
 
 (** The methods, signals and properties of a [GdkCursor]. *)
 class type cursor_t = object
@@ -81,7 +82,14 @@ class cursor : Raw.Cursor.t -> cursor_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GdkCursor], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_name : string -> cursor_t option -> cursor_t
+(** Creates a new cursor by looking up [name] in the current cursor theme.
+
+    A recommended set of cursor names that will work across different platforms
+    can be found in the CSS specification: *)
 
 val new_from_texture :
   Texture.texture_t -> int -> int -> cursor_t option -> cursor_t
+(** Creates a new cursor from a [GdkTexture]. *)

@@ -12,7 +12,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_zlib_decompressor_get_type"
 
 external new_ : Ocgio_enums.zlibcompressorformat -> t
   = "ml_g_zlib_decompressor_new"
-(** Create a new ZlibDecompressor *)
+(** Creates a new decompressor. *)
 
 (* Methods *)
 

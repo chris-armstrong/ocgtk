@@ -111,11 +111,12 @@ and Tree_view : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_view_get_type"
 
   external new_ : unit -> t = "ml_gtk_tree_view_new"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget. *)
 
   external new_with_model : Tree_model.t -> t
     = "ml_gtk_tree_view_new_with_model"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget with the model initialized to [model].
+  *)
 
   (* Methods *)
 

@@ -56,7 +56,8 @@
  GtkWidget *window = gtk_application_window_new (app);\n\
  ]}\n\n\
  Its methods, signals and properties are on \
- {!class-type-application_window_t}. The functions it is built on are in \
+ {!class-type-application_window_t}. Its constructors are under \
+ {!section-constructors}. The functions it is built on are in \
  {!Ocgtk.Raw.Application_window}."]
 
 (** The methods, signals and properties of a [GtkApplicationWindow]. *)
@@ -100,6 +101,9 @@ class application_window : Raw.Application_window.t -> application_window_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkApplicationWindow], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Application_and__window_and__window_group.application_t ->
   application_window_t
+(** Creates a new [GtkApplicationWindow]. *)

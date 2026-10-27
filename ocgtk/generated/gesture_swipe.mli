@@ -11,7 +11,8 @@
     All velocities are reported in pixels/sec units.
 
     Its methods, signals and properties are on {!class-type-gesture_swipe_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Gesture_swipe}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Gesture_swipe}. *)
 
 (** The methods, signals and properties of a [GtkGestureSwipe]. *)
 class type gesture_swipe_t = object
@@ -31,4 +32,7 @@ class gesture_swipe : Raw.Gesture_swipe.t -> gesture_swipe_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGestureSwipe], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_swipe_t
+(** Returns a newly created [GtkGesture] that recognizes swipes. *)

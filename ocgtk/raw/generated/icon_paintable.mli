@@ -14,7 +14,9 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_icon_paintable_get_type"
 
 external new_for_file : Ocgio_raw.File.t -> int -> int -> t
   = "ml_gtk_icon_paintable_new_for_file"
-(** Create a new IconPaintable *)
+(** Creates a [GtkIconPaintable] for a file with a given size and scale.
+
+    The icon can then be rendered by using it as a [GdkPaintable]. *)
 
 (* Methods *)
 

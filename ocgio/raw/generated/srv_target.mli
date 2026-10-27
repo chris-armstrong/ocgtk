@@ -25,7 +25,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_srv_target_get_type"
 
 external new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> t
   = "ml_g_srv_target_new"
-(** Create a new SrvTarget *)
+(** Creates a new [GSrvTarget] with the given parameters.
+
+    You should not need to use this; normally [GSrvTargets] are created by
+    [GResolver]. *)
 
 (* Methods *)
 

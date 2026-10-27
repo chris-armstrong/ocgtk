@@ -24,7 +24,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_get_type"
 
 external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t
   = "ml_gtk_shortcut_new"
-(** Create a new Shortcut *)
+(** Creates a new [GtkShortcut] that is triggered by [trigger] and then
+    activates [action]. *)
 
 (* Methods *)
 

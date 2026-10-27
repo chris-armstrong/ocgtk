@@ -86,7 +86,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_scrolled_window_get_type"
 
 external new_ : unit -> t = "ml_gtk_scrolled_window_new"
-(** Create a new ScrolledWindow *)
+(** Creates a new scrolled window. *)
 
 (* Methods *)
 

@@ -4,7 +4,8 @@
     [Gtk.GestureRotate::angle-changed] signal is emitted.
 
     Its methods, signals and properties are on {!class-type-gesture_rotate_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Gesture_rotate}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Gesture_rotate}. *)
 
 (** The methods, signals and properties of a [GtkGestureRotate]. *)
 class type gesture_rotate_t = object
@@ -31,4 +32,8 @@ class gesture_rotate : Raw.Gesture_rotate.t -> gesture_rotate_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkGestureRotate], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_rotate_t
+(** Returns a newly created [GtkGesture] that recognizes 2-touch rotation
+    gestures. *)

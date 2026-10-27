@@ -10,7 +10,10 @@ type t = [ `cairo_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_cairo_node_get_type"
 
 external new_ : Ocgraphene_raw.Rect.t -> t = "ml_gsk_cairo_node_new"
-(** Create a new CairoNode *)
+(** Creates a [GskRenderNode] that will render a cairo surface into the area
+    given by [bounds].
+
+    You can draw to the cairo surface using [Gsk.CairoNode.get_draw_context]. *)
 
 (* Methods *)
 

@@ -13,7 +13,8 @@
     in time.
 
     Its methods, signals and properties are on {!class-type-pixbuf_animation_t}.
-    The functions it is built on are in {!Ocgdkpixbuf.Raw.Pixbuf_animation}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgdkpixbuf.Raw.Pixbuf_animation}. *)
 
 (** The methods, signals and properties of a [GdkPixbufAnimation]. *)
 class type pixbuf_animation_t = object
@@ -52,13 +53,42 @@ class pixbuf_animation : Raw.Pixbuf_animation.t -> pixbuf_animation_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GdkPixbufAnimation], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_file : string -> (pixbuf_animation_t, GError.t) result
+(** Creates a new animation by loading it from a file.
+
+    The file format is detected automatically.
+
+    If the file's format does not support multi-frame images, then an animation
+    with a single frame will be created.
+
+    Possible errors are in the [GDK_PIXBUF_ERROR] and [G_FILE_ERROR] domains. *)
+
 val new_from_resource : string -> (pixbuf_animation_t, GError.t) result
+(** Creates a new pixbuf animation by loading an image from an resource.
+
+    The file format is detected automatically. If [NULL] is returned, then
+    [error] will be set. *)
 
 val new_from_stream :
   Ocgio.Input_stream.input_stream_t ->
   Ocgio.Cancellable.cancellable_t option ->
   (pixbuf_animation_t, GError.t) result
+(** Creates a new animation by loading it from an input stream.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set.
+
+    The [cancellable] can be used to abort the operation from another thread. If
+    the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be
+    returned. Other possible errors are in the [GDK_PIXBUF_ERROR] and
+    [G_IO_ERROR] domains.
+
+    The stream is not closed. *)
 
 val new_from_stream_finish :
   Ocgio.Async_result.async_result_t -> (pixbuf_animation_t, GError.t) result
+(** Finishes an asynchronous pixbuf animation creation operation started with
+    [GdkPixbuf.PixbufAnimation.new_from_stream_async]. *)

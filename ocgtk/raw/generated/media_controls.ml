@@ -15,7 +15,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_media_controls_get_type"
 
 external new_ : Media_stream.t option -> t = "ml_gtk_media_controls_new"
-(** Create a new MediaControls *)
+(** Creates a new [GtkMediaControls] managing the [stream] passed to it. *)
 
 (* Methods *)
 

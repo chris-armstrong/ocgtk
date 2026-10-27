@@ -36,8 +36,9 @@
     Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
     much as possible, to simplify rendering.
 
-    Its methods, signals and properties are on {!class-type-path_builder_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Path_builder}. *)
+    Its methods, signals and properties are on {!class-type-path_builder_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Path_builder}. *)
 
 (** The methods, signals and properties of a [GskPathBuilder]. *)
 class type path_builder_t = object
@@ -276,4 +277,10 @@ class path_builder : Raw.Path_builder.t -> path_builder_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GskPathBuilder], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> path_builder_t
+(** Create a new [GskPathBuilder] object.
+
+    The resulting builder would create an empty [GskPath]. Use addition
+    functions to add types to it. *)

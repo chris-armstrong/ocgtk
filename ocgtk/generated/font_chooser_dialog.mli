@@ -18,7 +18,8 @@
     style class [.fontchooser].
 
     Its methods, signals and properties are on
-    {!class-type-font_chooser_dialog_t}. The functions it is built on are in
+    {!class-type-font_chooser_dialog_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Font_chooser_dialog}. *)
 
 (** The methods, signals and properties of a [GtkFontChooserDialog]. *)
@@ -33,7 +34,10 @@ class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkFontChooserDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   string option ->
   Application_and__window_and__window_group.window_t option ->
   font_chooser_dialog_t
+(** Creates a new [GtkFontChooserDialog]. *)

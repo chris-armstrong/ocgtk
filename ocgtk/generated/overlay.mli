@@ -30,8 +30,9 @@
     classes “.left”, “.right”, “.top”, and/or “.bottom” according to their
     position.
 
-    Its methods, signals and properties are on {!class-type-overlay_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Overlay}. *)
+    Its methods, signals and properties are on {!class-type-overlay_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Overlay}. *)
 
 (** The methods, signals and properties of a [GtkOverlay]. *)
 class type overlay_t = object
@@ -110,4 +111,7 @@ class overlay : Raw.Overlay.t -> overlay_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkOverlay], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> overlay_t
+(** Creates a new [GtkOverlay]. *)

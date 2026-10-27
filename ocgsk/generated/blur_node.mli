@@ -1,7 +1,8 @@
 (** A render node applying a blur effect to its single child.
 
-    Its methods, signals and properties are on {!class-type-blur_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Blur_node}. *)
+    Its methods, signals and properties are on {!class-type-blur_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Blur_node}. *)
 
 (** The methods, signals and properties of a [GskBlurNode]. *)
 class type blur_node_t = object
@@ -21,4 +22,7 @@ class blur_node : Raw.Blur_node.t -> blur_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskBlurNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Render_node.render_node_t -> float -> blur_node_t
+(** Creates a render node that blurs the child. *)

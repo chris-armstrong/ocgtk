@@ -302,8 +302,9 @@
  signal handlers to instance fields and function symbols.\n\n\
  For more information, see the [GtkWidget] documentation\n\
  for details.\n\n\
- Its methods, signals and properties are on {!class-type-builder_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Builder}."]
+ Its methods, signals and properties are on {!class-type-builder_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Builder}."]
 
 (** The methods, signals and properties of a [GtkBuilder]. *)
 class type builder_t = object
@@ -474,7 +475,35 @@ class builder : Raw.Builder.t -> builder_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBuilder], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> builder_t
+(** Creates a new empty builder object.
+
+    This function is only useful if you intend to make multiple calls to
+    [Gtk.Builder.add_from_file], [Gtk.Builder.add_from_resource] or
+    [Gtk.Builder.add_from_string] in order to merge multiple UI descriptions
+    into a single builder. *)
+
 val new_from_file : string -> builder_t
+(** Parses the UI definition in the file [filename].
+
+    If there is an error opening the file or parsing the description then the
+    program will be aborted. You should only ever attempt to parse user
+    interface descriptions that are shipped as part of your program. *)
+
 val new_from_resource : string -> builder_t
+(** Parses the UI definition at [resource_path].
+
+    If there is an error locating the resource or parsing the description, then
+    the program will be aborted. *)
+
 val new_from_string : string -> int -> builder_t
+(** Parses the UI definition in [string].
+
+    If [string] is [NULL]-terminated, then [length] should be -1. If [length] is
+    not -1, then it is the length of [string].
+
+    If there is an error parsing [string] then the program will be aborted. You
+    should not attempt to parse user interface description from untrusted
+    sources. *)

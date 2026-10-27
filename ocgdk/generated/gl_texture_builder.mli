@@ -11,7 +11,8 @@
     textures as well as kept around and reused to construct multiple textures.
 
     Its methods, signals and properties are on
-    {!class-type-gl_texture_builder_t}. The functions it is built on are in
+    {!class-type-gl_texture_builder_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Gl_texture_builder}. *)
 
 (** The methods, signals and properties of a [GdkGLTextureBuilder]. *)
@@ -134,4 +135,7 @@ class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GdkGLTextureBuilder], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gl_texture_builder_t
+(** Creates a new texture builder. *)

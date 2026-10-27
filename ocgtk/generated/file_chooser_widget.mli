@@ -29,7 +29,8 @@
     [GtkFileChooserWidget] has a single CSS node with name filechooser.
 
     Its methods, signals and properties are on
-    {!class-type-file_chooser_widget_t}. The functions it is built on are in
+    {!class-type-file_chooser_widget_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.File_chooser_widget}. *)
 
 (** The methods, signals and properties of a [GtkFileChooserWidget]. *)
@@ -94,4 +95,10 @@ class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkFileChooserWidget], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.filechooseraction -> file_chooser_widget_t
+(** Creates a new [GtkFileChooserWidget].
+
+    This is a file chooser widget that can be embedded in custom windows, and it
+    is the same widget that is used by [GtkFileChooserDialog]. *)

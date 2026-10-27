@@ -32,7 +32,8 @@
     can be used by themes to style the widget as a drop target.
 
     Its methods, signals and properties are on
-    {!class-type-drop_target_async_t}. The functions it is built on are in
+    {!class-type-drop_target_async_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Drop_target_async}. *)
 
 (** The methods, signals and properties of a [GtkDropTargetAsync]. *)
@@ -101,7 +102,10 @@ class drop_target_async : Raw.Drop_target_async.t -> drop_target_async_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkDropTargetAsync], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgdk.Content_formats.content_formats_t option ->
   Ocgdk.Enums.dragaction ->
   drop_target_async_t
+(** Creates a new [GtkDropTargetAsync] object. *)

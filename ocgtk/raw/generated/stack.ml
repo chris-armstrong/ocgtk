@@ -46,7 +46,7 @@ type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_stack_get_type"
 
 external new_ : unit -> t = "ml_gtk_stack_new"
-(** Create a new Stack *)
+(** Creates a new [GtkStack]. *)
 
 (* Methods *)
 

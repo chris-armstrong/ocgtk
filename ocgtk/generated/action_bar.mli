@@ -37,8 +37,9 @@
 
     Each of the boxes contains children packed for that side.
 
-    Its methods, signals and properties are on {!class-type-action_bar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Action_bar}. *)
+    Its methods, signals and properties are on {!class-type-action_bar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Action_bar}. *)
 
 (** The methods, signals and properties of a [GtkActionBar]. *)
 class type action_bar_t = object
@@ -98,4 +99,7 @@ class action_bar : Raw.Action_bar.t -> action_bar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkActionBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> action_bar_t
+(** Creates a new action bar widget. *)

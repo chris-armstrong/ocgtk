@@ -14,7 +14,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_rotate_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_rotate_new"
-(** Create a new GestureRotate *)
+(** Returns a newly created [GtkGesture] that recognizes 2-touch rotation
+    gestures. *)
 
 (* Methods *)
 

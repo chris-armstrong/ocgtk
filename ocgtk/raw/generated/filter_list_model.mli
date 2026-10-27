@@ -20,7 +20,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_filter_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> Filter.t option -> t
   = "ml_gtk_filter_list_model_new"
-(** Create a new FilterListModel *)
+(** Creates a new [GtkFilterListModel] that will filter [model] using the given
+    [filter]. *)
 
 (* Methods *)
 

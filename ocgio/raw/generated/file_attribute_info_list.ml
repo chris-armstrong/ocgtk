@@ -12,7 +12,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_file_attribute_info_list_get_type"
 
 external new_ : unit -> t = "ml_g_file_attribute_info_list_new"
-(** Create a new FileAttributeInfoList *)
+(** Creates a new file attribute info list. *)
 
 (* Methods *)
 

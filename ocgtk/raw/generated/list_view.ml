@@ -92,7 +92,15 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_list_view_get_type"
 
 external new_ : Selection_model.t option -> List_item_factory.t option -> t
   = "ml_gtk_list_view_new"
-(** Create a new ListView *)
+[@@ocaml.doc
+  "Creates a new [GtkListView] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   The function takes ownership of the\n\
+   arguments, so you can write code like\n\n\
+   {[\n\
+   list_view = gtk_list_view_new (create_model (),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/resource.ui\"));\n\
+   ]}"]
 
 (* Methods *)
 

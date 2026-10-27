@@ -23,8 +23,9 @@
     [GtkIconView] has a single CSS node with name iconview and style class
     .view. For rubberband selection, a subnode with name rubberband is used.
 
-    Its methods, signals and properties are on {!class-type-icon_view_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Icon_view}. *)
+    Its methods, signals and properties are on {!class-type-icon_view_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Icon_view}. *)
 
 (** The methods, signals and properties of a [GtkIconView]. *)
 class type icon_view_t = object
@@ -330,9 +331,15 @@ class icon_view : Raw.Icon_view.t -> icon_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkIconView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> icon_view_t
+(** Creates a new [GtkIconView] widget *)
 
 val new_with_area :
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t -> icon_view_t
+(** Creates a new [GtkIconView] widget using the specified [area] to layout
+    cells inside the icons. *)
 
 val new_with_model : Tree_model.tree_model_t -> icon_view_t
+(** Creates a new [GtkIconView] widget with the model [model]. *)

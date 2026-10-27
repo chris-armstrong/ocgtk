@@ -38,7 +38,8 @@
  {b Accessibility}\n\n\
  [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role.\n\n\
  Its methods, signals and properties are on {!class-type-window_controls_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Window_controls}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Window_controls}."]
 
 (** The methods, signals and properties of a [GtkWindowControls]. *)
 class type window_controls_t = object
@@ -95,4 +96,7 @@ class window_controls : Raw.Window_controls.t -> window_controls_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkWindowControls], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.packtype -> window_controls_t
+(** Creates a new [GtkWindowControls]. *)

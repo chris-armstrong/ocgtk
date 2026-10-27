@@ -53,7 +53,15 @@ type t = [ `recent_manager | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_recent_manager_get_type"
 
 external new_ : unit -> t = "ml_gtk_recent_manager_new"
-(** Create a new RecentManager *)
+(** Creates a new recent manager object.
+
+    Recent manager objects are used to handle the list of recently used
+    resources. A [GtkRecentManager] object monitors the recently used resources
+    list, and emits the [Gtk.RecentManager::changed] signal each time something
+    inside the list changes.
+
+    [GtkRecentManager] objects are expensive: be sure to create them only when
+    needed. You should use [Gtk.RecentManager.get_default] instead. *)
 
 (* Methods *)
 

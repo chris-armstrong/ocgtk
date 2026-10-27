@@ -13,7 +13,11 @@ type t = [ `multi_sorter | `sorter | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_multi_sorter_get_type"
 
 external new_ : unit -> t = "ml_gtk_multi_sorter_new"
-(** Create a new MultiSorter *)
+(** Creates a new multi sorter.
+
+    This sorter compares items by trying each of the sorters in turn, until one
+    returns non-zero. In particular, if no sorter has been added to it, it will
+    always compare items as equal. *)
 
 (* Methods *)
 

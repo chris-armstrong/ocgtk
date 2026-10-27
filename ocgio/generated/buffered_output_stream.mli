@@ -14,7 +14,8 @@
     the buffer.
 
     Its methods, signals and properties are on
-    {!class-type-buffered_output_stream_t}. The functions it is built on are in
+    {!class-type-buffered_output_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Buffered_output_stream}. *)
 
 (** The methods, signals and properties of a [GBufferedOutputStream]. *)
@@ -47,7 +48,11 @@ class buffered_output_stream :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GBufferedOutputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Output_stream.output_stream_t -> buffered_output_stream_t
+(** Creates a new buffered output stream for a base stream. *)
 
 val new_sized :
   Output_stream.output_stream_t -> Gsize.t -> buffered_output_stream_t
+(** Creates a new buffered output stream with a given buffer size. *)

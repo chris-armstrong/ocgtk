@@ -7,7 +7,8 @@
     The center widget is centered regarding the full width of the layout's.
 
     Its methods, signals and properties are on {!class-type-center_layout_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Center_layout}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Center_layout}. *)
 
 (** The methods, signals and properties of a [GtkCenterLayout]. *)
 class type center_layout_t = object
@@ -96,4 +97,7 @@ class center_layout : Raw.Center_layout.t -> center_layout_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkCenterLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> center_layout_t
+(** Creates a new [GtkCenterLayout]. *)

@@ -27,7 +27,8 @@
     [Gtk.AccessibleRole.menu] role.
 
     Its methods, signals and properties are on {!class-type-popover_menu_bar_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Popover_menu_bar}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Popover_menu_bar}. *)
 
 (** The methods, signals and properties of a [GtkPopoverMenuBar]. *)
 class type popover_menu_bar_t = object
@@ -66,4 +67,7 @@ class popover_menu_bar : Raw.Popover_menu_bar.t -> popover_menu_bar_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkPopoverMenuBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_model : Ocgio.Menu_model.menu_model_t option -> popover_menu_bar_t
+(** Creates a [GtkPopoverMenuBar] from a [GMenuModel]. *)

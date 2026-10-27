@@ -49,7 +49,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_editable_label_get_type"
 
 external new_ : string -> t = "ml_gtk_editable_label_new"
-(** Create a new EditableLabel *)
+(** Creates a new [GtkEditableLabel] widget. *)
 
 (* Methods *)
 

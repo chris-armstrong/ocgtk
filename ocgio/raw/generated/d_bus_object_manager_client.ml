@@ -79,11 +79,12 @@ external gtype : unit -> Gobject.Type.t
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_finish"
-(** Create a new DBusObjectManagerClient *)
+(** Finishes an operation started with g_dbus_object_manager_client_new(). *)
 
 external new_for_bus_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_for_bus_finish"
-(** Create a new DBusObjectManagerClient *)
+(** Finishes an operation started with
+    g_dbus_object_manager_client_new_for_bus(). *)
 
 (* Methods *)
 

@@ -122,8 +122,9 @@
 \  </data>\n\
  </object>\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-list_store_t}. The \
- functions it is built on are in {!Ocgtk.Raw.List_store}."]
+ Its methods, signals and properties are on {!class-type-list_store_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.List_store}."]
 
 (** The methods, signals and properties of a [GtkListStore]. *)
 class type list_store_t = object
@@ -189,4 +190,9 @@ class list_store : Raw.List_store.t -> list_store_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkListStore], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val newv : int -> Gobject.Type.t array -> list_store_t
+(** Creates a new [GtkListStore].
+
+    This function is meant to be used by language bindings. *)

@@ -2,7 +2,8 @@
     [Gio.DBusConnection].
 
     Its methods, signals and properties are on {!class-type-d_bus_message_t}.
-    The functions it is built on are in {!Ocgio.Raw.D_bus_message}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.D_bus_message}. *)
 
 (** The methods, signals and properties of a [GDBusMessage]. *)
 class type d_bus_message_t = object
@@ -238,9 +239,14 @@ class d_bus_message : Raw.D_bus_message.t -> d_bus_message_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GDBusMessage], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> d_bus_message_t
+(** Creates a new empty [GDBusMessage]. *)
 
 val new_method_call :
   string option -> string -> string option -> string -> d_bus_message_t
+(** Creates a new [GDBusMessage] for a method call. *)
 
 val new_signal : string -> string -> string -> d_bus_message_t
+(** Creates a new [GDBusMessage] for a signal emission. *)

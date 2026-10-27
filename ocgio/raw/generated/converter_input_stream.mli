@@ -18,7 +18,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Input_stream.t -> Converter.t -> t
   = "ml_g_converter_input_stream_new"
-(** Create a new ConverterInputStream *)
+(** Creates a new converter input stream for the [base_stream]. *)
 
 (* Methods *)
 

@@ -18,7 +18,8 @@
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
  or similar.\n\n\
  Its methods, signals and properties are on {!class-type-directory_list_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Directory_list}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Directory_list}."]
 
 (** The methods, signals and properties of a [GtkDirectoryList]. *)
 class type directory_list_t = object
@@ -96,4 +97,10 @@ class directory_list : Raw.Directory_list.t -> directory_list_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkDirectoryList], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> Ocgio.File.file_t option -> directory_list_t
+(** Creates a new [GtkDirectoryList].
+
+    The [GtkDirectoryList] is querying the given [file] with the given
+    [attributes]. *)

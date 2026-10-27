@@ -14,8 +14,9 @@
     service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
     interface and not need to worry about [GSrvTarget] at all.
 
-    Its methods, signals and properties are on {!class-type-srv_target_t}. The
-    functions it is built on are in {!Ocgio.Raw.Srv_target}. *)
+    Its methods, signals and properties are on {!class-type-srv_target_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Srv_target}. *)
 
 (** The methods, signals and properties of a [GSrvTarget]. *)
 class type srv_target_t = object
@@ -44,4 +45,10 @@ class srv_target : Raw.Srv_target.t -> srv_target_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GSrvTarget], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> srv_target_t
+(** Creates a new [GSrvTarget] with the given parameters.
+
+    You should not need to use this; normally [GSrvTargets] are created by
+    [GResolver]. *)

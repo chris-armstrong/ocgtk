@@ -1,7 +1,8 @@
 (** Bindings for [GskComponentTransferNode].
 
     Its methods, signals and properties are on
-    {!class-type-component_transfer_node_t}. The functions it is built on are in
+    {!class-type-component_transfer_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Component_transfer_node}. *)
 
 (** The methods, signals and properties of a [GskComponentTransferNode]. *)
@@ -25,6 +26,8 @@ class component_transfer_node :
     methods that return a [GskComponentTransferNode], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Render_node.render_node_t ->
   Raw.Component_transfer.t ->
@@ -32,3 +35,5 @@ val new_ :
   Raw.Component_transfer.t ->
   Raw.Component_transfer.t ->
   component_transfer_node_t
+(** Creates a render node that will apply component transfers to a child node.
+*)

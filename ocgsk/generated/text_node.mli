@@ -1,7 +1,8 @@
 (** A render node drawing a set of glyphs.
 
-    Its methods, signals and properties are on {!class-type-text_node_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Text_node}. *)
+    Its methods, signals and properties are on {!class-type-text_node_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Text_node}. *)
 
 (** The methods, signals and properties of a [GskTextNode]. *)
 class type text_node_t = object
@@ -33,9 +34,14 @@ class text_node : Raw.Text_node.t -> text_node_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskTextNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocpango.Font.font_t ->
   Ocpango.Glyph_string.glyph_string_t ->
   Ocgdk.Rgb_a.rgb_a_t ->
   Ocgraphene.Point.point_t ->
   text_node_t
+(** Creates a render node that renders the given glyphs.
+
+    Note that [color] may not be used if the font contains color glyphs. *)

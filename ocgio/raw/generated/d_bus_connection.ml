@@ -61,11 +61,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_connection_get_type"
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_connection_new_finish"
-(** Create a new DBusConnection *)
+(** Finishes an operation started with g_dbus_connection_new(). *)
 
 external new_for_address_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_connection_new_for_address_finish"
-(** Create a new DBusConnection *)
+(** Finishes an operation started with g_dbus_connection_new_for_address(). *)
 
 external new_for_address_sync :
   string ->
@@ -73,7 +73,23 @@ external new_for_address_sync :
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
   (t, GError.t) result = "ml_g_dbus_connection_new_for_address_sync"
-(** Create a new DBusConnection *)
+(** Synchronously connects and sets up a D-Bus client connection for exchanging
+    D-Bus messages with an endpoint specified by [address] which must be in the
+    {{:https://dbus.freedesktop.org/doc/dbus-specification.html#addresses}D-Bus
+     address format}.
+
+    This constructor can only be used to initiate client-side connections - use
+    g_dbus_connection_new_sync() if you need to act as the server. In
+    particular, [flags] cannot contain the
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER],
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS] or
+    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flags.
+
+    This is a synchronous failable constructor. See
+    g_dbus_connection_new_for_address() for the asynchronous version.
+
+    If [observer] is not [NULL] it may be used to control the authentication
+    process. *)
 
 external new_sync :
   Io_stream.t ->
@@ -82,7 +98,21 @@ external new_sync :
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
   (t, GError.t) result = "ml_g_dbus_connection_new_sync"
-(** Create a new DBusConnection *)
+(** Synchronously sets up a D-Bus connection for exchanging D-Bus messages with
+    the end represented by [stream].
+
+    If [stream] is a [GSocketConnection], then the corresponding [GSocket] will
+    be put into non-blocking mode.
+
+    The D-Bus connection will interact with [stream] from a worker thread. As a
+    result, the caller should not interact with [stream] after this method has
+    been called, except by calling g_object_unref() on it.
+
+    If [observer] is not [NULL] it may be used to control the authentication
+    process.
+
+    This is a synchronous failable constructor. See g_dbus_connection_new() for
+    the asynchronous version. *)
 
 (* Methods *)
 

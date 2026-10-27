@@ -10,7 +10,9 @@ type t = [ `container_node | `render_node ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gsk_container_node_get_type"
 
 external new_ : Render_node.t array -> int -> t = "ml_gsk_container_node_new"
-(** Create a new ContainerNode *)
+(** Creates a new [GskRenderNode] instance for holding the given [children].
+
+    The new node will acquire a reference to each of the children. *)
 
 (* Methods *)
 

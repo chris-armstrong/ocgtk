@@ -4,8 +4,9 @@
     [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
     factor.
 
-    Its methods, signals and properties are on {!class-type-gesture_zoom_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Gesture_zoom}. *)
+    Its methods, signals and properties are on {!class-type-gesture_zoom_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Gesture_zoom}. *)
 
 (** The methods, signals and properties of a [GtkGestureZoom]. *)
 class type gesture_zoom_t = object
@@ -32,4 +33,7 @@ class gesture_zoom : Raw.Gesture_zoom.t -> gesture_zoom_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGestureZoom], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> gesture_zoom_t
+(** Returns a newly created [GtkGesture] that recognizes pinch/zoom gestures. *)

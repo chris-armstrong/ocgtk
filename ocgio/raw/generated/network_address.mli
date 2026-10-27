@@ -19,10 +19,26 @@ type t = [ `network_address | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_network_address_get_type"
 
 external new_ : string -> UInt16.t -> t = "ml_g_network_address_new"
-(** Create a new NetworkAddress *)
+(** Creates a new [GSocketConnectable] for connecting to the given [hostname]
+    and [port].
+
+    Note that depending on the configuration of the machine, a [hostname] of
+    [localhost] may refer to the IPv4 loopback address only, or to both IPv4 and
+    IPv6; use g_network_address_new_loopback() to create a [GNetworkAddress]
+    that is guaranteed to resolve to both addresses. *)
 
 external new_loopback : UInt16.t -> t = "ml_g_network_address_new_loopback"
-(** Create a new NetworkAddress *)
+(** Creates a new [GSocketConnectable] for connecting to the local host over a
+    loopback connection to the given [port]. This is intended for use in
+    connecting to local services which may be running on IPv4 or IPv6.
+
+    The connectable will return IPv4 and IPv6 loopback addresses, regardless of
+    how the host resolves [localhost]. By contrast, g_network_address_new() will
+    often only return an IPv4 address when resolving [localhost], and an IPv6
+    address for [localhost6].
+
+    g_network_address_get_hostname() will always return [localhost] for a
+    [GNetworkAddress] created with this constructor. *)
 
 (* Methods *)
 

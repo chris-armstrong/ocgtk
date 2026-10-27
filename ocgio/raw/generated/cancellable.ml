@@ -13,7 +13,13 @@ type t = [ `cancellable | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_cancellable_get_type"
 
 external new_ : unit -> t = "ml_g_cancellable_new"
-(** Create a new Cancellable *)
+(** Creates a new [GCancellable] object.
+
+    Applications that want to start one or more operations that should be
+    cancellable should create a [GCancellable] and pass it to the operations.
+
+    One [GCancellable] can be used in multiple consecutive operations or in
+    multiple concurrent operations. *)
 
 (* Methods *)
 

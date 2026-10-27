@@ -503,8 +503,29 @@ and ray : Raw.Ray.t -> ray_t
 and triangle : Raw.Triangle.t -> triangle_t
 
 val alloc : unit -> euler_t
+(** Allocates a new #graphene_euler_t.
+
+    The contents of the returned structure are undefined. *)
+
 val alloc : unit -> matrix_t
+(** Allocates a new #graphene_matrix_t. *)
+
 val alloc : unit -> quaternion_t
+(** Allocates a new #graphene_quaternion_t.
+
+    The contents of the returned value are undefined. *)
+
 val alloc : unit -> ray_t
+(** Allocates a new #graphene_ray_t structure.
+
+    The contents of the returned structure are undefined. *)
+
 val alloc : unit -> plane_t
+(** Allocates a new #graphene_plane_t structure.
+
+    The contents of the returned structure are undefined. *)
+
 val alloc : unit -> triangle_t
+(** Allocates a new #graphene_triangle_t.
+
+    The contents of the returned structure are undefined. *)

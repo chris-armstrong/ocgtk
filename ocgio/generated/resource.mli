@@ -140,8 +140,9 @@
  before the [=].  The path after the slash should ideally be absolute, but\n\
  this is not strictly required.  It is possible to overlay the location of a\n\
  single resource with an individual file.\n\n\
- Its methods, signals and properties are on {!class-type-resource_t}. The \
- functions it is built on are in {!Ocgio.Raw.Resource}."]
+ Its methods, signals and properties are on {!class-type-resource_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgio.Raw.Resource}."]
 
 (** The methods, signals and properties of a [GResource]. *)
 class type resource_t = object
@@ -214,4 +215,20 @@ class resource : Raw.Resource.t -> resource_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GResource], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_from_data : Glib_bytes.t -> (resource_t, GError.t) result
+(** Creates a [Gio.Resource] from a reference to the binary resource bundle.
+
+    This will keep a reference to [data] while the resource lives, so the data
+    should not be modified or freed.
+
+    If you want to use this resource in the global resource namespace you need
+    to register it with [Gio.resources_register].
+
+    Note: [data] must be backed by memory that is at least pointer aligned.
+    Otherwise this function will internally create a copy of the memory since
+    GLib 2.56, or in older versions fail and exit the process.
+
+    If [data] is empty or corrupt, [G_RESOURCE_ERROR_INTERNAL] will be returned.
+*)

@@ -12,7 +12,8 @@
     ]}
 
     Its methods, signals and properties are on
-    {!class-type-tree_list_row_sorter_t}. The functions it is built on are in
+    {!class-type-tree_list_row_sorter_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Tree_list_row_sorter}. *)
 
 (** The methods, signals and properties of a [GtkTreeListRowSorter]. *)
@@ -38,4 +39,11 @@ class tree_list_row_sorter :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkTreeListRowSorter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Sorter.sorter_t option -> tree_list_row_sorter_t
+(** Create a special-purpose sorter that applies the sorting of [sorter] to the
+    levels of a [GtkTreeListModel].
+
+    Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
+    [FALSE] as it can only sort [Gtk.TreeListRow]s. *)

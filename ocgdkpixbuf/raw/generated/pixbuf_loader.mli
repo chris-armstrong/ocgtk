@@ -51,15 +51,40 @@ type t = [ `pixbuf_loader | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_loader_get_type"
 
 external new_ : unit -> t = "ml_gdk_pixbuf_loader_new"
-(** Create a new PixbufLoader *)
+(** Creates a new pixbuf loader object. *)
 
 external new_with_mime_type : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_loader_new_with_mime_type"
-(** Create a new PixbufLoader *)
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of MIME type [mime_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected MIME type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces a\n\
+   specific MIME type.\n\n\
+   The list of supported mime types depends on what image loaders\n\
+   are installed, but typically \"image/png\", \"image/jpeg\", \"image/gif\",\n\
+   \"image/tiff\" and \"image/x-xpixmap\" are among the supported mime types.\n\
+   To obtain the full list of supported mime types, call\n\
+   gdk_pixbuf_format_get_mime_types() on each of the [GdkPixbufFormat]\n\
+   structs returned by gdk_pixbuf_get_formats()."]
 
 external new_with_type : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_loader_new_with_type"
-(** Create a new PixbufLoader *)
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of type [image_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces\n\
+   a specific type.\n\n\
+   The list of supported image formats depends on what image loaders\n\
+   are installed, but typically \"png\", \"jpeg\", \"gif\", \"tiff\" and\n\
+   \"xpm\" are among the supported formats. To obtain the full list of\n\
+   supported image formats, call gdk_pixbuf_format_get_name() on each\n\
+   of the [GdkPixbufFormat] structs returned by gdk_pixbuf_get_formats()."]
 
 (* Methods *)
 

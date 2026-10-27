@@ -6,8 +6,9 @@
     The contents of the #graphene_quaternion_t structure are private and should
     never be accessed directly.
 
-    Its methods, signals and properties are on {!class-type-quaternion_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Quaternion}. *)
+    Its methods, signals and properties are on {!class-type-quaternion_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Quaternion}. *)
 
 class type quaternion_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
@@ -19,4 +20,9 @@ class quaternion : Raw.Quaternion.t -> quaternion_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [graphene_quaternion_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> quaternion_t
+(** Allocates a new #graphene_quaternion_t.
+
+    The contents of the returned value are undefined. *)

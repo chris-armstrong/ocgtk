@@ -12,6 +12,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_memory_texture_get_type"
 external new_ :
   int -> int -> Ocgdk_enums.memoryformat -> Glib_bytes.t -> Gsize.t -> t
   = "ml_gdk_memory_texture_new"
-(** Create a new MemoryTexture *)
+(** Creates a new texture for a blob of image data.
+
+    The [GBytes] must contain [stride] × [height] pixels in the given format. *)
 
 (* Methods *)

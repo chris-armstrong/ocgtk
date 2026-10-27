@@ -33,7 +33,13 @@ type t = [ `socket_service | `socket_listener | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_service_get_type"
 
 external new_ : unit -> t = "ml_g_socket_service_new"
-(** Create a new SocketService *)
+(** Creates a new [GSocketService] with no sockets to listen for. New listeners
+    can be added with e.g. g_socket_listener_add_address() or
+    g_socket_listener_add_inet_port().
+
+    New services are created active, there is no need to call
+    g_socket_service_start(), unless g_socket_service_stop() has been called
+    before. *)
 
 (* Methods *)
 

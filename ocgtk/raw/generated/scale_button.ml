@@ -32,7 +32,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_scale_button_get_type"
 
 external new_ : float -> float -> float -> string array option -> t
   = "ml_gtk_scale_button_new"
-(** Create a new ScaleButton *)
+(** Creates a [GtkScaleButton].
+
+    The new scale button has a range between [min] and [max], with a stepping of
+    [step]. *)
 
 (* Methods *)
 

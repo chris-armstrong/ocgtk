@@ -13,7 +13,7 @@ type t = [ `scroll_info ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_scroll_info_get_type"
 
 external new_ : unit -> t = "ml_gtk_scroll_info_new"
-(** Create a new ScrollInfo *)
+(** Creates a new scroll info for scrolling an element into view. *)
 
 (* Methods *)
 

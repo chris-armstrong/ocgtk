@@ -32,7 +32,18 @@ type t = [ `shortcut_action | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_action_get_type"
 
 external parse_string : string -> t = "ml_gtk_shortcut_action_parse_string"
-(** Create a new ShortcutAction *)
+(** Tries to parse the given string into an action.
+
+    On success, the parsed action is returned. When parsing failed, [NULL] is
+    returned.
+
+    The accepted strings are:
+
+    - [nothing], for [GtkNothingAction]
+    - [activate], for [GtkActivateAction]
+    - [mnemonic-activate], for [GtkMnemonicAction]
+    - [action(NAME)], for a [GtkNamedAction] for the action named [NAME]
+    - [signal(NAME)], for a [GtkSignalAction] for the signal [NAME] *)
 
 (* Methods *)
 

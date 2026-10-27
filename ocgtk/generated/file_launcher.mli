@@ -11,7 +11,8 @@
     To launch uris that don't represent files, use [Gtk.UriLauncher].
 
     Its methods, signals and properties are on {!class-type-file_launcher_t}.
-    The functions it is built on are in {!Ocgtk.Raw.File_launcher}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.File_launcher}. *)
 
 (** The methods, signals and properties of a [GtkFileLauncher]. *)
 class type file_launcher_t = object
@@ -53,4 +54,7 @@ class file_launcher : Raw.File_launcher.t -> file_launcher_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFileLauncher], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Ocgio.File.file_t option -> file_launcher_t
+(** Creates a new [GtkFileLauncher] object. *)

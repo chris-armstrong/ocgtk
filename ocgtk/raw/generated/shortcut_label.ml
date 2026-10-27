@@ -13,7 +13,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_label_get_type"
 
 external new_ : string -> t = "ml_gtk_shortcut_label_new"
-(** Create a new ShortcutLabel *)
+(** Creates a new [GtkShortcutLabel] with [accelerator] set. *)
 
 (* Methods *)
 

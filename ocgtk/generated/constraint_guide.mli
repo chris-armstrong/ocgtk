@@ -10,7 +10,8 @@
     Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn.
 
     Its methods, signals and properties are on {!class-type-constraint_guide_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Constraint_guide}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Constraint_guide}. *)
 
 (** The methods, signals and properties of a [GtkConstraintGuide]. *)
 class type constraint_guide_t = object
@@ -69,4 +70,7 @@ class constraint_guide : Raw.Constraint_guide.t -> constraint_guide_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkConstraintGuide], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> constraint_guide_t
+(** Creates a new [GtkConstraintGuide] object. *)

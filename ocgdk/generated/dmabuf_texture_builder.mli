@@ -64,7 +64,8 @@
       {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
 
     Its methods, signals and properties are on
-    {!class-type-dmabuf_texture_builder_t}. The functions it is built on are in
+    {!class-type-dmabuf_texture_builder_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Dmabuf_texture_builder}. *)
 
 (** The methods, signals and properties of a [GdkDmabufTextureBuilder]. *)
@@ -199,4 +200,7 @@ class dmabuf_texture_builder :
     methods that return a [GdkDmabufTextureBuilder], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> dmabuf_texture_builder_t
+(** Creates a new texture builder. *)

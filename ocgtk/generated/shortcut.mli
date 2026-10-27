@@ -13,8 +13,9 @@
     with shortcuts, either by providing informational strings for display
     purposes or by allowing shortcuts to be configured.
 
-    Its methods, signals and properties are on {!class-type-shortcut_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Shortcut}. *)
+    Its methods, signals and properties are on {!class-type-shortcut_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Shortcut}. *)
 
 (** The methods, signals and properties of a [GtkShortcut]. *)
 class type shortcut_t = object
@@ -44,7 +45,11 @@ class shortcut : Raw.Shortcut.t -> shortcut_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkShortcut], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Shortcut_trigger.shortcut_trigger_t option ->
   Shortcut_action.shortcut_action_t option ->
   shortcut_t
+(** Creates a new [GtkShortcut] that is triggered by [trigger] and then
+    activates [action]. *)

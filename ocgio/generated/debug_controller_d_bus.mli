@@ -104,7 +104,8 @@
 \  }\n\
  ]}\n\n\
  Its methods, signals and properties are on \
- {!class-type-debug_controller_d_bus_t}. The functions it is built on are in \
+ {!class-type-debug_controller_d_bus_t}. Its constructors are under \
+ {!section-constructors}. The functions it is built on are in \
  {!Ocgio.Raw.Debug_controller_d_bus}."]
 
 (** The methods, signals and properties of a [GDebugControllerDBus]. *)
@@ -149,7 +150,16 @@ class debug_controller_d_bus :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GDebugControllerDBus], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   D_bus_connection.d_bus_connection_t ->
   Cancellable.cancellable_t option ->
   (debug_controller_d_bus_t, GError.t) result
+(** Create a new [GDebugControllerDBus] and synchronously initialize it.
+
+    Initializing the object will export the debug object on [connection]. The
+    object will remain registered until the last reference to the
+    [GDebugControllerDBus] is dropped.
+
+    Initialization may fail if registering the object on [connection] fails. *)

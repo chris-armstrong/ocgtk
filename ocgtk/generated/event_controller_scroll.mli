@@ -34,7 +34,8 @@
     motion that was received.
 
     Its methods, signals and properties are on
-    {!class-type-event_controller_scroll_t}. The functions it is built on are in
+    {!class-type-event_controller_scroll_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_scroll}. *)
 
 (** The methods, signals and properties of a [GtkEventControllerScroll]. *)
@@ -85,4 +86,7 @@ class event_controller_scroll :
     methods that return a [GtkEventControllerScroll], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.eventcontrollerscrollflags -> event_controller_scroll_t
+(** Creates a new event controller that will handle scroll events. *)

@@ -487,3 +487,5 @@ class layout : Raw.Layout.t -> layout_t
 and layout_iter : Raw.Layout_iter.t -> layout_iter_t
 
 val new_ : Context_and__font_and__font_map_and__fontset.context_t -> layout_t
+(** Create a new [PangoLayout] object with attributes initialized to default
+    values for a particular [PangoContext]. *)

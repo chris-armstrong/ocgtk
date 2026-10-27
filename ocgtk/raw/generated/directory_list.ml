@@ -28,7 +28,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_directory_list_get_type"
 
 external new_ : string option -> Ocgio_raw.File.t option -> t
   = "ml_gtk_directory_list_new"
-(** Create a new DirectoryList *)
+(** Creates a new [GtkDirectoryList].
+
+    The [GtkDirectoryList] is querying the given [file] with the given
+    [attributes]. *)
 
 (* Methods *)
 

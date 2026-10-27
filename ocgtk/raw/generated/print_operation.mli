@@ -59,7 +59,7 @@ type t = [ `print_operation | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_print_operation_get_type"
 
 external new_ : unit -> t = "ml_gtk_print_operation_new"
-(** Create a new PrintOperation *)
+(** Creates a new [GtkPrintOperation]. *)
 
 (* Methods *)
 

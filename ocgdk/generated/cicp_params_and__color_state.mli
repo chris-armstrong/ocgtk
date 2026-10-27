@@ -77,3 +77,7 @@ class cicp_params : Raw.Cicp_params.t -> cicp_params_t
 and color_state : Raw.Color_state.t -> color_state_t
 
 val new_ : unit -> cicp_params_t
+[@@ocaml.doc
+  "Creates a new [GdkCicpParams] object.\n\n\
+   The initial values of the properties are the values for \"undefined\"\n\
+   and need to be set before a color state object can be built."]

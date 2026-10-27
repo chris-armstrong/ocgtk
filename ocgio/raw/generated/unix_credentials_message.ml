@@ -28,11 +28,12 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_unix_credentials_message_get_type"
 
 external new_ : unit -> t = "ml_g_unix_credentials_message_new"
-(** Create a new UnixCredentialsMessage *)
+(** Creates a new [GUnixCredentialsMessage] with credentials matching the
+    current processes. *)
 
 external new_with_credentials : Credentials.t -> t
   = "ml_g_unix_credentials_message_new_with_credentials"
-(** Create a new UnixCredentialsMessage *)
+(** Creates a new [GUnixCredentialsMessage] holding [credentials]. *)
 
 (* Methods *)
 

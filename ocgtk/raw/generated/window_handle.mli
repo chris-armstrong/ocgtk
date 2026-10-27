@@ -26,7 +26,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_window_handle_get_type"
 
 external new_ : unit -> t = "ml_gtk_window_handle_new"
-(** Create a new WindowHandle *)
+(** Creates a new [GtkWindowHandle]. *)
 
 (* Methods *)
 

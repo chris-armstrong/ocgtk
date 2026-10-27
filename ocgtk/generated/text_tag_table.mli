@@ -17,7 +17,8 @@
  </object>\n\
  ]}\n\n\
  Its methods, signals and properties are on {!class-type-text_tag_table_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Text_tag_table}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Text_tag_table}."]
 
 (** The methods, signals and properties of a [GtkTextTagTable]. *)
 class type text_tag_table_t = object
@@ -70,4 +71,9 @@ class text_tag_table : Raw.Text_tag_table.t -> text_tag_table_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkTextTagTable], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> text_tag_table_t
+(** Creates a new [GtkTextTagTable].
+
+    The table contains no tags by default. *)

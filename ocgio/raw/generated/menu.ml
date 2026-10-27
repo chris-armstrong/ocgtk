@@ -16,7 +16,9 @@ type t = [ `menu | `menu_model | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_menu_get_type"
 
 external new_ : unit -> t = "ml_g_menu_new"
-(** Create a new Menu *)
+(** Creates a new [GMenu].
+
+    The new menu has no items. *)
 
 (* Methods *)
 

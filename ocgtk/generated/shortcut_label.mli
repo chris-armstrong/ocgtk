@@ -3,7 +3,8 @@
     The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
 
     Its methods, signals and properties are on {!class-type-shortcut_label_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Shortcut_label}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Shortcut_label}. *)
 
 (** The methods, signals and properties of a [GtkShortcutLabel]. *)
 class type shortcut_label_t = object
@@ -31,4 +32,7 @@ class shortcut_label : Raw.Shortcut_label.t -> shortcut_label_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkShortcutLabel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> shortcut_label_t
+(** Creates a new [GtkShortcutLabel] with [accelerator] set. *)

@@ -38,7 +38,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_popover_menu_bar_get_type"
 
 external new_from_model : Ocgio_raw.Menu_model.t option -> t
   = "ml_gtk_popover_menu_bar_new_from_model"
-(** Create a new PopoverMenuBar *)
+(** Creates a [GtkPopoverMenuBar] from a [GMenuModel]. *)
 
 (* Methods *)
 

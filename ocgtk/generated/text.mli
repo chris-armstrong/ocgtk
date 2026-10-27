@@ -109,8 +109,9 @@
     as a delegate for a [GtkEditable] implementation that will be represented to
     accessibility.
 
-    Its methods, signals and properties are on {!class-type-text_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Text}. *)
+    Its methods, signals and properties are on {!class-type-text_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Text}. *)
 
 (** The methods, signals and properties of a [GtkText]. *)
 class type text_t = object
@@ -347,5 +348,10 @@ class text : Raw.Text.t -> text_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkText], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> text_t
+(** Creates a new [GtkText]. *)
+
 val new_with_buffer : Entry_buffer.entry_buffer_t -> text_t
+(** Creates a new [GtkText] with the specified buffer. *)

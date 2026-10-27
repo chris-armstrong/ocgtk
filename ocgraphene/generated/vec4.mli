@@ -7,8 +7,9 @@
     The contents of the #graphene_vec4_t structure are private and should never
     be accessed directly.
 
-    Its methods, signals and properties are on {!class-type-vec4_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Vec4}. *)
+    Its methods, signals and properties are on {!class-type-vec4_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Vec4}. *)
 
 class type vec4_t = Vec3_and__vec4.vec4_t
 (** The methods, signals and properties of a [graphene_vec4_t]. *)
@@ -18,4 +19,11 @@ class vec4 : Raw.Vec4.t -> vec4_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_vec4_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> vec4_t
+(** Allocates a new #graphene_vec4_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec4_init() to initialize the vector. *)

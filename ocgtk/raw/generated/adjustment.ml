@@ -20,7 +20,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_adjustment_get_type"
 
 external new_ : float -> float -> float -> float -> float -> float -> t
   = "ml_gtk_adjustment_new_bytecode" "ml_gtk_adjustment_new_native"
-(** Create a new Adjustment *)
+(** Creates a new [GtkAdjustment]. *)
 
 (* Methods *)
 

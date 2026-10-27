@@ -38,7 +38,11 @@ type t = [ `icon_theme | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_icon_theme_get_type"
 
 external new_ : unit -> t = "ml_gtk_icon_theme_new"
-(** Create a new IconTheme *)
+(** Creates a new icon theme object.
+
+    Icon theme objects are used to lookup up an icon by name in a particular
+    icon theme. Usually, you’ll want to use [Gtk.IconTheme.get_for_display]
+    rather than creating a new icon theme object for scratch. *)
 
 (* Methods *)
 

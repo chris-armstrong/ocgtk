@@ -7,7 +7,8 @@
     performing the comparison.
 
     Its methods, signals and properties are on {!class-type-string_sorter_t}.
-    The functions it is built on are in {!Ocgtk.Raw.String_sorter}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.String_sorter}. *)
 
 (** The methods, signals and properties of a [GtkStringSorter]. *)
 class type string_sorter_t = object
@@ -41,4 +42,11 @@ class string_sorter : Raw.String_sorter.t -> string_sorter_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStringSorter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Expression.expression_t option -> string_sorter_t
+(** Creates a new string sorter that compares items using the given
+    [expression].
+
+    Unless an expression is set on it, this sorter will always compare items as
+    invalid. *)

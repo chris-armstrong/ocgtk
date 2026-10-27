@@ -4,7 +4,8 @@
     As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
 
     Its methods, signals and properties are on
-    {!class-type-memory_input_stream_t}. The functions it is built on are in
+    {!class-type-memory_input_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Memory_input_stream}. *)
 
 (** The methods, signals and properties of a [GMemoryInputStream]. *)
@@ -24,5 +25,10 @@ class memory_input_stream : Raw.Memory_input_stream.t -> memory_input_stream_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GMemoryInputStream], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> memory_input_stream_t
+(** Creates a new empty [GMemoryInputStream]. *)
+
 val new_from_bytes : Glib_bytes.t -> memory_input_stream_t
+(** Creates a new [GMemoryInputStream] with data from the given [bytes]. *)

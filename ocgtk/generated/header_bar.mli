@@ -56,8 +56,9 @@
  [Gtk.WindowControls] for details, as well as other children.\n\n\
  {b Accessibility}\n\n\
  [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role.\n\n\
- Its methods, signals and properties are on {!class-type-header_bar_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Header_bar}."]
+ Its methods, signals and properties are on {!class-type-header_bar_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Header_bar}."]
 
 (** The methods, signals and properties of a [GtkHeaderBar]. *)
 class type header_bar_t = object
@@ -157,4 +158,7 @@ class header_bar : Raw.Header_bar.t -> header_bar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkHeaderBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> header_bar_t
+(** Creates a new [GtkHeaderBar] widget. *)

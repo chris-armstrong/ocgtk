@@ -5,7 +5,8 @@
     This can be cascaded to combine more than two triggers.
 
     Its methods, signals and properties are on
-    {!class-type-alternative_trigger_t}. The functions it is built on are in
+    {!class-type-alternative_trigger_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Alternative_trigger}. *)
 
 (** The methods, signals and properties of a [GtkAlternativeTrigger]. *)
@@ -30,7 +31,14 @@ class alternative_trigger : Raw.Alternative_trigger.t -> alternative_trigger_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkAlternativeTrigger], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Shortcut_trigger.shortcut_trigger_t ->
   Shortcut_trigger.shortcut_trigger_t ->
   alternative_trigger_t
+(** Creates a [GtkShortcutTrigger] that will trigger whenever either of the two
+    given triggers gets triggered.
+
+    Note that nesting is allowed, so if you want more than two alternative,
+    create a new alternative trigger for each option. *)

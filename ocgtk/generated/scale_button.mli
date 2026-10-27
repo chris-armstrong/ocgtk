@@ -21,8 +21,9 @@
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
     style class, and contains a [button] node with a [.toggle] style class.
 
-    Its methods, signals and properties are on {!class-type-scale_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Scale_button}. *)
+    Its methods, signals and properties are on {!class-type-scale_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Scale_button}. *)
 
 (** The methods, signals and properties of a [GtkScaleButton]. *)
 class type scale_button_t = object
@@ -103,4 +104,10 @@ class scale_button : Raw.Scale_button.t -> scale_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkScaleButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : float -> float -> float -> string array option -> scale_button_t
+(** Creates a [GtkScaleButton].
+
+    The new scale button has a range between [min] and [max], with a stepping of
+    [step]. *)

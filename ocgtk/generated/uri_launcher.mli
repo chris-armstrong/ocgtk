@@ -10,8 +10,9 @@
 
     To launch a file, use [Gtk.FileLauncher].
 
-    Its methods, signals and properties are on {!class-type-uri_launcher_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Uri_launcher}. *)
+    Its methods, signals and properties are on {!class-type-uri_launcher_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Uri_launcher}. *)
 
 (** The methods, signals and properties of a [GtkUriLauncher]. *)
 class type uri_launcher_t = object
@@ -41,4 +42,7 @@ class uri_launcher : Raw.Uri_launcher.t -> uri_launcher_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkUriLauncher], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> uri_launcher_t
+(** Creates a new [GtkUriLauncher] object. *)

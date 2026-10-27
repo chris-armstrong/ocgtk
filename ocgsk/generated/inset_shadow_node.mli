@@ -1,7 +1,8 @@
 (** A render node for an inset shadow.
 
     Its methods, signals and properties are on
-    {!class-type-inset_shadow_node_t}. The functions it is built on are in
+    {!class-type-inset_shadow_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Inset_shadow_node}. *)
 
 (** The methods, signals and properties of a [GskInsetShadowNode]. *)
@@ -37,6 +38,8 @@ class inset_shadow_node : Raw.Inset_shadow_node.t -> inset_shadow_node_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GskInsetShadowNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Raw.Rounded_rect.t ->
   Ocgdk.Rgb_a.rgb_a_t ->
@@ -45,3 +48,5 @@ val new_ :
   float ->
   float ->
   inset_shadow_node_t
+(** Creates a [GskRenderNode] that will render an inset shadow into the box
+    given by [outline]. *)

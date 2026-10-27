@@ -22,7 +22,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Io_stream.t -> Socket_and__socket_connection.Socket.t -> t
   = "ml_g_tcp_wrapper_connection_new"
-(** Create a new TcpWrapperConnection *)
+(** Wraps [base_io_stream] and [socket] together as a [GSocketConnection]. *)
 
 (* Methods *)
 

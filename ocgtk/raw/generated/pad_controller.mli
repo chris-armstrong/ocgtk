@@ -58,7 +58,20 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_pad_controller_get_type"
 
 external new_ : Ocgio_raw.Action_group.t -> Ocgdk_raw.Device.t option -> t
   = "ml_gtk_pad_controller_new"
-(** Create a new PadController *)
+(** Creates a new [GtkPadController] that will associate events from [pad] to
+    actions.
+
+    A [NULL] pad may be provided so the controller manages all pad devices
+    generically, it is discouraged to mix [GtkPadController] objects with [NULL]
+    and non-[NULL] [pad] argument on the same toplevel window, as execution
+    order is not guaranteed.
+
+    The [GtkPadController] is created with no mapped actions. In order to map
+    pad events to actions, use [Gtk.PadController.set_action_entries] or
+    [Gtk.PadController.set_action].
+
+    Be aware that pad events will only be delivered to [GtkWindow]s, so adding a
+    pad controller to any other type of widget will not have an effect. *)
 
 (* Methods *)
 

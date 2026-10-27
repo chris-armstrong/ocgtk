@@ -24,7 +24,8 @@
     incoming clients.
 
     Its methods, signals and properties are on {!class-type-socket_service_t}.
-    The functions it is built on are in {!Ocgio.Raw.Socket_service}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Socket_service}. *)
 
 (** The methods, signals and properties of a [GSocketService]. *)
 class type socket_service_t = object
@@ -68,4 +69,13 @@ class socket_service : Raw.Socket_service.t -> socket_service_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GSocketService], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> socket_service_t
+(** Creates a new [GSocketService] with no sockets to listen for. New listeners
+    can be added with e.g. g_socket_listener_add_address() or
+    g_socket_listener_add_inet_port().
+
+    New services are created active, there is no need to call
+    g_socket_service_start(), unless g_socket_service_stop() has been called
+    before. *)

@@ -492,4 +492,7 @@ class tree_selection : Raw.Tree_selection.t -> tree_selection_t
 and tree_view : Raw.Tree_view.t -> tree_view_t
 
 val new_ : unit -> tree_view_t
+(** Creates a new [GtkTreeView] widget. *)
+
 val new_with_model : Tree_model.tree_model_t -> tree_view_t
+(** Creates a new [GtkTreeView] widget with the model initialized to [model]. *)

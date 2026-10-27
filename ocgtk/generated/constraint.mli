@@ -14,8 +14,9 @@
     The source and target, as well as their attributes, of a [GtkConstraint]
     instance are immutable after creation.
 
-    Its methods, signals and properties are on {!class-type-constraint__t}. The
-    functions it is built on are in {!Ocgtk.Raw.Constraint}. *)
+    Its methods, signals and properties are on {!class-type-constraint__t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Constraint}. *)
 
 (** The methods, signals and properties of a [GtkConstraint]. *)
 class type constraint__t = object
@@ -72,6 +73,8 @@ class constraint_ : Raw.Constraint.t -> constraint__t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkConstraint], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Constraint_target.constraint_target_t option ->
   Enums.constraintattribute ->
@@ -82,6 +85,8 @@ val new_ :
   float ->
   int ->
   constraint__t
+(** Creates a new constraint representing a relation between a layout attribute
+    on a source and a layout attribute on a target. *)
 
 val new_constant :
   Constraint_target.constraint_target_t option ->
@@ -90,3 +95,5 @@ val new_constant :
   float ->
   int ->
   constraint__t
+(** Creates a new constraint representing a relation between a layout attribute
+    on a target and a constant value. *)

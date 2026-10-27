@@ -15,7 +15,9 @@ external new_ :
   Ocgdk_raw.Rgb_a.t ->
   Ocgraphene_raw.Point.t ->
   t = "ml_gsk_text_node_new"
-(** Create a new TextNode *)
+(** Creates a render node that renders the given glyphs.
+
+    Note that [color] may not be used if the font contains color glyphs. *)
 
 (* Methods *)
 

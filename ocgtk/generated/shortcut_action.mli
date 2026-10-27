@@ -23,7 +23,8 @@
     - [Gtk.NothingAction]: a shortcut action that does nothing
 
     Its methods, signals and properties are on {!class-type-shortcut_action_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Shortcut_action}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Shortcut_action}. *)
 
 (** The methods, signals and properties of a [GtkShortcutAction]. *)
 class type shortcut_action_t = object
@@ -55,4 +56,18 @@ class shortcut_action : Raw.Shortcut_action.t -> shortcut_action_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkShortcutAction], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val parse_string : string -> shortcut_action_t
+(** Tries to parse the given string into an action.
+
+    On success, the parsed action is returned. When parsing failed, [NULL] is
+    returned.
+
+    The accepted strings are:
+
+    - [nothing], for [GtkNothingAction]
+    - [activate], for [GtkActivateAction]
+    - [mnemonic-activate], for [GtkMnemonicAction]
+    - [action(NAME)], for a [GtkNamedAction] for the action named [NAME]
+    - [signal(NAME)], for a [GtkSignalAction] for the signal [NAME] *)

@@ -17,7 +17,8 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_drop_controller_motion_get_type"
 
 external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
-(** Create a new DropControllerMotion *)
+(** Creates a new event controller that will handle pointer motion events during
+    drag and drop. *)
 
 (* Methods *)
 

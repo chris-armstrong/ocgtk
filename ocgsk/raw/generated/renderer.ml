@@ -20,7 +20,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_renderer_get_type"
 
 external new_for_surface : Ocgdk_raw.Surface.t -> t
   = "ml_gsk_renderer_new_for_surface"
-(** Create a new Renderer *)
+(** Creates an appropriate [GskRenderer] instance for the given surface.
+
+    If the [GSK_RENDERER] environment variable is set, GSK will try that
+    renderer first, before trying the backend-specific default. The ultimate
+    fallback is the cairo renderer.
+
+    The renderer will be realized before it is returned. *)
 
 (* Methods *)
 

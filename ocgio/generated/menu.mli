@@ -6,8 +6,9 @@
     [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
     submenu, use [Gio.Menu.insert_submenu].
 
-    Its methods, signals and properties are on {!class-type-menu_t}. The
-    functions it is built on are in {!Ocgio.Raw.Menu}. *)
+    Its methods, signals and properties are on {!class-type-menu_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Menu}. *)
 
 (** The methods, signals and properties of a [GMenu]. *)
 class type menu_t = object
@@ -122,4 +123,9 @@ class menu : Raw.Menu.t -> menu_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GMenu], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> menu_t
+(** Creates a new [GMenu].
+
+    The new menu has no items. *)

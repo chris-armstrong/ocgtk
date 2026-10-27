@@ -15,8 +15,9 @@
 
     [GtkInscription] has a single CSS node with the name label.
 
-    Its methods, signals and properties are on {!class-type-inscription_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Inscription}. *)
+    Its methods, signals and properties are on {!class-type-inscription_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Inscription}. *)
 
 (** The methods, signals and properties of a [GtkInscription]. *)
 class type inscription_t = object
@@ -127,4 +128,7 @@ class inscription : Raw.Inscription.t -> inscription_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkInscription], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string option -> inscription_t
+(** Creates a new [GtkInscription] with the given text. *)

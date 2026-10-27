@@ -1,7 +1,8 @@
 (** Determines if a string matches a file attribute.
 
     Its methods, signals and properties are on
-    {!class-type-file_attribute_matcher_t}. The functions it is built on are in
+    {!class-type-file_attribute_matcher_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_matcher}. *)
 
 (** The methods, signals and properties of a [GFileAttributeMatcher]. *)
@@ -58,4 +59,25 @@ class file_attribute_matcher :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GFileAttributeMatcher], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> file_attribute_matcher_t
+[@@ocaml.doc
+  "Creates a new file attribute matcher, which matches attributes\n\
+   against a given string. [GFileAttributeMatchers] are reference\n\
+   counted structures, and are created with a reference count of 1. If\n\
+   the number of references falls to 0, the [GFileAttributeMatcher] is\n\
+   automatically destroyed.\n\n\
+   The [attributes] string should be formatted with specific keys separated\n\
+   from namespaces with a double colon. Several \"namespace::key\" strings may \
+   be\n\
+   concatenated with a single comma (e.g. \
+   \"standard::type,standard::is-hidden\").\n\
+   The wildcard \"{i \" may be used to match all keys and namespaces, or\n\
+   \"namespace::}\" will match all keys in a given namespace.\n\n\
+   {b Examples of file attribute matcher strings and results}\n\n\
+   - [\"*\"]: matches all attributes.\n\
+   - [\"standard::is-hidden\"]: matches only the key is-hidden in the\n\
+   standard namespace.\n\
+   - [\"standard::type,unix::*\"]: matches the type key in the standard\n\
+   namespace and all keys in the unix namespace."]

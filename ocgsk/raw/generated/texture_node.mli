@@ -11,7 +11,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_texture_node_get_type"
 
 external new_ : Ocgdk_raw.Texture.t -> Ocgraphene_raw.Rect.t -> t
   = "ml_gsk_texture_node_new"
-(** Create a new TextureNode *)
+(** Creates a [GskRenderNode] that will render the given [texture] into the area
+    given by [bounds].
+
+    Note that GSK applies linear filtering when textures are scaled and
+    transformed. See [Gsk.TextureScaleNode] for a way to influence filtering. *)
 
 (* Methods *)
 

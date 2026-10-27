@@ -3,8 +3,9 @@
     The contents of the [graphene_frustum_t] are private, and should not be
     modified directly.
 
-    Its methods, signals and properties are on {!class-type-frustum_t}. The
-    functions it is built on are in {!Ocgraphene.Raw.Frustum}. *)
+    Its methods, signals and properties are on {!class-type-frustum_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgraphene.Raw.Frustum}. *)
 
 (** The methods, signals and properties of a [graphene_frustum_t]. *)
 class type frustum_t = object
@@ -49,4 +50,9 @@ class frustum : Raw.Frustum.t -> frustum_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [graphene_frustum_t], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val alloc : unit -> frustum_t
+(** Allocates a new #graphene_frustum_t structure.
+
+    The contents of the returned structure are undefined. *)

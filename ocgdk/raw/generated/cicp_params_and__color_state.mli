@@ -31,7 +31,10 @@ module rec Cicp_params : sig
   external gtype : unit -> Gobject.Type.t = "ml_gdk_cicp_params_get_type"
 
   external new_ : unit -> t = "ml_gdk_cicp_params_new"
-  (** Create a new CicpParams *)
+  [@@ocaml.doc
+    "Creates a new [GdkCicpParams] object.\n\n\
+    \  The initial values of the properties are the values for \"undefined\"\n\
+    \  and need to be set before a color state object can be built."]
 
   (* Methods *)
 

@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_clip_node_get_type"
 
 external new_ : Render_node.t -> Ocgraphene_raw.Rect.t -> t
   = "ml_gsk_clip_node_new"
-(** Create a new ClipNode *)
+(** Creates a [GskRenderNode] that will clip the [child] to the area given by
+    [clip]. *)
 
 (* Methods *)
 

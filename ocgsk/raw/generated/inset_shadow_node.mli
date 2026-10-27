@@ -13,7 +13,8 @@ external new_ :
   Rounded_rect.t -> Ocgdk_raw.Rgb_a.t -> float -> float -> float -> float -> t
   = "ml_gsk_inset_shadow_node_new_bytecode"
     "ml_gsk_inset_shadow_node_new_native"
-(** Create a new InsetShadowNode *)
+(** Creates a [GskRenderNode] that will render an inset shadow into the box
+    given by [outline]. *)
 
 (* Methods *)
 

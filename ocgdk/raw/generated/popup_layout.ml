@@ -42,7 +42,18 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_popup_layout_get_type"
 
 external new_ : Rectangle.t -> Ocgdk_enums.gravity -> Ocgdk_enums.gravity -> t
   = "ml_gdk_popup_layout_new"
-(** Create a new PopupLayout *)
+(** Create a popup layout description.
+
+    Used together with [Gdk.Popup.present] to describe how a popup surface
+    should be placed and behave on-screen.
+
+    [anchor_rect] is relative to the top-left corner of the surface's parent.
+    [rect_anchor] and [surface_anchor] determine anchor points on [anchor_rect]
+    and surface to pin together.
+
+    The position of [anchor_rect]'s anchor point can optionally be offset using
+    [Gdk.PopupLayout.set_offset], which is equivalent to offsetting the position
+    of surface. *)
 
 (* Methods *)
 

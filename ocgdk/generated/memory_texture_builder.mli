@@ -12,7 +12,8 @@
     textures as well as kept around and reused to construct multiple textures.
 
     Its methods, signals and properties are on
-    {!class-type-memory_texture_builder_t}. The functions it is built on are in
+    {!class-type-memory_texture_builder_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Memory_texture_builder}. *)
 
 (** The methods, signals and properties of a [GdkMemoryTextureBuilder]. *)
@@ -138,4 +139,7 @@ class memory_texture_builder :
     methods that return a [GdkMemoryTextureBuilder], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> memory_texture_builder_t
+(** Creates a new texture builder. *)

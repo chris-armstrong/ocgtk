@@ -38,8 +38,9 @@
  {b CSS nodes}\n\n\
  [GtkAboutDialog] has a single CSS node with the name [window] and style\n\
  class [.aboutdialog].\n\n\
- Its methods, signals and properties are on {!class-type-about_dialog_t}. The \
- functions it is built on are in {!Ocgtk.Raw.About_dialog}."]
+ Its methods, signals and properties are on {!class-type-about_dialog_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.About_dialog}."]
 
 (** The methods, signals and properties of a [GtkAboutDialog]. *)
 class type about_dialog_t = object
@@ -192,4 +193,7 @@ class about_dialog : Raw.About_dialog.t -> about_dialog_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkAboutDialog], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> about_dialog_t
+(** Creates a new [GtkAboutDialog]. *)

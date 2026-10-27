@@ -10,7 +10,8 @@
     [GtkFilterListModel] passes through sections from the underlying model.
 
     Its methods, signals and properties are on
-    {!class-type-filter_list_model_t}. The functions it is built on are in
+    {!class-type-filter_list_model_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Filter_list_model}. *)
 
 (** The methods, signals and properties of a [GtkFilterListModel]. *)
@@ -98,7 +99,11 @@ class filter_list_model : Raw.Filter_list_model.t -> filter_list_model_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkFilterListModel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.List_model.list_model_t option ->
   Filter.filter_t option ->
   filter_list_model_t
+(** Creates a new [GtkFilterListModel] that will filter [model] using the given
+    [filter]. *)

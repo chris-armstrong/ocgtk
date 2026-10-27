@@ -31,7 +31,8 @@
     [GtkColorChooserWidget] has a single CSS node with name colorchooser.
 
     Its methods, signals and properties are on
-    {!class-type-color_chooser_widget_t}. The functions it is built on are in
+    {!class-type-color_chooser_widget_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_chooser_widget}. *)
 
 (** The methods, signals and properties of a [GtkColorChooserWidget]. *)
@@ -53,4 +54,7 @@ class color_chooser_widget :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GtkColorChooserWidget], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> color_chooser_widget_t
+(** Creates a new [GtkColorChooserWidget]. *)

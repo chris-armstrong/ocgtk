@@ -102,4 +102,7 @@ and path_measure : Raw.Path_measure.t -> path_measure_t
 and path_point : Raw.Path_point.t -> path_point_t
 
 val new_ : Raw.Path.t -> path_measure_t
+(** Creates a measure object for the given [path] with the default tolerance. *)
+
 val new_with_tolerance : Raw.Path.t -> float -> path_measure_t
+(** Creates a measure object for the given [path] and [tolerance]. *)

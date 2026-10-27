@@ -33,7 +33,8 @@ external new_ :
   float ->
   int ->
   t = "ml_gtk_constraint_new_bytecode" "ml_gtk_constraint_new_native"
-(** Create a new Constraint *)
+(** Creates a new constraint representing a relation between a layout attribute
+    on a source and a layout attribute on a target. *)
 
 external new_constant :
   Constraint_target.t option ->
@@ -42,7 +43,8 @@ external new_constant :
   float ->
   int ->
   t = "ml_gtk_constraint_new_constant"
-(** Create a new Constraint *)
+(** Creates a new constraint representing a relation between a layout attribute
+    on a target and a constant value. *)
 
 (* Methods *)
 

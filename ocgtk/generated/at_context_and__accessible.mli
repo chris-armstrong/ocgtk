@@ -106,3 +106,8 @@ val create :
   accessible_t ->
   Ocgdk.Display.display_t ->
   at_context_t
+(** Creates a new [GtkATContext] instance for the given accessible role,
+    accessible instance, and display connection.
+
+    The [GtkATContext] implementation being instantiated will depend on the
+    platform. *)

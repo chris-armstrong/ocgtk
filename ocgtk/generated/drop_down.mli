@@ -40,8 +40,9 @@
  with the button and popover nodes as children.\n\n\
  {b Accessibility}\n\n\
  [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role.\n\n\
- Its methods, signals and properties are on {!class-type-drop_down_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Drop_down}."]
+ Its methods, signals and properties are on {!class-type-drop_down_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Drop_down}."]
 
 (** The methods, signals and properties of a [GtkDropDown]. *)
 class type drop_down_t = object
@@ -135,9 +136,16 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkDropDown], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgio.List_model.list_model_t option ->
   Expression.expression_t option ->
   drop_down_t
+(** Creates a new [GtkDropDown].
+
+    You may want to call [Gtk.DropDown.set_factory] to set up a way to map its
+    items to widgets. *)
 
 val new_from_strings : string array -> drop_down_t
+(** Creates a new [GtkDropDown] that is populated with the strings. *)

@@ -119,10 +119,10 @@ type t = [ `text | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_text_get_type"
 
 external new_ : unit -> t = "ml_gtk_text_new"
-(** Create a new Text *)
+(** Creates a new [GtkText]. *)
 
 external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_text_new_with_buffer"
-(** Create a new Text *)
+(** Creates a new [GtkText] with the specified buffer. *)
 
 (* Methods *)
 

@@ -34,7 +34,8 @@
     obtain a matching iter.
 
     Its methods, signals and properties are on {!class-type-entry_completion_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Entry_completion}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Entry_completion}. *)
 
 (** The methods, signals and properties of a [GtkEntryCompletion]. *)
 class type entry_completion_t = object
@@ -166,8 +167,15 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkEntryCompletion], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> entry_completion_t
+(** Creates a new [GtkEntryCompletion] object. *)
 
 val new_with_area :
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
   entry_completion_t
+(** Creates a new [GtkEntryCompletion] object using the specified [area].
+
+    The [GtkCellArea] is used to layout cells in the underlying
+    [GtkTreeViewColumn] for the drop-down menu. *)

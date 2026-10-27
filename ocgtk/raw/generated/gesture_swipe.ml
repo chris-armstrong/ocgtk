@@ -22,7 +22,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_swipe_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_swipe_new"
-(** Create a new GestureSwipe *)
+(** Returns a newly created [GtkGesture] that recognizes swipes. *)
 
 (* Methods *)
 

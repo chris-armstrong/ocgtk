@@ -40,8 +40,9 @@
     }
     ]}
 
-    Its methods, signals and properties are on {!class-type-page_setup_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Page_setup}. *)
+    Its methods, signals and properties are on {!class-type-page_setup_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Page_setup}. *)
 
 (** The methods, signals and properties of a [GtkPageSetup]. *)
 class type page_setup_t = object
@@ -133,6 +134,19 @@ class page_setup : Raw.Page_setup.t -> page_setup_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkPageSetup], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> page_setup_t
+(** Creates a new [GtkPageSetup]. *)
+
 val new_from_file : string -> (page_setup_t, GError.t) result
+(** Reads the page setup from the file [file_name].
+
+    Returns a new [GtkPageSetup] object with the restored page setup, or [NULL]
+    if an error occurred. See [Gtk.PageSetup.to_file]. *)
+
 val new_from_gvariant : Gvariant.t -> page_setup_t
+(** Desrialize a page setup from an a\{sv\} variant.
+
+    The variant must be in the format produced by [Gtk.PageSetup.to_gvariant].
+*)

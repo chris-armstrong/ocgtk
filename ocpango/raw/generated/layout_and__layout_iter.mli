@@ -40,7 +40,8 @@ module rec Layout : sig
 
   external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t
     = "ml_pango_layout_new"
-  (** Create a new Layout *)
+  (** Create a new [PangoLayout] object with attributes initialized to default
+      values for a particular [PangoContext]. *)
 
   (* Methods *)
 

@@ -8,8 +8,9 @@
     This means code can safely expose them as properties of objects without
     having to worry about others changing them.
 
-    Its methods, signals and properties are on {!class-type-transform_t}. The
-    functions it is built on are in {!Ocgsk.Raw.Transform}. *)
+    Its methods, signals and properties are on {!class-type-transform_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgsk.Raw.Transform}. *)
 
 (** The methods, signals and properties of a [GskTransform]. *)
 class type transform_t = object
@@ -129,4 +130,10 @@ class transform : Raw.Transform.t -> transform_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GskTransform], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> transform_t
+(** Creates a new identity transform.
+
+    This function is meant to be used by language bindings. For C code, this is
+    equivalent to using [NULL]. *)

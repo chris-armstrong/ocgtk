@@ -3,8 +3,9 @@
     Scrolling functions usually allow passing a [NULL] scroll info which will
     cause the default values to be used and just scroll the element into view.
 
-    Its methods, signals and properties are on {!class-type-scroll_info_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Scroll_info}. *)
+    Its methods, signals and properties are on {!class-type-scroll_info_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Scroll_info}. *)
 
 (** The methods, signals and properties of a [GtkScrollInfo]. *)
 class type scroll_info_t = object
@@ -31,4 +32,7 @@ class scroll_info : Raw.Scroll_info.t -> scroll_info_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkScrollInfo], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> scroll_info_t
+(** Creates a new scroll info for scrolling an element into view. *)

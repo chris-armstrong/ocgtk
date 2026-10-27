@@ -3,8 +3,9 @@
     See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
     for ways to associate named actions with widgets.
 
-    Its methods, signals and properties are on {!class-type-named_action_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Named_action}. *)
+    Its methods, signals and properties are on {!class-type-named_action_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Named_action}. *)
 
 (** The methods, signals and properties of a [GtkNamedAction]. *)
 class type named_action_t = object
@@ -21,4 +22,12 @@ class named_action : Raw.Named_action.t -> named_action_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkNamedAction], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> named_action_t
+(** Creates an action that when activated, activates the named action on the
+    widget.
+
+    It also passes the given arguments to it.
+
+    See [Gtk.Widget.insert_action_group] for how to add actions to widgets. *)

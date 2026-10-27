@@ -76,7 +76,8 @@
     [Gtk.AccessibleRole.generic] role.
 
     Its methods, signals and properties are on {!class-type-scrolled_window_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Scrolled_window}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Scrolled_window}. *)
 
 (** The methods, signals and properties of a [GtkScrolledWindow]. *)
 class type scrolled_window_t = object
@@ -288,4 +289,7 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkScrolledWindow], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> scrolled_window_t
+(** Creates a new scrolled window. *)

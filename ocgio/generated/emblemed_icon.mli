@@ -6,7 +6,8 @@
     emblems. See also [Gio.Emblem] for more information.
 
     Its methods, signals and properties are on {!class-type-emblemed_icon_t}.
-    The functions it is built on are in {!Ocgio.Raw.Emblemed_icon}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Emblemed_icon}. *)
 
 (** The methods, signals and properties of a [GEmblemedIcon]. *)
 class type emblemed_icon_t = object
@@ -33,4 +34,7 @@ class emblemed_icon : Raw.Emblemed_icon.t -> emblemed_icon_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GEmblemedIcon], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Icon.icon_t -> Emblem.emblem_t option -> emblemed_icon_t
+(** Creates a new emblemed icon for [icon] with the emblem [emblem]. *)

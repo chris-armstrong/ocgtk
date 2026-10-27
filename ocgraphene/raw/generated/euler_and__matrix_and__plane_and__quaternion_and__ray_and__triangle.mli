@@ -19,7 +19,9 @@ module rec Euler : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_euler_get_type"
 
   external alloc : unit -> t = "ml_graphene_euler_alloc"
-  (** Create a new Euler *)
+  (** Allocates a new #graphene_euler_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -155,7 +157,7 @@ and Matrix : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_matrix_get_type"
 
   external alloc : unit -> t = "ml_graphene_matrix_alloc"
-  (** Create a new Matrix *)
+  (** Allocates a new #graphene_matrix_t. *)
 
   (* Methods *)
 
@@ -576,7 +578,9 @@ and Plane : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_plane_get_type"
 
   external alloc : unit -> t = "ml_graphene_plane_alloc"
-  (** Create a new Plane *)
+  (** Allocates a new #graphene_plane_t structure.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -653,7 +657,9 @@ and Quaternion : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_quaternion_get_type"
 
   external alloc : unit -> t = "ml_graphene_quaternion_alloc"
-  (** Create a new Quaternion *)
+  (** Allocates a new #graphene_quaternion_t.
+
+      The contents of the returned value are undefined. *)
 
   (* Methods *)
 
@@ -763,7 +769,9 @@ and Ray : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_ray_get_type"
 
   external alloc : unit -> t = "ml_graphene_ray_alloc"
-  (** Create a new Ray *)
+  (** Allocates a new #graphene_ray_t structure.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -868,7 +876,9 @@ and Triangle : sig
   external gtype : unit -> Gobject.Type.t = "ml_graphene_triangle_get_type"
 
   external alloc : unit -> t = "ml_graphene_triangle_alloc"
-  (** Create a new Triangle *)
+  (** Allocates a new #graphene_triangle_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 

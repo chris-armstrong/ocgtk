@@ -1,7 +1,8 @@
 (** Creates [GdkContentFormats] objects.
 
     Its methods, signals and properties are on
-    {!class-type-content_formats_builder_t}. The functions it is built on are in
+    {!class-type-content_formats_builder_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Content_formats_builder}. *)
 
 (** The methods, signals and properties of a [GdkContentFormatsBuilder]. *)
@@ -43,4 +44,10 @@ class content_formats_builder :
     methods that return a [GdkContentFormatsBuilder], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> content_formats_builder_t
+(** Create a new [GdkContentFormatsBuilder] object.
+
+    The resulting builder would create an empty [GdkContentFormats]. Use
+    addition functions to add types to it. *)

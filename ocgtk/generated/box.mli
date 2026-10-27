@@ -33,8 +33,9 @@
 
     Starting from GTK 4.12, [GtkBox] uses the [Gtk.AccessibleRole.generic] role.
 
-    Its methods, signals and properties are on {!class-type-box_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Box}. *)
+    Its methods, signals and properties are on {!class-type-box_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Box}. *)
 
 (** The methods, signals and properties of a [GtkBox]. *)
 class type box_t = object
@@ -133,4 +134,7 @@ class box : Raw.Box.t -> box_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> int -> box_t
+(** Creates a new box. *)

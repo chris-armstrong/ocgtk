@@ -69,7 +69,9 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_subprocess_get_type"
 external newv :
   string array -> Ocgio_enums.subprocessflags -> (t, GError.t) result
   = "ml_g_subprocess_newv"
-(** Create a new Subprocess *)
+(** Create a new process with the given flags and argument list.
+
+    The argument list is expected to be [NULL]-terminated. *)
 
 (* Methods *)
 

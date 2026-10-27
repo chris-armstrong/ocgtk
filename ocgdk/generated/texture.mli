@@ -23,8 +23,9 @@
     {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
     data.
 
-    Its methods, signals and properties are on {!class-type-texture_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Texture}. *)
+    Its methods, signals and properties are on {!class-type-texture_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Texture}. *)
 
 (** The methods, signals and properties of a [GdkTexture]. *)
 class type texture_t = object
@@ -101,8 +102,73 @@ class texture : Raw.Texture.t -> texture_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GdkTexture], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_for_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t -> texture_t
+(** Creates a new texture object representing the [GdkPixbuf].
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image. *)
+
 val new_from_bytes : Glib_bytes.t -> (texture_t, GError.t) result
+(** Creates a new texture by loading an image from memory,
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
+
 val new_from_file : Ocgio.File.file_t -> (texture_t, GError.t) result
+(** Creates a new texture by loading an image from a file.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
+
 val new_from_filename : string -> (texture_t, GError.t) result
+(** Creates a new texture by loading an image from a file.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    If [NULL] is returned, then [error] will be set.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image.
+
+    Note that this function should not be used with untrusted data. Use a proper
+    image loading framework such as libglycin, which can load many image formats
+    into a [GdkTexture]. *)
+
 val new_from_resource : string -> texture_t
+(** Creates a new texture by loading an image from a resource.
+
+    The file format is detected automatically. The supported formats are PNG,
+    JPEG and TIFF, though more formats might be available.
+
+    It is a fatal error if [resource_path] does not specify a valid image
+    resource and the program will abort if that happens. If you are unsure about
+    the validity of a resource, use [Gdk.Texture.new_from_file] to load it.
+
+    This function is threadsafe, so that you can e.g. use GTask and
+    [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
+    big image. *)

@@ -3,8 +3,9 @@
     [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
     necessary.
 
-    Its methods, signals and properties are on {!class-type-list_box_row_t}. The
-    functions it is built on are in {!Ocgtk.Raw.List_box_row}. *)
+    Its methods, signals and properties are on {!class-type-list_box_row_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.List_box_row}. *)
 
 (** The methods, signals and properties of a [GtkListBoxRow]. *)
 class type list_box_row_t = object
@@ -98,4 +99,7 @@ class list_box_row : Raw.List_box_row.t -> list_box_row_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkListBoxRow], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> list_box_row_t
+(** Creates a new [GtkListBoxRow]. *)

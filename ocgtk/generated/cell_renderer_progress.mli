@@ -4,7 +4,8 @@
     cell. Additionally, it can display a text on top of the progress bar.
 
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_progress_t}. The functions it is built on are in
+    {!class-type-cell_renderer_progress_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_progress}. *)
 
 (** The methods, signals and properties of a [GtkCellRendererProgress]. *)
@@ -34,4 +35,7 @@ class cell_renderer_progress :
     methods that return a [GtkCellRendererProgress], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> cell_renderer_progress_t
+(** Creates a new [GtkCellRendererProgress]. *)

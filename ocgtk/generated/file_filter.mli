@@ -39,8 +39,9 @@
 \  </suffixes>\n\
  </object>\n\
  ]}\n\n\
- Its methods, signals and properties are on {!class-type-file_filter_t}. The \
- functions it is built on are in {!Ocgtk.Raw.File_filter}."]
+ Its methods, signals and properties are on {!class-type-file_filter_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.File_filter}."]
 
 (** The methods, signals and properties of a [GtkFileFilter]. *)
 class type file_filter_t = object
@@ -103,5 +104,25 @@ class file_filter : Raw.File_filter.t -> file_filter_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFileFilter], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> file_filter_t
+[@@ocaml.doc
+  "Creates a new [GtkFileFilter] with no rules added to it.\n\n\
+   Such a filter doesn’t accept any files, so is not\n\
+   particularly useful until you add rules with\n\
+   [Gtk.FileFilter.add_mime_type],\n\
+   [Gtk.FileFilter.add_pattern],\n\
+   [Gtk.FileFilter.add_suffix] or\n\
+   [Gtk.FileFilter.add_pixbuf_formats].\n\n\
+   To create a filter that accepts any file, use:\n\n\
+   {[\n\
+   GtkFileFilter *filter = gtk_file_filter_new ();\n\
+   gtk_file_filter_add_pattern (filter, \"*\");\n\
+   ]}"]
+
 val new_from_gvariant : Gvariant.t -> file_filter_t
+(** Deserialize a file filter from a [GVariant].
+
+    The variant must be in the format produced by [Gtk.FileFilter.to_gvariant].
+*)

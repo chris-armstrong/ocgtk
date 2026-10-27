@@ -4,7 +4,8 @@
     they are expected to be defined with the [G_SIGNAL_ACTION] flag.
 
     Its methods, signals and properties are on {!class-type-signal_action_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Signal_action}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Signal_action}. *)
 
 (** The methods, signals and properties of a [GtkSignalAction]. *)
 class type signal_action_t = object
@@ -21,4 +22,10 @@ class signal_action : Raw.Signal_action.t -> signal_action_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkSignalAction], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> signal_action_t
+(** Creates an action that when activated, emits the given action signal on the
+    provided widget.
+
+    It will also unpack the args into arguments passed to the signal. *)

@@ -9,8 +9,9 @@
     The [GtkAdjustment] object does not update the value itself. Instead it is
     left up to the owner of the [GtkAdjustment] to control the value.
 
-    Its methods, signals and properties are on {!class-type-adjustment_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Adjustment}. *)
+    Its methods, signals and properties are on {!class-type-adjustment_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Adjustment}. *)
 
 (** The methods, signals and properties of a [GtkAdjustment]. *)
 class type adjustment_t = object
@@ -123,4 +124,7 @@ class adjustment : Raw.Adjustment.t -> adjustment_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkAdjustment], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : float -> float -> float -> float -> float -> float -> adjustment_t
+(** Creates a new [GtkAdjustment]. *)

@@ -697,5 +697,40 @@ and window : Raw.Window.t -> window_t
 and window_group : Raw.Window_group.t -> window_group_t
 
 val new_ : unit -> window_t
+(** Creates a new [GtkWindow].
+
+    To get an undecorated window (without window borders), use
+    [Gtk.Window.set_decorated].
+
+    All top-level windows created by this function are stored in an internal
+    top-level window list. This list can be obtained from
+    [Gtk.Window.list_toplevels]. Due to GTK keeping a reference to the window
+    internally, this function does not return a reference to the caller.
+
+    To delete a [GtkWindow], call [Gtk.Window.destroy]. *)
+
 val new_ : string option -> Ocgio.Enums.applicationflags -> application_t
+(** Creates a new application instance.
+
+    When using [GtkApplication], it is not necessary to call [Gtk.init]
+    manually. It is called as soon as the application gets registered as the
+    primary instance.
+
+    Concretely, [Gtk.init] is called in the default handler for the
+    [GApplication::startup] signal. Therefore, [GtkApplication] subclasses
+    should always chain up in their [GIO.Application.startup] handler before
+    using any GTK API.
+
+    Note that commandline arguments are not passed to [Gtk.init].
+
+    If [application_id] is not [NULL], then it must be valid. See
+    [Gio.Application.id_is_valid].
+
+    If no application ID is given then some features (most notably application
+    uniqueness) will be disabled. *)
+
 val new_ : unit -> window_group_t
+(** Creates a new [GtkWindowGroup] object.
+
+    Modality of windows only affects windows within the same [GtkWindowGroup].
+*)

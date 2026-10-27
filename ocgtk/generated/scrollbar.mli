@@ -39,8 +39,9 @@
 
     [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role.
 
-    Its methods, signals and properties are on {!class-type-scrollbar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Scrollbar}. *)
+    Its methods, signals and properties are on {!class-type-scrollbar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Scrollbar}. *)
 
 (** The methods, signals and properties of a [GtkScrollbar]. *)
 class type scrollbar_t = object
@@ -65,4 +66,7 @@ class scrollbar : Raw.Scrollbar.t -> scrollbar_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkScrollbar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.orientation -> Adjustment.adjustment_t option -> scrollbar_t
+(** Creates a new scrollbar with the given orientation. *)

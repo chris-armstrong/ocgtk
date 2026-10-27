@@ -77,11 +77,18 @@ type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_expander_get_type"
 
 external new_ : string option -> t = "ml_gtk_expander_new"
-(** Create a new Expander *)
+(** Creates a new expander using [label] as the text of the label. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_expander_new_with_mnemonic"
-(** Create a new Expander *)
+(** Creates a new expander using [label] as the text of the label.
+
+    If characters in [label] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use “__” (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic.
+
+    Pressing Alt and that key activates the button. *)
 
 (* Methods *)
 

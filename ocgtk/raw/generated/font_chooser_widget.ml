@@ -27,7 +27,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_chooser_widget_get_type"
 
 external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
-(** Create a new FontChooserWidget *)
+(** Creates a new [GtkFontChooserWidget]. *)
 
 (* Methods *)
 (* Properties *)

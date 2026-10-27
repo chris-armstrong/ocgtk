@@ -29,23 +29,33 @@ type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_view_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_view_new"
-(** Create a new CellView *)
+(** Creates a new [GtkCellView] widget. *)
 
 external new_with_context :
   Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t ->
   Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t ->
   t = "ml_gtk_cell_view_new_with_context"
-(** Create a new CellView *)
+(** Creates a new [GtkCellView] widget with a specific [GtkCellArea] to layout
+    cells and a specific [GtkCellAreaContext].
+
+    Specifying the same context for a handful of cells lets the underlying area
+    synchronize the geometry for those cells, in this way alignments with
+    cellviews for other rows are possible. *)
 
 external new_with_markup : string -> t = "ml_gtk_cell_view_new_with_markup"
-(** Create a new CellView *)
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererText] to it, and
+    makes it show [markup]. The text can be marked up with the
+    {{:https://docs.gtk.org/Pango/pango_markup.html}Pango text markup language}.
+*)
 
 external new_with_text : string -> t = "ml_gtk_cell_view_new_with_text"
-(** Create a new CellView *)
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererText] to it, and
+    makes it show [text]. *)
 
 external new_with_texture : Ocgdk_raw.Texture.t -> t
   = "ml_gtk_cell_view_new_with_texture"
-(** Create a new CellView *)
+(** Creates a new [GtkCellView] widget, adds a [GtkCellRendererPixbuf] to it,
+    and makes it show [texture]. *)
 
 (* Methods *)
 

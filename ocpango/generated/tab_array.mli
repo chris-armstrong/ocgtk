@@ -4,8 +4,9 @@
     stop has an alignment, a position, and optionally a character to use as
     decimal point.
 
-    Its methods, signals and properties are on {!class-type-tab_array_t}. The
-    functions it is built on are in {!Ocpango.Raw.Tab_array}. *)
+    Its methods, signals and properties are on {!class-type-tab_array_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Tab_array}. *)
 
 (** The methods, signals and properties of a [PangoTabArray]. *)
 class type tab_array_t = object
@@ -78,4 +79,10 @@ class tab_array : Raw.Tab_array.t -> tab_array_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [PangoTabArray], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : int -> bool -> tab_array_t
+(** Creates an array of [initial_size] tab stops.
+
+    Tab stops are specified in pixel units if [positions_in_pixels] is [TRUE],
+    otherwise in Pango units. All stops are initially at position 0. *)

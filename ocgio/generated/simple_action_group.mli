@@ -2,7 +2,8 @@
     implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces.
 
     Its methods, signals and properties are on
-    {!class-type-simple_action_group_t}. The functions it is built on are in
+    {!class-type-simple_action_group_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Simple_action_group}. *)
 
 (** The methods, signals and properties of a [GSimpleActionGroup]. *)
@@ -36,4 +37,7 @@ class simple_action_group : Raw.Simple_action_group.t -> simple_action_group_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GSimpleActionGroup], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> simple_action_group_t
+(** Creates a new, empty, [GSimpleActionGroup]. *)

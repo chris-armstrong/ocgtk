@@ -9,8 +9,9 @@
  [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\
  attached to the same row or column; however, if you only ever need a\n\
  single row or column, you should consider using [GtkBoxLayout].\n\n\
- Its methods, signals and properties are on {!class-type-grid_layout_t}. The \
- functions it is built on are in {!Ocgtk.Raw.Grid_layout}."]
+ Its methods, signals and properties are on {!class-type-grid_layout_t}. Its \
+ constructors are under {!section-constructors}. The functions it is built on \
+ are in {!Ocgtk.Raw.Grid_layout}."]
 
 (** The methods, signals and properties of a [GtkGridLayout]. *)
 class type grid_layout_t = object
@@ -70,4 +71,7 @@ class grid_layout : Raw.Grid_layout.t -> grid_layout_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGridLayout], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> grid_layout_t
+(** Creates a new [GtkGridLayout]. *)

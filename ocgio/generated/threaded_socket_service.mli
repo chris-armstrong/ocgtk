@@ -16,7 +16,8 @@
     handler.
 
     Its methods, signals and properties are on
-    {!class-type-threaded_socket_service_t}. The functions it is built on are in
+    {!class-type-threaded_socket_service_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Threaded_socket_service}. *)
 
 (** The methods, signals and properties of a [GThreadedSocketService]. *)
@@ -33,4 +34,9 @@ class threaded_socket_service :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GThreadedSocketService], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : int -> threaded_socket_service_t
+[@@ocaml.doc
+  "Creates a new [GThreadedSocketService] with no listeners. Listeners\n\
+   must be added with one of the [GSocketListener] \"add\" methods."]

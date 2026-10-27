@@ -39,8 +39,9 @@
     [Gtk.SignalListItemFactory::teardown].
 
     Its methods, signals and properties are on
-    {!class-type-signal_list_item_factory_t}. The functions it is built on are
-    in {!Ocgtk.Raw.Signal_list_item_factory}. *)
+    {!class-type-signal_list_item_factory_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Signal_list_item_factory}. *)
 
 (** The methods, signals and properties of a [GtkSignalListItemFactory]. *)
 class type signal_list_item_factory_t = object
@@ -56,4 +57,9 @@ class signal_list_item_factory :
     methods that return a [GtkSignalListItemFactory], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> signal_list_item_factory_t
+(** Creates a new [GtkSignalListItemFactory].
+
+    You need to connect signal handlers before you use it. *)

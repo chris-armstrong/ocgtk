@@ -73,7 +73,7 @@ type t = [ `test_d_bus | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_test_d_bus_get_type"
 
 external new_ : Ocgio_enums.testdbusflags -> t = "ml_g_test_dbus_new"
-(** Create a new TestDBus *)
+(** Create a new [GTestDBus] object. *)
 
 (* Methods *)
 

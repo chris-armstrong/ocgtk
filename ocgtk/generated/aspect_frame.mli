@@ -14,8 +14,9 @@
     Starting from GTK 4.12, [GtkAspectFrame] uses the
     [Gtk.AccessibleRole.generic] role.
 
-    Its methods, signals and properties are on {!class-type-aspect_frame_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Aspect_frame}. *)
+    Its methods, signals and properties are on {!class-type-aspect_frame_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Aspect_frame}. *)
 
 (** The methods, signals and properties of a [GtkAspectFrame]. *)
 class type aspect_frame_t = object
@@ -75,4 +76,7 @@ class aspect_frame : Raw.Aspect_frame.t -> aspect_frame_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkAspectFrame], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : float -> float -> float -> bool -> aspect_frame_t
+(** Create a new [GtkAspectFrame]. *)

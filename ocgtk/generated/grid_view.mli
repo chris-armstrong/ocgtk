@@ -40,8 +40,9 @@
     [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
     [Gtk.AccessibleRole.grid_cell] role.
 
-    Its methods, signals and properties are on {!class-type-grid_view_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Grid_view}. *)
+    Its methods, signals and properties are on {!class-type-grid_view_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Grid_view}. *)
 
 (** The methods, signals and properties of a [GtkGridView]. *)
 class type grid_view_t = object
@@ -126,7 +127,18 @@ class grid_view : Raw.Grid_view.t -> grid_view_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkGridView], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Selection_model.selection_model_t option ->
   List_item_factory.list_item_factory_t option ->
   grid_view_t
+[@@ocaml.doc
+  "Creates a new [GtkGridView] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   The function takes ownership of the\n\
+   arguments, so you can write code like\n\n\
+   {[\n\
+   grid_view = gtk_grid_view_new (create_model (),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/resource.ui\"));\n\
+   ]}"]

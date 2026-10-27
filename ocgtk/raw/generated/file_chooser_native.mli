@@ -125,7 +125,7 @@ external new_ :
   string option ->
   string option ->
   t = "ml_gtk_file_chooser_native_new"
-(** Create a new FileChooserNative *)
+(** Creates a new [GtkFileChooserNative]. *)
 
 (* Methods *)
 

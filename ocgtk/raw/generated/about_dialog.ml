@@ -50,7 +50,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_about_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_about_dialog_new"
-(** Create a new AboutDialog *)
+(** Creates a new [GtkAboutDialog]. *)
 
 (* Methods *)
 

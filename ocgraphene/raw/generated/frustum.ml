@@ -13,7 +13,9 @@ type t = [ `frustum ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_graphene_frustum_get_type"
 
 external alloc : unit -> t = "ml_graphene_frustum_alloc"
-(** Create a new Frustum *)
+(** Allocates a new #graphene_frustum_t structure.
+
+    The contents of the returned structure are undefined. *)
 
 (* Methods *)
 

@@ -5,7 +5,8 @@
     and expressions.
 
     Its methods, signals and properties are on {!class-type-string_object_t}.
-    The functions it is built on are in {!Ocgtk.Raw.String_object}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.String_object}. *)
 
 (** The methods, signals and properties of a [GtkStringObject]. *)
 class type string_object_t = object
@@ -20,4 +21,7 @@ class string_object : Raw.String_object.t -> string_object_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkStringObject], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> string_object_t
+(** Wraps a string in an object for use with [GListModel]. *)

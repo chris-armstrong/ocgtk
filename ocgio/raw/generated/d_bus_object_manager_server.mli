@@ -31,7 +31,12 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_d_bus_object_manager_server_get_type"
 
 external new_ : string -> t = "ml_g_dbus_object_manager_server_new"
-(** Create a new DBusObjectManagerServer *)
+(** Creates a new [GDBusObjectManagerServer] object.
+
+    The returned server isn't yet exported on any connection. To do so, use
+    g_dbus_object_manager_server_set_connection(). Normally you want to export
+    all of your objects before doing so to avoid InterfacesAdded signals being
+    emitted. *)
 
 (* Methods *)
 

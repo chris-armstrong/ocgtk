@@ -37,6 +37,6 @@ external new_ :
   string option ->
   Application_and__window_and__window_group.Window.t option ->
   t = "ml_gtk_font_chooser_dialog_new"
-(** Create a new FontChooserDialog *)
+(** Creates a new [GtkFontChooserDialog]. *)
 
 (* Methods *)

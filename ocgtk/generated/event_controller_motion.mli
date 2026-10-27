@@ -7,7 +7,8 @@
     reflect changes in the pointer position as it moves over the widget.
 
     Its methods, signals and properties are on
-    {!class-type-event_controller_motion_t}. The functions it is built on are in
+    {!class-type-event_controller_motion_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_motion}. *)
 
 (** The methods, signals and properties of a [GtkEventControllerMotion]. *)
@@ -48,4 +49,7 @@ class event_controller_motion :
     methods that return a [GtkEventControllerMotion], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> event_controller_motion_t
+(** Creates a new event controller that will handle motion events. *)

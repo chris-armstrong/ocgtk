@@ -4,8 +4,9 @@
     The storage for the glyph information is owned by the structure which
     simplifies memory management.
 
-    Its methods, signals and properties are on {!class-type-glyph_string_t}. The
-    functions it is built on are in {!Ocpango.Raw.Glyph_string}. *)
+    Its methods, signals and properties are on {!class-type-glyph_string_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Glyph_string}. *)
 
 (** The methods, signals and properties of a [PangoGlyphString]. *)
 class type glyph_string_t = object
@@ -28,4 +29,7 @@ class glyph_string : Raw.Glyph_string.t -> glyph_string_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [PangoGlyphString], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> glyph_string_t
+(** Create a new [PangoGlyphString]. *)

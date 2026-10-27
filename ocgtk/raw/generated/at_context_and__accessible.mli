@@ -20,7 +20,11 @@ module rec At_context : sig
   external create :
     Ocgtk_enums.accessiblerole -> Accessible.t -> Ocgdk_raw.Display.t -> t
     = "ml_gtk_at_context_create"
-  (** Create a new ATContext *)
+  (** Creates a new [GtkATContext] instance for the given accessible role,
+      accessible instance, and display connection.
+
+      The [GtkATContext] implementation being instantiated will depend on the
+      platform. *)
 
   (* Methods *)
 

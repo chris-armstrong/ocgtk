@@ -43,7 +43,7 @@ type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_box_get_type"
 
 external new_ : Ocgtk_enums.orientation -> int -> t = "ml_gtk_box_new"
-(** Create a new Box *)
+(** Creates a new box. *)
 
 (* Methods *)
 

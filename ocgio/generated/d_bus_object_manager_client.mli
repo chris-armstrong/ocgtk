@@ -67,8 +67,9 @@
     consequently, will deliver signals in the same main loop.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_object_manager_client_t}. The functions it is built on
-    are in {!Ocgio.Raw.D_bus_object_manager_client}. *)
+    {!class-type-d_bus_object_manager_client_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_object_manager_client}. *)
 
 (** The methods, signals and properties of a [GDBusObjectManagerClient]. *)
 class type d_bus_object_manager_client_t = object
@@ -116,10 +117,15 @@ class d_bus_object_manager_client :
     methods that return a [GDBusObjectManagerClient], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_finish :
   Async_result.async_result_t ->
   (d_bus_object_manager_client_t, GError.t) result
+(** Finishes an operation started with g_dbus_object_manager_client_new(). *)
 
 val new_for_bus_finish :
   Async_result.async_result_t ->
   (d_bus_object_manager_client_t, GError.t) result
+(** Finishes an operation started with
+    g_dbus_object_manager_client_new_for_bus(). *)

@@ -13,7 +13,24 @@ module rec Application : sig
 
   external new_ : string option -> Ocgio_enums.applicationflags -> t
     = "ml_gtk_application_new"
-  (** Create a new Application *)
+  (** Creates a new application instance.
+
+      When using [GtkApplication], it is not necessary to call [Gtk.init]
+      manually. It is called as soon as the application gets registered as the
+      primary instance.
+
+      Concretely, [Gtk.init] is called in the default handler for the
+      [GApplication::startup] signal. Therefore, [GtkApplication] subclasses
+      should always chain up in their [GIO.Application.startup] handler before
+      using any GTK API.
+
+      Note that commandline arguments are not passed to [Gtk.init].
+
+      If [application_id] is not [NULL], then it must be valid. See
+      [Gio.Application.id_is_valid].
+
+      If no application ID is given then some features (most notably application
+      uniqueness) will be disabled. *)
 
   (* Methods *)
 
@@ -352,7 +369,17 @@ and Window : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_window_get_type"
 
   external new_ : unit -> t = "ml_gtk_window_new"
-  (** Create a new Window *)
+  (** Creates a new [GtkWindow].
+
+      To get an undecorated window (without window borders), use
+      [Gtk.Window.set_decorated].
+
+      All top-level windows created by this function are stored in an internal
+      top-level window list. This list can be obtained from
+      [Gtk.Window.list_toplevels]. Due to GTK keeping a reference to the window
+      internally, this function does not return a reference to the caller.
+
+      To delete a [GtkWindow], call [Gtk.Window.destroy]. *)
 
   (* Methods *)
 
@@ -928,7 +955,10 @@ and Window_group : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_window_group_get_type"
 
   external new_ : unit -> t = "ml_gtk_window_group_new"
-  (** Create a new WindowGroup *)
+  (** Creates a new [GtkWindowGroup] object.
+
+      Modality of windows only affects windows within the same [GtkWindowGroup].
+  *)
 
   (* Methods *)
 

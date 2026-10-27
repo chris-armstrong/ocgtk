@@ -14,7 +14,9 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_flow_box_child_get_type"
 
 external new_ : unit -> t = "ml_gtk_flow_box_child_new"
-(** Create a new FlowBoxChild *)
+(** Creates a new [GtkFlowBoxChild].
+
+    This should only be used as a child of a [GtkFlowBox]. *)
 
 (* Methods *)
 

@@ -78,10 +78,10 @@ type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_get_type"
 
 external new_ : unit -> t = "ml_gtk_entry_new"
-(** Create a new Entry *)
+(** Creates a new entry. *)
 
 external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
-(** Create a new Entry *)
+(** Creates a new entry with the specified text buffer. *)
 
 (* Methods *)
 

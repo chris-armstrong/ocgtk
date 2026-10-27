@@ -12,8 +12,9 @@
     input. If you are writing a full-fledged video player, you may want to use
     the [Gdk.Paintable] API and a media framework such as Gstreamer directly.
 
-    Its methods, signals and properties are on {!class-type-video_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Video}. *)
+    Its methods, signals and properties are on {!class-type-video_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Video}. *)
 
 (** The methods, signals and properties of a [GtkVideo]. *)
 class type video_t = object
@@ -81,8 +82,24 @@ class video : Raw.Video.t -> video_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkVideo], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> video_t
+(** Creates a new empty [GtkVideo]. *)
+
 val new_for_file : Ocgio.File.file_t option -> video_t
+(** Creates a [GtkVideo] to play back the given [file]. *)
+
 val new_for_filename : string option -> video_t
+(** Creates a [GtkVideo] to play back the given [filename].
+
+    This is a utility function that calls [Gtk.Video.new_for_file], See that
+    function for details. *)
+
 val new_for_media_stream : Media_stream.media_stream_t option -> video_t
+(** Creates a [GtkVideo] to play back the given [stream]. *)
+
 val new_for_resource : string option -> video_t
+(** Creates a [GtkVideo] to play back the resource at the given [resource_path].
+
+    This is a utility function that calls [Gtk.Video.new_for_file]. *)

@@ -5,7 +5,8 @@
     not directly a [Gio.SocketConnection].
 
     Its methods, signals and properties are on
-    {!class-type-tcp_wrapper_connection_t}. The functions it is built on are in
+    {!class-type-tcp_wrapper_connection_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Tcp_wrapper_connection}. *)
 
 (** The methods, signals and properties of a [GTcpWrapperConnection]. *)
@@ -25,7 +26,10 @@ class tcp_wrapper_connection :
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GTcpWrapperConnection], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Io_stream.io_stream_t ->
   Socket_and__socket_connection.socket_t ->
   tcp_wrapper_connection_t
+(** Wraps [base_io_stream] and [socket] together as a [GSocketConnection]. *)

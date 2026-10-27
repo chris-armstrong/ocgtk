@@ -43,16 +43,28 @@ type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_button_new"
-(** Create a new Button *)
+(** Creates a new [GtkButton] widget.
+
+    To add a child widget to the button, use [Gtk.Button.set_child]. *)
 
 external new_from_icon_name : string -> t = "ml_gtk_button_new_from_icon_name"
-(** Create a new Button *)
+(** Creates a new button containing an icon from the current icon theme.
+
+    If the icon name isn’t known, a “broken image” icon will be displayed
+    instead. If the current icon theme is changed, the icon will be updated
+    appropriately. *)
 
 external new_with_label : string -> t = "ml_gtk_button_new_with_label"
-(** Create a new Button *)
+(** Creates a [GtkButton] widget with a [GtkLabel] child. *)
 
 external new_with_mnemonic : string -> t = "ml_gtk_button_new_with_mnemonic"
-(** Create a new Button *)
+(** Creates a new [GtkButton] containing a label.
+
+    If characters in [label] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use “__” (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic. Pressing <kbd>Alt</kbd> and that key
+    activates the button. *)
 
 (* Methods *)
 

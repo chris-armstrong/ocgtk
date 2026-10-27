@@ -15,8 +15,9 @@
     [GtkFontButton] has a single CSS node with name fontbutton which contains a
     button node with the .font style class.
 
-    Its methods, signals and properties are on {!class-type-font_button_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Font_button}. *)
+    Its methods, signals and properties are on {!class-type-font_button_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Font_button}. *)
 
 (** The methods, signals and properties of a [GtkFontButton]. *)
 class type font_button_t = object
@@ -66,5 +67,10 @@ class font_button : Raw.Font_button.t -> font_button_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkFontButton], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> font_button_t
+(** Creates a new font picker widget. *)
+
 val new_with_font : string -> font_button_t
+(** Creates a new font picker widget showing the given font. *)

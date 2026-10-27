@@ -1,7 +1,8 @@
 (** A render node for a conic gradient.
 
     Its methods, signals and properties are on
-    {!class-type-conic_gradient_node_t}. The functions it is built on are in
+    {!class-type-conic_gradient_node_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Conic_gradient_node}. *)
 
 (** The methods, signals and properties of a [GskConicGradientNode]. *)
@@ -34,6 +35,8 @@ class conic_gradient_node : Raw.Conic_gradient_node.t -> conic_gradient_node_t
     directly only to convert a handle obtained from layer 1: constructors, and
     methods that return a [GskConicGradientNode], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ :
   Ocgraphene.Rect.rect_t ->
   Ocgraphene.Point.point_t ->
@@ -41,3 +44,8 @@ val new_ :
   Raw.Color_stop.t array ->
   Gsize.t ->
   conic_gradient_node_t
+(** Creates a [GskRenderNode] that draws a conic gradient.
+
+    The conic gradient starts around [center] in the direction of [rotation]. A
+    rotation of 0 means that the gradient points up. Color stops are then added
+    clockwise. *)

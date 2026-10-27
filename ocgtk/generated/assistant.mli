@@ -34,8 +34,9 @@
     [GtkAssistant] has a single CSS node with the name window and style class
     .assistant.
 
-    Its methods, signals and properties are on {!class-type-assistant_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Assistant}. *)
+    Its methods, signals and properties are on {!class-type-assistant_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Assistant}. *)
 
 (** The methods, signals and properties of a [GtkAssistant]. *)
 class type assistant_t = object
@@ -221,4 +222,7 @@ class assistant : Raw.Assistant.t -> assistant_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkAssistant], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> assistant_t
+(** Creates a new [GtkAssistant]. *)

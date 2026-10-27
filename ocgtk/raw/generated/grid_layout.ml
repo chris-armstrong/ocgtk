@@ -19,7 +19,7 @@ type t = [ `grid_layout | `layout_manager | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gtk_grid_layout_get_type"
 
 external new_ : unit -> t = "ml_gtk_grid_layout_new"
-(** Create a new GridLayout *)
+(** Creates a new [GtkGridLayout]. *)
 
 (* Methods *)
 

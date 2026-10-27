@@ -20,8 +20,9 @@
     the [org.freedesktop.DBus.ObjectManager] interface.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_object_manager_server_t}. The functions it is built on
-    are in {!Ocgio.Raw.D_bus_object_manager_server}. *)
+    {!class-type-d_bus_object_manager_server_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_object_manager_server}. *)
 
 (** The methods, signals and properties of a [GDBusObjectManagerServer]. *)
 class type d_bus_object_manager_server_t = object
@@ -74,4 +75,12 @@ class d_bus_object_manager_server :
     methods that return a [GDBusObjectManagerServer], give one already wrapped.
 *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> d_bus_object_manager_server_t
+(** Creates a new [GDBusObjectManagerServer] object.
+
+    The returned server isn't yet exported on any connection. To do so, use
+    g_dbus_object_manager_server_set_connection(). Normally you want to export
+    all of your objects before doing so to avoid InterfacesAdded signals being
+    emitted. *)

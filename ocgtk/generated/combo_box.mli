@@ -57,8 +57,9 @@
 
     [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role.
 
-    Its methods, signals and properties are on {!class-type-combo_box_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Combo_box}. *)
+    Its methods, signals and properties are on {!class-type-combo_box_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Combo_box}. *)
 
 (** The methods, signals and properties of a [GtkComboBox]. *)
 class type combo_box_t = object
@@ -243,7 +244,22 @@ class combo_box : Raw.Combo_box.t -> combo_box_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkComboBox], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> combo_box_t
+(** Creates a new empty [GtkComboBox]. *)
+
 val new_with_entry : unit -> combo_box_t
+(** Creates a new empty [GtkComboBox] with an entry.
+
+    In order to use a combo box with entry, you need to tell it which column of
+    the model contains the text for the entry by calling
+    [Gtk.ComboBox.set_entry_text_column]. *)
+
 val new_with_model : Tree_model.tree_model_t -> combo_box_t
+(** Creates a new [GtkComboBox] with a model. *)
+
 val new_with_model_and_entry : Tree_model.tree_model_t -> combo_box_t
+(** Creates a new empty [GtkComboBox] with an entry and a model.
+
+    See also [Gtk.ComboBox.new_with_entry]. *)

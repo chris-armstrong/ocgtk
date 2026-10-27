@@ -39,7 +39,8 @@
     [Gtk.Text].
 
     Its methods, signals and properties are on {!class-type-editable_label_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Editable_label}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Editable_label}. *)
 
 (** The methods, signals and properties of a [GtkEditableLabel]. *)
 class type editable_label_t = object
@@ -71,4 +72,7 @@ class editable_label : Raw.Editable_label.t -> editable_label_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkEditableLabel], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : string -> editable_label_t
+(** Creates a new [GtkEditableLabel] widget. *)

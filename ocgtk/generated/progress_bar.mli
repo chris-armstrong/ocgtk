@@ -46,8 +46,9 @@
     the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
     and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
 
-    Its methods, signals and properties are on {!class-type-progress_bar_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Progress_bar}. *)
+    Its methods, signals and properties are on {!class-type-progress_bar_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Progress_bar}. *)
 
 (** The methods, signals and properties of a [GtkProgressBar]. *)
 class type progress_bar_t = object
@@ -146,4 +147,7 @@ class progress_bar : Raw.Progress_bar.t -> progress_bar_t
     to convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkProgressBar], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> progress_bar_t
+(** Creates a new [GtkProgressBar]. *)

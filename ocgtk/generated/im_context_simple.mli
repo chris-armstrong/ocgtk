@@ -25,7 +25,8 @@
  yields U+00E! LATIN SMALL LETTER_A WITH ACUTE, i.e. á. Note that this\n\
  depends on the keyboard layout including dead keys.\n\n\
  Its methods, signals and properties are on {!class-type-im_context_simple_t}. \
- The functions it is built on are in {!Ocgtk.Raw.Im_context_simple}."]
+ Its constructors are under {!section-constructors}. The functions it is built \
+ on are in {!Ocgtk.Raw.Im_context_simple}."]
 
 (** The methods, signals and properties of a [GtkIMContextSimple]. *)
 class type im_context_simple_t = object
@@ -42,4 +43,7 @@ class im_context_simple : Raw.Im_context_simple.t -> im_context_simple_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GtkIMContextSimple], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> im_context_simple_t
+(** Creates a new [GtkIMContextSimple]. *)

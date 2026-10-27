@@ -5,8 +5,9 @@
     Currently, only metainformation about the emblem's origin is supported. More
     may be added in the future.
 
-    Its methods, signals and properties are on {!class-type-emblem_t}. The
-    functions it is built on are in {!Ocgio.Raw.Emblem}. *)
+    Its methods, signals and properties are on {!class-type-emblem_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Emblem}. *)
 
 (** The methods, signals and properties of a [GEmblem]. *)
 class type emblem_t = object
@@ -26,5 +27,10 @@ class emblem : Raw.Emblem.t -> emblem_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GEmblem], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Icon.icon_t -> emblem_t
+(** Creates a new emblem for [icon]. *)
+
 val new_with_origin : Icon.icon_t -> Enums.emblemorigin -> emblem_t
+(** Creates a new emblem for [icon]. *)

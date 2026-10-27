@@ -2,7 +2,8 @@
     decompresses data compressed with zlib.
 
     Its methods, signals and properties are on
-    {!class-type-zlib_decompressor_t}. The functions it is built on are in
+    {!class-type-zlib_decompressor_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Zlib_decompressor}. *)
 
 (** The methods, signals and properties of a [GZlibDecompressor]. *)
@@ -21,4 +22,7 @@ class zlib_decompressor : Raw.Zlib_decompressor.t -> zlib_decompressor_t
     only to convert a handle obtained from layer 1: constructors, and methods
     that return a [GZlibDecompressor], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : Enums.zlibcompressorformat -> zlib_decompressor_t
+(** Creates a new decompressor. *)

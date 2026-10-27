@@ -7,8 +7,9 @@
 
     GTK itself includes an implementation using GStreamer.
 
-    Its methods, signals and properties are on {!class-type-media_file_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Media_file}. *)
+    Its methods, signals and properties are on {!class-type-media_file_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Media_file}. *)
 
 (** The methods, signals and properties of a [GtkMediaFile]. *)
 class type media_file_t = object
@@ -62,8 +63,28 @@ class media_file : Raw.Media_file.t -> media_file_t
     convert a handle obtained from layer 1: constructors, and methods that
     return a [GtkMediaFile], give one already wrapped. *)
 
+(** {2:constructors Constructors} *)
+
 val new_ : unit -> media_file_t
+(** Creates a new empty media file. *)
+
 val new_for_file : Ocgio.File.file_t -> media_file_t
+(** Creates a new media file to play [file]. *)
+
 val new_for_filename : string -> media_file_t
+(** Creates a new media file for the given filename.
+
+    This is a utility function that converts the given [filename] to a [GFile]
+    and calls [Gtk.MediaFile.new_for_file]. *)
+
 val new_for_input_stream : Ocgio.Input_stream.input_stream_t -> media_file_t
+(** Creates a new media file to play [stream].
+
+    If you want the resulting media to be seekable, the stream should implement
+    the [GSeekable] interface. *)
+
 val new_for_resource : string -> media_file_t
+(** Creates a new new media file for the given resource.
+
+    This is a utility function that converts the given [resource] to a [GFile]
+    and calls [Gtk.MediaFile.new_for_file]. *)
