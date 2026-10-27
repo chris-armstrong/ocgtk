@@ -1,17 +1,18 @@
-# M3 Odoc Translation Slice — emission, wiring, artifact cache, PR doc preview
+# M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
 **Status: Phases 0–4 implemented; Phase 5 partly done; the conventions
 page of Phase 9 written early; Phases 6–8 and 10 onwards not yet done
 (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
-use the cache driver. Conventions page: PR #194. Phase 3: branch `m3-phase3`.
+need it. Conventions page: PR #194. Phase 3: branch `m3-phase3`.
 Phase 5 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
 for PRs and `main` only; L2 page structure (decision 10), new Phase 7,
-Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page)**
+Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page); 2026-10-27 (artifact cache
+dropped for a local HTML diff, decision 3)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -37,11 +38,11 @@ bindings, and rendered to browsable odoc HTML with:
 
 - a **GitHub Pages preview** for every PR (a live doc-preview URL) and for
   `main`; pushes to other branches are not previewed,
-- a **local artifact cache** so outputs from different commits can be compared
-  against a benchmark without rebuilding.
+- a **local HTML diff** so the rendered output of the working tree can be
+  compared with that of a base commit.
 
 Rendered HTML is never committed to any code branch — it exists only on the
-auto-managed `gh-pages` branch and in the local cache.
+auto-managed `gh-pages` branch and in local build directories.
 
 ## Decisions (recorded deliberately; supersede earlier suggestions)
 
@@ -51,9 +52,9 @@ auto-managed `gh-pages` branch and in the local cache.
    regenerated doc-carrying bindings** — the one-time generated-file diff is
    part of this PR. Consequences: the committed tree is again byte-identical
    to a fresh regeneration (CI and the doc pipeline agree on one source of
-   truth), and the artifact cache's clean-tree keying below works as
-   specified. The earlier "keep committed bindings doc-less" idea is
-   superseded: it permanently dirtied the tree and defeated the cache.
+   truth), and a commit's rendered docs can be built from its tree alone, as
+   the HTML diff does. The earlier "keep committed bindings doc-less" idea is
+   superseded: it permanently dirtied the tree.
 
 2. **PR preview via `rossjrw/pr-preview-action`** (revised
    2026-10-07; the earlier choice, `rajyan/preview-pages`, was archived in
@@ -68,10 +69,12 @@ auto-managed `gh-pages` branch and in the local cache.
    deploy action the preview action uses internally. Third-party actions are
    pinned by commit SHA, because they run with a write token.
 
-3. **Local artifact cache stays** as the rebuild-avoidance and benchmark
-   layer (local now, CI later). Reviewer-grade HTML without publishing,
-   cross-commit comparison against a blessed baseline, and identical commits
-   never pay the full regeneration + `@doc` build twice.
+3. **A local HTML diff, not an artifact cache** (revised 2026-10-27). The
+   one local need is "what did this change do to the rendered docs",
+   answered by `diff -r` against a base commit built in a temporary git
+   worktree. A persistent per-commit cache was built and dropped: dune's
+   shared cache already avoids rebuilds, and the preview covers browsing
+   and warning counts.
 
 4. **Entity docs: both layers in this leg.** Un-suppress class/interface
    docs (standalone L1 module comments flow through the existing
@@ -113,8 +116,8 @@ auto-managed `gh-pages` branch and in the local cache.
    filtered to odoc-attributable lines (the raw stderr also carries dune's
    own messages), classified into buckets, trivially fixable classes are
    fixed at emission (paragraph-on-own-line, nested-tag re-parses), and the
-   rest are recorded as TODO counts in the artifact manifest. Capture is
-   available from Phase 3; classification follows in Phase 10. No CI gate this
+   rest are recorded as TODO counts in the doc preview's job summary. Capture
+   is in the preview workflow (Phase 4); classification follows in Phase 10. No CI gate this
    leg; the gate arrives once classification stabilises.
 
 8. **C idioms are translated, not just degraded (added 2026-10-04).** GIR
@@ -124,7 +127,7 @@ auto-managed `gh-pages` branch and in the local cache.
    Ownership boilerplate (`Free the returned object with g_object_unref()`,
    `should be freed with g_free()`) is **stripped**: the GC owns every value,
    so the sentence is actively misleading. Every strip is counted in the
-   warnings manifest. Code-block translation is **layer-aware**: L1 emission
+   generator's report. Code-block translation is **layer-aware**: L1 emission
    uses L1 idioms (modules and functions of the `Raw` modules,
    `Label.set_text l "x"`), L2 emission uses L2 idioms (classes and methods,
    `l#set_text "x"`).
@@ -133,7 +136,7 @@ auto-managed `gh-pages` branch and in the local cache.
    2026-10-05).** Each phase is its own PR, branched from the previous phase's
    branch and merged in order. A phase's acceptance gate is the checkpoint for
    its PR. From Phase 4 on, every PR gets a preview URL, so the rendered docs
-   are reviewed on the PR, not only in the local cache.
+   are reviewed on the PR, not only locally.
 
 10. **L2 page structure (added 2026-10-07).** Reviewing the Phase 4 preview
     showed that a reader of an L2 page is not told how the module is laid
@@ -376,7 +379,7 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `ocgtk/conventions.mld` | Hand-written conventions page (Phase 9; outline with draft Mermaid diagrams committed 2026-10-07). Replaces the generated `doc_index.ml` / `index.mld` of the earlier plan. |
 | `gir_gen/test/generate/doc_parse_tests.ml`, `doc_render_tests.ml`, `doc_translate_tests.ml` (+ `doc_translate_test_helpers.ml`), `doc_emit_tests.ml` (Phase 2) | Unit/expect tests per the `constant_code_tests.ml` convention: every render-policy row, every invariant. |
 | `gir_gen/test/corpus/doc_translate_corpus_tests.ml` | Corpus smoke test (Phase 1): `parse`+`render` over the bundled `<doc>` elements; asserts comment safety, balance, the wiring property. |
-| `scripts/doc_artifacts.ml` | Artifact cache driver (Phase 3; warning classification added in Phase 10): `build`/`list`/`extract`/`diff`/`diff-baseline`/`set-baseline`/`warnings` subcommands plus `--force`. Pure `Sys.command` shelling; invoked as `opam exec -- ocaml scripts/doc_artifacts.ml …` (no dune bootstrap needed — it shells out only). |
+| `gir_gen/tools/doc_diff/` | Phase 3. `diff -r` of the rendered HTML of a base commit (default `origin/m3`) and the working tree. |
 | `.github/workflows/doc-preview.yml` | Phase 4. Builds `@doc` (read-only job), deploys PR previews and `main` (write job). |
 | `.github/workflows/doc-preview-cleanup.yml` | Phase 4. Removes a PR's preview on close (`pull_request_target`, no PR code run). |
 | `scripts/doc-preview-landing.sh` | Phase 4. Writes the landing `index.html` linking the package roots, with build provenance. Runs locally too. |
@@ -442,100 +445,31 @@ under a `(documentation)` stanza (one per package directory, `ocglib/` to
   must belong to a package and odoc cannot resolve page references across
   packages (checked with both `@doc` and `@doc-new`).
 
-## Doc artifact cache
+## Doc HTML diff
 
-**What and why.** The driver caches **rendered odoc HTML artifacts per
-commit** — the gzipped `_build/default/_doc/_html` tree plus a JSON
-manifest. Not the bindings, not odoc's intermediate `.odoc` files. Three
-consumers:
-
-1. **Skip the expensive pipeline on repeat work.** `build` = regenerate
-   bindings + `dune build @doc`. Both are slow and fully deterministic on a
-   clean tree (that is why decision 1 commits the bindings — the tree at a
-   given sha *always* produces byte-identical HTML). Same sha, artifact
-   exists → cache hit, zero rebuild.
-2. **Benchmark diffing.** Once a baseline is blessed (`benchmarks/BASELINE`),
-   `diff-baseline` extracts two artifacts and runs `diff -r` across the HTML
-   trees — the review workflow: "what did this translator change do to the
-   rendered docs across all 39k docs?", answered without publishing or
-   hand-browsing. Only meaningful because identical tool versions produce
-   identical output; the manifest records odoc/dune versions so a version
-   bump is not misread as a translator regression (and `--force` forces
-   regeneration when that happens).
-3. **Reviewer-grade local preview.** `extract <sha>` untars an artifact into
-   `view/` for browsing, without deploying to gh-pages.
-
-It deliberately is **not**: CI infrastructure (preview publishing goes
-through the gh-pages workflow), a build cache for `dune` itself, or
-versioned in git — a per-box scratch/benchmark layer, outside every
-worktree so `git clean` and branch switches cannot destroy it.
-
-**Location** — default `~/.cache/ocgtk-doc-artifacts/`, override
-`OCGTK_DOC_ARTIFACTS`:
-
-```
-<cache>/
-  artifacts/
-    <full-commit-sha>.tar.gz      # gzipped tar of _build/default/_doc/_html
-    <full-commit-sha>.json        # manifest (below)
-  benchmarks/
-    BASELINE                      # blessed benchmark sha + one-line note
-  view/                           # extracted trees for local browsing (scratch)
-  index.tsv                       # append-only: sha, date, branch, note
-```
-
-**Keying** (coherent now that bindings are committed — decision 1 —
-regeneration is idempotent and the tree stays clean):
-
-| Tree state | Key | Semantics |
-|---|---|---|
-| Clean (`git status` empty) | `git rev-parse HEAD` (full sha) | **immutable**: hit → reuse, print artifact path; miss → build once, write once, never overwrite |
-| Dirty | `<sha>-dirty` | scratch: always rebuilt, always overwritten, never a baseline candidate |
-
-The asymmetry is the point: a clean-sha artifact is a pure function of the
-commit (deterministic pipeline ⇒ same output forever), so immutability is
-safe and cache hits are trustworthy. A dirty-tree build depends on
-uncommitted state, so it cannot be keyed by sha alone and gets no
-immutability guarantees. Because hits are keyed on sha alone, a toolchain
-bump (odoc/dune upgrade) will keep serving the old-toolchain artifact for a
-known sha — `--force` exists for exactly that; the manifest's recorded
-versions make the situation recognisable.
-
-**Manifest fields (`<sha>.json`):** sha, branch, date, host odoc version,
-dune version, artifact byte size, HTML file count, free-text note, and the
-**odoc warning report** — filtered to odoc-attributable lines (decision 7).
-Phase 3 records the filtered raw warning count; Phase 10 adds the classified
-bucket counts (report-only this leg).
-
-**Benchmark semantics:** once translation stabilises, one artifact is blessed
-as `benchmarks/BASELINE`; any later artifact can be byte-diffed against it
-(`diff -r` between extracted trees is meaningful for identical tool versions;
-the determinism claim gets one probe — clear cache, rebuild same sha, diff).
-Phase 3 blesses its own commit as the first baseline (not Phase 2's: see
-the Phase 3 status), so Phase 5's wiring diff is reviewed against it.
-
-**Driver interface** (as built: a dune executable rather than an `ocaml`
-toplevel script, so its pure parts are unit-tested; full usage in
-[gir_gen/tools/doc_artifacts/README.md](../../tools/doc_artifacts/README.md)):
+**What and why.** Reviewing a translator change means knowing what it did
+to the rendered docs across all 39k of them, which browsing cannot answer.
+`gir_gen/tools/doc_diff/` (a dune executable; usage in
+[gir_gen/tools/doc_diff/README.md](../../tools/doc_diff/README.md)) runs
+`diff -r` between the odoc HTML of a base commit and that of the working
+tree:
 
 ```bash
-DA="dune exec gir_gen/tools/doc_artifacts/doc_artifacts.exe --"
-$DA build [note]                 # ensure artifact for the working tree
-$DA build --force [note]         # rebuild even on hit
-$DA list                         # print index.tsv
-$DA extract <artifact> [dir]     # untar for browsing
-$DA diff [--brief] <a> <b>       # diff -r two artifacts
-$DA diff-baseline [--brief]      # diff the working tree's artifact vs BASELINE
-$DA set-baseline <artifact> ["note"]
-$DA warnings <artifact>          # print stored warning report
+dune exec gir_gen/tools/doc_diff/doc_diff.exe -- [--brief] [BASE]   # BASE defaults to origin/m3
 ```
 
-`build` runs `scripts/generate-bindings.sh`, stops if that dirties a clean
-tree, then runs `dune build @doc --cache=disabled` in a build directory of
-its own under the cache (emptied first), capturing the odoc warning log.
-The separate build directory is what makes the count complete: deleting
-`_build/default/_doc` instead leaves dune's database out of step with the
-files, and later doc builds fail until `dune clean`.
+The working tree is built in its own `_build`; the base is checked out with
+`git worktree add` into a fresh temporary directory, built there, and
+removed with `git worktree remove`. Nothing is regenerated: decision 1
+commits the bindings, so a commit's tree is already the generator's output.
+The diff is only meaningful between builds with the same odoc and dune.
+
+It replaces an earlier design, a persistent per-commit cache of HTML
+tarballs with manifests, a blessed baseline, local extraction for browsing
+and odoc warning capture. Its only needed job was the diff. Rebuild
+avoidance comes from dune's shared cache, browsing from the PR preview, and
+the warning count from the preview workflow, which builds with the cache
+disabled so every warning is reported (decision 7).
 
 ## PR preview workflow
 
@@ -577,13 +511,13 @@ Behaviour, and where it differs from the sketch:
   would either be a no-op or publish docs that are not in the PR.
   Regeneration drift is a separate check, not part of the preview.
 - **The PR head commit is built**, not the merge commit, so a preview
-  matches the SHA that keys the local artifact cache.
+  matches the commit a local HTML diff builds.
 - **Warnings are counted, not fatal:** the count of odoc `Warning:` lines
   (compiler warnings excluded) goes into the landing page and the job
   summary, and the full log is uploaded as a workflow artifact
   (decision 7). The doc build runs with `--cache=disabled`: dune does not
   replay the warnings of rules restored from its cache, so a cached build
-  under-counts. The same applies to the Phase 3 driver's warning capture.
+  under-counts.
 - **Root files:** `.nojekyll` and the root `index.html` are deployed on
   pushes to `main`, and on any run where `gh-pages` has no `.nojekyll`
   yet.
@@ -739,46 +673,26 @@ git status --porcelain        # empty — regenerated bindings committed
 Belt-and-braces: grep the regenerated tree for unneutralised `*)` outside
 legitimate comment syntax — any hit is a Phase-2 failure.
 
-### Phase 3 — Doc artifact cache driver (local)
+### Phase 3 — Doc HTML diff tool (local)
 
-**Status: done** (branch `m3-phase3`). Differences from the text below:
-the driver is `gir_gen/tools/doc_artifacts/` (a dune executable and a small tested
-library) rather than a toplevel script; the manifest is written with
-`yojson`, added to `gir_gen`'s dependencies (every build that compiles
-`scripts/` installs them); and the first baseline is the Phase 3 commit,
-not Phase 2's, because the library layout change moved every page since
-Phase 2, so a diff against it would be all noise. Two fixes were needed
-first, in the same PR: `generate-bindings.sh` now formats the generated
-dune files, without which a regeneration never left the tree clean (so
-every artifact would have been keyed `-dirty`); and the package indexes now
-link a generated modules page (see Root index pages). Acceptance results:
-cache hit, `--force` rebuild, two builds of one sha byte-identical,
-`diff-baseline` empty, a dirty build keyed `-dirty`, refused as baseline,
-its one planted warning reported with its location; 2955 HTML files and 0
-odoc warnings; a cache miss takes about 35 s on 20 cores, plus regeneration.
+**Status: done** (branch `m3-phase3`). First built as the per-commit
+artifact cache of the earlier design (tarballs, manifests, a blessed
+baseline, warning capture), then cut down to the diff, the one job later
+phases need: `gir_gen/tools/doc_diff/` (see Doc HTML diff). Two fixes were
+needed first, in the same PR: `generate-bindings.sh` now formats the
+generated dune files, without which a regeneration never left the tree
+clean; and the package indexes now link a generated modules page (see Root
+index pages).
 
-*Goal:* the local cache works, and Phase 2 is blessed as the first benchmark
-baseline, so every later PR can be diffed against it.
-
-*Changes:* `scripts/doc_artifacts.ml` with the CLI per the driver interface
-above (`build`, `build --force`, `list`, `extract`, `diff`, `diff-baseline`,
-`set-baseline`); keying and dirty-suffix semantics as specified; manifest
-(sha, branch, date, odoc and dune versions, byte size, HTML file count, note,
-and the filtered raw warning count). Bucket classification is left to Phase 10.
-Small OCaml test for the purely testable parts: manifest serialisation and
-key/dirty-suffix logic.
+*Goal:* every later PR's effect on the rendered docs can be listed against
+its base.
 
 *Acceptance:*
 ```bash
-opam exec -- ocaml scripts/doc_artifacts.ml build            # build + cache
-opam exec -- ocaml scripts/doc_artifacts.ml build            # cache hit, no rebuild
-opam exec -- ocaml scripts/doc_artifacts.ml build --force    # rebuilds
-opam exec -- ocaml scripts/doc_artifacts.ml list             # index.tsv entry
-opam exec -- ocaml scripts/doc_artifacts.ml set-baseline <sha> "phase 2"
-opam exec -- ocaml scripts/doc_artifacts.ml diff-baseline    # identical → empty
-# determinism probe: clear cache, rebuild same sha, diff-baseline → empty
+dune exec gir_gen/tools/doc_diff/doc_diff.exe -- --brief          # against origin/m3: the new modules pages and indexes
+dune exec gir_gen/tools/doc_diff/doc_diff.exe -- --brief HEAD     # clean tree: empty, exit 0
+git worktree list                                                 # no worktree left behind
 ```
-Dirty-tree build keys `<sha>-dirty` and is never a baseline candidate.
 
 ### Phase 4 — PR preview workflow (CI)
 
@@ -808,8 +722,8 @@ responsibility, not part of the gate.
 
 *Goal:* entity docs land at both layers; L2 methods, constructors and signals
 carry docs; combined and cyclic modules carry docs. Diffs here are *additive*
-(previously-doc-less output gains docs) and must be reviewed as such, against
-the Phase 2 baseline from Phase 3.
+(previously-doc-less output gains docs) and must be reviewed as such, with
+the Phase 3 HTML diff against the phase's base.
 
 **Status: partly done.** Class/interface entity docs are un-suppressed for L1
 (`adc30fe6`, `742d1a77`). The remaining steps are below, in order. Additional
@@ -867,8 +781,7 @@ pages) were previously out of scope. They are now step 3 of this phase.
 opam exec -- dune build @all
 opam exec -- dune test gir_gen/ && xvfb-run $(which dune) test ocgtk/
 git status --porcelain     # empty
-opam exec -- ocaml scripts/doc_artifacts.ml build          # cache the commit
-opam exec -- ocaml scripts/doc_artifacts.ml diff-baseline   # additive diff only
+dune exec gir_gen/tools/doc_diff/doc_diff.exe -- BASE      # additive diff only
 ```
 Spot checks against known corpus anchors: `Gtk.Button` class doc non-empty
 in `button.mli`, and as the L2 `GButton` module preamble with the navigation
@@ -973,7 +886,7 @@ the resolver leg.
   matching `free(d)? with g_\w+`, `unref(f)?ed with`, `g_object_unref`,
   `g_free`, `g_strfreev`, `g_list_free\w*` (allowlist, one place, unit-tested).
   The emptied-paragraph case removes the paragraph. Counted per pattern in
-  the manifest.
+  the generator's report.
 - **Code blocks keep their language:** `Code_block of string` becomes
   `Code_block of { lang : string option; body : string }`; `parse` records
   the fence language (`c`, `C`, `xml`, …, or `|[ <!-- language="C" --> ` form)
@@ -1031,17 +944,16 @@ The diagrams render in the PR's preview.
 
 *Goal:* odoc warnings are classified, not just counted.
 
-*Changes:* classify the warnings captured since Phase 3 into buckets
+*Changes:* classify the warnings the preview workflow captures into buckets
 (decision 7); trivially fixable classes fixed at emission here
-(paragraph-on-own-line, nested-tag re-parses); the manifest gains bucket
-counts; the `doc_artifacts.ml warnings <sha>` subcommand prints them. Unit
-tests: bucket classification of synthetic warning lines and the odoc-line
-filter.
+(paragraph-on-own-line, nested-tag re-parses); the preview's job summary
+and landing page gain bucket counts. Unit tests: bucket classification of
+synthetic warning lines and the odoc-line filter.
 
 *Acceptance:*
 ```bash
-opam exec -- ocaml scripts/doc_artifacts.ml build            # manifest now has buckets
-opam exec -- ocaml scripts/doc_artifacts.ml warnings <sha>   # classified buckets
+opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
+# classify doc-build.log locally; the PR preview's job summary shows the buckets
 ```
 The trivially fixable buckets are zero at emission; the rest are recorded as
 TODO counts, not silently dropped.
@@ -1095,7 +1007,7 @@ Only if the Phase 12 gate passes. Pipeline: C tokenizer → statement parser
 C-identifier table (`c:identifier` → namespace, type, method, constructor) →
 signature-driven adaptation (nullable param → `Some`/`None`, out/`GError**` →
 `result` with a `match`, `void` → `unit` sequencing, `let … in` chaining) →
-layer renderer (L1 or L2). Rejection reasons are counted in the manifest, so
+layer renderer (L1 or L2). Rejection reasons are counted in the generator's report, so
 the translated fraction is a tracked number. This phase also adds the compile
 check (below).
 
@@ -1118,18 +1030,17 @@ typecheck; this is what makes Tier B trustworthy); override staleness test.
 
 *Acceptance (Phases 11–14):* the compile check is green; no `{[ … ]}` block in
 generated docs contains C tokens (`->`, `;` after a `)` call with `NULL`, `g_`);
-the manifest reports translated / labelled / rejected counts per rejection
+the generator's report gives translated / labelled / rejected counts per rejection
 reason; `dune build @doc` shows no new warnings.
 
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
 - 1 → 2 → 3: the translator and emit helper must exist before sites consume
-  them; the cache must bless the Phase 2 baseline before wiring diffs are
-  reviewed.
-- 4 (preview) needs 0 only: the workflow does not use the cache driver, so it
+  them; the HTML diff must exist before wiring diffs are reviewed.
+- 4 (preview) needs 0 only: the workflow does not use the HTML diff, so it
   landed before 3. It must precede 5, so that every later PR has a preview.
-- 5 (wiring) needs 2 and 3 (its diff is reviewed against the cached baseline).
+- 5 (wiring) needs 2 and 3 (its diff is reviewed with the HTML diff).
 - 6 (properties) needs 5: it reuses the both-layer pattern Phase 5 establishes.
 - 7 (L2 page structure) needs 6: the Properties section should have docs
   when it first appears.
@@ -1137,7 +1048,7 @@ reason; `dune build @doc` shows no new warnings.
   so the diff is only the idiom rewrites).
 - 9 (conventions page and namespace intros) needs 7, so the page describes
   the final layout. The hand-written text can be drafted earlier.
-- 10 (warning classification) needs 3 (captured warnings) and a stable `@doc`
+- 10 (warning classification) needs 4 (captured warnings) and a stable `@doc`
   from 5–9, so the buckets are not classified against a moving target.
 - 11–14 are end of cycle: 11 needs 8 (`Code_block.lang`); 12 needs 5 (the L2
   renderer is only visible once L2 docs exist) and 10 (stable warning counts);
@@ -1154,13 +1065,11 @@ closing checklist on top of them:
   (re-run at close).
 - Regenerated bindings committed; tree clean afterwards;
   the full test suite is green on the committed tree.
-- `doc_artifacts.ml build` twice in a row: second run is a cache hit;
-  `build --force` rebuilds.
 - Warning report recorded, filtered to odoc-attributable lines; trivial
   buckets eliminated at emission; the rest TODO-counted, not silently
   dropped.
-- `doc_artifacts.ml diff` between two commits with a known translator change
-  shows the expected HTML delta; between tool-identical commits shows none.
+- `doc_diff` against a commit before a known translator change shows the
+  expected HTML delta; against `HEAD` on a clean tree it shows none.
 - Preview workflow posts a URL on each PR from Phase 4 on; eyeball the member
   docs with headings (`{b …}` lead-ins) and the `about_dialog` C-fence page.
 - Layer check: every entity, method, constructor, signal and property site
