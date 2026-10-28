@@ -18,4 +18,8 @@
   ocpangocairo
   occairo))
 
+(documentation
+ (package ocgtk)
+ (mld_files modules))
+
 (copy_files# ../core/*.{ml,mli})

@@ -37,3 +37,41 @@ let generate_enums_module ~namespace =
   Fmt.str "%s(** %s enumerations and bitfields. *)\n\ninclude %s\n"
     generated_header namespace
     (Module_paths.enums_module namespace)
+
+(* The main module is dune's, so it carries no docs and its page shows each
+   module as a bare [sig ... end]. The package's hand-written [index.mld]
+   links this page instead, which lists the modules by kind. *)
+
+let modules_page_name = "modules"
+
+let generate_modules_page ~namespace ~entities =
+  let main_module = Module_paths.main_module namespace in
+  let classes, interfaces, records =
+    List.fold_left entities ~init:([], [], [])
+      ~f:(fun (classes, interfaces, records) (e : entity) ->
+        let m = Utils.module_name_of_class e.name in
+        match e.kind with
+        | Class _ -> (m :: classes, interfaces, records)
+        | Interface _ -> (classes, m :: interfaces, records)
+        | Record _ -> (classes, interfaces, m :: records))
+  in
+  let section (heading, names) =
+    match List.sort ~cmp:String.compare names with
+    | [] -> None
+    | names ->
+        Some
+          (Fmt.str "{1 %s}\n\n{!modules:\n%s}\n" heading
+             (String.concat ~sep:""
+                (List.map names ~f:(fun m -> Fmt.str "  %s.%s\n" main_module m))))
+  in
+  let sections =
+    List.filter_map ~f:section
+      [ ("Classes", classes); ("Interfaces", interfaces); ("Records", records) ]
+  in
+  Fmt.str
+    "{0 %s modules}\n\n\
+     {!%s} has one module for each %s class, interface and record. The \
+     externals they are built on are in {!%s.Raw}.\n\n\
+     %s"
+    namespace main_module namespace main_module
+    (String.concat ~sep:"\n" sections)

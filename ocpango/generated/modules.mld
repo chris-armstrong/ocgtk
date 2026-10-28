@@ -1,0 +1,55 @@
+{0 Pango modules}
+
+{!Ocpango} has one module for each Pango class, interface and record. The externals they are built on are in {!Ocpango.Raw}.
+
+{1 Classes}
+
+{!modules:
+  Ocpango.Context
+  Ocpango.Coverage
+  Ocpango.Font
+  Ocpango.Font_face
+  Ocpango.Font_family
+  Ocpango.Font_map
+  Ocpango.Fontset
+  Ocpango.Fontset_simple
+  Ocpango.Layout
+  Ocpango.Renderer
+}
+
+{1 Records}
+
+{!modules:
+  Ocpango.Analysis
+  Ocpango.Attr_class
+  Ocpango.Attr_color
+  Ocpango.Attr_float
+  Ocpango.Attr_font_desc
+  Ocpango.Attr_font_features
+  Ocpango.Attr_int
+  Ocpango.Attr_iterator
+  Ocpango.Attr_language
+  Ocpango.Attr_list
+  Ocpango.Attr_shape
+  Ocpango.Attr_size
+  Ocpango.Attr_string
+  Ocpango.Attribute
+  Ocpango.Color
+  Ocpango.Font_description
+  Ocpango.Font_metrics
+  Ocpango.Glyph_geometry
+  Ocpango.Glyph_info
+  Ocpango.Glyph_item
+  Ocpango.Glyph_item_iter
+  Ocpango.Glyph_string
+  Ocpango.Glyph_vis_attr
+  Ocpango.Item
+  Ocpango.Language
+  Ocpango.Layout_iter
+  Ocpango.Layout_line
+  Ocpango.Log_attr
+  Ocpango.Matrix
+  Ocpango.Rectangle
+  Ocpango.Script_iter
+  Ocpango.Tab_array
+}

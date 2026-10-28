@@ -1,0 +1,10 @@
+{0 PangoCairo modules}
+
+{!Ocpangocairo} has one module for each PangoCairo class, interface and record. The externals they are built on are in {!Ocpangocairo.Raw}.
+
+{1 Interfaces}
+
+{!modules:
+  Ocpangocairo.Font
+  Ocpangocairo.Font_map
+}

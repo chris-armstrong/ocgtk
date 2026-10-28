@@ -14,3 +14,7 @@
   ocpango
   ocpangocairo
   occairo))
+
+(documentation
+ (package ocgdk)
+ (mld_files modules))

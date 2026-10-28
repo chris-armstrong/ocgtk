@@ -1433,6 +1433,13 @@ let generate_bindings filter_file gir_file output_dir reference_files
     ~content:
       (Gir_gen_lib.Generate.Library_module.generate_enums_module
          ~namespace:ns_name);
+  write_file
+    ~path:
+      (Filename.concat dirs.main_generated
+         (Gir_gen_lib.Generate.Library_module.modules_page_name ^ ".mld"))
+    ~content:
+      (Gir_gen_lib.Generate.Library_module.generate_modules_page
+         ~namespace:ns_name ~entities);
 
   (* ==== BUILD CONFIGURATION ==== *)
   Fmt.pr "\n";

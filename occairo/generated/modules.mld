@@ -1,0 +1,22 @@
+{0 cairo modules}
+
+{!Occairo} has one module for each cairo class, interface and record. The externals they are built on are in {!Occairo.Raw}.
+
+{1 Records}
+
+{!modules:
+  Occairo.Context
+  Occairo.Device
+  Occairo.Font_face
+  Occairo.Font_options
+  Occairo.Glyph
+  Occairo.Matrix
+  Occairo.Path
+  Occairo.Pattern
+  Occairo.Rectangle
+  Occairo.Rectangle_int
+  Occairo.Region
+  Occairo.Scaled_font
+  Occairo.Surface
+  Occairo.Text_cluster
+}

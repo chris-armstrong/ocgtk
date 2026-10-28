@@ -48,7 +48,7 @@ jobs:
     env:
       HTML_DIR: _build/default/_doc/_html
       # Build exactly the PR head commit (not the merge commit), so the
-      # preview matches the commit SHA used by the local artifact cache.
+      # preview matches the commit a local HTML diff builds.
       BUILD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
     steps:

@@ -211,6 +211,36 @@ let test_enums_module_includes_enums_library () =
     "include" [ "Ocgraphene_enums" ]
     (Ml_ast_helpers.included_modules ast)
 
+let test_modules_page () =
+  let entities =
+    [
+      entity_of_class
+        (Type_factory.make_gir_class ~class_name:"Sphere" ~c_type:"Sphere" ());
+      entity_of_record
+        (Type_factory.make_gir_record ~record_name:"Point" ~c_type:"Point" ());
+      entity_of_class
+        (Type_factory.make_gir_class ~class_name:"Box" ~c_type:"Box" ());
+    ]
+  in
+  let text =
+    Library_module.generate_modules_page ~namespace:"Graphene" ~entities
+  in
+  Alcotest.(check string)
+    "classes, then records, sorted; no interfaces section"
+    "{0 Graphene modules}\n\n\
+     {!Ocgraphene} has one module for each Graphene class, interface and \
+     record. The externals they are built on are in {!Ocgraphene.Raw}.\n\n\
+     {1 Classes}\n\n\
+     {!modules:\n\
+    \  Ocgraphene.Box\n\
+    \  Ocgraphene.Sphere\n\
+     }\n\n\
+     {1 Records}\n\n\
+     {!modules:\n\
+    \  Ocgraphene.Point\n\
+     }\n"
+    text
+
 (* ---------- dune stanzas ------------------------------------------------ *)
 
 let lines s = String.split_on_char '\n' s
@@ -242,6 +272,11 @@ let test_main_dune () =
   Alcotest.(check bool)
     "no core, no copy_files" false
     (Helpers.string_contains text "copy_files")
+
+let test_main_dune_documents_modules_page () =
+  let text = main_dune ~core_modules:[] in
+  check_has_line "documentation for the package" " (package ocgraphene)" text;
+  check_has_line "the modules page" " (mld_files modules))" text
 
 let test_main_dune_copies_core () =
   check_has_line "hand-written modules from core/" core_copy_files
@@ -317,6 +352,10 @@ let tests =
     ("enums library stanza", `Quick, test_enums_dune);
     ("main library stanza", `Quick, test_main_dune);
     ("main library copies in core/", `Quick, test_main_dune_copies_core);
+    ( "main library documents the modules page",
+      `Quick,
+      test_main_dune_documents_modules_page );
+    ("modules page lists modules by kind", `Quick, test_modules_page);
     ("raw stubs library stanza", `Quick, test_raw_dune_inc_stubs_library);
     ( "dune.inc copies the headers for install",
       `Quick,

@@ -24,3 +24,11 @@ val generate_raw_module :
 val generate_enums_module : namespace:string -> string
 (** Content of [enums.ml]: [include Ocgio_enums]. A source file cannot itself be
     an alias for another library's module, hence the [include]. *)
+
+val modules_page_name : string
+(** Name of the page {!generate_modules_page} writes: [modules], so the
+    package's [index.mld] links it as [{!page-modules}]. *)
+
+val generate_modules_page : namespace:string -> entities:entity list -> string
+(** Content of [modules.mld]: one [{!modules: ...}] list each for the classes,
+    interfaces and records in [entities], sorted, leaving out empty ones. *)

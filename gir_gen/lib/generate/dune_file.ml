@@ -347,11 +347,16 @@ let generate_main_dune ~ctx ~namespace ~repository ~core_modules =
     \ (public_name %s)\n\
     \ (synopsis \"OCaml bindings for %s\")\n\
     \ (flags %s -open Ocglib)\n\
-    \ (libraries %s))\n\
+    \ (libraries %s))\n\n\
+     (documentation\n\
+    \ (package %s)\n\
+    \ (mld_files %s))\n\
      %s"
     generated_dune_header
     (Module_paths.package_name namespace)
     (Module_paths.package_name namespace)
     namespace main_ocaml_flags
     (String.concat ~sep:" " libraries)
+    (Module_paths.package_name namespace)
+    Library_module.modules_page_name
     (main_core_copy_files ~core_modules)
