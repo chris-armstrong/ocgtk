@@ -2,7 +2,9 @@
 (* SettingsSchemaKey: SettingsSchemaKey *)
 
 (** [GSettingsSchemaKey] is an opaque data structure and can only be accessed
-    using the following functions. *)
+    using the following functions.
+
+    The class built on this module is in {!Ocgio.Settings_schema_key}. *)
 
 type t = [ `settings_schema_key ] Gobject.obj
 

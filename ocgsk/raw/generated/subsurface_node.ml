@@ -2,7 +2,9 @@
 (* SubsurfaceNode: SubsurfaceNode *)
 
 (** A render node that potentially diverts a part of the scene graph to a
-    subsurface. *)
+    subsurface.
+
+    The class built on this module is in {!Ocgsk.Subsurface_node}. *)
 
 type t = [ `subsurface_node | `render_node ] Gobject.obj
 

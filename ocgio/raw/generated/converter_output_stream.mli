@@ -5,7 +5,9 @@
     of data of various types during reading.
 
     As of GLib 2.34, [GConverterOutputStream] implements
-    [Gio.PollableOutputStream]. *)
+    [Gio.PollableOutputStream].
+
+    The class built on this module is in {!Ocgio.Converter_output_stream}. *)
 
 type t =
   [ `converter_output_stream
@@ -19,7 +21,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Output_stream.t -> Converter.t -> t
   = "ml_g_converter_output_stream_new"
-(** Create a new ConverterOutputStream *)
+(** Creates a new converter output stream for the [base_stream]. *)
 
 (* Methods *)
 

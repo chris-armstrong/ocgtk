@@ -134,7 +134,8 @@
  later (in this example, in an idle). Note that it is necessary to\n\
  hold the application until you are done with the commandline.\n\n\
  The complete example can be found here:\n\
- {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}"]
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}\n\n\
+ The class built on this module is in {!Ocgio.Application_command_line}."]
 
 type t = [ `application_command_line | `object_ ] Gobject.obj
 

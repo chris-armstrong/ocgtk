@@ -2,7 +2,9 @@
 (* FillNode: FillNode *)
 
 (** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
-    the child node. *)
+    the child node.
+
+    The class built on this module is in {!Ocgsk.Fill_node}. *)
 
 type t = [ `fill_node | `render_node ] Gobject.obj
 
@@ -13,7 +15,8 @@ external new_ :
   Path_and__path_measure_and__path_point.Path.t ->
   Ocgsk_enums.fillrule ->
   t = "ml_gsk_fill_node_new"
-(** Create a new FillNode *)
+(** Creates a [GskRenderNode] that will fill the [child] in the area given by
+    [path] and [fill_rule]. *)
 
 (* Methods *)
 

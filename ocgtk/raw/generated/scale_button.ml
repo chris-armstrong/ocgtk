@@ -22,7 +22,9 @@
     ]}
 
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
-    style class, and contains a [button] node with a [.toggle] style class. *)
+    style class, and contains a [button] node with a [.toggle] style class.
+
+    The class built on this module is in {!Ocgtk.Scale_button}. *)
 
 type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -30,7 +32,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_scale_button_get_type"
 
 external new_ : float -> float -> float -> string array option -> t
   = "ml_gtk_scale_button_new"
-(** Create a new ScaleButton *)
+(** Creates a [GtkScaleButton].
+
+    The new scale button has a range between [min] and [max], with a stepping of
+    [step]. *)
 
 (* Methods *)
 

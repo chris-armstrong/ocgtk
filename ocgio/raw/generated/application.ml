@@ -106,7 +106,8 @@
  For an example of using actions with [GApplication], see\n\
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-actions.c}gapplication-example-actions.c}.\n\n\
  For an example of using extra D-Bus hooks with [GApplication], see\n\
- {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}."]
+ {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}.\n\n\
+ The class built on this module is in {!Ocgio.Application}."]
 
 type t = [ `application | `object_ ] Gobject.obj
 
@@ -114,7 +115,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_application_get_type"
 
 external new_ : string option -> Ocgio_enums.applicationflags -> t
   = "ml_g_application_new"
-(** Create a new Application *)
+(** Creates a new [GApplication] instance.
+
+    If non-[NULL], the application id must be valid. See
+    g_application_id_is_valid().
+
+    If no application ID is given then some features of [GApplication] (most
+    notably application uniqueness) will be disabled. *)
 
 (* Methods *)
 

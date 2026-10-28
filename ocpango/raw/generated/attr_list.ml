@@ -12,14 +12,15 @@
     Since the [PangoAttrList] structure is stored as a linear list, it is not
     suitable for storing attributes for large amounts of text. In general, you
     should not use a single [PangoAttrList] for more than one paragraph of text.
-*)
+
+    The class built on this module is in {!Ocpango.Attr_list}. *)
 
 type t = [ `attr_list ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_pango_attr_list_get_type"
 
 external new_ : unit -> t = "ml_pango_attr_list_new"
-(** Create a new AttrList *)
+(** Create a new empty attribute list with a reference count of one. *)
 
 (* Methods *)
 

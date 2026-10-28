@@ -770,6 +770,7 @@ let generate_high_level_class ~ctx ~dirs entity parent_chain =
     write_file ~path:g_sig_file
       ~content:
         (Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+           ~class_doc:entity.Gir_gen_lib.Types.doc
            ~c_type:entity.Gir_gen_lib.Types.c_type
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
            ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
@@ -841,7 +842,7 @@ let generate_combined_ml_files ~ctx ~dirs ~module_group ~parent_chain_for_class
 
 (* Generate the layer 1 module of each member of a cycle, outside the
    combined module *)
-let generate_cycle_member_shims ~dirs ~module_group =
+let generate_cycle_member_shims ~ctx ~dirs ~module_group =
   let open Gir_gen_lib in
   let combined_module_name =
     Dependency_analysis.module_name_of_group module_group
@@ -855,7 +856,9 @@ let generate_cycle_member_shims ~dirs ~module_group =
             ~path:(Filename.concat dirs.raw_generated (stem ^ ext))
             ~content:
               (Generate.Ml_interface.generate_cycle_member_shim ~output_mode
-                 ~combined_module_name ~member_name:entity.name))
+                 ~namespace:ctx.Types.namespace.namespace_name
+                 ~combined_module_name ~member_name:entity.name
+                 ~member_doc:entity.doc))
         [
           (Generate.Ml_interface.Interface, ".mli");
           (Generate.Ml_interface.Implementation, ".ml");
@@ -942,16 +945,6 @@ let guard_converters ~namespace_name version_opt converters =
    written even when empty, so that every namespace has an enums library. *)
 let generate_enum_files ~dirs ~generated_stubs namespace enums bitfields =
   begin
-    (* Enum and bitfield type-level docs are suppressed so the generated enum
-       files stay stable; member-level docs are still emitted. *)
-    let enums =
-      List.map ~f:(fun (e : gir_enum) -> { e with enum_doc = None }) enums
-    in
-    let bitfields =
-      List.map
-        ~f:(fun (b : gir_bitfield) -> { b with bitfield_doc = None })
-        bitfields
-    in
     (* Generate OCaml .mli file with type definitions *)
     let enum_file =
       Filename.concat dirs.enums_generated
@@ -1389,7 +1382,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
           Fmt.pr "  Generating combined module for cycle: %s\n" names;
           generate_combined_ml_files ~ctx ~dirs ~module_group:group
             ~parent_chain_for_class;
-          generate_cycle_member_shims ~dirs ~module_group:group)
+          generate_cycle_member_shims ~ctx ~dirs ~module_group:group)
     module_groups_list;
 
   (* Generate Layer 2 files (high-level wrapper classes) *)

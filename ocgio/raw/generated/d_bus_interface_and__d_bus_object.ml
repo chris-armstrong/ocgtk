@@ -78,12 +78,14 @@ and D_bus_object : sig
     t ->
     callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is added to [object]. *)
 
   val on_interface_removed :
     ?after:bool ->
     t ->
     callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is removed from [object]. *)
 end = struct
   type t = [ `d_bus_object ] Gobject.obj
 

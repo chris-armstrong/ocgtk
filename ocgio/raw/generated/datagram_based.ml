@@ -50,7 +50,9 @@
 
     Like most other APIs in GLib, [GDatagramBased] is not inherently thread
     safe. To use a [GDatagramBased] concurrently from multiple threads, you must
-    implement your own locking. *)
+    implement your own locking.
+
+    The class built on this module is in {!Ocgio.Datagram_based}. *)
 
 type t = [ `datagram_based ] Gobject.obj
 

@@ -7,14 +7,16 @@
     left-to-right locales and right in right-to-left ones), and the end widget
     at the end.
 
-    The center widget is centered regarding the full width of the layout's. *)
+    The center widget is centered regarding the full width of the layout's.
+
+    The class built on this module is in {!Ocgtk.Center_layout}. *)
 
 type t = [ `center_layout | `layout_manager | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_center_layout_get_type"
 
 external new_ : unit -> t = "ml_gtk_center_layout_new"
-(** Create a new CenterLayout *)
+(** Creates a new [GtkCenterLayout]. *)
 
 (* Methods *)
 

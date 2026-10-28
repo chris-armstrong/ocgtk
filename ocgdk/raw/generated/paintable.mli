@@ -43,7 +43,9 @@
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
-    [Gdk.Paintable.new_empty]. *)
+    [Gdk.Paintable.new_empty].
+
+    The class built on this module is in {!Ocgdk.Paintable}. *)
 
 type t = [ `paintable ] Gobject.obj
 
@@ -162,6 +164,18 @@ external compute_concrete_size :
 
 val on_invalidate_contents :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the contents of the [paintable] change.
+
+    Examples for such an event would be videos changing to the next frame or the
+    icon theme for an icon changing. *)
 
 val on_invalidate_size :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the intrinsic size of the [paintable] changes.
+
+    This means the values reported by at least one of
+    [Gdk.Paintable.get_intrinsic_width], [Gdk.Paintable.get_intrinsic_height] or
+    [Gdk.Paintable.get_intrinsic_aspect_ratio] has changed.
+
+    Examples for such an event would be a paintable displaying the contents of a
+    toplevel surface being resized. *)

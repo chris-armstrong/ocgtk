@@ -23,7 +23,9 @@
     For bindings in languages where the native constructor supports exceptions
     the binding could check for objects implementing [GInitable] during normal
     construction and automatically initialize them, throwing an exception on
-    failure. *)
+    failure.
+
+    The class built on this module is in {!Ocgio.Initable}. *)
 
 type t = [ `initable ] Gobject.obj
 

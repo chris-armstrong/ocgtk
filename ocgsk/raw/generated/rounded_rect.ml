@@ -14,7 +14,9 @@
 
     The algorithm used for normalizing corner sizes is described in
     {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
-     specification}. *)
+     specification}.
+
+    The class built on this module is in {!Ocgsk.Rounded_rect}. *)
 
 type t = [ `rounded_rect ] Gobject.obj
 

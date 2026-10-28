@@ -1,7 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RepeatingLinearGradientNode: RepeatingLinearGradientNode *)
 
-(** A render node for a repeating linear gradient. *)
+(** A render node for a repeating linear gradient.
+
+    The class built on this module is in
+    {!Ocgsk.Repeating_linear_gradient_node}. *)
 
 type t = [ `repeating_linear_gradient_node | `render_node ] Gobject.obj
 
@@ -15,6 +18,8 @@ external new_ :
   Color_stop.t array ->
   Gsize.t ->
   t = "ml_gsk_repeating_linear_gradient_node_new"
-(** Create a new RepeatingLinearGradientNode *)
+(** Creates a [GskRenderNode] that will create a repeating linear gradient from
+    the given points and color stops, and render that into the area given by
+    [bounds]. *)
 
 (* Methods *)

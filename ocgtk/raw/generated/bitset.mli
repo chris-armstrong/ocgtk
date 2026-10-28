@@ -17,17 +17,19 @@
     The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
 
     The main use case for [GtkBitset] is implementing complex selections for
-    [Gtk.SelectionModel]. *)
+    [Gtk.SelectionModel].
+
+    The class built on this module is in {!Ocgtk.Bitset}. *)
 
 type t = [ `bitset ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_bitset_get_type"
 
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
-(** Create a new Bitset *)
+(** Creates a new empty bitset. *)
 
 external new_range : int -> int -> t = "ml_gtk_bitset_new_range"
-(** Create a new Bitset *)
+(** Creates a bitset with the given range set. *)
 
 (* Methods *)
 

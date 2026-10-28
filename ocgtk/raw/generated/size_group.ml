@@ -87,14 +87,15 @@
 \    <widget name=\"radio2\"/>\n\
 \  </widgets>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Size_group}."]
 
 type t = [ `size_group | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_size_group_get_type"
 
 external new_ : Ocgtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
-(** Create a new SizeGroup *)
+(** Create a new [GtkSizeGroup]. *)
 
 (* Methods *)
 

@@ -2,7 +2,10 @@ class type memory_input_stream_t = object
   inherit Input_stream.input_stream_t
   inherit Pollable_input_stream.pollable_input_stream_t
   inherit Seekable.seekable_t
+
   method add_bytes : Glib_bytes.t -> unit
+  (** Appends [bytes] to data that can be read from the input stream. *)
+
   method as_memory_input_stream : Raw.Memory_input_stream.t
 end
 

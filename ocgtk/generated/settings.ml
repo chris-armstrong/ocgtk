@@ -1,6 +1,13 @@
 class type settings_t = object
   inherit Style_provider.style_provider_t
+
   method reset_property : string -> unit
+  (** Undoes the effect of calling g_object_set() to install an
+      application-specific value for a setting.
+
+      After this call, the setting will again follow the session-wide value for
+      this setting. *)
+
   method gtk_alternative_button_order : bool
   method set_gtk_alternative_button_order : bool -> unit
   method gtk_alternative_sort_arrows : bool

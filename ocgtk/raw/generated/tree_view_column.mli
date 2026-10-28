@@ -11,19 +11,21 @@
     Please refer to the tree widget conceptual overview for an overview of all
     the objects and data types related to the tree widget and how they work
     together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers. *)
+    CSS node structure for treeviews and their headers.
+
+    The class built on this module is in {!Ocgtk.Tree_view_column}. *)
 
 type t = [ `tree_view_column | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_view_column_get_type"
 
 external new_ : unit -> t = "ml_gtk_tree_view_column_new"
-(** Create a new TreeViewColumn *)
+(** Creates a new [GtkTreeViewColumn]. *)
 
 external new_with_area :
   Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> t
   = "ml_gtk_tree_view_column_new_with_area"
-(** Create a new TreeViewColumn *)
+(** Creates a new [GtkTreeViewColumn] using [area] to render its cells. *)
 
 (* Methods *)
 
@@ -303,3 +305,4 @@ external get_cell_area :
 
 val on_clicked :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the column's header has been clicked. *)

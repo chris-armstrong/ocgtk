@@ -12,14 +12,16 @@
 
     The typical way to obtain a [GtkSnapshot] object is as an argument to the
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
-    use [Gtk.Snapshot.new]. *)
+    use [Gtk.Snapshot.new].
+
+    The class built on this module is in {!Ocgtk.Snapshot}. *)
 
 type t = [ `snapshot | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_snapshot_get_type"
 
 external new_ : unit -> t = "ml_gtk_snapshot_new"
-(** Create a new Snapshot *)
+(** Creates a new [GtkSnapshot]. *)
 
 (* Methods *)
 

@@ -1,7 +1,16 @@
 class type alternative_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
+
   method get_first : unit -> Shortcut_trigger.shortcut_trigger_t
+  (** Gets the first of the two alternative triggers that may trigger [self].
+
+      [Gtk.AlternativeTrigger.get_second] will return the other one. *)
+
   method get_second : unit -> Shortcut_trigger.shortcut_trigger_t
+  (** Gets the second of the two alternative triggers that may trigger [self].
+
+      [Gtk.AlternativeTrigger.get_first] will return the other one. *)
+
   method as_alternative_trigger : Raw.Alternative_trigger.t
 end
 

@@ -38,7 +38,9 @@
     search or when the list of all applications is shown). The reason for this
     is that changes to the list of installed applications often come in groups
     (like during system updates) and rescanning the list on every change is
-    pointless and expensive. *)
+    pointless and expensive.
+
+    The class built on this module is in {!Ocgio.App_info_monitor}. *)
 
 type t = [ `app_info_monitor | `object_ ] Gobject.obj
 

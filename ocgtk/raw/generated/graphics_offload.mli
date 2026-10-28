@@ -39,7 +39,9 @@
 
     GDK_DEBUG=offload GDK_DEBUG=dmabuf
 
-    The GTK inspector provides a visual debugging tool for graphics offload. *)
+    The GTK inspector provides a visual debugging tool for graphics offload.
+
+    The class built on this module is in {!Ocgtk.Graphics_offload}. *)
 
 type t =
   [ `graphics_offload | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -52,7 +54,7 @@ external new_ :
   .t
   option ->
   t = "ml_gtk_graphics_offload_new"
-(** Create a new GraphicsOffload *)
+(** Creates a new GtkGraphicsOffload widget. *)
 
 (* Methods *)
 

@@ -5,7 +5,9 @@
     data of various types during reading.
 
     As of GLib 2.34, [GConverterInputStream] implements
-    [Gio.PollableInputStream]. *)
+    [Gio.PollableInputStream].
+
+    The class built on this module is in {!Ocgio.Converter_input_stream}. *)
 
 type t =
   [ `converter_input_stream | `filter_input_stream | `input_stream | `object_ ]
@@ -16,7 +18,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Input_stream.t -> Converter.t -> t
   = "ml_g_converter_input_stream_new"
-(** Create a new ConverterInputStream *)
+(** Creates a new converter input stream for the [base_stream]. *)
 
 (* Methods *)
 

@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CustomSorter: CustomSorter *)
 
-(** Sorts items via a callback function. *)
+(** Sorts items via a callback function.
+
+    The class built on this module is in {!Ocgtk.Custom_sorter}. *)
 
 type t = [ `custom_sorter | `sorter | `object_ ] Gobject.obj
 

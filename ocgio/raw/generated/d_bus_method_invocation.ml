@@ -7,7 +7,9 @@
     The normal way to obtain a [GDBusMethodInvocation] object is to receive it
     as an argument to the [handle_method_call()] function in a
     [Gio.DBusInterfaceVTable] that was passed to
-    [Gio.DBusConnection.register_object]. *)
+    [Gio.DBusConnection.register_object].
+
+    The class built on this module is in {!Ocgio.D_bus_method_invocation}. *)
 
 type t = [ `d_bus_method_invocation | `object_ ] Gobject.obj
 

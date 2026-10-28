@@ -5,14 +5,19 @@
 
     [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
     stop has an alignment, a position, and optionally a character to use as
-    decimal point. *)
+    decimal point.
+
+    The class built on this module is in {!Ocpango.Tab_array}. *)
 
 type t = [ `tab_array ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_pango_tab_array_get_type"
 
 external new_ : int -> bool -> t = "ml_pango_tab_array_new"
-(** Create a new TabArray *)
+(** Creates an array of [initial_size] tab stops.
+
+    Tab stops are specified in pixel units if [positions_in_pixels] is [TRUE],
+    otherwise in Pango units. All stops are initially at position 0. *)
 
 (* Methods *)
 

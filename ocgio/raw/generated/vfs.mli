@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Vfs: Vfs *)
 
-(** Entry point for using GIO functionality. *)
+(** Entry point for using GIO functionality.
+
+    The class built on this module is in {!Ocgio.Vfs}. *)
 
 type t = [ `vfs | `object_ ] Gobject.obj
 

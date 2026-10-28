@@ -10,14 +10,16 @@
 
     The actual printing can be done with [Gtk.PrintDialog.print] or
     [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
-    the results can be obtained by calling the corresponding finish methods. *)
+    the results can be obtained by calling the corresponding finish methods.
+
+    The class built on this module is in {!Ocgtk.Print_dialog}. *)
 
 type t = [ `print_dialog | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_print_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_print_dialog_new"
-(** Create a new PrintDialog *)
+(** Creates a new [GtkPrintDialog] object. *)
 
 (* Methods *)
 

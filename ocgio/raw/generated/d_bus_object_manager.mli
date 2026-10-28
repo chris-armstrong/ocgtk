@@ -6,7 +6,9 @@
     interface.
 
     See [Gio.DBusObjectManagerClient] for the client-side implementation and
-    [Gio.DBusObjectManagerServer] for the service-side implementation. *)
+    [Gio.DBusObjectManagerServer] for the service-side implementation.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager}. *)
 
 type t = [ `d_bus_object_manager ] Gobject.obj
 
@@ -47,6 +49,10 @@ val on_interface_added :
     interface:D_bus_interface_and__d_bus_object.D_bus_interface.t ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [interface] is added to [object].
+
+    This signal exists purely as a convenience to avoid having to connect
+    signals to all objects managed by [manager]. *)
 
 val on_interface_removed :
   ?after:bool ->
@@ -56,15 +62,21 @@ val on_interface_removed :
     interface:D_bus_interface_and__d_bus_object.D_bus_interface.t ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [interface] has been removed from [object].
+
+    This signal exists purely as a convenience to avoid having to connect
+    signals to all objects managed by [manager]. *)
 
 val on_object_added :
   ?after:bool ->
   t ->
   callback:(object_:D_bus_interface_and__d_bus_object.D_bus_object.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [object] is added to [manager]. *)
 
 val on_object_removed :
   ?after:bool ->
   t ->
   callback:(object_:D_bus_interface_and__d_bus_object.D_bus_object.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [object] is removed from [manager]. *)

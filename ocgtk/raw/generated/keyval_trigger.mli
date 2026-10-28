@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* KeyvalTrigger: KeyvalTrigger *)
 
-(** Triggers when a specific keyval and modifiers are pressed. *)
+(** Triggers when a specific keyval and modifiers are pressed.
+
+    The class built on this module is in {!Ocgtk.Keyval_trigger}. *)
 
 type t = [ `keyval_trigger | `shortcut_trigger | `object_ ] Gobject.obj
 
@@ -9,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_keyval_trigger_get_type"
 
 external new_ : int -> Ocgdk_enums.modifiertype -> t
   = "ml_gtk_keyval_trigger_new"
-(** Create a new KeyvalTrigger *)
+(** Creates a [GtkShortcutTrigger] that will trigger whenever the key with the
+    given [keyval] and [modifiers] is pressed. *)
 
 (* Methods *)
 

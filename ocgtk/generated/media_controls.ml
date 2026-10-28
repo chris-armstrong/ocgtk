@@ -4,7 +4,11 @@ class type media_controls_t = object
     .widget_t
 
   method get_media_stream : unit -> Media_stream.media_stream_t option
+  (** Gets the media stream managed by [controls] or [NULL] if none. *)
+
   method set_media_stream : Media_stream.media_stream_t option -> unit
+  (** Sets the stream that is controlled by [controls]. *)
+
   method as_media_controls : Raw.Media_controls.t
 end
 

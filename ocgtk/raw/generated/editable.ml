@@ -105,7 +105,8 @@
  the delegate to the \"wrapper\" editable, as they would cause an infinite\n\
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
  and [Gtk.Editable::delete-text] signals, you will need to connect\n\
- to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+ to them on the delegate obtained via [Gtk.Editable.get_delegate].\n\n\
+ The class built on this module is in {!Ocgtk.Editable}."]
 
 type t = [ `editable ] Gobject.obj
 

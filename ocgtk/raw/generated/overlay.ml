@@ -31,14 +31,16 @@
     [GtkOverlay] has a single CSS node with the name “overlay”. Overlay children
     whose alignments cause them to be positioned at an edge get the style
     classes “.left”, “.right”, “.top”, and/or “.bottom” according to their
-    position. *)
+    position.
+
+    The class built on this module is in {!Ocgtk.Overlay}. *)
 
 type t = [ `overlay | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_overlay_get_type"
 
 external new_ : unit -> t = "ml_gtk_overlay_new"
-(** Create a new Overlay *)
+(** Creates a new [GtkOverlay]. *)
 
 (* Methods *)
 

@@ -8,7 +8,9 @@
     [Gtk.EventControllerFocus:is-focus] and
     [Gtk.EventControllerFocus:contains-focus] properties which are updated to
     reflect focus changes inside the widget hierarchy that is rooted at the
-    controllers widget. *)
+    controllers widget.
+
+    The class built on this module is in {!Ocgtk.Event_controller_focus}. *)
 
 type t = [ `event_controller_focus | `event_controller | `object_ ] Gobject.obj
 
@@ -16,7 +18,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_event_controller_focus_get_type"
 
 external new_ : unit -> t = "ml_gtk_event_controller_focus_new"
-(** Create a new EventControllerFocus *)
+(** Creates a new event controller that will handle focus events. *)
 
 (* Methods *)
 

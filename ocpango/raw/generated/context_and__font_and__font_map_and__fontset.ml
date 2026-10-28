@@ -7,7 +7,17 @@ module rec Context : sig
   external gtype : unit -> Gobject.Type.t = "ml_pango_context_get_type"
 
   external new_ : unit -> t = "ml_pango_context_new"
-  (** Create a new Context *)
+  (** Creates a new [PangoContext] initialized to default values.
+
+      This function is not particularly useful as it should always be followed
+      by a [Pango.Context.set_font_map] call, and the function
+      [Pango.FontMap.create_context] does these two steps together and hence
+      users are recommended to use that.
+
+      If you are using Pango as part of a higher-level system, that system may
+      have it's own way of create a [PangoContext]. For instance, the GTK
+      toolkit has, among others, [gtk_widget_get_pango_context()]. Use those
+      instead. *)
 
   (* Methods *)
 
@@ -183,7 +193,17 @@ end = struct
   external gtype : unit -> Gobject.Type.t = "ml_pango_context_get_type"
 
   external new_ : unit -> t = "ml_pango_context_new"
-  (** Create a new Context *)
+  (** Creates a new [PangoContext] initialized to default values.
+
+      This function is not particularly useful as it should always be followed
+      by a [Pango.Context.set_font_map] call, and the function
+      [Pango.FontMap.create_context] does these two steps together and hence
+      users are recommended to use that.
+
+      If you are using Pango as part of a higher-level system, that system may
+      have it's own way of create a [PangoContext]. For instance, the GTK
+      toolkit has, among others, [gtk_widget_get_pango_context()]. Use those
+      instead. *)
 
   (* Methods *)
 

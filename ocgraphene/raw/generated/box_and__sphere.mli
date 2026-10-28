@@ -1,13 +1,22 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgraphene.Raw.Box}, {!Ocgraphene.Raw.Sphere},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** A 3D box, described as the volume between a minimum and a maximum vertices.
+
+    The class built on this module is in {!Ocgraphene.Box}. *)
 module rec Box : sig
   type t = [ `box ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_box_get_type"
 
   external alloc : unit -> t = "ml_graphene_box_alloc"
-  (** Create a new Box *)
+  (** Allocates a new #graphene_box_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -107,13 +116,18 @@ module rec Box : sig
       [b]. *)
 end
 
+(** A sphere, represented by its center and radius.
+
+    The class built on this module is in {!Ocgraphene.Sphere}. *)
 and Sphere : sig
   type t = [ `sphere ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_sphere_get_type"
 
   external alloc : unit -> t = "ml_graphene_sphere_alloc"
-  (** Create a new Sphere *)
+  (** Allocates a new #graphene_sphere_t.
+
+      The contents of the newly allocated structure are undefined. *)
 
   (* Methods *)
 

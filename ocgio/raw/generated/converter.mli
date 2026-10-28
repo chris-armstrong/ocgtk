@@ -7,7 +7,9 @@
     ways. The conversion can be stateful and may fail at any place.
 
     Some example conversions are: character set conversion, compression,
-    decompression and regular expression replace. *)
+    decompression and regular expression replace.
+
+    The class built on this module is in {!Ocgio.Converter}. *)
 
 type t = [ `converter ] Gobject.obj
 

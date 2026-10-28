@@ -5,8 +5,20 @@ class type shortcut_action_t = object
     .widget_t ->
     Gvariant.t option ->
     bool
+  (** Activates the action on the [widget] with the given [args].
+
+      Note that some actions ignore the passed in [flags], [widget] or [args].
+
+      Activation of an action can fail for various reasons. If the action is not
+      supported by the [widget], if the [args] don't match the action or if the
+      activation otherwise had no effect, [FALSE] will be returned. *)
 
   method to_string : unit -> string
+  (** Prints the given action into a human-readable string.
+
+      This is a small wrapper around [Gtk.ShortcutAction.print] to help when
+      debugging. *)
+
   method as_shortcut_action : Raw.Shortcut_action.t
 end
 

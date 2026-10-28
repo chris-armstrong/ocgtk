@@ -1,8 +1,21 @@
 class type themed_icon_t = object
   inherit Icon.icon_t
+
   method append_name : string -> unit
+  (** Append a name to the list of icons from within [icon].
+
+      Note that doing so invalidates the hash computed by prior calls to
+      g_icon_hash(). *)
+
   method get_names : unit -> string array
+  (** Gets the names of icons from within [icon]. *)
+
   method prepend_name : string -> unit
+  (** Prepend a name to the list of icons from within [icon].
+
+      Note that doing so invalidates the hash computed by prior calls to
+      g_icon_hash(). *)
+
   method use_default_fallbacks : bool
   method as_themed_icon : Raw.Themed_icon.t
 end

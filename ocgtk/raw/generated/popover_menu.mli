@@ -99,7 +99,8 @@
  [GtkPopoverMenu] uses the [Gtk.AccessibleRole.menu] role, and its\n\
  items use the [Gtk.AccessibleRole.menu_item],\n\
  [Gtk.AccessibleRole.checkbox] or [Gtk.AccessibleRole.menu_item_radio]\n\
- roles, depending on the action they are connected to."]
+ roles, depending on the action they are connected to.\n\n\
+ The class built on this module is in {!Ocgtk.Popover_menu}."]
 
 type t =
   [ `popover_menu | `popover | `widget | `initially_unowned | `object_ ]
@@ -109,12 +110,29 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_popover_menu_get_type"
 
 external new_from_model : Ocgio_raw.Menu_model.t option -> t
   = "ml_gtk_popover_menu_new_from_model"
-(** Create a new PopoverMenu *)
+(** Creates a [GtkPopoverMenu] and populates it according to [model].
+
+    The created buttons are connected to actions found in the
+    [GtkApplicationWindow] to which the popover belongs - typically by means of
+    being attached to a widget that is contained within the
+    [GtkApplicationWindow]s widget hierarchy.
+
+    Actions can also be added using [Gtk.Widget.insert_action_group] on the
+    menus attach widget or on any of its parent widgets.
+
+    This function creates menus with sliding submenus. See
+    [Gtk.PopoverMenu.new_from_model_full] for a way to control this. *)
 
 external new_from_model_full :
   Ocgio_raw.Menu_model.t -> Ocgtk_enums.popovermenuflags -> t
   = "ml_gtk_popover_menu_new_from_model_full"
-(** Create a new PopoverMenu *)
+(** Creates a [GtkPopoverMenu] and populates it according to [model].
+
+    The created buttons are connected to actions found in the action groups that
+    are accessible from the parent widget. This includes the
+    [GtkApplicationWindow] to which the popover belongs. Actions can also be
+    added using [Gtk.Widget.insert_action_group] on the parent widget or on any
+    of its parent widgets. *)
 
 (* Methods *)
 

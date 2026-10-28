@@ -7,7 +7,9 @@
     this should feel really familiar.
 
     This controller is not able to accept drops, use [Gtk.DropTarget] for that
-    purpose. *)
+    purpose.
+
+    The class built on this module is in {!Ocgtk.Drop_controller_motion}. *)
 
 type t = [ `drop_controller_motion | `event_controller | `object_ ] Gobject.obj
 
@@ -15,7 +17,8 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_drop_controller_motion_get_type"
 
 external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
-(** Create a new DropControllerMotion *)
+(** Creates a new event controller that will handle pointer motion events during
+    drag and drop. *)
 
 (* Methods *)
 

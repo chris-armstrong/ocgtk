@@ -4,7 +4,9 @@
 (** Configures how rows are displayed in a [Gtk.ColumnView].
 
     It is not used to set the widgets displayed in the individual cells. For
-    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)
+    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell].
+
+    The class built on this module is in {!Ocgtk.Column_view_row}. *)
 
 type t = [ `column_view_row | `object_ ] Gobject.obj
 

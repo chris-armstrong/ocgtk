@@ -2,8 +2,15 @@ class type no_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
   inherit Selection_model.selection_model_t
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
+  (** Gets the model that [self] is wrapping. *)
+
   method set_model : Ocgio.List_model.list_model_t option -> unit
+  (** Sets the model that [self] should wrap.
+
+      If [model] is [NULL], this model will be empty. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_no_selection : Raw.No_selection.t

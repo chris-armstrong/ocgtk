@@ -20,7 +20,8 @@
     user that is running the [GDBusServer]. Since GLib 2.68 this can be achieved
     more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
-*)
+
+    The class built on this module is in {!Ocgio.D_bus_server}. *)
 
 type t = [ `d_bus_server | `object_ ] Gobject.obj
 
@@ -33,7 +34,27 @@ external new_sync :
   D_bus_auth_observer.t option ->
   Cancellable.t option ->
   (t, GError.t) result = "ml_g_dbus_server_new_sync"
-(** Create a new DBusServer *)
+(** Creates a new D-Bus server that listens on the first address in [address]
+    that works.
+
+    Once constructed, you can use g_dbus_server_get_client_address() to get a
+    D-Bus address string that clients can use to connect.
+
+    To have control over the available authentication mechanisms and the users
+    that are authorized to connect, it is strongly recommended to provide a
+    non-[NULL] [GDBusAuthObserver].
+
+    Connect to the [GDBusServer::new]-connection signal to handle incoming
+    connections.
+
+    The returned [GDBusServer] isn't active - you have to start it with
+    g_dbus_server_start().
+
+    [GDBusServer] is used in this
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}example}.
+
+    This is a synchronous failable constructor. There is currently no
+    asynchronous version. *)
 
 (* Methods *)
 
@@ -75,3 +96,23 @@ val on_new_connection :
   t ->
   callback:(connection:D_bus_connection.t -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a new authenticated connection has been made. Use
+    g_dbus_connection_get_peer_credentials() to figure out what identity (if
+    any), was authenticated.
+
+    If you want to accept the connection, take a reference to the [connection]
+    object and return [TRUE]. When you are done with the connection call
+    g_dbus_connection_close() and give up your reference. Note that the other
+    peer may disconnect at any time - a typical thing to do when accepting a
+    connection is to listen to the [GDBusConnection::closed] signal.
+
+    If [GDBusServer:flags] contains [G_DBUS_SERVER_FLAGS_RUN_IN_THREAD] then the
+    signal is emitted in a new thread dedicated to the connection. Otherwise the
+    signal is emitted in the thread-default main context (see
+    [GLib.MainContext.push_thread_default]) of the thread that [server] was
+    constructed in.
+
+    You are guaranteed that signal handlers for this signal runs before incoming
+    messages on [connection] are processed. This means that it's suitable to
+    call g_dbus_connection_register_object() or similar from the signal handler.
+*)

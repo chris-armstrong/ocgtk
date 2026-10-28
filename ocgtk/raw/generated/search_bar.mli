@@ -49,14 +49,19 @@
 
     {b Accessibility}
 
-    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
+    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role.
+
+    The class built on this module is in {!Ocgtk.Search_bar}. *)
 
 type t = [ `search_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_search_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_search_bar_new"
-(** Create a new SearchBar *)
+(** Creates a [GtkSearchBar].
+
+    You will need to tell it about which widget is going to be your text entry
+    using [Gtk.SearchBar.connect_entry]. *)
 
 (* Methods *)
 

@@ -14,7 +14,9 @@
 
     How long the timeout is before the ::pressed signal gets emitted is
     determined by the [Gtk.Settings:gtk-long-press-time] setting. It can be
-    modified by the [Gtk.GestureLongPress:delay-factor] property. *)
+    modified by the [Gtk.GestureLongPress:delay-factor] property.
+
+    The class built on this module is in {!Ocgtk.Gesture_long_press}. *)
 
 type t =
   [ `gesture_long_press
@@ -27,7 +29,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_long_press_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_long_press_new"
-(** Create a new GestureLongPress *)
+(** Returns a newly created [GtkGesture] that recognizes long presses. *)
 
 (* Methods *)
 

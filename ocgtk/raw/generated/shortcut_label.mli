@@ -4,7 +4,8 @@
 (** [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
     The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
-*)
+
+    The class built on this module is in {!Ocgtk.Shortcut_label}. *)
 
 type t =
   [ `shortcut_label | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -12,7 +13,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_label_get_type"
 
 external new_ : string -> t = "ml_gtk_shortcut_label_new"
-(** Create a new ShortcutLabel *)
+(** Creates a new [GtkShortcutLabel] with [accelerator] set. *)
 
 (* Methods *)
 

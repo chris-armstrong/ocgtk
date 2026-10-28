@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShadowNode: ShadowNode *)
 
-(** A render node drawing one or more shadows behind its single child node. *)
+(** A render node drawing one or more shadows behind its single child node.
+
+    The class built on this module is in {!Ocgsk.Shadow_node}. *)
 
 type t = [ `shadow_node | `render_node ] Gobject.obj
 
@@ -9,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_shadow_node_get_type"
 
 external new_ : Render_node.t -> Shadow.t array -> Gsize.t -> t
   = "ml_gsk_shadow_node_new"
-(** Create a new ShadowNode *)
+(** Creates a [GskRenderNode] that will draw a [child] with the given [shadows]
+    below it. *)
 
 (* Methods *)
 

@@ -1,10 +1,49 @@
 class type list_store_t = object
   inherit List_model.list_model_t
+
   method append : [ `object_ ] Gobject.obj -> unit
+  (** Appends [item] to [store]. [item] must be of type [GListStore:item]-type.
+
+      This function takes a ref on [item].
+
+      Use g_list_store_splice() to append multiple items at the same time
+      efficiently. *)
+
   method insert : int -> [ `object_ ] Gobject.obj -> unit
+  (** Inserts [item] into [store] at [position]. [item] must be of type
+      [GListStore:item]-type or derived from it. [position] must be smaller than
+      the length of the list, or equal to it to append.
+
+      This function takes a ref on [item].
+
+      Use g_list_store_splice() to insert multiple items at the same time
+      efficiently. *)
+
   method remove : int -> unit
+  (** Removes the item from [store] that is at [position]. [position] must be
+      smaller than the current length of the list.
+
+      Use g_list_store_splice() to remove multiple items at the same time
+      efficiently. *)
+
   method remove_all : unit -> unit
+  (** Removes all items from [store]. *)
+
   method splice : int -> int -> [ `object_ ] Gobject.obj array -> int -> unit
+  (** Changes [store] by removing [n_removals] items and adding [n_additions]
+      items to it. [additions] must contain [n_additions] items of type
+      [GListStore:item]-type. [NULL] is not permitted.
+
+      This function is more efficient than g_list_store_insert() and
+      g_list_store_remove(), because it only emits [GListModel::items]-changed
+      once for the change.
+
+      This function takes a ref on each item in [additions].
+
+      The parameters [position] and [n_removals] must be correct (ie: [position]
+      \+ [n_removals] must be less than or equal to the length of the list at
+      the time this function is called). *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_list_store : Raw.List_store.t

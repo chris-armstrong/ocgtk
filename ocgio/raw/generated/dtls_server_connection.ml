@@ -2,7 +2,9 @@
 (* DtlsServerConnection: DtlsServerConnection *)
 
 (** [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],
-    representing a server-side DTLS connection. *)
+    representing a server-side DTLS connection.
+
+    The class built on this module is in {!Ocgio.Dtls_server_connection}. *)
 
 type t = [ `dtls_server_connection ] Gobject.obj
 

@@ -15,7 +15,9 @@
 
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
-    a reference until you are done with the object. *)
+    a reference until you are done with the object.
+
+    The class built on this module is in {!Ocgtk.Native_dialog}. *)
 
 type t = [ `native_dialog | `object_ ] Gobject.obj
 
@@ -97,3 +99,9 @@ val on_response :
   t ->
   callback:(response_id:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user responds to the dialog.
+
+    When this is called the dialog has been hidden.
+
+    If you call [Gtk.NativeDialog.hide] before the user responds to the dialog
+    this signal will not be emitted. *)

@@ -34,7 +34,9 @@
     The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
     [Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
-    motion that was received. *)
+    motion that was received.
+
+    The class built on this module is in {!Ocgtk.Event_controller_scroll}. *)
 
 type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
 
@@ -43,7 +45,7 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Ocgtk_enums.eventcontrollerscrollflags -> t
   = "ml_gtk_event_controller_scroll_new"
-(** Create a new EventControllerScroll *)
+(** Creates a new event controller that will handle scroll events. *)
 
 (* Methods *)
 
@@ -70,15 +72,31 @@ val on_decelerate :
   t ->
   callback:(vel_x:float -> vel_y:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted after scroll is finished if the
+    [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag is set.
+
+    [vel_x] and [vel_y] express the initial velocity that was imprinted by the
+    scroll events. [vel_x] and [vel_y] are expressed in pixels/ms. *)
 
 val on_scroll :
   ?after:bool ->
   t ->
   callback:(dx:float -> dy:float -> bool) ->
   Gobject.Signal.handler_id
+(** Signals that the widget should scroll by the amount specified by [dx] and
+    [dy].
+
+    For the representation unit of the deltas, see
+    [Gtk.EventControllerScroll.get_unit]. *)
 
 val on_scroll_begin :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Signals that a new scrolling operation has begun.
+
+    It will only be emitted on devices capable of it. *)
 
 val on_scroll_end :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Signals that a scrolling operation has finished.
+
+    It will only be emitted on devices capable of it. *)

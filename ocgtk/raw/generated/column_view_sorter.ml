@@ -30,7 +30,9 @@
         column = gtk_column_view_sorter_get_nth_sort_column (sorter, i, &order);
         gtk_column_view_sort_by_column (view, column, order);
       }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Column_view_sorter}. *)
 
 type t = [ `column_view_sorter | `sorter | `object_ ] Gobject.obj
 

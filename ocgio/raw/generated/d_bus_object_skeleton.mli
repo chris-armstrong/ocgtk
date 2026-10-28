@@ -5,7 +5,9 @@
     The set of exported interfaces on the object may be dynamic and change at
     runtime.
 
-    This type is intended to be used with [Gio.DBusObjectManager]. *)
+    This type is intended to be used with [Gio.DBusObjectManager].
+
+    The class built on this module is in {!Ocgio.D_bus_object_skeleton}. *)
 
 type t = [ `d_bus_object_skeleton | `object_ ] Gobject.obj
 
@@ -13,7 +15,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_d_bus_object_skeleton_get_type"
 
 external new_ : string -> t = "ml_g_dbus_object_skeleton_new"
-(** Create a new DBusObjectSkeleton *)
+(** Creates a new [GDBusObjectSkeleton]. *)
 
 (* Methods *)
 
@@ -64,3 +66,11 @@ val on_authorize_method :
     invocation:D_bus_method_invocation.t ->
     bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a method is invoked by a remote caller and used to determine if
+    the method call is authorized.
+
+    This signal is like [GDBusInterfaceSkeleton]'s
+    [GDBusInterfaceSkeleton::g]-authorize-method signal, except that it is for
+    the enclosing object.
+
+    The default class handler just returns [TRUE]. *)

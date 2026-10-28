@@ -1,6 +1,36 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgtk.Raw.Tree_selection}, {!Ocgtk.Raw.Tree_view},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** The selection object for GtkTreeView
+
+    The [GtkTreeSelection] object is a helper object to manage the selection for
+    a [GtkTreeView] widget. The [GtkTreeSelection] object is automatically
+    created when a new [GtkTreeView] widget is created, and cannot exist
+    independently of this widget. The primary reason the [GtkTreeSelection]
+    objects exists is for cleanliness of code and API. That is, there is no
+    conceptual reason all these functions could not be methods on the
+    [GtkTreeView] widget instead of a separate function.
+
+    The [GtkTreeSelection] object is gotten from a [GtkTreeView] by calling
+    gtk_tree_view_get_selection(). It can be manipulated to check the selection
+    status of the tree, as well as select and deselect individual rows.
+    Selection is done completely view side. As a result, multiple views of the
+    same model can have completely different selections. Additionally, you
+    cannot change the selection of a row on the model that is not currently
+    displayed by the view without expanding its parents first.
+
+    One of the important things to remember when monitoring the selection of a
+    view is that the [GtkTreeSelection]::changed signal is mostly a hint. That
+    is, it may only emit one signal when a range of rows is selected.
+    Additionally, it may on occasion emit a [GtkTreeSelection]::changed signal
+    when nothing has happened (mostly as a result of programmers calling
+    select_row on an already selected row).
+
+    The class built on this module is in {!Ocgtk.Tree_selection}. *)
 module rec Tree_selection : sig
   type t = [ `tree_selection | `object_ ] Gobject.obj
 
@@ -73,6 +103,10 @@ module rec Tree_selection : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted whenever the selection has (possibly) changed. Please note that
+      this signal is mostly a hint. It may only be emitted once when a range of
+      rows are selected, and it may occasionally be emitted when nothing has
+      happened. *)
 end
 
 and Tree_view : sig
@@ -81,11 +115,12 @@ and Tree_view : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_view_get_type"
 
   external new_ : unit -> t = "ml_gtk_tree_view_new"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget. *)
 
   external new_with_model : Tree_model.t -> t
     = "ml_gtk_tree_view_new_with_model"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget with the model initialized to [model].
+  *)
 
   (* Methods *)
 
@@ -601,9 +636,11 @@ and Tree_view : sig
 
   val on_columns_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** The number of columns of the treeview has changed. *)
 
   val on_cursor_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** The position of the cursor (focused cell) has changed. *)
 
   val on_expand_collapse_cursor_row :
     ?after:bool ->
@@ -621,6 +658,15 @@ and Tree_view : sig
       modify:bool ->
       bool) ->
     Gobject.Signal.handler_id
+  (** The [GtkTreeView]::move-cursor signal is a \[keybinding
+      signal\][Gtk.SignalAction] which gets emitted when the user presses one of
+      the cursor keys.
+
+      Applications should not connect to it, but may emit it with
+      g_signal_emit_by_name() if they need to control the cursor
+      programmatically. In contrast to gtk_tree_view_set_cursor() and
+      gtk_tree_view_set_cursor_on_cell() when moving horizontally
+      [GtkTreeView]::move-cursor does not reset the current selection. *)
 
   val on_select_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
@@ -643,3 +689,81 @@ and Tree_view : sig
   val on_unselect_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 end
+[@@ocaml.doc
+  "A widget for displaying both trees and lists\n\n\
+   An example GtkTreeView\n\n\
+   Widget that displays any object that implements the [Gtk.TreeModel] \
+   interface.\n\n\
+   Please refer to the tree widget conceptual overview\n\
+   for an overview of all the objects and data types related to the tree\n\
+   widget and how they work together.\n\n\
+   {b Coordinate systems in GtkTreeView API}\n\n\
+   Several different coordinate systems are exposed in the [GtkTreeView] API.\n\
+   These are:\n\n\
+   - Widget coordinates: Coordinates relative to the widget (usually \
+   [widget->window]).\n\n\
+   - Bin window coordinates: Coordinates relative to the window that \
+   GtkTreeView renders to.\n\n\
+   - Tree coordinates: Coordinates relative to the entire scrollable area of \
+   GtkTreeView. These\n\
+   coordinates start at (0, 0) for row 0 of the tree.\n\n\
+   Several functions are available for converting between the different\n\
+   coordinate systems.  The most common translations are between widget and bin\n\
+   window coordinates and between bin window and tree coordinates. For the\n\
+   former you can use [Gtk.TreeView.convert_widget_to_bin_window_coords]\n\
+   (and vice versa), for the latter \
+   [Gtk.TreeView.convert_bin_window_to_tree_coords]\n\
+   (and vice versa).\n\n\
+   {b [GtkTreeView] as [GtkBuildable]}\n\n\
+   The [GtkTreeView] implementation of the [GtkBuildable] interface accepts\n\
+   [Gtk.TreeViewColumn] objects as [<child>] elements and exposes the\n\
+   internal [Gtk.TreeSelection] in UI definitions.\n\n\
+   An example of a UI definition fragment with [GtkTreeView]:\n\n\
+   {[\n\
+   <object class=\"GtkTreeView\" id=\"treeview\">\n\
+  \  <property name=\"model\">liststore1</property>\n\
+  \  <child>\n\
+  \    <object class=\"GtkTreeViewColumn\" id=\"test-column\">\n\
+  \      <property name=\"title\">Test</property>\n\
+  \      <child>\n\
+  \        <object class=\"GtkCellRendererText\" id=\"test-renderer\"/>\n\
+  \        <attributes>\n\
+  \          <attribute name=\"text\">1</attribute>\n\
+  \        </attributes>\n\
+  \      </child>\n\
+  \    </object>\n\
+  \  </child>\n\
+  \  <child internal-child=\"selection\">\n\
+  \    <object class=\"GtkTreeSelection\" id=\"selection\">\n\
+  \      <signal name=\"changed\" handler=\"on_treeview_selection_changed\"/>\n\
+  \    </object>\n\
+  \  </child>\n\
+   </object>\n\
+   ]}\n\n\
+   {b CSS nodes}\n\n\
+   {[\n\
+   treeview.view\n\
+   ├── header\n\
+   │   ├── button\n\
+   │   │   ╰── [sort-indicator]\n\
+   ┊   ┊\n\
+   │   ╰── button\n\
+   │       ╰── [sort-indicator]\n\
+   │\n\
+   ├── [rubberband]\n\
+   ╰── [dndtarget]\n\
+   ]}\n\n\
+   [GtkTreeView] has a main CSS node with name [treeview] and style class \
+   [.view].\n\
+   It has a subnode with name [header], which is the parent for all the column\n\
+   header widgets' CSS nodes.\n\n\
+   Each column header consists of a [button], which among other content, has a\n\
+   child with name [sort-indicator], which carries the [.ascending] or \
+   [.descending]\n\
+   style classes when the column header should show a sort indicator. The CSS\n\
+   is expected to provide a suitable image using the [-gtk-icon-source] \
+   property.\n\n\
+   For rubberband selection, a subnode with name [rubberband] is used.\n\n\
+   For the drop target location during DND, a subnode with name [dndtarget] is \
+   used.\n\n\
+   The class built on this module is in {!Ocgtk.Tree_view}."]

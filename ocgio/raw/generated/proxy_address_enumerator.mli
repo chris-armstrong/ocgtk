@@ -9,7 +9,9 @@
     This enumerator will be returned (for example, by
     [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
-    [Gio.SocketAddressEnumerator] instance with one. *)
+    [Gio.SocketAddressEnumerator] instance with one.
+
+    The class built on this module is in {!Ocgio.Proxy_address_enumerator}. *)
 
 type t =
   [ `proxy_address_enumerator | `socket_address_enumerator | `object_ ]

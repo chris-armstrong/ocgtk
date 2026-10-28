@@ -2,14 +2,16 @@
 (* SimpleActionGroup: SimpleActionGroup *)
 
 (** [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
-    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
+    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces.
+
+    The class built on this module is in {!Ocgio.Simple_action_group}. *)
 
 type t = [ `simple_action_group | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_simple_action_group_get_type"
 
 external new_ : unit -> t = "ml_g_simple_action_group_new"
-(** Create a new SimpleActionGroup *)
+(** Creates a new, empty, [GSimpleActionGroup]. *)
 
 (* Methods *)
 

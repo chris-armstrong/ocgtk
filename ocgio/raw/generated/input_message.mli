@@ -19,7 +19,9 @@
     array, which may be zero.
 
     Flags relevant to this message will be returned in [flags]. For example,
-    [MSG_EOR] or [MSG_TRUNC]. *)
+    [MSG_EOR] or [MSG_TRUNC].
+
+    The class built on this module is in {!Ocgio.Input_message}. *)
 
 type t = [ `input_message ] Gobject.obj
 

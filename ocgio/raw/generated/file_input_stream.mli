@@ -9,7 +9,9 @@
     file allows it. To find the position of a file input stream, use
     [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
     use [Gio.Seekable.can_seek]. To position a file input stream, use
-    [Gio.Seekable.seek]. *)
+    [Gio.Seekable.seek].
+
+    The class built on this module is in {!Ocgio.File_input_stream}. *)
 
 type t = [ `file_input_stream | `input_stream | `object_ ] Gobject.obj
 

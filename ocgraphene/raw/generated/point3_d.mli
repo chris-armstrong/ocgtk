@@ -1,14 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Point3D: Point3D *)
 
-(** A point with three components: X, Y, and Z. *)
+(** A point with three components: X, Y, and Z.
+
+    The class built on this module is in {!Ocgraphene.Point3_d}. *)
 
 type t = [ `point3_d ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_graphene_point3_d_get_type"
 
 external alloc : unit -> t = "ml_graphene_point3d_alloc"
-(** Create a new Point3D *)
+(** Allocates a #graphene_point3d_t structure. *)
 
 (* Methods *)
 

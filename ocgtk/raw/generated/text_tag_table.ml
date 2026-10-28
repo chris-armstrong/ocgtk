@@ -18,14 +18,17 @@
 \   <object class=\"GtkTextTag\"/>\n\
 \ </child>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Text_tag_table}."]
 
 type t = [ `text_tag_table | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_text_tag_table_get_type"
 
 external new_ : unit -> t = "ml_gtk_text_tag_table_new"
-(** Create a new TextTagTable *)
+(** Creates a new [GtkTextTagTable].
+
+    The table contains no tags by default. *)
 
 (* Methods *)
 

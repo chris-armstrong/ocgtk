@@ -1,12 +1,55 @@
 class type string_list_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
+
   method append : string -> unit
+  (** Appends [string] to [self].
+
+      The [string] will be copied. See [Gtk.StringList.take] for a way to avoid
+      that. *)
+
   method find : string -> int
+  (** Gets the position of the [string] in [self].
+
+      If [self] does not contain [string] item, [G_MAXUINT] is returned. *)
+
   method get_string : int -> string option
+  (** Gets the string that is at [position] in [self].
+
+      If [self] does not contain [position] items, [NULL] is returned.
+
+      This function returns the const char *. To get the object wrapping it, use
+      g_list_model_get_item(). *)
+
   method remove : int -> unit
+  (** Removes the string at [position] from [self].
+
+      [position] must be smaller than the current length of the list. *)
+
   method splice : int -> int -> string array option -> unit
+  (** Changes [self] by removing [n_removals] strings and adding [additions] to
+      it.
+
+      This function is more efficient than [Gtk.StringList.append] and
+      [Gtk.StringList.remove], because it only emits the ::items-changed signal
+      once for the change.
+
+      This function copies the strings in [additions].
+
+      The parameters [position] and [n_removals] must be correct (ie: [position]
+      \+ [n_removals] must be less than or equal to the length of the list at
+      the time this function is called). *)
+
   method take : string -> unit
+  [@@ocaml.doc
+    "Adds [string] to self at the end, and takes\n\
+     ownership of it.\n\n\
+     This variant of [Gtk.StringList.append]\n\
+     is convenient for formatting strings:\n\n\
+     {[\n\
+     gtk_string_list_take (self, g_strdup_print (\"%d dollars\", lots));\n\
+     ]}"]
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_string_list : Raw.String_list.t

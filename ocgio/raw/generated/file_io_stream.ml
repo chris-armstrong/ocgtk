@@ -18,7 +18,9 @@
 
     The default implementation of all the [GFileIOStream] operations and the
     implementation of [Gio.Seekable] just call into the same operations on the
-    output stream. *)
+    output stream.
+
+    The class built on this module is in {!Ocgio.File_io_stream}. *)
 
 type t = [ `file_io_stream | `io_stream | `object_ ] Gobject.obj
 

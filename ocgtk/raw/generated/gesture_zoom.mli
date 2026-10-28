@@ -5,14 +5,16 @@
 
     Whenever the distance between both tracked sequences changes, the
     [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor. *)
+    factor.
+
+    The class built on this module is in {!Ocgtk.Gesture_zoom}. *)
 
 type t = [ `gesture_zoom | `gesture | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_zoom_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_zoom_new"
-(** Create a new GestureZoom *)
+(** Returns a newly created [GtkGesture] that recognizes pinch/zoom gestures. *)
 
 (* Methods *)
 
@@ -28,3 +30,4 @@ val on_scale_changed :
   t ->
   callback:(scale:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the distance between both tracked sequences changes. *)

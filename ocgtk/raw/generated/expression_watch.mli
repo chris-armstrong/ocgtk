@@ -4,7 +4,9 @@
 (** An opaque structure representing a watched [GtkExpression].
 
     The contents of [GtkExpressionWatch] should only be accessed through the
-    provided API. *)
+    provided API.
+
+    The class built on this module is in {!Ocgtk.Expression_watch}. *)
 
 type t = [ `expression_watch ] Gobject.obj
 

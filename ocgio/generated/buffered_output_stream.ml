@@ -1,10 +1,22 @@
 class type buffered_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t
+
   method get_auto_grow : unit -> bool
+  (** Checks if the buffer automatically grows as data is added. *)
+
   method get_buffer_size : unit -> Gsize.t
+  (** Gets the size of the buffer in the [stream]. *)
+
   method set_auto_grow : bool -> unit
+  (** Sets whether or not the [stream]'s buffer should automatically grow. If
+      [auto_grow] is true, then each write will just make the buffer larger, and
+      you must manually flush the buffer to actually write out the data to the
+      underlying stream. *)
+
   method set_buffer_size : Gsize.t -> unit
+  (** Sets the size of the internal buffer to [size]. *)
+
   method as_buffered_output_stream : Raw.Buffered_output_stream.t
 end
 

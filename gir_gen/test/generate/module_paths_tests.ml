@@ -189,6 +189,7 @@ let test_raw_module_aliases () =
 let test_cycle_member_shim () =
   let shim output_mode =
     Gir_gen_lib.Generate.Ml_interface.generate_cycle_member_shim ~output_mode
+      ~namespace:"Graphene" ~member_doc:None
       ~combined_module_name:"Box_and__sphere" ~member_name:"Box"
   in
   Alcotest.(check (list string))

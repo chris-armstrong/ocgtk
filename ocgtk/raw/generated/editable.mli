@@ -105,7 +105,8 @@
  the delegate to the \"wrapper\" editable, as they would cause an infinite\n\
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
  and [Gtk.Editable::delete-text] signals, you will need to connect\n\
- to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+ to them on the delegate obtained via [Gtk.Editable.get_delegate].\n\n\
+ The class built on this module is in {!Ocgtk.Editable}."]
 
 type t = [ `editable ] Gobject.obj
 
@@ -300,9 +301,24 @@ external get_selection_bound : t -> int = "ml_gtk_editable_get_selection_bound"
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted at the end of a single user-visible operation on the contents.
+
+    E.g., a paste operation that replaces the contents of the selection will
+    cause only one signal emission (even though it is implemented by first
+    deleting the selection, then inserting the new content, and may cause
+    multiple ::notify::text signals to be emitted). *)
 
 val on_delete_text :
   ?after:bool ->
   t ->
   callback:(start_pos:int -> end_pos:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when text is deleted from the widget by the user.
+
+    The default handler for this signal will normally be responsible for
+    deleting the text, so by connecting to this signal and then stopping the
+    signal with g_signal_stop_emission(), it is possible to modify the range of
+    deleted text, or prevent it from being deleted entirely.
+
+    The [start_pos] and [end_pos] parameters are interpreted as for
+    [Gtk.Editable.delete_text]. *)

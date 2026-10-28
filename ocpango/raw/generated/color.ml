@@ -2,7 +2,9 @@
 (* Color: Color *)
 
 (** The [PangoColor] structure is used to represent a color in an uncalibrated
-    RGB color-space. *)
+    RGB color-space.
+
+    The class built on this module is in {!Ocpango.Color}. *)
 
 type t = [ `color ] Gobject.obj
 

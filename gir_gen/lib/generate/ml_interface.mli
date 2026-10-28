@@ -82,10 +82,12 @@ val generate_combined_ml_modules :
 
 val generate_cycle_member_shim :
   output_mode:output_mode ->
+  namespace:string ->
   combined_module_name:string ->
   member_name:string ->
+  member_doc:string option ->
   string
 (** The layer 1 module of a member of a cycle, outside the combined module:
     [include App_info_cycle_<hash>.File], so that other namespaces can name it
     [Ocgio_raw.File]. Its signature keeps its types equal to the combined
-    module's. *)
+    module's, and carries the member's module doc. *)

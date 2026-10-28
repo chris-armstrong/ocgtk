@@ -47,7 +47,9 @@
     application code may only run operations on the base (wrapped) stream when
     the wrapper stream is idle. Note that the semantics of such operations may
     not be well-defined due to the state the wrapper stream leaves the base
-    stream in (though they are guaranteed not to crash). *)
+    stream in (though they are guaranteed not to crash).
+
+    The class built on this module is in {!Ocgio.Io_stream}. *)
 
 type t = [ `io_stream | `object_ ] Gobject.obj
 

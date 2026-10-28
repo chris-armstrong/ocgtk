@@ -5,7 +5,9 @@
 
     [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
     their factory, but provide a different set of properties suitable for
-    managing the header instead of individual items. *)
+    managing the header instead of individual items.
+
+    The class built on this module is in {!Ocgtk.List_header}. *)
 
 type t = [ `list_header | `object_ ] Gobject.obj
 

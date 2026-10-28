@@ -43,7 +43,9 @@
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
-    [Gdk.Paintable.new_empty]. *)
+    [Gdk.Paintable.new_empty].
+
+    The class built on this module is in {!Ocgdk.Paintable}. *)
 
 type t = [ `paintable ] Gobject.obj
 

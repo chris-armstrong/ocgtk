@@ -37,14 +37,19 @@
     This is similar to how paths are drawn in Cairo.
 
     Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
-    much as possible, to simplify rendering. *)
+    much as possible, to simplify rendering.
+
+    The class built on this module is in {!Ocgsk.Path_builder}. *)
 
 type t = [ `path_builder ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_path_builder_get_type"
 
 external new_ : unit -> t = "ml_gsk_path_builder_new"
-(** Create a new PathBuilder *)
+(** Create a new [GskPathBuilder] object.
+
+    The resulting builder would create an empty [GskPath]. Use addition
+    functions to add types to it. *)
 
 (* Methods *)
 

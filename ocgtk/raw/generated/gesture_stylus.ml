@@ -4,7 +4,8 @@
 (** Recognizes tablet stylus input.
 
     The provided signals just relay the basic information of the stylus events.
-*)
+
+    The class built on this module is in {!Ocgtk.Gesture_stylus}. *)
 
 type t =
   [ `gesture_stylus | `gesture_single | `gesture | `event_controller | `object_ ]
@@ -13,7 +14,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_stylus_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_stylus_new"
-(** Create a new GestureStylus *)
+(** Creates a new [GtkGestureStylus]. *)
 
 (* Methods *)
 

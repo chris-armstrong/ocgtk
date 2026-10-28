@@ -39,7 +39,9 @@
 
     {b Accessibility}
 
-    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role.
+
+    The class built on this module is in {!Ocgtk.Link_button}. *)
 
 type t =
   [ `link_button | `button | `widget | `initially_unowned | `object_ ]
@@ -48,11 +50,11 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_link_button_get_type"
 
 external new_ : string -> t = "ml_gtk_link_button_new"
-(** Create a new LinkButton *)
+(** Creates a new [GtkLinkButton] with the URI as its text. *)
 
 external new_with_label : string -> string option -> t
   = "ml_gtk_link_button_new_with_label"
-(** Create a new LinkButton *)
+(** Creates a new [GtkLinkButton] containing a label. *)
 
 (* Methods *)
 
@@ -81,3 +83,11 @@ external get_uri : t -> string = "ml_gtk_link_button_get_uri"
 
 val on_activate_link :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+(** Emitted each time the [GtkLinkButton] is clicked.
+
+    The default handler will call [Gtk.FileLauncher.launch] with the URI stored
+    inside the [Gtk.LinkButton:uri] property.
+
+    To override the default behavior, you can connect to the ::activate-link
+    signal and stop the propagation of the signal by returning [TRUE] from your
+    handler. *)

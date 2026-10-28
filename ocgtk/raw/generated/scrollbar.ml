@@ -40,7 +40,9 @@
 
     {b Accessibility}
 
-    [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role. *)
+    [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role.
+
+    The class built on this module is in {!Ocgtk.Scrollbar}. *)
 
 type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -48,7 +50,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_scrollbar_get_type"
 
 external new_ : Ocgtk_enums.orientation -> Adjustment.t option -> t
   = "ml_gtk_scrollbar_new"
-(** Create a new Scrollbar *)
+(** Creates a new scrollbar with the given orientation. *)
 
 (* Methods *)
 

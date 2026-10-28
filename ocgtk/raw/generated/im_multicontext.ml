@@ -5,14 +5,16 @@
 
     Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to
     implement their [im-module] property for switching between different input
-    methods. *)
+    methods.
+
+    The class built on this module is in {!Ocgtk.Im_multicontext}. *)
 
 type t = [ `im_multicontext | `im_context | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_im_multicontext_get_type"
 
 external new_ : unit -> t = "ml_gtk_im_multicontext_new"
-(** Create a new IMMulticontext *)
+(** Creates a new [GtkIMMulticontext]. *)
 
 (* Methods *)
 

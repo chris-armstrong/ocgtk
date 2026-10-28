@@ -9,7 +9,9 @@
     property allows it.
 
     If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
-    [GtkCellRendererText] allows to edit its text using an entry. *)
+    [GtkCellRendererText] allows to edit its text using an entry.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_text}. *)
 
 type t =
   [ `cell_renderer_text | `cell_renderer | `initially_unowned | `object_ ]
@@ -18,7 +20,12 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_text_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
-(** Create a new CellRendererText *)
+(** Creates a new [GtkCellRendererText]. Adjust how text is drawn using object
+    properties. Object properties can be set globally (with g_object_set()).
+    Also, with [GtkTreeViewColumn], you can bind a property to a value in a
+    [GtkTreeModel]. For example, you can bind the “text” property on the cell
+    renderer to a string value in the model, thus rendering a different string
+    in each row of the [GtkTreeView]. *)
 
 (* Methods *)
 

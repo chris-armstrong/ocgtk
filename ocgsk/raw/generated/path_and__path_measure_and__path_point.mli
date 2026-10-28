@@ -1,6 +1,28 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgsk.Raw.Path}, {!Ocgsk.Raw.Path_measure},
+    {!Ocgsk.Raw.Path_point}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** Describes lines and curves that are more complex than simple rectangles.
+
+    Paths can used for rendering (filling or stroking) and for animations (e.g.
+    as trajectories).
+
+    [GskPath] is an immutable, opaque, reference-counted struct. After creation,
+    you cannot change the types it represents. Instead, new [GskPath] objects
+    have to be created. The [Gsk.PathBuilder] structure is meant to help in this
+    endeavor.
+
+    Conceptually, a path consists of zero or more contours (continuous,
+    connected curves), each of which may or may not be closed. Contours are
+    typically constructed from Bézier segments.
+
+    A Path
+
+    The class built on this module is in {!Ocgsk.Path}. *)
 module rec Path : sig
   type t = [ `path ] Gobject.obj
 
@@ -88,17 +110,28 @@ module rec Path : sig
       zero rectangle but true will be returned. *)
 end
 
+(** Performs measurements on paths such as determining the length of the path.
+
+    Many measuring operations require sampling the path length at intermediate
+    points. Therefore, a [GskPathMeasure] has a tolerance that determines what
+    precision is required for such approximations.
+
+    A [GskPathMeasure] struct is a reference counted struct and should be
+    treated as opaque.
+
+    The class built on this module is in {!Ocgsk.Path_measure}. *)
 and Path_measure : sig
   type t = [ `path_measure ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gsk_path_measure_get_type"
 
   external new_ : Path.t -> t = "ml_gsk_path_measure_new"
-  (** Create a new PathMeasure *)
+  (** Creates a measure object for the given [path] with the default tolerance.
+  *)
 
   external new_with_tolerance : Path.t -> float -> t
     = "ml_gsk_path_measure_new_with_tolerance"
-  (** Create a new PathMeasure *)
+  (** Creates a measure object for the given [path] and [tolerance]. *)
 
   (* Methods *)
 
@@ -123,6 +156,21 @@ and Path_measure : sig
       The length is cached, so this function does not do any work. *)
 end
 
+(** Represents a point on a path.
+
+    It can be queried for properties of the path at that point, such as its
+    tangent or its curvature.
+
+    To obtain a [GskPathPoint], use [Gsk.Path.get_closest_point],
+    [Gsk.Path.get_start_point], [Gsk.Path.get_end_point] or
+    [Gsk.PathMeasure.get_point].
+
+    Note that [GskPathPoint] structs are meant to be stack-allocated, and don't
+    hold a reference to the path object they are obtained from. It is the
+    callers responsibility to keep a reference to the path as long as the
+    [GskPathPoint] is used.
+
+    The class built on this module is in {!Ocgsk.Path_point}. *)
 and Path_point : sig
   type t = [ `path_point ] Gobject.obj
 

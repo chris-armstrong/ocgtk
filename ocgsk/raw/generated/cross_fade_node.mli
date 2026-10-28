@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CrossFadeNode: CrossFadeNode *)
 
-(** A render node cross fading between two child nodes. *)
+(** A render node cross fading between two child nodes.
+
+    The class built on this module is in {!Ocgsk.Cross_fade_node}. *)
 
 type t = [ `cross_fade_node | `render_node ] Gobject.obj
 
@@ -9,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_cross_fade_node_get_type"
 
 external new_ : Render_node.t -> Render_node.t -> float -> t
   = "ml_gsk_cross_fade_node_new"
-(** Create a new CrossFadeNode *)
+(** Creates a [GskRenderNode] that will do a cross-fade between [start] and
+    [end]. *)
 
 (* Methods *)
 

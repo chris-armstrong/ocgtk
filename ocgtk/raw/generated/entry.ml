@@ -70,17 +70,18 @@
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+ [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role.\n\n\
+ The class built on this module is in {!Ocgtk.Entry}."]
 
 type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_get_type"
 
 external new_ : unit -> t = "ml_gtk_entry_new"
-(** Create a new Entry *)
+(** Creates a new entry. *)
 
 external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
-(** Create a new Entry *)
+(** Creates a new entry with the specified text buffer. *)
 
 (* Methods *)
 

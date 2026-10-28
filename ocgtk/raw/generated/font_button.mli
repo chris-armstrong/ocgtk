@@ -16,17 +16,19 @@
     ]}
 
     [GtkFontButton] has a single CSS node with name fontbutton which contains a
-    button node with the .font style class. *)
+    button node with the .font style class.
+
+    The class built on this module is in {!Ocgtk.Font_button}. *)
 
 type t = [ `font_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_font_button_new"
-(** Create a new FontButton *)
+(** Creates a new font picker widget. *)
 
 external new_with_font : string -> t = "ml_gtk_font_button_new_with_font"
-(** Create a new FontButton *)
+(** Creates a new font picker widget showing the given font. *)
 
 (* Methods *)
 
@@ -60,6 +62,18 @@ external get_modal : t -> bool = "ml_gtk_font_button_get_modal"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the font button is activated.
+
+    The [::activate] signal on [GtkFontButton] is an action signal and emitting
+    it causes the button to present its dialog. *)
 
 val on_font_set :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user selects a font.
+
+    When handling this signal, use [Gtk.FontChooser.get_font] to find out which
+    font was just selected.
+
+    Note that this signal is only emitted when the user changes the font. If you
+    need to react to programmatic font changes as well, use the notify::font
+    signal. *)

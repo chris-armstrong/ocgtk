@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GrabBrokenEvent: GrabBrokenEvent *)
 
-(** An event related to a broken windowing system grab. *)
+(** An event related to a broken windowing system grab.
+
+    The class built on this module is in {!Ocgdk.Grab_broken_event}. *)
 
 type t = [ `grab_broken_event | `event ] Gobject.obj
 

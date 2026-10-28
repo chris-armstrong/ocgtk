@@ -44,7 +44,8 @@
  }\n\
  ]}\n\n\
  Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
- signal, and unref the [GMemoryMonitor] itself when exiting."]
+ signal, and unref the [GMemoryMonitor] itself when exiting.\n\n\
+ The class built on this module is in {!Ocgio.Memory_monitor}."]
 
 type t = [ `memory_monitor ] Gobject.obj
 

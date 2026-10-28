@@ -8,22 +8,45 @@ class type aspect_frame_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [self]. *)
 
   method get_obey_child : unit -> bool
+  (** Returns whether the child's size request should override the set aspect
+      ratio of the [GtkAspectFrame]. *)
+
   method get_ratio : unit -> float
+  (** Returns the desired aspect ratio of the child. *)
+
   method get_xalign : unit -> float
+  (** Returns the horizontal alignment of the child within the allocation of the
+      [GtkAspectFrame]. *)
+
   method get_yalign : unit -> float
+  (** Returns the vertical alignment of the child within the allocation of the
+      [GtkAspectFrame]. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [self]. *)
 
   method set_obey_child : bool -> unit
+  (** Sets whether the aspect ratio of the child's size request should override
+      the set aspect ratio of the [GtkAspectFrame]. *)
+
   method set_ratio : float -> unit
+  (** Sets the desired aspect ratio of the child. *)
+
   method set_xalign : float -> unit
+  (** Sets the horizontal alignment of the child within the allocation of the
+      [GtkAspectFrame]. *)
+
   method set_yalign : float -> unit
+  (** Sets the vertical alignment of the child within the allocation of the
+      [GtkAspectFrame]. *)
+
   method as_aspect_frame : Raw.Aspect_frame.t
 end
 

@@ -29,7 +29,9 @@
     you need to ensure that your new implementation also implements
     [Gio.LoadableIcon]. Additionally, you must provide an implementation of
     [Gio.Icon.serialize] that gives a result that is understood by
-    [Gio.Icon.deserialize], yielding one of the built-in icon types. *)
+    [Gio.Icon.deserialize], yielding one of the built-in icon types.
+
+    The class built on this module is in {!Ocgio.Icon}. *)
 
 type t = [ `icon ] Gobject.obj
 

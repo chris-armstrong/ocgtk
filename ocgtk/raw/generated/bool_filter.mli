@@ -1,14 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoolFilter: BoolFilter *)
 
-(** Evaluates a boolean expression to determine whether to include items. *)
+(** Evaluates a boolean expression to determine whether to include items.
+
+    The class built on this module is in {!Ocgtk.Bool_filter}. *)
 
 type t = [ `bool_filter | `filter | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_bool_filter_get_type"
 
 external new_ : Expression.t option -> t = "ml_gtk_bool_filter_new"
-(** Create a new BoolFilter *)
+(** Creates a new bool filter. *)
 
 (* Methods *)
 

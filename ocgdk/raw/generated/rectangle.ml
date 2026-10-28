@@ -15,7 +15,9 @@
     non-rectangular clipping of graphical operations.
 
     The Graphene library has a number of other data types for regions and
-    volumes in 2D and 3D. *)
+    volumes in 2D and 3D.
+
+    The class built on this module is in {!Ocgdk.Rectangle}. *)
 
 type t = [ `rectangle ] Gobject.obj
 

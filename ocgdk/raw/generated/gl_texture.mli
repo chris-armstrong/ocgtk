@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLTexture: GLTexture *)
 
-(** A [GdkTexture] representing a GL texture object. *)
+(** A [GdkTexture] representing a GL texture object.
+
+    The class built on this module is in {!Ocgdk.Gl_texture}. *)
 
 type t = [ `gl_texture | `texture | `object_ ] Gobject.obj
 

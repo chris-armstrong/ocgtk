@@ -8,21 +8,27 @@ type bustype =
   | `NONE  (** Not a message bus. *)
   | `SYSTEM  (** The system-wide message bus. *)
   | `SESSION  (** The login session message bus. *) ]
+(** An enumeration for well-known message buses.
+    @since 2.26 *)
 
 val bustype_of_int : int -> bustype
 val bustype_to_int : bustype -> int
 
 (* ConverterResult - enumeration *)
+
 type converterresult =
   [ `ERROR  (** There was an error during conversion. *)
   | `CONVERTED  (** Some data was consumed or produced *)
   | `FINISHED  (** The conversion is finished *)
   | `FLUSHED  (** Flushing is finished *) ]
+(** Results returned from g_converter_convert().
+    @since 2.24 *)
 
 val converterresult_of_int : int -> converterresult
 val converterresult_to_int : converterresult -> int
 
 (* CredentialsType - enumeration *)
+
 type credentialstype =
   [ `INVALID  (** Indicates an invalid native credential type. *)
   | `LINUX_UCRED  (** The native credentials type is a [struct ucred]. *)
@@ -39,11 +45,14 @@ type credentialstype =
     (** The native credentials type is a [struct xucred]. Added in 2.66. *)
   | `WIN32_PID
     (** The native credentials type is a PID [DWORD]. Added in 2.72. *) ]
+(** Enumeration describing different kinds of native credential types.
+    @since 2.26 *)
 
 val credentialstype_of_int : int -> credentialstype
 val credentialstype_to_int : credentialstype -> int
 
 (* DBusError - enumeration *)
+
 type dbuserror =
   [ `FAILED
     [@ocaml.doc
@@ -136,19 +145,25 @@ type dbuserror =
     (** Property you tried to access isn't known by the object. Since 2.42 *)
   | `PROPERTY_READ_ONLY
     (** Property you tried to set is read-only. Since 2.42 *) ]
+(** Error codes for the [G_DBUS_ERROR] error domain.
+    @since 2.26 *)
 
 val dbuserror_of_int : int -> dbuserror
 val dbuserror_to_int : dbuserror -> int
 
 (* DBusMessageByteOrder - enumeration *)
+
 type dbusmessagebyteorder =
   [ `BIG_ENDIAN  (** The byte order is big endian. *)
   | `LITTLE_ENDIAN  (** The byte order is little endian. *) ]
+(** Enumeration used to describe the byte order of a D-Bus message.
+    @since 2.26 *)
 
 val dbusmessagebyteorder_of_int : int -> dbusmessagebyteorder
 val dbusmessagebyteorder_to_int : dbusmessagebyteorder -> int
 
 (* DBusMessageHeaderField - enumeration *)
+
 type dbusmessageheaderfield =
   [ `INVALID  (** Not a valid header field. *)
   | `PATH  (** The object path. *)
@@ -162,32 +177,41 @@ type dbusmessageheaderfield =
   | `SIGNATURE  (** The signature of the message body. *)
   | `NUM_UNIX_FDS
     (** The number of UNIX file descriptors that accompany the message. *) ]
+(** Header fields used in [GDBusMessage].
+    @since 2.26 *)
 
 val dbusmessageheaderfield_of_int : int -> dbusmessageheaderfield
 val dbusmessageheaderfield_to_int : dbusmessageheaderfield -> int
 
 (* DBusMessageType - enumeration *)
+
 type dbusmessagetype =
   [ `INVALID  (** Message is of invalid type. *)
   | `METHOD_CALL  (** Method call. *)
   | `METHOD_RETURN  (** Method reply. *)
   | `ERROR  (** Error reply. *)
   | `SIGNAL  (** Signal emission. *) ]
+(** Message types used in [GDBusMessage].
+    @since 2.26 *)
 
 val dbusmessagetype_of_int : int -> dbusmessagetype
 val dbusmessagetype_to_int : dbusmessagetype -> int
 
 (* DataStreamByteOrder - enumeration *)
+
 type datastreambyteorder =
   [ `BIG_ENDIAN  (** Selects Big Endian byte order. *)
   | `LITTLE_ENDIAN  (** Selects Little Endian byte order. *)
   | `HOST_ENDIAN
     (** Selects endianness based on host machine's architecture. *) ]
+(** [GDataStreamByteOrder] is used to ensure proper endianness of streaming data
+    sources across various machine architectures. *)
 
 val datastreambyteorder_of_int : int -> datastreambyteorder
 val datastreambyteorder_to_int : datastreambyteorder -> int
 
 (* DataStreamNewlineType - enumeration *)
+
 type datastreamnewlinetype =
   [ `LF
     [@ocaml.doc
@@ -196,11 +220,14 @@ type datastreamnewlinetype =
   | `CR_LF
     [@ocaml.doc "Selects \"CR, LF\" line ending, common on Microsoft Windows."]
   | `ANY  (** Automatically try to handle any line ending type. *) ]
+(** [GDataStreamNewlineType] is used when checking for or setting the line
+    endings for a given file. *)
 
 val datastreamnewlinetype_of_int : int -> datastreamnewlinetype
 val datastreamnewlinetype_to_int : datastreamnewlinetype -> int
 
 (* DriveStartStopType - enumeration *)
+
 type drivestartstoptype =
   [ `UNKNOWN  (** Unknown or drive doesn't support start/stop. *)
   | `SHUTDOWN
@@ -215,11 +242,14 @@ type drivestartstoptype =
   | `PASSWORD
     (** The start/stop methods will unlock/lock the disk (for example using the
         ATA [SECURITY UNLOCK DEVICE] command) *) ]
+(** Enumeration describing how a drive can be started/stopped.
+    @since 2.22 *)
 
 val drivestartstoptype_of_int : int -> drivestartstoptype
 val drivestartstoptype_to_int : drivestartstoptype -> int
 
 (* EmblemOrigin - enumeration *)
+
 type emblemorigin =
   [ `UNKNOWN  (** Emblem of unknown origin *)
   | `DEVICE  (** Emblem adds device-specific information *)
@@ -228,20 +258,26 @@ type emblemorigin =
   | `TAG
     (** Emblem comes from a user-defined tag, e.g. set by nautilus (in the
         future) *) ]
+(** GEmblemOrigin is used to add information about the origin of the emblem to
+    [GEmblem].
+    @since 2.18 *)
 
 val emblemorigin_of_int : int -> emblemorigin
 val emblemorigin_to_int : emblemorigin -> int
 
 (* FileAttributeStatus - enumeration *)
+
 type fileattributestatus =
   [ `UNSET  (** Attribute value is unset (empty). *)
   | `SET  (** Attribute value is set. *)
   | `ERROR_SETTING  (** Indicates an error in setting the value. *) ]
+(** Used by g_file_set_attributes_from_info() when setting file attributes. *)
 
 val fileattributestatus_of_int : int -> fileattributestatus
 val fileattributestatus_to_int : fileattributestatus -> int
 
 (* FileAttributeType - enumeration *)
+
 type fileattributetype =
   [ `INVALID  (** indicates an invalid or uninitialized type. *)
   | `STRING  (** a null terminated UTF8 string. *)
@@ -253,11 +289,13 @@ type fileattributetype =
   | `INT64  (** a signed 8-byte/64-bit integer. *)
   | `OBJECT  (** a [GObject]. *)
   | `STRINGV  (** a [NULL] terminated char **. Since 2.22 *) ]
+(** The data types for file attributes. *)
 
 val fileattributetype_of_int : int -> fileattributetype
 val fileattributetype_to_int : fileattributetype -> int
 
 (* FileMonitorEvent - enumeration *)
+
 type filemonitorevent =
   [ `CHANGED  (** a file changed. *)
   | `CHANGES_DONE_HINT
@@ -281,11 +319,13 @@ type filemonitorevent =
     (** the file was moved out of the monitored directory to another location --
         only sent if the [G_FILE_MONITOR_WATCH_MOVES] flag is set. Since: 2.46
     *) ]
+(** Specifies what type of event a monitor event is. *)
 
 val filemonitorevent_of_int : int -> filemonitorevent
 val filemonitorevent_to_int : filemonitorevent -> int
 
 (* FileType - enumeration *)
+
 type filetype =
   [ `UNKNOWN  (** File's type is unknown. *)
   | `REGULAR  (** File handle represents a regular file. *)
@@ -298,22 +338,37 @@ type filetype =
        block device, or character device."]
   | `SHORTCUT  (** File is a shortcut (Windows systems). *)
   | `MOUNTABLE  (** File is a mountable location. *) ]
+(** Indicates the file's on-disk type.
+
+    On Windows systems a file will never have [G_FILE_TYPE_SYMBOLIC_LINK] type;
+    use [GFileInfo] and [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK] to determine
+    whether a file is a symlink or not. This is due to the fact that NTFS does
+    not have a single filesystem object type for symbolic links - it has files
+    that symlink to files, and directories that symlink to directories.
+    [GFileType] enumeration cannot precisely represent this important
+    distinction, which is why all Windows symlinks will continue to be reported
+    as [G_FILE_TYPE_REGULAR] or [G_FILE_TYPE_DIRECTORY]. *)
 
 val filetype_of_int : int -> filetype
 val filetype_to_int : filetype -> int
 
 (* FilesystemPreviewType - enumeration *)
+
 type filesystempreviewtype =
   [ `IF_ALWAYS  (** Only preview files if user has explicitly requested it. *)
   | `IF_LOCAL
     [@ocaml.doc
       "Preview files if user has requested preview of \"local\" files."]
   | `NEVER  (** Never preview files. *) ]
+(** Indicates a hint from the file system whether files should be previewed in a
+    file manager. Returned as the value of the key
+    [G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW]. *)
 
 val filesystempreviewtype_of_int : int -> filesystempreviewtype
 val filesystempreviewtype_to_int : filesystempreviewtype -> int
 
 (* IOErrorEnum - enumeration *)
+
 type ioerrorenum =
   [ `FAILED
     (** Generic error condition for when an operation fails and no more specific
@@ -385,22 +440,46 @@ type ioerrorenum =
   | `MESSAGE_TOO_LARGE  (** Message too large. Since 2.48. *)
   | `NO_SUCH_DEVICE  (** No such device found. Since 2.74 *)
   | `DESTINATION_UNSET  (** Destination address unset. Since 2.80 *) ]
+(** Error codes returned by GIO functions.
+
+    Note that this domain may be extended in future GLib releases. In general,
+    new error codes either only apply to new APIs, or else replace
+    [G_IO_ERROR_FAILED] in cases that were not explicitly distinguished before.
+    You should therefore avoid writing code like
+
+    {[
+    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
+      {
+        // Assume that this is EPRINTERONFIRE
+        ...
+      }
+    ]}
+
+    but should instead treat all unrecognized error codes the same as
+    [G_IO_ERROR_FAILED].
+
+    See also [GPollableReturn] for a cheaper way of returning
+    [G_IO_ERROR_WOULD_BLOCK] to callers without allocating a [GError]. *)
 
 val ioerrorenum_of_int : int -> ioerrorenum
 val ioerrorenum_to_int : ioerrorenum -> int
 
 (* IOModuleScopeFlags - enumeration *)
+
 type iomodulescopeflags =
   [ `NONE  (** No module scan flags *)
   | `BLOCK_DUPLICATES
     (** When using this scope to load or scan modules, automatically block a
         modules which has the same base basename as previously loaded module. *)
   ]
+(** Flags for use with g_io_module_scope_new().
+    @since 2.30 *)
 
 val iomodulescopeflags_of_int : int -> iomodulescopeflags
 val iomodulescopeflags_to_int : iomodulescopeflags -> int
 
 (* MemoryMonitorWarningLevel - enumeration *)
+
 type memorymonitorwarninglevel =
   [ `LOW
     (** Memory on the device is low, processes should free up unneeded resources
@@ -413,22 +492,36 @@ type memorymonitorwarninglevel =
   | `CRITICAL
     (** The system will soon start terminating processes to reclaim memory,
         including background processes. *) ]
+(** Memory availability warning levels.
+
+    Note that because new values might be added, it is recommended that
+    applications check [GMemoryMonitorWarningLevel] as ranges, for example:
+
+    {[
+    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+      drop_caches ();
+    ]}
+    @since 2.64 *)
 
 val memorymonitorwarninglevel_of_int : int -> memorymonitorwarninglevel
 val memorymonitorwarninglevel_to_int : memorymonitorwarninglevel -> int
 
 (* MountOperationResult - enumeration *)
+
 type mountoperationresult =
   [ `HANDLED
     (** The request was fulfilled and the user specified data is now available
     *)
   | `ABORTED  (** The user requested the mount operation to be aborted *)
   | `UNHANDLED  (** The request was unhandled (i.e. not implemented) *) ]
+(** [GMountOperationResult] is returned as a result when a request for
+    information is send by the mounting operation. *)
 
 val mountoperationresult_of_int : int -> mountoperationresult
 val mountoperationresult_to_int : mountoperationresult -> int
 
 (* NetworkConnectivity - enumeration *)
+
 type networkconnectivity =
   [ `LOCAL
     (** The host is not configured with a route to the Internet; it may or may
@@ -442,11 +535,14 @@ type networkconnectivity =
   | `FULL
     (** The host is connected to a network, and appears to be able to reach the
         full Internet. *) ]
+(** The host's network connectivity state, as reported by [GNetworkMonitor].
+    @since 2.44 *)
 
 val networkconnectivity_of_int : int -> networkconnectivity
 val networkconnectivity_to_int : networkconnectivity -> int
 
 (* NotificationPriority - enumeration *)
+
 type notificationpriority =
   [ `NORMAL
     (** the default priority, to be used for the majority of notifications (for
@@ -463,59 +559,118 @@ type notificationpriority =
     (** for urgent notifications, or notifications that require a response in a
         short space of time (for example phone calls or emergency warnings) *)
   ]
+(** Priority levels for [GNotifications].
+    @since 2.42 *)
 
 val notificationpriority_of_int : int -> notificationpriority
 val notificationpriority_to_int : notificationpriority -> int
 
 (* PasswordSave - enumeration *)
+
 type passwordsave =
   [ `NEVER  (** never save a password. *)
   | `FOR_SESSION  (** save a password for the session. *)
   | `PERMANENTLY  (** save a password permanently. *) ]
+(** [GPasswordSave] is used to indicate the lifespan of a saved password.
+
+    [Gvfs] stores passwords in the Gnome keyring when this flag allows it to,
+    and later retrieves it again from there. *)
 
 val passwordsave_of_int : int -> passwordsave
 val passwordsave_to_int : passwordsave -> int
 
 (* PollableReturn - enumeration *)
+
 type pollablereturn =
   [ `FAILED  (** Generic error condition for when an operation fails. *)
   | `OK  (** The operation was successfully finished. *)
   | `WOULD_BLOCK  (** The operation would block. *) ]
+(** Return value for various IO operations that signal errors via the return
+    value and not necessarily via a [GError].
+
+    This enum exists to be able to return errors to callers without having to
+    allocate a [GError]. Allocating [GErrors] can be quite expensive for
+    regularly happening errors like [G_IO_ERROR_WOULD_BLOCK].
+
+    In case of [G_POLLABLE_RETURN_FAILED] a [GError] should be set for the
+    operation to give details about the error that happened.
+    @since 2.60 *)
 
 val pollablereturn_of_int : int -> pollablereturn
 val pollablereturn_to_int : pollablereturn -> int
 
 (* ResolverError - enumeration *)
+
 type resolvererror =
   [ `NOT_FOUND  (** the requested name/address/service was not found *)
   | `TEMPORARY_FAILURE
     (** the requested information could not be looked up due to a network error
         or similar problem *)
   | `INTERNAL  (** unknown error *) ]
+(** An error code used with [G_RESOLVER_ERROR] in a [GError] returned from a
+    [GResolver] routine.
+    @since 2.22 *)
 
 val resolvererror_of_int : int -> resolvererror
 val resolvererror_to_int : resolvererror -> int
 
 (* ResolverRecordType - enumeration *)
+
 type resolverrecordtype =
   [ `SRV  (** look up DNS SRV records for a domain *)
   | `MX  (** look up DNS MX records for a domain *)
   | `TXT  (** look up DNS TXT records for a name *)
   | `SOA  (** look up DNS SOA records for a zone *)
   | `NS  (** look up DNS NS records for a domain *) ]
+(** The type of record that g_resolver_lookup_records() or
+    g_resolver_lookup_records_async() should retrieve. The records are returned
+    as lists of [GVariant] tuples. Each record type has different values in the
+    variant tuples returned.
+
+    [G_RESOLVER_RECORD_SRV] records are returned as variants with the signature
+    [(qqqs)], containing a [guint16] with the priority, a [guint16] with the
+    weight, a [guint16] with the port, and a string of the hostname.
+
+    [G_RESOLVER_RECORD_MX] records are returned as variants with the signature
+    [(qs)], representing a [guint16] with the preference, and a string
+    containing the mail exchanger hostname.
+
+    [G_RESOLVER_RECORD_TXT] records are returned as variants with the signature
+    [(as)], representing an array of the strings in the text record. Note: Most
+    TXT records only contain a single string, but
+    {{:https://tools.ietf.org/html/rfc1035#section-3.3.14}RFC 1035} does allow a
+    record to contain multiple strings. The RFC which defines the interpretation
+    of a specific TXT record will likely require concatenation of multiple
+    strings if they are present, as with
+    {{:https://tools.ietf.org/html/rfc7208#section-3.3}RFC 7208}.
+
+    [G_RESOLVER_RECORD_SOA] records are returned as variants with the signature
+    [(ssuuuuu)], representing a string containing the primary name server, a
+    string containing the administrator, the serial as a [guint32], the refresh
+    interval as a [guint32], the retry interval as a [guint32], the expire
+    timeout as a [guint32], and the TTL as a [guint32].
+
+    [G_RESOLVER_RECORD_NS] records are returned as variants with the signature
+    [(s)], representing a string of the hostname of the name server.
+    @since 2.34 *)
 
 val resolverrecordtype_of_int : int -> resolverrecordtype
 val resolverrecordtype_to_int : resolverrecordtype -> int
 
 (* ResourceError - enumeration *)
+
 type resourceerror =
   [ `NOT_FOUND  (** no file was found at the requested path *)
   | `INTERNAL  (** unknown error *) ]
+(** An error code used with [G_RESOURCE_ERROR] in a [GError] returned from a
+    [GResource] routine.
+    @since 2.32 *)
 
 val resourceerror_of_int : int -> resourceerror
 val resourceerror_to_int : resourceerror -> int
 
 (* SocketClientEvent - enumeration *)
+
 type socketclientevent =
   [ `RESOLVING  (** The client is doing a DNS lookup. *)
   | `RESOLVED  (** The client has completed a DNS lookup. *)
@@ -531,42 +686,67 @@ type socketclientevent =
   | `TLS_HANDSHAKED  (** The client has performed a TLS handshake. *)
   | `COMPLETE  (** The client is done with a particular [GSocketConnectable]. *)
   ]
+(** Describes an event occurring on a [GSocketClient]. See the
+    [GSocketClient::event] signal for more details.
+
+    Additional values may be added to this type in the future.
+    @since 2.32 *)
 
 val socketclientevent_of_int : int -> socketclientevent
 val socketclientevent_to_int : socketclientevent -> int
 
 (* SocketFamily - enumeration *)
+
 type socketfamily =
   [ `INVALID  (** no address family *)
   | `UNIX  (** the UNIX domain family *)
   | `IPV4  (** the IPv4 family *)
   | `IPV6  (** the IPv6 family *) ]
+(** The protocol family of a [GSocketAddress]. (These values are identical to
+    the system defines [AF_INET], [AF_INET6] and [AF_UNIX], if available.)
+    @since 2.22 *)
 
 val socketfamily_of_int : int -> socketfamily
 val socketfamily_to_int : socketfamily -> int
 
 (* SocketListenerEvent - enumeration *)
+
 type socketlistenerevent =
   [ `BINDING  (** The listener is about to bind a socket. *)
   | `BOUND  (** The listener has bound a socket. *)
   | `LISTENING  (** The listener is about to start listening on this socket. *)
   | `LISTENED  (** The listener is now listening on this socket. *) ]
+(** Describes an event occurring on a [GSocketListener]. See the
+    [GSocketListener::event] signal for more details.
+
+    Additional values may be added to this type in the future.
+    @since 2.46 *)
 
 val socketlistenerevent_of_int : int -> socketlistenerevent
 val socketlistenerevent_to_int : socketlistenerevent -> int
 
 (* SocketProtocol - enumeration *)
+
 type socketprotocol =
   [ `UNKNOWN  (** The protocol type is unknown *)
   | `DEFAULT  (** The default protocol for the family/type *)
   | `TCP  (** TCP over IP *)
   | `UDP  (** UDP over IP *)
   | `SCTP  (** SCTP over IP *) ]
+(** A protocol identifier is specified when creating a [GSocket], which is a
+    family/type specific identifier, where 0 means the default protocol for the
+    particular family/type.
+
+    This enum contains a set of commonly available and used protocols. You can
+    also pass any other identifiers handled by the platform in order to use
+    protocols not listed here.
+    @since 2.22 *)
 
 val socketprotocol_of_int : int -> socketprotocol
 val socketprotocol_to_int : socketprotocol -> int
 
 (* SocketType - enumeration *)
+
 type sockettype =
   [ `INVALID  (** Type unknown or wrong *)
   | `STREAM  (** Reliable connection-based byte streams (e.g. TCP). *)
@@ -574,26 +754,38 @@ type sockettype =
   | `SEQPACKET
     (** Reliable connection-based passing of datagrams of fixed maximum length
         (e.g. SCTP). *) ]
+(** Flags used when creating a [GSocket]. Some protocols may not implement all
+    the socket types.
+    @since 2.22 *)
 
 val sockettype_of_int : int -> sockettype
 val sockettype_to_int : sockettype -> int
 
 (* TlsAuthenticationMode - enumeration *)
+
 type tlsauthenticationmode =
   [ `NONE  (** client authentication not required *)
   | `REQUESTED  (** client authentication is requested *)
   | `REQUIRED  (** client authentication is required *) ]
+(** The client authentication mode for a [GTlsServerConnection].
+    @since 2.28 *)
 
 val tlsauthenticationmode_of_int : int -> tlsauthenticationmode
 val tlsauthenticationmode_to_int : tlsauthenticationmode -> int
 
 (* TlsCertificateRequestFlags - enumeration *)
+
 type tlscertificaterequestflags = [ `NONE  (** No flags *) ]
+(** Flags for g_tls_interaction_request_certificate(),
+    g_tls_interaction_request_certificate_async(), and
+    g_tls_interaction_invoke_request_certificate().
+    @since 2.40 *)
 
 val tlscertificaterequestflags_of_int : int -> tlscertificaterequestflags
 val tlscertificaterequestflags_to_int : tlscertificaterequestflags -> int
 
 (* TlsChannelBindingError - enumeration *)
+
 type tlschannelbindingerror =
   [ `NOT_IMPLEMENTED
     (** Either entire binding retrieval facility or specific binding type is not
@@ -613,11 +805,15 @@ type tlschannelbindingerror =
         functions. *)
   | `GENERAL_ERROR
     (** Any other backend error preventing binding data retrieval. *) ]
+(** An error code used with [G_TLS_CHANNEL_BINDING_ERROR] in a [GError] to
+    indicate a TLS channel binding retrieval error.
+    @since 2.66 *)
 
 val tlschannelbindingerror_of_int : int -> tlschannelbindingerror
 val tlschannelbindingerror_to_int : tlschannelbindingerror -> int
 
 (* TlsChannelBindingType - enumeration *)
+
 type tlschannelbindingtype =
   [ `UNIQUE
     (** {{:https://tools.ietf.org/html/rfc5929#section-3}[tls-unique]} binding
@@ -628,20 +824,31 @@ type tlschannelbindingtype =
   | `EXPORTER
     (** {{:https://www.rfc-editor.org/rfc/rfc9266.html}[tls-exporter]} binding
         type. Since: 2.74 *) ]
+(** The type of TLS channel binding data to retrieve from [GTlsConnection] or
+    [GDtlsConnection], as documented by RFC 5929 or RFC 9266. The
+    {{:https://tools.ietf.org/html/rfc5929#section-5}[tls-unique-for-telnet]}
+    binding type is not currently implemented.
+    @since 2.66 *)
 
 val tlschannelbindingtype_of_int : int -> tlschannelbindingtype
 val tlschannelbindingtype_to_int : tlschannelbindingtype -> int
 
 (* TlsDatabaseLookupFlags - enumeration *)
+
 type tlsdatabaselookupflags =
   [ `NONE  (** No lookup flags *)
   | `KEYPAIR  (** Restrict lookup to certificates that have a private key. *)
   ]
+(** Flags for g_tls_database_lookup_certificate_for_handle(),
+    g_tls_database_lookup_certificate_issuer(), and
+    g_tls_database_lookup_certificates_issued_by().
+    @since 2.30 *)
 
 val tlsdatabaselookupflags_of_int : int -> tlsdatabaselookupflags
 val tlsdatabaselookupflags_to_int : tlsdatabaselookupflags -> int
 
 (* TlsError - enumeration *)
+
 type tlserror =
   [ `UNAVAILABLE  (** No TLS provider is available *)
   | `MISC  (** Miscellaneous TLS error *)
@@ -666,22 +873,30 @@ type tlserror =
   | `BAD_CERTIFICATE_PASSWORD
     (** The certificate failed to load because a password was incorrect. Since:
         2.72 *) ]
+(** An error code used with [G_TLS_ERROR] in a [GError] returned from a
+    TLS-related routine.
+    @since 2.28 *)
 
 val tlserror_of_int : int -> tlserror
 val tlserror_to_int : tlserror -> int
 
 (* TlsInteractionResult - enumeration *)
+
 type tlsinteractionresult =
   [ `UNHANDLED  (** The interaction was unhandled (i.e. not implemented). *)
   | `HANDLED  (** The interaction completed, and resulting data is available. *)
   | `FAILED
     (** The interaction has failed, or was cancelled. and the operation should
         be aborted. *) ]
+(** [GTlsInteractionResult] is returned by various functions in
+    [GTlsInteraction] when finishing an interaction request.
+    @since 2.30 *)
 
 val tlsinteractionresult_of_int : int -> tlsinteractionresult
 val tlsinteractionresult_to_int : tlsinteractionresult -> int
 
 (* TlsProtocolVersion - enumeration *)
+
 type tlsprotocolversion =
   [ `UNKNOWN  (** No protocol version or unknown protocol version *)
   | `SSL_3_0  (** SSL 3.0, which is insecure and should not be used *)
@@ -697,20 +912,34 @@ type tlsprotocolversion =
   | `DTLS_1_2
     (** DTLS 1.2, defined by
         {{:https://datatracker.ietf.org/doc/html/rfc6347}RFC 6347} *) ]
+(** The TLS or DTLS protocol version used by a [GTlsConnection] or
+    [GDtlsConnection]. The integer values of these versions are sequential to
+    ensure newer known protocol versions compare greater than older known
+    versions. Any known DTLS protocol version will compare greater than any SSL
+    or TLS protocol version. The protocol version may be
+    [G_TLS_PROTOCOL_VERSION_UNKNOWN] if the TLS backend supports a newer
+    protocol version that GLib does not yet know about. This means that it's
+    possible for an unknown DTLS protocol version to compare less than the TLS
+    protocol versions.
+    @since 2.70 *)
 
 val tlsprotocolversion_of_int : int -> tlsprotocolversion
 val tlsprotocolversion_to_int : tlsprotocolversion -> int
 
 (* TlsRehandshakeMode - enumeration *)
+
 type tlsrehandshakemode =
   [ `NEVER  (** Never allow rehandshaking *)
   | `SAFELY  (** Allow safe rehandshaking only *)
   | `UNSAFELY  (** Allow unsafe rehandshaking *) ]
+(** When to allow rehandshaking. See g_tls_connection_set_rehandshake_mode().
+    @since 2.28 *)
 
 val tlsrehandshakemode_of_int : int -> tlsrehandshakemode
 val tlsrehandshakemode_to_int : tlsrehandshakemode -> int
 
 (* UnixSocketAddressType - enumeration *)
+
 type unixsocketaddresstype =
   [ `INVALID  (** invalid *)
   | `ANONYMOUS  (** anonymous *)
@@ -719,26 +948,45 @@ type unixsocketaddresstype =
   | `ABSTRACT_PADDED
     (** an abstract name, 0-padded to the full length of a unix socket name *)
   ]
+(** The type of name used by a [GUnixSocketAddress].
+    [G_UNIX_SOCKET_ADDRESS_PATH] indicates a traditional unix domain socket
+    bound to a filesystem path. [G_UNIX_SOCKET_ADDRESS_ANONYMOUS] indicates a
+    socket not bound to any name (eg, a client-side socket, or a socket created
+    with socketpair()).
+
+    For abstract sockets, there are two incompatible ways of naming them; the
+    man pages suggest using the entire [struct sockaddr_un] as the name, padding
+    the unused parts of the %sun_path field with zeroes; this corresponds to
+    [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]. However, many programs instead just
+    use a portion of %sun_path, and pass an appropriate smaller length to bind()
+    or connect(). This is [G_UNIX_SOCKET_ADDRESS_ABSTRACT].
+    @since 2.26 *)
 
 val unixsocketaddresstype_of_int : int -> unixsocketaddresstype
 val unixsocketaddresstype_to_int : unixsocketaddresstype -> int
 
 (* ZlibCompressorFormat - enumeration *)
+
 type zlibcompressorformat =
   [ `ZLIB  (** deflate compression with zlib header *)
   | `GZIP  (** gzip file format *)
   | `RAW  (** deflate compression with no header *) ]
+(** Used to select the type of data format to use for [GZlibDecompressor] and
+    [GZlibCompressor].
+    @since 2.24 *)
 
 val zlibcompressorformat_of_int : int -> zlibcompressorformat
 val zlibcompressorformat_to_int : zlibcompressorformat -> int
 
 (* AppInfoCreateFlags - bitfield/flags *)
+
 type appinfocreateflags_flag =
   [ `NONE  (** No flags. *)
   | `NEEDS_TERMINAL  (** Application opens in a terminal window. *)
   | `SUPPORTS_URIS  (** Application supports URI arguments. *)
   | `SUPPORTS_STARTUP_NOTIFICATION
     (** Application supports startup notification. Since 2.26 *) ]
+(** Flags used when creating a [GAppInfo]. *)
 
 type appinfocreateflags = appinfocreateflags_flag list
 
@@ -746,6 +994,7 @@ val appinfocreateflags_of_int : int -> appinfocreateflags
 val appinfocreateflags_to_int : appinfocreateflags -> int
 
 (* ApplicationFlags - bitfield/flags *)
+
 type applicationflags_flag =
   [ `FLAGS_NONE  (** Default flags. *)
   | `DEFAULT_FLAGS  (** Default flags. *)
@@ -786,6 +1035,8 @@ type applicationflags_flag =
   | `REPLACE
     (** Take over from another instance. This flag is usually set by passing
         [--gapplication-replace] on the commandline. Since: 2.60 *) ]
+(** Flags used to define the behaviour of a [GApplication].
+    @since 2.28 *)
 
 type applicationflags = applicationflags_flag list
 
@@ -793,6 +1044,7 @@ val applicationflags_of_int : int -> applicationflags
 val applicationflags_to_int : applicationflags -> int
 
 (* AskPasswordFlags - bitfield/flags *)
+
 type askpasswordflags_flag =
   [ `NEED_PASSWORD  (** operation requires a password. *)
   | `NEED_USERNAME  (** operation requires a username. *)
@@ -800,6 +1052,8 @@ type askpasswordflags_flag =
   | `SAVING_SUPPORTED  (** operation supports saving settings. *)
   | `ANONYMOUS_SUPPORTED  (** operation supports anonymous users. *)
   | `TCRYPT  (** operation takes TCRYPT parameters (Since: 2.58) *) ]
+(** [GAskPasswordFlags] are used to request specific information from the user,
+    or to notify the user of their choices in an authentication situation. *)
 
 type askpasswordflags = askpasswordflags_flag list
 
@@ -807,6 +1061,7 @@ val askpasswordflags_of_int : int -> askpasswordflags
 val askpasswordflags_to_int : askpasswordflags -> int
 
 (* BusNameOwnerFlags - bitfield/flags *)
+
 type busnameownerflags_flag =
   [ `NONE  (** No flags set. *)
   | `ALLOW_REPLACEMENT
@@ -819,6 +1074,8 @@ type busnameownerflags_flag =
     (** If another message bus connection owns the name, immediately return an
         error from [Gio.bus_own_name] rather than entering the waiting queue for
         that name. *) ]
+(** Flags used in g_bus_own_name().
+    @since 2.26 *)
 
 type busnameownerflags = busnameownerflags_flag list
 
@@ -826,11 +1083,14 @@ val busnameownerflags_of_int : int -> busnameownerflags
 val busnameownerflags_to_int : busnameownerflags -> int
 
 (* BusNameWatcherFlags - bitfield/flags *)
+
 type busnamewatcherflags_flag =
   [ `NONE  (** No flags set. *)
   | `AUTO_START
     (** If no-one owns the name when beginning to watch the name, ask the bus to
         launch an owner for the name. *) ]
+(** Flags used in g_bus_watch_name().
+    @since 2.26 *)
 
 type busnamewatcherflags = busnamewatcherflags_flag list
 
@@ -838,10 +1098,13 @@ val busnamewatcherflags_of_int : int -> busnamewatcherflags
 val busnamewatcherflags_to_int : busnamewatcherflags -> int
 
 (* ConverterFlags - bitfield/flags *)
+
 type converterflags_flag =
   [ `NONE  (** No flags. *)
   | `INPUT_AT_END  (** At end of input data *)
   | `FLUSH  (** Flush data *) ]
+(** Flags used when calling a g_converter_convert().
+    @since 2.24 *)
 
 type converterflags = converterflags_flag list
 
@@ -849,6 +1112,7 @@ val converterflags_of_int : int -> converterflags
 val converterflags_to_int : converterflags -> int
 
 (* DBusCallFlags - bitfield/flags *)
+
 type dbuscallflags_flag =
   [ `NONE  (** No flags set. *)
   | `NO_AUTO_START
@@ -857,6 +1121,8 @@ type dbuscallflags_flag =
   | `ALLOW_INTERACTIVE_AUTHORIZATION
     (** the caller is prepared to wait for interactive authorization. Since
         2.46. *) ]
+(** Flags used in g_dbus_connection_call() and similar APIs.
+    @since 2.26 *)
 
 type dbuscallflags = dbuscallflags_flag list
 
@@ -864,11 +1130,14 @@ val dbuscallflags_of_int : int -> dbuscallflags
 val dbuscallflags_to_int : dbuscallflags -> int
 
 (* DBusCapabilityFlags - bitfield/flags *)
+
 type dbuscapabilityflags_flag =
   [ `NONE  (** No flags set. *)
   | `UNIX_FD_PASSING
     (** The connection supports exchanging UNIX file descriptors with the remote
         peer. *) ]
+(** Capabilities negotiated with the remote peer.
+    @since 2.26 *)
 
 type dbuscapabilityflags = dbuscapabilityflags_flag list
 
@@ -876,6 +1145,7 @@ val dbuscapabilityflags_of_int : int -> dbuscapabilityflags
 val dbuscapabilityflags_to_int : dbuscapabilityflags -> int
 
 (* DBusConnectionFlags - bitfield/flags *)
+
 type dbusconnectionflags_flag =
   [ `NONE  (** No flags set. *)
   | `AUTHENTICATION_CLIENT  (** Perform authentication against server. *)
@@ -900,6 +1170,8 @@ type dbusconnectionflags_flag =
         authentication, for which this flag makes connections to a server in
         another user namespace succeed, but causes a deadlock when connecting to
         a GDBus server older than 2.73.3. Since: 2.74 *) ]
+(** Flags used when creating a new [GDBusConnection].
+    @since 2.26 *)
 
 type dbusconnectionflags = dbusconnectionflags_flag list
 
@@ -907,6 +1179,7 @@ val dbusconnectionflags_of_int : int -> dbusconnectionflags
 val dbusconnectionflags_to_int : dbusconnectionflags -> int
 
 (* DBusInterfaceSkeletonFlags - bitfield/flags *)
+
 type dbusinterfaceskeletonflags_flag =
   [ `NONE  (** No flags set. *)
   | `HANDLE_METHOD_INVOCATIONS_IN_THREAD
@@ -915,6 +1188,8 @@ type dbusinterfaceskeletonflags_flag =
         IO without blocking any other part of the process. It also means that
         the method implementation must use locking to access data structures
         used by other threads. *) ]
+(** Flags describing the behavior of a [GDBusInterfaceSkeleton] instance.
+    @since 2.30 *)
 
 type dbusinterfaceskeletonflags = dbusinterfaceskeletonflags_flag list
 
@@ -922,6 +1197,7 @@ val dbusinterfaceskeletonflags_of_int : int -> dbusinterfaceskeletonflags
 val dbusinterfaceskeletonflags_to_int : dbusinterfaceskeletonflags -> int
 
 (* DBusMessageFlags - bitfield/flags *)
+
 type dbusmessageflags_flag =
   [ `NONE  (** No flags set. *)
   | `NO_REPLY_EXPECTED  (** A reply is not expected. *)
@@ -931,6 +1207,8 @@ type dbusmessageflags_flag =
   | `ALLOW_INTERACTIVE_AUTHORIZATION
     (** If set on a method call, this flag means that the caller is prepared to
         wait for interactive authorization. Since 2.46. *) ]
+(** Message flags used in [GDBusMessage].
+    @since 2.26 *)
 
 type dbusmessageflags = dbusmessageflags_flag list
 
@@ -938,12 +1216,15 @@ val dbusmessageflags_of_int : int -> dbusmessageflags
 val dbusmessageflags_to_int : dbusmessageflags -> int
 
 (* DBusObjectManagerClientFlags - bitfield/flags *)
+
 type dbusobjectmanagerclientflags_flag =
   [ `NONE  (** No flags set. *)
   | `DO_NOT_AUTO_START
     (** If not set and the manager is for a well-known name, then request the
         bus to launch an owner for the name if no-one owns the name. This flag
         can only be used in managers for well-known names. *) ]
+(** Flags used when constructing a [GDBusObjectManagerClient].
+    @since 2.30 *)
 
 type dbusobjectmanagerclientflags = dbusobjectmanagerclientflags_flag list
 
@@ -951,10 +1232,13 @@ val dbusobjectmanagerclientflags_of_int : int -> dbusobjectmanagerclientflags
 val dbusobjectmanagerclientflags_to_int : dbusobjectmanagerclientflags -> int
 
 (* DBusPropertyInfoFlags - bitfield/flags *)
+
 type dbuspropertyinfoflags_flag =
   [ `NONE  (** No flags set. *)
   | `READABLE  (** Property is readable. *)
   | `WRITABLE  (** Property is writable. *) ]
+(** Flags describing the access control of a D-Bus property.
+    @since 2.26 *)
 
 type dbuspropertyinfoflags = dbuspropertyinfoflags_flag list
 
@@ -962,6 +1246,7 @@ val dbuspropertyinfoflags_of_int : int -> dbuspropertyinfoflags
 val dbuspropertyinfoflags_to_int : dbuspropertyinfoflags -> int
 
 (* DBusProxyFlags - bitfield/flags *)
+
 type dbusproxyflags_flag =
   [ `NONE  (** No flags set. *)
   | `DO_NOT_LOAD_PROPERTIES  (** Don't load properties. *)
@@ -988,6 +1273,8 @@ type dbusproxyflags_flag =
     (** Don't actually send the AddMatch D-Bus call for this signal
         subscription. This gives you more control over which match rules you add
         (but you must add them manually). (Since: 2.72) *) ]
+(** Flags used when constructing an instance of a [GDBusProxy] derived class.
+    @since 2.26 *)
 
 type dbusproxyflags = dbusproxyflags_flag list
 
@@ -995,11 +1282,14 @@ val dbusproxyflags_of_int : int -> dbusproxyflags
 val dbusproxyflags_to_int : dbusproxyflags -> int
 
 (* DBusSendMessageFlags - bitfield/flags *)
+
 type dbussendmessageflags_flag =
   [ `NONE  (** No flags set. *)
   | `PRESERVE_SERIAL
     (** Do not automatically assign a serial number from the [GDBusConnection]
         object when sending a message. *) ]
+(** Flags used when sending [GDBusMessages] on a [GDBusConnection].
+    @since 2.26 *)
 
 type dbussendmessageflags = dbussendmessageflags_flag list
 
@@ -1007,6 +1297,7 @@ val dbussendmessageflags_of_int : int -> dbussendmessageflags
 val dbussendmessageflags_to_int : dbussendmessageflags -> int
 
 (* DBusServerFlags - bitfield/flags *)
+
 type dbusserverflags_flag =
   [ `NONE  (** No flags set. *)
   | `RUN_IN_THREAD
@@ -1017,6 +1308,8 @@ type dbusserverflags_flag =
   | `AUTHENTICATION_REQUIRE_SAME_USER
     (** Require the UID of the peer to be the same as the UID of the server when
         authenticating. (Since: 2.68) *) ]
+(** Flags used when creating a [GDBusServer].
+    @since 2.26 *)
 
 type dbusserverflags = dbusserverflags_flag list
 
@@ -1024,6 +1317,7 @@ val dbusserverflags_of_int : int -> dbusserverflags
 val dbusserverflags_to_int : dbusserverflags -> int
 
 (* DBusSignalFlags - bitfield/flags *)
+
 type dbussignalflags_flag =
   [ `NONE  (** No flags set. *)
   | `NO_MATCH_RULE
@@ -1037,6 +1331,9 @@ type dbussignalflags_flag =
     (** Match first arguments that contain an object path that is either
         equivalent to the given path, or one of the paths is a subpath of the
         other. *) ]
+(** Flags used when subscribing to signals via
+    g_dbus_connection_signal_subscribe().
+    @since 2.26 *)
 
 type dbussignalflags = dbussignalflags_flag list
 
@@ -1044,12 +1341,15 @@ val dbussignalflags_of_int : int -> dbussignalflags
 val dbussignalflags_to_int : dbussignalflags -> int
 
 (* DBusSubtreeFlags - bitfield/flags *)
+
 type dbussubtreeflags_flag =
   [ `NONE  (** No flags set. *)
   | `DISPATCH_TO_UNENUMERATED_NODES
     (** Method calls to objects not in the enumerated range will still be
         dispatched. This is useful if you want to dynamically spawn objects in
         the subtree. *) ]
+(** Flags passed to g_dbus_connection_register_subtree().
+    @since 2.26 *)
 
 type dbussubtreeflags = dbussubtreeflags_flag list
 
@@ -1057,18 +1357,24 @@ val dbussubtreeflags_of_int : int -> dbussubtreeflags
 val dbussubtreeflags_to_int : dbussubtreeflags -> int
 
 (* DriveStartFlags - bitfield/flags *)
+
 type drivestartflags_flag = [ `NONE  (** No flags set. *) ]
+(** Flags used when starting a drive.
+    @since 2.22 *)
+
 type drivestartflags = drivestartflags_flag list
 
 val drivestartflags_of_int : int -> drivestartflags
 val drivestartflags_to_int : drivestartflags -> int
 
 (* FileAttributeInfoFlags - bitfield/flags *)
+
 type fileattributeinfoflags_flag =
   [ `NONE  (** no flags set. *)
   | `COPY_WITH_FILE  (** copy the attribute values when the file is copied. *)
   | `COPY_WHEN_MOVED  (** copy the attribute values when the file is moved. *)
   ]
+(** Flags specifying the behaviour of an attribute. *)
 
 type fileattributeinfoflags = fileattributeinfoflags_flag list
 
@@ -1076,6 +1382,7 @@ val fileattributeinfoflags_of_int : int -> fileattributeinfoflags
 val fileattributeinfoflags_to_int : fileattributeinfoflags -> int
 
 (* FileCopyFlags - bitfield/flags *)
+
 type filecopyflags_flag =
   [ `NONE  (** No flags set. *)
   | `OVERWRITE  (** Overwrite any existing files *)
@@ -1092,6 +1399,7 @@ type filecopyflags_flag =
   | `TARGET_DEFAULT_MODIFIED_TIME
     (** Use default modification timestamps instead of copying them from the
         source file. Since 2.80 *) ]
+(** Flags used when copying or moving files. *)
 
 type filecopyflags = filecopyflags_flag list
 
@@ -1099,6 +1407,7 @@ val filecopyflags_of_int : int -> filecopyflags
 val filecopyflags_to_int : filecopyflags -> int
 
 (* FileCreateFlags - bitfield/flags *)
+
 type filecreateflags_flag =
   [ `NONE  (** No flags set. *)
   | `PRIVATE
@@ -1115,6 +1424,7 @@ type filecreateflags_flag =
        be exactly like that. This flag can only be used with\n\
        g_file_replace() and its variants, including g_file_replace_contents().\n\
        Since 2.20"] ]
+(** Flags used when an operation may create a file. *)
 
 type filecreateflags = filecreateflags_flag list
 
@@ -1122,6 +1432,7 @@ val filecreateflags_of_int : int -> filecreateflags
 val filecreateflags_to_int : filecreateflags -> int
 
 (* FileMeasureFlags - bitfield/flags *)
+
 type filemeasureflags_flag =
   [ `NONE  (** No flags set. *)
   | `REPORT_ANY_ERROR
@@ -1136,6 +1447,8 @@ type filemeasureflags_flag =
         file types are not specified in a standard way. *)
   | `NO_XDEV  (** Do not cross mount point boundaries. Compare with [du -x]. *)
   ]
+(** Flags that can be used with g_file_measure_disk_usage().
+    @since 2.38 *)
 
 type filemeasureflags = filemeasureflags_flag list
 
@@ -1143,6 +1456,7 @@ val filemeasureflags_of_int : int -> filemeasureflags
 val filemeasureflags_to_int : filemeasureflags -> int
 
 (* FileMonitorFlags - bitfield/flags *)
+
 type filemonitorflags_flag =
   [ `NONE  (** No flags set. *)
   | `WATCH_MOUNTS  (** Watch for mount events. *)
@@ -1159,6 +1473,7 @@ type filemonitorflags_flag =
         [G_FILE_MONITOR_EVENT_RENAMED], [G_FILE_MONITOR_EVENT_MOVED_IN] and
         [G_FILE_MONITOR_EVENT_MOVED_OUT] events to be emitted when possible.
         Since: 2.46. *) ]
+(** Flags used to set what a [GFileMonitor] will watch for. *)
 
 type filemonitorflags = filemonitorflags_flag list
 
@@ -1166,9 +1481,11 @@ val filemonitorflags_of_int : int -> filemonitorflags
 val filemonitorflags_to_int : filemonitorflags -> int
 
 (* FileQueryInfoFlags - bitfield/flags *)
+
 type filequeryinfoflags_flag =
   [ `NONE  (** No flags set. *)
   | `NOFOLLOW_SYMLINKS  (** Don't follow symlinks. *) ]
+(** Flags used when querying a [GFileInfo]. *)
 
 type filequeryinfoflags = filequeryinfoflags_flag list
 
@@ -1176,6 +1493,7 @@ val filequeryinfoflags_of_int : int -> filequeryinfoflags
 val filequeryinfoflags_to_int : filequeryinfoflags -> int
 
 (* IOStreamSpliceFlags - bitfield/flags *)
+
 type iostreamspliceflags_flag =
   [ `NONE  (** Do not close either stream. *)
   | `CLOSE_STREAM1  (** Close the first stream after the splice. *)
@@ -1183,6 +1501,8 @@ type iostreamspliceflags_flag =
   | `WAIT_FOR_BOTH
     (** Wait for both splice operations to finish before calling the callback.
     *) ]
+(** GIOStreamSpliceFlags determine how streams should be spliced.
+    @since 2.28 *)
 
 type iostreamspliceflags = iostreamspliceflags_flag list
 
@@ -1190,18 +1510,23 @@ val iostreamspliceflags_of_int : int -> iostreamspliceflags
 val iostreamspliceflags_to_int : iostreamspliceflags -> int
 
 (* MountMountFlags - bitfield/flags *)
+
 type mountmountflags_flag = [ `NONE  (** No flags set. *) ]
+(** Flags used when mounting a mount. *)
+
 type mountmountflags = mountmountflags_flag list
 
 val mountmountflags_of_int : int -> mountmountflags
 val mountmountflags_to_int : mountmountflags -> int
 
 (* MountUnmountFlags - bitfield/flags *)
+
 type mountunmountflags_flag =
   [ `NONE  (** No flags set. *)
   | `FORCE
     (** Unmount even if there are outstanding file operations on the mount. *)
   ]
+(** Flags used when an unmounting a mount. *)
 
 type mountunmountflags = mountunmountflags_flag list
 
@@ -1209,10 +1534,12 @@ val mountunmountflags_of_int : int -> mountunmountflags
 val mountunmountflags_to_int : mountunmountflags -> int
 
 (* OutputStreamSpliceFlags - bitfield/flags *)
+
 type outputstreamspliceflags_flag =
   [ `NONE  (** Do not close either stream. *)
   | `CLOSE_SOURCE  (** Close the source stream after the splice. *)
   | `CLOSE_TARGET  (** Close the target stream after the splice. *) ]
+(** GOutputStreamSpliceFlags determine how streams should be spliced. *)
 
 type outputstreamspliceflags = outputstreamspliceflags_flag list
 
@@ -1220,10 +1547,13 @@ val outputstreamspliceflags_of_int : int -> outputstreamspliceflags
 val outputstreamspliceflags_to_int : outputstreamspliceflags -> int
 
 (* ResolverNameLookupFlags - bitfield/flags *)
+
 type resolvernamelookupflags_flag =
   [ `DEFAULT  (** default behavior (same as g_resolver_lookup_by_name()) *)
   | `IPV4_ONLY  (** only resolve ipv4 addresses *)
   | `IPV6_ONLY  (** only resolve ipv6 addresses *) ]
+(** Flags to modify lookup behavior.
+    @since 2.60 *)
 
 type resolvernamelookupflags = resolvernamelookupflags_flag list
 
@@ -1231,8 +1561,12 @@ val resolvernamelookupflags_of_int : int -> resolvernamelookupflags
 val resolvernamelookupflags_to_int : resolvernamelookupflags -> int
 
 (* ResourceFlags - bitfield/flags *)
+
 type resourceflags_flag =
   [ `NONE  (** No flags set. *) | `COMPRESSED  (** The file is compressed. *) ]
+(** GResourceFlags give information about a particular file inside a resource
+    bundle.
+    @since 2.32 *)
 
 type resourceflags = resourceflags_flag list
 
@@ -1240,13 +1574,18 @@ val resourceflags_of_int : int -> resourceflags
 val resourceflags_to_int : resourceflags -> int
 
 (* ResourceLookupFlags - bitfield/flags *)
+
 type resourcelookupflags_flag = [ `NONE  (** No flags set. *) ]
+(** GResourceLookupFlags determine how resource path lookups are handled.
+    @since 2.32 *)
+
 type resourcelookupflags = resourcelookupflags_flag list
 
 val resourcelookupflags_of_int : int -> resourcelookupflags
 val resourcelookupflags_to_int : resourcelookupflags -> int
 
 (* SettingsBindFlags - bitfield/flags *)
+
 type settingsbindflags_flag =
   [ `DEFAULT  (** Equivalent to [G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET] *)
   | `GET
@@ -1267,6 +1606,10 @@ type settingsbindflags_flag =
         that invert the boolean value when mapping between the setting and the
         property. The setting and property must both be booleans. You cannot
         pass this flag to [Gio.Settings.bind_with_mapping]. *) ]
+(** Flags used when creating a binding.
+
+    These flags determine in which direction the binding works. The default is
+    to synchronize in both directions. *)
 
 type settingsbindflags = settingsbindflags_flag list
 
@@ -1274,6 +1617,7 @@ val settingsbindflags_of_int : int -> settingsbindflags
 val settingsbindflags_to_int : settingsbindflags -> int
 
 (* SocketMsgFlags - bitfield/flags *)
+
 type socketmsgflags_flag =
   [ `NONE  (** No flags. *)
   | `OOB  (** Request to send/receive out of band data. *)
@@ -1281,6 +1625,12 @@ type socketmsgflags_flag =
   | `DONTROUTE
     (** Don't use a gateway to send out the packet, only send to hosts on
         directly connected networks. *) ]
+(** Flags used in g_socket_receive_message() and g_socket_send_message(). The
+    flags listed in the enum are some commonly available flags, but the values
+    used for them are the same as on the platform, and any other flags are
+    passed in/out as is. So to use a platform specific flag, just include the
+    right system header and pass in the flag.
+    @since 2.22 *)
 
 type socketmsgflags = socketmsgflags_flag list
 
@@ -1288,6 +1638,7 @@ val socketmsgflags_of_int : int -> socketmsgflags
 val socketmsgflags_to_int : socketmsgflags -> int
 
 (* SubprocessFlags - bitfield/flags *)
+
 type subprocessflags_flag =
   [ `NONE  (** No flags. *)
   | `STDIN_PIPE
@@ -1319,6 +1670,16 @@ type subprocessflags_flag =
   | `SEARCH_PATH_FROM_ENVP
     (** if path searching is needed when spawning the subprocess, use the [PATH]
         in the launcher environment. (Since: 2.72) *) ]
+(** Flags to define the behaviour of a [GSubprocess].
+
+    Note that the default for stdin is to redirect from [/dev/null]. For stdout
+    and stderr the default are for them to inherit the corresponding descriptor
+    from the calling process.
+
+    Note that it is a programmer error to mix 'incompatible' flags. For example,
+    you may not request both [G_SUBPROCESS_FLAGS_STDOUT_PIPE] and
+    [G_SUBPROCESS_FLAGS_STDOUT_SILENCE].
+    @since 2.40 *)
 
 type subprocessflags = subprocessflags_flag list
 
@@ -1326,13 +1687,18 @@ val subprocessflags_of_int : int -> subprocessflags
 val subprocessflags_to_int : subprocessflags -> int
 
 (* TestDBusFlags - bitfield/flags *)
+
 type testdbusflags_flag = [ `NONE  (** No flags. *) ]
+(** Flags to define future [GTestDBus] behaviour.
+    @since 2.34 *)
+
 type testdbusflags = testdbusflags_flag list
 
 val testdbusflags_of_int : int -> testdbusflags
 val testdbusflags_to_int : testdbusflags -> int
 
 (* TlsCertificateFlags - bitfield/flags *)
+
 type tlscertificateflags_flag =
   [ `NO_FLAGS  (** No flags set. Since: 2.74 *)
   | `UNKNOWN_CA  (** The signing certificate authority is not known. *)
@@ -1348,6 +1714,18 @@ type tlscertificateflags_flag =
   | `INSECURE  (** The certificate's algorithm is considered insecure. *)
   | `GENERIC_ERROR  (** Some other error occurred validating the certificate *)
   | `VALIDATE_ALL  (** the combination of all of the above flags *) ]
+(** A set of flags describing TLS certification validation. This can be used to
+    describe why a particular certificate was rejected (for example, in
+    [GTlsConnection::accept]-certificate).
+
+    GLib guarantees that if certificate verification fails, at least one flag
+    will be set, but it does not guarantee that all possible flags will be set.
+    Accordingly, you may not safely decide to ignore any particular type of
+    error. For example, it would be incorrect to mask
+    [G_TLS_CERTIFICATE_EXPIRED] if you want to allow expired certificates,
+    because this could potentially be the only error flag set even if other
+    problems exist with the certificate.
+    @since 2.28 *)
 
 type tlscertificateflags = tlscertificateflags_flag list
 
@@ -1355,13 +1733,18 @@ val tlscertificateflags_of_int : int -> tlscertificateflags
 val tlscertificateflags_to_int : tlscertificateflags -> int
 
 (* TlsDatabaseVerifyFlags - bitfield/flags *)
+
 type tlsdatabaseverifyflags_flag = [ `NONE  (** No verification flags *) ]
+(** Flags for g_tls_database_verify_chain().
+    @since 2.30 *)
+
 type tlsdatabaseverifyflags = tlsdatabaseverifyflags_flag list
 
 val tlsdatabaseverifyflags_of_int : int -> tlsdatabaseverifyflags
 val tlsdatabaseverifyflags_to_int : tlsdatabaseverifyflags -> int
 
 (* TlsPasswordFlags - bitfield/flags *)
+
 type tlspasswordflags_flag =
   [ `NONE  (** No flags *)
   | `RETRY  (** The password was wrong, and the user should retry. *)
@@ -1376,6 +1759,8 @@ type tlspasswordflags_flag =
     (** For PKCS #11, the security officer PIN is required. Since: 2.70. *)
   | `PKCS11_CONTEXT_SPECIFIC
     (** For PKCS #11, the context-specific PIN is required. Since: 2.70. *) ]
+(** Various flags for the password.
+    @since 2.30 *)
 
 type tlspasswordflags = tlspasswordflags_flag list
 

@@ -5,7 +5,9 @@
 
     [GtkTreeSortable] is an interface to be implemented by tree models which
     support sorting. The [GtkTreeView] uses the methods provided by this
-    interface to sort the model. *)
+    interface to sort the model.
+
+    The class built on this module is in {!Ocgtk.Tree_sortable}. *)
 
 type t = [ `tree_sortable ] Gobject.obj
 

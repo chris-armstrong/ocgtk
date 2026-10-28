@@ -44,7 +44,8 @@
  ]}\n\n\
  [GtkComboBoxText] has a single CSS node with name combobox. It adds\n\
  the style class .combo to the main CSS nodes of its entry and button\n\
- children, and the .linked class to the node of its internal box."]
+ children, and the .linked class to the node of its internal box.\n\n\
+ The class built on this module is in {!Ocgtk.Combo_box_text}."]
 
 type t =
   [ `combo_box_text | `combo_box | `widget | `initially_unowned | `object_ ]
@@ -53,10 +54,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_combo_box_text_get_type"
 
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"
-(** Create a new ComboBoxText *)
+(** Creates a new [GtkComboBoxText]. *)
 
 external new_with_entry : unit -> t = "ml_gtk_combo_box_text_new_with_entry"
-(** Create a new ComboBoxText *)
+(** Creates a new [GtkComboBoxText] with an entry. *)
 
 (* Methods *)
 

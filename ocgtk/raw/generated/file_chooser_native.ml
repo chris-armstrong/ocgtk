@@ -111,7 +111,8 @@
  On macOS the [NSSavePanel] and [NSOpenPanel] classes are used to provide\n\
  native file chooser dialogs. Some features provided by [GtkFileChooser]\n\
  are not supported:\n\n\
- - Shortcut folders."]
+ - Shortcut folders.\n\n\
+ The class built on this module is in {!Ocgtk.File_chooser_native}."]
 
 type t = [ `file_chooser_native | `native_dialog | `object_ ] Gobject.obj
 
@@ -124,7 +125,7 @@ external new_ :
   string option ->
   string option ->
   t = "ml_gtk_file_chooser_native_new"
-(** Create a new FileChooserNative *)
+(** Creates a new [GtkFileChooserNative]. *)
 
 (* Methods *)
 

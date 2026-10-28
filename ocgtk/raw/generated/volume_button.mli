@@ -4,7 +4,9 @@
 (** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 
-    An example GtkVolumeButton *)
+    An example GtkVolumeButton
+
+    The class built on this module is in {!Ocgtk.Volume_button}. *)
 
 type t =
   [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]
@@ -13,7 +15,11 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_volume_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_volume_button_new"
-(** Create a new VolumeButton *)
+(** Creates a [GtkVolumeButton].
+
+    The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
+    values can be obtained and modified using the functions from
+    [Gtk.ScaleButton]. *)
 
 (* Methods *)
 (* Properties *)

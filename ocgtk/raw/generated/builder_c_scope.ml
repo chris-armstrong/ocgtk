@@ -14,13 +14,19 @@
 
     Note that unless [Gtk.BuilderCScope.add_callback_symbol] is called for all
     signal callbacks which are referenced by the loaded XML, this functionality
-    will require that [GModule] be supported on the platform. *)
+    will require that [GModule] be supported on the platform.
+
+    The class built on this module is in {!Ocgtk.Builder_c_scope}. *)
 
 type t = [ `builder_c_scope | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_builder_c_scope_get_type"
 
 external new_ : unit -> t = "ml_gtk_builder_cscope_new"
-(** Create a new BuilderCScope *)
+(** Creates a new [GtkBuilderCScope] object to use with future [GtkBuilder]
+    instances.
+
+    Calling this function is only necessary if you want to add custom callbacks
+    via [Gtk.BuilderCScope.add_callback_symbol]. *)
 
 (* Methods *)

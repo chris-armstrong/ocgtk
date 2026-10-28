@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragSurface: DragSurface *)
 
-(** A surface that is used during DND. *)
+(** A surface that is used during DND.
+
+    The class built on this module is in {!Ocgdk.Drag_surface}. *)
 
 type t = [ `drag_surface ] Gobject.obj
 

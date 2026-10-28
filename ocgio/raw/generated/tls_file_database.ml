@@ -3,7 +3,9 @@
 
 (** [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
     their certificate information from a file. It is an interface which TLS
-    library specific subtypes implement. *)
+    library specific subtypes implement.
+
+    The class built on this module is in {!Ocgio.Tls_file_database}. *)
 
 type t = [ `tls_file_database ] Gobject.obj
 

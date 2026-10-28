@@ -1,14 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Size: Size *)
 
-(** A size. *)
+(** A size.
+
+    The class built on this module is in {!Ocgraphene.Size}. *)
 
 type t = [ `size ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_graphene_size_get_type"
 
 external alloc : unit -> t = "ml_graphene_size_alloc"
-(** Create a new Size *)
+(** Allocates a new #graphene_size_t.
+
+    The contents of the returned value are undefined. *)
 
 (* Methods *)
 

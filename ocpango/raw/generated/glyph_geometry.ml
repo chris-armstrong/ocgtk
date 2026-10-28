@@ -15,7 +15,9 @@
     + Assume the current point is (x, y)
     + Render the current glyph at (x + x_offset, y + y_offset),
     + Advance the current point to (x + width, y)
-    + Render the next glyph *)
+    + Render the next glyph
+
+    The class built on this module is in {!Ocpango.Glyph_geometry}. *)
 
 type t = [ `glyph_geometry ] Gobject.obj
 

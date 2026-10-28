@@ -10,14 +10,16 @@
     The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
 
     See [Gtk.ColorDialogButton] for a convenient control that uses
-    [GtkColorDialog] and presents the results. *)
+    [GtkColorDialog] and presents the results.
+
+    The class built on this module is in {!Ocgtk.Color_dialog}. *)
 
 type t = [ `color_dialog | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_color_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_color_dialog_new"
-(** Create a new ColorDialog *)
+(** Creates a new [GtkColorDialog] object. *)
 
 (* Methods *)
 

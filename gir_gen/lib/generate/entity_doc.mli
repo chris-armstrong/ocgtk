@@ -1,0 +1,51 @@
+(* Entity_doc — the docs of a class, interface or record's modules, class
+   type and class at both layers: the translated GIR doc where there is one,
+   and the fixed text that tells a reader how the modules fit together. *)
+
+val l1_module :
+  namespace:string ->
+  class_name:string ->
+  class_doc:string option ->
+  Doc_emit.t option
+(** The layer 1 module's floating doc: the class doc, then a pointer to the
+    layer 2 module. Without a class doc, it starts with "Bindings for
+    [class_name]." instead, because the first paragraph is also the module's
+    synopsis on its parent's page. *)
+
+val l2_module :
+  namespace:string ->
+  class_name:string ->
+  has_constructors:bool ->
+  class_doc:string option ->
+  Doc_emit.t option
+(** The layer 2 module's floating doc: the class doc, then where its members are
+    (the class type) and the layer 1 module it is built on. *)
+
+val class_type : class_name:string -> Doc_emit.t option
+(** The canned doc of the layer 2 [class type]. *)
+
+val class_ : namespace:string -> class_name:string -> Doc_emit.t option
+(** The canned doc of the layer 2 [class]: the layer 1 type it wraps. *)
+
+type layer = Layer1 | Layer2
+
+val combined_module :
+  namespace:string ->
+  layer:layer ->
+  class_names:string list ->
+  Doc_emit.t option
+(** The floating doc of a module that defines a cycle's classes together: which
+    modules re-export them, and that those are the ones to use. *)
+
+val constructors_heading : string
+(** The floating [Constructors] heading, with the [constructors] label the layer
+    2 module doc links to. *)
+
+val constructor :
+  namespace:string ->
+  class_name:string ->
+  Types.gir_constructor ->
+  Doc_emit.t option
+(** A constructor's doc at either layer: its translated GIR doc, else "Create a
+    new [class_name]. Wraps [c_function]." with the C function linked to its
+    gi-docgen page when the namespace has a gi-docgen site. *)

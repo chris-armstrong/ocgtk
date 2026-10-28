@@ -14,7 +14,9 @@
 
     [GtkShortcut] does provide functionality to make it easy for users to work
     with shortcuts, either by providing informational strings for display
-    purposes or by allowing shortcuts to be configured. *)
+    purposes or by allowing shortcuts to be configured.
+
+    The class built on this module is in {!Ocgtk.Shortcut}. *)
 
 type t = [ `shortcut | `object_ ] Gobject.obj
 
@@ -22,7 +24,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_get_type"
 
 external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t
   = "ml_gtk_shortcut_new"
-(** Create a new Shortcut *)
+(** Creates a new [GtkShortcut] that is triggered by [trigger] and then
+    activates [action]. *)
 
 (* Methods *)
 

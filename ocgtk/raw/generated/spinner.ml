@@ -18,14 +18,16 @@
 
     {b Accessibility}
 
-    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role.
+
+    The class built on this module is in {!Ocgtk.Spinner}. *)
 
 type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_spinner_get_type"
 
 external new_ : unit -> t = "ml_gtk_spinner_new"
-(** Create a new Spinner *)
+(** Returns a new spinner widget. Not yet started. *)
 
 (* Methods *)
 

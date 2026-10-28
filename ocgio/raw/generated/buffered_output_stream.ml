@@ -14,7 +14,9 @@
     [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
     output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
     that the buffer's size cannot be reduced below the size of the data within
-    the buffer. *)
+    the buffer.
+
+    The class built on this module is in {!Ocgio.Buffered_output_stream}. *)
 
 type t =
   [ `buffered_output_stream | `filter_output_stream | `output_stream | `object_ ]
@@ -24,11 +26,11 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_buffered_output_stream_get_type"
 
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
-(** Create a new BufferedOutputStream *)
+(** Creates a new buffered output stream for a base stream. *)
 
 external new_sized : Output_stream.t -> Gsize.t -> t
   = "ml_g_buffered_output_stream_new_sized"
-(** Create a new BufferedOutputStream *)
+(** Creates a new buffered output stream with a given buffer size. *)
 
 (* Methods *)
 

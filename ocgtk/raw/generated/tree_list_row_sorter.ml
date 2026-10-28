@@ -12,14 +12,20 @@
     sort_model = gtk_sort_list_model_new (tree_model, sorter);
     selection = gtk_single_selection_new sort_model;
     gtk_column_view_set_model (view, G_LIST_MODEL selection)
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Tree_list_row_sorter}. *)
 
 type t = [ `tree_list_row_sorter | `sorter | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_list_row_sorter_get_type"
 
 external new_ : Sorter.t option -> t = "ml_gtk_tree_list_row_sorter_new"
-(** Create a new TreeListRowSorter *)
+(** Create a special-purpose sorter that applies the sorting of [sorter] to the
+    levels of a [GtkTreeListModel].
+
+    Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
+    [FALSE] as it can only sort [Gtk.TreeListRow]s. *)
 
 (* Methods *)
 

@@ -3,7 +3,9 @@
 
 (** Activates a widget with a mnemonic.
 
-    This means that [Gtk.Widget.mnemonic_activate] is called. *)
+    This means that [Gtk.Widget.mnemonic_activate] is called.
+
+    The class built on this module is in {!Ocgtk.Mnemonic_action}. *)
 
 type t = [ `mnemonic_action | `shortcut_action | `object_ ] Gobject.obj
 

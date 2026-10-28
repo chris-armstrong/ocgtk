@@ -42,22 +42,49 @@
     [GdkPixbuf.PixbufAnimation] instance, and then call and
     [GdkPixbuf.PixbufAnimation.get_iter] to get a
     [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
-    stamp. *)
+    stamp.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_loader}. *)
 
 type t = [ `pixbuf_loader | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_loader_get_type"
 
 external new_ : unit -> t = "ml_gdk_pixbuf_loader_new"
-(** Create a new PixbufLoader *)
+(** Creates a new pixbuf loader object. *)
 
 external new_with_mime_type : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_loader_new_with_mime_type"
-(** Create a new PixbufLoader *)
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of MIME type [mime_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected MIME type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces a\n\
+   specific MIME type.\n\n\
+   The list of supported mime types depends on what image loaders\n\
+   are installed, but typically \"image/png\", \"image/jpeg\", \"image/gif\",\n\
+   \"image/tiff\" and \"image/x-xpixmap\" are among the supported mime types.\n\
+   To obtain the full list of supported mime types, call\n\
+   gdk_pixbuf_format_get_mime_types() on each of the [GdkPixbufFormat]\n\
+   structs returned by gdk_pixbuf_get_formats()."]
 
 external new_with_type : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_loader_new_with_type"
-(** Create a new PixbufLoader *)
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of type [image_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces\n\
+   a specific type.\n\n\
+   The list of supported image formats depends on what image loaders\n\
+   are installed, but typically \"png\", \"jpeg\", \"gif\", \"tiff\" and\n\
+   \"xpm\" are among the supported formats. To obtain the full list of\n\
+   supported image formats, call gdk_pixbuf_format_get_name() on each\n\
+   of the [GdkPixbufFormat] structs returned by gdk_pixbuf_get_formats()."]
 
 (* Methods *)
 
@@ -124,18 +151,41 @@ external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
 
 val on_area_prepared :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** This signal is emitted when the pixbuf loader has allocated the pixbuf in
+    the desired size.
+
+    After this signal is emitted, applications can call
+    gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded pixbuf. *)
 
 val on_area_updated :
   ?after:bool ->
   t ->
   callback:(x:int -> y:int -> width:int -> height:int -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted when a significant area of the image being loaded has
+    been updated.
+
+    Normally it means that a complete scanline has been read in, but it could be
+    a different area as well.
+
+    Applications can use this signal to know when to repaint areas of an image
+    that is being loaded. *)
 
 val on_closed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** This signal is emitted when gdk_pixbuf_loader_close() is called.
+
+    It can be used by different parts of an application to receive notification
+    when an image loader is closed by the code that drives it. *)
 
 val on_size_prepared :
   ?after:bool ->
   t ->
   callback:(width:int -> height:int -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted when the pixbuf loader has been fed the initial
+    amount of data that is required to figure out the size of the image that it
+    will create.
+
+    Applications can call gdk_pixbuf_loader_set_size() in response to this
+    signal to set the desired size to which the image should be scaled. *)

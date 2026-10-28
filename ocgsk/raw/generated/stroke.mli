@@ -1,14 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Stroke: Stroke *)
 
-(** Collects the parameters that are needed when stroking a path. *)
+(** Collects the parameters that are needed when stroking a path.
+
+    The class built on this module is in {!Ocgsk.Stroke}. *)
 
 type t = [ `stroke ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_stroke_get_type"
 
 external new_ : float -> t = "ml_gsk_stroke_new"
-(** Create a new Stroke *)
+(** Creates a new [GskStroke] with the given [line_width]. *)
 
 (* Methods *)
 

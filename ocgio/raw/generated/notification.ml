@@ -44,14 +44,21 @@
     because the object will not exist if the application is autostarted as a
     result of a notification being clicked.
 
-    A notification can be sent with [Gio.Application.send_notification]. *)
+    A notification can be sent with [Gio.Application.send_notification].
+
+    The class built on this module is in {!Ocgio.Notification}. *)
 
 type t = [ `notification | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_notification_get_type"
 
 external new_ : string -> t = "ml_g_notification_new"
-(** Create a new Notification *)
+(** Creates a new [GNotification] with [title] as its title.
+
+    After populating [notification] with more details, it can be sent to the
+    desktop shell with g_application_send_notification(). Changing any
+    properties after this call will not have any effect until resending
+    [notification]. *)
 
 (* Methods *)
 

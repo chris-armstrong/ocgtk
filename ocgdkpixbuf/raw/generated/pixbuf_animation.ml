@@ -13,7 +13,9 @@
 
     To display an animation you don't need to understand its representation,
     however; you just ask [GdkPixbuf] what should be displayed at a given point
-    in time. *)
+    in time.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_animation}. *)
 
 type t = [ `pixbuf_animation | `object_ ] Gobject.obj
 
@@ -22,22 +24,44 @@ external gtype : unit -> Gobject.Type.t
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_file"
-(** Create a new PixbufAnimation *)
+(** Creates a new animation by loading it from a file.
+
+    The file format is detected automatically.
+
+    If the file's format does not support multi-frame images, then an animation
+    with a single frame will be created.
+
+    Possible errors are in the [GDK_PIXBUF_ERROR] and [G_FILE_ERROR] domains. *)
 
 external new_from_resource : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_resource"
-(** Create a new PixbufAnimation *)
+(** Creates a new pixbuf animation by loading an image from an resource.
+
+    The file format is detected automatically. If [NULL] is returned, then
+    [error] will be set. *)
 
 external new_from_stream :
   Ocgio_raw.Input_stream.t ->
   Ocgio_raw.Cancellable.t option ->
   (t, GError.t) result = "ml_gdk_pixbuf_animation_new_from_stream"
-(** Create a new PixbufAnimation *)
+(** Creates a new animation by loading it from an input stream.
+
+    The file format is detected automatically.
+
+    If [NULL] is returned, then [error] will be set.
+
+    The [cancellable] can be used to abort the operation from another thread. If
+    the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be
+    returned. Other possible errors are in the [GDK_PIXBUF_ERROR] and
+    [G_IO_ERROR] domains.
+
+    The stream is not closed. *)
 
 external new_from_stream_finish :
   Ocgio_raw.Async_result.t -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_stream_finish"
-(** Create a new PixbufAnimation *)
+(** Finishes an asynchronous pixbuf animation creation operation started with
+    [GdkPixbuf.PixbufAnimation.new_from_stream_async]. *)
 
 (* Methods *)
 

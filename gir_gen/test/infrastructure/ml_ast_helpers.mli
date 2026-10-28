@@ -54,6 +54,17 @@ val is_unit_type : Ppxlib.Parsetree.core_type -> bool
 val is_string_type : Ppxlib.Parsetree.core_type -> bool
 val is_string_option_type : Ppxlib.Parsetree.core_type -> bool
 val is_result_type_with_ginfo_error : Ppxlib.Parsetree.core_type -> bool
+
+val doc_of_attributes : Ppxlib.Parsetree.attributes -> string option
+(** The text of an [ocaml.doc] attribute, which is also what a doc comment
+    before or after an item parses to. *)
+
+val module_preamble : Ppxlib.Parsetree.signature -> string option
+(** The text of the first floating doc ([ocaml.text]) of a signature. *)
+
+val type_declaration_doc : Ppxlib.Parsetree.type_declaration -> string option
+(** The type's doc, from a doc comment or an [ocaml.doc] attribute. *)
+
 val get_variant_tags : Ppxlib.Parsetree.type_declaration -> string list
 val wraps_gobject_obj : Ppxlib.Parsetree.type_declaration -> bool
 val is_polymorphic_variant : Ppxlib.Parsetree.type_declaration -> bool

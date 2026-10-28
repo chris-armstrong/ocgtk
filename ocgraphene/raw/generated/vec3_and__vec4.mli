@@ -1,13 +1,27 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgraphene.Raw.Vec3}, {!Ocgraphene.Raw.Vec4},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** A structure capable of holding a vector with three dimensions: x, y, and z.
+
+    The contents of the #graphene_vec3_t structure are private and should never
+    be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Vec3}. *)
 module rec Vec3 : sig
   type t = [ `vec3 ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_vec3_get_type"
 
   external alloc : unit -> t = "ml_graphene_vec3_alloc"
-  (** Create a new Vec3 *)
+  (** Allocates a new #graphene_vec3_t structure.
+
+      The contents of the returned structure are undefined.
+
+      Use graphene_vec3_init() to initialize the vector. *)
 
   (* Methods *)
 
@@ -110,13 +124,24 @@ module rec Vec3 : sig
   (** Adds each component of the two given vectors. *)
 end
 
+(** A structure capable of holding a vector with four dimensions: x, y, z, and
+    w.
+
+    The contents of the #graphene_vec4_t structure are private and should never
+    be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Vec4}. *)
 and Vec4 : sig
   type t = [ `vec4 ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_vec4_get_type"
 
   external alloc : unit -> t = "ml_graphene_vec4_alloc"
-  (** Create a new Vec4 *)
+  (** Allocates a new #graphene_vec4_t structure.
+
+      The contents of the returned structure are undefined.
+
+      Use graphene_vec4_init() to initialize the vector. *)
 
   (* Methods *)
 

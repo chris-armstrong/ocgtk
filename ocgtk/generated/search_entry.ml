@@ -7,44 +7,106 @@ class type search_entry_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the entry is activated.
+
+      The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+  *)
 
   method on_next_match :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiates a move to the next match for the current
+      search string.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement moving between matches.
+
+      The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>g</kbd>. *)
 
   method on_previous_match :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiates a move to the previous match for the
+      current search string.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement moving between matches.
+
+      The default bindings for this signal is
+      <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd>. *)
 
   method on_search_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted with a delay. The length of the delay can be changed with the
+      [Gtk.SearchEntry:search-delay] property. *)
 
   method on_search_started :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user initiated a search on the entry. *)
 
   method on_stop_search :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user stops a search via keyboard input.
+
+      This is a keybinding signal.
+
+      Applications should connect to it, to implement hiding the search entry in
+      this case.
+
+      The default bindings for this signal is <kbd>Escape</kbd>. *)
 
   method get_input_hints : unit -> Enums.inputhints
+  (** Gets the input purpose for [entry]. *)
+
   method get_input_purpose : unit -> Enums.inputpurpose
+  (** Gets the input purpose of [entry]. *)
 
   method get_key_capture_widget :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the widget that [entry] is capturing key events from. *)
 
   method get_placeholder_text : unit -> string option
+  (** Gets the placeholder text associated with [entry]. *)
+
   method get_search_delay : unit -> int
+  (** Get the delay to be used between the last keypress and the
+      [Gtk.SearchEntry::search-changed] signal being emitted. *)
+
   method set_input_hints : Enums.inputhints -> unit
+  (** Sets the input hints for [entry]. *)
+
   method set_input_purpose : Enums.inputpurpose -> unit
+  (** Sets the input purpose of [entry]. *)
 
   method set_key_capture_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets [widget] as the widget that [entry] will capture key events from.
+
+      Key events are consumed by the search entry to start or continue a search.
+
+      If the entry is part of a [GtkSearchBar], it is preferable to call
+      [Gtk.SearchBar.set_key_capture_widget] instead, which will reveal the
+      entry in addition to triggering the search entry.
+
+      Note that despite the name of this function, the events are only
+      'captured' in the bubble phase, which means that editable child widgets of
+      [widget] will receive text input before it gets captured. If that is not
+      desired, you can capture and forward the events yourself with
+      [Gtk.EventControllerKey.forward]. *)
 
   method set_placeholder_text : string option -> unit
+  (** Sets the placeholder text associated with [entry]. *)
+
   method set_search_delay : int -> unit
+  (** Set the delay to be used between the last keypress and the
+      [Gtk.SearchEntry::search-changed] signal being emitted. *)
+
   method activates_default : bool
   method set_activates_default : bool -> unit
   method as_search_entry : Raw.Search_entry.t

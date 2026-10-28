@@ -36,14 +36,16 @@
     attributes are specified for a [GFileInfo].
 
     [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
-    attributes. *)
+    attributes.
+
+    The class built on this module is in {!Ocgio.File_info}. *)
 
 type t = [ `file_info | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_file_info_get_type"
 
 external new_ : unit -> t = "ml_g_file_info_new"
-(** Create a new FileInfo *)
+(** Creates a new file info structure. *)
 
 (* Methods *)
 

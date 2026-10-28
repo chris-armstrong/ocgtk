@@ -11,7 +11,9 @@
 
     Applications may wish to store the page_setup and print_settings from the
     print setup and copy them to the PrintDialog if they want to keep using
-    them. *)
+    them.
+
+    The class built on this module is in {!Ocgtk.Print_setup}. *)
 
 type t = [ `print_setup ] Gobject.obj
 

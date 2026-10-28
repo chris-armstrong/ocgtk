@@ -1,7 +1,14 @@
 class type fontset_simple_t = object
   inherit Context_and__font_and__font_map_and__fontset.fontset_t
+
   method append : Context_and__font_and__font_map_and__fontset.font_t -> unit
+  (** Adds a font to the fontset.
+
+      The fontset takes ownership of [font]. *)
+
   method size : unit -> int
+  (** Returns the number of fonts in the fontset. *)
+
   method as_fontset_simple : Raw.Fontset_simple.t
 end
 

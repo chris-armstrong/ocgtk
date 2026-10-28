@@ -38,14 +38,15 @@
  [GtkStack] has a single CSS node named stack.\n\n\
  {b Accessibility}\n\n\
  [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack\n\
- pages, which are the accessible parent objects of the child widgets."]
+ pages, which are the accessible parent objects of the child widgets.\n\n\
+ The class built on this module is in {!Ocgtk.Stack}."]
 
 type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_stack_get_type"
 
 external new_ : unit -> t = "ml_gtk_stack_new"
-(** Create a new Stack *)
+(** Creates a new [GtkStack]. *)
 
 (* Methods *)
 

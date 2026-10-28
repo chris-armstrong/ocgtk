@@ -1,6 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgio.Raw.D_bus_interface},
+    {!Ocgio.Raw.D_bus_object}, defined together because they refer to each
+    other. Each has a module of its own that re-exports it; use that module
+    rather than this one. *)
+
+(** Base type for D-Bus interfaces.
+
+    The [GDBusInterface] type is the base type for D-Bus interfaces both on the
+    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
+    [Gio.DBusProxy]).
+
+    The class built on this module is in {!Ocgio.D_bus_interface}. *)
 module rec D_bus_interface : sig
   type t = [ `d_bus_interface ] Gobject.obj
 
@@ -27,6 +39,11 @@ module rec D_bus_interface : sig
   (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
 end
 
+(** The [GDBusObject] type is the base type for D-Bus objects on both the
+    service side (see [Gio.DBusObjectSkeleton]) and the client side (see
+    [Gio.DBusObjectProxy]). It is essentially just a container of interfaces.
+
+    The class built on this module is in {!Ocgio.D_bus_object}. *)
 and D_bus_object : sig
   type t = [ `d_bus_object ] Gobject.obj
 
@@ -54,10 +71,12 @@ and D_bus_object : sig
     t ->
     callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is added to [object]. *)
 
   val on_interface_removed :
     ?after:bool ->
     t ->
     callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [interface] is removed from [object]. *)
 end

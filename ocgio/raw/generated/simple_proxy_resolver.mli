@@ -8,7 +8,9 @@
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
-    [Gio.SocketClient.set_proxy_resolver]. *)
+    [Gio.SocketClient.set_proxy_resolver].
+
+    The class built on this module is in {!Ocgio.Simple_proxy_resolver}. *)
 
 type t = [ `simple_proxy_resolver | `object_ ] Gobject.obj
 

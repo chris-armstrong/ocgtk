@@ -13,7 +13,8 @@
 
     An object only needs to implement this interface if it needs to extend the
     [GtkBuilder] XML format or run any extra routines at deserialization time.
-*)
+
+    The class built on this module is in {!Ocgtk.Buildable}. *)
 
 type t = [ `buildable ] Gobject.obj
 

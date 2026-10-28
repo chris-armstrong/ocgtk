@@ -11,14 +11,16 @@
 
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
-    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+    To launch uris that don't represent files, use [Gtk.UriLauncher].
+
+    The class built on this module is in {!Ocgtk.File_launcher}. *)
 
 type t = [ `file_launcher | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_file_launcher_get_type"
 
 external new_ : Ocgio_raw.File.t option -> t = "ml_gtk_file_launcher_new"
-(** Create a new FileLauncher *)
+(** Creates a new [GtkFileLauncher] object. *)
 
 (* Methods *)
 

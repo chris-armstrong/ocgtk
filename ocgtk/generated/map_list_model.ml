@@ -1,9 +1,20 @@
 class type map_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
+  (** Gets the model that is currently being mapped or [NULL] if none. *)
+
   method has_map : unit -> bool
+  (** Checks if a map function is currently set on [self]. *)
+
   method set_model : Ocgio.List_model.list_model_t option -> unit
+  (** Sets the model to be mapped.
+
+      GTK makes no effort to ensure that [model] conforms to the item type
+      expected by the map function. It assumes that the caller knows what they
+      are doing and have set up an appropriate map function. *)
+
   method item_type : Gobject.Type.t
   method n_items : int
   method as_map_list_model : Raw.Map_list_model.t

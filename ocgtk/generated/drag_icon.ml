@@ -14,12 +14,14 @@ class type drag_icon_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the widget currently used as drag icon. *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the widget to display as the drag icon. *)
 
   method as_drag_icon : Raw.Drag_icon.t
 end

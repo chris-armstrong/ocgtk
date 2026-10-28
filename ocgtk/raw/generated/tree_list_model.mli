@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeListModel: TreeListModel *)
 
-(** A list model that can create child models on demand. *)
+(** A list model that can create child models on demand.
+
+    The class built on this module is in {!Ocgtk.Tree_list_model}. *)
 
 type t = [ `tree_list_model | `object_ ] Gobject.obj
 

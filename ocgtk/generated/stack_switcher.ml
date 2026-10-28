@@ -4,8 +4,13 @@ class type stack_switcher_t = object
     .widget_t
 
   inherit Orientable.orientable_t
+
   method get_stack : unit -> Stack.stack_t option
+  (** Retrieves the stack. *)
+
   method set_stack : Stack.stack_t option -> unit
+  (** Sets the stack to control. *)
+
   method as_stack_switcher : Raw.Stack_switcher.t
 end
 

@@ -3,7 +3,9 @@
 
 (** Activates a widget.
 
-    Widgets are activated by calling [Gtk.Widget.activate]. *)
+    Widgets are activated by calling [Gtk.Widget.activate].
+
+    The class built on this module is in {!Ocgtk.Activate_action}. *)
 
 type t = [ `activate_action | `shortcut_action | `object_ ] Gobject.obj
 

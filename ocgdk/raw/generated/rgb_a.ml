@@ -8,7 +8,9 @@
     way to deal with colors and mirrors its behavior. All values are in the
     range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0)
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other
-    values will be clamped to this range when drawing. *)
+    values will be clamped to this range when drawing.
+
+    The class built on this module is in {!Ocgdk.Rgb_a}. *)
 
 type t = [ `rgb_a ] Gobject.obj
 

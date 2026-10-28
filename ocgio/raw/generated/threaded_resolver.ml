@@ -2,7 +2,9 @@
 (* ThreadedResolver: ThreadedResolver *)
 
 (** [GThreadedResolver] is an implementation of [GResolver] which calls the libc
-    lookup functions in threads to allow them to run asynchronously. *)
+    lookup functions in threads to allow them to run asynchronously.
+
+    The class built on this module is in {!Ocgio.Threaded_resolver}. *)
 
 type t = [ `threaded_resolver | `resolver | `object_ ] Gobject.obj
 

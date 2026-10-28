@@ -6,7 +6,9 @@
     Unlike touchscreens, where the windowing system sends basic sequences of
     begin, update, end events, and leaves gesture recognition to the clients,
     touchpad gestures are typically processed by the system, resulting in these
-    events. *)
+    events.
+
+    The class built on this module is in {!Ocgdk.Touchpad_event}. *)
 
 type t = [ `touchpad_event | `event ] Gobject.obj
 

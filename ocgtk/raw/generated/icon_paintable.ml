@@ -4,7 +4,9 @@
 (** Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 
-    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable].
+
+    The class built on this module is in {!Ocgtk.Icon_paintable}. *)
 
 type t = [ `icon_paintable | `object_ ] Gobject.obj
 
@@ -12,7 +14,9 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_icon_paintable_get_type"
 
 external new_for_file : Ocgio_raw.File.t -> int -> int -> t
   = "ml_gtk_icon_paintable_new_for_file"
-(** Create a new IconPaintable *)
+(** Creates a [GtkIconPaintable] for a file with a given size and scale.
+
+    The icon can then be rendered by using it as a [GdkPaintable]. *)
 
 (* Methods *)
 

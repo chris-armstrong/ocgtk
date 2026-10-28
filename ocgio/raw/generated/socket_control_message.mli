@@ -19,7 +19,9 @@
     To extend the set of control messages that can be received, subclass this
     class and implement the [deserialize] method. Also, make sure your class is
     registered with the [GObject.Type] type system before calling
-    [Gio.Socket.receive_message] to read such a message. *)
+    [Gio.Socket.receive_message] to read such a message.
+
+    The class built on this module is in {!Ocgio.Socket_control_message}. *)
 
 type t = [ `socket_control_message | `object_ ] Gobject.obj
 

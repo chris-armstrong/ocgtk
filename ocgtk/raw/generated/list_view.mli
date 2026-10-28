@@ -81,7 +81,8 @@
  .rich-list, .navigation-sidebar or .data-table.\n\n\
  {b Accessibility}\n\n\
  [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list\n\
- items use the [Gtk.AccessibleRole.list_item] role."]
+ items use the [Gtk.AccessibleRole.list_item] role.\n\n\
+ The class built on this module is in {!Ocgtk.List_view}."]
 
 type t =
   [ `list_view | `list_base | `widget | `initially_unowned | `object_ ]
@@ -91,7 +92,15 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_list_view_get_type"
 
 external new_ : Selection_model.t option -> List_item_factory.t option -> t
   = "ml_gtk_list_view_new"
-(** Create a new ListView *)
+[@@ocaml.doc
+  "Creates a new [GtkListView] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   The function takes ownership of the\n\
+   arguments, so you can write code like\n\n\
+   {[\n\
+   list_view = gtk_list_view_new (create_model (),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/resource.ui\"));\n\
+   ]}"]
 
 (* Methods *)
 
@@ -177,3 +186,10 @@ val on_activate :
   t ->
   callback:(position:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a row has been activated by the user.
+
+    Activation usually happens via the list.activate-item action of the
+    [GtkListView].
+
+    This allows for a convenient way to handle activation in a listview. See
+    [Gtk.ListItem.set_activatable] for details on how to use this signal. *)

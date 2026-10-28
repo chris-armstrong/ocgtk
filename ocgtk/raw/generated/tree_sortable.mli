@@ -5,7 +5,9 @@
 
     [GtkTreeSortable] is an interface to be implemented by tree models which
     support sorting. The [GtkTreeView] uses the methods provided by this
-    interface to sort the model. *)
+    interface to sort the model.
+
+    The class built on this module is in {!Ocgtk.Tree_sortable}. *)
 
 type t = [ `tree_sortable ] Gobject.obj
 
@@ -47,3 +49,6 @@ external get_sort_column_id : t -> bool * int * Ocgtk_enums.sorttype
 
 val on_sort_column_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** The ::sort-column-changed signal is emitted when the sort column or sort
+    order of [sortable] is changed. The signal is emitted before the contents of
+    [sortable] are resorted. *)

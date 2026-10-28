@@ -166,7 +166,8 @@
  siblings are referenced. To phrase this differently, signals are only\n\
  required for levels in which nodes are referenced. For the root level\n\
  however, signals must be emitted at all times (however the root level\n\
- is always referenced when any view is attached)."]
+ is always referenced when any view is attached).\n\n\
+ The class built on this module is in {!Ocgtk.Tree_model}."]
 
 type t = [ `tree_model ] Gobject.obj
 

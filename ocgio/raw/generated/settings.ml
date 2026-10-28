@@ -319,17 +319,41 @@
  [<description>] elements, and also any [<default>] elements which have a\n\
  [l10n] attribute set.\n\n\
  Translations {b must not} be included in the [.gschema.xml] file by the build\n\
- system, for example by using a rule to generate the XML file from a template."]
+ system, for example by using a rule to generate the XML file from a template.\n\n\
+ The class built on this module is in {!Ocgio.Settings}."]
 
 type t = [ `settings | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_settings_get_type"
 
 external new_ : string -> t = "ml_g_settings_new"
-(** Create a new Settings *)
+(** Creates a new [Gio.Settings] object with the schema specified by
+    [schema_id].
+
+    It is an error for the schema to not exist: schemas are an essential part of
+    a program, as they provide type information. If schemas need to be
+    dynamically loaded (for example, from an optional runtime dependency),
+    [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
+    before loading them.
+
+    Signals on the newly created [Gio.Settings] object will be dispatched via
+    the thread-default [GLib.MainContext] in effect at the time of the call to
+    [Gio.Settings.new]. The new [Gio.Settings] will hold a reference on the
+    context. See [GLib.MainContext.push_thread_default]. *)
 
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
-(** Create a new Settings *)
+(** Creates a new [Gio.Settings] object with the relocatable schema specified by
+    [schema_id] and a given path.
+
+    You only need to do this if you want to directly create a settings object
+    with a schema that doesn’t have a specified path of its own. That’s quite
+    rare.
+
+    It is a programmer error to call this function for a schema that has an
+    explicitly specified path.
+
+    It is a programmer error if [path] is not a valid path. A valid path begins
+    and ends with [/] and does not contain two consecutive [/] characters. *)
 
 (* Methods *)
 

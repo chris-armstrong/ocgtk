@@ -105,16 +105,19 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
      comment attaches to the first type, odoc no longer shows it as the
      module's synopsis on parent pages, and ocamlformat keeps it there. *)
   Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
-  @@ Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member class_doc;
+  @@ Entity_doc.l1_module ~namespace:ctx.namespace.namespace_name ~class_name
+       ~class_doc;
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name ~signals ?glib_get_type buf;
   Buffer.contents buf
 
-(** Format module declaration (module rec X | and X) *)
-let format_module_declaration buf module_name is_start : unit =
-  if is_start then bprintf buf "module rec %s" module_name
-  else bprintf buf "\nand %s\n" module_name
+(** Format module declaration (module rec X | and X), after the arm's doc
+    comment when it has one *)
+let format_module_declaration buf ~doc module_name is_start : unit =
+  if is_start then
+    bprintf buf "%smodule rec %s" (Doc_emit.before_item doc) module_name
+  else bprintf buf "\n%sand %s\n" (Doc_emit.before_item doc) module_name
 
 (** Generate module signature for a single entity *)
 let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf :
@@ -172,8 +175,15 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
   in
   let is_start = index = 0 in
   let from_gobject_c_name = from_gobject_c_name_for_entity entity in
+  (* Only the interface's docs reach odoc. *)
+  let doc =
+    if is_impl then None
+    else
+      Entity_doc.l1_module ~namespace:ctx.namespace.namespace_name ~class_name
+        ~class_doc:entity.doc
+  in
 
-  format_module_declaration buf module_name is_start;
+  format_module_declaration buf ~doc module_name is_start;
 
   if is_impl then begin
     bprintf buf " : sig\n";
@@ -186,7 +196,7 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 
   generate_module_implementation ~ctx ~output_mode ~entity ~base_type
     ?from_gobject_c_name buf;
-  bprintf buf "end\n"
+  bprintf buf "end\n%s" (Doc_emit.after_item doc)
 
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
@@ -197,6 +207,13 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Combined modules for cyclic dependencies *)\n\n";
+  (match output_mode with
+  | Layer1_helpers.Implementation -> ()
+  | Layer1_helpers.Interface ->
+      Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
+      @@ Entity_doc.combined_module ~namespace:ctx.namespace.namespace_name
+           ~layer:Entity_doc.Layer1
+           ~class_names:(List.map ~f:(fun e -> e.name) entities));
 
   let sorted_entities =
     List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities
@@ -215,14 +232,25 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
    the short path ([Ocgio_raw.File] for [App_info_cycle_<hash>.File]) that
    other namespaces and [Raw] refer to; the strengthened signature keeps its
    types equal to the combined module's. *)
-let generate_cycle_member_shim ~output_mode ~combined_module_name ~member_name =
+let generate_cycle_member_shim ~output_mode ~namespace ~combined_module_name
+    ~member_name ~member_doc =
   let member =
     combined_module_name ^ "." ^ Utils.module_name_of_class member_name
   in
   let body =
     match output_mode with
     | Layer1_helpers.Interface ->
-        Fmt.str "include module type of struct\n  include %s\nend\n" member
+        (* The member's doc is on its declaration in the combined module,
+           which the included signature does not carry, so the shim repeats
+           it. *)
+        let preamble =
+          Entity_doc.l1_module ~namespace ~class_name:member_name
+            ~class_doc:member_doc
+          |> Option.fold ~none:"" ~some:(fun doc ->
+              Doc_emit.floating doc ^ "\n\n")
+        in
+        Fmt.str "%sinclude module type of struct\n  include %s\nend\n" preamble
+          member
     | Layer1_helpers.Implementation -> Fmt.str "include %s\n" member
   in
   Fmt.str

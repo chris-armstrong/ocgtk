@@ -39,7 +39,8 @@
     .emoji-searchbar style class itself. The bottom toolbar used to switch
     between different emoji categories consists of buttons with the
     .emoji-section style class and gets the .emoji-toolbar style class itself.
-*)
+
+    The class built on this module is in {!Ocgtk.Emoji_chooser}. *)
 
 type t =
   [ `emoji_chooser | `popover | `widget | `initially_unowned | `object_ ]
@@ -48,7 +49,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_emoji_chooser_get_type"
 
 external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
-(** Create a new EmojiChooser *)
+(** Creates a new [GtkEmojiChooser]. *)
 
 (* Methods *)
 let on_emoji_picked ?after obj ~callback =

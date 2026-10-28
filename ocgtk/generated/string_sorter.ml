@@ -1,11 +1,26 @@
 class type string_sorter_t = object
   inherit Sorter.sorter_t
+
   method get_collation : unit -> Enums.collation
+  (** Gets which collation method the sorter uses. *)
+
   method get_expression : unit -> Expression.expression_t option
+  (** Gets the expression that is evaluated to obtain strings from items. *)
+
   method get_ignore_case : unit -> bool
+  (** Gets whether the sorter ignores case differences. *)
+
   method set_collation : Enums.collation -> unit
+  (** Sets the collation method to use for sorting. *)
+
   method set_expression : Expression.expression_t option -> unit
+  (** Sets the expression that is evaluated to obtain strings from items.
+
+      The expression must have the type [G_TYPE_STRING]. *)
+
   method set_ignore_case : bool -> unit
+  (** Sets whether the sorter will ignore case differences. *)
+
   method as_string_sorter : Raw.String_sorter.t
 end
 

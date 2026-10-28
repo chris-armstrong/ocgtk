@@ -41,7 +41,9 @@
     {b Accessibility}
 
     [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role. *)
+    [Gtk.AccessibleRole.grid_cell] role.
+
+    The class built on this module is in {!Ocgtk.Grid_view}. *)
 
 type t =
   [ `grid_view | `list_base | `widget | `initially_unowned | `object_ ]
@@ -51,7 +53,15 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_grid_view_get_type"
 
 external new_ : Selection_model.t option -> List_item_factory.t option -> t
   = "ml_gtk_grid_view_new"
-(** Create a new GridView *)
+[@@ocaml.doc
+  "Creates a new [GtkGridView] that uses the given [factory] for\n\
+   mapping items to widgets.\n\n\
+   The function takes ownership of the\n\
+   arguments, so you can write code like\n\n\
+   {[\n\
+   grid_view = gtk_grid_view_new (create_model (),\n\
+  \  gtk_builder_list_item_factory_new_from_resource (\"/resource.ui\"));\n\
+   ]}"]
 
 (* Methods *)
 

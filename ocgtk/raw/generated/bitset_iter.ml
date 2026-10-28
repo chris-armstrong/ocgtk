@@ -7,7 +7,9 @@
 
     Before a [GtkBitsetIter] can be used, it needs to be initialized with
     [Gtk.BitsetIter.init_first], [Gtk.BitsetIter.init_last] or
-    [Gtk.BitsetIter.init_at]. *)
+    [Gtk.BitsetIter.init_at].
+
+    The class built on this module is in {!Ocgtk.Bitset_iter}. *)
 
 type t = [ `bitset_iter ] Gobject.obj
 

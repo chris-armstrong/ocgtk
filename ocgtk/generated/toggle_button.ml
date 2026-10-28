@@ -3,11 +3,38 @@ class type toggle_button_t = object
 
   method on_toggled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted whenever the [GtkToggleButton]'s state is changed. *)
 
   method get_active : unit -> bool
+  (** Queries a [GtkToggleButton] and returns its current state.
+
+      Returns [TRUE] if the toggle button is pressed in and [FALSE] if it is
+      raised. *)
+
   method set_active : bool -> unit
+  (** Sets the status of the toggle button.
+
+      Set to [TRUE] if you want the [GtkToggleButton] to be “pressed in”, and
+      [FALSE] to raise it.
+
+      If the status of the button changes, this action causes the
+      [Gtk.ToggleButton::toggled] signal to be emitted. *)
+
   method set_group : toggle_button_t option -> unit
+  (** Adds [self] to the group of [group].
+
+      In a group of multiple toggle buttons, only one button can be active at a
+      time.
+
+      Setting up groups in a cycle leads to undefined behavior.
+
+      Note that the same effect can be achieved via the [Gtk.Actionable] API, by
+      using the same action with parameter type and state type 's' for all
+      buttons in the group, and giving each button its own target value. *)
+
   method toggled : unit -> unit
+  (** Emits the ::toggled signal on the [GtkToggleButton]. *)
+
   method as_toggle_button : Raw.Toggle_button.t
 end
 

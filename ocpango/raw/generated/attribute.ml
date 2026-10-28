@@ -8,7 +8,9 @@
     portion. The common portion of the attribute holds the range to which the
     value in the type-specific part of the attribute applies and should be
     initialized using [Pango.Attribute.init]. By default, an attribute will have
-    an all-inclusive range of \[0,[G_MAXUINT]\]. *)
+    an all-inclusive range of \[0,[G_MAXUINT]\].
+
+    The class built on this module is in {!Ocpango.Attribute}. *)
 
 type t = [ `attribute ] Gobject.obj
 

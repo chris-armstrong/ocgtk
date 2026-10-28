@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShaderArgsBuilder: ShaderArgsBuilder *)
 
-(** Builds the uniforms data for a [GskGLShader]. *)
+(** Builds the uniforms data for a [GskGLShader].
+
+    The class built on this module is in {!Ocgsk.Shader_args_builder}. *)
 
 type t = [ `shader_args_builder ] Gobject.obj
 
@@ -9,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_shader_args_builder_get_type"
 
 external new_ : Gl_shader.t -> Glib_bytes.t option -> t
   = "ml_gsk_shader_args_builder_new"
-(** Create a new ShaderArgsBuilder *)
+(** Allocates a builder that can be used to construct a new uniform data chunk.
+*)
 
 (* Methods *)
 

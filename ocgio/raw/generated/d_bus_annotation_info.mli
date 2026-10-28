@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusAnnotationInfo: DBusAnnotationInfo *)
 
-(** Information about an annotation. *)
+(** Information about an annotation.
+
+    The class built on this module is in {!Ocgio.D_bus_annotation_info}. *)
 
 type t = [ `d_bus_annotation_info ] Gobject.obj
 

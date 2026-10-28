@@ -1,8 +1,15 @@
+(** An auxiliary object used by [GtkNotebook].
+
+    Its methods, signals and properties are on {!class-type-notebook_page_t}.
+    The functions it is built on are in {!Ocgtk.Raw.Notebook_page}. *)
+
+(** The methods, signals and properties of a [NotebookPage]. *)
 class type notebook_page_t = object
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Returns the notebook child to which [page] belongs. *)
 
   method detachable : bool
   method set_detachable : bool -> unit
@@ -32,3 +39,4 @@ class type notebook_page_t = object
 end
 
 class notebook_page : Raw.Notebook_page.t -> notebook_page_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Notebook_page.t}. *)

@@ -2,7 +2,9 @@
 (* DataOutputStream: DataOutputStream *)
 
 (** Data output stream implements [Gio.OutputStream] and includes functions for
-    writing data directly to an output stream. *)
+    writing data directly to an output stream.
+
+    The class built on this module is in {!Ocgio.Data_output_stream}. *)
 
 type t =
   [ `data_output_stream | `filter_output_stream | `output_stream | `object_ ]
@@ -11,7 +13,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gio_data_output_stream_get_type"
 
 external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
-(** Create a new DataOutputStream *)
+(** Creates a new data output stream for [base_stream]. *)
 
 (* Methods *)
 

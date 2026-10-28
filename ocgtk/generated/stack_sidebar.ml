@@ -4,7 +4,14 @@ class type stack_sidebar_t = object
     .widget_t
 
   method get_stack : unit -> Stack.stack_t option
+  (** Retrieves the stack. *)
+
   method set_stack : Stack.stack_t -> unit
+  (** Set the [GtkStack] associated with this [GtkStackSidebar].
+
+      The sidebar widget will automatically update according to the order and
+      items within the given [GtkStack]. *)
+
   method as_stack_sidebar : Raw.Stack_sidebar.t
 end
 

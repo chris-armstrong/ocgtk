@@ -7,7 +7,9 @@
     elements per page and updating the offset whenever a different page is
     opened.
 
-    [GtkSliceListModel] passes through sections from the underlying model. *)
+    [GtkSliceListModel] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.Slice_list_model}. *)
 
 type t = [ `slice_list_model | `object_ ] Gobject.obj
 
@@ -15,7 +17,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_slice_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> int -> int -> t
   = "ml_gtk_slice_list_model_new"
-(** Create a new SliceListModel *)
+(** Creates a new slice model.
+
+    It presents the slice from [offset] to offset + [size] of the given [model].
+*)
 
 (* Methods *)
 

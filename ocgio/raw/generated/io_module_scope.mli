@@ -5,7 +5,9 @@
     duplicate modules, or blocking a module you don't want to load.
 
     The scope can be used with g_io_modules_load_all_in_directory_with_scope()
-    or g_io_modules_scan_all_in_directory_with_scope(). *)
+    or g_io_modules_scan_all_in_directory_with_scope().
+
+    The class built on this module is in {!Ocgio.Io_module_scope}. *)
 
 type t = [ `io_module_scope ] Gobject.obj
 

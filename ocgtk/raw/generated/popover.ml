@@ -76,14 +76,15 @@
  means that the border width of the [content] node and the [arrow] node should\n\
  be the same. The arrow also does not support any border shape other than\n\
  solid, no border-radius, only one border width (border-bottom-width is\n\
- used) and no box-shadow."]
+ used) and no box-shadow.\n\n\
+ The class built on this module is in {!Ocgtk.Popover}."]
 
 type t = [ `popover | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_popover_get_type"
 
 external new_ : unit -> t = "ml_gtk_popover_new"
-(** Create a new Popover *)
+(** Creates a new [GtkPopover]. *)
 
 (* Methods *)
 

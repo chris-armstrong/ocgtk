@@ -69,7 +69,8 @@
  except for one case: when the supported actions include\n\
  [GDK_ACTION_MOVE], you need to listen for the\n\
  [Gtk.DragSource::drag-end] signal and delete the\n\
- data after it has been transferred."]
+ data after it has been transferred.\n\n\
+ The class built on this module is in {!Ocgtk.Drag_source}."]
 
 type t =
   [ `drag_source | `gesture_single | `gesture | `event_controller | `object_ ]
@@ -78,7 +79,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drag_source_get_type"
 
 external new_ : unit -> t = "ml_gtk_drag_source_new"
-(** Create a new DragSource *)
+(** Creates a new [GtkDragSource] object. *)
 
 (* Methods *)
 

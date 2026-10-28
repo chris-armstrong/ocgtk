@@ -35,14 +35,15 @@
     Until GTK 4.10, [GtkBox] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkBox] uses the [Gtk.AccessibleRole.generic] role.
-*)
+
+    The class built on this module is in {!Ocgtk.Box}. *)
 
 type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_box_get_type"
 
 external new_ : Ocgtk_enums.orientation -> int -> t = "ml_gtk_box_new"
-(** Create a new Box *)
+(** Creates a new box. *)
 
 (* Methods *)
 

@@ -18,7 +18,9 @@
     on itself via gtk_picture_set_paintable(). The paintable will take care of
     recursion when this happens. If you do this however, ensure that the
     [Gtk.Picture:can-shrink] property is set to [TRUE] or you might end up with
-    an infinitely growing widget. *)
+    an infinitely growing widget.
+
+    The class built on this module is in {!Ocgtk.Widget_paintable}. *)
 
 type t = [ `widget_paintable | `object_ ] Gobject.obj
 
@@ -30,7 +32,7 @@ external new_ :
   .t
   option ->
   t = "ml_gtk_widget_paintable_new"
-(** Create a new WidgetPaintable *)
+(** Creates a new widget paintable observing the given widget. *)
 
 (* Methods *)
 

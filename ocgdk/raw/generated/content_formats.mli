@@ -31,18 +31,24 @@
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
     created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor. *)
+    endeavor.
+
+    The class built on this module is in {!Ocgdk.Content_formats}. *)
 
 type t = [ `content_formats ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gdk_content_formats_get_type"
 
 external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
-(** Create a new ContentFormats *)
+(** Creates a new [GdkContentFormats] from an array of mime types.
+
+    The mime types must be valid and different from each other or the behavior
+    of the return value is undefined. If you cannot guarantee this, use
+    [Gdk.ContentFormatsBuilder] instead. *)
 
 external new_for_gtype : Gobject.Type.t -> t
   = "ml_gdk_content_formats_new_for_gtype"
-(** Create a new ContentFormats *)
+(** Creates a new [GdkContentFormats] for a given [GType]. *)
 
 (* Methods *)
 

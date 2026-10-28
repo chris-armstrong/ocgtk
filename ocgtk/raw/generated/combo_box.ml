@@ -58,24 +58,32 @@
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role.
+
+    The class built on this module is in {!Ocgtk.Combo_box}. *)
 
 type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_combo_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_combo_box_new"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox]. *)
 
 external new_with_entry : unit -> t = "ml_gtk_combo_box_new_with_entry"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox] with an entry.
+
+    In order to use a combo box with entry, you need to tell it which column of
+    the model contains the text for the entry by calling
+    [Gtk.ComboBox.set_entry_text_column]. *)
 
 external new_with_model : Tree_model.t -> t = "ml_gtk_combo_box_new_with_model"
-(** Create a new ComboBox *)
+(** Creates a new [GtkComboBox] with a model. *)
 
 external new_with_model_and_entry : Tree_model.t -> t
   = "ml_gtk_combo_box_new_with_model_and_entry"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox] with an entry and a model.
+
+    See also [Gtk.ComboBox.new_with_entry]. *)
 
 (* Methods *)
 

@@ -47,7 +47,8 @@
  ]}\n\n\
  {b GtkMessageDialog as GtkBuildable}\n\n\
  The [GtkMessageDialog] implementation of the [GtkBuildable] interface exposes\n\
- the message area as an internal child with the name “message_area”."]
+ the message area as an internal child with the name “message_area”.\n\n\
+ The class built on this module is in {!Ocgtk.Message_dialog}."]
 
 type t =
   [ `message_dialog

@@ -5,7 +5,9 @@
     Cairo.
 
     The actual type of the font map will depend on the particular font
-    technology Cairo was compiled to use. *)
+    technology Cairo was compiled to use.
+
+    The class built on this module is in {!Ocpangocairo.Font_map}. *)
 
 type t = [ `font_map ] Gobject.obj
 

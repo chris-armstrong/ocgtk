@@ -11,14 +11,16 @@
 
     The operation is started with the [Gtk.UriLauncher.launch] function.
 
-    To launch a file, use [Gtk.FileLauncher]. *)
+    To launch a file, use [Gtk.FileLauncher].
+
+    The class built on this module is in {!Ocgtk.Uri_launcher}. *)
 
 type t = [ `uri_launcher | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_uri_launcher_get_type"
 
 external new_ : string option -> t = "ml_gtk_uri_launcher_new"
-(** Create a new UriLauncher *)
+(** Creates a new [GtkUriLauncher] object. *)
 
 (* Methods *)
 

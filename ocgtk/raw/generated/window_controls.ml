@@ -39,7 +39,8 @@
  When [Gtk.WindowControls:empty] is true, it gets the .empty\n\
  style class.\n\n\
  {b Accessibility}\n\n\
- [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role."]
+ [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ The class built on this module is in {!Ocgtk.Window_controls}."]
 
 type t =
   [ `window_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -47,7 +48,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_window_controls_get_type"
 
 external new_ : Ocgtk_enums.packtype -> t = "ml_gtk_window_controls_new"
-(** Create a new WindowControls *)
+(** Creates a new [GtkWindowControls]. *)
 
 (* Methods *)
 external set_use_native_controls : t -> bool -> unit

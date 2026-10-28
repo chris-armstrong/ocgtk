@@ -1,6 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComponentTransferNode: ComponentTransferNode *)
 
+(** Bindings for [ComponentTransferNode].
+
+    The class built on this module is in {!Ocgsk.Component_transfer_node}. *)
+
 type t = [ `component_transfer_node | `render_node ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t
@@ -13,7 +17,8 @@ external new_ :
   Component_transfer.t ->
   Component_transfer.t ->
   t = "ml_gsk_component_transfer_node_new"
-(** Create a new ComponentTransferNode *)
+(** Creates a render node that will apply component transfers to a child node.
+*)
 
 (* Methods *)
 

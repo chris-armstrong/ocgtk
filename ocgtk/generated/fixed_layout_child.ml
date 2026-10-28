@@ -4,7 +4,11 @@ class type fixed_layout_child_t = object
     .layout_child_t
 
   method get_transform : unit -> Ocgsk.Transform.transform_t option
+  (** Retrieves the transformation of the child. *)
+
   method set_transform : Ocgsk.Transform.transform_t -> unit
+  (** Sets the transformation of the child of a [GtkFixedLayout]. *)
+
   method as_fixed_layout_child : Raw.Fixed_layout_child.t
 end
 

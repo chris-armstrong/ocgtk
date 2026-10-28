@@ -44,7 +44,9 @@
 
     - [listitem.select] changes selection if the item is selectable.
     - [listitem.scroll-to] moves the visible area of the list to this item with
-      the minimum amount of scrolling required. *)
+      the minimum amount of scrolling required.
+
+    The class built on this module is in {!Ocgtk.List_base}. *)
 
 type t = [ `list_base | `widget | `initially_unowned | `object_ ] Gobject.obj
 

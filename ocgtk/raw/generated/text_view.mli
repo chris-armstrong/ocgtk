@@ -74,19 +74,31 @@
 
     {b Accessibility}
 
-    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role.
+
+    The class built on this module is in {!Ocgtk.Text_view}. *)
 
 type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_text_view_get_type"
 
 external new_ : unit -> t = "ml_gtk_text_view_new"
-(** Create a new TextView *)
+(** Creates a new [GtkTextView].
+
+    If you don’t call [Gtk.TextView.set_buffer] before using the text view, an
+    empty default buffer will be created for you. Get the buffer with
+    [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
+    [Gtk.TextView.new_with_buffer]. *)
 
 external new_with_buffer :
   Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> t
   = "ml_gtk_text_view_new_with_buffer"
-(** Create a new TextView *)
+(** Creates a new [GtkTextView] widget displaying the buffer [buffer].
+
+    One buffer can be shared among many widgets. [buffer] may be [NULL] to
+    create a default buffer, in which case this function is equivalent to
+    [Gtk.TextView.new]. The text view adds its own reference count to the
+    buffer; it does not take over an existing reference. *)
 
 (* Methods *)
 
@@ -713,27 +725,67 @@ external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 
 val on_backspace :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted when the user asks for it.
+
+    The ::backspace signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Backspace</kbd> and
+    <kbd>Shift</kbd>+<kbd>Backspace</kbd>. *)
 
 val on_copy_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to copy the selection to the clipboard.
+
+    The ::copy-clipboard signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>c</kbd> and
+    <kbd>Ctrl</kbd>+<kbd>Insert</kbd>. *)
 
 val on_cut_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to cut the selection to the clipboard.
+
+    The ::cut-clipboard signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>x</kbd> and
+    <kbd>Shift</kbd>+<kbd>Delete</kbd>. *)
 
 val on_delete_from_cursor :
   ?after:bool ->
   t ->
   callback:(type_:Ocgtk_enums.deletetype -> count:int -> unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted when the user initiates a text deletion.
+
+    The ::delete-from-cursor signal is a keybinding signal.
+
+    If the [type] is [GTK_DELETE_CHARS], GTK deletes the selection if there is
+    one, otherwise it deletes the requested number of characters.
+
+    The default bindings for this signal are <kbd>Delete</kbd> for deleting a
+    character, <kbd>Ctrl</kbd>+<kbd>Delete</kbd> for deleting a word and
+    <kbd>Ctrl</kbd>+<kbd>Backspace</kbd> for deleting a word backwards. *)
 
 val on_insert_at_cursor :
   ?after:bool ->
   t ->
   callback:(string:string -> unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted when the user initiates the insertion of a fixed string at the
+    cursor.
+
+    The ::insert-at-cursor signal is a keybinding signal.
+
+    This signal has no default bindings. *)
 
 val on_insert_emoji :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to present the Emoji chooser for the [text_view].
+
+    The ::insert-emoji signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>.</kbd> and
+    <kbd>Ctrl</kbd>+<kbd>;</kbd> *)
 
 val on_move_cursor :
   ?after:bool ->
@@ -744,33 +796,97 @@ val on_move_cursor :
     extend_selection:bool ->
     unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted when the user initiates a cursor movement.
+
+    The ::move-cursor signal is a keybinding signal. If the cursor is not
+    visible in [text_view], this signal causes the viewport to be moved instead.
+
+    Applications should not connect to it, but may emit it with
+    g_signal_emit_by_name() if they need to control the cursor programmatically.
+
+    The default bindings for this signal come in two variants, the variant with
+    the <kbd>Shift</kbd> modifier extends the selection, the variant without it
+    does not. There are too many key combinations to list them all here.
+
+    - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+      characters/lines
+    - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
+    - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer
+    - <kbd>PgUp</kbd> and <kbd>PgDn</kbd> move vertically by pages
+    - <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> and <kbd>Ctrl</kbd>+<kbd>PgDn</kbd> move
+      horizontally by pages *)
 
 val on_move_viewport :
   ?after:bool ->
   t ->
   callback:(step:Ocgtk_enums.scrollstep -> count:int -> unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted to move the viewport.
+
+    The ::move-viewport signal is a keybinding signal, which can be bound to key
+    combinations to allow the user to move the viewport, i.e. change what part
+    of the text view is visible in a containing scrolled window.
+
+    There are no default bindings for this signal. *)
 
 val on_paste_clipboard :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to paste the contents of the clipboard into the text view.
+
+    The ::paste-clipboard signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>v</kbd> and
+    <kbd>Shift</kbd>+<kbd>Insert</kbd>. *)
 
 val on_preedit_changed :
   ?after:bool ->
   t ->
   callback:(preedit:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when preedit text of the active IM changes.
+
+    If an input method is used, the typed text will not immediately be committed
+    to the buffer. So if you are interested in the text, connect to this signal.
+
+    This signal is only emitted if the text at the given position is actually
+    editable. *)
 
 val on_select_all :
   ?after:bool ->
   t ->
   callback:(select:bool -> unit) ->
   Gobject.Signal.handler_id
+(** Gets emitted to select or unselect the complete contents of the text view.
+
+    The ::select-all signal is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>a</kbd> and
+    <kbd>Ctrl</kbd>+<kbd>/</kbd> for selecting and
+    <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>a</kbd> and
+    <kbd>Ctrl</kbd>+<kbd></kbd> for unselecting. *)
 
 val on_set_anchor :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+[@@ocaml.doc
+  "Gets emitted when the user initiates settings the \"anchor\" mark.\n\n\
+   The ::set-anchor signal is a keybinding signal\n\
+   which gets emitted when the user initiates setting the \"anchor\"\n\
+   mark. The \"anchor\" mark gets placed at the same position as the\n\
+   \"insert\" mark.\n\n\
+   This signal has no default bindings."]
 
 val on_toggle_cursor_visible :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to toggle the [cursor-visible] property.
+
+    The ::toggle-cursor-visible signal is a keybinding signal.
+
+    The default binding for this signal is <kbd>F7</kbd>. *)
 
 val on_toggle_overwrite :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted to toggle the overwrite mode of the text view.
+
+    The ::toggle-overwrite signal is a keybinding signal.
+
+    The default binding for this signal is <kbd>Insert</kbd>. *)

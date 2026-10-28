@@ -4,7 +4,9 @@
 (** A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is
-    needed when acting as a [Gio.TlsServerConnection]). *)
+    needed when acting as a [Gio.TlsServerConnection]).
+
+    The class built on this module is in {!Ocgio.Tls_certificate}. *)
 
 type t = [ `tls_certificate | `object_ ] Gobject.obj
 
@@ -12,23 +14,89 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_tls_certificate_get_type"
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_file"
-(** Create a new TlsCertificate *)
+(** Creates a [GTlsCertificate] from the data in [file].
+
+    As of 2.72, if the filename ends in [.p12] or [.pfx] the data is loaded by
+    g_tls_certificate_new_from_pkcs12() otherwise it is loaded by
+    g_tls_certificate_new_from_pem(). See those functions for exact details.
+
+    If [file] cannot be read or parsed, the function will return [NULL] and set
+    [error]. *)
 
 external new_from_file_with_password : string -> string -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_file_with_password"
-(** Create a new TlsCertificate *)
+(** Creates a [GTlsCertificate] from the data in [file].
+
+    If [file] cannot be read or parsed, the function will return [NULL] and set
+    [error].
+
+    Any unknown file types will error with [G_IO_ERROR_NOT_SUPPORTED]. Currently
+    only [.p12] and [.pfx] files are supported. See
+    g_tls_certificate_new_from_pkcs12() for more details. *)
 
 external new_from_files : string -> string -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_files"
-(** Create a new TlsCertificate *)
+(** Creates a [GTlsCertificate] from the PEM-encoded data in [cert_file] and
+    [key_file]. The returned certificate will be the first certificate found in
+    [cert_file]. As of GLib 2.44, if [cert_file] contains more certificates it
+    will try to load a certificate chain. All certificates will be verified in
+    the order found (top-level certificate should be the last one in the file)
+    and the [GTlsCertificate:issuer] property of each certificate will be set
+    accordingly if the verification succeeds. If any certificate in the chain
+    cannot be verified, the first certificate in the file will still be
+    returned.
+
+    If either file cannot be read or parsed, the function will return [NULL] and
+    set [error]. Otherwise, this behaves like g_tls_certificate_new_from_pem().
+*)
 
 external new_from_pem : string -> int -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_pem"
-(** Create a new TlsCertificate *)
+(** Creates a [GTlsCertificate] from the PEM-encoded data in [data]. If [data]
+    includes both a certificate and a private key, then the returned certificate
+    will include the private key data as well. (See the
+    [GTlsCertificate:private]-key-pem property for information about supported
+    formats.)
+
+    The returned certificate will be the first certificate found in [data]. As
+    of GLib 2.44, if [data] contains more certificates it will try to load a
+    certificate chain. All certificates will be verified in the order found
+    (top-level certificate should be the last one in the file) and the
+    [GTlsCertificate:issuer] property of each certificate will be set
+    accordingly if the verification succeeds. If any certificate in the chain
+    cannot be verified, the first certificate in the file will still be
+    returned. *)
 
 external new_from_pkcs11_uris : string -> string option -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_pkcs11_uris"
-(** Create a new TlsCertificate *)
+(** Creates a [GTlsCertificate] from a
+    {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
+     #11} URI.
+
+    An example [pkcs11_uri] would be
+    [pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01]
+
+    Where the token’s layout is:
+
+    {[
+    Object 0:
+      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=private%20key;type=private
+      Type: Private key (RSA-2048)
+      ID: 01
+
+    Object 1:
+      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=Certificate%20for%20Authentication;type=cert
+      Type: X.509 Certificate (RSA-2048)
+      ID: 01
+    ]}
+
+    In this case the certificate and private key would both be detected and used
+    as expected. [pkcs_uri] may also just reference an X.509 certificate object
+    and then optionally [private_key_pkcs11_uri] allows using a private key
+    exposed under a different URI.
+
+    Note that the private key is not accessed until usage and may fail or
+    require a PIN later. *)
 
 (* Methods *)
 

@@ -39,7 +39,9 @@
 
     Selections may happen asynchronously, so the only reliable way to find out
     when an item was selected is to listen to the signals that indicate
-    selection. *)
+    selection.
+
+    The class built on this module is in {!Ocgtk.Selection_model}. *)
 
 type t = [ `selection_model ] Gobject.obj
 
@@ -139,3 +141,9 @@ val on_selection_changed :
   t ->
   callback:(position:int -> n_items:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the selection state of some of the items in [model] changes.
+
+    Note that this signal does not specify the new selection state of the items,
+    they need to be queried manually. It is also not necessary for a model to
+    change the selection state of any of the items in the selection model,
+    though it would be rather useless to emit such a signal. *)

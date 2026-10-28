@@ -124,14 +124,17 @@
 \    </row>\n\
 \  </data>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.List_store}."]
 
 type t = [ `list_store | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_list_store_get_type"
 
 external newv : int -> Gobject.Type.t array -> t = "ml_gtk_list_store_newv"
-(** Create a new ListStore *)
+(** Creates a new [GtkListStore].
+
+    This function is meant to be used by language bindings. *)
 
 (* Methods *)
 

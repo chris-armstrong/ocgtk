@@ -18,7 +18,8 @@
     Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
     UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
     pkg-config file when using it. This is no longer necessary since GLib 2.72.
-*)
+
+    The class built on this module is in {!Ocgio.Unix_credentials_message}. *)
 
 type t =
   [ `unix_credentials_message | `socket_control_message | `object_ ] Gobject.obj
@@ -27,11 +28,12 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_unix_credentials_message_get_type"
 
 external new_ : unit -> t = "ml_g_unix_credentials_message_new"
-(** Create a new UnixCredentialsMessage *)
+(** Creates a new [GUnixCredentialsMessage] with credentials matching the
+    current processes. *)
 
 external new_with_credentials : Credentials.t -> t
   = "ml_g_unix_credentials_message_new_with_credentials"
-(** Create a new UnixCredentialsMessage *)
+(** Creates a new [GUnixCredentialsMessage] holding [credentials]. *)
 
 (* Methods *)
 

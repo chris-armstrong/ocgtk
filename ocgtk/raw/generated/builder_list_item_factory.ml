@@ -28,7 +28,8 @@
  A common approach is to embed such templates as CDATA marked sections into\n\
  a surrounding UI file. Note that if you use this approach, extracting\n\
  translatable strings with xgettext will not work for strings inside the\n\
- marked section."]
+ marked section.\n\n\
+ The class built on this module is in {!Ocgtk.Builder_list_item_factory}."]
 
 type t =
   [ `builder_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
@@ -38,11 +39,13 @@ external gtype : unit -> Gobject.Type.t
 
 external new_from_bytes : Builder_scope.t option -> Glib_bytes.t -> t
   = "ml_gtk_builder_list_item_factory_new_from_bytes"
-(** Create a new BuilderListItemFactory *)
+(** Creates a new [GtkBuilderListItemFactory] that instantiates widgets using
+    [bytes] as the data to pass to [GtkBuilder]. *)
 
 external new_from_resource : Builder_scope.t option -> string -> t
   = "ml_gtk_builder_list_item_factory_new_from_resource"
-(** Create a new BuilderListItemFactory *)
+(** Creates a new [GtkBuilderListItemFactory] that instantiates widgets using
+    data read from the given [resource_path] to pass to [GtkBuilder]. *)
 
 (* Methods *)
 

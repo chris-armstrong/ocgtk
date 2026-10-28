@@ -17,7 +17,8 @@
     If your application or service is using the default GLib log writer
     function, creating one of the built-in implementations of [GDebugController]
     should be all that’s needed to dynamically enable or disable debug output.
-*)
+
+    The class built on this module is in {!Ocgio.Debug_controller}. *)
 
 type t = [ `debug_controller ] Gobject.obj
 

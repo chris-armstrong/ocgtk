@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConstantExpression: ConstantExpression *)
 
-(** A constant value in a [GtkExpression]. *)
+(** A constant value in a [GtkExpression].
+
+    The class built on this module is in {!Ocgtk.Constant_expression}. *)
 
 type t = [ `constant_expression | `expression ] Gobject.obj
 
@@ -9,7 +11,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_constant_expression_get_type"
 
 external new_for_value : Gobject.Value.t -> t
   = "ml_gtk_constant_expression_new_for_value"
-(** Create a new ConstantExpression *)
+(** Creates an expression that always evaluates to the given [value]. *)
 
 (* Methods *)
 

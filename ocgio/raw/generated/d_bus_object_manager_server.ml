@@ -20,7 +20,10 @@
 
     See [Gio.DBusObjectManagerClient] for the client-side code that is intended
     to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
-    the [org.freedesktop.DBus.ObjectManager] interface. *)
+    the [org.freedesktop.DBus.ObjectManager] interface.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager_server}.
+*)
 
 type t = [ `d_bus_object_manager_server | `object_ ] Gobject.obj
 
@@ -28,7 +31,12 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_d_bus_object_manager_server_get_type"
 
 external new_ : string -> t = "ml_g_dbus_object_manager_server_new"
-(** Create a new DBusObjectManagerServer *)
+(** Creates a new [GDBusObjectManagerServer] object.
+
+    The returned server isn't yet exported on any connection. To do so, use
+    g_dbus_object_manager_server_set_connection(). Normally you want to export
+    all of your objects before doing so to avoid InterfacesAdded signals being
+    emitted. *)
 
 (* Methods *)
 

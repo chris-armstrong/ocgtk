@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RoundedClipNode: RoundedClipNode *)
 
-(** A render node applying a rounded rectangle clip to its single child. *)
+(** A render node applying a rounded rectangle clip to its single child.
+
+    The class built on this module is in {!Ocgsk.Rounded_clip_node}. *)
 
 type t = [ `rounded_clip_node | `render_node ] Gobject.obj
 
@@ -9,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_rounded_clip_node_get_type"
 
 external new_ : Render_node.t -> Rounded_rect.t -> t
   = "ml_gsk_rounded_clip_node_new"
-(** Create a new RoundedClipNode *)
+(** Creates a [GskRenderNode] that will clip the [child] to the area given by
+    [clip]. *)
 
 (* Methods *)
 

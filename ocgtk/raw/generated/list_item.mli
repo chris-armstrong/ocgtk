@@ -14,7 +14,9 @@
       [NULL].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [NULL]. *)
+      [Gtk.ListItem:item] property is not [NULL].
+
+    The class built on this module is in {!Ocgtk.List_item}. *)
 
 type t = [ `list_item | `object_ ] Gobject.obj
 

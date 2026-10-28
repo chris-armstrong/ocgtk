@@ -2,7 +2,9 @@
 (* DataInputStream: DataInputStream *)
 
 (** Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream. *)
+    reading structured data directly from a binary input stream.
+
+    The class built on this module is in {!Ocgio.Data_input_stream}. *)
 
 type t =
   [ `data_input_stream
@@ -15,7 +17,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gio_data_input_stream_get_type"
 
 external new_ : Input_stream.t -> t = "ml_g_data_input_stream_new"
-(** Create a new DataInputStream *)
+(** Creates a new data input stream for the [base_stream]. *)
 
 (* Methods *)
 external set_newline_type : t -> Ocgio_enums.datastreamnewlinetype -> unit

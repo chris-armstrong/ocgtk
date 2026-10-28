@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RepeatNode: RepeatNode *)
 
-(** A render node repeating its single child node. *)
+(** A render node repeating its single child node.
+
+    The class built on this module is in {!Ocgsk.Repeat_node}. *)
 
 type t = [ `repeat_node | `render_node ] Gobject.obj
 
@@ -10,7 +12,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_repeat_node_get_type"
 external new_ :
   Ocgraphene_raw.Rect.t -> Render_node.t -> Ocgraphene_raw.Rect.t option -> t
   = "ml_gsk_repeat_node_new"
-(** Create a new RepeatNode *)
+(** Creates a [GskRenderNode] that will repeat the drawing of [child] across the
+    given [bounds]. *)
 
 (* Methods *)
 

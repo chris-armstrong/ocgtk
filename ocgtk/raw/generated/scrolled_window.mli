@@ -76,7 +76,9 @@
     role.
 
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    [Gtk.AccessibleRole.generic] role.
+
+    The class built on this module is in {!Ocgtk.Scrolled_window}. *)
 
 type t =
   [ `scrolled_window | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -84,7 +86,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_scrolled_window_get_type"
 
 external new_ : unit -> t = "ml_gtk_scrolled_window_new"
-(** Create a new ScrolledWindow *)
+(** Creates a new scrolled window. *)
 
 (* Methods *)
 
@@ -316,21 +318,51 @@ val on_edge_overshot :
   t ->
   callback:(pos:Ocgtk_enums.positiontype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever user initiated scrolling makes the scrolled window firmly
+    surpass the limits defined by the adjustment in that orientation.
+
+    A similar behavior without edge resistance is provided by the
+    [Gtk.ScrolledWindow::edge-reached] signal.
+
+    Note: The [pos] argument is LTR/RTL aware, so callers should be aware too if
+    intending to provide behavior on horizontal edges. *)
 
 val on_edge_reached :
   ?after:bool ->
   t ->
   callback:(pos:Ocgtk_enums.positiontype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever user-initiated scrolling makes the scrolled window exactly
+    reach the lower or upper limits defined by the adjustment in that
+    orientation.
+
+    A similar behavior with edge resistance is provided by the
+    [Gtk.ScrolledWindow::edge-overshot] signal.
+
+    Note: The [pos] argument is LTR/RTL aware, so callers should be aware too if
+    intending to provide behavior on horizontal edges. *)
 
 val on_move_focus_out :
   ?after:bool ->
   t ->
   callback:(direction_type:Ocgtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when focus is moved away from the scrolled window by a keybinding.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd> to
+    move forward and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>` to move
+    backward. *)
 
 val on_scroll_child :
   ?after:bool ->
   t ->
   callback:(scroll:Ocgtk_enums.scrolltype -> horizontal:bool -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a keybinding that scrolls is pressed.
+
+    This is a keybinding signal.
+
+    The horizontal or vertical adjustment is updated which triggers a signal
+    that the scrolled window’s child may listen to and scroll itself. *)

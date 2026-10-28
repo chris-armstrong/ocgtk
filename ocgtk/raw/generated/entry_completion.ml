@@ -34,19 +34,24 @@
     [Gtk.TreeModel.get], this will make no difference to you. If for some
     reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
     Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
-    obtain a matching iter. *)
+    obtain a matching iter.
+
+    The class built on this module is in {!Ocgtk.Entry_completion}. *)
 
 type t = [ `entry_completion | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_completion_get_type"
 
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
-(** Create a new EntryCompletion *)
+(** Creates a new [GtkEntryCompletion] object. *)
 
 external new_with_area :
   Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> t
   = "ml_gtk_entry_completion_new_with_area"
-(** Create a new EntryCompletion *)
+(** Creates a new [GtkEntryCompletion] object using the specified [area].
+
+    The [GtkCellArea] is used to layout cells in the underlying
+    [GtkTreeViewColumn] for the drop-down menu. *)
 
 (* Methods *)
 

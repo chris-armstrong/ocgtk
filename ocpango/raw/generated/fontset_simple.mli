@@ -5,14 +5,16 @@
     class as an array of fonts.
 
     When creating a [PangoFontsetSimple], you have to provide the array of fonts
-    that make up the fontset. *)
+    that make up the fontset.
+
+    The class built on this module is in {!Ocpango.Fontset_simple}. *)
 
 type t = [ `fontset_simple | `fontset | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_pango_fontset_simple_get_type"
 
 external new_ : Language.t -> t = "ml_pango_fontset_simple_new"
-(** Create a new FontsetSimple *)
+(** Creates a new [PangoFontsetSimple] for the given language. *)
 
 (* Methods *)
 

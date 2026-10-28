@@ -17,7 +17,9 @@
 
     All classes derived from [GOutputStream] {i should} implement synchronous
     writing, splicing, flushing and closing streams, but {i may} implement
-    asynchronous versions. *)
+    asynchronous versions.
+
+    The class built on this module is in {!Ocgio.Output_stream}. *)
 
 type t = [ `output_stream | `object_ ] Gobject.obj
 

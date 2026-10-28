@@ -69,18 +69,26 @@
  i.e. the expand/collapse arrow; then the label widget if any. The arrow of an\n\
  expander that is showing its child gets the [:checked] pseudoclass set on it.\n\n\
  {b Accessibility}\n\n\
- [GtkExpander] uses the [Gtk.AccessibleRole.button] role."]
+ [GtkExpander] uses the [Gtk.AccessibleRole.button] role.\n\n\
+ The class built on this module is in {!Ocgtk.Expander}."]
 
 type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_expander_get_type"
 
 external new_ : string option -> t = "ml_gtk_expander_new"
-(** Create a new Expander *)
+(** Creates a new expander using [label] as the text of the label. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_expander_new_with_mnemonic"
-(** Create a new Expander *)
+(** Creates a new expander using [label] as the text of the label.
+
+    If characters in [label] are preceded by an underscore, they are underlined.
+    If you need a literal underscore character in a label, use “__” (two
+    underscores). The first underlined character represents a keyboard
+    accelerator called a mnemonic.
+
+    Pressing Alt and that key activates the button. *)
 
 (* Methods *)
 

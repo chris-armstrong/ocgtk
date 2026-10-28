@@ -1,14 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventControllerKey: EventControllerKey *)
 
-(** Provides access to key events. *)
+(** Provides access to key events.
+
+    The class built on this module is in {!Ocgtk.Event_controller_key}. *)
 
 type t = [ `event_controller_key | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_event_controller_key_get_type"
 
 external new_ : unit -> t = "ml_gtk_event_controller_key_new"
-(** Create a new EventControllerKey *)
+(** Creates a new event controller that will handle key events. *)
 
 (* Methods *)
 
@@ -40,21 +42,29 @@ external forward :
 
 val on_im_update :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever the input method context filters away a keypress and
+    prevents the [controller] receiving it.
+
+    See [Gtk.EventControllerKey.set_im_context] and
+    [Gtk.IMContext.filter_keypress]. *)
 
 val on_key_pressed :
   ?after:bool ->
   t ->
   callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a key is pressed. *)
 
 val on_key_released :
   ?after:bool ->
   t ->
   callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a key is released. *)
 
 val on_modifiers :
   ?after:bool ->
   t ->
   callback:(state:Ocgdk_enums.modifiertype -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted whenever the state of modifier keys and pointer buttons change. *)

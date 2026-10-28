@@ -1,5 +1,13 @@
+(** The [PangoAttrSize] structure is used to represent attributes which set font
+    size.
+
+    Its methods, signals and properties are on {!class-type-attr_size_t}. The
+    functions it is built on are in {!Ocpango.Raw.Attr_size}. *)
+
+(** The methods, signals and properties of a [AttrSize]. *)
 class type attr_size_t = object
   method as_attr_size : Raw.Attr_size.t
 end
 
 class attr_size : Raw.Attr_size.t -> attr_size_t
+(** Wraps a raw handle of {!Ocpango.Raw.Attr_size.t}. *)

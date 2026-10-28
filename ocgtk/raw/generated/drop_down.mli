@@ -42,7 +42,8 @@
  [GtkDropDown] has a single CSS node with name dropdown,\n\
  with the button and popover nodes as children.\n\n\
  {b Accessibility}\n\n\
- [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role."]
+ [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role.\n\n\
+ The class built on this module is in {!Ocgtk.Drop_down}."]
 
 type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -50,11 +51,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_down_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> Expression.t option -> t
   = "ml_gtk_drop_down_new"
-(** Create a new DropDown *)
+(** Creates a new [GtkDropDown].
+
+    You may want to call [Gtk.DropDown.set_factory] to set up a way to map its
+    items to widgets. *)
 
 external new_from_strings : string array -> t
   = "ml_gtk_drop_down_new_from_strings"
-(** Create a new DropDown *)
+(** Creates a new [GtkDropDown] that is populated with the strings. *)
 
 (* Methods *)
 
@@ -149,3 +153,7 @@ external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the drop down is activated.
+
+    The [::activate] signal on [GtkDropDown] is an action signal and emitting it
+    causes the drop down to pop up its dropdown. *)

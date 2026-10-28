@@ -15,7 +15,8 @@
     [Gtk.SectionModel.sections_changed] function. All sections in the given
     range then need to be queried again. The [Gio.ListModel::items-changed]
     signal has the same effect, all sections in that range are invalidated, too.
-*)
+
+    The class built on this module is in {!Ocgtk.Section_model}. *)
 
 type t = [ `section_model ] Gobject.obj
 

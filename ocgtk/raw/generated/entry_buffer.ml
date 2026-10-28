@@ -10,14 +10,18 @@
     [GtkEntryBuffer] may be derived from. Such a derived class might allow text
     to be stored in an alternate location, such as non-pageable memory, useful
     in the case of important passwords. Or a derived class could integrate with
-    an application’s concept of undo/redo. *)
+    an application’s concept of undo/redo.
+
+    The class built on this module is in {!Ocgtk.Entry_buffer}. *)
 
 type t = [ `entry_buffer | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_buffer_get_type"
 
 external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
-(** Create a new EntryBuffer *)
+(** Create a new [GtkEntryBuffer] object.
+
+    Optionally, specify initial text to set in the buffer. *)
 
 (* Methods *)
 

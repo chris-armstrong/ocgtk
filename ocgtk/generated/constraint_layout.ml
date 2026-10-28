@@ -4,13 +4,63 @@ class type constraint_layout_t = object
     .layout_manager_t
 
   inherit Buildable.buildable_t
+
   method add_constraint : Constraint.constraint__t -> unit
+  (** Adds a constraint to the layout manager.
+
+      The [Gtk.Constraint:source] and [Gtk.Constraint:target] properties of
+      [constraint] can be:
+
+      - set to [NULL] to indicate that the constraint refers to the widget using
+        [layout]
+      - set to the [Gtk.Widget] using [layout]
+      - set to a child of the [Gtk.Widget] using [layout]
+      - set to a [Gtk.ConstraintGuide] that is part of [layout]
+
+      The [layout] acquires the ownership of [constraint] after calling this
+      function. *)
+
   method add_guide : Constraint_guide.constraint_guide_t -> unit
+  (** Adds a guide to [layout].
+
+      A guide can be used as the source or target of constraints, like a widget,
+      but it is not visible.
+
+      The [layout] acquires the ownership of [guide] after calling this
+      function. *)
+
   method observe_constraints : unit -> Ocgio.List_model.list_model_t
+  (** Returns a [GListModel] to track the constraints that are part of the
+      layout.
+
+      Calling this function will enable extra internal bookkeeping to track
+      constraints and emit signals on the returned listmodel. It may slow down
+      operations a lot.
+
+      Applications should try hard to avoid calling this function because of the
+      slowdowns. *)
+
   method observe_guides : unit -> Ocgio.List_model.list_model_t
+  (** Returns a [GListModel] to track the guides that are part of the layout.
+
+      Calling this function will enable extra internal bookkeeping to track
+      guides and emit signals on the returned listmodel. It may slow down
+      operations a lot.
+
+      Applications should try hard to avoid calling this function because of the
+      slowdowns. *)
+
   method remove_all_constraints : unit -> unit
+  (** Removes all constraints from the layout manager. *)
+
   method remove_constraint : Constraint.constraint__t -> unit
+  (** Removes [constraint] from the layout manager, so that it no longer
+      influences the layout. *)
+
   method remove_guide : Constraint_guide.constraint_guide_t -> unit
+  (** Removes [guide] from the layout manager, so that it no longer influences
+      the layout. *)
+
   method as_constraint_layout : Raw.Constraint_layout.t
 end
 

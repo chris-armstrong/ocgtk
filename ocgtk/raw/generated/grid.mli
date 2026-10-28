@@ -69,14 +69,15 @@
  [GtkGrid] uses a single CSS node with name [grid].\n\n\
  {b Accessibility}\n\n\
  Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
- Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role."]
+ Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role.\n\n\
+ The class built on this module is in {!Ocgtk.Grid}."]
 
 type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_grid_get_type"
 
 external new_ : unit -> t = "ml_gtk_grid_new"
-(** Create a new Grid *)
+(** Creates a new grid widget. *)
 
 (* Methods *)
 

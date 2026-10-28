@@ -6,14 +6,16 @@
     This model is meant to be used as a simple wrapper around a [GListModel]
     when a [GtkSelectionModel] is required.
 
-    [GtkNoSelection] passes through sections from the underlying model. *)
+    [GtkNoSelection] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.No_selection}. *)
 
 type t = [ `no_selection | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_no_selection_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> t = "ml_gtk_no_selection_new"
-(** Create a new NoSelection *)
+(** Creates a new selection to handle [model]. *)
 
 (* Methods *)
 

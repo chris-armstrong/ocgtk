@@ -16,7 +16,9 @@
 
     As with [Gio.SocketService], you may connect to
     [Gio.ThreadedSocketService::run], or subclass and override the default
-    handler. *)
+    handler.
+
+    The class built on this module is in {!Ocgio.Threaded_socket_service}. *)
 
 type t =
   [ `threaded_socket_service | `socket_service | `socket_listener | `object_ ]
@@ -26,7 +28,9 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_threaded_socket_service_get_type"
 
 external new_ : int -> t = "ml_g_threaded_socket_service_new"
-(** Create a new ThreadedSocketService *)
+[@@ocaml.doc
+  "Creates a new [GThreadedSocketService] with no listeners. Listeners\n\
+   must be added with one of the [GSocketListener] \"add\" methods."]
 
 (* Methods *)
 (* Properties *)

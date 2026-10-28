@@ -51,7 +51,9 @@
     is actually stored in [Gio.Settings]. In that case, the real source of the
     value is* [Gio.Settings]. If you want a [Gio.Action] to control a setting
     stored in [Gio.Settings], see [Gio.Settings.create_action] instead, and
-    possibly combine its use with [Gio.Settings.bind]. *)
+    possibly combine its use with [Gio.Settings.bind].
+
+    The class built on this module is in {!Ocgio.Property_action}. *)
 
 type t = [ `property_action | `object_ ] Gobject.obj
 
@@ -59,7 +61,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_property_action_get_type"
 
 external new_ : string -> [ `object_ ] Gobject.obj -> string -> t
   = "ml_g_property_action_new"
-(** Create a new PropertyAction *)
+(** Creates a [GAction] corresponding to the value of property [property_name]
+    on [object].
+
+    The property must be existent and readable and writable (and not
+    construct-only).
+
+    This function takes a reference on [object] and doesn't release it until the
+    action is destroyed. *)
 
 (* Methods *)
 (* Properties *)

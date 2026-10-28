@@ -11,7 +11,9 @@
     There are various support objects that can make use of [GtkTreeListRow]
     objects, such as the [Gtk.TreeExpander] widget that allows displaying an
     icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
-    possible to sort trees properly. *)
+    possible to sort trees properly.
+
+    The class built on this module is in {!Ocgtk.Tree_list_row}. *)
 
 type t = [ `tree_list_row | `object_ ] Gobject.obj
 

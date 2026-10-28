@@ -13,14 +13,16 @@
     connection it will be a [Gio.TcpConnection].
 
     As [GSocketClient] is a lightweight object, you don't need to cache it. You
-    can just create a new one any time you need one. *)
+    can just create a new one any time you need one.
+
+    The class built on this module is in {!Ocgio.Socket_client}. *)
 
 type t = [ `socket_client | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_client_get_type"
 
 external new_ : unit -> t = "ml_g_socket_client_new"
-(** Create a new SocketClient *)
+(** Creates a new [GSocketClient] with the default options. *)
 
 (* Methods *)
 
@@ -354,3 +356,51 @@ val on_event :
     connection:Io_stream.t option ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [client]'s activity on [connectable] changes state. Among other
+    things, this can be used to provide progress information about a network
+    connection in the UI. The meanings of the different [event] values are as
+    follows:
+
+    - [G_SOCKET_CLIENT_RESOLVING]: [client] is about to look up [connectable] in
+      DNS. [connection] will be [NULL].
+
+    - [G_SOCKET_CLIENT_RESOLVED]: [client] has successfully resolved
+      [connectable] in DNS. [connection] will be [NULL].
+
+    - [G_SOCKET_CLIENT_CONNECTING]: [client] is about to make a connection to a
+      remote host; either a proxy server or the destination server itself.
+      [connection] is the [GSocketConnection], which is not yet connected. Since
+      GLib 2.40, you can access the remote address via
+      g_socket_connection_get_remote_address().
+
+    - [G_SOCKET_CLIENT_CONNECTED]: [client] has successfully connected to a
+      remote host. [connection] is the connected [GSocketConnection].
+
+    - [G_SOCKET_CLIENT_PROXY_NEGOTIATING]: [client] is about to negotiate with a
+      proxy to get it to connect to [connectable]. [connection] is the
+      [GSocketConnection] to the proxy server.
+
+    - [G_SOCKET_CLIENT_PROXY_NEGOTIATED]: [client] has negotiated a connection
+      to [connectable] through a proxy server. [connection] is the stream
+      returned from g_proxy_connect(), which may or may not be a
+      [GSocketConnection].
+
+    - [G_SOCKET_CLIENT_TLS_HANDSHAKING]: [client] is about to begin a TLS
+      handshake. [connection] is a [GTlsClientConnection].
+
+    - [G_SOCKET_CLIENT_TLS_HANDSHAKED]: [client] has successfully completed the
+      TLS handshake. [connection] is a [GTlsClientConnection].
+
+    - [G_SOCKET_CLIENT_COMPLETE]: [client] has either successfully connected to
+      [connectable] (in which case [connection] is the [GSocketConnection] that
+      it will be returning to the caller) or has failed (in which case
+      [connection] is [NULL] and the client is about to return an error).
+
+    Each event except [G_SOCKET_CLIENT_COMPLETE] may be emitted multiple times
+    (or not at all) for a given connectable (in particular, if [client] ends up
+    attempting to connect to more than one address). However, if [client] emits
+    the [GSocketClient::event] signal at all for a given connectable, then it
+    will always emit it with [G_SOCKET_CLIENT_COMPLETE] when it is done.
+
+    Note that there may be additional [GSocketClientEvent] values in the future;
+    unrecognized [event] values should be ignored. *)

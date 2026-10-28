@@ -8,6 +8,7 @@ class type event_controller_legacy_t = object
     callback:(event:Ocgdk.Event.event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted for each GDK event delivered to [controller]. *)
 
   method as_event_controller_legacy : Raw.Event_controller_legacy.t
 end

@@ -4,14 +4,18 @@
 (** A 4 vertex quadrilateral, as represented by four #graphene_point_t.
 
     The contents of a #graphene_quad_t are private and should never be accessed
-    directly. *)
+    directly.
+
+    The class built on this module is in {!Ocgraphene.Quad}. *)
 
 type t = [ `quad ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_graphene_quad_get_type"
 
 external alloc : unit -> t = "ml_graphene_quad_alloc"
-(** Create a new Quad *)
+(** Allocates a new #graphene_quad_t instance.
+
+    The contents of the returned instance are undefined. *)
 
 (* Methods *)
 

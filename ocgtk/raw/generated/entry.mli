@@ -70,17 +70,18 @@
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+ [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role.\n\n\
+ The class built on this module is in {!Ocgtk.Entry}."]
 
 type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_entry_get_type"
 
 external new_ : unit -> t = "ml_gtk_entry_new"
-(** Create a new Entry *)
+(** Creates a new entry. *)
 
 external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
-(** Create a new Entry *)
+(** Creates a new entry with the specified text buffer. *)
 
 (* Methods *)
 
@@ -666,15 +667,21 @@ external set_truncate_multiline : t -> bool -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the entry is activated.
+
+    The keybindings for this signal are all forms of the Enter key. *)
 
 val on_icon_press :
   ?after:bool ->
   t ->
   callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an activatable icon is clicked. *)
 
 val on_icon_release :
   ?after:bool ->
   t ->
   callback:(icon_pos:Ocgtk_enums.entryiconposition -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted on the button release from a mouse click over an activatable icon.
+*)

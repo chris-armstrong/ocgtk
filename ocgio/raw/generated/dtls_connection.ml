@@ -19,7 +19,9 @@
     peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
     is up to the caller to do that if they wish. If they do not, and
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
-    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
+    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O.
+
+    The class built on this module is in {!Ocgio.Dtls_connection}. *)
 
 type t = [ `dtls_connection ] Gobject.obj
 

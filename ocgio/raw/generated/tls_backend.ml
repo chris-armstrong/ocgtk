@@ -3,7 +3,9 @@
 
 (** TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an
     internal type used to coordinate the different classes implemented by a TLS
-    backend. *)
+    backend.
+
+    The class built on this module is in {!Ocgio.Tls_backend}. *)
 
 type t = [ `tls_backend ] Gobject.obj
 

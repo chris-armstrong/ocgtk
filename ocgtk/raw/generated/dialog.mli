@@ -98,7 +98,8 @@
  </object>\n\
  ]}\n\n\
  {b Accessibility}\n\n\
- [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role."]
+ [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role.\n\n\
+ The class built on this module is in {!Ocgtk.Dialog}."]
 
 type t =
   [ `dialog | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -106,7 +107,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_dialog_new"
-(** Create a new Dialog *)
+(** Creates a new dialog box.
+
+    Widgets should not be packed into the [GtkWindow] directly, but into the
+    [content_area] and [action_area], as described above. *)
 
 (* Methods *)
 
@@ -192,9 +196,20 @@ external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
 
 val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user uses a keybinding to close the dialog.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is the Escape key. *)
 
 val on_response :
   ?after:bool ->
   t ->
   callback:(response_id:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an action widget is clicked.
+
+    The signal is also emitted when the dialog receives a delete event, and when
+    [Gtk.Dialog.response] is called. On a delete event, the response ID is
+    [GTK_RESPONSE_DELETE_EVENT]. Otherwise, it depends on which action widget
+    was clicked. *)

@@ -17,7 +17,8 @@
  Alignments of [GtkCellRenderer]s rendered in adjacent rows can be\n\
  configured by configuring the [GtkCellAreaBox] align child cell property\n\
  with gtk_cell_area_cell_set_property() or by specifying the \"align\"\n\
- argument to gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end()."]
+ argument to gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().\n\n\
+ The class built on this module is in {!Ocgtk.Cell_area_box}."]
 
 type t =
   [ `cell_area_box | `cell_area | `initially_unowned | `object_ ] Gobject.obj
@@ -25,7 +26,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_area_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_area_box_new"
-(** Create a new CellAreaBox *)
+(** Creates a new [GtkCellAreaBox]. *)
 
 (* Methods *)
 

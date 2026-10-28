@@ -56,7 +56,8 @@
  properties[PROP_N_ITEMS] =\n\
 \  g_param_spec_uint (\"n-items\", NULL, NULL, 0, G_MAXUINT, 0,\n\
 \                     G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.List_model}."]
 
 type t = [ `list_model ] Gobject.obj
 
@@ -124,3 +125,9 @@ val on_items_changed :
   t ->
   callback:(position:int -> removed:int -> added:int -> unit) ->
   Gobject.Signal.handler_id
+(** This signal is emitted whenever items were added to or removed from [list].
+    At [position], [removed] items were removed and [added] items were added in
+    their place.
+
+    Note: If [removed != added], the positions of all later items in the model
+    change. *)

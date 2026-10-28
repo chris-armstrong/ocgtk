@@ -10,7 +10,9 @@
     It is necessary to realize a [GskRenderer] instance using
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
     create the appropriate windowing system resources needed to render the
-    scene. *)
+    scene.
+
+    The class built on this module is in {!Ocgsk.Renderer}. *)
 
 type t = [ `renderer | `object_ ] Gobject.obj
 
@@ -18,7 +20,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_renderer_get_type"
 
 external new_for_surface : Ocgdk_raw.Surface.t -> t
   = "ml_gsk_renderer_new_for_surface"
-(** Create a new Renderer *)
+(** Creates an appropriate [GskRenderer] instance for the given surface.
+
+    If the [GSK_RENDERER] environment variable is set, GSK will try that
+    renderer first, before trying the backend-specific default. The ultimate
+    fallback is the cairo renderer.
+
+    The renderer will be realized before it is returned. *)
 
 (* Methods *)
 

@@ -41,22 +41,30 @@
 
       page_setup = new_page_setup;
     }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Page_setup}. *)
 
 type t = [ `page_setup | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_page_setup_get_type"
 
 external new_ : unit -> t = "ml_gtk_page_setup_new"
-(** Create a new PageSetup *)
+(** Creates a new [GtkPageSetup]. *)
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_gtk_page_setup_new_from_file"
-(** Create a new PageSetup *)
+(** Reads the page setup from the file [file_name].
+
+    Returns a new [GtkPageSetup] object with the restored page setup, or [NULL]
+    if an error occurred. See [Gtk.PageSetup.to_file]. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_page_setup_new_from_gvariant"
-(** Create a new PageSetup *)
+(** Desrialize a page setup from an a\{sv\} variant.
+
+    The variant must be in the format produced by [Gtk.PageSetup.to_gvariant].
+*)
 
 (* Methods *)
 

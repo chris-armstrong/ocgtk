@@ -4,14 +4,20 @@
 (** A structure capable of holding a vector with two dimensions, x and y.
 
     The contents of the #graphene_vec2_t structure are private and should never
-    be accessed directly. *)
+    be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Vec2}. *)
 
 type t = [ `vec2 ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_graphene_vec2_get_type"
 
 external alloc : unit -> t = "ml_graphene_vec2_alloc"
-(** Create a new Vec2 *)
+(** Allocates a new #graphene_vec2_t structure.
+
+    The contents of the returned structure are undefined.
+
+    Use graphene_vec2_init() to initialize the vector. *)
 
 (* Methods *)
 

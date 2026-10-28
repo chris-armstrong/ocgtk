@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScrollEvent: ScrollEvent *)
 
-(** An event related to a scrolling motion. *)
+(** An event related to a scrolling motion.
+
+    The class built on this module is in {!Ocgdk.Scroll_event}. *)
 
 type t = [ `scroll_event | `event ] Gobject.obj
 

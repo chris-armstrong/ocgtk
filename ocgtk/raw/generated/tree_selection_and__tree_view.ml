@@ -73,6 +73,10 @@ module rec Tree_selection : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted whenever the selection has (possibly) changed. Please note that
+      this signal is mostly a hint. It may only be emitted once when a range of
+      rows are selected, and it may occasionally be emitted when nothing has
+      happened. *)
 end = struct
   type t = [ `tree_selection | `object_ ] Gobject.obj
 
@@ -154,11 +158,12 @@ and Tree_view : sig
   external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_view_get_type"
 
   external new_ : unit -> t = "ml_gtk_tree_view_new"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget. *)
 
   external new_with_model : Tree_model.t -> t
     = "ml_gtk_tree_view_new_with_model"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget with the model initialized to [model].
+  *)
 
   (* Methods *)
 
@@ -674,9 +679,11 @@ and Tree_view : sig
 
   val on_columns_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** The number of columns of the treeview has changed. *)
 
   val on_cursor_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** The position of the cursor (focused cell) has changed. *)
 
   val on_expand_collapse_cursor_row :
     ?after:bool ->
@@ -694,6 +701,15 @@ and Tree_view : sig
       modify:bool ->
       bool) ->
     Gobject.Signal.handler_id
+  (** The [GtkTreeView]::move-cursor signal is a \[keybinding
+      signal\][Gtk.SignalAction] which gets emitted when the user presses one of
+      the cursor keys.
+
+      Applications should not connect to it, but may emit it with
+      g_signal_emit_by_name() if they need to control the cursor
+      programmatically. In contrast to gtk_tree_view_set_cursor() and
+      gtk_tree_view_set_cursor_on_cell() when moving horizontally
+      [GtkTreeView]::move-cursor does not reset the current selection. *)
 
   val on_select_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
@@ -721,11 +737,12 @@ end = struct
   external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_view_get_type"
 
   external new_ : unit -> t = "ml_gtk_tree_view_new"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget. *)
 
   external new_with_model : Tree_model.t -> t
     = "ml_gtk_tree_view_new_with_model"
-  (** Create a new TreeView *)
+  (** Creates a new [GtkTreeView] widget with the model initialized to [model].
+  *)
 
   (* Methods *)
 

@@ -36,14 +36,16 @@
 
     {b CSS node}
 
-    [GtkStatusbar] has a single CSS node with name [statusbar]. *)
+    [GtkStatusbar] has a single CSS node with name [statusbar].
+
+    The class built on this module is in {!Ocgtk.Statusbar}. *)
 
 type t = [ `statusbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_statusbar_get_type"
 
 external new_ : unit -> t = "ml_gtk_statusbar_new"
-(** Create a new Statusbar *)
+(** Creates a new [GtkStatusbar] ready for messages. *)
 
 (* Methods *)
 
@@ -75,9 +77,11 @@ val on_text_popped :
   t ->
   callback:(context_id:int -> text:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a new message is popped off a statusbar's stack. *)
 
 val on_text_pushed :
   ?after:bool ->
   t ->
   callback:(context_id:int -> text:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted whenever a new message gets pushed onto a statusbar's stack. *)

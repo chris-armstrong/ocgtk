@@ -10,7 +10,9 @@
     lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
     details.
 
-    [GtkFilterListModel] passes through sections from the underlying model. *)
+    [GtkFilterListModel] passes through sections from the underlying model.
+
+    The class built on this module is in {!Ocgtk.Filter_list_model}. *)
 
 type t = [ `filter_list_model | `object_ ] Gobject.obj
 
@@ -18,7 +20,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_filter_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> Filter.t option -> t
   = "ml_gtk_filter_list_model_new"
-(** Create a new FilterListModel *)
+(** Creates a new [GtkFilterListModel] that will filter [model] using the given
+    [filter]. *)
 
 (* Methods *)
 

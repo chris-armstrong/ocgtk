@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RadialGradientNode: RadialGradientNode *)
 
-(** A render node for a radial gradient. *)
+(** A render node for a radial gradient.
+
+    The class built on this module is in {!Ocgsk.Radial_gradient_node}. *)
 
 type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 
@@ -19,7 +21,11 @@ external new_ :
   t
   = "ml_gsk_radial_gradient_node_new_bytecode"
     "ml_gsk_radial_gradient_node_new_native"
-(** Create a new RadialGradientNode *)
+(** Creates a [GskRenderNode] that draws a radial gradient.
+
+    The radial gradient starts around [center]. The size of the gradient is
+    dictated by [hradius] in horizontal orientation and by [vradius] in vertical
+    orientation. *)
 
 (* Methods *)
 

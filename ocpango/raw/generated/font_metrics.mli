@@ -11,7 +11,9 @@
 
     For an overview of the most important metrics, see:
 
-    Font metrics *)
+    Font metrics
+
+    The class built on this module is in {!Ocpango.Font_metrics}. *)
 
 type t = [ `font_metrics ] Gobject.obj
 

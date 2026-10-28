@@ -8,32 +8,78 @@ class type scale_button_t = object
 
   method on_popdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to dismiss the popup.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Escape</kbd>. *)
 
   method on_popup :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted to popup the scale widget.
+
+      This is a keybinding signal.
+
+      The default bindings for this signal are <kbd>Space</kbd>,
+      <kbd>Enter</kbd> and <kbd>Return</kbd>. *)
 
   method on_value_changed :
     ?after:bool ->
     callback:(value:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the value field has changed. *)
 
   method get_active : unit -> bool
+  (** Queries a [GtkScaleButton] and returns its current state.
+
+      Returns [TRUE] if the scale button is pressed in and [FALSE] if it is
+      raised. *)
+
   method get_adjustment : unit -> Adjustment.adjustment_t
+  (** Gets the [GtkAdjustment] associated with the [GtkScaleButton]’s scale.
+
+      See [Gtk.Range.get_adjustment] for details. *)
+
   method get_has_frame : unit -> bool
+  (** Returns whether the button has a frame. *)
+
   method get_minus_button : unit -> Button.button_t
+  (** Retrieves the minus button of the [GtkScaleButton]. *)
+
   method get_plus_button : unit -> Button.button_t
+  (** Retrieves the plus button of the [GtkScaleButton.] *)
 
   method get_popup :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Retrieves the popup of the [GtkScaleButton]. *)
 
   method get_value : unit -> float
+  (** Gets the current value of the scale button. *)
+
   method set_adjustment : Adjustment.adjustment_t -> unit
+  (** Sets the [GtkAdjustment] to be used as a model for the [GtkScaleButton]’s
+      scale.
+
+      See [Gtk.Range.set_adjustment] for details. *)
+
   method set_has_frame : bool -> unit
+  (** Sets the style of the button. *)
+
   method set_icons : string array -> unit
+  (** Sets the icons to be used by the scale button. *)
+
   method set_value : float -> unit
+  (** Sets the current value of the scale.
+
+      If the value is outside the minimum or maximum range values, it will be
+      clamped to fit inside them.
+
+      The scale button emits the [Gtk.ScaleButton::value-changed] signal if the
+      value changes. *)
+
   method as_scale_button : Raw.Scale_button.t
 end
 

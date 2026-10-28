@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CallbackAction: CallbackAction *)
 
-(** Invokes a callback. *)
+(** Invokes a callback.
+
+    The class built on this module is in {!Ocgtk.Callback_action}. *)
 
 type t = [ `callback_action | `shortcut_action | `object_ ] Gobject.obj
 

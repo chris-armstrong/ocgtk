@@ -54,14 +54,15 @@
 \    }\n\n\
 \  return authorized;\n\
  }\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.D_bus_auth_observer}."]
 
 type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_auth_observer_get_type"
 
 external new_ : unit -> t = "ml_g_dbus_auth_observer_new"
-(** Create a new DBusAuthObserver *)
+(** Creates a new [GDBusAuthObserver] object. *)
 
 (* Methods *)
 
@@ -80,9 +81,12 @@ val on_allow_mechanism :
   t ->
   callback:(mechanism:string -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted to check if [mechanism] is allowed to be used. *)
 
 val on_authorize_authenticated_peer :
   ?after:bool ->
   t ->
   callback:(stream:Io_stream.t -> credentials:Credentials.t option -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted to check if a peer that is successfully authenticated is authorized.
+*)

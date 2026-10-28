@@ -77,14 +77,16 @@
     user-visible indication that the drawing area is focused.
 
     If you need more complex control over your widget, you should consider
-    creating your own [GtkWidget] subclass. *)
+    creating your own [GtkWidget] subclass.
+
+    The class built on this module is in {!Ocgtk.Drawing_area}. *)
 
 type t = [ `drawing_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drawing_area_get_type"
 
 external new_ : unit -> t = "ml_gtk_drawing_area_new"
-(** Create a new DrawingArea *)
+(** Creates a new drawing area. *)
 
 (* Methods *)
 
@@ -122,3 +124,8 @@ val on_resize :
   t ->
   callback:(width:int -> height:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted once when the widget is realized, and then each time the widget is
+    changed while realized.
+
+    This is useful in order to keep state up to date with the widget size, like
+    for instance a backing surface. *)

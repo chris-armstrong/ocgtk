@@ -5,11 +5,28 @@ class type color_dialog_button_t = object
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the color dialog button is activated.
+
+      The [::activate] signal on [GtkColorDialogButton] is an action signal and
+      emitting it causes the button to pop up its dialog. *)
 
   method get_dialog : unit -> Color_dialog.color_dialog_t option
+  (** Returns the [GtkColorDialog] of [self]. *)
+
   method get_rgba : unit -> Ocgdk.Rgb_a.rgb_a_t
+  [@@ocaml.doc
+    "Returns the color of the button.\n\n\
+     This function is what should be used to obtain\n\
+     the color that was chosen by the user. To get\n\
+     informed about changes, listen to \"notify::rgba\"."]
+
   method set_dialog : Color_dialog.color_dialog_t -> unit
+  (** Sets a [GtkColorDialog] object to use for creating the color chooser
+      dialog that is presented when the user clicks the button. *)
+
   method set_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit
+  (** Sets the color of the button. *)
+
   method as_color_dialog_button : Raw.Color_dialog_button.t
 end
 

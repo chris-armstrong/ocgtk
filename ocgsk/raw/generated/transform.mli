@@ -9,14 +9,19 @@
 
     [GskTransform] objects are immutable and cannot be changed after creation.
     This means code can safely expose them as properties of objects without
-    having to worry about others changing them. *)
+    having to worry about others changing them.
+
+    The class built on this module is in {!Ocgsk.Transform}. *)
 
 type t = [ `transform ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_transform_get_type"
 
 external new_ : unit -> t = "ml_gsk_transform_new"
-(** Create a new Transform *)
+(** Creates a new identity transform.
+
+    This function is meant to be used by language bindings. For C code, this is
+    equivalent to using [NULL]. *)
 
 (* Methods *)
 

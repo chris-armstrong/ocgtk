@@ -1,3 +1,20 @@
+(** Recognizes swipe gestures.
+
+    After a press/move/.../move/release sequence happens, the
+    [Gtk.GestureSwipe::swipe] signal will be emitted, providing the velocity and
+    directionality of the sequence at the time it was lifted.
+
+    If the velocity is desired in intermediate points,
+    [Gtk.GestureSwipe.get_velocity] can be called in a [Gtk.Gesture::update]
+    handler.
+
+    All velocities are reported in pixels/sec units.
+
+    Its methods, signals and properties are on {!class-type-gesture_swipe_t}.
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Gesture_swipe}. *)
+
+(** The methods, signals and properties of a [GestureSwipe]. *)
 class type gesture_swipe_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -6,10 +23,17 @@ class type gesture_swipe_t = object
     callback:(velocity_x:float -> velocity_y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the recognized gesture is finished.
+
+      Velocity and direction are a product of previously recorded events. *)
 
   method as_gesture_swipe : Raw.Gesture_swipe.t
 end
 
 class gesture_swipe : Raw.Gesture_swipe.t -> gesture_swipe_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_swipe.t}. *)
+
+(** {2:constructors Constructors} *)
 
 val new_ : unit -> gesture_swipe_t
+(** Returns a newly created [GtkGesture] that recognizes swipes. *)

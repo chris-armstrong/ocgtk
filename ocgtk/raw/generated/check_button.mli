@@ -44,22 +44,23 @@
  is named check when no group is set, and radio if the checkbutton\n\
  is grouped together with other checkbuttons.\n\n\
  {b Accessibility}\n\n\
- [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role."]
+ [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role.\n\n\
+ The class built on this module is in {!Ocgtk.Check_button}."]
 
 type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_check_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_check_button_new"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton]. *)
 
 external new_with_label : string option -> t
   = "ml_gtk_check_button_new_with_label"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton] with the given text. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_check_button_new_with_mnemonic"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton] with the given text and a mnemonic. *)
 
 (* Methods *)
 
@@ -146,6 +147,17 @@ external get_active : t -> bool = "ml_gtk_check_button_get_active"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the check button is activated.
+
+    The [::activate] signal on [GtkCheckButton] is an action signal and emitting
+    it causes the button to animate press then release.
+
+    Applications should never connect to this signal, but use the
+    [Gtk.CheckButton::toggled] signal.
+
+    The default bindings for this signal are all forms of the <kbd>␣</kbd> and
+    <kbd>Enter</kbd> keys. *)
 
 val on_toggled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the buttons's [Gtk.CheckButton:active] property changes. *)

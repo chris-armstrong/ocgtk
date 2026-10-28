@@ -9,7 +9,8 @@
  with signals on the [GdkDrag] object.\n\n\
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
- \"Drag and Drop\" section of the GTK documentation for more information."]
+ \"Drag and Drop\" section of the GTK documentation for more information.\n\n\
+ The class built on this module is in {!Ocgdk.Drag}."]
 
 type t = [ `drag | `object_ ] Gobject.obj
 
@@ -78,9 +79,14 @@ val on_cancel :
   t ->
   callback:(reason:Ocgdk_enums.dragcancelreason -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the drag operation is cancelled. *)
 
 val on_dnd_finished :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the destination side has finished reading all data.
+
+    The drag object can now free all miscellaneous data. *)
 
 val on_drop_performed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the drop operation is performed on an accepting client. *)

@@ -2,7 +2,9 @@
 (* MenuAttributeIter: MenuAttributeIter *)
 
 (** [GMenuAttributeIter] is an opaque structure type. You must access it using
-    the functions below. *)
+    the functions below.
+
+    The class built on this module is in {!Ocgio.Menu_attribute_iter}. *)
 
 type t = [ `menu_attribute_iter | `object_ ] Gobject.obj
 

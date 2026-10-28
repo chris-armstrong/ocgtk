@@ -1,14 +1,17 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OpacityNode: OpacityNode *)
 
-(** A render node controlling the opacity of its single child node. *)
+(** A render node controlling the opacity of its single child node.
+
+    The class built on this module is in {!Ocgsk.Opacity_node}. *)
 
 type t = [ `opacity_node | `render_node ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gsk_opacity_node_get_type"
 
 external new_ : Render_node.t -> float -> t = "ml_gsk_opacity_node_new"
-(** Create a new OpacityNode *)
+(** Creates a [GskRenderNode] that will drawn the [child] with reduced
+    [opacity]. *)
 
 (* Methods *)
 

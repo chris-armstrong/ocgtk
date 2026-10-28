@@ -6,7 +6,9 @@
     To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]
     object.
 
-    Dma-buf textures can only be created on Linux. *)
+    Dma-buf textures can only be created on Linux.
+
+    The class built on this module is in {!Ocgdk.Dmabuf_texture}. *)
 
 type t = [ `dmabuf_texture | `texture | `object_ ] Gobject.obj
 

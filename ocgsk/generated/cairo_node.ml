@@ -1,7 +1,16 @@
 class type cairo_node_t = object
   inherit Render_node.render_node_t
+
   method get_draw_context : unit -> Occairo.Context.context_t
+  (** Creates a Cairo context for drawing using the surface associated to the
+      render node.
+
+      If no surface exists yet, a surface will be created optimized for
+      rendering to [renderer]. *)
+
   method get_surface : unit -> Occairo.Surface.surface_t
+  (** Retrieves the Cairo surface used by the render node. *)
+
   method as_cairo_node : Raw.Cairo_node.t
 end
 

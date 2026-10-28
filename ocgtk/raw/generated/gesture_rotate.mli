@@ -4,7 +4,9 @@
 (** Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
-    [Gtk.GestureRotate::angle-changed] signal is emitted. *)
+    [Gtk.GestureRotate::angle-changed] signal is emitted.
+
+    The class built on this module is in {!Ocgtk.Gesture_rotate}. *)
 
 type t =
   [ `gesture_rotate | `gesture | `event_controller | `object_ ] Gobject.obj
@@ -12,7 +14,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_rotate_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_rotate_new"
-(** Create a new GestureRotate *)
+(** Returns a newly created [GtkGesture] that recognizes 2-touch rotation
+    gestures. *)
 
 (* Methods *)
 
@@ -28,3 +31,4 @@ val on_angle_changed :
   t ->
   callback:(angle:float -> angle_delta:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the angle between both tracked points changes. *)

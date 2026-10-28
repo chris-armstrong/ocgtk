@@ -8,27 +8,38 @@
     GTK provides a GIO extension point for [GtkMediaFile] implementations to
     allow for external implementations using various media frameworks.
 
-    GTK itself includes an implementation using GStreamer. *)
+    GTK itself includes an implementation using GStreamer.
+
+    The class built on this module is in {!Ocgtk.Media_file}. *)
 
 type t = [ `media_file | `media_stream | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_media_file_get_type"
 
 external new_ : unit -> t = "ml_gtk_media_file_new"
-(** Create a new MediaFile *)
+(** Creates a new empty media file. *)
 
 external new_for_file : Ocgio_raw.File.t -> t = "ml_gtk_media_file_new_for_file"
-(** Create a new MediaFile *)
+(** Creates a new media file to play [file]. *)
 
 external new_for_filename : string -> t = "ml_gtk_media_file_new_for_filename"
-(** Create a new MediaFile *)
+(** Creates a new media file for the given filename.
+
+    This is a utility function that converts the given [filename] to a [GFile]
+    and calls [Gtk.MediaFile.new_for_file]. *)
 
 external new_for_input_stream : Ocgio_raw.Input_stream.t -> t
   = "ml_gtk_media_file_new_for_input_stream"
-(** Create a new MediaFile *)
+(** Creates a new media file to play [stream].
+
+    If you want the resulting media to be seekable, the stream should implement
+    the [GSeekable] interface. *)
 
 external new_for_resource : string -> t = "ml_gtk_media_file_new_for_resource"
-(** Create a new MediaFile *)
+(** Creates a new new media file for the given resource.
+
+    This is a utility function that converts the given [resource] to a [GFile]
+    and calls [Gtk.MediaFile.new_for_file]. *)
 
 (* Methods *)
 

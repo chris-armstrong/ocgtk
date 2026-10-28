@@ -11,7 +11,9 @@
     [Gtk.GestureSwipe.get_velocity] can be called in a [Gtk.Gesture::update]
     handler.
 
-    All velocities are reported in pixels/sec units. *)
+    All velocities are reported in pixels/sec units.
+
+    The class built on this module is in {!Ocgtk.Gesture_swipe}. *)
 
 type t =
   [ `gesture_swipe | `gesture_single | `gesture | `event_controller | `object_ ]
@@ -20,7 +22,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_swipe_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_swipe_new"
-(** Create a new GestureSwipe *)
+(** Returns a newly created [GtkGesture] that recognizes swipes. *)
 
 (* Methods *)
 

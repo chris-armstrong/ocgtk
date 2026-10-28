@@ -39,7 +39,9 @@
     choice has an identifier and a user visible label; additionally, each choice
     can have multiple options. If a choice has no option, it will be rendered as
     a check button with the given label; if a choice has options, it will be
-    rendered as a combo box. *)
+    rendered as a combo box.
+
+    The class built on this module is in {!Ocgtk.File_chooser}. *)
 
 type t = [ `file_chooser ] Gobject.obj
 

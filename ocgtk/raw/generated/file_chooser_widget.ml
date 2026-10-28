@@ -29,7 +29,9 @@
 
     {b CSS nodes}
 
-    [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
+    [GtkFileChooserWidget] has a single CSS node with name filechooser.
+
+    The class built on this module is in {!Ocgtk.File_chooser_widget}. *)
 
 type t =
   [ `file_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -38,7 +40,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_file_chooser_widget_get_type"
 
 external new_ : Ocgtk_enums.filechooseraction -> t
   = "ml_gtk_file_chooser_widget_new"
-(** Create a new FileChooserWidget *)
+(** Creates a new [GtkFileChooserWidget].
+
+    This is a file chooser widget that can be embedded in custom windows, and it
+    is the same widget that is used by [GtkFileChooserDialog]. *)
 
 (* Methods *)
 (* Properties *)

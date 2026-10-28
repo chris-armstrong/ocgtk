@@ -9,7 +9,9 @@
     some of the later values as [NULL]. All values after [name] are optional.
     Additional optional fields may be added in the future.
 
-    See [Gio.ActionMap.add_action_entries] for an example. *)
+    See [Gio.ActionMap.add_action_entries] for an example.
+
+    The class built on this module is in {!Ocgio.Action_entry}. *)
 
 type t = [ `action_entry ] Gobject.obj
 

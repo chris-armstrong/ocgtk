@@ -55,14 +55,20 @@
 
     {b Accessibility}
 
-    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role.
+
+    The class built on this module is in {!Ocgtk.Menu_button}. *)
 
 type t = [ `menu_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_menu_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_menu_button_new"
-(** Create a new MenuButton *)
+(** Creates a new [GtkMenuButton] widget with downwards-pointing arrow as the
+    only child.
+
+    You can replace the child widget with another [GtkWidget] should you wish
+    to. *)
 
 (* Methods *)
 
@@ -224,3 +230,7 @@ external get_active : t -> bool = "ml_gtk_menu_button_get_active"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the menu button is activated.
+
+    The [::activate] signal on [GtkMenuButton] is an action signal and emitting
+    it causes the button to pop up its menu. *)

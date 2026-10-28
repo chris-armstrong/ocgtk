@@ -6,7 +6,9 @@
     It is able to recognize multiple clicks on a nearby zone, which can be
     listened for through the [Gtk.GestureClick::pressed] signal. Whenever time
     or distance between clicks exceed the GTK defaults,
-    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset. *)
+    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset.
+
+    The class built on this module is in {!Ocgtk.Gesture_click}. *)
 
 type t =
   [ `gesture_click | `gesture_single | `gesture | `event_controller | `object_ ]
@@ -15,7 +17,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_click_get_type"
 
 external new_ : unit -> t = "ml_gtk_gesture_click_new"
-(** Create a new GestureClick *)
+(** Returns a newly created [GtkGesture] that recognizes single and multiple
+    presses. *)
 
 (* Methods *)
 let on_pressed ?after obj ~callback =

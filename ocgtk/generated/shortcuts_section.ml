@@ -6,8 +6,20 @@ class type shortcuts_section_t = object
     callback:(offset:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when we change the current page.
+
+      The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
+      <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>. *)
 
   method add_group : Shortcuts_group.shortcuts_group_t -> unit
+  (** Adds a group to the shortcuts section.
+
+      This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+      tag to add the child.
+
+      Adding children with the [GtkBox] API is not appropriate, as
+      [GtkShortcutsSection] manages its children internally. *)
+
   method max_height : int
   method set_max_height : int -> unit
   method section_name : string

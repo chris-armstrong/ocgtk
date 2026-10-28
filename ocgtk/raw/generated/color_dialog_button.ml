@@ -17,7 +17,9 @@
 
     [GtkColorDialogButton] has a single CSS node with name colorbutton which
     contains a button node. To differentiate it from a plain [GtkButton], it
-    gets the .color style class. *)
+    gets the .color style class.
+
+    The class built on this module is in {!Ocgtk.Color_dialog_button}. *)
 
 type t =
   [ `color_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -25,7 +27,10 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_color_dialog_button_get_type"
 
 external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"
-(** Create a new ColorDialogButton *)
+(** Creates a new [GtkColorDialogButton] with the given [GtkColorDialog].
+
+    You can pass [NULL] to this function and set a [GtkColorDialog] later. The
+    button will be insensitive until that happens. *)
 
 (* Methods *)
 

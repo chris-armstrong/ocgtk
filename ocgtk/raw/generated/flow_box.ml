@@ -55,14 +55,16 @@
     {b Accessibility}
 
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
-    uses the [Gtk.AccessibleRole.grid_cell] role. *)
+    uses the [Gtk.AccessibleRole.grid_cell] role.
+
+    The class built on this module is in {!Ocgtk.Flow_box}. *)
 
 type t = [ `flow_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_flow_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_flow_box_new"
-(** Create a new FlowBox *)
+(** Creates a [GtkFlowBox]. *)
 
 (* Methods *)
 

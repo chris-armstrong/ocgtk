@@ -9,7 +9,11 @@ module rec At_context : sig
   external create :
     Ocgtk_enums.accessiblerole -> Accessible.t -> Ocgdk_raw.Display.t -> t
     = "ml_gtk_at_context_create"
-  (** Create a new ATContext *)
+  (** Creates a new [GtkATContext] instance for the given accessible role,
+      accessible instance, and display connection.
+
+      The [GtkATContext] implementation being instantiated will depend on the
+      platform. *)
 
   (* Methods *)
 
@@ -33,6 +37,8 @@ module rec At_context : sig
 
   val on_state_change :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the attributes of the accessible for the [GtkATContext]
+      instance change. *)
 end = struct
   type t = [ `at_context | `object_ ] Gobject.obj
 
@@ -41,7 +47,11 @@ end = struct
   external create :
     Ocgtk_enums.accessiblerole -> Accessible.t -> Ocgdk_raw.Display.t -> t
     = "ml_gtk_at_context_create"
-  (** Create a new ATContext *)
+  (** Creates a new [GtkATContext] instance for the given accessible role,
+      accessible instance, and display connection.
+
+      The [GtkATContext] implementation being instantiated will depend on the
+      platform. *)
 
   (* Methods *)
 

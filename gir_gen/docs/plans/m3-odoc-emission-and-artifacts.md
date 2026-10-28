@@ -1,12 +1,12 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–4 implemented; Phase 5 partly done; the conventions
-page of Phase 9 written early; Phases 6–8 and 10 onwards not yet done
-(per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
+**Status: Phases 0–5 implemented; the conventions page of Phase 9 written
+early; Phases 6–8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
-need it. Conventions page: PR #194. Phase 3: branch `m3-phase3`.
-Phase 5 onwards: one branch and PR per phase (see the rules below).
+need it. Conventions page: PR #194. Phase 3: PR #207 (branch
+`m3-phase3`). Phase 5: branch `m3-phase5`. Phase 6 onwards: one branch and PR
+per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -725,9 +725,32 @@ carry docs; combined and cyclic modules carry docs. Diffs here are *additive*
 (previously-doc-less output gains docs) and must be reviewed as such, with
 the Phase 3 HTML diff against the phase's base.
 
-**Status: partly done.** Class/interface entity docs are un-suppressed for L1
-(`adc30fe6`, `742d1a77`). The remaining steps are below, in order. Additional
-items done in this phase so far, which the original list did not contain:
+**Status: done** (branch `m3-phase5`; L1 class and interface entity docs were
+un-suppressed earlier in `adc30fe6` and `742d1a77`). The five steps landed as
+five commits. Differences from the text below:
+
+- *Constructors heading only where there are constructors.* The
+  `{2:constructors Constructors}` heading, and the navigation paragraph's
+  sentence linking it, appear only when a class has at least one generated
+  constructor. Phase 7 adds the heading with the canned no-constructor line.
+- *Synopsis fallback.* odoc reuses a module doc's first paragraph as the
+  synopsis on the parent page, where `{!class-type-…}` does not resolve, so a
+  module without a GIR class doc starts with "Bindings for [<class name>]."
+  instead of the navigation paragraph (20 warnings without it).
+- *Combined modules* get a preamble naming the modules that re-export their
+  members ("use that module rather than this one"), at both layers; each
+  `module rec`/`and` arm, class type and class carries its own doc.
+- *Constructor fallback* ("Create a new [<class name>]. Wraps [<C function>].",
+  linked for gi-docgen namespaces): every generated constructor in the
+  current corpus has a GIR doc, so it shows only in unit tests for now.
+- *Placement:* ocamlformat moves type, method, constructor and signal docs
+  after their item (its default); odoc attaches them the same way. A doc
+  comment between two items is preceded by a blank line so it is not
+  ambiguous.
+- *Result:* 2956 HTML files, 0 odoc warnings; against Phase 3 (`doc_diff`),
+  2820 pages change and one is added (the generator's `Entity_doc`).
+
+Items done in this phase earlier, which the original list did not contain:
 
 - *Comment safety for quotes:* OCaml lexes string literals inside comments, and
   GIR prose can leave one open. `Doc_emit` replaces every `"` in an emitted

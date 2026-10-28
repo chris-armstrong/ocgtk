@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GridLayoutChild: GridLayoutChild *)
 
-(** [GtkLayoutChild] subclass for children in a [GtkGridLayout]. *)
+(** [GtkLayoutChild] subclass for children in a [GtkGridLayout].
+
+    The class built on this module is in {!Ocgtk.Grid_layout_child}. *)
 
 type t = [ `grid_layout_child | `layout_child | `object_ ] Gobject.obj
 

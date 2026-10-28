@@ -39,7 +39,9 @@
     For tracking changes in other properties in the listitem, the ::notify
     signal is recommended. The signal can be connected in the
     [Gtk.SignalListItemFactory::setup] signal and removed again during
-    [Gtk.SignalListItemFactory::teardown]. *)
+    [Gtk.SignalListItemFactory::teardown].
+
+    The class built on this module is in {!Ocgtk.Signal_list_item_factory}. *)
 
 type t =
   [ `signal_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
@@ -48,6 +50,8 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_signal_list_item_factory_get_type"
 
 external new_ : unit -> t = "ml_gtk_signal_list_item_factory_new"
-(** Create a new SignalListItemFactory *)
+(** Creates a new [GtkSignalListItemFactory].
+
+    You need to connect signal handlers before you use it. *)
 
 (* Methods *)

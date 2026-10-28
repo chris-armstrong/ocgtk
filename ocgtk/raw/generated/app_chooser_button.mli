@@ -27,7 +27,9 @@
     {b CSS nodes}
 
     [GtkAppChooserButton] has a single CSS node with the name
-    “appchooserbutton”. *)
+    “appchooserbutton”.
+
+    The class built on this module is in {!Ocgtk.App_chooser_button}. *)
 
 type t =
   [ `app_chooser_button | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -35,7 +37,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_button_get_type"
 
 external new_ : string -> t = "ml_gtk_app_chooser_button_new"
-(** Create a new AppChooserButton *)
+(** Creates a new [GtkAppChooserButton] for applications that can handle content
+    of the given type. *)
 
 (* Methods *)
 
@@ -103,12 +106,20 @@ external append_custom_item : t -> string -> string -> Ocgio_raw.Icon.t -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the button is activated.
+
+    The [::activate] signal on [GtkAppChooserButton] is an action signal and
+    emitting it causes the button to pop up its dialog. *)
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the active application changes. *)
 
 val on_custom_item_activated :
   ?after:bool ->
   t ->
   callback:(item_name:string -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a custom item is activated.
+
+    Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)

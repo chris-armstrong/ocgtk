@@ -11,14 +11,18 @@
     like any other widget and use [Gtk.DragIcon.set_child] to set whatever
     widget should be used for the drag icon.
 
-    Keep in mind that drag icons do not allow user input. *)
+    Keep in mind that drag icons do not allow user input.
+
+    The class built on this module is in {!Ocgtk.Drag_icon}. *)
 
 type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drag_icon_get_type"
 
 external get_for_drag : Ocgdk_raw.Drag.t -> t = "ml_gtk_drag_icon_get_for_drag"
-(** Create a new DragIcon *)
+(** Gets the [GtkDragIcon] in use with [drag].
+
+    If no drag icon exists yet, a new one will be created and shown. *)
 
 (* Methods *)
 

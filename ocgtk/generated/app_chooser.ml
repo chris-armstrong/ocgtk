@@ -1,7 +1,14 @@
 class type app_chooser_t = object
   method get_app_info : unit -> Ocgio.App_info.app_info_t option
+  (** Returns the currently selected application. *)
+
   method get_content_type : unit -> string
+  (** Returns the content type for which the [GtkAppChooser] shows applications.
+  *)
+
   method refresh : unit -> unit
+  (** Reloads the list of applications. *)
+
   method as_app_chooser : Raw.App_chooser.t
 end
 

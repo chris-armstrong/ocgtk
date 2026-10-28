@@ -60,7 +60,8 @@
  [GTK_STATE_FLAG_DROP_ACTIVE] state, which can be used to style the widget.\n\n\
  If you are not interested in receiving the drop, but just want to update\n\
  UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
- use [Gtk.DropControllerMotion]."]
+ use [Gtk.DropControllerMotion].\n\n\
+ The class built on this module is in {!Ocgtk.Drop_target}."]
 
 type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 
@@ -68,7 +69,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_get_type"
 
 external new_ : Gobject.Type.t -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_new"
-(** Create a new DropTarget *)
+(** Creates a new [GtkDropTarget] object.
+
+    If the drop target should support more than 1 type, pass [G_TYPE_INVALID]
+    for [type] and then call [Gtk.DropTarget.set_gtypes]. *)
 
 (* Methods *)
 

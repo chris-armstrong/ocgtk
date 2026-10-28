@@ -56,7 +56,8 @@
  properties[PROP_N_ITEMS] =\n\
 \  g_param_spec_uint (\"n-items\", NULL, NULL, 0, G_MAXUINT, 0,\n\
 \                     G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgio.List_model}."]
 
 type t = [ `list_model ] Gobject.obj
 

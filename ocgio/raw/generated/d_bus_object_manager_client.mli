@@ -67,7 +67,10 @@
     [GDBusObjectManagerClient] object was constructed in. Additionally, the
     [Gio.DBusObjectProxy] and [Gio.DBusProxy] objects originating from the
     [GDBusObjectManagerClient] object will be created in the same context and,
-    consequently, will deliver signals in the same main loop. *)
+    consequently, will deliver signals in the same main loop.
+
+    The class built on this module is in {!Ocgio.D_bus_object_manager_client}.
+*)
 
 type t = [ `d_bus_object_manager_client | `object_ ] Gobject.obj
 
@@ -76,11 +79,12 @@ external gtype : unit -> Gobject.Type.t
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_finish"
-(** Create a new DBusObjectManagerClient *)
+(** Finishes an operation started with g_dbus_object_manager_client_new(). *)
 
 external new_for_bus_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_for_bus_finish"
-(** Create a new DBusObjectManagerClient *)
+(** Finishes an operation started with
+    g_dbus_object_manager_client_new_for_bus(). *)
 
 (* Methods *)
 
@@ -119,3 +123,11 @@ val on_interface_proxy_signal :
     parameters:Gvariant.t ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a D-Bus signal is received on [interface_proxy].
+
+    This signal exists purely as a convenience to avoid having to connect
+    signals to all interface proxies managed by [manager].
+
+    This signal is emitted in the thread-default main context (see
+    [GLib.MainContext.push_thread_default]) that [manager] was constructed in.
+*)

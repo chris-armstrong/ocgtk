@@ -88,7 +88,9 @@
 
     {b Accessibility}
 
-    [GtkScale] uses the [Gtk.AccessibleRole.slider] role. *)
+    [GtkScale] uses the [Gtk.AccessibleRole.slider] role.
+
+    The class built on this module is in {!Ocgtk.Scale}. *)
 
 type t =
   [ `scale | `range | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -97,12 +99,21 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_scale_get_type"
 
 external new_ : Ocgtk_enums.orientation -> Adjustment.t option -> t
   = "ml_gtk_scale_new"
-(** Create a new Scale *)
+(** Creates a new [GtkScale]. *)
 
 external new_with_range :
   Ocgtk_enums.orientation -> float -> float -> float -> t
   = "ml_gtk_scale_new_with_range"
-(** Create a new Scale *)
+(** Creates a new scale widget with a range from [min] to [max].
+
+    The returns scale will have the given orientation and will let the user
+    input a number between [min] and [max] (including [min] and [max]) with the
+    increment [step]. [step] must be nonzero; it’s the distance the slider moves
+    when using the arrow keys to adjust the scale value.
+
+    Note that the way in which the precision is derived works best if [step] is
+    a power of ten. If the resulting precision is not suitable for your needs,
+    use [Gtk.Scale.set_digits] to correct it. *)
 
 (* Methods *)
 

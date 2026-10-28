@@ -35,7 +35,9 @@
     Many properties of [GtkCellRenderer] and its subclasses have a corresponding
     “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
     These “set” properties reflect whether a property has been set or not. You
-    should not set them independently. *)
+    should not set them independently.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer}. *)
 
 type t = [ `cell_renderer | `initially_unowned | `object_ ] Gobject.obj
 

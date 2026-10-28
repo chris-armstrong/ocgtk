@@ -57,7 +57,8 @@
  g_object_unref (builder);\n\n\
  // ...\n\n\
  GtkWidget *window = gtk_application_window_new (app);\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Application_window}."]
 
 type t =
   [ `application_window | `window | `widget | `initially_unowned | `object_ ]
@@ -67,7 +68,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_application_window_get_type"
 
 external new_ : Application_and__window_and__window_group.Application.t -> t
   = "ml_gtk_application_window_new"
-(** Create a new ApplicationWindow *)
+(** Creates a new [GtkApplicationWindow]. *)
 
 (* Methods *)
 

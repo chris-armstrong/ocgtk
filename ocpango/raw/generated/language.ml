@@ -4,7 +4,9 @@
 (** The [PangoLanguage] structure is used to represent a language.
 
     [PangoLanguage] pointers can be efficiently copied and compared with each
-    other. *)
+    other.
+
+    The class built on this module is in {!Ocpango.Language}. *)
 
 type t = [ `language ] Gobject.obj
 

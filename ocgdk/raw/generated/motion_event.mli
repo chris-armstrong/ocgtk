@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MotionEvent: MotionEvent *)
 
-(** An event related to a pointer or touch device motion. *)
+(** An event related to a pointer or touch device motion.
+
+    The class built on this module is in {!Ocgdk.Motion_event}. *)
 
 type t = [ `motion_event | `event ] Gobject.obj
 

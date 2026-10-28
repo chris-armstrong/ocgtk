@@ -1,6 +1,19 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgio.Raw.Tls_connection},
+    {!Ocgio.Raw.Tls_database}, {!Ocgio.Raw.Tls_interaction}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** [GTlsConnection] is the base TLS connection class type, which wraps a
+    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
+    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
+    client-side and server-side TLS, respectively.
+
+    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection].
+
+    The class built on this module is in {!Ocgio.Tls_connection}. *)
 module rec Tls_connection : sig
   type t = [ `tls_connection | `io_stream | `object_ ] Gobject.obj
 
@@ -236,8 +249,57 @@ module rec Tls_connection : sig
       errors:Ocgio_enums.tlscertificateflags ->
       bool) ->
     Gobject.Signal.handler_id
+  (** Emitted during the TLS handshake after the peer certificate has been
+      received. You can examine [peer_cert]'s certification path by calling
+      g_tls_certificate_get_issuer() on it.
+
+      For a client-side connection, [peer_cert] is the server's certificate, and
+      the signal will only be emitted if the certificate was not acceptable
+      according to [conn]'s [GTlsClientConnection:validation_flags]. If you
+      would like the certificate to be accepted despite [errors], return [TRUE]
+      from the signal handler. Otherwise, if no handler accepts the certificate,
+      the handshake will fail with [G_TLS_ERROR_BAD_CERTIFICATE].
+
+      GLib guarantees that if certificate verification fails, this signal will
+      be emitted with at least one error will be set in [errors], but it does
+      not guarantee that all possible errors will be set. Accordingly, you may
+      not safely decide to ignore any particular type of error. For example, it
+      would be incorrect to ignore [G_TLS_CERTIFICATE_EXPIRED] if you want to
+      allow expired certificates, because this could potentially be the only
+      error flag set even if other problems exist with the certificate.
+
+      For a server-side connection, [peer_cert] is the certificate presented by
+      the client, if this was requested via the server's
+      [GTlsServerConnection:authentication_mode]. On the server side, the signal
+      is always emitted when the client presents a certificate, and the
+      certificate will only be accepted if a handler returns [TRUE].
+
+      Note that if this signal is emitted as part of asynchronous I/O in the
+      main thread, then you should not attempt to interact with the user before
+      returning from the signal handler. If you want to let the user decide
+      whether or not to accept the certificate, you would have to return [FALSE]
+      from the signal handler on the first attempt, and then after the
+      connection attempt returns a [G_TLS_ERROR_BAD_CERTIFICATE], you can
+      interact with the user, and if the user decides to accept the certificate,
+      remember that fact, create a new connection, and return [TRUE] from the
+      signal handler the next time.
+
+      If you are doing I/O in another thread, you do not need to worry about
+      this, and can simply block in the signal handler until the UI thread
+      returns an answer. *)
 end
 
+(** [GTlsDatabase] is used to look up certificates and other information from a
+    certificate or key store. It is an abstract base class which TLS library
+    specific subtypes override.
+
+    A [GTlsDatabase] may be accessed from multiple threads by the TLS backend.
+    All implementations are required to be fully thread-safe.
+
+    Most common client applications will not directly interact with
+    [GTlsDatabase]. It is used internally by [Gio.TlsConnection].
+
+    The class built on this module is in {!Ocgio.Tls_database}. *)
 and Tls_database : sig
   type t = [ `tls_database | `object_ ] Gobject.obj
 
@@ -418,6 +480,28 @@ and Tls_database : sig
   *)
 end
 
+(** [GTlsInteraction] provides a mechanism for the TLS connection and database
+    code to interact with the user. It can be used to ask the user for
+    passwords.
+
+    To use a [GTlsInteraction] with a TLS connection use
+    [Gio.TlsConnection.set_interaction].
+
+    Callers should instantiate a derived class that implements the various
+    interaction methods to show the required dialogs.
+
+    Callers should use the 'invoke' functions like
+    [Gio.TlsInteraction.invoke_ask_password] to run interaction methods. These
+    functions make sure that the interaction is invoked in the main loop and not
+    in the current thread, if the current thread is not running the main loop.
+
+    Derived classes can choose to implement whichever interactions methods
+    they’d like to support by overriding those virtual methods in their class
+    initialization function. Any interactions not implemented will return
+    [G_TLS_INTERACTION_UNHANDLED]. If a derived class implements an async
+    method, it must also implement the corresponding finish method.
+
+    The class built on this module is in {!Ocgio.Tls_interaction}. *)
 and Tls_interaction : sig
   type t = [ `tls_interaction | `object_ ] Gobject.obj
 

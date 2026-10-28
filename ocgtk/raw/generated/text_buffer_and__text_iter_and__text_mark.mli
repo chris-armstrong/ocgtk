@@ -1,13 +1,28 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgtk.Raw.Text_buffer}, {!Ocgtk.Raw.Text_iter},
+    {!Ocgtk.Raw.Text_mark}, defined together because they refer to each other.
+    Each has a module of its own that re-exports it; use that module rather than
+    this one. *)
+
+(** Stores text and attributes for display in a [GtkTextView].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    GtkTextBuffer can support undoing changes to the buffer content, see
+    [Gtk.TextBuffer.set_enable_undo].
+
+    The class built on this module is in {!Ocgtk.Text_buffer}. *)
 module rec Text_buffer : sig
   type t = [ `text_buffer | `object_ ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gtk_text_buffer_get_type"
 
   external new_ : Text_tag_table.t option -> t = "ml_gtk_text_buffer_new"
-  (** Create a new TextBuffer *)
+  (** Creates a new text buffer. *)
 
   (* Methods *)
 
@@ -626,35 +641,73 @@ module rec Text_buffer : sig
 
   val on_begin_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted at the beginning of a single user-visible operation on a
+      [GtkTextBuffer].
+
+      See also: [Gtk.TextBuffer.begin_user_action],
+      [Gtk.TextBuffer.insert_interactive],
+      [Gtk.TextBuffer.insert_range_interactive],
+      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
+      [Gtk.TextBuffer.delete_selection]. *)
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the content of a [GtkTextBuffer] has changed. *)
 
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted at the end of a single user-visible operation on the
+      [GtkTextBuffer].
+
+      See also: [Gtk.TextBuffer.end_user_action],
+      [Gtk.TextBuffer.insert_interactive],
+      [Gtk.TextBuffer.insert_range_interactive],
+      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
+      [Gtk.TextBuffer.delete_selection], [Gtk.TextBuffer.backspace]. *)
 
   val on_mark_deleted :
     ?after:bool ->
     t ->
     callback:(mark:Text_mark.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted as notification after a [GtkTextMark] is deleted.
+
+      See also: [Gtk.TextBuffer.delete_mark]. *)
 
   val on_modified_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the modified bit of a [GtkTextBuffer] flips.
+
+      See also: [Gtk.TextBuffer.set_modified]. *)
 
   val on_paste_done :
     ?after:bool ->
     t ->
     callback:(clipboard:Ocgdk_raw.Clipboard.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted after paste operation has been completed.
+
+      This is useful to properly scroll the view to the end of the pasted text.
+      See [Gtk.TextBuffer.paste_clipboard] for more details. *)
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when a request has been made to redo the previously undone
+      operation. *)
 
   val on_undo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when a request has been made to undo the previous operation or set
+      of operations that have been grouped together. *)
 end
 
+(** Iterates over the contents of a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    The class built on this module is in {!Ocgtk.Text_iter}. *)
 and Text_iter : sig
   type t = [ `text_iter ] Gobject.obj
 
@@ -1349,13 +1402,55 @@ and Text_iter : sig
       The function is used by language bindings. *)
 end
 
+(** Marks a position in a [GtkTextbuffer] that is preserved across
+    modifications.
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    A [GtkTextMark] is like a bookmark in a text buffer; it preserves a position
+    in the text. You can convert the mark to an iterator using
+    [Gtk.TextBuffer.get_iter_at_mark]. Unlike iterators, marks remain valid
+    across buffer mutations, because their behavior is defined when text is
+    inserted or deleted. When text containing a mark is deleted, the mark
+    remains in the position originally occupied by the deleted text. When text
+    is inserted at a mark, a mark with “left gravity” will be moved to the
+    beginning of the newly-inserted text, and a mark with “right gravity” will
+    be moved to the end.
+
+    Note that “left” and “right” here refer to logical direction (left is the
+    toward the start of the buffer); in some languages such as Hebrew the
+    logically-leftmost text is not actually on the left when displayed.
+
+    Marks are reference counted, but the reference count only controls the
+    validity of the memory; marks can be deleted from the buffer at any time
+    with [Gtk.TextBuffer.delete_mark]. Once deleted from the buffer, a mark is
+    essentially useless.
+
+    Marks optionally have names; these can be convenient to avoid passing the
+    [GtkTextMark] object around.
+
+    Marks are typically created using the [Gtk.TextBuffer.create_mark] function.
+
+    The class built on this module is in {!Ocgtk.Text_mark}. *)
 and Text_mark : sig
   type t = [ `text_mark | `object_ ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gtk_text_mark_get_type"
 
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
-  (** Create a new TextMark *)
+  (** Creates a text mark.
+
+      Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [NULL],
+      the mark is anonymous; otherwise, the mark can be retrieved by name using
+      [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is
+      inserted at the mark’s current location, the mark will be moved to the
+      left of the newly-inserted text. If the mark has right gravity
+      ([left_gravity] = [FALSE]), the mark will end up on the right of
+      newly-inserted text. The standard left-to-right cursor is a mark with
+      right gravity (when you type, the cursor stays on the right side of the
+      text you’re typing). *)
 
   (* Methods *)
 

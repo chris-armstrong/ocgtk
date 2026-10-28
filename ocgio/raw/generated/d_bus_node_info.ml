@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusNodeInfo: DBusNodeInfo *)
 
-(** Information about nodes in a remote object hierarchy. *)
+(** Information about nodes in a remote object hierarchy.
+
+    The class built on this module is in {!Ocgio.D_bus_node_info}. *)
 
 type t = [ `d_bus_node_info ] Gobject.obj
 
@@ -9,7 +11,12 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_node_info_get_type"
 
 external new_for_xml : string -> (t, GError.t) result
   = "ml_g_dbus_node_info_new_for_xml"
-(** Create a new DBusNodeInfo *)
+(** Parses [xml_data] and returns a [GDBusNodeInfo] representing the data.
+
+    The introspection XML must contain exactly one top-level [<node>] element.
+
+    Note that this routine is using a GMarkup-based parser that only accepts a
+    subset of valid XML documents. *)
 
 (* Methods *)
 

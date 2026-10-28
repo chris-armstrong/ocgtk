@@ -1,13 +1,27 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgraphene.Raw.Euler}, {!Ocgraphene.Raw.Matrix},
+    {!Ocgraphene.Raw.Plane}, {!Ocgraphene.Raw.Quaternion},
+    {!Ocgraphene.Raw.Ray}, {!Ocgraphene.Raw.Triangle}, defined together because
+    they refer to each other. Each has a module of its own that re-exports it;
+    use that module rather than this one. *)
+
+(** Describe a rotation using Euler angles.
+
+    The contents of the #graphene_euler_t structure are private and should never
+    be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Euler}. *)
 module rec Euler : sig
   type t = [ `euler ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_euler_get_type"
 
   external alloc : unit -> t = "ml_graphene_euler_alloc"
-  (** Create a new Euler *)
+  (** Allocates a new #graphene_euler_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -131,13 +145,19 @@ module rec Euler : sig
   (** Checks if two #graphene_euler_t are equal. *)
 end
 
+(** A structure capable of holding a 4x4 matrix.
+
+    The contents of the #graphene_matrix_t structure are private and should
+    never be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Matrix}. *)
 and Matrix : sig
   type t = [ `matrix ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_matrix_get_type"
 
   external alloc : unit -> t = "ml_graphene_matrix_alloc"
-  (** Create a new Matrix *)
+  (** Allocates a new #graphene_matrix_t. *)
 
   (* Methods *)
 
@@ -546,13 +566,21 @@ and Matrix : sig
     \  available online."]
 end
 
+(** A 2D plane that extends infinitely in a 3D volume.
+
+    The contents of the [graphene_plane_t] are private, and should not be
+    modified directly.
+
+    The class built on this module is in {!Ocgraphene.Plane}. *)
 and Plane : sig
   type t = [ `plane ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_plane_get_type"
 
   external alloc : unit -> t = "ml_graphene_plane_alloc"
-  (** Create a new Plane *)
+  (** Allocates a new #graphene_plane_t structure.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -617,13 +645,21 @@ and Plane : sig
   (** Computes the distance of [point] from a #graphene_plane_t. *)
 end
 
+(** A quaternion.
+
+    The contents of the #graphene_quaternion_t structure are private and should
+    never be accessed directly.
+
+    The class built on this module is in {!Ocgraphene.Quaternion}. *)
 and Quaternion : sig
   type t = [ `quaternion ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_quaternion_get_type"
 
   external alloc : unit -> t = "ml_graphene_quaternion_alloc"
-  (** Create a new Quaternion *)
+  (** Allocates a new #graphene_quaternion_t.
+
+      The contents of the returned value are undefined. *)
 
   (* Methods *)
 
@@ -721,13 +757,21 @@ and Quaternion : sig
   (** Adds two #graphene_quaternion_t [a] and [b]. *)
 end
 
+(** A ray emitted from an origin in a given direction.
+
+    The contents of the [graphene_ray_t] structure are private, and should not
+    be modified directly.
+
+    The class built on this module is in {!Ocgraphene.Ray}. *)
 and Ray : sig
   type t = [ `ray ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_ray_get_type"
 
   external alloc : unit -> t = "ml_graphene_ray_alloc"
-  (** Create a new Ray *)
+  (** Allocates a new #graphene_ray_t structure.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 
@@ -823,13 +867,18 @@ and Ray : sig
   (** Checks whether the two given #graphene_ray_t are equal. *)
 end
 
+(** A triangle.
+
+    The class built on this module is in {!Ocgraphene.Triangle}. *)
 and Triangle : sig
   type t = [ `triangle ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_graphene_triangle_get_type"
 
   external alloc : unit -> t = "ml_graphene_triangle_alloc"
-  (** Create a new Triangle *)
+  (** Allocates a new #graphene_triangle_t.
+
+      The contents of the returned structure are undefined. *)
 
   (* Methods *)
 

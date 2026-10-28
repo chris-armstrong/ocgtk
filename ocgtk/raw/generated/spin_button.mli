@@ -116,7 +116,9 @@
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role.
+
+    The class built on this module is in {!Ocgtk.Spin_button}. *)
 
 type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -124,11 +126,21 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_spin_button_get_type"
 
 external new_ : Adjustment.t option -> float -> int -> t
   = "ml_gtk_spin_button_new"
-(** Create a new SpinButton *)
+(** Creates a new [GtkSpinButton]. *)
 
 external new_with_range : float -> float -> float -> t
   = "ml_gtk_spin_button_new_with_range"
-(** Create a new SpinButton *)
+(** Creates a new [GtkSpinButton] with the given properties.
+
+    This is a convenience constructor that allows creation of a numeric
+    [GtkSpinButton] without manually creating an adjustment. The value is
+    initially set to the minimum value and a page increment of 10 * [step] is
+    the default. The precision of the spin button is equivalent to the precision
+    of [step].
+
+    Note that the way in which the precision is derived works best if [step] is
+    a power of ten. If the resulting precision is not suitable for your needs,
+    use [Gtk.SpinButton.set_digits] to correct it. *)
 
 (* Methods *)
 
@@ -257,18 +269,55 @@ external configure : t -> Adjustment.t option -> float -> int -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the spin button is activated.
+
+    The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
+
+    If the <kbd>Enter</kbd> key results in the value being committed to the spin
+    button, then activation does not occur until <kbd>Enter</kbd> is pressed
+    again. *)
 
 val on_change_value :
   ?after:bool ->
   t ->
   callback:(scroll:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the user initiates a value change.
+
+    This is a keybinding signal.
+
+    Applications should not connect to it, but may emit it with
+    g_signal_emit_by_name() if they need to control the cursor programmatically.
+
+    The default bindings for this signal are Up/Down and PageUp/PageDown. *)
 
 val on_output :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+[@@ocaml.doc
+  "Emitted to tweak the formatting of the value for display.\n\n\
+   {[\n\
+   // show leading zeros\n\
+   static gboolean\n\
+   on_output (GtkSpinButton *spin,\n\
+  \           gpointer       data)\n\
+   {\n\
+  \   char *text;\n\
+  \   int value;\n\n\
+  \   value = gtk_spin_button_get_value_as_int (spin);\n\
+  \   text = g_strdup_printf (\"%02d\", value);\n\
+  \   gtk_editable_set_text (GTK_EDITABLE (spin), text):\n\
+  \   g_free (text);\n\n\
+  \   return TRUE;\n\
+   }\n\
+   ]}"]
 
 val on_value_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the value is changed.
+
+    Also see the [Gtk.SpinButton::output] signal. *)
 
 val on_wrapped :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted right after the spinbutton wraps from its maximum to its minimum
+    value or vice-versa. *)

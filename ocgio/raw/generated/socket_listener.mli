@@ -13,14 +13,18 @@
 
     If you want to implement a network server, also look at [Gio.SocketService]
     and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
-    that make this even easier. *)
+    that make this even easier.
+
+    The class built on this module is in {!Ocgio.Socket_listener}. *)
 
 type t = [ `socket_listener | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_listener_get_type"
 
 external new_ : unit -> t = "ml_g_socket_listener_new"
-(** Create a new SocketListener *)
+(** Creates a new [GSocketListener] with no sockets to listen for. New listeners
+    can be added with e.g. g_socket_listener_add_address() or
+    g_socket_listener_add_inet_port(). *)
 
 (* Methods *)
 
@@ -119,3 +123,7 @@ val on_event :
     socket:Socket_and__socket_connection.Socket.t ->
     unit) ->
   Gobject.Signal.handler_id
+(** Emitted when [listener]'s activity on [socket] changes state. Note that when
+    [listener] is used to listen on both IPv4 and IPv6, a separate set of
+    signals will be emitted for each, and the order they happen in is undefined.
+*)

@@ -69,7 +69,8 @@
  except for one case: when the supported actions include\n\
  [GDK_ACTION_MOVE], you need to listen for the\n\
  [Gtk.DragSource::drag-end] signal and delete the\n\
- data after it has been transferred."]
+ data after it has been transferred.\n\n\
+ The class built on this module is in {!Ocgtk.Drag_source}."]
 
 type t =
   [ `drag_source | `gesture_single | `gesture | `event_controller | `object_ ]
@@ -78,7 +79,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_drag_source_get_type"
 
 external new_ : unit -> t = "ml_gtk_drag_source_new"
-(** Create a new DragSource *)
+(** Creates a new [GtkDragSource] object. *)
 
 (* Methods *)
 
@@ -139,6 +140,10 @@ val on_drag_begin :
   t ->
   callback:(drag:Ocgdk_raw.Drag.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted on the drag source when a drag is started.
+
+    It can be used to e.g. set a custom drag icon with
+    [Gtk.DragSource.set_icon]. *)
 
 val on_drag_cancel :
   ?after:bool ->
@@ -146,15 +151,30 @@ val on_drag_cancel :
   callback:
     (drag:Ocgdk_raw.Drag.t -> reason:Ocgdk_enums.dragcancelreason -> bool) ->
   Gobject.Signal.handler_id
+[@@ocaml.doc
+  "Emitted on the drag source when a drag has failed.\n\n\
+   The signal handler may handle a failed drag operation based on\n\
+   the type of error. It should return [TRUE] if the failure has been handled\n\
+   and the default \"drag operation failed\" animation should not be shown."]
 
 val on_drag_end :
   ?after:bool ->
   t ->
   callback:(drag:Ocgdk_raw.Drag.t -> delete_data:bool -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted on the drag source when a drag is finished.
+
+    A typical reason to connect to this signal is to undo things done in
+    [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] handlers. *)
 
 val on_prepare :
   ?after:bool ->
   t ->
   callback:(x:float -> y:float -> Ocgdk_raw.Content_provider.t option) ->
   Gobject.Signal.handler_id
+(** Emitted when a drag is about to be initiated.
+
+    It returns the [GdkContentProvider] to use for the drag that is about to
+    start. The default handler for this signal returns the value of the
+    [Gtk.DragSource:content] property, so if you set up that property ahead of
+    time, you don't need to connect to this signal. *)

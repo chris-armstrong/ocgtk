@@ -2,7 +2,9 @@
 (* TlsServerConnection: TlsServerConnection *)
 
 (** [GTlsServerConnection] is the server-side subclass of [Gio.TlsConnection],
-    representing a server-side TLS connection. *)
+    representing a server-side TLS connection.
+
+    The class built on this module is in {!Ocgio.Tls_server_connection}. *)
 
 type t = [ `tls_server_connection ] Gobject.obj
 

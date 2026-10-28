@@ -1,5 +1,9 @@
 class type file_list_t = object
   method get_files : unit -> Ocgio.File.file_t list
+  (** Retrieves the list of files inside a [GdkFileList].
+
+      This function is meant for language bindings. *)
+
   method as_file_list : Raw.File_list.t
 end
 

@@ -26,14 +26,16 @@
     versions all the way back to 4.0.
 
     To track errors while loading CSS, connect to the
-    [Gtk.CssProvider::parsing-error] signal. *)
+    [Gtk.CssProvider::parsing-error] signal.
+
+    The class built on this module is in {!Ocgtk.Css_provider}. *)
 
 type t = [ `css_provider | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_css_provider_get_type"
 
 external new_ : unit -> t = "ml_gtk_css_provider_new"
-(** Create a new CssProvider *)
+(** Returns a newly created [GtkCssProvider]. *)
 
 (* Methods *)
 

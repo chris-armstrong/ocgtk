@@ -5,7 +5,9 @@
 
     [GtkFlattenListModel] takes a list model containing list models, and
     flattens it into a single model. Each list model becomes a section in the
-    single model. *)
+    single model.
+
+    The class built on this module is in {!Ocgtk.Flatten_list_model}. *)
 
 type t = [ `flatten_list_model | `object_ ] Gobject.obj
 
@@ -13,7 +15,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_flatten_list_model_get_type"
 
 external new_ : Ocgio_raw.List_model.t option -> t
   = "ml_gtk_flatten_list_model_new"
-(** Create a new FlattenListModel *)
+(** Creates a new [GtkFlattenListModel] that flattens [list]. *)
 
 (* Methods *)
 

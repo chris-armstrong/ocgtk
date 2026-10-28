@@ -59,14 +59,15 @@
  one of the style classes .info, .warning, .error or .question, depending\n\
  on the message type.\n\
  If the info bar shows a close button, that button will have the .close\n\
- style class applied."]
+ style class applied.\n\n\
+ The class built on this module is in {!Ocgtk.Info_bar}."]
 
 type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_info_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_info_bar_new"
-(** Create a new InfoBar *)
+(** Creates a new [GtkInfoBar] object. *)
 
 (* Methods *)
 
@@ -177,9 +178,19 @@ external add_action_widget :
 
 val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Gets emitted when the user uses a keybinding to dismiss the info bar.
+
+    The ::close signal is a keybinding signal.
+
+    The default binding for this signal is the Escape key. *)
 
 val on_response :
   ?after:bool ->
   t ->
   callback:(response_id:int -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an action widget is clicked.
+
+    The signal is also emitted when the application programmer calls
+    [Gtk.InfoBar.response]. The [response_id] depends on which action widget was
+    clicked. *)

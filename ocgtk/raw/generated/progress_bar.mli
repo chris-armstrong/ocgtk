@@ -48,14 +48,15 @@
     [GtkProgressBar] uses the [Gtk.AccessibleRole.progress_bar] role and sets
     the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
     and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
-*)
+
+    The class built on this module is in {!Ocgtk.Progress_bar}. *)
 
 type t = [ `progress_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_progress_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_progress_bar_new"
-(** Create a new ProgressBar *)
+(** Creates a new [GtkProgressBar]. *)
 
 (* Methods *)
 

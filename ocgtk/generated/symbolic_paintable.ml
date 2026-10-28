@@ -6,6 +6,10 @@ class type symbolic_paintable_t = object
     Ocgdk.Raw.Rgb_a.t array ->
     Gsize.t ->
     unit
+  (** Snapshots the paintable with the given colors.
+
+      If less than 4 colors are provided, GTK will pad the array with default
+      colors. *)
 
   method as_symbolic_paintable : Raw.Symbolic_paintable.t
 end

@@ -4,14 +4,18 @@
 (** A 3D volume delimited by 2D clip planes.
 
     The contents of the [graphene_frustum_t] are private, and should not be
-    modified directly. *)
+    modified directly.
+
+    The class built on this module is in {!Ocgraphene.Frustum}. *)
 
 type t = [ `frustum ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_graphene_frustum_get_type"
 
 external alloc : unit -> t = "ml_graphene_frustum_alloc"
-(** Create a new Frustum *)
+(** Allocates a new #graphene_frustum_t structure.
+
+    The contents of the returned structure are undefined. *)
 
 (* Methods *)
 

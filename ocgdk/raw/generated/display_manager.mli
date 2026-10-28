@@ -37,7 +37,8 @@
 \  else\n\
  #endif\n\
 \  g_error (\"Unsupported GDK backend\");\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgdk.Display_manager}."]
 
 type t = [ `display_manager | `object_ ] Gobject.obj
 
@@ -71,3 +72,4 @@ val on_display_opened :
   t ->
   callback:(display:App_launch_context_cycle_de440b34.Display.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when a display is opened. *)

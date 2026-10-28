@@ -19,7 +19,9 @@
     peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
     is up to the caller to do that if they wish. If they do not, and
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
-    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
+    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O.
+
+    The class built on this module is in {!Ocgio.Dtls_connection}. *)
 
 type t = [ `dtls_connection ] Gobject.obj
 
@@ -297,3 +299,41 @@ val on_accept_certificate :
     errors:Ocgio_enums.tlscertificateflags ->
     bool) ->
   Gobject.Signal.handler_id
+(** Emitted during the TLS handshake after the peer certificate has been
+    received. You can examine [peer_cert]'s certification path by calling
+    g_tls_certificate_get_issuer() on it.
+
+    For a client-side connection, [peer_cert] is the server's certificate, and
+    the signal will only be emitted if the certificate was not acceptable
+    according to [conn]'s [GDtlsClientConnection:validation_flags]. If you would
+    like the certificate to be accepted despite [errors], return [TRUE] from the
+    signal handler. Otherwise, if no handler accepts the certificate, the
+    handshake will fail with [G_TLS_ERROR_BAD_CERTIFICATE].
+
+    GLib guarantees that if certificate verification fails, this signal will be
+    emitted with at least one error will be set in [errors], but it does not
+    guarantee that all possible errors will be set. Accordingly, you may not
+    safely decide to ignore any particular type of error. For example, it would
+    be incorrect to ignore [G_TLS_CERTIFICATE_EXPIRED] if you want to allow
+    expired certificates, because this could potentially be the only error flag
+    set even if other problems exist with the certificate.
+
+    For a server-side connection, [peer_cert] is the certificate presented by
+    the client, if this was requested via the server's
+    [GDtlsServerConnection:authentication_mode]. On the server side, the signal
+    is always emitted when the client presents a certificate, and the
+    certificate will only be accepted if a handler returns [TRUE].
+
+    Note that if this signal is emitted as part of asynchronous I/O in the main
+    thread, then you should not attempt to interact with the user before
+    returning from the signal handler. If you want to let the user decide
+    whether or not to accept the certificate, you would have to return [FALSE]
+    from the signal handler on the first attempt, and then after the connection
+    attempt returns a [G_TLS_ERROR_BAD_CERTIFICATE], you can interact with the
+    user, and if the user decides to accept the certificate, remember that fact,
+    create a new connection, and return [TRUE] from the signal handler the next
+    time.
+
+    If you are doing I/O in another thread, you do not need to worry about this,
+    and can simply block in the signal handler until the UI thread returns an
+    answer. *)

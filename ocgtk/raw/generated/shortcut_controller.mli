@@ -41,18 +41,25 @@
     signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
     syntax for other kinds of [Gtk.ShortcutAction]. See
     [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
-    triggers. *)
+    triggers.
+
+    The class built on this module is in {!Ocgtk.Shortcut_controller}. *)
 
 type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_controller_get_type"
 
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
-(** Create a new ShortcutController *)
+(** Creates a new shortcut controller. *)
 
 external new_for_model : Ocgio_raw.List_model.t -> t
   = "ml_gtk_shortcut_controller_new_for_model"
-(** Create a new ShortcutController *)
+(** Creates a new shortcut controller that takes its shortcuts from the given
+    list model.
+
+    A controller created by this function does not let you add or remove
+    individual shortcuts using the shortcut controller api, but you can change
+    the contents of the model. *)
 
 (* Methods *)
 

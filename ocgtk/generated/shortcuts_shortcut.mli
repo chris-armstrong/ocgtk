@@ -1,3 +1,13 @@
+(** A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
+    with a short text.
+
+    This widget is only meant to be used with [GtkShortcutsWindow].
+
+    Its methods, signals and properties are on
+    {!class-type-shortcuts_shortcut_t}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcuts_shortcut}. *)
+
+(** The methods, signals and properties of a [ShortcutsShortcut]. *)
 class type shortcuts_shortcut_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -26,3 +36,4 @@ class type shortcuts_shortcut_t = object
 end
 
 class shortcuts_shortcut : Raw.Shortcuts_shortcut.t -> shortcuts_shortcut_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_shortcut.t}. *)

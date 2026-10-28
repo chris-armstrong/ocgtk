@@ -13,7 +13,9 @@
 
     Once a panning gesture along the expected axis is recognized, the
     [Gtk.GesturePan::pan] signal will be emitted as input events are received,
-    containing the offset in the given axis. *)
+    containing the offset in the given axis.
+
+    The class built on this module is in {!Ocgtk.Gesture_pan}. *)
 
 type t =
   [ `gesture_pan
@@ -27,7 +29,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_pan_get_type"
 
 external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_gesture_pan_new"
-(** Create a new GesturePan *)
+(** Returns a newly created [GtkGesture] that recognizes pan gestures. *)
 
 (* Methods *)
 

@@ -1,6 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgdk.Raw.App_launch_context},
+    {!Ocgdk.Raw.Cairo_context}, {!Ocgdk.Raw.Clipboard}, {!Ocgdk.Raw.Device},
+    {!Ocgdk.Raw.Display}, {!Ocgdk.Raw.Draw_context}, {!Ocgdk.Raw.Event},
+    {!Ocgdk.Raw.Gl_context}, {!Ocgdk.Raw.Monitor}, {!Ocgdk.Raw.Seat},
+    {!Ocgdk.Raw.Surface}, {!Ocgdk.Raw.Vulkan_context}, defined together because
+    they refer to each other. Each has a module of its own that re-exports it;
+    use that module rather than this one. *)
+
 module rec App_launch_context : sig
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
@@ -61,7 +69,29 @@ module rec App_launch_context : sig
     = "ml_gdk_app_launch_context_get_display"
   (** Get property: display *)
 end
+[@@ocaml.doc
+  "Handles launching an application in a graphical context.\n\n\
+   It is an implementation of [GAppLaunchContext] that provides startup\n\
+   notification and allows to launch applications on a specific workspace.\n\n\
+   {b Launching an application}\n\n\
+   {[\n\
+   GdkAppLaunchContext *context;\n\n\
+   context = gdk_display_get_app_launch_context (display);\n\n\
+   gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));\n\n\
+   if (!g_app_info_launch_default_for_uri (\"http://www.gtk.org\", context, \
+   &error))\n\
+  \  g_warning (\"Launching failed: %s\\n\", error->message);\n\n\
+   g_object_unref (context);\n\
+   ]}\n\n\
+   The class built on this module is in {!Ocgdk.App_launch_context}."]
 
+(** Represents the platform-specific draw context.
+
+    [GdkCairoContext]s are created for a surface using
+    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
+    on that surface.
+
+    The class built on this module is in {!Ocgdk.Cairo_context}. *)
 and Cairo_context : sig
   type t = [ `cairo_context | `draw_context | `object_ ] Gobject.obj
 
@@ -81,6 +111,23 @@ and Cairo_context : sig
       [Gdk.DrawContext.end_frame] is called. *)
 end
 
+(** Represents data shared between applications or inside an application.
+
+    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
+    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
+    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+
+    To make text or image data available in a clipboard, use
+    [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
+    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
+    object.
+
+    To read textual or image data from a clipboard, use
+    [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For
+    other data, use [Gdk.Clipboard.read_async], which provides a [GInputStream]
+    object.
+
+    The class built on this module is in {!Ocgdk.Clipboard}. *)
 and Clipboard : sig
   type t = [ `clipboard | `object_ ] Gobject.obj
 
@@ -162,8 +209,15 @@ and Clipboard : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the clipboard changes ownership. *)
 end
 
+(** Represents an input device, such as a keyboard, mouse or touchpad.
+
+    See the [Gdk.Seat] documentation for more information about the various
+    kinds of devices, and their relationships.
+
+    The class built on this module is in {!Ocgdk.Device}. *)
 and Device : sig
   type t = [ `device | `object_ ] Gobject.obj
 
@@ -303,14 +357,38 @@ and Device : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted either when the number of either axes or keys changes.
+
+      On X11 this will normally happen when the physical device routing events
+      through the logical device changes (for example, user switches from the
+      USB mouse to a tablet); in that case the logical device will change to
+      reflect the axes and keys on the new physical device. *)
 
   val on_tool_changed :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted on pen/eraser devices whenever tools enter or leave proximity. *)
 end
 
+(** A representation of a workstation.
+
+    Their purpose are two-fold:
+
+    - To manage and provide information about input devices (pointers,
+      keyboards, etc)
+    - To manage and provide information about output devices (monitors,
+      projectors, etc)
+
+    Most of the input device handling has been factored out into separate
+    [Gdk.Seat] objects. Every display has a one or more seats, which can be
+    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+
+    Output devices are represented by [Gdk.Monitor] objects, which can be
+    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs.
+
+    The class built on this module is in {!Ocgdk.Display}. *)
 and Display : sig
   type t = [ `display | `object_ ] Gobject.obj
 
@@ -570,29 +648,47 @@ and Display : sig
     t ->
     callback:(is_error:bool -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      closed. *)
 
   val on_opened :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the connection to the windowing system for [display] is
+      opened. *)
 
   val on_seat_added :
     ?after:bool ->
     t ->
     callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new seat is made known to the windowing system. *)
 
   val on_seat_removed :
     ?after:bool ->
     t ->
     callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a seat is removed by the windowing system. *)
 
   val on_setting_changed :
     ?after:bool ->
     t ->
     callback:(setting:string -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a setting changes its value. *)
 end
 
+(** Base class for objects implementing different rendering methods.
+
+    [GdkDrawContext] is the base object used by contexts implementing different
+    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
+    provides shared functionality between those contexts.
+
+    You will always interact with one of those subclasses.
+
+    A [GdkDrawContext] is always associated with a single toplevel surface.
+
+    The class built on this module is in {!Ocgdk.Draw_context}. *)
 and Draw_context : sig
   type t = [ `draw_context | `object_ ] Gobject.obj
 
@@ -665,6 +761,15 @@ and Draw_context : sig
   (* Properties *)
 end
 
+(** Represents windowing system events.
+
+    In GTK applications the events are handled automatically by toplevel widgets
+    and passed on to the event controllers of appropriate widgets, so using
+    [GdkEvent] and its related API is rarely needed.
+
+    [GdkEvent] structs are immutable.
+
+    The class built on this module is in {!Ocgdk.Event}. *)
 and Event : sig
   type t = [ `event ] Gobject.obj
 
@@ -960,7 +1065,54 @@ and Gl_context : sig
 
   (* Properties *)
 end
+[@@ocaml.doc
+  "Represents a platform-specific OpenGL draw context.\n\n\
+   [GdkGLContext]s are created for a surface using\n\
+   [Gdk.Surface.create_gl_context], and the context will match\n\
+   the characteristics of the surface.\n\n\
+   A [GdkGLContext] is not tied to any particular normal framebuffer.\n\
+   For instance, it cannot draw to the surface back buffer. The GDK\n\
+   repaint system is in full control of the painting to that. Instead,\n\
+   you can create render buffers or textures and use [cairo_draw_from_gl]\n\
+   in the draw function of your widget to draw them. Then GDK will handle\n\
+   the integration of your rendering with that of other widgets.\n\n\
+   Support for [GdkGLContext] is platform-specific and context creation\n\
+   can fail, returning [NULL] context.\n\n\
+   A [GdkGLContext] has to be made \"current\" in order to start using\n\
+   it, otherwise any OpenGL call will be ignored.\n\n\
+   {b Creating a new OpenGL context}\n\n\
+   In order to create a new [GdkGLContext] instance you need a [GdkSurface],\n\
+   which you typically get during the realize call of a widget.\n\n\
+   A [GdkGLContext] is not realized until either [Gdk.GLContext.make_current]\n\
+   or [Gdk.GLContext.realize] is called. It is possible to specify\n\
+   details of the GL context like the OpenGL version to be used, or whether\n\
+   the GL context should have extra state validation enabled after calling\n\
+   [Gdk.Surface.create_gl_context] by calling [Gdk.GLContext.realize].\n\
+   If the realization fails you have the option to change the settings of\n\
+   the [GdkGLContext] and try again.\n\n\
+   {b Using a GdkGLContext}\n\n\
+   You will need to make the [GdkGLContext] the current context before issuing\n\
+   OpenGL calls; the system sends OpenGL commands to whichever context is \
+   current.\n\
+   It is possible to have multiple contexts, so you always need to ensure that\n\
+   the one which you want to draw with is the current one before issuing \
+   commands:\n\n\
+   {[\n\
+   gdk_gl_context_make_current (context);\n\
+   ]}\n\n\
+   You can now perform your drawing using OpenGL commands.\n\n\
+   You can check which [GdkGLContext] is the current one by using\n\
+   [Gdk.GLContext.get_current]; you can also unset any [GdkGLContext]\n\
+   that is currently set by calling [Gdk.GLContext.clear_current].\n\n\
+   The class built on this module is in {!Ocgdk.Gl_context}."]
 
+(** Represents the individual outputs that are associated with a [GdkDisplay].
+
+    [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
+    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    to find a particular monitor.
+
+    The class built on this module is in {!Ocgdk.Monitor}. *)
 and Monitor : sig
   type t = [ `monitor | `object_ ] Gobject.obj
 
@@ -1049,8 +1201,12 @@ and Monitor : sig
 
   val on_invalidate :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the output represented by [monitor] gets disconnected. *)
 end
 
+(** Represents a collection of input devices that belong to a user.
+
+    The class built on this module is in {!Ocgdk.Seat}. *)
 and Seat : sig
   type t = [ `seat | `object_ ] Gobject.obj
 
@@ -1085,36 +1241,60 @@ and Seat : sig
     t ->
     callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when a new input device is related to this seat. *)
 
   val on_device_removed :
     ?after:bool ->
     t ->
     callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when an input device is removed (e.g. unplugged). *)
 
   val on_tool_added :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a new tool is made known to the seat.
+
+      The tool may later be assigned to a device (i.e. on proximity with a
+      tablet). The device will emit the [Gdk.Device::tool-changed] signal
+      accordingly.
+
+      A same tool may be used by several devices. *)
 
   val on_tool_removed :
     ?after:bool ->
     t ->
     callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted whenever a tool is no longer known to this [seat]. *)
 end
 
+(** Represents a rectangular region on the screen.
+
+    It’s a low-level object, used to implement high-level objects such as
+    GtkWindow.
+
+    The surfaces you see in practice are either [Gdk.Toplevel] or [Gdk.Popup],
+    and those interfaces provide much of the required API to interact with these
+    surfaces. Other, more specialized surface types exist, but you will rarely
+    interact with them directly.
+
+    The class built on this module is in {!Ocgdk.Surface}. *)
 and Surface : sig
   type t = [ `surface | `object_ ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gdk_surface_get_type"
 
   external new_popup : t -> bool -> t = "ml_gdk_surface_new_popup"
-  (** Create a new Surface *)
+  (** Create a new popup surface.
+
+      The surface will be attached to [parent] and can be positioned relative to
+      it using [Gdk.Popup.present]. *)
 
   external new_toplevel : Display.t -> t = "ml_gdk_surface_new_toplevel"
-  (** Create a new Surface *)
+  (** Creates a new toplevel surface. *)
 
   (* Methods *)
 
@@ -1341,32 +1521,55 @@ and Surface : sig
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] starts being present on the monitor. *)
 
   val on_event :
     ?after:bool ->
     t ->
     callback:(event:Event.t -> bool) ->
     Gobject.Signal.handler_id
+  (** Emitted when GDK receives an input event for [surface]. *)
 
   val on_layout :
     ?after:bool ->
     t ->
     callback:(width:int -> height:int -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when the size of [surface] is changed, or when relayout should be
+      performed.
+
+      Surface size is reported in ”application pixels”, not ”device pixels” (see
+      gdk_surface_get_scale_factor()). *)
 
   val on_leave_monitor :
     ?after:bool ->
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+  (** Emitted when [surface] stops being present on the monitor. *)
 end
 
+(** Represents the platform-specific Vulkan draw context.
+
+    [GdkVulkanContext]s are created for a surface using
+    [Gdk.Surface.create_vulkan_context], and the context will match the
+    characteristics of the surface.
+
+    Support for [GdkVulkanContext] is platform-specific and context creation can
+    fail, returning [NULL] context.
+
+    The class built on this module is in {!Ocgdk.Vulkan_context}. *)
 and Vulkan_context : sig
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gdk_vulkan_context_get_type"
 
   (* Methods *)
+
   val on_images_updated :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the images managed by this context have changed.
+
+      Usually this means that the swapchain had to be recreated, for example in
+      response to a change of the surface size. *)
 end

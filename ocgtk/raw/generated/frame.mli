@@ -31,14 +31,17 @@
  visible border. You can set the appearance of the border using CSS properties\n\
  like “border-style” on this node.\n\n\
  {b Accessibility}\n\n\
- [GtkFrame] uses the [Gtk.AccessibleRole.group] role."]
+ [GtkFrame] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ The class built on this module is in {!Ocgtk.Frame}."]
 
 type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_frame_get_type"
 
 external new_ : string option -> t = "ml_gtk_frame_new"
-(** Create a new Frame *)
+(** Creates a new [GtkFrame], with optional label [label].
+
+    If [label] is [NULL], the label is omitted. *)
 
 (* Methods *)
 

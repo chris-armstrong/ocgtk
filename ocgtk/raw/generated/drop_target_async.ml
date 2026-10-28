@@ -32,7 +32,9 @@
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
     drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
-    can be used by themes to style the widget as a drop target. *)
+    can be used by themes to style the widget as a drop target.
+
+    The class built on this module is in {!Ocgtk.Drop_target_async}. *)
 
 type t = [ `drop_target_async | `event_controller | `object_ ] Gobject.obj
 
@@ -41,7 +43,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_async_get_type"
 external new_ :
   Ocgdk_raw.Content_formats.t option -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_async_new"
-(** Create a new DropTargetAsync *)
+(** Creates a new [GtkDropTargetAsync] object. *)
 
 (* Methods *)
 

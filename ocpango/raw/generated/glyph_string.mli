@@ -5,14 +5,16 @@
     visual attribute information.
 
     The storage for the glyph information is owned by the structure which
-    simplifies memory management. *)
+    simplifies memory management.
+
+    The class built on this module is in {!Ocpango.Glyph_string}. *)
 
 type t = [ `glyph_string ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"
 
 external new_ : unit -> t = "ml_pango_glyph_string_new"
-(** Create a new GlyphString *)
+(** Create a new [PangoGlyphString]. *)
 
 (* Methods *)
 

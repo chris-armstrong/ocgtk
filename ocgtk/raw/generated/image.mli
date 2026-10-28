@@ -29,35 +29,91 @@
  [.normal-icons] or [.large-icons] may appear, depending on the\n\
  [Gtk.Image:icon-size] property.\n\n\
  {b Accessibility}\n\n\
- [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
+ [GtkImage] uses the [Gtk.AccessibleRole.img] role.\n\n\
+ The class built on this module is in {!Ocgtk.Image}."]
 
 type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_image_get_type"
 
 external new_ : unit -> t = "ml_gtk_image_new"
-(** Create a new Image *)
+(** Creates a new empty [GtkImage] widget. *)
 
 external new_from_file : string -> t = "ml_gtk_image_new_from_file"
-(** Create a new Image *)
+(** Creates a new [GtkImage] displaying the file [filename].
+
+    If the file isn’t found or can’t be loaded, the resulting [GtkImage] will
+    display a “broken image” icon. This function never returns [NULL], it always
+    returns a valid [GtkImage] widget.
+
+    If you need to detect failures to load the file, use an image loading
+    framework such as libglycin to load the file yourself, then create the
+    [GtkImage] from the texture.
+
+    The storage type (see [Gtk.Image.get_storage_type]) of the returned image is
+    not defined, it will be whatever is appropriate for displaying the file. *)
 
 external new_from_gicon : Ocgio_raw.Icon.t -> t = "ml_gtk_image_new_from_gicon"
-(** Create a new Image *)
+(** Creates a [GtkImage] displaying an icon from the current icon theme.
+
+    If the icon name isn’t known, a “broken image” icon will be displayed
+    instead. If the current icon theme is changed, the icon will be updated
+    appropriately. *)
 
 external new_from_icon_name : string option -> t
   = "ml_gtk_image_new_from_icon_name"
-(** Create a new Image *)
+(** Creates a [GtkImage] displaying an icon from the current icon theme.
+
+    If the icon name isn’t known, a “broken image” icon will be displayed
+    instead. If the current icon theme is changed, the icon will be updated
+    appropriately. *)
 
 external new_from_paintable : Ocgdk_raw.Paintable.t option -> t
   = "ml_gtk_image_new_from_paintable"
-(** Create a new Image *)
+(** Creates a new [GtkImage] displaying [paintable].
+
+    The [GtkImage] does not assume a reference to the paintable; you still need
+    to unref it if you own references. [GtkImage] will add its own reference
+    rather than adopting yours.
+
+    The [GtkImage] will track changes to the [paintable] and update its size and
+    contents in response to it.
+
+    Note that paintables are still subject to the icon size that is set on the
+    image. If you want to display a paintable at its intrinsic size, use
+    [Gtk.Picture] instead.
+
+    If [paintable] is a [Gtk.SymbolicPaintable], then it will be recolored with
+    the symbolic palette from the theme. *)
 
 external new_from_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t option -> t
   = "ml_gtk_image_new_from_pixbuf"
-(** Create a new Image *)
+(** Creates a new [GtkImage] displaying [pixbuf].
+
+    The [GtkImage] does not assume a reference to the pixbuf; you still need to
+    unref it if you own references. [GtkImage] will add its own reference rather
+    than adopting yours.
+
+    This is a helper for [Gtk.Image.new_from_paintable], and you can't get back
+    the exact pixbuf once this is called, only a texture.
+
+    Note that this function just creates an [GtkImage] from the pixbuf. The
+    [GtkImage] created will not react to state changes. Should you want that,
+    you should use [Gtk.Image.new_from_icon_name]. *)
 
 external new_from_resource : string -> t = "ml_gtk_image_new_from_resource"
-(** Create a new Image *)
+(** Creates a new [GtkImage] displaying the resource file [resource_path].
+
+    If the file isn’t found or can’t be loaded, the resulting [GtkImage] will
+    display a “broken image” icon. This function never returns [NULL], it always
+    returns a valid [GtkImage] widget.
+
+    If you need to detect failures to load the file, use an image loading
+    framework such as libglycin to load the file yourself, then create the
+    [GtkImage] from the texture.
+
+    The storage type (see [Gtk.Image.get_storage_type]) of the returned image is
+    not defined, it will be whatever is appropriate for displaying the file. *)
 
 (* Methods *)
 

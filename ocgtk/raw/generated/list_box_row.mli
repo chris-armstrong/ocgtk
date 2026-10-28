@@ -4,14 +4,16 @@
 (** The kind of widget that can be added to a [GtkListBox].
 
     [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
-    necessary. *)
+    necessary.
+
+    The class built on this module is in {!Ocgtk.List_box_row}. *)
 
 type t = [ `list_box_row | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_list_box_row_get_type"
 
 external new_ : unit -> t = "ml_gtk_list_box_row_new"
-(** Create a new ListBoxRow *)
+(** Creates a new [GtkListBoxRow]. *)
 
 (* Methods *)
 
@@ -100,3 +102,8 @@ external changed : t -> unit = "ml_gtk_list_box_row_changed"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** This is a keybinding signal, which will cause this row to be activated.
+
+    If you want to be notified when the user activates a row (by key or not),
+    use the [Gtk.ListBox::row-activated] signal on the row’s parent
+    [GtkListBox]. *)

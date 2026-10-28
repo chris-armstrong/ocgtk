@@ -28,7 +28,9 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page] *)
+    - [Gtk.ShortcutsSection::change-current-page]
+
+    The class built on this module is in {!Ocgtk.Shortcuts_section}. *)
 
 type t =
   [ `shortcuts_section | `box | `widget | `initially_unowned | `object_ ]
@@ -80,3 +82,7 @@ external set_view_name : t -> string -> unit
 
 val on_change_current_page :
   ?after:bool -> t -> callback:(offset:int -> bool) -> Gobject.Signal.handler_id
+(** Emitted when we change the current page.
+
+    The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
+    <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>. *)

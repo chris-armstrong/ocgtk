@@ -1,10 +1,56 @@
 class type rgb_a_t = object
   method equal : Raw.Rgb_a.t -> bool
+  (** Compares two [GdkRGBA] colors. *)
+
   method hash : unit -> int
+  (** A hash function suitable for using for a hash table that stores
+      [GdkRGBA]s. *)
+
   method is_clear : unit -> bool
+  (** Checks if an [rgba] value is transparent.
+
+      That is, drawing with the value would not produce any change. *)
+
   method is_opaque : unit -> bool
+  (** Checks if an [rgba] value is opaque.
+
+      That is, drawing with the value will not retain any results from previous
+      contents. *)
+
   method parse : string -> bool
+  [@@ocaml.doc
+    "Parses a textual representation of a color.\n\n\
+     The string can be either one of:\n\n\
+     - A standard name (Taken from the CSS specification).\n\
+     - A hexadecimal value in the form “#rgb”, “#rrggbb”,\n\
+     “#rrrgggbbb” or ”#rrrrggggbbbb”\n\
+     - A hexadecimal value in the form “#rgba”, “#rrggbbaa”,\n\
+     or ”#rrrrggggbbbbaaaa”\n\
+     - A RGB color in the form “rgb(r,g,b)” (In this case the color\n\
+     will have full opacity)\n\
+     - A RGBA color in the form “rgba(r,g,b,a)”\n\
+     - A HSL color in the form \"hsl(hue, saturation, lightness)\"\n\
+     - A HSLA color in the form \"hsla(hue, saturation, lightness, alpha)\"\n\n\
+     Where “r”, “g”, “b” and “a” are respectively the red, green,\n\
+     blue and alpha color values. In the last two cases, “r”, “g”,\n\
+     and “b” are either integers in the range 0 to 255 or percentage\n\
+     values in the range 0% to 100%, and a is a floating point value\n\
+     in the range 0 to 1."]
+
   method to_string : unit -> string
+  (** Returns a textual specification of [rgba] in the form [rgb(r,g,b)] or
+      [rgba(r,g,b,a)], where “r”, “g”, “b” and “a” represent the red, green,
+      blue and alpha values respectively. “r”, “g”, and “b” are represented as
+      integers in the range 0 to 255, and “a” is represented as a floating point
+      value in the range 0 to 1.
+
+      These string forms are string forms that are supported by the CSS3 colors
+      module, and can be parsed by [Gdk.RGBA.parse].
+
+      Note that this string representation may lose some precision, since “r”,
+      “g” and “b” are represented as 8-bit integers. If this is a concern, you
+      should use a different representation. *)
+
   method as_rgb_a : Raw.Rgb_a.t
 end
 

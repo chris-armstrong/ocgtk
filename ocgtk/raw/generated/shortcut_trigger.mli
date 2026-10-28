@@ -11,14 +11,33 @@
 
     All [GtkShortcutTriggers] are immutable, you can only specify their
     properties during construction. If you want to change a trigger, you have to
-    replace it with a new one. *)
+    replace it with a new one.
+
+    The class built on this module is in {!Ocgtk.Shortcut_trigger}. *)
 
 type t = [ `shortcut_trigger | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_trigger_get_type"
 
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
-(** Create a new ShortcutTrigger *)
+(** Tries to parse the given string into a trigger.
+
+    On success, the parsed trigger is returned. When parsing failed, [NULL] is
+    returned.
+
+    The accepted strings are:
+
+    - [never], for [GtkNeverTrigger]
+    - a string parsed by gtk_accelerator_parse(), for a [GtkKeyvalTrigger], e.g.
+      [<Control>C]
+    - underscore, followed by a single character, for [GtkMnemonicTrigger], e.g.
+      [_l]
+    - two valid trigger strings, separated by a [|] character, for a
+      [GtkAlternativeTrigger]: [<Control>q|<Control>w]
+
+    Note that you will have to escape the [<] and [>] characters when specifying
+    triggers in XML files, such as GtkBuilder ui files. Use [&lt;] instead of
+    [<] and [&gt;] instead of [>]. *)
 
 (* Methods *)
 

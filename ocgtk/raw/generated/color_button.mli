@@ -18,18 +18,25 @@
 
     [GtkColorButton] has a single CSS node with name colorbutton which contains
     a button node. To differentiate it from a plain [GtkButton], it gets the
-    .color style class. *)
+    .color style class.
+
+    The class built on this module is in {!Ocgtk.Color_button}. *)
 
 type t = [ `color_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_color_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_color_button_new"
-(** Create a new ColorButton *)
+(** Creates a new color button.
+
+    This returns a widget in the form of a small button containing a swatch
+    representing the current selected color. When the button is clicked, a color
+    chooser dialog will open, allowing the user to select a color. The swatch
+    will be updated to reflect the new color when the user finishes. *)
 
 external new_with_rgba : Ocgdk_raw.Rgb_a.t -> t
   = "ml_gtk_color_button_new_with_rgba"
-(** Create a new ColorButton *)
+(** Creates a new color button showing the given color. *)
 
 (* Methods *)
 
@@ -56,6 +63,18 @@ external set_show_editor : t -> bool -> unit
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the color button is activated.
+
+    The [::activate] signal on [GtkMenuButton] is an action signal and emitting
+    it causes the button to pop up its dialog. *)
 
 val on_color_set :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user selects a color.
+
+    When handling this signal, use [Gtk.ColorChooser.get_rgba] to find out which
+    color was just selected.
+
+    Note that this signal is only emitted when the user changes the color. If
+    you need to react to programmatic color changes as well, use the
+    notify::rgba signal. *)

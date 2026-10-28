@@ -4,7 +4,9 @@
 (** Makes it possible to use an object as source or target in a
     [Gtk.Constraint].
 
-    Besides [GtkWidget], it is also implemented by [GtkConstraintGuide]. *)
+    Besides [GtkWidget], it is also implemented by [GtkConstraintGuide].
+
+    The class built on this module is in {!Ocgtk.Constraint_target}. *)
 
 type t = [ `constraint_target ] Gobject.obj
 

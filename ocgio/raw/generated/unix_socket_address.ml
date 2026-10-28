@@ -19,23 +19,55 @@
 
     Before GLib 2.72, [<gio/gunixsocketaddress.h>] belonged to the UNIX-specific
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
-    when using it. This is no longer necessary since GLib 2.72. *)
+    when using it. This is no longer necessary since GLib 2.72.
+
+    The class built on this module is in {!Ocgio.Unix_socket_address}. *)
 
 type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_unix_socket_address_get_type"
 
 external new_ : string -> t = "ml_g_unix_socket_address_new"
-(** Create a new UnixSocketAddress *)
+(** Creates a new [GUnixSocketAddress] for [path].
+
+    To create abstract socket addresses, on systems that support that, use
+    g_unix_socket_address_new_abstract(). *)
 
 external new_abstract : int array -> int -> t
   = "ml_g_unix_socket_address_new_abstract"
-(** Create a new UnixSocketAddress *)
+(** Creates a new [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED] [GUnixSocketAddress]
+    for [path]. *)
 
 external new_with_type :
   int array -> int -> Ocgio_enums.unixsocketaddresstype -> t
   = "ml_g_unix_socket_address_new_with_type"
-(** Create a new UnixSocketAddress *)
+[@@ocaml.doc
+  "Creates a new [GUnixSocketAddress] of type [type] with name [path].\n\n\
+   If [type] is [G_UNIX_SOCKET_ADDRESS_PATH], this is equivalent to\n\
+   calling g_unix_socket_address_new().\n\n\
+   If [type] is [G_UNIX_SOCKET_ADDRESS_ANONYMOUS], [path] and [path_len] will be\n\
+   ignored.\n\n\
+   If [path_type] is [G_UNIX_SOCKET_ADDRESS_ABSTRACT], then [path_len]\n\
+   bytes of [path] will be copied to the socket's path, and only those\n\
+   bytes will be considered part of the name. (If [path_len] is -1,\n\
+   then [path] is assumed to be NUL-terminated.) For example, if [path]\n\
+   was \"test\", then calling g_socket_address_get_native_size() on the\n\
+   returned socket would return 7 (2 bytes of overhead, 1 byte for the\n\
+   abstract-socket indicator byte, and 4 bytes for the name \"test\").\n\n\
+   If [path_type] is [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED], then\n\
+   [path_len] bytes of [path] will be copied to the socket's path, the\n\
+   rest of the path will be padded with 0 bytes, and the entire\n\
+   zero-padded buffer will be considered the name. (As above, if\n\
+   [path_len] is -1, then [path] is assumed to be NUL-terminated.) In\n\
+   this case, g_socket_address_get_native_size() will always return\n\
+   the full size of a [struct sockaddr_un], although\n\
+   g_unix_socket_address_get_path_len() will still return just the\n\
+   length of [path].\n\n\
+   [G_UNIX_SOCKET_ADDRESS_ABSTRACT] is preferred over\n\
+   [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED] for new programs. Of course,\n\
+   when connecting to a server created by another process, you must\n\
+   use the appropriate type corresponding to how that process created\n\
+   its listening socket."]
 
 (* Methods *)
 

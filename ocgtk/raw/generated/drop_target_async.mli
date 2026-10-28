@@ -32,7 +32,9 @@
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
     drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
-    can be used by themes to style the widget as a drop target. *)
+    can be used by themes to style the widget as a drop target.
+
+    The class built on this module is in {!Ocgtk.Drop_target_async}. *)
 
 type t = [ `drop_target_async | `event_controller | `object_ ] Gobject.obj
 
@@ -41,7 +43,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_drop_target_async_get_type"
 external new_ :
   Ocgdk_raw.Content_formats.t option -> Ocgdk_enums.dragaction -> t
   = "ml_gtk_drop_target_async_new"
-(** Create a new DropTargetAsync *)
+(** Creates a new [GtkDropTargetAsync] object. *)
 
 (* Methods *)
 
@@ -77,6 +79,20 @@ val on_accept :
   t ->
   callback:(drop:Ocgdk_raw.Drop.t -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted on the drop site when a drop operation is about to begin.
+
+    If the drop is not accepted, [FALSE] will be returned and the drop target
+    will ignore the drop. If [TRUE] is returned, the drop is accepted for now
+    but may be rejected later via a call to [Gtk.DropTargetAsync.reject_drop] or
+    ultimately by returning [FALSE] from a [Gtk.DropTargetAsync::drop] handler.
+
+    The default handler for this signal decides whether to accept the drop based
+    on the formats provided by the [drop].
+
+    If the decision whether the drop will be accepted or rejected needs further
+    processing, such as inspecting the data, this function should return [TRUE]
+    and proceed as is [drop] was accepted and if it decides to reject the drop
+    later, it should call [Gtk.DropTargetAsync.reject_drop]. *)
 
 val on_drag_enter :
   ?after:bool ->
@@ -84,12 +100,19 @@ val on_drag_enter :
   callback:
     (drop:Ocgdk_raw.Drop.t -> x:float -> y:float -> Ocgdk_enums.dragaction) ->
   Gobject.Signal.handler_id
+(** Emitted on the drop site when the pointer enters the widget.
+
+    It can be used to set up custom highlighting. *)
 
 val on_drag_leave :
   ?after:bool ->
   t ->
   callback:(drop:Ocgdk_raw.Drop.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted on the drop site when the pointer leaves the widget.
+
+    Its main purpose it to undo things done in [GtkDropTargetAsync]::drag-enter.
+*)
 
 val on_drag_motion :
   ?after:bool ->
@@ -97,9 +120,23 @@ val on_drag_motion :
   callback:
     (drop:Ocgdk_raw.Drop.t -> x:float -> y:float -> Ocgdk_enums.dragaction) ->
   Gobject.Signal.handler_id
+(** Emitted while the pointer is moving over the drop target. *)
 
 val on_drop :
   ?after:bool ->
   t ->
   callback:(drop:Ocgdk_raw.Drop.t -> x:float -> y:float -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted on the drop site when the user drops the data onto the widget.
+
+    The signal handler must determine whether the pointer position is in a drop
+    zone or not. If it is not in a drop zone, it returns [FALSE] and no further
+    processing is necessary.
+
+    Otherwise, the handler returns [TRUE]. In this case, this handler will
+    accept the drop. The handler must ensure that [Gdk.Drop.finish] is called to
+    let the source know that the drop is done. The call to [Gdk.Drop.finish]
+    must only be done when all data has been received.
+
+    To receive the data, use one of the read functions provided by [Gdk.Drop]
+    such as [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async]. *)

@@ -44,7 +44,8 @@
  [PATH]. If two modules have the same base name in different\n\
  directories, then the latter one will be ignored. If additional\n\
  directories are specified GIO will load modules from the built-in\n\
- directory last."]
+ directory last.\n\n\
+ The class built on this module is in {!Ocgio.Io_extension_point}."]
 
 type t = [ `io_extension_point ] Gobject.obj
 

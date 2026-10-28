@@ -15,7 +15,9 @@
     [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
     service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
-    interface and not need to worry about [GSrvTarget] at all. *)
+    interface and not need to worry about [GSrvTarget] at all.
+
+    The class built on this module is in {!Ocgio.Srv_target}. *)
 
 type t = [ `srv_target ] Gobject.obj
 
@@ -23,7 +25,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_srv_target_get_type"
 
 external new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> t
   = "ml_g_srv_target_new"
-(** Create a new SrvTarget *)
+(** Creates a new [GSrvTarget] with the given parameters.
+
+    You should not need to use this; normally [GSrvTargets] are created by
+    [GResolver]. *)
 
 (* Methods *)
 

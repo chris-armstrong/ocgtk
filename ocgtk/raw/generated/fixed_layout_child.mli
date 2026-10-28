@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FixedLayoutChild: FixedLayoutChild *)
 
-(** [GtkLayoutChild] subclass for children in a [GtkFixedLayout]. *)
+(** [GtkLayoutChild] subclass for children in a [GtkFixedLayout].
+
+    The class built on this module is in {!Ocgtk.Fixed_layout_child}. *)
 
 type t = [ `fixed_layout_child | `layout_child | `object_ ] Gobject.obj
 

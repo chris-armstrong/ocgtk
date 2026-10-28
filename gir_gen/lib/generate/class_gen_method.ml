@@ -373,8 +373,10 @@ let generate_method_signatures ~ctx ~property_method_names:_
         ~current_layer2_module meth
     in
     let seen = StringSet.add ocaml_name seen in
-    let buf = Buffer.create 256 in
-    if has_type_var then
-      bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
-    else bprintf buf "    method %s : %s\n" ocaml_name signature;
-    (Buffer.contents buf, seen)
+    let doc =
+      Doc_emit.item_doc ~indent:"    " ~context:Doc_translate.Member meth.doc
+    in
+    let quantifier = if has_type_var then "'a. " else "" in
+    ( Doc_emit.around doc
+        (Fmt.str "    method %s : %s%s\n" ocaml_name quantifier signature),
+      seen )

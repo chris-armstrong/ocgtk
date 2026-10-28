@@ -12,9 +12,16 @@ class type d_bus_proxy_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a signal from the remote object and interface that [proxy] is
+      for, has been received.
+
+      Since 2.72 this signal supports detailed connections. You can connect to
+      the detailed signal [g-signal::x] in order to receive callbacks only when
+      signal [x] is received from the remote object. *)
 
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
+  (** Finishes an operation started with g_dbus_proxy_call(). *)
 
   method call_sync :
     string ->
@@ -23,20 +30,126 @@ class type d_bus_proxy_t = object
     int ->
     Cancellable.cancellable_t option ->
     (Gvariant.t, GError.t) result
+  [@@ocaml.doc
+    "Synchronously invokes the [method_name] method on [proxy].\n\n\
+     If [method_name] contains any dots, then [name] is split into interface and\n\
+     method name parts. This allows using [proxy] for invoking methods on\n\
+     other interfaces.\n\n\
+     If the [GDBusConnection] associated with [proxy] is disconnected then\n\
+     the operation will fail with [G_IO_ERROR_CLOSED]. If\n\
+     [cancellable] is canceled, the operation will fail with\n\
+     [G_IO_ERROR_CANCELLED]. If [parameters] contains a value not\n\
+     compatible with the D-Bus protocol, the operation fails with\n\
+     [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+     If the [parameters] [GVariant] is floating, it is consumed. This allows\n\
+     convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+     {[\n\
+    \ g_dbus_proxy_call_sync (proxy,\n\
+    \                         \"TwoStrings\",\n\
+    \                         g_variant_new (\"(ss)\",\n\
+    \                                        \"Thing One\",\n\
+    \                                        \"Thing Two\"),\n\
+    \                         G_DBUS_CALL_FLAGS_NONE,\n\
+    \                         -1,\n\
+    \                         NULL,\n\
+    \                         &error);\n\
+     ]}\n\n\
+     The calling thread is blocked until a reply is received. See\n\
+     g_dbus_proxy_call() for the asynchronous version of this\n\
+     method.\n\n\
+     If [proxy] has an expected interface (see\n\
+     [GDBusProxy:g]-interface-info) and [method_name] is referenced by it,\n\
+     then the return value is checked against the return type."]
 
   method get_cached_property : string -> Gvariant.t option
+  (** Looks up the value for a property from the cache. This call does no
+      blocking IO.
+
+      If [proxy] has an expected interface (see [GDBusProxy:g]-interface-info)
+      and [property_name] is referenced by it, then [value] is checked against
+      the type of the property. *)
+
   method get_cached_property_names : unit -> string array option
+  (** Gets the names of all cached properties on [proxy]. *)
+
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
+  (** Gets the connection [proxy] is for. *)
+
   method get_default_timeout : unit -> int
+  (** Gets the timeout to use if -1 (specifying default timeout) is passed as
+      [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+      functions.
+
+      See the [GDBusProxy:g]-default-timeout property for more details. *)
+
   method get_flags : unit -> Enums.dbusproxyflags
+  (** Gets the flags that [proxy] was constructed with. *)
+
   method get_interface_info : unit -> Raw.D_bus_interface_info.t option
+  (** Returns the [GDBusInterfaceInfo], if any, specifying the interface that
+      [proxy] conforms to. See the [GDBusProxy:g]-interface-info property for
+      more details. *)
+
   method get_interface_name : unit -> string
+  (** Gets the D-Bus interface name [proxy] is for. *)
+
   method get_name : unit -> string option
+  (** Gets the name that [proxy] was constructed for.
+
+      When connected to a message bus, this will usually be non-[NULL]. However,
+      it may be [NULL] for a proxy that communicates using a peer-to-peer
+      pattern. *)
+
   method get_name_owner : unit -> string option
+  (** The unique name that owns the name that [proxy] is for or [NULL] if no-one
+      currently owns that name. You may connect to the [GObject::notify] signal
+      to track changes to the [GDBusProxy:g]-name-owner property. *)
+
   method get_object_path : unit -> string
+  (** Gets the object path [proxy] is for. *)
+
   method set_cached_property : string -> Gvariant.t option -> unit
+  [@@ocaml.doc
+    "If [value] is not [NULL], sets the cached value for the property with\n\
+     name [property_name] to the value in [value].\n\n\
+     If [value] is [NULL], then the cached value is removed from the\n\
+     property cache.\n\n\
+     If [proxy] has an expected interface (see\n\
+     [GDBusProxy:g]-interface-info) and [property_name] is referenced by\n\
+     it, then [value] is checked against the type of the property.\n\n\
+     If the [value] [GVariant] is floating, it is consumed. This allows\n\
+     convenient 'inline' use of g_variant_new(), e.g.\n\n\
+     {[\n\
+    \ g_dbus_proxy_set_cached_property (proxy,\n\
+    \                                   \"SomeProperty\",\n\
+    \                                   g_variant_new (\"(si)\",\n\
+    \                                                 \"A String\",\n\
+    \                                                 42));\n\
+     ]}\n\n\
+     Normally you will not need to use this method since [proxy]\n\
+     is tracking changes using the\n\
+     [org.freedesktop.DBus.Properties.PropertiesChanged]\n\
+     D-Bus signal. However, for performance reasons an object may\n\
+     decide to not use this signal for some properties and instead\n\
+     use a proprietary out-of-band mechanism to transmit changes.\n\n\
+     As a concrete example, consider an object with a property\n\
+     [ChatroomParticipants] which is an array of strings. Instead of\n\
+     transmitting the same (long) array every time the property changes,\n\
+     it is more efficient to only transmit the delta using e.g. signals\n\
+     [ChatroomParticipantJoined(String name)] and\n\
+     [ChatroomParticipantParted(String name)]."]
+
   method set_default_timeout : int -> unit
+  (** Sets the timeout to use if -1 (specifying default timeout) is passed as
+      [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+      functions.
+
+      See the [GDBusProxy:g]-default-timeout property for more details. *)
+
   method set_interface_info : Raw.D_bus_interface_info.t option -> unit
+  (** Ensure that interactions with [proxy] conform to the given interface. See
+      the [GDBusProxy:g]-interface-info property for more details. *)
+
   method g_connection : D_bus_connection.d_bus_connection_t
   method g_default_timeout : int
   method set_g_default_timeout : int -> unit

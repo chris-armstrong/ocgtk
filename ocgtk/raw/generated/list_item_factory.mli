@@ -47,7 +47,9 @@
 
     Once you have chosen your factory and created it, you need to set it on the
     view widget you want to use it with, such as via [Gtk.ListView.set_factory].
-    Reusing factories across different views is allowed, but very uncommon. *)
+    Reusing factories across different views is allowed, but very uncommon.
+
+    The class built on this module is in {!Ocgtk.List_item_factory}. *)
 
 type t = [ `list_item_factory | `object_ ] Gobject.obj
 

@@ -17,7 +17,9 @@
     or fallback applications.
 
     To obtain the application that has been selected in a [GtkAppChooser], use
-    [Gtk.AppChooser.get_app_info]. *)
+    [Gtk.AppChooser.get_app_info].
+
+    The class built on this module is in {!Ocgtk.App_chooser}. *)
 
 type t = [ `app_chooser ] Gobject.obj
 

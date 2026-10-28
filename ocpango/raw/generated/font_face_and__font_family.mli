@@ -1,6 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocpango.Raw.Font_face}, {!Ocpango.Raw.Font_family},
+    defined together because they refer to each other. Each has a module of its
+    own that re-exports it; use that module rather than this one. *)
+
+(** A [PangoFontFace] is used to represent a group of fonts with the same
+    family, slant, weight, and width, but varying sizes.
+
+    The class built on this module is in {!Ocpango.Font_face}. *)
 module rec Font_face : sig
   type t = [ `font_face | `object_ ] Gobject.obj
 
@@ -40,6 +48,12 @@ module rec Font_face : sig
       weight and stretch of the face, but its size field will be unset. *)
 end
 
+(** A [PangoFontFamily] is used to represent a family of related font faces.
+
+    The font faces in a family share a common design, but differ in slant,
+    weight, width or other aspects.
+
+    The class built on this module is in {!Ocpango.Font_family}. *)
 and Font_family : sig
   type t = [ `font_family | `object_ ] Gobject.obj
 

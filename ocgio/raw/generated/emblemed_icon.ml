@@ -6,14 +6,16 @@
     [Gio.EmblemedIcon.add_emblem].
 
     Note that [GEmblemedIcon] allows no control over the position of the
-    emblems. See also [Gio.Emblem] for more information. *)
+    emblems. See also [Gio.Emblem] for more information.
+
+    The class built on this module is in {!Ocgio.Emblemed_icon}. *)
 
 type t = [ `emblemed_icon | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_emblemed_icon_get_type"
 
 external new_ : Icon.t -> Emblem.t option -> t = "ml_g_emblemed_icon_new"
-(** Create a new EmblemedIcon *)
+(** Creates a new emblemed icon for [icon] with the emblem [emblem]. *)
 
 (* Methods *)
 

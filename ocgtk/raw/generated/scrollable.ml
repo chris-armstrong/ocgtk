@@ -27,7 +27,9 @@
       for example using [Gtk.Adjustment.configure].
 
     - When any of the adjustments emits the [Gtk.Adjustment::value-changed]
-      signal, the scrollable widget should scroll its contents. *)
+      signal, the scrollable widget should scroll its contents.
+
+    The class built on this module is in {!Ocgtk.Scrollable}. *)
 
 type t = [ `scrollable ] Gobject.obj
 

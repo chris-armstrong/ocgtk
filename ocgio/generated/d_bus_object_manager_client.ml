@@ -14,11 +14,31 @@ class type d_bus_object_manager_client_t = object
       unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a D-Bus signal is received on [interface_proxy].
+
+      This signal exists purely as a convenience to avoid having to connect
+      signals to all interface proxies managed by [manager].
+
+      This signal is emitted in the thread-default main context (see
+      [GLib.MainContext.push_thread_default]) that [manager] was constructed in.
+  *)
 
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
+  (** Gets the [GDBusConnection] used by [manager]. *)
+
   method get_flags : unit -> Enums.dbusobjectmanagerclientflags
+  (** Gets the flags that [manager] was constructed with. *)
+
   method get_name : unit -> string
+  (** Gets the name that [manager] is for, or [NULL] if not a message bus
+      connection. *)
+
   method get_name_owner : unit -> string option
+  (** The unique name that owns the name that [manager] is for or [NULL] if
+      no-one currently owns that name. You can connect to the [GObject::notify]
+      signal to track changes to the [GDBusObjectManagerClient:name]-owner
+      property. *)
+
   method object_path : string
   method as_d_bus_object_manager_client : Raw.D_bus_object_manager_client.t
 end

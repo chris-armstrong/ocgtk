@@ -58,7 +58,8 @@
  {b Accessibility}\n\n\
  Until GTK 4.10, [GtkTreeExpander] used the [Gtk.AccessibleRole.group] role.\n\n\
  Since GTK 4.12, [GtkTreeExpander] uses the [Gtk.AccessibleRole.button] role.\n\
- Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state."]
+ Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state.\n\n\
+ The class built on this module is in {!Ocgtk.Tree_expander}."]
 
 type t =
   [ `tree_expander | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -66,7 +67,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_expander_get_type"
 
 external new_ : unit -> t = "ml_gtk_tree_expander_new"
-(** Create a new TreeExpander *)
+(** Creates a new [GtkTreeExpander] *)
 
 (* Methods *)
 

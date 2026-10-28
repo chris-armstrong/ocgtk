@@ -16,7 +16,9 @@
     {b CSS nodes}
 
     [GtkAppChooserDialog] has a single CSS node with the name [window] and style
-    class [.appchooser]. *)
+    class [.appchooser].
+
+    The class built on this module is in {!Ocgtk.App_chooser_dialog}. *)
 
 type t =
   [ `app_chooser_dialog
@@ -34,14 +36,18 @@ external new_ :
   Ocgtk_enums.dialogflags ->
   Ocgio_raw.File.t ->
   t = "ml_gtk_app_chooser_dialog_new"
-(** Create a new AppChooserDialog *)
+(** Creates a new [GtkAppChooserDialog] for the provided [GFile].
+
+    The dialog will show applications that can open the file. *)
 
 external new_for_content_type :
   Application_and__window_and__window_group.Window.t option ->
   Ocgtk_enums.dialogflags ->
   string ->
   t = "ml_gtk_app_chooser_dialog_new_for_content_type"
-(** Create a new AppChooserDialog *)
+(** Creates a new [GtkAppChooserDialog] for the provided content type.
+
+    The dialog will show applications that can open the content type. *)
 
 (* Methods *)
 

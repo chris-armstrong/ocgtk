@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FocusEvent: FocusEvent *)
 
-(** An event related to a keyboard focus change. *)
+(** An event related to a keyboard focus change.
+
+    The class built on this module is in {!Ocgdk.Focus_event}. *)
 
 type t = [ `focus_event | `event ] Gobject.obj
 

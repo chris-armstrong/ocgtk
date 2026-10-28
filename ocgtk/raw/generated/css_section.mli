@@ -4,7 +4,9 @@
 (** Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region. *)
+    [CssSection.get_parent] to get the containing region.
+
+    The class built on this module is in {!Ocgtk.Css_section}. *)
 
 type t = [ `css_section ] Gobject.obj
 
@@ -12,7 +14,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_css_section_get_type"
 
 external new_ : Ocgio_raw.File.t option -> Css_location.t -> Css_location.t -> t
   = "ml_gtk_css_section_new"
-(** Create a new CssSection *)
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    from the [start] location to the [end] location. *)
 
 external new_with_bytes :
   Ocgio_raw.File.t option ->
@@ -20,7 +23,8 @@ external new_with_bytes :
   Css_location.t ->
   Css_location.t ->
   t = "ml_gtk_css_section_new_with_bytes"
-(** Create a new CssSection *)
+(** Creates a new [GtkCssSection] referring to the section in the given [file]
+    or the given [bytes] from the [start] location to the [end] location. *)
 
 (* Methods *)
 

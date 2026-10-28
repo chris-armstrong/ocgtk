@@ -1,3 +1,40 @@
+(** Places “overlay” widgets on top of a single main child.
+
+    An example GtkOverlay
+
+    The position of each overlay widget is determined by its [Gtk.Widget:halign]
+    and [Gtk.Widget:valign] properties. E.g. a widget with both alignments set
+    to [GTK_ALIGN_START] will be placed at the top left corner of the
+    [GtkOverlay] container, whereas an overlay with halign set to
+    [GTK_ALIGN_CENTER] and valign set to [GTK_ALIGN_END] will be placed a the
+    bottom edge of the [GtkOverlay], horizontally centered. The position can be
+    adjusted by setting the margin properties of the child to non-zero values.
+
+    More complicated placement of overlays is possible by connecting to the
+    [Gtk.Overlay::get-child-position] signal.
+
+    An overlay’s minimum and natural sizes are those of its main child. The
+    sizes of overlay children are not considered when measuring these preferred
+    sizes.
+
+    {b GtkOverlay as GtkBuildable}
+
+    The [GtkOverlay] implementation of the [GtkBuildable] interface supports
+    placing a child as an overlay by specifying “overlay” as the “type”
+    attribute of a [<child>] element.
+
+    {b CSS nodes}
+
+    [GtkOverlay] has a single CSS node with the name “overlay”. Overlay children
+    whose alignments cause them to be positioned at an edge get the style
+    classes “.left”, “.right”, “.top”, and/or “.bottom” according to their
+    position.
+
+    Its methods, signals and properties are on {!class-type-overlay_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Overlay}. *)
+
+(** The methods, signals and properties of a [Overlay]. *)
 class type overlay_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -7,49 +44,72 @@ class type overlay_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Adds [widget] to [overlay].
+
+      The widget will be stacked on top of the main widget added with
+      [Gtk.Overlay.set_child].
+
+      The position at which [widget] is placed is determined from its
+      [Gtk.Widget:halign] and [Gtk.Widget:valign] properties. *)
 
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the child widget of [overlay]. *)
 
   method get_clip_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Gets whether [widget] should be clipped within the parent. *)
 
   method get_measure_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
+  (** Gets whether [widget]'s size is included in the measurement of [overlay].
+  *)
 
   method remove_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
+  (** Removes an overlay that was added with gtk_overlay_add_overlay(). *)
 
   method set_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
+  (** Sets the child widget of [overlay]. *)
 
   method set_clip_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
+  (** Sets whether [widget] should be clipped within the parent. *)
 
   method set_measure_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
+  (** Sets whether [widget] is included in the measured size of [overlay].
+
+      The overlay will request the size of the largest child that has this
+      property set to [TRUE]. Children who are not included may be drawn outside
+      of [overlay]'s allocation if they are too large. *)
 
   method as_overlay : Raw.Overlay.t
 end
 
 class overlay : Raw.Overlay.t -> overlay_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Overlay.t}. *)
+
+(** {2:constructors Constructors} *)
 
 val new_ : unit -> overlay_t
+(** Creates a new [GtkOverlay]. *)

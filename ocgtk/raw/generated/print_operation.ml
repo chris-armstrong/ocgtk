@@ -51,14 +51,15 @@
  [Gtk.PrintOperationPreview.render_page],\n\
  [Gtk.PrintOperationPreview.end_preview] and\n\
  [Gtk.PrintOperationPreview.is_selected]\n\
- are useful when implementing a print preview."]
+ are useful when implementing a print preview.\n\n\
+ The class built on this module is in {!Ocgtk.Print_operation}."]
 
 type t = [ `print_operation | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_print_operation_get_type"
 
 external new_ : unit -> t = "ml_gtk_print_operation_new"
-(** Create a new PrintOperation *)
+(** Creates a new [GtkPrintOperation]. *)
 
 (* Methods *)
 

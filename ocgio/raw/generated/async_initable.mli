@@ -101,7 +101,9 @@
       iface->init_async = foo_init_async;
       iface->init_finish = foo_init_finish;
     }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgio.Async_initable}. *)
 
 type t = [ `async_initable ] Gobject.obj
 

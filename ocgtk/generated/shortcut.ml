@@ -1,10 +1,22 @@
 class type shortcut_t = object
   method get_action : unit -> Shortcut_action.shortcut_action_t option
+  (** Gets the action that is activated by this shortcut. *)
+
   method get_arguments : unit -> Gvariant.t option
+  (** Gets the arguments that are passed when activating the shortcut. *)
+
   method get_trigger : unit -> Shortcut_trigger.shortcut_trigger_t option
+  (** Gets the trigger used to trigger [self]. *)
+
   method set_action : Shortcut_action.shortcut_action_t option -> unit
+  (** Sets the new action for [self] to be [action]. *)
+
   method set_arguments : Gvariant.t option -> unit
+  (** Sets the arguments to pass when activating the shortcut. *)
+
   method set_trigger : Shortcut_trigger.shortcut_trigger_t option -> unit
+  (** Sets the new trigger for [self] to be [trigger]. *)
+
   method as_shortcut : Raw.Shortcut.t
 end
 

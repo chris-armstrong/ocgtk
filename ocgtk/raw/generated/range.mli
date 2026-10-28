@@ -14,7 +14,9 @@
 
     The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
     dragging, or initiating the drag with a long-press will enable the
-    fine-tuning mode. *)
+    fine-tuning mode.
+
+    The class built on this module is in {!Ocgtk.Range}. *)
 
 type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -171,18 +173,36 @@ val on_adjust_bounds :
   t ->
   callback:(value:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted before clamping a value, to give the application a chance to adjust
+    the bounds. *)
 
 val on_change_value :
   ?after:bool ->
   t ->
   callback:(scroll:Ocgtk_enums.scrolltype -> value:float -> bool) ->
   Gobject.Signal.handler_id
+(** Emitted when a scroll action is performed on a range.
+
+    It allows an application to determine the type of scroll event that occurred
+    and the resultant new value. The application can handle the event itself and
+    return [TRUE] to prevent further processing. Or, by returning [FALSE], it
+    can pass the event to other handlers until the default GTK handler is
+    reached.
+
+    The value parameter is unrounded. An application that overrides the
+    ::change-value signal is responsible for clamping the value to the desired
+    number of decimal digits; the default GTK handler clamps the value based on
+    [Gtk.Range:round-digits]. *)
 
 val on_move_slider :
   ?after:bool ->
   t ->
   callback:(step:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
+(** Virtual function that moves the slider.
+
+    Used for keybindings. *)
 
 val on_value_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the range value changes. *)

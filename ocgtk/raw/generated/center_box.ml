@@ -34,14 +34,16 @@
     Until GTK 4.10, [GtkCenterBox] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkCenterBox] uses the [Gtk.AccessibleRole.generic]
-    role. *)
+    role.
+
+    The class built on this module is in {!Ocgtk.Center_box}. *)
 
 type t = [ `center_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_center_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_center_box_new"
-(** Create a new CenterBox *)
+(** Creates a new [GtkCenterBox]. *)
 
 (* Methods *)
 

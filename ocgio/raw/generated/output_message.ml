@@ -6,7 +6,9 @@
     the operation will use all the buffers as if they were one buffer.
 
     If [address] is [NULL] then the message is sent to the default receiver (as
-    previously set by g_socket_connect()). *)
+    previously set by g_socket_connect()).
+
+    The class built on this module is in {!Ocgio.Output_message}. *)
 
 type t = [ `output_message ] Gobject.obj
 

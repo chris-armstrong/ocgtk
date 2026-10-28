@@ -9,7 +9,9 @@
 
     GDK knows how to handle common text and image formats out-of-the-box. See
     [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats. *)
+    support for application-specific data formats.
+
+    The class built on this module is in {!Ocgdk.Content_provider}. *)
 
 type t = [ `content_provider | `object_ ] Gobject.obj
 
@@ -17,15 +19,31 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_content_provider_get_type"
 
 external new_for_bytes : string -> Glib_bytes.t -> t
   = "ml_gdk_content_provider_new_for_bytes"
-(** Create a new ContentProvider *)
+(** Create a content provider that provides the given [bytes] as data for the
+    given [mime_type]. *)
 
 external new_for_value : Gobject.Value.t -> t
   = "ml_gdk_content_provider_new_for_value"
-(** Create a new ContentProvider *)
+(** Create a content provider that provides the given [value]. *)
 
 external new_union : t array option -> Gsize.t -> t
   = "ml_gdk_content_provider_new_union"
-(** Create a new ContentProvider *)
+(** Creates a content provider that represents all the given [providers].
+
+    Whenever data needs to be written, the union provider will try the given
+    [providers] in the given order and the first one supporting a format will be
+    chosen to provide it.
+
+    This allows an easy way to support providing data in different formats. For
+    example, an image may be provided by its file and by the image contents with
+    a call such as
+
+    {[
+    gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
+                                      gdk_content_provider_new_typed (GDK_TYPE_TEXTURE, texture)
+                                    }, 2);
+    ]} *)
 
 (* Methods *)
 

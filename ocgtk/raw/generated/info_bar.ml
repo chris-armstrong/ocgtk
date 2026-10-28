@@ -59,14 +59,15 @@
  one of the style classes .info, .warning, .error or .question, depending\n\
  on the message type.\n\
  If the info bar shows a close button, that button will have the .close\n\
- style class applied."]
+ style class applied.\n\n\
+ The class built on this module is in {!Ocgtk.Info_bar}."]
 
 type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_info_bar_get_type"
 
 external new_ : unit -> t = "ml_gtk_info_bar_new"
-(** Create a new InfoBar *)
+(** Creates a new [GtkInfoBar] object. *)
 
 (* Methods *)
 

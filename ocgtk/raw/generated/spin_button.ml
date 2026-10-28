@@ -116,7 +116,9 @@
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role.
+
+    The class built on this module is in {!Ocgtk.Spin_button}. *)
 
 type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -124,11 +126,21 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_spin_button_get_type"
 
 external new_ : Adjustment.t option -> float -> int -> t
   = "ml_gtk_spin_button_new"
-(** Create a new SpinButton *)
+(** Creates a new [GtkSpinButton]. *)
 
 external new_with_range : float -> float -> float -> t
   = "ml_gtk_spin_button_new_with_range"
-(** Create a new SpinButton *)
+(** Creates a new [GtkSpinButton] with the given properties.
+
+    This is a convenience constructor that allows creation of a numeric
+    [GtkSpinButton] without manually creating an adjustment. The value is
+    initially set to the minimum value and a page increment of 10 * [step] is
+    the default. The precision of the spin button is equivalent to the precision
+    of [step].
+
+    Note that the way in which the precision is derived works best if [step] is
+    a power of ten. If the resulting precision is not suitable for your needs,
+    use [Gtk.SpinButton.set_digits] to correct it. *)
 
 (* Methods *)
 

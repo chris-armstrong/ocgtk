@@ -56,6 +56,45 @@ let find_type_declaration_sig (ast : signature) (name : string) :
       | _ -> None)
     ast
 
+(* The parser turns a doc comment into an [ocaml.doc] attribute, so both
+   forms the generator writes read back the same way. *)
+let doc_of_attributes (attributes : attributes) : string option =
+  List.find_map
+    (fun (attr : attribute) ->
+      match (attr.attr_name.txt, attr.attr_payload) with
+      | ( "ocaml.doc",
+          PStr
+            [
+              {
+                pstr_desc =
+                  Pstr_eval
+                    ( { pexp_desc = Pexp_constant (Pconst_string (s, _, _)); _ },
+                      _ );
+                _;
+              };
+            ] ) ->
+          Some s
+      | _ -> None)
+    attributes
+
+let module_preamble (ast : signature) : string option =
+  List.find_map
+    (fun item ->
+      match item.psig_desc with
+      | Psig_attribute ({ attr_name = { txt = "ocaml.text"; _ }; _ } as attr) ->
+          doc_of_attributes
+            [
+              {
+                attr with
+                attr_name = { attr.attr_name with txt = "ocaml.doc" };
+              };
+            ]
+      | _ -> None)
+    ast
+
+let type_declaration_doc (td : type_declaration) : string option =
+  doc_of_attributes td.ptype_attributes
+
 (* Get all type declarations from a structure *)
 let get_all_type_declarations (ast : structure) : type_declaration list =
   List.concat_map

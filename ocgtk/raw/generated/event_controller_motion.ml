@@ -7,7 +7,9 @@
     [Gtk.EventControllerMotion::leave] signals, as well as
     [Gtk.EventControllerMotion:is-pointer] and
     [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
-    reflect changes in the pointer position as it moves over the widget. *)
+    reflect changes in the pointer position as it moves over the widget.
+
+    The class built on this module is in {!Ocgtk.Event_controller_motion}. *)
 
 type t = [ `event_controller_motion | `event_controller | `object_ ] Gobject.obj
 
@@ -15,7 +17,7 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gtk_event_controller_motion_get_type"
 
 external new_ : unit -> t = "ml_gtk_event_controller_motion_new"
-(** Create a new EventControllerMotion *)
+(** Creates a new event controller that will handle motion events. *)
 
 (* Methods *)
 

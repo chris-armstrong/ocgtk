@@ -6,6 +6,7 @@ class type emoji_chooser_t = object
     callback:(text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the user selects an Emoji. *)
 
   method as_emoji_chooser : Raw.Emoji_chooser.t
 end

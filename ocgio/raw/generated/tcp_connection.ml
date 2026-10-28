@@ -2,7 +2,9 @@
 (* TcpConnection: TcpConnection *)
 
 (** This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
-    sockets. *)
+    sockets.
+
+    The class built on this module is in {!Ocgio.Tcp_connection}. *)
 
 type t =
   [ `tcp_connection | `socket_connection | `io_stream | `object_ ] Gobject.obj

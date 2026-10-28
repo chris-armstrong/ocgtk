@@ -1,6 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
+(** The layer 1 modules of {!Ocgio.Raw.App_info},
+    {!Ocgio.Raw.App_launch_context}, {!Ocgio.Raw.Drive}, {!Ocgio.Raw.File},
+    {!Ocgio.Raw.File_enumerator}, {!Ocgio.Raw.File_monitor}, {!Ocgio.Raw.Mount},
+    {!Ocgio.Raw.Volume}, defined together because they refer to each other. Each
+    has a module of its own that re-exports it; use that module rather than this
+    one. *)
+
 module rec App_info : sig
   type t = [ `app_info ] Gobject.obj
 
@@ -170,14 +177,69 @@ module rec App_info : sig
   (** Adds a content type to the application information to indicate the
       application is capable of opening files with the given content type. *)
 end
+[@@ocaml.doc
+  "Information about an installed application and methods to launch\n\
+   it (with file arguments).\n\n\
+   [GAppInfo] and [GAppLaunchContext] are used for describing and launching\n\
+   applications installed on the system.\n\n\
+   As of GLib 2.20, URIs will always be converted to POSIX paths\n\
+   (using [Gio.File.get_path]) when using [Gio.AppInfo.launch]\n\
+   even if the application requested an URI and not a POSIX path. For example\n\
+   for a desktop-file based application with the following Exec key:\n\n\
+   {[\n\
+   Exec=totem %U\n\
+   ]}\n\n\
+   and a single URI, [sftp://foo/file.avi], then\n\
+   [/home/user/.gvfs/sftp on foo/file.avi] will be passed. This will only work\n\
+   if a set of suitable GIO extensions (such as GVfs 2.26 compiled with FUSE\n\
+   support), is available and operational; if this is not the case, the URI\n\
+   will be passed unmodified to the application. Some URIs, such as [mailto:],\n\
+   of course cannot be mapped to a POSIX path (in GVfs there’s no FUSE mount\n\
+   for it); such URIs will be passed unmodified to the application.\n\n\
+   Specifically for GVfs 2.26 and later, the POSIX URI will be mapped\n\
+   back to the GIO URI in the [Gio.File] constructors (since GVfs\n\
+   implements the GVfs extension point). As such, if the application\n\
+   needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
+   or similar on [Gio.File]. In other words, an application cannot\n\
+   assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
+   is equal to the result of [Gio.File.get_uri]. The following snippet\n\
+   illustrates this:\n\n\
+   {[\n\
+   GFile *f;\n\
+   char *uri;\n\n\
+   file = g_file_new_for_commandline_arg (uri_from_commandline);\n\n\
+   uri = g_file_get_uri (file);\n\
+   strcmp (uri, uri_from_commandline) == 0;\n\
+   g_free (uri);\n\n\
+   if (g_file_has_uri_scheme (file, \"cdda\"))\n\
+  \  {\n\
+  \    // do something special with uri\n\
+  \  }\n\
+   g_object_unref (file);\n\
+   ]}\n\n\
+   This code will work when both [cdda://sr0/Track 1.wav] and\n\
+   [/home/user/.gvfs/cdda on sr0/Track 1.wav] is passed to the\n\
+   application. It should be noted that it’s generally not safe\n\
+   for applications to rely on the format of a particular URIs.\n\
+   Different launcher applications (e.g. file managers) may have\n\
+   different ideas of what a given URI means.\n\n\
+   The class built on this module is in {!Ocgio.App_info}."]
 
+(** Integrating the launch with the launching application. This is used to
+    handle for instance startup notification and launching the new application
+    on the same screen as the launching window.
+
+    The class built on this module is in {!Ocgio.App_launch_context}. *)
 and App_launch_context : sig
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
   external gtype : unit -> Gobject.Type.t = "ml_gio_app_launch_context_get_type"
 
   external new_ : unit -> t = "ml_g_app_launch_context_new"
-  (** Create a new AppLaunchContext *)
+  (** Creates a new application launch context. This is not normally used,
+      instead you instantiate a subclass of this, such as
+      {{:https://docs.gtk.org/gdk4/class.AppLaunchContext.html}[GdkAppLaunchContext]}.
+  *)
 
   (* Methods *)
 
@@ -236,20 +298,95 @@ and App_launch_context : sig
     t ->
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launch-failed] signal is emitted when a
+      [Gio.AppInfo] launch fails. The startup notification id is provided, so
+      that the launcher can cancel the startup notification.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one for each spawned instance. *)
 
   val on_launch_started :
     ?after:bool ->
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launch-started] signal is emitted when a
+      [Gio.AppInfo] is about to be launched. If non-null the [platform_data] is
+      an GVariant dictionary mapping strings to variants (ie [a{sv}]), which
+      contains additional, platform-specific data about this launch. On UNIX, at
+      least the [startup-notification-id] keys will be present.
+
+      The value of the [startup-notification-id] key (type [s]) is a startup
+      notification ID corresponding to the format from the
+      \[startup-notification
+      specification\](https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt).
+      It allows tracking the progress of the launchee through startup.
+
+      It is guaranteed that this signal is followed by either a
+      [Gio.AppLaunchContext::launched] or [Gio.AppLaunchContext::launch-failed]
+      signal.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one for each spawned instance. *)
 
   val on_launched :
     ?after:bool ->
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
+  (** The [Gio.AppLaunchContext::launched] signal is emitted when a
+      [Gio.AppInfo] is successfully launched.
+
+      Because a launch operation may involve spawning multiple instances of the
+      target application, you should expect this signal to be emitted multiple
+      times, one time for each spawned instance.
+
+      The [platform_data] is an GVariant dictionary mapping strings to variants
+      (ie [a{sv}]), which contains additional, platform-specific data about this
+      launch. On UNIX, at least the [pid] and [startup-notification-id] keys
+      will be present.
+
+      Since 2.72 the [pid] may be 0 if the process id wasn’t known (for example
+      if the process was launched via D-Bus). The [pid] may not be set at all in
+      subsequent releases.
+
+      On Windows, [pid] is guaranteed to be valid only for the duration of the
+      [Gio.AppLaunchContext::launched] signal emission; after the signal is
+      emitted, GLib will call [GLib.spawn_close_pid]. If you need to keep the
+      [GLib.Pid] after the signal has been emitted, then you can duplicate [pid]
+      using [DuplicateHandle()]. *)
 end
 
+(** [GDrive] represents a piece of hardware connected to the machine. It’s
+    generally only created for removable hardware or hardware with removable
+    media. For example, an optical disc drive, or a USB flash drive.
+
+    [GDrive] is a container class for [Gio.Volume] objects that stem from the
+    same piece of media. As such, [GDrive] abstracts a drive with (or without)
+    removable media and provides operations for querying whether media is
+    available, determining whether media change is automatically detected and
+    ejecting the media.
+
+    If the [GDrive] reports that media isn’t automatically detected, one can
+    poll for media; typically one should not do this periodically as a poll for
+    media operation is potentially expensive and may spin up the drive creating
+    noise.
+
+    [GDrive] supports starting and stopping drives with authentication support
+    for the former. This can be used to support a diverse set of use cases
+    including connecting/disconnecting iSCSI devices, powering down external
+    disk enclosures and starting/stopping multi-disk devices such as RAID
+    devices. Note that the actual semantics and side-effects of
+    starting/stopping a [GDrive] may vary according to implementation. To choose
+    the correct verbs in e.g. a file manager, use
+    [Gio.Drive.get_start_stop_type].
+
+    For porting from GnomeVFS note that there is no equivalent of [GDrive] in
+    that API.
+
+    The class built on this module is in {!Ocgio.Drive}. *)
 and Drive : sig
   type t = [ `drive ] Gobject.obj
 
@@ -349,17 +486,112 @@ and Drive : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the drive's state has changed. *)
 
   val on_disconnected :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GDrive] have been disconnected. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 
   val on_eject_button :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the physical eject button (if any) of a drive has been
+      pressed. *)
 
   val on_stop_button :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the physical stop button (if any) of a drive has been
+      pressed. *)
 end
 
+(** [GFile] is a high level abstraction for manipulating files on a virtual file
+    system. [GFile]s are lightweight, immutable objects that do no I/O upon
+    creation. It is necessary to understand that [GFile] objects do not
+    represent files, merely an identifier for a file. All file content I/O is
+    implemented as streaming operations (see [Gio.InputStream] and
+    [Gio.OutputStream]).
+
+    To construct a [GFile], you can use:
+
+    - [Gio.File.new_for_path] if you have a path.
+    - [Gio.File.new_for_uri] if you have a URI.
+    - [Gio.File.new_for_commandline_arg] or
+      [Gio.File.new_for_commandline_arg_and_cwd] for a command line argument.
+    - [Gio.File.new_tmp] to create a temporary file from a template.
+    - [Gio.File.new_tmp_async] to asynchronously create a temporary file.
+    - [Gio.File.new_tmp_dir_async] to asynchronously create a temporary
+      directory.
+    - [Gio.File.parse_name] from a UTF-8 string gotten from
+      [Gio.File.get_parse_name].
+    - [Gio.File.new_build_filename] or [Gio.File.new_build_filenamev] to create
+      a file from path elements.
+
+    One way to think of a [GFile] is as an abstraction of a pathname. For normal
+    files the system pathname is what is stored internally, but as [GFile]s are
+    extensible it could also be something else that corresponds to a pathname in
+    a userspace implementation of a filesystem.
+
+    [GFile]s make up hierarchies of directories and files that correspond to the
+    files on a filesystem. You can move through the file system with [GFile]
+    using [Gio.File.get_parent] to get an identifier for the parent directory,
+    [Gio.File.get_child] to get a child within a directory, and
+    [Gio.File.resolve_relative_path] to resolve a relative path between two
+    [GFile]s. There can be multiple hierarchies, so you may not end up at the
+    same root if you repeatedly call [Gio.File.get_parent] on two different
+    files.
+
+    All [GFile]s have a basename (get with [Gio.File.get_basename]). These names
+    are byte strings that are used to identify the file on the filesystem
+    (relative to its parent directory) and there is no guarantees that they have
+    any particular charset encoding or even make any sense at all. If you want
+    to use filenames in a user interface you should use the display name that
+    you can get by requesting the [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
+    attribute with [Gio.File.query_info]. This is guaranteed to be in UTF-8 and
+    can be used in a user interface. But always store the real basename or the
+    [GFile] to use to actually access the file, because there is no way to go
+    from a display name to the actual name.
+
+    Using [GFile] as an identifier has the same weaknesses as using a path in
+    that there may be multiple aliases for the same file. For instance, hard or
+    soft links may cause two different [GFile]s to refer to the same file. Other
+    possible causes for aliases are: case insensitive filesystems, short and
+    long names on FAT/NTFS, or bind mounts in Linux. If you want to check if two
+    [GFile]s point to the same file you can query for the
+    [G_FILE_ATTRIBUTE_ID_FILE] attribute. Note that [GFile] does some trivial
+    canonicalization of pathnames passed in, so that trivial differences in the
+    path string used at creation (duplicated slashes, slash at end of path, [.]
+    or [..] path segments, etc) does not create different [GFile]s.
+
+    Many [GFile] operations have both synchronous and asynchronous versions to
+    suit your application. Asynchronous versions of synchronous functions simply
+    have [_async()] appended to their function names. The asynchronous I/O
+    functions call a [Gio.AsyncReadyCallback] which is then used to finalize the
+    operation, producing a [Gio.AsyncResult] which is then passed to the
+    function’s matching [_finish()] operation.
+
+    It is highly recommended to use asynchronous calls when running within a
+    shared main loop, such as in the main thread of an application. This avoids
+    I/O operations blocking other sources on the main loop from being
+    dispatched. Synchronous I/O operations should be performed from worker
+    threads. See the introduction to asynchronous programming section for more.
+
+    Some [GFile] operations almost always take a noticeable amount of time, and
+    so do not have synchronous analogs. Notable cases include:
+
+    - [Gio.File.mount_mountable] to mount a mountable file.
+    - [Gio.File.unmount_mountable_with_operation] to unmount a mountable file.
+    - [Gio.File.eject_mountable_with_operation] to eject a mountable file.
+
+    {b Entity Tags}
+
+    One notable feature of [GFile]s are entity tags, or ‘etags’ for short.
+    Entity tags are somewhat like a more abstract version of the traditional
+    mtime, and can be used to quickly determine if the file has been modified
+    from the version on the file system. See the HTTP 1.1 specification for HTTP
+    [ETag] headers, which are a very similar concept.
+
+    The class built on this module is in {!Ocgio.File}. *)
 and File : sig
   type t = [ `file ] Gobject.obj
 
@@ -1377,6 +1609,32 @@ and File : sig
       possible too, and depend on what kind of filesystem the file is on. *)
 end
 
+(** [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
+    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
+    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
+    the children within a directory).
+
+    To get the next file's information from a [GFileEnumerator], use
+    [Gio.FileEnumerator.next_file] or its asynchronous version,
+    [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
+    will return a list of [Gio.FileInfo] objects, whereas the synchronous will
+    only return the next file in the enumerator.
+
+    The ordering of returned files is unspecified for non-Unix platforms; for
+    more information, see [GLib.Dir.read_name]. On Unix, when operating on local
+    files, returned files will be sorted by inode number. Effectively you can
+    assume that the ordering of returned files will be stable between successive
+    calls (and applications) assuming the directory is unchanged.
+
+    If your application needs a specific ordering, such as by name or
+    modification time, you will have to implement that in your application code.
+
+    To close a [GFileEnumerator], use [Gio.FileEnumerator.close], or its
+    asynchronous version, [Gio.FileEnumerator.close_async]. Once a
+    [GFileEnumerator] is closed, no further actions may be performed on it, and
+    it should be freed with [GObject.Object.unref].
+
+    The class built on this module is in {!Ocgio.File_enumerator}. *)
 and File_enumerator : sig
   type t = [ `file_enumerator | `object_ ] Gobject.obj
 
@@ -1460,6 +1718,20 @@ and File_enumerator : sig
   (* Properties *)
 end
 
+(** Monitors a file or directory for changes.
+
+    To obtain a [GFileMonitor] for a file or directory, use [Gio.File.monitor],
+    [Gio.File.monitor_file], or [Gio.File.monitor_directory].
+
+    To get informed about changes to the file or directory you are monitoring,
+    connect to the [Gio.FileMonitor::changed] signal. The signal will be emitted
+    in the thread-default main context (see
+    [GLib.MainContext.push_thread_default]) of the thread that the monitor was
+    created in (though if the global default main context is blocked, this may
+    cause notifications to be blocked even if the thread-default context is
+    still running).
+
+    The class built on this module is in {!Ocgio.File_monitor}. *)
 and File_monitor : sig
   type t = [ `file_monitor | `object_ ] Gobject.obj
 
@@ -1499,8 +1771,61 @@ and File_monitor : sig
       event_type:Ocgio_enums.filemonitorevent ->
       unit) ->
     Gobject.Signal.handler_id
+  [@@ocaml.doc
+    "Emitted when [file] has been changed.\n\n\
+    \  If using [G_FILE_MONITOR_WATCH_MOVES] on a directory monitor, and\n\
+    \  the information is available (and if supported by the backend),\n\
+    \  [event_type] may be [G_FILE_MONITOR_EVENT_RENAMED],\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED_IN] or [G_FILE_MONITOR_EVENT_MOVED_OUT].\n\n\
+    \  In all cases [file] will be a child of the monitored directory.  For\n\
+    \  renames, [file] will be the old name and [other_file] is the new\n\
+    \  name.  For \"moved in\" events, [file] is the name of the file that\n\
+    \  appeared and [other_file] is the old name that it was moved from (in\n\
+    \  another directory).  For \"moved out\" events, [file] is the name of\n\
+    \  the file that used to be in this directory and [other_file] is the\n\
+    \  name of the file at its new location.\n\n\
+    \  It makes sense to treat [G_FILE_MONITOR_EVENT_MOVED_IN] as\n\
+    \  equivalent to [G_FILE_MONITOR_EVENT_CREATED] and\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED_OUT] as equivalent to\n\
+    \  [G_FILE_MONITOR_EVENT_DELETED], with extra information.\n\
+    \  [G_FILE_MONITOR_EVENT_RENAMED] is equivalent to a delete/create\n\
+    \  pair.  This is exactly how the events will be reported in the case\n\
+    \  that the [G_FILE_MONITOR_WATCH_MOVES] flag is not in use.\n\n\
+    \  If using the deprecated flag [G_FILE_MONITOR_SEND_MOVED] flag and \
+     [event_type] is\n\
+    \  [G_FILE_MONITOR_EVENT_MOVED], [file] will be set to a [GFile] \
+     containing the\n\
+    \  old path, and [other_file] will be set to a [GFile] containing the new \
+     path.\n\n\
+    \  In all the other cases, [other_file] will be set to [NULL]."]
 end
 
+(** The [GMount] interface represents a user-visible mount, such as a mounted
+    file system.
+
+    [GMount] is a ‘mounted’ filesystem that you can access. Mounted is in quotes
+    because it’s not the same as a UNIX mount, it might be a GVFS mount, but you
+    can still access the files on it if you use GIO.
+
+    A [GMount] might be associated with a [Gio.Volume] (such as a USB flash
+    drive) which hosts it.
+
+    Unmounting a [GMount] instance is an asynchronous operation. For more
+    information about asynchronous operations, see [Gio.AsyncResult] and
+    [Gio.Task]. To unmount a [GMount] instance, first call
+    [Gio.Mount.unmount_with_operation] with (at least) the [GMount] instance and
+    a [Gio.AsyncReadyCallback]. The callback will be fired when the operation
+    has resolved (either with success or failure), and a [Gio.AsyncResult]
+    structure will be passed to the callback. That callback should then call
+    [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
+    [Gio.AsyncResult] data to see if the operation was completed successfully.
+    If an [error] is present when [Gio.Mount.unmount_with_operation_finish] is
+    called, then it will be filled with any error information.
+
+    Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
+    [GnomeVFSVolume].
+
+    The class built on this module is in {!Ocgio.Mount}. *)
 and Mount : sig
   type t = [ `mount ] Gobject.obj
 
@@ -1635,14 +1960,68 @@ and Mount : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the mount has been changed. *)
 
   val on_pre_unmount :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal may be emitted when the [GMount] is about to be unmounted.
+
+      This signal depends on the backend and is only emitted if GIO was used to
+      unmount. *)
 
   val on_unmounted :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GMount] have been unmounted. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 end
 
+(** The [GVolume] interface represents user-visible objects that can be mounted.
+    For example, a file system partition on a USB flash drive, or an optical
+    disc inserted into a disc drive.
+
+    If a [GVolume] is currently mounted, the corresponding [Gio.Mount] can be
+    retrieved using [Gio.Volume.get_mount].
+
+    Mounting a [GVolume] instance is an asynchronous operation. For more
+    information about asynchronous operations, see [Gio.AsyncResult] and
+    [Gio.Task]. To mount a [GVolume], first call [Gio.Volume.mount] with (at
+    least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
+    a [Gio.AsyncReadyCallback].
+
+    Typically, one will only want to pass [NULL] for the [Gio.MountOperation] if
+    automounting all volumes when a desktop session starts since it’s not
+    desirable to put up a lot of dialogs asking for credentials.
+
+    The callback will be fired when the operation has resolved (either with
+    success or failure), and a [Gio.AsyncResult] instance will be passed to the
+    callback. That callback should then call [Gio.Volume.mount_finish] with the
+    [GVolume] instance and the [Gio.AsyncResult] data to see if the operation
+    was completed successfully. If a [GLib.Error] is present when
+    [Gio.Volume.mount_finish] is called, then it will be filled with any error
+    information.
+
+    Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
+    [GnomeVFSDrive].
+
+    {b Volume Identifiers}
+
+    It is sometimes necessary to directly access the underlying operating system
+    object behind a volume (e.g. for passing a volume to an application via the
+    command line). For this purpose, GIO allows to obtain an ‘identifier’ for
+    the volume. There can be different kinds of identifiers, such as Hal UDIs,
+    filesystem labels, traditional Unix devices (e.g. [/dev/sda2]), UUIDs. GIO
+    uses predefined strings as names for the different kinds of identifiers:
+    [G_VOLUME_IDENTIFIER_KIND_UUID], [G_VOLUME_IDENTIFIER_KIND_LABEL], etc. Use
+    [Gio.Volume.get_identifier] to obtain an identifier for a volume.
+
+    Note that [G_VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available when the
+    GVFS hal volume monitor is in use. Other volume monitors will generally be
+    able to provide the [G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE] identifier, which
+    can be used to obtain a hal device by means of
+    [libhal_manager_find_device_string_match()].
+
+    The class built on this module is in {!Ocgio.Volume}. *)
 and Volume : sig
   type t = [ `volume ] Gobject.obj
 
@@ -1746,7 +2125,11 @@ and Volume : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** Emitted when the volume has been changed. *)
 
   val on_removed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+  (** This signal is emitted when the [GVolume] have been removed. If the
+      recipient is holding references to the object they should release them so
+      the object can be finalized. *)
 end

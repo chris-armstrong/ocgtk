@@ -18,7 +18,9 @@
     {b CSS nodes}
 
     [GtkColorChooserDialog] has a single CSS node with the name [window] and
-    style class [.colorchooser]. *)
+    style class [.colorchooser].
+
+    The class built on this module is in {!Ocgtk.Color_chooser_dialog}. *)
 
 type t =
   [ `color_chooser_dialog
@@ -35,7 +37,7 @@ external new_ :
   string option ->
   Application_and__window_and__window_group.Window.t option ->
   t = "ml_gtk_color_chooser_dialog_new"
-(** Create a new ColorChooserDialog *)
+(** Creates a new [GtkColorChooserDialog]. *)
 
 (* Methods *)
 (* Properties *)

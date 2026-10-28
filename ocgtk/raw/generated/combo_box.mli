@@ -58,24 +58,32 @@
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role.
+
+    The class built on this module is in {!Ocgtk.Combo_box}. *)
 
 type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_combo_box_get_type"
 
 external new_ : unit -> t = "ml_gtk_combo_box_new"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox]. *)
 
 external new_with_entry : unit -> t = "ml_gtk_combo_box_new_with_entry"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox] with an entry.
+
+    In order to use a combo box with entry, you need to tell it which column of
+    the model contains the text for the entry by calling
+    [Gtk.ComboBox.set_entry_text_column]. *)
 
 external new_with_model : Tree_model.t -> t = "ml_gtk_combo_box_new_with_model"
-(** Create a new ComboBox *)
+(** Creates a new [GtkComboBox] with a model. *)
 
 external new_with_model_and_entry : Tree_model.t -> t
   = "ml_gtk_combo_box_new_with_model_and_entry"
-(** Create a new ComboBox *)
+(** Creates a new empty [GtkComboBox] with an entry and a model.
+
+    See also [Gtk.ComboBox.new_with_entry]. *)
 
 (* Methods *)
 
@@ -248,24 +256,72 @@ external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to when the combo box is activated.
+
+    The [::activate] signal on [GtkComboBox] is an action signal and emitting it
+    causes the combo box to pop up its dropdown. *)
 
 val on_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the active item is changed.
+
+    The can be due to the user selecting a different item from the list, or due
+    to a call to [Gtk.ComboBox.set_active_iter]. It will also be emitted while
+    typing into the entry of a combo box with an entry. *)
 
 val on_format_entry_text :
   ?after:bool ->
   t ->
   callback:(path:string -> string) ->
   Gobject.Signal.handler_id
+[@@ocaml.doc
+  "Emitted to allow changing how the text in a combo box's entry is displayed.\n\n\
+   See [Gtk.ComboBox:has-entry].\n\n\
+   Connect a signal handler which returns an allocated string representing\n\
+   [path]. That string will then be used to set the text in the combo box's\n\
+   entry. The default signal handler uses the text from the\n\
+   [Gtk.ComboBox:entry-text-column] model column.\n\n\
+   Here's an example signal handler which fetches data from the model and\n\
+   displays it in the entry.\n\n\
+   {[\n\
+   static char *\n\
+   format_entry_text_callback (GtkComboBox *combo,\n\
+  \                            const char *path,\n\
+  \                            gpointer     user_data)\n\
+   {\n\
+  \  GtkTreeIter iter;\n\
+  \  GtkTreeModel model;\n\
+  \  double       value;\n\n\
+  \  model = gtk_combo_box_get_model (combo);\n\n\
+  \  gtk_tree_model_get_iter_from_string (model, &iter, path);\n\
+  \  gtk_tree_model_get (model, &iter,\n\
+  \                      THE_DOUBLE_VALUE_COLUMN, &value,\n\
+  \                      -1);\n\n\
+  \  return g_strdup_printf (\"%g\", value);\n\
+   }\n\
+   ]}"]
 
 val on_move_active :
   ?after:bool ->
   t ->
   callback:(scroll_type:Ocgtk_enums.scrolltype -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted to move the active selection.
+
+    This is an keybinding signal. *)
 
 val on_popdown :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+(** Emitted to popdown the combo box list.
+
+    This is an keybinding signal.
+
+    The default bindings for this signal are Alt+Up and Escape. *)
 
 val on_popup :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to popup the combo box list.
+
+    This is an keybinding signal.
+
+    The default binding for this signal is Alt+Down. *)

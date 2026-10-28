@@ -95,7 +95,9 @@
                           -1);
       g_free (modified_data);
     }
-    ]} *)
+    ]}
+
+    The class built on this module is in {!Ocgtk.Tree_model_sort}. *)
 
 type t = [ `tree_model_sort | `object_ ] Gobject.obj
 
@@ -103,7 +105,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_tree_model_sort_get_type"
 
 external new_with_model : Tree_model.t -> t
   = "ml_gtk_tree_model_sort_new_with_model"
-(** Create a new TreeModelSort *)
+(** Creates a new [GtkTreeModelSort], with [child_model] as the child model. *)
 
 (* Methods *)
 

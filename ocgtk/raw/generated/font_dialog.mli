@@ -10,14 +10,16 @@
     variants.
 
     See [Gtk.FontDialogButton] for a convenient control that uses
-    [GtkFontDialog] and presents the results. *)
+    [GtkFontDialog] and presents the results.
+
+    The class built on this module is in {!Ocgtk.Font_dialog}. *)
 
 type t = [ `font_dialog | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_dialog_get_type"
 
 external new_ : unit -> t = "ml_gtk_font_dialog_new"
-(** Create a new FontDialog *)
+(** Creates a new [GtkFontDialog] object. *)
 
 (* Methods *)
 

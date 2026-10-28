@@ -2,7 +2,9 @@
 (* TlsClientConnection: TlsClientConnection *)
 
 (** [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
-    representing a client-side TLS connection. *)
+    representing a client-side TLS connection.
+
+    The class built on this module is in {!Ocgio.Tls_client_connection}. *)
 
 type t = [ `tls_client_connection ] Gobject.obj
 

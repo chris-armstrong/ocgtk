@@ -14,7 +14,9 @@
 
     In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
     for rendering on that surface. To get the renderer, use
-    [Gtk.Native.get_renderer]. *)
+    [Gtk.Native.get_renderer].
+
+    The class built on this module is in {!Ocgtk.Native}. *)
 
 type t = [ `native ] Gobject.obj
 

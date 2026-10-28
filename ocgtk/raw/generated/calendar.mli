@@ -50,14 +50,16 @@
     Day labels that belong to the previous or next month get the .other-month
     style class. The label of the current day get the .today style class.
 
-    Marked day labels get the :selected state assigned. *)
+    Marked day labels get the :selected state assigned.
+
+    The class built on this module is in {!Ocgtk.Calendar}. *)
 
 type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_calendar_get_type"
 
 external new_ : unit -> t = "ml_gtk_calendar_new"
-(** Create a new Calendar *)
+(** Creates a new calendar, with the current date being selected. *)
 
 (* Methods *)
 
@@ -136,15 +138,20 @@ external clear_marks : t -> unit = "ml_gtk_calendar_clear_marks"
 
 val on_day_selected :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user selects a day. *)
 
 val on_next_month :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user switches to the next month. *)
 
 val on_next_year :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when user switches to the next year. *)
 
 val on_prev_month :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the user switches to the previous month. *)
 
 val on_prev_year :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted when user switches to the previous year. *)

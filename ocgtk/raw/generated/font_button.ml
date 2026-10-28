@@ -16,17 +16,19 @@
     ]}
 
     [GtkFontButton] has a single CSS node with name fontbutton which contains a
-    button node with the .font style class. *)
+    button node with the .font style class.
+
+    The class built on this module is in {!Ocgtk.Font_button}. *)
 
 type t = [ `font_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_font_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_font_button_new"
-(** Create a new FontButton *)
+(** Creates a new font picker widget. *)
 
 external new_with_font : string -> t = "ml_gtk_font_button_new_with_font"
-(** Create a new FontButton *)
+(** Creates a new font picker widget showing the given font. *)
 
 (* Methods *)
 

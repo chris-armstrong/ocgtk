@@ -61,14 +61,15 @@
  gtk_paned_set_resize_end_child (GTK_PANED (hpaned), FALSE);\n\
  gtk_paned_set_shrink_end_child (GTK_PANED (hpaned), FALSE);\n\
  gtk_widget_set_size_request (frame2, 50, -1);\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.Paned}."]
 
 type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_paned_get_type"
 
 external new_ : Ocgtk_enums.orientation -> t = "ml_gtk_paned_new"
-(** Create a new Paned *)
+(** Creates a new [GtkPaned] widget. *)
 
 (* Methods *)
 

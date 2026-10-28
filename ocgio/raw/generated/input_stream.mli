@@ -13,7 +13,9 @@
     See the documentation for [Gio.IOStream] for details of thread safety of
     streaming APIs.
 
-    All of these functions have async variants too. *)
+    All of these functions have async variants too.
+
+    The class built on this module is in {!Ocgio.Input_stream}. *)
 
 type t = [ `input_stream | `object_ ] Gobject.obj
 

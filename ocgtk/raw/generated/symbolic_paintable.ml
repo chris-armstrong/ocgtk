@@ -11,7 +11,9 @@
     These 4 colors are the foreground color, and the colors to use for errors,
     warnings and success information in that order.
 
-    More colors may be added in the future. *)
+    More colors may be added in the future.
+
+    The class built on this module is in {!Ocgtk.Symbolic_paintable}. *)
 
 type t = [ `symbolic_paintable ] Gobject.obj
 

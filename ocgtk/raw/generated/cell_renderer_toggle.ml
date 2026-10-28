@@ -6,7 +6,9 @@
     [GtkCellRendererToggle] renders a toggle button in a cell. The button is
     drawn as a radio or a checkbutton, depending on the
     [GtkCellRendererToggle:radio] property. When activated, it emits the
-    [GtkCellRendererToggle::toggled] signal. *)
+    [GtkCellRendererToggle::toggled] signal.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_toggle}. *)
 
 type t =
   [ `cell_renderer_toggle | `cell_renderer | `initially_unowned | `object_ ]
@@ -15,7 +17,12 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_toggle_get_type"
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"
-(** Create a new CellRendererToggle *)
+(** Creates a new [GtkCellRendererToggle]. Adjust rendering parameters using
+    object properties. Object properties can be set globally (with
+    g_object_set()). Also, with [GtkTreeViewColumn], you can bind a property to
+    a value in a [GtkTreeModel]. For example, you can bind the “active” property
+    on the cell renderer to a boolean value in the model, thus causing the check
+    button to reflect the state of the model. *)
 
 (* Methods *)
 

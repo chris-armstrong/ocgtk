@@ -44,7 +44,8 @@
  }\n\
  ]}\n\n\
  Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
- signal, and unref the [GMemoryMonitor] itself when exiting."]
+ signal, and unref the [GMemoryMonitor] itself when exiting.\n\n\
+ The class built on this module is in {!Ocgio.Memory_monitor}."]
 
 type t = [ `memory_monitor ] Gobject.obj
 
@@ -54,8 +55,17 @@ external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_memory_monitor_from_gobject"
 
 (* Methods *)
+
 val on_low_memory_warning :
   ?after:bool ->
   t ->
   callback:(level:Ocgio_enums.memorymonitorwarninglevel -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the system is running low on free memory.
+
+    The signal handler should then take the appropriate action depending on the
+    warning level. See the [GMemoryMonitorWarningLevel] documentation for
+    details.
+
+    Since the [Gio.MemoryMonitor] is a singleton, this signal will be emitted in
+    the [GLib.MainContext.default]\[global-default main context\]. *)

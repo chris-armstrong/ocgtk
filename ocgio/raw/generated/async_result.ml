@@ -71,7 +71,8 @@
  I/O scheduling. Priorities are integers, with lower numbers indicating\n\
  higher priority. It is recommended to choose priorities between\n\
  [G_PRIORITY_LOW] and [G_PRIORITY_HIGH], with [G_PRIORITY_DEFAULT]\n\
- as a default."]
+ as a default.\n\n\
+ The class built on this module is in {!Ocgio.Async_result}."]
 
 type t = [ `async_result ] Gobject.obj
 

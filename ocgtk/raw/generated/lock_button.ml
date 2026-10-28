@@ -35,7 +35,9 @@
     The text (and tooltips) that are shown in the various cases can be adjusted
     with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
     [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
-    [Gtk.LockButton:tooltip-not-authorized] properties. *)
+    [Gtk.LockButton:tooltip-not-authorized] properties.
+
+    The class built on this module is in {!Ocgtk.Lock_button}. *)
 
 type t =
   [ `lock_button | `button | `widget | `initially_unowned | `object_ ]
@@ -44,7 +46,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_lock_button_get_type"
 
 external new_ : Ocgio_raw.Permission.t option -> t = "ml_gtk_lock_button_new"
-(** Create a new LockButton *)
+(** Creates a new lock button which reflects the [permission]. *)
 
 (* Methods *)
 

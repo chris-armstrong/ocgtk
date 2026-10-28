@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NothingAction: NothingAction *)
 
-(** Does nothing. *)
+(** Does nothing.
+
+    The class built on this module is in {!Ocgtk.Nothing_action}. *)
 
 type t = [ `nothing_action | `shortcut_action | `object_ ] Gobject.obj
 

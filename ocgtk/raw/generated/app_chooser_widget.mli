@@ -20,7 +20,9 @@
 
     {b CSS nodes}
 
-    [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
+    [GtkAppChooserWidget] has a single CSS node with name appchooser.
+
+    The class built on this module is in {!Ocgtk.App_chooser_widget}. *)
 
 type t =
   [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -28,7 +30,8 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_widget_get_type"
 
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
-(** Create a new AppChooserWidget *)
+(** Creates a new [GtkAppChooserWidget] for applications that can handle content
+    of the given type. *)
 
 (* Methods *)
 
@@ -95,9 +98,15 @@ val on_application_activated :
   t ->
   callback:(application:Ocgio_raw.App_info.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an application item is activated from the widget's list.
+
+    This usually happens when the user double clicks an item, or an item is
+    selected and the user presses one of the keys Space, Shift+Space, Return or
+    Enter. *)
 
 val on_application_selected :
   ?after:bool ->
   t ->
   callback:(application:Ocgio_raw.App_info.t -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when an application item is selected from the widget's list. *)

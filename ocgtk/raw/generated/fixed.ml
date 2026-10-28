@@ -35,14 +35,16 @@
 
     If you know none of these things are an issue for your application, and
     prefer the simplicity of [GtkFixed], by all means use the widget. But you
-    should be aware of the tradeoffs. *)
+    should be aware of the tradeoffs.
+
+    The class built on this module is in {!Ocgtk.Fixed}. *)
 
 type t = [ `fixed | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_fixed_get_type"
 
 external new_ : unit -> t = "ml_gtk_fixed_new"
-(** Create a new Fixed *)
+(** Creates a new [GtkFixed]. *)
 
 (* Methods *)
 

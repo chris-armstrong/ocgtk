@@ -44,22 +44,23 @@
  is named check when no group is set, and radio if the checkbutton\n\
  is grouped together with other checkbuttons.\n\n\
  {b Accessibility}\n\n\
- [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role."]
+ [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role.\n\n\
+ The class built on this module is in {!Ocgtk.Check_button}."]
 
 type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_check_button_get_type"
 
 external new_ : unit -> t = "ml_gtk_check_button_new"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton]. *)
 
 external new_with_label : string option -> t
   = "ml_gtk_check_button_new_with_label"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton] with the given text. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_check_button_new_with_mnemonic"
-(** Create a new CheckButton *)
+(** Creates a new [GtkCheckButton] with the given text and a mnemonic. *)
 
 (* Methods *)
 

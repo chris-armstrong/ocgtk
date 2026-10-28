@@ -8,18 +8,25 @@ class type event_controller_motion_t = object
     callback:(x:float -> y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Signals that the pointer has entered the widget. *)
 
   method on_leave :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Signals that the pointer has left the widget. *)
 
   method on_motion :
     ?after:bool ->
     callback:(x:float -> y:float -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when the pointer moves inside the widget. *)
 
   method contains_pointer : unit -> bool
+  (** Returns if a pointer is within [self] or one of its children. *)
+
   method is_pointer : unit -> bool
+  (** Returns if a pointer is within [self], but not one of its children. *)
+
   method as_event_controller_motion : Raw.Event_controller_motion.t
 end
 

@@ -6,8 +6,20 @@ class type cell_renderer_text_t = object
     callback:(path:string -> new_text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** This signal is emitted after [renderer] has been edited.
+
+      It is the responsibility of the application to update the model and store
+      [new_text] at the position indicated by [path]. *)
 
   method set_fixed_height_from_font : int -> unit
+  (** Sets the height of a renderer to explicitly be determined by the “font”
+      and “y_pad” property set on it. Further changes in these properties do not
+      affect the height, so they must be accompanied by a subsequent call to
+      this function. Using this function is inflexible, and should really only
+      be used if calculating the size of a cell is too slow (ie, a massive
+      number of cells displayed). If [number_of_rows] is -1, then the fixed
+      height is unset, and the height is determined by the properties again. *)
+
   method align_set : bool
   method set_align_set : bool -> unit
   method alignment : Ocpango.Enums.alignment

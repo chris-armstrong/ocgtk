@@ -5,18 +5,24 @@
     [Gio.InetAddress] and a port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
-    or [struct sockaddr_in]). *)
+    or [struct sockaddr_in]).
+
+    The class built on this module is in {!Ocgio.Inet_socket_address}. *)
 
 type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_inet_socket_address_get_type"
 
 external new_ : Inet_address.t -> UInt16.t -> t = "ml_g_inet_socket_address_new"
-(** Create a new InetSocketAddress *)
+(** Creates a new [GInetSocketAddress] for [address] and [port]. *)
 
 external new_from_string : string -> int -> t
   = "ml_g_inet_socket_address_new_from_string"
-(** Create a new InetSocketAddress *)
+(** Creates a new [GInetSocketAddress] for [address] and [port].
+
+    If [address] is an IPv6 address, it can also contain a scope ID (separated
+    from the address by a [%]). Note that currently this behavior is platform
+    specific. This may change in a future release. *)
 
 (* Methods *)
 

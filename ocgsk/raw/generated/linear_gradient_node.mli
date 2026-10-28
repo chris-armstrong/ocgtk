@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LinearGradientNode: LinearGradientNode *)
 
-(** A render node for a linear gradient. *)
+(** A render node for a linear gradient.
+
+    The class built on this module is in {!Ocgsk.Linear_gradient_node}. *)
 
 type t = [ `linear_gradient_node | `render_node ] Gobject.obj
 
@@ -14,7 +16,8 @@ external new_ :
   Color_stop.t array ->
   Gsize.t ->
   t = "ml_gsk_linear_gradient_node_new"
-(** Create a new LinearGradientNode *)
+(** Creates a [GskRenderNode] that will create a linear gradient from the given
+    points and color stops, and render that into the area given by [bounds]. *)
 
 (* Methods *)
 

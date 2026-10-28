@@ -22,14 +22,15 @@
 \    <item translatable=\"yes\">Subway</item>\n\
 \  </items>\n\
  </object>\n\
- ]}"]
+ ]}\n\n\
+ The class built on this module is in {!Ocgtk.String_list}."]
 
 type t = [ `string_list | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gtk_string_list_get_type"
 
 external new_ : string array option -> t = "ml_gtk_string_list_new"
-(** Create a new StringList *)
+(** Creates a new [GtkStringList] with the given [strings]. *)
 
 (* Methods *)
 external take : t -> string -> unit = "ml_gtk_string_list_take"

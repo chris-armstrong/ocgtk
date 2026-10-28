@@ -3,7 +3,9 @@
 
 (** Provides context for parsing GtkBuilder UI files.
 
-    [GtkBuildableParseContext] is an opaque struct. *)
+    [GtkBuildableParseContext] is an opaque struct.
+
+    The class built on this module is in {!Ocgtk.Buildable_parse_context}. *)
 
 type t = [ `buildable_parse_context ] Gobject.obj
 

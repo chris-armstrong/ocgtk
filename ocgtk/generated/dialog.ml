@@ -3,42 +3,89 @@ class type dialog_t = object
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user uses a keybinding to close the dialog.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is the Escape key. *)
 
   method on_response :
     ?after:bool ->
     callback:(response_id:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when an action widget is clicked.
+
+      The signal is also emitted when the dialog receives a delete event, and
+      when [Gtk.Dialog.response] is called. On a delete event, the response ID
+      is [GTK_RESPONSE_DELETE_EVENT]. Otherwise, it depends on which action
+      widget was clicked. *)
 
   method add_action_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
+  (** Adds an activatable widget to the action area of a [GtkDialog].
+
+      GTK connects a signal handler that will emit the [Gtk.Dialog::response]
+      signal on the dialog when the widget is activated. The widget is appended
+      to the end of the dialog’s action area.
+
+      If you want to add a non-activatable widget, simply pack it into the
+      [action_area] field of the [GtkDialog] struct. *)
 
   method add_button :
     string ->
     int ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+  (** Adds a button with the given text.
+
+      GTK arranges things so that clicking the button will emit the
+      [Gtk.Dialog::response] signal with the given [response_id]. The button is
+      appended to the end of the dialog’s action area. The button widget is
+      returned, but usually you don’t need it. *)
 
   method get_content_area : unit -> Box.box_t
+  (** Returns the content area of [dialog]. *)
+
   method get_header_bar : unit -> Header_bar.header_bar_t
+  (** Returns the header bar of [dialog].
+
+      Note that the headerbar is only used by the dialog if the
+      [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
 
   method get_response_for_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int
+  (** Gets the response id of a widget in the action area of a dialog. *)
 
   method get_widget_for_response :
     int ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
+  (** Gets the widget button that uses the given response ID in the action area
+      of a dialog. *)
 
   method response : int -> unit
+  (** Emits the ::response signal with the given response ID.
+
+      Used to indicate that the user has responded to the dialog in some way. *)
+
   method set_default_response : int -> unit
+  (** Sets the default widget for the dialog based on the response ID.
+
+      Pressing “Enter” normally activates the default widget. *)
+
   method set_response_sensitive : int -> bool -> unit
+  (** A convenient way to sensitize/desensitize dialog buttons.
+
+      Calls [gtk_widget_set_sensitive (widget, @setting)] for each widget in the
+      dialog’s action area with the given [response_id]. *)
+
   method use_header_bar : int
   method as_dialog : Raw.Dialog.t
 end

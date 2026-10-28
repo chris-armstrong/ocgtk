@@ -3,18 +3,28 @@
 
 (** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
     interface. This is the easiest way to create an action for purposes of
-    adding it to a [Gio.SimpleActionGroup]. *)
+    adding it to a [Gio.SimpleActionGroup].
+
+    The class built on this module is in {!Ocgio.Simple_action}. *)
 
 type t = [ `simple_action | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_simple_action_get_type"
 
 external new_ : string -> Gvariant_type.t option -> t = "ml_g_simple_action_new"
-(** Create a new SimpleAction *)
+(** Creates a new action.
+
+    The created action is stateless. See g_simple_action_new_stateful() to
+    create an action that has state. *)
 
 external new_stateful : string -> Gvariant_type.t option -> Gvariant.t -> t
   = "ml_g_simple_action_new_stateful"
-(** Create a new SimpleAction *)
+(** Creates a new stateful action.
+
+    All future state values must have the same [GVariantType] as the initial
+    [state].
+
+    If the [state] [GVariant] is floating, it is consumed. *)
 
 (* Methods *)
 
@@ -63,9 +73,54 @@ val on_activate :
   t ->
   callback:(parameter:Gvariant.t -> unit) ->
   Gobject.Signal.handler_id
+(** Indicates that the action was just activated.
+
+    [parameter] will always be of the expected type, i.e. the parameter type
+    specified when the action was created. If an incorrect type is given when
+    activating the action, this signal is not emitted.
+
+    Since GLib 2.40, if no handler is connected to this signal then the default
+    behaviour for boolean-stated actions with a [NULL] parameter type is to
+    toggle them via the [GSimpleAction::change]-state signal. For stateful
+    actions where the state type is equal to the parameter type, the default is
+    to forward them directly to [GSimpleAction::change]-state. This should allow
+    almost all users of [GSimpleAction] to connect only one handler or the
+    other. *)
 
 val on_change_state :
   ?after:bool ->
   t ->
   callback:(value:Gvariant.t -> unit) ->
   Gobject.Signal.handler_id
+(** Indicates that the action just received a request to change its state.
+
+    [value] will always be of the correct state type, i.e. the type of the
+    initial state passed to g_simple_action_new_stateful(). If an incorrect type
+    is given when requesting to change the state, this signal is not emitted.
+
+    If no handler is connected to this signal then the default behaviour is to
+    call g_simple_action_set_state() to set the state to the requested value. If
+    you connect a signal handler then no default action is taken. If the state
+    should change then you must call g_simple_action_set_state() from the
+    handler.
+
+    An example of a 'change-state' handler:
+
+    {[
+    static void
+    change_volume_state (GSimpleAction *action,
+                         GVariant      *value,
+                         gpointer       user_data)
+    {
+      gint requested;
+
+      requested = g_variant_get_int32 (value);
+
+      // Volume only goes from 0 to 10
+      if (0 <= requested && requested <= 10)
+        g_simple_action_set_state (action, value);
+    }
+    ]}
+
+    The handler need not set the state to the requested value. It could set it
+    to any value at all, or take some other action. *)

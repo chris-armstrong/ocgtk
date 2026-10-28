@@ -134,7 +134,8 @@
  when you use [GtkFileChooserDialog] to ensure proper operation.\n\n\
  {b CSS nodes}\n\n\
  [GtkFileChooserDialog] has a single CSS node with the name [window] and style\n\
- class [.filechooser]."]
+ class [.filechooser].\n\n\
+ The class built on this module is in {!Ocgtk.File_chooser_dialog}."]
 
 type t =
   [ `file_chooser_dialog

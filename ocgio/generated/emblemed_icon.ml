@@ -1,9 +1,18 @@
 class type emblemed_icon_t = object
   inherit Icon.icon_t
+
   method add_emblem : Emblem.emblem_t -> unit
+  (** Adds [emblem] to the [GList] of [GEmblems]. *)
+
   method clear_emblems : unit -> unit
+  (** Removes all the emblems from [icon]. *)
+
   method get_emblems : unit -> Emblem.emblem_t list
+  (** Gets the list of emblems for the [icon]. *)
+
   method get_icon : unit -> Icon.icon_t
+  (** Gets the main icon for [emblemed]. *)
+
   method gicon : Icon.icon_t
   method as_emblemed_icon : Raw.Emblemed_icon.t
 end

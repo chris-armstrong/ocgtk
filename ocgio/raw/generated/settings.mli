@@ -319,17 +319,41 @@
  [<description>] elements, and also any [<default>] elements which have a\n\
  [l10n] attribute set.\n\n\
  Translations {b must not} be included in the [.gschema.xml] file by the build\n\
- system, for example by using a rule to generate the XML file from a template."]
+ system, for example by using a rule to generate the XML file from a template.\n\n\
+ The class built on this module is in {!Ocgio.Settings}."]
 
 type t = [ `settings | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_settings_get_type"
 
 external new_ : string -> t = "ml_g_settings_new"
-(** Create a new Settings *)
+(** Creates a new [Gio.Settings] object with the schema specified by
+    [schema_id].
+
+    It is an error for the schema to not exist: schemas are an essential part of
+    a program, as they provide type information. If schemas need to be
+    dynamically loaded (for example, from an optional runtime dependency),
+    [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
+    before loading them.
+
+    Signals on the newly created [Gio.Settings] object will be dispatched via
+    the thread-default [GLib.MainContext] in effect at the time of the call to
+    [Gio.Settings.new]. The new [Gio.Settings] will hold a reference on the
+    context. See [GLib.MainContext.push_thread_default]. *)
 
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
-(** Create a new Settings *)
+(** Creates a new [Gio.Settings] object with the relocatable schema specified by
+    [schema_id] and a given path.
+
+    You only need to do this if you want to directly create a settings object
+    with a schema that doesn’t have a specified path of its own. That’s quite
+    rare.
+
+    It is a programmer error to call this function for a schema that has an
+    explicitly specified path.
+
+    It is a programmer error if [path] is not a valid path. A valid path begins
+    and ends with [/] and does not contain two consecutive [/] characters. *)
 
 (* Methods *)
 
@@ -726,9 +750,43 @@ external get_settings_schema : t -> Settings_schema.t
 
 val on_changed :
   ?after:bool -> t -> callback:(key:string -> unit) -> Gobject.Signal.handler_id
+(** Emitted when a key has potentially changed.
+
+    You should call one of the [Gio.Settings.get] calls to check the new value.
+
+    This signal supports detailed connections. You can connect to the detailed
+    signal [changed::x] in order to only receive callbacks when key [x] changes.
+
+    Note that [settings] only emits this signal if you have read [key] at least
+    once while a signal handler was already connected for [key]. *)
 
 val on_writable_change_event :
   ?after:bool -> t -> callback:(key:int -> bool) -> Gobject.Signal.handler_id
+(** Emitted once per writability change event that affects this settings object.
+
+    You should connect to this signal if you are interested in viewing groups of
+    changes before they are split out into multiple emissions of the
+    [Gio.Settings::writable-changed] signal. For most use cases it is more
+    appropriate to use the [Gio.Settings::writable-changed] signal.
+
+    In the event that the writability change applies only to a single key, [key]
+    will be set to the [GLib.Quark] for that key. In the event that the
+    writability change affects the entire settings object, [key] will be [0].
+
+    The default handler for this signal invokes the
+    [Gio.Settings::writable-changed] and [Gio.Settings::changed] signals for
+    each affected key. This is done because changes in writability might also
+    imply changes in value (if for example, a new mandatory setting is
+    introduced). If any other connected handler returns true then this default
+    functionality will be suppressed. *)
 
 val on_writable_changed :
   ?after:bool -> t -> callback:(key:string -> unit) -> Gobject.Signal.handler_id
+(** Emitted when the writability of a key has potentially changed.
+
+    You should call [Gio.Settings.is_writable] in order to determine the new
+    status.
+
+    This signal supports detailed connections. You can connect to the detailed
+    signal [writable-changed::x] in order to only receive callbacks when the
+    writability of [x] changes. *)

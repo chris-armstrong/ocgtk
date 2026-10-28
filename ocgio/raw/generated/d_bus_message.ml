@@ -2,23 +2,25 @@
 (* DBusMessage: DBusMessage *)
 
 (** A type for representing D-Bus messages that can be sent or received on a
-    [Gio.DBusConnection]. *)
+    [Gio.DBusConnection].
+
+    The class built on this module is in {!Ocgio.D_bus_message}. *)
 
 type t = [ `d_bus_message | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_message_get_type"
 
 external new_ : unit -> t = "ml_g_dbus_message_new"
-(** Create a new DBusMessage *)
+(** Creates a new empty [GDBusMessage]. *)
 
 external new_method_call :
   string option -> string -> string option -> string -> t
   = "ml_g_dbus_message_new_method_call"
-(** Create a new DBusMessage *)
+(** Creates a new [GDBusMessage] for a method call. *)
 
 external new_signal : string -> string -> string -> t
   = "ml_g_dbus_message_new_signal"
-(** Create a new DBusMessage *)
+(** Creates a new [GDBusMessage] for a signal emission. *)
 
 (* Methods *)
 

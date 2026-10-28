@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DNDEvent: DNDEvent *)
 
-(** An event related to drag and drop operations. *)
+(** An event related to drag and drop operations.
+
+    The class built on this module is in {!Ocgdk.Dnd_event}. *)
 
 type t = [ `dnd_event | `event ] Gobject.obj
 

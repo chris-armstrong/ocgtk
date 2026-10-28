@@ -1,6 +1,18 @@
+(** A [GdkTexture] representing a DMA buffer.
+
+    To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]
+    object.
+
+    Dma-buf textures can only be created on Linux.
+
+    Its methods, signals and properties are on {!class-type-dmabuf_texture_t}.
+    The functions it is built on are in {!Ocgdk.Raw.Dmabuf_texture}. *)
+
+(** The methods, signals and properties of a [DmabufTexture]. *)
 class type dmabuf_texture_t = object
   inherit Texture.texture_t
   method as_dmabuf_texture : Raw.Dmabuf_texture.t
 end
 
 class dmabuf_texture : Raw.Dmabuf_texture.t -> dmabuf_texture_t
+(** Wraps a raw handle of {!Ocgdk.Raw.Dmabuf_texture.t}. *)

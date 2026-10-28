@@ -4,18 +4,23 @@ class type display_manager_t = object
     callback:(display:App_launch_context_cycle_de440b34.display_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
+  (** Emitted when a display is opened. *)
 
   method get_default_display :
     unit -> App_launch_context_cycle_de440b34.display_t option
+  (** Gets the default [GdkDisplay]. *)
 
   method list_displays :
     unit -> App_launch_context_cycle_de440b34.display_t list
+  (** List all currently open displays. *)
 
   method open_display :
     string option -> App_launch_context_cycle_de440b34.display_t option
+  (** Opens a display. *)
 
   method set_default_display :
     App_launch_context_cycle_de440b34.display_t -> unit
+  (** Sets [display] as the default display. *)
 
   method as_display_manager : Raw.Display_manager.t
 end

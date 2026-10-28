@@ -5,14 +5,17 @@
     items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a
-    fast path for the common case of iterating the list linearly. *)
+    fast path for the common case of iterating the list linearly.
+
+    The class built on this module is in {!Ocgio.List_store}. *)
 
 type t = [ `list_store | `object_ ] Gobject.obj
 
 external gtype : unit -> Gobject.Type.t = "ml_gio_list_store_get_type"
 
 external new_ : Gobject.Type.t -> t = "ml_g_list_store_new"
-(** Create a new ListStore *)
+(** Creates a new [GListStore] with items of type [item_type]. [item_type] must
+    be a subclass of [GObject]. *)
 
 (* Methods *)
 

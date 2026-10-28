@@ -1,7 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* KeyEvent: KeyEvent *)
 
-(** An event related to a key-based device. *)
+(** An event related to a key-based device.
+
+    The class built on this module is in {!Ocgdk.Key_event}. *)
 
 type t = [ `key_event | `event ] Gobject.obj
 

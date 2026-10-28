@@ -22,7 +22,9 @@
     ]}
 
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
-    style class, and contains a [button] node with a [.toggle] style class. *)
+    style class, and contains a [button] node with a [.toggle] style class.
+
+    The class built on this module is in {!Ocgtk.Scale_button}. *)
 
 type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -30,7 +32,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_scale_button_get_type"
 
 external new_ : float -> float -> float -> string array option -> t
   = "ml_gtk_scale_button_new"
-(** Create a new ScaleButton *)
+(** Creates a [GtkScaleButton].
+
+    The new scale button has a range between [min] and [max], with a stepping of
+    [step]. *)
 
 (* Methods *)
 
@@ -92,12 +97,24 @@ external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 
 val on_popdown :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to dismiss the popup.
+
+    This is a keybinding signal.
+
+    The default binding for this signal is <kbd>Escape</kbd>. *)
 
 val on_popup :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted to popup the scale widget.
+
+    This is a keybinding signal.
+
+    The default bindings for this signal are <kbd>Space</kbd>, <kbd>Enter</kbd>
+    and <kbd>Return</kbd>. *)
 
 val on_value_changed :
   ?after:bool ->
   t ->
   callback:(value:float -> unit) ->
   Gobject.Signal.handler_id
+(** Emitted when the value field has changed. *)

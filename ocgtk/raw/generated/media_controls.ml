@@ -5,7 +5,9 @@
 
     An example GtkMediaControls
 
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+    Usually, [GtkMediaControls] is used as part of [Gtk.Video].
+
+    The class built on this module is in {!Ocgtk.Media_controls}. *)
 
 type t =
   [ `media_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -13,7 +15,7 @@ type t =
 external gtype : unit -> Gobject.Type.t = "ml_gtk_media_controls_get_type"
 
 external new_ : Media_stream.t option -> t = "ml_gtk_media_controls_new"
-(** Create a new MediaControls *)
+(** Creates a new [GtkMediaControls] managing the [stream] passed to it. *)
 
 (* Methods *)
 

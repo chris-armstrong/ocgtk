@@ -1,20 +1,47 @@
+(** [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
+    representing a client-side DTLS connection.
+
+    Its methods, signals and properties are on
+    {!class-type-dtls_client_connection_t}. The functions it is built on are in
+    {!Ocgio.Raw.Dtls_client_connection}. *)
+
+(** The methods, signals and properties of a [DtlsClientConnection]. *)
 class type dtls_client_connection_t = object
   method get_server_identity :
     unit ->
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
+  (** Gets [conn]'s expected server identity *)
 
   method get_validation_flags : unit -> Enums.tlscertificateflags
+  (** Gets [conn]'s validation flags
+
+      This function does not work as originally designed and is impossible to
+      use correctly. See [GDtlsClientConnection:validation]-flags for more
+      information. *)
 
   method set_server_identity :
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t ->
     unit
+  (** Sets [conn]'s expected server identity, which is used both to tell servers
+      on virtual hosts which certificate to present, and also to let [conn] know
+      what name to look for in the certificate when performing
+      [G_TLS_CERTIFICATE_BAD_IDENTITY] validation, if enabled. *)
 
   method set_validation_flags : Enums.tlscertificateflags -> unit
+  (** Sets [conn]'s validation flags, to override the default set of checks
+      performed when validating a server certificate. By default,
+      [G_TLS_CERTIFICATE_VALIDATE_ALL] is used.
+
+      This function does not work as originally designed and is impossible to
+      use correctly. See [GDtlsClientConnection:validation]-flags for more
+      information. *)
+
   method as_dtls_client_connection : Raw.Dtls_client_connection.t
 end
 
 class dtls_client_connection :
   Raw.Dtls_client_connection.t ->
   dtls_client_connection_t
+(** Wraps a raw handle of {!Ocgio.Raw.Dtls_client_connection.t}. *)
