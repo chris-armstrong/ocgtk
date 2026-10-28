@@ -11,7 +11,7 @@ module rec Cell_area : sig
   external stop_editing : t -> bool -> unit = "ml_gtk_cell_area_stop_editing"
   (** Explicitly stops the editing of the currently edited cell.
 
-      If [canceled] is [TRUE], the currently edited cell renderer will emit the
+      If [canceled] is [true], the currently edited cell renderer will emit the
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
@@ -381,7 +381,7 @@ end = struct
   external stop_editing : t -> bool -> unit = "ml_gtk_cell_area_stop_editing"
   (** Explicitly stops the editing of the currently edited cell.
 
-      If [canceled] is [TRUE], the currently edited cell renderer will emit the
+      If [canceled] is [true], the currently edited cell renderer will emit the
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
@@ -1045,16 +1045,16 @@ and Cell_layout : sig
   external pack_start : t -> Cell_renderer.t -> bool -> unit
     = "ml_gtk_cell_layout_pack_start"
   (** Packs the [cell] into the beginning of [cell_layout]. If [expand] is
-      [FALSE], then the [cell] is allocated no more space than it needs. Any
-      unused space is divided evenly between cells for which [expand] is [TRUE].
+      [false], then the [cell] is allocated no more space than it needs. Any
+      unused space is divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 
   external pack_end : t -> Cell_renderer.t -> bool -> unit
     = "ml_gtk_cell_layout_pack_end"
-  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [FALSE], then
+  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [false], then
       the [cell] is allocated no more space than it needs. Any unused space is
-      divided evenly between cells for which [expand] is [TRUE].
+      divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 
@@ -1064,7 +1064,7 @@ and Cell_layout : sig
 
   external get_area : t -> Cell_area.t option = "ml_gtk_cell_layout_get_area"
   (** Returns the underlying [GtkCellArea] which might be [cell_layout] if
-      called on a [GtkCellArea] or might be [NULL] if no [GtkCellArea] is used
+      called on a [GtkCellArea] or might be [None] if no [GtkCellArea] is used
       by [cell_layout]. *)
 
   external clear_attributes : t -> Cell_renderer.t -> unit
@@ -1105,16 +1105,16 @@ end = struct
   external pack_start : t -> Cell_renderer.t -> bool -> unit
     = "ml_gtk_cell_layout_pack_start"
   (** Packs the [cell] into the beginning of [cell_layout]. If [expand] is
-      [FALSE], then the [cell] is allocated no more space than it needs. Any
-      unused space is divided evenly between cells for which [expand] is [TRUE].
+      [false], then the [cell] is allocated no more space than it needs. Any
+      unused space is divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 
   external pack_end : t -> Cell_renderer.t -> bool -> unit
     = "ml_gtk_cell_layout_pack_end"
-  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [FALSE], then
+  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [false], then
       the [cell] is allocated no more space than it needs. Any unused space is
-      divided evenly between cells for which [expand] is [TRUE].
+      divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 
@@ -1124,7 +1124,7 @@ end = struct
 
   external get_area : t -> Cell_area.t option = "ml_gtk_cell_layout_get_area"
   (** Returns the underlying [GtkCellArea] which might be [cell_layout] if
-      called on a [GtkCellArea] or might be [NULL] if no [GtkCellArea] is used
+      called on a [GtkCellArea] or might be [None] if no [GtkCellArea] is used
       by [cell_layout]. *)
 
   external clear_attributes : t -> Cell_renderer.t -> unit

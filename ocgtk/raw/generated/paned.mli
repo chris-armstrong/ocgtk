@@ -85,7 +85,7 @@ external set_start_child :
   unit = "ml_gtk_paned_set_start_child"
 (** Sets the start child of [paned] to [child].
 
-    If [child] is [NULL], the existing child will be removed. *)
+    If [child] is [None], the existing child will be removed. *)
 
 external set_shrink_start_child : t -> bool -> unit
   = "ml_gtk_paned_set_shrink_start_child"
@@ -115,7 +115,7 @@ external set_end_child :
   unit = "ml_gtk_paned_set_end_child"
 (** Sets the end child of [paned] to [child].
 
-    If [child] is [NULL], the existing child will be removed. *)
+    If [child] is [None], the existing child will be removed. *)
 
 external get_wide_handle : t -> bool = "ml_gtk_paned_get_wide_handle"
 (** Gets whether the separator should be wide. *)

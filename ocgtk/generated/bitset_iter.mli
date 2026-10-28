@@ -22,7 +22,7 @@ class type bitset_iter_t = object
   method get_value : unit -> int
   (** Gets the current value that [iter] points to.
 
-      If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [FALSE], this
+      If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [false], this
       function returns 0. *)
 
   method is_valid : unit -> bool

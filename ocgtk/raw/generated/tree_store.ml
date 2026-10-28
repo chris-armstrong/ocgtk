@@ -81,7 +81,7 @@ external prepend : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_tree_store_prepend"
 (** Prepends a new row to [tree_store].
 
-    If [parent] is non-[NULL], then it will prepend the new row before the first
+    If [parent] is non-[None], then it will prepend the new row before the first
     child of [parent], otherwise it will prepend a row to the top level. The
     [iter] parameter will be changed to point to this new row. The row will be
     empty after this function is called. To fill in values, you need to call
@@ -95,7 +95,7 @@ external move_before : t -> Tree_iter.t -> Tree_iter.t option -> unit
 
     Note that this function only works with unsorted stores.
 
-    If [position] is [NULL], [iter] will be moved to the end of the level. *)
+    If [position] is [None], [iter] will be moved to the end of the level. *)
 
 external move_after : t -> Tree_iter.t -> Tree_iter.t option -> unit
   = "ml_gtk_tree_store_move_after"
@@ -105,7 +105,7 @@ external move_after : t -> Tree_iter.t -> Tree_iter.t option -> unit
 
     Note that this function only works with unsorted stores.
 
-    If [position] is [NULL], [iter] will be moved to the start of the level. *)
+    If [position] is [None], [iter] will be moved to the start of the level. *)
 
 external iter_is_valid : t -> Tree_iter.t -> bool
   = "ml_gtk_tree_store_iter_is_valid"
@@ -143,10 +143,10 @@ external insert_before :
   = "ml_gtk_tree_store_insert_before"
 (** Inserts a new row before [sibling].
 
-    If [sibling] is [NULL], then the row will be appended to [parent]’s
+    If [sibling] is [None], then the row will be appended to [parent]’s
     children.
 
-    If [parent] and [sibling] are [NULL], then the row will be appended to the
+    If [parent] and [sibling] are [None], then the row will be appended to the
     toplevel.
 
     If both [sibling] and [parent] are set, then [parent] must be the parent of
@@ -161,10 +161,10 @@ external insert_after :
   = "ml_gtk_tree_store_insert_after"
 (** Inserts a new row after [sibling].
 
-    If [sibling] is [NULL], then the row will be prepended to [parent]’s
+    If [sibling] is [None], then the row will be prepended to [parent]’s
     children.
 
-    If [parent] and [sibling] are [NULL], then the row will be prepended to the
+    If [parent] and [sibling] are [None], then the row will be prepended to the
     toplevel.
 
     If both [sibling] and [parent] are set, then [parent] must be the parent of
@@ -178,7 +178,7 @@ external insert : t -> Tree_iter.t option -> int -> Tree_iter.t
   = "ml_gtk_tree_store_insert"
 (** Creates a new row at [position].
 
-    If parent is non-[NULL], then the row will be made a child of [parent].
+    If parent is non-[None], then the row will be made a child of [parent].
     Otherwise, the row will be created at the toplevel.
 
     If [position] is [-1] or is larger than the number of rows at that level,
@@ -195,7 +195,7 @@ external append : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_tree_store_append"
 (** Appends a new row to [tree_store].
 
-    If [parent] is non-[NULL], then it will append the new row after the last
+    If [parent] is non-[None], then it will append the new row after the last
     child of [parent], otherwise it will append a row to the top level.
 
     The [iter] parameter will be changed to point to this new row. The row will

@@ -130,7 +130,7 @@ external convert_path_to_child_path : t -> Tree_path.t -> Tree_path.t option
 (** Converts [sorted_path] to a path on the child model of [tree_model_sort].
     That is, [sorted_path] points to a location in [tree_model_sort]. The
     returned path will point to the same location in the model not being sorted.
-    If [sorted_path] does not point to a location in the child model, [NULL] is
+    If [sorted_path] does not point to a location in the child model, [None] is
     returned. *)
 
 external convert_iter_to_child_iter : t -> Tree_iter.t -> Tree_iter.t
@@ -142,12 +142,12 @@ external convert_child_path_to_path : t -> Tree_path.t -> Tree_path.t option
 (** Converts [child_path] to a path relative to [tree_model_sort]. That is,
     [child_path] points to a path in the child model. The returned path will
     point to the same row in the sorted model. If [child_path] isn’t a valid
-    path on the child model, then [NULL] is returned. *)
+    path on the child model, then [None] is returned. *)
 
 external convert_child_iter_to_iter : t -> Tree_iter.t -> bool * Tree_iter.t
   = "ml_gtk_tree_model_sort_convert_child_iter_to_iter"
 (** Sets [sort_iter] to point to the row in [tree_model_sort] that corresponds
-    to the row pointed at by [child_iter]. If [sort_iter] was not set, [FALSE]
+    to the row pointed at by [child_iter]. If [sort_iter] was not set, [false]
     is returned. Note: a boolean is only returned since 2.14. *)
 
 external clear_cache : t -> unit = "ml_gtk_tree_model_sort_clear_cache"

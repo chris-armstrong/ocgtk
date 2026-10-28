@@ -96,13 +96,13 @@ class type tree_model_filter_t = object
       [child_path] points to a path in the child model. The rerturned path will
       point to the same row in the filtered model. If [child_path] isn’t a valid
       path on the child model or points to a row which is not visible in
-      [filter], then [NULL] is returned. *)
+      [filter], then [None] is returned. *)
 
   method convert_path_to_child_path : Raw.Tree_path.t -> Raw.Tree_path.t option
   (** Converts [filter_path] to a path on the child model of [filter]. That is,
       [filter_path] points to a location in [filter]. The returned path will
       point to the same location in the model not being filtered. If
-      [filter_path] does not point to a location in the child model, [NULL] is
+      [filter_path] does not point to a location in the child model, [None] is
       returned. *)
 
   method get_model : unit -> Tree_model.tree_model_t
@@ -115,7 +115,7 @@ class type tree_model_filter_t = object
   method set_visible_column : int -> unit
   (** Sets [column] of the child_model to be the column where [filter] should
       look for visibility information. [columns] should be a column of type
-      [G_TYPE_BOOLEAN], where [TRUE] means that a row is visible, and [FALSE] if
+      [G_TYPE_BOOLEAN], where [true] means that a row is visible, and [false] if
       not.
 
       Note that gtk_tree_model_filter_set_visible_func() or

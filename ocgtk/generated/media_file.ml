@@ -9,13 +9,13 @@ class type media_file_t = object
   method get_file : unit -> Ocgio.File.file_t option
   (** Returns the file that [self] is currently playing from.
 
-      When [self] is not playing or not playing from a file, [NULL] is returned.
+      When [self] is not playing or not playing from a file, [None] is returned.
   *)
 
   method get_input_stream : unit -> Ocgio.Input_stream.input_stream_t option
   (** Returns the stream that [self] is currently playing from.
 
-      When [self] is not playing or not playing from a stream, [NULL] is
+      When [self] is not playing or not playing from a stream, [None] is
       returned. *)
 
   method set_file : Ocgio.File.file_t option -> unit

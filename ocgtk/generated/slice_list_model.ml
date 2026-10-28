@@ -5,7 +5,7 @@ class type slice_list_model_t = object
   (** {2:methods Methods} *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
-  (** Gets the model that is currently being used or [NULL] if none. *)
+  (** Gets the model that is currently being used or [None] if none. *)
 
   method get_offset : unit -> int
   (** Gets the offset set via gtk_slice_list_model_set_offset(). *)

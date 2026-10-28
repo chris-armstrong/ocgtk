@@ -22,13 +22,13 @@ class type event_controller_t = object
   method get_current_event : unit -> Ocgdk.Event.event_t option
   (** Returns the event that is currently being handled by the controller.
 
-      At other times, [NULL] is returned. *)
+      At other times, [None] is returned. *)
 
   method get_current_event_device : unit -> Ocgdk.Device.device_t option
   (** Returns the device of the event that is currently being handled by the
       controller.
 
-      At other times, [NULL] is returned. *)
+      At other times, [None] is returned. *)
 
   method get_current_event_state : unit -> Ocgdk.Enums.modifiertype
   (** Returns the modifier state of the event that is currently being handled by
@@ -212,13 +212,13 @@ and root_t = object
 
       Note that this is the widget that would have the focus if the root is
       active; if the root is not focused then [gtk_widget_has_focus (widget)]
-      will be [FALSE] for the widget. *)
+      will be [false] for the widget. *)
 
   method set_focus : widget_t option -> unit
   (** If [focus] is not the current focus widget, and is focusable, sets it as
       the focus widget for the root.
 
-      If [focus] is [NULL], unsets the focus widget for the root.
+      If [focus] is [None], unsets the focus widget for the root.
 
       To set the focus to a particular widget in the root, it is usually more
       convenient to use [Gtk.Widget.grab_focus] instead of this function. *)
@@ -239,7 +239,7 @@ end
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [TRUE]. This will make GTK
+    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
       monitor the widget for motion and related events which are needed to
       determine when and where to show a tooltip.
 
@@ -251,8 +251,8 @@ end
       for setting the tooltip’s markup, setting an image from a named icon, or
       even putting in a custom widget.
 
-    - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
-      to be show. If you return [FALSE], it will not be shown. *)
+    - Return [true] from your ::query-tooltip handler. This causes the tooltip
+      to be show. If you return [false], it will not be shown. *)
 and tooltip_t = object
   (** {2:methods Methods} *)
 
@@ -265,28 +265,28 @@ and tooltip_t = object
 
   method set_icon : Ocgdk.Paintable.paintable_t option -> unit
   (** Sets the icon of the tooltip (which is in front of the text) to be
-      [paintable]. If [paintable] is [NULL], the image will be hidden. *)
+      [paintable]. If [paintable] is [None], the image will be hidden. *)
 
   method set_icon_from_gicon : Ocgio.Icon.icon_t option -> unit
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [gicon] with the size indicated by [size]. If [gicon] is
-      [NULL], the image will be hidden. *)
+      [None], the image will be hidden. *)
 
   method set_icon_from_icon_name : string option -> unit
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [icon_name] with the size indicated by [size]. If
-      [icon_name] is [NULL], the image will be hidden. *)
+      [icon_name] is [None], the image will be hidden. *)
 
   method set_markup : string option -> unit
   (** Sets the text of the tooltip to be [markup].
 
-      The string must be marked up with Pango markup. If [markup] is [NULL], the
+      The string must be marked up with Pango markup. If [markup] is [None], the
       label will be hidden. *)
 
   method set_text : string option -> unit
   (** Sets the text of the tooltip to be [text].
 
-      If [text] is [NULL], the label will be hidden. See also
+      If [text] is [None], the label will be hidden. See also
       [Gtk.Tooltip.set_markup]. *)
 
   method set_tip_area : Ocgdk.Rectangle.rectangle_t -> unit
@@ -576,7 +576,7 @@ and widget_t = object
       This function is the opposite of [Gtk.Widget.init_template], and it is
       used to clear all the template children from a widget instance. If you
       bound a template child to a field in the instance structure, or in the
-      instance private data structure, the field will be set to [NULL] after
+      instance private data structure, the field will be set to [None] after
       this function returns.
 
       You should call this function inside the [GObjectClass.dispose()]
@@ -836,7 +836,7 @@ and widget_t = object
   method get_native : unit -> Native.native_t option
   (** Returns the nearest [GtkNative] ancestor of the widget.
 
-      This function will return [NULL] if the widget is not contained inside a
+      This function will return [None] if the widget is not contained inside a
       widget tree with a native ancestor.
 
       [GtkNative] widgets will return themselves here. *)
@@ -905,7 +905,7 @@ and widget_t = object
   method get_root : unit -> root_t option
   (** Returns the [GtkRoot] widget of the widget.
 
-      This function will return [NULL] if the widget is not contained inside a
+      This function will return [None] if the widget is not contained inside a
       widget tree with a root widget.
 
       [GtkRoot] widgets will return themselves here. *)
@@ -987,7 +987,7 @@ and widget_t = object
   (** Gets the contents of the tooltip for the widget.
 
       If the tooltip has not been set using [Gtk.Widget.set_tooltip_markup],
-      this function returns [NULL]. *)
+      this function returns [None]. *)
 
   method get_tooltip_text : unit -> string option
   (** Gets the contents of the tooltip for the widget.
@@ -1108,7 +1108,7 @@ and widget_t = object
       still be inherited from the parent, unless the group contains an action
       with the same name.
 
-      If [group] is [NULL], a previously inserted group for [name] is removed
+      If [group] is [None], a previously inserted group for [name] is removed
       from [widget]. *)
 
   method insert_after : widget_t -> widget_t option -> unit
@@ -1118,7 +1118,7 @@ and widget_t = object
       a specific position into the list of children of the [parent] widget.
 
       It will be placed after [previous_sibling], or at the beginning if
-      [previous_sibling] is [NULL].
+      [previous_sibling] is [None].
 
       After calling this function, [gtk_widget_get_prev_sibling (widget)] will
       return [previous_sibling].
@@ -1136,7 +1136,7 @@ and widget_t = object
       a specific position into the list of children of the [parent] widget.
 
       It will be placed before [next_sibling], or at the end if [next_sibling]
-      is [NULL].
+      is [None].
 
       After calling this function, [gtk_widget_get_next_sibling (widget)] will
       return [next_sibling].
@@ -1248,9 +1248,9 @@ and widget_t = object
       The point (x, y) must be given in widget coordinates, so (0, 0) is assumed
       to be the top left of [widget]'s content area.
 
-      Usually widgets will return [NULL] if the given coordinate is not
+      Usually widgets will return [None] if the given coordinate is not
       contained in [widget] checked via [Gtk.Widget.contains]. Otherwise they
-      will recursively try to find a child that does not return [NULL]. Widgets
+      will recursively try to find a child that does not return [None]. Widgets
       are however free to customize their picking algorithm.
 
       This function is used on the toplevel to determine the widget below the
@@ -1371,7 +1371,7 @@ and widget_t = object
   method set_cursor : Ocgdk.Cursor.cursor_t option -> unit
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
-      If the [cursor] is [NULL], [widget] will use the cursor inherited from its
+      If the [cursor] is [None], [widget] will use the cursor inherited from its
       parent. *)
 
   method set_cursor_from_name : string option -> unit
@@ -1381,8 +1381,8 @@ and widget_t = object
       [Gdk.Cursor.new_from_name] and then sets it on [widget] with
       [Gtk.Widget.set_cursor]. See those functions for details.
 
-      On top of that, this function allows [name] to be [NULL], which will do
-      the same as calling [Gtk.Widget.set_cursor] with a [NULL] cursor. *)
+      On top of that, this function allows [name] to be [None], which will do
+      the same as calling [Gtk.Widget.set_cursor] with a [None] cursor. *)
 
   method set_direction : Enums.textdirection -> unit
   (** Sets the reading direction on the widget.

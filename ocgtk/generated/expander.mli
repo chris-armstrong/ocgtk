@@ -24,14 +24,14 @@ class type expander_t = object
   method get_expanded : unit -> bool
   (** Queries a [GtkExpander] and returns its current state.
 
-      Returns [TRUE] if the child widget is revealed. *)
+      Returns [true] if the child widget is revealed. *)
 
   method get_label : unit -> string option
   (** Fetches the text from a label widget.
 
       This is including any embedded underlines indicating mnemonics and Pango
       markup, as set by [Gtk.Expander.set_label]. If the label text has not been
-      set the return value will be [NULL]. This will be the case if you create
+      set the return value will be [None]. This will be the case if you create
       an empty button with gtk_button_new() to use as a container. *)
 
   method get_label_widget : unit -> Widget.widget_t option
@@ -53,7 +53,7 @@ class type expander_t = object
   method set_expanded : bool -> unit
   (** Sets the state of the expander.
 
-      Set to [TRUE], if you want the child widget to be revealed, and [FALSE] if
+      Set to [true], if you want the child widget to be revealed, and [false] if
       you want the child widget to be hidden. *)
 
   method set_label : string option -> unit

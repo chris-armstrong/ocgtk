@@ -59,7 +59,7 @@ class type dialog_t = object
   (** Returns the header bar of [dialog].
 
       Note that the headerbar is only used by the dialog if the
-      [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
+      [Gtk.Dialog:use-header-bar] property is [true]. *)
 
   method get_response_for_widget : Widget.widget_t -> int
   (** Gets the response id of a widget in the action area of a dialog. *)
@@ -88,10 +88,10 @@ class type dialog_t = object
 
   method use_header_bar : int
   [@@ocaml.doc
-    "[TRUE] if the dialog uses a headerbar for action buttons\n\
+    "[true] if the dialog uses a headerbar for action buttons\n\
      instead of the action-area.\n\n\
      For technical reasons, this property is declared as an integer\n\
-     property, but you should only set it to [TRUE] or [FALSE].\n\n\
+     property, but you should only set it to [true] or [false].\n\n\
      {b Creating a dialog with headerbar}\n\n\
      Builtin [GtkDialog] subclasses such as [Gtk.ColorChooserDialog]\n\
      set this property according to platform conventions (using the\n\

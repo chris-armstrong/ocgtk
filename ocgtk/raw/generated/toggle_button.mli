@@ -99,8 +99,8 @@ external set_group : t -> t option -> unit = "ml_gtk_toggle_button_set_group"
 external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
 (** Sets the status of the toggle button.
 
-    Set to [TRUE] if you want the [GtkToggleButton] to be “pressed in”, and
-    [FALSE] to raise it.
+    Set to [true] if you want the [GtkToggleButton] to be “pressed in”, and
+    [false] to raise it.
 
     If the status of the button changes, this action causes the
     [Gtk.ToggleButton::toggled] signal to be emitted. *)
@@ -108,7 +108,7 @@ external set_active : t -> bool -> unit = "ml_gtk_toggle_button_set_active"
 external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
 (** Queries a [GtkToggleButton] and returns its current state.
 
-    Returns [TRUE] if the toggle button is pressed in and [FALSE] if it is
+    Returns [true] if the toggle button is pressed in and [false] if it is
     raised. *)
 
 (* Properties *)

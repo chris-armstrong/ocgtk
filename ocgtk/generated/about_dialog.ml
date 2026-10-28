@@ -95,7 +95,7 @@ class type about_dialog_t = object
   method set_license : string option -> unit
   (** Sets the license information to be displayed in the about dialog.
 
-      If [license] is [NULL], the license page is hidden. *)
+      If [license] is [None], the license page is hidden. *)
 
   method set_logo : Ocgdk.Paintable.paintable_t option -> unit
   (** Sets the logo in the about dialog. *)
@@ -112,7 +112,7 @@ class type about_dialog_t = object
   method set_system_information : string option -> unit
   (** Sets the system information to be displayed in the about dialog.
 
-      If [system_information] is [NULL], the system information page is hidden.
+      If [system_information] is [None], the system information page is hidden.
 
       See [Gtk.AboutDialog:system-information]. *)
 

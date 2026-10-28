@@ -10,10 +10,10 @@
     This structure closely mirrors [struct mmsghdr] and [struct msghdr] from the
     POSIX sockets API (see [man 2 recvmmsg]).
 
-    If [address] is non-[NULL] then it is set to the source address the message
+    If [address] is non-[None] then it is set to the source address the message
     was received from, and the caller must free it afterwards.
 
-    If [control_messages] is non-[NULL] then it is set to an array of control
+    If [control_messages] is non-[None] then it is set to an array of control
     messages received with the message (if any), and the caller must free it
     afterwards. [num_control_messages] is set to the number of elements in this
     array, which may be zero.

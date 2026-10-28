@@ -38,6 +38,7 @@ let has_fallback msg kind fbs =
          | Picture_stripped _, `Picture_stripped
          | Image_stripped _, `Image_stripped
          | Quote_stripped, `Quote_stripped
+         | Ownership_stripped _, `Ownership_stripped
          | Table_stripped, `Table_stripped ->
              true
          | _ -> false)

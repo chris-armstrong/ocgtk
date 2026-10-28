@@ -41,14 +41,13 @@ external steal_fds : t -> int array * int = "ml_g_unix_fd_list_steal_fds"
     After this call, the descriptors are no longer contained in [list]. Further
     calls will return an empty list (unless more descriptors have been added).
 
-    The return result of this function must be freed with g_free(). The caller
-    is also responsible for closing all of the file descriptors. The file
-    descriptors in the array are set to close-on-exec.
+    The caller is also responsible for closing all of the file descriptors. The
+    file descriptors in the array are set to close-on-exec.
 
-    If [length] is non-[NULL] then it is set to the number of file descriptors
+    If [length] is non-[None] then it is set to the number of file descriptors
     in the returned array. The returned array is also terminated with -1.
 
-    This function never returns [NULL]. In case there are no file descriptors
+    This function never returns [None]. In case there are no file descriptors
     contained in [list], an empty array is returned. *)
 
 external peek_fds : t -> int array * int = "ml_g_unix_fd_list_peek_fds"
@@ -58,10 +57,10 @@ external peek_fds : t -> int array * int = "ml_g_unix_fd_list_peek_fds"
     must not close them and must not free the array. The array is valid only
     until [list] is changed in any way.
 
-    If [length] is non-[NULL] then it is set to the number of file descriptors
+    If [length] is non-[None] then it is set to the number of file descriptors
     in the returned array. The returned array is also terminated with -1.
 
-    This function never returns [NULL]. In case there are no file descriptors
+    This function never returns [None]. In case there are no file descriptors
     contained in [list], an empty array is returned. *)
 
 external get_length : t -> int = "ml_g_unix_fd_list_get_length"

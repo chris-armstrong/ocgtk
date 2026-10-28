@@ -96,9 +96,9 @@ class type d_bus_connection_t = object
      operation will fail with [G_IO_ERROR_CANCELLED]. If [parameters]\n\
      contains a value not compatible with the D-Bus protocol, the operation\n\
      fails with [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
-     If [reply_type] is non-[NULL] then the reply will be checked for having\n\
+     If [reply_type] is non-[None] then the reply will be checked for having\n\
      this type and an error will be raised if it does not match.  Said\n\
-     another way, if you give a [reply_type] then any non-[NULL] return\n\
+     another way, if you give a [reply_type] then any non-[None] return\n\
      value will be of this type.\n\n\
      If the [parameters] [GVariant] is floating, it is consumed.\n\
      This allows convenient 'inline' use of g_variant_new(), e.g.:\n\n\
@@ -219,12 +219,12 @@ class type d_bus_connection_t = object
 
   method get_peer_credentials : unit -> Credentials.credentials_t option
   (** Gets the credentials of the authenticated peer. This will always return
-      [NULL] unless [connection] acted as a server (e.g.
+      [None] unless [connection] acted as a server (e.g.
       [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER] was passed) when set up
       and the client passed credentials as part of the authentication process.
 
       In a message bus setup, the message bus is always the server and each
-      application is a client. So this method will always return [NULL] for
+      application is a client. So this method will always return [None] for
       message bus clients. *)
 
   method get_stream : unit -> Io_stream.io_stream_t
@@ -274,7 +274,7 @@ class type d_bus_connection_t = object
       Note that this function should be used with care. Most modern UNIX
       desktops tie the notion of a user session with the session bus, and expect
       all of a user's applications to quit when their bus connection goes away.
-      If you are setting [exit_on_close] to [FALSE] for the shared session bus
+      If you are setting [exit_on_close] to [false] for the shared session bus
       connection, you should make sure that your application exits when the user
       session ends. *)
 
@@ -413,7 +413,7 @@ val new_for_address_sync :
     This is a synchronous failable constructor. See
     g_dbus_connection_new_for_address() for the asynchronous version.
 
-    If [observer] is not [NULL] it may be used to control the authentication
+    If [observer] is not [None] it may be used to control the authentication
     process. *)
 
 val new_sync :
@@ -433,7 +433,7 @@ val new_sync :
     result, the caller should not interact with [stream] after this method has
     been called, except by calling g_object_unref() on it.
 
-    If [observer] is not [NULL] it may be used to control the authentication
+    If [observer] is not [None] it may be used to control the authentication
     process.
 
     This is a synchronous failable constructor. See g_dbus_connection_new() for

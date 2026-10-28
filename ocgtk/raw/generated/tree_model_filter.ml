@@ -78,7 +78,7 @@ external set_visible_column : t -> int -> unit
   = "ml_gtk_tree_model_filter_set_visible_column"
 (** Sets [column] of the child_model to be the column where [filter] should look
     for visibility information. [columns] should be a column of type
-    [G_TYPE_BOOLEAN], where [TRUE] means that a row is visible, and [FALSE] if
+    [G_TYPE_BOOLEAN], where [true] means that a row is visible, and [false] if
     not.
 
     Note that gtk_tree_model_filter_set_visible_func() or
@@ -97,7 +97,7 @@ external convert_path_to_child_path : t -> Tree_path.t -> Tree_path.t option
 (** Converts [filter_path] to a path on the child model of [filter]. That is,
     [filter_path] points to a location in [filter]. The returned path will point
     to the same location in the model not being filtered. If [filter_path] does
-    not point to a location in the child model, [NULL] is returned. *)
+    not point to a location in the child model, [None] is returned. *)
 
 external convert_iter_to_child_iter : t -> Tree_iter.t -> Tree_iter.t
   = "ml_gtk_tree_model_filter_convert_iter_to_child_iter"
@@ -108,13 +108,13 @@ external convert_child_path_to_path : t -> Tree_path.t -> Tree_path.t option
 (** Converts [child_path] to a path relative to [filter]. That is, [child_path]
     points to a path in the child model. The rerturned path will point to the
     same row in the filtered model. If [child_path] isn’t a valid path on the
-    child model or points to a row which is not visible in [filter], then [NULL]
+    child model or points to a row which is not visible in [filter], then [None]
     is returned. *)
 
 external convert_child_iter_to_iter : t -> Tree_iter.t -> bool * Tree_iter.t
   = "ml_gtk_tree_model_filter_convert_child_iter_to_iter"
 (** Sets [filter_iter] to point to the row in [filter] that corresponds to the
-    row pointed at by [child_iter]. If [filter_iter] was not set, [FALSE] is
+    row pointed at by [child_iter]. If [filter_iter] was not set, [false] is
     returned. *)
 
 external clear_cache : t -> unit = "ml_gtk_tree_model_filter_clear_cache"

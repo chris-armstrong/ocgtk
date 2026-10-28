@@ -47,11 +47,11 @@ external query_info :
     [G_IO_ERROR_CLOSED]), the stream has pending operations (with [error] being
     set to [G_IO_ERROR_PENDING]), or if querying info is not supported for the
     stream's interface (with [error] being set to [G_IO_ERROR_NOT_SUPPORTED]). I
-    all cases of failure, [NULL] will be returned.
+    all cases of failure, [None] will be returned.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [NULL] will be
+    cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [None] will be
     returned. *)
 
 external get_etag : t -> string option = "ml_g_file_io_stream_get_etag"

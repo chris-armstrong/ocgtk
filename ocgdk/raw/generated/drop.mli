@@ -56,7 +56,7 @@ external get_drag : t -> Drag.t option = "ml_gdk_drop_get_drag"
 (** If this is an in-app drag-and-drop operation, returns the [GdkDrag] that
     corresponds to this drop.
 
-    If it is not, [NULL] is returned. *)
+    If it is not, [None] is returned. *)
 
 external get_display : t -> App_launch_context_cycle_de440b34.Display.t
   = "ml_gdk_drop_get_display"

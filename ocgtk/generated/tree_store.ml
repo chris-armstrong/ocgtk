@@ -32,7 +32,7 @@ class type tree_store_t = object
 
       Note that this function only works with unsorted stores.
 
-      If [position] is [NULL], [iter] will be moved to the start of the level.
+      If [position] is [None], [iter] will be moved to the start of the level.
   *)
 
   method move_before : Raw.Tree_iter.t -> Raw.Tree_iter.t option -> unit
@@ -42,7 +42,7 @@ class type tree_store_t = object
 
       Note that this function only works with unsorted stores.
 
-      If [position] is [NULL], [iter] will be moved to the end of the level. *)
+      If [position] is [None], [iter] will be moved to the end of the level. *)
 
   method remove : Raw.Tree_iter.t -> bool
   (** Removes [iter] from [tree_store].

@@ -10,7 +10,7 @@
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [TRUE]. This will make GTK
+    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
       monitor the widget for motion and related events which are needed to
       determine when and where to show a tooltip.
 
@@ -22,8 +22,8 @@
       for setting the tooltip’s markup, setting an image from a named icon, or
       even putting in a custom widget.
 
-    - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
-      to be show. If you return [FALSE], it will not be shown.
+    - Return [true] from your ::query-tooltip handler. This causes the tooltip
+      to be show. If you return [false], it will not be shown.
 
     The class built on this module is in {!Ocgtk.Tooltip}. *)
 

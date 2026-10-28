@@ -7,7 +7,7 @@ class type cell_view_t = object
 
   method get_displayed_row : unit -> Raw.Tree_path.t option
   (** Returns a [GtkTreePath] referring to the currently displayed row. If no
-      row is currently displayed, [NULL] is returned. *)
+      row is currently displayed, [None] is returned. *)
 
   method get_draw_sensitive : unit -> bool
   (** Gets whether [cell_view] is configured to draw all of its cells in a
@@ -18,7 +18,7 @@ class type cell_view_t = object
       [GtkTreeModel]. *)
 
   method get_model : unit -> Tree_model.tree_model_t option
-  (** Returns the model for [cell_view]. If no model is used [NULL] is returned.
+  (** Returns the model for [cell_view]. If no model is used [None] is returned.
   *)
 
   method set_displayed_row : Raw.Tree_path.t option -> unit
@@ -44,7 +44,7 @@ class type cell_view_t = object
 
   method set_model : Tree_model.tree_model_t option -> unit
   (** Sets the model for [cell_view]. If [cell_view] already has a model set, it
-      will remove it before setting the new model. If [model] is [NULL], then it
+      will remove it before setting the new model. If [model] is [None], then it
       will unset the old model. *)
 
   (** {2:properties Properties} *)

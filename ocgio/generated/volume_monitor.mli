@@ -114,28 +114,19 @@ class type volume_monitor_t = object
   (** {2:methods Methods} *)
 
   method get_connected_drives : unit -> Drive.drive_t list
-  (** Gets a list of drives connected to the system.
-
-      The returned list should be freed with g_list_free(), after its elements
-      have been unreffed with g_object_unref(). *)
+  (** Gets a list of drives connected to the system. *)
 
   method get_mount_for_uuid : string -> Mount.mount_t option
   (** Finds a [GMount] object by its UUID (see g_mount_get_uuid()) *)
 
   method get_mounts : unit -> Mount.mount_t list
-  (** Gets a list of the mounts on the system.
-
-      The returned list should be freed with g_list_free(), after its elements
-      have been unreffed with g_object_unref(). *)
+  (** Gets a list of the mounts on the system. *)
 
   method get_volume_for_uuid : string -> Volume.volume_t option
   (** Finds a [GVolume] object by its UUID (see g_volume_get_uuid()) *)
 
   method get_volumes : unit -> Volume.volume_t list
-  (** Gets a list of the volumes on the system.
-
-      The returned list should be freed with g_list_free(), after its elements
-      have been unreffed with g_object_unref(). *)
+  (** Gets a list of the volumes on the system. *)
 
   (** {2:conversions Conversions} *)
 

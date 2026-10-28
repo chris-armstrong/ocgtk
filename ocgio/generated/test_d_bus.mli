@@ -24,7 +24,7 @@ class type test_d_bus_t = object
 
   method get_bus_address : unit -> string option
   (** Get the address on which dbus-daemon is running. If g_test_dbus_up() has
-      not been called yet, [NULL] is returned. This can be used with
+      not been called yet, [None] is returned. This can be used with
       g_dbus_connection_new_for_address(). *)
 
   method get_flags : unit -> Enums.testdbusflags

@@ -6,7 +6,7 @@ class type gesture_t = object
   method get_device : unit -> Ocgdk.Device.device_t option
   (** Returns the logical [GdkDevice] that is currently operating on [gesture].
 
-      This returns [NULL] if the gesture is not being interacted. *)
+      This returns [None] if the gesture is not being interacted. *)
 
   method get_group : unit -> gesture_t list
   (** Returns all gestures in the group of [gesture] *)
@@ -48,20 +48,20 @@ class type gesture_t = object
      [GTK_EVENT_SEQUENCE_DENIED]."]
 
   method handles_sequence : Ocgdk.Event_sequence.event_sequence_t option -> bool
-  (** Returns [TRUE] if [gesture] is currently handling events corresponding to
+  (** Returns [true] if [gesture] is currently handling events corresponding to
       [sequence]. *)
 
   method is_active : unit -> bool
-  (** Returns [TRUE] if the gesture is currently active.
+  (** Returns [true] if the gesture is currently active.
 
       A gesture is active while there are touch sequences interacting with it.
   *)
 
   method is_grouped_with : gesture_t -> bool
-  (** Returns [TRUE] if both gestures pertain to the same group. *)
+  (** Returns [true] if both gestures pertain to the same group. *)
 
   method is_recognized : unit -> bool
-  (** Returns [TRUE] if the gesture is currently recognized.
+  (** Returns [true] if the gesture is currently recognized.
 
       A gesture is recognized if there are as many interacting touch sequences
       as required by [gesture]. *)

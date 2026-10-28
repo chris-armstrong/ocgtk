@@ -29,7 +29,7 @@ class type d_bus_object_manager_server_t = object
 
   method set_connection : D_bus_connection.d_bus_connection_t option -> unit
   (** Exports all objects managed by [manager] on [connection]. If [connection]
-      is [NULL], stops exporting objects. *)
+      is [None], stops exporting objects. *)
 
   method unexport : string -> bool
   (** If [manager] has an object at [path], removes the object. Otherwise does

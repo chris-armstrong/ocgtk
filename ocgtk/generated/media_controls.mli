@@ -27,7 +27,7 @@ class type media_controls_t = object
   (** {2:methods Methods} *)
 
   method get_media_stream : unit -> Media_stream.media_stream_t option
-  (** Gets the media stream managed by [controls] or [NULL] if none. *)
+  (** Gets the media stream managed by [controls] or [None] if none. *)
 
   method set_media_stream : Media_stream.media_stream_t option -> unit
   (** Sets the stream that is controlled by [controls]. *)

@@ -12,7 +12,7 @@ class type memory_texture_builder_t = object
 
   method get_bytes : unit -> Glib_bytes.t option
   (** Gets the bytes previously set via gdk_memory_texture_builder_set_bytes()
-      or [NULL] if none was set. *)
+      or [None] if none was set. *)
 
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the colorstate previously set via
@@ -40,12 +40,12 @@ class type memory_texture_builder_t = object
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_memory_texture_builder_set_update_region() or [NULL] if none was set.
+      gdk_memory_texture_builder_set_update_region() or [None] if none was set.
   *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_memory_texture_builder_set_update_texture() or [NULL] if none was set.
+      gdk_memory_texture_builder_set_update_texture() or [None] if none was set.
   *)
 
   method get_width : unit -> int

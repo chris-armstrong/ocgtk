@@ -11,7 +11,7 @@ class type tab_array_t = object
       according to the current locale. *)
 
   method get_positions_in_pixels : unit -> bool
-  (** Returns [TRUE] if the tab positions are in pixels, [FALSE] if they are in
+  (** Returns [true] if the tab positions are in pixels, [false] if they are in
       Pango units. *)
 
   method get_size : unit -> int

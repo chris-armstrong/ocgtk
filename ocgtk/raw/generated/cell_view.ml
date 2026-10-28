@@ -62,7 +62,7 @@ external new_with_texture : Ocgdk_raw.Texture.t -> t
 external set_model : t -> Tree_model.t option -> unit
   = "ml_gtk_cell_view_set_model"
 (** Sets the model for [cell_view]. If [cell_view] already has a model set, it
-    will remove it before setting the new model. If [model] is [NULL], then it
+    will remove it before setting the new model. If [model] is [None], then it
     will unset the old model. *)
 
 external set_fit_model : t -> bool -> unit = "ml_gtk_cell_view_set_fit_model"
@@ -88,7 +88,7 @@ external set_displayed_row : t -> Tree_path.t option -> unit
     temporarily empty. *)
 
 external get_model : t -> Tree_model.t option = "ml_gtk_cell_view_get_model"
-(** Returns the model for [cell_view]. If no model is used [NULL] is returned.
+(** Returns the model for [cell_view]. If no model is used [None] is returned.
 *)
 
 external get_fit_model : t -> bool = "ml_gtk_cell_view_get_fit_model"
@@ -102,7 +102,7 @@ external get_draw_sensitive : t -> bool = "ml_gtk_cell_view_get_draw_sensitive"
 external get_displayed_row : t -> Tree_path.t option
   = "ml_gtk_cell_view_get_displayed_row"
 (** Returns a [GtkTreePath] referring to the currently displayed row. If no row
-    is currently displayed, [NULL] is returned. *)
+    is currently displayed, [None] is returned. *)
 
 (* Properties *)
 

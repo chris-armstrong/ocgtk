@@ -200,7 +200,7 @@ class type pixbuf_t = object
       1.0, saturation is reduced (the image turns toward grayscale); if greater
       than 1.0, saturation is increased (the image gets more vivid colors).
 
-      If [pixelate] is [TRUE], then pixels are faded in a checkerboard pattern
+      If [pixelate] is [true], then pixels are faded in a checkerboard pattern
       to create a pixelated image. *)
 
   method save_to_streamv :
@@ -227,7 +227,7 @@ class type pixbuf_t = object
     "Vector version of [gdk_pixbuf_save()].\n\n\
      Saves pixbuf to a file in [type], which is currently \"jpeg\", \"png\", \
      \"tiff\", \"ico\" or \"bmp\".\n\n\
-     If [error] is set, [FALSE] will be returned.\n\n\
+     If [error] is set, [false] will be returned.\n\n\
      See [GdkPixbuf.Pixbuf.save] for more details."]
 
   method scale :
@@ -280,7 +280,7 @@ class type pixbuf_t = object
   (** Attaches a key/value pair as an option to a [GdkPixbuf].
 
       If [key] already exists in the list of options attached to the [pixbuf],
-      the new value is ignored and [FALSE] is returned. *)
+      the new value is ignored and [false] is returned. *)
 
   (** {2:properties Properties} *)
 

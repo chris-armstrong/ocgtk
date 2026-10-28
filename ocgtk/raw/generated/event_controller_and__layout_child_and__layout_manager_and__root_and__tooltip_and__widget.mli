@@ -87,13 +87,13 @@ module rec Event_controller : sig
   (** Returns the device of the event that is currently being handled by the
       controller.
 
-      At other times, [NULL] is returned. *)
+      At other times, [None] is returned. *)
 
   external get_current_event : t -> Ocgdk_raw.Event.t option
     = "ml_gtk_event_controller_get_current_event"
   (** Returns the event that is currently being handled by the controller.
 
-      At other times, [NULL] is returned. *)
+      At other times, [None] is returned. *)
 
   (* Properties *)
 end
@@ -243,7 +243,7 @@ and Root : sig
   (** If [focus] is not the current focus widget, and is focusable, sets it as
       the focus widget for the root.
 
-      If [focus] is [NULL], unsets the focus widget for the root.
+      If [focus] is [None], unsets the focus widget for the root.
 
       To set the focus to a particular widget in the root, it is usually more
       convenient to use [Gtk.Widget.grab_focus] instead of this function. *)
@@ -253,7 +253,7 @@ and Root : sig
 
       Note that this is the widget that would have the focus if the root is
       active; if the root is not focused then [gtk_widget_has_focus (widget)]
-      will be [FALSE] for the widget. *)
+      will be [false] for the widget. *)
 
   external get_display : t -> Ocgdk_raw.Display.t = "ml_gtk_root_get_display"
   (** Returns the display that this [GtkRoot] is on. *)
@@ -268,7 +268,7 @@ end
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [TRUE]. This will make GTK
+    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
       monitor the widget for motion and related events which are needed to
       determine when and where to show a tooltip.
 
@@ -280,8 +280,8 @@ end
       for setting the tooltip’s markup, setting an image from a named icon, or
       even putting in a custom widget.
 
-    - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
-      to be show. If you return [FALSE], it will not be shown.
+    - Return [true] from your ::query-tooltip handler. This causes the tooltip
+      to be show. If you return [false], it will not be shown.
 
     The class built on this module is in {!Ocgtk.Tooltip}. *)
 and Tooltip : sig
@@ -304,31 +304,31 @@ and Tooltip : sig
   external set_text : t -> string option -> unit = "ml_gtk_tooltip_set_text"
   (** Sets the text of the tooltip to be [text].
 
-      If [text] is [NULL], the label will be hidden. See also
+      If [text] is [None], the label will be hidden. See also
       [Gtk.Tooltip.set_markup]. *)
 
   external set_markup : t -> string option -> unit = "ml_gtk_tooltip_set_markup"
   (** Sets the text of the tooltip to be [markup].
 
-      The string must be marked up with Pango markup. If [markup] is [NULL], the
+      The string must be marked up with Pango markup. If [markup] is [None], the
       label will be hidden. *)
 
   external set_icon_from_icon_name : t -> string option -> unit
     = "ml_gtk_tooltip_set_icon_from_icon_name"
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [icon_name] with the size indicated by [size]. If
-      [icon_name] is [NULL], the image will be hidden. *)
+      [icon_name] is [None], the image will be hidden. *)
 
   external set_icon_from_gicon : t -> Ocgio_raw.Icon.t option -> unit
     = "ml_gtk_tooltip_set_icon_from_gicon"
   (** Sets the icon of the tooltip (which is in front of the text) to be the
       icon indicated by [gicon] with the size indicated by [size]. If [gicon] is
-      [NULL], the image will be hidden. *)
+      [None], the image will be hidden. *)
 
   external set_icon : t -> Ocgdk_raw.Paintable.t option -> unit
     = "ml_gtk_tooltip_set_icon"
   (** Sets the icon of the tooltip (which is in front of the text) to be
-      [paintable]. If [paintable] is [NULL], the image will be hidden. *)
+      [paintable]. If [paintable] is [None], the image will be hidden. *)
 
   external set_custom : t -> Widget.t option -> unit
     = "ml_gtk_tooltip_set_custom"
@@ -722,14 +722,14 @@ and Widget : sig
       [Gdk.Cursor.new_from_name] and then sets it on [widget] with
       [Gtk.Widget.set_cursor]. See those functions for details.
 
-      On top of that, this function allows [name] to be [NULL], which will do
-      the same as calling [Gtk.Widget.set_cursor] with a [NULL] cursor. *)
+      On top of that, this function allows [name] to be [None], which will do
+      the same as calling [Gtk.Widget.set_cursor] with a [None] cursor. *)
 
   external set_cursor : t -> Ocgdk_raw.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
-      If the [cursor] is [NULL], [widget] will use the cursor inherited from its
+      If the [cursor] is [None], [widget] will use the cursor inherited from its
       parent. *)
 
   external set_css_classes : t -> string array -> unit
@@ -857,9 +857,9 @@ and Widget : sig
       The point (x, y) must be given in widget coordinates, so (0, 0) is assumed
       to be the top left of [widget]'s content area.
 
-      Usually widgets will return [NULL] if the given coordinate is not
+      Usually widgets will return [None] if the given coordinate is not
       contained in [widget] checked via [Gtk.Widget.contains]. Otherwise they
-      will recursively try to find a child that does not return [NULL]. Widgets
+      will recursively try to find a child that does not return [None]. Widgets
       are however free to customize their picking algorithm.
 
       This function is used on the toplevel to determine the widget below the
@@ -986,7 +986,7 @@ and Widget : sig
       a specific position into the list of children of the [parent] widget.
 
       It will be placed before [next_sibling], or at the end if [next_sibling]
-      is [NULL].
+      is [None].
 
       After calling this function, [gtk_widget_get_next_sibling (widget)] will
       return [next_sibling].
@@ -1005,7 +1005,7 @@ and Widget : sig
       a specific position into the list of children of the [parent] widget.
 
       It will be placed after [previous_sibling], or at the beginning if
-      [previous_sibling] is [NULL].
+      [previous_sibling] is [None].
 
       After calling this function, [gtk_widget_get_prev_sibling (widget)] will
       return [previous_sibling].
@@ -1030,7 +1030,7 @@ and Widget : sig
       still be inherited from the parent, unless the group contains an action
       with the same name.
 
-      If [group] is [NULL], a previously inserted group for [name] is removed
+      If [group] is [None], a previously inserted group for [name] is removed
       from [widget]. *)
 
   external init_template : t -> unit = "ml_gtk_widget_init_template"
@@ -1145,7 +1145,7 @@ and Widget : sig
   (** Gets the contents of the tooltip for the widget.
 
       If the tooltip has not been set using [Gtk.Widget.set_tooltip_markup],
-      this function returns [NULL]. *)
+      this function returns [None]. *)
 
   external get_template_child :
     t -> Gobject.Type.t -> string -> [ `object_ ] Gobject.obj
@@ -1239,7 +1239,7 @@ and Widget : sig
   external get_root : t -> Root.t option = "ml_gtk_widget_get_root"
   (** Returns the [GtkRoot] widget of the widget.
 
-      This function will return [NULL] if the widget is not contained inside a
+      This function will return [None] if the widget is not contained inside a
       widget tree with a root widget.
 
       [GtkRoot] widgets will return themselves here. *)
@@ -1330,7 +1330,7 @@ and Widget : sig
   external get_native : t -> Native.t option = "ml_gtk_widget_get_native"
   (** Returns the nearest [GtkNative] ancestor of the widget.
 
-      This function will return [NULL] if the widget is not contained inside a
+      This function will return [None] if the widget is not contained inside a
       widget tree with a native ancestor.
 
       [GtkNative] widgets will return themselves here. *)
@@ -1595,7 +1595,7 @@ and Widget : sig
       This function is the opposite of [Gtk.Widget.init_template], and it is
       used to clear all the template children from a widget instance. If you
       bound a template child to a field in the instance structure, or in the
-      instance private data structure, the field will be set to [NULL] after
+      instance private data structure, the field will be set to [None] after
       this function returns.
 
       You should call this function inside the [GObjectClass.dispose()]

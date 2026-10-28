@@ -67,7 +67,7 @@ external get_parameter_type : t -> Gvariant_type.t
 
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_state_type"
-(** The [GVariantType] of the state that the action has, or [NULL] if the action
+(** The [GVariantType] of the state that the action has, or [None] if the action
     is stateless. *)
 
 val on_activate :
@@ -82,7 +82,7 @@ val on_activate :
     activating the action, this signal is not emitted.
 
     Since GLib 2.40, if no handler is connected to this signal then the default
-    behaviour for boolean-stated actions with a [NULL] parameter type is to
+    behaviour for boolean-stated actions with a [None] parameter type is to
     toggle them via the [GSimpleAction::change]-state signal. For stateful
     actions where the state type is equal to the parameter type, the default is
     to forward them directly to [GSimpleAction::change]-state. This should allow

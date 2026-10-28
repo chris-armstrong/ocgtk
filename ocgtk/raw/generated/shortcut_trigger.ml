@@ -22,7 +22,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_trigger_get_type"
 external parse_string : string -> t = "ml_gtk_shortcut_trigger_parse_string"
 (** Tries to parse the given string into a trigger.
 
-    On success, the parsed trigger is returned. When parsing failed, [NULL] is
+    On success, the parsed trigger is returned. When parsing failed, [None] is
     returned.
 
     The accepted strings are:

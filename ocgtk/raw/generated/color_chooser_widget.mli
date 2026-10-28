@@ -49,12 +49,12 @@ external new_ : unit -> t = "ml_gtk_color_chooser_widget_new"
 
 external get_show_editor : t -> bool
   = "ml_gtk_color_chooser_widget_get_show_editor"
-(** [TRUE] when the color chooser is showing the single-color editor.
+(** [true] when the color chooser is showing the single-color editor.
 
     It can be set to switch the color chooser into single-color editing mode. *)
 
 external set_show_editor : t -> bool -> unit
   = "ml_gtk_color_chooser_widget_set_show_editor"
-(** [TRUE] when the color chooser is showing the single-color editor.
+(** [true] when the color chooser is showing the single-color editor.
 
     It can be set to switch the color chooser into single-color editing mode. *)

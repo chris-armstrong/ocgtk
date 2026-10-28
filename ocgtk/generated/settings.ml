@@ -23,14 +23,14 @@ class type settings_t = object
       views.
 
       By default an arrow pointing down means the column is sorted in ascending
-      order. When set to [TRUE], this order will be inverted. *)
+      order. When set to [true], this order will be inverted. *)
 
   method set_gtk_alternative_sort_arrows : bool -> unit
   (** Controls the direction of the sort indicators in sorted list and tree
       views.
 
       By default an arrow pointing down means the column is sorted in ascending
-      order. When set to [TRUE], this order will be inverted. *)
+      order. When set to [true], this order will be inverted. *)
 
   method gtk_application_prefer_dark_theme : bool
   (** Whether the application prefers to use a dark theme.
@@ -92,7 +92,7 @@ class type settings_t = object
       The timer is reset after each user interaction.
 
       Setting this to zero has the same effect as setting
-      [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
+      [Gtk.Settings:gtk-cursor-blink] to [false]. *)
 
   method set_gtk_cursor_blink_timeout : int -> unit
   (** Time after which the cursor stops blinking, in seconds.
@@ -100,17 +100,17 @@ class type settings_t = object
       The timer is reset after each user interaction.
 
       Setting this to zero has the same effect as setting
-      [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
+      [Gtk.Settings:gtk-cursor-blink] to [false]. *)
 
   method gtk_cursor_theme_name : string
   (** Name of the cursor theme to use.
 
-      Use [NULL] to use the default theme. *)
+      Use [None] to use the default theme. *)
 
   method set_gtk_cursor_theme_name : string -> unit
   (** Name of the cursor theme to use.
 
-      Use [NULL] to use the default theme. *)
+      Use [None] to use the default theme. *)
 
   method gtk_cursor_theme_size : int
   (** The size to use for cursors.
@@ -275,7 +275,7 @@ class type settings_t = object
   (** Whether to select the contents of an entry when it is focused. *)
 
   method gtk_error_bell : bool
-  (** When [TRUE], keyboard navigation and other input-related errors will cause
+  (** When [true], keyboard navigation and other input-related errors will cause
       a beep.
 
       Since the error bell is implemented using gdk_surface_beep(), the
@@ -283,7 +283,7 @@ class type settings_t = object
       such as flashing the window or similar visual effects. *)
 
   method set_gtk_error_bell : bool -> unit
-  (** When [TRUE], keyboard navigation and other input-related errors will cause
+  (** When [true], keyboard navigation and other input-related errors will cause
       a beep.
 
       Since the error bell is implemented using gdk_surface_beep(), the
@@ -433,21 +433,21 @@ class type settings_t = object
   method gtk_overlay_scrolling : bool
   (** Whether scrolled windows may use overlaid scrolling indicators.
 
-      If this is set to [FALSE], scrolled windows will have permanent
+      If this is set to [false], scrolled windows will have permanent
       scrollbars. *)
 
   method set_gtk_overlay_scrolling : bool -> unit
   (** Whether scrolled windows may use overlaid scrolling indicators.
 
-      If this is set to [FALSE], scrolled windows will have permanent
+      If this is set to [false], scrolled windows will have permanent
       scrollbars. *)
 
   method gtk_primary_button_warps_slider : bool
-  (** If the value of this setting is [TRUE], clicking the primary button in a
+  (** If the value of this setting is [true], clicking the primary button in a
       [GtkRange] trough will move the slider, and hence set the range’s value,
       to the point that you clicked.
 
-      If it is [FALSE], a primary click will cause the slider/value to move by
+      If it is [false], a primary click will cause the slider/value to move by
       the range’s page-size towards the point clicked.
 
       Whichever action you choose for the primary button, the other action will
@@ -455,11 +455,11 @@ class type settings_t = object
       mouse button. *)
 
   method set_gtk_primary_button_warps_slider : bool -> unit
-  (** If the value of this setting is [TRUE], clicking the primary button in a
+  (** If the value of this setting is [true], clicking the primary button in a
       [GtkRange] trough will move the slider, and hence set the range’s value,
       to the point that you clicked.
 
-      If it is [FALSE], a primary click will cause the slider/value to move by
+      If it is [false], a primary click will cause the slider/value to move by
       the range’s page-size towards the point clicked.
 
       Whichever action you choose for the primary button, the other action will
@@ -506,13 +506,13 @@ class type settings_t = object
   (** Whether GTK should keep track of items inside the recently used resources
       list.
 
-      If set to [FALSE], the list will always be empty. *)
+      If set to [false], the list will always be empty. *)
 
   method set_gtk_recent_files_enabled : bool -> unit
   (** Whether GTK should keep track of items inside the recently used resources
       list.
 
-      If set to [FALSE], the list will always be empty. *)
+      If set to [false], the list will always be empty. *)
 
   method gtk_recent_files_max_age : int
   (** The maximum age, in days, of the items inside the recently used resources
@@ -529,35 +529,35 @@ class type settings_t = object
       the list will always be empty; if set to -1, no item will be removed. *)
 
   method gtk_shell_shows_app_menu : bool
-  (** Set to [TRUE] if the desktop environment is displaying the app menu,
-      [FALSE] if the app should display it itself. *)
+  (** Set to [true] if the desktop environment is displaying the app menu,
+      [false] if the app should display it itself. *)
 
   method set_gtk_shell_shows_app_menu : bool -> unit
-  (** Set to [TRUE] if the desktop environment is displaying the app menu,
-      [FALSE] if the app should display it itself. *)
+  (** Set to [true] if the desktop environment is displaying the app menu,
+      [false] if the app should display it itself. *)
 
   method gtk_shell_shows_desktop : bool
-  (** Set to [TRUE] if the desktop environment is displaying the desktop folder,
-      [FALSE] if not. *)
+  (** Set to [true] if the desktop environment is displaying the desktop folder,
+      [false] if not. *)
 
   method set_gtk_shell_shows_desktop : bool -> unit
-  (** Set to [TRUE] if the desktop environment is displaying the desktop folder,
-      [FALSE] if not. *)
+  (** Set to [true] if the desktop environment is displaying the desktop folder,
+      [false] if not. *)
 
   method gtk_shell_shows_menubar : bool
-  (** Set to [TRUE] if the desktop environment is displaying the menubar,
-      [FALSE] if the app should display it itself. *)
+  (** Set to [true] if the desktop environment is displaying the menubar,
+      [false] if the app should display it itself. *)
 
   method set_gtk_shell_shows_menubar : bool -> unit
-  (** Set to [TRUE] if the desktop environment is displaying the menubar,
-      [FALSE] if the app should display it itself. *)
+  (** Set to [true] if the desktop environment is displaying the menubar,
+      [false] if the app should display it itself. *)
 
   method gtk_show_status_shapes : bool
-  (** When [TRUE], widgets like switches include shapes to indicate their on/off
+  (** When [true], widgets like switches include shapes to indicate their on/off
       state. *)
 
   method set_gtk_show_status_shapes : bool -> unit
-  (** When [TRUE], widgets like switches include shapes to indicate their on/off
+  (** When [true], widgets like switches include shapes to indicate their on/off
       state. *)
 
   method gtk_sound_theme_name : string

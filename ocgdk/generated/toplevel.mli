@@ -108,14 +108,14 @@ class type toplevel_t = object
   method set_decorated : bool -> unit
   (** Sets the toplevel to be decorated.
 
-      Setting [decorated] to [FALSE] hints the desktop environment that the
+      Setting [decorated] to [false] hints the desktop environment that the
       surface has its own, client-side decorations and does not need to have
       window decorations added. *)
 
   method set_deletable : bool -> unit
   (** Sets the toplevel to be deletable.
 
-      Setting [deletable] to [TRUE] hints the desktop environment that it should
+      Setting [deletable] to [true] hints the desktop environment that it should
       offer the user a way to close the surface. *)
 
   method set_gravity : Enums.gravity -> unit

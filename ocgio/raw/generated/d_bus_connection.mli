@@ -88,7 +88,7 @@ external new_for_address_sync :
     This is a synchronous failable constructor. See
     g_dbus_connection_new_for_address() for the asynchronous version.
 
-    If [observer] is not [NULL] it may be used to control the authentication
+    If [observer] is not [None] it may be used to control the authentication
     process. *)
 
 external new_sync :
@@ -108,7 +108,7 @@ external new_sync :
     result, the caller should not interact with [stream] after this method has
     been called, except by calling g_object_unref() on it.
 
-    If [observer] is not [NULL] it may be used to control the authentication
+    If [observer] is not [None] it may be used to control the authentication
     process.
 
     This is a synchronous failable constructor. See g_dbus_connection_new() for
@@ -171,7 +171,7 @@ external set_exit_on_close : t -> bool -> unit
     Note that this function should be used with care. Most modern UNIX desktops
     tie the notion of a user session with the session bus, and expect all of a
     user's applications to quit when their bus connection goes away. If you are
-    setting [exit_on_close] to [FALSE] for the shared session bus connection,
+    setting [exit_on_close] to [false] for the shared session bus connection,
     you should make sure that your application exits when the user session ends.
 *)
 
@@ -190,7 +190,7 @@ external send_message_with_reply_sync :
 
     Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
     the serial number will be assigned by [connection] and set on [message] via
-    g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the serial
+    g_dbus_message_set_serial(). If [out_serial] is not [None], then the serial
     number used will be written to this location prior to submitting the message
     to the underlying transport. While it has a [volatile] qualifier, this is a
     historical artifact and the argument passed to it should not be [volatile].
@@ -236,7 +236,7 @@ external send_message :
 
     Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
     the serial number will be assigned by [connection] and set on [message] via
-    g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the serial
+    g_dbus_message_set_serial(). If [out_serial] is not [None], then the serial
     number used will be written to this location prior to submitting the message
     to the underlying transport. While it has a [volatile] qualifier, this is a
     historical artifact and the argument passed to it should not be [volatile].
@@ -281,12 +281,12 @@ external get_stream : t -> Io_stream.t = "ml_g_dbus_connection_get_stream"
 external get_peer_credentials : t -> Credentials.t option
   = "ml_g_dbus_connection_get_peer_credentials"
 (** Gets the credentials of the authenticated peer. This will always return
-    [NULL] unless [connection] acted as a server (e.g.
+    [None] unless [connection] acted as a server (e.g.
     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER] was passed) when set up and
     the client passed credentials as part of the authentication process.
 
     In a message bus setup, the message bus is always the server and each
-    application is a client. So this method will always return [NULL] for
+    application is a client. So this method will always return [None] for
     message bus clients. *)
 
 external get_last_serial : t -> UInt32.t
@@ -421,9 +421,9 @@ external call_sync :
    operation will fail with [G_IO_ERROR_CANCELLED]. If [parameters]\n\
    contains a value not compatible with the D-Bus protocol, the operation\n\
    fails with [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
-   If [reply_type] is non-[NULL] then the reply will be checked for having\n\
+   If [reply_type] is non-[None] then the reply will be checked for having\n\
    this type and an error will be raised if it does not match.  Said\n\
-   another way, if you give a [reply_type] then any non-[NULL] return\n\
+   another way, if you give a [reply_type] then any non-[None] return\n\
    value will be of this type.\n\n\
    If the [parameters] [GVariant] is floating, it is consumed.\n\
    This allows convenient 'inline' use of g_variant_new(), e.g.:\n\n\

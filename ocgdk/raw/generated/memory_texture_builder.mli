@@ -103,13 +103,13 @@ external get_width : t -> int = "ml_gdk_memory_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_memory_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_memory_texture_builder_set_update_texture() or [NULL] if none was set.
+    gdk_memory_texture_builder_set_update_texture() or [None] if none was set.
 *)
 
 external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_memory_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_memory_texture_builder_set_update_region() or [NULL] if none was set. *)
+    gdk_memory_texture_builder_set_update_region() or [None] if none was set. *)
 
 external get_stride_for_plane : t -> int -> Gsize.t
   = "ml_gdk_memory_texture_builder_get_stride_for_plane"
@@ -142,7 +142,7 @@ external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
 external get_bytes : t -> Glib_bytes.t option
   = "ml_gdk_memory_texture_builder_get_bytes"
 (** Gets the bytes previously set via gdk_memory_texture_builder_set_bytes() or
-    [NULL] if none was set. *)
+    [None] if none was set. *)
 
 external build : t -> Texture.t = "ml_gdk_memory_texture_builder_build"
 (** Builds a new [GdkTexture] with the values set up in the builder.

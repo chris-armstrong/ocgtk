@@ -10,10 +10,10 @@ class type transform_t = object
   method invert : unit -> Raw.Transform.t option
   (** Inverts the given transform.
 
-      If [self] is not invertible, [NULL] is returned. Note that inverting
-      [NULL] also returns [NULL], which is the correct inverse of [NULL]. If you
+      If [self] is not invertible, [None] is returned. Note that inverting
+      [None] also returns [None], which is the correct inverse of [None]. If you
       need to differentiate between those cases, you should check [self] is not
-      [NULL] before calling this function.
+      [None] before calling this function.
 
       This function consumes [self]. Use [Gsk.Transform.ref] first if you want
       to keep it around. *)

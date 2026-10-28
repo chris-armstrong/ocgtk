@@ -15,7 +15,7 @@ class type revealer_t = object
   method get_reveal_child : unit -> bool
   (** Returns whether the child is currently revealed.
 
-      This function returns [TRUE] as soon as the transition is to the revealed
+      This function returns [true] as soon as the transition is to the revealed
       state is started. To learn whether the child is fully revealed (ie the
       transition is completed), use [Gtk.Revealer.get_child_revealed]. *)
 

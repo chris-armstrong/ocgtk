@@ -51,7 +51,7 @@ external unexport : t -> string -> bool
 external set_connection : t -> D_bus_connection.t option -> unit
   = "ml_g_dbus_object_manager_server_set_connection"
 (** Exports all objects managed by [manager] on [connection]. If [connection] is
-    [NULL], stops exporting objects. *)
+    [None], stops exporting objects. *)
 
 external is_exported : t -> D_bus_object_skeleton.t -> bool
   = "ml_g_dbus_object_manager_server_is_exported"

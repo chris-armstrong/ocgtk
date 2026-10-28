@@ -57,7 +57,7 @@ type accessibleinvalidstate =
 (** The possible values for the [GTK_ACCESSIBLE_STATE_INVALID] accessible state.
 
     Note that the [GTK_ACCESSIBLE_INVALID_FALSE] and
-    [GTK_ACCESSIBLE_INVALID_TRUE] have the same values as [FALSE] and [TRUE]. *)
+    [GTK_ACCESSIBLE_INVALID_TRUE] have the same values as [false] and [true]. *)
 
 val accessibleinvalidstate_of_int : int -> accessibleinvalidstate
 val accessibleinvalidstate_to_int : accessibleinvalidstate -> int
@@ -500,7 +500,7 @@ type accessibletristate =
 (** The possible values for the [GTK_ACCESSIBLE_STATE_PRESSED] accessible state.
 
     Note that the [GTK_ACCESSIBLE_TRISTATE_FALSE] and
-    [GTK_ACCESSIBLE_TRISTATE_TRUE] have the same values as [FALSE] and [TRUE].
+    [GTK_ACCESSIBLE_TRISTATE_TRUE] have the same values as [false] and [true].
 *)
 
 val accessibletristate_of_int : int -> accessibletristate
@@ -1156,7 +1156,7 @@ type imagetype =
    gtk_image_get_storage_type()\n\
    returns [GTK_IMAGE_PAINTABLE], then you can call gtk_image_get_paintable().\n\n\
    For empty images, you can request any storage type (call any of the \"get\"\n\
-   functions), but they will all return [NULL] values."]
+   functions), but they will all return [None] values."]
 
 val imagetype_of_int : int -> imagetype
 val imagetype_to_int : imagetype -> int

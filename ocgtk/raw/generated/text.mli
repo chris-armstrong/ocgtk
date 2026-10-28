@@ -335,7 +335,7 @@ external get_im_module : t -> string = "ml_gtk_text_get_im_module"
 
     See [Gtk.IMMulticontext].
 
-    Setting this to a non-[NULL] value overrides the system-wide input method.
+    Setting this to a non-[None] value overrides the system-wide input method.
     See the [Gtk.Settings:gtk-im-module] setting. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
@@ -343,7 +343,7 @@ external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
 
     See [Gtk.IMMulticontext].
 
-    Setting this to a non-[NULL] value overrides the system-wide input method.
+    Setting this to a non-[None] value overrides the system-wide input method.
     See the [Gtk.Settings:gtk-im-module] setting. *)
 
 external get_invisible_char_set : t -> bool

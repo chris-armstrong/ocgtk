@@ -219,12 +219,12 @@ external set_max_width_chars : t -> int -> unit
 external get_placeholder_text : t -> string
   = "ml_gtk_cell_renderer_text_get_placeholder_text"
 (** The text that will be displayed in the [GtkCellRenderer] if
-    [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
+    [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
 external set_placeholder_text : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_placeholder_text"
 (** The text that will be displayed in the [GtkCellRenderer] if
-    [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
+    [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
 external get_rise : t -> int = "ml_gtk_cell_renderer_text_get_rise"
 (** Get property: rise *)

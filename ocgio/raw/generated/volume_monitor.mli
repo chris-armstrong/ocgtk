@@ -22,10 +22,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_volume_monitor_get_type"
 
 external get_volumes : t -> App_info_cycle_64c425a0.Volume.t list
   = "ml_g_volume_monitor_get_volumes"
-(** Gets a list of the volumes on the system.
-
-    The returned list should be freed with g_list_free(), after its elements
-    have been unreffed with g_object_unref(). *)
+(** Gets a list of the volumes on the system. *)
 
 external get_volume_for_uuid :
   t -> string -> App_info_cycle_64c425a0.Volume.t option
@@ -34,10 +31,7 @@ external get_volume_for_uuid :
 
 external get_mounts : t -> App_info_cycle_64c425a0.Mount.t list
   = "ml_g_volume_monitor_get_mounts"
-(** Gets a list of the mounts on the system.
-
-    The returned list should be freed with g_list_free(), after its elements
-    have been unreffed with g_object_unref(). *)
+(** Gets a list of the mounts on the system. *)
 
 external get_mount_for_uuid :
   t -> string -> App_info_cycle_64c425a0.Mount.t option
@@ -46,10 +40,7 @@ external get_mount_for_uuid :
 
 external get_connected_drives : t -> App_info_cycle_64c425a0.Drive.t list
   = "ml_g_volume_monitor_get_connected_drives"
-(** Gets a list of drives connected to the system.
-
-    The returned list should be freed with g_list_free(), after its elements
-    have been unreffed with g_object_unref(). *)
+(** Gets a list of drives connected to the system. *)
 
 val on_drive_changed :
   ?after:bool ->

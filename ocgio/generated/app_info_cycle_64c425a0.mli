@@ -62,7 +62,7 @@ class type app_info_t = object
       instance, on Unix this is the desktop file id from the xdg menu
       specification.
 
-      Note that the returned ID may be [NULL], depending on how the [appinfo]
+      Note that the returned ID may be [None], depending on how the [appinfo]
       has been constructed. *)
 
   method get_name : unit -> string
@@ -71,7 +71,7 @@ class type app_info_t = object
   method get_supported_types : unit -> string array
   (** Retrieves the list of content types that [app_info] claims to support. If
       this information is not provided by the environment, this function will
-      return [NULL].
+      return [None].
 
       This function does not take in consideration associations added with
       [Gio.AppInfo.add_supports_type], but only those exported directly by the
@@ -84,7 +84,7 @@ class type app_info_t = object
       details of the launcher (like what screen it is on). On error, [error]
       will be set accordingly.
 
-      To launch the application without arguments pass a [NULL] [files] list.
+      To launch the application without arguments pass a [None] [files] list.
 
       Note that even if the launch is successful the application launched can
       fail to start if it runs into problems during startup. There is no way to
@@ -116,7 +116,7 @@ class type app_info_t = object
       per invocation as part of their command-line, multiple instances of the
       application will be spawned.
 
-      To launch the application without arguments pass a [NULL] [uris] list.
+      To launch the application without arguments pass a [None] [uris] list.
 
       Note that even if the launch is successful the application launched can
       fail to start if it runs into problems during startup. There is no way to
@@ -288,7 +288,7 @@ and app_launch_context_t = object
   method get_environment : unit -> string array
   (** Gets the complete environment variable list to be passed to the child
       process when [context] is used to launch an application. This is a
-      [NULL]-terminated array of strings, where each string has the form
+      null-terminated array of strings, where each string has the form
       [KEY=VALUE]. *)
 
   method get_startup_notify_id :
@@ -309,8 +309,8 @@ and app_launch_context_t = object
       freedesktop.org Startup Notification Protocol.
 
       Support for the XDG Activation Protocol was added in GLib 2.76. Since GLib
-      2.82 [info] and [files] can be [NULL]. If that’s not supported by the
-      backend, the returned token will be [NULL]. *)
+      2.82 [info] and [files] can be [None]. If that’s not supported by the
+      backend, the returned token will be [None]. *)
 
   method launch_failed : string -> unit
   (** Called when an application has failed to launch, so that it can cancel the
@@ -404,7 +404,7 @@ and drive_t = object
   method eject_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes ejecting a drive. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method enumerate_identifiers : unit -> string array
   (** Gets the kinds of identifiers that [drive] has. Use
@@ -430,10 +430,7 @@ and drive_t = object
   (** Gets the icon for [drive]. *)
 
   method get_volumes : unit -> volume_t list
-  (** Get a list of mountable volumes for [drive].
-
-      The returned list should be freed with g_list_free(), after its elements
-      have been unreffed with g_object_unref(). *)
+  (** Get a list of mountable volumes for [drive]. *)
 
   method has_media : unit -> bool
   (** Checks if the [drive] has media. Note that the OS may not be polling the
@@ -570,7 +567,7 @@ and file_t = object
       only to the current user, to the level that is supported on the target
       filesystem.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -626,7 +623,7 @@ and file_t = object
       only to the current user, to the level that is supported on the target
       filesystem.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -655,7 +652,7 @@ and file_t = object
       only to the current user, to the level that is supported on the target
       filesystem.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -696,7 +693,7 @@ and file_t = object
     \               g_file_peek_path (my_file), local_error->message);\n\
     \  }\n\
      ]}\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+     If [cancellable] is not [None], then the operation can be cancelled by\n\
      triggering the cancellable object from another thread. If the operation\n\
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
@@ -746,7 +743,7 @@ and file_t = object
      [G_FILE_ATTRIBUTE_STANDARD_NAME]. [G_FILE_ATTRIBUTE_STANDARD_NAME] should\n\
      always be specified if you plan to call g_file_enumerator_get_child() or\n\
      g_file_enumerator_iterate() on the returned enumerator.\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled\n\
+     If [cancellable] is not [None], then the operation can be cancelled\n\
      by triggering the cancellable object from another thread. If the\n\
      operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be\n\
      returned.\n\n\
@@ -773,10 +770,10 @@ and file_t = object
 
       [GMount] is returned only for user interesting locations, see
       [GVolumeMonitor]. If the [GFileIface] for [file] does not have a #mount,
-      [error] will be set to [G_IO_ERROR_NOT_FOUND] and [NULL] #will be
+      [error] will be set to [G_IO_ERROR_NOT_FOUND] and [None] #will be
       returned.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -811,7 +808,7 @@ and file_t = object
 
   method get_child_for_display_name : string -> (file_t, GError.t) result
   (** Gets the child of [file] for a given [display_name] (i.e. a UTF-8 version
-      of the name). If this function fails, it returns [NULL] and [error] will
+      of the name). If this function fails, it returns [None] and [error] will
       be set. This is very useful when constructing a [GFile] for a new file and
       the user entered the filename in the user interface, for instance when you
       select a directory and type a filename in the file selector.
@@ -820,7 +817,7 @@ and file_t = object
 
   method get_parent : unit -> file_t option
   (** Gets the parent directory for the [file]. If the [file] represents the
-      root directory of the file system, then [NULL] will be returned.
+      root directory of the file system, then [None] will be returned.
 
       This call does no blocking I/O. *)
 
@@ -839,7 +836,7 @@ and file_t = object
       This call does no blocking I/O. *)
 
   method get_path : unit -> string option
-  (** Gets the local pathname for [GFile], if one exists. If non-[NULL], this is
+  (** Gets the local pathname for [GFile], if one exists. If non-[None], this is
       guaranteed to be an absolute, canonical path. It might contain symlinks.
 
       This call does no blocking I/O. *)
@@ -870,8 +867,8 @@ and file_t = object
   method has_parent : file_t option -> bool
   (** Checks if [file] has a parent, and optionally, if it is [parent].
 
-      If [parent] is [NULL] then this function returns [TRUE] if [file] has any
-      parent at all. If [parent] is non-[NULL] then [TRUE] is only returned if
+      If [parent] is [None] then this function returns [true] if [file] has any
+      parent at all. If [parent] is non-[None] then [true] is only returned if
       [file] is an immediate child of [parent]. *)
 
   method has_prefix : file_t -> bool
@@ -885,7 +882,7 @@ and file_t = object
       use g_file_equal().
 
       This call does no I/O, as it works purely on names. As such it can
-      sometimes return [FALSE] even if [file] is inside a [prefix] (from a
+      sometimes return [false] even if [file] is inside a [prefix] (from a
       filesystem point of view), because the prefix of [file] is an alias of
       [prefix]. *)
 
@@ -908,7 +905,7 @@ and file_t = object
      as it might be on a locally mounted remote filesystem.\n\n\
      On some systems non-native files may be available using the native\n\
      filesystem via a userspace filesystem (FUSE), in these cases this call\n\
-     will return [FALSE], but g_file_get_path() will still return a native \
+     will return [false], but g_file_get_path() will still return a native \
      path.\n\n\
      This call does no blocking I/O."]
 
@@ -929,7 +926,7 @@ and file_t = object
       For a local [GFile] the newly created directory will have the default
       (current) ownership and permissions of the current process.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -949,7 +946,7 @@ and file_t = object
       For a local [GFile] the newly created directories will have the default
       (current) ownership and permissions of the current process.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -958,7 +955,7 @@ and file_t = object
   (** Creates a symbolic link named [file] which contains the string
       [symlink_value].
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -974,7 +971,7 @@ and file_t = object
   (** Obtains a file or directory monitor for the given file, depending on the
       type of the file.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -985,7 +982,7 @@ and file_t = object
   (** Obtains a directory monitor for the given file. This may fail if directory
       monitoring is not supported.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -1002,7 +999,7 @@ and file_t = object
   (** Obtains a file monitor for the given file. If no file notification
       mechanism exists, then regular polling of the file is used.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -1035,7 +1032,7 @@ and file_t = object
       [GFileIOStream] that can be used to read and write the contents of the
       file.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -1073,7 +1070,7 @@ and file_t = object
   (** Returns the [GAppInfo] that is registered as the default application to
       handle the file specified by [file].
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1139,7 +1136,7 @@ and file_t = object
      [G_FILE_ATTRIBUTE_FILESYSTEM_SIZE] (the total size of the filesystem\n\
      in bytes), [G_FILE_ATTRIBUTE_FILESYSTEM_FREE] (number of bytes available),\n\
      and [G_FILE_ATTRIBUTE_FILESYSTEM_TYPE] (type of the filesystem).\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled\n\
+     If [cancellable] is not [None], then the operation can be cancelled\n\
      by triggering the cancellable object from another thread. If the\n\
      operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be\n\
      returned.\n\n\
@@ -1181,7 +1178,7 @@ and file_t = object
      An example attribute query might be [\"standard::*,owner::user\"].\n\
      The standard attributes are available as defines, like\n\
      [Gio.FILE_ATTRIBUTE_STANDARD_NAME].\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled\n\
+     If [cancellable] is not [None], then the operation can be cancelled\n\
      by triggering the cancellable object from another thread. If the\n\
      operation was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be\n\
      returned.\n\n\
@@ -1210,7 +1207,7 @@ and file_t = object
       you might get an access failure, or some specific file may not support a
       specific attribute.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1221,7 +1218,7 @@ and file_t = object
     "Obtain the list of attribute namespaces where new attributes\n\
      can be created by a user. An example of this is extended\n\
      attributes (in the \"xattr\" namespace).\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+     If [cancellable] is not [None], then the operation can be cancelled by\n\
      triggering the cancellable object from another thread. If the operation\n\
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
@@ -1231,7 +1228,7 @@ and file_t = object
   (** Opens a file for reading. The result is a [GFileInputStream] that can be
       used to read the contents of the file.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
@@ -1266,11 +1263,11 @@ and file_t = object
       only to the current user, to the level that is supported on the target
       filesystem.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
 
-      If you pass in a non-[NULL] [etag] value and [file] already exists, then
+      If you pass in a non-[None] [etag] value and [file] already exists, then
       this value is compared to the current entity tag of the file, and if they
       differ an [G_IO_ERROR_WRONG_ETAG] error is returned. This generally means
       that the file has been changed since you last read it. You can get the new
@@ -1278,10 +1275,10 @@ and file_t = object
       and closed the [GFileOutputStream]. When you load a new file you can use
       g_file_input_stream_query_info() to get the etag of the file.
 
-      If [make_backup] is [TRUE], this function will attempt to make a backup of
+      If [make_backup] is [true], this function will attempt to make a backup of
       the current file before overwriting it. If this fails a
       [G_IO_ERROR_CANT_CREATE_BACKUP] error will be returned. If you want to
-      replace anyway, try again with [make_backup] set to [FALSE].
+      replace anyway, try again with [make_backup] set to [false].
 
       If the file is a directory the [G_IO_ERROR_IS_DIRECTORY] error will be
       returned, and if the file is some other form of non-regular file then a
@@ -1336,9 +1333,9 @@ and file_t = object
     (bool, GError.t) result
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING] to [value].
       If [attribute] is of a different type, this operation will fail, returning
-      [FALSE].
+      [false].
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1351,7 +1348,7 @@ and file_t = object
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_INT32] to [value]. If
       [attribute] is of a different type, this operation will fail.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1364,7 +1361,7 @@ and file_t = object
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_INT64] to [value]. If
       [attribute] is of a different type, this operation will fail.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1377,7 +1374,7 @@ and file_t = object
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_STRING] to [value]. If
       [attribute] is of a different type, this operation will fail.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1390,7 +1387,7 @@ and file_t = object
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_UINT32] to [value]. If
       [attribute] is of a different type, this operation will fail.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1403,7 +1400,7 @@ and file_t = object
   (** Sets [attribute] of type [G_FILE_ATTRIBUTE_TYPE_UINT64] to [value]. If
       [attribute] is of a different type, this operation will fail.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1420,7 +1417,7 @@ and file_t = object
      by setting the \"status\" field in the attribute value to\n\
      [G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING], which means you can\n\
      also detect further errors.\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+     If [cancellable] is not [None], then the operation can be cancelled by\n\
      triggering the cancellable object from another thread. If the operation\n\
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
@@ -1438,7 +1435,7 @@ and file_t = object
 
       On success the resulting converted filename is returned.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -1463,7 +1460,7 @@ and file_t = object
 
   method supports_thread_contexts : unit -> bool
   (** Checks if [file] supports thread-default main contexts (see
-      [GLib.MainContext.push_thread_default]) If this returns [FALSE], you
+      [GLib.MainContext.push_thread_default]) If this returns [false], you
       cannot perform asynchronous operations on [file] in a thread that has a
       thread-default context. *)
 
@@ -1479,7 +1476,7 @@ and file_t = object
      mounts, the [G_IO_ERROR_NOT_SUPPORTED] error will be returned in that case.\n\
      Since 2.82, the [x-gvfs-trash] unix mount option can be used to enable\n\
      g_file_trash() support for particular system mounts.\n\n\
-     If [cancellable] is not [NULL], then the operation can be cancelled by\n\
+     If [cancellable] is not [None], then the operation can be cancelled by\n\
      triggering the cancellable object from another thread. If the operation\n\
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
@@ -1550,12 +1547,12 @@ and file_enumerator_t = object
 
       If the file enumerator was already closed when
       g_file_enumerator_close_async() was called, then this function will report
-      [G_IO_ERROR_CLOSED] in [error], and return [FALSE]. If the file enumerator
+      [G_IO_ERROR_CLOSED] in [error], and return [false]. If the file enumerator
       had pending operation when the close operation was started, then this
-      function will report [G_IO_ERROR_PENDING], and return [FALSE]. If
-      [cancellable] was not [NULL], then the operation may have been cancelled
+      function will report [G_IO_ERROR_PENDING], and return [false]. If
+      [cancellable] was not [None], then the operation may have been cancelled
       by triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [FALSE]
+      was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [false]
       will be returned. *)
 
   method get_child : File_info.file_info_t -> file_t
@@ -1594,8 +1591,8 @@ and file_enumerator_t = object
       See the documentation of [GFileEnumerator] for information about the order
       of returned files.
 
-      On error, returns [NULL] and sets [error] to the error. If the enumerator
-      is at the end, [NULL] will be returned and [error] will be unset. *)
+      On error, returns [None] and sets [error] to the error. If the enumerator
+      is at the end, [None] will be returned and [error] will be unset. *)
 
   method next_files_finish :
     Async_result.async_result_t -> (File_info.file_info_t list, GError.t) result
@@ -1745,12 +1742,12 @@ and mount_t = object
 
   method eject_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes ejecting a mount. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method eject_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes ejecting a mount. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method get_default_location : unit -> file_t
   (** Gets the default location of [mount]. The default location of the given
@@ -1781,7 +1778,7 @@ and mount_t = object
   method get_uuid : unit -> string option
   (** Gets the UUID for the [mount]. The reference is typically based on the
       file system UUID for the mount in question and should be considered an
-      opaque string. Returns [NULL] if there is no UUID available. *)
+      opaque string. Returns [None] if there is no UUID available. *)
 
   method get_volume : unit -> volume_t option
   (** Gets the volume for the [mount]. *)
@@ -1789,7 +1786,7 @@ and mount_t = object
   method guess_content_type_finish :
     Async_result.async_result_t -> (string array, GError.t) result
   (** Finishes guessing content types of [mount]. If any errors occurred during
-      the operation, [error] will be set to contain the errors and [FALSE] will
+      the operation, [error] will be set to contain the errors and [false] will
       be returned. In particular, you may get an [G_IO_ERROR_NOT_SUPPORTED] if
       the mount does not support content guessing. *)
 
@@ -1830,7 +1827,7 @@ and mount_t = object
 
   method remount_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes remounting a mount. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method shadow : unit -> unit
   (** Increments the shadow count on [mount]. Usually used by [GVolumeMonitor]
@@ -1840,12 +1837,12 @@ and mount_t = object
 
   method unmount_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes unmounting a mount. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method unmount_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes unmounting a mount. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method unshadow : unit -> unit
   (** Decrements the shadow count on [mount]. Usually used by [GVolumeMonitor]
@@ -1873,7 +1870,7 @@ end
     least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
     a [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [NULL] for the [Gio.MountOperation] if
+    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
     automounting all volumes when a desktop session starts since it’s not
     desirable to put up a lot of dialogs asking for credentials.
 
@@ -1927,12 +1924,12 @@ and volume_t = object
 
   method eject_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes ejecting a volume. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method eject_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes ejecting a volume. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned. *)
+      [error] will be set to contain the errors and [false] will be returned. *)
 
   method enumerate_identifiers : unit -> string array
   (** Gets the kinds of identifiers that [volume] has. Use
@@ -1940,7 +1937,7 @@ and volume_t = object
 
   method get_activation_root : unit -> file_t option
   (** Gets the activation root for a [GVolume] if it is known ahead of mount
-      time. Returns [NULL] otherwise. If not [NULL] and if [volume] is mounted,
+      time. Returns [None] otherwise. If not [None] and if [volume] is mounted,
       then the result of g_mount_get_root() on the [GMount] object obtained from
       g_volume_get_mount() will always either be equal or a prefix of what this
       function returns. In other words, in code
@@ -1962,7 +1959,7 @@ and volume_t = object
       || g_file_equal (volume_activation_root, mount_root)
       ]}
 
-      will always be [TRUE].
+      will always be [true].
 
       Activation roots are typically used in [GVolumeMonitor] implementations to
       find the underlying mount to shadow, see g_mount_is_shadowed() for more
@@ -1993,11 +1990,11 @@ and volume_t = object
   method get_uuid : unit -> string option
   (** Gets the UUID for the [volume]. The reference is typically based on the
       file system UUID for the volume in question and should be considered an
-      opaque string. Returns [NULL] if there is no UUID available. *)
+      opaque string. Returns [None] if there is no UUID available. *)
 
   method mount_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes mounting a volume. If any errors occurred during the operation,
-      [error] will be set to contain the errors and [FALSE] will be returned.
+      [error] will be set to contain the errors and [false] will be returned.
 
       If the mount operation succeeded, g_volume_get_mount() on [volume] is
       guaranteed to return the mount right after calling this function; there's

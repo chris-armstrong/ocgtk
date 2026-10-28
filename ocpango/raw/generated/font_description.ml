@@ -207,11 +207,11 @@ external merge : t -> t option -> bool -> unit
   = "ml_pango_font_description_merge"
 (** Merges the fields that are set in [desc_to_merge] into the fields in [desc].
 
-    If [replace_existing] is [FALSE], only fields in [desc] that are not already
-    set are affected. If [TRUE], then fields that are already set will be
+    If [replace_existing] is [false], only fields in [desc] that are not already
+    set are affected. If [true], then fields that are already set will be
     replaced as well.
 
-    If [desc_to_merge] is [NULL], this function performs nothing. *)
+    If [desc_to_merge] is [None], this function performs nothing. *)
 
 external hash : t -> int = "ml_pango_font_description_hash"
 (** Computes a hash of a [PangoFontDescription] structure.
@@ -297,7 +297,7 @@ external equal : t -> t -> bool = "ml_pango_font_description_equal"
     Two font descriptions are considered equal if the fonts they describe are
     provably identical. This means that their masks do not have to match, as
     long as other fields are all the same. (Two font descriptions may result in
-    identical fonts being loaded, but still compare [FALSE].) *)
+    identical fonts being loaded, but still compare [false].) *)
 
 external copy_static : t -> t option = "ml_pango_font_description_copy_static"
 (** Make a copy of a [PangoFontDescription], but don't duplicate allocated
@@ -311,7 +311,7 @@ external copy_static : t -> t option = "ml_pango_font_description_copy_static"
 external better_match : t -> t option -> t -> bool
   = "ml_pango_font_description_better_match"
 (** Determines if the style attributes of [new_match] are a closer match for
-    [desc] than those of [old_match] are, or if [old_match] is [NULL],
+    [desc] than those of [old_match] are, or if [old_match] is [None],
     determines if [new_match] is a match at all.
 
     Approximate matching is done for weight and style; other style attributes

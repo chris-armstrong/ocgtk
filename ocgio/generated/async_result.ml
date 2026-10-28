@@ -6,7 +6,7 @@ class type async_result_t = object
 
   method legacy_propagate_error : unit -> (bool, GError.t) result
   (** If [res] is a [Gio.SimpleAsyncResult], this is equivalent to
-      [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [FALSE].
+      [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [false].
 
       This can be used for legacy error handling in async [*_finish()] wrapper
       functions that traditionally handled [Gio.SimpleAsyncResult] error returns

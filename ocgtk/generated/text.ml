@@ -306,7 +306,7 @@ class type text_t = object
 
       See [Gtk.IMMulticontext].
 
-      Setting this to a non-[NULL] value overrides the system-wide input method.
+      Setting this to a non-[None] value overrides the system-wide input method.
       See the [Gtk.Settings:gtk-im-module] setting. *)
 
   method set_im_module : string -> unit
@@ -314,7 +314,7 @@ class type text_t = object
 
       See [Gtk.IMMulticontext].
 
-      Setting this to a non-[NULL] value overrides the system-wide input method.
+      Setting this to a non-[None] value overrides the system-wide input method.
       See the [Gtk.Settings:gtk-im-module] setting. *)
 
   method invisible_char_set : bool

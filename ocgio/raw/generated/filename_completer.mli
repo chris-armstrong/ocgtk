@@ -18,7 +18,7 @@ external new_ : unit -> t = "ml_g_filename_completer_new"
 
 external set_dirs_only : t -> bool -> unit
   = "ml_g_filename_completer_set_dirs_only"
-(** If [dirs_only] is [TRUE], [completer] will only complete directory names,
+(** If [dirs_only] is [true], [completer] will only complete directory names,
     and not file names.
 
     This function needs to be called before waiting for results from the
@@ -33,7 +33,7 @@ external get_completion_suffix : t -> string -> string option
 (** Obtains a suffix completion for [initial_text] from [completer].
 
     Suffix will be an empty string if there's no shared suffix among matching
-    completions. If there's no matching completions anyway, [NULL] is returned.
+    completions. If there's no matching completions anyway, [None] is returned.
 *)
 
 val on_got_completion_data :

@@ -38,7 +38,7 @@ external set_default : t -> unit = "ml_pango_cairo_font_map_set_default"
     fontmaps of existing threads are not changed. Default fontmaps of any new
     threads will still be created using [PangoCairo.FontMap.new].
 
-    A value of [NULL] for [fontmap] will cause the current default font map to
+    A value of [None] for [fontmap] will cause the current default font map to
     be released and a new default font map to be created on demand, using
     [PangoCairo.FontMap.new]. *)
 

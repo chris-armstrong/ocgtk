@@ -41,7 +41,7 @@ class type list_box_t = object
     callback:(row:List_box_row.list_box_row_t option -> unit) ->
     unit ->
     Gobject.Signal.handler_id
-  (** Emitted when a new row is selected, or (with a [NULL] [row]) when the
+  (** Emitted when a new row is selected, or (with a [None] [row]) when the
       selection is cleared.
 
       When the [box] is using [GTK_SELECTION_MULTIPLE], this signal will not
@@ -111,13 +111,13 @@ class type list_box_t = object
   (** Gets the n-th child in the list (not counting headers).
 
       If [index_] is negative or larger than the number of items in the list,
-      [NULL] is returned. *)
+      [None] is returned. *)
 
   method get_row_at_y : int -> List_box_row.list_box_row_t option
   (** Gets the row at the [y] position. *)
 
   method get_selected_row : unit -> List_box_row.list_box_row_t option
-  (** Gets the selected row, or [NULL] if no rows are selected.
+  (** Gets the selected row, or [None] if no rows are selected.
 
       Note that the box may allow multiple selection, in which case you should
       use [Gtk.ListBox.selected_foreach] to find all selected rows. *)
@@ -185,7 +185,7 @@ class type list_box_t = object
   (** Make [row] the currently selected row. *)
 
   method set_activate_on_single_click : bool -> unit
-  (** If [single] is [TRUE], rows will be activated when you click on them,
+  (** If [single] is [true], rows will be activated when you click on them,
       otherwise you need to double-click. *)
 
   method set_adjustment : Adjustment.adjustment_t option -> unit

@@ -6,7 +6,7 @@ class type color_chooser_t = object
   (** Adds a palette to the color chooser.
 
       If [orientation] is horizontal, the colors are grouped in rows, with
-      [colors_per_line] colors in each row. If [horizontal] is [FALSE], the
+      [colors_per_line] colors in each row. If [horizontal] is [false], the
       colors are grouped in columns instead.
 
       The default color palette of [Gtk.ColorChooserWidget] has 45 colors,
@@ -18,7 +18,7 @@ class type color_chooser_t = object
       Calling this function for the first time has the side effect of removing
       the default color palette from the color chooser.
 
-      If [colors] is [NULL], removes all previously added palettes. *)
+      If [colors] is [None], removes all previously added palettes. *)
 
   method get_use_alpha : unit -> bool
   (** Returns whether the color chooser shows the alpha channel. *)

@@ -5,7 +5,7 @@ class type map_list_model_t = object
   (** {2:methods Methods} *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
-  (** Gets the model that is currently being mapped or [NULL] if none. *)
+  (** Gets the model that is currently being mapped or [None] if none. *)
 
   method has_map : unit -> bool
   (** Checks if a map function is currently set on [self]. *)

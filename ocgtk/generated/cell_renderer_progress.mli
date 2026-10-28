@@ -56,14 +56,14 @@ class type cell_renderer_progress_t = object
   method text : string
   [@@ocaml.doc
     "The \"text\" property determines the label which will be drawn\n\
-     over the progress bar. Setting this property to [NULL] causes the default\n\
+     over the progress bar. Setting this property to [None] causes the default\n\
      label to be displayed. Setting this property to an empty string causes\n\
      no label to be displayed."]
 
   method set_text : string -> unit
   [@@ocaml.doc
     "The \"text\" property determines the label which will be drawn\n\
-     over the progress bar. Setting this property to [NULL] causes the default\n\
+     over the progress bar. Setting this property to [None] causes the default\n\
      label to be displayed. Setting this property to an empty string causes\n\
      no label to be displayed."]
 

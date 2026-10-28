@@ -12,7 +12,7 @@ class type list_item_t = object
       [Gtk.ListItem.set_activatable]. *)
 
   method get_child : unit -> Widget.widget_t option
-  (** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if
+  (** Gets the child previously set via [Gtk.ListItem.set_child] or [None] if
       none was set. *)
 
   method get_focusable : unit -> bool
@@ -22,7 +22,7 @@ class type list_item_t = object
   method get_item : unit -> [ `object_ ] Gobject.obj option
   (** Gets the model item that associated with [self].
 
-      If [self] is unbound, this function returns [NULL]. *)
+      If [self] is unbound, this function returns [None]. *)
 
   method get_position : unit -> int
   (** Gets the position in the model that [self] currently displays.

@@ -82,7 +82,7 @@ external reorder_child_after :
     The child is moved to the position after [sibling] in the list of [box]
     children.
 
-    If [sibling] is [NULL], the child is placed at the beginning. *)
+    If [sibling] is [None], the child is placed at the beginning. *)
 
 external remove :
   t ->
@@ -117,7 +117,7 @@ external insert_child_after :
 
     The child is added after [sibling] in the list of [box] children.
 
-    If [sibling] is [NULL], the [child] is placed at the beginning. *)
+    If [sibling] is [None], the [child] is placed at the beginning. *)
 
 external get_spacing : t -> int = "ml_gtk_box_get_spacing"
 (** Gets the value set by [Gtk.Box.set_spacing]. *)

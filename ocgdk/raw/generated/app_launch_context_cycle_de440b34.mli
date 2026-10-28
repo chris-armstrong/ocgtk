@@ -105,7 +105,7 @@ and Cairo_context : sig
       [context].
 
       A call to [Gdk.DrawContext.begin_frame] with this [context] must have been
-      done or this function will return [NULL].
+      done or this function will return [None].
 
       The returned context is guaranteed to be valid until
       [Gdk.DrawContext.end_frame] is called. *)
@@ -153,7 +153,7 @@ and Clipboard : sig
       The clipboard will claim the [GdkDisplay]'s resources and advertise these
       new contents to other applications.
 
-      In the rare case of a failure, this function will return [FALSE]. The
+      In the rare case of a failure, this function will return [false]. The
       clipboard will then continue reporting its old contents and ignore
       [provider].
 
@@ -188,7 +188,7 @@ and Clipboard : sig
       A clipboard is considered local if it was last claimed by the running
       application.
 
-      Note that [Gdk.Clipboard.get_content] may return [NULL] even on a local
+      Note that [Gdk.Clipboard.get_content] may return [None] even on a local
       clipboard. In this case the clipboard is empty. *)
 
   external get_formats : t -> Content_formats.t = "ml_gdk_clipboard_get_formats"
@@ -203,7 +203,7 @@ and Clipboard : sig
   (** Returns the [GdkContentProvider] currently set on [clipboard].
 
       If the [clipboard] is empty or its contents are not owned by the current
-      process, [NULL] will be returned. *)
+      process, [None] will be returned. *)
 
   (* Properties *)
 
@@ -269,7 +269,7 @@ and Device : sig
   (** Obtains the surface underneath [device], returning the location of the
       device in [win_x] and [win_y].
 
-      Returns [NULL] if the surface tree under [device] is not known to GDK (for
+      Returns [None] if the surface tree under [device] is not known to GDK (for
       example, belongs to another application). *)
 
   external get_source : t -> Ocgdk_enums.inputsource
@@ -440,18 +440,18 @@ and Display : sig
   (** Returns whether it's possible for a surface to draw outside of the window
       area.
 
-      If [TRUE] is returned the application decides if it wants to draw shadows.
-      If [FALSE] is returned, the compositor decides if it wants to draw
+      If [true] is returned the application decides if it wants to draw shadows.
+      If [false] is returned, the compositor decides if it wants to draw
       shadows. *)
 
   external supports_input_shapes : t -> bool
     = "ml_gdk_display_supports_input_shapes"
-  (** Returns [TRUE] if the display supports input shapes.
+  (** Returns [true] if the display supports input shapes.
 
       This means that [Gdk.Surface.set_input_region] can be used to modify the
       input shape of surfaces on [display].
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   external put_event : t -> Event.t -> unit = "ml_gdk_display_put_event"
   (** Adds the given event to the event queue for [display]. *)
@@ -460,7 +460,7 @@ and Display : sig
     = "ml_gdk_display_prepare_gl"
   (** Checks that OpenGL is available for [self] and ensures that it is properly
       initialized. When this fails, an [error] will be set describing the error
-      and this function returns [FALSE].
+      and this function returns [false].
 
       Note that even if this function succeeds, creating a [GdkGLContext] may
       still fail.
@@ -496,9 +496,7 @@ and Display : sig
       English modes, for example.
 
       [GdkEventKey] contains a %group field that indicates the active keyboard
-      group. The level is computed from the modifier mask.
-
-      The returned array should be freed with g_free(). *)
+      group. The level is computed from the modifier mask. *)
 
   external map_keycode : t -> int -> bool * Keymap_key.t array * int array * int
     = "ml_gdk_display_map_keycode"
@@ -508,8 +506,7 @@ and Display : sig
 
       When a keycode is pressed by the user, the keyval from this list of
       entries is selected by considering the effective keyboard group and level.
-
-      Free the returned arrays with g_free(). *)
+  *)
 
   external list_seats : t -> Seat.t list = "ml_gdk_display_list_seats"
   (** Returns the list of seats known to [display]. *)
@@ -518,13 +515,13 @@ and Display : sig
   (** Returns whether surfaces on this [display] are created with an alpha
       channel.
 
-      Even if a [TRUE] is returned, it is possible that the surface’s alpha
+      Even if a [true] is returned, it is possible that the surface’s alpha
       channel won’t be honored when displaying the surface on the screen: in
       particular, for X an appropriate windowing manager and compositing manager
       must be running to provide appropriate display. Use
       [Gdk.Display.is_composited] to check if that is the case.
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   external is_composited : t -> bool = "ml_gdk_display_is_composited"
   (** Returns whether surfaces can reasonably be expected to have their alpha
@@ -536,14 +533,14 @@ and Display : sig
       On X11 this function returns whether a compositing manager is compositing
       on [display].
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   external is_closed : t -> bool = "ml_gdk_display_is_closed"
   (** Finds out if the display has been closed. *)
 
   external get_startup_notification_id : t -> string option
     = "ml_gdk_display_get_startup_notification_id"
-  (** Gets the startup notification ID for a Wayland display, or [NULL] if no ID
+  (** Gets the startup notification ID for a Wayland display, or [None] if no ID
       has been defined. *)
 
   external get_setting : t -> string -> Gobject.Value.t -> bool
@@ -594,7 +591,7 @@ and Display : sig
   (** Returns the default [GdkSeat] for this display.
 
       Note that a display may not have a seat. In this case, this function will
-      return [NULL]. *)
+      return [None]. *)
 
   external get_clipboard : t -> Clipboard.t = "ml_gdk_display_get_clipboard"
   (** Gets the clipboard used for copy/paste operations. *)
@@ -619,7 +616,7 @@ and Display : sig
 
   external device_is_grabbed : t -> Device.t -> bool
     = "ml_gdk_display_device_is_grabbed"
-  (** Returns [TRUE] if there is an ongoing grab on [device] for [display]. *)
+  (** Returns [true] if there is an ongoing grab on [device] for [display]. *)
 
   external create_gl_context : t -> (Gl_context.t, GError.t) result
     = "ml_gdk_display_create_gl_context"
@@ -697,7 +694,7 @@ and Draw_context : sig
   (* Methods *)
 
   external is_in_frame : t -> bool = "ml_gdk_draw_context_is_in_frame"
-  (** Returns [TRUE] if [context] is in the process of drawing to its surface.
+  (** Returns [true] if [context] is in the process of drawing to its surface.
 
       This is the case between calls to [Gdk.DrawContext.begin_frame] and
       [Gdk.DrawContext.end_frame]. In this situation, drawing commands may be
@@ -716,7 +713,7 @@ and Draw_context : sig
       that the [context] determined needs to be repainted.
 
       If [context] is not in between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame], [NULL] will be returned. *)
+      [Gdk.DrawContext.end_frame], [None] will be returned. *)
 
   external get_display : t -> Display.t option
     = "ml_gdk_draw_context_get_display"
@@ -858,7 +855,7 @@ and Event : sig
   (** Returns a [GdkDeviceTool] representing the tool that caused the event.
 
       If the was not generated by a device that supports different tools (such
-      as a tablet), this function will return [NULL].
+      as a tablet), this function will return [None].
 
       Note: the [GdkDeviceTool] will be constant during the application
       lifetime, if settings must be stored persistently across runs, see
@@ -884,14 +881,14 @@ and Event : sig
   (** Returns the distance between the event locations.
 
       This assumes that both events have X/Y information. If not, this function
-      returns [FALSE]. *)
+      returns [false]. *)
 
   external _get_center : t -> t -> bool * float * float
     = "ml_gdk_events_get_center"
   (** Returns the point halfway between the events' positions.
 
       This assumes that both events have X/Y information. If not, this function
-      returns [FALSE]. *)
+      returns [false]. *)
 
   external _get_angle : t -> t -> bool * float = "ml_gdk_events_get_angle"
   (** Returns the relative angle from [event1] to [event2].
@@ -901,7 +898,7 @@ and Event : sig
       the positive X axis towards the positive Y axis.
 
       This assumes that both events have X/Y information. If not, this function
-      returns [FALSE]. *)
+      returns [false]. *)
 end
 
 and Gl_context : sig
@@ -991,7 +988,7 @@ and Gl_context : sig
       contexts it depends on the GL backend.
 
       Both contexts must be realized for this check to succeed. If either one is
-      not, this function will return [FALSE]. *)
+      not, this function will return [false]. *)
 
   external is_legacy : t -> bool = "ml_gdk_gl_context_is_legacy"
   (** Whether the [GdkGLContext] is in legacy mode or not.
@@ -1001,11 +998,11 @@ and Gl_context : sig
       When realizing a GL context, GDK will try to use the OpenGL 3.2 core
       profile; this profile removes all the OpenGL API that was deprecated prior
       to the 3.2 version of the specification. If the realization is successful,
-      this function will return [FALSE].
+      this function will return [false].
 
       If the underlying OpenGL implementation does not support core profiles,
       GDK will fall back to a pre-3.2 compatibility profile, and this function
-      will return [TRUE].
+      will return [true].
 
       You can use the value returned by this function to decide which kind of
       OpenGL API to use, or whether to do extension discovery, or what kind of
@@ -1027,7 +1024,7 @@ and Gl_context : sig
   (** Used to retrieves the [GdkGLContext] that this [context] share data with.
 
       As many contexts can share data now and no single shared context exists
-      anymore, this function has been deprecated and now always returns [NULL].
+      anymore, this function has been deprecated and now always returns [None].
   *)
 
   external get_required_version : t -> int option * int option
@@ -1077,7 +1074,7 @@ end
    in the draw function of your widget to draw them. Then GDK will handle\n\
    the integration of your rendering with that of other widgets.\n\n\
    Support for [GdkGLContext] is platform-specific and context creation\n\
-   can fail, returning [NULL] context.\n\n\
+   can fail, returning [None] context.\n\n\
    A [GdkGLContext] has to be made \"current\" in order to start using\n\
    it, otherwise any OpenGL call will be ignored.\n\n\
    {b Creating a new OpenGL context}\n\n\
@@ -1121,7 +1118,7 @@ and Monitor : sig
   (* Methods *)
 
   external is_valid : t -> bool = "ml_gdk_monitor_is_valid"
-  (** Returns [TRUE] if the [monitor] object corresponds to a physical monitor.
+  (** Returns [true] if the [monitor] object corresponds to a physical monitor.
 
       The [monitor] becomes invalid when the physical monitor is unplugged or
       removed. *)
@@ -1342,7 +1339,7 @@ and Surface : sig
   (** Sets a specific [GdkCursor] for a given device when it gets inside
       [surface].
 
-      Passing [NULL] for the [cursor] argument means that [surface] will use the
+      Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default.
 
       Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
@@ -1352,7 +1349,7 @@ and Surface : sig
     = "ml_gdk_surface_set_cursor"
   (** Sets the default mouse pointer for a [GdkSurface].
 
-      Passing [NULL] for the [cursor] argument means that [surface] will use the
+      Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default. Note
       that [cursor] must be for the same display as [surface].
 
@@ -1447,7 +1444,7 @@ and Surface : sig
   (** Retrieves a [GdkCursor] pointer for the [device] currently set on the
       specified [GdkSurface].
 
-      If the return value is [NULL] then there is no custom cursor set on the
+      If the return value is [None] then there is no custom cursor set on the
       specified surface, and it is using the cursor for its parent surface.
 
       Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
@@ -1456,7 +1453,7 @@ and Surface : sig
   (** Retrieves a [GdkCursor] pointer for the cursor currently set on the
       [GdkSurface].
 
-      If the return value is [NULL] then there is no custom cursor set on the
+      If the return value is [None] then there is no custom cursor set on the
       surface, and it is using the cursor for its parent surface.
 
       Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
@@ -1474,7 +1471,7 @@ and Surface : sig
 
   external create_vulkan_context : t -> (Vulkan_context.t, GError.t) result
     = "ml_gdk_surface_create_vulkan_context"
-  (** Sets an error and returns [NULL]. *)
+  (** Sets an error and returns [None]. *)
 
   external create_similar_surface :
     t -> Occairo_enums.content -> int -> int -> Occairo_raw.Surface.t
@@ -1556,7 +1553,7 @@ end
     characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
-    fail, returning [NULL] context.
+    fail, returning [None] context.
 
     The class built on this module is in {!Ocgdk.Vulkan_context}. *)
 and Vulkan_context : sig

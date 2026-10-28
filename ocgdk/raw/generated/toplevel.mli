@@ -86,13 +86,13 @@ external set_gravity : t -> Ocgdk_enums.gravity -> unit
 external set_deletable : t -> bool -> unit = "ml_gdk_toplevel_set_deletable"
 (** Sets the toplevel to be deletable.
 
-    Setting [deletable] to [TRUE] hints the desktop environment that it should
+    Setting [deletable] to [true] hints the desktop environment that it should
     offer the user a way to close the surface. *)
 
 external set_decorated : t -> bool -> unit = "ml_gdk_toplevel_set_decorated"
 (** Sets the toplevel to be decorated.
 
-    Setting [decorated] to [FALSE] hints the desktop environment that the
+    Setting [decorated] to [false] hints the desktop environment that the
     surface has its own, client-side decorations and does not need to have
     window decorations added. *)
 

@@ -94,7 +94,7 @@ external set_system_information : t -> string option -> unit
   = "ml_gtk_about_dialog_set_system_information"
 (** Sets the system information to be displayed in the about dialog.
 
-    If [system_information] is [NULL], the system information page is hidden.
+    If [system_information] is [None], the system information page is hidden.
 
     See [Gtk.AboutDialog:system-information]. *)
 
@@ -117,7 +117,7 @@ external set_license : t -> string option -> unit
   = "ml_gtk_about_dialog_set_license"
 (** Sets the license information to be displayed in the about dialog.
 
-    If [license] is [NULL], the license page is hidden. *)
+    If [license] is [None], the license page is hidden. *)
 
 external set_documenters : t -> string array -> unit
   = "ml_gtk_about_dialog_set_documenters"

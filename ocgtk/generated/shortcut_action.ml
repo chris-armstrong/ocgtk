@@ -9,7 +9,7 @@ class type shortcut_action_t = object
 
       Activation of an action can fail for various reasons. If the action is not
       supported by the [widget], if the [args] don't match the action or if the
-      activation otherwise had no effect, [FALSE] will be returned. *)
+      activation otherwise had no effect, [false] will be returned. *)
 
   method to_string : unit -> string
   (** Prints the given action into a human-readable string.

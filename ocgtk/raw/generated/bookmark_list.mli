@@ -30,11 +30,11 @@ external set_attributes : t -> string option -> unit
   = "ml_gtk_bookmark_list_set_attributes"
 (** Sets the [attributes] to be enumerated and starts the enumeration.
 
-    If [attributes] is [NULL], no attributes will be queried, but a list of
+    If [attributes] is [None], no attributes will be queried, but a list of
     [GFileInfo]s will still be created. *)
 
 external is_loading : t -> bool = "ml_gtk_bookmark_list_is_loading"
-(** Returns [TRUE] if the files are currently being loaded.
+(** Returns [true] if the files are currently being loaded.
 
     Files will be added to [self] from time to time while loading is going on.
     The order in which are added is undefined and may change in between runs. *)

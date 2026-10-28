@@ -107,17 +107,17 @@ val on_g_authorize_method :
     it is appropriate to call e.g. polkit_authority_check_authorization_sync()
     with the POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION flag set.
 
-    If [FALSE] is returned then no further handlers are run and the signal
+    If [false] is returned then no further handlers are run and the signal
     handler must take a reference to [invocation] and finish handling the call
     (e.g. return an error via g_dbus_method_invocation_return_error()).
 
-    Otherwise, if [TRUE] is returned, signal emission continues. If no handlers
-    return [FALSE], then the method is dispatched. If [interface] has an
+    Otherwise, if [true] is returned, signal emission continues. If no handlers
+    return [false], then the method is dispatched. If [interface] has an
     enclosing [GDBusObjectSkeleton], then the
     [GDBusObjectSkeleton::authorize]-method signal handlers run before the
     handlers for this signal.
 
-    The default class handler just returns [TRUE].
+    The default class handler just returns [true].
 
     Please note that the common case is optimized: if no signals handlers are
     connected and the default class handler isn't overridden (for both

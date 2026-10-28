@@ -65,6 +65,7 @@
   doc_translate_test_helpers
   doc_parse_tests
   doc_render_tests
+  doc_c_idiom_tests
   doc_translate_tests
   ; Doc_translate corpus smoke test (in-memory, both contexts)
   doc_translate_corpus_tests

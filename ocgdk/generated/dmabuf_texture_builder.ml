@@ -38,12 +38,12 @@ class type dmabuf_texture_builder_t = object
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_dmabuf_texture_builder_set_update_region() or [NULL] if none was set.
+      gdk_dmabuf_texture_builder_set_update_region() or [None] if none was set.
   *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_dmabuf_texture_builder_set_update_texture() or [NULL] if none was set.
+      gdk_dmabuf_texture_builder_set_update_texture() or [None] if none was set.
   *)
 
   method get_width : unit -> int
@@ -53,7 +53,7 @@ class type dmabuf_texture_builder_t = object
   method set_color_state : Raw.Color_state.t option -> unit
   (** Sets the color state for the texture.
 
-      By default, the colorstate is [NULL]. In that case, GTK will choose the
+      By default, the colorstate is [None]. In that case, GTK will choose the
       correct colorstate based on the format. If you don't know what colorstates
       are, this is probably the right thing. *)
 

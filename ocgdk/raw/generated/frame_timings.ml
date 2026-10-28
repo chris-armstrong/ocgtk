@@ -69,6 +69,6 @@ external get_complete : t -> bool = "ml_gdk_frame_timings_get_complete"
     0 to indicate an unavailable value for two reasons: either because the
     information is not yet available, or because it isn't available at all.
 
-    Once this function returns [TRUE] for a frame, you can be certain that no
+    Once this function returns [true] for a frame, you can be certain that no
     further values will become available and be stored in the [GdkFrameTimings].
 *)

@@ -134,7 +134,7 @@ class type layout_t = object
   (** Gets the current [PangoTabArray] used by this layout.
 
       If no [PangoTabArray] has been set, then the default tabs are in use and
-      [NULL] is returned. Default tabs are every 8 spaces.
+      [None] is returned. Default tabs are every 8 spaces.
 
       The return value should be freed with [Pango.TabArray.free]. *)
 
@@ -163,14 +163,14 @@ class type layout_t = object
   method is_ellipsized : unit -> bool
   (** Queries whether the layout had to ellipsize any paragraphs.
 
-      This returns [TRUE] if the ellipsization mode for [layout] is not
+      This returns [true] if the ellipsization mode for [layout] is not
       [PANGO_ELLIPSIZE_NONE], a positive width is set on [layout], and there are
       paragraphs exceeding that width that have to be ellipsized. *)
 
   method is_wrapped : unit -> bool
   (** Queries whether the layout had to wrap any paragraphs.
 
-      This returns [TRUE] if a positive width is set on [layout], and there are
+      This returns [true] if a positive width is set on [layout], and there are
       paragraphs exceeding the layout width that have to be wrapped. *)
 
   method serialize : Enums.layoutserializeflags -> Glib_bytes.t
@@ -205,7 +205,7 @@ class type layout_t = object
       have left-to-right layout. Paragraphs with only neutral characters get
       their direction from the surrounding paragraphs.
 
-      When [FALSE], the choice between left-to-right and right-to-left layout is
+      When [false], the choice between left-to-right and right-to-left layout is
       done according to the base direction of the layout's [PangoContext]. (See
       [Pango.Context.set_base_dir]).
 
@@ -287,7 +287,7 @@ class type layout_t = object
       Note that tabs and justification conflict with each other: Justification
       will move content away from its tab-aligned positions.
 
-      The default value is [FALSE].
+      The default value is [false].
 
       Also see [Pango.Layout.set_justify_last_line]. *)
 
@@ -298,7 +298,7 @@ class type layout_t = object
       This only has an effect if [Pango.Layout.set_justify] has been called as
       well.
 
-      The default value is [FALSE]. *)
+      The default value is [false]. *)
 
   method set_line_spacing : float -> unit
   (** Sets a factor for line spacing.
@@ -331,12 +331,12 @@ class type layout_t = object
   method set_single_paragraph_mode : bool -> unit
   (** Sets the single paragraph mode of [layout].
 
-      If [setting] is [TRUE], do not treat newlines and similar characters as
+      If [setting] is [true], do not treat newlines and similar characters as
       paragraph separators; instead, keep all text in a single paragraph, and
       display a glyph for paragraph separator characters. Used when you want to
       allow editing of newlines on a single text line.
 
-      The default value is [FALSE]. *)
+      The default value is [false]. *)
 
   method set_spacing : int -> unit
   (** Sets the amount of spacing in Pango units between the lines of the layout.
@@ -361,7 +361,7 @@ class type layout_t = object
       [PangoLayout] will place content at the next tab position whenever it
       meets a Tab character (U+0009).
 
-      By default, tabs are every 8 spaces. If [tabs] is [NULL], the default tabs
+      By default, tabs are every 8 spaces. If [tabs] is [None], the default tabs
       are reinstated. [tabs] is copied into the layout; you must free your copy
       of [tabs] yourself.
 
@@ -428,7 +428,7 @@ and layout_iter_t = object
 
       Note that iterating forward by char moves in visual order, not logical
       order, so indexes may not be sequential. Also, the index may be equal to
-      the length of the text in the layout, if on the [NULL] run (see
+      the length of the text in the layout, if on the [None] run (see
       [Pango.LayoutIter.get_run]). *)
 
   method get_layout : unit -> layout_t option
@@ -458,22 +458,22 @@ and layout_iter_t = object
   method next_char : unit -> bool
   (** Moves [iter] forward to the next character in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   method next_cluster : unit -> bool
   (** Moves [iter] forward to the next cluster in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   method next_line : unit -> bool
   (** Moves [iter] forward to the start of the next line.
 
-      If [iter] is already on the last line, returns [FALSE]. *)
+      If [iter] is already on the last line, returns [false]. *)
 
   method next_run : unit -> bool
   (** Moves [iter] forward to the next run in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   (** {2:conversions Conversions} *)
 

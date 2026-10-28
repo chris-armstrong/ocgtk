@@ -142,10 +142,10 @@ external set_child :
 
 external set_cascade_popdown : t -> bool -> unit
   = "ml_gtk_popover_set_cascade_popdown"
-(** If [cascade_popdown] is [TRUE], the popover will be closed when a child
+(** If [cascade_popdown] is [true], the popover will be closed when a child
     modal popover is closed.
 
-    If [FALSE], [popover] will stay visible. *)
+    If [false], [popover] will stay visible. *)
 
 external set_autohide : t -> bool -> unit = "ml_gtk_popover_set_autohide"
 (** Sets whether [popover] is modal.
@@ -183,8 +183,8 @@ external get_pointing_to : t -> bool * Ocgdk_raw.Rectangle.t
   = "ml_gtk_popover_get_pointing_to"
 (** Gets the rectangle that the popover points to.
 
-    If a rectangle to point to has been set, this function will return [TRUE]
-    and fill in [rect] with such rectangle, otherwise it will return [FALSE] and
+    If a rectangle to point to has been set, this function will return [true]
+    and fill in [rect] with such rectangle, otherwise it will return [false] and
     fill in [rect] with the parent widget coordinates. *)
 
 external get_offset : t -> int * int = "ml_gtk_popover_get_offset"

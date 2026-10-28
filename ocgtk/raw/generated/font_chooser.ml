@@ -87,7 +87,7 @@ external get_font_size : t -> int = "ml_gtk_font_chooser_get_font_size"
 
 external get_font_map : t -> Ocpango_raw.Font_map.t option
   = "ml_gtk_font_chooser_get_font_map"
-(** Gets the custom font map of this font chooser widget, or [NULL] if it does
+(** Gets the custom font map of this font chooser widget, or [None] if it does
     not have one. *)
 
 external get_font_features : t -> string
@@ -105,14 +105,14 @@ external get_font_family : t -> Ocpango_raw.Font_family.t option
 
     Font families are a collection of font faces.
 
-    If the selected font is not installed, returns [NULL]. *)
+    If the selected font is not installed, returns [None]. *)
 
 external get_font_face : t -> Ocpango_raw.Font_face.t option
   = "ml_gtk_font_chooser_get_font_face"
 (** Gets the [PangoFontFace] representing the selected font group details (i.e.
     family, slant, weight, width, etc).
 
-    If the selected font is not installed, returns [NULL]. *)
+    If the selected font is not installed, returns [None]. *)
 
 external get_font_desc : t -> Ocpango_raw.Font_description.t option
   = "ml_gtk_font_chooser_get_font_desc"

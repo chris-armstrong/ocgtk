@@ -118,7 +118,7 @@ class type scale_t = object
       GTK makes it easy for the user to position the scale exactly at the marks
       value.
 
-      If [markup] is not [NULL], text is shown next to the tick mark.
+      If [markup] is not [None], text is shown next to the tick mark.
 
       To remove marks from a scale, use [Gtk.Scale.clear_marks]. *)
 
@@ -149,8 +149,8 @@ class type scale_t = object
 
       Also causes the value of the adjustment to be rounded to this number of
       digits, so the retrieved value matches the displayed one, if
-      [Gtk.Scale:draw-value] is [TRUE] when the value changes. If you want to
-      enforce rounding the value when [Gtk.Scale:draw-value] is [FALSE], you can
+      [Gtk.Scale:draw-value] is [true] when the value changes. If you want to
+      enforce rounding the value when [Gtk.Scale:draw-value] is [false], you can
       set [Gtk.Range:round-digits] instead.
 
       Note that rounding to a small number of digits can interfere with the
@@ -165,7 +165,7 @@ class type scale_t = object
   method set_has_origin : bool -> unit
   (** Sets whether the scale has an origin.
 
-      If [Gtk.Scale:has-origin] is set to [TRUE] (the default), the scale will
+      If [Gtk.Scale:has-origin] is set to [true] (the default), the scale will
       highlight the part of the trough between the origin (bottom or left side)
       and the current value. *)
 

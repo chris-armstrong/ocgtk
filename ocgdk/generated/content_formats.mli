@@ -63,7 +63,7 @@ class type content_formats_t = object
   method match_mime_type : Raw.Content_formats.t -> string option
   (** Finds the first mime type from [first] that is also contained in [second].
 
-      If no matching mime type is found, [NULL] is returned. *)
+      If no matching mime type is found, [None] is returned. *)
 
   method ref : unit -> Raw.Content_formats.t
   (** Increases the reference count of a [GdkContentFormats] by one. *)

@@ -8,7 +8,7 @@
     characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
-    fail, returning [NULL] context.
+    fail, returning [None] context.
 
     The class built on this module is in {!Ocgdk.Vulkan_context}. *)
 

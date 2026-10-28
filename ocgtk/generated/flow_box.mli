@@ -240,7 +240,7 @@ class type flow_box_t = object
   (** Selects a single child of [box], if the selection mode allows it. *)
 
   method set_activate_on_single_click : bool -> unit
-  (** If [single] is [TRUE], children will be activated when you click on them,
+  (** If [single] is [true], children will be activated when you click on them,
       otherwise you need to double-click. *)
 
   method set_column_spacing : int -> unit

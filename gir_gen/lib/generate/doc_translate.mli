@@ -40,6 +40,10 @@
    never string equality, for all of these. *)
 
 type context = Doc_ast.context = Entity | Member
+type ret_shape = Doc_ast.ret_shape = Plain | Throws
+
+val ret_shape_of_throws : bool -> ret_shape
+(** [Throws] for an item GIR marks [throws="1"]. *)
 
 type sym_kind = Doc_ast.sym_kind =
   | Class
@@ -60,6 +64,8 @@ type sym_kind = Doc_ast.sym_kind =
   | Id
   | Type_kind
 
+type c_lit = Doc_ast.c_lit = True | False | Null | Null_on_error of string
+
 type inline = Doc_ast.inline =
   | Text of string
   | Code of string
@@ -74,6 +80,8 @@ type inline = Doc_ast.inline =
     }
   | Param_ref of string
   | Ref of string
+  | C_lit of c_lit
+  | C_prim of string
 
 type block = Doc_ast.block =
   | Para of inline list
@@ -95,6 +103,7 @@ type fallback = Doc_ast.fallback =
   | Picture_stripped of string option
   | Image_stripped of string
   | Quote_stripped
+  | Ownership_stripped of string
 
 val parse : context -> string -> t
 (** [parse ctx gir_markdown] parses raw GIR [<doc>] content into the AST. [ctx]
@@ -106,16 +115,18 @@ val parse_with_fallbacks : context -> string -> t * fallback list
 val render : t -> string
 (** Renders with the [Entity] heading policy; see [Doc_render]. *)
 
-val render_as : context -> t -> string
+val render_as : ?ret_shape:ret_shape -> context -> t -> string
 (** [render] with the heading policy selected explicitly. *)
 
-val render_with_fallbacks : context -> t -> string * fallback list
+val render_with_fallbacks :
+  ?ret_shape:ret_shape -> context -> t -> string * fallback list
 (** [render_as] plus the render-time fallback events; see [Doc_render]. *)
 
-val translate : context -> string -> string
-(** [translate ctx s = render_as ctx (parse ctx s)]. *)
+val translate : ?ret_shape:ret_shape -> context -> string -> string
+(** [translate ?ret_shape ctx s = render_as ?ret_shape ctx (parse ctx s)]. *)
 
-val translate_with_fallbacks : context -> string -> string * fallback list
+val translate_with_fallbacks :
+  ?ret_shape:ret_shape -> context -> string -> string * fallback list
 (** [translate] plus all fallback events, parse events before render events.
     This is the call the emission sites and the corpus smoke test use. *)
 

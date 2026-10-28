@@ -27,7 +27,7 @@ class type tab_array_t = object
       according to the current locale. *)
 
   method get_positions_in_pixels : unit -> bool
-  (** Returns [TRUE] if the tab positions are in pixels, [FALSE] if they are in
+  (** Returns [true] if the tab positions are in pixels, [false] if they are in
       Pango units. *)
 
   method get_size : unit -> int
@@ -99,5 +99,5 @@ class tab_array : Raw.Tab_array.t -> tab_array_t
 val new_ : int -> bool -> tab_array_t
 (** Creates an array of [initial_size] tab stops.
 
-    Tab stops are specified in pixel units if [positions_in_pixels] is [TRUE],
+    Tab stops are specified in pixel units if [positions_in_pixels] is [true],
     otherwise in Pango units. All stops are initially at position 0. *)

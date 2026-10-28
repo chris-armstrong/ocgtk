@@ -94,7 +94,7 @@ class type d_bus_message_t = object
   (** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header
       field.
 
-      This will always be non-[NULL], but may be an empty string. *)
+      This will always be non-[None], but may be an empty string. *)
 
   method get_unix_fd_list : unit -> Unix_fd_list.unix_fd_list_t option
   (** Gets the UNIX file descriptors associated with [message], if any.
@@ -156,7 +156,7 @@ class type d_bus_message_t = object
   method set_body : Gvariant.t -> unit
   (** Sets the body [message]. As a side-effect the
       [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header field is set to the type
-      string of [body] (or cleared if [body] is [NULL]).
+      string of [body] (or cleared if [body] is [None]).
 
       If [body] is floating, [message] assumes ownership of [body]. *)
 
@@ -220,7 +220,7 @@ class type d_bus_message_t = object
   method set_unix_fd_list : Unix_fd_list.unix_fd_list_t option -> unit
   (** Sets the UNIX file descriptors associated with [message]. As a side-effect
       the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header field is set to the
-      number of fds in [fd_list] (or cleared if [fd_list] is [NULL]).
+      number of fds in [fd_list] (or cleared if [fd_list] is [None]).
 
       This method is only available on UNIX.
 
@@ -231,7 +231,7 @@ class type d_bus_message_t = object
 
   method to_gerror : unit -> (bool, GError.t) result
   (** If [message] is not of type [G_DBUS_MESSAGE_TYPE_ERROR] does nothing and
-      returns [FALSE].
+      returns [false].
 
       Otherwise this method encodes the error in [message] as a [GError] using
       g_dbus_error_set_dbus_error() using the information in the

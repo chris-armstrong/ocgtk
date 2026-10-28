@@ -41,7 +41,7 @@ class type seekable_t = object
       larger than [offset], the extra data is discarded. If the stream was
       previously shorter than [offset], it is extended with NUL ('\0') bytes.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
       operation was partially finished when the operation was cancelled the

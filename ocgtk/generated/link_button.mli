@@ -32,7 +32,7 @@
 
     By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
     is clicked. This behaviour can be overridden by connecting to the
-    [Gtk.LinkButton::activate-link] signal and returning [TRUE] from the signal
+    [Gtk.LinkButton::activate-link] signal and returning [true] from the signal
     handler.
 
     {b Shortcuts and Gestures}
@@ -69,7 +69,7 @@ class type link_button_t = object
       stored inside the [Gtk.LinkButton:uri] property.
 
       To override the default behavior, you can connect to the ::activate-link
-      signal and stop the propagation of the signal by returning [TRUE] from
+      signal and stop the propagation of the signal by returning [true] from
       your handler. *)
 
   (** {2:methods Methods} *)
@@ -120,7 +120,7 @@ class link_button : Raw.Link_button.t -> link_button_t
 
     By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
     is clicked. This behaviour can be overridden by connecting to the
-    [Gtk.LinkButton::activate-link] signal and returning [TRUE] from the signal
+    [Gtk.LinkButton::activate-link] signal and returning [true] from the signal
     handler.
 
     {b Shortcuts and Gestures}

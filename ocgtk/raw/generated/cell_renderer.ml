@@ -47,7 +47,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_get_type"
 
 external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
 (** Informs the cell renderer that the editing is stopped. If [canceled] is
-    [TRUE], the cell renderer will emit the [GtkCellRenderer]::editing-canceled
+    [true], the cell renderer will emit the [GtkCellRenderer]::editing-canceled
     signal.
 
     This function should be called by cell renderer implementations in response

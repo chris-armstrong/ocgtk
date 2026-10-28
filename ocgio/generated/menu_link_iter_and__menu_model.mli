@@ -22,7 +22,7 @@ class type menu_link_iter_t = object
   method next : unit -> bool
   (** Attempts to advance the iterator to the next (possibly first) link.
 
-      [TRUE] is returned on success, or [FALSE] if there are no more links.
+      [true] is returned on success, or [false] if there are no more links.
 
       You must call this function when you first acquire the iterator to advance
       it to the first link (and determine if the first link exists at all). *)
@@ -179,21 +179,21 @@ and menu_model_t = object
   (** Queries the item at position [item_index] in [model] for the attribute
       specified by [attribute].
 
-      If [expected_type] is non-[NULL] then it specifies the expected type of
-      the attribute. If it is [NULL] then any type will be accepted.
+      If [expected_type] is non-[None] then it specifies the expected type of
+      the attribute. If it is [None] then any type will be accepted.
 
       If the attribute exists and matches [expected_type] (or if the expected
       type is unspecified) then the value is returned.
 
       If the attribute does not exist, or does not match the expected type then
-      [NULL] is returned. *)
+      [None] is returned. *)
 
   method get_item_link : int -> string -> menu_model_t option
   (** Queries the item at position [item_index] in [model] for the link
       specified by [link].
 
       If the link exists, the linked [GMenuModel] is returned. If the link does
-      not exist, [NULL] is returned. *)
+      not exist, [None] is returned. *)
 
   method get_n_items : unit -> int
   (** Query the number of items in [model]. *)
@@ -224,15 +224,11 @@ and menu_model_t = object
   method iterate_item_attributes :
     int -> Menu_attribute_iter.menu_attribute_iter_t
   (** Creates a [GMenuAttributeIter] to iterate over the attributes of the item
-      at position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      at position [item_index] in [model]. *)
 
   method iterate_item_links : int -> menu_link_iter_t
   (** Creates a [GMenuLinkIter] to iterate over the links of the item at
-      position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      position [item_index] in [model]. *)
 
   (** {2:conversions Conversions} *)
 

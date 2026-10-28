@@ -34,7 +34,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_shortcut_action_get_type"
 external parse_string : string -> t = "ml_gtk_shortcut_action_parse_string"
 (** Tries to parse the given string into an action.
 
-    On success, the parsed action is returned. When parsing failed, [NULL] is
+    On success, the parsed action is returned. When parsing failed, [None] is
     returned.
 
     The accepted strings are:
@@ -67,4 +67,4 @@ external activate :
 
     Activation of an action can fail for various reasons. If the action is not
     supported by the [widget], if the [args] don't match the action or if the
-    activation otherwise had no effect, [FALSE] will be returned. *)
+    activation otherwise had no effect, [false] will be returned. *)

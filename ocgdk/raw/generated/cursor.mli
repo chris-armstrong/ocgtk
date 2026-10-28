@@ -55,12 +55,12 @@ external new_from_texture : Texture.t -> int -> int -> t option -> t
 external get_texture : t -> Texture.t option = "ml_gdk_cursor_get_texture"
 (** Returns the texture for the cursor.
 
-    If the cursor is a named cursor, [NULL] will be returned. *)
+    If the cursor is a named cursor, [None] will be returned. *)
 
 external get_name : t -> string option = "ml_gdk_cursor_get_name"
 (** Returns the name of the cursor.
 
-    If the cursor is not a named cursor, [NULL] will be returned. *)
+    If the cursor is not a named cursor, [None] will be returned. *)
 
 external get_hotspot_y : t -> int = "ml_gdk_cursor_get_hotspot_y"
 (** Returns the vertical offset of the hotspot.

@@ -121,14 +121,14 @@ external set_has_stencil_buffer : t -> bool -> unit
   = "ml_gtk_gl_area_set_has_stencil_buffer"
 (** Sets whether the [GtkGLArea] should use a stencil buffer.
 
-    If [has_stencil_buffer] is [TRUE] the widget will allocate and enable a
+    If [has_stencil_buffer] is [true] the widget will allocate and enable a
     stencil buffer for the target framebuffer. Otherwise there will be none. *)
 
 external set_has_depth_buffer : t -> bool -> unit
   = "ml_gtk_gl_area_set_has_depth_buffer"
 (** Sets whether the [GtkGLArea] should use a depth buffer.
 
-    If [has_depth_buffer] is [TRUE] the widget will allocate and enable a depth
+    If [has_depth_buffer] is [true] the widget will allocate and enable a depth
     buffer for the target framebuffer. Otherwise there will be none. *)
 
 external set_error : t -> GError.t option -> unit = "ml_gtk_gl_area_set_error"
@@ -140,11 +140,11 @@ external set_error : t -> GError.t option -> unit = "ml_gtk_gl_area_set_error"
 external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 (** Sets whether the [GtkGLArea] is in auto render mode.
 
-    If [auto_render] is [TRUE] the [Gtk.GLArea::render] signal will be emitted
+    If [auto_render] is [true] the [Gtk.GLArea::render] signal will be emitted
     every time the widget draws. This is the default and is useful if drawing
     the widget is faster.
 
-    If [auto_render] is [FALSE] the data from previous rendering is kept around
+    If [auto_render] is [false] the data from previous rendering is kept around
     and will be used for drawing the widget the next time, unless the window is
     resized. In order to force a rendering [Gtk.GLArea.queue_render] must be
     called. This mode is useful when the scene changes seldom, but takes a long
@@ -166,7 +166,7 @@ external queue_render : t -> unit = "ml_gtk_gl_area_queue_render"
     draw.
 
     This is only needed when [Gtk.GLArea.set_auto_render] has been called with a
-    [FALSE] value. The default behaviour is to emit [Gtk.GLArea::render] on each
+    [false] value. The default behaviour is to emit [Gtk.GLArea::render] on each
     draw. *)
 
 external make_current : t -> unit = "ml_gtk_gl_area_make_current"

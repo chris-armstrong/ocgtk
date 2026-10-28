@@ -69,4 +69,4 @@ val new_ : Sorter.sorter_t option -> tree_list_row_sorter_t
     levels of a [GtkTreeListModel].
 
     Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
-    [FALSE] as it can only sort [Gtk.TreeListRow]s. *)
+    [false] as it can only sort [Gtk.TreeListRow]s. *)

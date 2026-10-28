@@ -92,12 +92,12 @@ class type subprocess_t = object
       This is equivalent to the system WEXITSTATUS macro.
 
       It is an error to call this function before g_subprocess_wait() and unless
-      g_subprocess_get_if_exited() returned [TRUE]. *)
+      g_subprocess_get_if_exited() returned [true]. *)
 
   method get_identifier : unit -> string option
   (** On UNIX, returns the process ID as a decimal string. On Windows, returns
       the result of GetProcessId() also as a string. If the subprocess has
-      terminated, this will return [NULL]. *)
+      terminated, this will return [None]. *)
 
   method get_if_exited : unit -> bool
   (** Check if the given subprocess exited normally (ie: by way of exit() or
@@ -134,14 +134,14 @@ class type subprocess_t = object
       [subprocess].
 
       The process must have been created with [G_SUBPROCESS_FLAGS_STDERR_PIPE],
-      otherwise [NULL] will be returned. *)
+      otherwise [None] will be returned. *)
 
   method get_stdin_pipe : unit -> Output_stream.output_stream_t option
   (** Gets the [GOutputStream] that you can write to in order to give data to
       the stdin of [subprocess].
 
       The process must have been created with [G_SUBPROCESS_FLAGS_STDIN_PIPE]
-      and not [G_SUBPROCESS_FLAGS_STDIN_INHERIT], otherwise [NULL] will be
+      and not [G_SUBPROCESS_FLAGS_STDIN_INHERIT], otherwise [None] will be
       returned. *)
 
   method get_stdout_pipe : unit -> Input_stream.input_stream_t option
@@ -149,7 +149,7 @@ class type subprocess_t = object
       [subprocess].
 
       The process must have been created with [G_SUBPROCESS_FLAGS_STDOUT_PIPE],
-      otherwise [NULL] will be returned. *)
+      otherwise [None] will be returned. *)
 
   method get_successful : unit -> bool
   [@@ocaml.doc
@@ -166,7 +166,7 @@ class type subprocess_t = object
       This is equivalent to the system WTERMSIG macro.
 
       It is an error to call this function before g_subprocess_wait() and unless
-      g_subprocess_get_if_signaled() returned [TRUE]. *)
+      g_subprocess_get_if_signaled() returned [true]. *)
 
   method send_signal : int -> unit
   (** Sends the UNIX signal [signal_num] to the subprocess, if it is still
@@ -276,4 +276,4 @@ val newv :
   string array -> Enums.subprocessflags -> (subprocess_t, GError.t) result
 (** Create a new process with the given flags and argument list.
 
-    The argument list is expected to be [NULL]-terminated. *)
+    The argument list is expected to be null-terminated. *)

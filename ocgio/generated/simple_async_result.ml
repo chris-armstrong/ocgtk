@@ -33,7 +33,7 @@ class type simple_async_result_t = object
 
       If the [GCancellable] given to a prior call to
       g_simple_async_result_set_check_cancellable() is cancelled then this
-      function will return [TRUE] with [dest] set appropriately. *)
+      function will return [true] with [dest] set appropriately. *)
 
   method set_check_cancellable : Cancellable.cancellable_t option -> unit
   [@@ocaml.doc

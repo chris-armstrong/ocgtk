@@ -98,11 +98,11 @@ class type font_dialog_button_t = object
   *)
 
   method set_use_font : bool -> unit
-  (** If [use_font] is [TRUE], the font name will be written using the selected
+  (** If [use_font] is [true], the font name will be written using the selected
       font. *)
 
   method set_use_size : bool -> unit
-  (** If [use_size] is [TRUE], the font name will be written using the selected
+  (** If [use_size] is [true], the font name will be written using the selected
       font size. *)
 
   (** {2:conversions Conversions} *)
@@ -137,5 +137,5 @@ class font_dialog_button : Raw.Font_dialog_button.t -> font_dialog_button_t
 val new_ : Font_dialog.font_dialog_t option -> font_dialog_button_t
 (** Creates a new [GtkFontDialogButton] with the given [GtkFontDialog].
 
-    You can pass [NULL] to this function and set a [GtkFontDialog] later. The
+    You can pass [None] to this function and set a [GtkFontDialog] later. The
     button will be insensitive until that happens. *)

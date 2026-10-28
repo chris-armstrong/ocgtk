@@ -21,7 +21,7 @@ external new_ : unit -> t = "ml_gsk_transform_new"
 (** Creates a new identity transform.
 
     This function is meant to be used by language bindings. For C code, this is
-    equivalent to using [NULL]. *)
+    equivalent to using [None]. *)
 
 (* Methods *)
 
@@ -203,9 +203,9 @@ external matrix : t -> Ocgraphene_raw.Matrix.t -> t = "ml_gsk_transform_matrix"
 external invert : t -> t option = "ml_gsk_transform_invert"
 (** Inverts the given transform.
 
-    If [self] is not invertible, [NULL] is returned. Note that inverting [NULL]
-    also returns [NULL], which is the correct inverse of [NULL]. If you need to
-    differentiate between those cases, you should check [self] is not [NULL]
+    If [self] is not invertible, [None] is returned. Note that inverting [None]
+    also returns [None], which is the correct inverse of [None]. If you need to
+    differentiate between those cases, you should check [self] is not [None]
     before calling this function.
 
     This function consumes [self]. Use [Gsk.Transform.ref] first if you want to

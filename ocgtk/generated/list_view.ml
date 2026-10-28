@@ -60,7 +60,7 @@ class type list_view_t = object
   (** Sets the [GtkListItemFactory] to use for populating the [Gtk.ListHeader]
       objects used in section headers.
 
-      If this factory is set to [NULL], the list will not show section headers.
+      If this factory is set to [None], the list will not show section headers.
   *)
 
   method set_model : Selection_model.selection_model_t option -> unit

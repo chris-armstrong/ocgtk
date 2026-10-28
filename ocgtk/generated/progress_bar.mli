@@ -134,24 +134,24 @@ class type progress_bar_t = object
   (** Sets whether the progress bar will show text next to the bar.
 
       The shown text is either the value of the [Gtk.ProgressBar:text] property
-      or, if that is [NULL], the [Gtk.ProgressBar:fraction] value, as a
+      or, if that is [None], the [Gtk.ProgressBar:fraction] value, as a
       percentage.
 
       To make a progress bar that is styled and sized suitably for containing
       text (even if the actual text is blank), set [Gtk.ProgressBar:show-text]
-      to [TRUE] and [Gtk.ProgressBar:text] to the empty string (not [NULL]). *)
+      to [true] and [Gtk.ProgressBar:text] to the empty string (not [None]). *)
 
   method set_text : string option -> unit
   (** Causes the given [text] to appear next to the progress bar.
 
-      If [text] is [NULL] and [Gtk.ProgressBar:show-text] is [TRUE], the current
+      If [text] is [None] and [Gtk.ProgressBar:show-text] is [true], the current
       value of [Gtk.ProgressBar:fraction] will be displayed as a percentage.
 
-      If [text] is non-[NULL] and [Gtk.ProgressBar:show-text] is [TRUE], the
+      If [text] is non-[None] and [Gtk.ProgressBar:show-text] is [true], the
       text will be displayed. In this case, it will not display the progress
       percentage. If [text] is the empty string, the progress bar will still be
       styled and sized suitably for containing text, as long as
-      [Gtk.ProgressBar:show-text] is [TRUE]. *)
+      [Gtk.ProgressBar:show-text] is [true]. *)
 
   (** {2:conversions Conversions} *)
 

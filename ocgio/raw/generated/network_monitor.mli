@@ -36,9 +36,9 @@ external get_connectivity : t -> Ocgio_enums.networkconnectivity
 [@@ocaml.doc
   "Gets a more detailed networking state than\n\
    g_network_monitor_get_network_available().\n\n\
-   If [GNetworkMonitor:network]-available is [FALSE], then the\n\
+   If [GNetworkMonitor:network]-available is [false], then the\n\
    connectivity state will be [G_NETWORK_CONNECTIVITY_LOCAL].\n\n\
-   If [GNetworkMonitor:network]-available is [TRUE], then the\n\
+   If [GNetworkMonitor:network]-available is [true], then the\n\
    connectivity state will be [G_NETWORK_CONNECTIVITY_FULL] (if there\n\
    is full Internet connectivity), [G_NETWORK_CONNECTIVITY_LIMITED] (if\n\
    the host has a default route, but appears to be unable to actually\n\
@@ -66,12 +66,12 @@ external can_reach :
 (** Attempts to determine whether or not the host pointed to by [connectable]
     can be reached, without actually trying to connect to it.
 
-    This may return [TRUE] even when [GNetworkMonitor:network]-available is
-    [FALSE], if, for example, [monitor] can determine that [connectable] refers
+    This may return [true] even when [GNetworkMonitor:network]-available is
+    [false], if, for example, [monitor] can determine that [connectable] refers
     to a host on a local network.
 
     If [monitor] believes that an attempt to connect to [connectable] will
-    succeed, it will return [TRUE]. Otherwise, it will return [FALSE] and set
+    succeed, it will return [true]. Otherwise, it will return [false] and set
     [error] to an appropriate error (such as [G_IO_ERROR_HOST_UNREACHABLE]).
 
     Note that although this does not attempt to connect to [connectable], it may

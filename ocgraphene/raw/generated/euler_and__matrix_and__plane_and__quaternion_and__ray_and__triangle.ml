@@ -54,7 +54,7 @@ module rec Euler : sig
   (** Initializes a #graphene_euler_t using the angles contained in a
       #graphene_vec3_t.
 
-      If the #graphene_vec3_t [v] is [NULL], the #graphene_euler_t will be
+      If the #graphene_vec3_t [v] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_radians :
@@ -68,7 +68,7 @@ module rec Euler : sig
     = "ml_graphene_euler_init_from_quaternion"
   (** Initializes a #graphene_euler_t using the given normalized quaternion.
 
-      If the #graphene_quaternion_t [q] is [NULL], the #graphene_euler_t will be
+      If the #graphene_quaternion_t [q] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_matrix :
@@ -76,7 +76,7 @@ module rec Euler : sig
     = "ml_graphene_euler_init_from_matrix"
   (** Initializes a #graphene_euler_t using the given rotation matrix.
 
-      If the #graphene_matrix_t [m] is [NULL], the #graphene_euler_t will be
+      If the #graphene_matrix_t [m] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_euler : t -> t option -> t
@@ -84,7 +84,7 @@ module rec Euler : sig
   (** Initializes a #graphene_euler_t using the angles and order of another
       #graphene_euler_t.
 
-      If the #graphene_euler_t [src] is [NULL], this function is equivalent to
+      If the #graphene_euler_t [src] is [None], this function is equivalent to
       calling graphene_euler_init() with all angles set to 0. *)
 
   external init : t -> float -> float -> float -> t = "ml_graphene_euler_init"
@@ -184,7 +184,7 @@ end = struct
   (** Initializes a #graphene_euler_t using the angles contained in a
       #graphene_vec3_t.
 
-      If the #graphene_vec3_t [v] is [NULL], the #graphene_euler_t will be
+      If the #graphene_vec3_t [v] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_radians :
@@ -198,7 +198,7 @@ end = struct
     = "ml_graphene_euler_init_from_quaternion"
   (** Initializes a #graphene_euler_t using the given normalized quaternion.
 
-      If the #graphene_quaternion_t [q] is [NULL], the #graphene_euler_t will be
+      If the #graphene_quaternion_t [q] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_matrix :
@@ -206,7 +206,7 @@ end = struct
     = "ml_graphene_euler_init_from_matrix"
   (** Initializes a #graphene_euler_t using the given rotation matrix.
 
-      If the #graphene_matrix_t [m] is [NULL], the #graphene_euler_t will be
+      If the #graphene_matrix_t [m] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   external init_from_euler : t -> t option -> t
@@ -214,7 +214,7 @@ end = struct
   (** Initializes a #graphene_euler_t using the angles and order of another
       #graphene_euler_t.
 
-      If the #graphene_euler_t [src] is [NULL], this function is equivalent to
+      If the #graphene_euler_t [src] is [None], this function is equivalent to
       calling graphene_euler_init() with all angles set to 0. *)
 
   external init : t -> float -> float -> float -> t = "ml_graphene_euler_init"
@@ -1108,7 +1108,7 @@ and Plane : sig
   (** Transforms a #graphene_plane_t [p] using the given [matrix] and
       [normal_matrix].
 
-      If [normal_matrix] is [NULL], a transformation matrix for the plane normal
+      If [normal_matrix] is [None], a transformation matrix for the plane normal
       will be computed from [matrix]. If you are transforming multiple planes
       using the same [matrix] it's recommended to compute the normal matrix
       beforehand to avoid incurring in the cost of recomputing it every time. *)
@@ -1179,7 +1179,7 @@ end = struct
   (** Transforms a #graphene_plane_t [p] using the given [matrix] and
       [normal_matrix].
 
-      If [normal_matrix] is [NULL], a transformation matrix for the plane normal
+      If [normal_matrix] is [None], a transformation matrix for the plane normal
       will be computed from [matrix]. If you are transforming multiple planes
       using the same [matrix] it's recommended to compute the normal matrix
       beforehand to avoid incurring in the cost of recomputing it every time. *)
@@ -1694,7 +1694,7 @@ and Triangle : sig
 
       The point [p] must lie on the same plane as the triangle [t]; if the point
       is not coplanar, the result of this function is undefined. If [p] is
-      [NULL], the point will be set in (0, 0, 0).
+      [None], the point will be set in (0, 0, 0).
 
       The UV coordinates will be placed in the [res] vector:
 
@@ -1796,7 +1796,7 @@ end = struct
 
       The point [p] must lie on the same plane as the triangle [t]; if the point
       is not coplanar, the result of this function is undefined. If [p] is
-      [NULL], the point will be set in (0, 0, 0).
+      [None], the point will be set in (0, 0, 0).
 
       The UV coordinates will be placed in the [res] vector:
 

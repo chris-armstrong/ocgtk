@@ -15,7 +15,7 @@ class type constraint__t = object
   (** Retrieves the [Gtk.ConstraintTarget] used as the source for the
       constraint.
 
-      If the source is set to [NULL] at creation, the constraint will use the
+      If the source is set to [None] at creation, the constraint will use the
       widget using the [Gtk.ConstraintLayout] as the source. *)
 
   method get_source_attribute : unit -> Enums.constraintattribute
@@ -28,7 +28,7 @@ class type constraint__t = object
   (** Retrieves the [Gtk.ConstraintTarget] used as the target for the
       constraint.
 
-      If the targe is set to [NULL] at creation, the constraint will use the
+      If the targe is set to [None] at creation, the constraint will use the
       widget using the [Gtk.ConstraintLayout] as the target. *)
 
   method get_target_attribute : unit -> Enums.constraintattribute

@@ -37,7 +37,7 @@ external set_use_preedit : t -> bool -> unit
 (** Sets whether the IM context should use the preedit string to display
     feedback.
 
-    If [use_preedit] is [FALSE] (default is [TRUE]), then the IM context may use
+    If [use_preedit] is [false] (default is [true]), then the IM context may use
     some other method to display feedback, such as displaying it in a child of
     the root window. *)
 
@@ -100,7 +100,7 @@ external filter_keypress : t -> Ocgdk_raw.Event.t -> bool
   = "ml_gtk_im_context_filter_keypress"
 (** Allow an input method to internally handle key press and release events.
 
-    If this function returns [TRUE], then no further processing should be done
+    If this function returns [true], then no further processing should be done
     for this key event. *)
 
 external filter_key :
@@ -141,7 +141,7 @@ external activate_osk : t -> Ocgdk_raw.Event.t option -> bool
   = "ml_gtk_im_context_activate_osk"
 (** Requests the platform to show an on-screen keyboard for user input.
 
-    This method will return [TRUE] if this request was actually performed to the
+    This method will return [true] if this request was actually performed to the
     platform, other environmental factors may result in an on-screen keyboard
     effectively not showing up. *)
 

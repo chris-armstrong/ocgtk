@@ -118,7 +118,7 @@ external set_adjustment : t -> Adjustment.t option -> unit
 
 external set_activate_on_single_click : t -> bool -> unit
   = "ml_gtk_list_box_set_activate_on_single_click"
-(** If [single] is [TRUE], rows will be activated when you click on them,
+(** If [single] is [true], rows will be activated when you click on them,
     otherwise you need to double-click. *)
 
 external select_row : t -> List_box_row.t option -> unit
@@ -205,7 +205,7 @@ external get_selected_rows : t -> List_box_row.t list
 
 external get_selected_row : t -> List_box_row.t option
   = "ml_gtk_list_box_get_selected_row"
-(** Gets the selected row, or [NULL] if no rows are selected.
+(** Gets the selected row, or [None] if no rows are selected.
 
     Note that the box may allow multiple selection, in which case you should use
     [Gtk.ListBox.selected_foreach] to find all selected rows. *)
@@ -219,7 +219,7 @@ external get_row_at_index : t -> int -> List_box_row.t option
 (** Gets the n-th child in the list (not counting headers).
 
     If [index_] is negative or larger than the number of items in the list,
-    [NULL] is returned. *)
+    [None] is returned. *)
 
 external get_adjustment : t -> Adjustment.t option
   = "ml_gtk_list_box_get_adjustment"

@@ -34,7 +34,7 @@ class type bookmark_list_t = object
   (** Gets the IO priority to use while loading file. *)
 
   method is_loading : unit -> bool
-  (** Returns [TRUE] if the files are currently being loaded.
+  (** Returns [true] if the files are currently being loaded.
 
       Files will be added to [self] from time to time while loading is going on.
       The order in which are added is undefined and may change in between runs.
@@ -43,7 +43,7 @@ class type bookmark_list_t = object
   method set_attributes : string option -> unit
   (** Sets the [attributes] to be enumerated and starts the enumeration.
 
-      If [attributes] is [NULL], no attributes will be queried, but a list of
+      If [attributes] is [None], no attributes will be queried, but a list of
       [GFileInfo]s will still be created. *)
 
   method set_io_priority : int -> unit

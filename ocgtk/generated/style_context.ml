@@ -44,7 +44,7 @@ class type style_context_t = object
       [Gtk.Widget.get_state_flags]. *)
 
   method has_class : string -> bool
-  (** Returns [TRUE] if [context] currently has defined the given class name. *)
+  (** Returns [true] if [context] currently has defined the given class name. *)
 
   method remove_class : string -> unit
   (** Removes [class_name] from [context]. *)

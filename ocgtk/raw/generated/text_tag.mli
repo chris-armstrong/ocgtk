@@ -61,16 +61,16 @@ external get_accumulative_margin : t -> bool
   = "ml_gtk_text_tag_get_accumulative_margin"
 (** Whether the margins accumulate or override each other.
 
-    When set to [TRUE] the margins of this tag are added to the margins of any
-    other non-accumulative margins present. When set to [FALSE] the margins
+    When set to [true] the margins of this tag are added to the margins of any
+    other non-accumulative margins present. When set to [false] the margins
     override one another (the default). *)
 
 external set_accumulative_margin : t -> bool -> unit
   = "ml_gtk_text_tag_set_accumulative_margin"
 (** Whether the margins accumulate or override each other.
 
-    When set to [TRUE] the margins of this tag are added to the margins of any
-    other non-accumulative margins present. When set to [FALSE] the margins
+    When set to [true] the margins of this tag are added to the margins of any
+    other non-accumulative margins present. When set to [false] the margins
     override one another (the default). *)
 
 external get_allow_breaks : t -> bool = "ml_gtk_text_tag_get_allow_breaks"
@@ -148,13 +148,13 @@ external set_editable_set : t -> bool -> unit
 external get_fallback : t -> bool = "ml_gtk_text_tag_get_fallback"
 (** Whether font fallback is enabled.
 
-    When set to [TRUE], other fonts will be substituted where the current font
+    When set to [true], other fonts will be substituted where the current font
     is missing glyphs. *)
 
 external set_fallback : t -> bool -> unit = "ml_gtk_text_tag_set_fallback"
 (** Whether font fallback is enabled.
 
-    When set to [TRUE], other fonts will be substituted where the current font
+    When set to [true], other fonts will be substituted where the current font
     is missing glyphs. *)
 
 external get_fallback_set : t -> bool = "ml_gtk_text_tag_get_fallback_set"
@@ -371,7 +371,7 @@ external set_line_height_set : t -> bool -> unit
 external get_name : t -> string = "ml_gtk_text_tag_get_name"
 (** The name used to refer to the tag.
 
-    [NULL] for anonymous tags. *)
+    [None] for anonymous tags. *)
 
 external get_overline : t -> Ocpango_enums.overline
   = "ml_gtk_text_tag_get_overline"

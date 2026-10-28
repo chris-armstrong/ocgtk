@@ -3,10 +3,11 @@
 (* Prose for an item: the translated [doc] when it says something, otherwise
    the [fallback]. Returns the prose and whether it came from the fallback,
    because the two render [@since] differently (see [item_doc]). *)
-let prose_of ~context ~doc ~fallback =
+let prose_of ?ret_shape ~context ~doc ~fallback () =
   let translated =
     Option.fold ~none:""
-      ~some:(fun raw -> String.trim (Doc_translate.translate context raw))
+      ~some:(fun raw ->
+        String.trim (Doc_translate.translate ?ret_shape context raw))
       doc
   in
   if not (String.equal translated "") then Some (translated, false)
@@ -71,9 +72,9 @@ let with_prefix ?prefix prose =
   | Some prefix, None -> Some (prefix, true)
   | None, prose -> prose
 
-let item_doc ~indent ?since ?fallback ?prefix ?suffix ~context doc =
+let item_doc ~indent ?since ?fallback ?prefix ?suffix ?ret_shape ~context doc =
   let prose =
-    prose_of ~context ~doc ~fallback
+    prose_of ?ret_shape ~context ~doc ~fallback ()
     |> with_prefix ?prefix |> with_suffix ?suffix
   in
   let body =

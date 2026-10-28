@@ -68,7 +68,7 @@ external get_target : t -> Constraint_target.t option
   = "ml_gtk_constraint_get_target"
 (** Retrieves the [Gtk.ConstraintTarget] used as the target for the constraint.
 
-    If the targe is set to [NULL] at creation, the constraint will use the
+    If the targe is set to [None] at creation, the constraint will use the
     widget using the [Gtk.ConstraintLayout] as the target. *)
 
 external get_strength : t -> int = "ml_gtk_constraint_get_strength"
@@ -82,7 +82,7 @@ external get_source : t -> Constraint_target.t option
   = "ml_gtk_constraint_get_source"
 (** Retrieves the [Gtk.ConstraintTarget] used as the source for the constraint.
 
-    If the source is set to [NULL] at creation, the constraint will use the
+    If the source is set to [None] at creation, the constraint will use the
     widget using the [Gtk.ConstraintLayout] as the source. *)
 
 external get_relation : t -> Ocgtk_enums.constraintrelation

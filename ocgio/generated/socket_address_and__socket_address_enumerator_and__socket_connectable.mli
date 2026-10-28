@@ -39,7 +39,7 @@ end
     [Gio.SocketAddressEnumerator.next_finish] should be used where possible.
 
     Each [GSocketAddressEnumerator] can only be enumerated once. Once
-    [Gio.SocketAddressEnumerator.next] has returned [NULL], further enumeration
+    [Gio.SocketAddressEnumerator.next] has returned [None], further enumeration
     with that [GSocketAddressEnumerator] is not possible, and it can be
     unreffed. *)
 and socket_address_enumerator_t = object

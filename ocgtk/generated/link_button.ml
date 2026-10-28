@@ -11,7 +11,7 @@ class type link_button_t = object
       stored inside the [Gtk.LinkButton:uri] property.
 
       To override the default behavior, you can connect to the ::activate-link
-      signal and stop the propagation of the signal by returning [TRUE] from
+      signal and stop the propagation of the signal by returning [true] from
       your handler. *)
 
   (** {2:methods Methods} *)

@@ -61,21 +61,21 @@ class type euler_t = object
   (** Initializes a #graphene_euler_t using the angles and order of another
       #graphene_euler_t.
 
-      If the #graphene_euler_t [src] is [NULL], this function is equivalent to
+      If the #graphene_euler_t [src] is [None], this function is equivalent to
       calling graphene_euler_init() with all angles set to 0. *)
 
   method init_from_matrix :
     Raw.Matrix.t option -> Enums.eulerorder -> Raw.Euler.t
   (** Initializes a #graphene_euler_t using the given rotation matrix.
 
-      If the #graphene_matrix_t [m] is [NULL], the #graphene_euler_t will be
+      If the #graphene_matrix_t [m] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   method init_from_quaternion :
     Raw.Quaternion.t option -> Enums.eulerorder -> Raw.Euler.t
   (** Initializes a #graphene_euler_t using the given normalized quaternion.
 
-      If the #graphene_quaternion_t [q] is [NULL], the #graphene_euler_t will be
+      If the #graphene_quaternion_t [q] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   method init_from_radians :
@@ -87,7 +87,7 @@ class type euler_t = object
   (** Initializes a #graphene_euler_t using the angles contained in a
       #graphene_vec3_t.
 
-      If the #graphene_vec3_t [v] is [NULL], the #graphene_euler_t will be
+      If the #graphene_vec3_t [v] is [None], the #graphene_euler_t will be
       initialized with all angles set to 0. *)
 
   method init_with_order :

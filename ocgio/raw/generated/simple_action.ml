@@ -67,7 +67,7 @@ external get_parameter_type : t -> Gvariant_type.t
 
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_state_type"
-(** The [GVariantType] of the state that the action has, or [NULL] if the action
+(** The [GVariantType] of the state that the action has, or [None] if the action
     is stateless. *)
 
 let on_activate ?after obj ~callback =

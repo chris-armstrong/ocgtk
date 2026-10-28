@@ -182,7 +182,7 @@ class type cell_renderer_t = object
 
   method stop_editing : bool -> unit
   (** Informs the cell renderer that the editing is stopped. If [canceled] is
-      [TRUE], the cell renderer will emit the
+      [true], the cell renderer will emit the
       [GtkCellRenderer]::editing-canceled signal.
 
       This function should be called by cell renderer implementations in

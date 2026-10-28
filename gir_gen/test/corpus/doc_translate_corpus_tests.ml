@@ -160,6 +160,9 @@ type stats = {
   mutable missing_block_fallback : int;
   mutable roundtrip_mismatch : int;
   mutable strict_roundtrip_ok : int;
+  mutable c_lits : int;
+  mutable c_prims : int;
+  mutable c_idiom_residuals : int;
   mutable event_counts : (string * int) list;
 }
 
@@ -190,15 +193,18 @@ let event_name = function
   | Picture_stripped _ -> "pictures stripped"
   | Image_stripped _ -> "images stripped"
   | Quote_stripped -> "quotes stripped"
+  | Ownership_stripped pattern -> "ownership stripped: " ^ pattern
 
 let bump_event_counts stats fbs =
   stats.event_counts <-
     List.fold_left
       (fun counts fb ->
         let name = event_name fb in
-        List.map
-          (fun (n, c) -> if String.equal n name then (n, c + 1) else (n, c))
-          counts)
+        if List.exists (fun (n, _) -> String.equal n name) counts then
+          List.map
+            (fun (n, c) -> if String.equal n name then (n, c + 1) else (n, c))
+            counts
+        else counts @ [ (name, 1) ])
       stats.event_counts fbs
 
 (* Invariant 3: every unbalanced code span and every hazardous code block
@@ -222,6 +228,45 @@ let rec check_code_fallbacks inl stats fbs =
   | Link { text; _ } | Page_ref { text; _ } ->
       List.iter (fun i -> check_code_fallbacks i stats fbs) text
   | _ -> ()
+
+(* C literal and primitive nodes in the parsed AST, counted in the entity
+   pass only so each doc counts once. *)
+let count_c_idioms ctx (t : t) stats =
+  let rec count_inline = function
+    | C_lit _ -> stats.c_lits <- stats.c_lits + 1
+    | C_prim _ -> stats.c_prims <- stats.c_prims + 1
+    | Bold ins
+    | Italic ins
+    | Link { text = ins; _ }
+    | Page_ref { text = ins; _ } ->
+        List.iter count_inline ins
+    | Text _ | Code _ | Sym_ref _ | Param_ref _ | Ref _ -> ()
+  in
+  let count_block = function
+    | Para ins | Heading (_, ins) -> List.iter count_inline ins
+    | List (_, items) -> List.iter (List.iter count_inline) items
+    | Code_block _ -> ()
+  in
+  match ctx with Entity -> List.iter count_block t.blocks | Member -> ()
+
+(* Code keeps C verbatim, so code blocks and inline code spans (an unescaped
+   bracket up to the next one) are cut before looking for C literal sigils
+   and ownership calls in the rendered text. A code span holding more than a
+   bare literal ([@sibling == %NULL]) is C, and stays code. *)
+let code_re =
+  Re.Perl.compile_pat ~opts:[ `Dotall ]
+    {|\{\[.*?\]\}|\{v.*?v\}|(^|[^\\])\[[^\]]*\]|}
+
+(* A sentence that only names a free function (Initable: "all operations
+   except g_object_ref() and g_object_unref() are invalid") is kept, so the
+   check looks for the instructions the ownership filter drops. *)
+let c_idiom_residual_re =
+  Re.Perl.compile_pat ~opts:[ `Caseless ]
+    {|%(TRUE|FALSE|NULL)\b|\bfreed? with g_(free|object_unref)\b|}
+
+let c_idiom_residual_count output =
+  let prose = Re.replace_string code_re ~by:" " output in
+  List.length (Re.all c_idiom_residual_re prose)
 
 let check_doc ctx doc stats =
   let t1 = parse ctx doc in
@@ -272,6 +317,9 @@ let check_doc ctx doc stats =
      design (references degrade to code spans), so only a subset holds *)
   if equal_t t1 t2 then
     stats.strict_roundtrip_ok <- stats.strict_roundtrip_ok + 1;
+  count_c_idioms ctx t1 stats;
+  stats.c_idiom_residuals <-
+    stats.c_idiom_residuals + c_idiom_residual_count out;
   bump_event_counts stats fbs
 
 let test_corpus_all_invariants () =
@@ -284,6 +332,9 @@ let test_corpus_all_invariants () =
       missing_block_fallback = 0;
       roundtrip_mismatch = 0;
       strict_roundtrip_ok = 0;
+      c_lits = 0;
+      c_prims = 0;
+      c_idiom_residuals = 0;
       event_counts = counts_initial;
     }
   in
@@ -305,6 +356,8 @@ let test_corpus_all_invariants () =
     stats.event_counts;
   Printf.printf "  strict first-pass AST round-trips: %d docs\n"
     stats.strict_roundtrip_ok;
+  Printf.printf "  C literals (entity context)  %6d\n" stats.c_lits;
+  Printf.printf "  C primitives (entity context) %5d\n" stats.c_prims;
   Alcotest.(check bool) "corpus non-empty" true (stats.docs > 39_000);
   Alcotest.(check int)
     "no comment-hazard sequence in any render output" 0 stats.comment_hazard;
@@ -320,7 +373,10 @@ let test_corpus_all_invariants () =
   Alcotest.(check int)
     "translation converges (parse∘render stable within two\n\
     \     applications, both contexts)"
-    0 stats.roundtrip_mismatch
+    0 stats.roundtrip_mismatch;
+  Alcotest.(check int)
+    "no C literal sigil or free instruction left outside code" 0
+    stats.c_idiom_residuals
 
 let tests =
   [ ("corpus: all bundled <doc> elements", `Slow, test_corpus_all_invariants) ]

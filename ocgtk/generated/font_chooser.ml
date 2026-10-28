@@ -43,14 +43,14 @@ class type font_chooser_t = object
   (** Gets the [PangoFontFace] representing the selected font group details
       (i.e. family, slant, weight, width, etc).
 
-      If the selected font is not installed, returns [NULL]. *)
+      If the selected font is not installed, returns [None]. *)
 
   method get_font_family : unit -> Ocpango.Font_family.font_family_t option
   (** Gets the [PangoFontFamily] representing the selected font family.
 
       Font families are a collection of font faces.
 
-      If the selected font is not installed, returns [NULL]. *)
+      If the selected font is not installed, returns [None]. *)
 
   method get_font_features : unit -> string
   (** Gets the currently-selected font features.
@@ -61,7 +61,7 @@ class type font_chooser_t = object
       [Pango.AttrFontFeatures.new]. *)
 
   method get_font_map : unit -> Ocpango.Font_map.font_map_t option
-  (** Gets the custom font map of this font chooser widget, or [NULL] if it does
+  (** Gets the custom font map of this font chooser widget, or [None] if it does
       not have one. *)
 
   method get_font_size : unit -> int

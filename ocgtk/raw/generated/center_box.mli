@@ -56,7 +56,7 @@ external set_start_widget :
   unit = "ml_gtk_center_box_set_start_widget"
 (** Sets the start widget.
 
-    To remove the existing start widget, pass [NULL]. *)
+    To remove the existing start widget, pass [None]. *)
 
 external set_shrink_center_last : t -> bool -> unit
   = "ml_gtk_center_box_set_shrink_center_last"
@@ -78,7 +78,7 @@ external set_end_widget :
   unit = "ml_gtk_center_box_set_end_widget"
 (** Sets the end widget.
 
-    To remove the existing end widget, pass [NULL]. *)
+    To remove the existing end widget, pass [None]. *)
 
 external set_center_widget :
   t ->
@@ -89,7 +89,7 @@ external set_center_widget :
   unit = "ml_gtk_center_box_set_center_widget"
 (** Sets the center widget.
 
-    To remove the existing center widget, pass [NULL]. *)
+    To remove the existing center widget, pass [None]. *)
 
 external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_center_box_set_baseline_position"

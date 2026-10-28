@@ -57,7 +57,7 @@ class type builder_t = object
       loading [GtkBuilder] UI. Otherwise, you probably want
       [Gtk.Builder.new_from_string] instead.
 
-      Upon errors [FALSE] will be returned and [error] will be assigned a
+      Upon errors [false] will be returned and [error] will be assigned a
       [GError] from the [GTK_BUILDER_ERROR], [G_MARKUP_ERROR] or
       [G_VARIANT_PARSE_ERROR] domain.
 
@@ -95,7 +95,7 @@ class type builder_t = object
   (** Parses a string containing a UI definition, building only the requested
       objects and merges them with the current contents of [builder].
 
-      Upon errors [FALSE] will be returned and [error] will be assigned a
+      Upon errors [false] will be returned and [error] will be assigned a
       [GError] from the [GTK_BUILDER_ERROR] or [G_MARKUP_ERROR] domain.
 
       If you are adding an object that depends on an object that is not its
@@ -160,12 +160,12 @@ class type builder_t = object
 
       [Gtk.Widget.init_template] for example will set the current object to the
       widget the template is inited for. For functions like
-      [Gtk.Builder.new_from_resource], the current object will be [NULL]. *)
+      [Gtk.Builder.new_from_resource], the current object will be [None]. *)
 
   method set_scope : Builder_scope.builder_scope_t option -> unit
   (** Sets the scope the builder should operate in.
 
-      If [scope] is [NULL], a new [Gtk.BuilderCScope] will be created. *)
+      If [scope] is [None], a new [Gtk.BuilderCScope] will be created. *)
 
   method set_translation_domain : string option -> unit
   (** Sets the translation domain of [builder]. *)
@@ -823,7 +823,7 @@ val new_from_resource : string -> builder_t
 val new_from_string : string -> int -> builder_t
 (** Parses the UI definition in [string].
 
-    If [string] is [NULL]-terminated, then [length] should be -1. If [length] is
+    If [string] is null-terminated, then [length] should be -1. If [length] is
     not -1, then it is the length of [string].
 
     If there is an error parsing [string] then the program will be aborted. You

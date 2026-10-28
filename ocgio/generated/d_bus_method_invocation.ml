@@ -7,7 +7,7 @@ class type d_bus_method_invocation_t = object
   method get_interface_name : unit -> string option
   [@@ocaml.doc
     "Gets the name of the D-Bus interface the method was invoked on.\n\n\
-     This can be [NULL] if it was not specified by the sender. See\n\
+     This can be [None] if it was not specified by the sender. See\n\
      [Gio.DBusInterfaceMethodCallFunc] or the\n\
      {{:https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method}D-Bus \
      Specification}\n\
@@ -30,7 +30,7 @@ class type d_bus_method_invocation_t = object
   (** Gets information about the method call, if any.
 
       If this method invocation is a property Get, Set or GetAll call that has
-      been redirected to the method call handler then [NULL] will be returned.
+      been redirected to the method call handler then [None] will be returned.
       See g_dbus_method_invocation_get_property_info() and
       [GDBusInterfaceVTable] for more information. *)
 
@@ -55,12 +55,12 @@ class type d_bus_method_invocation_t = object
 
       See [GDBusInterfaceVTable] for more information.
 
-      If the call was GetAll, [NULL] will be returned. *)
+      If the call was GetAll, [None] will be returned. *)
 
   method get_sender : unit -> string option
   (** Gets the bus name that invoked the method.
 
-      This can return [NULL] if not specified by the caller, e.g. on
+      This can return [None] if not specified by the caller, e.g. on
       peer-to-peer connections. *)
 
   method return_dbus_error : string -> string -> unit
@@ -86,7 +86,7 @@ class type d_bus_method_invocation_t = object
      tuple\n\
      containing the out-parameters of the D-Bus method. Even if the method has a\n\
      single out-parameter, it must be contained in a tuple. If the method has no\n\
-     out-parameters, [parameters] may be [NULL] or an empty tuple.\n\n\
+     out-parameters, [parameters] may be [None] or an empty tuple.\n\n\
      {[\n\
      GDBusMethodInvocation *invocation = some_invocation;\n\
      g_autofree gchar *result_string = NULL;\n\

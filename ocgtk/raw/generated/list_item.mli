@@ -11,10 +11,10 @@
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [NULL].
+      [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [NULL].
+      [Gtk.ListItem:item] property is not [None].
 
     The class built on this module is in {!Ocgtk.List_item}. *)
 
@@ -105,7 +105,7 @@ external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_list_item_get_item"
 (** Gets the model item that associated with [self].
 
-    If [self] is unbound, this function returns [NULL]. *)
+    If [self] is unbound, this function returns [None]. *)
 
 external get_focusable : t -> bool = "ml_gtk_list_item_get_focusable"
 (** Checks if a listitem has been set to be focusable via
@@ -117,7 +117,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_list_item_get_child"
-(** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if none
+(** Gets the child previously set via [Gtk.ListItem.set_child] or [None] if none
     was set. *)
 
 external get_activatable : t -> bool = "ml_gtk_list_item_get_activatable"

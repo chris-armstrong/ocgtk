@@ -20,13 +20,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_bitset_iter_get_type"
 external previous : t -> bool * int = "ml_gtk_bitset_iter_previous"
 (** Moves [iter] to the previous value in the set.
 
-    If it was already pointing to the first value in the set, [FALSE] is
+    If it was already pointing to the first value in the set, [false] is
     returned and [iter] is invalidated. *)
 
 external next : t -> bool * int = "ml_gtk_bitset_iter_next"
 (** Moves [iter] to the next value in the set.
 
-    If it was already pointing to the last value in the set, [FALSE] is returned
+    If it was already pointing to the last value in the set, [false] is returned
     and [iter] is invalidated. *)
 
 external is_valid : t -> bool = "ml_gtk_bitset_iter_is_valid"
@@ -35,5 +35,5 @@ external is_valid : t -> bool = "ml_gtk_bitset_iter_is_valid"
 external get_value : t -> int = "ml_gtk_bitset_iter_get_value"
 (** Gets the current value that [iter] points to.
 
-    If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [FALSE], this
+    If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [false], this
     function returns 0. *)

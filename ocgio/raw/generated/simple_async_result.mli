@@ -35,7 +35,7 @@
  [Gio.SimpleAsyncResult.propagate_error].\n\n\
  An asynchronous operation can be made to ignore a cancellation event by\n\
  calling [Gio.SimpleAsyncResult.set_handle_cancellation] with a\n\
- [GSimpleAsyncResult] for the operation and [FALSE]. This is useful for\n\
+ [GSimpleAsyncResult] for the operation and [false]. This is useful for\n\
  operations that are dangerous to cancel, such as close (which would\n\
  cause a leak if cancelled before being run).\n\n\
  [GSimpleAsyncResult] can integrate into GLib’s event loop,\n\
@@ -196,7 +196,7 @@ external propagate_error : t -> (bool, GError.t) result
 
     If the [GCancellable] given to a prior call to
     g_simple_async_result_set_check_cancellable() is cancelled then this
-    function will return [TRUE] with [dest] set appropriately. *)
+    function will return [true] with [dest] set appropriately. *)
 
 external get_op_res_gssize : t -> int
   = "ml_g_simple_async_result_get_op_res_gssize"

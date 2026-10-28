@@ -92,16 +92,13 @@ external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
 
 external list_children : t -> string array
   = "ml_g_settings_schema_list_children"
-(** Gets the list of children in [schema].
-
-    You should free the return value with g_strfreev() when you are done with
-    it. *)
+(** Gets the list of children in [schema]. *)
 
 external has_key : t -> string -> bool = "ml_g_settings_schema_has_key"
 (** Checks if [schema] has a key named [name]. *)
 
 external get_path : t -> string option = "ml_g_settings_schema_get_path"
-(** Gets the path associated with [schema], or [NULL].
+(** Gets the path associated with [schema], or [None].
 
     Schemas may be single-instance or relocatable. Single-instance schemas
     correspond to exactly one set of keys in the backend database: those located
@@ -109,7 +106,7 @@ external get_path : t -> string option = "ml_g_settings_schema_get_path"
 
     Relocatable schemas can be referenced by other schemas and can therefore
     describe multiple sets of keys at different locations. For relocatable
-    schemas, this function will return [NULL]. *)
+    schemas, this function will return [None]. *)
 
 external get_key : t -> string -> Settings_schema_key.t
   = "ml_g_settings_schema_get_key"

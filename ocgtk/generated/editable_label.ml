@@ -13,7 +13,7 @@ class type editable_label_t = object
   method stop_editing : bool -> unit
   (** Switches the label out of “editing mode”.
 
-      If [commit] is [TRUE], the resulting text is kept as the
+      If [commit] is [true], the resulting text is kept as the
       [Gtk.Editable:text] property value, otherwise the resulting text is
       discarded and the label will keep its previous [Gtk.Editable:text]
       property value. *)

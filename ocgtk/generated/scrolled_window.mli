@@ -72,7 +72,7 @@
     {b CSS nodes}
 
     [GtkScrolledWindow] has a main CSS node with name scrolledwindow. It gets a
-    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [TRUE].
+    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [true].
 
     It uses subnodes with names overshoot and undershoot to draw the overflow
     and underflow indications. These nodes get the .left, .right, .top or
@@ -395,7 +395,7 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     {b CSS nodes}
 
     [GtkScrolledWindow] has a main CSS node with name scrolledwindow. It gets a
-    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [TRUE].
+    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [true].
 
     It uses subnodes with names overshoot and undershoot to draw the overflow
     and underflow indications. These nodes get the .left, .right, .top or

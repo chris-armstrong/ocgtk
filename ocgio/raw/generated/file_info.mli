@@ -133,7 +133,7 @@ external set_attribute_status :
     external code that implement g_file_set_attributes_from_info() or similar
     functions.
 
-    The attribute must exist in [info] for this to work. Otherwise [FALSE] is
+    The attribute must exist in [info] for this to work. Otherwise [false] is
     returned and [info] is unchanged. *)
 
 external set_attribute_object : t -> string -> [ `object_ ] Gobject.obj -> unit
@@ -206,7 +206,7 @@ external get_sort_order : t -> Int32.t = "ml_g_file_info_get_sort_order"
 external get_size : t -> int64 = "ml_g_file_info_get_size"
 (** Gets the file's size (in bytes). The size is retrieved through the value of
     the [G_FILE_ATTRIBUTE_STANDARD_SIZE] attribute and is converted from
-    #guint64 to #goffset before returning the result.
+    [UInt64.t] to #goffset before returning the result.
 
     It is an error to call this if the [GFileInfo] does not contain
     [G_FILE_ATTRIBUTE_STANDARD_SIZE]. *)
@@ -294,12 +294,12 @@ external get_attribute_type : t -> string -> Ocgio_enums.fileattributetype
 external get_attribute_stringv : t -> string -> string array option
   = "ml_g_file_info_get_attribute_stringv"
 (** Gets the value of a stringv attribute. If the attribute does not contain a
-    stringv, [NULL] will be returned. *)
+    stringv, [None] will be returned. *)
 
 external get_attribute_string : t -> string -> string option
   = "ml_g_file_info_get_attribute_string"
 (** Gets the value of a string attribute. If the attribute does not contain a
-    string, [NULL] will be returned. *)
+    string, [None] will be returned. *)
 
 external get_attribute_status : t -> string -> Ocgio_enums.fileattributestatus
   = "ml_g_file_info_get_attribute_status"
@@ -308,7 +308,7 @@ external get_attribute_status : t -> string -> Ocgio_enums.fileattributestatus
 external get_attribute_object : t -> string -> [ `object_ ] Gobject.obj option
   = "ml_g_file_info_get_attribute_object"
 (** Gets the value of a [GObject] attribute. If the attribute does not contain a
-    [GObject], [NULL] will be returned. *)
+    [GObject], [None] will be returned. *)
 
 external get_attribute_int64 : t -> string -> int64
   = "ml_g_file_info_get_attribute_int64"
@@ -326,7 +326,7 @@ external get_attribute_file_path : t -> string -> string option
   = "ml_g_file_info_get_attribute_file_path"
 (** Gets the value of a byte string attribute as a file path.
 
-    If the attribute does not contain a byte string, [NULL] will be returned.
+    If the attribute does not contain a byte string, [None] will be returned.
 
     This function is meant to be used by language bindings that have specific
     handling for Unix paths. *)
@@ -334,12 +334,12 @@ external get_attribute_file_path : t -> string -> string option
 external get_attribute_byte_string : t -> string -> string option
   = "ml_g_file_info_get_attribute_byte_string"
 (** Gets the value of a byte string attribute. If the attribute does not contain
-    a byte string, [NULL] will be returned. *)
+    a byte string, [None] will be returned. *)
 
 external get_attribute_boolean : t -> string -> bool
   = "ml_g_file_info_get_attribute_boolean"
 (** Gets the value of a boolean attribute. If the attribute does not contain a
-    boolean value, [FALSE] will be returned. *)
+    boolean value, [false] will be returned. *)
 
 external get_attribute_as_string : t -> string -> string option
   = "ml_g_file_info_get_attribute_as_string"

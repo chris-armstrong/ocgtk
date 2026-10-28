@@ -155,7 +155,7 @@ class type label_t = object
   method get_tabs : unit -> Ocpango.Tab_array.tab_array_t option
   (** Gets the tab stops for the label.
 
-      The returned array will be [NULL] if “standard” (8-space) tabs are used.
+      The returned array will be [None] if “standard” (8-space) tabs are used.
   *)
 
   method get_text : unit -> string
@@ -746,7 +746,7 @@ class label : Raw.Label.t -> label_t
 val new_ : string option -> label_t
 (** Creates a new label with the given text inside it.
 
-    You can pass [NULL] to get an empty label widget. *)
+    You can pass [None] to get an empty label widget. *)
 
 val new_with_mnemonic : string option -> label_t
 (** Creates a new label with the given text inside it, and a mnemonic.

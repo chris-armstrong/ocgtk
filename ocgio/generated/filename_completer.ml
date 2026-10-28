@@ -11,14 +11,14 @@ class type filename_completer_t = object
   (** Obtains a suffix completion for [initial_text] from [completer].
 
       Suffix will be an empty string if there's no shared suffix among matching
-      completions. If there's no matching completions anyway, [NULL] is
+      completions. If there's no matching completions anyway, [None] is
       returned. *)
 
   method get_completions : string -> string array
   (** Gets an array of completion strings for a given initial text. *)
 
   method set_dirs_only : bool -> unit
-  (** If [dirs_only] is [TRUE], [completer] will only complete directory names,
+  (** If [dirs_only] is [true], [completer] will only complete directory names,
       and not file names.
 
       This function needs to be called before waiting for results from the

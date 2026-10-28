@@ -152,7 +152,7 @@ val new_ : string option -> Ocgio.Enums.applicationflags -> application_t
 
     Note that commandline arguments are not passed to [Gtk.init].
 
-    If [application_id] is not [NULL], then it must be valid. See
+    If [application_id] is not [None], then it must be valid. See
     [Gio.Application.id_is_valid].
 
     If no application ID is given then some features (most notably application

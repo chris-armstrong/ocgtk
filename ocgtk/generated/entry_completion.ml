@@ -38,13 +38,13 @@ class type entry_completion_t = object
   (** Computes the common prefix that is shared by all rows in [completion] that
       start with [key].
 
-      If no row matches [key], [NULL] will be returned. Note that a text column
+      If no row matches [key], [None] will be returned. Note that a text column
       must have been set for this function to work, see
       [Gtk.EntryCompletion.set_text_column] for details. *)
 
   method get_completion_prefix : unit -> string option
   (** Get the original text entered by the user that triggered the completion or
-      [NULL] if there’s no completion ongoing. *)
+      [None] if there’s no completion ongoing. *)
 
   method get_entry : unit -> Widget.widget_t
   (** Gets the entry [completion] has been attached to. *)
@@ -54,7 +54,7 @@ class type entry_completion_t = object
       automatically inserted in the entry. *)
 
   method get_inline_selection : unit -> bool
-  (** Returns [TRUE] if inline-selection mode is turned on. *)
+  (** Returns [true] if inline-selection mode is turned on. *)
 
   method get_minimum_key_length : unit -> int
   (** Returns the minimum key length as set for [completion]. *)
@@ -62,7 +62,7 @@ class type entry_completion_t = object
   method get_model : unit -> Tree_model.tree_model_t option
   (** Returns the model the [GtkEntryCompletion] is using as data source.
 
-      Returns [NULL] if the model is unset. *)
+      Returns [None] if the model is unset. *)
 
   method get_popup_completion : unit -> bool
   (** Returns whether the completions should be presented in a popup window. *)
@@ -101,7 +101,7 @@ class type entry_completion_t = object
   (** Sets the model for a [GtkEntryCompletion].
 
       If [completion] already has a model set, it will remove it before setting
-      the new model. If model is [NULL], then it will unset the model. *)
+      the new model. If model is [None], then it will unset the model. *)
 
   method set_popup_completion : bool -> unit
   (** Sets whether the completions should be presented in a popup window. *)
@@ -114,7 +114,7 @@ class type entry_completion_t = object
   (** Sets whether the completion popup window will appear even if there is only
       a single match.
 
-      You may want to set this to [FALSE] if you are using
+      You may want to set this to [false] if you are using
       [Gtk.EntryCompletion:inline-completion]. *)
 
   method set_text_column : int -> unit

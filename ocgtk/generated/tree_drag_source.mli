@@ -14,7 +14,7 @@ class type tree_drag_source_t = object
 
   method drag_data_delete : Raw.Tree_path.t -> bool
   (** Asks the [GtkTreeDragSource] to delete the row at [path], because it was
-      moved somewhere else via drag-and-drop. Returns [FALSE] if the deletion
+      moved somewhere else via drag-and-drop. Returns [false] if the deletion
       fails because [path] no longer exists, or for some model-specific reason.
       Should robustly handle a [path] no longer found in the model! *)
 

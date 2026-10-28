@@ -10,7 +10,7 @@ class type single_selection_t = object
       gtk_single_selection_set_autoselect(). *)
 
   method get_can_unselect : unit -> bool
-  (** If [TRUE], gtk_selection_model_unselect_item() is supported and allows
+  (** If [true], gtk_selection_model_unselect_item() is supported and allows
       unselecting the selected item. *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
@@ -24,17 +24,17 @@ class type single_selection_t = object
   method get_selected_item : unit -> [ `object_ ] Gobject.obj option
   (** Gets the selected item.
 
-      If no item is selected, [NULL] is returned. *)
+      If no item is selected, [None] is returned. *)
 
   method set_autoselect : bool -> unit
   (** Enables or disables autoselect.
 
-      If [autoselect] is [TRUE], [self] will enforce that an item is always
+      If [autoselect] is [true], [self] will enforce that an item is always
       selected. It will select a new item when the currently selected item is
       deleted and it will disallow unselecting the current item. *)
 
   method set_can_unselect : bool -> unit
-  (** If [TRUE], unselecting the current item via
+  (** If [true], unselecting the current item via
       gtk_selection_model_unselect_item() is supported.
 
       Note that setting [Gtk.SingleSelection:autoselect] will cause unselecting
@@ -44,7 +44,7 @@ class type single_selection_t = object
   method set_model : Ocgio.List_model.list_model_t option -> unit
   (** Sets the model that [self] should wrap.
 
-      If [model] is [NULL], [self] will be empty. *)
+      If [model] is [None], [self] will be empty. *)
 
   method set_selected : int -> unit
   (** Selects the item at the given position.
@@ -54,7 +54,7 @@ class type single_selection_t = object
       the [Gtk.SingleSelection:autoselect] property: If it is set, no change
       will occur and the old item will stay selected. If it is unset, the
       selection will be unset and no item will be selected. This also applies if
-      [Gtk.SingleSelection:can-unselect] is set to [FALSE]. *)
+      [Gtk.SingleSelection:can-unselect] is set to [false]. *)
 
   (** {2:properties Properties} *)
 

@@ -4,11 +4,11 @@ class type cell_renderer_combo_t = object
   (** {2:properties Properties} *)
 
   method has_entry : bool
-  (** If [TRUE], the cell renderer will include an entry and allow to enter
+  (** If [true], the cell renderer will include an entry and allow to enter
       values other than the ones in the popup list. *)
 
   method set_has_entry : bool -> unit
-  (** If [TRUE], the cell renderer will include an entry and allow to enter
+  (** If [true], the cell renderer will include an entry and allow to enter
       values other than the ones in the popup list. *)
 
   method model : Tree_model.tree_model_t

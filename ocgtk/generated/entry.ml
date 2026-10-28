@@ -65,20 +65,20 @@ class type entry_t = object
   method get_icon_gicon : Enums.entryiconposition -> Ocgio.Icon.icon_t option
   (** Retrieves the [GIcon] used for the icon.
 
-      [NULL] will be returned if there is no icon or if the icon was set by some
+      [None] will be returned if there is no icon or if the icon was set by some
       other method (e.g., by [GdkPaintable] or icon name). *)
 
   method get_icon_name : Enums.entryiconposition -> string option
   (** Retrieves the icon name used for the icon.
 
-      [NULL] is returned if there is no icon or if the icon was set by some
+      [None] is returned if there is no icon or if the icon was set by some
       other method (e.g., by [GdkPaintable] or gicon). *)
 
   method get_icon_paintable :
     Enums.entryiconposition -> Ocgdk.Paintable.paintable_t option
   (** Retrieves the [GdkPaintable] used for the icon.
 
-      If no [GdkPaintable] was used for the icon, [NULL] is returned. *)
+      If no [GdkPaintable] was used for the icon, [None] is returned. *)
 
   method get_icon_sensitive : Enums.entryiconposition -> bool
   (** Returns whether the icon appears sensitive or insensitive. *)
@@ -198,7 +198,7 @@ class type entry_t = object
 
       All further configuration of the completion mechanism is done on
       [completion] using the [GtkEntryCompletion] API. Completion is disabled if
-      [completion] is set to [NULL]. *)
+      [completion] is set to [None]. *)
 
   method set_extra_menu : Ocgio.Menu_model.menu_model_t option -> unit
   (** Sets a menu model to add when constructing the context menu for [entry].
@@ -227,7 +227,7 @@ class type entry_t = object
 
       If the icon isn’t known, a “broken image” icon will be displayed instead.
 
-      If [icon] is [NULL], no icon will be shown in the specified position. *)
+      If [icon] is [None], no icon will be shown in the specified position. *)
 
   method set_icon_from_icon_name :
     Enums.entryiconposition -> string option -> unit
@@ -237,14 +237,14 @@ class type entry_t = object
       If the icon name isn’t known, a “broken image” icon will be displayed
       instead.
 
-      If [icon_name] is [NULL], no icon will be shown in the specified position.
+      If [icon_name] is [None], no icon will be shown in the specified position.
   *)
 
   method set_icon_from_paintable :
     Enums.entryiconposition -> Ocgdk.Paintable.paintable_t option -> unit
   (** Sets the icon shown in the specified position using a [GdkPaintable].
 
-      If [paintable] is [NULL], no icon will be shown in the specified position.
+      If [paintable] is [None], no icon will be shown in the specified position.
   *)
 
   method set_icon_sensitive : Enums.entryiconposition -> bool -> unit
@@ -257,7 +257,7 @@ class type entry_t = object
 
       [tooltip] is assumed to be marked up with Pango Markup.
 
-      Use [NULL] for [tooltip] to remove an existing tooltip.
+      Use [None] for [tooltip] to remove an existing tooltip.
 
       See also [Gtk.Widget.set_tooltip_markup] and
       [Gtk.Entry.set_icon_tooltip_text]. *)
@@ -267,16 +267,16 @@ class type entry_t = object
   (** Sets [tooltip] as the contents of the tooltip for the icon at the
       specified position.
 
-      Use [NULL] for [tooltip] to remove an existing tooltip.
+      Use [None] for [tooltip] to remove an existing tooltip.
 
       See also [Gtk.Widget.set_tooltip_text] and
       [Gtk.Entry.set_icon_tooltip_markup].
 
       If you unset the widget tooltip via [Gtk.Widget.set_tooltip_text] or
       [Gtk.Widget.set_tooltip_markup], this sets [Gtk.Widget:has-tooltip] to
-      [FALSE], which suppresses icon tooltips too. You can resolve this by then
+      [false], which suppresses icon tooltips too. You can resolve this by then
       calling [Gtk.Widget.set_has_tooltip] to set [Gtk.Widget:has-tooltip] back
-      to [TRUE], or setting at least one non-empty tooltip on any icon achieves
+      to [true], or setting at least one non-empty tooltip on any icon achieves
       the same result. *)
 
   method set_input_hints : Enums.inputhints -> unit
@@ -342,7 +342,7 @@ class type entry_t = object
   method set_visibility : bool -> unit
   (** Sets whether the contents of the entry are visible or not.
 
-      When visibility is set to [FALSE], characters are displayed as the
+      When visibility is set to [false], characters are displayed as the
       invisible char, and will also appear that way when the text in the entry
       widget is copied elsewhere.
 
@@ -352,7 +352,7 @@ class type entry_t = object
       Note that you probably want to set [Gtk.Entry:input-purpose] to
       [GTK_INPUT_PURPOSE_PASSWORD] or [GTK_INPUT_PURPOSE_PIN] to inform input
       methods about the purpose of this entry, in addition to setting visibility
-      to [FALSE]. *)
+      to [false]. *)
 
   method unset_invisible_char : unit -> unit
   (** Unsets the invisible char, so that the default invisible char is used
@@ -373,7 +373,7 @@ class type entry_t = object
 
       See [Gtk.IMContext].
 
-      Setting this to a non-[NULL] value overrides the system-wide IM module
+      Setting this to a non-[None] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
   method set_im_module : string -> unit
@@ -381,7 +381,7 @@ class type entry_t = object
 
       See [Gtk.IMContext].
 
-      Setting this to a non-[NULL] value overrides the system-wide IM module
+      Setting this to a non-[None] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
   method invisible_char_set : bool
@@ -622,10 +622,10 @@ class type entry_t = object
       to open the Emoji chooser. *)
 
   method truncate_multiline : bool
-  (** When [TRUE], pasted multi-line text is truncated to the first line. *)
+  (** When [true], pasted multi-line text is truncated to the first line. *)
 
   method set_truncate_multiline : bool -> unit
-  (** When [TRUE], pasted multi-line text is truncated to the first line. *)
+  (** When [true], pasted multi-line text is truncated to the first line. *)
 
   (** {2:conversions Conversions} *)
 

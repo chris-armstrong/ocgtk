@@ -43,7 +43,7 @@ external get_item : t -> [ `object_ ] Gobject.obj option
 (** Gets the model item at the start of the section. This is the item that
     occupies the list model at position [Gtk.ListHeader:start].
 
-    If [self] is unbound, this function returns [NULL]. *)
+    If [self] is unbound, this function returns [None]. *)
 
 external get_end : t -> int = "ml_gtk_list_header_get_end"
 (** Gets the end position in the model of the section that [self] is currently
@@ -57,7 +57,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_list_header_get_child"
-(** Gets the child previously set via gtk_list_header_set_child() or [NULL] if
+(** Gets the child previously set via gtk_list_header_set_child() or [None] if
     none was set. *)
 
 (* Properties *)

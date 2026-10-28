@@ -23,7 +23,7 @@ external remove : t -> string -> unit = "ml_g_simple_action_group_remove"
 external lookup : t -> string -> Action.t = "ml_g_simple_action_group_lookup"
 (** Looks up the action with the name [action_name] in the group.
 
-    If no such action exists, returns [NULL]. *)
+    If no such action exists, returns [None]. *)
 
 external insert : t -> Action.t -> unit = "ml_g_simple_action_group_insert"
 (** Adds an action to the action group.

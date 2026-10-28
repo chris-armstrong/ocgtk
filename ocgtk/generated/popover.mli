@@ -78,10 +78,10 @@ class type popover_t = object
       different from the current one, will cause the popup to be hidden. *)
 
   method set_cascade_popdown : bool -> unit
-  (** If [cascade_popdown] is [TRUE], the popover will be closed when a child
+  (** If [cascade_popdown] is [true], the popover will be closed when a child
       modal popover is closed.
 
-      If [FALSE], [popover] will stay visible. *)
+      If [false], [popover] will stay visible. *)
 
   method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [popover]. *)

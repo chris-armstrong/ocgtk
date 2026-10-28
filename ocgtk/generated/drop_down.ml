@@ -46,7 +46,7 @@ class type drop_down_t = object
   (** Gets the position of the selected item. *)
 
   method get_selected_item : unit -> [ `object_ ] Gobject.obj option
-  (** Gets the selected item. If no item is selected, [NULL] is returned. *)
+  (** Gets the selected item. If no item is selected, [None] is returned. *)
 
   method get_show_arrow : unit -> bool
   (** Returns whether to show an arrow within the widget. *)

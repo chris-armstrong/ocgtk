@@ -21,14 +21,14 @@ class type toggle_button_t = object
   method get_active : unit -> bool
   (** Queries a [GtkToggleButton] and returns its current state.
 
-      Returns [TRUE] if the toggle button is pressed in and [FALSE] if it is
+      Returns [true] if the toggle button is pressed in and [false] if it is
       raised. *)
 
   method set_active : bool -> unit
   (** Sets the status of the toggle button.
 
-      Set to [TRUE] if you want the [GtkToggleButton] to be “pressed in”, and
-      [FALSE] to raise it.
+      Set to [true] if you want the [GtkToggleButton] to be “pressed in”, and
+      [false] to raise it.
 
       If the status of the button changes, this action causes the
       [Gtk.ToggleButton::toggled] signal to be emitted. *)

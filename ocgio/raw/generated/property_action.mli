@@ -23,7 +23,7 @@
 
     Properties of [GLib.Variant] types are not currently supported.
 
-    If the property is boolean-valued then the action will have a [NULL]
+    If the property is boolean-valued then the action will have a [None]
     parameter type, and activating the action (with no parameter) will toggle
     the value of the property.
 
@@ -81,7 +81,7 @@ external get_enabled : t -> bool = "ml_g_property_action_get_enabled"
 
 external get_invert_boolean : t -> bool
   = "ml_g_property_action_get_invert_boolean"
-(** If [TRUE], the state of the action will be the negation of the property
+(** If [true], the state of the action will be the negation of the property
     value, provided the property is boolean. *)
 
 external get_name : t -> string = "ml_g_property_action_get_name"
@@ -93,9 +93,9 @@ external get_parameter_type : t -> Gvariant_type.t
 (** The type of the parameter that must be given when activating the action. *)
 
 external get_state : t -> Gvariant.t = "ml_g_property_action_get_state"
-(** The state of the action, or [NULL] if the action is stateless. *)
+(** The state of the action, or [None] if the action is stateless. *)
 
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_property_action_get_state_type"
-(** The [GVariantType] of the state that the action has, or [NULL] if the action
+(** The [GVariantType] of the state that the action has, or [None] if the action
     is stateless. *)

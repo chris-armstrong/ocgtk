@@ -258,7 +258,7 @@ class type text_view_t = object
       Tags in the buffer may override this setting for some ranges of text. *)
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t
-  (** Gets the menu model that gets added to the context menu or [NULL] if none
+  (** Gets the menu model that gets added to the context menu or [None] if none
       has been set. *)
 
   method get_gutter : Enums.textwindowtype -> Widget.widget_t option
@@ -334,7 +334,7 @@ class type text_view_t = object
   (** Gets the default tabs for [text_view].
 
       Tags in the buffer may override the defaults. The returned array will be
-      [NULL] if “standard” (8-space) tabs are used. Free the return value with
+      [None] if “standard” (8-space) tabs are used. Free the return value with
       [Pango.TabArray.free]. *)
 
   method get_top_margin : unit -> int
@@ -347,7 +347,7 @@ class type text_view_t = object
   (** Allow the [GtkTextView] input method to internally handle key press and
       release events.
 
-      If this function returns [TRUE], then no further processing should be done
+      If this function returns [true], then no further processing should be done
       for this key event. See [Gtk.IMContext.filter_keypress].
 
       Note that you are expected to call this function from your handler when
@@ -429,7 +429,7 @@ class type text_view_t = object
       indicated by [xalign] and [yalign].
 
       An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom,
-      0.5 means center. If [use_align] is [FALSE], the text scrolls the minimal
+      0.5 means center. If [use_align] is [false], the text scrolls the minimal
       distance to get the mark onscreen, possibly not scrolling at all. The
       effective screen for purposes of this function is reduced by a margin of
       size [within_margin].
@@ -447,7 +447,7 @@ class type text_view_t = object
       indicated by [xalign] and [yalign].
 
       An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom,
-      0.5 means center. If [use_align] is [FALSE], the text scrolls the minimal
+      0.5 means center. If [use_align] is [false], the text scrolls the minimal
       distance to get the mark onscreen, possibly not scrolling at all. The
       effective screen for purposes of this function is reduced by a margin of
       size [within_margin]. *)
@@ -456,8 +456,8 @@ class type text_view_t = object
   (** Sets the behavior of the text widget when the <kbd>Tab</kbd> key is
       pressed.
 
-      If [accepts_tab] is [TRUE], a tab character is inserted. If [accepts_tab]
-      is [FALSE] the keyboard focus is moved to the next widget in the focus
+      If [accepts_tab] is [true], a tab character is inserted. If [accepts_tab]
+      is [false] the keyboard focus is moved to the next widget in the focus
       chain.
 
       Focus can always be moved using <kbd>Ctrl</kbd>+<kbd>Tab</kbd>. *)
@@ -495,7 +495,7 @@ class type text_view_t = object
   (** Sets a menu model to add when constructing the context menu for
       [text_view].
 
-      You can pass [NULL] to remove a previously set extra menu. *)
+      You can pass [None] to remove a previously set extra menu. *)
 
   method set_gutter : Enums.textwindowtype -> Widget.widget_t option -> unit
   (** Places [widget] into the gutter specified by [win].
@@ -591,7 +591,7 @@ class type text_view_t = object
 
       See [Gtk.IMMulticontext].
 
-      Setting this to a non-[NULL] value overrides the system-wide IM module
+      Setting this to a non-[None] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
   method set_im_module : string -> unit
@@ -599,7 +599,7 @@ class type text_view_t = object
 
       See [Gtk.IMMulticontext].
 
-      Setting this to a non-[NULL] value overrides the system-wide IM module
+      Setting this to a non-[None] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
   (** {2:conversions Conversions} *)

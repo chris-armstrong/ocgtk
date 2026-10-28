@@ -131,7 +131,7 @@ external set_header_factory : t -> List_item_factory.t option -> unit
 (** Sets the [GtkListItemFactory] to use for populating the [Gtk.ListHeader]
     objects used in section headers.
 
-    If this factory is set to [NULL], the list will not show section headers. *)
+    If this factory is set to [None], the list will not show section headers. *)
 
 external set_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_list_view_set_factory"

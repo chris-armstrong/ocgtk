@@ -15,7 +15,7 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_tls_backend_from_gobject"
 (* Methods *)
 external supports_tls : t -> bool = "ml_g_tls_backend_supports_tls"
 [@@ocaml.doc
-  "Checks if TLS is supported; if this returns [FALSE] for the default\n\
+  "Checks if TLS is supported; if this returns [false] for the default\n\
    [GTlsBackend], it means no \"real\" TLS backend is available."]
 
 external supports_dtls : t -> bool = "ml_g_tls_backend_supports_dtls"
@@ -32,7 +32,7 @@ external set_default_database :
     database set in this call. Existing databases and connections are not
     modified.
 
-    Setting a [NULL] default database will reset to using the system default
+    Setting a [None] default database will reset to using the system default
     database as if g_tls_backend_set_default_database() had never been called.
 *)
 

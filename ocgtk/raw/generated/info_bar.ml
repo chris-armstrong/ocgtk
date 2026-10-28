@@ -84,7 +84,7 @@ external set_revealed : t -> bool -> unit = "ml_gtk_info_bar_set_revealed"
     transition.
 
     Note: this does not show or hide [info_bar] in the [Gtk.Widget:visible]
-    sense, so revealing has no effect if [Gtk.Widget:visible] is [FALSE]. *)
+    sense, so revealing has no effect if [Gtk.Widget:visible] is [false]. *)
 
 external set_response_sensitive : t -> int -> bool -> unit
   = "ml_gtk_info_bar_set_response_sensitive"

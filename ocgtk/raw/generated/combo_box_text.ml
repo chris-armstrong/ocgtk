@@ -78,7 +78,7 @@ external prepend : t -> string option -> string -> unit
   = "ml_gtk_combo_box_text_prepend"
 (** Prepends [text] to the list of strings stored in [combo_box].
 
-    If [id] is non-[NULL] then it is used as the ID of the row.
+    If [id] is non-[None] then it is used as the ID of the row.
 
     This is the same as calling [Gtk.ComboBoxText.insert] with a position of 0.
 *)
@@ -89,14 +89,14 @@ external insert_text : t -> int -> string -> unit
 
     If [position] is negative then [text] is appended.
 
-    This is the same as calling [Gtk.ComboBoxText.insert] with a [NULL] ID
+    This is the same as calling [Gtk.ComboBoxText.insert] with a [None] ID
     string. *)
 
 external insert : t -> int -> string option -> string -> unit
   = "ml_gtk_combo_box_text_insert"
 (** Inserts [text] at [position] in the list of strings stored in [combo_box].
 
-    If [id] is non-[NULL] then it is used as the ID of the row. See
+    If [id] is non-[None] then it is used as the ID of the row. See
     [Gtk.ComboBox:id-column].
 
     If [position] is negative then [text] is appended. *)
@@ -105,7 +105,7 @@ external get_active_text : t -> string option
   = "ml_gtk_combo_box_text_get_active_text"
 (** Returns the currently active string in [combo_box].
 
-    If no row is currently selected, [NULL] is returned. If [combo_box] contains
+    If no row is currently selected, [None] is returned. If [combo_box] contains
     an entry, this function will return its contents (which will not necessarily
     be an item from the list). *)
 
@@ -119,7 +119,7 @@ external append : t -> string option -> string -> unit
   = "ml_gtk_combo_box_text_append"
 (** Appends [text] to the list of strings stored in [combo_box].
 
-    If [id] is non-[NULL] then it is used as the ID of the row.
+    If [id] is non-[None] then it is used as the ID of the row.
 
     This is the same as calling [Gtk.ComboBoxText.insert] with a position of -1.
 *)

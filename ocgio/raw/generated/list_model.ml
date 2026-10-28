@@ -28,7 +28,7 @@
  and [Gio.ListModel.get_item] returns an item at a (0-based) position.\n\
  In order to allow implementations to calculate the list length lazily,\n\
  you can also iterate over items: starting from 0, repeatedly call\n\
- [Gio.ListModel.get_item] until it returns [NULL].\n\n\
+ [Gio.ListModel.get_item] until it returns [None].\n\n\
  An implementation may create objects lazily, but must take care to\n\
  return the same object for a given position until all references to\n\
  it are gone.\n\n\
@@ -92,10 +92,10 @@ external get_object : t -> int -> [ `object_ ] Gobject.obj option
   = "ml_g_list_model_get_object"
 (** Get the item at [position].
 
-    If [position] is greater than the number of items in [list], [NULL] is
+    If [position] is greater than the number of items in [list], [None] is
     returned.
 
-    [NULL] is never returned for an index that is smaller than the length of the
+    [None] is never returned for an index that is smaller than the length of the
     list.
 
     This function is meant to be used by language bindings in place of
@@ -108,7 +108,7 @@ external get_n_items : t -> int = "ml_g_list_model_get_n_items"
 
     Depending on the model implementation, calling this function may be less
     efficient than iterating the list with increasing values for [position]
-    until g_list_model_get_item() returns [NULL]. *)
+    until g_list_model_get_item() returns [None]. *)
 
 external get_item_type : t -> Gobject.Type.t = "ml_g_list_model_get_item_type"
 (** Gets the type of the items in [list].

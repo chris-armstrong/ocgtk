@@ -90,7 +90,7 @@ external get_adjustment : t -> Adjustment.t
 external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 (** Queries a [GtkScaleButton] and returns its current state.
 
-    Returns [TRUE] if the scale button is pressed in and [FALSE] if it is
+    Returns [true] if the scale button is pressed in and [false] if it is
     raised. *)
 
 (* Properties *)

@@ -30,15 +30,15 @@ class type list_model_t = object
 
       Depending on the model implementation, calling this function may be less
       efficient than iterating the list with increasing values for [position]
-      until g_list_model_get_item() returns [NULL]. *)
+      until g_list_model_get_item() returns [None]. *)
 
   method get_object : int -> [ `object_ ] Gobject.obj option
   (** Get the item at [position].
 
-      If [position] is greater than the number of items in [list], [NULL] is
+      If [position] is greater than the number of items in [list], [None] is
       returned.
 
-      [NULL] is never returned for an index that is smaller than the length of
+      [None] is never returned for an index that is smaller than the length of
       the list.
 
       This function is meant to be used by language bindings in place of

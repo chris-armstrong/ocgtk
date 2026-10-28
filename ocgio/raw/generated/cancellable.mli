@@ -104,7 +104,7 @@ external disconnect : t -> int -> unit = "ml_g_cancellable_disconnect"
     cancellable operation is finished and the signal handler is removed. See
     [GCancellable::cancelled] for details on how to use this.
 
-    If [cancellable] is [NULL] or [handler_id] is [0] this function does
+    If [cancellable] is [None] or [handler_id] is [0] this function does
     nothing. *)
 
 external cancel : t -> unit = "ml_g_cancellable_cancel"
@@ -117,7 +117,7 @@ external cancel : t -> unit = "ml_g_cancellable_cancel"
     thread other than the one running the operation that was passed the
     [cancellable].
 
-    If [cancellable] is [NULL], this function returns immediately for
+    If [cancellable] is [None], this function returns immediately for
     convenience.
 
     The convention within GIO is that cancelling an asynchronous operation

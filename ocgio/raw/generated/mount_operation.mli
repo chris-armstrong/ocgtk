@@ -14,7 +14,7 @@
     callbacks to show the required dialogs, such as
     {{:https://docs.gtk.org/gtk4/class.MountOperation.html}[GtkMountOperation]}.
     If no user interaction is desired (for example when automounting filesystems
-    at login time), usually [NULL] can be passed, see each method taking a
+    at login time), usually [None] can be passed, see each method taking a
     [GMountOperation] for details.
 
     Throughout the API, the term ‘TCRYPT’ is used to mean ‘compatible with
@@ -53,12 +53,12 @@ external set_password : t -> string option -> unit
 external set_is_tcrypt_system_volume : t -> bool -> unit
   = "ml_g_mount_operation_set_is_tcrypt_system_volume"
 (** Sets the mount operation to use a system volume if [system_volume] is
-    [TRUE]. *)
+    [true]. *)
 
 external set_is_tcrypt_hidden_volume : t -> bool -> unit
   = "ml_g_mount_operation_set_is_tcrypt_hidden_volume"
 (** Sets the mount operation to use a hidden volume if [hidden_volume] is
-    [TRUE]. *)
+    [true]. *)
 
 external set_domain : t -> string option -> unit
   = "ml_g_mount_operation_set_domain"
@@ -69,7 +69,7 @@ external set_choice : t -> int -> unit = "ml_g_mount_operation_set_choice"
 
 external set_anonymous : t -> bool -> unit
   = "ml_g_mount_operation_set_anonymous"
-(** Sets the mount operation to use an anonymous user if [anonymous] is [TRUE].
+(** Sets the mount operation to use an anonymous user if [anonymous] is [true].
 *)
 
 external reply : t -> Ocgio_enums.mountoperationresult -> unit

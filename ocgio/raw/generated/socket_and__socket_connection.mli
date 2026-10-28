@@ -19,7 +19,7 @@
     constructed by e.g. [GObject.Object.new] you must call [Gio.Initable.init]
     and check the results before using the object. This is done automatically in
     [Gio.Socket.new] and [Gio.Socket.new_from_fd], so these functions can return
-    [NULL].
+    [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking
@@ -132,13 +132,13 @@ module rec Socket : sig
     = "ml_g_socket_shutdown"
   (** Shut down part or all of a full-duplex connection.
 
-      If [shutdown_read] is [TRUE] then the receiving side of the connection is
+      If [shutdown_read] is [true] then the receiving side of the connection is
       shut down, and further reading is disallowed.
 
-      If [shutdown_write] is [TRUE] then the sending side of the connection is
+      If [shutdown_write] is [true] then the sending side of the connection is
       shut down, and further writing is disallowed.
 
-      It is allowed for both [shutdown_read] and [shutdown_write] to be [TRUE].
+      It is allowed for both [shutdown_read] and [shutdown_write] to be [true].
 
       One example where it is useful to shut down only one side of a connection
       is graceful disconnect for TCP connections where you close the sending
@@ -190,7 +190,7 @@ module rec Socket : sig
   external set_multicast_loopback : t -> bool -> unit
     = "ml_g_socket_set_multicast_loopback"
   (** Sets whether outgoing multicast packets will be received by sockets
-      listening on that multicast address on the same host. This is [TRUE] by
+      listening on that multicast address on the same host. This is [true] by
       default. *)
 
   external set_listen_backlog : t -> int -> unit
@@ -222,7 +222,7 @@ module rec Socket : sig
 
   external set_broadcast : t -> bool -> unit = "ml_g_socket_set_broadcast"
   (** Sets whether [socket] should allow sending to broadcast addresses. This is
-      [FALSE] by default. *)
+      [false] by default. *)
 
   external set_blocking : t -> bool -> unit = "ml_g_socket_set_blocking"
   (** Sets the blocking mode of the socket. In blocking mode all operations
@@ -319,22 +319,22 @@ module rec Socket : sig
       g_socket_send_messages(); for easier use, see g_socket_send() and
       g_socket_send_to().
 
-      If [address] is [NULL] then the message is sent to the default receiver
+      If [address] is [None] then the message is sent to the default receiver
       (set by g_socket_connect()).
 
       [vectors] must point to an array of [GOutputVector] structs and
       [num_vectors] must be the length of this array. (If [num_vectors] is -1,
       then [vectors] is assumed to be terminated by a [GOutputVector] with a
-      [NULL] buffer pointer.) The [GOutputVector] structs describe the buffers
+      [None] buffer pointer.) The [GOutputVector] structs describe the buffers
       that the sent data will be gathered from. Using multiple [GOutputVectors]
       is more memory-efficient than manually copying data from multiple sources
       into a single buffer, and more network-efficient than making multiple
       calls to g_socket_send().
 
-      [messages], if non-[NULL], is taken to point to an array of [num_messages]
+      [messages], if non-[None], is taken to point to an array of [num_messages]
       [GSocketControlMessage] instances. These correspond to the control
       messages to be sent on the socket. If [num_messages] is -1 then [messages]
-      is treated as a [NULL]-terminated array.
+      is treated as a null-terminated array.
 
       [flags] modify how the message is sent. The commonly available arguments
       for this are available in the [GSocketMsgFlags] enum, but the values there
@@ -388,10 +388,10 @@ module rec Socket : sig
       The other members of [GInputMessage] are treated as described in its
       documentation.
 
-      If [GSocket:blocking] is [TRUE] the call will block until [num_messages]
+      If [GSocket:blocking] is [true] the call will block until [num_messages]
       have been received, or the end of the stream is reached.
 
-      If [GSocket:blocking] is [FALSE] the call will return up to [num_messages]
+      If [GSocket:blocking] is [false] the call will return up to [num_messages]
       without blocking, or [G_IO_ERROR_WOULD_BLOCK] if no messages are queued in
       the operating system to be received.
 
@@ -476,10 +476,10 @@ module rec Socket : sig
       must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
       appropriate interface and port with g_socket_bind().
 
-      If [iface] is [NULL], the system will automatically pick an interface to
+      If [iface] is [None], the system will automatically pick an interface to
       bind to based on [group].
 
-      If [source_specific] is not [NULL], use source-specific multicast as
+      If [source_specific] is not [None], use source-specific multicast as
       defined in RFC 4604. Note that on older platforms this may fail with a
       [G_IO_ERROR_NOT_SUPPORTED] error.
 
@@ -494,10 +494,10 @@ module rec Socket : sig
       must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
       appropriate interface and port with g_socket_bind().
 
-      If [iface] is [NULL], the system will automatically pick an interface to
+      If [iface] is [None], the system will automatically pick an interface to
       bind to based on [group].
 
-      If [source_specific] is [TRUE], source-specific multicast as defined in
+      If [source_specific] is [true], source-specific multicast as defined in
       RFC 4604 is used. Note that on older platforms this may fail with a
       [G_IO_ERROR_NOT_SUPPORTED] error.
 
@@ -508,9 +508,9 @@ module rec Socket : sig
   (** Check whether the socket is connected. This is only useful for
       connection-oriented sockets.
 
-      If using g_socket_shutdown(), this function will return [TRUE] until the
+      If using g_socket_shutdown(), this function will return [true] until the
       socket has been shut down for reading and writing. If you do a
-      non-blocking connect, this function will not return [TRUE] until after you
+      non-blocking connect, this function will not return [true] until after you
       call g_socket_check_connect_result(). *)
 
   external is_closed : t -> bool = "ml_g_socket_is_closed"
@@ -554,7 +554,7 @@ module rec Socket : sig
       or platform-dependent options, you may need to include additional headers.
 
       Note that even for socket options that are a single byte in size, [value]
-      is still a pointer to a #gint variable, not a #guchar;
+      is still a pointer to a [int] variable, not a #guchar;
       g_socket_get_option() will handle the conversion internally. *)
 
   external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
@@ -563,7 +563,7 @@ module rec Socket : sig
 
   external get_multicast_loopback : t -> bool
     = "ml_g_socket_get_multicast_loopback"
-  (** Gets the multicast loopback setting on [socket]; if [TRUE] (the default),
+  (** Gets the multicast loopback setting on [socket]; if [true] (the default),
       outgoing multicast packets will be looped back to multicast listeners on
       the same host. *)
 
@@ -617,7 +617,7 @@ module rec Socket : sig
       g_unix_connection_receive_credentials() functions. *)
 
   external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
-  (** Gets the broadcast setting on [socket]; if [TRUE], it is possible to send
+  (** Gets the broadcast setting on [socket]; if [true], it is possible to send
       packets to broadcast addresses. *)
 
   external get_blocking : t -> bool = "ml_g_socket_get_blocking"
@@ -715,9 +715,9 @@ module rec Socket : sig
       initiate connections, though this is not normally required.
 
       If [socket] is a TCP socket, then [allow_reuse] controls the setting of
-      the [SO_REUSEADDR] socket option; normally it should be [TRUE] for server
+      the [SO_REUSEADDR] socket option; normally it should be [true] for server
       sockets (sockets that you will eventually call g_socket_accept() on), and
-      [FALSE] for client sockets. (Failing to set this flag on a server socket
+      [false] for client sockets. (Failing to set this flag on a server socket
       may cause g_socket_bind() to return [G_IO_ERROR_ADDRESS_IN_USE] if the
       server program is stopped and then immediately restarted.)
 

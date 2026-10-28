@@ -28,19 +28,19 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_font_dialog_button_get_type"
 external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
 (** Creates a new [GtkFontDialogButton] with the given [GtkFontDialog].
 
-    You can pass [NULL] to this function and set a [GtkFontDialog] later. The
+    You can pass [None] to this function and set a [GtkFontDialog] later. The
     button will be insensitive until that happens. *)
 
 (* Methods *)
 
 external set_use_size : t -> bool -> unit
   = "ml_gtk_font_dialog_button_set_use_size"
-(** If [use_size] is [TRUE], the font name will be written using the selected
+(** If [use_size] is [true], the font name will be written using the selected
     font size. *)
 
 external set_use_font : t -> bool -> unit
   = "ml_gtk_font_dialog_button_set_use_font"
-(** If [use_font] is [TRUE], the font name will be written using the selected
+(** If [use_font] is [true], the font name will be written using the selected
     font. *)
 
 external set_level : t -> Ocgtk_enums.fontlevel -> unit

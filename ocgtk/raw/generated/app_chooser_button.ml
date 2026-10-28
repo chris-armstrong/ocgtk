@@ -7,7 +7,7 @@
 
     Initially, a [GtkAppChooserButton] selects the first application in its
     list, which will either be the most-recently used application or, if
-    [Gtk.AppChooserButton:show-default-item] is [TRUE], the default application.
+    [Gtk.AppChooserButton:show-default-item] is [true], the default application.
 
     The list of applications shown in a [GtkAppChooserButton] includes the
     recommended applications for the given content type. When

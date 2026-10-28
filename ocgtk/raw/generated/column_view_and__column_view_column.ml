@@ -79,7 +79,7 @@ module rec Column_view : sig
   (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
       in section headers.
 
-      If this factory is set to [NULL], the list will not show section headers.
+      If this factory is set to [None], the list will not show section headers.
   *)
 
   external set_enable_rubberband : t -> bool -> unit
@@ -268,7 +268,7 @@ end = struct
   (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
       in section headers.
 
-      If this factory is set to [NULL], the list will not show section headers.
+      If this factory is set to [None], the list will not show section headers.
   *)
 
   external set_enable_rubberband : t -> bool -> unit
@@ -503,7 +503,7 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_get_column_view"
   (** Gets the column view that's currently displaying this column.
 
-      If [self] has not been added to a column view yet, [NULL] is returned. *)
+      If [self] has not been added to a column view yet, [None] is returned. *)
 
   (* Properties *)
 end = struct
@@ -627,7 +627,7 @@ end = struct
     = "ml_gtk_column_view_column_get_column_view"
   (** Gets the column view that's currently displaying this column.
 
-      If [self] has not been added to a column view yet, [NULL] is returned. *)
+      If [self] has not been added to a column view yet, [None] is returned. *)
 
   (* Properties *)
 end

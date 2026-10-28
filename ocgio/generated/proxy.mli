@@ -37,8 +37,8 @@ class type proxy_t = object
   method supports_hostname : unit -> bool
   (** Some proxy protocols expect to be passed a hostname, which they will
       resolve to an IP address themselves. Others, like SOCKS4, do not allow
-      this. This function will return [FALSE] if [proxy] is implementing such a
-      protocol. When [FALSE] is returned, the caller should resolve the
+      this. This function will return [false] if [proxy] is implementing such a
+      protocol. When [false] is returned, the caller should resolve the
       destination hostname first, and then pass a [GProxyAddress] containing the
       stringified IP address to g_proxy_connect() or g_proxy_connect_async(). *)
 

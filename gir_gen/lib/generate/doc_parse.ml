@@ -178,7 +178,9 @@ let backtick_run c =
 
 (* A backtick-delimited code span. The closing run must be at least as long
    as the opening run. An unmatched opener is left as literal text (a
-   one-sided backtick must not swallow the rest of the paragraph). *)
+   one-sided backtick must not swallow the rest of the paragraph). A span
+   holding exactly a C literal name is that literal; one holding more stays
+   code. *)
 let code_span c =
   let k = backtick_run c in
   let rec find_close cj =
@@ -189,7 +191,11 @@ let code_span c =
   let+ cj = find_close (Cursor.advance c k) in
   let content = Cursor.text_between (Cursor.advance c k) cj in
   let close_run = backtick_run cj in
-  (T_nodes [ Code content ], Cursor.advance cj (Int.min k close_run), [])
+  let node =
+    Doc_c_idiom.c_lit_of_name content
+    |> Option.fold ~none:(Code content) ~some:(fun lit -> C_lit lit)
+  in
+  (T_nodes [ node ], Cursor.advance cj (Int.min k close_run), [])
 
 (* [*]/[**] emphasis. The opener must have a non-empty, space-free content
    and a matching closer; a lone or space-bounded star is literal text. *)
@@ -376,7 +382,8 @@ and hash_sigil c =
   if Cursor.peek_char c (-1) '/' then None
   else
     let* start = Cursor.scan_char c '#' in
-    if not (Cursor.matches start is_upper) then None
+    if Cursor.matches start is_lower then c_prim_sigil start
+    else if not (Cursor.matches start is_upper) then None
     else
       let id_end = Cursor.skip_while start is_ident_char in
       let name = Cursor.text_between start id_end in
@@ -399,16 +406,31 @@ and hash_sigil c =
       Some
         (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], next, [])
 
+(* A [#gint]-style primitive type sigil, [start] just past the [#]. Only
+   names with an OCaml reading count; any other lowercase [#word] stays
+   literal text. *)
+and c_prim_sigil start =
+  let id_end = Cursor.skip_while start is_ident_char in
+  let name = Cursor.text_between start id_end in
+  let+ _reading = Doc_c_idiom.ocaml_of_c_prim name in
+  (T_nodes [ C_prim name ], id_end, [])
+
 (* A legacy gtk-doc [%CONSTANT] sigil: [%] followed by an uppercase
-   identifier with no space. *)
+   identifier with no space. [%TRUE], [%FALSE] and [%NULL] are C literals, not
+   constants. *)
 and percent_sigil c =
   let* start = Cursor.scan_char c '%' in
   if not (Cursor.matches start is_upper) then None
   else
     let id_end = Cursor.skip_while start is_ident_char in
     let endpoint = Cursor.text_between start id_end in
-    Some
-      (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], id_end, [])
+    let node =
+      Doc_c_idiom.c_lit_of_name endpoint
+      |> Option.fold
+           ~none:(Sym_ref { kind = None; endpoint; anchor = None })
+           ~some:(fun lit -> C_lit lit)
+    in
+    Some (T_nodes [ node ], id_end, [])
 
 and scan_token c =
   let* ch = Cursor.current c in
@@ -434,7 +456,8 @@ and parse_inline s : inline list * fallback list =
       t :: acc
   in
   let rec go c acc fbs =
-    if Cursor.eof c then (List.rev (flush acc), List.rev fbs)
+    if Cursor.eof c then
+      (Doc_c_idiom.attach_null_phrases (List.rev (flush acc)), List.rev fbs)
     else
       match scan_token c with
       | None ->
@@ -767,6 +790,7 @@ let parse_blocks (text : string) : block list * fallback list =
 
 let parse_with_fallbacks _ctx s =
   let blocks, fbs = parse_blocks (String.trim s) in
-  ({ blocks }, fbs)
+  let blocks, ownership_fbs = Doc_c_idiom.strip_ownership blocks in
+  ({ blocks }, fbs @ ownership_fbs)
 
 let parse ctx s = fst (parse_with_fallbacks ctx s)

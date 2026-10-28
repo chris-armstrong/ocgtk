@@ -18,7 +18,7 @@ class type string_list_t = object
   method get_string : int -> string option
   (** Gets the string that is at [position] in [self].
 
-      If [self] does not contain [position] items, [NULL] is returned.
+      If [self] does not contain [position] items, [None] is returned.
 
       This function returns the const char *. To get the object wrapping it, use
       g_list_model_get_item(). *)

@@ -82,16 +82,16 @@ class type file_info_t = object
 
   method get_attribute_boolean : string -> bool
   (** Gets the value of a boolean attribute. If the attribute does not contain a
-      boolean value, [FALSE] will be returned. *)
+      boolean value, [false] will be returned. *)
 
   method get_attribute_byte_string : string -> string option
   (** Gets the value of a byte string attribute. If the attribute does not
-      contain a byte string, [NULL] will be returned. *)
+      contain a byte string, [None] will be returned. *)
 
   method get_attribute_file_path : string -> string option
   (** Gets the value of a byte string attribute as a file path.
 
-      If the attribute does not contain a byte string, [NULL] will be returned.
+      If the attribute does not contain a byte string, [None] will be returned.
 
       This function is meant to be used by language bindings that have specific
       handling for Unix paths. *)
@@ -108,18 +108,18 @@ class type file_info_t = object
 
   method get_attribute_object : string -> [ `object_ ] Gobject.obj option
   (** Gets the value of a [GObject] attribute. If the attribute does not contain
-      a [GObject], [NULL] will be returned. *)
+      a [GObject], [None] will be returned. *)
 
   method get_attribute_status : string -> Enums.fileattributestatus
   (** Gets the attribute status for an attribute key. *)
 
   method get_attribute_string : string -> string option
   (** Gets the value of a string attribute. If the attribute does not contain a
-      string, [NULL] will be returned. *)
+      string, [None] will be returned. *)
 
   method get_attribute_stringv : string -> string array option
   (** Gets the value of a stringv attribute. If the attribute does not contain a
-      stringv, [NULL] will be returned. *)
+      stringv, [None] will be returned. *)
 
   method get_attribute_type : string -> Enums.fileattributetype
   (** Gets the attribute type for an attribute key. *)
@@ -200,7 +200,7 @@ class type file_info_t = object
   method get_size : unit -> int64
   (** Gets the file's size (in bytes). The size is retrieved through the value
       of the [G_FILE_ATTRIBUTE_STANDARD_SIZE] attribute and is converted from
-      #guint64 to #goffset before returning the result.
+      [UInt64.t] to #goffset before returning the result.
 
       It is an error to call this if the [GFileInfo] does not contain
       [G_FILE_ATTRIBUTE_STANDARD_SIZE]. *)
@@ -266,7 +266,7 @@ class type file_info_t = object
       external code that implement g_file_set_attributes_from_info() or similar
       functions.
 
-      The attribute must exist in [info] for this to work. Otherwise [FALSE] is
+      The attribute must exist in [info] for this to work. Otherwise [false] is
       returned and [info] is unchanged. *)
 
   method set_attribute_string : string -> string -> unit

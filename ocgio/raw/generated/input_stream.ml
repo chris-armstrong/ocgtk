@@ -39,7 +39,7 @@ external skip : t -> Gsize.t -> Cancellable.t option -> (int, GError.t) result
     This function is optional for inherited classes, as the default
     implementation emulates it using read.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
     operation was partially finished when the operation was cancelled the
@@ -48,7 +48,7 @@ external skip : t -> Gsize.t -> Cancellable.t option -> (int, GError.t) result
 external set_pending : t -> (bool, GError.t) result
   = "ml_g_input_stream_set_pending"
 (** Sets [stream] to have actions pending. If the pending flag is already set or
-    [stream] is closed, it will return [FALSE] and set [error]. *)
+    [stream] is closed, it will return [false] and set [error]. *)
 
 external read_finish : t -> Async_result.t -> (int, GError.t) result
   = "ml_g_input_stream_read_finish"
@@ -76,13 +76,13 @@ external read_bytes :
     near the end of a file. A zero-length [GBytes] is returned on end of file
     (or if [count] is zero), but never otherwise.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
     operation was partially finished when the operation was cancelled the
     partial result will be returned, without an error.
 
-    On error [NULL] is returned and [error] is set accordingly. *)
+    On error [None] is returned and [error] is set accordingly. *)
 
 external read_all_finish :
   t -> Async_result.t -> (bool * Gsize.t, GError.t) result
@@ -91,7 +91,7 @@ external read_all_finish :
     [InputStream.read_all_async].
 
     As a special exception to the normal conventions for functions that use
-    [GError], if this function returns [FALSE] (and sets [error]) then
+    [GError], if this function returns [false] (and sets [error]) then
     [bytes_read] will be set to the number of bytes that were successfully read
     before the error was encountered. This functionality is only available from
     C. If you need it from another language then you must write your own loop
@@ -129,7 +129,7 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
     will still return [G_IO_ERROR_CLOSED] for all operations. Still, it is
     important to check and report the error to the user.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. Cancelling a
     close will still leave the stream closed, but some streams can use a faster

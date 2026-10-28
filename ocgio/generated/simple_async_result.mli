@@ -43,7 +43,7 @@ class type simple_async_result_t = object
 
       If the [GCancellable] given to a prior call to
       g_simple_async_result_set_check_cancellable() is cancelled then this
-      function will return [TRUE] with [dest] set appropriately. *)
+      function will return [true] with [dest] set appropriately. *)
 
   method set_check_cancellable : Cancellable.cancellable_t option -> unit
   [@@ocaml.doc
@@ -118,7 +118,7 @@ end
      [Gio.SimpleAsyncResult.propagate_error].\n\n\
      An asynchronous operation can be made to ignore a cancellation event by\n\
      calling [Gio.SimpleAsyncResult.set_handle_cancellation] with a\n\
-     [GSimpleAsyncResult] for the operation and [FALSE]. This is useful for\n\
+     [GSimpleAsyncResult] for the operation and [false]. This is useful for\n\
      operations that are dangerous to cancel, such as close (which would\n\
      cause a leak if cancelled before being run).\n\n\
      [GSimpleAsyncResult] can integrate into GLib’s event loop,\n\
@@ -269,7 +269,7 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
  [Gio.SimpleAsyncResult.propagate_error].\n\n\
  An asynchronous operation can be made to ignore a cancellation event by\n\
  calling [Gio.SimpleAsyncResult.set_handle_cancellation] with a\n\
- [GSimpleAsyncResult] for the operation and [FALSE]. This is useful for\n\
+ [GSimpleAsyncResult] for the operation and [false]. This is useful for\n\
  operations that are dangerous to cancel, such as close (which would\n\
  cause a leak if cancelled before being run).\n\n\
  [GSimpleAsyncResult] can integrate into GLib’s event loop,\n\

@@ -48,12 +48,12 @@ class type center_layout_t = object
   method set_center_widget : Widget.widget_t option -> unit
   (** Sets the new center widget of [self].
 
-      To remove the existing center widget, pass [NULL]. *)
+      To remove the existing center widget, pass [None]. *)
 
   method set_end_widget : Widget.widget_t option -> unit
   (** Sets the new end widget of [self].
 
-      To remove the existing center widget, pass [NULL]. *)
+      To remove the existing center widget, pass [None]. *)
 
   method set_orientation : Enums.orientation -> unit
   (** Sets the orientation of [self]. *)
@@ -65,13 +65,13 @@ class type center_layout_t = object
       widths, the start and end widgets start shrinking and the center child
       keeps natural width until they reach minimum width.
 
-      If set to [FALSE], start and end widgets keep natural width and the center
+      If set to [false], start and end widgets keep natural width and the center
       widget starts shrinking instead. *)
 
   method set_start_widget : Widget.widget_t option -> unit
   (** Sets the new start widget of [self].
 
-      To remove the existing start widget, pass [NULL]. *)
+      To remove the existing start widget, pass [None]. *)
 
   (** {2:conversions Conversions} *)
 

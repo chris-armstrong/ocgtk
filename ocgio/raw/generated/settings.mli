@@ -388,7 +388,7 @@ external set_strv : t -> string -> string array option -> bool
 (** Sets [key] in [settings] to [value].
 
     A convenience variant of [Gio.Settings.set] for string arrays. If [value] is
-    [NULL], then [key] is set to be the empty array.
+    [None], then [key] is set to be the empty array.
 
     It is a programmer error to give a [key] that isn’t specified as having an
     [as] type in the schema for [settings] (see [GLib.VariantType]). *)
@@ -514,7 +514,7 @@ external get_user_value : t -> string -> Gvariant.t option
 
     The user value of a key is the last value that was set by the user.
 
-    After calling [Gio.Settings.reset] this function should always return [NULL]
+    After calling [Gio.Settings.reset] this function should always return [None]
     (assuming something is not wrong with the system configuration).
 
     It is possible that [Gio.Settings.get_value] will return a different value

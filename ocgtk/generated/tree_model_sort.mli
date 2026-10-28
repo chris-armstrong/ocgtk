@@ -128,14 +128,14 @@ class type tree_model_sort_t = object
   (** Converts [child_path] to a path relative to [tree_model_sort]. That is,
       [child_path] points to a path in the child model. The returned path will
       point to the same row in the sorted model. If [child_path] isn’t a valid
-      path on the child model, then [NULL] is returned. *)
+      path on the child model, then [None] is returned. *)
 
   method convert_path_to_child_path : Raw.Tree_path.t -> Raw.Tree_path.t option
   (** Converts [sorted_path] to a path on the child model of [tree_model_sort].
       That is, [sorted_path] points to a location in [tree_model_sort]. The
       returned path will point to the same location in the model not being
       sorted. If [sorted_path] does not point to a location in the child model,
-      [NULL] is returned. *)
+      [None] is returned. *)
 
   method get_model : unit -> Tree_model.tree_model_t
   (** Returns the model the [GtkTreeModelSort] is sorting. *)

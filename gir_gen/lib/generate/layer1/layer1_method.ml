@@ -66,7 +66,9 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
 
   if should_generate_method ~ctx ~entity_kind meth then begin
     let doc =
-      Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member meth.doc
+      Doc_emit.item_doc ~indent:""
+        ~ret_shape:(Doc_translate.ret_shape_of_throws meth.throws)
+        ~context:Doc_translate.Member meth.doc
     in
     bprintf buf "%s" (Doc_emit.before_item doc);
 

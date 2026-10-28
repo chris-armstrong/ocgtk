@@ -56,8 +56,8 @@ external new_from_file : string -> (t, GError.t) result
   = "ml_gtk_page_setup_new_from_file"
 (** Reads the page setup from the file [file_name].
 
-    Returns a new [GtkPageSetup] object with the restored page setup, or [NULL]
-    if an error occurred. See [Gtk.PageSetup.to_file]. *)
+    Returns a new [GtkPageSetup] object with the restored page setup, or an
+    [Error] result. See [Gtk.PageSetup.to_file]. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_page_setup_new_from_gvariant"

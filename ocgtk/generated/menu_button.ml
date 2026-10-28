@@ -41,7 +41,7 @@ class type menu_button_t = object
   method get_popover : unit -> Popover.popover_t option
   (** Returns the [GtkPopover] that pops out of the button.
 
-      If the button is not using a [GtkPopover], this function returns [NULL].
+      If the button is not using a [GtkPopover], this function returns [None].
   *)
 
   method get_primary : unit -> bool
@@ -77,7 +77,7 @@ class type menu_button_t = object
       Setting a child resets [Gtk.MenuButton:label] and
       [Gtk.MenuButton:icon-name].
 
-      If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+      If [Gtk.MenuButton:always-show-arrow] is set to [true] and
       [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will
       be shown next to the child. *)
 
@@ -90,7 +90,7 @@ class type menu_button_t = object
       Setting icon name resets [Gtk.MenuButton:label] and
       [Gtk.MenuButton:child].
 
-      If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+      If [Gtk.MenuButton:always-show-arrow] is set to [true] and
       [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will
       be shown next to the icon. *)
 
@@ -106,23 +106,23 @@ class type menu_button_t = object
   method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
   (** Sets the [GMenuModel] from which the popup will be constructed.
 
-      If [menu_model] is [NULL], the button is disabled.
+      If [menu_model] is [None], the button is disabled.
 
       A [Gtk.Popover] will be created from the menu model with
       [Gtk.PopoverMenu.new_from_model]. Actions will be connected as documented
       for this function.
 
       If [Gtk.MenuButton:popover] is already set, it will be dissociated from
-      the [menu_button], and the property is set to [NULL]. *)
+      the [menu_button], and the property is set to [None]. *)
 
   method set_popover : Popover.popover_t option -> unit
   (** Sets the [GtkPopover] that will be popped up when the [menu_button] is
       clicked.
 
-      If [popover] is [NULL], the button is disabled.
+      If [popover] is [None], the button is disabled.
 
       If [Gtk.MenuButton:menu-model] is set, the menu model is dissociated from
-      the [menu_button], and the property is set to [NULL]. *)
+      the [menu_button], and the property is set to [None]. *)
 
   method set_primary : bool -> unit
   (** Sets whether menu button acts as a primary menu.

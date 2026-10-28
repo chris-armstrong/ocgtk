@@ -91,7 +91,7 @@ external match_mime_type : t -> t -> string option
   = "ml_gdk_content_formats_match_mime_type"
 (** Finds the first mime type from [first] that is also contained in [second].
 
-    If no matching mime type is found, [NULL] is returned. *)
+    If no matching mime type is found, [None] is returned. *)
 
 external match_gtype : t -> t -> Gobject.Type.t
   = "ml_gdk_content_formats_match_gtype"
@@ -110,14 +110,14 @@ external get_mime_types : t -> string array option * Gsize.t
 (** Gets the mime types included in [formats].
 
     Note that [formats] may not contain any mime types, in particular when they
-    are empty. In that case [NULL] will be returned. *)
+    are empty. In that case [None] will be returned. *)
 
 external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
   = "ml_gdk_content_formats_get_gtypes"
 (** Gets the [GType]s included in [formats].
 
     Note that [formats] may not contain any [GType]s, in particular when they
-    are empty. In that case [NULL] will be returned. *)
+    are empty. In that case [None] will be returned. *)
 
 external contain_mime_type : t -> string -> bool
   = "ml_gdk_content_formats_contain_mime_type"

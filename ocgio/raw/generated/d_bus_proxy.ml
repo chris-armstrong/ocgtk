@@ -130,9 +130,9 @@ external set_default_timeout : t -> int -> unit
 external set_cached_property : t -> string -> Gvariant.t option -> unit
   = "ml_g_dbus_proxy_set_cached_property"
 [@@ocaml.doc
-  "If [value] is not [NULL], sets the cached value for the property with\n\
+  "If [value] is not [None], sets the cached value for the property with\n\
    name [property_name] to the value in [value].\n\n\
-   If [value] is [NULL], then the cached value is removed from the\n\
+   If [value] is [None], then the cached value is removed from the\n\
    property cache.\n\n\
    If [proxy] has an expected interface (see\n\
    [GDBusProxy:g]-interface-info) and [property_name] is referenced by\n\
@@ -163,15 +163,15 @@ external get_object_path : t -> string = "ml_g_dbus_proxy_get_object_path"
 (** Gets the object path [proxy] is for. *)
 
 external get_name_owner : t -> string option = "ml_g_dbus_proxy_get_name_owner"
-(** The unique name that owns the name that [proxy] is for or [NULL] if no-one
+(** The unique name that owns the name that [proxy] is for or [None] if no-one
     currently owns that name. You may connect to the [GObject::notify] signal to
     track changes to the [GDBusProxy:g]-name-owner property. *)
 
 external get_name : t -> string option = "ml_g_dbus_proxy_get_name"
 (** Gets the name that [proxy] was constructed for.
 
-    When connected to a message bus, this will usually be non-[NULL]. However,
-    it may be [NULL] for a proxy that communicates using a peer-to-peer pattern.
+    When connected to a message bus, this will usually be non-[None]. However,
+    it may be [None] for a proxy that communicates using a peer-to-peer pattern.
 *)
 
 external get_interface_name : t -> string = "ml_g_dbus_proxy_get_interface_name"
@@ -343,7 +343,7 @@ external get_g_name : t -> string = "ml_g_d_bus_proxy_get_g_name"
 (** The well-known or unique name that the proxy is for. *)
 
 external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
-(** The unique name that owns [GDBusProxy:g]-name or [NULL] if no-one currently
+(** The unique name that owns [GDBusProxy:g]-name or [None] if no-one currently
     owns that name. You may connect to [GObject::notify] signal to track changes
     to this property. *)
 

@@ -86,12 +86,12 @@ class type center_box_t = object
   method set_center_widget : Widget.widget_t option -> unit
   (** Sets the center widget.
 
-      To remove the existing center widget, pass [NULL]. *)
+      To remove the existing center widget, pass [None]. *)
 
   method set_end_widget : Widget.widget_t option -> unit
   (** Sets the end widget.
 
-      To remove the existing end widget, pass [NULL]. *)
+      To remove the existing end widget, pass [None]. *)
 
   method set_shrink_center_last : bool -> unit
   (** Sets whether to shrink the center widget after other children.
@@ -106,7 +106,7 @@ class type center_box_t = object
   method set_start_widget : Widget.widget_t option -> unit
   (** Sets the start widget.
 
-      To remove the existing start widget, pass [NULL]. *)
+      To remove the existing start widget, pass [None]. *)
 
   (** {2:conversions Conversions} *)
 

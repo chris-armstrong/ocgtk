@@ -105,7 +105,7 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
     This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
     the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
 
-    Set this to [NULL] to show all groups. *)
+    Set this to [None] to show all groups. *)
 
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_view_name"
@@ -114,7 +114,7 @@ external set_view_name : t -> string -> unit
     This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
     the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
 
-    Set this to [NULL] to show all groups. *)
+    Set this to [None] to show all groups. *)
 
 val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

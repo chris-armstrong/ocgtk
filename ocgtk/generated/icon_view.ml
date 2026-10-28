@@ -100,7 +100,7 @@ class type icon_view_t = object
   method enable_model_drag_dest :
     Ocgdk.Content_formats.content_formats_t -> Ocgdk.Enums.dragaction -> unit
   (** Turns [icon_view] into a drop destination for automatic DND. Calling this
-      method sets [GtkIconView]:reorderable to [FALSE]. *)
+      method sets [GtkIconView]:reorderable to [false]. *)
 
   method enable_model_drag_source :
     Ocgdk.Enums.modifiertype ->
@@ -108,7 +108,7 @@ class type icon_view_t = object
     Ocgdk.Enums.dragaction ->
     unit
   (** Turns [icon_view] into a drag source for automatic DND. Calling this
-      method sets [GtkIconView]:reorderable to [FALSE]. *)
+      method sets [GtkIconView]:reorderable to [false]. *)
 
   method get_activate_on_single_click : unit -> bool
   (** Gets the setting set by gtk_icon_view_set_activate_on_single_click(). *)
@@ -144,7 +144,7 @@ class type icon_view_t = object
   (** Returns the column with markup text for [icon_view]. *)
 
   method get_model : unit -> Tree_model.tree_model_t option
-  (** Returns the model the [GtkIconView] is based on. Returns [NULL] if the
+  (** Returns the model the [GtkIconView] is based on. Returns [None] if the
       model is unset. *)
 
   method get_path_at_pos : int -> int -> Raw.Tree_path.t option
@@ -165,8 +165,6 @@ class type icon_view_t = object
       planning on modifying the model after calling this function, you may want
       to convert the returned list into a list of [GtkTreeRowReferences]. To do
       this, you can use gtk_tree_row_reference_new().
-
-      To free the return value, use [g_list_free_full]:
 
       {[
       GtkWidget *icon_view = gtk_icon_view_new ();
@@ -196,8 +194,8 @@ class type icon_view_t = object
   (** Activates the item determined by [path]. *)
 
   method path_is_selected : Raw.Tree_path.t -> bool
-  (** Returns [TRUE] if the icon pointed to by [path] is currently selected. If
-      [path] does not point to a valid location, [FALSE] is returned. *)
+  (** Returns [true] if the icon pointed to by [path] is currently selected. If
+      [path] does not point to a valid location, [false] is returned. *)
 
   method scroll_to_path : Raw.Tree_path.t -> bool -> float -> float -> unit
   (** Moves the alignments of [icon_view] to the position specified by [path].
@@ -206,7 +204,7 @@ class type icon_view_t = object
       means left/top alignment, 1.0 means right/bottom alignment, 0.5 means
       center.
 
-      If [use_align] is [FALSE], then the alignment arguments are ignored, and
+      If [use_align] is [false], then the alignment arguments are ignored, and
       the tree does the minimum amount of work to scroll the item onto the
       screen. This means that the item will be scrolled to the edge closest to
       its current position. If the item is currently visible on the screen,
@@ -265,7 +263,7 @@ class type icon_view_t = object
 
   method set_model : Tree_model.tree_model_t option -> unit
   (** Sets the model for a [GtkIconView]. If the [icon_view] already has a model
-      set, it will remove it before setting the new model. If [model] is [NULL],
+      set, it will remove it before setting the new model. If [model] is [None],
       then it will unset the old model. *)
 
   method set_pixbuf_column : int -> unit
@@ -276,7 +274,7 @@ class type icon_view_t = object
   (** This function is a convenience function to allow you to reorder models
       that support the [GtkTreeDragSourceIface] and the [GtkTreeDragDestIface].
       Both [GtkTreeStore] and [GtkListStore] support these. If [reorderable] is
-      [TRUE], then the user can reorder the model by dragging and dropping rows.
+      [true], then the user can reorder the model by dragging and dropping rows.
       The developer can listen to these changes by connecting to the model's
       row_inserted and row_deleted signals. The reordering is implemented by
       setting up the icon view as a drag source and destination. Therefore, drag
@@ -317,7 +315,7 @@ class type icon_view_t = object
       you. [column] should be set to the column in [icon_view]’s model
       containing the tooltip texts, or -1 to disable this feature.
 
-      When enabled, [GtkWidget:has-tooltip] will be set to [TRUE] and
+      When enabled, [GtkWidget:has-tooltip] will be set to [true] and
       [icon_view] will connect a [GtkWidget::query-tooltip] signal handler.
 
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
@@ -336,11 +334,11 @@ class type icon_view_t = object
 
   method unset_model_drag_dest : unit -> unit
   (** Undoes the effect of gtk_icon_view_enable_model_drag_dest(). Calling this
-      method sets [GtkIconView]:reorderable to [FALSE]. *)
+      method sets [GtkIconView]:reorderable to [false]. *)
 
   method unset_model_drag_source : unit -> unit
   (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling
-      this method sets [GtkIconView]:reorderable to [FALSE]. *)
+      this method sets [GtkIconView]:reorderable to [false]. *)
 
   (** {2:properties Properties} *)
 

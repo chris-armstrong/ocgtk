@@ -28,7 +28,7 @@ class type volume_t = App_info_cycle_64c425a0.volume_t
     least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
     a [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [NULL] for the [Gio.MountOperation] if
+    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
     automounting all volumes when a desktop session starts since it’s not
     desirable to put up a lot of dialogs asking for credentials.
 
@@ -78,7 +78,7 @@ class volume : Raw.Volume.t -> volume_t
     least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
     a [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [NULL] for the [Gio.MountOperation] if
+    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
     automounting all volumes when a desktop session starts since it’s not
     desirable to put up a lot of dialogs asking for credentials.
 

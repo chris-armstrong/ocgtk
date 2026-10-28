@@ -91,14 +91,14 @@ external set_popup_fixed_width : t -> bool -> unit
   = "ml_gtk_combo_box_set_popup_fixed_width"
 (** Specifies whether the popup’s width should be a fixed width.
 
-    If [fixed] is [TRUE], the popup's width is set to match the allocated width
+    If [fixed] is [true], the popup's width is set to match the allocated width
     of the combo box. *)
 
 external set_model : t -> Tree_model.t option -> unit
   = "ml_gtk_combo_box_set_model"
 (** Sets the model used by [combo_box] to be [model].
 
-    Will unset a previously set model (if applicable). If model is [NULL], then
+    Will unset a previously set model (if applicable). If model is [None], then
     it will unset the model.
 
     Note that this function does not clear the cell renderers, you have to call
@@ -123,7 +123,7 @@ external set_entry_text_column : t -> int -> unit
     [G_TYPE_STRING].
 
     This is only relevant if [combo_box] has been created with
-    [Gtk.ComboBox:has-entry] as [TRUE]. *)
+    [Gtk.ComboBox:has-entry] as [true]. *)
 
 external set_child :
   t ->
@@ -143,18 +143,18 @@ external set_active_iter : t -> Tree_iter.t option -> unit
   = "ml_gtk_combo_box_set_active_iter"
 (** Sets the current active item to be the one referenced by [iter].
 
-    If [iter] is [NULL], the active item is unset. *)
+    If [iter] is [None], the active item is unset. *)
 
 external set_active_id : t -> string option -> bool
   = "ml_gtk_combo_box_set_active_id"
 (** Changes the active row of [combo_box] to the one that has an ID equal to
     [active_id].
 
-    If [active_id] is [NULL], the active row is unset. Rows having a [NULL] ID
+    If [active_id] is [None], the active row is unset. Rows having a [None] ID
     string cannot be made active by this function.
 
     If the [Gtk.ComboBox:id-column] property of [combo_box] is unset or if no
-    row has the given ID then the function does nothing and returns [FALSE]. *)
+    row has the given ID then the function does nothing and returns [false]. *)
 
 external set_active : t -> int -> unit = "ml_gtk_combo_box_set_active"
 (** Sets the active item of [combo_box] to be the item at [index]. *)
@@ -232,7 +232,7 @@ external get_active_id : t -> string option = "ml_gtk_combo_box_get_active_id"
     it.
 
     If the [Gtk.ComboBox:id-column] property of [combo_box] is not set, or if no
-    row is active, or if the active row has a [NULL] ID value, then [NULL] is
+    row is active, or if the active row has a [None] ID value, then [None] is
     returned. *)
 
 external get_active : t -> int = "ml_gtk_combo_box_get_active"

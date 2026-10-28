@@ -45,7 +45,7 @@ external add_palette :
 (** Adds a palette to the color chooser.
 
     If [orientation] is horizontal, the colors are grouped in rows, with
-    [colors_per_line] colors in each row. If [horizontal] is [FALSE], the colors
+    [colors_per_line] colors in each row. If [horizontal] is [false], the colors
     are grouped in columns instead.
 
     The default color palette of [Gtk.ColorChooserWidget] has 45 colors,
@@ -57,6 +57,6 @@ external add_palette :
     Calling this function for the first time has the side effect of removing the
     default color palette from the color chooser.
 
-    If [colors] is [NULL], removes all previously added palettes. *)
+    If [colors] is [None], removes all previously added palettes. *)
 
 (* Properties *)

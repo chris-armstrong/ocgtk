@@ -19,7 +19,7 @@
     to do that, they are encouraged to create their own scopes for that purpose.
 
     In the case that symbols are not explicitly added; GTK will uses [GModule]’s
-    introspective features (by opening the module [NULL]) to look at the
+    introspective features (by opening the module [None]) to look at the
     application’s symbol table. From here it tries to match the signal function
     names given in the interface description with symbols in the application.
 
@@ -46,7 +46,7 @@ class builder_c_scope : Raw.Builder_c_scope.t -> builder_c_scope_t
     to do that, they are encouraged to create their own scopes for that purpose.
 
     In the case that symbols are not explicitly added; GTK will uses [GModule]’s
-    introspective features (by opening the module [NULL]) to look at the
+    introspective features (by opening the module [None]) to look at the
     application’s symbol table. From here it tries to match the signal function
     names given in the interface description with symbols in the application.
 

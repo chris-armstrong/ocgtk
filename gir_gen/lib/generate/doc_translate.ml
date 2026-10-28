@@ -8,9 +8,9 @@ let render = Doc_render.render
 let render_as = Doc_render.render_as
 let render_with_fallbacks = Doc_render.render_with_fallbacks
 
-let translate_with_fallbacks ctx s =
+let translate_with_fallbacks ?ret_shape ctx s =
   let t, parse_fbs = parse_with_fallbacks ctx s in
-  let out, render_fbs = render_with_fallbacks ctx t in
+  let out, render_fbs = render_with_fallbacks ?ret_shape ctx t in
   (out, parse_fbs @ render_fbs)
 
-let translate ctx s = fst (translate_with_fallbacks ctx s)
+let translate ?ret_shape ctx s = fst (translate_with_fallbacks ?ret_shape ctx s)

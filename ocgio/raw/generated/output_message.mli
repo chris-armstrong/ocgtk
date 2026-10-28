@@ -5,7 +5,7 @@
     or packets in one go. You generally pass in an array of [GOutputVectors] and
     the operation will use all the buffers as if they were one buffer.
 
-    If [address] is [NULL] then the message is sent to the default receiver (as
+    If [address] is [None] then the message is sent to the default receiver (as
     previously set by g_socket_connect()).
 
     The class built on this module is in {!Ocgio.Output_message}. *)

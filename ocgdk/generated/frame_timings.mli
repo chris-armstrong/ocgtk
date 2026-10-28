@@ -29,7 +29,7 @@ class type frame_timings_t = object
       the information is not yet available, or because it isn't available at
       all.
 
-      Once this function returns [TRUE] for a frame, you can be certain that no
+      Once this function returns [true] for a frame, you can be certain that no
       further values will become available and be stored in the
       [GdkFrameTimings]. *)
 

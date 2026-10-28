@@ -16,7 +16,7 @@ class type combo_box_text_t = object
   method append : string option -> string -> unit
   (** Appends [text] to the list of strings stored in [combo_box].
 
-      If [id] is non-[NULL] then it is used as the ID of the row.
+      If [id] is non-[None] then it is used as the ID of the row.
 
       This is the same as calling [Gtk.ComboBoxText.insert] with a position of
       -1. *)
@@ -30,14 +30,14 @@ class type combo_box_text_t = object
   method get_active_text : unit -> string option
   (** Returns the currently active string in [combo_box].
 
-      If no row is currently selected, [NULL] is returned. If [combo_box]
+      If no row is currently selected, [None] is returned. If [combo_box]
       contains an entry, this function will return its contents (which will not
       necessarily be an item from the list). *)
 
   method insert : int -> string option -> string -> unit
   (** Inserts [text] at [position] in the list of strings stored in [combo_box].
 
-      If [id] is non-[NULL] then it is used as the ID of the row. See
+      If [id] is non-[None] then it is used as the ID of the row. See
       [Gtk.ComboBox:id-column].
 
       If [position] is negative then [text] is appended. *)
@@ -47,13 +47,13 @@ class type combo_box_text_t = object
 
       If [position] is negative then [text] is appended.
 
-      This is the same as calling [Gtk.ComboBoxText.insert] with a [NULL] ID
+      This is the same as calling [Gtk.ComboBoxText.insert] with a [None] ID
       string. *)
 
   method prepend : string option -> string -> unit
   (** Prepends [text] to the list of strings stored in [combo_box].
 
-      If [id] is non-[NULL] then it is used as the ID of the row.
+      If [id] is non-[None] then it is used as the ID of the row.
 
       This is the same as calling [Gtk.ComboBoxText.insert] with a position of
       0. *)

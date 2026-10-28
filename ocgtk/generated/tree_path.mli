@@ -31,10 +31,10 @@ class type tree_path_t = object
   (** Returns the current depth of [path]. *)
 
   method is_ancestor : Raw.Tree_path.t -> bool
-  (** Returns [TRUE] if [descendant] is a descendant of [path]. *)
+  (** Returns [true] if [descendant] is a descendant of [path]. *)
 
   method is_descendant : Raw.Tree_path.t -> bool
-  (** Returns [TRUE] if [path] is a descendant of [ancestor]. *)
+  (** Returns [true] if [path] is a descendant of [ancestor]. *)
 
   method next : unit -> unit
   (** Moves the [path] to point to the next node at the current depth. *)
@@ -53,7 +53,7 @@ class type tree_path_t = object
 
       This string is a “:” separated list of numbers. For example, “4:10:0:3”
       would be an acceptable return value for this string. If the path has depth
-      0, [NULL] is returned. *)
+      0, [None] is returned. *)
 
   method up : unit -> bool
   (** Moves the [path] to point to its parent node, if it has a parent. *)
@@ -85,4 +85,4 @@ val new_from_string : string -> tree_path_t
     [path] is expected to be a colon separated list of numbers. For example, the
     string “10:4:0” would create a path of depth 3 pointing to the 11th child of
     the root node, the 5th child of that 11th child, and the 1st child of that
-    5th child. If an invalid path string is passed in, [NULL] is returned. *)
+    5th child. If an invalid path string is passed in, [None] is returned. *)

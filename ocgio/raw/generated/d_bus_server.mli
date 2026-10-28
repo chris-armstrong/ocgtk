@@ -42,7 +42,7 @@ external new_sync :
 
     To have control over the available authentication mechanisms and the users
     that are authorized to connect, it is strongly recommended to provide a
-    non-[NULL] [GDBusAuthObserver].
+    non-[None] [GDBusAuthObserver].
 
     Connect to the [GDBusServer::new]-connection signal to handle incoming
     connections.
@@ -90,7 +90,7 @@ external get_address : t -> string = "ml_g_d_bus_server_get_address"
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
 (** A [GDBusAuthObserver] object to assist in the authentication process or
-    [NULL]. *)
+    [None]. *)
 
 val on_new_connection :
   ?after:bool ->
@@ -102,7 +102,7 @@ val on_new_connection :
     any), was authenticated.
 
     If you want to accept the connection, take a reference to the [connection]
-    object and return [TRUE]. When you are done with the connection call
+    object and return [true]. When you are done with the connection call
     g_dbus_connection_close() and give up your reference. Note that the other
     peer may disconnect at any time - a typical thing to do when accepting a
     connection is to listen to the [GDBusConnection::closed] signal.

@@ -1,6 +1,9 @@
 (* See the .mli. *)
 
 type context = Entity | Member
+type ret_shape = Plain | Throws
+
+let ret_shape_of_throws throws = if throws then Throws else Plain
 
 type sym_kind =
   | Class
@@ -22,6 +25,8 @@ type sym_kind =
   | Type_kind
 [@@deriving eq]
 
+type c_lit = True | False | Null | Null_on_error of string [@@deriving eq]
+
 type inline =
   | Text of string
   | Code of string
@@ -36,6 +41,8 @@ type inline =
     }
   | Param_ref of string
   | Ref of string
+  | C_lit of c_lit
+  | C_prim of string
 [@@deriving eq]
 
 type block =
@@ -59,6 +66,7 @@ type fallback =
   | Picture_stripped of string option
   | Image_stripped of string
   | Quote_stripped
+  | Ownership_stripped of string
 [@@deriving eq]
 
 (* [ppx_deriving.eq] derives a function named [equal] (not [equal_t]) for a

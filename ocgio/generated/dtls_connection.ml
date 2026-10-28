@@ -16,7 +16,7 @@ class type dtls_connection_t = object
       For a client-side connection, [peer_cert] is the server's certificate, and
       the signal will only be emitted if the certificate was not acceptable
       according to [conn]'s [GDtlsClientConnection:validation_flags]. If you
-      would like the certificate to be accepted despite [errors], return [TRUE]
+      would like the certificate to be accepted despite [errors], return [true]
       from the signal handler. Otherwise, if no handler accepts the certificate,
       the handshake will fail with [G_TLS_ERROR_BAD_CERTIFICATE].
 
@@ -32,16 +32,16 @@ class type dtls_connection_t = object
       the client, if this was requested via the server's
       [GDtlsServerConnection:authentication_mode]. On the server side, the
       signal is always emitted when the client presents a certificate, and the
-      certificate will only be accepted if a handler returns [TRUE].
+      certificate will only be accepted if a handler returns [true].
 
       Note that if this signal is emitted as part of asynchronous I/O in the
       main thread, then you should not attempt to interact with the user before
       returning from the signal handler. If you want to let the user decide
-      whether or not to accept the certificate, you would have to return [FALSE]
+      whether or not to accept the certificate, you would have to return [false]
       from the signal handler on the first attempt, and then after the
       connection attempt returns a [G_TLS_ERROR_BAD_CERTIFICATE], you can
       interact with the user, and if the user decides to accept the certificate,
-      remember that fact, create a new connection, and return [TRUE] from the
+      remember that fact, create a new connection, and return [true] from the
       signal handler the next time.
 
       If you are doing I/O in another thread, you do not need to worry about
@@ -87,7 +87,7 @@ class type dtls_connection_t = object
   *)
 
   method get_ciphersuite_name : unit -> string option
-  (** Returns the name of the current DTLS ciphersuite, or [NULL] if the
+  (** Returns the name of the current DTLS ciphersuite, or [None] if the
       connection has not handshaked or has been closed. Beware that the TLS
       backend may use any of multiple different naming conventions, because
       OpenSSL and GnuTLS have their own ciphersuite naming conventions that are
@@ -102,7 +102,7 @@ class type dtls_connection_t = object
 
   method get_interaction : unit -> Tls_interaction.tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
-      used for things like prompting the user for passwords. If [NULL] is
+      used for things like prompting the user for passwords. If [None] is
       returned, then no user interaction will occur for this connection. *)
 
   method get_negotiated_protocol : unit -> string option
@@ -111,7 +111,7 @@ class type dtls_connection_t = object
 
       If the peer did not use the ALPN extension, or did not advertise a
       protocol that matched one of [conn]'s protocols, or the TLS backend does
-      not support ALPN, then this will be [NULL]. See
+      not support ALPN, then this will be [None]. See
       g_dtls_connection_set_advertised_protocols(). *)
 
   method get_peer_certificate : unit -> Tls_certificate.tls_certificate_t option
@@ -177,7 +177,7 @@ class type dtls_connection_t = object
       is willing to speak on this connection. The Application-Layer Protocol
       Negotiation (ALPN) extension will be used to negotiate a compatible
       protocol with the peer; use g_dtls_connection_get_negotiated_protocol() to
-      find the negotiated protocol after the handshake. Specifying [NULL] for
+      find the negotiated protocol after the handshake. Specifying [None] for
       the the value of [protocols] will disable ALPN negotiation.
 
       See
@@ -199,12 +199,12 @@ class type dtls_connection_t = object
       (It is also possible that a server will allow the connection with or
       without a certificate; in that case, if you don't provide a certificate,
       you can tell that the server requested one by the fact that
-      g_dtls_client_connection_get_accepted_cas() will return non-[NULL].) *)
+      g_dtls_client_connection_get_accepted_cas() will return non-[None].) *)
 
   method set_database : Tls_database.tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to [NULL], then peer
+      g_tls_backend_get_default_database(). If set to [None], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
       error (meaning [GDtlsConnection::accept]-certificate will always be
       emitted on client-side connections, unless that bit is not set in
@@ -218,7 +218,7 @@ class type dtls_connection_t = object
       used for things like prompting the user for passwords.
 
       The [interaction] argument will normally be a derived subclass of
-      [GTlsInteraction]. [NULL] can also be provided if no user interaction
+      [GTlsInteraction]. [None] can also be provided if no user interaction
       should occur for this connection. *)
 
   method set_rehandshake_mode : Enums.tlsrehandshakemode -> unit
@@ -230,7 +230,7 @@ class type dtls_connection_t = object
   method set_require_close_notify : bool -> unit
   [@@ocaml.doc
     "Sets whether or not [conn] expects a proper TLS close notification\n\
-     before the connection is closed. If this is [TRUE] (the default),\n\
+     before the connection is closed. If this is [true] (the default),\n\
      then [conn] will expect to receive a TLS close notification from its\n\
      peer before the connection is closed, and will return a\n\
      [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
@@ -257,11 +257,11 @@ class type dtls_connection_t = object
     bool -> bool -> Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Shut down part or all of a DTLS connection.
 
-      If [shutdown_read] is [TRUE] then the receiving side of the connection is
+      If [shutdown_read] is [true] then the receiving side of the connection is
       shut down, and further reading is disallowed. Subsequent calls to
       g_datagram_based_receive_messages() will return [G_IO_ERROR_CLOSED].
 
-      If [shutdown_write] is [TRUE] then the sending side of the connection is
+      If [shutdown_write] is [true] then the sending side of the connection is
       shut down, and further writing is disallowed. Subsequent calls to
       g_datagram_based_send_messages() will return [G_IO_ERROR_CLOSED].
 

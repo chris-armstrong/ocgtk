@@ -11,7 +11,7 @@ module rec Menu_link_iter : sig
   external next : t -> bool = "ml_g_menu_link_iter_next"
   (** Attempts to advance the iterator to the next (possibly first) link.
 
-      [TRUE] is returned on success, or [FALSE] if there are no more links.
+      [true] is returned on success, or [false] if there are no more links.
 
       You must call this function when you first acquire the iterator to advance
       it to the first link (and determine if the first link exists at all). *)
@@ -35,7 +35,7 @@ end = struct
   external next : t -> bool = "ml_g_menu_link_iter_next"
   (** Attempts to advance the iterator to the next (possibly first) link.
 
-      [TRUE] is returned on success, or [FALSE] if there are no more links.
+      [true] is returned on success, or [false] if there are no more links.
 
       You must call this function when you first acquire the iterator to advance
       it to the first link (and determine if the first link exists at all). *)
@@ -61,16 +61,12 @@ and Menu_model : sig
   external iterate_item_links : t -> int -> Menu_link_iter.t
     = "ml_g_menu_model_iterate_item_links"
   (** Creates a [GMenuLinkIter] to iterate over the links of the item at
-      position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      position [item_index] in [model]. *)
 
   external iterate_item_attributes : t -> int -> Menu_attribute_iter.t
     = "ml_g_menu_model_iterate_item_attributes"
   (** Creates a [GMenuAttributeIter] to iterate over the attributes of the item
-      at position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      at position [item_index] in [model]. *)
 
   external items_changed : t -> int -> int -> int -> unit
     = "ml_g_menu_model_items_changed"
@@ -105,7 +101,7 @@ and Menu_model : sig
       specified by [link].
 
       If the link exists, the linked [GMenuModel] is returned. If the link does
-      not exist, [NULL] is returned. *)
+      not exist, [None] is returned. *)
 
   external get_item_attribute_value :
     t -> int -> string -> Gvariant_type.t option -> Gvariant.t option
@@ -113,14 +109,14 @@ and Menu_model : sig
   (** Queries the item at position [item_index] in [model] for the attribute
       specified by [attribute].
 
-      If [expected_type] is non-[NULL] then it specifies the expected type of
-      the attribute. If it is [NULL] then any type will be accepted.
+      If [expected_type] is non-[None] then it specifies the expected type of
+      the attribute. If it is [None] then any type will be accepted.
 
       If the attribute exists and matches [expected_type] (or if the expected
       type is unspecified) then the value is returned.
 
       If the attribute does not exist, or does not match the expected type then
-      [NULL] is returned. *)
+      [None] is returned. *)
 
   val on_items_changed :
     ?after:bool ->
@@ -156,16 +152,12 @@ end = struct
   external iterate_item_links : t -> int -> Menu_link_iter.t
     = "ml_g_menu_model_iterate_item_links"
   (** Creates a [GMenuLinkIter] to iterate over the links of the item at
-      position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      position [item_index] in [model]. *)
 
   external iterate_item_attributes : t -> int -> Menu_attribute_iter.t
     = "ml_g_menu_model_iterate_item_attributes"
   (** Creates a [GMenuAttributeIter] to iterate over the attributes of the item
-      at position [item_index] in [model].
-
-      You must free the iterator with g_object_unref() when you are done. *)
+      at position [item_index] in [model]. *)
 
   external items_changed : t -> int -> int -> int -> unit
     = "ml_g_menu_model_items_changed"
@@ -200,7 +192,7 @@ end = struct
       specified by [link].
 
       If the link exists, the linked [GMenuModel] is returned. If the link does
-      not exist, [NULL] is returned. *)
+      not exist, [None] is returned. *)
 
   external get_item_attribute_value :
     t -> int -> string -> Gvariant_type.t option -> Gvariant.t option
@@ -208,14 +200,14 @@ end = struct
   (** Queries the item at position [item_index] in [model] for the attribute
       specified by [attribute].
 
-      If [expected_type] is non-[NULL] then it specifies the expected type of
-      the attribute. If it is [NULL] then any type will be accepted.
+      If [expected_type] is non-[None] then it specifies the expected type of
+      the attribute. If it is [None] then any type will be accepted.
 
       If the attribute exists and matches [expected_type] (or if the expected
       type is unspecified) then the value is returned.
 
       If the attribute does not exist, or does not match the expected type then
-      [NULL] is returned. *)
+      [None] is returned. *)
 
   let on_items_changed ?after obj ~callback =
     let closure =

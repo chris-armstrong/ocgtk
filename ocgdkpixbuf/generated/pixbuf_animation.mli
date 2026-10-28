@@ -39,7 +39,7 @@ class type pixbuf_animation_t = object
       something more sophisticated depending on the file format.
 
       If an animation hasn't loaded any frames yet, this function will return
-      [NULL]. *)
+      [None]. *)
 
   method get_width : unit -> int
   (** Queries the width of the bounding box of a pixbuf animation. *)
@@ -49,7 +49,7 @@ class type pixbuf_animation_t = object
 
       If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
       out to be a plain, unanimated image, then this function will return
-      [TRUE]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
+      [true]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
   *)
 
   (** {2:conversions Conversions} *)
@@ -91,7 +91,7 @@ val new_from_file : string -> (pixbuf_animation_t, GError.t) result
 val new_from_resource : string -> (pixbuf_animation_t, GError.t) result
 (** Creates a new pixbuf animation by loading an image from an resource.
 
-    The file format is detected automatically. If [NULL] is returned, then
+    The file format is detected automatically. If [None] is returned, then
     [error] will be set. *)
 
 val new_from_stream :
@@ -102,7 +102,7 @@ val new_from_stream :
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     The [cancellable] can be used to abort the operation from another thread. If
     the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be

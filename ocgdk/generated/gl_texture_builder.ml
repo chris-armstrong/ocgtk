@@ -7,7 +7,7 @@ class type gl_texture_builder_t = object
 
   method get_context : unit -> Gl_context.gl_context_t option
   (** Gets the context previously set via gdk_gl_texture_builder_set_context()
-      or [NULL] if none was set. *)
+      or [None] if none was set. *)
 
   method get_format : unit -> Enums.memoryformat
   (** Gets the format previously set via gdk_gl_texture_builder_set_format(). *)
@@ -25,11 +25,11 @@ class type gl_texture_builder_t = object
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_gl_texture_builder_set_update_region() or [NULL] if none was set. *)
+      gdk_gl_texture_builder_set_update_region() or [None] if none was set. *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_gl_texture_builder_set_update_texture() or [NULL] if none was set. *)
+      gdk_gl_texture_builder_set_update_texture() or [None] if none was set. *)
 
   method get_width : unit -> int
   (** Gets the width previously set via gdk_gl_texture_builder_set_width() or 0

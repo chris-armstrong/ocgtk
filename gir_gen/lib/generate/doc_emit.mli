@@ -26,6 +26,7 @@ val item_doc :
   ?fallback:string ->
   ?prefix:string ->
   ?suffix:string ->
+  ?ret_shape:Doc_translate.ret_shape ->
   context:Doc_translate.context ->
   string option ->
   t option
@@ -40,6 +41,8 @@ val item_doc :
       before the prose (or the fallback), or alone when there is neither.
     - [suffix] is trusted odoc markup too, added as a paragraph of its own after
       the prose (or the fallback), or alone when there is neither.
+    - [ret_shape] is what the item returns (default [Plain]); a throwing
+      function or method passes [Throws].
     - [since] is the native version. With prose it goes on its own line,
       indented under [indent]; with only a fallback it is appended inline.
     - [indent] applies only to the [@since] continuation line; prose is left as

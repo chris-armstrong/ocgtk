@@ -11,14 +11,14 @@ class type css_section_t = object
   (** Gets the file that [section] was parsed from.
 
       If no such file exists, for example because the CSS was loaded via
-      [Gtk.CssProvider.load_from_data], then [NULL] is returned. *)
+      [Gtk.CssProvider.load_from_data], then [None] is returned. *)
 
   method get_parent : unit -> Raw.Css_section.t option
   (** Gets the parent section for the given [section].
 
       The parent section is the section that contains this [section]. A special
       case are sections of type [GTK_CSS_SECTION_DOCUMENT]. Their parent will
-      either be [NULL] if they are the original CSS document that was loaded by
+      either be [None] if they are the original CSS document that was loaded by
       [Gtk.CssProvider.load_from_file] or a section of type
       [GTK_CSS_SECTION_IMPORT] if it was loaded with an [@import] rule from a
       different file. *)

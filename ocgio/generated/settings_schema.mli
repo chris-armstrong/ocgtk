@@ -22,7 +22,7 @@ class type settings_schema_t = object
       g_settings_schema_list_keys(). *)
 
   method get_path : unit -> string option
-  (** Gets the path associated with [schema], or [NULL].
+  (** Gets the path associated with [schema], or [None].
 
       Schemas may be single-instance or relocatable. Single-instance schemas
       correspond to exactly one set of keys in the backend database: those
@@ -30,16 +30,13 @@ class type settings_schema_t = object
 
       Relocatable schemas can be referenced by other schemas and can therefore
       describe multiple sets of keys at different locations. For relocatable
-      schemas, this function will return [NULL]. *)
+      schemas, this function will return [None]. *)
 
   method has_key : string -> bool
   (** Checks if [schema] has a key named [name]. *)
 
   method list_children : unit -> string array
-  (** Gets the list of children in [schema].
-
-      You should free the return value with g_strfreev() when you are done with
-      it. *)
+  (** Gets the list of children in [schema]. *)
 
   method list_keys : unit -> string array
   [@@ocaml.doc

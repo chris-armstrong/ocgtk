@@ -26,9 +26,9 @@ external new_from_file : string -> (t, GError.t) result
   = "ml_gtk_print_settings_new_from_file"
 (** Reads the print settings from [file_name].
 
-    Returns a new [GtkPrintSettings] object with the restored settings, or
-    [NULL] if an error occurred. If the file could not be loaded then error is
-    set to either a [GFileError] or [GKeyFileError].
+    Returns a new [GtkPrintSettings] object with the restored settings, or an
+    [Error] result. If the file could not be loaded then error is set to either
+    a [GFileError] or [GKeyFileError].
 
     See [Gtk.PrintSettings.to_file]. *)
 
@@ -44,7 +44,7 @@ external new_from_gvariant : Gvariant.t -> t
 external unset : t -> string -> unit = "ml_gtk_print_settings_unset"
 (** Removes any value associated with [key].
 
-    This has the same effect as setting the value to [NULL]. *)
+    This has the same effect as setting the value to [None]. *)
 
 external to_gvariant : t -> Gvariant.t = "ml_gtk_print_settings_to_gvariant"
 (** Serialize print settings to an a\{sv\} variant. *)
@@ -184,7 +184,7 @@ external load_file : t -> string -> (bool, GError.t) result
     See [Gtk.PrintSettings.to_file]. *)
 
 external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"
-(** Returns [TRUE], if a value is associated with [key]. *)
+(** Returns [true], if a value is associated with [key]. *)
 
 external get_use_color : t -> bool = "ml_gtk_print_settings_get_use_color"
 (** Gets the value of [GTK_PRINT_SETTINGS_USE_COLOR]. *)
@@ -310,7 +310,7 @@ external get_collate : t -> bool = "ml_gtk_print_settings_get_collate"
 external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 (** Returns the boolean represented by the value that is associated with [key].
 
-    The string “true” represents [TRUE], any other string [FALSE]. *)
+    The string “true” represents [true], any other string [false]. *)
 
 external get : t -> string -> string option = "ml_gtk_print_settings_get"
 (** Looks up the string value associated with [key]. *)

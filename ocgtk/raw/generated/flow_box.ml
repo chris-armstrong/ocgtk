@@ -130,7 +130,7 @@ external set_column_spacing : t -> int -> unit
 
 external set_activate_on_single_click : t -> bool -> unit
   = "ml_gtk_flow_box_set_activate_on_single_click"
-(** If [single] is [TRUE], children will be activated when you click on them,
+(** If [single] is [true], children will be activated when you click on them,
     otherwise you need to double-click. *)
 
 external select_child : t -> Flow_box_child.t -> unit

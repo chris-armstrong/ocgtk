@@ -146,7 +146,7 @@ external set_enable_undo : t -> bool -> unit = "ml_gtk_editable_set_enable_undo"
 
     This results in an additional copy of text changes and are not stored in
     secure memory. As such, undo is forcefully disabled when
-    [Gtk.Text:visibility] is set to [FALSE]. *)
+    [Gtk.Text:visibility] is set to [false]. *)
 
 external set_editable : t -> bool -> unit = "ml_gtk_editable_set_editable"
 (** Determines if the user can edit the text in the editable widget. *)
@@ -199,7 +199,7 @@ external get_selection_bounds : t -> bool * int * int
 (** Retrieves the selection bound of the editable.
 
     [start_pos] will be filled with the start of the selection and [end_pos]
-    with end. If no text was selected both will be identical and [FALSE] will be
+    with end. If no text was selected both will be identical and [false] will be
     returned.
 
     Note that positions are specified in characters, not bytes. *)

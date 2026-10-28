@@ -54,12 +54,12 @@ class type file_output_stream_t = object
       [G_IO_ERROR_CLOSED]), the stream has pending operations (with [error]
       being set to [G_IO_ERROR_PENDING]), or if querying info is not supported
       for the stream's interface (with [error] being set to
-      [G_IO_ERROR_NOT_SUPPORTED]). In all cases of failure, [NULL] will be
+      [G_IO_ERROR_NOT_SUPPORTED]). In all cases of failure, [None] will be
       returned.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [NULL]
+      was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [None]
       will be returned. *)
 
   method query_info_finish :

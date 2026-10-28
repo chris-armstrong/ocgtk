@@ -208,7 +208,7 @@ external get_stdin : t -> Input_stream.t option
     The [GInputStream] can be used to read data passed to the standard input of
     the invoking process. This doesn't work on all platforms. Presently, it is
     only available on UNIX when using a D-Bus daemon capable of passing file
-    descriptors. If stdin is not available then [NULL] will be returned. In the
+    descriptors. If stdin is not available then [None] will be returned. In the
     future, support may be expanded to other platforms.
 
     You must only call this function once per commandline invocation. *)
@@ -224,7 +224,7 @@ external get_platform_data : t -> Gvariant.t option
     It comes from an untrusted external process and hence the types of all
     values must be validated before being used.
 
-    For local invocation, it will be [NULL]. *)
+    For local invocation, it will be [None]. *)
 
 external get_is_remote : t -> bool
   = "ml_g_application_command_line_get_is_remote"
@@ -238,7 +238,7 @@ external get_exit_status : t -> int
 external get_environ : t -> string array
   = "ml_g_application_command_line_get_environ"
 (** Gets the contents of the 'environ' variable of the command line invocation,
-    as would be returned by g_get_environ(), ie as a [NULL]-terminated list of
+    as would be returned by g_get_environ(), ie as a null-terminated list of
     strings in the form 'NAME=VALUE'. The strings may contain non-utf8 data.
 
     The remote application usually does not send an environment. Use
@@ -257,7 +257,7 @@ external get_cwd : t -> string option = "ml_g_application_command_line_get_cwd"
     contain non-utf8 data.
 
     It is possible that the remote application did not send a working directory,
-    so this may be [NULL].
+    so this may be [None].
 
     The return value should not be modified or freed and is valid for as long as
     [cmdline] exists. *)
@@ -273,8 +273,8 @@ external get_arguments : t -> string array * int
     If you wish to use the return value with [GOptionContext], you must use
     g_option_context_parse_strv().
 
-    The return value is [NULL]-terminated and should be freed using
-    g_strfreev(). *)
+    The return value is null-terminated and should be freed using g_strfreev().
+*)
 
 external done_ : t -> unit = "ml_g_application_command_line_done"
 (** Signals that command line processing is completed.

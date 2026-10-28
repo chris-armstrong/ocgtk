@@ -16,7 +16,7 @@ external gtype : unit -> Gobject.Type.t = "ml_pango_tab_array_get_type"
 external new_ : int -> bool -> t = "ml_pango_tab_array_new"
 (** Creates an array of [initial_size] tab stops.
 
-    Tab stops are specified in pixel units if [positions_in_pixels] is [TRUE],
+    Tab stops are specified in pixel units if [positions_in_pixels] is [true],
     otherwise in Pango units. All stops are initially at position 0. *)
 
 (* Methods *)
@@ -77,7 +77,7 @@ external get_size : t -> int = "ml_pango_tab_array_get_size"
 
 external get_positions_in_pixels : t -> bool
   = "ml_pango_tab_array_get_positions_in_pixels"
-(** Returns [TRUE] if the tab positions are in pixels, [FALSE] if they are in
+(** Returns [true] if the tab positions are in pixels, [false] if they are in
     Pango units. *)
 
 external get_decimal_point : t -> int -> int

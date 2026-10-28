@@ -74,4 +74,4 @@ val on_state_set :
     To implement delayed state change, applications can connect to this signal,
     initiate the change of the underlying state, and call [Gtk.Switch.set_state]
     when the underlying state change is complete. The signal handler should
-    return [TRUE] to prevent the default handler from running. *)
+    return [true] to prevent the default handler from running. *)

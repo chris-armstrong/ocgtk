@@ -36,7 +36,7 @@ external return_value : t -> Gvariant.t option -> unit
    It is an error if [parameters] is not of the right format: it must be a tuple\n\
    containing the out-parameters of the D-Bus method. Even if the method has a\n\
    single out-parameter, it must be contained in a tuple. If the method has no\n\
-   out-parameters, [parameters] may be [NULL] or an empty tuple.\n\n\
+   out-parameters, [parameters] may be [None] or an empty tuple.\n\n\
    {[\n\
    GDBusMethodInvocation *invocation = some_invocation;\n\
    g_autofree gchar *result_string = NULL;\n\
@@ -77,7 +77,7 @@ external get_sender : t -> string option
   = "ml_g_dbus_method_invocation_get_sender"
 (** Gets the bus name that invoked the method.
 
-    This can return [NULL] if not specified by the caller, e.g. on peer-to-peer
+    This can return [None] if not specified by the caller, e.g. on peer-to-peer
     connections. *)
 
 external get_property_info : t -> D_bus_property_info.t option
@@ -91,7 +91,7 @@ external get_property_info : t -> D_bus_property_info.t option
 
     See [GDBusInterfaceVTable] for more information.
 
-    If the call was GetAll, [NULL] will be returned. *)
+    If the call was GetAll, [None] will be returned. *)
 
 external get_parameters : t -> Gvariant.t
   = "ml_g_dbus_method_invocation_get_parameters"
@@ -112,7 +112,7 @@ external get_method_info : t -> D_bus_method_info.t option
 (** Gets information about the method call, if any.
 
     If this method invocation is a property Get, Set or GetAll call that has
-    been redirected to the method call handler then [NULL] will be returned. See
+    been redirected to the method call handler then [None] will be returned. See
     g_dbus_method_invocation_get_property_info() and [GDBusInterfaceVTable] for
     more information. *)
 
@@ -130,7 +130,7 @@ external get_interface_name : t -> string option
   = "ml_g_dbus_method_invocation_get_interface_name"
 [@@ocaml.doc
   "Gets the name of the D-Bus interface the method was invoked on.\n\n\
-   This can be [NULL] if it was not specified by the sender. See\n\
+   This can be [None] if it was not specified by the sender. See\n\
    [Gio.DBusInterfaceMethodCallFunc] or the\n\
    {{:https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method}D-Bus \
    Specification}\n\

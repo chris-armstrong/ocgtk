@@ -29,7 +29,7 @@ class type tree_sortable_t = object
   (** {2:methods Methods} *)
 
   method has_default_sort_func : unit -> bool
-  (** Returns [TRUE] if the model has a default sort function. This is used
+  (** Returns [true] if the model has a default sort function. This is used
       primarily by GtkTreeViewColumns in order to determine if a model can go
       back to the default state, or not. *)
 

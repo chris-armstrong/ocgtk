@@ -27,14 +27,14 @@ class type check_button_t = object
   (** Returns whether the check button is active. *)
 
   method get_child : unit -> Widget.widget_t option
-  (** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
+  (** Gets the child widget of [button] or [None] if [CheckButton:label] is set.
   *)
 
   method get_inconsistent : unit -> bool
   (** Returns whether the check button is in an inconsistent state. *)
 
   method get_label : unit -> string option
-  (** Returns the label of the check button or [NULL] if [CheckButton:child] is
+  (** Returns the label of the check button or [None] if [CheckButton:child] is
       set. *)
 
   method get_use_underline : unit -> bool
@@ -77,14 +77,14 @@ class type check_button_t = object
   method set_label : string option -> unit
   (** Sets the text of [self].
 
-      If [Gtk.CheckButton:use-underline] is [TRUE], an underscore in [label] is
+      If [Gtk.CheckButton:use-underline] is [true], an underscore in [label] is
       interpreted as mnemonic indicator, see [Gtk.CheckButton.set_use_underline]
       for details on this behavior. *)
 
   method set_use_underline : bool -> unit
   (** Sets whether underlines in the label indicate mnemonics.
 
-      If [setting] is [TRUE], an underscore character in [self]'s label
+      If [setting] is [true], an underscore character in [self]'s label
       indicates a mnemonic accelerator key. This behavior is similar to
       [Gtk.Label:use-underline]. *)
 

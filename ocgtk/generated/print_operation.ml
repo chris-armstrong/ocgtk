@@ -40,7 +40,7 @@ class type print_operation_t = object
       [Gtk.PrintOperation.get_error] for more information.
 
       If you enabled print status tracking then [Gtk.PrintOperation.is_finished]
-      may still return [FALSE] after the ::done signal was emitted. *)
+      may still return [false] after the ::done signal was emitted. *)
 
   method on_draw_page :
     ?after:bool ->
@@ -115,12 +115,12 @@ class type print_operation_t = object
   (** Emitted after the ::begin-print signal, but before the actual rendering
       starts.
 
-      It keeps getting emitted until a connected signal handler returns [TRUE].
+      It keeps getting emitted until a connected signal handler returns [true].
 
       The ::paginate signal is intended to be used for paginating a document in
       small chunks, to avoid blocking the user interface for a long time. The
       signal handler should update the number of pages using
-      [Gtk.PrintOperation.set_n_pages], and return [TRUE] if the document has
+      [Gtk.PrintOperation.set_n_pages], and return [true] if the document has
       been completely paginated.
 
       If you don't need to do pagination in chunks, you can simply do it all in
@@ -140,7 +140,7 @@ class type print_operation_t = object
       The default handler for this signal uses an external viewer application to
       preview.
 
-      To implement a custom print preview, an application must return [TRUE]
+      To implement a custom print preview, an application must return [true]
       from its handler for this signal. In order to use the provided [context]
       for the preview implementation, it must be given a suitable cairo context
       with [Gtk.PrintContext.set_cairo_context].
@@ -237,7 +237,7 @@ class type print_operation_t = object
   method get_print_settings : unit -> Print_settings.print_settings_t option
   (** Returns the current print settings.
 
-      Note that the return value is [NULL] until either
+      Note that the return value is [None] until either
       [Gtk.PrintOperation.set_print_settings] or [Gtk.PrintOperation.run] have
       been called. *)
 
@@ -406,14 +406,14 @@ class type print_operation_t = object
       print operation, see [Gtk.PrintOperation.run]. *)
 
   method set_show_progress : bool -> unit
-  (** If [show_progress] is [TRUE], the print operation will show a progress
+  (** If [show_progress] is [true], the print operation will show a progress
       dialog during the print operation. *)
 
   method set_support_selection : bool -> unit
   (** Sets whether selection is supported by [GtkPrintOperation]. *)
 
   method set_track_print_status : bool -> unit
-  (** If track_status is [TRUE], the print operation will try to continue report
+  (** If track_status is [true], the print operation will try to continue report
       on the status of the print job in the printer queues and printer.
 
       This can allow your application to show things like “out of paper” issues,
@@ -428,7 +428,7 @@ class type print_operation_t = object
       [unit]. *)
 
   method set_use_full_page : bool -> unit
-  (** If [full_page] is [TRUE], the transformation for the cairo context
+  (** If [full_page] is [true], the transformation for the cairo context
       obtained from [GtkPrintContext] puts the origin at the top left corner of
       the page.
 

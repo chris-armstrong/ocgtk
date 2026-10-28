@@ -25,7 +25,7 @@ class type settings_schema_key_t = object
   (** Gets the description for [key].
 
       If no description has been provided in the schema for [key], returns
-      [NULL].
+      [None].
 
       The description can be one sentence to several paragraphs in length.
       Paragraphs are delimited with a double newline. Descriptions can be
@@ -71,15 +71,12 @@ class type settings_schema_key_t = object
       to be a hint for introspection purposes. Normal programs should already
       know what is permitted by their own schema. The format may change in any
       way in the future -- but particularly, new forms may be added to the
-      possibilities described above.
-
-      You should free the returned value with g_variant_unref() when it is no
-      longer needed. *)
+      possibilities described above. *)
 
   method get_summary : unit -> string option
   (** Gets the summary for [key].
 
-      If no summary has been provided in the schema for [key], returns [NULL].
+      If no summary has been provided in the schema for [key], returns [None].
 
       The summary is a short description of the purpose of the key; usually one
       short sentence. Summaries can be translated and the value returned from

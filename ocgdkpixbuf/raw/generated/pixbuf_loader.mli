@@ -110,7 +110,7 @@ external get_pixbuf : t -> Pixbuf.t option = "ml_gdk_pixbuf_loader_get_pixbuf"
    emitted by the loader; this means that enough data has been read\n\
    to know the size of the image that will be allocated.\n\n\
    If the loader has not received enough data via gdk_pixbuf_loader_write(),\n\
-   then this function returns [NULL].\n\n\
+   then this function returns [None].\n\n\
    The returned pixbuf will be the same in all future calls to the loader,\n\
    so if you want to keep using it, you should acquire a reference to it.\n\n\
    Additionally, if the loader is an animation, it will return the \"static\n\
@@ -130,7 +130,7 @@ external get_animation : t -> Pixbuf_animation.t option
     loader.
 
     If the loader doesn't have enough bytes yet, and hasn't emitted the
-    [area-prepared] signal, this function will return [NULL]. *)
+    [area-prepared] signal, this function will return [None]. *)
 
 external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
 (** Informs a pixbuf loader that no further writes with
@@ -140,11 +140,11 @@ external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
     This function also tries to parse any data that hasn't yet been parsed; if
     the remaining data is partial or corrupt, an error will be returned.
 
-    If [FALSE] is returned, [error] will be set to an error from the
+    If [false] is returned, [error] will be set to an error from the
     [GDK_PIXBUF_ERROR] or [G_FILE_ERROR] domains.
 
     If you're just cancelling a load rather than expecting it to be finished,
-    passing [NULL] for [error] to ignore it is reasonable.
+    passing [None] for [error] to ignore it is reasonable.
 
     Remember that this function does not release a reference on the loader, so
     you will need to explicitly release any reference you hold. *)
