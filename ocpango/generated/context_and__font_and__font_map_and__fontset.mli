@@ -5,6 +5,8 @@
 
 (** {b The methods, signals and properties of a [Context].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoContext] stores global information used to control the itemization
     process.
 
@@ -167,6 +169,8 @@ end
 
 (** {b The methods, signals and properties of a [Font].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoFont] is used to represent a font in a rendering-system-independent
     manner. *)
 and font_t = object
@@ -236,6 +240,11 @@ and font_t = object
 end
 
 (** {b The methods, signals and properties of a [FontMap].}
+
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 
     A [PangoFontMap] represents the set of fonts available for a particular
     rendering system.
@@ -320,6 +329,8 @@ and font_map_t = object
 end
 
 (** {b The methods, signals and properties of a [Fontset].}
+
+    Inherits from: [GObject.Object]
 
     A [PangoFontset] represents a set of [PangoFont] to use when rendering text.
 

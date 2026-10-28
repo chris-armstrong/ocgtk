@@ -46,6 +46,10 @@ class type file_chooser_native_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileChooserNative].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Native_dialog.class-type-native_dialog_t}Ocgtk.Native_dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}\n\n\
      [GtkFileChooserNative] is an abstraction of a dialog suitable\n\
      for use with “File Open” or “File Save as” commands.\n\n\
      By default, this just uses a [GtkFileChooserDialog] to implement\n\

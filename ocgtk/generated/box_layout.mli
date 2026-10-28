@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [BoxLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
+    Implements:
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its

@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [Coverage].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoCoverage] structure is a map from Unicode characters to
     [Pango.CoverageLevel] values.
 

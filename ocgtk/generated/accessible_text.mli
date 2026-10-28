@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [AccessibleText].}
 
+    Requires:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+
     An interface for accessible objects containing formatted text.
 
     The [GtkAccessibleText] interfaces is meant to be implemented by accessible

@@ -10,6 +10,11 @@
 
 (** {b The methods, signals and properties of a [ListStore].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     [GListStore] is a simple implementation of [Gio.ListModel] that stores all
     items in memory.
 

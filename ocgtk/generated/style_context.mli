@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [StyleContext].}
 
+    Inherits from: [GObject.Object]
+
     [GtkStyleContext] stores styling information affecting a widget.
 
     In order to construct the final style information, [GtkStyleContext] queries

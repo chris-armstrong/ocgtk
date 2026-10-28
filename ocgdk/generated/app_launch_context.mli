@@ -14,6 +14,8 @@ class type app_launch_context_t =
   App_launch_context_cycle_de440b34.app_launch_context_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [AppLaunchContext].}\n\n\
+     Inherits from: \
+     {{!Ocgio.App_launch_context.class-type-app_launch_context_t}Ocgio.App_launch_context}\n\n\
      Handles launching an application in a graphical context.\n\n\
      It is an implementation of [GAppLaunchContext] that provides startup\n\
      notification and allows to launch applications on a specific workspace.\n\n\

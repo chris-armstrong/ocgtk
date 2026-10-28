@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [IOStream].}
 
+    Inherits from: [GObject.Object]
+
     [GIOStream] represents an object that has both read and write streams.
     Generally the two streams act as separate input and output streams, but they
     share some common resources and state. For instance, for seekable streams,

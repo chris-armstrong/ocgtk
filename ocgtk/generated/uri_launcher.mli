@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [UriLauncher].}
 
+    Inherits from: [GObject.Object]
+
     Asynchronous API to open a uri with an application.
 
     [GtkUriLauncher] collects the arguments that are needed to open the uri.

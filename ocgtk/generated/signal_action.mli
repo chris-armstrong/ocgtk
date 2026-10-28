@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [SignalAction].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
     Emits a signal on a widget.
 
     Signals that are used in this way are referred to as keybinding signals, and

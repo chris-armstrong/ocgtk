@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [PollableOutputStream].}
 
+    Requires:
+    - {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
     [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
     polled for readiness to write. This can be used when interfacing with a
     non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather

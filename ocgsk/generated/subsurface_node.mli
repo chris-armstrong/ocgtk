@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [SubsurfaceNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node that potentially diverts a part of the scene graph to a
     subsurface. *)
 class type subsurface_node_t = object

@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Calendar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Displays a Gregorian calendar, one month at a time.
 
     An example GtkCalendar

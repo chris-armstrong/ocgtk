@@ -9,6 +9,17 @@
 
 (** {b The methods, signals and properties of a [ColorChooserDialog].}
 
+    Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Color_chooser.class-type-color_chooser_t}Ocgtk.Color_chooser}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
+
     A dialog for choosing a color.
 
     An example GtkColorChooserDialog

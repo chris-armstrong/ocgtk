@@ -90,6 +90,7 @@ class type recent_manager_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [RecentManager].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      Manages and looks up recently used files.\n\n\
      Each recently used file is identified by its URI, and has meta-data\n\
      associated to it, like the names and command lines of the applications\n\

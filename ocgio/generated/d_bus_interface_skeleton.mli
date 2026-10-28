@@ -8,6 +8,11 @@
 
 (** {b The methods, signals and properties of a [DBusInterfaceSkeleton].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.D_bus_interface.class-type-d_bus_interface_t}Ocgio.D_bus_interface}
+
     Abstract base class for D-Bus interfaces on the service side. *)
 class type d_bus_interface_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_interface_t

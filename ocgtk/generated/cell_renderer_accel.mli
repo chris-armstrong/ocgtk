@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererAccel].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer_text.class-type-cell_renderer_text_t}Ocgtk.Cell_renderer_text}
+
     Renders a keyboard accelerator in a cell
 
     [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key

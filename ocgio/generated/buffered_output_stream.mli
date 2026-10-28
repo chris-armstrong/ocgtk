@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [BufferedOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}Ocgio.Filter_output_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     Buffered output stream implements [Gio.FilterOutputStream] and provides for
     buffered writes.
 

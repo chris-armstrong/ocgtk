@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [Subprocess].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:

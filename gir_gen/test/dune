@@ -60,6 +60,7 @@
   constant_code_tests
   enum_code_tests
   entity_doc_tests
+  class_gen_inheritance_tests
   ; Doc_translate — pure translation engine (no wiring)
   doc_translate_test_helpers
   doc_parse_tests

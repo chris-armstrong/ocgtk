@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [ShadowNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node drawing one or more shadows behind its single child node. *)
 class type shadow_node_t = object
   inherit Render_node.render_node_t

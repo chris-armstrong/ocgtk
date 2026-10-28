@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Renderer].}
 
+    Inherits from: [GObject.Object]
+
     [PangoRenderer] is a base class for objects that can render text provided as
     [PangoGlyphString] or [PangoLayout].
 

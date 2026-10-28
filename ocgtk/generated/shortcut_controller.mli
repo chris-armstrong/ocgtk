@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ShortcutController].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+
     Manages keyboard shortcuts and their activation.
 
     Most common shortcuts are using this controller implicitly, e.g. by adding a

@@ -7,6 +7,13 @@
 
 (** {b The methods, signals and properties of a [GLTexture].}
 
+    Inherits from: {{!Ocgdk.Texture.class-type-texture_t}Ocgdk.Texture}
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     A [GdkTexture] representing a GL texture object. *)
 class type gl_texture_t = object
   inherit Texture.texture_t

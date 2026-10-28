@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [DeviceTool].}
 
+    Inherits from: [GObject.Object]
+
     A physical tool associated to a [GdkDevice]. *)
 class type device_tool_t = object
   (** {2:methods Methods} *)

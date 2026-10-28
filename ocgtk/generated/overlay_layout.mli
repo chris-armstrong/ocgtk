@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [OverlayLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     The layout manager used by [Gtk.Overlay].
 
     It places widgets as overlays on top of the main child.

@@ -76,6 +76,7 @@ class type drop_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Drop].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      Represents the target of an ongoing DND operation.\n\n\
      Possible drop sites get informed about the status of the ongoing drag\n\
      operation with events of type [GDK_DRAG_ENTER], [GDK_DRAG_LEAVE],\n\

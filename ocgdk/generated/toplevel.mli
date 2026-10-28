@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [Toplevel].}
 
+    Requires:
+    - {{!Ocgdk.Surface.class-type-surface_t}Ocgdk.Surface}
+
     A freestanding toplevel surface.
 
     The [GdkToplevel] interface provides useful APIs for interacting with the

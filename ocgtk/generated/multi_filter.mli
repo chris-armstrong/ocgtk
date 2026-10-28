@@ -7,6 +7,12 @@
 
 (** {b The methods, signals and properties of a [MultiFilter].}
 
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+
     Base class for filters that combine multiple filters. *)
 class type multi_filter_t = object
   inherit Filter.filter_t

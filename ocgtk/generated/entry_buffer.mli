@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [EntryBuffer].}
 
+    Inherits from: [GObject.Object]
+
     Holds the text that is displayed in a single-line text entry widget.
 
     A single [GtkEntryBuffer] object can be shared by multiple widgets which

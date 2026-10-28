@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [BuilderCScope].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Builder_scope.class-type-builder_scope_t}Ocgtk.Builder_scope}
+
     A [GtkBuilderScope] implementation for the C language.
 
     [GtkBuilderCScope] instances use symbols explicitly added to [builder] with

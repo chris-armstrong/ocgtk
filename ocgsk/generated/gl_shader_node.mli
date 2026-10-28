@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [GLShaderNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node using a GL shader when drawing its children nodes. *)
 class type gl_shader_node_t = object
   inherit Render_node.render_node_t

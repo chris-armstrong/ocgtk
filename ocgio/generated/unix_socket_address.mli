@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [UnixSocketAddress].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address.class-type-socket_address_t}Ocgio.Socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     Support for UNIX-domain (also known as local) sockets, corresponding to
     [struct sockaddr_un].
 

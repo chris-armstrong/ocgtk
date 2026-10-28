@@ -13,6 +13,8 @@
 class type at_context_t = At_context_and__accessible.at_context_t
 (** {b The methods, signals and properties of a [ATContext].}
 
+    Inherits from: [GObject.Object]
+
     Communicates with platform-specific assistive technologies API.
 
     Each platform supported by GTK implements a [GtkATContext] subclass, and is

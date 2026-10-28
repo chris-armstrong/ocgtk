@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [TlsClientConnection].}
 
+    Requires:
+    - {{!Ocgio.Tls_connection.class-type-tls_connection_t}Ocgio.Tls_connection}
+
     [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
     representing a client-side TLS connection. *)
 class type tls_client_connection_t = object

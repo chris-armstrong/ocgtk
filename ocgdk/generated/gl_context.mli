@@ -12,6 +12,8 @@
 class type gl_context_t = App_launch_context_cycle_de440b34.gl_context_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GLContext].}\n\n\
+     Inherits from: \
+     {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}\n\n\
      Represents a platform-specific OpenGL draw context.\n\n\
      [GdkGLContext]s are created for a surface using\n\
      [Gdk.Surface.create_gl_context], and the context will match\n\

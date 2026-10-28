@@ -13,6 +13,9 @@
 
 (** {b The methods, signals and properties of a [TcpWrapperConnection].}
 
+    Inherits from:
+    {{!Ocgio.Tcp_connection.class-type-tcp_connection_t}Ocgio.Tcp_connection}
+
     A [GTcpWrapperConnection] can be used to wrap a [Gio.IOStream] that is based
     on a [Gio.Socket], but which is not actually a [Gio.SocketConnection]. This
     is used by [Gio.SocketClient] so that it can always return a

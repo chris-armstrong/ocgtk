@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [InputStream].}
 
+    Inherits from: [GObject.Object]
+
     [GInputStream] is a base class for implementing streaming input.
 
     It has functions to read from a stream ([Gio.InputStream.read]), to close a

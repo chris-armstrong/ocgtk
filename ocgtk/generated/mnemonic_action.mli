@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [MnemonicAction].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
     Activates a widget with a mnemonic.
 
     This means that [Gtk.Widget.mnemonic_activate] is called. *)

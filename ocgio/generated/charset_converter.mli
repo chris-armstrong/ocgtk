@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [CharsetConverter].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GCharsetConverter] is an implementation of [Gio.Converter] based on
     [GLib.IConv]. *)
 class type charset_converter_t = object

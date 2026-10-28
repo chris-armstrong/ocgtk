@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [DataOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}Ocgio.Filter_output_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     Data output stream implements [Gio.OutputStream] and includes functions for
     writing data directly to an output stream. *)
 class type data_output_stream_t = object

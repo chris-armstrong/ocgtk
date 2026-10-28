@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [Notification].}
 
+    Inherits from: [GObject.Object]
+
     [GNotification] is a mechanism for creating a notification to be shown to
     the user — typically as a pop-up notification presented by the desktop
     environment shell.

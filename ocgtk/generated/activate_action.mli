@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [ActivateAction].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
     Activates a widget.
 
     Widgets are activated by calling [Gtk.Widget.activate]. *)

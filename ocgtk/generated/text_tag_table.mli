@@ -65,6 +65,9 @@ class type text_tag_table_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [TextTagTable].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Collects the tags in a [GtkTextBuffer].\n\n\
      You may wish to begin by reading the\n\
      text widget conceptual overview,\n\

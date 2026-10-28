@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureClick].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes click gestures.
 
     It is able to recognize multiple clicks on a nearby zone, which can be

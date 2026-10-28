@@ -8,6 +8,15 @@
 
 (** {b The methods, signals and properties of a [Range].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Base class for widgets which visualize an adjustment.
 
     Widgets that are derived from [GtkRange] include [Gtk.Scale] and

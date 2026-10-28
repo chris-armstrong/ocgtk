@@ -64,6 +64,8 @@ class type grid_layout_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GridLayout].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}\n\n\
      Arranges child widgets in rows and columns.\n\n\
      Children have an \"attach point\" defined by the horizontal and vertical\n\
      index of the cell they occupy; children can span multiple rows or columns.\n\

@@ -129,6 +129,12 @@ class type info_bar_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [InfoBar].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      [GtkInfoBar] can be used to show messages to the user without a dialog.\n\n\
      An example GtkInfoBar\n\n\
      It is often temporarily shown at the top or bottom of a document.\n\

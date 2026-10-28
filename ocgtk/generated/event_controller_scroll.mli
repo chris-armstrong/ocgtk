@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerScroll].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Handles scroll events.
 
     It is capable of handling both discrete and continuous scroll events from

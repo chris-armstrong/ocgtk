@@ -75,6 +75,16 @@ class type message_dialog_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [MessageDialog].}\n\n\
+     Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      [GtkMessageDialog] presents a dialog with some message text.\n\n\
      An example GtkMessageDialog\n\n\
      It’s simply a convenience widget; you could construct the equivalent of\n\

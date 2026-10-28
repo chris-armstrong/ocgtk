@@ -111,6 +111,8 @@ class type drag_source_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DragSource].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}\n\n\
      An event controller to initiate Drag-And-Drop operations.\n\n\
      [GtkDragSource] can be set up with the necessary\n\
      ingredients for a DND operation ahead of time. This includes\n\

@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [PollableInputStream].}
 
+    Requires:
+    - {{!Ocgio.Input_stream.class-type-input_stream_t}Ocgio.Input_stream}
+
     [GPollableInputStream] is implemented by [Gio.InputStream]s that can be
     polled for readiness to read. This can be used when interfacing with a
     non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather

@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [ColumnViewCell].}
 
+    Inherits from: {{!Ocgtk.List_item.class-type-list_item_t}Ocgtk.List_item}
+
     Represents items in a cell in [Gtk.ColumnView].
 
     The [GtkColumnViewCell]s are managed by the [Gtk.ColumnView] widget (with

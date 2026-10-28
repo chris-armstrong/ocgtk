@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [DropControllerMotion].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     An event controller tracking the pointer during Drag-and-Drop operations.
 
     It is modeled after [Gtk.EventControllerMotion] so if you have used that,

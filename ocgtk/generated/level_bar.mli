@@ -91,6 +91,15 @@ class type level_bar_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [LevelBar].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      Shows a level indicator.\n\n\
      Typical use cases are displaying the strength of a password, or\n\
      showing the charge level of a battery.\n\n\

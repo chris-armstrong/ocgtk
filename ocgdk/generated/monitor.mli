@@ -12,6 +12,8 @@
 class type monitor_t = App_launch_context_cycle_de440b34.monitor_t
 (** {b The methods, signals and properties of a [Monitor].}
 
+    Inherits from: [GObject.Object]
+
     Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with

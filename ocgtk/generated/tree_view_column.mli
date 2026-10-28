@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [TreeViewColumn].}
 
+    Inherits from: [GObject.InitiallyUnowned]
+
+    Implements:
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+
     A visible column in a [Gtk.TreeView] widget
 
     The [GtkTreeViewColumn] object represents a visible column in a

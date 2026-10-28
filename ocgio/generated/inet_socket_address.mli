@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [InetSocketAddress].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address.class-type-socket_address_t}Ocgio.Socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     An IPv4 or IPv6 socket address. That is, the combination of a
     [Gio.InetAddress] and a port number.
 

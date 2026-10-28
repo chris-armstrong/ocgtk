@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureDrag].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the

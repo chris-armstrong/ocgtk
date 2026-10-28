@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [ThreadedSocketService].}
 
+    Inherits from:
+    {{!Ocgio.Socket_service.class-type-socket_service_t}Ocgio.Socket_service}
+
     A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
     handles incoming connections by creating a worker thread and dispatching the
     connection to it by emitting the \[signal@Gio.ThreadedSocketService::run

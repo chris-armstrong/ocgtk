@@ -212,6 +212,11 @@ class type application_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Application].}\n\n\
+     Inherits from: \
+     {{!Ocgio.Application.class-type-application_t}Ocgio.Application}\n\n\
+     Implements:\n\
+     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}\n\
+     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}\n\n\
      A high-level API for writing applications.\n\n\
      [GtkApplication] supports many aspects of writing a GTK application\n\
      in a convenient fashion, without enforcing a one-size-fits-all model.\n\n\
@@ -269,6 +274,16 @@ end
      - Getting Started with GTK: Basics"]
 
 (** {b The methods, signals and properties of a [Window].}
+
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
 
     A toplevel window which can contain other widgets.
 
@@ -869,6 +884,8 @@ and window_t = object
 end
 
 (** {b The methods, signals and properties of a [WindowGroup].}
+
+    Inherits from: [GObject.Object]
 
     Creates groups of windows that behave like separate applications.
 

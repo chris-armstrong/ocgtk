@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [DropTargetAsync].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     An event controller to receive Drag-and-Drop operations, asynchronously.
 
     It is the more complete but also more complex method of handling drop

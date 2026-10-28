@@ -45,6 +45,8 @@ class type pad_controller_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [PadController].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}\n\n\
      Handles input from the pads found in drawing tablets.\n\n\
      Pads are the collection of buttons and tactile sensors often found around\n\
      the stylus-sensitive area.\n\n\

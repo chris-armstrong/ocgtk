@@ -67,6 +67,9 @@ class type file_filter_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileFilter].}\n\n\
+     Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Filters files by name or mime type.\n\n\
      [GtkFileFilter] can be used to restrict the files being shown in a\n\
      file chooser. Files can be filtered based on their name (with\n\

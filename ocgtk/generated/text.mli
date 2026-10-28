@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [Text].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+
     A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is

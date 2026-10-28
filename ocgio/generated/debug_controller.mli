@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [DebugController].}
 
+    Requires:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GDebugController] is an interface to expose control of debugging features
     and debug output.
 

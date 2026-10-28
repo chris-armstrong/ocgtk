@@ -8,6 +8,12 @@
 
 (** {b The methods, signals and properties of a [MapListModel].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
     A list model that maps the items in another model to different items.
 
     [GtkMapListModel] uses a [Gtk.MapListModelMapFunc].

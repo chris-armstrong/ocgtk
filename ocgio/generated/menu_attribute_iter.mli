@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [MenuAttributeIter].}
 
+    Inherits from: [GObject.Object]
+
     [GMenuAttributeIter] is an opaque structure type. You must access it using
     the functions below. *)
 class type menu_attribute_iter_t = object

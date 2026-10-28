@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Snapshot].}
 
+    Inherits from: {{!Ocgdk.Snapshot.class-type-snapshot_t}Ocgdk.Snapshot}
+
     Assists in creating [Gsk.RenderNode]s for widgets.
 
     It functions in a similar way to a cairo context, and maintains a stack of

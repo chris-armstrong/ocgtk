@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [FileLauncher].}
 
+    Inherits from: [GObject.Object]
+
     Asynchronous API to open a file with an application.
 
     [GtkFileLauncher] collects the arguments that are needed to open the file.

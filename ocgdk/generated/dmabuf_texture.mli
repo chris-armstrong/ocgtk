@@ -8,6 +8,13 @@
 
 (** {b The methods, signals and properties of a [DmabufTexture].}
 
+    Inherits from: {{!Ocgdk.Texture.class-type-texture_t}Ocgdk.Texture}
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     A [GdkTexture] representing a DMA buffer.
 
     To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]

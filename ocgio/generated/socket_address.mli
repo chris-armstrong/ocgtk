@@ -15,6 +15,11 @@ class type socket_address_t =
   .socket_address_t
 (** {b The methods, signals and properties of a [SocketAddress].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
     the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
     for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets. *)

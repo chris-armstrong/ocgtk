@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [GestureSingle].}
 
+    Inherits from: {{!Ocgtk.Gesture.class-type-gesture_t}Ocgtk.Gesture}
+
     A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
     Under interaction, these gestures stick to the first interacting sequence,

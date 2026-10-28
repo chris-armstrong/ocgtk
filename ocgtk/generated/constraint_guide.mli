@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [ConstraintGuide].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     An invisible layout element in a [GtkConstraintLayout].
 
     The [GtkConstraintLayout] treats guides like widgets. They can be used as

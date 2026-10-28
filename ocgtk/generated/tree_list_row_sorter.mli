@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [TreeListRowSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Applies a gives sorter to the levels in a tree.
 
     Here is an example for setting up a column view with a tree model and a

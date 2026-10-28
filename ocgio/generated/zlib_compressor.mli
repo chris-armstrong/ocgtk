@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [ZlibCompressor].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
+
     [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
     data using zlib. *)
 class type zlib_compressor_t = object

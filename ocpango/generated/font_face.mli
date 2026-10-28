@@ -12,6 +12,8 @@
 class type font_face_t = Font_face_and__font_family.font_face_t
 (** {b The methods, signals and properties of a [FontFace].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoFontFace] is used to represent a group of fonts with the same
     family, slant, weight, and width, but varying sizes. *)
 

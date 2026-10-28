@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [ClipNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node applying a rectangular clip to its single child node. *)
 class type clip_node_t = object
   inherit Render_node.render_node_t

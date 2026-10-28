@@ -76,6 +76,11 @@ class type debug_controller_d_bus_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DebugControllerDBus].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - \
+     {{!Ocgio.Debug_controller.class-type-debug_controller_t}Ocgio.Debug_controller}\n\
+     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}\n\n\
      [GDebugControllerDBus] is an implementation of [Gio.DebugController]\n\
      which exposes debug settings as a D-Bus object.\n\n\
      It is a [Gio.Initable] object, and will register an object at\n\

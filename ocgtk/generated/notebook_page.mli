@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [NotebookPage].}
 
+    Inherits from: [GObject.Object]
+
     An auxiliary object used by [GtkNotebook]. *)
 class type notebook_page_t = object
   (** {2:methods Methods} *)

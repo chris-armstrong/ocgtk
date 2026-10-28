@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [CellView].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     A widget displaying a single row of a GtkTreeModel
 
     A [GtkCellView] displays a single row of a [GtkTreeModel] using a

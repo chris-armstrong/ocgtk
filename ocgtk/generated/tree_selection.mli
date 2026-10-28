@@ -12,6 +12,8 @@
 class type tree_selection_t = Tree_selection_and__tree_view.tree_selection_t
 (** {b The methods, signals and properties of a [TreeSelection].}
 
+    Inherits from: [GObject.Object]
+
     The selection object for GtkTreeView
 
     The [GtkTreeSelection] object is a helper object to manage the selection for

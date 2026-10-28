@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [Inscription].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Shows text in a predefined area.
 
     You likely want to use [GtkLabel] instead as this widget is intended only

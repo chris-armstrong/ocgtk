@@ -83,6 +83,9 @@ class type simple_async_result_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [SimpleAsyncResult].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}\n\n\
      As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of\n\
      [Gio.Task], which provides a simpler API.\n\n\
      [GSimpleAsyncResult] implements [Gio.AsyncResult].\n\n\

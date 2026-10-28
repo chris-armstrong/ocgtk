@@ -6,7 +6,11 @@
 
 (** {1:class Class} *)
 
-(** {b The methods, signals and properties of a [PixbufSimpleAnimIter].} *)
+(** {b The methods, signals and properties of a [PixbufSimpleAnimIter].}
+
+    Inherits from:
+    {{!Ocgdkpixbuf.Pixbuf_animation_iter.class-type-pixbuf_animation_iter_t}Ocgdkpixbuf.Pixbuf_animation_iter}
+*)
 class type pixbuf_simple_anim_iter_t = object
   inherit Pixbuf_animation_iter.pixbuf_animation_iter_t
 

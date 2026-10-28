@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [Menu].}
 
+    Inherits from: {{!Ocgio.Menu_model.class-type-menu_model_t}Ocgio.Menu_model}
+
     [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
     [GMenu] by adding [Gio.MenuItem] instances to it.
 

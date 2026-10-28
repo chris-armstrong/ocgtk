@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [DBusMethodInvocation].}
 
+    Inherits from: [GObject.Object]
+
     Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
     method calls. It provides a way to asynchronously return results and errors.
 

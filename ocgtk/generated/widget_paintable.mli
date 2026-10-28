@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [WidgetPaintable].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     A [GdkPaintable] that displays the contents of a widget.
 
     [GtkWidgetPaintable] will also take care of the widget not being in a state

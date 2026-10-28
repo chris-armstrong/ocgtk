@@ -88,6 +88,9 @@ class type directory_list_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DirectoryList].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\n\
      A list model that wraps [Gio.File.enumerate_children_async].\n\n\
      It presents a [GListModel] and fills it asynchronously with the \
      [GFileInfo]s\n\

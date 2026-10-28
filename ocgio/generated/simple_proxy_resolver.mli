@@ -11,6 +11,11 @@
 
 (** {b The methods, signals and properties of a [SimpleProxyResolver].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}Ocgio.Proxy_resolver}
+
     [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
     handles a single default proxy, multiple URI-scheme-specific proxies, and a
     list of hosts that proxies should not be used for.

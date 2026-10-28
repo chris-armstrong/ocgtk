@@ -8,6 +8,11 @@
 
 (** {b The methods, signals and properties of a [MediaStream].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     The integration point for media playback inside GTK.
 
     GTK provides an implementation of the [GtkMediaStream] interface that is

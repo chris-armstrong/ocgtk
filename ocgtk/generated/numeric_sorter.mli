@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [NumericSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Sorts items numerically.
 
     To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].

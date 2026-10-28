@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [CellEditable].}
 
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     Interface for widgets that can be used for editing cells
 
     The [GtkCellEditable] interface must be implemented for widgets to be usable

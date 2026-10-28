@@ -14,6 +14,10 @@ class type root_t =
   .root_t
 (** {b The methods, signals and properties of a [Root].}
 
+    Requires:
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     An interface for widgets that can act as the root of a widget hierarchy.
 
     The root widget takes care of providing the connection to the windowing

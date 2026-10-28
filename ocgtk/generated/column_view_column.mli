@@ -14,6 +14,8 @@ class type column_view_column_t =
   Column_view_and__column_view_column.column_view_column_t
 (** {b The methods, signals and properties of a [ColumnViewColumn].}
 
+    Inherits from: [GObject.Object]
+
     Represents the columns in a [GtkColumnView].
 
     The main ingredient for a [GtkColumnViewColumn] is the [GtkListItemFactory]

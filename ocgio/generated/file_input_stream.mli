@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [FileInputStream].}
 
+    Inherits from:
+    {{!Ocgio.Input_stream.class-type-input_stream_t}Ocgio.Input_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GFileInputStream] provides input streams that take their content from a
     file.
 

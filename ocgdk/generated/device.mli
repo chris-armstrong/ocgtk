@@ -12,6 +12,8 @@
 class type device_t = App_launch_context_cycle_de440b34.device_t
 (** {b The methods, signals and properties of a [Device].}
 
+    Inherits from: [GObject.Object]
+
     Represents an input device, such as a keyboard, mouse or touchpad.
 
     See the [Gdk.Seat] documentation for more information about the various

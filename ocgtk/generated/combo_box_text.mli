@@ -76,6 +76,14 @@ class type combo_box_text_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ComboBoxText].}\n\n\
+     Inherits from: {{!Ocgtk.Combo_box.class-type-combo_box_t}Ocgtk.Combo_box}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}\n\
+     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      A [GtkComboBoxText] is a simple variant of [GtkComboBox] for text-only\n\
      use cases.\n\n\
      An example GtkComboBoxText\n\n\

@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureLongPress].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes long press gestures.
 
     This gesture is also known as “Press and Hold”.

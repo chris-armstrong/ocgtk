@@ -9,6 +9,10 @@
 
 (** {b The methods, signals and properties of a [DtlsClientConnection].}
 
+    Requires:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
+    - {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}Ocgio.Dtls_connection}
+
     [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
     representing a client-side DTLS connection. *)
 class type dtls_client_connection_t = object

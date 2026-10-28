@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [ColorMatrixNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node controlling the color matrix of its single child node. *)
 class type color_matrix_node_t = object
   inherit Render_node.render_node_t

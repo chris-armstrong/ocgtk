@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Adjustment].}
 
+    Inherits from: [GObject.InitiallyUnowned]
+
     A model for a numeric value.
 
     The [GtkAdjustment] has an associated lower and upper bound. It also

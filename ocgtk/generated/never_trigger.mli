@@ -7,6 +7,9 @@
 
 (** {b The methods, signals and properties of a [NeverTrigger].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}Ocgtk.Shortcut_trigger}
+
     A [GtkShortcutTrigger] that never triggers. *)
 class type never_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t

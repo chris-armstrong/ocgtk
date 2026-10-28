@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [FilterOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
     Base class for output stream implementations that perform some kind of
     filtering operation on a base stream. Typical examples of filtering
     operations are character set conversion, compression and byte order

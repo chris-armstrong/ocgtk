@@ -69,12 +69,55 @@ let test_description_omitted_when_synopsis_is_all () =
 let test_class_type_with_class_doc () =
   check_text "the bold line, then the class doc"
     "(** {b The methods, signals and properties of a [Button].}\n\nA button. *)"
-    (Entity_doc.class_type ~class_name:"Button" ~class_doc:(Some "A button."))
+    (Entity_doc.class_type ~class_name:"Button"
+       ~inheritance:Entity_doc.no_inheritance ~class_doc:(Some "A button."))
 
 let test_class_type_without_class_doc () =
   check_text "the bold line alone"
     "(** {b The methods, signals and properties of a [Button].} *)"
-    (Entity_doc.class_type ~class_name:"Button" ~class_doc:None)
+    (Entity_doc.class_type ~class_name:"Button"
+       ~inheritance:Entity_doc.no_inheritance ~class_doc:None)
+
+let bound namespace name = Entity_doc.Bound { namespace; name }
+
+let test_class_type_inheritance_block () =
+  check_text "the block between the bold line and the class doc"
+    "(** {b The methods, signals and properties of a [Button].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
+     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\n\
+     A button. *)"
+    (Entity_doc.class_type ~class_name:"Button"
+       ~inheritance:
+         {
+           Entity_doc.parent = Some (bound "Gtk" "Widget");
+           implements = [ bound "Gtk" "Actionable"; bound "Gio" "ListModel" ];
+           requires = [];
+         }
+       ~class_doc:(Some "A button."))
+
+let test_class_type_unbound_ancestor_is_code () =
+  check_text "an ancestor without a layer 2 class is named, not linked"
+    "(** {b The methods, signals and properties of a [Button].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned] *)"
+    (Entity_doc.class_type ~class_name:"Button"
+       ~inheritance:
+         {
+           Entity_doc.no_inheritance with
+           parent = Some (Entity_doc.Unbound "GObject.InitiallyUnowned");
+         }
+       ~class_doc:None)
+
+let test_interface_requires () =
+  check_text "an interface lists its prerequisites"
+    "(** {b The methods, signals and properties of a [Actionable].}\n\n\
+     Requires:\n\
+     - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget} *)"
+    (Entity_doc.class_type ~class_name:"Actionable"
+       ~inheritance:
+         { Entity_doc.no_inheritance with requires = [ bound "Gtk" "Widget" ] }
+       ~class_doc:None)
 
 let ctor ?ctor_doc () =
   Type_factory.make_gir_constructor ~ctor_name:"new_with_label"
@@ -322,6 +365,15 @@ let tests =
     ( "layer 2 signature carries method docs",
       `Quick,
       test_signature_carries_method_docs );
+    ( "class type doc carries the inheritance block",
+      `Quick,
+      test_class_type_inheritance_block );
+    ( "an unbound ancestor is code, not a link",
+      `Quick,
+      test_class_type_unbound_ancestor_is_code );
+    ( "an interface's class type doc lists what it requires",
+      `Quick,
+      test_interface_requires );
     ( "class type sections follow the emitted members",
       `Quick,
       test_sections_follow_emitted_members );

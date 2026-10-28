@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [ColumnViewSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Sorts [Gtk.ColumnView] columns.
 
     The sorter returned by [Gtk.ColumnView.get_sorter] is a

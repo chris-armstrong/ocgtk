@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [FillNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
     the child node. *)
 class type fill_node_t = object

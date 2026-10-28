@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [FileIOStream].}
 
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 

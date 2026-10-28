@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [ConverterOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}Ocgio.Filter_output_stream}
+
+    Implements:
+    - {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}Ocgio.Pollable_output_stream}
+
     Converter output stream implements [Gio.OutputStream] and allows conversion
     of data of various types during reading.
 

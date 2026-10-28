@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [GridLayoutChild].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_child.class-type-layout_child_t}Ocgtk.Layout_child}
+
     [GtkLayoutChild] subclass for children in a [GtkGridLayout]. *)
 class type grid_layout_child_t = object
   inherit

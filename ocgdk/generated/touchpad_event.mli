@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [TouchpadEvent].}
 
+    Inherits from: {{!Ocgdk.Event.class-type-event_t}Ocgdk.Event}
+
     An event related to a gesture on a touchpad device.
 
     Unlike touchscreens, where the windowing system sends basic sequences of

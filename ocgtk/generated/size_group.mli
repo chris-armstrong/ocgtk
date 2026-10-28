@@ -58,6 +58,9 @@ class type size_group_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [SizeGroup].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Groups widgets together so they all request the same size.\n\n\
      This is typically useful when you want a column of widgets to have\n\
      the same size, but you can’t use a [Gtk.Grid] or [Gtk.Box].\n\n\

@@ -493,6 +493,12 @@ class type notebook_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Notebook].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Switches between children using tabs.\n\n\
      An example GtkNotebook\n\n\
      There are many configuration options for [GtkNotebook]. Among\n\

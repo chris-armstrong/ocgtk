@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [DebugNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node that emits a debugging message when drawing its child node. *)
 class type debug_node_t = object
   inherit Render_node.render_node_t

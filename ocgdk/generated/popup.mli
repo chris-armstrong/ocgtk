@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [Popup].}
 
+    Requires:
+    - {{!Ocgdk.Surface.class-type-surface_t}Ocgdk.Surface}
+
     A surface that is attached to another surface.
 
     The [GdkPopup] is positioned relative to its parent surface.

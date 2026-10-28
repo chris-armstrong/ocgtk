@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureSwipe].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes swipe gestures.
 
     After a press/move/.../move/release sequence happens, the

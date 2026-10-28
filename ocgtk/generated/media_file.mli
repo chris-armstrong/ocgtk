@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [MediaFile].}
 
+    Inherits from:
+    {{!Ocgtk.Media_stream.class-type-media_stream_t}Ocgtk.Media_stream}
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     Implements the [GtkMediaStream] interface for files.
 
     This provides a simple way to play back video files with GTK.

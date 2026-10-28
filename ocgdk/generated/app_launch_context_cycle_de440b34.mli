@@ -60,6 +60,8 @@ class type app_launch_context_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [AppLaunchContext].}\n\n\
+     Inherits from: \
+     {{!Ocgio.App_launch_context.class-type-app_launch_context_t}Ocgio.App_launch_context}\n\n\
      Handles launching an application in a graphical context.\n\n\
      It is an implementation of [GAppLaunchContext] that provides startup\n\
      notification and allows to launch applications on a specific workspace.\n\n\
@@ -75,6 +77,9 @@ end
      ]}"]
 
 (** {b The methods, signals and properties of a [CairoContext].}
+
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
 
     Represents the platform-specific draw context.
 
@@ -100,6 +105,8 @@ and cairo_context_t = object
 end
 
 (** {b The methods, signals and properties of a [Clipboard].}
+
+    Inherits from: [GObject.Object]
 
     Represents data shared between applications or inside an application.
 
@@ -195,6 +202,8 @@ and clipboard_t = object
 end
 
 (** {b The methods, signals and properties of a [Device].}
+
+    Inherits from: [GObject.Object]
 
     Represents an input device, such as a keyboard, mouse or touchpad.
 
@@ -342,6 +351,8 @@ and device_t = object
 end
 
 (** {b The methods, signals and properties of a [Display].}
+
+    Inherits from: [GObject.Object]
 
     A representation of a workstation.
 
@@ -578,6 +589,8 @@ and display_t = object
 end
 
 (** {b The methods, signals and properties of a [DrawContext].}
+
+    Inherits from: [GObject.Object]
 
     Base class for objects implementing different rendering methods.
 
@@ -871,6 +884,8 @@ and gl_context_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GLContext].}\n\n\
+     Inherits from: \
+     {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}\n\n\
      Represents a platform-specific OpenGL draw context.\n\n\
      [GdkGLContext]s are created for a surface using\n\
      [Gdk.Surface.create_gl_context], and the context will match\n\
@@ -911,6 +926,8 @@ end
      that is currently set by calling [Gdk.GLContext.clear_current]."]
 
 (** {b The methods, signals and properties of a [Monitor].}
+
+    Inherits from: [GObject.Object]
 
     Represents the individual outputs that are associated with a [GdkDisplay].
 
@@ -1000,6 +1017,8 @@ end
 
 (** {b The methods, signals and properties of a [Seat].}
 
+    Inherits from: [GObject.Object]
+
     Represents a collection of input devices that belong to a user. *)
 and seat_t = object
   (** {2:signals Signals} *)
@@ -1064,6 +1083,8 @@ and seat_t = object
 end
 
 (** {b The methods, signals and properties of a [Surface].}
+
+    Inherits from: [GObject.Object]
 
     Represents a rectangular region on the screen.
 
@@ -1308,6 +1329,9 @@ and surface_t = object
 end
 
 (** {b The methods, signals and properties of a [VulkanContext].}
+
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
 
     Represents the platform-specific Vulkan draw context.
 

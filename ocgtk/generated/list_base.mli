@@ -8,6 +8,15 @@
 
 (** {b The methods, signals and properties of a [ListBase].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
+
     The abstract base class for GTK's list widgets.
 
     {b Shortcuts and Gestures}

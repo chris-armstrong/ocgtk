@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [StringFilter].}
 
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
     Determines whether to include items by comparing strings to a fixed search
     term.
 

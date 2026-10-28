@@ -10,6 +10,11 @@
 
 (** {b The methods, signals and properties of a [PropertyAction].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Action.class-type-action_t}Ocgio.Action}
+
     A [GPropertyAction] is a way to get a [Gio.Action] with a state value
     reflecting and controlling the value of a [GObject.Object] property.
 

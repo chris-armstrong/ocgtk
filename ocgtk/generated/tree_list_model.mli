@@ -7,6 +7,11 @@
 
 (** {b The methods, signals and properties of a [TreeListModel].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     A list model that can create child models on demand. *)
 class type tree_list_model_t = object
   inherit Ocgio.List_model.list_model_t

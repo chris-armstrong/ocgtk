@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererCombo].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer_text.class-type-cell_renderer_text_t}Ocgtk.Cell_renderer_text}
+
     Renders a combobox in a cell
 
     [GtkCellRendererCombo] renders text in a cell like [GtkCellRendererText]

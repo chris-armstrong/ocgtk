@@ -11,6 +11,13 @@
 
 (** {b The methods, signals and properties of a [DBusProxy].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Async_initable.class-type-async_initable_t}Ocgio.Async_initable}
+    - {{!Ocgio.D_bus_interface.class-type-d_bus_interface_t}Ocgio.D_bus_interface}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GDBusProxy] is a base class used for proxies to access a D-Bus interface on
     a remote object. A [GDBusProxy] can be constructed for both well-known and
     unique names.

@@ -10,6 +10,15 @@
 
 (** {b The methods, signals and properties of a [ComboBox].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     A [GtkComboBox] is a widget that allows the user to choose from a list of
     valid choices.
 

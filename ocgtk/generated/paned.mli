@@ -180,6 +180,15 @@ class type paned_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Paned].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      Arranges its children in two panes, horizontally or vertically.\n\n\
      An example GtkPaned\n\n\
      The division between the two panes is adjustable by the user\n\

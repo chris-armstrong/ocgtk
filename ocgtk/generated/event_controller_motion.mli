@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerMotion].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Tracks the pointer position.
 
     The event controller offers [Gtk.EventControllerMotion::enter] and

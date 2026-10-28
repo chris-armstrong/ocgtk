@@ -12,6 +12,9 @@
 class type vulkan_context_t = App_launch_context_cycle_de440b34.vulkan_context_t
 (** {b The methods, signals and properties of a [VulkanContext].}
 
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
+
     Represents the platform-specific Vulkan draw context.
 
     [GdkVulkanContext]s are created for a surface using

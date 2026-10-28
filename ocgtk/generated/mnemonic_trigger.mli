@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [MnemonicTrigger].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}Ocgtk.Shortcut_trigger}
+
     Triggers when a specific mnemonic is pressed.
 
     Mnemonics require a {i mnemonic modifier} (typically <kbd>Alt</kbd>) to be

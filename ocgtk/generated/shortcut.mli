@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Shortcut].}
 
+    Inherits from: [GObject.Object]
+
     Describes a keyboard shortcut.
 
     It contains a description of how to trigger the shortcut via a

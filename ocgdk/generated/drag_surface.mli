@@ -7,6 +7,9 @@
 
 (** {b The methods, signals and properties of a [DragSurface].}
 
+    Requires:
+    - {{!Ocgdk.Surface.class-type-surface_t}Ocgdk.Surface}
+
     A surface that is used during DND. *)
 class type drag_surface_t = object
   (** {2:methods Methods} *)

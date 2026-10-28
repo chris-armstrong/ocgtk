@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Texture].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     Refers to pixel data in various forms.
 
     It is primarily meant for pixel data that will not change over multiple

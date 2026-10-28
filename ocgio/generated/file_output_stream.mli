@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [FileOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GFileOutputStream] provides output streams that write their content to a
     file.
 

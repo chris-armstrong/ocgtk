@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [CellRendererProgress].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
+    Implements:
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Renders numbers as progress bars
 
     [GtkCellRendererProgress] renders a numeric value as a progress par in a

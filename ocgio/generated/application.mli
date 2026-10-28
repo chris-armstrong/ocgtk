@@ -452,6 +452,10 @@ class type application_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Application].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}\n\
+     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}\n\n\
      [GApplication] is the core class for application support.\n\n\
      A [GApplication] is the foundation of an application. It wraps some\n\
      low-level platform-specific services and is intended to act as the\n\

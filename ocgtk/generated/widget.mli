@@ -14,6 +14,12 @@ class type widget_t =
   .widget_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Widget].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      The base class for all widgets.\n\n\
      It manages the widget lifecycle, layout, states and style.\n\n\
      {b Height-for-width Geometry Management}\n\n\

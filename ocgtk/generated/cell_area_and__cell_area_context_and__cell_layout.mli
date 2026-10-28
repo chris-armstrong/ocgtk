@@ -222,6 +222,10 @@ class type cell_area_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [CellArea].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\n\
      An abstract class for laying out [GtkCellRenderer]s\n\n\
      The [GtkCellArea] is an abstract class for [Gtk.CellLayout]\n\
      widgets (also referred to as \"layouting widgets\") to interface with\n\
@@ -493,6 +497,8 @@ end
      [Gtk.CellArea.cell_get] or [Gtk.CellArea.cell_get_valist]."]
 
 (** {b The methods, signals and properties of a [CellAreaContext].}
+
+    Inherits from: [GObject.Object]
 
     Stores geometrical information for a series of rows in a GtkCellArea
 

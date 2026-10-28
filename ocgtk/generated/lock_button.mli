@@ -10,6 +10,14 @@
 
 (** {b The methods, signals and properties of a [LockButton].}
 
+    Inherits from: {{!Ocgtk.Button.class-type-button_t}Ocgtk.Button}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkLockButton] is a widget to obtain and revoke authorizations needed to
     operate the controls.
 

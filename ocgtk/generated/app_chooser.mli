@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [AppChooser].}
 
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
 

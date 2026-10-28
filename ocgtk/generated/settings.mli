@@ -8,6 +8,11 @@
 
 (** {b The methods, signals and properties of a [Settings].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Style_provider.class-type-style_provider_t}Ocgtk.Style_provider}
+
     Provides a mechanism to share global settings between applications.
 
     On the X window system, this sharing is realized by an XSettings manager

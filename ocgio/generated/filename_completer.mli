@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [FilenameCompleter].}
 
+    Inherits from: [GObject.Object]
+
     Completes partial file and directory names given a partial string by looking
     in the file system for clues. Can return a list of possible completion
     strings for widget implementations. *)

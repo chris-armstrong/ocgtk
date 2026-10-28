@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [Font].}
 
+    Requires:
+    - {{!Ocpango.Font.class-type-font_t}Ocpango.Font}
+
     [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
     The actual type of the font will depend on the particular font technology

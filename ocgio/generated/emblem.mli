@@ -11,6 +11,11 @@
 
 (** {b The methods, signals and properties of a [Emblem].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GEmblem] is an implementation of [Gio.Icon] that supports having an emblem,
     which is an icon with additional properties. It can than be added to a
     [Gio.EmblemedIcon].

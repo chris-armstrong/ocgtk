@@ -13,6 +13,8 @@
 class type surface_t = App_launch_context_cycle_de440b34.surface_t
 (** {b The methods, signals and properties of a [Surface].}
 
+    Inherits from: [GObject.Object]
+
     Represents a rectangular region on the screen.
 
     It’s a low-level object, used to implement high-level objects such as

@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [BookmarkList].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     A list model that wraps [GBookmarkFile].
 
     It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s

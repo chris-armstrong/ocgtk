@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [ThemedIcon].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,

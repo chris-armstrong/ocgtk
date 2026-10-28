@@ -111,10 +111,48 @@ let description ~class_name ~class_doc =
       Doc_emit.item_doc ~indent:"" ~fallback:text
         ~prefix:"{1:description Description}" ~context:Doc_translate.Member None)
 
-let class_type ~class_name ~class_doc =
+type ancestor =
+  | Bound of { namespace : string; name : string }
+  | Unbound of string
+
+type inheritance = {
+  parent : ancestor option;
+  implements : ancestor list;
+  requires : ancestor list;
+}
+
+let no_inheritance = { parent = None; implements = []; requires = [] }
+
+let ancestor_ref = function
+  | Bound { namespace; name } ->
+      let path = Module_paths.cross_ns_layer2_module ~namespace name in
+      Fmt.str "{{!%s.class-type-%s}%s}" path (Utils.class_type_name name) path
+  | Unbound name -> Fmt.str "[%s]" name
+
+let ancestor_list ~label = function
+  | [] -> None
+  | ancestors ->
+      Some
+        (String.concat ~sep:"\n"
+           ((label ^ ":")
+           :: List.map ancestors ~f:(fun a -> "- " ^ ancestor_ref a)))
+
+let inheritance_paragraphs { parent; implements; requires } =
+  List.filter_map ~f:Fun.id
+    [
+      Option.map (fun p -> "Inherits from: " ^ ancestor_ref p) parent;
+      ancestor_list ~label:"Implements" implements;
+      ancestor_list ~label:"Requires" requires;
+    ]
+
+let class_type ~class_name ~inheritance ~class_doc =
+  let heading =
+    Fmt.str "{b The methods, signals and properties of a [%s].}" class_name
+  in
   Doc_emit.item_doc ~indent:""
     ~prefix:
-      (Fmt.str "{b The methods, signals and properties of a [%s].}" class_name)
+      (String.concat ~sep:"\n\n"
+         (heading :: inheritance_paragraphs inheritance))
     ~context:Doc_translate.Member class_doc
 
 let class_ ~namespace ~class_name =

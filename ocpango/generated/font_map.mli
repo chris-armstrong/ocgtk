@@ -13,6 +13,11 @@
 class type font_map_t = Context_and__font_and__font_map_and__fontset.font_map_t
 (** {b The methods, signals and properties of a [FontMap].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     A [PangoFontMap] represents the set of fonts available for a particular
     rendering system.
 

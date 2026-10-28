@@ -25,6 +25,11 @@ class type cell_area_box_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [CellAreaBox].}\n\n\
+     Inherits from: {{!Ocgtk.Cell_area.class-type-cell_area_t}Ocgtk.Cell_area}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      A cell area that renders GtkCellRenderers into a row or a column\n\n\
      The [GtkCellAreaBox] renders cell renderers into a row or a column\n\
      depending on its [GtkOrientation].\n\n\

@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [FlowBoxChild].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The kind of widget that can be added to a [GtkFlowBox].
 
     [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]

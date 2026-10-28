@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [ParamSpecExpression].}
 
+    Inherits from: [GObject.ParamSpec]
+
     A [GParamSpec] for properties holding a [GtkExpression]. *)
 class type param_spec_expression_t = object
   (** {2:conversions Conversions} *)

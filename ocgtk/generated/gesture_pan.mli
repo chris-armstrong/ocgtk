@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GesturePan].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t}Ocgtk.Gesture_drag}
+
     Recognizes pan gestures.
 
     These are drags that are locked to happen along one axis. The axis that a

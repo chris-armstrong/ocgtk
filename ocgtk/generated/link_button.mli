@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [LinkButton].}
 
+    Inherits from: {{!Ocgtk.Button.class-type-button_t}Ocgtk.Button}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     A button with a hyperlink.
 
     An example GtkLinkButton

@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [FileIcon].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 

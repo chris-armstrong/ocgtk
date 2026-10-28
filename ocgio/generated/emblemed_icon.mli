@@ -11,6 +11,11 @@
 
 (** {b The methods, signals and properties of a [EmblemedIcon].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
     emblem to an icon. Adding multiple emblems to an icon is ensured via
     [Gio.EmblemedIcon.add_emblem].

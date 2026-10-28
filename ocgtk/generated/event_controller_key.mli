@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerKey].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Provides access to key events. *)
 class type event_controller_key_t = object
   inherit

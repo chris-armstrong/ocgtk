@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [CustomLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     Uses closures for size negotiation.
 
     A [GtkCustomLayout] uses closures matching to the old [GtkWidget] virtual

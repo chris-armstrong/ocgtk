@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [DtlsConnection].}
 
+    Requires:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
+
     [GDtlsConnection] is the base DTLS connection class type, which wraps a
     [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
     subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],

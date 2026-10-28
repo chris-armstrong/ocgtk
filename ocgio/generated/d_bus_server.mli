@@ -14,6 +14,11 @@
 
 (** {b The methods, signals and properties of a [DBusServer].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GDBusServer] is a helper for listening to and accepting D-Bus connections.
     This can be used to create a new D-Bus server, allowing two peers to use the
     D-Bus protocol for their own specialized communication. A server instance

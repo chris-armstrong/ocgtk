@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [FontButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Font_chooser.class-type-font_chooser_t}Ocgtk.Font_chooser}
+
     The [GtkFontButton] allows to open a font chooser dialog to change the font.
 
     An example GtkFontButton

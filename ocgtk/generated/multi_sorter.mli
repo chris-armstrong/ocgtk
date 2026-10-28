@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [MultiSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+
     Combines multiple sorters by trying them in turn.
 
     If the first sorter compares two items as equal, the second is tried next,

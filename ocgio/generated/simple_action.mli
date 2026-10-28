@@ -10,6 +10,11 @@
 
 (** {b The methods, signals and properties of a [SimpleAction].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Action.class-type-action_t}Ocgio.Action}
+
     A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
     interface. This is the easiest way to create an action for purposes of
     adding it to a [Gio.SimpleActionGroup]. *)

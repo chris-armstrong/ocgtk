@@ -13,6 +13,9 @@
 
 (** {b The methods, signals and properties of a [UnixCredentialsMessage].}
 
+    Inherits from:
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}Ocgio.Socket_control_message}
+
     This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
     may be sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the

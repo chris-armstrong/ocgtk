@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [CssProvider].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Style_provider.class-type-style_provider_t}Ocgtk.Style_provider}
+
     A style provider for CSS.
 
     It is able to parse CSS-like input in order to style widgets.

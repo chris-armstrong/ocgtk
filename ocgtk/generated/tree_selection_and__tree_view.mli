@@ -4,6 +4,8 @@
 
 (** {b The methods, signals and properties of a [TreeSelection].}
 
+    Inherits from: [GObject.Object]
+
     The selection object for GtkTreeView
 
     The [GtkTreeSelection] object is a helper object to manage the selection for
@@ -539,6 +541,13 @@ and tree_view_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [TreeView].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}\n\n\
      A widget for displaying both trees and lists\n\n\
      An example GtkTreeView\n\n\
      Widget that displays any object that implements the [Gtk.TreeModel] \

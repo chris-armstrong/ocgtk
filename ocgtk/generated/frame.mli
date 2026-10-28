@@ -68,6 +68,12 @@ class type frame_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Frame].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Surrounds its child with a decorative frame and an optional label.\n\n\
      An example GtkFrame\n\n\
      If present, the label is drawn inside the top edge of the frame.\n\

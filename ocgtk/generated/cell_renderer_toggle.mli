@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererToggle].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
     Renders a toggle button in a cell
 
     [GtkCellRendererToggle] renders a toggle button in a cell. The button is

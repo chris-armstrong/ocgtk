@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [CustomFilter].}
 
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
     Determines whether to include items with a callback. *)
 class type custom_filter_t = object
   inherit Filter.filter_t

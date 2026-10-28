@@ -15,6 +15,11 @@
 
 (** {b The methods, signals and properties of a [DBusObjectManagerServer].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}Ocgio.D_bus_object_manager}
+
     [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
     using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
     example, remote D-Bus clients can get all objects and properties in a single

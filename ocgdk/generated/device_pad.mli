@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [DevicePad].}
 
+    Requires:
+    - {{!Ocgdk.Device.class-type-device_t}Ocgdk.Device}
+
     An interface for tablet pad devices.
 
     It allows querying the features provided by the pad device.

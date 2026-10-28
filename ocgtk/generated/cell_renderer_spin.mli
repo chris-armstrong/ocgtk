@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererSpin].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer_text.class-type-cell_renderer_text_t}Ocgtk.Cell_renderer_text}
+
     Renders a spin button in a cell
 
     [GtkCellRendererSpin] renders text in a cell like [GtkCellRendererText] from

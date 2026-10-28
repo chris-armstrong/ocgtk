@@ -8,6 +8,12 @@
 
 (** {b The methods, signals and properties of a [ProxyAddress].}
 
+    Inherits from:
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}Ocgio.Inet_socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
 class type proxy_address_t = object
   inherit Inet_socket_address.inet_socket_address_t

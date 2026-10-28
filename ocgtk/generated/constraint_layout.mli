@@ -78,6 +78,10 @@ class type constraint_layout_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ConstraintLayout].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Uses constraints to describe relations between widgets.\n\n\
      [GtkConstraintLayout] is a layout manager that uses relations between\n\
      widget attributes, expressed via [Gtk.Constraint] instances, to\n\

@@ -14,6 +14,8 @@
 class type context_t = Context_and__font_and__font_map_and__fontset.context_t
 (** {b The methods, signals and properties of a [Context].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoContext] stores global information used to control the itemization
     process.
 

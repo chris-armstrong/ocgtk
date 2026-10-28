@@ -11,6 +11,11 @@
 
 (** {b The methods, signals and properties of a [DBusObjectSkeleton].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.D_bus_object.class-type-d_bus_object_t}Ocgio.D_bus_object}
+
     A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
     The set of exported interfaces on the object may be dynamic and change at
     runtime.

@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [KeyvalTrigger].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}Ocgtk.Shortcut_trigger}
+
     Triggers when a specific keyval and modifiers are pressed. *)
 class type keyval_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t

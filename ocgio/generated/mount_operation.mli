@@ -13,6 +13,8 @@
 
 (** {b The methods, signals and properties of a [MountOperation].}
 
+    Inherits from: [GObject.Object]
+
     [GMountOperation] provides a mechanism for interacting with the user. It can
     be used for authenticating mountable operations, such as loop mounting
     files, hard drive partitions or server locations. It can also be used to ask

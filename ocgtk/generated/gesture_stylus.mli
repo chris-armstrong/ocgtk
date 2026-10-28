@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureStylus].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes tablet stylus input.
 
     The provided signals just relay the basic information of the stylus events.

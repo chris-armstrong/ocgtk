@@ -12,6 +12,11 @@
 
 (** {b The methods, signals and properties of a [NetworkService].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
     easy way to resolve a SRV record, and then attempt to connect to one of the
     hosts that implements that service, handling service priority/weighting,

@@ -12,6 +12,9 @@
 class type cairo_context_t = App_launch_context_cycle_de440b34.cairo_context_t
 (** {b The methods, signals and properties of a [CairoContext].}
 
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
+
     Represents the platform-specific draw context.
 
     [GdkCairoContext]s are created for a surface using

@@ -7,6 +7,11 @@
 
 (** {b The methods, signals and properties of a [StackPage].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+
     An auxiliary class used by [GtkStack]. *)
 class type stack_page_t = object
   inherit At_context_and__accessible.accessible_t

@@ -75,6 +75,10 @@ class type string_list_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [StringList].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
+     Implements:\n\
+     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      A list model that wraps an array of strings.\n\n\
      The objects in the model are of type [Gtk.StringObject] and have\n\
      a \"string\" property that can be used inside expressions.\n\n\

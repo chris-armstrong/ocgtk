@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [PadEvent].}
 
+    Inherits from: {{!Ocgdk.Event.class-type-event_t}Ocgdk.Event}
+
     An event related to a pad-based device. *)
 class type pad_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t

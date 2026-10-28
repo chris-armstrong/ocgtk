@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [FrameClock].}
 
+    Inherits from: [GObject.Object]
+
     Tells the application when to update and repaint a surface.
 
     This may be synced to the vertical refresh rate of the monitor, for example.

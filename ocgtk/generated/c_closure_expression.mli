@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [CClosureExpression].}
 
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
     A variant of [GtkClosureExpression] using a C closure. *)
 class type c_closure_expression_t = object
   inherit Expression.expression_t

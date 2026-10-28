@@ -476,6 +476,7 @@ class type settings_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Settings].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      The [GSettings] class provides a convenient API for storing and retrieving\n\
      application settings.\n\n\
      Reads and writes can be considered to be non-blocking.  Reading\n\

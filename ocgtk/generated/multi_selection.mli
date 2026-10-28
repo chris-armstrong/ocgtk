@@ -8,6 +8,13 @@
 
 (** {b The methods, signals and properties of a [MultiSelection].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+    - {{!Ocgtk.Selection_model.class-type-selection_model_t}Ocgtk.Selection_model}
+
     A selection model that allows selecting multiple elements. *)
 class type multi_selection_t = object
   inherit Ocgio.List_model.list_model_t

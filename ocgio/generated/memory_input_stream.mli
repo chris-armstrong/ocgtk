@@ -10,6 +10,13 @@
 
 (** {b The methods, signals and properties of a [MemoryInputStream].}
 
+    Inherits from:
+    {{!Ocgio.Input_stream.class-type-input_stream_t}Ocgio.Input_stream}
+
+    Implements:
+    - {{!Ocgio.Pollable_input_stream.class-type-pollable_input_stream_t}Ocgio.Pollable_input_stream}
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GMemoryInputStream] is a class for using arbitrary memory chunks as input
     for GIO streaming input operations.
 

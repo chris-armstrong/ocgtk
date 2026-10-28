@@ -12,6 +12,8 @@
 class type draw_context_t = App_launch_context_cycle_de440b34.draw_context_t
 (** {b The methods, signals and properties of a [DrawContext].}
 
+    Inherits from: [GObject.Object]
+
     Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different

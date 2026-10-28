@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ShortcutLabel].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
     The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].

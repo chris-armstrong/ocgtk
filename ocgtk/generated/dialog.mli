@@ -123,6 +123,16 @@ class type dialog_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Dialog].}\n\n\
+     Inherits from: {{!Ocgtk.Window.class-type-window_t}Ocgtk.Window}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      Dialogs are a convenient way to prompt the user for a small amount\n\
      of input.\n\n\
      An example GtkDialog\n\n\

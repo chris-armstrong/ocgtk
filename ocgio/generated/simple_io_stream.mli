@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [SimpleIOStream].}
 
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
     [GSimpleIOStream] creates a [Gio.IOStream] from an arbitrary
     [Gio.InputStream] and [Gio.OutputStream]. This allows any pair of input and
     output streams to be used with [Gio.IOStream] methods.

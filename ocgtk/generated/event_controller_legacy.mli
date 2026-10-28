@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerLegacy].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Provides raw access to the event stream.
 
     It should only be used as a last resort if none of the other event

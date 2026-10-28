@@ -11,6 +11,11 @@
 
 (** {b The methods, signals and properties of a [NetworkAddress].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     [GNetworkAddress] provides an easy way to resolve a hostname and then
     attempt to connect to that host, handling the possibility of multiple IP
     addresses and multiple address families.

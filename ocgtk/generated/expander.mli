@@ -101,6 +101,12 @@ class type expander_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Expander].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows the user to reveal or conceal a child widget.\n\n\
      An example GtkExpander\n\n\
      This is similar to the triangles used in a [GtkTreeView].\n\n\

@@ -12,6 +12,11 @@
 
 (** {b The methods, signals and properties of a [InetAddressMask].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GInetAddressMask] represents a range of IPv4 or IPv6 addresses described by
     a base address and a length indicating how many bits of the base address are
     relevant for matching purposes. These are often given in string form. For

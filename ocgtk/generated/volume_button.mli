@@ -10,6 +10,16 @@
 
 (** {b The methods, signals and properties of a [VolumeButton].}
 
+    Inherits from:
+    {{!Ocgtk.Scale_button.class-type-scale_button_t}Ocgtk.Scale_button}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 

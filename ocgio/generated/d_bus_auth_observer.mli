@@ -45,6 +45,7 @@ class type d_bus_auth_observer_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DBusAuthObserver].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      [GDBusAuthObserver] provides a mechanism for participating\n\
      in how a [Gio.DBusServer] (or a [Gio.DBusConnection])\n\
      authenticates remote peers.\n\n\

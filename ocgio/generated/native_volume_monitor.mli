@@ -6,7 +6,10 @@
 
 (** {1:class Class} *)
 
-(** {b The methods, signals and properties of a [NativeVolumeMonitor].} *)
+(** {b The methods, signals and properties of a [NativeVolumeMonitor].}
+
+    Inherits from:
+    {{!Ocgio.Volume_monitor.class-type-volume_monitor_t}Ocgio.Volume_monitor} *)
 class type native_volume_monitor_t = object
   inherit Volume_monitor.volume_monitor_t
 

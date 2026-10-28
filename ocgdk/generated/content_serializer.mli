@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [ContentSerializer].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}
+
     Serializes content for inter-application data transfers.
 
     The [GdkContentSerializer] transforms an object that is identified by a

@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [NoSelection].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+    - {{!Ocgtk.Selection_model.class-type-selection_model_t}Ocgtk.Selection_model}
+
     A selection model that does not allow selecting anything.
 
     This model is meant to be used as a simple wrapper around a [GListModel]

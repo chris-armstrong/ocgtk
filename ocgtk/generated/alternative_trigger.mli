@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [AlternativeTrigger].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}Ocgtk.Shortcut_trigger}
+
     Combines two shortcut triggers.
 
     The [GtkAlternativeTrigger] triggers when either of the two trigger.

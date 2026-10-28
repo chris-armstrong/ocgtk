@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [ColumnViewRow].}
 
+    Inherits from: [GObject.Object]
+
     Configures how rows are displayed in a [Gtk.ColumnView].
 
     It is not used to set the widgets displayed in the individual cells. For

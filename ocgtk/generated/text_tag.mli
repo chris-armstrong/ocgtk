@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [TextTag].}
 
+    Inherits from: [GObject.Object]
+
     Can be applied to text contained in a [GtkTextBuffer].
 
     You may wish to begin by reading the text widget conceptual overview, which

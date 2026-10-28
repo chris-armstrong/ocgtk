@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [NetworkMonitor].}
 
+    Requires:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
     network connectivity. On Linux, the available implementations are based on
     the kernel's netlink interface and on NetworkManager.

@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [FontsetSimple].}
 
+    Inherits from: {{!Ocpango.Fontset.class-type-fontset_t}Ocpango.Fontset}
+
     [PangoFontsetSimple] is a implementation of the abstract [PangoFontset] base
     class as an array of fonts.
 

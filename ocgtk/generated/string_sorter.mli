@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [StringSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Sorts items by comparing strings.
 
     To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].

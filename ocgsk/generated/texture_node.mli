@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [TextureNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for a [GdkTexture]. *)
 class type texture_node_t = object
   inherit Render_node.render_node_t

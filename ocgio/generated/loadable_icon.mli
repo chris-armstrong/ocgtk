@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [LoadableIcon].}
 
+    Requires:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GLoadableIcon] extends the [Gio.Icon] interface and adds the ability to
     load icons from streams. *)
 class type loadable_icon_t = object

@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [IconPaintable].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgtk.Symbolic_paintable.class-type-symbolic_paintable_t}Ocgtk.Symbolic_paintable}
+
     Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 

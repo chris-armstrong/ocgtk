@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [InsetShadowNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for an inset shadow. *)
 class type inset_shadow_node_t = object
   inherit Render_node.render_node_t

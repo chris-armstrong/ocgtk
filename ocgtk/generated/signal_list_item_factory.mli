@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [SignalListItemFactory].}
 
+    Inherits from:
+    {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}Ocgtk.List_item_factory}
+
     Emits signals to manage listitems.
 
     Signals are emitted for every listitem in the same order:

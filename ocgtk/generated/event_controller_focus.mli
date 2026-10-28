@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerFocus].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Tracks keyboard focus.
 
     The event controller offers [Gtk.EventControllerFocus::enter] and

@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [ShortcutsGroup].}
 
+    Inherits from: {{!Ocgtk.Box.class-type-box_t}Ocgtk.Box}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     A [GtkShortcutsGroup] represents a group of related keyboard shortcuts or
     gestures.
 

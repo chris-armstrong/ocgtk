@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [SelectionFilterModel].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     A list model that presents the selection from a [GtkSelectionModel]. *)
 class type selection_filter_model_t = object
   inherit Ocgio.List_model.list_model_t

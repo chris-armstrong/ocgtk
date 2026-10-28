@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererSpinner].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
     Renders a spinning animation in a cell
 
     [GtkCellRendererSpinner] renders a spinning animation in a cell, very

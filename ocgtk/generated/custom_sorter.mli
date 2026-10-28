@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [CustomSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Sorts items via a callback function. *)
 class type custom_sorter_t = object
   inherit Sorter.sorter_t

@@ -15,6 +15,8 @@ class type tls_interaction_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
 (** {b The methods, signals and properties of a [TlsInteraction].}
 
+    Inherits from: [GObject.Object]
+
     [GTlsInteraction] provides a mechanism for the TLS connection and database
     code to interact with the user. It can be used to ask the user for
     passwords.

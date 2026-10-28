@@ -35,6 +35,8 @@ class type memory_monitor_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [MemoryMonitor].}\n\n\
+     Requires:\n\
+     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}\n\n\
      [GMemoryMonitor] will monitor system memory and suggest to the application\n\
      when to free memory so as to leave more room for other applications.\n\
      It is implemented on Linux using the\n\

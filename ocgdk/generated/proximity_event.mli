@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [ProximityEvent].}
 
+    Inherits from: {{!Ocgdk.Event.class-type-event_t}Ocgdk.Event}
+
     An event related to the proximity of a tool to a device. *)
 class type proximity_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t

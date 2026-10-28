@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [ClosureExpression].}
 
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
     An expression using a custom [GClosure] to compute the value from its
     parameters. *)
 class type closure_expression_t = object

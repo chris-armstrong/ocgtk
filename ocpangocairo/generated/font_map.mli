@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [FontMap].}
 
+    Requires:
+    - {{!Ocpango.Font_map.class-type-font_map_t}Ocpango.Font_map}
+
     [PangoCairoFontMap] is an interface exported by font maps for use with
     Cairo.
 

@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [EmojiChooser].}
 
+    Inherits from: {{!Ocgtk.Popover.class-type-popover_t}Ocgtk.Popover}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
+
     Used by text widgets to let users insert Emoji characters.
 
     An example GtkEmojiChooser

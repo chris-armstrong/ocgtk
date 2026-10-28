@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [PixbufSimpleAnim].}
 
+    Inherits from:
+    {{!Ocgdkpixbuf.Pixbuf_animation.class-type-pixbuf_animation_t}Ocgdkpixbuf.Pixbuf_animation}
+
     An opaque struct representing a simple animation. *)
 class type pixbuf_simple_anim_t = object
   inherit Pixbuf_animation.pixbuf_animation_t

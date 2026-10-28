@@ -5,6 +5,8 @@
 
 (** {b The methods, signals and properties of a [EventController].}
 
+    Inherits from: [GObject.Object]
+
     The base class for event controllers.
 
     These are ancillary objects associated to widgets, which react to
@@ -83,6 +85,8 @@ end
 
 (** {b The methods, signals and properties of a [LayoutChild].}
 
+    Inherits from: [GObject.Object]
+
     The base class for objects that are meant to hold layout properties.
 
     If a [GtkLayoutManager] has per-child properties, like their packing type,
@@ -143,6 +147,7 @@ and layout_manager_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [LayoutManager].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      Handles the preferred size and allocation for children of a widget.\n\n\
      You typically subclass [GtkLayoutManager] if you want to implement a\n\
      layout policy for the children of a widget, or if you want to determine\n\
@@ -185,6 +190,10 @@ end
 
 (** {b The methods, signals and properties of a [Root].}
 
+    Requires:
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     An interface for widgets that can act as the root of a widget hierarchy.
 
     The root widget takes care of providing the connection to the windowing
@@ -225,6 +234,8 @@ and root_t = object
 end
 
 (** {b The methods, signals and properties of a [Tooltip].}
+
+    Inherits from: [GObject.Object]
 
     Represents a widget tooltip.
 
@@ -1746,6 +1757,12 @@ and widget_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Widget].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      The base class for all widgets.\n\n\
      It manages the widget lifecycle, layout, states and style.\n\n\
      {b Height-for-width Geometry Management}\n\n\

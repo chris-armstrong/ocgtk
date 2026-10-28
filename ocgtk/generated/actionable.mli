@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [Actionable].}
 
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     Provides a way to associate widgets with actions.
 
     It primarily consists of two properties: [Gtk.Actionable:action-name] and

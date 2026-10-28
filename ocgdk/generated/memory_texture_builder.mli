@@ -10,6 +10,8 @@
 
 (** {b The methods, signals and properties of a [MemoryTextureBuilder].}
 
+    Inherits from: [GObject.Object]
+
     Constructs [Gdk.Texture] objects from system memory provided via
     [GLib.Bytes].
 

@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [SocketService].}
 
+    Inherits from:
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}Ocgio.Socket_listener}
+
     A [GSocketService] is an object that represents a service that is provided
     to the network or over local sockets. When a new connection is made to the
     service the [Gio.SocketService::incoming] signal is emitted.

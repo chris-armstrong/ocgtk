@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [AccessibleRange].}
 
+    Requires:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+
     An interface for accessible objects containing a numeric value.
 
     [GtkAccessibleRange] describes ranged controls for Assistive Technologies.

@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [MountOperation].}
 
+    Inherits from:
+    {{!Ocgio.Mount_operation.class-type-mount_operation_t}Ocgio.Mount_operation}
+
     Asks the user for passwords and other information required to mount a
     volume.
 

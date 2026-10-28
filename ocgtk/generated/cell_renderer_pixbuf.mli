@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererPixbuf].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
     Renders a pixbuf in a cell
 
     A [GtkCellRendererPixbuf] can be used to render an image in a cell. It

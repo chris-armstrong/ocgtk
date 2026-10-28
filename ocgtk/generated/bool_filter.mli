@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [BoolFilter].}
 
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
     Evaluates a boolean expression to determine whether to include items. *)
 class type bool_filter_t = object
   inherit Filter.filter_t

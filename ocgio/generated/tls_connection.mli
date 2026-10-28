@@ -16,6 +16,8 @@ class type tls_connection_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_connection_t
 (** {b The methods, signals and properties of a [TlsConnection].}
 
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
     [GTlsConnection] is the base TLS connection class type, which wraps a
     [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
     [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement

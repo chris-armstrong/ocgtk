@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [SymbolicPaintable].}
 
+    Requires:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     An interface that supports symbolic colors in paintables.
 
     [GdkPaintable]s implementing the interface will have the

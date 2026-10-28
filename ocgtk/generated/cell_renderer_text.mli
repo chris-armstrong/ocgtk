@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererText].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
     Renders text in a cell
 
     A [GtkCellRendererText] renders a given text in its cell, using the font,

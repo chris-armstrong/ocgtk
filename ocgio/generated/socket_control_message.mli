@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [SocketControlMessage].}
 
+    Inherits from: [GObject.Object]
+
     A [GSocketControlMessage] is a special-purpose utility message that can be
     sent to or received from a [Gio.Socket]. These types of messages are often
     called ‘ancillary data’.

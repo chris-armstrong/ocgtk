@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [PropertyExpression].}
 
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
     A [GObject] property value in a [GtkExpression]. *)
 class type property_expression_t = object
   inherit Expression.expression_t

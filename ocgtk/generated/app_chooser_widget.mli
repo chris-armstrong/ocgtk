@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [AppChooserWidget].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.App_chooser.class-type-app_chooser_t}Ocgtk.App_chooser}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkAppChooserWidget] is a widget for selecting applications.
 
     It is the main building block for [Gtk.AppChooserDialog]. Most applications

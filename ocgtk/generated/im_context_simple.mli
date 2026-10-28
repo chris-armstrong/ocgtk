@@ -21,6 +21,8 @@ class type im_context_simple_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [IMContextSimple].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Im_context.class-type-im_context_t}Ocgtk.Im_context}\n\n\
      Supports compose sequences, dead keys and numeric Unicode input.\n\n\
      {b Compose sequences}\n\n\
      [GtkIMContextSimple] reads compose sequences from the first of the\n\

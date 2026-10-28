@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [TreeModelFilter].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
+
     A [GtkTreeModel] which hides parts of an underlying tree model
 
     A [GtkTreeModelFilter] is a tree model which wraps another tree model, and

@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [StrokeNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node that will fill the area determined by stroking the the given
     [Gsk.Path] using the [Gsk.Stroke] attributes. *)
 class type stroke_node_t = object

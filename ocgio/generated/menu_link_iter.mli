@@ -12,6 +12,8 @@
 class type menu_link_iter_t = Menu_link_iter_and__menu_model.menu_link_iter_t
 (** {b The methods, signals and properties of a [MenuLinkIter].}
 
+    Inherits from: [GObject.Object]
+
     [GMenuLinkIter] is an opaque structure type. You must access it using the
     functions below. *)
 

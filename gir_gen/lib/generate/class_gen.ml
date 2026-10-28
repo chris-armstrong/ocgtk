@@ -223,7 +223,12 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   let class_snake = sanitize_name class_name in
   let class_type_name = Utils.class_type_name class_name in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
-  let class_type_doc = Entity_doc.class_type ~class_name ~class_doc in
+  let class_type_doc =
+    Entity_doc.class_type ~class_name
+      ~inheritance:
+        (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
+      ~class_doc
+  in
 
   let has_constructors = has_constructors ~ctx constructors in
   floating_doc buf
@@ -387,7 +392,12 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       List.find_map entities ~f:(fun (e : entity) ->
           if String.equal e.name class_name then e.doc else None)
     in
-    let doc = Entity_doc.class_type ~class_name ~class_doc in
+    let doc =
+      Entity_doc.class_type ~class_name
+        ~inheritance:
+          (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
+        ~class_doc
+    in
     if i = 0 then
       bprintf buf "%sclass type %s = object\n" (Doc_emit.before_item doc)
         class_type_name
@@ -504,7 +514,12 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   class_heading buf;
   bprintf buf "%s\n"
     (doc_around
-       (Entity_doc.class_type ~class_name:entity.name ~class_doc:entity.doc)
+       (Entity_doc.class_type ~class_name:entity.name
+          ~inheritance:
+            (Class_gen_inheritance.of_entity ~ctx
+               ~entity_kind:(Filtering.entity_kind_of_entity entity)
+               entity.name)
+          ~class_doc:entity.doc)
        ~item:
          (Fmt.str "class type %s = %s.%s\n" entity_type_name
             combined_module_name entity_type_name));

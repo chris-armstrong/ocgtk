@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [TextView].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
+
     Displays the contents of a [Gtk.TextBuffer].
 
     An example GtkTextView

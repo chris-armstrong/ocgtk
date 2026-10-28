@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [RepeatNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node repeating its single child node. *)
 class type repeat_node_t = object
   inherit Render_node.render_node_t

@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [BinLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     A layout manager for widgets with a single child.
 
     [GtkBinLayout] will stack each child of a widget on top of each other, using

@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [AnyFilter].}
 
+    Inherits from:
+    {{!Ocgtk.Multi_filter.class-type-multi_filter_t}Ocgtk.Multi_filter}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+
     Matches an item when at least one of its filters matches.
 
     To add filters to a [GtkAnyFilter], use [Gtk.MultiFilter.append]. *)

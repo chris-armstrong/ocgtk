@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [DBusMenuModel].}
 
+    Inherits from: {{!Ocgio.Menu_model.class-type-menu_model_t}Ocgio.Menu_model}
+
     [GDBusMenuModel] is an implementation of [Gio.MenuModel] that can be used as
     a proxy for a menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model]. *)

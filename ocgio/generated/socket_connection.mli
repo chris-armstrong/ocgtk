@@ -16,6 +16,8 @@ class type socket_connection_t =
   Socket_and__socket_connection.socket_connection_t
 (** {b The methods, signals and properties of a [SocketConnection].}
 
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
     [GSocketConnection] is a [Gio.IOStream] for a connected socket. They can be
     created either by [Gio.SocketClient] when connecting to a host, or by
     [Gio.SocketListener] when accepting a new client.

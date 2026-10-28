@@ -14,6 +14,8 @@ class type layout_child_t =
   .layout_child_t
 (** {b The methods, signals and properties of a [LayoutChild].}
 
+    Inherits from: [GObject.Object]
+
     The base class for objects that are meant to hold layout properties.
 
     If a [GtkLayoutManager] has per-child properties, like their packing type,

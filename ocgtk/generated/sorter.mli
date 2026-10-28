@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [Sorter].}
 
+    Inherits from: [GObject.Object]
+
     Describes sorting criteria for a [Gtk.SortListModel].
 
     Its primary user is [Gtk.SortListModel]

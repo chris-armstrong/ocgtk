@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [TcpConnection].}
 
+    Inherits from:
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}Ocgio.Socket_connection}
+
     This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
     sockets. *)
 class type tcp_connection_t = object

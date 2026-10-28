@@ -96,6 +96,14 @@ class type list_view_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ListView].}\n\n\
+     Inherits from: {{!Ocgtk.List_base.class-type-list_base_t}Ocgtk.List_base}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\
+     - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}\n\n\
      Presents a large dynamic list of items.\n\n\
      [GtkListView] uses its factory to generate one row widget for each visible\n\
      item and shows them in a linear display, either vertically or \

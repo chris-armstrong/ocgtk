@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [TreeSortable].}
 
+    Requires:
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
+
     The interface for sortable models used by GtkTreeView
 
     [GtkTreeSortable] is an interface to be implemented by tree models which

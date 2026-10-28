@@ -645,6 +645,14 @@ class type entry_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Entry].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}\n\n\
      A single-line text entry widget.\n\n\
      An example GtkEntry\n\n\
      A fairly large set of key bindings are supported by default. If the\n\

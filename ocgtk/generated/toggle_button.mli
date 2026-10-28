@@ -54,6 +54,13 @@ class type toggle_button_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ToggleButton].}\n\n\
+     Inherits from: {{!Ocgtk.Button.class-type-button_t}Ocgtk.Button}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Shows a button which remains “pressed-in” when clicked.\n\n\
      Example GtkToggleButtons\n\n\
      Clicking again will cause the toggle button to return to its normal \

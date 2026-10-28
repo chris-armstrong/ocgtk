@@ -134,6 +134,7 @@ class type icon_theme_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [IconTheme].}\n\n\
+     Inherits from: [GObject.Object]\n\n\
      Loads themed icons.\n\n\
      The main reason for using a name rather than simply providing a filename\n\
      is to allow different icons to be used depending on what “icon theme” is\n\

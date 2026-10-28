@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [SectionModel].}
 
+    Requires:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     An interface that adds support for sections to list models.
 
     A [GtkSectionModel] groups successive items into so-called sections. List

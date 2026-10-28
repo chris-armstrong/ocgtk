@@ -7,7 +7,10 @@
 
 (** {1:class Class} *)
 
-(** {b The methods, signals and properties of a [ComponentTransferNode].} *)
+(** {b The methods, signals and properties of a [ComponentTransferNode].}
+
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node} *)
 class type component_transfer_node_t = object
   inherit Render_node.render_node_t
 

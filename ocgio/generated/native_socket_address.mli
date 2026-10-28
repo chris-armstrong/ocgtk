@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [NativeSocketAddress].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address.class-type-socket_address_t}Ocgio.Socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     A socket address of some unknown native type.
 
     This corresponds to a general [struct sockaddr] of a type not otherwise

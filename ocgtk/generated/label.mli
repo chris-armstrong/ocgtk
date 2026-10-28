@@ -401,6 +401,14 @@ class type label_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Label].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Displays a small amount of text.\n\n\
      Most labels are used to label another widget (such as an [Entry]).\n\n\
      An example GtkLabel\n\n\

@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [FileChooserWidget].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}
+
     [GtkFileChooserWidget] is a widget for choosing files.
 
     It exposes the [Gtk.FileChooser] interface, and you should use the methods

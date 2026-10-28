@@ -70,6 +70,12 @@ class type tree_expander_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [TreeExpander].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Provides an expander for a tree-like list.\n\n\
      It is typically placed as a bottommost child into a [GtkListView]\n\
      to allow users to expand and collapse children in a list with a\n\

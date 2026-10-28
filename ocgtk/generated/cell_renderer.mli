@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [CellRenderer].}
 
+    Inherits from: [GObject.InitiallyUnowned]
+
     An object for rendering a single cell
 
     The [GtkCellRenderer] is a base class of a set of objects used for rendering

@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [AppInfoMonitor].}
 
+    Inherits from: [GObject.Object]
+
     [GAppInfoMonitor] monitors application information for changes.
 
     [GAppInfoMonitor] is a very simple object used for monitoring the app info

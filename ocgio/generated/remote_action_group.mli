@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [RemoteActionGroup].}
 
+    Requires:
+    - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}
+
     The [GRemoteActionGroup] interface is implemented by [Gio.ActionGroup]
     instances that either transmit action invocations to other processes or
     receive action invocations in the local process from other processes.

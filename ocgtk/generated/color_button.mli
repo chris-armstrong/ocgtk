@@ -10,6 +10,14 @@
 
 (** {b The methods, signals and properties of a [ColorButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Color_chooser.class-type-color_chooser_t}Ocgtk.Color_chooser}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The [GtkColorButton] allows to open a color chooser dialog to change the
     color.
 

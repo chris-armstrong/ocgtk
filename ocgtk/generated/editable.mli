@@ -206,6 +206,8 @@ class type editable_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Editable].}\n\n\
+     Requires:\n\
+     - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
      Interface for single-line text editing widgets.\n\n\
      Typical examples of editable widgets are [Gtk.Entry] and\n\
      [Gtk.SpinButton]. It contains functions for generically manipulating\n\

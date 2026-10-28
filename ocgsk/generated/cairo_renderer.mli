@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [CairoRenderer].}
 
+    Inherits from: {{!Ocgsk.Renderer.class-type-renderer_t}Ocgsk.Renderer}
+
     Renders a GSK rendernode tree with cairo.
 
     Since it is using cairo, this renderer cannot support 3D transformations. *)

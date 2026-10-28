@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Resolver].}
 
+    Inherits from: [GObject.Object]
+
     The object that handles DNS resolution. Use [Gio.Resolver.get_default] to
     get the default resolver.
 

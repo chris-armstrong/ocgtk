@@ -8,6 +8,8 @@
 
 (** {b The methods, signals and properties of a [OutputStream].}
 
+    Inherits from: [GObject.Object]
+
     [GOutputStream] is a base class for implementing streaming output.
 
     It has functions to write to a stream ([Gio.OutputStream.write]), to close a

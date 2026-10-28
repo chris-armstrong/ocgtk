@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [DmabufTextureBuilder].}
 
+    Inherits from: [GObject.Object]
+
     Constructs [Gdk.Texture] objects from DMA buffers.
 
     DMA buffers are commonly called {b _dma-bufs_}.

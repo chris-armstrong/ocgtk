@@ -4,6 +4,8 @@
 
 (** {b The methods, signals and properties of a [Layout].}
 
+    Inherits from: [GObject.Object]
+
     A [PangoLayout] structure represents an entire paragraph of text.
 
     While complete access to the layout capabilities of Pango is provided using

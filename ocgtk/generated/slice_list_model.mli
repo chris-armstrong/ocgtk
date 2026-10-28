@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [SliceListModel].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
     A list model that presents a slice of another model.
 
     This is useful when implementing paging by setting the size to the number of

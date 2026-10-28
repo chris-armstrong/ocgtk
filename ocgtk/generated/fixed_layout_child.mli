@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [FixedLayoutChild].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_child.class-type-layout_child_t}Ocgtk.Layout_child}
+
     [GtkLayoutChild] subclass for children in a [GtkFixedLayout]. *)
 class type fixed_layout_child_t = object
   inherit

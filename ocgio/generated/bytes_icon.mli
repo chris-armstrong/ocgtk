@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [BytesIcon].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     [GBytesIcon] specifies an image held in memory in a common format (usually
     PNG) to be used as icon. *)
 class type bytes_icon_t = object

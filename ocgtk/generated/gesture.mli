@@ -178,6 +178,8 @@ class type gesture_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Gesture].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}\n\n\
      The base class for gesture recognition.\n\n\
      Although [GtkGesture] is quite generalized to serve as a base for\n\
      multi-touch gestures, it is suitable to implement single-touch and\n\

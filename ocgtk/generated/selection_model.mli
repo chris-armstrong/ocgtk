@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [SelectionModel].}
 
+    Requires:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     An interface that adds support for selection to list models.
 
     This support is then used by widgets using list models to add the ability to

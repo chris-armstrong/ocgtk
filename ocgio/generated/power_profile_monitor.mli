@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [PowerProfileMonitor].}
 
+    Requires:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GPowerProfileMonitor] makes it possible for applications as well as OS
     components to monitor system power profiles and act upon them. It currently
     only exports whether the system is in “Power Saver” mode (known as “Low

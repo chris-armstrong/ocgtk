@@ -10,6 +10,13 @@
 
 (** {b The methods, signals and properties of a [MemoryOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
+    Implements:
+    - {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}Ocgio.Pollable_output_stream}
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
     for GIO streaming output operations.
 

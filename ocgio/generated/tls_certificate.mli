@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [TlsCertificate].}
 
+    Inherits from: [GObject.Object]
+
     A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is

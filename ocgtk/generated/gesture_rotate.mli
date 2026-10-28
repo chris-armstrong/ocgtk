@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [GestureRotate].}
 
+    Inherits from: {{!Ocgtk.Gesture.class-type-gesture_t}Ocgtk.Gesture}
+
     Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the

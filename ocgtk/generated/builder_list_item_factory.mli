@@ -29,6 +29,8 @@ class type builder_list_item_factory_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [BuilderListItemFactory].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}Ocgtk.List_item_factory}\n\n\
      Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
      The templates must extend the class that the parent widget expects.\n\
      For example, a factory provided to [Gtk.ListView:factory] must have\n\

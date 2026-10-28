@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [ProxyAddressEnumerator].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}Ocgio.Socket_address_enumerator}
+
     [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
     which takes the [Gio.SocketAddress] instances returned by the
     [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]

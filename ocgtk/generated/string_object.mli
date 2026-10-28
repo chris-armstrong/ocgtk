@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [StringObject].}
 
+    Inherits from: [GObject.Object]
+
     The type of items in a [GtkStringList].
 
     A [GtkStringObject] is a wrapper around a [const char*]; it has a

@@ -158,6 +158,13 @@ class type grid_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Grid].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      Arranges its child widgets in rows and columns.\n\n\
      An example GtkGrid\n\n\
      It supports arbitrary positions and horizontal/vertical spans.\n\n\

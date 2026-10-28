@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [FileDialog].}
 
+    Inherits from: [GObject.Object]
+
     Asynchronous API to present a file chooser dialog.
 
     [GtkFileDialog] collects the arguments that are needed to present the dialog

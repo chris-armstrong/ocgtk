@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [TreeModelSort].}
 
+    Inherits from: [GObject.Object]
+
+    Implements:
+    - {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
+    - {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}Ocgtk.Tree_sortable}
+
     A GtkTreeModel which makes an underlying tree model sortable
 
     The [GtkTreeModelSort] is a model which implements the [GtkTreeSortable]

@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [MaskNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node masking one child node with another. *)
 class type mask_node_t = object
   inherit Render_node.render_node_t

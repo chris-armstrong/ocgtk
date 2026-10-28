@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [PixbufLoader].}
 
+    Inherits from: [GObject.Object]
+
     Incremental image loader.
 
     [GdkPixbufLoader] provides a way for applications to drive the process of

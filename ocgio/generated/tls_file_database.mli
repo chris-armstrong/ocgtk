@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [TlsFileDatabase].}
 
+    Requires:
+    - {{!Ocgio.Tls_database.class-type-tls_database_t}Ocgio.Tls_database}
+
     [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
     their certificate information from a file. It is an interface which TLS
     library specific subtypes implement. *)

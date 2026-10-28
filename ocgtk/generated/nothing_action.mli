@@ -7,6 +7,9 @@
 
 (** {b The methods, signals and properties of a [NothingAction].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
     Does nothing. *)
 class type nothing_action_t = object
   inherit Shortcut_action.shortcut_action_t

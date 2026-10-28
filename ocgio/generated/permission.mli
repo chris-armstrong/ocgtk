@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Permission].}
 
+    Inherits from: [GObject.Object]
+
     A [GPermission] represents the status of the caller’s permission to perform
     a certain action.
 

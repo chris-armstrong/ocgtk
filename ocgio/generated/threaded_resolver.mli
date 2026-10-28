@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [ThreadedResolver].}
 
+    Inherits from: {{!Ocgio.Resolver.class-type-resolver_t}Ocgio.Resolver}
+
     [GThreadedResolver] is an implementation of [GResolver] which calls the libc
     lookup functions in threads to allow them to run asynchronously. *)
 class type threaded_resolver_t = object

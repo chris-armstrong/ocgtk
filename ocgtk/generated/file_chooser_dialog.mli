@@ -18,6 +18,17 @@ class type file_chooser_dialog_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileChooserDialog].}\n\n\
+     Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      [GtkFileChooserDialog] is a dialog suitable for use with\n\
      “File Open” or “File Save” commands.\n\n\
      An example GtkFileChooserDialog\n\n\

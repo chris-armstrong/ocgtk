@@ -65,6 +65,13 @@ class type switch_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Switch].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Shows a \"light switch\" that has two states: on or off.\n\n\
      An example GtkSwitch\n\n\
      The user can control which state should be active by clicking the\n\

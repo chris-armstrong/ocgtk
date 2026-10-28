@@ -12,6 +12,8 @@
 class type display_t = App_launch_context_cycle_de440b34.display_t
 (** {b The methods, signals and properties of a [Display].}
 
+    Inherits from: [GObject.Object]
+
     A representation of a workstation.
 
     Their purpose are two-fold:

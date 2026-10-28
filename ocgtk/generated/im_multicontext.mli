@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [IMMulticontext].}
 
+    Inherits from: {{!Ocgtk.Im_context.class-type-im_context_t}Ocgtk.Im_context}
+
     Supports switching between multiple input methods.
 
     Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to

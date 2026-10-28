@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [PageSetup].}
 
+    Inherits from: [GObject.Object]
+
     Stores page size, orientation and margins for printing.
 
     The idea is that you can get one of these from the page setup dialog and

@@ -8,6 +8,9 @@
 
 (** {b The methods, signals and properties of a [Native].}
 
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
     An interface for widgets that have their own [Gdk.Surface].
 
     The obvious example of a [GtkNative] is [GtkWindow].

@@ -34,11 +34,32 @@ val description :
     whole class doc. [None] without a class doc, or when the synopsis is the
     whole of it. *)
 
+(** A class's parent, or an interface it implements or requires. *)
+type ancestor =
+  | Bound of { namespace : string; name : string }
+      (** Has a layer 2 class type, linked through its own module. *)
+  | Unbound of string
+      (** No layer 2 class type; named as code, with its GIR name. *)
+
+type inheritance = {
+  parent : ancestor option;
+  implements : ancestor list;
+      (** Every interface the class implements, including those its parent
+          already provides, which the class type does not [inherit] again. *)
+  requires : ancestor list;  (** An interface's prerequisites. *)
+}
+
+val no_inheritance : inheritance
+
 val class_type :
-  class_name:string -> class_doc:string option -> Doc_emit.t option
-(** The doc of the layer 2 [class type]: a bold line saying what it holds, then
-    the class doc, so the class doc is on the class type's page as well as the
-    module's. *)
+  class_name:string ->
+  inheritance:inheritance ->
+  class_doc:string option ->
+  Doc_emit.t option
+(** The doc of the layer 2 [class type]: a bold line saying what it holds, the
+    inheritance block (Inherits from, Implements, Requires, each left out when
+    empty), then the class doc, so the class doc is on the class type's page as
+    well as the module's. *)
 
 val class_ : namespace:string -> class_name:string -> Doc_emit.t option
 (** The canned doc of the layer 2 [class]: the layer 1 type it wraps. *)

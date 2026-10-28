@@ -207,6 +207,8 @@ end
 
 (** {b The methods, signals and properties of a [AppLaunchContext].}
 
+    Inherits from: [GObject.Object]
+
     Integrating the launch with the launching application. This is used to
     handle for instance startup notification and launching the new application
     on the same screen as the launching window. *)
@@ -1509,6 +1511,8 @@ end
 
 (** {b The methods, signals and properties of a [FileEnumerator].}
 
+    Inherits from: [GObject.Object]
+
     [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
     returning a [Gio.FileInfo] structure for each file enumerated (e.g.
     [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
@@ -1611,6 +1615,8 @@ and file_enumerator_t = object
 end
 
 (** {b The methods, signals and properties of a [FileMonitor].}
+
+    Inherits from: [GObject.Object]
 
     Monitors a file or directory for changes.
 
