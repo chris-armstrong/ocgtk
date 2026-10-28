@@ -66,7 +66,7 @@
      [gdbus-example-watch-proxy.c]}. *)
 class type d_bus_proxy_t = object
   inherit Async_initable.async_initable_t
-  inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
+  inherit D_bus_interface.d_bus_interface_t
   inherit Initable.initable_t
 
   (** {2:signals Signals} *)

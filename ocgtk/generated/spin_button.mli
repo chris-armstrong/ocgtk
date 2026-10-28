@@ -137,10 +137,7 @@
 
     [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
 class type spin_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t

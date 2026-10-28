@@ -17,11 +17,7 @@ class type print_operation_t = object
 
   method on_custom_widget_apply :
     ?after:bool ->
-    callback:
-      (widget:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      unit) ->
+    callback:(widget:Widget.widget_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted right before ::begin-print if you added a custom widget in the
@@ -135,7 +131,7 @@ class type print_operation_t = object
     callback:
       (preview:Print_operation_preview.print_operation_preview_t ->
       context:Print_context.print_context_t ->
-      parent:Application_and__window_and__window_group.window_t option ->
+      parent:Window.window_t option ->
       bool) ->
     unit ->
     Gobject.Signal.handler_id
@@ -180,9 +176,7 @@ class type print_operation_t = object
   method on_update_custom_widget :
     ?after:bool ->
     callback:
-      (widget:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
+      (widget:Widget.widget_t ->
       setup:Page_setup.page_setup_t ->
       settings:Print_settings.print_settings_t ->
       unit) ->
@@ -276,7 +270,7 @@ class type print_operation_t = object
 
   method run :
     Enums.printoperationaction ->
-    Application_and__window_and__window_group.window_t option ->
+    Window.window_t option ->
     (Enums.printoperationresult, GError.t) result
   [@@ocaml.doc
     "Runs the print operation.\n\n\
@@ -461,13 +455,7 @@ class print_operation (obj : Raw.Print_operation.t) : print_operation_t =
 
     method on_custom_widget_apply ?(after = false) ~callback () =
       Raw.Print_operation.on_custom_widget_apply ~after self#as_print_operation
-        ~callback:(fun ~widget ->
-          callback
-            ~widget:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 widget))
+        ~callback:(fun ~widget -> callback ~widget:(new Widget.widget widget))
 
     method on_done_ ?(after = false) ~callback () =
       Raw.Print_operation.on_done_ ~after self#as_print_operation ~callback
@@ -494,11 +482,7 @@ class print_operation (obj : Raw.Print_operation.t) : print_operation_t =
             ~preview:
               (new Print_operation_preview.print_operation_preview preview)
             ~context:(new Print_context.print_context context)
-            ~parent:
-              (Option.map
-                 (fun w ->
-                   new Application_and__window_and__window_group.window w)
-                 parent))
+            ~parent:(Option.map (fun w -> new Window.window w) parent))
 
     method on_request_page_setup ?(after = false) ~callback () =
       Raw.Print_operation.on_request_page_setup ~after self#as_print_operation
@@ -516,11 +500,7 @@ class print_operation (obj : Raw.Print_operation.t) : print_operation_t =
       Raw.Print_operation.on_update_custom_widget ~after self#as_print_operation
         ~callback:(fun ~widget ~setup ~settings ->
           callback
-            ~widget:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 widget)
+            ~widget:(new Widget.widget widget)
             ~setup:(new Page_setup.page_setup setup)
             ~settings:(new Print_settings.print_settings settings))
 
@@ -566,7 +546,7 @@ class print_operation (obj : Raw.Print_operation.t) : print_operation_t =
 
     method run :
         Enums.printoperationaction ->
-        Application_and__window_and__window_group.window_t option ->
+        Window.window_t option ->
         (Enums.printoperationresult, GError.t) result =
       fun action parent ->
         let parent = Option.map (fun c -> c#as_window) parent in

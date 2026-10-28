@@ -1,8 +1,5 @@
 class type constraint_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
-
+  inherit Layout_manager.layout_manager_t
   inherit Buildable.buildable_t
 
   (** {2:methods Methods} *)
@@ -71,11 +68,7 @@ end
 (* High-level class for ConstraintLayout *)
 class constraint_layout (obj : Raw.Constraint_layout.t) : constraint_layout_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .layout_manager
-        (obj :> Raw.Layout_manager.t)
-
+    inherit Layout_manager.layout_manager (obj :> Raw.Layout_manager.t)
     inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 
     method add_constraint : Constraint.constraint__t -> unit =

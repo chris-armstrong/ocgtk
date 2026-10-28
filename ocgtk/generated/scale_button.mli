@@ -41,10 +41,7 @@
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
     style class, and contains a [button] node with a [.toggle] style class. *)
 class type scale_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
@@ -96,10 +93,7 @@ class type scale_button_t = object
   method get_plus_button : unit -> Button.button_t
   (** Retrieves the plus button of the [GtkScaleButton.] *)
 
-  method get_popup :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_popup : unit -> Widget.widget_t
   (** Retrieves the popup of the [GtkScaleButton]. *)
 
   method get_value : unit -> float

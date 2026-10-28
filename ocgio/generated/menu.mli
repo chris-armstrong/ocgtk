@@ -20,7 +20,7 @@
     [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
     submenu, use [Gio.Menu.insert_submenu]. *)
 class type menu_t = object
-  inherit Menu_link_iter_and__menu_model.menu_model_t
+  inherit Menu_model.menu_model_t
 
   (** {2:methods Methods} *)
 
@@ -34,14 +34,12 @@ class type menu_t = object
 
       See g_menu_insert_item() for more information. *)
 
-  method append_section :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method append_section : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for appending a section menu item to the end of
       [menu]. Combine g_menu_item_new_section() and g_menu_insert_item() for a
       more flexible alternative. *)
 
-  method append_submenu :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method append_submenu : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for appending a submenu menu item to the end of
       [menu]. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
       more flexible alternative. *)
@@ -77,13 +75,13 @@ class type menu_t = object
      each of these functions."]
 
   method insert_section :
-    int -> string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+    int -> string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for inserting a section menu item into [menu].
       Combine g_menu_item_new_section() and g_menu_insert_item() for a more
       flexible alternative. *)
 
   method insert_submenu :
-    int -> string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+    int -> string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for inserting a submenu menu item into [menu].
       Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
       flexible alternative. *)
@@ -98,14 +96,12 @@ class type menu_t = object
 
       See g_menu_insert_item() for more information. *)
 
-  method prepend_section :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method prepend_section : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for prepending a section menu item to the start of
       [menu]. Combine g_menu_item_new_section() and g_menu_insert_item() for a
       more flexible alternative. *)
 
-  method prepend_submenu :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method prepend_submenu : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for prepending a submenu menu item to the start of
       [menu]. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
       more flexible alternative. *)

@@ -13,11 +13,11 @@
 
     An event related to a broken windowing system grab. *)
 class type grab_broken_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
 
   (** {2:methods Methods} *)
 
-  method get_grab_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_grab_surface : unit -> Surface.surface_t
   (** Extracts the grab surface from a grab broken event. *)
 
   method get_implicit : unit -> bool

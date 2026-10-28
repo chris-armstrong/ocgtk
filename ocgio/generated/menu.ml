@@ -1,5 +1,5 @@
 class type menu_t = object
-  inherit Menu_link_iter_and__menu_model.menu_model_t
+  inherit Menu_model.menu_model_t
 
   (** {2:methods Methods} *)
 
@@ -13,14 +13,12 @@ class type menu_t = object
 
       See g_menu_insert_item() for more information. *)
 
-  method append_section :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method append_section : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for appending a section menu item to the end of
       [menu]. Combine g_menu_item_new_section() and g_menu_insert_item() for a
       more flexible alternative. *)
 
-  method append_submenu :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method append_submenu : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for appending a submenu menu item to the end of
       [menu]. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
       more flexible alternative. *)
@@ -56,13 +54,13 @@ class type menu_t = object
      each of these functions."]
 
   method insert_section :
-    int -> string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+    int -> string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for inserting a section menu item into [menu].
       Combine g_menu_item_new_section() and g_menu_insert_item() for a more
       flexible alternative. *)
 
   method insert_submenu :
-    int -> string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+    int -> string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for inserting a submenu menu item into [menu].
       Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
       flexible alternative. *)
@@ -77,14 +75,12 @@ class type menu_t = object
 
       See g_menu_insert_item() for more information. *)
 
-  method prepend_section :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method prepend_section : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for prepending a section menu item to the start of
       [menu]. Combine g_menu_item_new_section() and g_menu_insert_item() for a
       more flexible alternative. *)
 
-  method prepend_submenu :
-    string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit
+  method prepend_submenu : string option -> Menu_model.menu_model_t -> unit
   (** Convenience function for prepending a submenu menu item to the start of
       [menu]. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
       more flexible alternative. *)
@@ -112,7 +108,7 @@ end
 (* High-level class for Menu *)
 class menu (obj : Raw.Menu.t) : menu_t =
   object (self)
-    inherit Menu_link_iter_and__menu_model.menu_model (obj :> Raw.Menu_model.t)
+    inherit Menu_model.menu_model (obj :> Raw.Menu_model.t)
 
     method append : string option -> string option -> unit =
       fun label detailed_action -> Raw.Menu.append obj label detailed_action
@@ -122,14 +118,12 @@ class menu (obj : Raw.Menu.t) : menu_t =
         let item = item#as_menu_item in
         Raw.Menu.append_item obj item
 
-    method append_section :
-        string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit =
+    method append_section : string option -> Menu_model.menu_model_t -> unit =
       fun label section ->
         let section = section#as_menu_model in
         Raw.Menu.append_section obj label section
 
-    method append_submenu :
-        string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit =
+    method append_submenu : string option -> Menu_model.menu_model_t -> unit =
       fun label submenu ->
         let submenu = submenu#as_menu_model in
         Raw.Menu.append_submenu obj label submenu
@@ -146,19 +140,13 @@ class menu (obj : Raw.Menu.t) : menu_t =
         Raw.Menu.insert_item obj position item
 
     method insert_section :
-        int ->
-        string option ->
-        Menu_link_iter_and__menu_model.menu_model_t ->
-        unit =
+        int -> string option -> Menu_model.menu_model_t -> unit =
       fun position label section ->
         let section = section#as_menu_model in
         Raw.Menu.insert_section obj position label section
 
     method insert_submenu :
-        int ->
-        string option ->
-        Menu_link_iter_and__menu_model.menu_model_t ->
-        unit =
+        int -> string option -> Menu_model.menu_model_t -> unit =
       fun position label submenu ->
         let submenu = submenu#as_menu_model in
         Raw.Menu.insert_submenu obj position label submenu
@@ -171,14 +159,12 @@ class menu (obj : Raw.Menu.t) : menu_t =
         let item = item#as_menu_item in
         Raw.Menu.prepend_item obj item
 
-    method prepend_section :
-        string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit =
+    method prepend_section : string option -> Menu_model.menu_model_t -> unit =
       fun label section ->
         let section = section#as_menu_model in
         Raw.Menu.prepend_section obj label section
 
-    method prepend_submenu :
-        string option -> Menu_link_iter_and__menu_model.menu_model_t -> unit =
+    method prepend_submenu : string option -> Menu_model.menu_model_t -> unit =
       fun label submenu ->
         let submenu = submenu#as_menu_model in
         Raw.Menu.prepend_submenu obj label submenu

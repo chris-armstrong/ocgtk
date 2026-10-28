@@ -73,8 +73,5 @@ class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  string option ->
-  Application_and__window_and__window_group.window_t option ->
-  font_chooser_dialog_t
+val new_ : string option -> Window.window_t option -> font_chooser_dialog_t
 (** Creates a new [GtkFontChooserDialog]. *)

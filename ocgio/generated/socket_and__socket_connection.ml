@@ -21,10 +21,7 @@ class type socket_t = object
       notified of an incoming connection, wait for the [G_IO_IN] condition. *)
 
   method bind :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t ->
-    bool ->
-    (bool, GError.t) result
+    Socket_address.socket_address_t -> bool -> (bool, GError.t) result
   (** When a socket is created it is attached to an address family, but it
       doesn't have an address in this family. g_socket_bind() assigns the
       address (sometimes called name) of the socket.
@@ -82,8 +79,7 @@ class type socket_t = object
      does.)"]
 
   method connect :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t ->
+    Socket_address.socket_address_t ->
     Cancellable.cancellable_t option ->
     (bool, GError.t) result
   (** Connect the socket to the specified remote address.
@@ -164,11 +160,7 @@ class type socket_t = object
       g_socket_set_listen_backlog(). *)
 
   method get_local_address :
-    unit ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address_t,
-      GError.t )
-    result
+    unit -> (Socket_address.socket_address_t, GError.t) result
   (** Try to get the local address of a bound socket. This is only useful if the
       socket has been bound to a local address, either explicitly or implicitly
       when connecting. *)
@@ -187,11 +179,7 @@ class type socket_t = object
       protocol is unknown, -1 is returned. *)
 
   method get_remote_address :
-    unit ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address_t,
-      GError.t )
-    result
+    unit -> (Socket_address.socket_address_t, GError.t) result
   (** Try to get the remote address of a connected socket. This is only useful
       for connection oriented sockets that have been connected. *)
 
@@ -311,9 +299,7 @@ class type socket_t = object
       [G_IO_ERROR_TIMED_OUT]. *)
 
   method send_message :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
-    option ->
+    Socket_address.socket_address_t option ->
     Raw.Output_vector.t array ->
     int ->
     Raw.Socket_control_message.t array option ->
@@ -489,8 +475,7 @@ and socket_connection_t = object
   (** {2:methods Methods} *)
 
   method connect :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t ->
+    Socket_address.socket_address_t ->
     Cancellable.cancellable_t option ->
     (bool, GError.t) result
   (** Connect [connection] to the specified remote address. *)
@@ -499,19 +484,11 @@ and socket_connection_t = object
   (** Gets the result of a g_socket_connection_connect_async() call. *)
 
   method get_local_address :
-    unit ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address_t,
-      GError.t )
-    result
+    unit -> (Socket_address.socket_address_t, GError.t) result
   (** Try to get the local address of a socket connection. *)
 
   method get_remote_address :
-    unit ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address_t,
-      GError.t )
-    result
+    unit -> (Socket_address.socket_address_t, GError.t) result
   [@@ocaml.doc
     "Try to get the remote address of a socket connection.\n\n\
      Since GLib 2.40, when used with g_socket_client_connect() or\n\
@@ -549,10 +526,7 @@ class socket (obj : Raw.Socket.t) : socket_t =
           (Raw.Socket.accept obj cancellable)
 
     method bind :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t ->
-        bool ->
-        (bool, GError.t) result =
+        Socket_address.socket_address_t -> bool -> (bool, GError.t) result =
       fun address allow_reuse ->
         let address = address#as_socket_address in
         Raw.Socket.bind obj address allow_reuse
@@ -564,8 +538,7 @@ class socket (obj : Raw.Socket.t) : socket_t =
       fun () -> Raw.Socket.close obj
 
     method connect :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t ->
+        Socket_address.socket_address_t ->
         Cancellable.cancellable_t option ->
         (bool, GError.t) result =
       fun address cancellable ->
@@ -601,18 +574,10 @@ class socket (obj : Raw.Socket.t) : socket_t =
       fun () -> Raw.Socket.get_listen_backlog obj
 
     method get_local_address :
-        unit ->
-        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-          .socket_address_t,
-          GError.t )
-        result =
+        unit -> (Socket_address.socket_address_t, GError.t) result =
       fun () ->
         Result.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_address
-              ret)
+          (fun ret -> new Socket_address.socket_address ret)
           (Raw.Socket.get_local_address obj)
 
     method get_multicast_loopback : unit -> bool =
@@ -625,18 +590,10 @@ class socket (obj : Raw.Socket.t) : socket_t =
       fun () -> Raw.Socket.get_protocol obj
 
     method get_remote_address :
-        unit ->
-        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-          .socket_address_t,
-          GError.t )
-        result =
+        unit -> (Socket_address.socket_address_t, GError.t) result =
       fun () ->
         Result.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_address
-              ret)
+          (fun ret -> new Socket_address.socket_address ret)
           (Raw.Socket.get_remote_address obj)
 
     method get_socket_type : unit -> Enums.sockettype =
@@ -702,9 +659,7 @@ class socket (obj : Raw.Socket.t) : socket_t =
         Raw.Socket.receive_bytes obj size timeout_us cancellable
 
     method send_message :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t
-        option ->
+        Socket_address.socket_address_t option ->
         Raw.Output_vector.t array ->
         int ->
         Raw.Socket_control_message.t array option ->
@@ -758,8 +713,7 @@ and socket_connection (obj : Raw.Socket_connection.t) : socket_connection_t =
     inherit Io_stream.io_stream (obj :> Raw.Io_stream.t)
 
     method connect :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t ->
+        Socket_address.socket_address_t ->
         Cancellable.cancellable_t option ->
         (bool, GError.t) result =
       fun address cancellable ->
@@ -774,33 +728,17 @@ and socket_connection (obj : Raw.Socket_connection.t) : socket_connection_t =
         Raw.Socket_connection.connect_finish obj result
 
     method get_local_address :
-        unit ->
-        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-          .socket_address_t,
-          GError.t )
-        result =
+        unit -> (Socket_address.socket_address_t, GError.t) result =
       fun () ->
         Result.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_address
-              ret)
+          (fun ret -> new Socket_address.socket_address ret)
           (Raw.Socket_connection.get_local_address obj)
 
     method get_remote_address :
-        unit ->
-        ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-          .socket_address_t,
-          GError.t )
-        result =
+        unit -> (Socket_address.socket_address_t, GError.t) result =
       fun () ->
         Result.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_address
-              ret)
+          (fun ret -> new Socket_address.socket_address ret)
           (Raw.Socket_connection.get_remote_address obj)
 
     method get_socket : unit -> socket_t =

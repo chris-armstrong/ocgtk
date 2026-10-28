@@ -24,7 +24,7 @@ class type menu_item_t = object
       [NULL] is returned. [NULL] is also returned if the attribute simply does
       not exist. *)
 
-  method get_link : string -> Menu_link_iter_and__menu_model.menu_model_t option
+  method get_link : string -> Menu_model.menu_model_t option
   (** Queries the named [link] on [menu_item]. *)
 
   method set_action_and_target_value :
@@ -108,8 +108,7 @@ class type menu_item_t = object
      If [label] is non-[NULL] it is used as the label for the menu item.  If\n\
      it is [NULL] then the label attribute is unset."]
 
-  method set_link :
-    string -> Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_link : string -> Menu_model.menu_model_t option -> unit
   (** Creates a link from [menu_item] to [model] if non-[NULL], or unsets it.
 
       Links are used to establish a relationship between a particular menu item
@@ -121,8 +120,7 @@ class type menu_item_t = object
       names must begin with a lowercase character, must not end with a '-', and
       must not contain consecutive dashes. *)
 
-  method set_section :
-    Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_section : Menu_model.menu_model_t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"section\" link of [menu_item] to [section].\n\n\
      The effect of having one menu appear as a section of another is\n\
@@ -131,8 +129,7 @@ class type menu_item_t = object
      for more information about what it means for a menu item to be a\n\
      section."]
 
-  method set_submenu :
-    Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_submenu : Menu_model.menu_model_t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"submenu\" link of [menu_item] to [submenu].\n\n\
      If [submenu] is non-[NULL], it is linked to.  If it is [NULL] then the\n\
@@ -159,16 +156,14 @@ val new_ : string option -> string option -> menu_item_t
    possibly the \"target\" attribute of the new item.  See\n\
    g_menu_item_set_detailed_action() for more information."]
 
-val new_from_model :
-  Menu_link_iter_and__menu_model.menu_model_t -> int -> menu_item_t
+val new_from_model : Menu_model.menu_model_t -> int -> menu_item_t
 (** Creates a [GMenuItem] as an exact copy of an existing menu item in a
     [GMenuModel].
 
     [item_index] must be valid (ie: be sure to call g_menu_model_get_n_items()
     first). *)
 
-val new_section :
-  string option -> Menu_link_iter_and__menu_model.menu_model_t -> menu_item_t
+val new_section : string option -> Menu_model.menu_model_t -> menu_item_t
 [@@ocaml.doc
   "Creates a new [GMenuItem] representing a section.\n\n\
    This is a convenience API around g_menu_item_new() and\n\
@@ -225,8 +220,7 @@ val new_section :
    </menu>\n\
    ]}"]
 
-val new_submenu :
-  string option -> Menu_link_iter_and__menu_model.menu_model_t -> menu_item_t
+val new_submenu : string option -> Menu_model.menu_model_t -> menu_item_t
 (** Creates a new [GMenuItem] representing a submenu.
 
     This is a convenience API around g_menu_item_new() and

@@ -1,7 +1,5 @@
 class type drop_down_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -97,10 +95,7 @@ end
 (* High-level class for DropDown *)
 class drop_down (obj : Raw.Drop_down.t) : drop_down_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate ?(after = false) ~callback () =
       Raw.Drop_down.on_activate ~after self#as_drop_down ~callback

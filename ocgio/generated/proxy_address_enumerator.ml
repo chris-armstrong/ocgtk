@@ -1,13 +1,9 @@
 class type proxy_address_enumerator_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_enumerator_t
+  inherit Socket_address_enumerator.socket_address_enumerator_t
 
   (** {2:properties Properties} *)
 
-  method connectable :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  method connectable : Socket_connectable.socket_connectable_t
   (** The connectable being enumerated. *)
 
   method default_port : int
@@ -33,14 +29,11 @@ class proxy_address_enumerator (obj : Raw.Proxy_address_enumerator.t) :
   proxy_address_enumerator_t =
   object (self)
     inherit
-      Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address_enumerator
+      Socket_address_enumerator.socket_address_enumerator
         (obj :> Raw.Socket_address_enumerator.t)
 
     method connectable =
-      new
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable
+      new Socket_connectable.socket_connectable
         (Raw.Proxy_address_enumerator.get_connectable obj)
 
     method default_port = Raw.Proxy_address_enumerator.get_default_port obj

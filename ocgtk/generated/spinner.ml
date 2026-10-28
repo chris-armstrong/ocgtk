@@ -1,7 +1,5 @@
 class type spinner_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -25,11 +23,7 @@ end
 (* High-level class for Spinner *)
 class spinner (obj : Raw.Spinner.t) : spinner_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     method get_spinning : unit -> bool = fun () -> Raw.Spinner.get_spinning obj
 
     method set_spinning : bool -> unit =

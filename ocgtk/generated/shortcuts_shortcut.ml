@@ -1,7 +1,5 @@
 class type shortcuts_shortcut_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:properties Properties} *)
 
@@ -158,10 +156,7 @@ end
 class shortcuts_shortcut (obj : Raw.Shortcuts_shortcut.t) : shortcuts_shortcut_t
   =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method set_accel_size_group : Size_group.size_group_t -> unit =
       fun v -> Raw.Shortcuts_shortcut.set_accel_size_group obj v#as_size_group

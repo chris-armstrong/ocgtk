@@ -1,7 +1,5 @@
 class type color_dialog_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -40,10 +38,7 @@ end
 class color_dialog_button (obj : Raw.Color_dialog_button.t) :
   color_dialog_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate ?(after = false) ~callback () =
       Raw.Color_dialog_button.on_activate ~after self#as_color_dialog_button

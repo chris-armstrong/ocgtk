@@ -8,10 +8,7 @@
 (** {1:class Class} *)
 
 class type popover_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Native.native_t
   inherit Shortcut_manager.shortcut_manager_t
 
@@ -39,11 +36,7 @@ class type popover_t = object
   method get_cascade_popdown : unit -> bool
   (** Returns whether the popover will close after a modal child is closed. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [popover]. *)
 
   method get_has_arrow : unit -> bool
@@ -90,18 +83,10 @@ class type popover_t = object
 
       If [FALSE], [popover] will stay visible. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [popover]. *)
 
-  method set_default_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_default_widget : Widget.widget_t option -> unit
   (** Sets the default widget of a [GtkPopover].
 
       The default widget is the widget that’s activated when the user presses

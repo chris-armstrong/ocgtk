@@ -14,10 +14,7 @@
 class type assistant_page_t = object
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_child : unit -> Widget.widget_t
   (** Returns the child to which [page] belongs. *)
 
   (** {2:properties Properties} *)

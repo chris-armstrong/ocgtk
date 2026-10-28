@@ -22,7 +22,7 @@
     [GDBusObjectProxy] yourself — typically [Gio.DBusObjectManagerClient] is
     used to obtain it. *)
 class type d_bus_object_proxy_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
+  inherit D_bus_object.d_bus_object_t
 
   (** {2:methods Methods} *)
 

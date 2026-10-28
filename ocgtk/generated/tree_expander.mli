@@ -8,17 +8,11 @@
 (** {1:class Class} *)
 
 class type tree_expander_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget displayed by [self]. *)
 
   method get_hide_expander : unit -> bool
@@ -43,11 +37,7 @@ class type tree_expander_t = object
   method get_list_row : unit -> Tree_list_row.tree_list_row_t option
   (** Gets the list row managed by [self]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the content widget to display. *)
 
   method set_hide_expander : bool -> unit

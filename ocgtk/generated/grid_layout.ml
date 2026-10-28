@@ -1,7 +1,5 @@
 class type grid_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
 
   (** {2:methods Methods} *)
 
@@ -57,10 +55,7 @@ end
 (* High-level class for GridLayout *)
 class grid_layout (obj : Raw.Grid_layout.t) : grid_layout_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .layout_manager
-        (obj :> Raw.Layout_manager.t)
+    inherit Layout_manager.layout_manager (obj :> Raw.Layout_manager.t)
 
     method get_baseline_row : unit -> int =
       fun () -> Raw.Grid_layout.get_baseline_row obj

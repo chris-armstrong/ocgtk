@@ -68,10 +68,7 @@
 
     [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
 class type search_entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
 
   (** {2:signals Signals} *)
@@ -134,11 +131,7 @@ class type search_entry_t = object
   method get_input_purpose : unit -> Enums.inputpurpose
   (** Gets the input purpose of [entry]. *)
 
-  method get_key_capture_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_key_capture_widget : unit -> Widget.widget_t option
   (** Gets the widget that [entry] is capturing key events from. *)
 
   method get_placeholder_text : unit -> string option
@@ -154,11 +147,7 @@ class type search_entry_t = object
   method set_input_purpose : Enums.inputpurpose -> unit
   (** Sets the input purpose of [entry]. *)
 
-  method set_key_capture_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_key_capture_widget : Widget.widget_t option -> unit
   (** Sets [widget] as the widget that [entry] will capture key events from.
 
       Key events are consumed by the search entry to start or continue a search.

@@ -38,11 +38,7 @@ class type shortcut_action_t = object
   (** {2:methods Methods} *)
 
   method activate :
-    Enums.shortcutactionflags ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Gvariant.t option ->
-    bool
+    Enums.shortcutactionflags -> Widget.widget_t -> Gvariant.t option -> bool
   (** Activates the action on the [widget] with the given [args].
 
       Note that some actions ignore the passed in [flags], [widget] or [args].

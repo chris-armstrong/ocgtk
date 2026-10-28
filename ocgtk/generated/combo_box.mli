@@ -78,12 +78,9 @@
 
     [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
 class type combo_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Cell_editable.cell_editable_t
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Cell_layout.cell_layout_t
 
   (** {2:signals Signals} *)
 
@@ -189,11 +186,7 @@ class type combo_box_t = object
   (** Returns whether the combo box sets the dropdown button sensitive or not
       when there are no items in the model. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [combo_box]. *)
 
   method get_entry_text_column : unit -> int
@@ -259,11 +252,7 @@ class type combo_box_t = object
   (** Sets whether the dropdown button of the combo box should update its
       sensitivity depending on the model contents. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [combo_box]. *)
 
   method set_entry_text_column : int -> unit

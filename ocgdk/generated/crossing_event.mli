@@ -12,7 +12,7 @@
 
     An event caused by a pointing device moving between surfaces. *)
 class type crossing_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
 
   (** {2:methods Methods} *)
 

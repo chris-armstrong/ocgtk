@@ -97,8 +97,7 @@ class type cell_renderer_t = object
 
   method activate :
     Ocgdk.Event.event_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     string ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
@@ -122,11 +121,7 @@ class type cell_renderer_t = object
   (** Returns the cell renderer’s sensitivity. *)
 
   method get_state :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Enums.cellrendererstate ->
-    Enums.stateflags
+    Widget.widget_t option -> Enums.cellrendererstate -> Enums.stateflags
   (** Translates the cell renderer state to [GtkStateFlags], based on the cell
       renderer and widget sensitivity, and the given [GtkCellRenderer]State. *)
 
@@ -160,8 +155,7 @@ class type cell_renderer_t = object
 
   method snapshot :
     Snapshot.snapshot_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
@@ -176,8 +170,7 @@ class type cell_renderer_t = object
 
   method start_editing :
     Ocgdk.Event.event_t option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     string ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->

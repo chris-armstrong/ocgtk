@@ -26,7 +26,7 @@ class type file_icon_t = object
 
   (** {2:methods Methods} *)
 
-  method get_file : unit -> App_info_cycle_64c425a0.file_t
+  method get_file : unit -> File.file_t
   (** Gets the [GFile] associated with the given [icon]. *)
 
   (** {2:conversions Conversions} *)
@@ -46,5 +46,5 @@ class file_icon : Raw.File_icon.t -> file_icon_t
 
 (** {1:constructors Constructors} *)
 
-val new_ : App_info_cycle_64c425a0.file_t -> file_icon_t
+val new_ : File.file_t -> file_icon_t
 (** Creates a new icon for a file. *)

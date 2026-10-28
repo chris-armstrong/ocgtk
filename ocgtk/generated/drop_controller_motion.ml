@@ -1,7 +1,5 @@
 class type drop_controller_motion_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 
@@ -46,10 +44,7 @@ end
 class drop_controller_motion (obj : Raw.Drop_controller_motion.t) :
   drop_controller_motion_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_enter ?(after = false) ~callback () =
       Raw.Drop_controller_motion.on_enter ~after self#as_drop_controller_motion

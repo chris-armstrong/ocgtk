@@ -25,9 +25,8 @@ class tcp_wrapper_connection (obj : Raw.Tcp_wrapper_connection.t) :
     method as_tcp_wrapper_connection = obj
   end
 
-let new_ (base_io_stream : Io_stream.io_stream_t)
-    (socket : Socket_and__socket_connection.socket_t) : tcp_wrapper_connection_t
-    =
+let new_ (base_io_stream : Io_stream.io_stream_t) (socket : Socket.socket_t) :
+    tcp_wrapper_connection_t =
   let base_io_stream = base_io_stream#as_io_stream in
   let socket = socket#as_socket in
   let obj_ = Raw.Tcp_wrapper_connection.new_ base_io_stream socket in

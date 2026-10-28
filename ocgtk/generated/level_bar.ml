@@ -1,8 +1,5 @@
 class type level_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
@@ -84,10 +81,7 @@ end
 (* High-level class for LevelBar *)
 class level_bar (obj : Raw.Level_bar.t) : level_bar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)

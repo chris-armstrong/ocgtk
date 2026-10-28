@@ -36,9 +36,7 @@
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
 class type unix_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
 
   (** {2:methods Methods} *)
 

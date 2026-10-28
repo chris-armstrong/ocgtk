@@ -14,10 +14,10 @@
 class type vfs_t = object
   (** {2:methods Methods} *)
 
-  method get_file_for_path : string -> App_info_cycle_64c425a0.file_t
+  method get_file_for_path : string -> File.file_t
   (** Gets a [GFile] for [path]. *)
 
-  method get_file_for_uri : string -> App_info_cycle_64c425a0.file_t
+  method get_file_for_uri : string -> File.file_t
   (** Gets a [GFile] for [uri].
 
       This operation never fails, but the returned object might not support any
@@ -30,7 +30,7 @@ class type vfs_t = object
   method is_active : unit -> bool
   (** Checks if the VFS is active. *)
 
-  method parse_name : string -> App_info_cycle_64c425a0.file_t
+  method parse_name : string -> File.file_t
   (** This operation never fails, but the returned object might not support any
       I/O operations if the [parse_name] cannot be parsed by the [GVfs] module.
   *)

@@ -28,12 +28,7 @@ class type renderer_t = object
       This should be called while [renderer] is already active. Use
       [Pango.Renderer.activate] to activate a renderer. *)
 
-  method draw_glyph :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    int ->
-    float ->
-    float ->
-    unit
+  method draw_glyph : Font.font_t -> int -> float -> float -> unit
   (** Draws a single glyph with coordinates in device space. *)
 
   method draw_glyph_item :
@@ -57,15 +52,10 @@ class type renderer_t = object
       The default implementation of this method simply falls back to
       [Pango.Renderer.draw_glyphs]. *)
 
-  method draw_glyphs :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    Raw.Glyph_string.t ->
-    int ->
-    int ->
-    unit
+  method draw_glyphs : Font.font_t -> Raw.Glyph_string.t -> int -> int -> unit
   (** Draws the glyphs in [glyphs] with the specified [PangoRenderer]. *)
 
-  method draw_layout : Layout_and__layout_iter.layout_t -> int -> int -> unit
+  method draw_layout : Layout.layout_t -> int -> int -> unit
   (** Draws [layout] with the specified [PangoRenderer].
 
       This is equivalent to drawing the lines of the layout, at their respective
@@ -103,7 +93,7 @@ class type renderer_t = object
   method get_color : Enums.renderpart -> Raw.Color.t option
   (** Gets the current rendering color for the specified part. *)
 
-  method get_layout : unit -> Layout_and__layout_iter.layout_t option
+  method get_layout : unit -> Layout.layout_t option
   (** Gets the layout currently being rendered using [renderer].
 
       Calling this function only makes sense from inside a subclass's methods,
@@ -171,12 +161,7 @@ class renderer (obj : Raw.Renderer.t) : renderer_t =
       fun x y width height ->
         Raw.Renderer.draw_error_underline obj x y width height
 
-    method draw_glyph :
-        Context_and__font_and__font_map_and__fontset.font_t ->
-        int ->
-        float ->
-        float ->
-        unit =
+    method draw_glyph : Font.font_t -> int -> float -> float -> unit =
       fun font glyph x y ->
         let font = font#as_font in
         Raw.Renderer.draw_glyph obj font glyph x y
@@ -186,18 +171,13 @@ class renderer (obj : Raw.Renderer.t) : renderer_t =
       fun text glyph_item x y ->
         Raw.Renderer.draw_glyph_item obj text glyph_item x y
 
-    method draw_glyphs :
-        Context_and__font_and__font_map_and__fontset.font_t ->
-        Raw.Glyph_string.t ->
-        int ->
-        int ->
-        unit =
+    method draw_glyphs : Font.font_t -> Raw.Glyph_string.t -> int -> int -> unit
+        =
       fun font glyphs x y ->
         let font = font#as_font in
         Raw.Renderer.draw_glyphs obj font glyphs x y
 
-    method draw_layout : Layout_and__layout_iter.layout_t -> int -> int -> unit
-        =
+    method draw_layout : Layout.layout_t -> int -> int -> unit =
       fun layout x y ->
         let layout = layout#as_layout in
         Raw.Renderer.draw_layout obj layout x y
@@ -228,10 +208,10 @@ class renderer (obj : Raw.Renderer.t) : renderer_t =
     method get_color : Enums.renderpart -> Raw.Color.t option =
       fun part -> Raw.Renderer.get_color obj part
 
-    method get_layout : unit -> Layout_and__layout_iter.layout_t option =
+    method get_layout : unit -> Layout.layout_t option =
       fun () ->
         Option.map
-          (fun ret -> new Layout_and__layout_iter.layout ret)
+          (fun ret -> new Layout.layout ret)
           (Raw.Renderer.get_layout obj)
 
     method get_layout_line : unit -> Raw.Layout_line.t option =

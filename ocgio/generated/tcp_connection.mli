@@ -15,7 +15,7 @@
     This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
     sockets. *)
 class type tcp_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
 
   (** {2:methods Methods} *)
 

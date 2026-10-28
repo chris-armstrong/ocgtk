@@ -1,7 +1,7 @@
 class type application_command_line_t = object
   (** {2:methods Methods} *)
 
-  method create_file_for_arg : string -> App_info_cycle_64c425a0.file_t
+  method create_file_for_arg : string -> File.file_t
   (** Creates a [GFile] corresponding to a filename that was given as part of
       the invocation of [cmdline].
 
@@ -146,10 +146,9 @@ end
 class application_command_line (obj : Raw.Application_command_line.t) :
   application_command_line_t =
   object (self)
-    method create_file_for_arg : string -> App_info_cycle_64c425a0.file_t =
+    method create_file_for_arg : string -> File.file_t =
       fun arg ->
-        new App_info_cycle_64c425a0.file
-          (Raw.Application_command_line.create_file_for_arg obj arg)
+        new File.file (Raw.Application_command_line.create_file_for_arg obj arg)
 
     method done_ : unit -> unit =
       fun () -> Raw.Application_command_line.done_ obj

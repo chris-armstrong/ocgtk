@@ -1,5 +1,5 @@
 class type shortcuts_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 
@@ -68,8 +68,7 @@ end
 (* High-level class for ShortcutsWindow *)
 class shortcuts_window (obj : Raw.Shortcuts_window.t) : shortcuts_window_t =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     method on_close ?(after = false) ~callback () =
       Raw.Shortcuts_window.on_close ~after self#as_shortcuts_window ~callback

@@ -1,9 +1,6 @@
 class type icon_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Widget.widget_t
+  inherit Cell_layout.cell_layout_t
   inherit Scrollable.scrollable_t
 
   (** {2:signals Signals} *)
@@ -305,8 +302,7 @@ class type icon_view_t = object
       must be of type [G_TYPE_STRING]. *)
 
   method set_tooltip_cell :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
+    Tooltip.tooltip_t ->
     Raw.Tree_path.t ->
     Cell_renderer.cell_renderer_t option ->
     unit
@@ -327,11 +323,7 @@ class type icon_view_t = object
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
       so &, <, etc have to be escaped in the text. *)
 
-  method set_tooltip_item :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
-    Raw.Tree_path.t ->
-    unit
+  method set_tooltip_item : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the item at
       [path]. See also gtk_icon_view_set_tooltip_column() for a simpler
       alternative. See also gtk_tooltip_set_tip_area(). *)
@@ -352,8 +344,7 @@ class type icon_view_t = object
 
   (** {2:properties Properties} *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this view.
 
       If no area is specified when creating the icon view with
@@ -367,15 +358,8 @@ end
 (* High-level class for IconView *)
 class icon_view (obj : Raw.Icon_view.t) : icon_view_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
-    inherit
-      Cell_area_and__cell_area_context_and__cell_layout.cell_layout
-        (Raw.Cell_layout.from_gobject obj)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
+    inherit Cell_layout.cell_layout (Raw.Cell_layout.from_gobject obj)
     inherit Scrollable.scrollable (Raw.Scrollable.from_gobject obj)
 
     method on_activate_cursor_item ?(after = false) ~callback () =
@@ -551,8 +535,7 @@ class icon_view (obj : Raw.Icon_view.t) : icon_view_t =
       fun column -> Raw.Icon_view.set_text_column obj column
 
     method set_tooltip_cell :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .tooltip_t ->
+        Tooltip.tooltip_t ->
         Raw.Tree_path.t ->
         Cell_renderer.cell_renderer_t option ->
         unit =
@@ -564,11 +547,7 @@ class icon_view (obj : Raw.Icon_view.t) : icon_view_t =
     method set_tooltip_column : int -> unit =
       fun column -> Raw.Icon_view.set_tooltip_column obj column
 
-    method set_tooltip_item :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .tooltip_t ->
-        Raw.Tree_path.t ->
-        unit =
+    method set_tooltip_item : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit =
       fun tooltip path ->
         let tooltip = tooltip#as_tooltip in
         Raw.Icon_view.set_tooltip_item obj tooltip path
@@ -585,18 +564,13 @@ class icon_view (obj : Raw.Icon_view.t) : icon_view_t =
     method unset_model_drag_source : unit -> unit =
       fun () -> Raw.Icon_view.unset_model_drag_source obj
 
-    method cell_area =
-      new Cell_area_and__cell_area_context_and__cell_layout.cell_area
-        (Raw.Icon_view.get_cell_area obj)
-
+    method cell_area = new Cell_area.cell_area (Raw.Icon_view.get_cell_area obj)
     method as_icon_view = obj
   end
 
 let new_ () : icon_view_t = new icon_view (Raw.Icon_view.new_ ())
 
-let new_with_area
-    (area : Cell_area_and__cell_area_context_and__cell_layout.cell_area_t) :
-    icon_view_t =
+let new_with_area (area : Cell_area.cell_area_t) : icon_view_t =
   let area = area#as_cell_area in
   let obj_ = Raw.Icon_view.new_with_area area in
   new icon_view obj_

@@ -12,10 +12,7 @@ class type message_dialog_t = object
 
   (** {2:methods Methods} *)
 
-  method get_message_area :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_message_area : unit -> Widget.widget_t
   (** Returns the message area of the dialog.
 
       This is the box where the dialog’s primary and secondary labels are

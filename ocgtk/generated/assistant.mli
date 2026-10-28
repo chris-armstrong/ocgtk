@@ -55,7 +55,7 @@
     [GtkAssistant] has a single CSS node with the name window and style class
     .assistant. *)
 class type assistant_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 
@@ -89,11 +89,7 @@ class type assistant_t = object
 
   method on_prepare :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      unit) ->
+    callback:(page:Widget.widget_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when a new page is set as the assistant's current page, before
@@ -104,16 +100,10 @@ class type assistant_t = object
 
   (** {2:methods Methods} *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method add_action_widget : Widget.widget_t -> unit
   (** Adds a widget to the action area of a [GtkAssistant]. *)
 
-  method append_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method append_page : Widget.widget_t -> int
   (** Appends a page to the [assistant]. *)
 
   method commit : unit -> unit
@@ -133,45 +123,25 @@ class type assistant_t = object
   method get_n_pages : unit -> int
   (** Returns the number of pages in the [assistant] *)
 
-  method get_nth_page :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_nth_page : int -> Widget.widget_t option
   (** Returns the child widget contained in page number [page_num]. *)
 
-  method get_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Assistant_page.assistant_page_t
+  method get_page : Widget.widget_t -> Assistant_page.assistant_page_t
   (** Returns the [GtkAssistantPage] object for [child]. *)
 
-  method get_page_complete :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_page_complete : Widget.widget_t -> bool
   (** Gets whether [page] is complete. *)
 
-  method get_page_title :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string
+  method get_page_title : Widget.widget_t -> string
   (** Gets the title for [page]. *)
 
-  method get_page_type :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.assistantpagetype
+  method get_page_type : Widget.widget_t -> Enums.assistantpagetype
   (** Gets the page type of [page]. *)
 
   method get_pages : unit -> Ocgio.List_model.list_model_t
   (** Gets a list model of the assistant pages. *)
 
-  method insert_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int
+  method insert_page : Widget.widget_t -> int -> int
   (** Inserts a page in the [assistant] at a given position. *)
 
   method next_page : unit -> unit
@@ -183,10 +153,7 @@ class type assistant_t = object
       This function is for use when creating pages of the
       [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
-  method prepend_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method prepend_page : Widget.widget_t -> int
   (** Prepends a page to the [assistant]. *)
 
   method previous_page : unit -> unit
@@ -198,10 +165,7 @@ class type assistant_t = object
       This function is for use when creating pages of the
       [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
-  method remove_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_action_widget : Widget.widget_t -> unit
   (** Removes a widget from the action area of a [GtkAssistant]. *)
 
   method remove_page : int -> unit
@@ -213,31 +177,19 @@ class type assistant_t = object
       Note that this will only be necessary in custom buttons, as the
       [assistant] flow can be set with gtk_assistant_set_forward_page_func(). *)
 
-  method set_page_complete :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_page_complete : Widget.widget_t -> bool -> unit
   (** Sets whether [page] contents are complete.
 
       This will make [assistant] update the buttons state to be able to continue
       the task. *)
 
-  method set_page_title :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_page_title : Widget.widget_t -> string -> unit
   (** Sets a title for [page].
 
       The title is displayed in the header area of the assistant when [page] is
       the current page. *)
 
-  method set_page_type :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.assistantpagetype ->
-    unit
+  method set_page_type : Widget.widget_t -> Enums.assistantpagetype -> unit
   (** Sets the page type for [page].
 
       The page type determines the page behavior in the [assistant]. *)

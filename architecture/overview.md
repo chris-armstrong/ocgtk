@@ -274,7 +274,7 @@ Application + Window + WindowGroup
   → application_and__window_and__window_group.ml
 ```
 
-This produces the long module names visible in the generated code:
+This produces long module names:
 
 ```
 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -308,9 +308,13 @@ class widget =
 ```
 
 So `Ocgtk.Widget.widget_t` and `Ocgtk.Raw.Widget.t` work, and other namespaces
-write `Ocgtk_raw.Widget.t`; no cluster name appears outside its own namespace. The
-combined modules stay public (dune's main module lists them), because odoc
-resolves `inherit` links only through them.
+write `Ocgtk_raw.Widget.t`; no cluster name appears outside its own namespace.
+Layer 2 code outside a group also refers to its members through their own
+modules (`inherit Widget.widget_t`, `get_child : unit -> Widget.widget_t option`),
+so a compound name appears only in the group's combined module and its member
+modules, which refer to each other through it (a member module naming another
+would make the member modules depend on each other). The combined modules stay
+public (dune's main module lists them), since the member modules re-export them.
 
 ---
 

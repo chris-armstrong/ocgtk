@@ -1,8 +1,5 @@
 class type search_entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
 
   (** {2:signals Signals} *)
@@ -65,11 +62,7 @@ class type search_entry_t = object
   method get_input_purpose : unit -> Enums.inputpurpose
   (** Gets the input purpose of [entry]. *)
 
-  method get_key_capture_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_key_capture_widget : unit -> Widget.widget_t option
   (** Gets the widget that [entry] is capturing key events from. *)
 
   method get_placeholder_text : unit -> string option
@@ -85,11 +78,7 @@ class type search_entry_t = object
   method set_input_purpose : Enums.inputpurpose -> unit
   (** Sets the input purpose of [entry]. *)
 
-  method set_key_capture_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_key_capture_widget : Widget.widget_t option -> unit
   (** Sets [widget] as the widget that [entry] will capture key events from.
 
       Key events are consumed by the search entry to start or continue a search.
@@ -127,11 +116,7 @@ end
 (* High-level class for SearchEntry *)
 class search_entry (obj : Raw.Search_entry.t) : search_entry_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Editable.editable (Raw.Editable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
@@ -158,18 +143,10 @@ class search_entry (obj : Raw.Search_entry.t) : search_entry_t =
     method get_input_purpose : unit -> Enums.inputpurpose =
       fun () -> Raw.Search_entry.get_input_purpose obj
 
-    method get_key_capture_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_key_capture_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Search_entry.get_key_capture_widget obj)
 
     method get_placeholder_text : unit -> string option =
@@ -184,11 +161,7 @@ class search_entry (obj : Raw.Search_entry.t) : search_entry_t =
     method set_input_purpose : Enums.inputpurpose -> unit =
       fun purpose -> Raw.Search_entry.set_input_purpose obj purpose
 
-    method set_key_capture_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_key_capture_widget : Widget.widget_t option -> unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
         Raw.Search_entry.set_key_capture_widget obj widget

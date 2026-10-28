@@ -1,7 +1,5 @@
 class type drawing_area_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -53,10 +51,7 @@ end
 (* High-level class for DrawingArea *)
 class drawing_area (obj : Raw.Drawing_area.t) : drawing_area_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_resize ?(after = false) ~callback () =
       Raw.Drawing_area.on_resize ~after self#as_drawing_area ~callback

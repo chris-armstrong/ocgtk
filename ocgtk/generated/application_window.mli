@@ -8,7 +8,7 @@
 (** {1:class Class} *)
 
 class type application_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
   inherit Ocgio.Action_group.action_group_t
   inherit Ocgio.Action_map.action_map_t
 
@@ -182,7 +182,5 @@ class application_window : Raw.Application_window.t -> application_window_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Application_and__window_and__window_group.application_t ->
-  application_window_t
+val new_ : Application.application_t -> application_window_t
 (** Creates a new [GtkApplicationWindow]. *)

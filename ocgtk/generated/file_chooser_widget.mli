@@ -47,10 +47,7 @@
 
     [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
 class type file_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit File_chooser.file_chooser_t
 
   (** {2:signals Signals} *)

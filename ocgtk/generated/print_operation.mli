@@ -26,11 +26,7 @@ class type print_operation_t = object
 
   method on_custom_widget_apply :
     ?after:bool ->
-    callback:
-      (widget:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      unit) ->
+    callback:(widget:Widget.widget_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted right before ::begin-print if you added a custom widget in the
@@ -144,7 +140,7 @@ class type print_operation_t = object
     callback:
       (preview:Print_operation_preview.print_operation_preview_t ->
       context:Print_context.print_context_t ->
-      parent:Application_and__window_and__window_group.window_t option ->
+      parent:Window.window_t option ->
       bool) ->
     unit ->
     Gobject.Signal.handler_id
@@ -189,9 +185,7 @@ class type print_operation_t = object
   method on_update_custom_widget :
     ?after:bool ->
     callback:
-      (widget:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
+      (widget:Widget.widget_t ->
       setup:Page_setup.page_setup_t ->
       settings:Print_settings.print_settings_t ->
       unit) ->
@@ -285,7 +279,7 @@ class type print_operation_t = object
 
   method run :
     Enums.printoperationaction ->
-    Application_and__window_and__window_group.window_t option ->
+    Window.window_t option ->
     (Enums.printoperationresult, GError.t) result
   [@@ocaml.doc
     "Runs the print operation.\n\n\

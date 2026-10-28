@@ -1,5 +1,5 @@
 class type about_dialog_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 
@@ -156,8 +156,7 @@ end
 (* High-level class for AboutDialog *)
 class about_dialog (obj : Raw.About_dialog.t) : about_dialog_t =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     method on_activate_link ?(after = false) ~callback () =
       Raw.About_dialog.on_activate_link ~after self#as_about_dialog ~callback

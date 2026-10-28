@@ -12,7 +12,7 @@
 
     An event related to the proximity of a tool to a device. *)
 class type proximity_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
 
   (** {2:conversions Conversions} *)
 

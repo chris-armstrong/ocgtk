@@ -1,5 +1,5 @@
 class type d_bus_object_proxy_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
+  inherit D_bus_object.d_bus_object_t
 
   (** {2:methods Methods} *)
 
@@ -23,9 +23,7 @@ end
 class d_bus_object_proxy (obj : Raw.D_bus_object_proxy.t) : d_bus_object_proxy_t
   =
   object (self)
-    inherit
-      D_bus_interface_and__d_bus_object.d_bus_object
-        (Raw.D_bus_object.from_gobject obj)
+    inherit D_bus_object.d_bus_object (Raw.D_bus_object.from_gobject obj)
 
     method get_connection : unit -> D_bus_connection.d_bus_connection_t =
       fun () ->

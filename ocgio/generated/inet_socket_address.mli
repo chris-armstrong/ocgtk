@@ -22,9 +22,7 @@
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]). *)
 class type inet_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
 
   (** {2:methods Methods} *)
 

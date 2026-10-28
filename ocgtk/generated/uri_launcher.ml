@@ -1,8 +1,7 @@
 class type uri_launcher_t = object
   (** {2:methods Methods} *)
 
-  method can_launch :
-    Application_and__window_and__window_group.window_t option -> bool
+  method can_launch : Window.window_t option -> bool
   (** Returns whether the launcher is likely to succeed in launching an
       application for its uri.
 
@@ -27,8 +26,7 @@ end
 (* High-level class for UriLauncher *)
 class uri_launcher (obj : Raw.Uri_launcher.t) : uri_launcher_t =
   object (self)
-    method can_launch :
-        Application_and__window_and__window_group.window_t option -> bool =
+    method can_launch : Window.window_t option -> bool =
       fun parent ->
         let parent = Option.map (fun c -> c#as_window) parent in
         Raw.Uri_launcher.can_launch obj parent

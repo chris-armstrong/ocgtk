@@ -35,10 +35,7 @@
 
     [GtkFontChooserWidget] has a single CSS node with name fontchooser. *)
 class type font_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Font_chooser.font_chooser_t
 
   (** {2:properties Properties} *)

@@ -1,7 +1,5 @@
 class type network_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
 
   (** {2:methods Methods} *)
 
@@ -24,8 +22,7 @@ end
 class network_address (obj : Raw.Network_address.t) : network_address_t =
   object (self)
     inherit
-      Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_connectable
+      Socket_connectable.socket_connectable
         (Raw.Socket_connectable.from_gobject obj)
 
     method get_hostname : unit -> string =

@@ -1,7 +1,5 @@
 class type network_service_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
 
   (** {2:methods Methods} *)
 
@@ -32,8 +30,7 @@ end
 class network_service (obj : Raw.Network_service.t) : network_service_t =
   object (self)
     inherit
-      Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_connectable
+      Socket_connectable.socket_connectable
         (Raw.Socket_connectable.from_gobject obj)
 
     method get_domain : unit -> string =

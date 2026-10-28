@@ -5,7 +5,7 @@ class type dmabuf_texture_builder_t = object
   (** Gets the color state previously set via
       gdk_dmabuf_texture_builder_set_color_state(). *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Returns the display that this texture builder is associated with. *)
 
   method get_fd : int -> int
@@ -57,7 +57,7 @@ class type dmabuf_texture_builder_t = object
       correct colorstate based on the format. If you don't know what colorstates
       are, this is probably the right thing. *)
 
-  method set_display : App_launch_context_cycle_de440b34.display_t -> unit
+  method set_display : Display.display_t -> unit
   (** Sets the display that this texture builder is associated with.
 
       The display is used to determine the supported dma-buf formats. *)
@@ -132,10 +132,8 @@ class dmabuf_texture_builder (obj : Raw.Dmabuf_texture_builder.t) :
     method get_color_state : unit -> Raw.Color_state.t option =
       fun () -> Raw.Dmabuf_texture_builder.get_color_state obj
 
-    method get_display : unit -> App_launch_context_cycle_de440b34.display_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.display
-          (Raw.Dmabuf_texture_builder.get_display obj)
+    method get_display : unit -> Display.display_t =
+      fun () -> new Display.display (Raw.Dmabuf_texture_builder.get_display obj)
 
     method get_fd : int -> int =
       fun plane -> Raw.Dmabuf_texture_builder.get_fd obj plane
@@ -180,7 +178,7 @@ class dmabuf_texture_builder (obj : Raw.Dmabuf_texture_builder.t) :
       fun color_state ->
         Raw.Dmabuf_texture_builder.set_color_state obj color_state
 
-    method set_display : App_launch_context_cycle_de440b34.display_t -> unit =
+    method set_display : Display.display_t -> unit =
       fun display ->
         let display = display#as_display in
         Raw.Dmabuf_texture_builder.set_display obj display

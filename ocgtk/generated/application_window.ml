@@ -1,5 +1,5 @@
 class type application_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
   inherit Ocgio.Action_group.action_group_t
   inherit Ocgio.Action_map.action_map_t
 
@@ -41,8 +41,7 @@ end
 class application_window (obj : Raw.Application_window.t) : application_window_t
   =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     inherit
       Ocgio.Action_group.action_group (Ocgio.Raw.Action_group.from_gobject obj)
@@ -76,8 +75,7 @@ class application_window (obj : Raw.Application_window.t) : application_window_t
     method as_application_window = obj
   end
 
-let new_ (application : Application_and__window_and__window_group.application_t)
-    : application_window_t =
+let new_ (application : Application.application_t) : application_window_t =
   let application = application#as_application in
   let obj_ = Raw.Application_window.new_ application in
   new application_window obj_

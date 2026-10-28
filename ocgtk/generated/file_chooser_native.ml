@@ -59,8 +59,7 @@ class file_chooser_native (obj : Raw.File_chooser_native.t) :
     method as_file_chooser_native = obj
   end
 
-let new_ (title : string option)
-    (parent : Application_and__window_and__window_group.window_t option)
+let new_ (title : string option) (parent : Window.window_t option)
     (action : Enums.filechooseraction) (accept_label : string option)
     (cancel_label : string option) : file_chooser_native_t =
   let parent = Option.map (fun c -> c#as_window) parent in

@@ -37,17 +37,11 @@
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget. *)
 class type revealer_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [revealer]. *)
 
   method get_child_revealed : unit -> bool
@@ -71,11 +65,7 @@ class type revealer_t = object
   (** Gets the type of animation that will be used for transitions in
       [revealer]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [revealer]. *)
 
   method set_reveal_child : bool -> unit

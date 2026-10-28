@@ -22,7 +22,7 @@
 
     This type is intended to be used with [Gio.DBusObjectManager]. *)
 class type d_bus_object_skeleton_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
+  inherit D_bus_object.d_bus_object_t
 
   (** {2:signals Signals} *)
 

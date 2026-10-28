@@ -1,7 +1,5 @@
 class type gesture_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:methods Methods} *)
 
@@ -172,10 +170,7 @@ end
 (* High-level class for Gesture *)
 class gesture (obj : Raw.Gesture.t) : gesture_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method get_device : unit -> Ocgdk.Device.device_t option =
       fun () ->

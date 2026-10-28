@@ -97,10 +97,7 @@ class type tree_selection_t = object
 end
 
 and tree_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Scrollable.scrollable_t
 
   (** {2:signals Signals} *)
@@ -480,8 +477,7 @@ and tree_view_t = object
       effects for lists. *)
 
   method set_tooltip_cell :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
+    Tooltip.tooltip_t ->
     Raw.Tree_path.t option ->
     Tree_view_column.tree_view_column_t option ->
     Cell_renderer.cell_renderer_t option ->
@@ -510,11 +506,7 @@ and tree_view_t = object
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
       so &, <, etc have to be escaped in the text. *)
 
-  method set_tooltip_row :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
-    Raw.Tree_path.t ->
-    unit
+  method set_tooltip_row : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the row at
       [path]. See also gtk_tree_view_set_tooltip_column() for a simpler
       alternative. See also gtk_tooltip_set_tip_area(). *)

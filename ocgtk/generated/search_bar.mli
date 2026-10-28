@@ -66,9 +66,7 @@
 
     [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
 class type search_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -80,18 +78,10 @@ class type search_bar_t = object
       manually is only required if the entry isn’t the direct child of the
       search bar (as in our main example). *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [bar]. *)
 
-  method get_key_capture_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_key_capture_widget : unit -> Widget.widget_t option
   (** Gets the widget that [bar] is capturing key events from. *)
 
   method get_search_mode : unit -> bool
@@ -100,18 +90,10 @@ class type search_bar_t = object
   method get_show_close_button : unit -> bool
   (** Returns whether the close button is shown. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [bar]. *)
 
-  method set_key_capture_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_key_capture_widget : Widget.widget_t option -> unit
   (** Sets [widget] as the widget that [bar] will capture key events from.
 
       If key events are handled by the search bar, the bar will be shown, and

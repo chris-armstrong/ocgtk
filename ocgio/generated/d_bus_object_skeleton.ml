@@ -1,5 +1,5 @@
 class type d_bus_object_skeleton_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_object_t
+  inherit D_bus_object.d_bus_object_t
 
   (** {2:signals Signals} *)
 
@@ -67,9 +67,7 @@ end
 class d_bus_object_skeleton (obj : Raw.D_bus_object_skeleton.t) :
   d_bus_object_skeleton_t =
   object (self)
-    inherit
-      D_bus_interface_and__d_bus_object.d_bus_object
-        (Raw.D_bus_object.from_gobject obj)
+    inherit D_bus_object.d_bus_object (Raw.D_bus_object.from_gobject obj)
 
     method on_authorize_method ?(after = false) ~callback () =
       Raw.D_bus_object_skeleton.on_authorize_method ~after

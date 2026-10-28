@@ -1,10 +1,7 @@
 class type dtls_client_connection_t = object
   (** {2:methods Methods} *)
 
-  method get_server_identity :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  method get_server_identity : unit -> Socket_connectable.socket_connectable_t
   (** Gets [conn]'s expected server identity *)
 
   method get_validation_flags : unit -> Enums.tlscertificateflags
@@ -14,10 +11,7 @@ class type dtls_client_connection_t = object
       use correctly. See [GDtlsClientConnection:validation]-flags for more
       information. *)
 
-  method set_server_identity :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
-    unit
+  method set_server_identity : Socket_connectable.socket_connectable_t -> unit
   (** Sets [conn]'s expected server identity, which is used both to tell servers
       on virtual hosts which certificate to present, and also to let [conn] know
       what name to look for in the certificate when performing
@@ -41,23 +35,17 @@ end
 class dtls_client_connection (obj : Raw.Dtls_client_connection.t) :
   dtls_client_connection_t =
   object (self)
-    method get_server_identity :
-        unit ->
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t =
+    method get_server_identity : unit -> Socket_connectable.socket_connectable_t
+        =
       fun () ->
-        new
-          Socket_address_and__socket_address_enumerator_and__socket_connectable
-          .socket_connectable
+        new Socket_connectable.socket_connectable
           (Raw.Dtls_client_connection.get_server_identity obj)
 
     method get_validation_flags : unit -> Enums.tlscertificateflags =
       fun () -> Raw.Dtls_client_connection.get_validation_flags obj
 
-    method set_server_identity :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
-        unit =
+    method set_server_identity : Socket_connectable.socket_connectable_t -> unit
+        =
       fun identity ->
         let identity = identity#as_socket_connectable in
         Raw.Dtls_client_connection.set_server_identity obj identity

@@ -96,16 +96,11 @@ class type dtls_connection_t = object
       displayed to the user for informative purposes only, and parsing it is not
       recommended. *)
 
-  method get_database :
-    unit ->
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option
+  method get_database : unit -> Tls_database.tls_database_t option
   (** Gets the certificate database that [conn] uses to verify peer
       certificates. See g_dtls_connection_set_database(). *)
 
-  method get_interaction :
-    unit ->
-    Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-    option
+  method get_interaction : unit -> Tls_interaction.tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
       used for things like prompting the user for passwords. If [NULL] is
       returned, then no user interaction will occur for this connection. *)
@@ -206,9 +201,7 @@ class type dtls_connection_t = object
       you can tell that the server requested one by the fact that
       g_dtls_client_connection_get_accepted_cas() will return non-[NULL].) *)
 
-  method set_database :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option ->
-    unit
+  method set_database : Tls_database.tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
       g_tls_backend_get_default_database(). If set to [NULL], then peer
@@ -220,10 +213,7 @@ class type dtls_connection_t = object
       There are nonintuitive security implications when using a non-default
       database. See [GDtlsConnection:database] for details. *)
 
-  method set_interaction :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-    option ->
-    unit
+  method set_interaction : Tls_interaction.tls_interaction_t option -> unit
   (** Set the object that will be used to interact with the user. It will be
       used for things like prompting the user for passwords.
 
@@ -335,29 +325,16 @@ class dtls_connection (obj : Raw.Dtls_connection.t) : dtls_connection_t =
     method get_ciphersuite_name : unit -> string option =
       fun () -> Raw.Dtls_connection.get_ciphersuite_name obj
 
-    method get_database :
-        unit ->
-        Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
-        option =
+    method get_database : unit -> Tls_database.tls_database_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Tls_connection_and__tls_database_and__tls_interaction.tls_database
-              ret)
+          (fun ret -> new Tls_database.tls_database ret)
           (Raw.Dtls_connection.get_database obj)
 
-    method get_interaction :
-        unit ->
-        Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-        option =
+    method get_interaction : unit -> Tls_interaction.tls_interaction_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Tls_connection_and__tls_database_and__tls_interaction
-              .tls_interaction
-              ret)
+          (fun ret -> new Tls_interaction.tls_interaction ret)
           (Raw.Dtls_connection.get_interaction obj)
 
     method get_negotiated_protocol : unit -> string option =
@@ -403,18 +380,12 @@ class dtls_connection (obj : Raw.Dtls_connection.t) : dtls_connection_t =
         let certificate = certificate#as_tls_certificate in
         Raw.Dtls_connection.set_certificate obj certificate
 
-    method set_database :
-        Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
-        option ->
-        unit =
+    method set_database : Tls_database.tls_database_t option -> unit =
       fun database ->
         let database = Option.map (fun c -> c#as_tls_database) database in
         Raw.Dtls_connection.set_database obj database
 
-    method set_interaction :
-        Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-        option ->
-        unit =
+    method set_interaction : Tls_interaction.tls_interaction_t option -> unit =
       fun interaction ->
         let interaction =
           Option.map (fun c -> c#as_tls_interaction) interaction

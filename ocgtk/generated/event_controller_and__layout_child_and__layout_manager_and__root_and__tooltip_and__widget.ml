@@ -194,7 +194,7 @@ and tooltip_t = object
 end
 
 and widget_t = object
-  inherit At_context_and__accessible.accessible_t
+  inherit Accessible.accessible_t
   inherit Buildable.buildable_t
   inherit Constraint_target.constraint_target_t
 
@@ -1781,9 +1781,7 @@ and tooltip (obj : Raw.Tooltip.t) : tooltip_t =
 
 and widget (obj : Raw.Widget.t) : widget_t =
   object (self)
-    inherit
-      At_context_and__accessible.accessible (Raw.Accessible.from_gobject obj)
-
+    inherit Accessible.accessible (Raw.Accessible.from_gobject obj)
     inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 
     inherit

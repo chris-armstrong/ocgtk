@@ -1,42 +1,25 @@
 class type stack_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
-  method add_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Stack_page.stack_page_t
+  method add_child : Widget.widget_t -> Stack_page.stack_page_t
   (** Adds a child to [stack]. *)
 
-  method add_named :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option ->
-    Stack_page.stack_page_t
+  method add_named : Widget.widget_t -> string option -> Stack_page.stack_page_t
   (** Adds a child to [stack].
 
       The child is identified by the [name]. *)
 
   method add_titled :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option ->
-    string ->
-    Stack_page.stack_page_t
+    Widget.widget_t -> string option -> string -> Stack_page.stack_page_t
   (** Adds a child to [stack].
 
       The child is identified by the [name]. The [title] will be used by
       [GtkStackSwitcher] to represent [child] in a tab bar, so it should be
       short. *)
 
-  method get_child_by_name :
-    string ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child_by_name : string -> Widget.widget_t option
   (** Finds the child with the name given as the argument.
 
       Returns [NULL] if there is no child with this name. *)
@@ -48,10 +31,7 @@ class type stack_t = object
   (** Returns whether the [GtkStack] is set up to interpolate between the sizes
       of children on page switch. *)
 
-  method get_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Stack_page.stack_page_t
+  method get_page : Widget.widget_t -> Stack_page.stack_page_t
   (** Returns the [GtkStackPage] object for [child]. *)
 
   method get_pages : unit -> Selection_model.selection_model_t
@@ -76,11 +56,7 @@ class type stack_t = object
   method get_vhomogeneous : unit -> bool
   (** Gets whether [stack] is vertically homogeneous. *)
 
-  method get_visible_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_visible_child : unit -> Widget.widget_t option
   (** Gets the currently visible child of [stack].
 
       Returns [NULL] if there are no visible children. *)
@@ -90,10 +66,7 @@ class type stack_t = object
 
       Returns [NULL] if there is no visible child. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child widget from [stack]. *)
 
   method set_hhomogeneous : bool -> unit
@@ -132,10 +105,7 @@ class type stack_t = object
       its children. If it isn't, the stack may change height when a different
       child becomes visible. *)
 
-  method set_visible_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method set_visible_child : Widget.widget_t -> unit
   (** Makes [child] the visible child of [stack].
 
       If [child] is different from the currently visible child, the transition
@@ -169,50 +139,29 @@ end
 (* High-level class for Stack *)
 class stack (obj : Raw.Stack.t) : stack_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
-    method add_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Stack_page.stack_page_t =
+    method add_child : Widget.widget_t -> Stack_page.stack_page_t =
       fun child ->
         let child = child#as_widget in
         new Stack_page.stack_page (Raw.Stack.add_child obj child)
 
     method add_named :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string option ->
-        Stack_page.stack_page_t =
+        Widget.widget_t -> string option -> Stack_page.stack_page_t =
       fun child name ->
         let child = child#as_widget in
         new Stack_page.stack_page (Raw.Stack.add_named obj child name)
 
     method add_titled :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string option ->
-        string ->
-        Stack_page.stack_page_t =
+        Widget.widget_t -> string option -> string -> Stack_page.stack_page_t =
       fun child name title ->
         let child = child#as_widget in
         new Stack_page.stack_page (Raw.Stack.add_titled obj child name title)
 
-    method get_child_by_name :
-        string ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child_by_name : string -> Widget.widget_t option =
       fun name ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Stack.get_child_by_name obj name)
 
     method get_hhomogeneous : unit -> bool =
@@ -221,10 +170,7 @@ class stack (obj : Raw.Stack.t) : stack_t =
     method get_interpolate_size : unit -> bool =
       fun () -> Raw.Stack.get_interpolate_size obj
 
-    method get_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Stack_page.stack_page_t =
+    method get_page : Widget.widget_t -> Stack_page.stack_page_t =
       fun child ->
         let child = child#as_widget in
         new Stack_page.stack_page (Raw.Stack.get_page obj child)
@@ -244,27 +190,16 @@ class stack (obj : Raw.Stack.t) : stack_t =
     method get_vhomogeneous : unit -> bool =
       fun () -> Raw.Stack.get_vhomogeneous obj
 
-    method get_visible_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_visible_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Stack.get_visible_child obj)
 
     method get_visible_child_name : unit -> string option =
       fun () -> Raw.Stack.get_visible_child_name obj
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Stack.remove obj child
@@ -285,10 +220,7 @@ class stack (obj : Raw.Stack.t) : stack_t =
     method set_vhomogeneous : bool -> unit =
       fun vhomogeneous -> Raw.Stack.set_vhomogeneous obj vhomogeneous
 
-    method set_visible_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method set_visible_child : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Stack.set_visible_child obj child

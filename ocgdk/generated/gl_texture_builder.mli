@@ -30,8 +30,7 @@ class type gl_texture_builder_t = object
   (** Gets the color state previously set via
       gdk_gl_texture_builder_set_color_state(). *)
 
-  method get_context :
-    unit -> App_launch_context_cycle_de440b34.gl_context_t option
+  method get_context : unit -> Gl_context.gl_context_t option
   (** Gets the context previously set via gdk_gl_texture_builder_set_context()
       or [NULL] if none was set. *)
 
@@ -67,8 +66,7 @@ class type gl_texture_builder_t = object
       By default, the sRGB colorstate is used. If you don't know what
       colorstates are, this is probably the right thing. *)
 
-  method set_context :
-    App_launch_context_cycle_de440b34.gl_context_t option -> unit
+  method set_context : Gl_context.gl_context_t option -> unit
   (** Sets the context to be used for the texture. This is the context that owns
       the texture.
 

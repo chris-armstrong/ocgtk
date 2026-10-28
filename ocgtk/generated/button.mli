@@ -52,10 +52,7 @@
 
     [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
 class type button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
 
   (** {2:signals Signals} *)
@@ -80,11 +77,7 @@ class type button_t = object
   (** Retrieves whether the button can be smaller than the natural size of its
       contents. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button]. *)
 
   method get_has_frame : unit -> bool
@@ -117,11 +110,7 @@ class type button_t = object
 
       For icons and custom children, this function has no effect. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up

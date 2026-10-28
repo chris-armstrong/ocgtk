@@ -15,14 +15,11 @@
 
     An auxiliary class used by [GtkStack]. *)
 class type stack_page_t = object
-  inherit At_context_and__accessible.accessible_t
+  inherit Accessible.accessible_t
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_child : unit -> Widget.widget_t
   (** Returns the stack child to which [self] belongs. *)
 
   method get_icon_name : unit -> string option

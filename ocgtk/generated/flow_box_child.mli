@@ -21,9 +21,7 @@
     [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
     when necessary. *)
 class type flow_box_child_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -61,11 +59,7 @@ class type flow_box_child_t = object
       Another alternative is to call [Gtk.FlowBox.invalidate_sort] on any model
       change, but that is more expensive. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [self]. *)
 
   method get_index : unit -> int
@@ -75,11 +69,7 @@ class type flow_box_child_t = object
   (** Returns whether the [child] is currently selected in its [GtkFlowBox]
       container. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
   (** {2:conversions Conversions} *)

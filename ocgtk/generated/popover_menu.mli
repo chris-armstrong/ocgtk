@@ -12,11 +12,7 @@ class type popover_menu_t = object
 
   (** {2:methods Methods} *)
 
-  method add_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    bool
+  method add_child : Widget.widget_t -> string -> bool
   (** Adds a custom widget to a generated menu.
 
       For this to work, the menu model of [popover] must have an item with a
@@ -29,10 +25,7 @@ class type popover_menu_t = object
   method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option
   (** Returns the menu model used to populate the popover. *)
 
-  method remove_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method remove_child : Widget.widget_t -> bool
   (** Removes a widget that has previously been added with
       [Gtk.PopoverMenu.add_child] *)
 

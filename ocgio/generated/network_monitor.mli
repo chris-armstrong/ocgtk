@@ -32,8 +32,7 @@ class type network_monitor_t = object
   (** {2:methods Methods} *)
 
   method can_reach :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
+    Socket_connectable.socket_connectable_t ->
     Cancellable.cancellable_t option ->
     (bool, GError.t) result
   (** Attempts to determine whether or not the host pointed to by [connectable]

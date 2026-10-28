@@ -1,8 +1,5 @@
 class type button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
 
   (** {2:signals Signals} *)
@@ -27,11 +24,7 @@ class type button_t = object
   (** Retrieves whether the button can be smaller than the natural size of its
       contents. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button]. *)
 
   method get_has_frame : unit -> bool
@@ -64,11 +57,7 @@ class type button_t = object
 
       For icons and custom children, this function has no effect. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up
@@ -107,11 +96,7 @@ end
 (* High-level class for Button *)
 class button (obj : Raw.Button.t) : button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Actionable.actionable (Raw.Actionable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
@@ -123,19 +108,9 @@ class button (obj : Raw.Button.t) : button_t =
     method get_can_shrink : unit -> bool =
       fun () -> Raw.Button.get_can_shrink obj
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
-        Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
-          (Raw.Button.get_child obj)
+        Option.map (fun ret -> new Widget.widget ret) (Raw.Button.get_child obj)
 
     method get_has_frame : unit -> bool = fun () -> Raw.Button.get_has_frame obj
 
@@ -151,11 +126,7 @@ class button (obj : Raw.Button.t) : button_t =
     method set_can_shrink : bool -> unit =
       fun can_shrink -> Raw.Button.set_can_shrink obj can_shrink
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Button.set_child obj child

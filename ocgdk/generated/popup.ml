@@ -4,7 +4,7 @@ class type popup_t = object
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)
 
-  method get_parent : unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_parent : unit -> Surface.surface_t option
   (** Returns the parent surface of a popup. *)
 
   method get_position_x : unit -> int
@@ -52,11 +52,10 @@ class popup (obj : Raw.Popup.t) : popup_t =
   object (self)
     method get_autohide : unit -> bool = fun () -> Raw.Popup.get_autohide obj
 
-    method get_parent :
-        unit -> App_launch_context_cycle_de440b34.surface_t option =
+    method get_parent : unit -> Surface.surface_t option =
       fun () ->
         Option.map
-          (fun ret -> new App_launch_context_cycle_de440b34.surface ret)
+          (fun ret -> new Surface.surface ret)
           (Raw.Popup.get_parent obj)
 
     method get_position_x : unit -> int = fun () -> Raw.Popup.get_position_x obj

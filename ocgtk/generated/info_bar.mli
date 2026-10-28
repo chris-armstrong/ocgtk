@@ -8,9 +8,7 @@
 (** {1:class Class} *)
 
 class type info_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -35,11 +33,7 @@ class type info_bar_t = object
 
   (** {2:methods Methods} *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method add_action_widget : Widget.widget_t -> int -> unit
   (** Add an activatable widget to the action area of a [GtkInfoBar].
 
       This also connects a signal handler that will emit the
@@ -55,10 +49,7 @@ class type info_bar_t = object
       action area. The button widget is returned, but usually you don't need it.
   *)
 
-  method add_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method add_child : Widget.widget_t -> unit
   (** Adds a widget to the content area of the info bar. *)
 
   method get_message_type : unit -> Enums.messagetype
@@ -70,19 +61,13 @@ class type info_bar_t = object
   method get_show_close_button : unit -> bool
   (** Returns whether the widget will display a standard close button. *)
 
-  method remove_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_action_widget : Widget.widget_t -> unit
   (** Removes a widget from the action area of [info_bar].
 
       The widget must have been put there by a call to
       [Gtk.InfoBar.add_action_widget] or [Gtk.InfoBar.add_button]. *)
 
-  method remove_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_child : Widget.widget_t -> unit
   (** Removes a widget from the content area of the info bar. *)
 
   method response : int -> unit

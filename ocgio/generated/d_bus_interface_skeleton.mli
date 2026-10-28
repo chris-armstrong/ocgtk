@@ -16,7 +16,7 @@
 
     Abstract base class for D-Bus interfaces on the service side. *)
 class type d_bus_interface_skeleton_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
+  inherit D_bus_interface.d_bus_interface_t
 
   (** {2:signals Signals} *)
 

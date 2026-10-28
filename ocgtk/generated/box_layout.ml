@@ -1,8 +1,5 @@
 class type box_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
-
+  inherit Layout_manager.layout_manager_t
   inherit Orientable.orientable_t
 
   (** {2:methods Methods} *)
@@ -47,11 +44,7 @@ end
 (* High-level class for BoxLayout *)
 class box_layout (obj : Raw.Box_layout.t) : box_layout_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .layout_manager
-        (obj :> Raw.Layout_manager.t)
-
+    inherit Layout_manager.layout_manager (obj :> Raw.Layout_manager.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
     method get_baseline_child : unit -> int =

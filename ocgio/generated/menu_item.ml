@@ -9,7 +9,7 @@ class type menu_item_t = object
       [NULL] is returned. [NULL] is also returned if the attribute simply does
       not exist. *)
 
-  method get_link : string -> Menu_link_iter_and__menu_model.menu_model_t option
+  method get_link : string -> Menu_model.menu_model_t option
   (** Queries the named [link] on [menu_item]. *)
 
   method set_action_and_target_value :
@@ -93,8 +93,7 @@ class type menu_item_t = object
      If [label] is non-[NULL] it is used as the label for the menu item.  If\n\
      it is [NULL] then the label attribute is unset."]
 
-  method set_link :
-    string -> Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_link : string -> Menu_model.menu_model_t option -> unit
   (** Creates a link from [menu_item] to [model] if non-[NULL], or unsets it.
 
       Links are used to establish a relationship between a particular menu item
@@ -106,8 +105,7 @@ class type menu_item_t = object
       names must begin with a lowercase character, must not end with a '-', and
       must not contain consecutive dashes. *)
 
-  method set_section :
-    Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_section : Menu_model.menu_model_t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"section\" link of [menu_item] to [section].\n\n\
      The effect of having one menu appear as a section of another is\n\
@@ -116,8 +114,7 @@ class type menu_item_t = object
      for more information about what it means for a menu item to be a\n\
      section."]
 
-  method set_submenu :
-    Menu_link_iter_and__menu_model.menu_model_t option -> unit
+  method set_submenu : Menu_model.menu_model_t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"submenu\" link of [menu_item] to [submenu].\n\n\
      If [submenu] is non-[NULL], it is linked to.  If it is [NULL] then the\n\
@@ -138,11 +135,10 @@ class menu_item (obj : Raw.Menu_item.t) : menu_item_t =
       fun attribute expected_type ->
         Raw.Menu_item.get_attribute_value obj attribute expected_type
 
-    method get_link :
-        string -> Menu_link_iter_and__menu_model.menu_model_t option =
+    method get_link : string -> Menu_model.menu_model_t option =
       fun link ->
         Option.map
-          (fun ret -> new Menu_link_iter_and__menu_model.menu_model ret)
+          (fun ret -> new Menu_model.menu_model ret)
           (Raw.Menu_item.get_link obj link)
 
     method set_action_and_target_value :
@@ -166,20 +162,17 @@ class menu_item (obj : Raw.Menu_item.t) : menu_item_t =
     method set_label : string option -> unit =
       fun label -> Raw.Menu_item.set_label obj label
 
-    method set_link :
-        string -> Menu_link_iter_and__menu_model.menu_model_t option -> unit =
+    method set_link : string -> Menu_model.menu_model_t option -> unit =
       fun link model ->
         let model = Option.map (fun c -> c#as_menu_model) model in
         Raw.Menu_item.set_link obj link model
 
-    method set_section :
-        Menu_link_iter_and__menu_model.menu_model_t option -> unit =
+    method set_section : Menu_model.menu_model_t option -> unit =
       fun section ->
         let section = Option.map (fun c -> c#as_menu_model) section in
         Raw.Menu_item.set_section obj section
 
-    method set_submenu :
-        Menu_link_iter_and__menu_model.menu_model_t option -> unit =
+    method set_submenu : Menu_model.menu_model_t option -> unit =
       fun submenu ->
         let submenu = Option.map (fun c -> c#as_menu_model) submenu in
         Raw.Menu_item.set_submenu obj submenu
@@ -192,20 +185,20 @@ let new_ (label : string option) (detailed_action : string option) : menu_item_t
   let obj_ = Raw.Menu_item.new_ label detailed_action in
   new menu_item obj_
 
-let new_from_model (model : Menu_link_iter_and__menu_model.menu_model_t)
-    (item_index : int) : menu_item_t =
+let new_from_model (model : Menu_model.menu_model_t) (item_index : int) :
+    menu_item_t =
   let model = model#as_menu_model in
   let obj_ = Raw.Menu_item.new_from_model model item_index in
   new menu_item obj_
 
-let new_section (label : string option)
-    (section : Menu_link_iter_and__menu_model.menu_model_t) : menu_item_t =
+let new_section (label : string option) (section : Menu_model.menu_model_t) :
+    menu_item_t =
   let section = section#as_menu_model in
   let obj_ = Raw.Menu_item.new_section label section in
   new menu_item obj_
 
-let new_submenu (label : string option)
-    (submenu : Menu_link_iter_and__menu_model.menu_model_t) : menu_item_t =
+let new_submenu (label : string option) (submenu : Menu_model.menu_model_t) :
+    menu_item_t =
   let submenu = submenu#as_menu_model in
   let obj_ = Raw.Menu_item.new_submenu label submenu in
   new menu_item obj_

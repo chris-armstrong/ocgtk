@@ -48,12 +48,7 @@ class type renderer_t = object
       This should be called while [renderer] is already active. Use
       [Pango.Renderer.activate] to activate a renderer. *)
 
-  method draw_glyph :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    int ->
-    float ->
-    float ->
-    unit
+  method draw_glyph : Font.font_t -> int -> float -> float -> unit
   (** Draws a single glyph with coordinates in device space. *)
 
   method draw_glyph_item :
@@ -77,15 +72,10 @@ class type renderer_t = object
       The default implementation of this method simply falls back to
       [Pango.Renderer.draw_glyphs]. *)
 
-  method draw_glyphs :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    Raw.Glyph_string.t ->
-    int ->
-    int ->
-    unit
+  method draw_glyphs : Font.font_t -> Raw.Glyph_string.t -> int -> int -> unit
   (** Draws the glyphs in [glyphs] with the specified [PangoRenderer]. *)
 
-  method draw_layout : Layout_and__layout_iter.layout_t -> int -> int -> unit
+  method draw_layout : Layout.layout_t -> int -> int -> unit
   (** Draws [layout] with the specified [PangoRenderer].
 
       This is equivalent to drawing the lines of the layout, at their respective
@@ -123,7 +113,7 @@ class type renderer_t = object
   method get_color : Enums.renderpart -> Raw.Color.t option
   (** Gets the current rendering color for the specified part. *)
 
-  method get_layout : unit -> Layout_and__layout_iter.layout_t option
+  method get_layout : unit -> Layout.layout_t option
   (** Gets the layout currently being rendered using [renderer].
 
       Calling this function only makes sense from inside a subclass's methods,

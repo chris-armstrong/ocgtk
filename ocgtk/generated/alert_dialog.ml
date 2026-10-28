@@ -49,8 +49,7 @@ class type alert_dialog_t = object
   (** Sets whether the alert blocks interaction with the parent window while it
       is presented. *)
 
-  method show :
-    Application_and__window_and__window_group.window_t option -> unit
+  method show : Window.window_t option -> unit
   (** Shows the alert to the user.
 
       This function is a simpler version of [Gtk.AlertDialog.choose] intended
@@ -109,8 +108,7 @@ class alert_dialog (obj : Raw.Alert_dialog.t) : alert_dialog_t =
     method set_modal : bool -> unit =
       fun modal -> Raw.Alert_dialog.set_modal obj modal
 
-    method show :
-        Application_and__window_and__window_group.window_t option -> unit =
+    method show : Window.window_t option -> unit =
       fun parent ->
         let parent = Option.map (fun c -> c#as_window) parent in
         Raw.Alert_dialog.show obj parent

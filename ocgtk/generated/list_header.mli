@@ -19,11 +19,7 @@
 class type list_header_t = object
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child previously set via gtk_list_header_set_child() or [NULL] if
       none was set. *)
 
@@ -50,11 +46,7 @@ class type list_header_t = object
 
       If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child to be used for this listitem.
 
       This function is typically called by applications when setting up a header

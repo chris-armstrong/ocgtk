@@ -8,7 +8,7 @@
 (** {1:class Class} *)
 
 class type about_dialog_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 

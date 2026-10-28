@@ -8,7 +8,7 @@
 (** {1:class Class} *)
 
 class type dialog_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 
@@ -34,11 +34,7 @@ class type dialog_t = object
 
   (** {2:methods Methods} *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method add_action_widget : Widget.widget_t -> int -> unit
   (** Adds an activatable widget to the action area of a [GtkDialog].
 
       GTK connects a signal handler that will emit the [Gtk.Dialog::response]
@@ -48,11 +44,7 @@ class type dialog_t = object
       If you want to add a non-activatable widget, simply pack it into the
       [action_area] field of the [GtkDialog] struct. *)
 
-  method add_button :
-    string ->
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method add_button : string -> int -> Widget.widget_t
   (** Adds a button with the given text.
 
       GTK arranges things so that clicking the button will emit the
@@ -69,17 +61,10 @@ class type dialog_t = object
       Note that the headerbar is only used by the dialog if the
       [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
 
-  method get_response_for_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method get_response_for_widget : Widget.widget_t -> int
   (** Gets the response id of a widget in the action area of a dialog. *)
 
-  method get_widget_for_response :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_widget_for_response : int -> Widget.widget_t option
   (** Gets the widget button that uses the given response ID in the action area
       of a dialog. *)
 

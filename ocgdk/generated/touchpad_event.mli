@@ -18,7 +18,7 @@
     touchpad gestures are typically processed by the system, resulting in these
     events. *)
 class type touchpad_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
 
   (** {2:methods Methods} *)
 

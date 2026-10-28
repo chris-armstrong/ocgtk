@@ -93,10 +93,7 @@
 
     [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
 class type text_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
   inherit Scrollable.scrollable_t
 
@@ -274,18 +271,10 @@ class type text_view_t = object
   (** {2:methods Methods} *)
 
   method add_child_at_anchor :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Text_child_anchor.text_child_anchor_t ->
-    unit
+    Widget.widget_t -> Text_child_anchor.text_child_anchor_t -> unit
   (** Adds a child widget in the text buffer, at the given [anchor]. *)
 
-  method add_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int ->
-    unit
+  method add_overlay : Widget.widget_t -> int -> int -> unit
   (** Adds [child] at a fixed coordinate in the [GtkTextView]'s text window.
 
       The [xpos] and [ypos] must be in buffer coordinates (see
@@ -348,8 +337,7 @@ class type text_view_t = object
   method get_bottom_margin : unit -> int
   (** Gets the bottom margin for text in the [text_view]. *)
 
-  method get_buffer :
-    unit -> Text_buffer_and__text_iter_and__text_mark.text_buffer_t
+  method get_buffer : unit -> Text_buffer.text_buffer_t
   (** Returns the [GtkTextBuffer] being displayed by this text view.
 
       The reference count on the buffer is not incremented; the caller of this
@@ -367,11 +355,7 @@ class type text_view_t = object
   (** Gets the menu model that gets added to the context menu or [NULL] if none
       has been set. *)
 
-  method get_gutter :
-    Enums.textwindowtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_gutter : Enums.textwindowtype -> Widget.widget_t option
   (** Gets a [GtkWidget] that has previously been set as gutter.
 
       See [Gtk.TextView.set_gutter].
@@ -486,17 +470,11 @@ class type text_view_t = object
       }
       ]} *)
 
-  method move_mark_onscreen :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t -> bool
+  method move_mark_onscreen : Text_mark.text_mark_t -> bool
   (** Moves a mark within the buffer so that it's located within the
       currently-visible text area. *)
 
-  method move_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int ->
-    unit
+  method move_overlay : Widget.widget_t -> int -> int -> unit
   (** Updates the position of a child.
 
       See [Gtk.TextView.add_overlay]. *)
@@ -517,10 +495,7 @@ class type text_view_t = object
   method place_cursor_onscreen : unit -> bool
   (** Moves the cursor to the currently visible region of the buffer. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child widget from [text_view]. *)
 
   method reset_cursor_blink : unit -> unit
@@ -538,8 +513,7 @@ class type text_view_t = object
       This can be necessary in the case where modifying the buffer would confuse
       on-going input method behavior. *)
 
-  method scroll_mark_onscreen :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t -> unit
+  method scroll_mark_onscreen : Text_mark.text_mark_t -> unit
   (** Scrolls [text_view] the minimum distance such that [mark] is contained
       within the visible area of the widget. *)
 
@@ -562,12 +536,7 @@ class type text_view_t = object
       line validation. *)
 
   method scroll_to_mark :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t ->
-    float ->
-    bool ->
-    float ->
-    float ->
-    unit
+    Text_mark.text_mark_t -> float -> bool -> float -> float -> unit
   (** Scrolls [text_view] so that [mark] is on the screen in the position
       indicated by [xalign] and [yalign].
 
@@ -593,8 +562,7 @@ class type text_view_t = object
       Note that this function is confusingly named. In CSS terms, the value set
       here is padding. *)
 
-  method set_buffer :
-    Text_buffer_and__text_iter_and__text_mark.text_buffer_t option -> unit
+  method set_buffer : Text_buffer.text_buffer_t option -> unit
   (** Sets [buffer] as the buffer being displayed by [text_view].
 
       The previous buffer displayed by the text view is unreferenced, and a
@@ -623,12 +591,7 @@ class type text_view_t = object
 
       You can pass [NULL] to remove a previously set extra menu. *)
 
-  method set_gutter :
-    Enums.textwindowtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_gutter : Enums.textwindowtype -> Widget.widget_t option -> unit
   (** Places [widget] into the gutter specified by [win].
 
       [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
@@ -828,8 +791,7 @@ val new_ : unit -> text_view_t
     [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
     [Gtk.TextView.new_with_buffer]. *)
 
-val new_with_buffer :
-  Text_buffer_and__text_iter_and__text_mark.text_buffer_t -> text_view_t
+val new_with_buffer : Text_buffer.text_buffer_t -> text_view_t
 (** Creates a new [GtkTextView] widget displaying the buffer [buffer].
 
     One buffer can be shared among many widgets. [buffer] may be [NULL] to

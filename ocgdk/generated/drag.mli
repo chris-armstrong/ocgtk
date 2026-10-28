@@ -47,14 +47,13 @@ class type drag_t = object
   method get_content : unit -> Content_provider.content_provider_t
   (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] associated to the [GdkDrag] object. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that the drag object was created for. *)
 
-  method get_drag_surface :
-    unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_drag_surface : unit -> Surface.surface_t option
   (** Returns the surface on which the drag icon should be rendered during the
       drag operation.
 
@@ -69,7 +68,7 @@ class type drag_t = object
   method get_selected_action : unit -> Enums.dragaction
   (** Determines the action chosen by the drag destination. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] where the drag originates. *)
 
   method set_hotspot : int -> int -> unit

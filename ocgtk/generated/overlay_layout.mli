@@ -20,9 +20,7 @@
     [GtkOverlay]. It is only listed here so that its layout properties get
     documented. *)
 class type overlay_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
 
   (** {2:conversions Conversions} *)
 

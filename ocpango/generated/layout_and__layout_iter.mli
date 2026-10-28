@@ -67,8 +67,7 @@ class type layout_t = object
   method get_character_count : unit -> int
   (** Returns the number of Unicode characters in the the text of [layout]. *)
 
-  method get_context :
-    unit -> Context_and__font_and__font_map_and__fontset.context_t
+  method get_context : unit -> Context.context_t
   (** Retrieves the [PangoContext] used for this layout. *)
 
   method get_direction : int -> Enums.direction
@@ -527,6 +526,6 @@ class layout : Raw.Layout.t -> layout_t
 
 and layout_iter : Raw.Layout_iter.t -> layout_iter_t
 
-val new_ : Context_and__font_and__font_map_and__fontset.context_t -> layout_t
+val new_ : Context.context_t -> layout_t
 (** Create a new [PangoLayout] object with attributes initialized to default
     values for a particular [PangoContext]. *)

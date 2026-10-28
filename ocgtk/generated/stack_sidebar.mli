@@ -33,9 +33,7 @@
     When circumstances require it, [GtkStackSidebar] adds the .needs-attention
     style class to the widgets representing the stack pages. *)
 class type stack_sidebar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 

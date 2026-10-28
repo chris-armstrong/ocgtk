@@ -79,9 +79,7 @@
     [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
     uses the [Gtk.AccessibleRole.list_item] role. *)
 class type list_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -161,10 +159,7 @@ class type list_box_t = object
 
   (** {2:methods Methods} *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method append : Widget.widget_t -> unit
   (** Append a widget to the list.
 
       If a sort function is set, the widget will actually be inserted at the
@@ -220,11 +215,7 @@ class type list_box_t = object
   (** Returns the behavior of the <kbd>Tab</kbd> and
       <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
 
-  method insert :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method insert : Widget.widget_t -> int -> unit
   (** Insert the [child] into the [box] at [position].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -253,19 +244,13 @@ class type list_box_t = object
       Call this when result of the sort function on the [box] is changed due to
       an external factor. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Prepend a widget to the list.
 
       If a sort function is set, the widget will actually be inserted at the
       calculated position. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit
@@ -294,11 +279,7 @@ class type list_box_t = object
       the adjustment from that will be picked up automatically, so there is no
       need to manually do that. *)
 
-  method set_placeholder :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_placeholder : Widget.widget_t option -> unit
   (** Sets the placeholder widget that is shown in the list when it doesn't
       display any visible children. *)
 

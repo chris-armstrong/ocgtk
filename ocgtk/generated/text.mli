@@ -129,10 +129,7 @@
     as a delegate for a [GtkEditable] implementation that will be represented to
     accessibility. *)
 class type text_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
   inherit Editable.editable_t
 

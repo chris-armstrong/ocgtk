@@ -358,16 +358,9 @@ end
 
     From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role. *)
 and window_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Native.native_t
-
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .root_t
-
+  inherit Root.root_t
   inherit Shortcut_manager.shortcut_manager_t
 
   (** {2:signals Signals} *)
@@ -456,21 +449,13 @@ and window_t = object
   method get_application : unit -> application_t option
   (** Gets the application object associated with the window. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of the window. *)
 
   method get_decorated : unit -> bool
   (** Returns whether the window has been set to have decorations. *)
 
-  method get_default_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_default_widget : unit -> Widget.widget_t option
   (** Returns the default widget for [window]. *)
 
   method get_deletable : unit -> bool
@@ -514,11 +499,7 @@ and window_t = object
   method get_title : unit -> string option
   (** Retrieves the title of the window. *)
 
-  method get_titlebar :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_titlebar : unit -> Widget.widget_t option
   (** Returns the titlebar that has been set with [Gtk.Window.set_titlebar]. *)
 
   method get_transient_for : unit -> window_t option
@@ -630,11 +611,7 @@ and window_t = object
       This is equivalent to calling [Gtk.Application.remove_window] and/or
       [Gtk.Application.add_window] on the old/new applications as relevant. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of the window. *)
 
   method set_decorated : bool -> unit
@@ -678,11 +655,7 @@ and window_t = object
      directly will not work in all circumstances and can lead to growing\n\
      or shrinking windows."]
 
-  method set_default_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_default_widget : Widget.widget_t option -> unit
   (** Sets the default widget.
 
       The default widget is the widget that is activated when the user presses
@@ -789,11 +762,7 @@ and window_t = object
 
       Passing [NULL] does the same as setting the title to an empty string. *)
 
-  method set_titlebar :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_titlebar : Widget.widget_t option -> unit
   (** Sets a custom titlebar for the window.
 
       A typical widget used here is [Gtk.HeaderBar], as it provides various

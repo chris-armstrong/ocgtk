@@ -3,10 +3,7 @@ class type socket_listener_t = object
 
   method on_event :
     ?after:bool ->
-    callback:
-      (event:Enums.socketlistenerevent ->
-      socket:Socket_and__socket_connection.socket_t ->
-      unit) ->
+    callback:(event:Enums.socketlistenerevent -> socket:Socket.socket_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when [listener]'s activity on [socket] changes state. Note that
@@ -61,7 +58,7 @@ class type socket_listener_t = object
       references may be held internally. *)
 
   method add_socket :
-    Socket_and__socket_connection.socket_t ->
+    Socket.socket_t ->
     [ `object_ ] Gobject.obj option ->
     (bool, GError.t) result
   (** Adds [socket] to the set of sockets that we try to accept new clients
@@ -110,8 +107,7 @@ class socket_listener (obj : Raw.Socket_listener.t) : socket_listener_t =
     method on_event ?(after = false) ~callback () =
       Raw.Socket_listener.on_event ~after self#as_socket_listener
         ~callback:(fun ~event ~socket ->
-          callback ~event
-            ~socket:(new Socket_and__socket_connection.socket socket))
+          callback ~event ~socket:(new Socket.socket socket))
 
     method add_any_inet_port :
         [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result =
@@ -124,7 +120,7 @@ class socket_listener (obj : Raw.Socket_listener.t) : socket_listener_t =
         Raw.Socket_listener.add_inet_port obj port source_object
 
     method add_socket :
-        Socket_and__socket_connection.socket_t ->
+        Socket.socket_t ->
         [ `object_ ] Gobject.obj option ->
         (bool, GError.t) result =
       fun socket source_object ->

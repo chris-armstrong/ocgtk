@@ -8,10 +8,7 @@
 (** {1:class Class} *)
 
 class type check_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
 
   (** {2:signals Signals} *)
@@ -38,11 +35,7 @@ class type check_button_t = object
   method get_active : unit -> bool
   (** Returns whether the check button is active. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
   *)
 
@@ -59,11 +52,7 @@ class type check_button_t = object
   method set_active : bool -> unit
   (** Changes the check buttons active state. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up

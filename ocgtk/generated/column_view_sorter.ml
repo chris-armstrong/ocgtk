@@ -13,7 +13,7 @@ class type column_view_sorter_t = object
       sort columns changes. *)
 
   method get_primary_sort_column :
-    unit -> Column_view_and__column_view_column.column_view_column_t option
+    unit -> Column_view_column.column_view_column_t option
   (** Returns the primary sort column.
 
       The primary sort column is the one that displays the triangle in a column
@@ -43,12 +43,10 @@ class column_view_sorter (obj : Raw.Column_view_sorter.t) : column_view_sorter_t
       fun () -> Raw.Column_view_sorter.get_n_sort_columns obj
 
     method get_primary_sort_column :
-        unit -> Column_view_and__column_view_column.column_view_column_t option
-        =
+        unit -> Column_view_column.column_view_column_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new Column_view_and__column_view_column.column_view_column ret)
+          (fun ret -> new Column_view_column.column_view_column ret)
           (Raw.Column_view_sorter.get_primary_sort_column obj)
 
     method get_primary_sort_order : unit -> Enums.sorttype =

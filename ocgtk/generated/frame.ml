@@ -1,15 +1,9 @@
 class type frame_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [frame]. *)
 
   method get_label : unit -> string option
@@ -20,18 +14,10 @@ class type frame_t = object
   method get_label_align : unit -> float
   (** Retrieves the X alignment of the frame’s label. *)
 
-  method get_label_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_label_widget : unit -> Widget.widget_t option
   (** Retrieves the label widget for the frame. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [frame]. *)
 
   method set_label : string option -> unit
@@ -43,11 +29,7 @@ class type frame_t = object
 
       The default value for a newly created frame is 0.0. *)
 
-  method set_label_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_label_widget : Widget.widget_t option -> unit
   (** Sets the label widget for the frame.
 
       This is the widget that will appear embedded in the top edge of the frame
@@ -61,49 +43,24 @@ end
 (* High-level class for Frame *)
 class frame (obj : Raw.Frame.t) : frame_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
-        Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
-          (Raw.Frame.get_child obj)
+        Option.map (fun ret -> new Widget.widget ret) (Raw.Frame.get_child obj)
 
     method get_label : unit -> string option = fun () -> Raw.Frame.get_label obj
 
     method get_label_align : unit -> float =
       fun () -> Raw.Frame.get_label_align obj
 
-    method get_label_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_label_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Frame.get_label_widget obj)
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Frame.set_child obj child
@@ -114,11 +71,7 @@ class frame (obj : Raw.Frame.t) : frame_t =
     method set_label_align : float -> unit =
       fun xalign -> Raw.Frame.set_label_align obj xalign
 
-    method set_label_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_label_widget : Widget.widget_t option -> unit =
       fun label_widget ->
         let label_widget = Option.map (fun c -> c#as_widget) label_widget in
         Raw.Frame.set_label_widget obj label_widget

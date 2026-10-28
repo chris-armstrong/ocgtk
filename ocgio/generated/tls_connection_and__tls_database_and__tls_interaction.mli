@@ -375,9 +375,7 @@ and tls_database_t = object
   method verify_chain :
     Tls_certificate.tls_certificate_t ->
     string ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
-    option ->
+    Socket_connectable.socket_connectable_t option ->
     tls_interaction_t option ->
     Enums.tlsdatabaseverifyflags ->
     Cancellable.cancellable_t option ->

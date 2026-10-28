@@ -73,10 +73,7 @@
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
     uses the [Gtk.AccessibleRole.grid_cell] role. *)
 class type flow_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
   (** {2:signals Signals} *)
@@ -157,10 +154,7 @@ class type flow_box_t = object
 
   (** {2:methods Methods} *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method append : Widget.widget_t -> unit
   (** Adds [child] to the end of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -200,11 +194,7 @@ class type flow_box_t = object
   method get_selection_mode : unit -> Enums.selectionmode
   (** Gets the selection mode of [box]. *)
 
-  method insert :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method insert : Widget.widget_t -> int -> unit
   (** Inserts the [widget] into [box] at [position].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -227,10 +217,7 @@ class type flow_box_t = object
       Call this when the result of the sort function on [box] is changed due to
       an external factor. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Adds [child] to the start of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -238,10 +225,7 @@ class type flow_box_t = object
 
       See also: [Gtk.FlowBox.insert]. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit

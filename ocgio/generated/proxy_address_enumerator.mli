@@ -26,15 +26,11 @@
     configured; there should be no need to manually wrap a
     [Gio.SocketAddressEnumerator] instance with one. *)
 class type proxy_address_enumerator_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_enumerator_t
+  inherit Socket_address_enumerator.socket_address_enumerator_t
 
   (** {2:properties Properties} *)
 
-  method connectable :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  method connectable : Socket_connectable.socket_connectable_t
   (** The connectable being enumerated. *)
 
   method default_port : int

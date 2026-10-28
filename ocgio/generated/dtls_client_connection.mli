@@ -19,10 +19,7 @@
 class type dtls_client_connection_t = object
   (** {2:methods Methods} *)
 
-  method get_server_identity :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  method get_server_identity : unit -> Socket_connectable.socket_connectable_t
   (** Gets [conn]'s expected server identity *)
 
   method get_validation_flags : unit -> Enums.tlscertificateflags
@@ -32,10 +29,7 @@ class type dtls_client_connection_t = object
       use correctly. See [GDtlsClientConnection:validation]-flags for more
       information. *)
 
-  method set_server_identity :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
-    unit
+  method set_server_identity : Socket_connectable.socket_connectable_t -> unit
   (** Sets [conn]'s expected server identity, which is used both to tell servers
       on virtual hosts which certificate to present, and also to let [conn] know
       what name to look for in the certificate when performing

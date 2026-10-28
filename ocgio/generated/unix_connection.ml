@@ -1,5 +1,5 @@
 class type unix_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
 
   (** {2:methods Methods} *)
 
@@ -81,9 +81,7 @@ end
 (* High-level class for UnixConnection *)
 class unix_connection (obj : Raw.Unix_connection.t) : unix_connection_t =
   object (self)
-    inherit
-      Socket_and__socket_connection.socket_connection
-        (obj :> Raw.Socket_connection.t)
+    inherit Socket_connection.socket_connection (obj :> Raw.Socket_connection.t)
 
     method receive_credentials :
         Cancellable.cancellable_t option ->

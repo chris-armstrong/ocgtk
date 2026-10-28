@@ -31,10 +31,10 @@ class type drop_t = object
       or [Gdk.Drop.finish]. The source side will not change this value anymore
       once a drop has started. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] performing the drop. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that [self] was created for. *)
 
   method get_drag : unit -> Drag.drag_t option
@@ -47,7 +47,7 @@ class type drop_t = object
   (** Returns the [GdkContentFormats] that the drop offers the data to be read
       in. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] performing the drop. *)
 
   method read_value_finish :

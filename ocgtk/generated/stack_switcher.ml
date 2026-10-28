@@ -1,8 +1,5 @@
 class type stack_switcher_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
   (** {2:methods Methods} *)
@@ -21,11 +18,7 @@ end
 (* High-level class for StackSwitcher *)
 class stack_switcher (obj : Raw.Stack_switcher.t) : stack_switcher_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
     method get_stack : unit -> Stack.stack_t option =

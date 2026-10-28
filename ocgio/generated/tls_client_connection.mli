@@ -47,10 +47,7 @@ class type tls_client_connection_t = object
       copied without regard for privacy considerations. *)
 
   method get_server_identity :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
-    option
+    unit -> Socket_connectable.socket_connectable_t option
   (** Gets [conn]'s expected server identity *)
 
   method get_use_ssl3 : unit -> bool
@@ -64,10 +61,7 @@ class type tls_client_connection_t = object
       use correctly. See [GTlsClientConnection:validation]-flags for more
       information. *)
 
-  method set_server_identity :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
-    unit
+  method set_server_identity : Socket_connectable.socket_connectable_t -> unit
   (** Sets [conn]'s expected server identity, which is used both to tell servers
       on virtual hosts which certificate to present, and also to let [conn] know
       what name to look for in the certificate when performing

@@ -123,11 +123,7 @@ class type im_context_t = object
 
       This will typically cause the input method to clear the preedit state. *)
 
-  method set_client_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_client_widget : Widget.widget_t option -> unit
   (** Set the client widget for the input context.
 
       This is the [GtkWidget] holding the input focus. This widget is used in

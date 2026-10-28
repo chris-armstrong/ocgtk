@@ -33,8 +33,7 @@ class type cell_area_t = object
 
   method activate :
     cell_area_context_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
     bool ->
@@ -44,8 +43,7 @@ class type cell_area_t = object
       a widget if it currently has the focus. *)
 
   method activate_cell :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Cell_renderer.cell_renderer_t ->
     Ocgdk.Event.event_t ->
     Ocgdk.Rectangle.rectangle_t ->
@@ -114,8 +112,7 @@ class type cell_area_t = object
 
   method event :
     cell_area_context_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Ocgdk.Event.event_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
@@ -193,8 +190,7 @@ class type cell_area_t = object
 
   method snapshot :
     cell_area_context_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Snapshot.snapshot_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
@@ -379,8 +375,7 @@ class cell_area (obj : Raw.Cell_area.t) : cell_area_t =
 
     method activate :
         cell_area_context_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
+        Widget.widget_t ->
         Ocgdk.Rectangle.rectangle_t ->
         Enums.cellrendererstate ->
         bool ->
@@ -392,8 +387,7 @@ class cell_area (obj : Raw.Cell_area.t) : cell_area_t =
         Raw.Cell_area.activate obj context widget cell_area flags edit_only
 
     method activate_cell :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
+        Widget.widget_t ->
         Cell_renderer.cell_renderer_t ->
         Ocgdk.Event.event_t ->
         Ocgdk.Rectangle.rectangle_t ->
@@ -465,8 +459,7 @@ class cell_area (obj : Raw.Cell_area.t) : cell_area_t =
 
     method event :
         cell_area_context_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
+        Widget.widget_t ->
         Ocgdk.Event.event_t ->
         Ocgdk.Rectangle.rectangle_t ->
         Enums.cellrendererstate ->
@@ -554,8 +547,7 @@ class cell_area (obj : Raw.Cell_area.t) : cell_area_t =
 
     method snapshot :
         cell_area_context_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
+        Widget.widget_t ->
         Snapshot.snapshot_t ->
         Ocgdk.Rectangle.rectangle_t ->
         Ocgdk.Rectangle.rectangle_t ->

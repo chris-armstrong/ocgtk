@@ -3,10 +3,7 @@ class type message_dialog_t = object
 
   (** {2:methods Methods} *)
 
-  method get_message_area :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_message_area : unit -> Widget.widget_t
   (** Returns the message area of the dialog.
 
       This is the box where the dialog’s primary and secondary labels are
@@ -71,15 +68,8 @@ class message_dialog (obj : Raw.Message_dialog.t) : message_dialog_t =
   object (self)
     inherit Dialog.dialog (obj :> Raw.Dialog.t)
 
-    method get_message_area :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Message_dialog.get_message_area obj)
+    method get_message_area : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Message_dialog.get_message_area obj)
 
     method set_markup : string -> unit =
       fun str -> Raw.Message_dialog.set_markup obj str

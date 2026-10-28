@@ -94,9 +94,7 @@
     If you need more complex control over your widget, you should consider
     creating your own [GtkWidget] subclass. *)
 class type drawing_area_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 

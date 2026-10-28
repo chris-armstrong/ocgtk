@@ -20,9 +20,7 @@
     [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
     reflect changes in the pointer position as it moves over the widget. *)
 class type event_controller_motion_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 

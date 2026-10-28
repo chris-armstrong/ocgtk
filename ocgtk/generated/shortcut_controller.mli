@@ -58,10 +58,7 @@
     [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
     triggers. *)
 class type shortcut_controller_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
-
+  inherit Event_controller.event_controller_t
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
 

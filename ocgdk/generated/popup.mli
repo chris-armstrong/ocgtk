@@ -24,7 +24,7 @@ class type popup_t = object
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)
 
-  method get_parent : unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_parent : unit -> Surface.surface_t option
   (** Returns the parent surface of a popup. *)
 
   method get_position_x : unit -> int

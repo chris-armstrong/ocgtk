@@ -1,8 +1,5 @@
 class type entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t
 
@@ -638,11 +635,7 @@ end
 (* High-level class for Entry *)
 class entry (obj : Raw.Entry.t) : entry_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Cell_editable.cell_editable (Raw.Cell_editable.from_gobject obj)
     inherit Editable.editable (Raw.Editable.from_gobject obj)
 

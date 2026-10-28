@@ -18,11 +18,11 @@
     When creating a [PangoFontsetSimple], you have to provide the array of fonts
     that make up the fontset. *)
 class type fontset_simple_t = object
-  inherit Context_and__font_and__font_map_and__fontset.fontset_t
+  inherit Fontset.fontset_t
 
   (** {2:methods Methods} *)
 
-  method append : Context_and__font_and__font_map_and__fontset.font_t -> unit
+  method append : Font.font_t -> unit
   (** Adds a font to the fontset.
 
       The fontset takes ownership of [font]. *)

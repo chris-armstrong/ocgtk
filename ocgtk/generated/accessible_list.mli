@@ -12,7 +12,7 @@
 class type accessible_list_t = object
   (** {2:methods Methods} *)
 
-  method get_objects : unit -> At_context_and__accessible.accessible_t list
+  method get_objects : unit -> Accessible.accessible_t list
   (** Gets the list of objects this boxed type holds. *)
 
   (** {2:conversions Conversions} *)

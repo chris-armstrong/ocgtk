@@ -32,9 +32,7 @@ class type socket_client_t = object
     ?after:bool ->
     callback:
       (event:Enums.socketclientevent ->
-      connectable:
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
+      connectable:Socket_connectable.socket_connectable_t ->
       connection:Io_stream.io_stream_t option ->
       unit) ->
     unit ->
@@ -112,10 +110,9 @@ class type socket_client_t = object
       specific handshake. *)
 
   method connect :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
+    Socket_connectable.socket_connectable_t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Tries to resolve the [connectable] and make a network connection to it.
 
       Upon a successful connection, a new [GSocketConnection] is constructed and
@@ -138,7 +135,7 @@ class type socket_client_t = object
 
   method connect_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See g_socket_client_connect_async()
   *)
 
@@ -146,7 +143,7 @@ class type socket_client_t = object
     string ->
     UInt16.t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** This is a helper function for g_socket_client_connect().
 
       Attempts to create a TCP connection to the named host.
@@ -180,7 +177,7 @@ class type socket_client_t = object
 
   method connect_to_host_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_host_async() *)
 
@@ -188,7 +185,7 @@ class type socket_client_t = object
     string ->
     string ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   [@@ocaml.doc
     "Attempts to create a TCP connection to a service.\n\n\
      This call looks up the SRV record for [service] at [domain] for the\n\
@@ -204,7 +201,7 @@ class type socket_client_t = object
 
   method connect_to_service_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_service_async() *)
 
@@ -212,7 +209,7 @@ class type socket_client_t = object
     string ->
     UInt16.t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   [@@ocaml.doc
     "This is a helper function for g_socket_client_connect().\n\n\
      Attempts to create a TCP connection with a network URI.\n\n\
@@ -233,7 +230,7 @@ class type socket_client_t = object
 
   method connect_to_uri_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_uri_async() *)
 
@@ -245,11 +242,7 @@ class type socket_client_t = object
 
       See g_socket_client_set_family() for details. *)
 
-  method get_local_address :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
-    option
+  method get_local_address : unit -> Socket_address.socket_address_t option
   (** Gets the local address of the socket client.
 
       See g_socket_client_set_local_address() for details. *)
@@ -302,11 +295,7 @@ class type socket_client_t = object
       connection to be an ipv4 socket, even though the address might be an ipv6
       mapped to ipv4 address. *)
 
-  method set_local_address :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
-    option ->
-    unit
+  method set_local_address : Socket_address.socket_address_t option -> unit
   (** Sets the local address of the socket client. The sockets created by this
       object will bound to the specified address (if not [NULL]) before
       connecting.

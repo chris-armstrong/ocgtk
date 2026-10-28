@@ -62,8 +62,7 @@ class type native_dialog_t = object
   method get_title : unit -> string option
   (** Gets the title of the [GtkNativeDialog]. *)
 
-  method get_transient_for :
-    unit -> Application_and__window_and__window_group.window_t option
+  method get_transient_for : unit -> Window.window_t option
   (** Fetches the transient parent for this window. *)
 
   method get_visible : unit -> bool
@@ -89,8 +88,7 @@ class type native_dialog_t = object
   method set_title : string -> unit
   (** Sets the title of the [GtkNativeDialog.] *)
 
-  method set_transient_for :
-    Application_and__window_and__window_group.window_t option -> unit
+  method set_transient_for : Window.window_t option -> unit
   (** Dialog windows should be set transient for the main application window
       they were spawned from.
 

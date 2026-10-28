@@ -1,7 +1,5 @@
 class type header_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -12,11 +10,7 @@ class type header_bar_t = object
   (** Returns whether this header bar shows the standard window title buttons.
   *)
 
-  method get_title_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_title_widget : unit -> Widget.widget_t option
   (** Retrieves the title widget of the header bar.
 
       See [Gtk.HeaderBar.set_title_widget]. *)
@@ -24,22 +18,13 @@ class type header_bar_t = object
   method get_use_native_controls : unit -> bool
   (** Returns whether this header bar shows platform native window controls. *)
 
-  method pack_end :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_end : Widget.widget_t -> unit
   (** Adds a child to the header bar, packed with reference to the end. *)
 
-  method pack_start :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_start : Widget.widget_t -> unit
   (** Adds a child to the header bar, packed with reference to the start. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from the header bar.
 
       The child must have been added with [Gtk.HeaderBar.pack_start],
@@ -66,11 +51,7 @@ class type header_bar_t = object
   method set_show_title_buttons : bool -> unit
   (** Sets whether this header bar shows the standard window title buttons. *)
 
-  method set_title_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_title_widget : Widget.widget_t option -> unit
   (** Sets the title for the header bar.
 
       When set to [NULL], the headerbar will display the title of the window it
@@ -97,10 +78,7 @@ end
 (* High-level class for HeaderBar *)
 class header_bar (obj : Raw.Header_bar.t) : header_bar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method get_decoration_layout : unit -> string option =
       fun () -> Raw.Header_bar.get_decoration_layout obj
@@ -108,43 +86,26 @@ class header_bar (obj : Raw.Header_bar.t) : header_bar_t =
     method get_show_title_buttons : unit -> bool =
       fun () -> Raw.Header_bar.get_show_title_buttons obj
 
-    method get_title_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_title_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Header_bar.get_title_widget obj)
 
     method get_use_native_controls : unit -> bool =
       fun () -> Raw.Header_bar.get_use_native_controls obj
 
-    method pack_end :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method pack_end : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Header_bar.pack_end obj child
 
-    method pack_start :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method pack_start : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Header_bar.pack_start obj child
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Header_bar.remove obj child
@@ -155,11 +116,7 @@ class header_bar (obj : Raw.Header_bar.t) : header_bar_t =
     method set_show_title_buttons : bool -> unit =
       fun setting -> Raw.Header_bar.set_show_title_buttons obj setting
 
-    method set_title_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_title_widget : Widget.widget_t option -> unit =
       fun title_widget ->
         let title_widget = Option.map (fun c -> c#as_widget) title_widget in
         Raw.Header_bar.set_title_widget obj title_widget

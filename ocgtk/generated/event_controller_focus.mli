@@ -21,9 +21,7 @@
     reflect focus changes inside the widget hierarchy that is rooted at the
     controllers widget. *)
 class type event_controller_focus_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 

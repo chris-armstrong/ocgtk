@@ -45,10 +45,7 @@ class type app_chooser_dialog_t = object
   method get_heading : unit -> string option
   (** Returns the text to display at the top of the dialog. *)
 
-  method get_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_widget : unit -> Widget.widget_t
   (** Returns the [GtkAppChooserWidget] of this dialog. *)
 
   method set_heading : string -> unit
@@ -94,7 +91,7 @@ class app_chooser_dialog : Raw.App_chooser_dialog.t -> app_chooser_dialog_t
 (** {1:constructors Constructors} *)
 
 val new_ :
-  Application_and__window_and__window_group.window_t option ->
+  Window.window_t option ->
   Enums.dialogflags ->
   Ocgio.File.file_t ->
   app_chooser_dialog_t
@@ -103,10 +100,7 @@ val new_ :
     The dialog will show applications that can open the file. *)
 
 val new_for_content_type :
-  Application_and__window_and__window_group.window_t option ->
-  Enums.dialogflags ->
-  string ->
-  app_chooser_dialog_t
+  Window.window_t option -> Enums.dialogflags -> string -> app_chooser_dialog_t
 (** Creates a new [GtkAppChooserDialog] for the provided content type.
 
     The dialog will show applications that can open the content type. *)

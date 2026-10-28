@@ -1,8 +1,5 @@
 class type app_chooser_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit App_chooser.app_chooser_t
 
   (** {2:signals Signals} *)
@@ -91,11 +88,7 @@ end
 class app_chooser_button (obj : Raw.App_chooser_button.t) : app_chooser_button_t
   =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit App_chooser.app_chooser (Raw.App_chooser.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =

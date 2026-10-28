@@ -38,11 +38,7 @@ class type list_item_t = object
   (** Checks if a listitem has been set to be activatable via
       [Gtk.ListItem.set_activatable]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if
       none was set. *)
 
@@ -92,11 +88,7 @@ class type list_item_t = object
 
       By default, listitems are activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child to be used for this listitem.
 
       This function is typically called by applications when setting up a

@@ -1,7 +1,5 @@
 class type event_controller_scroll_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 
@@ -63,10 +61,7 @@ end
 class event_controller_scroll (obj : Raw.Event_controller_scroll.t) :
   event_controller_scroll_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_decelerate ?(after = false) ~callback () =
       Raw.Event_controller_scroll.on_decelerate ~after

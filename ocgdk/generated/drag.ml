@@ -38,14 +38,13 @@ class type drag_t = object
   method get_content : unit -> Content_provider.content_provider_t
   (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] associated to the [GdkDrag] object. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that the drag object was created for. *)
 
-  method get_drag_surface :
-    unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_drag_surface : unit -> Surface.surface_t option
   (** Returns the surface on which the drag icon should be rendered during the
       drag operation.
 
@@ -60,7 +59,7 @@ class type drag_t = object
   method get_selected_action : unit -> Enums.dragaction
   (** Determines the action chosen by the drag destination. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] where the drag originates. *)
 
   method set_hotspot : int -> int -> unit
@@ -95,19 +94,16 @@ class drag (obj : Raw.Drag.t) : drag_t =
     method get_content : unit -> Content_provider.content_provider_t =
       fun () -> new Content_provider.content_provider (Raw.Drag.get_content obj)
 
-    method get_device : unit -> App_launch_context_cycle_de440b34.device_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.device (Raw.Drag.get_device obj)
+    method get_device : unit -> Device.device_t =
+      fun () -> new Device.device (Raw.Drag.get_device obj)
 
-    method get_display : unit -> App_launch_context_cycle_de440b34.display_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.display (Raw.Drag.get_display obj)
+    method get_display : unit -> Display.display_t =
+      fun () -> new Display.display (Raw.Drag.get_display obj)
 
-    method get_drag_surface :
-        unit -> App_launch_context_cycle_de440b34.surface_t option =
+    method get_drag_surface : unit -> Surface.surface_t option =
       fun () ->
         Option.map
-          (fun ret -> new App_launch_context_cycle_de440b34.surface ret)
+          (fun ret -> new Surface.surface ret)
           (Raw.Drag.get_drag_surface obj)
 
     method get_formats : unit -> Raw.Content_formats.t =
@@ -116,9 +112,8 @@ class drag (obj : Raw.Drag.t) : drag_t =
     method get_selected_action : unit -> Enums.dragaction =
       fun () -> Raw.Drag.get_selected_action obj
 
-    method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.surface (Raw.Drag.get_surface obj)
+    method get_surface : unit -> Surface.surface_t =
+      fun () -> new Surface.surface (Raw.Drag.get_surface obj)
 
     method set_hotspot : int -> int -> unit =
       fun hot_x hot_y -> Raw.Drag.set_hotspot obj hot_x hot_y

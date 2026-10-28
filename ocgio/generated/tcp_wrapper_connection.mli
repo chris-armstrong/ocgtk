@@ -41,8 +41,5 @@ class tcp_wrapper_connection :
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Io_stream.io_stream_t ->
-  Socket_and__socket_connection.socket_t ->
-  tcp_wrapper_connection_t
+val new_ : Io_stream.io_stream_t -> Socket.socket_t -> tcp_wrapper_connection_t
 (** Wraps [base_io_stream] and [socket] together as a [GSocketConnection]. *)

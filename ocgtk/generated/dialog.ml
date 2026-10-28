@@ -1,5 +1,5 @@
 class type dialog_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 
@@ -25,11 +25,7 @@ class type dialog_t = object
 
   (** {2:methods Methods} *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method add_action_widget : Widget.widget_t -> int -> unit
   (** Adds an activatable widget to the action area of a [GtkDialog].
 
       GTK connects a signal handler that will emit the [Gtk.Dialog::response]
@@ -39,11 +35,7 @@ class type dialog_t = object
       If you want to add a non-activatable widget, simply pack it into the
       [action_area] field of the [GtkDialog] struct. *)
 
-  method add_button :
-    string ->
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method add_button : string -> int -> Widget.widget_t
   (** Adds a button with the given text.
 
       GTK arranges things so that clicking the button will emit the
@@ -60,17 +52,10 @@ class type dialog_t = object
       Note that the headerbar is only used by the dialog if the
       [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
 
-  method get_response_for_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method get_response_for_widget : Widget.widget_t -> int
   (** Gets the response id of a widget in the action area of a dialog. *)
 
-  method get_widget_for_response :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_widget_for_response : int -> Widget.widget_t option
   (** Gets the widget button that uses the given response ID in the action area
       of a dialog. *)
 
@@ -116,8 +101,7 @@ end
 (* High-level class for Dialog *)
 class dialog (obj : Raw.Dialog.t) : dialog_t =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     method on_close ?(after = false) ~callback () =
       Raw.Dialog.on_close ~after self#as_dialog ~callback
@@ -125,25 +109,14 @@ class dialog (obj : Raw.Dialog.t) : dialog_t =
     method on_response ?(after = false) ~callback () =
       Raw.Dialog.on_response ~after self#as_dialog ~callback
 
-    method add_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        unit =
+    method add_action_widget : Widget.widget_t -> int -> unit =
       fun child response_id ->
         let child = child#as_widget in
         Raw.Dialog.add_action_widget obj child response_id
 
-    method add_button :
-        string ->
-        int ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
+    method add_button : string -> int -> Widget.widget_t =
       fun button_text response_id ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Dialog.add_button obj button_text response_id)
+        new Widget.widget (Raw.Dialog.add_button obj button_text response_id)
 
     method get_content_area : unit -> Box.box_t =
       fun () -> new Box.box (Raw.Dialog.get_content_area obj)
@@ -151,26 +124,15 @@ class dialog (obj : Raw.Dialog.t) : dialog_t =
     method get_header_bar : unit -> Header_bar.header_bar_t =
       fun () -> new Header_bar.header_bar (Raw.Dialog.get_header_bar obj)
 
-    method get_response_for_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int =
+    method get_response_for_widget : Widget.widget_t -> int =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Dialog.get_response_for_widget obj widget
 
-    method get_widget_for_response :
-        int ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_widget_for_response : int -> Widget.widget_t option =
       fun response_id ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Dialog.get_widget_for_response obj response_id)
 
     method response : int -> unit =

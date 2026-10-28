@@ -16,7 +16,7 @@
     a proxy for a menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model]. *)
 class type d_bus_menu_model_t = object
-  inherit Menu_link_iter_and__menu_model.menu_model_t
+  inherit Menu_model.menu_model_t
 
   (** {2:conversions Conversions} *)
 

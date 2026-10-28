@@ -37,9 +37,7 @@ class type tls_certificate_t = object
       [GTlsCertificate:private]-key-pem properties differ. *)
 
   method verify :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
-    option ->
+    Socket_connectable.socket_connectable_t option ->
     tls_certificate_t option ->
     Enums.tlscertificateflags
   (** This verifies [cert] and returns a set of [GTlsCertificateFlags]

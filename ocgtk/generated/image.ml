@@ -1,7 +1,5 @@
 class type image_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -113,11 +111,7 @@ end
 (* High-level class for Image *)
 class image (obj : Raw.Image.t) : image_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     method clear : unit -> unit = fun () -> Raw.Image.clear obj
 
     method get_gicon : unit -> Ocgio.Icon.icon_t option =

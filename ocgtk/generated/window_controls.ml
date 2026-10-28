@@ -1,7 +1,5 @@
 class type window_controls_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -54,10 +52,7 @@ end
 (* High-level class for WindowControls *)
 class window_controls (obj : Raw.Window_controls.t) : window_controls_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method get_decoration_layout : unit -> string option =
       fun () -> Raw.Window_controls.get_decoration_layout obj

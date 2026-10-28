@@ -1,8 +1,5 @@
 class type list_box_row_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
 
   (** {2:signals Signals} *)
@@ -39,18 +36,10 @@ class type list_box_row_t = object
   method get_activatable : unit -> bool
   (** Gets whether the row is activatable. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [row]. *)
 
-  method get_header :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_header : unit -> Widget.widget_t option
   (** Returns the current header of the [row].
 
       This can be used in a [Gtk.ListBoxUpdateHeaderFunc] to see if there is a
@@ -69,18 +58,10 @@ class type list_box_row_t = object
   method set_activatable : bool -> unit
   (** Set whether the row is activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
-  method set_header :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_header : Widget.widget_t option -> unit
   (** Sets the current header of the [row].
 
       This is only allowed to be called from a [Gtk.ListBoxUpdateHeaderFunc]. It
@@ -98,11 +79,7 @@ end
 (* High-level class for ListBoxRow *)
 class list_box_row (obj : Raw.List_box_row.t) : list_box_row_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Actionable.actionable (Raw.Actionable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
@@ -113,32 +90,16 @@ class list_box_row (obj : Raw.List_box_row.t) : list_box_row_t =
     method get_activatable : unit -> bool =
       fun () -> Raw.List_box_row.get_activatable obj
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.List_box_row.get_child obj)
 
-    method get_header :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_header : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.List_box_row.get_header obj)
 
     method get_index : unit -> int = fun () -> Raw.List_box_row.get_index obj
@@ -152,20 +113,12 @@ class list_box_row (obj : Raw.List_box_row.t) : list_box_row_t =
     method set_activatable : bool -> unit =
       fun activatable -> Raw.List_box_row.set_activatable obj activatable
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.List_box_row.set_child obj child
 
-    method set_header :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_header : Widget.widget_t option -> unit =
       fun header ->
         let header = Option.map (fun c -> c#as_widget) header in
         Raw.List_box_row.set_header obj header

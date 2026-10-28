@@ -57,9 +57,7 @@
 
     The GTK inspector provides a visual debugging tool for graphics offload. *)
 class type graphics_offload_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
@@ -68,11 +66,7 @@ class type graphics_offload_t = object
 
       See [Gtk.GraphicsOffload.set_black_background]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child of [self]. *)
 
   method get_enabled : unit -> Enums.graphicsoffloadenabled
@@ -93,11 +87,7 @@ class type graphics_offload_t = object
       {{:https://wayland.app/protocols/single-pixel-buffer-v1}single-pixel
        buffer} protocol. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child of [self]. *)
 
   method set_enabled : Enums.graphicsoffloadenabled -> unit
@@ -156,9 +146,5 @@ class graphics_offload : Raw.Graphics_offload.t -> graphics_offload_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-  .widget_t
-  option ->
-  graphics_offload_t
+val new_ : Widget.widget_t option -> graphics_offload_t
 (** Creates a new GtkGraphicsOffload widget. *)

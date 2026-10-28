@@ -1,15 +1,9 @@
 class type aspect_frame_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [self]. *)
 
   method get_obey_child : unit -> bool
@@ -27,11 +21,7 @@ class type aspect_frame_t = object
   (** Returns the vertical alignment of the child within the allocation of the
       [GtkAspectFrame]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
   method set_obey_child : bool -> unit
@@ -57,23 +47,12 @@ end
 (* High-level class for AspectFrame *)
 class aspect_frame (obj : Raw.Aspect_frame.t) : aspect_frame_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Aspect_frame.get_child obj)
 
     method get_obey_child : unit -> bool =
@@ -87,11 +66,7 @@ class aspect_frame (obj : Raw.Aspect_frame.t) : aspect_frame_t =
     method get_yalign : unit -> float =
       fun () -> Raw.Aspect_frame.get_yalign obj
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Aspect_frame.set_child obj child

@@ -4,7 +4,8 @@
    The name-mapping tests resolve types through
    [Type_mappings.find_type_mapping_for_gir_type], the path every generator
    takes, from a raw-library and a main-library context, one test per row of
-   the layout plan's name mapping. Fixtures: Graphene with Point and the
+   the layout plan's name mapping, plus layer 2 references to a cycle
+   member from inside and outside its group. Fixtures: Graphene with Point and the
    cycle Box/Sphere (combined module Box_and__sphere), and a Gio reference
    file with Icon and AppInfo, which is in a cycle in Gio. *)
 
@@ -91,7 +92,14 @@ let check_layer2_module ~ctx name expected =
 
 let test_layer2_to_layer2_same_namespace () =
   check_layer2_module ~ctx:main_ctx "Point" "Point";
-  check_layer2_module ~ctx:main_ctx "Box" "Box_and__sphere"
+  check_layer2_module ~ctx:main_ctx "Box" "Box"
+
+(* While Box/Sphere's own modules are generated, its members refer to each other
+   through the combined module, which their member modules re-export. *)
+let test_layer2_to_layer2_within_cycle () =
+  let ctx = { main_ctx with current_cycle_classes = [ "Box"; "Sphere" ] } in
+  check_layer2_module ~ctx "Box" "Box_and__sphere";
+  check_layer2_module ~ctx "Point" "Point"
 
 let test_layer2_to_layer1_same_namespace () =
   check_ocaml_type ~ctx:main_ctx "Point" "Raw.Point.t";
@@ -317,6 +325,9 @@ let tests =
     ( "layer 2 to layer 2, same namespace",
       `Quick,
       test_layer2_to_layer2_same_namespace );
+    ( "layer 2 to layer 2, within a cycle, via the combined module",
+      `Quick,
+      test_layer2_to_layer2_within_cycle );
     ( "layer 2 to layer 1, same namespace, via Raw",
       `Quick,
       test_layer2_to_layer1_same_namespace );

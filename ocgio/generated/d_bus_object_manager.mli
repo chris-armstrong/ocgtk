@@ -23,8 +23,8 @@ class type d_bus_object_manager_t = object
   method on_interface_added :
     ?after:bool ->
     callback:
-      (object_:D_bus_interface_and__d_bus_object.d_bus_object_t ->
-      interface:D_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      (object_:D_bus_object.d_bus_object_t ->
+      interface:D_bus_interface.d_bus_interface_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -36,8 +36,8 @@ class type d_bus_object_manager_t = object
   method on_interface_removed :
     ?after:bool ->
     callback:
-      (object_:D_bus_interface_and__d_bus_object.d_bus_object_t ->
-      interface:D_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      (object_:D_bus_object.d_bus_object_t ->
+      interface:D_bus_interface.d_bus_interface_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -48,14 +48,14 @@ class type d_bus_object_manager_t = object
 
   method on_object_added :
     ?after:bool ->
-    callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    callback:(object_:D_bus_object.d_bus_object_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when [object] is added to [manager]. *)
 
   method on_object_removed :
     ?after:bool ->
-    callback:(object_:D_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    callback:(object_:D_bus_object.d_bus_object_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when [object] is removed from [manager]. *)
@@ -63,20 +63,16 @@ class type d_bus_object_manager_t = object
   (** {2:methods Methods} *)
 
   method get_interface :
-    string ->
-    string ->
-    D_bus_interface_and__d_bus_object.d_bus_interface_t option
+    string -> string -> D_bus_interface.d_bus_interface_t option
   (** Gets the interface proxy for [interface_name] at [object_path], if any. *)
 
-  method get_object :
-    string -> D_bus_interface_and__d_bus_object.d_bus_object_t option
+  method get_object : string -> D_bus_object.d_bus_object_t option
   (** Gets the [GDBusObject] at [object_path], if any. *)
 
   method get_object_path : unit -> string
   (** Gets the object path that [manager] is for. *)
 
-  method get_objects :
-    unit -> D_bus_interface_and__d_bus_object.d_bus_object_t list
+  method get_objects : unit -> D_bus_object.d_bus_object_t list
   (** Gets all [GDBusObject] objects known to [manager]. *)
 
   (** {2:conversions Conversions} *)

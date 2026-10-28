@@ -1,7 +1,5 @@
 class type fixed_layout_child_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_child_t
+  inherit Layout_child.layout_child_t
 
   (** {2:methods Methods} *)
 
@@ -20,10 +18,7 @@ end
 class fixed_layout_child (obj : Raw.Fixed_layout_child.t) : fixed_layout_child_t
   =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .layout_child
-        (obj :> Raw.Layout_child.t)
+    inherit Layout_child.layout_child (obj :> Raw.Layout_child.t)
 
     method get_transform : unit -> Ocgsk.Transform.transform_t option =
       fun () ->

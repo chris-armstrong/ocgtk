@@ -53,18 +53,12 @@
     Starting from GTK 4.12, [GtkBox] uses the [Gtk.AccessibleRole.generic] role.
 *)
 class type box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
   (** {2:methods Methods} *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method append : Widget.widget_t -> unit
   (** Adds a child at the end. *)
 
   method get_baseline_child : unit -> int
@@ -81,41 +75,23 @@ class type box_t = object
   method get_spacing : unit -> int
   (** Gets the value set by [Gtk.Box.set_spacing]. *)
 
-  method insert_child_after :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method insert_child_after : Widget.widget_t -> Widget.widget_t option -> unit
   (** Inserts a child at a specific position.
 
       The child is added after [sibling] in the list of [box] children.
 
       If [sibling] is [NULL], the [child] is placed at the beginning. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Adds a child at the beginning. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child widget from the box.
 
       The child must have been added before with [Gtk.Box.append],
       [Gtk.Box.prepend], or [Gtk.Box.insert_child_after]. *)
 
-  method reorder_child_after :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method reorder_child_after : Widget.widget_t -> Widget.widget_t option -> unit
   (** Moves a child to a different position.
 
       The child is moved to the position after [sibling] in the list of [box]

@@ -282,7 +282,7 @@ class file_chooser_native : Raw.File_chooser_native.t -> file_chooser_native_t
 
 val new_ :
   string option ->
-  Application_and__window_and__window_group.window_t option ->
+  Window.window_t option ->
   Enums.filechooseraction ->
   string option ->
   string option ->

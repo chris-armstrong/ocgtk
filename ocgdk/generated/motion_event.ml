@@ -1,5 +1,5 @@
 class type motion_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
 
   (** {2:conversions Conversions} *)
 
@@ -9,6 +9,6 @@ end
 (* High-level class for MotionEvent *)
 class motion_event (obj : Raw.Motion_event.t) : motion_event_t =
   object (self)
-    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
+    inherit Event.event (obj :> Raw.Event.t)
     method as_motion_event = obj
   end

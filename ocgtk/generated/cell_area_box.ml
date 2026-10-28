@@ -1,5 +1,5 @@
 class type cell_area_box_t = object
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  inherit Cell_area.cell_area_t
   inherit Orientable.orientable_t
 
   (** {2:methods Methods} *)
@@ -18,10 +18,7 @@ end
 (* High-level class for CellAreaBox *)
 class cell_area_box (obj : Raw.Cell_area_box.t) : cell_area_box_t =
   object (self)
-    inherit
-      Cell_area_and__cell_area_context_and__cell_layout.cell_area
-        (obj :> Raw.Cell_area.t)
-
+    inherit Cell_area.cell_area (obj :> Raw.Cell_area.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
     method get_spacing : unit -> int =

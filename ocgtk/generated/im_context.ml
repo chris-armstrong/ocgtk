@@ -114,11 +114,7 @@ class type im_context_t = object
 
       This will typically cause the input method to clear the preedit state. *)
 
-  method set_client_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_client_widget : Widget.widget_t option -> unit
   (** Set the client widget for the input context.
 
       This is the [GtkWidget] holding the input focus. This widget is used in
@@ -229,11 +225,7 @@ class im_context (obj : Raw.Im_context.t) : im_context_t =
     method focus_out : unit -> unit = fun () -> Raw.Im_context.focus_out obj
     method reset : unit -> unit = fun () -> Raw.Im_context.reset obj
 
-    method set_client_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_client_widget : Widget.widget_t option -> unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
         Raw.Im_context.set_client_widget obj widget

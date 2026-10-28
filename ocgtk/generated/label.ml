@@ -1,8 +1,5 @@
 class type label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
 
   (** {2:signals Signals} *)
@@ -130,11 +127,7 @@ class type label_t = object
       returns the keyval used for the mnemonic accelerator. If there is no
       mnemonic set up it returns [GDK_KEY_VoidSymbol]. *)
 
-  method get_mnemonic_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_mnemonic_widget : unit -> Widget.widget_t option
   (** Retrieves the mnemonic target of this label.
 
       See [Gtk.Label.set_mnemonic_widget]. *)
@@ -285,11 +278,7 @@ class type label_t = object
   method set_max_width_chars : int -> unit
   (** Sets the maximum width of the label in characters. *)
 
-  method set_mnemonic_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_mnemonic_widget : Widget.widget_t option -> unit
   (** Associate the label with its mnemonic target.
 
       If the label has been set so that it has a mnemonic key (using i.e.
@@ -394,10 +383,7 @@ end
 (* High-level class for Label *)
 class label (obj : Raw.Label.t) : label_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_text.accessible_text (Raw.Accessible_text.from_gobject obj)
@@ -448,18 +434,10 @@ class label (obj : Raw.Label.t) : label_t =
     method get_mnemonic_keyval : unit -> int =
       fun () -> Raw.Label.get_mnemonic_keyval obj
 
-    method get_mnemonic_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_mnemonic_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Label.get_mnemonic_widget obj)
 
     method get_natural_wrap_mode : unit -> Enums.naturalwrapmode =
@@ -526,11 +504,7 @@ class label (obj : Raw.Label.t) : label_t =
     method set_max_width_chars : int -> unit =
       fun n_chars -> Raw.Label.set_max_width_chars obj n_chars
 
-    method set_mnemonic_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_mnemonic_widget : Widget.widget_t option -> unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
         Raw.Label.set_mnemonic_widget obj widget

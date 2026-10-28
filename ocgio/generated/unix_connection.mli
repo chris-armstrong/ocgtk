@@ -27,7 +27,7 @@
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
 class type unix_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
 
   (** {2:methods Methods} *)
 

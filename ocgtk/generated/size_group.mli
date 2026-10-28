@@ -12,10 +12,7 @@ class type size_group_t = object
 
   (** {2:methods Methods} *)
 
-  method add_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method add_widget : Widget.widget_t -> unit
   (** Adds a widget to a [GtkSizeGroup].
 
       In the future, the requisition of the widget will be determined as the
@@ -30,17 +27,10 @@ class type size_group_t = object
   method get_mode : unit -> Enums.sizegroupmode
   (** Gets the current mode of the size group. *)
 
-  method get_widgets :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    list
+  method get_widgets : unit -> Widget.widget_t list
   (** Returns the list of widgets associated with [size_group]. *)
 
-  method remove_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_widget : Widget.widget_t -> unit
   (** Removes a widget from a [GtkSizeGroup]. *)
 
   method set_mode : Enums.sizegroupmode -> unit

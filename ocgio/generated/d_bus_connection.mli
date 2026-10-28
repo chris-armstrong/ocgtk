@@ -171,9 +171,7 @@ class type d_bus_connection_t = object
       exported from only one main context. *)
 
   method export_menu_model :
-    string ->
-    Menu_link_iter_and__menu_model.menu_model_t ->
-    (int, GError.t) result
+    string -> Menu_model.menu_model_t -> (int, GError.t) result
   (** Exports [menu] on [connection] at [object_path].
 
       The implemented D-Bus API should be considered private. It is subject to

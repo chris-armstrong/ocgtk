@@ -26,9 +26,7 @@
     [Gio.SocketConnectable] for an example of using the connectable interface.
 *)
 class type network_service_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
 
   (** {2:methods Methods} *)
 

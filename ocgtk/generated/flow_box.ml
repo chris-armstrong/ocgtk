@@ -1,8 +1,5 @@
 class type flow_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
   (** {2:signals Signals} *)
@@ -83,10 +80,7 @@ class type flow_box_t = object
 
   (** {2:methods Methods} *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method append : Widget.widget_t -> unit
   (** Adds [child] to the end of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -126,11 +120,7 @@ class type flow_box_t = object
   method get_selection_mode : unit -> Enums.selectionmode
   (** Gets the selection mode of [box]. *)
 
-  method insert :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method insert : Widget.widget_t -> int -> unit
   (** Inserts the [widget] into [box] at [position].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -153,10 +143,7 @@ class type flow_box_t = object
       Call this when the result of the sort function on [box] is changed due to
       an external factor. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Adds [child] to the start of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -164,10 +151,7 @@ class type flow_box_t = object
 
       See also: [Gtk.FlowBox.insert]. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit
@@ -254,11 +238,7 @@ end
 (* High-level class for FlowBox *)
 class flow_box (obj : Raw.Flow_box.t) : flow_box_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
     method on_activate_cursor_child ?(after = false) ~callback () =
@@ -285,10 +265,7 @@ class flow_box (obj : Raw.Flow_box.t) : flow_box_t =
     method on_unselect_all ?(after = false) ~callback () =
       Raw.Flow_box.on_unselect_all ~after self#as_flow_box ~callback
 
-    method append :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method append : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Flow_box.append obj child
@@ -333,11 +310,7 @@ class flow_box (obj : Raw.Flow_box.t) : flow_box_t =
     method get_selection_mode : unit -> Enums.selectionmode =
       fun () -> Raw.Flow_box.get_selection_mode obj
 
-    method insert :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        unit =
+    method insert : Widget.widget_t -> int -> unit =
       fun widget position ->
         let widget = widget#as_widget in
         Raw.Flow_box.insert obj widget position
@@ -348,18 +321,12 @@ class flow_box (obj : Raw.Flow_box.t) : flow_box_t =
     method invalidate_sort : unit -> unit =
       fun () -> Raw.Flow_box.invalidate_sort obj
 
-    method prepend :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method prepend : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Flow_box.prepend obj child
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Flow_box.remove obj widget

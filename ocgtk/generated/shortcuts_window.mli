@@ -82,7 +82,7 @@
     [GtkShortcutsWindow] has a single CSS node with the name [window] and style
     class [.shortcuts]. *)
 class type shortcuts_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
 
   (** {2:signals Signals} *)
 

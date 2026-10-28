@@ -22,8 +22,7 @@ class type tls_backend_t = object
   method get_client_connection_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsClientConnection] implementation. *)
 
-  method get_default_database :
-    unit -> Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
+  method get_default_database : unit -> Tls_database.tls_database_t
   (** Gets the default [GTlsDatabase] used to verify TLS connections. *)
 
   method get_dtls_client_connection_type : unit -> Gobject.Type.t
@@ -38,9 +37,7 @@ class type tls_backend_t = object
   method get_server_connection_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsServerConnection] implementation. *)
 
-  method set_default_database :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option ->
-    unit
+  method set_default_database : Tls_database.tls_database_t option -> unit
   (** Set the default [GTlsDatabase] used to verify TLS connections
 
       Any subsequent call to g_tls_backend_get_default_database() will return

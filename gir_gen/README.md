@@ -290,6 +290,9 @@ components (SCC) algorithm and combined into single modules. For example:
 - Within this module, each class gets a submodule: `Application`, `Window`, `WindowGroup`
 - Type references within the cycle use simple names: `Window.t`
 - Type references across cycles use qualified names: `Application_and__window_and__window_group.Window.t`
+- At layer 2, code outside the group refers to a member through the member's own
+  module (`Window.window_t`); only the group's combined module and member modules,
+  generated with `current_cycle_classes` set, use the combined name
 
 This approach allows OCaml's type checker to validate recursive types while the
 linker still treats it as a single compilation unit.

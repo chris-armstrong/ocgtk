@@ -20,9 +20,7 @@
     This controller is not able to accept drops, use [Gtk.DropTarget] for that
     purpose. *)
 class type drop_controller_motion_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 

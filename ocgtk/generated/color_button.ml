@@ -1,8 +1,5 @@
 class type color_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Color_chooser.color_chooser_t
 
   (** {2:signals Signals} *)
@@ -63,11 +60,7 @@ end
 (* High-level class for ColorButton *)
 class color_button (obj : Raw.Color_button.t) : color_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Color_chooser.color_chooser (Raw.Color_chooser.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =

@@ -1,7 +1,5 @@
 class type pad_controller_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:methods Methods} *)
 
@@ -38,10 +36,7 @@ end
 (* High-level class for PadController *)
 class pad_controller (obj : Raw.Pad_controller.t) : pad_controller_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method set_action :
         Enums.padactiontype -> int -> int -> string -> string -> unit =

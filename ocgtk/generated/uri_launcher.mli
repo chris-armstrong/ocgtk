@@ -25,8 +25,7 @@
 class type uri_launcher_t = object
   (** {2:methods Methods} *)
 
-  method can_launch :
-    Application_and__window_and__window_group.window_t option -> bool
+  method can_launch : Window.window_t option -> bool
   (** Returns whether the launcher is likely to succeed in launching an
       application for its uri.
 

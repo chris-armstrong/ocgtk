@@ -20,9 +20,7 @@
     This corresponds to a general [struct sockaddr] of a type not otherwise
     handled by GLib. *)
 class type native_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
 
   (** {2:conversions Conversions} *)
 

@@ -2,19 +2,14 @@ class type toplevel_t = object
   (** {2:methods Methods} *)
 
   method begin_move :
-    App_launch_context_cycle_de440b34.device_t ->
-    int ->
-    float ->
-    float ->
-    UInt32.t ->
-    unit
+    Device.device_t -> int -> float -> float -> UInt32.t -> unit
   (** Begins an interactive move operation.
 
       You might use this function to implement draggable titlebars. *)
 
   method begin_resize :
     Enums.surfaceedge ->
-    App_launch_context_cycle_de440b34.device_t option ->
+    Device.device_t option ->
     int ->
     float ->
     float ->
@@ -41,8 +36,7 @@ class type toplevel_t = object
   (** Gets the bitwise or of the currently active surface state flags, from the
       [GdkToplevelState] enumeration. *)
 
-  method inhibit_system_shortcuts :
-    App_launch_context_cycle_de440b34.event_t option -> unit
+  method inhibit_system_shortcuts : Event.event_t option -> unit
   (** Requests that the [toplevel] inhibit the system shortcuts.
 
       This is asking the desktop environment/windowing system to let all
@@ -140,7 +134,7 @@ class type toplevel_t = object
 
       The title maybe be displayed in the titlebar, in lists of windows, etc. *)
 
-  method set_transient_for : App_launch_context_cycle_de440b34.surface_t -> unit
+  method set_transient_for : Surface.surface_t -> unit
   (** Sets a transient-for parent.
 
       Indicates to the window manager that [surface] is a transient dialog
@@ -150,7 +144,7 @@ class type toplevel_t = object
 
       See gtk_window_set_transient_for() if you’re using GtkWindow. *)
 
-  method show_window_menu : App_launch_context_cycle_de440b34.event_t -> bool
+  method show_window_menu : Event.event_t -> bool
   (** Asks the windowing system to show the window menu.
 
       The window menu is the menu shown when right-clicking the titlebar on
@@ -184,19 +178,14 @@ end
 class toplevel (obj : Raw.Toplevel.t) : toplevel_t =
   object (self)
     method begin_move :
-        App_launch_context_cycle_de440b34.device_t ->
-        int ->
-        float ->
-        float ->
-        UInt32.t ->
-        unit =
+        Device.device_t -> int -> float -> float -> UInt32.t -> unit =
       fun device button x y timestamp ->
         let device = device#as_device in
         Raw.Toplevel.begin_move obj device button x y timestamp
 
     method begin_resize :
         Enums.surfaceedge ->
-        App_launch_context_cycle_de440b34.device_t option ->
+        Device.device_t option ->
         int ->
         float ->
         float ->
@@ -218,8 +207,7 @@ class toplevel (obj : Raw.Toplevel.t) : toplevel_t =
     method get_state : unit -> Enums.toplevelstate =
       fun () -> Raw.Toplevel.get_state obj
 
-    method inhibit_system_shortcuts :
-        App_launch_context_cycle_de440b34.event_t option -> unit =
+    method inhibit_system_shortcuts : Event.event_t option -> unit =
       fun event ->
         let event = Option.map (fun c -> c#as_event) event in
         Raw.Toplevel.inhibit_system_shortcuts obj event
@@ -256,14 +244,12 @@ class toplevel (obj : Raw.Toplevel.t) : toplevel_t =
     method set_title : string -> unit =
       fun title -> Raw.Toplevel.set_title obj title
 
-    method set_transient_for :
-        App_launch_context_cycle_de440b34.surface_t -> unit =
+    method set_transient_for : Surface.surface_t -> unit =
       fun parent ->
         let parent = parent#as_surface in
         Raw.Toplevel.set_transient_for obj parent
 
-    method show_window_menu : App_launch_context_cycle_de440b34.event_t -> bool
-        =
+    method show_window_menu : Event.event_t -> bool =
       fun event ->
         let event = event#as_event in
         Raw.Toplevel.show_window_menu obj event

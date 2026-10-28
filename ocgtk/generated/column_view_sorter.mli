@@ -56,7 +56,7 @@ class type column_view_sorter_t = object
       sort columns changes. *)
 
   method get_primary_sort_column :
-    unit -> Column_view_and__column_view_column.column_view_column_t option
+    unit -> Column_view_column.column_view_column_t option
   (** Returns the primary sort column.
 
       The primary sort column is the one that displays the triangle in a column

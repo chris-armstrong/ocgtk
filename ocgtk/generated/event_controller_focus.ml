@@ -1,7 +1,5 @@
 class type event_controller_focus_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 
@@ -44,10 +42,7 @@ end
 class event_controller_focus (obj : Raw.Event_controller_focus.t) :
   event_controller_focus_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_enter ?(after = false) ~callback () =
       Raw.Event_controller_focus.on_enter ~after self#as_event_controller_focus

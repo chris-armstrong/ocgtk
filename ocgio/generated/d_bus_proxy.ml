@@ -1,6 +1,6 @@
 class type d_bus_proxy_t = object
   inherit Async_initable.async_initable_t
-  inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
+  inherit D_bus_interface.d_bus_interface_t
   inherit Initable.initable_t
 
   (** {2:signals Signals} *)
@@ -253,8 +253,7 @@ class d_bus_proxy (obj : Raw.D_bus_proxy.t) : d_bus_proxy_t =
     inherit Async_initable.async_initable (Raw.Async_initable.from_gobject obj)
 
     inherit
-      D_bus_interface_and__d_bus_object.d_bus_interface
-        (Raw.D_bus_interface.from_gobject obj)
+      D_bus_interface.d_bus_interface (Raw.D_bus_interface.from_gobject obj)
 
     inherit Initable.initable (Raw.Initable.from_gobject obj)
 

@@ -89,8 +89,5 @@ class color_chooser_dialog :
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  string option ->
-  Application_and__window_and__window_group.window_t option ->
-  color_chooser_dialog_t
+val new_ : string option -> Window.window_t option -> color_chooser_dialog_t
 (** Creates a new [GtkColorChooserDialog]. *)

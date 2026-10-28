@@ -16,8 +16,7 @@ class font_chooser_dialog (obj : Raw.Font_chooser_dialog.t) :
     method as_font_chooser_dialog = obj
   end
 
-let new_ (title : string option)
-    (parent : Application_and__window_and__window_group.window_t option) :
+let new_ (title : string option) (parent : Window.window_t option) :
     font_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
   let obj_ = Raw.Font_chooser_dialog.new_ title parent in

@@ -12,7 +12,7 @@
 class type application_command_line_t = object
   (** {2:methods Methods} *)
 
-  method create_file_for_arg : string -> App_info_cycle_64c425a0.file_t
+  method create_file_for_arg : string -> File.file_t
   (** Creates a [GFile] corresponding to a filename that was given as part of
       the invocation of [cmdline].
 

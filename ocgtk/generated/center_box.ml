@@ -1,8 +1,5 @@
 class type center_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
   (** {2:methods Methods} *)
@@ -12,28 +9,16 @@ class type center_box_t = object
 
       See [Gtk.CenterBox.set_baseline_position]. *)
 
-  method get_center_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_center_widget : unit -> Widget.widget_t option
   (** Gets the center widget. *)
 
-  method get_end_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_end_widget : unit -> Widget.widget_t option
   (** Gets the end widget. *)
 
   method get_shrink_center_last : unit -> bool
   (** Gets whether the center widget shrinks after other children. *)
 
-  method get_start_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_start_widget : unit -> Widget.widget_t option
   (** Gets the start widget. *)
 
   method set_baseline_position : Enums.baselineposition -> unit
@@ -44,20 +29,12 @@ class type center_box_t = object
       baseline is not allocated by the parent then [position] is used to
       allocate the baseline with respect to the extra space available. *)
 
-  method set_center_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_center_widget : Widget.widget_t option -> unit
   (** Sets the center widget.
 
       To remove the existing center widget, pass [NULL]. *)
 
-  method set_end_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_end_widget : Widget.widget_t option -> unit
   (** Sets the end widget.
 
       To remove the existing end widget, pass [NULL]. *)
@@ -72,11 +49,7 @@ class type center_box_t = object
       If [shrink_center_last] is false, start and end widgets keep natural width
       and the center widget starts shrinking instead. *)
 
-  method set_start_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_start_widget : Widget.widget_t option -> unit
   (** Sets the start widget.
 
       To remove the existing start widget, pass [NULL]. *)
@@ -89,78 +62,42 @@ end
 (* High-level class for CenterBox *)
 class center_box (obj : Raw.Center_box.t) : center_box_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
     method get_baseline_position : unit -> Enums.baselineposition =
       fun () -> Raw.Center_box.get_baseline_position obj
 
-    method get_center_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_center_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Center_box.get_center_widget obj)
 
-    method get_end_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_end_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Center_box.get_end_widget obj)
 
     method get_shrink_center_last : unit -> bool =
       fun () -> Raw.Center_box.get_shrink_center_last obj
 
-    method get_start_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_start_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Center_box.get_start_widget obj)
 
     method set_baseline_position : Enums.baselineposition -> unit =
       fun position -> Raw.Center_box.set_baseline_position obj position
 
-    method set_center_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_center_widget : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Center_box.set_center_widget obj child
 
-    method set_end_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_end_widget : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Center_box.set_end_widget obj child
@@ -169,11 +106,7 @@ class center_box (obj : Raw.Center_box.t) : center_box_t =
       fun shrink_center_last ->
         Raw.Center_box.set_shrink_center_last obj shrink_center_last
 
-    method set_start_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_start_widget : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Center_box.set_start_widget obj child

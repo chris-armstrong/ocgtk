@@ -405,7 +405,7 @@ memory instead of raising an exception.
 
 {2 Cyclic groups and top-level classes}
 
-You may notice references to modules like [Application_and__window_and__window_group] (in {!Ocgtk}) or [App_launch_context_cycle_de440b34] (in {!Ocgdk}, where the joined name would be too long) in the documentation and the source code. This is because some GObject classes and/or interfaces have mutually recursive dependencies between them.
+You may notice modules like [Application_and__window_and__window_group] (in {!Ocgtk}) or [App_launch_context_cycle_de440b34] (in {!Ocgdk}, where the joined name would be too long) in the module lists, and in the source of the classes that make them up. This is because some GObject classes and/or interfaces have mutually recursive dependencies between them.
 
 In OCaml, these can't be declared in separate files, but instead need to be declared in an OCaml recursive cluster in the same file i.e. [class type c1 ... and c2 ... end] / [class c1 ... and c2 ... end]. Each individual class is then aliased in a separate module to "flatten" the namespace and hide the recursive classes.
 

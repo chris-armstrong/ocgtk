@@ -1,8 +1,5 @@
 class type scale_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
@@ -54,10 +51,7 @@ class type scale_button_t = object
   method get_plus_button : unit -> Button.button_t
   (** Retrieves the plus button of the [GtkScaleButton.] *)
 
-  method get_popup :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_popup : unit -> Widget.widget_t
   (** Retrieves the popup of the [GtkScaleButton]. *)
 
   method get_value : unit -> float
@@ -92,10 +86,7 @@ end
 (* High-level class for ScaleButton *)
 class scale_button (obj : Raw.Scale_button.t) : scale_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)
@@ -125,15 +116,8 @@ class scale_button (obj : Raw.Scale_button.t) : scale_button_t =
     method get_plus_button : unit -> Button.button_t =
       fun () -> new Button.button (Raw.Scale_button.get_plus_button obj)
 
-    method get_popup :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Scale_button.get_popup obj)
+    method get_popup : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Scale_button.get_popup obj)
 
     method get_value : unit -> float = fun () -> Raw.Scale_button.get_value obj
 

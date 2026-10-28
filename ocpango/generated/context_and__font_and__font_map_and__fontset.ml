@@ -171,7 +171,7 @@ and font_t = object
   method get_coverage : Raw.Language.t -> Coverage.coverage_t
   (** Computes the coverage map for a given font and language tag. *)
 
-  method get_face : unit -> Font_face_and__font_family.font_face_t option
+  method get_face : unit -> Font_face.font_face_t option
   (** Gets the [PangoFontFace] to which [font] belongs.
 
       Note that this function can return [NULL] in cases where the font outlives
@@ -249,7 +249,7 @@ and font_map_t = object
       toolkit has, among others, gtk_widget_get_pango_context(). Use those
       instead. *)
 
-  method get_family : string -> Font_face_and__font_family.font_family_t option
+  method get_family : string -> Font_family.font_family_t option
   (** Gets a font family by name. *)
 
   method get_serial : unit -> int
@@ -403,10 +403,10 @@ and font (obj : Raw.Font.t) : font_t =
     method get_coverage : Raw.Language.t -> Coverage.coverage_t =
       fun language -> new Coverage.coverage (Raw.Font.get_coverage obj language)
 
-    method get_face : unit -> Font_face_and__font_family.font_face_t option =
+    method get_face : unit -> Font_face.font_face_t option =
       fun () ->
         Option.map
-          (fun ret -> new Font_face_and__font_family.font_face ret)
+          (fun ret -> new Font_face.font_face ret)
           (Raw.Font.get_face obj)
 
     method get_font_map : unit -> font_map_t option =
@@ -433,11 +433,10 @@ and font_map (obj : Raw.Font_map.t) : font_map_t =
     method create_context : unit -> context_t =
       fun () -> new context (Raw.Font_map.create_context obj)
 
-    method get_family :
-        string -> Font_face_and__font_family.font_family_t option =
+    method get_family : string -> Font_family.font_family_t option =
       fun name ->
         Option.map
-          (fun ret -> new Font_face_and__font_family.font_family ret)
+          (fun ret -> new Font_family.font_family ret)
           (Raw.Font_map.get_family obj name)
 
     method get_serial : unit -> int = fun () -> Raw.Font_map.get_serial obj

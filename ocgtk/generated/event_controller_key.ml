@@ -1,7 +1,5 @@
 class type event_controller_key_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
 
   (** {2:signals Signals} *)
 
@@ -38,10 +36,7 @@ class type event_controller_key_t = object
 
   (** {2:methods Methods} *)
 
-  method forward :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method forward : Widget.widget_t -> bool
   (** Forwards the current event of this [controller] to a [widget].
 
       This function can only be used in handlers for the
@@ -69,10 +64,7 @@ end
 class event_controller_key (obj : Raw.Event_controller_key.t) :
   event_controller_key_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_im_update ?(after = false) ~callback () =
       Raw.Event_controller_key.on_im_update ~after self#as_event_controller_key
@@ -90,10 +82,7 @@ class event_controller_key (obj : Raw.Event_controller_key.t) :
       Raw.Event_controller_key.on_modifiers ~after self#as_event_controller_key
         ~callback
 
-    method forward :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool =
+    method forward : Widget.widget_t -> bool =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Event_controller_key.forward obj widget

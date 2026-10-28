@@ -28,7 +28,7 @@
     CSS node structure for treeviews and their headers. *)
 class type tree_view_column_t = object
   inherit Buildable.buildable_t
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Cell_layout.cell_layout_t
 
   (** {2:signals Signals} *)
 
@@ -62,10 +62,7 @@ class type tree_view_column_t = object
   (** Returns the current x alignment of [tree_column]. This value can range
       between 0.0 and 1.0. *)
 
-  method get_button :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_button : unit -> Widget.widget_t
   (** Returns the button used in the treeview column header *)
 
   method get_clickable : unit -> bool
@@ -113,11 +110,7 @@ class type tree_view_column_t = object
   method get_title : unit -> string
   (** Returns the title of the widget. *)
 
-  method get_tree_view :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_tree_view : unit -> Widget.widget_t option
   (** Returns the [GtkTreeView] wherein [tree_column] has been inserted. If
       [column] is currently not inserted in any tree view, [NULL] is returned.
   *)
@@ -125,11 +118,7 @@ class type tree_view_column_t = object
   method get_visible : unit -> bool
   (** Returns [TRUE] if [tree_column] is visible. *)
 
-  method get_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_widget : unit -> Widget.widget_t option
   (** Returns the [GtkWidget] in the button on the column header.
 
       If a custom widget has not been set then [NULL] is returned. *)
@@ -236,19 +225,14 @@ class type tree_view_column_t = object
   method set_visible : bool -> unit
   (** Sets the visibility of [tree_column]. *)
 
-  method set_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_widget : Widget.widget_t option -> unit
   (** Sets the widget in the header to be [widget]. If widget is [NULL], then
       the header button is set with a [GtkLabel] set to the title of
       [tree_column]. *)
 
   (** {2:properties Properties} *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this column.
 
       If no area is specified when creating the tree view column with
@@ -282,7 +266,5 @@ class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
 val new_ : unit -> tree_view_column_t
 (** Creates a new [GtkTreeViewColumn]. *)
 
-val new_with_area :
-  Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
-  tree_view_column_t
+val new_with_area : Cell_area.cell_area_t -> tree_view_column_t
 (** Creates a new [GtkTreeViewColumn] using [area] to render its cells. *)

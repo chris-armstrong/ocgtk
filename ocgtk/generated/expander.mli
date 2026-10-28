@@ -8,9 +8,7 @@
 (** {1:class Class} *)
 
 class type expander_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
   (** {2:signals Signals} *)
 
@@ -20,11 +18,7 @@ class type expander_t = object
 
   (** {2:methods Methods} *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [expander]. *)
 
   method get_expanded : unit -> bool
@@ -40,11 +34,7 @@ class type expander_t = object
       set the return value will be [NULL]. This will be the case if you create
       an empty button with gtk_button_new() to use as a container. *)
 
-  method get_label_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_label_widget : unit -> Widget.widget_t option
   (** Retrieves the label widget for the frame. *)
 
   method get_resize_toplevel : unit -> bool
@@ -57,11 +47,7 @@ class type expander_t = object
   method get_use_underline : unit -> bool
   (** Returns whether an underline in the text indicates a mnemonic. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [expander]. *)
 
   method set_expanded : bool -> unit
@@ -75,11 +61,7 @@ class type expander_t = object
 
       This will also clear any previously set labels. *)
 
-  method set_label_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_label_widget : Widget.widget_t option -> unit
   (** Set the label widget for the expander.
 
       This is the widget that will appear embedded alongside the expander arrow.

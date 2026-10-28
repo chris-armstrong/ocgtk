@@ -311,7 +311,7 @@ and tooltip_t = object
 end
 
 and widget_t = object
-  inherit At_context_and__accessible.accessible_t
+  inherit Accessible.accessible_t
   inherit Buildable.buildable_t
   inherit Constraint_target.constraint_target_t
 

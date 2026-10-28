@@ -22,10 +22,7 @@
     [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
     necessary. *)
 class type list_box_row_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
 
   (** {2:signals Signals} *)
@@ -62,18 +59,10 @@ class type list_box_row_t = object
   method get_activatable : unit -> bool
   (** Gets whether the row is activatable. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [row]. *)
 
-  method get_header :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_header : unit -> Widget.widget_t option
   (** Returns the current header of the [row].
 
       This can be used in a [Gtk.ListBoxUpdateHeaderFunc] to see if there is a
@@ -92,18 +81,10 @@ class type list_box_row_t = object
   method set_activatable : bool -> unit
   (** Set whether the row is activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
-  method set_header :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_header : Widget.widget_t option -> unit
   (** Sets the current header of the [row].
 
       This is only allowed to be called from a [Gtk.ListBoxUpdateHeaderFunc]. It

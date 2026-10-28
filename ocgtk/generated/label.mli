@@ -8,10 +8,7 @@
 (** {1:class Class} *)
 
 class type label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
 
   (** {2:signals Signals} *)
@@ -139,11 +136,7 @@ class type label_t = object
       returns the keyval used for the mnemonic accelerator. If there is no
       mnemonic set up it returns [GDK_KEY_VoidSymbol]. *)
 
-  method get_mnemonic_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_mnemonic_widget : unit -> Widget.widget_t option
   (** Retrieves the mnemonic target of this label.
 
       See [Gtk.Label.set_mnemonic_widget]. *)
@@ -294,11 +287,7 @@ class type label_t = object
   method set_max_width_chars : int -> unit
   (** Sets the maximum width of the label in characters. *)
 
-  method set_mnemonic_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_mnemonic_widget : Widget.widget_t option -> unit
   (** Associate the label with its mnemonic target.
 
       If the label has been set so that it has a mnemonic key (using i.e.

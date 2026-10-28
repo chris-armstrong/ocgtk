@@ -185,6 +185,19 @@ let description buf ~class_name ~class_doc =
     (fun doc -> bprintf buf "\n%s\n" (Doc_emit.floating doc))
     (Entity_doc.description ~class_name ~class_doc)
 
+(* The context for generating a cyclic group's combined module or one of its
+   member modules: the group's members refer to each other through the
+   combined module (see [Type_mappings]). *)
+let in_cyclic_group ~ctx ~combined_module_name =
+  let members =
+    Hashtbl.fold
+      (fun name group members ->
+        if String.equal group combined_module_name then name :: members
+        else members)
+      ctx.module_groups []
+  in
+  { (Module_paths.main_library_ctx ctx) with current_cycle_classes = members }
+
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~entity_kind ~properties ~signals ~constructors =
@@ -312,7 +325,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
 (** Generate combined class modules for cyclic dependencies *)
 let generate_combined_class_module ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 4096 in
   bprintf buf
     "(* GENERATED CODE - DO NOT EDIT *)\n\
@@ -387,7 +400,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 (** Generate combined class signatures for cyclic dependencies *)
 let generate_combined_class_signature ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let namespace = ctx.namespace.namespace_name in
   let buf = Buffer.create 4096 in
 
@@ -468,7 +481,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
 (** Generate cyclic shim module (implementation) *)
 let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 512 in
   let layer1_module_name =
     Class_utils.get_qualified_module_name ~ctx entity.name
@@ -502,7 +515,7 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
 
 (** Generate cyclic shim signature *)
 let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 512 in
   let layer1_module_name =
     Class_utils.get_qualified_module_name ~ctx entity.name
