@@ -11,7 +11,15 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_motion}. *)
 
-(** The methods, signals and properties of a [EventControllerMotion]. *)
+(** {b The methods, signals and properties of a [EventControllerMotion].}
+
+    Tracks the pointer position.
+
+    The event controller offers [Gtk.EventControllerMotion::enter] and
+    [Gtk.EventControllerMotion::leave] signals, as well as
+    [Gtk.EventControllerMotion:is-pointer] and
+    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
+    reflect changes in the pointer position as it moves over the widget. *)
 class type event_controller_motion_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

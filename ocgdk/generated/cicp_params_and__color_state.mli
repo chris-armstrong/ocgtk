@@ -2,7 +2,26 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [CicpParams]. *)
+(** {b The methods, signals and properties of a [CicpParams].}
+
+    Contains the parameters that define a colorstate with cicp parameters.
+
+    Cicp parameters are specified in the ITU-T H.273
+    {{:https://www.itu.int/rec/T-REC-H.273/en}specification}.
+
+    See the documentation of individual properties for supported values.
+
+    The 'unspecified' value (2) is not treated in any special way, and must be
+    replaced by a different value before creating a color state.
+
+    [GdkCicpParams] can be used as a builder object to construct a color state
+    from Cicp data with [Gdk.CicpParams.build_color_state]. The function will
+    return an error if the given parameters are not supported.
+
+    You can obtain a [GdkCicpParams] object from a color state with
+    [Gdk.ColorState.create_cicp_params]. This can be used to create a variant of
+    a color state, by changing just one of the cicp parameters, or just to
+    obtain information about the color state. *)
 class type cicp_params_t = object
   method build_color_state : unit -> (Raw.Color_state.t, GError.t) result
   (** Creates a new [GdkColorState] object for the cicp parameters in [self].
@@ -39,7 +58,16 @@ class type cicp_params_t = object
   method as_cicp_params : Raw.Cicp_params.t
 end
 
-(** The methods, signals and properties of a [ColorState]. *)
+(** {b The methods, signals and properties of a [ColorState].}
+
+    Provides information to interpret colors and pixels in a variety of ways.
+
+    They are also known as
+    {{:https://en.wikipedia.org/wiki/Color_space}{i color spaces}}.
+
+    Crucially, GTK knows how to convert colors from one color state to another.
+
+    [GdkColorState] objects are immutable and therefore threadsafe. *)
 and color_state_t = object
   method create_cicp_params : unit -> cicp_params_t option
   (** Create a [Gdk.CicpParams] representing the colorstate.

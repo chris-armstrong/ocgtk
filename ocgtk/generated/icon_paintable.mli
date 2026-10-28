@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Icon_paintable}. *)
 
-(** The methods, signals and properties of a [IconPaintable]. *)
+(** {b The methods, signals and properties of a [IconPaintable].}
+
+    Contains information found when looking up an icon in [GtkIconTheme] or
+    loading it from a file.
+
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
 class type icon_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
   inherit Symbolic_paintable.symbolic_paintable_t

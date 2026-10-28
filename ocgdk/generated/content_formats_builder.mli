@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Content_formats_builder}. *)
 
-(** The methods, signals and properties of a [ContentFormatsBuilder]. *)
+(** {b The methods, signals and properties of a [ContentFormatsBuilder].}
+
+    Creates [GdkContentFormats] objects. *)
 class type content_formats_builder_t = object
   method add_formats : Raw.Content_formats.t -> unit
   (** Appends all formats from [formats] to [builder], skipping those that

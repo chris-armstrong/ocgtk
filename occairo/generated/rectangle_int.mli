@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-rectangle_int_t}.
     The functions it is built on are in {!Occairo.Raw.Rectangle_int}. *)
 
-(** The methods, signals and properties of a [RectangleInt]. *)
+(** {b The methods, signals and properties of a [RectangleInt].} *)
 class type rectangle_int_t = object
   method as_rectangle_int : Raw.Rectangle_int.t
 end

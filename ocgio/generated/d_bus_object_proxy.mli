@@ -8,7 +8,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_proxy}. *)
 
-(** The methods, signals and properties of a [DBusObjectProxy]. *)
+(** {b The methods, signals and properties of a [DBusObjectProxy].}
+
+    A [GDBusObjectProxy] is an object used to represent a remote object with one
+    or more D-Bus interfaces. Normally, you don’t instantiate a
+    [GDBusObjectProxy] yourself — typically [Gio.DBusObjectManagerClient] is
+    used to obtain it. *)
 class type d_bus_object_proxy_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 

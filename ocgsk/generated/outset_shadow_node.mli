@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Outset_shadow_node}. *)
 
-(** The methods, signals and properties of a [OutsetShadowNode]. *)
+(** {b The methods, signals and properties of a [OutsetShadowNode].}
+
+    A render node for an outset shadow. *)
 class type outset_shadow_node_t = object
   inherit Render_node.render_node_t
 

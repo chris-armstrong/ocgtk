@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Component_transfer_node}. *)
 
-(** The methods, signals and properties of a [ComponentTransferNode]. *)
+(** {b The methods, signals and properties of a [ComponentTransferNode].} *)
 class type component_transfer_node_t = object
   inherit Render_node.render_node_t
 

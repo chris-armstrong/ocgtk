@@ -62,9 +62,22 @@ let with_suffix ?suffix prose =
   | None, Some suffix -> Some (suffix, true)
   | prose, None -> prose
 
-let item_doc ~indent ?since ?fallback ?suffix ~context doc =
+(* The prefix is a paragraph of its own before the prose, and alone it is
+   trusted text like a fallback. *)
+let with_prefix ?prefix prose =
+  match (prefix, prose) with
+  | Some prefix, Some (text, from_fallback) ->
+      Some (prefix ^ "\n\n" ^ text, from_fallback)
+  | Some prefix, None -> Some (prefix, true)
+  | None, prose -> prose
+
+let item_doc ~indent ?since ?fallback ?prefix ?suffix ~context doc =
+  let prose =
+    prose_of ~context ~doc ~fallback
+    |> with_prefix ?prefix |> with_suffix ?suffix
+  in
   let body =
-    match (with_suffix ?suffix (prose_of ~context ~doc ~fallback), since) with
+    match (prose, since) with
     | Some (prose, false), Some v ->
         Some (prose ^ "\n" ^ indent ^ "    @since " ^ v)
     | Some (prose, true), Some v -> Some (prose ^ " @since " ^ v)

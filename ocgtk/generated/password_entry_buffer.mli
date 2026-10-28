@@ -8,7 +8,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Password_entry_buffer}. *)
 
-(** The methods, signals and properties of a [PasswordEntryBuffer]. *)
+(** {b The methods, signals and properties of a [PasswordEntryBuffer].}
+
+    A [GtkEntryBuffer] that locks the underlying memory to prevent it from being
+    swapped to disk.
+
+    [GtkPasswordEntry] uses a [GtkPasswordEntryBuffer]. *)
 class type password_entry_buffer_t = object
   inherit Entry_buffer.entry_buffer_t
   method as_password_entry_buffer : Raw.Password_entry_buffer.t

@@ -13,7 +13,18 @@
     {!class-type-content_deserializer_t}. The functions it is built on are in
     {!Ocgdk.Raw.Content_deserializer}. *)
 
-(** The methods, signals and properties of a [ContentDeserializer]. *)
+(** {b The methods, signals and properties of a [ContentDeserializer].}
+
+    Deserializes content received via inter-application data transfers.
+
+    The [GdkContentDeserializer] transforms serialized content that is
+    identified by a mime type into an object identified by a GType.
+
+    GTK provides serializers and deserializers for common data types such as
+    text, colors, images or file lists. To register your own deserialization
+    functions, use [content_register_deserializer].
+
+    Also see [Gdk.ContentSerializer]. *)
 class type content_deserializer_t = object
   inherit Ocgio.Async_result.async_result_t
 

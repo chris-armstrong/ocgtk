@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Mnemonic_trigger}. *)
 
-(** The methods, signals and properties of a [MnemonicTrigger]. *)
+(** {b The methods, signals and properties of a [MnemonicTrigger].}
+
+    Triggers when a specific mnemonic is pressed.
+
+    Mnemonics require a {i mnemonic modifier} (typically <kbd>Alt</kbd>) to be
+    pressed together with the mnemonic key. *)
 class type mnemonic_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 

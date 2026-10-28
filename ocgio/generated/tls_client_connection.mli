@@ -5,7 +5,10 @@
     {!class-type-tls_client_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Tls_client_connection}. *)
 
-(** The methods, signals and properties of a [TlsClientConnection]. *)
+(** {b The methods, signals and properties of a [TlsClientConnection].}
+
+    [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
+    representing a client-side TLS connection. *)
 class type tls_client_connection_t = object
   method copy_session_state : tls_client_connection_t -> unit
   (** Possibly copies session state from one connection to another, for use in

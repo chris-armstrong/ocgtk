@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Frustum}. *)
 
-(** The methods, signals and properties of a [Frustum]. *)
+(** {b The methods, signals and properties of a [Frustum].}
+
+    A 3D volume delimited by 2D clip planes.
+
+    The contents of the [graphene_frustum_t] are private, and should not be
+    modified directly. *)
 class type frustum_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether a point is inside the volume defined by the given

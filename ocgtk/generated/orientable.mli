@@ -12,7 +12,18 @@
     Its methods, signals and properties are on {!class-type-orientable_t}. The
     functions it is built on are in {!Ocgtk.Raw.Orientable}. *)
 
-(** The methods, signals and properties of a [Orientable]. *)
+(** {b The methods, signals and properties of a [Orientable].}
+
+    An interface for widgets that can be oriented horizontally or vertically.
+
+    [GtkOrientable] is more flexible in that it allows the orientation to be
+    changed at runtime, allowing the widgets to “flip”.
+
+    {b CSS nodes}
+
+    [GtkWidget] types implementing the [GtkOrientable] interface will
+    automatically acquire the [horizontal] or [vertical] CSS class depending on
+    the value of the [Gtk.Orientable:orientation] property. *)
 class type orientable_t = object
   method get_orientation : unit -> Enums.orientation
   (** Retrieves the orientation of the [orientable]. *)

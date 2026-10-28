@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Menu_item}. *)
 
-(** The methods, signals and properties of a [MenuItem]. *)
+(** {b The methods, signals and properties of a [MenuItem].}
+
+    [GMenuItem] is an opaque structure type. You must access it using the
+    functions below. *)
 class type menu_item_t = object
   method get_attribute_value :
     string -> Gvariant_type.t option -> Gvariant.t option

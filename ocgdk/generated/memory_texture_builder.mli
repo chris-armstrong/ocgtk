@@ -16,7 +16,21 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Memory_texture_builder}. *)
 
-(** The methods, signals and properties of a [MemoryTextureBuilder]. *)
+(** {b The methods, signals and properties of a [MemoryTextureBuilder].}
+
+    Constructs [Gdk.Texture] objects from system memory provided via
+    [GLib.Bytes].
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
+    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
+    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
+    texture.
+
+    [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+*)
 class type memory_texture_builder_t = object
   method build : unit -> Texture.texture_t
   (** Builds a new [GdkTexture] with the values set up in the builder.

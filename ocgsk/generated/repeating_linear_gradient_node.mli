@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Repeating_linear_gradient_node}. *)
 
-(** The methods, signals and properties of a [RepeatingLinearGradientNode]. *)
+(** {b The methods, signals and properties of a [RepeatingLinearGradientNode].}
+
+    A render node for a repeating linear gradient. *)
 class type repeating_linear_gradient_node_t = object
   inherit Render_node.render_node_t
 

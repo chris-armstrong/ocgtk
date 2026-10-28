@@ -5,7 +5,10 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Zlib_compressor}. *)
 
-(** The methods, signals and properties of a [ZlibCompressor]. *)
+(** {b The methods, signals and properties of a [ZlibCompressor].}
+
+    [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
+    data using zlib. *)
 class type zlib_compressor_t = object
   inherit Converter.converter_t
 

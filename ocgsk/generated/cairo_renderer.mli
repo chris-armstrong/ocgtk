@@ -6,7 +6,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Cairo_renderer}. *)
 
-(** The methods, signals and properties of a [CairoRenderer]. *)
+(** {b The methods, signals and properties of a [CairoRenderer].}
+
+    Renders a GSK rendernode tree with cairo.
+
+    Since it is using cairo, this renderer cannot support 3D transformations. *)
 class type cairo_renderer_t = object
   inherit Renderer.renderer_t
   method as_cairo_renderer : Raw.Cairo_renderer.t

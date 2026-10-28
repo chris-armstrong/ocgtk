@@ -10,7 +10,14 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Simple_permission}. *)
 
-(** The methods, signals and properties of a [SimplePermission]. *)
+(** {b The methods, signals and properties of a [SimplePermission].}
+
+    [GSimplePermission] is a trivial implementation of [Gio.Permission] that
+    represents a permission that is either always or never allowed. The value is
+    given at construction and doesn’t change.
+
+    Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
+    [GSimplePermission] will result in errors. *)
 class type simple_permission_t = object
   inherit Permission.permission_t
   method as_simple_permission : Raw.Simple_permission.t

@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Repeating_radial_gradient_node}. *)
 
-(** The methods, signals and properties of a [RepeatingRadialGradientNode]. *)
+(** {b The methods, signals and properties of a [RepeatingRadialGradientNode].}
+
+    A render node for a repeating radial gradient. *)
 class type repeating_radial_gradient_node_t = object
   inherit Render_node.render_node_t
 

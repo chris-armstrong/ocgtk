@@ -4,7 +4,9 @@
     {!class-type-c_closure_expression_t}. The functions it is built on are in
     {!Ocgtk.Raw.C_closure_expression}. *)
 
-(** The methods, signals and properties of a [CClosureExpression]. *)
+(** {b The methods, signals and properties of a [CClosureExpression].}
+
+    A variant of [GtkClosureExpression] using a C closure. *)
 class type c_closure_expression_t = object
   inherit Expression.expression_t
   method as_c_closure_expression : Raw.C_closure_expression.t

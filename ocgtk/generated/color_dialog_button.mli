@@ -21,7 +21,25 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_dialog_button}. *)
 
-(** The methods, signals and properties of a [ColorDialogButton]. *)
+(** {b The methods, signals and properties of a [ColorDialogButton].}
+
+    Opens a color chooser dialog to select a color.
+
+    An example GtkColorDialogButton
+
+    It is suitable widget for selecting a color in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    colorbutton
+    ╰── button.color
+        ╰── [content]
+    ]}
+
+    [GtkColorDialogButton] has a single CSS node with name colorbutton which
+    contains a button node. To differentiate it from a plain [GtkButton], it
+    gets the .color style class. *)
 class type color_dialog_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

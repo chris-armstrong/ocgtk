@@ -14,7 +14,19 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.File_launcher}. *)
 
-(** The methods, signals and properties of a [FileLauncher]. *)
+(** {b The methods, signals and properties of a [FileLauncher].}
+
+    Asynchronous API to open a file with an application.
+
+    [GtkFileLauncher] collects the arguments that are needed to open the file.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.FileLauncher.launch] function.
+
+    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
 class type file_launcher_t = object
   method get_always_ask : unit -> bool
   (** Returns whether to ask the user which app to use. *)

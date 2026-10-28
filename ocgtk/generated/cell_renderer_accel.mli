@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_accel}. *)
 
-(** The methods, signals and properties of a [CellRendererAccel]. *)
+(** {b The methods, signals and properties of a [CellRendererAccel].}
+
+    Renders a keyboard accelerator in a cell
+
+    [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key
+    combination like [Control + a]). If the cell renderer is editable, the
+    accelerator can be changed by simply typing the new combination. *)
 class type cell_renderer_accel_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
 

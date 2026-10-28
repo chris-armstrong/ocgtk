@@ -6,7 +6,12 @@
     Its methods, signals and properties are on {!class-type-language_t}. The
     functions it is built on are in {!Ocpango.Raw.Language}. *)
 
-(** The methods, signals and properties of a [Language]. *)
+(** {b The methods, signals and properties of a [Language].}
+
+    The [PangoLanguage] structure is used to represent a language.
+
+    [PangoLanguage] pointers can be efficiently copied and compared with each
+    other. *)
 class type language_t = object
   method get_sample_string : unit -> string
   [@@ocaml.doc

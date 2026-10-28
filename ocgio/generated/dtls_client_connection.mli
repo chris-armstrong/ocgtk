@@ -5,7 +5,10 @@
     {!class-type-dtls_client_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Dtls_client_connection}. *)
 
-(** The methods, signals and properties of a [DtlsClientConnection]. *)
+(** {b The methods, signals and properties of a [DtlsClientConnection].}
+
+    [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
+    representing a client-side DTLS connection. *)
 class type dtls_client_connection_t = object
   method get_server_identity :
     unit ->

@@ -14,7 +14,19 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Shortcut_trigger}. *)
 
-(** The methods, signals and properties of a [ShortcutTrigger]. *)
+(** {b The methods, signals and properties of a [ShortcutTrigger].}
+
+    Tracks how a [GtkShortcut] can be activated.
+
+    To find out if a [GtkShortcutTrigger] triggers, you can call
+    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+
+    [GtkShortcutTriggers] contain functions that allow easy presentation to end
+    users as well as being printed for debugging.
+
+    All [GtkShortcutTriggers] are immutable, you can only specify their
+    properties during construction. If you want to change a trigger, you have to
+    replace it with a new one. *)
 class type shortcut_trigger_t = object
   method compare : shortcut_trigger_t -> int
   (** The types of [trigger1] and [trigger2] are [gconstpointer] only to allow

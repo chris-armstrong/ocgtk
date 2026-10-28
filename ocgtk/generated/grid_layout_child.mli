@@ -4,7 +4,9 @@
     {!class-type-grid_layout_child_t}. The functions it is built on are in
     {!Ocgtk.Raw.Grid_layout_child}. *)
 
-(** The methods, signals and properties of a [GridLayoutChild]. *)
+(** {b The methods, signals and properties of a [GridLayoutChild].}
+
+    [GtkLayoutChild] subclass for children in a [GtkGridLayout]. *)
 class type grid_layout_child_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

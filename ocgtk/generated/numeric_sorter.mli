@@ -6,7 +6,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Numeric_sorter}. *)
 
-(** The methods, signals and properties of a [NumericSorter]. *)
+(** {b The methods, signals and properties of a [NumericSorter].}
+
+    Sorts items numerically.
+
+    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
+*)
 class type numeric_sorter_t = object
   inherit Sorter.sorter_t
 

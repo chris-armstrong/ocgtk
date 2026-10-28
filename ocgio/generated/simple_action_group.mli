@@ -6,7 +6,10 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Simple_action_group}. *)
 
-(** The methods, signals and properties of a [SimpleActionGroup]. *)
+(** {b The methods, signals and properties of a [SimpleActionGroup].}
+
+    [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
+    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
 class type simple_action_group_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t

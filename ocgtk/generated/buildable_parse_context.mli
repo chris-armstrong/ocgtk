@@ -6,7 +6,11 @@
     {!class-type-buildable_parse_context_t}. The functions it is built on are in
     {!Ocgtk.Raw.Buildable_parse_context}. *)
 
-(** The methods, signals and properties of a [BuildableParseContext]. *)
+(** {b The methods, signals and properties of a [BuildableParseContext].}
+
+    Provides context for parsing GtkBuilder UI files.
+
+    [GtkBuildableParseContext] is an opaque struct. *)
 class type buildable_parse_context_t = object
   method get_element : unit -> string option
   (** Retrieves the name of the currently open element.

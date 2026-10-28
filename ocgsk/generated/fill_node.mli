@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Fill_node}. *)
 
-(** The methods, signals and properties of a [FillNode]. *)
+(** {b The methods, signals and properties of a [FillNode].}
+
+    A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
+    the child node. *)
 class type fill_node_t = object
   inherit Render_node.render_node_t
 

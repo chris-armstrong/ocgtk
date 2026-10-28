@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Border_node}. *)
 
-(** The methods, signals and properties of a [BorderNode]. *)
+(** {b The methods, signals and properties of a [BorderNode].}
+
+    A render node for a border. *)
 class type border_node_t = object
   inherit Render_node.render_node_t
 

@@ -8,7 +8,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_legacy}. *)
 
-(** The methods, signals and properties of a [EventControllerLegacy]. *)
+(** {b The methods, signals and properties of a [EventControllerLegacy].}
+
+    Provides raw access to the event stream.
+
+    It should only be used as a last resort if none of the other event
+    controllers or gestures do the job. *)
 class type event_controller_legacy_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

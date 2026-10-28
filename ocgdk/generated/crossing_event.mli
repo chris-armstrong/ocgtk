@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-crossing_event_t}.
     The functions it is built on are in {!Ocgdk.Raw.Crossing_event}. *)
 
-(** The methods, signals and properties of a [CrossingEvent]. *)
+(** {b The methods, signals and properties of a [CrossingEvent].}
+
+    An event caused by a pointing device moving between surfaces. *)
 class type crossing_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 

@@ -8,7 +8,15 @@
     Its methods, signals and properties are on {!class-type-attr_iterator_t}.
     The functions it is built on are in {!Ocpango.Raw.Attr_iterator}. *)
 
-(** The methods, signals and properties of a [AttrIterator]. *)
+(** {b The methods, signals and properties of a [AttrIterator].}
+
+    A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
+
+    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
+    iterator is created, it can be advanced through the style changes in the
+    text using [Pango.AttrIterator.next]. At each style change, the range of the
+    current style segment and the attributes currently in effect can be queried.
+*)
 class type attr_iterator_t = object
   method destroy : unit -> unit
   (** Destroy a [PangoAttrIterator] and free all associated memory. *)

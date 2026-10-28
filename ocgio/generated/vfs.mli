@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-vfs_t}. The
     functions it is built on are in {!Ocgio.Raw.Vfs}. *)
 
-(** The methods, signals and properties of a [Vfs]. *)
+(** {b The methods, signals and properties of a [Vfs].}
+
+    Entry point for using GIO functionality. *)
 class type vfs_t = object
   method get_file_for_path : string -> App_info_cycle_64c425a0.file_t
   (** Gets a [GFile] for [path]. *)

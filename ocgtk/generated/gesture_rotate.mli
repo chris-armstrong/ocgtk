@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Gesture_rotate}. *)
 
-(** The methods, signals and properties of a [GestureRotate]. *)
+(** {b The methods, signals and properties of a [GestureRotate].}
+
+    Recognizes 2-finger rotation gestures.
+
+    Whenever the angle between both handled sequences changes, the
+    [Gtk.GestureRotate::angle-changed] signal is emitted. *)
 class type gesture_rotate_t = object
   inherit Gesture.gesture_t
 

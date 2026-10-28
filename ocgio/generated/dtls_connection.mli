@@ -21,7 +21,27 @@
     Its methods, signals and properties are on {!class-type-dtls_connection_t}.
     The functions it is built on are in {!Ocgio.Raw.Dtls_connection}. *)
 
-(** The methods, signals and properties of a [DtlsConnection]. *)
+(** {b The methods, signals and properties of a [DtlsConnection].}
+
+    [GDtlsConnection] is the base DTLS connection class type, which wraps a
+    [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
+    subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
+    implement client-side and server-side DTLS, respectively.
+
+    For TLS support, see [Gio.TlsConnection].
+
+    As DTLS is datagram based, [GDtlsConnection] implements [Gio.DatagramBased],
+    presenting a datagram-socket-like API for the encrypted connection. This
+    operates over a base datagram connection, which is also a [GDatagramBased]
+    ([Gio.DtlsConnection:base-socket]).
+
+    To close a DTLS connection, use [Gio.DtlsConnection.close].
+
+    Neither [Gio.DtlsServerConnection] or [Gio.DtlsClientConnection] set the
+    peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
+    is up to the caller to do that if they wish. If they do not, and
+    [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
+    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 class type dtls_connection_t = object
   method on_accept_certificate :
     ?after:bool ->

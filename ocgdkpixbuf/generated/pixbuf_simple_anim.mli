@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim}. *)
 
-(** The methods, signals and properties of a [PixbufSimpleAnim]. *)
+(** {b The methods, signals and properties of a [PixbufSimpleAnim].}
+
+    An opaque struct representing a simple animation. *)
 class type pixbuf_simple_anim_t = object
   inherit Pixbuf_animation.pixbuf_animation_t
 

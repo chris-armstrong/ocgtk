@@ -12,7 +12,16 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_focus}. *)
 
-(** The methods, signals and properties of a [EventControllerFocus]. *)
+(** {b The methods, signals and properties of a [EventControllerFocus].}
+
+    Tracks keyboard focus.
+
+    The event controller offers [Gtk.EventControllerFocus::enter] and
+    [Gtk.EventControllerFocus::leave] signals, as well as
+    [Gtk.EventControllerFocus:is-focus] and
+    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
+    reflect focus changes inside the widget hierarchy that is rooted at the
+    controllers widget. *)
 class type event_controller_focus_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

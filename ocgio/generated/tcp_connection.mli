@@ -4,7 +4,10 @@
     Its methods, signals and properties are on {!class-type-tcp_connection_t}.
     The functions it is built on are in {!Ocgio.Raw.Tcp_connection}. *)
 
-(** The methods, signals and properties of a [TcpConnection]. *)
+(** {b The methods, signals and properties of a [TcpConnection].}
+
+    This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
+    sockets. *)
 class type tcp_connection_t = object
   inherit Socket_and__socket_connection.socket_connection_t
 

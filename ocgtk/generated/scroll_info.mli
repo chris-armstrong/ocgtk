@@ -7,7 +7,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Scroll_info}. *)
 
-(** The methods, signals and properties of a [ScrollInfo]. *)
+(** {b The methods, signals and properties of a [ScrollInfo].}
+
+    Provides detailed information on how a scroll operation should be performed.
+
+    Scrolling functions usually allow passing a [NULL] scroll info which will
+    cause the default values to be used and just scroll the element into view.
+*)
 class type scroll_info_t = object
   method get_enable_horizontal : unit -> bool
   (** Checks if horizontal scrolling is enabled. *)

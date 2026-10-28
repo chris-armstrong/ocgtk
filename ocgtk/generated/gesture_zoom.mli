@@ -8,7 +8,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Gesture_zoom}. *)
 
-(** The methods, signals and properties of a [GestureZoom]. *)
+(** {b The methods, signals and properties of a [GestureZoom].}
+
+    Recognizes 2-finger pinch/zoom gestures.
+
+    Whenever the distance between both tracked sequences changes, the
+    [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
+    factor. *)
 class type gesture_zoom_t = object
   inherit Gesture.gesture_t
 

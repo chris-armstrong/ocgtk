@@ -6,7 +6,10 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_output_stream}. *)
 
-(** The methods, signals and properties of a [DataOutputStream]. *)
+(** {b The methods, signals and properties of a [DataOutputStream].}
+
+    Data output stream implements [Gio.OutputStream] and includes functions for
+    writing data directly to an output stream. *)
 class type data_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t

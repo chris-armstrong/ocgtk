@@ -4,7 +4,10 @@
     {!class-type-drag_surface_size_t}. The functions it is built on are in
     {!Ocgdk.Raw.Drag_surface_size}. *)
 
-(** The methods, signals and properties of a [DragSurfaceSize]. *)
+(** {b The methods, signals and properties of a [DragSurfaceSize].}
+
+    Contains information that is useful to compute the size of a drag surface.
+*)
 class type drag_surface_size_t = object
   method set_size : int -> int -> unit
   (** Sets the size the drag surface prefers to be resized to. *)

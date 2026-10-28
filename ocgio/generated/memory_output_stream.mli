@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Memory_output_stream}. *)
 
-(** The methods, signals and properties of a [MemoryOutputStream]. *)
+(** {b The methods, signals and properties of a [MemoryOutputStream].}
+
+    [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
+    for GIO streaming output operations.
+
+    As of GLib 2.34, [GMemoryOutputStream] trivially implements
+    [Gio.PollableOutputStream]: it always polls as ready. *)
 class type memory_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Pollable_output_stream.pollable_output_stream_t

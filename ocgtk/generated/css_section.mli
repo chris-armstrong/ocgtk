@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Css_section}. *)
 
-(** The methods, signals and properties of a [CssSection]. *)
+(** {b The methods, signals and properties of a [CssSection].}
+
+    Defines a part of a CSS document.
+
+    Because sections are nested into one another, you can use
+    [CssSection.get_parent] to get the containing region. *)
 class type css_section_t = object
   method get_bytes : unit -> Glib_bytes.t option
   (** Gets the bytes that [section] was parsed from. *)

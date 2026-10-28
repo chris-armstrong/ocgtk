@@ -10,7 +10,12 @@
     functions it is built on are in {!Ocgdk.Raw.Device}. *)
 
 class type device_t = App_launch_context_cycle_de440b34.device_t
-(** The methods, signals and properties of a [Device]. *)
+(** {b The methods, signals and properties of a [Device].}
+
+    Represents an input device, such as a keyboard, mouse or touchpad.
+
+    See the [Gdk.Seat] documentation for more information about the various
+    kinds of devices, and their relationships. *)
 
 class device : Raw.Device.t -> device_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Device.t}. *)

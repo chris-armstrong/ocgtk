@@ -20,7 +20,24 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Font_dialog_button}. *)
 
-(** The methods, signals and properties of a [FontDialogButton]. *)
+(** {b The methods, signals and properties of a [FontDialogButton].}
+
+    Opens a font chooser dialog to select a font.
+
+    An example GtkFontDialogButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontDialogButton] has a single CSS node with name fontbutton which
+    contains a button node with the .font style class. *)
 class type font_dialog_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

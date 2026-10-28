@@ -12,7 +12,12 @@
 
 class type ray_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray_t
-(** The methods, signals and properties of a [Ray]. *)
+(** {b The methods, signals and properties of a [Ray].}
+
+    A ray emitted from an origin in a given direction.
+
+    The contents of the [graphene_ray_t] structure are private, and should not
+    be modified directly. *)
 
 class ray : Raw.Ray.t -> ray_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Ray.t}. *)

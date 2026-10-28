@@ -38,7 +38,43 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Assistant}. *)
 
-(** The methods, signals and properties of a [Assistant]. *)
+(** {b The methods, signals and properties of a [Assistant].}
+
+    [GtkAssistant] is used to represent a complex as a series of steps.
+
+    An example GtkAssistant
+
+    Each step consists of one or more pages. [GtkAssistant] guides the user
+    through the pages, and controls the page flow to collect the data needed for
+    the operation.
+
+    [GtkAssistant] handles which buttons to show and to make sensitive based on
+    page sequence knowledge and the [Gtk.AssistantPageType] of each page in
+    addition to state information like the {i completed} and {i committed} page
+    statuses.
+
+    If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
+    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
+    buttons yourself.
+
+    [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
+    which holds additional per-child properties. You obtain the
+    [GtkAssistantPage] for a child with [Gtk.Assistant.get_page].
+
+    {b GtkAssistant as GtkBuildable}
+
+    The [GtkAssistant] implementation of the [GtkBuildable] interface exposes
+    the [action_area] as internal children with the name “action_area”.
+
+    To add pages to an assistant in [GtkBuilder], simply add it as a child to
+    the [GtkAssistant] object. If you need to set per-object properties, create
+    a [GtkAssistantPage] object explicitly, and set the child widget as a
+    property on it.
+
+    {b CSS nodes}
+
+    [GtkAssistant] has a single CSS node with the name window and style class
+    .assistant. *)
 class type assistant_t = object
   inherit Application_and__window_and__window_group.window_t
 

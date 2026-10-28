@@ -11,7 +11,17 @@
     Its methods, signals and properties are on {!class-type-matrix_t}. The
     functions it is built on are in {!Ocpango.Raw.Matrix}. *)
 
-(** The methods, signals and properties of a [Matrix]. *)
+(** {b The methods, signals and properties of a [Matrix].}
+
+    A [PangoMatrix] specifies a transformation between user-space and device
+    coordinates.
+
+    The transformation is given by
+
+    {[
+    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
+    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
+    ]} *)
 class type matrix_t = object
   method concat : Raw.Matrix.t -> unit
   (** Changes the transformation represented by [matrix] to be the

@@ -8,7 +8,13 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Media_controls}. *)
 
-(** The methods, signals and properties of a [MediaControls]. *)
+(** {b The methods, signals and properties of a [MediaControls].}
+
+    Shows controls for video playback.
+
+    An example GtkMediaControls
+
+    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
 class type media_controls_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

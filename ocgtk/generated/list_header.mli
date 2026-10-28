@@ -7,7 +7,13 @@
     Its methods, signals and properties are on {!class-type-list_header_t}. The
     functions it is built on are in {!Ocgtk.Raw.List_header}. *)
 
-(** The methods, signals and properties of a [ListHeader]. *)
+(** {b The methods, signals and properties of a [ListHeader].}
+
+    Used by list widgets to represent the headers they display.
+
+    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
+    their factory, but provide a different set of properties suitable for
+    managing the header instead of individual items. *)
 class type list_header_t = object
   method get_child :
     unit ->

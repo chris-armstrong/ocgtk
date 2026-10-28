@@ -12,7 +12,17 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_io_stream}. *)
 
-(** The methods, signals and properties of a [SimpleIOStream]. *)
+(** {b The methods, signals and properties of a [SimpleIOStream].}
+
+    [GSimpleIOStream] creates a [Gio.IOStream] from an arbitrary
+    [Gio.InputStream] and [Gio.OutputStream]. This allows any pair of input and
+    output streams to be used with [Gio.IOStream] methods.
+
+    This is useful when you obtained a [Gio.InputStream] and a
+    [Gio.OutputStream] by other means, for instance creating them with platform
+    specific methods as [g_unix_input_stream_new()] (from [gio-unix-2.0.pc] /
+    [GioUnix-2.0]), and you want to take advantage of the methods provided by
+    [Gio.IOStream]. *)
 class type simple_io_stream_t = object
   inherit Io_stream.io_stream_t
   method as_simple_io_stream : Raw.Simple_io_stream.t

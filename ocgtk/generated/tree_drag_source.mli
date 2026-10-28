@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-tree_drag_source_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_drag_source}. *)
 
-(** The methods, signals and properties of a [TreeDragSource]. *)
+(** {b The methods, signals and properties of a [TreeDragSource].}
+
+    Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
 class type tree_drag_source_t = object
   method drag_data_delete : Raw.Tree_path.t -> bool
   (** Asks the [GtkTreeDragSource] to delete the row at [path], because it was

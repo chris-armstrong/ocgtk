@@ -14,7 +14,18 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Filter_list_model}. *)
 
-(** The methods, signals and properties of a [FilterListModel]. *)
+(** {b The methods, signals and properties of a [FilterListModel].}
+
+    A list model that filters the elements of another model.
+
+    It hides some elements from the underlying model according to criteria given
+    by a [GtkFilter].
+
+    The model can be set up to do incremental filtering, so that filtering long
+    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
+    details.
+
+    [GtkFilterListModel] passes through sections from the underlying model. *)
 class type filter_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t

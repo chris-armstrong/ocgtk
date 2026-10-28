@@ -9,7 +9,15 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.File_dialog}. *)
 
-(** The methods, signals and properties of a [FileDialog]. *)
+(** {b The methods, signals and properties of a [FileDialog].}
+
+    Asynchronous API to present a file chooser dialog.
+
+    [GtkFileDialog] collects the arguments that are needed to present the dialog
+    to the user, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
+*)
 class type file_dialog_t = object
   method get_accept_label : unit -> string option
   (** Retrieves the text used by the dialog on its accept button. *)

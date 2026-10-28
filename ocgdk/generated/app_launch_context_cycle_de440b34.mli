@@ -5,7 +5,6 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [AppLaunchContext]. *)
 class type app_launch_context_t = object
   inherit Ocgio.App_launch_context.app_launch_context_t
 
@@ -55,8 +54,29 @@ class type app_launch_context_t = object
   method display : display_t
   (** The display that the [GdkAppLaunchContext] is on. *)
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [AppLaunchContext].}\n\n\
+     Handles launching an application in a graphical context.\n\n\
+     It is an implementation of [GAppLaunchContext] that provides startup\n\
+     notification and allows to launch applications on a specific workspace.\n\n\
+     {b Launching an application}\n\n\
+     {[\n\
+     GdkAppLaunchContext *context;\n\n\
+     context = gdk_display_get_app_launch_context (display);\n\n\
+     gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));\n\n\
+     if (!g_app_info_launch_default_for_uri (\"http://www.gtk.org\", context, \
+     &error))\n\
+    \  g_warning (\"Launching failed: %s\\n\", error->message);\n\n\
+     g_object_unref (context);\n\
+     ]}"]
 
-(** The methods, signals and properties of a [CairoContext]. *)
+(** {b The methods, signals and properties of a [CairoContext].}
+
+    Represents the platform-specific draw context.
+
+    [GdkCairoContext]s are created for a surface using
+    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
+    on that surface. *)
 and cairo_context_t = object
   method cairo_create : unit -> Occairo.Context.context_t option
   (** Retrieves a Cairo context to be used to draw on the [GdkSurface] of
@@ -71,7 +91,23 @@ and cairo_context_t = object
   method as_cairo_context : Raw.Cairo_context.t
 end
 
-(** The methods, signals and properties of a [Clipboard]. *)
+(** {b The methods, signals and properties of a [Clipboard].}
+
+    Represents data shared between applications or inside an application.
+
+    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
+    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
+    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+
+    To make text or image data available in a clipboard, use
+    [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
+    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
+    object.
+
+    To read textual or image data from a clipboard, use
+    [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For
+    other data, use [Gdk.Clipboard.read_async], which provides a [GInputStream]
+    object. *)
 and clipboard_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -144,7 +180,12 @@ and clipboard_t = object
   method as_clipboard : Raw.Clipboard.t
 end
 
-(** The methods, signals and properties of a [Device]. *)
+(** {b The methods, signals and properties of a [Device].}
+
+    Represents an input device, such as a keyboard, mouse or touchpad.
+
+    See the [Gdk.Seat] documentation for more information about the various
+    kinds of devices, and their relationships. *)
 and device_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -278,7 +319,23 @@ and device_t = object
   method as_device : Raw.Device.t
 end
 
-(** The methods, signals and properties of a [Display]. *)
+(** {b The methods, signals and properties of a [Display].}
+
+    A representation of a workstation.
+
+    Their purpose are two-fold:
+
+    - To manage and provide information about input devices (pointers,
+      keyboards, etc)
+    - To manage and provide information about output devices (monitors,
+      projectors, etc)
+
+    Most of the input device handling has been factored out into separate
+    [Gdk.Seat] objects. Every display has a one or more seats, which can be
+    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+
+    Output devices are represented by [Gdk.Monitor] objects, which can be
+    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
 and display_t = object
   method on_closed :
     ?after:bool ->
@@ -492,7 +549,17 @@ and display_t = object
   method as_display : Raw.Display.t
 end
 
-(** The methods, signals and properties of a [DrawContext]. *)
+(** {b The methods, signals and properties of a [DrawContext].}
+
+    Base class for objects implementing different rendering methods.
+
+    [GdkDrawContext] is the base object used by contexts implementing different
+    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
+    provides shared functionality between those contexts.
+
+    You will always interact with one of those subclasses.
+
+    A [GdkDrawContext] is always associated with a single toplevel surface. *)
 and draw_context_t = object
   method begin_frame : Occairo.Region.region_t -> unit
   (** Indicates that you are beginning the process of redrawing [region] on the
@@ -555,7 +622,15 @@ and draw_context_t = object
   method as_draw_context : Raw.Draw_context.t
 end
 
-(** The methods, signals and properties of a [Event]. *)
+(** {b The methods, signals and properties of a [Event].}
+
+    Represents windowing system events.
+
+    In GTK applications the events are handled automatically by toplevel widgets
+    and passed on to the event controllers of appropriate widgets, so using
+    [GdkEvent] and its related API is rarely needed.
+
+    [GdkEvent] structs are immutable. *)
 and event_t = object
   method get_device : unit -> device_t option
   (** Returns the device of an event. *)
@@ -626,7 +701,6 @@ and event_t = object
   method as_event : Raw.Event.t
 end
 
-(** The methods, signals and properties of a [GLContext]. *)
 and gl_context_t = object
   method get_allowed_apis : unit -> Enums.glapi
   (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
@@ -755,8 +829,54 @@ and gl_context_t = object
 
   method as_gl_context : Raw.Gl_context.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [GLContext].}\n\n\
+     Represents a platform-specific OpenGL draw context.\n\n\
+     [GdkGLContext]s are created for a surface using\n\
+     [Gdk.Surface.create_gl_context], and the context will match\n\
+     the characteristics of the surface.\n\n\
+     A [GdkGLContext] is not tied to any particular normal framebuffer.\n\
+     For instance, it cannot draw to the surface back buffer. The GDK\n\
+     repaint system is in full control of the painting to that. Instead,\n\
+     you can create render buffers or textures and use [cairo_draw_from_gl]\n\
+     in the draw function of your widget to draw them. Then GDK will handle\n\
+     the integration of your rendering with that of other widgets.\n\n\
+     Support for [GdkGLContext] is platform-specific and context creation\n\
+     can fail, returning [NULL] context.\n\n\
+     A [GdkGLContext] has to be made \"current\" in order to start using\n\
+     it, otherwise any OpenGL call will be ignored.\n\n\
+     {b Creating a new OpenGL context}\n\n\
+     In order to create a new [GdkGLContext] instance you need a [GdkSurface],\n\
+     which you typically get during the realize call of a widget.\n\n\
+     A [GdkGLContext] is not realized until either [Gdk.GLContext.make_current]\n\
+     or [Gdk.GLContext.realize] is called. It is possible to specify\n\
+     details of the GL context like the OpenGL version to be used, or whether\n\
+     the GL context should have extra state validation enabled after calling\n\
+     [Gdk.Surface.create_gl_context] by calling [Gdk.GLContext.realize].\n\
+     If the realization fails you have the option to change the settings of\n\
+     the [GdkGLContext] and try again.\n\n\
+     {b Using a GdkGLContext}\n\n\
+     You will need to make the [GdkGLContext] the current context before issuing\n\
+     OpenGL calls; the system sends OpenGL commands to whichever context is \
+     current.\n\
+     It is possible to have multiple contexts, so you always need to ensure that\n\
+     the one which you want to draw with is the current one before issuing \
+     commands:\n\n\
+     {[\n\
+     gdk_gl_context_make_current (context);\n\
+     ]}\n\n\
+     You can now perform your drawing using OpenGL commands.\n\n\
+     You can check which [GdkGLContext] is the current one by using\n\
+     [Gdk.GLContext.get_current]; you can also unset any [GdkGLContext]\n\
+     that is currently set by calling [Gdk.GLContext.clear_current]."]
 
-(** The methods, signals and properties of a [Monitor]. *)
+(** {b The methods, signals and properties of a [Monitor].}
+
+    Represents the individual outputs that are associated with a [GdkDisplay].
+
+    [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
+    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    to find a particular monitor. *)
 and monitor_t = object
   method on_invalidate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -832,7 +952,9 @@ and monitor_t = object
   method as_monitor : Raw.Monitor.t
 end
 
-(** The methods, signals and properties of a [Seat]. *)
+(** {b The methods, signals and properties of a [Seat].}
+
+    Represents a collection of input devices that belong to a user. *)
 and seat_t = object
   method on_device_added :
     ?after:bool ->
@@ -889,7 +1011,17 @@ and seat_t = object
   method as_seat : Raw.Seat.t
 end
 
-(** The methods, signals and properties of a [Surface]. *)
+(** {b The methods, signals and properties of a [Surface].}
+
+    Represents a rectangular region on the screen.
+
+    It’s a low-level object, used to implement high-level objects such as
+    GtkWindow.
+
+    The surfaces you see in practice are either [Gdk.Toplevel] or [Gdk.Popup],
+    and those interfaces provide much of the required API to interact with these
+    surfaces. Other, more specialized surface types exist, but you will rarely
+    interact with them directly. *)
 and surface_t = object
   method on_enter_monitor :
     ?after:bool ->
@@ -1117,7 +1249,16 @@ and surface_t = object
   method as_surface : Raw.Surface.t
 end
 
-(** The methods, signals and properties of a [VulkanContext]. *)
+(** {b The methods, signals and properties of a [VulkanContext].}
+
+    Represents the platform-specific Vulkan draw context.
+
+    [GdkVulkanContext]s are created for a surface using
+    [Gdk.Surface.create_vulkan_context], and the context will match the
+    characteristics of the surface.
+
+    Support for [GdkVulkanContext] is platform-specific and context creation can
+    fail, returning [NULL] context. *)
 and vulkan_context_t = object
   method on_images_updated :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id

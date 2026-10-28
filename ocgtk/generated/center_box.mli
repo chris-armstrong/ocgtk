@@ -37,7 +37,42 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Center_box}. *)
 
-(** The methods, signals and properties of a [CenterBox]. *)
+(** {b The methods, signals and properties of a [CenterBox].}
+
+    Arranges three children in a row, keeping the middle child centered as well
+    as possible.
+
+    An example GtkCenterBox
+
+    To add children to [GtkCenterBox], use [Gtk.CenterBox.set_start_widget],
+    [Gtk.CenterBox.set_center_widget] and [Gtk.CenterBox.set_end_widget].
+
+    The sizing and positioning of children can be influenced with the align and
+    expand properties of the children.
+
+    {b GtkCenterBox as GtkBuildable}
+
+    The [GtkCenterBox] implementation of the [GtkBuildable] interface supports
+    placing children in the 3 positions by specifying “start”, “center” or “end”
+    as the “type” attribute of a [<child>] element.
+
+    {b CSS nodes}
+
+    [GtkCenterBox] uses a single CSS node with the name “box”,
+
+    The first child of the [GtkCenterBox] will be allocated depending on the
+    text direction, i.e. in left-to-right layouts it will be allocated on the
+    left and in right-to-left layouts on the right.
+
+    In vertical orientation, the nodes of the children are arranged from top to
+    bottom.
+
+    {b Accessibility}
+
+    Until GTK 4.10, [GtkCenterBox] used the [Gtk.AccessibleRole.group] role.
+
+    Starting from GTK 4.12, [GtkCenterBox] uses the [Gtk.AccessibleRole.generic]
+    role. *)
 class type center_box_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

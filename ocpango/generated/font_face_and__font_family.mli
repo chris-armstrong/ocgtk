@@ -2,7 +2,10 @@
     together because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [FontFace]. *)
+(** {b The methods, signals and properties of a [FontFace].}
+
+    A [PangoFontFace] is used to represent a group of fonts with the same
+    family, slant, weight, and width, but varying sizes. *)
 class type font_face_t = object
   method describe : unit -> Raw.Font_description.t
   (** Returns a font description that matches the face.
@@ -29,7 +32,12 @@ class type font_face_t = object
   method as_font_face : Raw.Font_face.t
 end
 
-(** The methods, signals and properties of a [FontFamily]. *)
+(** {b The methods, signals and properties of a [FontFamily].}
+
+    A [PangoFontFamily] is used to represent a family of related font faces.
+
+    The font faces in a family share a common design, but differ in slant,
+    weight, width or other aspects. *)
 and font_family_t = object
   inherit Ocgio.List_model.list_model_t
 

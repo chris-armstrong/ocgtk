@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Blur_node}. *)
 
-(** The methods, signals and properties of a [BlurNode]. *)
+(** {b The methods, signals and properties of a [BlurNode].}
+
+    A render node applying a blur effect to its single child. *)
 class type blur_node_t = object
   inherit Render_node.render_node_t
 

@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_key}. *)
 
-(** The methods, signals and properties of a [EventControllerKey]. *)
+(** {b The methods, signals and properties of a [EventControllerKey].}
+
+    Provides access to key events. *)
 class type event_controller_key_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

@@ -14,7 +14,20 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Attr_list}. *)
 
-(** The methods, signals and properties of a [AttrList]. *)
+(** {b The methods, signals and properties of a [AttrList].}
+
+    A [PangoAttrList] represents a list of attributes that apply to a section of
+    text.
+
+    The attributes in a [PangoAttrList] are, in general, allowed to overlap in
+    an arbitrary fashion. However, if the attributes are manipulated only
+    through [Pango.AttrList.change], the overlap between properties will meet
+    stricter criteria.
+
+    Since the [PangoAttrList] structure is stored as a linear list, it is not
+    suitable for storing attributes for large amounts of text. In general, you
+    should not use a single [PangoAttrList] for more than one paragraph of text.
+*)
 class type attr_list_t = object
   method change : Raw.Attribute.t -> unit
   (** Insert the given attribute into the [PangoAttrList].

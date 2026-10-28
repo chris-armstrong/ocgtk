@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Stroke_node}. *)
 
-(** The methods, signals and properties of a [StrokeNode]. *)
+(** {b The methods, signals and properties of a [StrokeNode].}
+
+    A render node that will fill the area determined by stroking the the given
+    [Gsk.Path] using the [Gsk.Stroke] attributes. *)
 class type stroke_node_t = object
   inherit Render_node.render_node_t
 

@@ -13,7 +13,15 @@
     functions it is built on are in {!Ocgdk.Raw.Event}. *)
 
 class type event_t = App_launch_context_cycle_de440b34.event_t
-(** The methods, signals and properties of a [Event]. *)
+(** {b The methods, signals and properties of a [Event].}
+
+    Represents windowing system events.
+
+    In GTK applications the events are handled automatically by toplevel widgets
+    and passed on to the event controllers of appropriate widgets, so using
+    [GdkEvent] and its related API is rarely needed.
+
+    [GdkEvent] structs are immutable. *)
 
 class event : Raw.Event.t -> event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Event.t}. *)

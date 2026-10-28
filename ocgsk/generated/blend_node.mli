@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Blend_node}. *)
 
-(** The methods, signals and properties of a [BlendNode]. *)
+(** {b The methods, signals and properties of a [BlendNode].}
+
+    A render node applying a blending function between its two child nodes. *)
 class type blend_node_t = object
   inherit Render_node.render_node_t
 

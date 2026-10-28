@@ -12,7 +12,17 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Inet_address}. *)
 
-(** The methods, signals and properties of a [InetAddress]. *)
+(** {b The methods, signals and properties of a [InetAddress].}
+
+    [GInetAddress] represents an IPv4 or IPv6 internet address. Use
+    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
+    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
+    [GInetAddress].
+
+    To actually connect to a remote host, you will need a
+    [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
+    number). *)
 class type inet_address_t = object
   method equal : inet_address_t -> bool
   (** Checks if two [GInetAddress] instances are equal, e.g. the same address.

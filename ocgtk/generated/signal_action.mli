@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Signal_action}. *)
 
-(** The methods, signals and properties of a [SignalAction]. *)
+(** {b The methods, signals and properties of a [SignalAction].}
+
+    Emits a signal on a widget.
+
+    Signals that are used in this way are referred to as keybinding signals, and
+    they are expected to be defined with the [G_SIGNAL_ACTION] flag. *)
 class type signal_action_t = object
   inherit Shortcut_action.shortcut_action_t
 

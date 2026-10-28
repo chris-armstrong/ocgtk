@@ -5,7 +5,10 @@
     {!class-type-closure_expression_t}. The functions it is built on are in
     {!Ocgtk.Raw.Closure_expression}. *)
 
-(** The methods, signals and properties of a [ClosureExpression]. *)
+(** {b The methods, signals and properties of a [ClosureExpression].}
+
+    An expression using a custom [GClosure] to compute the value from its
+    parameters. *)
 class type closure_expression_t = object
   inherit Expression.expression_t
   method as_closure_expression : Raw.Closure_expression.t

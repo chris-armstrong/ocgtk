@@ -12,7 +12,16 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Component_transfer}. *)
 
-(** The methods, signals and properties of a [ComponentTransfer]. *)
+(** {b The methods, signals and properties of a [ComponentTransfer].}
+
+    Specifies a transfer function for a color component to be applied while
+    rendering.
+
+    The available functions include linear, piecewise-linear, gamma and step
+    functions.
+
+    Note that the transfer function is applied to un-premultiplied values, and
+    all results are clamped to the \[0, 1\] range. *)
 class type component_transfer_t = object
   method as_component_transfer : Raw.Component_transfer.t
 end

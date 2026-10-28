@@ -8,7 +8,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.List_store}. *)
 
-(** The methods, signals and properties of a [ListStore]. *)
+(** {b The methods, signals and properties of a [ListStore].}
+
+    [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+    items in memory.
+
+    It provides insertions, deletions, and lookups in logarithmic time with a
+    fast path for the common case of iterating the list linearly. *)
 class type list_store_t = object
   inherit List_model.list_model_t
 

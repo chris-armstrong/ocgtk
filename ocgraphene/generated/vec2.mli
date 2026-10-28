@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Vec2}. *)
 
-(** The methods, signals and properties of a [Vec2]. *)
+(** {b The methods, signals and properties of a [Vec2].}
+
+    A structure capable of holding a vector with two dimensions, x and y.
+
+    The contents of the #graphene_vec2_t structure are private and should never
+    be accessed directly. *)
 class type vec2_t = object
   method dot : Raw.Vec2.t -> float
   (** Computes the dot product of the two given vectors. *)

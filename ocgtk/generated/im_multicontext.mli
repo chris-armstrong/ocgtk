@@ -8,7 +8,13 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Im_multicontext}. *)
 
-(** The methods, signals and properties of a [IMMulticontext]. *)
+(** {b The methods, signals and properties of a [IMMulticontext].}
+
+    Supports switching between multiple input methods.
+
+    Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to
+    implement their [im-module] property for switching between different input
+    methods. *)
 class type im_multicontext_t = object
   inherit Im_context.im_context_t
 

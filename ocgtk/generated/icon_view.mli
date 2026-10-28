@@ -27,7 +27,32 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Icon_view}. *)
 
-(** The methods, signals and properties of a [IconView]. *)
+(** {b The methods, signals and properties of a [IconView].}
+
+    [GtkIconView] is a widget which displays data in a grid of icons.
+
+    An example GtkIconView
+
+    [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
+    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
+    select one or multiple items (depending on the selection mode, see
+    [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
+    keys, [GtkIconView] supports rubberband selection, which is controlled by
+    dragging the pointer.
+
+    Note that if the tree model is backed by an actual tree store (as opposed to
+    a flat list where the mapping to icons is obvious), [GtkIconView] will only
+    display the first level of the tree and ignore the tree’s branches.
+
+    {b CSS nodes}
+
+    {[
+    iconview.view
+    ╰── [rubberband]
+    ]}
+
+    [GtkIconView] has a single CSS node with name iconview and style class
+    .view. For rubberband selection, a subnode with name rubberband is used. *)
 class type icon_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

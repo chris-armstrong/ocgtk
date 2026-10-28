@@ -8,7 +8,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Glyph_string}. *)
 
-(** The methods, signals and properties of a [GlyphString]. *)
+(** {b The methods, signals and properties of a [GlyphString].}
+
+    A [PangoGlyphString] is used to store strings of glyphs with geometry and
+    visual attribute information.
+
+    The storage for the glyph information is owned by the structure which
+    simplifies memory management. *)
 class type glyph_string_t = object
   method get_width : unit -> int
   (** Computes the logical width of the glyph string.

@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-custom_sorter_t}.
     The functions it is built on are in {!Ocgtk.Raw.Custom_sorter}. *)
 
-(** The methods, signals and properties of a [CustomSorter]. *)
+(** {b The methods, signals and properties of a [CustomSorter].}
+
+    Sorts items via a callback function. *)
 class type custom_sorter_t = object
   inherit Sorter.sorter_t
   method as_custom_sorter : Raw.Custom_sorter.t

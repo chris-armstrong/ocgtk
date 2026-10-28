@@ -8,7 +8,14 @@
     Its methods, signals and properties are on {!class-type-layout_line_t}. The
     functions it is built on are in {!Ocpango.Raw.Layout_line}. *)
 
-(** The methods, signals and properties of a [LayoutLine]. *)
+(** {b The methods, signals and properties of a [LayoutLine].}
+
+    A [PangoLayoutLine] represents one of the lines resulting from laying out a
+    paragraph via [PangoLayout].
+
+    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
+    and are only valid until the text, attributes, or settings of the parent
+    [PangoLayout] are modified. *)
 class type layout_line_t = object
   method get_length : unit -> int
   (** Returns the length of the line, in bytes. *)

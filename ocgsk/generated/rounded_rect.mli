@@ -16,7 +16,22 @@
     Its methods, signals and properties are on {!class-type-rounded_rect_t}. The
     functions it is built on are in {!Ocgsk.Raw.Rounded_rect}. *)
 
-(** The methods, signals and properties of a [RoundedRect]. *)
+(** {b The methods, signals and properties of a [RoundedRect].}
+
+    A rectangular region with rounded corners.
+
+    Application code should normalize rectangles using
+    [Gsk.RoundedRect.normalize]; this function will ensure that the bounds of
+    the rectangle are normalized and ensure that the corner values are positive
+    and the corners do not overlap.
+
+    All functions taking a [GskRoundedRect] as an argument will internally
+    operate on a normalized copy; all functions returning a [GskRoundedRect]
+    will always return a normalized one.
+
+    The algorithm used for normalizing corner sizes is described in
+    {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
+     specification}. *)
 class type rounded_rect_t = object
   method contains_point : Ocgraphene.Point.point_t -> bool
   (** Checks if the given point is inside the rounded rectangle. *)

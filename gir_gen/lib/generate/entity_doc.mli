@@ -21,8 +21,11 @@ val l2_module :
 (** The layer 2 module's floating doc: the class doc, then where its members are
     (the class type) and the layer 1 module it is built on. *)
 
-val class_type : class_name:string -> Doc_emit.t option
-(** The canned doc of the layer 2 [class type]. *)
+val class_type :
+  class_name:string -> class_doc:string option -> Doc_emit.t option
+(** The doc of the layer 2 [class type]: a bold line saying what it holds, then
+    the class doc, so the class doc is on the class type's page as well as the
+    module's. *)
 
 val class_ : namespace:string -> class_name:string -> Doc_emit.t option
 (** The canned doc of the layer 2 [class]: the layer 1 type it wraps. *)

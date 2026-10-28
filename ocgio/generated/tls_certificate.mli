@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Tls_certificate}. *)
 
-(** The methods, signals and properties of a [TlsCertificate]. *)
+(** {b The methods, signals and properties of a [TlsCertificate].}
+
+    A certificate used for TLS authentication and encryption. This can represent
+    either a certificate only (eg, the certificate received by a client from a
+    server), or the combination of a certificate and a private key (which is
+    needed when acting as a [Gio.TlsServerConnection]). *)
 class type tls_certificate_t = object
   method get_issuer : unit -> tls_certificate_t option
   (** Gets the [GTlsCertificate] representing [cert]'s issuer, if known *)

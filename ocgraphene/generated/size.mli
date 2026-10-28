@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Size}. *)
 
-(** The methods, signals and properties of a [Size]. *)
+(** {b The methods, signals and properties of a [Size].}
+
+    A size. *)
 class type size_t = object
   method equal : Raw.Size.t -> bool
   (** Checks whether the two give #graphene_size_t are equal. *)

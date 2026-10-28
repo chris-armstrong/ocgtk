@@ -9,7 +9,15 @@
     Its methods, signals and properties are on {!class-type-bitset_iter_t}. The
     functions it is built on are in {!Ocgtk.Raw.Bitset_iter}. *)
 
-(** The methods, signals and properties of a [BitsetIter]. *)
+(** {b The methods, signals and properties of a [BitsetIter].}
+
+    Iterates over the elements of a [Gtk.Bitset].
+
+    `GtkBitSetIter is an opaque, stack-allocated struct.
+
+    Before a [GtkBitsetIter] can be used, it needs to be initialized with
+    [Gtk.BitsetIter.init_first], [Gtk.BitsetIter.init_last] or
+    [Gtk.BitsetIter.init_at]. *)
 class type bitset_iter_t = object
   method get_value : unit -> int
   (** Gets the current value that [iter] points to.

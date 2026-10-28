@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Shadow_node}. *)
 
-(** The methods, signals and properties of a [ShadowNode]. *)
+(** {b The methods, signals and properties of a [ShadowNode].}
+
+    A render node drawing one or more shadows behind its single child node. *)
 class type shadow_node_t = object
   inherit Render_node.render_node_t
 

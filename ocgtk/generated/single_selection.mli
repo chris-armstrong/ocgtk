@@ -9,7 +9,14 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Single_selection}. *)
 
-(** The methods, signals and properties of a [SingleSelection]. *)
+(** {b The methods, signals and properties of a [SingleSelection].}
+
+    A selection model that allows selecting a single item.
+
+    Note that the selection is {i persistent} -- if the selected item is removed
+    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
+    selected. In particular, this means that changing the sort order of an
+    underlying sort model will preserve the selection. *)
 class type single_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t

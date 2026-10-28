@@ -11,7 +11,17 @@
     Its methods, signals and properties are on {!class-type-accessible_text_t}.
     The functions it is built on are in {!Ocgtk.Raw.Accessible_text}. *)
 
-(** The methods, signals and properties of a [AccessibleText]. *)
+(** {b The methods, signals and properties of a [AccessibleText].}
+
+    An interface for accessible objects containing formatted text.
+
+    The [GtkAccessibleText] interfaces is meant to be implemented by accessible
+    objects that have text formatted with attributes, or non-trivial text
+    contents.
+
+    You should use the [Gtk.AccessibleProperty.LABEL] or the
+    [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
+    containing simple, unformatted text. *)
 class type accessible_text_t = object
   method update_caret_position : unit -> unit
   (** Updates the position of the caret.

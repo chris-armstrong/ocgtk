@@ -14,7 +14,20 @@
     Its methods, signals and properties are on {!class-type-render_node_t}. The
     functions it is built on are in {!Ocgsk.Raw.Render_node}. *)
 
-(** The methods, signals and properties of a [RenderNode]. *)
+(** {b The methods, signals and properties of a [RenderNode].}
+
+    The basic block in a scene graph to be rendered using [Gsk.Renderer].
+
+    Each node has a parent, except the top-level node; each node may have
+    children nodes.
+
+    Each node has an associated drawing surface, which has the size of the
+    rectangle set when creating it.
+
+    Render nodes are meant to be transient; once they have been associated to a
+    [Gsk.Renderer] it's safe to release any reference you have on them. All
+    [Gsk.RenderNode]s are immutable, you can only specify their properties
+    during construction. *)
 class type render_node_t = object
   method draw : Occairo.Context.context_t -> unit
   (** Draws the contents of a render node on a cairo context.

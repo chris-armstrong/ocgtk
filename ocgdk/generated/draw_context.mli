@@ -15,7 +15,17 @@
     functions it is built on are in {!Ocgdk.Raw.Draw_context}. *)
 
 class type draw_context_t = App_launch_context_cycle_de440b34.draw_context_t
-(** The methods, signals and properties of a [DrawContext]. *)
+(** {b The methods, signals and properties of a [DrawContext].}
+
+    Base class for objects implementing different rendering methods.
+
+    [GdkDrawContext] is the base object used by contexts implementing different
+    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
+    provides shared functionality between those contexts.
+
+    You will always interact with one of those subclasses.
+
+    A [GdkDrawContext] is always associated with a single toplevel surface. *)
 
 class draw_context : Raw.Draw_context.t -> draw_context_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Draw_context.t}. *)

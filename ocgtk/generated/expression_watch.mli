@@ -6,7 +6,12 @@
     Its methods, signals and properties are on {!class-type-expression_watch_t}.
     The functions it is built on are in {!Ocgtk.Raw.Expression_watch}. *)
 
-(** The methods, signals and properties of a [ExpressionWatch]. *)
+(** {b The methods, signals and properties of a [ExpressionWatch].}
+
+    An opaque structure representing a watched [GtkExpression].
+
+    The contents of [GtkExpressionWatch] should only be accessed through the
+    provided API. *)
 class type expression_watch_t = object
   method evaluate : Gobject.Value.t -> bool
   (** Evaluates the watched expression and on success stores the result in

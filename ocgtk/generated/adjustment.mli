@@ -13,7 +13,18 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Adjustment}. *)
 
-(** The methods, signals and properties of a [Adjustment]. *)
+(** {b The methods, signals and properties of a [Adjustment].}
+
+    A model for a numeric value.
+
+    The [GtkAdjustment] has an associated lower and upper bound. It also
+    contains step and page increments, and a page size.
+
+    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
+    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+
+    The [GtkAdjustment] object does not update the value itself. Instead it is
+    left up to the owner of the [GtkAdjustment] to control the value. *)
 class type adjustment_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id

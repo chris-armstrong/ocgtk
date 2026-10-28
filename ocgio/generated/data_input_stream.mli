@@ -6,7 +6,10 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_input_stream}. *)
 
-(** The methods, signals and properties of a [DataInputStream]. *)
+(** {b The methods, signals and properties of a [DataInputStream].}
+
+    Data input stream implements [Gio.InputStream] and includes functions for
+    reading structured data directly from a binary input stream. *)
 class type data_input_stream_t = object
   inherit Buffered_input_stream.buffered_input_stream_t
 

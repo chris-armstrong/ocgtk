@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Script_iter}. *)
 
-(** The methods, signals and properties of a [ScriptIter]. *)
+(** {b The methods, signals and properties of a [ScriptIter].}
+
+    A [PangoScriptIter] is used to iterate through a string and identify ranges
+    in different scripts. *)
 class type script_iter_t = object
   method next : unit -> bool
   (** Advances a [PangoScriptIter] to the next range.

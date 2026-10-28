@@ -9,7 +9,14 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Emblemed_icon}. *)
 
-(** The methods, signals and properties of a [EmblemedIcon]. *)
+(** {b The methods, signals and properties of a [EmblemedIcon].}
+
+    [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
+    emblem to an icon. Adding multiple emblems to an icon is ensured via
+    [Gio.EmblemedIcon.add_emblem].
+
+    Note that [GEmblemedIcon] allows no control over the position of the
+    emblems. See also [Gio.Emblem] for more information. *)
 class type emblemed_icon_t = object
   inherit Icon.icon_t
 

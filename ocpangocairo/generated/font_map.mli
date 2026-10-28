@@ -7,7 +7,13 @@
     Its methods, signals and properties are on {!class-type-font_map_t}. The
     functions it is built on are in {!Ocpangocairo.Raw.Font_map}. *)
 
-(** The methods, signals and properties of a [FontMap]. *)
+(** {b The methods, signals and properties of a [FontMap].}
+
+    [PangoCairoFontMap] is an interface exported by font maps for use with
+    Cairo.
+
+    The actual type of the font map will depend on the particular font
+    technology Cairo was compiled to use. *)
 class type font_map_t = object
   method get_font_type : unit -> Occairo.Enums.fonttype
   (** Gets the type of Cairo font backend that [fontmap] uses. *)

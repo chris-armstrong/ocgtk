@@ -11,7 +11,15 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Drop_controller_motion}. *)
 
-(** The methods, signals and properties of a [DropControllerMotion]. *)
+(** {b The methods, signals and properties of a [DropControllerMotion].}
+
+    An event controller tracking the pointer during Drag-and-Drop operations.
+
+    It is modeled after [Gtk.EventControllerMotion] so if you have used that,
+    this should feel really familiar.
+
+    This controller is not able to accept drops, use [Gtk.DropTarget] for that
+    purpose. *)
 class type drop_controller_motion_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

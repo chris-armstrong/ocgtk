@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Color_node}. *)
 
-(** The methods, signals and properties of a [ColorNode]. *)
+(** {b The methods, signals and properties of a [ColorNode].}
+
+    A render node for a solid color. *)
 class type color_node_t = object
   inherit Render_node.render_node_t
 

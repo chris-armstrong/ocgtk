@@ -12,7 +12,12 @@
 
 class type matrix_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.matrix_t
-(** The methods, signals and properties of a [Matrix]. *)
+(** {b The methods, signals and properties of a [Matrix].}
+
+    A structure capable of holding a 4x4 matrix.
+
+    The contents of the #graphene_matrix_t structure are private and should
+    never be accessed directly. *)
 
 class matrix : Raw.Matrix.t -> matrix_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Matrix.t}. *)

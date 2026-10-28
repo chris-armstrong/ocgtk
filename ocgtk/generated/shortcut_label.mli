@@ -6,7 +6,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Shortcut_label}. *)
 
-(** The methods, signals and properties of a [ShortcutLabel]. *)
+(** {b The methods, signals and properties of a [ShortcutLabel].}
+
+    [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
+
+    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+*)
 class type shortcut_label_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

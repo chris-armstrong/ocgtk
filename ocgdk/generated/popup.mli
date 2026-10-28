@@ -8,7 +8,14 @@
     Its methods, signals and properties are on {!class-type-popup_t}. The
     functions it is built on are in {!Ocgdk.Raw.Popup}. *)
 
-(** The methods, signals and properties of a [Popup]. *)
+(** {b The methods, signals and properties of a [Popup].}
+
+    A surface that is attached to another surface.
+
+    The [GdkPopup] is positioned relative to its parent surface.
+
+    [GdkPopup]s are typically used to implement menus and similar popups. They
+    can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
 class type popup_t = object
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)

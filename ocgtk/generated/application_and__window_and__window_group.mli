@@ -2,7 +2,6 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [Application]. *)
 class type application_t = object
   inherit Ocgio.Application.application_t
 
@@ -205,8 +204,138 @@ class type application_t = object
 
       Tracking the screensaver state is currently only supported on Linux. *)
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [Application].}\n\n\
+     A high-level API for writing applications.\n\n\
+     [GtkApplication] supports many aspects of writing a GTK application\n\
+     in a convenient fashion, without enforcing a one-size-fits-all model.\n\n\
+     Currently, it handles GTK initialization, application uniqueness, session\n\
+     management, provides some basic scriptability and desktop shell integration\n\
+     by exporting actions and menus and manages a list of toplevel windows whose\n\
+     life-cycle is automatically tied to the life-cycle of your application.\n\n\
+     While [GtkApplication] works fine with plain [Gtk.Window]s,\n\
+     it is recommended to use it together with [Gtk.ApplicationWindow].\n\n\
+     {b Automatic resources}\n\n\
+     [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
+     resource located at \"gtk/menus.ui\", relative to the application's\n\
+     resource base path (see [Gio.Application.set_resource_base_path]).\n\
+     The menu with the ID \"menubar\" is taken as the application's\n\
+     menubar. Additional menus (most interesting submenus) can be named\n\
+     and accessed via [Gtk.Application.get_menu_by_id] which allows for\n\
+     dynamic population of a part of the menu structure.\n\n\
+     Note that automatic resource loading uses the resource base path\n\
+     that is set at construction time and will not work if the resource\n\
+     base path is changed at a later time.\n\n\
+     It is also possible to provide the menubar manually using\n\
+     [Gtk.Application.set_menubar].\n\n\
+     [GtkApplication] will also automatically setup an icon search path for\n\
+     the default icon theme by appending \"icons\" to the resource base\n\
+     path. This allows your application to easily store its icons as\n\
+     resources. See [Gtk.IconTheme.add_resource_path] for more\n\
+     information.\n\n\
+     If there is a resource located at [gtk/help-overlay.ui] which\n\
+     defines a [Gtk.ShortcutsWindow] with ID [help_overlay] then\n\
+     [GtkApplication] associates an instance of this shortcuts window with\n\
+     each [Gtk.ApplicationWindow] and sets up the keyboard accelerator\n\
+     <kbd>Control</kbd>+<kbd>?</kbd> to open it. To create a menu item that\n\
+     displays the shortcuts window, associate the item with the action\n\
+     [win.show-help-overlay].\n\n\
+     [GtkApplication] will also automatically set the application id as the\n\
+     default window icon. Use [Gtk.Window.set_default_icon_name] or\n\
+     [Gtk.Window:icon-name] to override that behavior.\n\n\
+     {b A simple application}\n\n\
+     {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/bp/bloatpad.c}A \
+     simple example}\n\
+     is available in the GTK source code repository\n\n\
+     [GtkApplication] registers with a session manager if possible and\n\
+     offers various functionality related to the session life-cycle.\n\n\
+     An application can block various ways to end the session with\n\
+     the [Gtk.Application.inhibit] function. Typical use cases for\n\
+     this kind of inhibiting are long-running, uninterruptible operations,\n\
+     such as burning a CD or performing a disk backup. The session\n\
+     manager may not honor the inhibitor, but it can be expected to\n\
+     inform the user about the negative consequences of ending the\n\
+     session while inhibitors are present.\n\n\
+     {b See Also}\n\n\
+     - \
+     {{:https://developer.gnome.org/documentation/tutorials/application.html}Using \
+     GtkApplication}\n\
+     - Getting Started with GTK: Basics"]
 
-(** The methods, signals and properties of a [Window]. *)
+(** {b The methods, signals and properties of a [Window].}
+
+    A toplevel window which can contain other widgets.
+
+    An example GtkWindow
+
+    Windows normally have decorations that are under the control of the
+    windowing system and allow the user to manipulate the window (resize it,
+    move it, close it,...).
+
+    {b GtkWindow as GtkBuildable}
+
+    The [GtkWindow] implementation of the [Gtk.Buildable] interface supports
+    setting a child as the titlebar by specifying “titlebar” as the “type”
+    attribute of a [<child>] element.
+
+    {b Shortcuts and Gestures}
+
+    [GtkWindow] supports the following keyboard shortcuts:
+
+    - <kbd>F10</kbd> activates the menubar, if present.
+    - <kbd>Alt</kbd> makes the mnemonics visible while pressed.
+
+    The following signals have default keybindings:
+
+    - [Gtk.Window::activate-default]
+    - [Gtk.Window::activate-focus]
+    - [Gtk.Window::enable-debugging]
+
+    {b Actions}
+
+    [GtkWindow] defines a set of built-in actions:
+
+    - [default.activate] activates the default widget.
+    - [window.minimize] minimizes the window.
+    - [window.toggle-maximized] maximizes or restores the window.
+    - [window.close] closes the window.
+
+    {b CSS nodes}
+
+    {[
+    window.background [.csd / .solid-csd / .ssd] [.maximized / .fullscreen / .tiled]
+    ├── <child>
+    ╰── <titlebar child>.titlebar [.default-decoration]
+    ]}
+
+    [GtkWindow] has a main CSS node with name window and style class
+    .background.
+
+    Style classes that are typically used with the main CSS node are .csd (when
+    client-side decorations are in use), .solid-csd (for client-side decorations
+    without invisible borders), .ssd (used by mutter when rendering server-side
+    decorations). GtkWindow also represents window states with the following
+    style classes on the main node: .maximized, .fullscreen, .tiled (when
+    supported, also .tiled-top, .tiled-left, .tiled-right, .tiled-bottom).
+
+    [GtkWindow] subclasses often add their own discriminating style classes,
+    such as .dialog, .popup or .tooltip.
+
+    Generally, some CSS properties don't make sense on the toplevel window node,
+    such as margins or padding. When client-side decorations without invisible
+    borders are in use (i.e. the .solid-csd style class is added to the main
+    window node), the CSS border of the toplevel window is used for resize
+    drags. In the .csd case, the shadow area outside of the window can be used
+    to resize it.
+
+    [GtkWindow] adds the .titlebar and .default-decoration style classes to the
+    widget that is added as a titlebar child.
+
+    {b Accessibility}
+
+    [GtkWindow] uses the [Gtk.AccessibleRole.window] role.
+
+    From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role. *)
 and window_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -725,7 +854,23 @@ and window_t = object
   method as_window : Raw.Window.t
 end
 
-(** The methods, signals and properties of a [WindowGroup]. *)
+(** {b The methods, signals and properties of a [WindowGroup].}
+
+    Creates groups of windows that behave like separate applications.
+
+    It achieves this by limiting the effect of GTK grabs and modality to windows
+    in the same group.
+
+    A window can be a member in at most one window group at a time. Windows that
+    have not been explicitly assigned to a group are implicitly treated like
+    windows of the default window group.
+
+    [GtkWindowGroup] objects are referenced by each window in the group, so once
+    you have added all windows to a [GtkWindowGroup], you can drop the initial
+    reference to the window group with g_object_unref(). If the windows in the
+    window group are subsequently destroyed, then they will be removed from the
+    window group and drop their references on the window group; when all window
+    have been removed, the window group will be freed. *)
 and window_group_t = object
   method add_window : window_t -> unit
   (** Adds a window to a [GtkWindowGroup]. *)

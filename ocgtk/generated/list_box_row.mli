@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.List_box_row}. *)
 
-(** The methods, signals and properties of a [ListBoxRow]. *)
+(** {b The methods, signals and properties of a [ListBoxRow].}
+
+    The kind of widget that can be added to a [GtkListBox].
+
+    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
+    necessary. *)
 class type list_box_row_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

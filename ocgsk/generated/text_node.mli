@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Text_node}. *)
 
-(** The methods, signals and properties of a [TextNode]. *)
+(** {b The methods, signals and properties of a [TextNode].}
+
+    A render node drawing a set of glyphs. *)
 class type text_node_t = object
   inherit Render_node.render_node_t
 

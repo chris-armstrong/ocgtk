@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Transform_node}. *)
 
-(** The methods, signals and properties of a [TransformNode]. *)
+(** {b The methods, signals and properties of a [TransformNode].}
+
+    A render node applying a [GskTransform] to its single child node. *)
 class type transform_node_t = object
   inherit Render_node.render_node_t
 

@@ -13,7 +13,18 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Constraint_guide}. *)
 
-(** The methods, signals and properties of a [ConstraintGuide]. *)
+(** {b The methods, signals and properties of a [ConstraintGuide].}
+
+    An invisible layout element in a [GtkConstraintLayout].
+
+    The [GtkConstraintLayout] treats guides like widgets. They can be used as
+    the source or target of a [GtkConstraint].
+
+    Guides have a minimum, maximum and natural size. Depending on the
+    constraints that are applied, they can act like a guideline that widgets can
+    be aligned to, or like {i flexible space}.
+
+    Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn. *)
 class type constraint_guide_t = object
   inherit Constraint_target.constraint_target_t
 

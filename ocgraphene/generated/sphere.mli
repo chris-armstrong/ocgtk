@@ -8,7 +8,9 @@
     are in {!Ocgraphene.Raw.Sphere}. *)
 
 class type sphere_t = Box_and__sphere.sphere_t
-(** The methods, signals and properties of a [Sphere]. *)
+(** {b The methods, signals and properties of a [Sphere].}
+
+    A sphere, represented by its center and radius. *)
 
 class sphere : Raw.Sphere.t -> sphere_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Sphere.t}. *)

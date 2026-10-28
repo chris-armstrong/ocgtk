@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_skeleton}. *)
 
-(** The methods, signals and properties of a [DBusObjectSkeleton]. *)
+(** {b The methods, signals and properties of a [DBusObjectSkeleton].}
+
+    A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
+    The set of exported interfaces on the object may be dynamic and change at
+    runtime.
+
+    This type is intended to be used with [Gio.DBusObjectManager]. *)
 class type d_bus_object_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 

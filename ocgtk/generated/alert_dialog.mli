@@ -8,7 +8,14 @@
     Its methods, signals and properties are on {!class-type-alert_dialog_t}. The
     functions it is built on are in {!Ocgtk.Raw.Alert_dialog}. *)
 
-(** The methods, signals and properties of a [AlertDialog]. *)
+(** {b The methods, signals and properties of a [AlertDialog].}
+
+    Collects the arguments that are needed to present a message to the user.
+
+    The message is shown with the [Gtk.AlertDialog.choose] function.
+
+    If you don't need to wait for a button to be clicked, you can use
+    [Gtk.AlertDialog.show]. *)
 class type alert_dialog_t = object
   method choose_finish :
     Ocgio.Async_result.async_result_t -> (int, GError.t) result

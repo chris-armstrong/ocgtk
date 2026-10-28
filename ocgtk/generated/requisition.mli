@@ -6,7 +6,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Requisition}. *)
 
-(** The methods, signals and properties of a [Requisition]. *)
+(** {b The methods, signals and properties of a [Requisition].}
+
+    Represents the desired size of a widget.
+
+    See GtkWidget’s geometry management section for more information. *)
 class type requisition_t = object
   method as_requisition : Raw.Requisition.t
 end

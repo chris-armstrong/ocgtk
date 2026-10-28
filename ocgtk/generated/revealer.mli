@@ -23,7 +23,28 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Revealer}. *)
 
-(** The methods, signals and properties of a [Revealer]. *)
+(** {b The methods, signals and properties of a [Revealer].}
+
+    Animates the transition of its child from invisible to visible.
+
+    The style of transition can be controlled with
+    [Gtk.Revealer.set_transition_type].
+
+    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
+
+    {b CSS nodes}
+
+    [GtkRevealer] has a single CSS node with name revealer. When styling
+    [GtkRevealer] using CSS, remember that it only hides its contents, not
+    itself. That means applied margin, padding and borders will be visible even
+    when the [Gtk.Revealer:reveal-child] property is set to [FALSE].
+
+    {b Accessibility}
+
+    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
+
+    The child of [GtkRevealer], if set, is always available in the accessibility
+    tree, regardless of the state of the revealer widget. *)
 class type revealer_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

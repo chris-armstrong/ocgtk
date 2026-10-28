@@ -5,7 +5,11 @@
     Its methods, signals and properties are on {!class-type-tls_backend_t}. The
     functions it is built on are in {!Ocgio.Raw.Tls_backend}. *)
 
-(** The methods, signals and properties of a [TlsBackend]. *)
+(** {b The methods, signals and properties of a [TlsBackend].}
+
+    TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an
+    internal type used to coordinate the different classes implemented by a TLS
+    backend. *)
 class type tls_backend_t = object
   method get_certificate_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsCertificate] implementation. *)

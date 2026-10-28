@@ -10,7 +10,15 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Bookmark_list}. *)
 
-(** The methods, signals and properties of a [BookmarkList]. *)
+(** {b The methods, signals and properties of a [BookmarkList].}
+
+    A list model that wraps [GBookmarkFile].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    The [GFileInfo]s in the list have some attributes in the recent namespace
+    added: [recent::private] (boolean) and [recent:applications] (stringv). *)
 class type bookmark_list_t = object
   inherit Ocgio.List_model.list_model_t
 

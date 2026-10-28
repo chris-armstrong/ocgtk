@@ -14,7 +14,20 @@
     Its methods, signals and properties are on {!class-type-media_stream_t}. The
     functions it is built on are in {!Ocgtk.Raw.Media_stream}. *)
 
-(** The methods, signals and properties of a [MediaStream]. *)
+(** {b The methods, signals and properties of a [MediaStream].}
+
+    The integration point for media playback inside GTK.
+
+    GTK provides an implementation of the [GtkMediaStream] interface that is
+    called [Gtk.MediaFile].
+
+    Apart from application-facing API for stream playback, [GtkMediaStream] has
+    a number of APIs that are only useful for implementations and should not be
+    used in applications: [Gtk.MediaStream.prepared],
+    [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
+    [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
+    [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
+    [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
 class type media_stream_t = object
   inherit Ocgdk.Paintable.paintable_t
 

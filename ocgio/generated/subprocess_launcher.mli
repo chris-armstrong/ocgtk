@@ -11,7 +11,15 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Subprocess_launcher}. *)
 
-(** The methods, signals and properties of a [SubprocessLauncher]. *)
+(** {b The methods, signals and properties of a [SubprocessLauncher].}
+
+    This class contains a set of options for launching child processes, such as
+    where its standard input and output will be directed, the argument list, the
+    environment, and more.
+
+    While the [Gio.Subprocess] class has high level functions covering popular
+    cases, use of this class allows access to more advanced options. It can also
+    be used to launch multiple subprocesses with a similar configuration. *)
 class type subprocess_launcher_t = object
   method close : unit -> unit
   (** Closes all the file descriptors previously passed to the object with

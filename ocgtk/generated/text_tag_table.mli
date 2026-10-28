@@ -20,7 +20,6 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Text_tag_table}."]
 
-(** The methods, signals and properties of a [TextTagTable]. *)
 class type text_tag_table_t = object
   inherit Buildable.buildable_t
 
@@ -71,6 +70,25 @@ class type text_tag_table_t = object
 
   method as_text_tag_table : Raw.Text_tag_table.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [TextTagTable].}\n\n\
+     Collects the tags in a [GtkTextBuffer].\n\n\
+     You may wish to begin by reading the\n\
+     text widget conceptual overview,\n\
+     which gives an overview of all the objects and data types\n\
+     related to the text widget and how they work together.\n\n\
+     {b GtkTextTagTables as GtkBuildable}\n\n\
+     The [GtkTextTagTable] implementation of the [GtkBuildable] interface\n\
+     supports adding tags by specifying “tag” as the “type” attribute\n\
+     of a [<child>] element.\n\n\
+     An example of a UI definition fragment specifying tags:\n\n\
+     {[\n\
+     <object class=\"GtkTextTagTable\">\n\
+    \ <child type=\"tag\">\n\
+    \   <object class=\"GtkTextTag\"/>\n\
+    \ </child>\n\
+     </object>\n\
+     ]}"]
 
 class text_tag_table : Raw.Text_tag_table.t -> text_tag_table_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Text_tag_table.t}. *)

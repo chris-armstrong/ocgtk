@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-pad_action_entry_t}.
     The functions it is built on are in {!Ocgtk.Raw.Pad_action_entry}. *)
 
-(** The methods, signals and properties of a [PadActionEntry]. *)
+(** {b The methods, signals and properties of a [PadActionEntry].}
+
+    Struct defining a pad action entry. *)
 class type pad_action_entry_t = object
   method as_pad_action_entry : Raw.Pad_action_entry.t
 end

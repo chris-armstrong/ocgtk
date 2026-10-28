@@ -9,7 +9,14 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocpango.Raw.Font_description}. *)
 
-(** The methods, signals and properties of a [FontDescription]. *)
+(** {b The methods, signals and properties of a [FontDescription].}
+
+    A [PangoFontDescription] describes a font in an implementation-independent
+    manner.
+
+    [PangoFontDescription] structures are used both to list what fonts are
+    available on the system and also for specifying the characteristics of a
+    font to load. *)
 class type font_description_t = object
   method better_match :
     Raw.Font_description.t option -> Raw.Font_description.t -> bool

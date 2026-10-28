@@ -6,7 +6,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Any_filter}. *)
 
-(** The methods, signals and properties of a [AnyFilter]. *)
+(** {b The methods, signals and properties of a [AnyFilter].}
+
+    Matches an item when at least one of its filters matches.
+
+    To add filters to a [GtkAnyFilter], use [Gtk.MultiFilter.append]. *)
 class type any_filter_t = object
   inherit Multi_filter.multi_filter_t
   method as_any_filter : Raw.Any_filter.t

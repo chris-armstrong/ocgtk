@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Converter_input_stream}. *)
 
-(** The methods, signals and properties of a [ConverterInputStream]. *)
+(** {b The methods, signals and properties of a [ConverterInputStream].}
+
+    Converter input stream implements [Gio.InputStream] and allows conversion of
+    data of various types during reading.
+
+    As of GLib 2.34, [GConverterInputStream] implements
+    [Gio.PollableInputStream]. *)
 class type converter_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Pollable_input_stream.pollable_input_stream_t

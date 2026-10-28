@@ -7,7 +7,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Volume_button}. *)
 
-(** The methods, signals and properties of a [VolumeButton]. *)
+(** {b The methods, signals and properties of a [VolumeButton].}
+
+    [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
+    control.
+
+    An example GtkVolumeButton *)
 class type volume_button_t = object
   inherit Scale_button.scale_button_t
 

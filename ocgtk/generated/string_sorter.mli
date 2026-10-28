@@ -10,7 +10,15 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.String_sorter}. *)
 
-(** The methods, signals and properties of a [StringSorter]. *)
+(** {b The methods, signals and properties of a [StringSorter].}
+
+    Sorts items by comparing strings.
+
+    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+
+    It does the comparison in a linguistically correct way using the current
+    locale by normalizing Unicode strings and possibly case-folding them before
+    performing the comparison. *)
 class type string_sorter_t = object
   inherit Sorter.sorter_t
 

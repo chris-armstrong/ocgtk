@@ -9,7 +9,9 @@
 
 class type triangle_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.triangle_t
-(** The methods, signals and properties of a [Triangle]. *)
+(** {b The methods, signals and properties of a [Triangle].}
+
+    A triangle. *)
 
 class triangle : Raw.Triangle.t -> triangle_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Triangle.t}. *)

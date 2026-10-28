@@ -25,7 +25,30 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Scale_button}. *)
 
-(** The methods, signals and properties of a [ScaleButton]. *)
+(** {b The methods, signals and properties of a [ScaleButton].}
+
+    Provides a button which pops up a scale widget.
+
+    This kind of widget is commonly used for volume controls in multimedia
+    applications, and GTK provides a [Gtk.VolumeButton] subclass that is
+    tailored for this use case.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.ScaleButton::popup]
+
+    {b CSS nodes}
+
+    {[
+    scalebutton.scale
+    ╰── button.toggle
+        ╰── <icon>
+    ]}
+
+    [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
+    style class, and contains a [button] node with a [.toggle] style class. *)
 class type scale_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

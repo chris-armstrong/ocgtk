@@ -6,7 +6,10 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Zlib_decompressor}. *)
 
-(** The methods, signals and properties of a [ZlibDecompressor]. *)
+(** {b The methods, signals and properties of a [ZlibDecompressor].}
+
+    [GZlibDecompressor] is an implementation of [Gio.Converter] that
+    decompresses data compressed with zlib. *)
 class type zlib_decompressor_t = object
   inherit Converter.converter_t
 

@@ -4,7 +4,10 @@
     Its methods, signals and properties are on {!class-type-io_extension_t}. The
     functions it is built on are in {!Ocgio.Raw.Io_extension}. *)
 
-(** The methods, signals and properties of a [IOExtension]. *)
+(** {b The methods, signals and properties of a [IOExtension].}
+
+    [GIOExtension] is an opaque data structure and can only be accessed using
+    the following functions. *)
 class type io_extension_t = object
   method get_name : unit -> string
   (** Gets the name under which [extension] was registered.

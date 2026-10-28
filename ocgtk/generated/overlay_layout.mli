@@ -10,7 +10,15 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Overlay_layout}. *)
 
-(** The methods, signals and properties of a [OverlayLayout]. *)
+(** {b The methods, signals and properties of a [OverlayLayout].}
+
+    The layout manager used by [Gtk.Overlay].
+
+    It places widgets as overlays on top of the main child.
+
+    This is not a reusable layout manager, since it expects its widget to be a
+    [GtkOverlay]. It is only listed here so that its layout properties get
+    documented. *)
 class type overlay_layout_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

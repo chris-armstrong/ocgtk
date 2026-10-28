@@ -13,7 +13,17 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Texture_downloader}. *)
 
-(** The methods, signals and properties of a [TextureDownloader]. *)
+(** {b The methods, signals and properties of a [TextureDownloader].}
+
+    Used to download the contents of a [Gdk.Texture].
+
+    It is intended to be created as a short-term object for a single download,
+    but can be used for multiple downloads of different textures or with
+    different settings.
+
+    [GdkTextureDownloader] can be used to convert data between different
+    formats. Create a [GdkTexture] for the existing format and then download it
+    in a different format. *)
 class type texture_downloader_t = object
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state that the data will be downloaded in. *)

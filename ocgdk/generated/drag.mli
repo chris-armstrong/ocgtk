@@ -10,7 +10,6 @@
  Its methods, signals and properties are on {!class-type-drag_t}. The \
  functions it is built on are in {!Ocgdk.Raw.Drag}."]
 
-(** The methods, signals and properties of a [Drag]. *)
 class type drag_t = object
   method on_cancel :
     ?after:bool ->
@@ -80,6 +79,17 @@ class type drag_t = object
 
   method as_drag : Raw.Drag.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [Drag].}\n\n\
+     Represents the source of an ongoing DND operation.\n\n\
+     A [GdkDrag] is created when a drag is started, and stays alive for \
+     duration of\n\
+     the DND operation. After a drag has been started with [Gdk.Drag.begin],\n\
+     the caller gets informed about the status of the ongoing drag operation\n\
+     with signals on the [GdkDrag] object.\n\n\
+     GTK provides a higher level abstraction based on top of these functions,\n\
+     and so they are not normally needed in GTK applications. See the\n\
+     \"Drag and Drop\" section of the GTK documentation for more information."]
 
 class drag : Raw.Drag.t -> drag_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Drag.t}. *)

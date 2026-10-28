@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Opacity_node}. *)
 
-(** The methods, signals and properties of a [OpacityNode]. *)
+(** {b The methods, signals and properties of a [OpacityNode].}
+
+    A render node controlling the opacity of its single child node. *)
 class type opacity_node_t = object
   inherit Render_node.render_node_t
 

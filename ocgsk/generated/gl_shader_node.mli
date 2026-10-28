@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Gl_shader_node}. *)
 
-(** The methods, signals and properties of a [GLShaderNode]. *)
+(** {b The methods, signals and properties of a [GLShaderNode].}
+
+    A render node using a GL shader when drawing its children nodes. *)
 class type gl_shader_node_t = object
   inherit Render_node.render_node_t
 

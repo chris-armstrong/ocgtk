@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Stroke}. *)
 
-(** The methods, signals and properties of a [Stroke]. *)
+(** {b The methods, signals and properties of a [Stroke].}
+
+    Collects the parameters that are needed when stroking a path. *)
 class type stroke_t = object
   method get_dash_offset : unit -> float
   (** Gets the dash offset. *)

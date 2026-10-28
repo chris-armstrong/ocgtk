@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Bool_filter}. *)
 
-(** The methods, signals and properties of a [BoolFilter]. *)
+(** {b The methods, signals and properties of a [BoolFilter].}
+
+    Evaluates a boolean expression to determine whether to include items. *)
 class type bool_filter_t = object
   inherit Filter.filter_t
 

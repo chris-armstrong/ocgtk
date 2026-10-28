@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-notebook_page_t}.
     The functions it is built on are in {!Ocgtk.Raw.Notebook_page}. *)
 
-(** The methods, signals and properties of a [NotebookPage]. *)
+(** {b The methods, signals and properties of a [NotebookPage].}
+
+    An auxiliary object used by [GtkNotebook]. *)
 class type notebook_page_t = object
   method get_child :
     unit ->

@@ -13,7 +13,14 @@
 
 class type tls_connection_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_connection_t
-(** The methods, signals and properties of a [TlsConnection]. *)
+(** {b The methods, signals and properties of a [TlsConnection].}
+
+    [GTlsConnection] is the base TLS connection class type, which wraps a
+    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
+    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
+    client-side and server-side TLS, respectively.
+
+    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection]. *)
 
 class tls_connection : Raw.Tls_connection.t -> tls_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_connection.t}. *)

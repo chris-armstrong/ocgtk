@@ -13,7 +13,18 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Print_dialog}. *)
 
-(** The methods, signals and properties of a [PrintDialog]. *)
+(** {b The methods, signals and properties of a [PrintDialog].}
+
+    Asynchronous API to present a print dialog to the user.
+
+    [GtkPrintDialog] collects the arguments that are needed to present the
+    dialog, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with the [Gtk.PrintDialog.setup] function.
+
+    The actual printing can be done with [Gtk.PrintDialog.print] or
+    [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
+    the results can be obtained by calling the corresponding finish methods. *)
 class type print_dialog_t = object
   method get_accept_label : unit -> string
   (** Returns the label that will be shown on the accept button of the print

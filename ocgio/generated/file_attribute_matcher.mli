@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_matcher}. *)
 
-(** The methods, signals and properties of a [FileAttributeMatcher]. *)
+(** {b The methods, signals and properties of a [FileAttributeMatcher].}
+
+    Determines if a string matches a file attribute. *)
 class type file_attribute_matcher_t = object
   method enumerate_namespace : string -> bool
   [@@ocaml.doc

@@ -6,7 +6,12 @@
     Its methods, signals and properties are on {!class-type-column_view_row_t}.
     The functions it is built on are in {!Ocgtk.Raw.Column_view_row}. *)
 
-(** The methods, signals and properties of a [ColumnViewRow]. *)
+(** {b The methods, signals and properties of a [ColumnViewRow].}
+
+    Configures how rows are displayed in a [Gtk.ColumnView].
+
+    It is not used to set the widgets displayed in the individual cells. For
+    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)
 class type column_view_row_t = object
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)

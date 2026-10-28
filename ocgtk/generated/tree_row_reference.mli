@@ -7,7 +7,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Tree_row_reference}. *)
 
-(** The methods, signals and properties of a [TreeRowReference]. *)
+(** {b The methods, signals and properties of a [TreeRowReference].}
+
+    A GtkTreeRowReference tracks model changes so that it always refers to the
+    same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
+    new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
 class type tree_row_reference_t = object
   method get_model : unit -> Tree_model.tree_model_t
   (** Returns the model that the row reference is monitoring. *)

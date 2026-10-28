@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Rounded_clip_node}. *)
 
-(** The methods, signals and properties of a [RoundedClipNode]. *)
+(** {b The methods, signals and properties of a [RoundedClipNode].}
+
+    A render node applying a rounded rectangle clip to its single child. *)
 class type rounded_clip_node_t = object
   inherit Render_node.render_node_t
 

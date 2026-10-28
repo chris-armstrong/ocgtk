@@ -20,7 +20,25 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Text_tag}. *)
 
-(** The methods, signals and properties of a [TextTag]. *)
+(** {b The methods, signals and properties of a [TextTag].}
+
+    Can be applied to text contained in a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
+    using them with that buffer.
+
+    [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
+    for numerous examples.
+
+    For each property of [GtkTextTag], there is a “set” property, e.g.
+    “font-set” corresponds to “font”. These “set” properties reflect whether a
+    property has been set or not.
+
+    They are maintained by GTK and you should not set them independently. *)
 class type text_tag_t = object
   method changed : bool -> unit
   (** Emits the [Gtk.TextTagTable::tag-changed] signal on the [GtkTextTagTable]

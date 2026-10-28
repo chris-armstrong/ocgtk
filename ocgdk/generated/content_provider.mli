@@ -12,7 +12,17 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Content_provider}. *)
 
-(** The methods, signals and properties of a [ContentProvider]. *)
+(** {b The methods, signals and properties of a [ContentProvider].}
+
+    Provides content for the clipboard or for drag-and-drop operations in a
+    number of formats.
+
+    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
+    [Gdk.ContentProvider.new_for_bytes].
+
+    GDK knows how to handle common text and image formats out-of-the-box. See
+    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
+    support for application-specific data formats. *)
 class type content_provider_t = object
   method on_content_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id

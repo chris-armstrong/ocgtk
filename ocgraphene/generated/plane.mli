@@ -12,7 +12,12 @@
 
 class type plane_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.plane_t
-(** The methods, signals and properties of a [Plane]. *)
+(** {b The methods, signals and properties of a [Plane].}
+
+    A 2D plane that extends infinitely in a 3D volume.
+
+    The contents of the [graphene_plane_t] are private, and should not be
+    modified directly. *)
 
 class plane : Raw.Plane.t -> plane_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Plane.t}. *)

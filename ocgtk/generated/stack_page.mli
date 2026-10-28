@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-stack_page_t}. The
     functions it is built on are in {!Ocgtk.Raw.Stack_page}. *)
 
-(** The methods, signals and properties of a [StackPage]. *)
+(** {b The methods, signals and properties of a [StackPage].}
+
+    An auxiliary class used by [GtkStack]. *)
 class type stack_page_t = object
   inherit At_context_and__accessible.accessible_t
 

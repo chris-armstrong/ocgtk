@@ -6,7 +6,10 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Charset_converter}. *)
 
-(** The methods, signals and properties of a [CharsetConverter]. *)
+(** {b The methods, signals and properties of a [CharsetConverter].}
+
+    [GCharsetConverter] is an implementation of [Gio.Converter] based on
+    [GLib.IConv]. *)
 class type charset_converter_t = object
   inherit Converter.converter_t
   inherit Initable.initable_t

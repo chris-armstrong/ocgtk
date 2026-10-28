@@ -4,7 +4,9 @@
     {!class-type-d_bus_annotation_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_annotation_info}. *)
 
-(** The methods, signals and properties of a [DBusAnnotationInfo]. *)
+(** {b The methods, signals and properties of a [DBusAnnotationInfo].}
+
+    Information about an annotation. *)
 class type d_bus_annotation_info_t = object
   method ref : unit -> Raw.D_bus_annotation_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the

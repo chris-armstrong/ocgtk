@@ -10,7 +10,15 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Center_layout}. *)
 
-(** The methods, signals and properties of a [CenterLayout]. *)
+(** {b The methods, signals and properties of a [CenterLayout].}
+
+    Manages up to three children.
+
+    The start widget is allocated at the start of the layout (left in
+    left-to-right locales and right in right-to-left ones), and the end widget
+    at the end.
+
+    The center widget is centered regarding the full width of the layout's. *)
 class type center_layout_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

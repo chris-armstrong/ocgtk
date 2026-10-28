@@ -24,6 +24,7 @@ val item_doc :
   indent:string ->
   ?since:string ->
   ?fallback:string ->
+  ?prefix:string ->
   ?suffix:string ->
   context:Doc_translate.context ->
   string option ->
@@ -35,6 +36,8 @@ val item_doc :
       or translates to nothing, [fallback] is used instead.
     - [fallback] is trusted odoc markup (e.g. a synthetic code span holding a C
       type name). It is not translated, but it is still sanitised.
+    - [prefix] is trusted odoc markup too, added as a paragraph of its own
+      before the prose (or the fallback), or alone when there is neither.
     - [suffix] is trusted odoc markup too, added as a paragraph of its own after
       the prose (or the fallback), or alone when there is neither.
     - [since] is the native version. With prose it goes on its own line,

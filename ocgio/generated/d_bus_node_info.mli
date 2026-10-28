@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_node_info}. *)
 
-(** The methods, signals and properties of a [DBusNodeInfo]. *)
+(** {b The methods, signals and properties of a [DBusNodeInfo].}
+
+    Information about nodes in a remote object hierarchy. *)
 class type d_bus_node_info_t = object
   method lookup_interface : string -> Raw.D_bus_interface_info.t option
   (** Looks up information about an interface.

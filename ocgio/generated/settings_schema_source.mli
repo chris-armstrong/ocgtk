@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_source}. *)
 
-(** The methods, signals and properties of a [SettingsSchemaSource]. *)
+(** {b The methods, signals and properties of a [SettingsSchemaSource].}
+
+    This is an opaque structure type. You may not access it directly. *)
 class type settings_schema_source_t = object
   method lookup : string -> bool -> Raw.Settings_schema.t option
   (** Looks up a schema with the identifier [schema_id] in [source].

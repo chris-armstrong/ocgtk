@@ -8,7 +8,14 @@
     Its methods, signals and properties are on {!class-type-touchpad_event_t}.
     The functions it is built on are in {!Ocgdk.Raw.Touchpad_event}. *)
 
-(** The methods, signals and properties of a [TouchpadEvent]. *)
+(** {b The methods, signals and properties of a [TouchpadEvent].}
+
+    An event related to a gesture on a touchpad device.
+
+    Unlike touchscreens, where the windowing system sends basic sequences of
+    begin, update, end events, and leaves gesture recognition to the clients,
+    touchpad gestures are typically processed by the system, resulting in these
+    events. *)
 class type touchpad_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 

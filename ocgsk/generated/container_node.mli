@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Container_node}. *)
 
-(** The methods, signals and properties of a [ContainerNode]. *)
+(** {b The methods, signals and properties of a [ContainerNode].}
+
+    A render node that can contain other render nodes. *)
 class type container_node_t = object
   inherit Render_node.render_node_t
 

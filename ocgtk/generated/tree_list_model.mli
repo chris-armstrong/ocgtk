@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-tree_list_model_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_list_model}. *)
 
-(** The methods, signals and properties of a [TreeListModel]. *)
+(** {b The methods, signals and properties of a [TreeListModel].}
+
+    A list model that can create child models on demand. *)
 class type tree_list_model_t = object
   inherit Ocgio.List_model.list_model_t
 

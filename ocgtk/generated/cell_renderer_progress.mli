@@ -8,7 +8,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_progress}. *)
 
-(** The methods, signals and properties of a [CellRendererProgress]. *)
+(** {b The methods, signals and properties of a [CellRendererProgress].}
+
+    Renders numbers as progress bars
+
+    [GtkCellRendererProgress] renders a numeric value as a progress par in a
+    cell. Additionally, it can display a text on top of the progress bar. *)
 class type cell_renderer_progress_t = object
   inherit Cell_renderer.cell_renderer_t
   inherit Orientable.orientable_t

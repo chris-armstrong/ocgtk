@@ -13,7 +13,17 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_text}. *)
 
-(** The methods, signals and properties of a [CellRendererText]. *)
+(** {b The methods, signals and properties of a [CellRendererText].}
+
+    Renders text in a cell
+
+    A [GtkCellRendererText] renders a given text in its cell, using the font,
+    color and style information provided by its properties. The text will be
+    ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
+    property allows it.
+
+    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
+    [GtkCellRendererText] allows to edit its text using an entry. *)
 class type cell_renderer_text_t = object
   inherit Cell_renderer.cell_renderer_t
 

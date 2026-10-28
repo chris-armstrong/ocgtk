@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Cross_fade_node}. *)
 
-(** The methods, signals and properties of a [CrossFadeNode]. *)
+(** {b The methods, signals and properties of a [CrossFadeNode].}
+
+    A render node cross fading between two child nodes. *)
 class type cross_fade_node_t = object
   inherit Render_node.render_node_t
 

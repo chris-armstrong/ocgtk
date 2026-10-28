@@ -10,7 +10,16 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Network_service}. *)
 
-(** The methods, signals and properties of a [NetworkService]. *)
+(** {b The methods, signals and properties of a [NetworkService].}
+
+    Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
+    easy way to resolve a SRV record, and then attempt to connect to one of the
+    hosts that implements that service, handling service priority/weighting,
+    multiple IP addresses, and multiple address families.
+
+    See [Gio.SrvTarget] for more information about SRV records, and see
+    [Gio.SocketConnectable] for an example of using the connectable interface.
+*)
 class type network_service_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable

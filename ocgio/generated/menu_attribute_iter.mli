@@ -5,7 +5,10 @@
     {!class-type-menu_attribute_iter_t}. The functions it is built on are in
     {!Ocgio.Raw.Menu_attribute_iter}. *)
 
-(** The methods, signals and properties of a [MenuAttributeIter]. *)
+(** {b The methods, signals and properties of a [MenuAttributeIter].}
+
+    [GMenuAttributeIter] is an opaque structure type. You must access it using
+    the functions below. *)
 class type menu_attribute_iter_t = object
   method get_name : unit -> string
   (** Gets the name of the attribute at the current iterator position, as a

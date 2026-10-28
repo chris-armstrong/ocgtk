@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Color_matrix_node}. *)
 
-(** The methods, signals and properties of a [ColorMatrixNode]. *)
+(** {b The methods, signals and properties of a [ColorMatrixNode].}
+
+    A render node controlling the color matrix of its single child node. *)
 class type color_matrix_node_t = object
   inherit Render_node.render_node_t
 

@@ -42,7 +42,47 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Editable_label}. *)
 
-(** The methods, signals and properties of a [EditableLabel]. *)
+(** {b The methods, signals and properties of a [EditableLabel].}
+
+    Allows users to edit the displayed text by switching to an “edit mode”.
+
+    An example GtkEditableLabel
+
+    [GtkEditableLabel] does not have API of its own, but it implements the
+    [Gtk.Editable] interface.
+
+    The default bindings for activating the edit mode is to click or press the
+    Enter key. The default bindings for leaving the edit mode are the Enter key
+    (to save the results) or the Escape key (to cancel the editing).
+
+    {b Shortcuts and Gestures}
+
+    [GtkEditableLabel] supports the following keyboard shortcuts:
+
+    - <kbd>Enter</kbd> starts editing.
+    - <kbd>Escape</kbd> stops editing.
+
+    {b Actions}
+
+    [GtkEditableLabel] defines a set of built-in actions:
+
+    - [editing.starts] switches the widget into editing mode.
+    - [editing.stop] switches the widget out of editing mode.
+
+    {b CSS nodes}
+
+    {[
+    editablelabel[.editing]
+    ╰── stack
+        ├── label
+        ╰── text
+    ]}
+
+    [GtkEditableLabel] has a main node with the name editablelabel. When the
+    entry is in editing mode, it gets the .editing style class.
+
+    For all the subnodes added to the text node in various situations, see
+    [Gtk.Text]. *)
 class type editable_label_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

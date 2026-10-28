@@ -18,7 +18,23 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Aspect_frame}. *)
 
-(** The methods, signals and properties of a [AspectFrame]. *)
+(** {b The methods, signals and properties of a [AspectFrame].}
+
+    Preserves the aspect ratio of its child.
+
+    The frame can respect the aspect ratio of the child widget, or use its own
+    aspect ratio.
+
+    {b CSS nodes}
+
+    [GtkAspectFrame] uses a CSS node with name [aspectframe].
+
+    {b Accessibility}
+
+    Until GTK 4.10, [GtkAspectFrame] used the [Gtk.AccessibleRole.group] role.
+
+    Starting from GTK 4.12, [GtkAspectFrame] uses the
+    [Gtk.AccessibleRole.generic] role. *)
 class type aspect_frame_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Multi_sorter}. *)
 
-(** The methods, signals and properties of a [MultiSorter]. *)
+(** {b The methods, signals and properties of a [MultiSorter].}
+
+    Combines multiple sorters by trying them in turn.
+
+    If the first sorter compares two items as equal, the second is tried next,
+    and so on. *)
 class type multi_sorter_t = object
   inherit Sorter.sorter_t
   inherit Ocgio.List_model.list_model_t

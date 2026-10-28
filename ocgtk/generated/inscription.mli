@@ -19,7 +19,24 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Inscription}. *)
 
-(** The methods, signals and properties of a [Inscription]. *)
+(** {b The methods, signals and properties of a [Inscription].}
+
+    Shows text in a predefined area.
+
+    You likely want to use [GtkLabel] instead as this widget is intended only
+    for a small subset of use cases. The main scenario envisaged is inside lists
+    such as [GtkColumnView].
+
+    While a [GtkLabel] sizes itself depending on the text that is displayed,
+    [GtkInscription] is given a size and inscribes the given text into that
+    space as well as it can.
+
+    Users of this widget should take care to plan behaviour for the common case
+    where the text doesn't fit exactly in the allocated space.
+
+    {b CSS nodes}
+
+    [GtkInscription] has a single CSS node with the name label. *)
 class type inscription_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

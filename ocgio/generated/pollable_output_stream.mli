@@ -12,7 +12,17 @@
     {!class-type-pollable_output_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.Pollable_output_stream}. *)
 
-(** The methods, signals and properties of a [PollableOutputStream]. *)
+(** {b The methods, signals and properties of a [PollableOutputStream].}
+
+    [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
+    polled for readiness to write. This can be used when interfacing with a
+    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
+    than GIO-style.
+
+    Some classes may implement [GPollableOutputStream] but have only certain
+    instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
+    returns false, then the behavior of other [GPollableOutputStream] methods is
+    undefined. *)
 class type pollable_output_stream_t = object
   method can_poll : unit -> bool
   (** Checks if [stream] is actually pollable. Some classes may implement

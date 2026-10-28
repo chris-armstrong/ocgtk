@@ -13,7 +13,18 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Color_dialog}. *)
 
-(** The methods, signals and properties of a [ColorDialog]. *)
+(** {b The methods, signals and properties of a [ColorDialog].}
+
+    Asynchronous API to present a color chooser dialog.
+
+    [GtkColorDialog] collects the arguments that are needed to present the
+    dialog to the user, such as a title for the dialog and whether it should be
+    modal.
+
+    The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
+
+    See [Gtk.ColorDialogButton] for a convenient control that uses
+    [GtkColorDialog] and presents the results. *)
 class type color_dialog_t = object
   method choose_rgba_finish :
     Ocgio.Async_result.async_result_t -> (Ocgdk.Rgb_a.rgb_a_t, GError.t) result

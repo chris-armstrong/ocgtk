@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Keyval_trigger}. *)
 
-(** The methods, signals and properties of a [KeyvalTrigger]. *)
+(** {b The methods, signals and properties of a [KeyvalTrigger].}
+
+    Triggers when a specific keyval and modifiers are pressed. *)
 class type keyval_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 

@@ -18,7 +18,23 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Constraint}. *)
 
-(** The methods, signals and properties of a [Constraint]. *)
+(** {b The methods, signals and properties of a [Constraint].}
+
+    Describes a constraint between attributes of two widgets, expressed as a
+    linear equation.
+
+    The typical equation for a constraint is:
+
+    {[
+      target.target_attr = source.source_attr × multiplier + constant
+    ]}
+
+    Each [GtkConstraint] is part of a system that will be solved by a
+    [Gtk.ConstraintLayout] in order to allocate and position each child widget
+    or guide.
+
+    The source and target, as well as their attributes, of a [GtkConstraint]
+    instance are immutable after creation. *)
 class type constraint__t = object
   method get_constant : unit -> float
   (** Retrieves the constant factor added to the source attributes' value. *)

@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Clip_node}. *)
 
-(** The methods, signals and properties of a [ClipNode]. *)
+(** {b The methods, signals and properties of a [ClipNode].}
+
+    A render node applying a rectangular clip to its single child node. *)
 class type clip_node_t = object
   inherit Render_node.render_node_t
 

@@ -45,8 +45,11 @@ let l2_module ~namespace ~class_name ~has_constructors ~class_doc =
          (layer1_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
-let class_type ~class_name =
-  canned (Fmt.str "The methods, signals and properties of a [%s]." class_name)
+let class_type ~class_name ~class_doc =
+  Doc_emit.item_doc ~indent:""
+    ~prefix:
+      (Fmt.str "{b The methods, signals and properties of a [%s].}" class_name)
+    ~context:Doc_translate.Member class_doc
 
 let class_ ~namespace ~class_name =
   canned

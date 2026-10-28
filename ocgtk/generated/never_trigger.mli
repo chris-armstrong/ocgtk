@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-never_trigger_t}.
     The functions it is built on are in {!Ocgtk.Raw.Never_trigger}. *)
 
-(** The methods, signals and properties of a [NeverTrigger]. *)
+(** {b The methods, signals and properties of a [NeverTrigger].}
+
+    A [GtkShortcutTrigger] that never triggers. *)
 class type never_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
   method as_never_trigger : Raw.Never_trigger.t

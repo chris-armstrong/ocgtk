@@ -20,7 +20,24 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_dialog}. *)
 
-(** The methods, signals and properties of a [AppChooserDialog]. *)
+(** {b The methods, signals and properties of a [AppChooserDialog].}
+
+    [GtkAppChooserDialog] shows a [GtkAppChooserWidget] inside a [GtkDialog].
+
+    An example GtkAppChooserDialog
+
+    Note that [GtkAppChooserDialog] does not have any interesting methods of its
+    own. Instead, you should get the embedded [GtkAppChooserWidget] using
+    [Gtk.AppChooserDialog.get_widget] and call its methods if the generic
+    [Gtk.AppChooser] interface is not sufficient for your needs.
+
+    To set the heading that is shown above the [GtkAppChooserWidget], use
+    [Gtk.AppChooserDialog.set_heading].
+
+    {b CSS nodes}
+
+    [GtkAppChooserDialog] has a single CSS node with the name [window] and style
+    class [.appchooser]. *)
 class type app_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit App_chooser.app_chooser_t

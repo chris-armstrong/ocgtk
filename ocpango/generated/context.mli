@@ -15,7 +15,16 @@
     are in {!Ocpango.Raw.Context}. *)
 
 class type context_t = Context_and__font_and__font_map_and__fontset.context_t
-(** The methods, signals and properties of a [Context]. *)
+(** {b The methods, signals and properties of a [Context].}
+
+    A [PangoContext] stores global information used to control the itemization
+    process.
+
+    The information stored by [PangoContext] includes the fontmap used to look
+    up fonts, and default values such as the default language, default gravity,
+    or default font.
+
+    To obtain a [PangoContext], use [Pango.FontMap.create_context]. *)
 
 class context : Raw.Context.t -> context_t
 (** Wraps a raw handle of {!Ocpango.Raw.Context.t}. *)

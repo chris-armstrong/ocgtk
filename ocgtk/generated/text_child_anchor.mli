@@ -7,7 +7,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Text_child_anchor}. *)
 
-(** The methods, signals and properties of a [TextChildAnchor]. *)
+(** {b The methods, signals and properties of a [TextChildAnchor].}
+
+    Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
+
+    The anchor can have multiple widgets anchored, to allow for multiple views.
+*)
 class type text_child_anchor_t = object
   method get_deleted : unit -> bool
   (** Determines whether a child anchor has been deleted from the buffer.

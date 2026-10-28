@@ -13,7 +13,19 @@
     Its methods, signals and properties are on {!class-type-font_metrics_t}. The
     functions it is built on are in {!Ocpango.Raw.Font_metrics}. *)
 
-(** The methods, signals and properties of a [FontMetrics]. *)
+(** {b The methods, signals and properties of a [FontMetrics].}
+
+    A [PangoFontMetrics] structure holds the overall metric information for a
+    font.
+
+    The information in a [PangoFontMetrics] structure may be restricted to a
+    script. The fields of this structure are private to implementations of a
+    font backend. See the documentation of the corresponding getters for
+    documentation of their meaning.
+
+    For an overview of the most important metrics, see:
+
+    Font metrics *)
 class type font_metrics_t = object
   method get_approximate_char_width : unit -> int
   (** Gets the approximate character width for a font metrics structure.

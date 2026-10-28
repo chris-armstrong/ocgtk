@@ -5,7 +5,10 @@
     {!class-type-threaded_resolver_t}. The functions it is built on are in
     {!Ocgio.Raw.Threaded_resolver}. *)
 
-(** The methods, signals and properties of a [ThreadedResolver]. *)
+(** {b The methods, signals and properties of a [ThreadedResolver].}
+
+    [GThreadedResolver] is an implementation of [GResolver] which calls the libc
+    lookup functions in threads to allow them to run asynchronously. *)
 class type threaded_resolver_t = object
   inherit Resolver.resolver_t
   method as_threaded_resolver : Raw.Threaded_resolver.t

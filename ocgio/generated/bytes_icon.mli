@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Bytes_icon}. *)
 
-(** The methods, signals and properties of a [BytesIcon]. *)
+(** {b The methods, signals and properties of a [BytesIcon].}
+
+    [GBytesIcon] specifies an image held in memory in a common format (usually
+    PNG) to be used as icon. *)
 class type bytes_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t

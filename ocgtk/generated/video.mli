@@ -16,7 +16,21 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Video}. *)
 
-(** The methods, signals and properties of a [Video]. *)
+(** {b The methods, signals and properties of a [Video].}
+
+    Shows a [GtkMediaStream] with media controls.
+
+    An example GtkVideo
+
+    The controls are available separately as [Gtk.MediaControls]. If you just
+    want to display a video without controls, you can treat it like any other
+    paintable and for example put it into a [Gtk.Picture].
+
+    [GtkVideo] aims to cover use cases such as previews, embedded animations,
+    etc. It supports autoplay, looping, and simple media controls. It does not
+    have support for video overlays, multichannel audio, device selection, or
+    input. If you are writing a full-fledged video player, you may want to use
+    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
 class type video_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

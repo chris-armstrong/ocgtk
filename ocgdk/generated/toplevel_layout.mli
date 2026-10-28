@@ -11,7 +11,16 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Toplevel_layout}. *)
 
-(** The methods, signals and properties of a [ToplevelLayout]. *)
+(** {b The methods, signals and properties of a [ToplevelLayout].}
+
+    Contains information that is necessary to present a sovereign window on
+    screen.
+
+    The [GdkToplevelLayout] struct is necessary for using
+    [Gdk.Toplevel.present].
+
+    Toplevel surfaces are sovereign windows that can be presented to the user in
+    various states (maximized, on all workspaces, etc). *)
 class type toplevel_layout_t = object
   method equal : Raw.Toplevel_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)

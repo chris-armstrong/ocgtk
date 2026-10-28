@@ -35,7 +35,40 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Password_entry}. *)
 
-(** The methods, signals and properties of a [PasswordEntry]. *)
+(** {b The methods, signals and properties of a [PasswordEntry].}
+
+    A single-line text entry widget for entering passwords and other secrets.
+
+    An example GtkPasswordEntry
+
+    It does not show its contents in clear text, does not allow to copy it to
+    the clipboard, and it shows a warning when Caps Lock is engaged. If the
+    underlying platform allows it, [GtkPasswordEntry] will also place the text
+    in a non-pageable memory area, to avoid it being written out to disk by the
+    operating system.
+
+    Optionally, it can offer a way to reveal the contents in clear text.
+
+    [GtkPasswordEntry] provides only minimal API and should be used with the
+    [Gtk.Editable] API.
+
+    {b CSS Nodes}
+
+    {[
+    entry.password
+    ╰── text
+        ├── image.caps-lock-indicator
+        ┊
+    ]}
+
+    [GtkPasswordEntry] has a single CSS node with name entry that carries a
+    .passwordstyle class. The text Css node below it has a child with name image
+    and style class .caps-lock-indicator for the Caps Lock icon, and possibly
+    other children.
+
+    {b Accessibility}
+
+    [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
 class type password_entry_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

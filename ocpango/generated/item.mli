@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Item}. *)
 
-(** The methods, signals and properties of a [Item]. *)
+(** {b The methods, signals and properties of a [Item].}
+
+    The [PangoItem] structure stores information about a segment of text.
+
+    You typically obtain [PangoItems] by itemizing a piece of text with
+    [itemize]. *)
 class type item_t = object
   method apply_attrs : Raw.Attr_iterator.t -> unit
   (** Add attributes to a [PangoItem].

@@ -12,7 +12,17 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Transform}. *)
 
-(** The methods, signals and properties of a [Transform]. *)
+(** {b The methods, signals and properties of a [Transform].}
+
+    Describes a 3D transform.
+
+    Unlike [graphene_matrix_t], [GskTransform] retains the steps in how a
+    transform was constructed, and allows inspecting them. It is modeled after
+    the way CSS describes transforms.
+
+    [GskTransform] objects are immutable and cannot be changed after creation.
+    This means code can safely expose them as properties of objects without
+    having to worry about others changing them. *)
 class type transform_t = object
   method equal : Raw.Transform.t option -> bool
   (** Checks two transforms for equality. *)

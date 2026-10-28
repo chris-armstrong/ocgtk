@@ -21,7 +21,20 @@
 
 class type column_view_column_t =
   Column_view_and__column_view_column.column_view_column_t
-(** The methods, signals and properties of a [ColumnViewColumn]. *)
+(** {b The methods, signals and properties of a [ColumnViewColumn].}
+
+    Represents the columns in a [GtkColumnView].
+
+    The main ingredient for a [GtkColumnViewColumn] is the [GtkListItemFactory]
+    that tells the columnview how to create cells for this column from items in
+    the model.
+
+    Columns have a title, and can optionally have a header menu set with
+    [Gtk.ColumnViewColumn.set_header_menu].
+
+    A sorter can be associated with a column using
+    [Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
+    clicking on the column header. *)
 
 class column_view_column : Raw.Column_view_column.t -> column_view_column_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Column_view_column.t}. *)

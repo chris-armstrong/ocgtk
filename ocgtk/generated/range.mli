@@ -16,7 +16,22 @@
     Its methods, signals and properties are on {!class-type-range_t}. The
     functions it is built on are in {!Ocgtk.Raw.Range}. *)
 
-(** The methods, signals and properties of a [Range]. *)
+(** {b The methods, signals and properties of a [Range].}
+
+    Base class for widgets which visualize an adjustment.
+
+    Widgets that are derived from [GtkRange] include [Gtk.Scale] and
+    [Gtk.Scrollbar].
+
+    Apart from signals for monitoring the parameters of the adjustment,
+    [GtkRange] provides properties and methods for setting a “fill level” on
+    range widgets. See [Gtk.Range.set_fill_level].
+
+    {b Shortcuts and Gestures}
+
+    The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
+    dragging, or initiating the drag with a long-press will enable the
+    fine-tuning mode. *)
 class type range_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

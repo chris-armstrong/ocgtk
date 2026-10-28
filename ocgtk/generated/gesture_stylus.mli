@@ -6,7 +6,12 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Gesture_stylus}. *)
 
-(** The methods, signals and properties of a [GestureStylus]. *)
+(** {b The methods, signals and properties of a [GestureStylus].}
+
+    Recognizes tablet stylus input.
+
+    The provided signals just relay the basic information of the stylus events.
+*)
 class type gesture_stylus_t = object
   inherit Gesture_single.gesture_single_t
 

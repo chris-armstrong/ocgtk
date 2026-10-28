@@ -2,7 +2,13 @@
     together because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [DBusInterface]. *)
+(** {b The methods, signals and properties of a [DBusInterface].}
+
+    Base type for D-Bus interfaces.
+
+    The [GDBusInterface] type is the base type for D-Bus interfaces both on the
+    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
+    [Gio.DBusProxy]). *)
 class type d_bus_interface_t = object
   method dup_object : unit -> d_bus_object_t option
   (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
@@ -19,7 +25,11 @@ class type d_bus_interface_t = object
   method as_d_bus_interface : Raw.D_bus_interface.t
 end
 
-(** The methods, signals and properties of a [DBusObject]. *)
+(** {b The methods, signals and properties of a [DBusObject].}
+
+    The [GDBusObject] type is the base type for D-Bus objects on both the
+    service side (see [Gio.DBusObjectSkeleton]) and the client side (see
+    [Gio.DBusObjectProxy]). It is essentially just a container of interfaces. *)
 and d_bus_object_t = object
   method on_interface_added :
     ?after:bool ->

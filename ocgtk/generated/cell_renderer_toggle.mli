@@ -10,7 +10,14 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_toggle}. *)
 
-(** The methods, signals and properties of a [CellRendererToggle]. *)
+(** {b The methods, signals and properties of a [CellRendererToggle].}
+
+    Renders a toggle button in a cell
+
+    [GtkCellRendererToggle] renders a toggle button in a cell. The button is
+    drawn as a radio or a checkbutton, depending on the
+    [GtkCellRendererToggle:radio] property. When activated, it emits the
+    [GtkCellRendererToggle::toggled] signal. *)
 class type cell_renderer_toggle_t = object
   inherit Cell_renderer.cell_renderer_t
 

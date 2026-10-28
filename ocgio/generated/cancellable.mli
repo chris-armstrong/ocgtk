@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Cancellable}. *)
 
-(** The methods, signals and properties of a [Cancellable]. *)
+(** {b The methods, signals and properties of a [Cancellable].}
+
+    [GCancellable] allows operations to be cancelled.
+
+    [GCancellable] is a thread-safe operation cancellation stack used throughout
+    GIO to allow for cancellation of synchronous and asynchronous operations. *)
 class type cancellable_t = object
   method on_cancelled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id

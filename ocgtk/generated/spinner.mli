@@ -21,7 +21,26 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Spinner}. *)
 
-(** The methods, signals and properties of a [Spinner]. *)
+(** {b The methods, signals and properties of a [Spinner].}
+
+    Displays an icon-size spinning animation.
+
+    It is often used as an alternative to a [Gtk.ProgressBar] for displaying
+    indefinite activity, instead of actual progress.
+
+    An example GtkSpinner
+
+    To start the animation, use [Gtk.Spinner.start], to stop it use
+    [Gtk.Spinner.stop].
+
+    {b CSS nodes}
+
+    [GtkSpinner] has a single CSS node with the name spinner. When the animation
+    is active, the :checked pseudoclass is added to this node.
+
+    {b Accessibility}
+
+    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
 class type spinner_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

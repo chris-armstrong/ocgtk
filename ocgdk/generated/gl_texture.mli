@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-gl_texture_t}. The
     functions it is built on are in {!Ocgdk.Raw.Gl_texture}. *)
 
-(** The methods, signals and properties of a [GLTexture]. *)
+(** {b The methods, signals and properties of a [GLTexture].}
+
+    A [GdkTexture] representing a GL texture object. *)
 class type gl_texture_t = object
   inherit Texture.texture_t
 

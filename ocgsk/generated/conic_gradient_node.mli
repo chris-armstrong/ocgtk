@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Conic_gradient_node}. *)
 
-(** The methods, signals and properties of a [ConicGradientNode]. *)
+(** {b The methods, signals and properties of a [ConicGradientNode].}
+
+    A render node for a conic gradient. *)
 class type conic_gradient_node_t = object
   inherit Render_node.render_node_t
 

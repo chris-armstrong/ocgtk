@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Constant_expression}. *)
 
-(** The methods, signals and properties of a [ConstantExpression]. *)
+(** {b The methods, signals and properties of a [ConstantExpression].}
+
+    A constant value in a [GtkExpression]. *)
 class type constant_expression_t = object
   inherit Expression.expression_t
 

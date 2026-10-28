@@ -5,7 +5,10 @@
     {!class-type-dtls_server_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Dtls_server_connection}. *)
 
-(** The methods, signals and properties of a [DtlsServerConnection]. *)
+(** {b The methods, signals and properties of a [DtlsServerConnection].}
+
+    [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],
+    representing a server-side DTLS connection. *)
 class type dtls_server_connection_t = object
   method authentication_mode : Enums.tlsauthenticationmode
   (** The [GTlsAuthenticationMode] for the server. This can be changed before

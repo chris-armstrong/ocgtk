@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Mask_node}. *)
 
-(** The methods, signals and properties of a [MaskNode]. *)
+(** {b The methods, signals and properties of a [MaskNode].}
+
+    A render node masking one child node with another. *)
 class type mask_node_t = object
   inherit Render_node.render_node_t
 

@@ -15,7 +15,20 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Snapshot}. *)
 
-(** The methods, signals and properties of a [Snapshot]. *)
+(** {b The methods, signals and properties of a [Snapshot].}
+
+    Assists in creating [Gsk.RenderNode]s for widgets.
+
+    It functions in a similar way to a cairo context, and maintains a stack of
+    render nodes and their associated transformations.
+
+    The node at the top of the stack is the one that [gtk_snapshot_append_…()]
+    functions operate on. Use the [gtk_snapshot_push_…()] functions and
+    [Snapshot.pop] to change the current node.
+
+    The typical way to obtain a [GtkSnapshot] object is as an argument to the
+    [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
+    use [Gtk.Snapshot.new]. *)
 class type snapshot_t = object
   inherit Ocgdk.Snapshot.snapshot_t
 

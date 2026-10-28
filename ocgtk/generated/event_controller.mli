@@ -19,7 +19,19 @@
 class type event_controller_t =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .event_controller_t
-(** The methods, signals and properties of a [EventController]. *)
+(** {b The methods, signals and properties of a [EventController].}
+
+    The base class for event controllers.
+
+    These are ancillary objects associated to widgets, which react to
+    [GdkEvents], and possibly trigger actions as a consequence.
+
+    Event controllers are added to a widget with [Gtk.Widget.add_controller]. It
+    is rarely necessary to explicitly remove a controller with
+    [Gtk.Widget.remove_controller].
+
+    See the chapter on input handling for an overview of the basic concepts,
+    such as the capture and bubble phases of event propagation. *)
 
 class event_controller : Raw.Event_controller.t -> event_controller_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Event_controller.t}. *)

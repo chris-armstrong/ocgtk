@@ -7,7 +7,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Quad}. *)
 
-(** The methods, signals and properties of a [Quad]. *)
+(** {b The methods, signals and properties of a [Quad].}
+
+    A 4 vertex quadrilateral, as represented by four #graphene_point_t.
+
+    The contents of a #graphene_quad_t are private and should never be accessed
+    directly. *)
 class type quad_t = object
   method contains : Raw.Point.t -> bool
   (** Checks if the given #graphene_quad_t contains the given #graphene_point_t.

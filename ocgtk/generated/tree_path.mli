@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Tree_path}. *)
 
-(** The methods, signals and properties of a [TreePath]. *)
+(** {b The methods, signals and properties of a [TreePath].}
+
+    An opaque structure representing a path to a row in a model. *)
 class type tree_path_t = object
   method append_index : int -> unit
   (** Appends a new index to a path.

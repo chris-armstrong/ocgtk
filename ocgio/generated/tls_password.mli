@@ -5,7 +5,10 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Tls_password}. *)
 
-(** The methods, signals and properties of a [TlsPassword]. *)
+(** {b The methods, signals and properties of a [TlsPassword].}
+
+    An abstract interface representing a password used in TLS. Often used in
+    user interaction such as unlocking a key storage token. *)
 class type tls_password_t = object
   method get_description : unit -> string
   (** Get a description string about what the password will be used for. *)

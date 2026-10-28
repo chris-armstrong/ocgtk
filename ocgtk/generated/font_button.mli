@@ -19,7 +19,24 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Font_button}. *)
 
-(** The methods, signals and properties of a [FontButton]. *)
+(** {b The methods, signals and properties of a [FontButton].}
+
+    The [GtkFontButton] allows to open a font chooser dialog to change the font.
+
+    An example GtkFontButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontButton] has a single CSS node with name fontbutton which contains a
+    button node with the .font style class. *)
 class type font_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

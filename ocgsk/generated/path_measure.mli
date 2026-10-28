@@ -16,7 +16,16 @@
 
 class type path_measure_t =
   Path_and__path_measure_and__path_point.path_measure_t
-(** The methods, signals and properties of a [PathMeasure]. *)
+(** {b The methods, signals and properties of a [PathMeasure].}
+
+    Performs measurements on paths such as determining the length of the path.
+
+    Many measuring operations require sampling the path length at intermediate
+    points. Therefore, a [GskPathMeasure] has a tolerance that determines what
+    precision is required for such approximations.
+
+    A [GskPathMeasure] struct is a reference counted struct and should be
+    treated as opaque. *)
 
 class path_measure : Raw.Path_measure.t -> path_measure_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Path_measure.t}. *)

@@ -11,7 +11,16 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Media_file}. *)
 
-(** The methods, signals and properties of a [MediaFile]. *)
+(** {b The methods, signals and properties of a [MediaFile].}
+
+    Implements the [GtkMediaStream] interface for files.
+
+    This provides a simple way to play back video files with GTK.
+
+    GTK provides a GIO extension point for [GtkMediaFile] implementations to
+    allow for external implementations using various media frameworks.
+
+    GTK itself includes an implementation using GStreamer. *)
 class type media_file_t = object
   inherit Media_stream.media_stream_t
 

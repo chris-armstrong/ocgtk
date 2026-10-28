@@ -4,7 +4,10 @@
     Its methods, signals and properties are on {!class-type-recent_info_t}. The
     functions it is built on are in {!Ocgtk.Raw.Recent_info}. *)
 
-(** The methods, signals and properties of a [RecentInfo]. *)
+(** {b The methods, signals and properties of a [RecentInfo].}
+
+    Contains the metadata associated with an item in the recently used files
+    list. *)
 class type recent_info_t = object
   method create_app_info :
     string option -> (Ocgio.App_info.app_info_t option, GError.t) result

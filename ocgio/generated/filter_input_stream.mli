@@ -7,7 +7,12 @@
     {!class-type-filter_input_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.Filter_input_stream}. *)
 
-(** The methods, signals and properties of a [FilterInputStream]. *)
+(** {b The methods, signals and properties of a [FilterInputStream].}
+
+    Base class for input stream implementations that perform some kind of
+    filtering operation on a base stream. Typical examples of filtering
+    operations are character set conversion, compression and byte order
+    flipping. *)
 class type filter_input_stream_t = object
   inherit Input_stream.input_stream_t
 

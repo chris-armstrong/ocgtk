@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Multi_selection}. *)
 
-(** The methods, signals and properties of a [MultiSelection]. *)
+(** {b The methods, signals and properties of a [MultiSelection].}
+
+    A selection model that allows selecting multiple elements. *)
 class type multi_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t

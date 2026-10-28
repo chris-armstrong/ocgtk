@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Alternative_trigger}. *)
 
-(** The methods, signals and properties of a [AlternativeTrigger]. *)
+(** {b The methods, signals and properties of a [AlternativeTrigger].}
+
+    Combines two shortcut triggers.
+
+    The [GtkAlternativeTrigger] triggers when either of the two trigger.
+
+    This can be cascaded to combine more than two triggers. *)
 class type alternative_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 

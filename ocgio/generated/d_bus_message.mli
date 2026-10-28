@@ -5,7 +5,10 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_message}. *)
 
-(** The methods, signals and properties of a [DBusMessage]. *)
+(** {b The methods, signals and properties of a [DBusMessage].}
+
+    A type for representing D-Bus messages that can be sent or received on a
+    [Gio.DBusConnection]. *)
 class type d_bus_message_t = object
   method copy : unit -> (d_bus_message_t, GError.t) result
   (** Copies [message]. The copy is a deep copy and the returned [GDBusMessage]

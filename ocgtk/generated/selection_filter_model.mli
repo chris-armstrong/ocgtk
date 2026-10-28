@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Selection_filter_model}. *)
 
-(** The methods, signals and properties of a [SelectionFilterModel]. *)
+(** {b The methods, signals and properties of a [SelectionFilterModel].}
+
+    A list model that presents the selection from a [GtkSelectionModel]. *)
 class type selection_filter_model_t = object
   inherit Ocgio.List_model.list_model_t
 

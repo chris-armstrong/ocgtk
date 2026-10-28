@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Shader_args_builder}. *)
 
-(** The methods, signals and properties of a [ShaderArgsBuilder]. *)
+(** {b The methods, signals and properties of a [ShaderArgsBuilder].}
+
+    Builds the uniforms data for a [GskGLShader]. *)
 class type shader_args_builder_t = object
   method ref : unit -> Raw.Shader_args_builder.t
   (** Increases the reference count of a [GskShaderArgsBuilder] by one. *)

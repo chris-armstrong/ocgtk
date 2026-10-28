@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.File_list}. *)
 
-(** The methods, signals and properties of a [FileList]. *)
+(** {b The methods, signals and properties of a [FileList].}
+
+    An opaque type representing a list of files. *)
 class type file_list_t = object
   method get_files : unit -> Ocgio.File.file_t list
   (** Retrieves the list of files inside a [GdkFileList].

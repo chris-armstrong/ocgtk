@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_socket_address}. *)
 
-(** The methods, signals and properties of a [InetSocketAddress]. *)
+(** {b The methods, signals and properties of a [InetSocketAddress].}
+
+    An IPv4 or IPv6 socket address. That is, the combination of a
+    [Gio.InetAddress] and a port number.
+
+    In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
+    or [struct sockaddr_in]). *)
 class type inet_socket_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable

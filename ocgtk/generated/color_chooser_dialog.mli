@@ -22,7 +22,26 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_chooser_dialog}. *)
 
-(** The methods, signals and properties of a [ColorChooserDialog]. *)
+(** {b The methods, signals and properties of a [ColorChooserDialog].}
+
+    A dialog for choosing a color.
+
+    An example GtkColorChooserDialog
+
+    [GtkColorChooserDialog] implements the [Gtk.ColorChooser] interface and does
+    not provide much API of its own.
+
+    To create a [GtkColorChooserDialog], use [Gtk.ColorChooserDialog.new].
+
+    To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
+    get the selected color use [Gtk.ColorChooser.get_rgba].
+
+    [GtkColorChooserDialog] has been deprecated in favor of [Gtk.ColorDialog].
+
+    {b CSS nodes}
+
+    [GtkColorChooserDialog] has a single CSS node with the name [window] and
+    style class [.colorchooser]. *)
 class type color_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Color_chooser.color_chooser_t

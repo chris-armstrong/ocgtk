@@ -13,7 +13,18 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Network_address}. *)
 
-(** The methods, signals and properties of a [NetworkAddress]. *)
+(** {b The methods, signals and properties of a [NetworkAddress].}
+
+    [GNetworkAddress] provides an easy way to resolve a hostname and then
+    attempt to connect to that host, handling the possibility of multiple IP
+    addresses and multiple address families.
+
+    The enumeration results of resolved addresses {i may} be cached as long as
+    this object is kept alive which may have unexpected results if alive for too
+    long.
+
+    See [Gio.SocketConnectable] for an example of using the connectable
+    interface. *)
 class type network_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable

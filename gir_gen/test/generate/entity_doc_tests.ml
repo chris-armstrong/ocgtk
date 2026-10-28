@@ -32,6 +32,16 @@ let test_l2_module_without_class_doc_starts_with_synopsis () =
     (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
        ~has_constructors:true ~class_doc:None)
 
+let test_class_type_with_class_doc () =
+  check_text "the bold line, then the class doc"
+    "(** {b The methods, signals and properties of a [Button].}\n\nA button. *)"
+    (Entity_doc.class_type ~class_name:"Button" ~class_doc:(Some "A button."))
+
+let test_class_type_without_class_doc () =
+  check_text "the bold line alone"
+    "(** {b The methods, signals and properties of a [Button].} *)"
+    (Entity_doc.class_type ~class_name:"Button" ~class_doc:None)
+
 let ctor ?ctor_doc () =
   Type_factory.make_gir_constructor ~ctor_name:"new_with_label"
     ~c_identifier:"gtk_button_new_with_label" ?ctor_doc ()
@@ -112,10 +122,14 @@ let test_signature_carries_docs () =
   let ast = signature ~class_doc:(Some "A button.") () in
   check_has "module preamble" ~sub:"A button."
     (Ml_ast_helpers.module_preamble ast);
+  let class_type_doc =
+    Helpers.expect_some "class type button_t"
+      (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+        Ml_ast_helpers.doc_of_attributes ct.pci_attributes)
+  in
   check_has "class type" ~sub:"The methods, signals and properties of a"
-    (Helpers.expect_some "class type button_t"
-       (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
-         Ml_ast_helpers.doc_of_attributes ct.pci_attributes))
+    class_type_doc;
+  check_has "class type repeats the class doc" ~sub:"A button." class_type_doc
 
 let test_signature_carries_method_docs () =
   let clicked =
@@ -163,6 +177,10 @@ let tests =
     ( "layer 2 module doc without a class doc starts with a synopsis",
       `Quick,
       test_l2_module_without_class_doc_starts_with_synopsis );
+    ("class type doc with a class doc", `Quick, test_class_type_with_class_doc);
+    ( "class type doc without a class doc",
+      `Quick,
+      test_class_type_without_class_doc );
     ( "constructor fallback links the gi-docgen page",
       `Quick,
       test_constructor_fallback_links_upstream );

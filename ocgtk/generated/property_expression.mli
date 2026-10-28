@@ -5,7 +5,9 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Property_expression}. *)
 
-(** The methods, signals and properties of a [PropertyExpression]. *)
+(** {b The methods, signals and properties of a [PropertyExpression].}
+
+    A [GObject] property value in a [GtkExpression]. *)
 class type property_expression_t = object
   inherit Expression.expression_t
 

@@ -7,7 +7,13 @@
     Its methods, signals and properties are on {!class-type-font_chooser_t}. The
     functions it is built on are in {!Ocgtk.Raw.Font_chooser}. *)
 
-(** The methods, signals and properties of a [FontChooser]. *)
+(** {b The methods, signals and properties of a [FontChooser].}
+
+    [GtkFontChooser] is an interface that can be implemented by widgets for
+    choosing fonts.
+
+    In GTK, the main objects that implement this interface are
+    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
 class type font_chooser_t = object
   method on_font_activated :
     ?after:bool ->

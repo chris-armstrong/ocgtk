@@ -9,7 +9,14 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.No_selection}. *)
 
-(** The methods, signals and properties of a [NoSelection]. *)
+(** {b The methods, signals and properties of a [NoSelection].}
+
+    A selection model that does not allow selecting anything.
+
+    This model is meant to be used as a simple wrapper around a [GListModel]
+    when a [GtkSelectionModel] is required.
+
+    [GtkNoSelection] passes through sections from the underlying model. *)
 class type no_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t

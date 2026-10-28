@@ -12,7 +12,13 @@
     are in {!Ocgtk.Raw.At_context}. *)
 
 class type at_context_t = At_context_and__accessible.at_context_t
-(** The methods, signals and properties of a [ATContext]. *)
+(** {b The methods, signals and properties of a [ATContext].}
+
+    Communicates with platform-specific assistive technologies API.
+
+    Each platform supported by GTK implements a [GtkATContext] subclass, and is
+    responsible for updating the accessible state in response to state changes
+    in [GtkAccessible]. *)
 
 class at_context : Raw.At_context.t -> at_context_t
 (** Wraps a raw handle of {!Ocgtk.Raw.At_context.t}. *)

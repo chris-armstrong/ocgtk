@@ -18,7 +18,23 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Srv_target}. *)
 
-(** The methods, signals and properties of a [SrvTarget]. *)
+(** {b The methods, signals and properties of a [SrvTarget].}
+
+    A single target host/port that a network service is running on.
+
+    SRV (service) records are used by some network protocols to provide
+    service-specific aliasing and load-balancing. For example, XMPP (Jabber)
+    uses SRV records to locate the XMPP server for a domain; rather than
+    connecting directly to ‘example.com’ or assuming a specific server hostname
+    like ‘xmpp.example.com’, an XMPP client would look up the [xmpp-client] SRV
+    record for ‘example.com’, and then connect to whatever host was pointed to
+    by that record.
+
+    You can use [Gio.Resolver.lookup_service] or
+    [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
+    service. However, if you are simply planning to connect to the remote
+    service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
+    interface and not need to worry about [GSrvTarget] at all. *)
 class type srv_target_t = object
   method get_hostname : unit -> string
   (** Gets [target]'s hostname (in ASCII form; if you are going to present this

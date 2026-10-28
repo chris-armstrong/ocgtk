@@ -4,7 +4,9 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Accessible_list}. *)
 
-(** The methods, signals and properties of a [AccessibleList]. *)
+(** {b The methods, signals and properties of a [AccessibleList].}
+
+    Wraps a list of references to [Gtk.Accessible] objects. *)
 class type accessible_list_t = object
   method get_objects : unit -> At_context_and__accessible.accessible_t list
   (** Gets the list of objects this boxed type holds. *)

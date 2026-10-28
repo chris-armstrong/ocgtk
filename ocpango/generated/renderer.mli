@@ -8,7 +8,14 @@
     Its methods, signals and properties are on {!class-type-renderer_t}. The
     functions it is built on are in {!Ocpango.Raw.Renderer}. *)
 
-(** The methods, signals and properties of a [Renderer]. *)
+(** {b The methods, signals and properties of a [Renderer].}
+
+    [PangoRenderer] is a base class for objects that can render text provided as
+    [PangoGlyphString] or [PangoLayout].
+
+    By subclassing [PangoRenderer] and overriding operations such as
+    [draw_glyphs] and [draw_rectangle], renderers for particular font backends
+    and destinations can be created. *)
 class type renderer_t = object
   method activate : unit -> unit
   (** Does initial setup before rendering operations on [renderer].

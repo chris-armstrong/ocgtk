@@ -9,7 +9,14 @@
     {!class-type-d_bus_object_manager_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_manager}. *)
 
-(** The methods, signals and properties of a [DBusObjectManager]. *)
+(** {b The methods, signals and properties of a [DBusObjectManager].}
+
+    The [GDBusObjectManager] type is the base type for service- and client-side
+    implementations of the standardized [org.freedesktop.DBus.ObjectManager]
+    interface.
+
+    See [Gio.DBusObjectManagerClient] for the client-side implementation and
+    [Gio.DBusObjectManagerServer] for the service-side implementation. *)
 class type d_bus_object_manager_t = object
   method on_interface_added :
     ?after:bool ->

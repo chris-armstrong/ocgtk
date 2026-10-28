@@ -6,7 +6,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_action}. *)
 
-(** The methods, signals and properties of a [SimpleAction]. *)
+(** {b The methods, signals and properties of a [SimpleAction].}
+
+    A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
+    interface. This is the easiest way to create an action for purposes of
+    adding it to a [Gio.SimpleActionGroup]. *)
 class type simple_action_t = object
   inherit Action.action_t
 

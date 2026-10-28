@@ -8,7 +8,13 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.String_object}. *)
 
-(** The methods, signals and properties of a [StringObject]. *)
+(** {b The methods, signals and properties of a [StringObject].}
+
+    The type of items in a [GtkStringList].
+
+    A [GtkStringObject] is a wrapper around a [const char*]; it has a
+    [Gtk.StringObject:string] property that can be used for property bindings
+    and expressions. *)
 class type string_object_t = object
   method get_string : unit -> string
   (** Returns the string contained in a [GtkStringObject]. *)

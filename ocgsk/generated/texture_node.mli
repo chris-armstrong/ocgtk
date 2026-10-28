@@ -4,7 +4,9 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Texture_node}. *)
 
-(** The methods, signals and properties of a [TextureNode]. *)
+(** {b The methods, signals and properties of a [TextureNode].}
+
+    A render node for a [GdkTexture]. *)
 class type texture_node_t = object
   inherit Render_node.render_node_t
 

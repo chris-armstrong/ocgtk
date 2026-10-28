@@ -20,7 +20,25 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Bitset}. *)
 
-(** The methods, signals and properties of a [Bitset]. *)
+(** {b The methods, signals and properties of a [Bitset].}
+
+    A set of unsigned integers.
+
+    Another name for this data structure is “bitmap”.
+
+    The current implementation is based on
+    {{:https://roaringbitmap.org/}roaring bitmaps}.
+
+    A bitset allows adding a set of integers and provides support for set
+    operations like unions, intersections and checks for equality or if a value
+    is contained in the set. [GtkBitset] also contains various functions to
+    query metadata about the bitset, such as the minimum or maximum values or
+    its size.
+
+    The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
+
+    The main use case for [GtkBitset] is implementing complex selections for
+    [Gtk.SelectionModel]. *)
 class type bitset_t = object
   method add : int -> bool
   (** Adds [value] to [self] if it wasn't part of it before. *)

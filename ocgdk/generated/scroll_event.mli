@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-scroll_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Scroll_event}. *)
 
-(** The methods, signals and properties of a [ScrollEvent]. *)
+(** {b The methods, signals and properties of a [ScrollEvent].}
+
+    An event related to a scrolling motion. *)
 class type scroll_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 

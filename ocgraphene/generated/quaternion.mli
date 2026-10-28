@@ -13,7 +13,12 @@
 class type quaternion_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
   .quaternion_t
-(** The methods, signals and properties of a [Quaternion]. *)
+(** {b The methods, signals and properties of a [Quaternion].}
+
+    A quaternion.
+
+    The contents of the #graphene_quaternion_t structure are private and should
+    never be accessed directly. *)
 
 class quaternion : Raw.Quaternion.t -> quaternion_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Quaternion.t}. *)

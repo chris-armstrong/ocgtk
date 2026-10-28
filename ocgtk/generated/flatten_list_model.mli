@@ -9,7 +9,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Flatten_list_model}. *)
 
-(** The methods, signals and properties of a [FlattenListModel]. *)
+(** {b The methods, signals and properties of a [FlattenListModel].}
+
+    A list model that concatenates other list models.
+
+    [GtkFlattenListModel] takes a list model containing list models, and
+    flattens it into a single model. Each list model becomes a section in the
+    single model. *)
 class type flatten_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t

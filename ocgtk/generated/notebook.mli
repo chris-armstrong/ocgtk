@@ -94,7 +94,6 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Notebook}."]
 
-(** The methods, signals and properties of a [Notebook]. *)
 class type notebook_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -571,6 +570,100 @@ class type notebook_t = object
 
   method as_notebook : Raw.Notebook.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [Notebook].}\n\n\
+     Switches between children using tabs.\n\n\
+     An example GtkNotebook\n\n\
+     There are many configuration options for [GtkNotebook]. Among\n\
+     other things, you can choose on which edge the tabs appear\n\
+     (see [Gtk.Notebook.set_tab_pos]), whether, if there are\n\
+     too many tabs to fit the notebook should be made bigger or scrolling\n\
+     arrows added (see [Gtk.Notebook.set_scrollable]), and whether\n\
+     there will be a popup menu allowing the users to switch pages.\n\
+     (see [Gtk.Notebook.popup_enable]).\n\n\
+     {b GtkNotebook as GtkBuildable}\n\n\
+     The [GtkNotebook] implementation of the [GtkBuildable] interface\n\
+     supports placing children into tabs by specifying “tab” as the\n\
+     “type” attribute of a [<child>] element. Note that the content\n\
+     of the tab must be created before the tab can be filled.\n\
+     A tab child can be specified without specifying a [<child>]\n\
+     type attribute.\n\n\
+     To add a child widget in the notebooks action area, specify\n\
+     \"action-start\" or “action-end” as the “type” attribute of the\n\
+     [<child>] element.\n\n\
+     An example of a UI definition fragment with [GtkNotebook]:\n\n\
+     {[\n\
+     <object class=\"GtkNotebook\">\n\
+    \  <child>\n\
+    \    <object class=\"GtkLabel\" id=\"notebook-content\">\n\
+    \      <property name=\"label\">Content</property>\n\
+    \    </object>\n\
+    \  </child>\n\
+    \  <child type=\"tab\">\n\
+    \    <object class=\"GtkLabel\" id=\"notebook-tab\">\n\
+    \      <property name=\"label\">Tab</property>\n\
+    \    </object>\n\
+    \  </child>\n\
+     </object>\n\
+     ]}\n\n\
+     {b Shortcuts and Gestures}\n\n\
+     [GtkNotebook] supports the following keyboard shortcuts:\n\n\
+     - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context \
+     menu.\n\
+     - <kbd>Home</kbd> moves the focus to the first tab.\n\
+     - <kbd>End</kbd> moves the focus to the last tab.\n\n\
+     Additionally, the following signals have default keybindings:\n\n\
+     - [Gtk.Notebook::change-current-page]\n\
+     - [Gtk.Notebook::focus-tab]\n\
+     - [Gtk.Notebook::move-focus-out]\n\
+     - [Gtk.Notebook::reorder-tab]\n\
+     - [Gtk.Notebook::select-page]\n\n\
+     Tabs support drag-and-drop between notebooks sharing the same [group-name],\n\
+     or to new windows by handling the [::create-window] signal.\n\n\
+     {b Actions}\n\n\
+     [GtkNotebook] defines a set of built-in actions:\n\n\
+     - [menu.popup] opens the tabs context menu.\n\n\
+     {b CSS nodes}\n\n\
+     {[\n\
+     notebook\n\
+     ├── header.top\n\
+     │   ├── [<action widget>]\n\
+     │   ├── tabs\n\
+     │   │   ├── [arrow]\n\
+     │   │   ├── tab\n\
+     │   │   │   ╰── <tab label>\n\
+     ┊   ┊   ┊\n\
+     │   │   ├── tab[.reorderable-page]\n\
+     │   │   │   ╰── <tab label>\n\
+     │   │   ╰── [arrow]\n\
+     │   ╰── [<action widget>]\n\
+     │\n\
+     ╰── stack\n\
+    \    ├── <child>\n\
+    \    ┊\n\
+    \    ╰── <child>\n\
+     ]}\n\n\
+     [GtkNotebook] has a main CSS node with name [notebook], a subnode\n\
+     with name [header] and below that a subnode with name [tabs] which\n\
+     contains one subnode per tab with name [tab].\n\n\
+     If action widgets are present, their CSS nodes are placed next\n\
+     to the [tabs] node. If the notebook is scrollable, CSS nodes with\n\
+     name [arrow] are placed as first and last child of the [tabs] node.\n\n\
+     The main node gets the [.frame] style class when the notebook\n\
+     has a border (see [Gtk.Notebook.set_show_border]).\n\n\
+     The header node gets one of the style class [.top], [.bottom],\n\
+     [.left] or [.right], depending on where the tabs are placed. For\n\
+     reorderable pages, the tab node gets the [.reorderable-page] class.\n\n\
+     A [tab] node gets the [.dnd] style class while it is moved with \
+     drag-and-drop.\n\n\
+     The nodes are always arranged from left-to-right, regardless of text \
+     direction.\n\n\
+     {b Accessibility}\n\n\
+     [GtkNotebook] uses the following roles:\n\n\
+     - [Gtk.AccessibleRole.group] for the notebook widget\n\
+     - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
+     - [Gtk.AccessibleRole.tab] role for each tab\n\
+     - [Gtk.AccessibleRole.tab_panel] for each page"]
 
 class notebook : Raw.Notebook.t -> notebook_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Notebook.t}. *)
