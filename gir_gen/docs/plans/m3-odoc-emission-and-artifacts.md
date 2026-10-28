@@ -1,18 +1,20 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–6 implemented; the conventions page of Phase 9 written
-early; Phases 7, 8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
+**Status: Phases 0–6 implemented; Phase 7 in progress; the conventions page
+of Phase 9 written early; Phases 8 and 10 onwards not yet done (per-phase
+status below).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
-`m3-phase3`). Phase 5: branch `m3-phase5`. Phase 6: branch `m3-phase6`.
-Phase 7 onwards: one branch and PR per phase (see the rules below).
+`m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
+(branch `m3-phase6`). Phase 7: branch `m3-phase7`. Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
 for PRs and `main` only; L2 page structure (decision 10), new Phase 7,
 Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page); 2026-10-27 (artifact cache
-dropped for a local HTML diff, decision 3)**
+dropped for a local HTML diff, decision 3); 2026-10-28 (Phase 7 revised for
+the per-package layout and the Phase 6 page structure)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -845,48 +847,97 @@ GIR-derived text at L1 and L2 in the PR's preview.
 
 ### Phase 7 — L2 page structure (sections, inheritance, no-constructor text)
 
+**Status: in progress** (branch `m3-phase7`). *Revised 2026-10-28* for the
+per-package layout and for the page structure Phase 6 settled.
+
 *Goal:* every L2 class page follows the decision 10 layout, so a reader can
 find a class's members and learn how to get an instance without knowing the
 generator's conventions.
 
-*Changes:*
-- Class type sections: `class_gen` emits `{2 Signals}`, `{2 Methods}`,
-  `{2 Properties}` and `{2 Conversions}` as floating comments in the
-  `class type` body (in the `.mli`; the probe showed odoc renders them and
-  lists them in the contents sidebar). Sections with no members are not
-  emitted. Properties need Phase 6, so their section has docs.
-- Inheritance block in the canned `class type` doc: "Inherits from:" the
-  parent class, and "Implements:" with one list item per interface.
-- No-constructor text: when a class has no constructors, the
-  `Constructors` heading is followed by the canned line for abstract
-  classes, interfaces or other classes (decision 10).
-- Public inheritance paths: classes outside a cyclic group `inherit` the
-  public shim's class type (`GWidget.widget_t`) instead of the combined
-  module's (`GEvent_controller_and__..._widget.widget_t`). The shim's class
-  type is an alias, so the type is unchanged, and the pages stop showing the
-  long cluster names. 126 gtk L2 files use the combined path today. This is a
-  generator change, so the standing invariant covers it. **This does not make
-  the `inherit` line a link:** the gtk library has a hand-written main module,
-  so the path still renders as unresolved text (`Ocgtk_gtk__.GWidget.widget_t`).
-  See "Known limitations" below.
-- Links to parents: the inheritance block (above) is what gives the reader
-  clickable parents. Write its entries as doc-comment references with public
-  paths (`{!Ocgtk_gtk.Gtk.Widget.widget_t}`), which odoc resolves against the
-  whole doc set. For a cluster member the module is the class's own public
-  name (`Widget`), not the cluster's. Check on the real tree first; the
-  mechanism was only confirmed on a small repro.
+*Starting point (after Phase 6).* An L2 module page reads: a short preamble
+(synopsis and navigation paragraph); `{1:class Class}`; the `class type` with
+a bold "The methods, signals and properties of a [<Class>]." line followed by
+the whole class doc; the `class`, with "Wraps a raw handle of
+{!<L1 module>.t}."; `{1:description Description}` when the class doc is
+longer than its synopsis; and `{1:constructors Constructors}` only when there
+is at least one constructor. The module preamble and `class` doc parts of
+decision 10 are therefore done. The `inherit` lines are links, but a cyclic
+group member's parent links to the combined module's page
+(`Event_controller_and__…_widget/class-type-widget_t`), not to `Widget`'s.
 
-*Tests:* `class_gen` expect tests for section emission (including empty
-sections), the inheritance block with zero, one and several interfaces, the
-three no-constructor variants, and the shim inherit path.
+*Changes (one commit each):*
+1. **Class type sections.** Floating `{2:signals Signals}`,
+   `{2:methods Methods}`, `{2:properties Properties}` and
+   `{2:conversions Conversions}` comments in the `class type` body (the
+   `.mli`), in the body's existing order: signals, methods, property
+   accessors, `as_*` methods. They sit at level 2 under the page's
+   `{1:class Class}` heading. A section with no emitted members is not
+   written, so the generator decides from what it emitted, not from the GIR
+   lists (filtered methods, skipped signals and properties covered by
+   methods leave a section empty). The `inherit` lines stay before the first
+   section. Labels are per class type page, so they do not collide with the
+   module page's `class`, `description` and `constructors` labels.
+2. **Inheritance block.** In the class type doc, between the bold line and
+   the class doc, so it is visible without scrolling past a long description:
 
-*Acceptance:* the standing invariant; in the PR's preview, the `Button`
-class type page has the four sections in its contents sidebar, the
-inheritance block with working links to the parent and interfaces, and no
-cyclic module names in the `class type` header or the block (the raw
-`inherit` lines remain unlinked text, a known limitation); `Widget` shows the
-abstract-class line, an interface page shows the interface line, and
-`Display` shows the third line.
+   ```
+   Inherits from: {!<parent L2 module>.class-type-<parent>_t}
+   Implements:
+   - {!<iface L2 module>.class-type-<iface>_t}
+   ```
+
+   Every interface the class implements is listed, including those already
+   provided through the parent chain (the `inherit` lines skip those, to
+   avoid diamond inheritance; the block is a reader's list, not the type).
+   Paths are the public L2 module of each class (`Ocgtk.Widget`, never the
+   combined module), qualified with the package's main module so they
+   resolve across packages (`{!Ocgdk.Paintable.class-type-paintable_t}`).
+   A parent or interface with no L2 class (not bound, or filtered) is named
+   as code (`[GInitiallyUnowned]`) rather than linked. "Inherits from" is
+   left out for a class with no parent and for interfaces; an interface's
+   page lists its prerequisites under "Requires:" instead. Records get no
+   block.
+3. **No-constructor text.** The `{1:constructors Constructors}` heading is
+   written on every L2 class page. When the class has no generated
+   constructor, the heading is followed by one canned line (decision 10):
+   abstract class, interface, or other. The abstract case needs GIR's
+   `abstract="1"`, which the parser does not read today: add `abstract : bool`
+   to `gir_class` (17 abstract classes in Gtk-4.0, including `Widget`). The
+   module preamble's "Its constructors are under {!section-constructors}."
+   sentence becomes unconditional. Records without constructors take the
+   "other" line.
+4. **Public paths to cyclic group members.** Outside its cyclic group, a
+   member is referenced through its own L2 module (`Widget.widget_t`), not the
+   combined module's (`Event_controller_and__…_widget.widget_t`). The shim's
+   class type is an alias of the combined one, so the types are unchanged.
+   The path comes from `layer2_class.class_module` in `Type_mappings`, so the
+   fix there covers `inherit` lines and method, property and signal types
+   together: 358 occurrences of the combined name in gtk's L2 `.mli` files
+   today, most of them in member signatures (`get_child`, `set_child`), not
+   `inherit` lines. Inside the combined module, members still refer to each
+   other directly. This is a generator change, so the standing invariant
+   covers it, and it is the commit to drop if it does not hold up (the other
+   three do not depend on it).
+
+*Tests:* `class_gen` tests on the parsed signature for: section emission,
+including a class whose methods are all filtered (no `Methods` section) and
+one with no signals; the inheritance block with no parent, a parent only,
+and several interfaces including one provided by the parent; a cross-package
+parent; an unbound parent (code, not a link); the three no-constructor lines;
+parser test for `abstract`; the public path for a cyclic group member
+referenced from a non-member, and the direct path between members.
+
+*Acceptance:* the standing invariant; `dune build @doc` with 0 odoc
+warnings; in the PR's preview:
+- `Ocgtk.Button`'s class type page lists Signals, Methods, Properties and
+  Conversions in its contents sidebar, and its inheritance block links to
+  `Widget` and `Actionable`;
+- no combined module name appears on `Button`'s pages, in the `inherit`
+  lines or in member signatures;
+- `Widget` shows the abstract-class line, an interface page (`Actionable`)
+  shows the interface line and its "Requires:" list, and `Ocgdk.Display`
+  shows the third line;
+- `doc_diff` against `m3` shows only the changes above.
 
 ### Phase 8 — C-idiom AST rewrites (scalars, primitive types, ownership)
 
@@ -1112,24 +1163,14 @@ closing checklist on top of them:
 
 ## Known limitations
 
-- **`inherit` lines on L2 class type pages are not links.** The gtk library has
-  a hand-written main module (`ocgtk_gtk.ml`). Dune builds the alias module it
-  generates for such libraries without `@canonical` annotations, and odoc
-  cannot link to modules named `Ocgtk_gtk__*`. All 297 intra-gtk `inherit`
-  lines are unresolved text in the preview. Parents in other libraries
-  render as plain text. This affects every class, not only cyclic-group
-  members. It does not affect the generated code or its type safety.
-  - Mitigation in this leg: the Phase 7 inheritance block gives clickable
-    parents through doc-comment references.
-  - Accepted for now: the proper fix is to let dune generate the main module,
-    which is part of a larger library layout change that is deferred. Doing
-    just that step (delete `ocgtk_gtk.ml`) is acceptable as an intermediate
-    while this leg is developed; it makes `GFoo`, layer 1 and the cluster
-    modules public and documented.
-    Investigation and options: [unresolved-inherit-links](../research/unresolved-inherit-links.md);
-    layout: [library-layout-proposal](../research/library-layout-proposal.md).
-  - Do not spend effort on `@canonical` annotations on the `GFoo` shims or on an
-    upstream odoc report: neither helps (see the research note).
+- **`inherit` lines to a cyclic group member link to the combined module.**
+  Since the per-package layout every `inherit` line is a link, but a parent
+  in a cyclic group (`Widget`) resolves to the combined module's page
+  (`Event_controller_and__…_widget`), and member signatures show the same
+  long name. Phase 7 (change 4) switches these to the member's own module.
+  The earlier limitation, unresolved `Ocgtk_gtk__*` paths from a
+  hand-written main module, went away with the layout change
+  ([unresolved-inherit-links](../research/unresolved-inherit-links.md)).
 
 ## Explicitly out of scope (later legs)
 
