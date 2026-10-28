@@ -1,5 +1,122 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>cell_area_t (ocgtk.Ocgtk.Cell_area.cell_area_t)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../index.html">Index</a> &#x00BB; <a href="../../../index.html">ocgtk</a> &#x00BB; <a href="../../index.html">Ocgtk</a> &#x00BB; <a href="../index.html">Cell_area</a> &#x00BB; cell_area_t</nav><header class="odoc-preamble"><h1>Class type <code><span>Cell_area.cell_area_t</span></code></h1><p>The methods, signals and properties of a <code>GtkCellArea</code>.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec inherit"><code><span><span class="keyword">inherit</span> <a href="../../Buildable/class-type-buildable_t/index.html">Ocgtk.Buildable.buildable_t</a></span></code></div></div><div class="odoc-spec"><div class="spec method anchored" id="method-on_focus_changed"><a href="#method-on_focus_changed" class="anchor"></a><code><span><span class="keyword">method</span> on_focus_changed : <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>cell_area_t (ocgtk.Ocgtk.Cell_area.cell_area_t)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../index.html">Index</a> &#x00BB; <a href="../../../index.html">ocgtk</a> &#x00BB; <a href="../../index.html">Ocgtk</a> &#x00BB; <a href="../index.html">Cell_area</a> &#x00BB; cell_area_t</nav><header class="odoc-preamble"><h1>Class type <code><span>Cell_area.cell_area_t</span></code></h1><p><b>The methods, signals and properties of a <code>GtkCellArea</code>.</b></p><p>An abstract class for laying out <code>GtkCellRenderer</code>s</p><p>The <code>GtkCellArea</code> is an abstract class for <code>Gtk.CellLayout</code> widgets (also referred to as &quot;layouting widgets&quot;) to interface with an arbitrary number of <code>Gtk.CellRenderer</code>s and interact with the user for a given <code>Gtk.TreeModel</code> row.</p><p>The cell area handles events, focus navigation, drawing and size requests and allocations for a given row of data.</p><p>Usually users dont have to interact with the <code>GtkCellArea</code> directly unless they are implementing a cell-layouting widget themselves.</p><p><b>Requesting area sizes</b></p><p>As outlined in GtkWidget’s geometry management section, GTK uses a height-for-width geometry management system to compute the sizes of widgets and user interfaces. <code>GtkCellArea</code> uses the same semantics to calculate the size of an area for an arbitrary number of <code>GtkTreeModel</code> rows.</p><p>When requesting the size of a cell area one needs to calculate the size for a handful of rows, and this will be done differently by different layouting widgets. For instance a <code>Gtk.TreeViewColumn</code> always lines up the areas from top to bottom while a <code>Gtk.IconView</code> on the other hand might enforce that all areas received the same width and wrap the areas around, requesting height for more cell areas when allocated less width.</p><p>It’s also important for areas to maintain some cell alignments with areas rendered for adjacent rows (cells can appear “columnized” inside an area even when the size of cells are different in each row). For this reason the <code>GtkCellArea</code> uses a <code>Gtk.CellAreaContext</code> object to store the alignments and sizes along the way (as well as the overall largest minimum and natural size for all the rows which have been calculated with the said context).</p><p>The <code>Gtk.CellAreaContext</code> is an opaque object specific to the <code>GtkCellArea</code> which created it (see <code>Gtk.CellArea.create_context</code>).</p><p>The owning cell-layouting widget can create as many contexts as it wishes to calculate sizes of rows which should receive the same size in at least one orientation (horizontally or vertically), However, it’s important that the same <code>Gtk.CellAreaContext</code> which was used to request the sizes for a given <code>GtkTreeModel</code> row be used when rendering or processing events for that row.</p><p>In order to request the width of all the rows at the root level of a <code>GtkTreeModel</code> one would do the following:</p><pre class="language-ocaml"><code>GtkTreeIter iter;
+int minimum_width;
+int natural_width;
+
+valid = gtk_tree_model_get_iter_first (model, &amp;iter);
+while (valid)
+  {
+    gtk_cell_area_apply_attributes (area, model, &amp;iter, FALSE, FALSE);
+    gtk_cell_area_get_preferred_width (area, context, widget, NULL, NULL);
+
+    valid = gtk_tree_model_iter_next (model, &amp;iter);
+  }
+
+gtk_cell_area_context_get_preferred_width (context, &amp;minimum_width, &amp;natural_width);</code></pre><p>Note that in this example it’s not important to observe the returned minimum and natural width of the area for each row unless the cell-layouting object is actually interested in the widths of individual rows. The overall width is however stored in the accompanying <code>GtkCellAreaContext</code> object and can be consulted at any time.</p><p>This can be useful since <code>GtkCellLayout</code> widgets usually have to support requesting and rendering rows in treemodels with an exceedingly large amount of rows. The <code>GtkCellLayout</code> widget in that case would calculate the required width of the rows in an idle or timeout source (see <code>GLib.timeout_add</code>) and when the widget is requested its actual width in <code>Gtk.Widget.measure</code> it can simply consult the width accumulated so far in the <code>GtkCellAreaContext</code> object.</p><p>A simple example where rows are rendered from top to bottom and take up the full width of the layouting widget would look like:</p><pre class="language-ocaml"><code>static void
+foo_get_preferred_width (GtkWidget *widget,
+                         int       *minimum_size,
+                         int       *natural_size)
+{
+  Foo *self = FOO (widget);
+  FooPrivate *priv = foo_get_instance_private (self);
+
+  foo_ensure_at_least_one_handfull_of_rows_have_been_requested (self);
+
+  gtk_cell_area_context_get_preferred_width (priv-&gt;context, minimum_size, natural_size);
+}</code></pre><p>In the above example the <code>Foo</code> widget has to make sure that some row sizes have been calculated (the amount of rows that <code>Foo</code> judged was appropriate to request space for in a single timeout iteration) before simply returning the amount of space required by the area via the <code>GtkCellAreaContext</code>.</p><p>Requesting the height for width (or width for height) of an area is a similar task except in this case the <code>GtkCellAreaContext</code> does not store the data (actually, it does not know how much space the layouting widget plans to allocate it for every row. It’s up to the layouting widget to render each row of data with the appropriate height and width which was requested by the <code>GtkCellArea</code>).</p><p>In order to request the height for width of all the rows at the root level of a <code>GtkTreeModel</code> one would do the following:</p><pre class="language-ocaml"><code>GtkTreeIter iter;
+int minimum_height;
+int natural_height;
+int full_minimum_height = 0;
+int full_natural_height = 0;
+
+valid = gtk_tree_model_get_iter_first (model, &amp;iter);
+while (valid)
+  {
+    gtk_cell_area_apply_attributes (area, model, &amp;iter, FALSE, FALSE);
+    gtk_cell_area_get_preferred_height_for_width (area, context, widget,
+                                                  width, &amp;minimum_height, &amp;natural_height);
+
+    if (width_is_for_allocation)
+       cache_row_height (&amp;iter, minimum_height, natural_height);
+
+    full_minimum_height += minimum_height;
+    full_natural_height += natural_height;
+
+    valid = gtk_tree_model_iter_next (model, &amp;iter);
+  }</code></pre><p>Note that in the above example we would need to cache the heights returned for each row so that we would know what sizes to render the areas for each row. However we would only want to really cache the heights if the request is intended for the layouting widgets real allocation.</p><p>In some cases the layouting widget is requested the height for an arbitrary for_width, this is a special case for layouting widgets who need to request size for tens of thousands of rows. For this case it’s only important that the layouting widget calculate one reasonably sized chunk of rows and return that height synchronously. The reasoning here is that any layouting widget is at least capable of synchronously calculating enough height to fill the screen height (or scrolled window height) in response to a single call to <code>Gtk.Widget.measure</code>. Returning a perfect height for width that is larger than the screen area is inconsequential since after the layouting receives an allocation from a scrolled window it simply continues to drive the scrollbar values while more and more height is required for the row heights that are calculated in the background.</p><p><b>Rendering Areas</b></p><p>Once area sizes have been acquired at least for the rows in the visible area of the layouting widget they can be rendered at <code>Gtk.Widget.snapshot</code> time.</p><p>A crude example of how to render all the rows at the root level runs as follows:</p><pre class="language-ocaml"><code>GtkAllocation allocation;
+GdkRectangle cell_area = { 0, };
+GtkTreeIter iter;
+int minimum_width;
+int natural_width;
+
+gtk_widget_get_allocation (widget, &amp;allocation);
+cell_area.width = allocation.width;
+
+valid = gtk_tree_model_get_iter_first (model, &amp;iter);
+while (valid)
+  {
+    cell_area.height = get_cached_height_for_row (&amp;iter);
+
+    gtk_cell_area_apply_attributes (area, model, &amp;iter, FALSE, FALSE);
+    gtk_cell_area_render (area, context, widget, cr,
+                          &amp;cell_area, &amp;cell_area, state_flags, FALSE);
+
+    cell_area.y += cell_area.height;
+
+    valid = gtk_tree_model_iter_next (model, &amp;iter);
+  }</code></pre><p>Note that the cached height in this example really depends on how the layouting widget works. The layouting widget might decide to give every row its minimum or natural height or, if the model content is expected to fit inside the layouting widget without scrolling, it would make sense to calculate the allocation for each row at the time the widget is allocated using <code>Gtk.distribute_natural_allocation</code>.</p><p><b>Handling Events and Driving Keyboard Focus</b></p><p>Passing events to the area is as simple as handling events on any normal widget and then passing them to the <code>Gtk.CellArea.event</code> API as they come in. Usually <code>GtkCellArea</code> is only interested in button events, however some customized derived areas can be implemented who are interested in handling other events. Handling an event can trigger the <code>Gtk.CellArea::focus-changed</code> signal to fire; as well as <code>Gtk.CellArea::add-editable</code> in the case that an editable cell was clicked and needs to start editing. You can call <code>Gtk.CellArea.stop_editing</code> at any time to cancel any cell editing that is currently in progress.</p><p>The <code>GtkCellArea</code> drives keyboard focus from cell to cell in a way similar to <code>GtkWidget</code>. For layouting widgets that support giving focus to cells it’s important to remember to pass <code>GTK_CELL_RENDERER_FOCUSED</code> to the area functions for the row that has focus and to tell the area to paint the focus at render time.</p><p>Layouting widgets that accept focus on cells should implement the <code>Gtk.Widget.focus</code> virtual method. The layouting widget is always responsible for knowing where <code>GtkTreeModel</code> rows are rendered inside the widget, so at <code>Gtk.Widget.focus</code> time the layouting widget should use the <code>GtkCellArea</code> methods to navigate focus inside the area and then observe the <code>Gtk.DirectionType</code> to pass the focus to adjacent rows and areas.</p><p>A basic example of how the <code>Gtk.Widget.focus</code> virtual method should be implemented:</p><pre class="language-ocaml"><code>static gboolean
+foo_focus (GtkWidget       *widget,
+           GtkDirectionType direction)
+{
+  Foo *self = FOO (widget);
+  FooPrivate *priv = foo_get_instance_private (self);
+  int focus_row = priv-&gt;focus_row;
+  gboolean have_focus = FALSE;
+
+  if (!gtk_widget_has_focus (widget))
+    gtk_widget_grab_focus (widget);
+
+  valid = gtk_tree_model_iter_nth_child (priv-&gt;model, &amp;iter, NULL, priv-&gt;focus_row);
+  while (valid)
+    {
+      gtk_cell_area_apply_attributes (priv-&gt;area, priv-&gt;model, &amp;iter, FALSE, FALSE);
+
+      if (gtk_cell_area_focus (priv-&gt;area, direction))
+        {
+           priv-&gt;focus_row = focus_row;
+           have_focus = TRUE;
+           break;
+        }
+      else
+        {
+          if (direction == GTK_DIR_RIGHT ||
+              direction == GTK_DIR_LEFT)
+            break;
+          else if (direction == GTK_DIR_UP ||
+                   direction == GTK_DIR_TAB_BACKWARD)
+           {
+              if (focus_row == 0)
+                break;
+              else
+               {
+                  focus_row--;
+                  valid = gtk_tree_model_iter_nth_child (priv-&gt;model, &amp;iter, NULL, focus_row);
+               }
+            }
+          else
+            {
+              if (focus_row == last_row)
+                break;
+              else
+                {
+                  focus_row++;
+                  valid = gtk_tree_model_iter_next (priv-&gt;model, &amp;iter);
+                }
+            }
+        }
+    }
+    return have_focus;
+}</code></pre><p>Note that the layouting widget is responsible for matching the <code>GtkDirectionType</code> values to the way it lays out its cells.</p><p><b>Cell Properties</b></p><p>The <code>GtkCellArea</code> introduces cell properties for <code>GtkCellRenderer</code>s. This provides some general interfaces for defining the relationship cell areas have with their cells. For instance in a <code>Gtk.CellAreaBox</code> a cell might “expand” and receive extra space when the area is allocated more than its full natural request, or a cell might be configured to “align” with adjacent rows which were requested and rendered with the same <code>GtkCellAreaContext</code>.</p><p>Use <code>Gtk.CellAreaClass.install_cell_property</code> to install cell properties for a cell area class and <code>Gtk.CellAreaClass.find_cell_property</code> or <code>Gtk.CellAreaClass.list_cell_properties</code> to get information about existing cell properties.</p><p>To set the value of a cell property, use <code>Gtk.CellArea.cell_set_property</code>, <code>Gtk.CellArea.cell_set</code> or <code>Gtk.CellArea.cell_set_valist</code>. To obtain the value of a cell property, use <code>Gtk.CellArea.cell_get_property</code> <code>Gtk.CellArea.cell_get</code> or <code>Gtk.CellArea.cell_get_valist</code>.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec inherit"><code><span><span class="keyword">inherit</span> <a href="../../Buildable/class-type-buildable_t/index.html">Ocgtk.Buildable.buildable_t</a></span></code></div></div><div class="odoc-spec"><div class="spec method anchored" id="method-on_focus_changed"><a href="#method-on_focus_changed" class="anchor"></a><code><span><span class="keyword">method</span> on_focus_changed : <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
   <span><span class="label">callback</span>:
     <span>(<span><span class="label">renderer</span>:<a href="../../Cell_renderer/class-type-cell_renderer_t/index.html">Ocgtk.Cell_renderer.cell_renderer_t</a> <span class="arrow">&#45;&gt;</span></span> <span><span class="label">path</span>:string <span class="arrow">&#45;&gt;</span></span> unit)</span> <span class="arrow">&#45;&gt;</span></span>
   <span>unit <span class="arrow">&#45;&gt;</span></span>

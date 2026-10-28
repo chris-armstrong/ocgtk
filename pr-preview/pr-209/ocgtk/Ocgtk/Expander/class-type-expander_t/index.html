@@ -1,5 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>expander_t (ocgtk.Ocgtk.Expander.expander_t)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../index.html">Index</a> &#x00BB; <a href="../../../index.html">ocgtk</a> &#x00BB; <a href="../../index.html">Ocgtk</a> &#x00BB; <a href="../index.html">Expander</a> &#x00BB; expander_t</nav><header class="odoc-preamble"><h1>Class type <code><span>Expander.expander_t</span></code></h1><p>The methods, signals and properties of a <code>GtkExpander</code>.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec inherit"><code><span><span class="keyword">inherit</span> <a href="../../Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget/class-type-widget_t/index.html">Ocgtk.Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t</a></span></code></div></div><div class="odoc-spec"><div class="spec method anchored" id="method-on_activate"><a href="#method-on_activate" class="anchor"></a><code><span><span class="keyword">method</span> on_activate : <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>expander_t (ocgtk.Ocgtk.Expander.expander_t)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../../index.html">Index</a> &#x00BB; <a href="../../../index.html">ocgtk</a> &#x00BB; <a href="../../index.html">Ocgtk</a> &#x00BB; <a href="../index.html">Expander</a> &#x00BB; expander_t</nav><header class="odoc-preamble"><h1>Class type <code><span>Expander.expander_t</span></code></h1><p><b>The methods, signals and properties of a <code>GtkExpander</code>.</b></p><p>Allows the user to reveal or conceal a child widget.</p><p>An example GtkExpander</p><p>This is similar to the triangles used in a <code>GtkTreeView</code>.</p><p>Normally you use an expander as you would use a frame; you create the child widget and use <code>Gtk.Expander.set_child</code> to add it to the expander. When the expander is toggled, it will take care of showing and hiding the child automatically.</p><p><b>Special Usage</b></p><p>There are situations in which you may prefer to show and hide the expanded widget yourself, such as when you want to actually create the widget at expansion time. In this case, create a <code>GtkExpander</code> but do not add a child to it. The expander widget has an <code>Gtk.Expander:expanded</code> property which can be used to monitor its expansion state. You should watch this property with a signal connection as follows:</p><pre class="language-ocaml"><code>static void
+expander_callback (GObject    *object,
+                   GParamSpec *param_spec,
+                   gpointer    user_data)
+{
+  GtkExpander *expander;
+
+  expander = GTK_EXPANDER (object);
+
+  if (gtk_expander_get_expanded (expander))
+    {
+      // Show or create widgets
+    }
+  else
+    {
+      // Hide or destroy widgets
+    }
+}
+
+static void
+create_expander (void)
+{
+  GtkWidget *expander = gtk_expander_new_with_mnemonic (&quot;_More Options&quot;);
+  g_signal_connect (expander, &quot;notify::expanded&quot;,
+                    G_CALLBACK (expander_callback), NULL);
+
+  // ...
+}</code></pre><p><b>GtkExpander as GtkBuildable</b></p><p>An example of a UI definition fragment with GtkExpander:</p><pre class="language-ocaml"><code>&lt;object class=&quot;GtkExpander&quot;&gt;
+  &lt;property name=&quot;label-widget&quot;&gt;
+    &lt;object class=&quot;GtkLabel&quot; id=&quot;expander-label&quot;/&gt;
+  &lt;/property&gt;
+  &lt;property name=&quot;child&quot;&gt;
+    &lt;object class=&quot;GtkEntry&quot; id=&quot;expander-content&quot;/&gt;
+  &lt;/property&gt;
+&lt;/object&gt;</code></pre><p><b>CSS nodes</b></p><pre class="language-ocaml"><code>expander-widget
+╰── box
+    ├── title
+    │   ├── expander
+    │   ╰── &lt;label widget&gt;
+    ╰── &lt;child&gt;</code></pre><p><code>GtkExpander</code> has a main node <code>expander-widget</code>, and subnode <code>box</code> containing the title and child widget. The box subnode <code>title</code> contains node <code>expander</code>, i.e. the expand/collapse arrow; then the label widget if any. The arrow of an expander that is showing its child gets the <code>:checked</code> pseudoclass set on it.</p><p><b>Accessibility</b></p><p><code>GtkExpander</code> uses the <code>Gtk.AccessibleRole.button</code> role.</p></header><div class="odoc-content"><div class="odoc-spec"><div class="spec inherit"><code><span><span class="keyword">inherit</span> <a href="../../Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget/class-type-widget_t/index.html">Ocgtk.Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t</a></span></code></div></div><div class="odoc-spec"><div class="spec method anchored" id="method-on_activate"><a href="#method-on_activate" class="anchor"></a><code><span><span class="keyword">method</span> on_activate : <span><span class="optlabel">?after</span>:bool <span class="arrow">&#45;&gt;</span></span>
   <span><span class="label">callback</span>:<span>(<span>unit <span class="arrow">&#45;&gt;</span></span> unit)</span> <span class="arrow">&#45;&gt;</span></span>
   <span>unit <span class="arrow">&#45;&gt;</span></span>
   <a href="../../../../ocglib/Ocglib/Gobject/Signal/index.html#type-handler_id">Ocglib.Gobject.Signal.handler_id</a></span></code></div><div class="spec-doc"><p>Activates the <code>GtkExpander</code>.</p></div></div><div class="odoc-spec"><div class="spec method anchored" id="method-get_child"><a href="#method-get_child" class="anchor"></a><code><span><span class="keyword">method</span> get_child : <span>unit <span class="arrow">&#45;&gt;</span></span>
