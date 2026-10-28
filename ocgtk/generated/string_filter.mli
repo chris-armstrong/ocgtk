@@ -1,6 +1,18 @@
 (** Determines whether to include items by comparing strings to a fixed search
     term.
 
+    Its methods, signals and properties are on {!class-type-string_filter_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.String_filter}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [StringFilter].}
+
+    Determines whether to include items by comparing strings to a fixed search
+    term.
+
     The strings are obtained from the items by evaluating an expression set with
     [Gtk.StringFilter.set_expression], and they are compared against a search
     term set with [Gtk.StringFilter.set_search].
@@ -10,13 +22,7 @@
     [Gtk.StringFilter.set_match_mode] choose a mode.
 
     It is also possible to make case-insensitive comparisons, with
-    [Gtk.StringFilter.set_ignore_case].
-
-    Its methods, signals and properties are on {!class-type-string_filter_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.String_filter}. *)
-
-(** The methods, signals and properties of a [StringFilter]. *)
+    [Gtk.StringFilter.set_ignore_case]. *)
 class type string_filter_t = object
   inherit Filter.filter_t
 
@@ -54,7 +60,23 @@ end
 class string_filter : Raw.String_filter.t -> string_filter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.String_filter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Determines whether to include items by comparing strings to a fixed search
+    term.
+
+    The strings are obtained from the items by evaluating an expression set with
+    [Gtk.StringFilter.set_expression], and they are compared against a search
+    term set with [Gtk.StringFilter.set_search].
+
+    [GtkStringFilter] has several different modes of comparison - it can match
+    the whole string, just a prefix, or any substring. Use
+    [Gtk.StringFilter.set_match_mode] choose a mode.
+
+    It is also possible to make case-insensitive comparisons, with
+    [Gtk.StringFilter.set_ignore_case]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Expression.expression_t option -> string_filter_t
 (** Creates a new string filter.

@@ -2,17 +2,24 @@
     the computer. In other words, what a file selector or file manager would
     show in a sidebar.
 
+    Its methods, signals and properties are on {!class-type-volume_monitor_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgio.Raw.Volume_monitor}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [VolumeMonitor].}
+
+    [GVolumeMonitor] is for listing the user interesting devices and volumes on
+    the computer. In other words, what a file selector or file manager would
+    show in a sidebar.
+
     [GVolumeMonitor] is not thread-default-context aware (see
     [GLib.MainContext.push_thread_default]), and so should not be used other
     than from the main thread, with no thread-default-context active.
 
     In order to receive updates about volumes and mounts monitored through GVFS,
-    a main loop must be running.
-
-    Its methods, signals and properties are on {!class-type-volume_monitor_t}.
-    The functions it is built on are in {!Ocgio.Raw.Volume_monitor}. *)
-
-(** The methods, signals and properties of a [VolumeMonitor]. *)
+    a main loop must be running. *)
 class type volume_monitor_t = object
   method on_drive_changed :
     ?after:bool ->
@@ -130,3 +137,16 @@ end
 
 class volume_monitor : Raw.Volume_monitor.t -> volume_monitor_t
 (** Wraps a raw handle of {!Ocgio.Raw.Volume_monitor.t}. *)
+
+(** {1:description Description}
+
+    [GVolumeMonitor] is for listing the user interesting devices and volumes on
+    the computer. In other words, what a file selector or file manager would
+    show in a sidebar.
+
+    [GVolumeMonitor] is not thread-default-context aware (see
+    [GLib.MainContext.push_thread_default]), and so should not be used other
+    than from the main thread, with no thread-default-context active.
+
+    In order to receive updates about volumes and mounts monitored through GVFS,
+    a main loop must be running. *)

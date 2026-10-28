@@ -5,7 +5,12 @@
     {!class-type-settings_schema_key_t}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_key}. *)
 
-(** The methods, signals and properties of a [SettingsSchemaKey]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SettingsSchemaKey].}
+
+    [GSettingsSchemaKey] is an opaque data structure and can only be accessed
+    using the following functions. *)
 class type settings_schema_key_t = object
   method get_default_value : unit -> Gvariant.t
   (** Gets the default value for [key].

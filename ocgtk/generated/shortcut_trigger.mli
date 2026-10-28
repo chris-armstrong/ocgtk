@@ -1,5 +1,16 @@
 (** Tracks how a [GtkShortcut] can be activated.
 
+    Its methods, signals and properties are on {!class-type-shortcut_trigger_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcut_trigger}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ShortcutTrigger].}
+
+    Tracks how a [GtkShortcut] can be activated.
+
     To find out if a [GtkShortcutTrigger] triggers, you can call
     [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
 
@@ -8,13 +19,7 @@
 
     All [GtkShortcutTriggers] are immutable, you can only specify their
     properties during construction. If you want to change a trigger, you have to
-    replace it with a new one.
-
-    Its methods, signals and properties are on {!class-type-shortcut_trigger_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Shortcut_trigger}. *)
-
-(** The methods, signals and properties of a [ShortcutTrigger]. *)
+    replace it with a new one. *)
 class type shortcut_trigger_t = object
   method compare : shortcut_trigger_t -> int
   (** The types of [trigger1] and [trigger2] are [gconstpointer] only to allow
@@ -67,7 +72,21 @@ end
 class shortcut_trigger : Raw.Shortcut_trigger.t -> shortcut_trigger_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Shortcut_trigger.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Tracks how a [GtkShortcut] can be activated.
+
+    To find out if a [GtkShortcutTrigger] triggers, you can call
+    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+
+    [GtkShortcutTriggers] contain functions that allow easy presentation to end
+    users as well as being printed for debugging.
+
+    All [GtkShortcutTriggers] are immutable, you can only specify their
+    properties during construction. If you want to change a trigger, you have to
+    replace it with a new one. *)
+
+(** {1:constructors Constructors} *)
 
 val parse_string : string -> shortcut_trigger_t
 (** Tries to parse the given string into a trigger.

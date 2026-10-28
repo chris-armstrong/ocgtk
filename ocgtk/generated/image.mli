@@ -1,37 +1,12 @@
-[@@@ocaml.text
-"Displays an image.\n\n\
- An example GtkImage\n\n\
- Various kinds of object can be displayed as an image; most typically,\n\
- you would load a [GdkTexture] from a file, using the convenience function\n\
- [Gtk.Image.new_from_file], for instance:\n\n\
- {[\n\
- GtkWidget *image = gtk_image_new_from_file (\"myfile.png\");\n\
- ]}\n\n\
- If the file isn’t loaded successfully, the image will contain a\n\
- “broken image” icon similar to that used in many web browsers.\n\n\
- If you want to handle errors in loading the file yourself, for example\n\
- by displaying an error message, then load the image with an image\n\
- loading framework such as libglycin, then create the [GtkImage] with\n\
- [Gtk.Image.new_from_paintable].\n\n\
- Sometimes an application will want to avoid depending on external data\n\
- files, such as image files. See the documentation of [GResource] inside\n\
- GIO, for details. In this case, [Gtk.Image:resource],\n\
- [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
- should be used.\n\n\
- [GtkImage] displays its image as an icon, with a size that is determined\n\
- by the application. See [Gtk.Picture] if you want to show an image\n\
- at is actual size.\n\n\
- {b CSS nodes}\n\n\
- [GtkImage] has a single CSS node with the name [image]. The style classes\n\
- [.normal-icons] or [.large-icons] may appear, depending on the\n\
- [Gtk.Image:icon-size] property.\n\n\
- {b Accessibility}\n\n\
- [GtkImage] uses the [Gtk.AccessibleRole.img] role.\n\n\
- Its methods, signals and properties are on {!class-type-image_t}. Its \
- constructors are under {!section-constructors}. The functions it is built on \
- are in {!Ocgtk.Raw.Image}."]
+(** Displays an image.
 
-(** The methods, signals and properties of a [Image]. *)
+    Its methods, signals and properties are on {!class-type-image_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Image}. *)
+
+(** {1:class Class} *)
+
 class type image_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -122,14 +97,87 @@ class type image_t = object
       size set by [Gtk.Image.set_icon_size]. *)
 
   method use_fallback : bool
+  (** Whether the icon displayed in the [GtkImage] will use standard icon names
+      fallback.
+
+      The value of this property is only relevant for images of type
+      [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+
   method set_use_fallback : bool -> unit
+  (** Whether the icon displayed in the [GtkImage] will use standard icon names
+      fallback.
+
+      The value of this property is only relevant for images of type
+      [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+
   method as_image : Raw.Image.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [Image].}\n\n\
+     Displays an image.\n\n\
+     An example GtkImage\n\n\
+     Various kinds of object can be displayed as an image; most typically,\n\
+     you would load a [GdkTexture] from a file, using the convenience function\n\
+     [Gtk.Image.new_from_file], for instance:\n\n\
+     {[\n\
+     GtkWidget *image = gtk_image_new_from_file (\"myfile.png\");\n\
+     ]}\n\n\
+     If the file isn’t loaded successfully, the image will contain a\n\
+     “broken image” icon similar to that used in many web browsers.\n\n\
+     If you want to handle errors in loading the file yourself, for example\n\
+     by displaying an error message, then load the image with an image\n\
+     loading framework such as libglycin, then create the [GtkImage] with\n\
+     [Gtk.Image.new_from_paintable].\n\n\
+     Sometimes an application will want to avoid depending on external data\n\
+     files, such as image files. See the documentation of [GResource] inside\n\
+     GIO, for details. In this case, [Gtk.Image:resource],\n\
+     [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
+     should be used.\n\n\
+     [GtkImage] displays its image as an icon, with a size that is determined\n\
+     by the application. See [Gtk.Picture] if you want to show an image\n\
+     at is actual size.\n\n\
+     {b CSS nodes}\n\n\
+     [GtkImage] has a single CSS node with the name [image]. The style classes\n\
+     [.normal-icons] or [.large-icons] may appear, depending on the\n\
+     [Gtk.Image:icon-size] property.\n\n\
+     {b Accessibility}\n\n\
+     [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
 
 class image : Raw.Image.t -> image_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Image.t}. *)
 
-(** {2:constructors Constructors} *)
+[@@@ocaml.text
+"{1:description Description}\n\n\
+ Displays an image.\n\n\
+ An example GtkImage\n\n\
+ Various kinds of object can be displayed as an image; most typically,\n\
+ you would load a [GdkTexture] from a file, using the convenience function\n\
+ [Gtk.Image.new_from_file], for instance:\n\n\
+ {[\n\
+ GtkWidget *image = gtk_image_new_from_file (\"myfile.png\");\n\
+ ]}\n\n\
+ If the file isn’t loaded successfully, the image will contain a\n\
+ “broken image” icon similar to that used in many web browsers.\n\n\
+ If you want to handle errors in loading the file yourself, for example\n\
+ by displaying an error message, then load the image with an image\n\
+ loading framework such as libglycin, then create the [GtkImage] with\n\
+ [Gtk.Image.new_from_paintable].\n\n\
+ Sometimes an application will want to avoid depending on external data\n\
+ files, such as image files. See the documentation of [GResource] inside\n\
+ GIO, for details. In this case, [Gtk.Image:resource],\n\
+ [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
+ should be used.\n\n\
+ [GtkImage] displays its image as an icon, with a size that is determined\n\
+ by the application. See [Gtk.Picture] if you want to show an image\n\
+ at is actual size.\n\n\
+ {b CSS nodes}\n\n\
+ [GtkImage] has a single CSS node with the name [image]. The style classes\n\
+ [.normal-icons] or [.large-icons] may appear, depending on the\n\
+ [Gtk.Image:icon-size] property.\n\n\
+ {b Accessibility}\n\n\
+ [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> image_t
 (** Creates a new empty [GtkImage] widget. *)

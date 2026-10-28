@@ -1,13 +1,18 @@
 (** Defines a part of a CSS document.
 
-    Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region.
-
     Its methods, signals and properties are on {!class-type-css_section_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Css_section}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Css_section}. *)
 
-(** The methods, signals and properties of a [CssSection]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [CssSection].}
+
+    Defines a part of a CSS document.
+
+    Because sections are nested into one another, you can use
+    [CssSection.get_parent] to get the containing region. *)
 class type css_section_t = object
   method get_bytes : unit -> Glib_bytes.t option
   (** Gets the bytes that [section] was parsed from. *)
@@ -47,7 +52,14 @@ end
 class css_section : Raw.Css_section.t -> css_section_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Css_section.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Defines a part of a CSS document.
+
+    Because sections are nested into one another, you can use
+    [CssSection.get_parent] to get the containing region. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgio.File.file_t option ->

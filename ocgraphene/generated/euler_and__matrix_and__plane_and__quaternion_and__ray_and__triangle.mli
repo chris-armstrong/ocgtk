@@ -4,7 +4,12 @@
     Each has a module of its own that re-exports it; use that module rather than
     this one. *)
 
-(** The methods, signals and properties of a [Euler]. *)
+(** {b The methods, signals and properties of a [Euler].}
+
+    Describe a rotation using Euler angles.
+
+    The contents of the #graphene_euler_t structure are private and should never
+    be accessed directly. *)
 class type euler_t = object
   method equal : Raw.Euler.t -> bool
   (** Checks if two #graphene_euler_t are equal. *)
@@ -90,7 +95,12 @@ class type euler_t = object
   method as_euler : Raw.Euler.t
 end
 
-(** The methods, signals and properties of a [Matrix]. *)
+(** {b The methods, signals and properties of a [Matrix].}
+
+    A structure capable of holding a 4x4 matrix.
+
+    The contents of the #graphene_matrix_t structure are private and should
+    never be accessed directly. *)
 and matrix_t = object
   method determinant : unit -> float
   (** Computes the determinant of the given matrix. *)
@@ -302,7 +312,12 @@ and matrix_t = object
   method as_matrix : Raw.Matrix.t
 end
 
-(** The methods, signals and properties of a [Plane]. *)
+(** {b The methods, signals and properties of a [Plane].}
+
+    A 2D plane that extends infinitely in a 3D volume.
+
+    The contents of the [graphene_plane_t] are private, and should not be
+    modified directly. *)
 and plane_t = object
   method distance : Raw.Point3_d.t -> float
   (** Computes the distance of [point] from a #graphene_plane_t. *)
@@ -341,7 +356,12 @@ and plane_t = object
   method as_plane : Raw.Plane.t
 end
 
-(** The methods, signals and properties of a [Quaternion]. *)
+(** {b The methods, signals and properties of a [Quaternion].}
+
+    A quaternion.
+
+    The contents of the #graphene_quaternion_t structure are private and should
+    never be accessed directly. *)
 and quaternion_t = object
   method dot : Raw.Quaternion.t -> float
   (** Computes the dot product of two #graphene_quaternion_t. *)
@@ -387,7 +407,12 @@ and quaternion_t = object
   method as_quaternion : Raw.Quaternion.t
 end
 
-(** The methods, signals and properties of a [Ray]. *)
+(** {b The methods, signals and properties of a [Ray].}
+
+    A ray emitted from an origin in a given direction.
+
+    The contents of the [graphene_ray_t] structure are private, and should not
+    be modified directly. *)
 and ray_t = object
   method equal : Raw.Ray.t -> bool
   (** Checks whether the two given #graphene_ray_t are equal. *)
@@ -438,7 +463,9 @@ and ray_t = object
   method as_ray : Raw.Ray.t
 end
 
-(** The methods, signals and properties of a [Triangle]. *)
+(** {b The methods, signals and properties of a [Triangle].}
+
+    A triangle. *)
 and triangle_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given triangle [t] contains the point [p]. *)

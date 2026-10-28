@@ -4,7 +4,11 @@
     {!class-type-d_bus_interface_skeleton_t}. The functions it is built on are
     in {!Ocgio.Raw.D_bus_interface_skeleton}. *)
 
-(** The methods, signals and properties of a [DBusInterfaceSkeleton]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusInterfaceSkeleton].}
+
+    Abstract base class for D-Bus interfaces on the service side. *)
 class type d_bus_interface_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
 
@@ -103,7 +107,11 @@ class type d_bus_interface_skeleton_t = object
       g_dbus_interface_skeleton_unexport(). *)
 
   method g_flags : Enums.dbusinterfaceskeletonflags
+  (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
   method set_g_flags : Enums.dbusinterfaceskeletonflags -> unit
+  (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
   method as_d_bus_interface_skeleton : Raw.D_bus_interface_skeleton.t
 end
 

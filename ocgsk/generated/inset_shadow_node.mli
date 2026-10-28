@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Inset_shadow_node}. *)
 
-(** The methods, signals and properties of a [InsetShadowNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [InsetShadowNode].}
+
+    A render node for an inset shadow. *)
 class type inset_shadow_node_t = object
   inherit Render_node.render_node_t
 
@@ -36,7 +40,7 @@ end
 class inset_shadow_node : Raw.Inset_shadow_node.t -> inset_shadow_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Inset_shadow_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Raw.Rounded_rect.t ->

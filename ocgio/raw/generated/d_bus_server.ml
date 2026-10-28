@@ -85,11 +85,12 @@ external get_client_address : t -> string
 (* Properties *)
 
 external get_address : t -> string = "ml_g_d_bus_server_get_address"
-(** Get property: address *)
+(** The D-Bus address to listen on. *)
 
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
-(** Get property: authentication-observer *)
+(** A [GDBusAuthObserver] object to assist in the authentication process or
+    [NULL]. *)
 
 let on_new_connection ?after obj ~callback =
   let closure =

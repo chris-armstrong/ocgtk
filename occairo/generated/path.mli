@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-path_t}. The
     functions it is built on are in {!Occairo.Raw.Path}. *)
 
-(** The methods, signals and properties of a [Path]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Path].} *)
 class type path_t = object
   method as_path : Raw.Path.t
 end

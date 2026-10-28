@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_matcher}. *)
 
-(** The methods, signals and properties of a [FileAttributeMatcher]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileAttributeMatcher].}
+
+    Determines if a string matches a file attribute. *)
 class type file_attribute_matcher_t = object
   method enumerate_namespace : string -> bool
   [@@ocaml.doc
@@ -57,7 +61,7 @@ class file_attribute_matcher :
   file_attribute_matcher_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_attribute_matcher.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string -> file_attribute_matcher_t
 [@@ocaml.doc

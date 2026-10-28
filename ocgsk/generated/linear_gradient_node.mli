@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Linear_gradient_node}. *)
 
-(** The methods, signals and properties of a [LinearGradientNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [LinearGradientNode].}
+
+    A render node for a linear gradient. *)
 class type linear_gradient_node_t = object
   inherit Render_node.render_node_t
 
@@ -26,7 +30,7 @@ class linear_gradient_node :
   linear_gradient_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Linear_gradient_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgraphene.Rect.rect_t ->

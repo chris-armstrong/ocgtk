@@ -1,5 +1,16 @@
 (** Puts child widgets in a reflowing grid.
 
+    Its methods, signals and properties are on {!class-type-flow_box_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Flow_box}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FlowBox].}
+
+    Puts child widgets in a reflowing grid.
+
     An example GtkFlowBox
 
     For instance, with the horizontal orientation, the widgets will be arranged
@@ -52,13 +63,7 @@
     {b Accessibility}
 
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
-    uses the [Gtk.AccessibleRole.grid_cell] role.
-
-    Its methods, signals and properties are on {!class-type-flow_box_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Flow_box}. *)
-
-(** The methods, signals and properties of a [FlowBox]. *)
+    uses the [Gtk.AccessibleRole.grid_cell] role. *)
 class type flow_box_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -296,14 +301,76 @@ class type flow_box_t = object
   (** Unselects a single child of [box], if the selection mode allows it. *)
 
   method accept_unpaired_release : bool
+  (** Whether to accept unpaired release events. *)
+
   method set_accept_unpaired_release : bool -> unit
+  (** Whether to accept unpaired release events. *)
+
   method as_flow_box : Raw.Flow_box.t
 end
 
 class flow_box : Raw.Flow_box.t -> flow_box_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Flow_box.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Puts child widgets in a reflowing grid.
+
+    An example GtkFlowBox
+
+    For instance, with the horizontal orientation, the widgets will be arranged
+    from left to right, starting a new row under the previous row when
+    necessary. Reducing the width in this case will require more rows, so a
+    larger height will be requested.
+
+    Likewise, with the vertical orientation, the widgets will be arranged from
+    top to bottom, starting a new column to the right when necessary. Reducing
+    the height will require more columns, so a larger width will be requested.
+
+    The size request of a [GtkFlowBox] alone may not be what you expect; if you
+    need to be able to shrink it along both axes and dynamically reflow its
+    children, you may have to wrap it in a [GtkScrolledWindow] to enable that.
+
+    The children of a [GtkFlowBox] can be dynamically sorted and filtered.
+
+    Although a [GtkFlowBox] must have only [GtkFlowBoxChild] children, you can
+    add any kind of widget to it via [Gtk.FlowBox.insert], and a
+    [GtkFlowBoxChild] widget will automatically be inserted between the box and
+    the widget.
+
+    Also see [Gtk.ListBox].
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.FlowBox::move-cursor]
+    - [Gtk.FlowBox::select-all]
+    - [Gtk.FlowBox::toggle-cursor-child]
+    - [Gtk.FlowBox::unselect-all]
+
+    {b CSS nodes}
+
+    {[
+    flowbox
+    ├── flowboxchild
+    │   ╰── <child>
+    ├── flowboxchild
+    │   ╰── <child>
+    ┊
+    ╰── [rubberband]
+    ]}
+
+    [GtkFlowBox] uses a single CSS node with name flowbox. [GtkFlowBoxChild]
+    uses a single CSS node with name flowboxchild. For rubberband selection, a
+    subnode with name rubberband is used.
+
+    {b Accessibility}
+
+    [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
+    uses the [Gtk.AccessibleRole.grid_cell] role. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> flow_box_t
 (** Creates a [GtkFlowBox]. *)

@@ -622,7 +622,10 @@ module rec Text_buffer : sig
 
   external get_cursor_position : t -> int
     = "ml_gtk_text_buffer_get_cursor_position"
-  (** Get property: cursor-position *)
+  (** The position of the insert mark.
+
+      This is an offset from the beginning of the buffer. It is useful for
+      getting notified when the cursor moves. *)
 
   val on_begin_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -1305,7 +1308,10 @@ end = struct
 
   external get_cursor_position : t -> int
     = "ml_gtk_text_buffer_get_cursor_position"
-  (** Get property: cursor-position *)
+  (** The position of the insert mark.
+
+      This is an offset from the beginning of the buffer. It is useful for
+      getting notified when the cursor moves. *)
 
   let on_begin_user_action ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"begin-user-action" ~callback

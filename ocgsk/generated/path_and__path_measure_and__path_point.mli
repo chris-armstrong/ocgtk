@@ -2,7 +2,23 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [Path]. *)
+(** {b The methods, signals and properties of a [Path].}
+
+    Describes lines and curves that are more complex than simple rectangles.
+
+    Paths can used for rendering (filling or stroking) and for animations (e.g.
+    as trajectories).
+
+    [GskPath] is an immutable, opaque, reference-counted struct. After creation,
+    you cannot change the types it represents. Instead, new [GskPath] objects
+    have to be created. The [Gsk.PathBuilder] structure is meant to help in this
+    endeavor.
+
+    Conceptually, a path consists of zero or more contours (continuous,
+    connected curves), each of which may or may not be closed. Contours are
+    typically constructed from Bézier segments.
+
+    A Path *)
 class type path_t = object
   method in_fill : Ocgraphene.Point.point_t -> Enums.fillrule -> bool
   (** Returns whether a point is inside the fill area of a path.
@@ -40,7 +56,16 @@ class type path_t = object
   method as_path : Raw.Path.t
 end
 
-(** The methods, signals and properties of a [PathMeasure]. *)
+(** {b The methods, signals and properties of a [PathMeasure].}
+
+    Performs measurements on paths such as determining the length of the path.
+
+    Many measuring operations require sampling the path length at intermediate
+    points. Therefore, a [GskPathMeasure] has a tolerance that determines what
+    precision is required for such approximations.
+
+    A [GskPathMeasure] struct is a reference counted struct and should be
+    treated as opaque. *)
 and path_measure_t = object
   method get_length : unit -> float
   (** Gets the length of the path being measured.
@@ -59,7 +84,21 @@ and path_measure_t = object
   method as_path_measure : Raw.Path_measure.t
 end
 
-(** The methods, signals and properties of a [PathPoint]. *)
+(** {b The methods, signals and properties of a [PathPoint].}
+
+    Represents a point on a path.
+
+    It can be queried for properties of the path at that point, such as its
+    tangent or its curvature.
+
+    To obtain a [GskPathPoint], use [Gsk.Path.get_closest_point],
+    [Gsk.Path.get_start_point], [Gsk.Path.get_end_point] or
+    [Gsk.PathMeasure.get_point].
+
+    Note that [GskPathPoint] structs are meant to be stack-allocated, and don't
+    hold a reference to the path object they are obtained from. It is the
+    callers responsibility to keep a reference to the path as long as the
+    [GskPathPoint] is used. *)
 and path_point_t = object
   method compare : Raw.Path_point.t -> int
   (** Returns whether [point1] is before or after [point2]. *)

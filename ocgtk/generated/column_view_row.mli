@@ -1,12 +1,17 @@
 (** Configures how rows are displayed in a [Gtk.ColumnView].
 
-    It is not used to set the widgets displayed in the individual cells. For
-    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell].
-
     Its methods, signals and properties are on {!class-type-column_view_row_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Column_view_row}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Column_view_row}. *)
 
-(** The methods, signals and properties of a [ColumnViewRow]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ColumnViewRow].}
+
+    Configures how rows are displayed in a [Gtk.ColumnView].
+
+    It is not used to set the widgets displayed in the individual cells. For
+    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)
 class type column_view_row_t = object
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
@@ -90,3 +95,10 @@ end
 
 class column_view_row : Raw.Column_view_row.t -> column_view_row_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Column_view_row.t}. *)
+
+(** {1:description Description}
+
+    Configures how rows are displayed in a [Gtk.ColumnView].
+
+    It is not used to set the widgets displayed in the individual cells. For
+    that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)

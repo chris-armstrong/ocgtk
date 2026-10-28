@@ -4,7 +4,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Memory_texture}. *)
 
-(** The methods, signals and properties of a [MemoryTexture]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MemoryTexture].}
+
+    A [GdkTexture] representing image data in memory. *)
 class type memory_texture_t = object
   inherit Texture.texture_t
   method as_memory_texture : Raw.Memory_texture.t
@@ -13,7 +17,7 @@ end
 class memory_texture : Raw.Memory_texture.t -> memory_texture_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Memory_texture.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   int ->

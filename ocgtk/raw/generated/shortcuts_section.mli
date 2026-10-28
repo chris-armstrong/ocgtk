@@ -53,32 +53,66 @@ external add_group : t -> Shortcuts_group.t -> unit
 (* Properties *)
 
 external get_max_height : t -> int = "ml_gtk_shortcuts_section_get_max_height"
-(** Get property: max-height *)
+(** The maximum number of lines to allow per column.
+
+    This property can be used to influence how the groups in this section are
+    distributed across pages and columns. The default value of 15 should work in
+    most cases. *)
 
 external set_max_height : t -> int -> unit
   = "ml_gtk_shortcuts_section_set_max_height"
-(** Set property: max-height *)
+(** The maximum number of lines to allow per column.
+
+    This property can be used to influence how the groups in this section are
+    distributed across pages and columns. The default value of 15 should work in
+    most cases. *)
 
 external get_section_name : t -> string
   = "ml_gtk_shortcuts_section_get_section_name"
-(** Get property: section-name *)
+(** A unique name to identify this section among the sections added to the
+    [GtkShortcutsWindow].
+
+    Setting the [Gtk.ShortcutsWindow:section-name] property to this string will
+    make this section shown in the [GtkShortcutsWindow]. *)
 
 external set_section_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_section_name"
-(** Set property: section-name *)
+(** A unique name to identify this section among the sections added to the
+    [GtkShortcutsWindow].
+
+    Setting the [Gtk.ShortcutsWindow:section-name] property to this string will
+    make this section shown in the [GtkShortcutsWindow]. *)
 
 external get_title : t -> string = "ml_gtk_shortcuts_section_get_title"
-(** Get property: title *)
+(** The string to show in the section selector of the [GtkShortcutsWindow] for
+    this section.
+
+    If there is only one section, you don't need to set a title, since the
+    section selector will not be shown in this case. *)
 
 external set_title : t -> string -> unit = "ml_gtk_shortcuts_section_set_title"
-(** Set property: title *)
+(** The string to show in the section selector of the [GtkShortcutsWindow] for
+    this section.
+
+    If there is only one section, you don't need to set a title, since the
+    section selector will not be shown in this case. *)
 
 external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
-(** Get property: view-name *)
+(** A view name to filter the groups in this section by.
+
+    See [Gtk.ShortcutsGroup:view].
+
+    Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+    property for this purpose. *)
 
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_view_name"
-(** Set property: view-name *)
+(** A view name to filter the groups in this section by.
+
+    See [Gtk.ShortcutsGroup:view].
+
+    Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+    property for this purpose. *)
 
 val on_change_current_page :
   ?after:bool -> t -> callback:(offset:int -> bool) -> Gobject.Signal.handler_id

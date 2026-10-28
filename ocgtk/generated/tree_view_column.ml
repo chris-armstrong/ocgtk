@@ -215,6 +215,11 @@ class type tree_view_column_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] used to layout cell renderers for this column.
+
+      If no area is specified when creating the tree view column with
+      gtk_tree_view_column_new_with_area() a horizontally oriented
+      [GtkCellAreaBox] will be used. *)
 
   method as_tree_view_column : Raw.Tree_view_column.t
 end

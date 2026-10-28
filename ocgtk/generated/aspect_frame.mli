@@ -1,5 +1,16 @@
 (** Preserves the aspect ratio of its child.
 
+    Its methods, signals and properties are on {!class-type-aspect_frame_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Aspect_frame}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [AspectFrame].}
+
+    Preserves the aspect ratio of its child.
+
     The frame can respect the aspect ratio of the child widget, or use its own
     aspect ratio.
 
@@ -12,13 +23,7 @@
     Until GTK 4.10, [GtkAspectFrame] used the [Gtk.AccessibleRole.group] role.
 
     Starting from GTK 4.12, [GtkAspectFrame] uses the
-    [Gtk.AccessibleRole.generic] role.
-
-    Its methods, signals and properties are on {!class-type-aspect_frame_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Aspect_frame}. *)
-
-(** The methods, signals and properties of a [AspectFrame]. *)
+    [Gtk.AccessibleRole.generic] role. *)
 class type aspect_frame_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -74,7 +79,25 @@ end
 class aspect_frame : Raw.Aspect_frame.t -> aspect_frame_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Aspect_frame.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Preserves the aspect ratio of its child.
+
+    The frame can respect the aspect ratio of the child widget, or use its own
+    aspect ratio.
+
+    {b CSS nodes}
+
+    [GtkAspectFrame] uses a CSS node with name [aspectframe].
+
+    {b Accessibility}
+
+    Until GTK 4.10, [GtkAspectFrame] used the [Gtk.AccessibleRole.group] role.
+
+    Starting from GTK 4.12, [GtkAspectFrame] uses the
+    [Gtk.AccessibleRole.generic] role. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : float -> float -> float -> bool -> aspect_frame_t
 (** Create a new [GtkAspectFrame]. *)

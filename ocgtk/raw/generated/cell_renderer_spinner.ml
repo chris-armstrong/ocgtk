@@ -31,22 +31,30 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_spinner_new"
 (* Properties *)
 
 external get_active : t -> bool = "ml_gtk_cell_renderer_spinner_get_active"
-(** Get property: active *)
+(** Whether the spinner is active (ie. shown) in the cell *)
 
 external set_active : t -> bool -> unit
   = "ml_gtk_cell_renderer_spinner_set_active"
-(** Set property: active *)
+(** Whether the spinner is active (ie. shown) in the cell *)
 
 external get_pulse : t -> int = "ml_gtk_cell_renderer_spinner_get_pulse"
-(** Get property: pulse *)
+(** Pulse of the spinner. Increment this value to draw the next frame of the
+    spinner animation. Usually, you would update this value in a timeout.
+
+    By default, the [GtkSpinner] widget draws one full cycle of the animation,
+    consisting of 12 frames, in 750 milliseconds. *)
 
 external set_pulse : t -> int -> unit = "ml_gtk_cell_renderer_spinner_set_pulse"
-(** Set property: pulse *)
+(** Pulse of the spinner. Increment this value to draw the next frame of the
+    spinner animation. Usually, you would update this value in a timeout.
+
+    By default, the [GtkSpinner] widget draws one full cycle of the animation,
+    consisting of 12 frames, in 750 milliseconds. *)
 
 external get_size : t -> Ocgtk_enums.iconsize
   = "ml_gtk_cell_renderer_spinner_get_size"
-(** Get property: size *)
+(** The [GtkIconSize] value that specifies the size of the rendered spinner. *)
 
 external set_size : t -> Ocgtk_enums.iconsize -> unit
   = "ml_gtk_cell_renderer_spinner_set_size"
-(** Set property: size *)
+(** The [GtkIconSize] value that specifies the size of the rendered spinner. *)

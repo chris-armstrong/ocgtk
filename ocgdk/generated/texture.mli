@@ -1,5 +1,16 @@
 (** Refers to pixel data in various forms.
 
+    Its methods, signals and properties are on {!class-type-texture_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Texture}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Texture].}
+
+    Refers to pixel data in various forms.
+
     It is primarily meant for pixel data that will not change over multiple
     frames, and will be used for a long time.
 
@@ -21,13 +32,7 @@
     and resources that are shipped with the toolkit or application. It is
     recommended that you use a dedicated image loading framework such as
     {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
-    data.
-
-    Its methods, signals and properties are on {!class-type-texture_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgdk.Raw.Texture}. *)
-
-(** The methods, signals and properties of a [Texture]. *)
+    data. *)
 class type texture_t = object
   inherit Paintable.paintable_t
   inherit Ocgio.Icon.icon_t
@@ -100,7 +105,34 @@ end
 class texture : Raw.Texture.t -> texture_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Texture.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Refers to pixel data in various forms.
+
+    It is primarily meant for pixel data that will not change over multiple
+    frames, and will be used for a long time.
+
+    There are various ways to create [GdkTexture] objects from a
+    [GdkPixbuf.Pixbuf], or from bytes stored in memory, a file, or a
+    [Gio.Resource].
+
+    The ownership of the pixel data is transferred to the [GdkTexture] instance;
+    you can only make a copy of it, via [Gdk.Texture.download].
+
+    [GdkTexture] is an immutable object: That means you cannot change anything
+    about it other than increasing the reference count via [GObject.Object.ref],
+    and consequently, it is a threadsafe object.
+
+    GDK provides a number of threadsafe texture loading functions:
+    [Gdk.Texture.new_from_resource], [Gdk.Texture.new_from_bytes],
+    [Gdk.Texture.new_from_file], [Gdk.Texture.new_from_filename],
+    [Gdk.Texture.new_for_pixbuf]. Note that these are meant for loading icons
+    and resources that are shipped with the toolkit or application. It is
+    recommended that you use a dedicated image loading framework such as
+    {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
+    data. *)
+
+(** {1:constructors Constructors} *)
 
 val new_for_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t -> texture_t
 (** Creates a new texture object representing the [GdkPixbuf].

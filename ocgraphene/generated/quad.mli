@@ -1,13 +1,18 @@
 (** A 4 vertex quadrilateral, as represented by four #graphene_point_t.
 
+    Its methods, signals and properties are on {!class-type-quad_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgraphene.Raw.Quad}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Quad].}
+
+    A 4 vertex quadrilateral, as represented by four #graphene_point_t.
+
     The contents of a #graphene_quad_t are private and should never be accessed
-    directly.
-
-    Its methods, signals and properties are on {!class-type-quad_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgraphene.Raw.Quad}. *)
-
-(** The methods, signals and properties of a [Quad]. *)
+    directly. *)
 class type quad_t = object
   method contains : Raw.Point.t -> bool
   (** Checks if the given #graphene_quad_t contains the given #graphene_point_t.
@@ -33,7 +38,14 @@ end
 class quad : Raw.Quad.t -> quad_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Quad.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A 4 vertex quadrilateral, as represented by four #graphene_point_t.
+
+    The contents of a #graphene_quad_t are private and should never be accessed
+    directly. *)
+
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> quad_t
 (** Allocates a new #graphene_quad_t instance.

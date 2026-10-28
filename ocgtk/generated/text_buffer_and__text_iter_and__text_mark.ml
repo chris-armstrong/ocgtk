@@ -554,6 +554,11 @@ class type text_buffer_t = object
   (** Undoes the last undoable action on the buffer, if there is one. *)
 
   method cursor_position : int
+  (** The position of the insert mark.
+
+      This is an offset from the beginning of the buffer. It is useful for
+      getting notified when the cursor moves. *)
+
   method as_text_buffer : Raw.Text_buffer.t
 end
 

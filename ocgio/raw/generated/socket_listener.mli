@@ -109,11 +109,11 @@ external add_any_inet_port :
 
 external get_listen_backlog : t -> int
   = "ml_g_socket_listener_get_listen_backlog"
-(** Get property: listen-backlog *)
+(** The number of outstanding connections in the listen queue. *)
 
 external set_listen_backlog : t -> int -> unit
   = "ml_g_socket_listener_set_listen_backlog"
-(** Set property: listen-backlog *)
+(** The number of outstanding connections in the listen queue. *)
 
 val on_event :
   ?after:bool ->

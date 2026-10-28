@@ -50,17 +50,17 @@ external new_ : Ocgtk_enums.filechooseraction -> t
 
 external get_search_mode : t -> bool
   = "ml_gtk_file_chooser_widget_get_search_mode"
-(** Get property: search-mode *)
+(** Whether search mode is enabled. *)
 
 external set_search_mode : t -> bool -> unit
   = "ml_gtk_file_chooser_widget_set_search_mode"
-(** Set property: search-mode *)
+(** Whether search mode is enabled. *)
 
 external get_show_time : t -> bool = "ml_gtk_file_chooser_widget_get_show_time"
-(** Get property: show-time *)
+(** Whether to show the time. *)
 
 external get_subtitle : t -> string = "ml_gtk_file_chooser_widget_get_subtitle"
-(** Get property: subtitle *)
+(** The subtitle of the file chooser widget. *)
 
 let on_desktop_folder ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"desktop-folder" ~callback

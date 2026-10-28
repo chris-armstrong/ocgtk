@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-delete_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Delete_event}. *)
 
-(** The methods, signals and properties of a [DeleteEvent]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DeleteEvent].}
+
+    An event related to closing a top-level surface. *)
 class type delete_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
   method as_delete_event : Raw.Delete_event.t

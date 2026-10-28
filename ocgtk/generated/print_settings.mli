@@ -1,5 +1,16 @@
 (** Collects the settings of a print dialog in a system-independent way.
 
+    Its methods, signals and properties are on {!class-type-print_settings_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Print_settings}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PrintSettings].}
+
+    Collects the settings of a print dialog in a system-independent way.
+
     The main use for this object is that once you’ve printed you can get a
     settings object that represents the settings the user chose, and the next
     time you print you can pass that object in so that the user doesn’t have to
@@ -8,13 +19,7 @@
     Its also possible to enumerate the settings so that you can easily save the
     settings for the next time your app runs, or even store them in a document.
     The predefined keys try to use shared values as much as possible so that
-    moving such a document between systems still works.
-
-    Its methods, signals and properties are on {!class-type-print_settings_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Print_settings}. *)
-
-(** The methods, signals and properties of a [PrintSettings]. *)
+    moving such a document between systems still works. *)
 class type print_settings_t = object
   method copy : unit -> print_settings_t
   (** Copies a [GtkPrintSettings] object. *)
@@ -260,7 +265,21 @@ end
 class print_settings : Raw.Print_settings.t -> print_settings_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Print_settings.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Collects the settings of a print dialog in a system-independent way.
+
+    The main use for this object is that once you’ve printed you can get a
+    settings object that represents the settings the user chose, and the next
+    time you print you can pass that object in so that the user doesn’t have to
+    re-set all his settings.
+
+    Its also possible to enumerate the settings so that you can easily save the
+    settings for the next time your app runs, or even store them in a document.
+    The predefined keys try to use shared values as much as possible so that
+    moving such a document between systems still works. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> print_settings_t
 (** Creates a new [GtkPrintSettings] object. *)

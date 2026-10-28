@@ -1,18 +1,23 @@
 (** [GtkPaperSize] handles paper sizes.
 
+    Its methods, signals and properties are on {!class-type-paper_size_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Paper_size}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PaperSize].}
+
+    [GtkPaperSize] handles paper sizes.
+
     It uses the standard called PWG 5101.1-2002 PWG: Standard for Media
     Standardized Names to name the paper sizes (and to get the data for the page
     sizes). In addition to standard paper sizes, [GtkPaperSize] allows to
     construct custom paper sizes with arbitrary dimensions.
 
     The [GtkPaperSize] object stores not only the dimensions (width and height)
-    of a paper size and its name, it also provides default print margins.
-
-    Its methods, signals and properties are on {!class-type-paper_size_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Paper_size}. *)
-
-(** The methods, signals and properties of a [PaperSize]. *)
+    of a paper size and its name, it also provides default print margins. *)
 class type paper_size_t = object
   method get_default_bottom_margin : Enums.unit -> float
   (** Gets the default bottom margin for the [GtkPaperSize]. *)
@@ -62,7 +67,19 @@ end
 class paper_size : Raw.Paper_size.t -> paper_size_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Paper_size.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GtkPaperSize] handles paper sizes.
+
+    It uses the standard called PWG 5101.1-2002 PWG: Standard for Media
+    Standardized Names to name the paper sizes (and to get the data for the page
+    sizes). In addition to standard paper sizes, [GtkPaperSize] allows to
+    construct custom paper sizes with arbitrary dimensions.
+
+    The [GtkPaperSize] object stores not only the dimensions (width and height)
+    of a paper size and its name, it also provides default print margins. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string option -> paper_size_t
 (** Creates a new [GtkPaperSize] object by parsing a PWG 5101.1-2002 paper name.

@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_source}. *)
 
-(** The methods, signals and properties of a [SettingsSchemaSource]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SettingsSchemaSource].}
+
+    This is an opaque structure type. You may not access it directly. *)
 class type settings_schema_source_t = object
   method lookup : string -> bool -> Raw.Settings_schema.t option
   (** Looks up a schema with the identifier [schema_id] in [source].
@@ -30,7 +34,7 @@ class settings_schema_source :
   settings_schema_source_t
 (** Wraps a raw handle of {!Ocgio.Raw.Settings_schema_source.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_from_directory :
   string ->

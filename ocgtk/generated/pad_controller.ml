@@ -21,7 +21,11 @@ class type pad_controller_t = object
       See [Gtk.PadActionEntry] and [Gtk.PadController.set_action]. *)
 
   method action_group : Ocgio.Action_group.action_group_t
+  (** The action group of the controller. *)
+
   method pad : Ocgdk.Device.device_t
+  (** The pad of the controller. *)
+
   method as_pad_controller : Raw.Pad_controller.t
 end
 

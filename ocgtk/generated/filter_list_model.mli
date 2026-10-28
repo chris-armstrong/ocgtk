@@ -1,5 +1,16 @@
 (** A list model that filters the elements of another model.
 
+    Its methods, signals and properties are on
+    {!class-type-filter_list_model_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Filter_list_model}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FilterListModel].}
+
+    A list model that filters the elements of another model.
+
     It hides some elements from the underlying model according to criteria given
     by a [GtkFilter].
 
@@ -7,14 +18,7 @@
     lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
     details.
 
-    [GtkFilterListModel] passes through sections from the underlying model.
-
-    Its methods, signals and properties are on
-    {!class-type-filter_list_model_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Filter_list_model}. *)
-
-(** The methods, signals and properties of a [FilterListModel]. *)
+    [GtkFilterListModel] passes through sections from the underlying model. *)
 class type filter_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -90,14 +94,31 @@ class type filter_list_model_t = object
       By default, watching items is disabled. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_filter_list_model : Raw.Filter_list_model.t
 end
 
 class filter_list_model : Raw.Filter_list_model.t -> filter_list_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Filter_list_model.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A list model that filters the elements of another model.
+
+    It hides some elements from the underlying model according to criteria given
+    by a [GtkFilter].
+
+    The model can be set up to do incremental filtering, so that filtering long
+    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
+    details.
+
+    [GtkFilterListModel] passes through sections from the underlying model. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgio.List_model.list_model_t option ->

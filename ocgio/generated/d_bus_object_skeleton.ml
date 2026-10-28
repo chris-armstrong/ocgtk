@@ -47,7 +47,11 @@ class type d_bus_object_skeleton_t = object
   (** Sets the object path for [object]. *)
 
   method g_object_path : string
+  (** The object path where the object is exported. *)
+
   method set_g_object_path : string -> unit
+  (** The object path where the object is exported. *)
+
   method as_d_bus_object_skeleton : Raw.D_bus_object_skeleton.t
 end
 

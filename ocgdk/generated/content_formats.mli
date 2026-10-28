@@ -1,5 +1,16 @@
 (** Used to advertise and negotiate the format of content.
 
+    Its methods, signals and properties are on {!class-type-content_formats_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Content_formats}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ContentFormats].}
+
+    Used to advertise and negotiate the format of content.
+
     You will encounter [GdkContentFormats] when interacting with objects
     controlling operations that pass data between different widgets, window or
     application, like [Gdk.Drag], [Gdk.Drop], [Gdk.Clipboard] or
@@ -28,13 +39,7 @@
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
     created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor.
-
-    Its methods, signals and properties are on {!class-type-content_formats_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgdk.Raw.Content_formats}. *)
-
-(** The methods, signals and properties of a [ContentFormats]. *)
+    endeavor. *)
 class type content_formats_t = object
   method contain_gtype : Gobject.Type.t -> bool
   (** Checks if a given [GType] is part of the given [formats]. *)
@@ -95,7 +100,41 @@ end
 class content_formats : Raw.Content_formats.t -> content_formats_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Content_formats.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Used to advertise and negotiate the format of content.
+
+    You will encounter [GdkContentFormats] when interacting with objects
+    controlling operations that pass data between different widgets, window or
+    application, like [Gdk.Drag], [Gdk.Drop], [Gdk.Clipboard] or
+    [Gdk.ContentProvider].
+
+    GDK supports content in 2 forms: [GType] and mime type. Using [GTypes] is
+    meant only for in-process content transfers. Mime types are meant to be used
+    for data passing both in-process and out-of-process. The details of how data
+    is passed is described in the documentation of the actual implementations.
+    To transform between the two forms, [Gdk.ContentSerializer] and
+    [Gdk.ContentDeserializer] are used.
+
+    A [GdkContentFormats] describes a set of possible formats content can be
+    exchanged in. It is assumed that this set is ordered. [GTypes] are more
+    important than mime types. Order between different [GTypes] or mime types is
+    the order they were added in, most important first. Functions that care
+    about order, such as [Gdk.ContentFormats.union], will describe in their
+    documentation how they interpret that order, though in general the order of
+    the first argument is considered the primary order of the result, followed
+    by the order of further arguments.
+
+    For debugging purposes, the function [Gdk.ContentFormats.to_string] exists.
+    It will print a comma-separated list of formats from most important to least
+    important.
+
+    [GdkContentFormats] is an immutable struct. After creation, you cannot
+    change the types it represents. Instead, new [GdkContentFormats] have to be
+    created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
+    endeavor. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string array option -> int -> content_formats_t
 (** Creates a new [GdkContentFormats] from an array of mime types.

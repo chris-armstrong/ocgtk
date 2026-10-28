@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Mask_node}. *)
 
-(** The methods, signals and properties of a [MaskNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MaskNode].}
+
+    A render node masking one child node with another. *)
 class type mask_node_t = object
   inherit Render_node.render_node_t
 
@@ -23,7 +27,7 @@ end
 class mask_node : Raw.Mask_node.t -> mask_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Mask_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t ->

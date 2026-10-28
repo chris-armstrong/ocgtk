@@ -1,12 +1,18 @@
 (** Sorts items numerically.
 
-    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
-
     Its methods, signals and properties are on {!class-type-numeric_sorter_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Numeric_sorter}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Numeric_sorter}. *)
 
-(** The methods, signals and properties of a [NumericSorter]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [NumericSorter].}
+
+    Sorts items numerically.
+
+    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
+*)
 class type numeric_sorter_t = object
   inherit Sorter.sorter_t
 
@@ -34,7 +40,14 @@ end
 class numeric_sorter : Raw.Numeric_sorter.t -> numeric_sorter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Numeric_sorter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Sorts items numerically.
+
+    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Expression.expression_t option -> numeric_sorter_t
 (** Creates a new numeric sorter using the given [expression].

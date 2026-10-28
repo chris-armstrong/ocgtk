@@ -6,7 +6,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_info_list}. *)
 
-(** The methods, signals and properties of a [FileAttributeInfoList]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileAttributeInfoList].}
+
+    Acts as a lightweight registry for possible valid file attributes. The
+    registry stores Key-Value pair formats as [GFileAttributeInfos]. *)
 class type file_attribute_info_list_t = object
   method add :
     string -> Enums.fileattributetype -> Enums.fileattributeinfoflags -> unit
@@ -30,7 +35,7 @@ class file_attribute_info_list :
   file_attribute_info_list_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_attribute_info_list.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> file_attribute_info_list_t
 (** Creates a new file attribute info list. *)

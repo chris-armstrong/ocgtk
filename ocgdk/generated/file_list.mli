@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.File_list}. *)
 
-(** The methods, signals and properties of a [FileList]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileList].}
+
+    An opaque type representing a list of files. *)
 class type file_list_t = object
   method get_files : unit -> Ocgio.File.file_t list
   (** Retrieves the list of files inside a [GdkFileList].
@@ -17,7 +21,7 @@ end
 class file_list : Raw.File_list.t -> file_list_t
 (** Wraps a raw handle of {!Ocgdk.Raw.File_list.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_from_array : Ocgio.Raw.File.t array -> Gsize.t -> file_list_t
 (** Creates a new [GdkFileList] for the given array of files.

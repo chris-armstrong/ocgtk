@@ -142,9 +142,23 @@ class type paned_t = object
   (** Sets whether the separator should be wide. *)
 
   method max_position : int
+  (** The largest possible value for the [Gtk.Paned:position] property.
+
+      This property is derived from the size and shrinkability of the widget's
+      children. *)
+
   method min_position : int
+  (** The smallest possible value for the [Gtk.Paned:position] property.
+
+      This property is derived from the size and shrinkability of the widget's
+      children. *)
+
   method position_set : bool
+  (** Whether the [Gtk.Paned:position] property has been set. *)
+
   method set_position_set : bool -> unit
+  (** Whether the [Gtk.Paned:position] property has been set. *)
+
   method as_paned : Raw.Paned.t
 end
 

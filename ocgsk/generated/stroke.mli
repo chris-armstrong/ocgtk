@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Stroke}. *)
 
-(** The methods, signals and properties of a [Stroke]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Stroke].}
+
+    Collects the parameters that are needed when stroking a path. *)
 class type stroke_t = object
   method get_dash_offset : unit -> float
   (** Gets the dash offset. *)
@@ -89,7 +93,7 @@ end
 class stroke : Raw.Stroke.t -> stroke_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Stroke.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : float -> stroke_t
 (** Creates a new [GskStroke] with the given [line_width]. *)

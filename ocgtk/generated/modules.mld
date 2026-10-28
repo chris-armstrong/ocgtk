@@ -1,4 +1,4 @@
-{0 Gtk modules}
+{0 Gtk classes, interfaces and records}
 
 {!Ocgtk} has one module for each Gtk class, interface and record. The externals they are built on are in {!Ocgtk.Raw}.
 

@@ -2,12 +2,19 @@
     network connectivity. On Linux, the available implementations are based on
     the kernel's netlink interface and on NetworkManager.
 
-    There is also an implementation for use inside Flatpak sandboxes.
-
     Its methods, signals and properties are on {!class-type-network_monitor_t}.
-    The functions it is built on are in {!Ocgio.Raw.Network_monitor}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgio.Raw.Network_monitor}. *)
 
-(** The methods, signals and properties of a [NetworkMonitor]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [NetworkMonitor].}
+
+    [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
+    network connectivity. On Linux, the available implementations are based on
+    the kernel's netlink interface and on NetworkManager.
+
+    There is also an implementation for use inside Flatpak sandboxes. *)
 class type network_monitor_t = object
   method on_network_changed :
     ?after:bool ->
@@ -77,3 +84,11 @@ end
 
 class network_monitor : Raw.Network_monitor.t -> network_monitor_t
 (** Wraps a raw handle of {!Ocgio.Raw.Network_monitor.t}. *)
+
+(** {1:description Description}
+
+    [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
+    network connectivity. On Linux, the available implementations are based on
+    the kernel's netlink interface and on NetworkManager.
+
+    There is also an implementation for use inside Flatpak sandboxes. *)

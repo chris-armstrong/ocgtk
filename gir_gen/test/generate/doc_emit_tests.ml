@@ -228,6 +228,23 @@ let test_placement_by_form () =
     "floating attribute is ocaml.text" "[@@@ocaml.text \"Say \\\"hi\\\".\"]"
     (match attr with Some d -> Doc_emit.floating d | None -> "")
 
+let test_around_separates_comment_from_previous_item () =
+  let comment =
+    item_doc ~indent:"" ~context:Doc_translate.Member (Some "Plain.")
+  in
+  let attr =
+    item_doc ~indent:"" ~context:Doc_translate.Member (Some "Say \"hi\".")
+  in
+  Alcotest.(check string)
+    "blank line, comment, item" "\n(** Plain. *)\nval x : int\n"
+    (Doc_emit.around comment "val x : int\n");
+  Alcotest.(check string)
+    "item, then attribute" "val x : int\n[@@ocaml.doc \"Say \\\"hi\\\".\"]\n\n"
+    (Doc_emit.around attr "val x : int\n");
+  Alcotest.(check string)
+    "no doc: the item alone" "val x : int\n"
+    (Doc_emit.around None "val x : int\n")
+
 let test_no_ascii_quote_in_comment () =
   (* A comment never carries an ASCII quote: that is what keeps the lexer out of
      string mode. Any body with one takes the attribute form instead. *)
@@ -265,4 +282,7 @@ let tests =
     ("attribute payload escaped", `Quick, test_attribute_payload_escaped);
     ("placement by form", `Quick, test_placement_by_form);
     ("comment has no ASCII quote", `Quick, test_no_ascii_quote_in_comment);
+    ( "around separates a comment from the previous item",
+      `Quick,
+      test_around_separates_comment_from_previous_item );
   ]

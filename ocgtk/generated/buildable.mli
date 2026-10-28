@@ -1,5 +1,15 @@
 (** Allows objects to extend and customize deserialization from ui files.
 
+    Its methods, signals and properties are on {!class-type-buildable_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Buildable}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Buildable].}
+
+    Allows objects to extend and customize deserialization from ui files.
+
     The [GtkBuildable] interface includes methods for setting names and
     properties of objects, parsing custom tags and constructing child objects.
 
@@ -10,11 +20,7 @@
 
     An object only needs to implement this interface if it needs to extend the
     [GtkBuilder] XML format or run any extra routines at deserialization time.
-
-    Its methods, signals and properties are on {!class-type-buildable_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Buildable}. *)
-
-(** The methods, signals and properties of a [Buildable]. *)
+*)
 class type buildable_t = object
   method get_buildable_id : unit -> string option
   (** Gets the ID of the [buildable] object.
@@ -27,3 +33,19 @@ end
 
 class buildable : Raw.Buildable.t -> buildable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Buildable.t}. *)
+
+(** {1:description Description}
+
+    Allows objects to extend and customize deserialization from ui files.
+
+    The [GtkBuildable] interface includes methods for setting names and
+    properties of objects, parsing custom tags and constructing child objects.
+
+    It is implemented by all widgets and many of the non-widget objects that are
+    provided by GTK. The main user of this interface is [Gtk.Builder]. There
+    should be very little need for applications to call any of these functions
+    directly.
+
+    An object only needs to implement this interface if it needs to extend the
+    [GtkBuilder] XML format or run any extra routines at deserialization time.
+*)

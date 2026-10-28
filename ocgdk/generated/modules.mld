@@ -1,4 +1,4 @@
-{0 Gdk modules}
+{0 Gdk classes, interfaces and records}
 
 {!Ocgdk} has one module for each Gdk class, interface and record. The externals they are built on are in {!Ocgdk.Raw}.
 

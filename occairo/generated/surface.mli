@@ -3,7 +3,9 @@
     Its methods, signals and properties are on {!class-type-surface_t}. The
     functions it is built on are in {!Occairo.Raw.Surface}. *)
 
-(** The methods, signals and properties of a [Surface]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Surface].} *)
 class type surface_t = object
   method as_surface : Raw.Surface.t
 end

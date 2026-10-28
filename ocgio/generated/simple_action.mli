@@ -6,7 +6,13 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_action}. *)
 
-(** The methods, signals and properties of a [SimpleAction]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SimpleAction].}
+
+    A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
+    interface. This is the easiest way to create an action for purposes of
+    adding it to a [Gio.SimpleActionGroup]. *)
 class type simple_action_t = object
   inherit Action.action_t
 
@@ -95,15 +101,24 @@ class type simple_action_t = object
       hints. *)
 
   method name : string
+  (** The name of the action. This is mostly meaningful for identifying the
+      action once it has been added to a [GSimpleActionGroup]. *)
+
   method parameter_type : Gvariant_type.t
+  (** The type of the parameter that must be given when activating the action.
+  *)
+
   method state_type : Gvariant_type.t
+  (** The [GVariantType] of the state that the action has, or [NULL] if the
+      action is stateless. *)
+
   method as_simple_action : Raw.Simple_action.t
 end
 
 class simple_action : Raw.Simple_action.t -> simple_action_t
 (** Wraps a raw handle of {!Ocgio.Raw.Simple_action.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string -> Gvariant_type.t option -> simple_action_t
 (** Creates a new action.

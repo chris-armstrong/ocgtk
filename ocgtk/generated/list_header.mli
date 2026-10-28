@@ -1,13 +1,18 @@
 (** Used by list widgets to represent the headers they display.
 
+    Its methods, signals and properties are on {!class-type-list_header_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.List_header}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ListHeader].}
+
+    Used by list widgets to represent the headers they display.
+
     [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
     their factory, but provide a different set of properties suitable for
-    managing the header instead of individual items.
-
-    Its methods, signals and properties are on {!class-type-list_header_t}. The
-    functions it is built on are in {!Ocgtk.Raw.List_header}. *)
-
-(** The methods, signals and properties of a [ListHeader]. *)
+    managing the header instead of individual items. *)
 class type list_header_t = object
   method get_child :
     unit ->
@@ -55,3 +60,11 @@ end
 
 class list_header : Raw.List_header.t -> list_header_t
 (** Wraps a raw handle of {!Ocgtk.Raw.List_header.t}. *)
+
+(** {1:description Description}
+
+    Used by list widgets to represent the headers they display.
+
+    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
+    their factory, but provide a different set of properties suitable for
+    managing the header instead of individual items. *)

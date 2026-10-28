@@ -1,6 +1,18 @@
 (** A [GtkShortcutsSection] collects all the keyboard shortcuts and gestures for
     a major application mode.
 
+    Its methods, signals and properties are on
+    {!class-type-shortcuts_section_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcuts_section}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ShortcutsSection].}
+
+    A [GtkShortcutsSection] collects all the keyboard shortcuts and gestures for
+    a major application mode.
+
     If your application needs multiple sections, you should give each section a
     unique [Gtk.ShortcutsSection:section-name] and a
     [Gtk.ShortcutsSection:title] that can be shown in the section selector of
@@ -25,13 +37,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page]
-
-    Its methods, signals and properties are on
-    {!class-type-shortcuts_section_t}. The functions it is built on are in
-    {!Ocgtk.Raw.Shortcuts_section}. *)
-
-(** The methods, signals and properties of a [ShortcutsSection]. *)
+    - [Gtk.ShortcutsSection::change-current-page] *)
 class type shortcuts_section_t = object
   inherit Box.box_t
 
@@ -55,15 +61,96 @@ class type shortcuts_section_t = object
       [GtkShortcutsSection] manages its children internally. *)
 
   method max_height : int
+  (** The maximum number of lines to allow per column.
+
+      This property can be used to influence how the groups in this section are
+      distributed across pages and columns. The default value of 15 should work
+      in most cases. *)
+
   method set_max_height : int -> unit
+  (** The maximum number of lines to allow per column.
+
+      This property can be used to influence how the groups in this section are
+      distributed across pages and columns. The default value of 15 should work
+      in most cases. *)
+
   method section_name : string
+  (** A unique name to identify this section among the sections added to the
+      [GtkShortcutsWindow].
+
+      Setting the [Gtk.ShortcutsWindow:section-name] property to this string
+      will make this section shown in the [GtkShortcutsWindow]. *)
+
   method set_section_name : string -> unit
+  (** A unique name to identify this section among the sections added to the
+      [GtkShortcutsWindow].
+
+      Setting the [Gtk.ShortcutsWindow:section-name] property to this string
+      will make this section shown in the [GtkShortcutsWindow]. *)
+
   method title : string
+  (** The string to show in the section selector of the [GtkShortcutsWindow] for
+      this section.
+
+      If there is only one section, you don't need to set a title, since the
+      section selector will not be shown in this case. *)
+
   method set_title : string -> unit
+  (** The string to show in the section selector of the [GtkShortcutsWindow] for
+      this section.
+
+      If there is only one section, you don't need to set a title, since the
+      section selector will not be shown in this case. *)
+
   method view_name : string
+  (** A view name to filter the groups in this section by.
+
+      See [Gtk.ShortcutsGroup:view].
+
+      Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+      property for this purpose. *)
+
   method set_view_name : string -> unit
+  (** A view name to filter the groups in this section by.
+
+      See [Gtk.ShortcutsGroup:view].
+
+      Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+      property for this purpose. *)
+
   method as_shortcuts_section : Raw.Shortcuts_section.t
 end
 
 class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_section.t}. *)
+
+(** {1:description Description}
+
+    A [GtkShortcutsSection] collects all the keyboard shortcuts and gestures for
+    a major application mode.
+
+    If your application needs multiple sections, you should give each section a
+    unique [Gtk.ShortcutsSection:section-name] and a
+    [Gtk.ShortcutsSection:title] that can be shown in the section selector of
+    the [Gtk.ShortcutsWindow].
+
+    The [Gtk.ShortcutsSection:max-height] property can be used to influence how
+    the groups in the section are distributed over pages and columns.
+
+    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+
+    The recommended way to construct a [GtkShortcutsSection] is with
+    [Gtk.Builder], by using the [<child>] tag to populate a
+    [GtkShortcutsSection] with one or more [Gtk.ShortcutsGroup] instances, which
+    in turn contain one or more [Gtk.ShortcutsShortcut] objects.
+
+    If you need to add a group programmatically, use
+    [Gtk.ShortcutsSection.add_group].
+
+    {b Shortcuts and Gestures}
+
+    Pan gestures allow to navigate between sections.
+
+    The following signals have default keybindings:
+
+    - [Gtk.ShortcutsSection::change-current-page] *)

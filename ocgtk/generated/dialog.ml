@@ -87,6 +87,21 @@ class type dialog_t = object
       dialog’s action area with the given [response_id]. *)
 
   method use_header_bar : int
+  [@@ocaml.doc
+    "[TRUE] if the dialog uses a headerbar for action buttons\n\
+     instead of the action-area.\n\n\
+     For technical reasons, this property is declared as an integer\n\
+     property, but you should only set it to [TRUE] or [FALSE].\n\n\
+     {b Creating a dialog with headerbar}\n\n\
+     Builtin [GtkDialog] subclasses such as [Gtk.ColorChooserDialog]\n\
+     set this property according to platform conventions (using the\n\
+     [Gtk.Settings:gtk-dialogs-use-header] setting).\n\n\
+     Here is how you can achieve the same:\n\n\
+     {[\n\
+     g_object_get (settings, \"gtk-dialogs-use-header\", &header, NULL);\n\
+     dialog = g_object_new (GTK_TYPE_DIALOG, header, TRUE, NULL);\n\
+     ]}"]
+
   method as_dialog : Raw.Dialog.t
 end
 

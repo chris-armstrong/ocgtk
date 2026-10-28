@@ -22,45 +22,85 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_progress_new"
 (* Properties *)
 
 external get_inverted : t -> bool = "ml_gtk_cell_renderer_progress_get_inverted"
-(** Get property: inverted *)
+(** Whether progess is inverted. *)
 
 external set_inverted : t -> bool -> unit
   = "ml_gtk_cell_renderer_progress_set_inverted"
-(** Set property: inverted *)
+(** Whether progess is inverted. *)
 
 external get_pulse : t -> int = "ml_gtk_cell_renderer_progress_get_pulse"
-(** Get property: pulse *)
+[@@ocaml.doc
+  "Setting this to a non-negative value causes the cell renderer to\n\
+   enter \"activity mode\", where a block bounces back and forth to\n\
+   indicate that some progress is made, without specifying exactly how\n\
+   much.\n\n\
+   Each increment of the property causes the block to move by a little\n\
+   bit.\n\n\
+   To indicate that the activity has not started yet, set the property\n\
+   to zero. To indicate completion, set the property to [G_MAXINT]."]
 
 external set_pulse : t -> int -> unit
   = "ml_gtk_cell_renderer_progress_set_pulse"
-(** Set property: pulse *)
+[@@ocaml.doc
+  "Setting this to a non-negative value causes the cell renderer to\n\
+   enter \"activity mode\", where a block bounces back and forth to\n\
+   indicate that some progress is made, without specifying exactly how\n\
+   much.\n\n\
+   Each increment of the property causes the block to move by a little\n\
+   bit.\n\n\
+   To indicate that the activity has not started yet, set the property\n\
+   to zero. To indicate completion, set the property to [G_MAXINT]."]
 
 external get_text : t -> string = "ml_gtk_cell_renderer_progress_get_text"
-(** Get property: text *)
+[@@ocaml.doc
+  "The \"text\" property determines the label which will be drawn\n\
+   over the progress bar. Setting this property to [NULL] causes the default\n\
+   label to be displayed. Setting this property to an empty string causes\n\
+   no label to be displayed."]
 
 external set_text : t -> string -> unit
   = "ml_gtk_cell_renderer_progress_set_text"
-(** Set property: text *)
+[@@ocaml.doc
+  "The \"text\" property determines the label which will be drawn\n\
+   over the progress bar. Setting this property to [NULL] causes the default\n\
+   label to be displayed. Setting this property to an empty string causes\n\
+   no label to be displayed."]
 
 external get_text_xalign : t -> float
   = "ml_gtk_cell_renderer_progress_get_text_xalign"
-(** Get property: text-xalign *)
+[@@ocaml.doc
+  "The \"text-xalign\" property controls the horizontal alignment of the\n\
+   text in the progress bar.  Valid values range from 0 (left) to 1\n\
+   (right).  Reserved for RTL layouts."]
 
 external set_text_xalign : t -> float -> unit
   = "ml_gtk_cell_renderer_progress_set_text_xalign"
-(** Set property: text-xalign *)
+[@@ocaml.doc
+  "The \"text-xalign\" property controls the horizontal alignment of the\n\
+   text in the progress bar.  Valid values range from 0 (left) to 1\n\
+   (right).  Reserved for RTL layouts."]
 
 external get_text_yalign : t -> float
   = "ml_gtk_cell_renderer_progress_get_text_yalign"
-(** Get property: text-yalign *)
+[@@ocaml.doc
+  "The \"text-yalign\" property controls the vertical alignment of the\n\
+   text in the progress bar.  Valid values range from 0 (top) to 1\n\
+   (bottom)."]
 
 external set_text_yalign : t -> float -> unit
   = "ml_gtk_cell_renderer_progress_set_text_yalign"
-(** Set property: text-yalign *)
+[@@ocaml.doc
+  "The \"text-yalign\" property controls the vertical alignment of the\n\
+   text in the progress bar.  Valid values range from 0 (top) to 1\n\
+   (bottom)."]
 
 external get_value : t -> int = "ml_gtk_cell_renderer_progress_get_value"
-(** Get property: value *)
+[@@ocaml.doc
+  "The \"value\" property determines the percentage to which the\n\
+   progress bar will be \"filled in\"."]
 
 external set_value : t -> int -> unit
   = "ml_gtk_cell_renderer_progress_set_value"
-(** Set property: value *)
+[@@ocaml.doc
+  "The \"value\" property determines the percentage to which the\n\
+   progress bar will be \"filled in\"."]

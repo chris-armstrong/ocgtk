@@ -1,5 +1,15 @@
 (** An object for rendering a single cell
 
+    Its methods, signals and properties are on {!class-type-cell_renderer_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Cell_renderer}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [CellRenderer].}
+
+    An object for rendering a single cell
+
     The [GtkCellRenderer] is a base class of a set of objects used for rendering
     a cell to a [cairo_t]. These objects are used primarily by the [GtkTreeView]
     widget, though they aren’t tied to them in any specific way. It is worth
@@ -32,12 +42,7 @@
     Many properties of [GtkCellRenderer] and its subclasses have a corresponding
     “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
     These “set” properties reflect whether a property has been set or not. You
-    should not set them independently.
-
-    Its methods, signals and properties are on {!class-type-cell_renderer_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Cell_renderer}. *)
-
-(** The methods, signals and properties of a [CellRenderer]. *)
+    should not set them independently. *)
 class type cell_renderer_t = object
   method on_editing_canceled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -185,27 +190,105 @@ class type cell_renderer_t = object
       [GtkCellEditable]. *)
 
   method set_cell_background : string -> unit
+  (** Set property: cell-background *)
+
   method cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t
+  (** Cell background as a [GdkRGBA] *)
+
   method set_cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit
+  (** Cell background as a [GdkRGBA] *)
+
   method cell_background_set : bool
+  (** Get property: cell-background-set *)
+
   method set_cell_background_set : bool -> unit
+  (** Set property: cell-background-set *)
+
   method editing : bool
+  (** Get property: editing *)
+
   method height : int
+  (** Get property: height *)
+
   method set_height : int -> unit
+  (** Set property: height *)
+
   method mode : Enums.cellrenderermode
+  (** Get property: mode *)
+
   method set_mode : Enums.cellrenderermode -> unit
+  (** Set property: mode *)
+
   method width : int
+  (** Get property: width *)
+
   method set_width : int -> unit
+  (** Set property: width *)
+
   method xalign : float
+  (** Get property: xalign *)
+
   method set_xalign : float -> unit
+  (** Set property: xalign *)
+
   method xpad : int
+  (** Get property: xpad *)
+
   method set_xpad : int -> unit
+  (** Set property: xpad *)
+
   method yalign : float
+  (** Get property: yalign *)
+
   method set_yalign : float -> unit
+  (** Set property: yalign *)
+
   method ypad : int
+  (** Get property: ypad *)
+
   method set_ypad : int -> unit
+  (** Set property: ypad *)
+
   method as_cell_renderer : Raw.Cell_renderer.t
 end
 
 class cell_renderer : Raw.Cell_renderer.t -> cell_renderer_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer.t}. *)
+
+(** {1:description Description}
+
+    An object for rendering a single cell
+
+    The [GtkCellRenderer] is a base class of a set of objects used for rendering
+    a cell to a [cairo_t]. These objects are used primarily by the [GtkTreeView]
+    widget, though they aren’t tied to them in any specific way. It is worth
+    noting that [GtkCellRenderer] is not a [GtkWidget] and cannot be treated as
+    such.
+
+    The primary use of a [GtkCellRenderer] is for drawing a certain graphical
+    elements on a [cairo_t]. Typically, one cell renderer is used to draw many
+    cells on the screen. To this extent, it isn’t expected that a CellRenderer
+    keep any permanent state around. Instead, any state is set just prior to use
+    using [GObject]s property system. Then, the cell is measured using
+    gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
+    correct location using gtk_cell_renderer_snapshot().
+
+    There are a number of rules that must be followed when writing a new
+    [GtkCellRenderer]. First and foremost, it’s important that a certain set of
+    properties will always yield a cell renderer of the same size, barring a
+    style change. The [GtkCellRenderer] also has a number of generic properties
+    that are expected to be honored by all children.
+
+    Beyond merely rendering a cell, cell renderers can optionally provide active
+    user interface elements. A cell renderer can be “activatable” like
+    [GtkCellRenderer]Toggle, which toggles when it gets activated by a mouse
+    click, or it can be “editable” like [GtkCellRenderer]Text, which allows the
+    user to edit the text using a widget implementing the [GtkCellEditable]
+    interface, e.g. [GtkEntry]. To make a cell renderer activatable or editable,
+    you have to implement the [GtkCellRenderer]Class.activate or
+    [GtkCellRenderer]Class.start_editing virtual functions, respectively.
+
+    Many properties of [GtkCellRenderer] and its subclasses have a corresponding
+    “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
+    These “set” properties reflect whether a property has been set or not. You
+    should not set them independently. *)

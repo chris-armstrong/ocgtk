@@ -1,5 +1,16 @@
 (** Opens a font chooser dialog to select a font.
 
+    Its methods, signals and properties are on
+    {!class-type-font_dialog_button_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Font_dialog_button}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FontDialogButton].}
+
+    Opens a font chooser dialog to select a font.
+
     An example GtkFontDialogButton
 
     It is suitable widget for selecting a font in a preference dialog.
@@ -13,14 +24,7 @@
     ]}
 
     [GtkFontDialogButton] has a single CSS node with name fontbutton which
-    contains a button node with the .font style class.
-
-    Its methods, signals and properties are on
-    {!class-type-font_dialog_button_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Font_dialog_button}. *)
-
-(** The methods, signals and properties of a [FontDialogButton]. *)
+    contains a button node with the .font style class. *)
 class type font_dialog_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -98,7 +102,26 @@ end
 class font_dialog_button : Raw.Font_dialog_button.t -> font_dialog_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Font_dialog_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Opens a font chooser dialog to select a font.
+
+    An example GtkFontDialogButton
+
+    It is suitable widget for selecting a font in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    fontbutton
+    ╰── button.font
+        ╰── [content]
+    ]}
+
+    [GtkFontDialogButton] has a single CSS node with name fontbutton which
+    contains a button node with the .font style class. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Font_dialog.font_dialog_t option -> font_dialog_button_t
 (** Creates a new [GtkFontDialogButton] with the given [GtkFontDialog].

@@ -34,4 +34,4 @@ external add_emblem : t -> Emblem.t -> unit = "ml_g_emblemed_icon_add_emblem"
 (* Properties *)
 
 external get_gicon : t -> Icon.t = "ml_g_emblemed_icon_get_gicon"
-(** Get property: gicon *)
+(** The [Gio.Icon] to attach emblems to. *)

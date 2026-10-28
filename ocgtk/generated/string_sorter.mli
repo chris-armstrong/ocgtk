@@ -1,16 +1,21 @@
 (** Sorts items by comparing strings.
 
+    Its methods, signals and properties are on {!class-type-string_sorter_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.String_sorter}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [StringSorter].}
+
+    Sorts items by comparing strings.
+
     To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
 
     It does the comparison in a linguistically correct way using the current
     locale by normalizing Unicode strings and possibly case-folding them before
-    performing the comparison.
-
-    Its methods, signals and properties are on {!class-type-string_sorter_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.String_sorter}. *)
-
-(** The methods, signals and properties of a [StringSorter]. *)
+    performing the comparison. *)
 class type string_sorter_t = object
   inherit Sorter.sorter_t
 
@@ -40,7 +45,17 @@ end
 class string_sorter : Raw.String_sorter.t -> string_sorter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.String_sorter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Sorts items by comparing strings.
+
+    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+
+    It does the comparison in a linguistically correct way using the current
+    locale by normalizing Unicode strings and possibly case-folding them before
+    performing the comparison. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Expression.expression_t option -> string_sorter_t
 (** Creates a new string sorter that compares items using the given

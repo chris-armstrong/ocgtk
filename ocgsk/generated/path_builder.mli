@@ -1,5 +1,16 @@
 (** Constructs [GskPath] objects.
 
+    Its methods, signals and properties are on {!class-type-path_builder_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Path_builder}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PathBuilder].}
+
+    Constructs [GskPath] objects.
+
     A path is constructed like this:
 
     {[
@@ -34,13 +45,7 @@
     This is similar to how paths are drawn in Cairo.
 
     Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
-    much as possible, to simplify rendering.
-
-    Its methods, signals and properties are on {!class-type-path_builder_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgsk.Raw.Path_builder}. *)
-
-(** The methods, signals and properties of a [PathBuilder]. *)
+    much as possible, to simplify rendering. *)
 class type path_builder_t = object
   method add_cairo_path : Occairo.Path.path_t -> unit
   (** Adds a Cairo path to the builder.
@@ -275,7 +280,47 @@ end
 class path_builder : Raw.Path_builder.t -> path_builder_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Path_builder.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Constructs [GskPath] objects.
+
+    A path is constructed like this:
+
+    {[
+    GskPath *
+    construct_path (void)
+    {
+      GskPathBuilder *builder;
+
+      builder = gsk_path_builder_new ();
+
+      // add contours to the path here
+
+      return gsk_path_builder_free_to_path (builder);
+    ]}
+
+    Adding contours to the path can be done in two ways. The easiest option is
+    to use the [gsk_path_builder_add_*] group of functions that add predefined
+    contours to the current path, either common shapes like
+    [Gsk.PathBuilder.add_circle] or by adding from other paths like
+    [Gsk.PathBuilder.add_path].
+
+    The [gsk_path_builder_add_*] methods always add complete contours, and do
+    not use or modify the current point.
+
+    The other option is to define each line and curve manually with the
+    [gsk_path_builder_*_to] group of functions. You start with a call to
+    [Gsk.PathBuilder.move_to] to set the starting point and then use multiple
+    calls to any of the drawing functions to move the pen along the plane. Once
+    you are done, you can call [Gsk.PathBuilder.close] to close the path by
+    connecting it back with a line to the starting point.
+
+    This is similar to how paths are drawn in Cairo.
+
+    Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
+    much as possible, to simplify rendering. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> path_builder_t
 (** Create a new [GskPathBuilder] object.

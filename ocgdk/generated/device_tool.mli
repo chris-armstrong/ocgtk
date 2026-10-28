@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-device_tool_t}. The
     functions it is built on are in {!Ocgdk.Raw.Device_tool}. *)
 
-(** The methods, signals and properties of a [DeviceTool]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DeviceTool].}
+
+    A physical tool associated to a [GdkDevice]. *)
 class type device_tool_t = object
   method get_axes : unit -> Enums.axisflags
   (** Gets the axes of the tool. *)

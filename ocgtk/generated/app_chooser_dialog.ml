@@ -17,6 +17,11 @@ class type app_chooser_dialog_t = object
       If the heading is not set, the dialog displays a default text. *)
 
   method gfile : Ocgio.File.file_t
+  (** The GFile used by the [GtkAppChooserDialog].
+
+      The dialog's [GtkAppChooserWidget] content type will be guessed from the
+      file, if present. *)
+
   method as_app_chooser_dialog : Raw.App_chooser_dialog.t
 end
 

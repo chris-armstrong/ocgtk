@@ -1,5 +1,15 @@
 (** The type of item used by [GtkTreeListModel].
 
+    Its methods, signals and properties are on {!class-type-tree_list_row_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_list_row}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [TreeListRow].}
+
+    The type of item used by [GtkTreeListModel].
+
     It allows navigating the model as a tree and modify the state of rows.
 
     [GtkTreeListRow] instances are created by a [GtkTreeListModel] only when the
@@ -8,12 +18,7 @@
     There are various support objects that can make use of [GtkTreeListRow]
     objects, such as the [Gtk.TreeExpander] widget that allows displaying an
     icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
-    possible to sort trees properly.
-
-    Its methods, signals and properties are on {!class-type-tree_list_row_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_list_row}. *)
-
-(** The methods, signals and properties of a [TreeListRow]. *)
+    possible to sort trees properly. *)
 class type tree_list_row_t = object
   method get_child_row : int -> tree_list_row_t option
   (** If [self] is not expanded or [position] is greater than the number of
@@ -81,3 +86,17 @@ end
 
 class tree_list_row : Raw.Tree_list_row.t -> tree_list_row_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_row.t}. *)
+
+(** {1:description Description}
+
+    The type of item used by [GtkTreeListModel].
+
+    It allows navigating the model as a tree and modify the state of rows.
+
+    [GtkTreeListRow] instances are created by a [GtkTreeListModel] only when the
+    [Gtk.TreeListModel:passthrough] property is not set.
+
+    There are various support objects that can make use of [GtkTreeListRow]
+    objects, such as the [Gtk.TreeExpander] widget that allows displaying an
+    icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
+    possible to sort trees properly. *)

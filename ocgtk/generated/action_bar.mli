@@ -1,5 +1,16 @@
 (** Presents contextual actions.
 
+    Its methods, signals and properties are on {!class-type-action_bar_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Action_bar}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ActionBar].}
+
+    Presents contextual actions.
+
     An example GtkActionBar
 
     [GtkActionBar] is expected to be displayed below the content and expand
@@ -35,13 +46,7 @@
     at the start and end of the action bar, with [start] and [end] style classes
     respectively, as well as a center node that represents the center child.
 
-    Each of the boxes contains children packed for that side.
-
-    Its methods, signals and properties are on {!class-type-action_bar_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Action_bar}. *)
-
-(** The methods, signals and properties of a [ActionBar]. *)
+    Each of the boxes contains children packed for that side. *)
 class type action_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -97,7 +102,48 @@ end
 class action_bar : Raw.Action_bar.t -> action_bar_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Action_bar.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Presents contextual actions.
+
+    An example GtkActionBar
+
+    [GtkActionBar] is expected to be displayed below the content and expand
+    horizontally to fill the area.
+
+    It allows placing children at the start or the end. In addition, it contains
+    an internal centered box which is centered with respect to the full width of
+    the box, even if the children at either side take up different amounts of
+    space.
+
+    {b GtkActionBar as GtkBuildable}
+
+    The [GtkActionBar] implementation of the [GtkBuildable] interface supports
+    adding children at the start or end sides by specifying “start” or “end” as
+    the “type” attribute of a [<child>] element, or setting the center widget by
+    specifying “center” value.
+
+    {b CSS nodes}
+
+    {[
+    actionbar
+    ╰── revealer
+        ╰── box
+            ├── box.start
+            │   ╰── [start children]
+            ├── [center widget]
+            ╰── box.end
+                ╰── [end children]
+    ]}
+
+    A [GtkActionBar]'s CSS node is called [actionbar]. It contains a [revealer]
+    subnode, which contains a [box] subnode, which contains two [box] subnodes
+    at the start and end of the action bar, with [start] and [end] style classes
+    respectively, as well as a center node that represents the center child.
+
+    Each of the boxes contains children packed for that side. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> action_bar_t
 (** Creates a new action bar widget. *)

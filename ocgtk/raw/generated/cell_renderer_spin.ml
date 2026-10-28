@@ -36,22 +36,24 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_spin_new"
 
 external get_adjustment : t -> Adjustment.t
   = "ml_gtk_cell_renderer_spin_get_adjustment"
-(** Get property: adjustment *)
+(** The adjustment that holds the value of the spinbutton. This must be
+    non-[NULL] for the cell renderer to be editable. *)
 
 external set_adjustment : t -> Adjustment.t -> unit
   = "ml_gtk_cell_renderer_spin_set_adjustment"
-(** Set property: adjustment *)
+(** The adjustment that holds the value of the spinbutton. This must be
+    non-[NULL] for the cell renderer to be editable. *)
 
 external get_climb_rate : t -> float
   = "ml_gtk_cell_renderer_spin_get_climb_rate"
-(** Get property: climb-rate *)
+(** The acceleration rate when you hold down a button. *)
 
 external set_climb_rate : t -> float -> unit
   = "ml_gtk_cell_renderer_spin_set_climb_rate"
-(** Set property: climb-rate *)
+(** The acceleration rate when you hold down a button. *)
 
 external get_digits : t -> int = "ml_gtk_cell_renderer_spin_get_digits"
-(** Get property: digits *)
+(** The number of decimal places to display. *)
 
 external set_digits : t -> int -> unit = "ml_gtk_cell_renderer_spin_set_digits"
-(** Set property: digits *)
+(** The number of decimal places to display. *)

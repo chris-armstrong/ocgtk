@@ -1,18 +1,23 @@
 (** Specifies a transfer function for a color component to be applied while
     rendering.
 
+    Its methods, signals and properties are on
+    {!class-type-component_transfer_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgsk.Raw.Component_transfer}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ComponentTransfer].}
+
+    Specifies a transfer function for a color component to be applied while
+    rendering.
+
     The available functions include linear, piecewise-linear, gamma and step
     functions.
 
     Note that the transfer function is applied to un-premultiplied values, and
-    all results are clamped to the \[0, 1\] range.
-
-    Its methods, signals and properties are on
-    {!class-type-component_transfer_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgsk.Raw.Component_transfer}. *)
-
-(** The methods, signals and properties of a [ComponentTransfer]. *)
+    all results are clamped to the \[0, 1\] range. *)
 class type component_transfer_t = object
   method as_component_transfer : Raw.Component_transfer.t
 end
@@ -20,7 +25,18 @@ end
 class component_transfer : Raw.Component_transfer.t -> component_transfer_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Component_transfer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Specifies a transfer function for a color component to be applied while
+    rendering.
+
+    The available functions include linear, piecewise-linear, gamma and step
+    functions.
+
+    Note that the transfer function is applied to un-premultiplied values, and
+    all results are clamped to the \[0, 1\] range. *)
+
+(** {1:constructors Constructors} *)
 
 val new_discrete : int -> float array -> component_transfer_t
 (** Creates a new component transfer that applies a step function.

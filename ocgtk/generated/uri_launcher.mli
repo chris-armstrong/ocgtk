@@ -1,5 +1,16 @@
 (** Asynchronous API to open a uri with an application.
 
+    Its methods, signals and properties are on {!class-type-uri_launcher_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Uri_launcher}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [UriLauncher].}
+
+    Asynchronous API to open a uri with an application.
+
     [GtkUriLauncher] collects the arguments that are needed to open the uri.
 
     Depending on system configuration, user preferences and available APIs, this
@@ -8,13 +19,7 @@
 
     The operation is started with the [Gtk.UriLauncher.launch] function.
 
-    To launch a file, use [Gtk.FileLauncher].
-
-    Its methods, signals and properties are on {!class-type-uri_launcher_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Uri_launcher}. *)
-
-(** The methods, signals and properties of a [UriLauncher]. *)
+    To launch a file, use [Gtk.FileLauncher]. *)
 class type uri_launcher_t = object
   method can_launch :
     Application_and__window_and__window_group.window_t option -> bool
@@ -40,7 +45,21 @@ end
 class uri_launcher : Raw.Uri_launcher.t -> uri_launcher_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Uri_launcher.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Asynchronous API to open a uri with an application.
+
+    [GtkUriLauncher] collects the arguments that are needed to open the uri.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.UriLauncher.launch] function.
+
+    To launch a file, use [Gtk.FileLauncher]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string option -> uri_launcher_t
 (** Creates a new [GtkUriLauncher] object. *)

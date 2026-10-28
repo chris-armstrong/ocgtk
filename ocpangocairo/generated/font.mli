@@ -1,12 +1,17 @@
 (** [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
+    Its methods, signals and properties are on {!class-type-font_t}. Its full
+    description is under {!section-description}. The functions it is built on
+    are in {!Ocpangocairo.Raw.Font}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Font].}
+
+    [PangoCairoFont] is an interface exported by fonts for use with Cairo.
+
     The actual type of the font will depend on the particular font technology
-    Cairo was compiled to use.
-
-    Its methods, signals and properties are on {!class-type-font_t}. The
-    functions it is built on are in {!Ocpangocairo.Raw.Font}. *)
-
-(** The methods, signals and properties of a [Font]. *)
+    Cairo was compiled to use. *)
 class type font_t = object
   method get_scaled_font : unit -> Occairo.Scaled_font.scaled_font_t option
   (** Gets the [cairo_scaled_font_t] used by [font]. The scaled font can be
@@ -17,3 +22,10 @@ end
 
 class font : Raw.Font.t -> font_t
 (** Wraps a raw handle of {!Ocpangocairo.Raw.Font.t}. *)
+
+(** {1:description Description}
+
+    [PangoCairoFont] is an interface exported by fonts for use with Cairo.
+
+    The actual type of the font will depend on the particular font technology
+    Cairo was compiled to use. *)

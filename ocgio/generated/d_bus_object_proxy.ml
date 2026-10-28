@@ -5,7 +5,11 @@ class type d_bus_object_proxy_t = object
   (** Gets the connection that [proxy] is for. *)
 
   method g_connection : D_bus_connection.d_bus_connection_t
+  (** The connection of the proxy. *)
+
   method g_object_path : string
+  (** The object path of the proxy. *)
+
   method as_d_bus_object_proxy : Raw.D_bus_object_proxy.t
 end
 

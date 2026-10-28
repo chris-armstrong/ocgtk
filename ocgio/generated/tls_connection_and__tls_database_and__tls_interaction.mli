@@ -3,7 +3,14 @@
     Each has a module of its own that re-exports it; use that module rather than
     this one. *)
 
-(** The methods, signals and properties of a [TlsConnection]. *)
+(** {b The methods, signals and properties of a [TlsConnection].}
+
+    [GTlsConnection] is the base TLS connection class type, which wraps a
+    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
+    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
+    client-side and server-side TLS, respectively.
+
+    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection]. *)
 class type tls_connection_t = object
   inherit Io_stream.io_stream_t
 
@@ -249,10 +256,26 @@ class type tls_connection_t = object
       [GTlsClientConnection:validation]-flags). *)
 
   method base_io_stream : Io_stream.io_stream_t
+  (** The [GIOStream] that the connection wraps. The connection holds a
+      reference to this stream, and may run operations on the stream from other
+      threads throughout its lifetime. Consequently, after the [GIOStream] has
+      been constructed, application code may only run its own operations on this
+      stream when no [GIOStream] operations are running. *)
+
   method as_tls_connection : Raw.Tls_connection.t
 end
 
-(** The methods, signals and properties of a [TlsDatabase]. *)
+(** {b The methods, signals and properties of a [TlsDatabase].}
+
+    [GTlsDatabase] is used to look up certificates and other information from a
+    certificate or key store. It is an abstract base class which TLS library
+    specific subtypes override.
+
+    A [GTlsDatabase] may be accessed from multiple threads by the TLS backend.
+    All implementations are required to be fully thread-safe.
+
+    Most common client applications will not directly interact with
+    [GTlsDatabase]. It is used internally by [Gio.TlsConnection]. *)
 and tls_database_t = object
   method create_certificate_handle :
     Tls_certificate.tls_certificate_t -> string option
@@ -420,7 +443,28 @@ and tls_database_t = object
   method as_tls_database : Raw.Tls_database.t
 end
 
-(** The methods, signals and properties of a [TlsInteraction]. *)
+(** {b The methods, signals and properties of a [TlsInteraction].}
+
+    [GTlsInteraction] provides a mechanism for the TLS connection and database
+    code to interact with the user. It can be used to ask the user for
+    passwords.
+
+    To use a [GTlsInteraction] with a TLS connection use
+    [Gio.TlsConnection.set_interaction].
+
+    Callers should instantiate a derived class that implements the various
+    interaction methods to show the required dialogs.
+
+    Callers should use the 'invoke' functions like
+    [Gio.TlsInteraction.invoke_ask_password] to run interaction methods. These
+    functions make sure that the interaction is invoked in the main loop and not
+    in the current thread, if the current thread is not running the main loop.
+
+    Derived classes can choose to implement whichever interactions methods
+    they’d like to support by overriding those virtual methods in their class
+    initialization function. Any interactions not implemented will return
+    [G_TLS_INTERACTION_UNHANDLED]. If a derived class implements an async
+    method, it must also implement the corresponding finish method. *)
 and tls_interaction_t = object
   method ask_password :
     Tls_password.tls_password_t ->

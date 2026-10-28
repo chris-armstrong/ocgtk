@@ -1,13 +1,19 @@
 (** [GtkFontChooser] is an interface that can be implemented by widgets for
     choosing fonts.
 
+    Its methods, signals and properties are on {!class-type-font_chooser_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Font_chooser}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FontChooser].}
+
+    [GtkFontChooser] is an interface that can be implemented by widgets for
+    choosing fonts.
+
     In GTK, the main objects that implement this interface are
-    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton].
-
-    Its methods, signals and properties are on {!class-type-font_chooser_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Font_chooser}. *)
-
-(** The methods, signals and properties of a [FontChooser]. *)
+    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
 class type font_chooser_t = object
   method on_font_activated :
     ?after:bool ->
@@ -137,3 +143,11 @@ end
 
 class font_chooser : Raw.Font_chooser.t -> font_chooser_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Font_chooser.t}. *)
+
+(** {1:description Description}
+
+    [GtkFontChooser] is an interface that can be implemented by widgets for
+    choosing fonts.
+
+    In GTK, the main objects that implement this interface are
+    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)

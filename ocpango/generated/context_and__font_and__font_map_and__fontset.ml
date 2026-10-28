@@ -274,7 +274,11 @@ and font_map_t = object
       size. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items contained in this list. *)
+
   method n_items : int
+  (** The number of items contained in this list. *)
+
   method as_font_map : Raw.Font_map.t
 end
 

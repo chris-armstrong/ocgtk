@@ -1,14 +1,20 @@
 (** [GListStore] is a simple implementation of [Gio.ListModel] that stores all
     items in memory.
 
-    It provides insertions, deletions, and lookups in logarithmic time with a
-    fast path for the common case of iterating the list linearly.
-
     Its methods, signals and properties are on {!class-type-list_store_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgio.Raw.List_store}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.List_store}. *)
 
-(** The methods, signals and properties of a [ListStore]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ListStore].}
+
+    [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+    items in memory.
+
+    It provides insertions, deletions, and lookups in logarithmic time with a
+    fast path for the common case of iterating the list linearly. *)
 class type list_store_t = object
   inherit List_model.list_model_t
 
@@ -56,14 +62,27 @@ class type list_store_t = object
       the time this function is called). *)
 
   method item_type : Gobject.Type.t
+  (** The type of items contained in this list store. Items must be subclasses
+      of [GObject]. *)
+
   method n_items : int
+  (** The number of items contained in this list store. *)
+
   method as_list_store : Raw.List_store.t
 end
 
 class list_store : Raw.List_store.t -> list_store_t
 (** Wraps a raw handle of {!Ocgio.Raw.List_store.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+    items in memory.
+
+    It provides insertions, deletions, and lookups in logarithmic time with a
+    fast path for the common case of iterating the list linearly. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Gobject.Type.t -> list_store_t
 (** Creates a new [GListStore] with items of type [item_type]. [item_type] must

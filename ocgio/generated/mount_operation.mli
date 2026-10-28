@@ -4,6 +4,21 @@
     the user questions or show a list of applications preventing unmount or
     eject operations from completing.
 
+    Its methods, signals and properties are on {!class-type-mount_operation_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Mount_operation}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MountOperation].}
+
+    [GMountOperation] provides a mechanism for interacting with the user. It can
+    be used for authenticating mountable operations, such as loop mounting
+    files, hard drive partitions or server locations. It can also be used to ask
+    the user questions or show a list of applications preventing unmount or
+    eject operations from completing.
+
     Note that [GMountOperation] is used for more than just [Gio.Mount] objects –
     for example it is also used in [Gio.Drive.start] and [Gio.Drive.stop].
 
@@ -19,13 +34,7 @@
     {{:https://en.wikipedia.org/wiki/TrueCrypt}TrueCrypt} is a discontinued
     system for encrypting file containers, partitions or whole disks, typically
     used with Windows. {{:https://www.veracrypt.fr/}VeraCrypt} is a maintained
-    fork of TrueCrypt with various improvements and auditing fixes.
-
-    Its methods, signals and properties are on {!class-type-mount_operation_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgio.Raw.Mount_operation}. *)
-
-(** The methods, signals and properties of a [MountOperation]. *)
+    fork of TrueCrypt with various improvements and auditing fixes. *)
 class type mount_operation_t = object
   method on_aborted :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -150,7 +159,32 @@ end
 class mount_operation : Raw.Mount_operation.t -> mount_operation_t
 (** Wraps a raw handle of {!Ocgio.Raw.Mount_operation.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GMountOperation] provides a mechanism for interacting with the user. It can
+    be used for authenticating mountable operations, such as loop mounting
+    files, hard drive partitions or server locations. It can also be used to ask
+    the user questions or show a list of applications preventing unmount or
+    eject operations from completing.
+
+    Note that [GMountOperation] is used for more than just [Gio.Mount] objects –
+    for example it is also used in [Gio.Drive.start] and [Gio.Drive.stop].
+
+    Users should instantiate a subclass of this that implements all the various
+    callbacks to show the required dialogs, such as
+    {{:https://docs.gtk.org/gtk4/class.MountOperation.html}[GtkMountOperation]}.
+    If no user interaction is desired (for example when automounting filesystems
+    at login time), usually [NULL] can be passed, see each method taking a
+    [GMountOperation] for details.
+
+    Throughout the API, the term ‘TCRYPT’ is used to mean ‘compatible with
+    TrueCrypt and VeraCrypt’.
+    {{:https://en.wikipedia.org/wiki/TrueCrypt}TrueCrypt} is a discontinued
+    system for encrypting file containers, partitions or whole disks, typically
+    used with Windows. {{:https://www.veracrypt.fr/}VeraCrypt} is a maintained
+    fork of TrueCrypt with various improvements and auditing fixes. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> mount_operation_t
 (** Creates a new mount operation. *)

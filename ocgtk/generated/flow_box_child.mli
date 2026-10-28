@@ -1,13 +1,18 @@
 (** The kind of widget that can be added to a [GtkFlowBox].
 
-    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
-    when necessary.
-
     Its methods, signals and properties are on {!class-type-flow_box_child_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Flow_box_child}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Flow_box_child}. *)
 
-(** The methods, signals and properties of a [FlowBoxChild]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FlowBoxChild].}
+
+    The kind of widget that can be added to a [GtkFlowBox].
+
+    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
+    when necessary. *)
 class type flow_box_child_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -72,7 +77,14 @@ end
 class flow_box_child : Raw.Flow_box_child.t -> flow_box_child_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Flow_box_child.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    The kind of widget that can be added to a [GtkFlowBox].
+
+    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
+    when necessary. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> flow_box_child_t
 (** Creates a new [GtkFlowBoxChild].

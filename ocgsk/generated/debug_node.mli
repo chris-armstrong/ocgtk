@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Debug_node}. *)
 
-(** The methods, signals and properties of a [DebugNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DebugNode].}
+
+    A render node that emits a debugging message when drawing its child node. *)
 class type debug_node_t = object
   inherit Render_node.render_node_t
 
@@ -20,7 +24,7 @@ end
 class debug_node : Raw.Debug_node.t -> debug_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Debug_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Render_node.render_node_t -> string -> debug_node_t
 (** Creates a [GskRenderNode] that will add debug information about the given

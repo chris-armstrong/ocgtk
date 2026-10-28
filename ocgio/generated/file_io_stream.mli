@@ -1,6 +1,17 @@
 (** [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 
+    Its methods, signals and properties are on {!class-type-file_io_stream_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgio.Raw.File_io_stream}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileIOStream].}
+
+    [GFileIOStream] provides I/O streams that both read and write to the same
+    file handle.
+
     [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
     jump to arbitrary positions in the file and to truncate the file, provided
     the filesystem of the file supports these operations.
@@ -15,12 +26,7 @@
 
     The default implementation of all the [GFileIOStream] operations and the
     implementation of [Gio.Seekable] just call into the same operations on the
-    output stream.
-
-    Its methods, signals and properties are on {!class-type-file_io_stream_t}.
-    The functions it is built on are in {!Ocgio.Raw.File_io_stream}. *)
-
-(** The methods, signals and properties of a [FileIOStream]. *)
+    output stream. *)
 class type file_io_stream_t = object
   inherit Io_stream.io_stream_t
   inherit Seekable.seekable_t
@@ -62,3 +68,24 @@ end
 
 class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_io_stream.t}. *)
+
+(** {1:description Description}
+
+    [GFileIOStream] provides I/O streams that both read and write to the same
+    file handle.
+
+    [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
+    jump to arbitrary positions in the file and to truncate the file, provided
+    the filesystem of the file supports these operations.
+
+    To find the position of a file I/O stream, use [Gio.Seekable.tell].
+
+    To find out if a file I/O stream supports seeking, use
+    [Gio.Seekable.can_seek]. To position a file I/O stream, use
+    [Gio.Seekable.seek]. To find out if a file I/O stream supports truncating,
+    use [Gio.Seekable.can_truncate]. To truncate a file I/O stream, use
+    [Gio.Seekable.truncate].
+
+    The default implementation of all the [GFileIOStream] operations and the
+    implementation of [Gio.Seekable] just call into the same operations on the
+    output stream. *)

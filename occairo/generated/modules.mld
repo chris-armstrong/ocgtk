@@ -1,6 +1,6 @@
-{0 cairo modules}
+{0 cairo records}
 
-{!Occairo} has one module for each cairo class, interface and record. The externals they are built on are in {!Occairo.Raw}.
+{!Occairo} has one module for each cairo record. The externals they are built on are in {!Occairo.Raw}.
 
 {1 Records}
 

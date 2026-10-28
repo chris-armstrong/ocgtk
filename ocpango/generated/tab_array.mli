@@ -1,14 +1,19 @@
 (** A [PangoTabArray] contains an array of tab stops.
 
+    Its methods, signals and properties are on {!class-type-tab_array_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Tab_array}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [TabArray].}
+
+    A [PangoTabArray] contains an array of tab stops.
+
     [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
     stop has an alignment, a position, and optionally a character to use as
-    decimal point.
-
-    Its methods, signals and properties are on {!class-type-tab_array_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocpango.Raw.Tab_array}. *)
-
-(** The methods, signals and properties of a [TabArray]. *)
+    decimal point. *)
 class type tab_array_t = object
   method get_decimal_point : int -> int
   (** Gets the Unicode character to use as decimal point.
@@ -77,7 +82,15 @@ end
 class tab_array : Raw.Tab_array.t -> tab_array_t
 (** Wraps a raw handle of {!Ocpango.Raw.Tab_array.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [PangoTabArray] contains an array of tab stops.
+
+    [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
+    stop has an alignment, a position, and optionally a character to use as
+    decimal point. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : int -> bool -> tab_array_t
 (** Creates an array of [initial_size] tab stops.

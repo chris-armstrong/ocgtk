@@ -2,7 +2,12 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [Vec3]. *)
+(** {b The methods, signals and properties of a [Vec3].}
+
+    A structure capable of holding a vector with three dimensions: x, y, and z.
+
+    The contents of the #graphene_vec3_t structure are private and should never
+    be accessed directly. *)
 class type vec3_t = object
   method dot : Raw.Vec3.t -> float
   (** Computes the dot product of the two given vectors. *)
@@ -41,7 +46,13 @@ class type vec3_t = object
   method as_vec3 : Raw.Vec3.t
 end
 
-(** The methods, signals and properties of a [Vec4]. *)
+(** {b The methods, signals and properties of a [Vec4].}
+
+    A structure capable of holding a vector with four dimensions: x, y, z, and
+    w.
+
+    The contents of the #graphene_vec4_t structure are private and should never
+    be accessed directly. *)
 and vec4_t = object
   method dot : Raw.Vec4.t -> float
   (** Computes the dot product of the two given vectors. *)

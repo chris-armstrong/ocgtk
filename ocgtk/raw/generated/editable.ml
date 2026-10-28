@@ -297,7 +297,8 @@ external delegate_get_accessible_platform_state :
 (* Properties *)
 
 external get_selection_bound : t -> int = "ml_gtk_editable_get_selection_bound"
-(** Get property: selection-bound *)
+(** The position of the opposite end of the selection from the cursor in chars.
+*)
 
 let on_changed ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"changed" ~callback

@@ -149,19 +149,25 @@ external activate_osk : t -> Ocgdk_raw.Event.t option -> bool
 
 external get_input_hints : t -> Ocgtk_enums.inputhints
   = "ml_gtk_im_context_get_input_hints"
-(** Get property: input-hints *)
+(** Additional hints that allow input methods to fine-tune their behaviour. *)
 
 external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
   = "ml_gtk_im_context_set_input_hints"
-(** Set property: input-hints *)
+(** Additional hints that allow input methods to fine-tune their behaviour. *)
 
 external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_im_context_get_input_purpose"
-(** Get property: input-purpose *)
+(** The purpose of the text field that the `GtkIMContext is connected to.
+
+    This property can be used by on-screen keyboards and other input methods to
+    adjust their behaviour. *)
 
 external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_im_context_set_input_purpose"
-(** Set property: input-purpose *)
+(** The purpose of the text field that the `GtkIMContext is connected to.
+
+    This property can be used by on-screen keyboards and other input methods to
+    adjust their behaviour. *)
 
 val on_commit :
   ?after:bool -> t -> callback:(str:string -> unit) -> Gobject.Signal.handler_id

@@ -1,14 +1,19 @@
 (** Recognizes 2-finger pinch/zoom gestures.
 
+    Its methods, signals and properties are on {!class-type-gesture_zoom_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Gesture_zoom}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GestureZoom].}
+
+    Recognizes 2-finger pinch/zoom gestures.
+
     Whenever the distance between both tracked sequences changes, the
     [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor.
-
-    Its methods, signals and properties are on {!class-type-gesture_zoom_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Gesture_zoom}. *)
-
-(** The methods, signals and properties of a [GestureZoom]. *)
+    factor. *)
 class type gesture_zoom_t = object
   inherit Gesture.gesture_t
 
@@ -32,7 +37,15 @@ end
 class gesture_zoom : Raw.Gesture_zoom.t -> gesture_zoom_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gesture_zoom.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Recognizes 2-finger pinch/zoom gestures.
+
+    Whenever the distance between both tracked sequences changes, the
+    [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
+    factor. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> gesture_zoom_t
 (** Returns a newly created [GtkGesture] that recognizes pinch/zoom gestures. *)

@@ -1,15 +1,20 @@
 (** A selection model that allows selecting a single item.
 
+    Its methods, signals and properties are on {!class-type-single_selection_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Single_selection}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SingleSelection].}
+
+    A selection model that allows selecting a single item.
+
     Note that the selection is {i persistent} -- if the selected item is removed
     and re-added in the same [Gio.ListModel::items-changed] emission, it stays
     selected. In particular, this means that changing the sort order of an
-    underlying sort model will preserve the selection.
-
-    Its methods, signals and properties are on {!class-type-single_selection_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Single_selection}. *)
-
-(** The methods, signals and properties of a [SingleSelection]. *)
+    underlying sort model will preserve the selection. *)
 class type single_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -67,14 +72,27 @@ class type single_selection_t = object
       [Gtk.SingleSelection:can-unselect] is set to [FALSE]. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_single_selection : Raw.Single_selection.t
 end
 
 class single_selection : Raw.Single_selection.t -> single_selection_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Single_selection.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A selection model that allows selecting a single item.
+
+    Note that the selection is {i persistent} -- if the selected item is removed
+    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
+    selected. In particular, this means that changing the sort order of an
+    underlying sort model will preserve the selection. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Ocgio.List_model.list_model_t option -> single_selection_t
 (** Creates a new selection to handle [model]. *)

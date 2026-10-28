@@ -1,5 +1,16 @@
 (** Asynchronous API to open a file with an application.
 
+    Its methods, signals and properties are on {!class-type-file_launcher_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.File_launcher}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileLauncher].}
+
+    Asynchronous API to open a file with an application.
+
     [GtkFileLauncher] collects the arguments that are needed to open the file.
 
     Depending on system configuration, user preferences and available APIs, this
@@ -8,13 +19,7 @@
 
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
-    To launch uris that don't represent files, use [Gtk.UriLauncher].
-
-    Its methods, signals and properties are on {!class-type-file_launcher_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.File_launcher}. *)
-
-(** The methods, signals and properties of a [FileLauncher]. *)
+    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
 class type file_launcher_t = object
   method get_always_ask : unit -> bool
   (** Returns whether to ask the user which app to use. *)
@@ -52,7 +57,21 @@ end
 class file_launcher : Raw.File_launcher.t -> file_launcher_t
 (** Wraps a raw handle of {!Ocgtk.Raw.File_launcher.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Asynchronous API to open a file with an application.
+
+    [GtkFileLauncher] collects the arguments that are needed to open the file.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.FileLauncher.launch] function.
+
+    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Ocgio.File.file_t option -> file_launcher_t
 (** Creates a new [GtkFileLauncher] object. *)

@@ -1,16 +1,22 @@
 (** Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
     method calls. It provides a way to asynchronously return results and errors.
 
+    Its methods, signals and properties are on
+    {!class-type-d_bus_method_invocation_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_method_invocation}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusMethodInvocation].}
+
+    Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
+    method calls. It provides a way to asynchronously return results and errors.
+
     The normal way to obtain a [GDBusMethodInvocation] object is to receive it
     as an argument to the [handle_method_call()] function in a
     [Gio.DBusInterfaceVTable] that was passed to
-    [Gio.DBusConnection.register_object].
-
-    Its methods, signals and properties are on
-    {!class-type-d_bus_method_invocation_t}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_method_invocation}. *)
-
-(** The methods, signals and properties of a [DBusMethodInvocation]. *)
+    [Gio.DBusConnection.register_object]. *)
 class type d_bus_method_invocation_t = object
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] the method was invoked on. *)
@@ -137,3 +143,13 @@ class d_bus_method_invocation :
   Raw.D_bus_method_invocation.t ->
   d_bus_method_invocation_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_method_invocation.t}. *)
+
+(** {1:description Description}
+
+    Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
+    method calls. It provides a way to asynchronously return results and errors.
+
+    The normal way to obtain a [GDBusMethodInvocation] object is to receive it
+    as an argument to the [handle_method_call()] function in a
+    [Gio.DBusInterfaceVTable] that was passed to
+    [Gio.DBusConnection.register_object]. *)

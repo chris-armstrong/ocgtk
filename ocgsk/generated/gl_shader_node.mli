@@ -4,7 +4,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Gl_shader_node}. *)
 
-(** The methods, signals and properties of a [GLShaderNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GLShaderNode].}
+
+    A render node using a GL shader when drawing its children nodes. *)
 class type gl_shader_node_t = object
   inherit Render_node.render_node_t
 
@@ -26,7 +30,7 @@ end
 class gl_shader_node : Raw.Gl_shader_node.t -> gl_shader_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Gl_shader_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Gl_shader.gl_shader_t ->

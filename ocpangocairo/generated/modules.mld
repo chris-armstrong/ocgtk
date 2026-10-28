@@ -1,6 +1,6 @@
-{0 PangoCairo modules}
+{0 PangoCairo interfaces}
 
-{!Ocpangocairo} has one module for each PangoCairo class, interface and record. The externals they are built on are in {!Ocpangocairo.Raw}.
+{!Ocpangocairo} has one module for each PangoCairo interface. The externals they are built on are in {!Ocpangocairo.Raw}.
 
 {1 Interfaces}
 

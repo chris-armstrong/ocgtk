@@ -4,7 +4,11 @@
     {!class-type-overlay_layout_child_t}. The functions it is built on are in
     {!Ocgtk.Raw.Overlay_layout_child}. *)
 
-(** The methods, signals and properties of a [OverlayLayoutChild]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [OverlayLayoutChild].}
+
+    [GtkLayoutChild] subclass for children in a [GtkOverlayLayout]. *)
 class type overlay_layout_child_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

@@ -4,7 +4,11 @@
     {!class-type-d_bus_method_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_method_info}. *)
 
-(** The methods, signals and properties of a [DBusMethodInfo]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusMethodInfo].}
+
+    Information about a method on a D-Bus interface. *)
 class type d_bus_method_info_t = object
   method ref : unit -> Raw.D_bus_method_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the

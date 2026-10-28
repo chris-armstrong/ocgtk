@@ -668,7 +668,7 @@ module rec Socket : sig
   (* Properties *)
 
   external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_get_type"
-  (** Get property: type *)
+  (** The socket’s type. *)
 end = struct
   type t = [ `socket | `object_ ] Gobject.obj
 
@@ -1336,7 +1336,7 @@ end = struct
   (* Properties *)
 
   external get_type : t -> Ocgio_enums.sockettype = "ml_g_socket_get_type"
-  (** Get property: type *)
+  (** The socket’s type. *)
 end
 
 and Socket_connection : sig

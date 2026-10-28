@@ -1,78 +1,12 @@
-[@@@ocaml.text
-"A single-line text entry widget.\n\n\
- An example GtkEntry\n\n\
- A fairly large set of key bindings are supported by default. If the\n\
- entered text is longer than the allocation of the widget, the widget\n\
- will scroll so that the cursor position is visible.\n\n\
- When using an entry for passwords and other sensitive information, it\n\
- can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
- In this mode, entered text is displayed using a “invisible” character.\n\
- By default, GTK picks the best invisible character that is available\n\
- in the current font, but it can be changed with\n\
- [Gtk.Entry.set_invisible_char].\n\n\
- [GtkEntry] has the ability to display progress or activity\n\
- information behind the text. To make an entry display such information,\n\
- use [Gtk.Entry.set_progress_fraction] or\n\
- [Gtk.Entry.set_progress_pulse_step].\n\n\
- Additionally, [GtkEntry] can show icons at either side of the entry.\n\
- These icons can be activatable by clicking, can be set up as drag source\n\
- and can have tooltips. To add an icon, use\n\
- [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
- that set an icon from an icon name or a paintable. To trigger an action when\n\
- the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
- To allow DND operations from an icon, use\n\
- [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
- [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
- for markup.\n\n\
- Note that functionality or information that is only available by clicking\n\
- on an icon in an entry may not be accessible at all to users which are not\n\
- able to use a mouse or other pointing device. It is therefore recommended\n\
- that any such functionality should also be available by other means, e.g.\n\
- via the context menu of the entry.\n\n\
- {b CSS nodes}\n\n\
- {[\n\
- entry[.flat][.warning][.error]\n\
- ├── text[.readonly]\n\
- ├── image.left\n\
- ├── image.right\n\
- ╰── [progress[.pulse]]\n\
- ]}\n\n\
- [GtkEntry] has a main node with the name entry. Depending on the properties\n\
- of the entry, the style classes .read-only and .flat may appear. The style\n\
- classes .warning and .error may also be used with entries.\n\n\
- When the entry shows icons, it adds subnodes with the name image and the\n\
- style class .left or .right, depending on where the icon appears.\n\n\
- When the entry shows progress, it adds a subnode with the name progress.\n\
- The node has the style class .pulse when the shown progress is pulsing.\n\n\
- For all the subnodes added to the text node in various situations,\n\
- see [Gtk.Text].\n\n\
- {b GtkEntry as GtkBuildable}\n\n\
- The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
- custom [<attributes>] element, which supports any number of [<attribute>]\n\
- elements. The [<attribute>] element has attributes named “name“, “value“,\n\
- “start“ and “end“ and allows you to specify [PangoAttribute] values for\n\
- this label.\n\n\
- An example of a UI definition fragment specifying Pango attributes:\n\n\
- {[\n\
- <object class=\"GtkEntry\">\n\
-\  <attributes>\n\
-\    <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\"/>\n\
-\    <attribute name=\"background\" value=\"red\" start=\"5\" end=\"10\"/>\n\
-\  </attributes>\n\
- </object>\n\
- ]}\n\n\
- The start and end attributes specify the range of characters to which the\n\
- Pango attribute applies. If start and end are not specified, the attribute\n\
- is applied to the whole text. Note that specifying ranges does not make much\n\
- sense with translatable attributes. Use markup embedded in the translatable\n\
- content instead.\n\n\
- {b Accessibility}\n\n\
- [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role.\n\n\
- Its methods, signals and properties are on {!class-type-entry_t}. Its \
- constructors are under {!section-constructors}. The functions it is built on \
- are in {!Ocgtk.Raw.Entry}."]
+(** A single-line text entry widget.
 
-(** The methods, signals and properties of a [Entry]. *)
+    Its methods, signals and properties are on {!class-type-entry_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Entry}. *)
+
+(** {1:class Class} *)
+
 class type entry_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -433,57 +367,424 @@ class type entry_t = object
       again. See [Gtk.Entry.set_invisible_char]. *)
 
   method enable_emoji_completion : bool
+  (** Whether to suggest Emoji replacements for :-delimited names like
+      [:heart:]. *)
+
   method set_enable_emoji_completion : bool -> unit
+  (** Whether to suggest Emoji replacements for :-delimited names like
+      [:heart:]. *)
+
   method im_module : string
+  (** Which IM (input method) module should be used for this entry.
+
+      See [Gtk.IMContext].
+
+      Setting this to a non-[NULL] value overrides the system-wide IM module
+      setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+
   method set_im_module : string -> unit
+  (** Which IM (input method) module should be used for this entry.
+
+      See [Gtk.IMContext].
+
+      Setting this to a non-[NULL] value overrides the system-wide IM module
+      setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+
   method invisible_char_set : bool
+  (** Whether the invisible char has been set for the [GtkEntry]. *)
+
   method set_invisible_char_set : bool -> unit
+  (** Whether the invisible char has been set for the [GtkEntry]. *)
+
   method menu_entry_icon_primary_text : string
+  (** Text for an item in the context menu to activate the primary icon action.
+
+      When the primary icon is activatable and this property has been set, a new
+      entry in the context menu of this GtkEntry will appear with this text.
+      Selecting that menu entry will result in the primary icon being activated,
+      exactly in the same way as it would be activated from a mouse click.
+
+      This simplifies adding accessibility support to applications using
+      activatable icons. The activatable icons aren't focusable when navigating
+      the interface with the keyboard This is why Gtk recommends to also add
+      those actions in the context menu. This set of methods greatly simplifies
+      this, by adding a menu item that, when enabled, calls the same callback
+      than clicking on the icon. *)
+
   method set_menu_entry_icon_primary_text : string -> unit
+  (** Text for an item in the context menu to activate the primary icon action.
+
+      When the primary icon is activatable and this property has been set, a new
+      entry in the context menu of this GtkEntry will appear with this text.
+      Selecting that menu entry will result in the primary icon being activated,
+      exactly in the same way as it would be activated from a mouse click.
+
+      This simplifies adding accessibility support to applications using
+      activatable icons. The activatable icons aren't focusable when navigating
+      the interface with the keyboard This is why Gtk recommends to also add
+      those actions in the context menu. This set of methods greatly simplifies
+      this, by adding a menu item that, when enabled, calls the same callback
+      than clicking on the icon. *)
+
   method menu_entry_icon_secondary_text : string
+  (** Text for an item in the context menu to activate the secondary icon
+      action.
+
+      When the primary icon is activatable and this property has been set, a new
+      entry in the context menu of this GtkEntry will appear with this text.
+      Selecting that menu entry will result in the primary icon being activated,
+      exactly in the same way as it would be activated from a mouse click.
+
+      This simplifies adding accessibility support to applications using
+      activatable icons. The activatable icons aren't focusable when navigating
+      the interface with the keyboard This is why Gtk recommends to also add
+      those actions in the context menu. This set of methods greatly simplifies
+      this, by adding a menu item that, when enabled, calls the same callback
+      than clicking on the icon. *)
+
   method set_menu_entry_icon_secondary_text : string -> unit
+  (** Text for an item in the context menu to activate the secondary icon
+      action.
+
+      When the primary icon is activatable and this property has been set, a new
+      entry in the context menu of this GtkEntry will appear with this text.
+      Selecting that menu entry will result in the primary icon being activated,
+      exactly in the same way as it would be activated from a mouse click.
+
+      This simplifies adding accessibility support to applications using
+      activatable icons. The activatable icons aren't focusable when navigating
+      the interface with the keyboard This is why Gtk recommends to also add
+      those actions in the context menu. This set of methods greatly simplifies
+      this, by adding a menu item that, when enabled, calls the same callback
+      than clicking on the icon. *)
+
   method primary_icon_activatable : bool
+  (** Whether the primary icon is activatable.
+
+      GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release]
+      signals only on sensitive, activatable icons.
+
+      Sensitive, but non-activatable icons can be used for purely informational
+      purposes. *)
+
   method set_primary_icon_activatable : bool -> unit
+  (** Whether the primary icon is activatable.
+
+      GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release]
+      signals only on sensitive, activatable icons.
+
+      Sensitive, but non-activatable icons can be used for purely informational
+      purposes. *)
+
   method primary_icon_gicon : Ocgio.Icon.icon_t
+  (** The [GIcon] to use for the primary icon for the entry. *)
+
   method set_primary_icon_gicon : Ocgio.Icon.icon_t -> unit
+  (** The [GIcon] to use for the primary icon for the entry. *)
+
   method primary_icon_name : string
+  (** The icon name to use for the primary icon for the entry. *)
+
   method set_primary_icon_name : string -> unit
+  (** The icon name to use for the primary icon for the entry. *)
+
   method primary_icon_paintable : Ocgdk.Paintable.paintable_t
+  (** A [GdkPaintable] to use as the primary icon for the entry. *)
+
   method set_primary_icon_paintable : Ocgdk.Paintable.paintable_t -> unit
+  (** A [GdkPaintable] to use as the primary icon for the entry. *)
+
   method primary_icon_sensitive : bool
+  (** Whether the primary icon is sensitive.
+
+      An insensitive icon appears grayed out. GTK does not emit the
+      [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
+      allow DND from insensitive icons.
+
+      An icon should be set insensitive if the action that would trigger when
+      clicked is currently not available. *)
+
   method set_primary_icon_sensitive : bool -> unit
+  (** Whether the primary icon is sensitive.
+
+      An insensitive icon appears grayed out. GTK does not emit the
+      [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
+      allow DND from insensitive icons.
+
+      An icon should be set insensitive if the action that would trigger when
+      clicked is currently not available. *)
+
   method primary_icon_storage_type : Enums.imagetype
+  (** The representation which is used for the primary icon of the entry. *)
+
   method primary_icon_tooltip_markup : string
+  (** The contents of the tooltip on the primary icon, with markup.
+
+      Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+
   method set_primary_icon_tooltip_markup : string -> unit
+  (** The contents of the tooltip on the primary icon, with markup.
+
+      Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+
   method primary_icon_tooltip_text : string
+  (** The contents of the tooltip on the primary icon.
+
+      Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+
   method set_primary_icon_tooltip_text : string -> unit
+  (** The contents of the tooltip on the primary icon.
+
+      Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+
   method scroll_offset : int
+  (** Number of pixels of the entry scrolled off the screen to the left. *)
+
   method secondary_icon_activatable : bool
+  (** Whether the secondary icon is activatable.
+
+      GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release]
+      signals only on sensitive, activatable icons.
+
+      Sensitive, but non-activatable icons can be used for purely informational
+      purposes. *)
+
   method set_secondary_icon_activatable : bool -> unit
+  (** Whether the secondary icon is activatable.
+
+      GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release]
+      signals only on sensitive, activatable icons.
+
+      Sensitive, but non-activatable icons can be used for purely informational
+      purposes. *)
+
   method secondary_icon_gicon : Ocgio.Icon.icon_t
+  (** The [GIcon] to use for the secondary icon for the entry. *)
+
   method set_secondary_icon_gicon : Ocgio.Icon.icon_t -> unit
+  (** The [GIcon] to use for the secondary icon for the entry. *)
+
   method secondary_icon_name : string
+  (** The icon name to use for the secondary icon for the entry. *)
+
   method set_secondary_icon_name : string -> unit
+  (** The icon name to use for the secondary icon for the entry. *)
+
   method secondary_icon_paintable : Ocgdk.Paintable.paintable_t
+  (** A [GdkPaintable] to use as the secondary icon for the entry. *)
+
   method set_secondary_icon_paintable : Ocgdk.Paintable.paintable_t -> unit
+  (** A [GdkPaintable] to use as the secondary icon for the entry. *)
+
   method secondary_icon_sensitive : bool
+  (** Whether the secondary icon is sensitive.
+
+      An insensitive icon appears grayed out. GTK does not emit the
+      \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
+      does not allow DND from insensitive icons.
+
+      An icon should be set insensitive if the action that would trigger when
+      clicked is currently not available. *)
+
   method set_secondary_icon_sensitive : bool -> unit
+  (** Whether the secondary icon is sensitive.
+
+      An insensitive icon appears grayed out. GTK does not emit the
+      \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
+      does not allow DND from insensitive icons.
+
+      An icon should be set insensitive if the action that would trigger when
+      clicked is currently not available. *)
+
   method secondary_icon_storage_type : Enums.imagetype
+  (** The representation which is used for the secondary icon of the entry. *)
+
   method secondary_icon_tooltip_markup : string
+  (** The contents of the tooltip on the secondary icon, with markup.
+
+      Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+
   method set_secondary_icon_tooltip_markup : string -> unit
+  (** The contents of the tooltip on the secondary icon, with markup.
+
+      Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+
   method secondary_icon_tooltip_text : string
+  (** The contents of the tooltip on the secondary icon.
+
+      Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+
   method set_secondary_icon_tooltip_text : string -> unit
+  (** The contents of the tooltip on the secondary icon.
+
+      Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+
   method show_emoji_icon : bool
+  (** Whether the entry will show an Emoji icon in the secondary icon position
+      to open the Emoji chooser. *)
+
   method set_show_emoji_icon : bool -> unit
+  (** Whether the entry will show an Emoji icon in the secondary icon position
+      to open the Emoji chooser. *)
+
   method truncate_multiline : bool
+  (** When [TRUE], pasted multi-line text is truncated to the first line. *)
+
   method set_truncate_multiline : bool -> unit
+  (** When [TRUE], pasted multi-line text is truncated to the first line. *)
+
   method as_entry : Raw.Entry.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [Entry].}\n\n\
+     A single-line text entry widget.\n\n\
+     An example GtkEntry\n\n\
+     A fairly large set of key bindings are supported by default. If the\n\
+     entered text is longer than the allocation of the widget, the widget\n\
+     will scroll so that the cursor position is visible.\n\n\
+     When using an entry for passwords and other sensitive information, it\n\
+     can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+     In this mode, entered text is displayed using a “invisible” character.\n\
+     By default, GTK picks the best invisible character that is available\n\
+     in the current font, but it can be changed with\n\
+     [Gtk.Entry.set_invisible_char].\n\n\
+     [GtkEntry] has the ability to display progress or activity\n\
+     information behind the text. To make an entry display such information,\n\
+     use [Gtk.Entry.set_progress_fraction] or\n\
+     [Gtk.Entry.set_progress_pulse_step].\n\n\
+     Additionally, [GtkEntry] can show icons at either side of the entry.\n\
+     These icons can be activatable by clicking, can be set up as drag source\n\
+     and can have tooltips. To add an icon, use\n\
+     [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+     that set an icon from an icon name or a paintable. To trigger an action \
+     when\n\
+     the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+     To allow DND operations from an icon, use\n\
+     [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
+     [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+     for markup.\n\n\
+     Note that functionality or information that is only available by clicking\n\
+     on an icon in an entry may not be accessible at all to users which are not\n\
+     able to use a mouse or other pointing device. It is therefore recommended\n\
+     that any such functionality should also be available by other means, e.g.\n\
+     via the context menu of the entry.\n\n\
+     {b CSS nodes}\n\n\
+     {[\n\
+     entry[.flat][.warning][.error]\n\
+     ├── text[.readonly]\n\
+     ├── image.left\n\
+     ├── image.right\n\
+     ╰── [progress[.pulse]]\n\
+     ]}\n\n\
+     [GtkEntry] has a main node with the name entry. Depending on the properties\n\
+     of the entry, the style classes .read-only and .flat may appear. The style\n\
+     classes .warning and .error may also be used with entries.\n\n\
+     When the entry shows icons, it adds subnodes with the name image and the\n\
+     style class .left or .right, depending on where the icon appears.\n\n\
+     When the entry shows progress, it adds a subnode with the name progress.\n\
+     The node has the style class .pulse when the shown progress is pulsing.\n\n\
+     For all the subnodes added to the text node in various situations,\n\
+     see [Gtk.Text].\n\n\
+     {b GtkEntry as GtkBuildable}\n\n\
+     The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
+     custom [<attributes>] element, which supports any number of [<attribute>]\n\
+     elements. The [<attribute>] element has attributes named “name“, “value“,\n\
+     “start“ and “end“ and allows you to specify [PangoAttribute] values for\n\
+     this label.\n\n\
+     An example of a UI definition fragment specifying Pango attributes:\n\n\
+     {[\n\
+     <object class=\"GtkEntry\">\n\
+    \  <attributes>\n\
+    \    <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\"/>\n\
+    \    <attribute name=\"background\" value=\"red\" start=\"5\" end=\"10\"/>\n\
+    \  </attributes>\n\
+     </object>\n\
+     ]}\n\n\
+     The start and end attributes specify the range of characters to which the\n\
+     Pango attribute applies. If start and end are not specified, the attribute\n\
+     is applied to the whole text. Note that specifying ranges does not make \
+     much\n\
+     sense with translatable attributes. Use markup embedded in the translatable\n\
+     content instead.\n\n\
+     {b Accessibility}\n\n\
+     [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
 
 class entry : Raw.Entry.t -> entry_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Entry.t}. *)
 
-(** {2:constructors Constructors} *)
+[@@@ocaml.text
+"{1:description Description}\n\n\
+ A single-line text entry widget.\n\n\
+ An example GtkEntry\n\n\
+ A fairly large set of key bindings are supported by default. If the\n\
+ entered text is longer than the allocation of the widget, the widget\n\
+ will scroll so that the cursor position is visible.\n\n\
+ When using an entry for passwords and other sensitive information, it\n\
+ can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+ In this mode, entered text is displayed using a “invisible” character.\n\
+ By default, GTK picks the best invisible character that is available\n\
+ in the current font, but it can be changed with\n\
+ [Gtk.Entry.set_invisible_char].\n\n\
+ [GtkEntry] has the ability to display progress or activity\n\
+ information behind the text. To make an entry display such information,\n\
+ use [Gtk.Entry.set_progress_fraction] or\n\
+ [Gtk.Entry.set_progress_pulse_step].\n\n\
+ Additionally, [GtkEntry] can show icons at either side of the entry.\n\
+ These icons can be activatable by clicking, can be set up as drag source\n\
+ and can have tooltips. To add an icon, use\n\
+ [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+ that set an icon from an icon name or a paintable. To trigger an action when\n\
+ the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+ To allow DND operations from an icon, use\n\
+ [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
+ [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+ for markup.\n\n\
+ Note that functionality or information that is only available by clicking\n\
+ on an icon in an entry may not be accessible at all to users which are not\n\
+ able to use a mouse or other pointing device. It is therefore recommended\n\
+ that any such functionality should also be available by other means, e.g.\n\
+ via the context menu of the entry.\n\n\
+ {b CSS nodes}\n\n\
+ {[\n\
+ entry[.flat][.warning][.error]\n\
+ ├── text[.readonly]\n\
+ ├── image.left\n\
+ ├── image.right\n\
+ ╰── [progress[.pulse]]\n\
+ ]}\n\n\
+ [GtkEntry] has a main node with the name entry. Depending on the properties\n\
+ of the entry, the style classes .read-only and .flat may appear. The style\n\
+ classes .warning and .error may also be used with entries.\n\n\
+ When the entry shows icons, it adds subnodes with the name image and the\n\
+ style class .left or .right, depending on where the icon appears.\n\n\
+ When the entry shows progress, it adds a subnode with the name progress.\n\
+ The node has the style class .pulse when the shown progress is pulsing.\n\n\
+ For all the subnodes added to the text node in various situations,\n\
+ see [Gtk.Text].\n\n\
+ {b GtkEntry as GtkBuildable}\n\n\
+ The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
+ custom [<attributes>] element, which supports any number of [<attribute>]\n\
+ elements. The [<attribute>] element has attributes named “name“, “value“,\n\
+ “start“ and “end“ and allows you to specify [PangoAttribute] values for\n\
+ this label.\n\n\
+ An example of a UI definition fragment specifying Pango attributes:\n\n\
+ {[\n\
+ <object class=\"GtkEntry\">\n\
+\  <attributes>\n\
+\    <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\"/>\n\
+\    <attribute name=\"background\" value=\"red\" start=\"5\" end=\"10\"/>\n\
+\  </attributes>\n\
+ </object>\n\
+ ]}\n\n\
+ The start and end attributes specify the range of characters to which the\n\
+ Pango attribute applies. If start and end are not specified, the attribute\n\
+ is applied to the whole text. Note that specifying ranges does not make much\n\
+ sense with translatable attributes. Use markup embedded in the translatable\n\
+ content instead.\n\n\
+ {b Accessibility}\n\n\
+ [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> entry_t
 (** Creates a new entry. *)

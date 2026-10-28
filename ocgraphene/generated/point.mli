@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Point}. *)
 
-(** The methods, signals and properties of a [Point]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Point].}
+
+    A point with two coordinates. *)
 class type point_t = object
   method equal : Raw.Point.t -> bool
   (** Checks if the two points [a] and [b] point to the same coordinates.
@@ -34,7 +38,7 @@ end
 class point : Raw.Point.t -> point_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Point.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> point_t
 (** Allocates a new #graphene_point_t structure.

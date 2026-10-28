@@ -163,8 +163,14 @@ class type toplevel_t = object
   (** Performs a title bar gesture. *)
 
   method fullscreen_mode : Enums.fullscreenmode
+  (** The fullscreen mode of the surface. *)
+
   method set_fullscreen_mode : Enums.fullscreenmode -> unit
+  (** The fullscreen mode of the surface. *)
+
   method shortcuts_inhibited : bool
+  (** Whether the surface should inhibit keyboard shortcuts. *)
+
   method as_toplevel : Raw.Toplevel.t
 end
 

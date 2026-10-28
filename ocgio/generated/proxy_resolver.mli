@@ -2,15 +2,22 @@
     resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
     method [Gio.SocketConnectable.proxy_enumerate].
 
+    Its methods, signals and properties are on {!class-type-proxy_resolver_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgio.Raw.Proxy_resolver}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ProxyResolver].}
+
+    [GProxyResolver] provides synchronous and asynchronous network proxy
+    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
+    method [Gio.SocketConnectable.proxy_enumerate].
+
     Implementations of [GProxyResolver] based on
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
     found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
-    GIO comes with an implementation for use inside Flatpak portals.
-
-    Its methods, signals and properties are on {!class-type-proxy_resolver_t}.
-    The functions it is built on are in {!Ocgio.Raw.Proxy_resolver}. *)
-
-(** The methods, signals and properties of a [ProxyResolver]. *)
+    GIO comes with an implementation for use inside Flatpak portals. *)
 class type proxy_resolver_t = object
   method is_supported : unit -> bool
   (** Checks if [resolver] can be used on this system. (This is used internally;
@@ -45,3 +52,14 @@ end
 
 class proxy_resolver : Raw.Proxy_resolver.t -> proxy_resolver_t
 (** Wraps a raw handle of {!Ocgio.Raw.Proxy_resolver.t}. *)
+
+(** {1:description Description}
+
+    [GProxyResolver] provides synchronous and asynchronous network proxy
+    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
+    method [Gio.SocketConnectable.proxy_enumerate].
+
+    Implementations of [GProxyResolver] based on
+    {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
+    found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
+    GIO comes with an implementation for use inside Flatpak portals. *)

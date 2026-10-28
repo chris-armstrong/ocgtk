@@ -185,8 +185,8 @@ external add_child :
 
 external get_visible_submenu : t -> string
   = "ml_gtk_popover_menu_get_visible_submenu"
-(** Get property: visible-submenu *)
+(** The name of the visible submenu. *)
 
 external set_visible_submenu : t -> string -> unit
   = "ml_gtk_popover_menu_set_visible_submenu"
-(** Set property: visible-submenu *)
+(** The name of the visible submenu. *)

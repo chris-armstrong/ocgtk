@@ -26,8 +26,8 @@ external get_connection : t -> D_bus_connection.t
 
 external get_g_connection : t -> D_bus_connection.t
   = "ml_g_d_bus_object_proxy_get_g_connection"
-(** Get property: g-connection *)
+(** The connection of the proxy. *)
 
 external get_g_object_path : t -> string
   = "ml_g_d_bus_object_proxy_get_g_object_path"
-(** Get property: g-object-path *)
+(** The object path of the proxy. *)

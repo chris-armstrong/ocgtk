@@ -1,13 +1,19 @@
 (** A [GdkPixbufFormat] contains information about the image format accepted by
     a module.
 
-    Only modules should access the fields directly, applications should use the
-    [gdk_pixbuf_format_*] family of functions.
-
     Its methods, signals and properties are on {!class-type-pixbuf_format_t}.
-    The functions it is built on are in {!Ocgdkpixbuf.Raw.Pixbuf_format}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgdkpixbuf.Raw.Pixbuf_format}. *)
 
-(** The methods, signals and properties of a [PixbufFormat]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PixbufFormat].}
+
+    A [GdkPixbufFormat] contains information about the image format accepted by
+    a module.
+
+    Only modules should access the fields directly, applications should use the
+    [gdk_pixbuf_format_*] family of functions. *)
 class type pixbuf_format_t = object
   method get_description : unit -> string option
   (** Returns a description of the format. *)
@@ -64,3 +70,11 @@ end
 
 class pixbuf_format : Raw.Pixbuf_format.t -> pixbuf_format_t
 (** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_format.t}. *)
+
+(** {1:description Description}
+
+    A [GdkPixbufFormat] contains information about the image format accepted by
+    a module.
+
+    Only modules should access the fields directly, applications should use the
+    [gdk_pixbuf_format_*] family of functions. *)

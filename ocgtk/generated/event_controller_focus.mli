@@ -1,18 +1,22 @@
 (** Tracks keyboard focus.
 
+    Its methods, signals and properties are on
+    {!class-type-event_controller_focus_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Event_controller_focus}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [EventControllerFocus].}
+
+    Tracks keyboard focus.
+
     The event controller offers [Gtk.EventControllerFocus::enter] and
     [Gtk.EventControllerFocus::leave] signals, as well as
     [Gtk.EventControllerFocus:is-focus] and
     [Gtk.EventControllerFocus:contains-focus] properties which are updated to
     reflect focus changes inside the widget hierarchy that is rooted at the
-    controllers widget.
-
-    Its methods, signals and properties are on
-    {!class-type-event_controller_focus_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Event_controller_focus}. *)
-
-(** The methods, signals and properties of a [EventControllerFocus]. *)
+    controllers widget. *)
 class type event_controller_focus_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -54,7 +58,18 @@ class event_controller_focus :
   event_controller_focus_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_focus.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Tracks keyboard focus.
+
+    The event controller offers [Gtk.EventControllerFocus::enter] and
+    [Gtk.EventControllerFocus::leave] signals, as well as
+    [Gtk.EventControllerFocus:is-focus] and
+    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
+    reflect focus changes inside the widget hierarchy that is rooted at the
+    controllers widget. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> event_controller_focus_t
 (** Creates a new event controller that will handle focus events. *)

@@ -1,16 +1,22 @@
 (** The [PangoAttribute] structure represents the common portions of all
     attributes.
 
+    Its methods, signals and properties are on {!class-type-attribute_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Attribute}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Attribute].}
+
+    The [PangoAttribute] structure represents the common portions of all
+    attributes.
+
     Particular types of attributes include this structure as their initial
     portion. The common portion of the attribute holds the range to which the
     value in the type-specific part of the attribute applies and should be
     initialized using [Pango.Attribute.init]. By default, an attribute will have
-    an all-inclusive range of \[0,[G_MAXUINT]\].
-
-    Its methods, signals and properties are on {!class-type-attribute_t}. The
-    functions it is built on are in {!Ocpango.Raw.Attribute}. *)
-
-(** The methods, signals and properties of a [Attribute]. *)
+    an all-inclusive range of \[0,[G_MAXUINT]\]. *)
 class type attribute_t = object
   method as_color : unit -> Raw.Attr_color.t option
   (** Returns the attribute cast to [PangoAttrColor].
@@ -77,3 +83,14 @@ end
 
 class attribute : Raw.Attribute.t -> attribute_t
 (** Wraps a raw handle of {!Ocpango.Raw.Attribute.t}. *)
+
+(** {1:description Description}
+
+    The [PangoAttribute] structure represents the common portions of all
+    attributes.
+
+    Particular types of attributes include this structure as their initial
+    portion. The common portion of the attribute holds the range to which the
+    value in the type-specific part of the attribute applies and should be
+    initialized using [Pango.Attribute.init]. By default, an attribute will have
+    an all-inclusive range of \[0,[G_MAXUINT]\]. *)

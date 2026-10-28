@@ -18,11 +18,27 @@ val l2_module :
   has_constructors:bool ->
   class_doc:string option ->
   Doc_emit.t option
-(** The layer 2 module's floating doc: the class doc, then where its members are
-    (the class type) and the layer 1 module it is built on. *)
+(** The layer 2 module's preamble, kept short so the declarations follow it
+    closely: a synopsis, then where the members, the full description and the
+    constructors are, and the layer 1 module it is built on. The synopsis is the
+    class doc's first paragraph when that paragraph stands on its own, else
+    "Bindings for [class_name]."; it is also the module's synopsis on its
+    parent's page. *)
 
-val class_type : class_name:string -> Doc_emit.t option
-(** The canned doc of the layer 2 [class type]. *)
+val class_heading : string
+(** The floating [Class] heading before the layer 2 class type and class. *)
+
+val description :
+  class_name:string -> class_doc:string option -> Doc_emit.t option
+(** The floating [Description] section after the class: a heading, then the
+    whole class doc. [None] without a class doc, or when the synopsis is the
+    whole of it. *)
+
+val class_type :
+  class_name:string -> class_doc:string option -> Doc_emit.t option
+(** The doc of the layer 2 [class type]: a bold line saying what it holds, then
+    the class doc, so the class doc is on the class type's page as well as the
+    module's. *)
 
 val class_ : namespace:string -> class_name:string -> Doc_emit.t option
 (** The canned doc of the layer 2 [class]: the layer 1 type it wraps. *)
@@ -49,3 +65,10 @@ val constructor :
 (** A constructor's doc at either layer: its translated GIR doc, else "Create a
     new [class_name]. Wraps [c_function]." with the C function linked to its
     gi-docgen page when the namespace has a gi-docgen site. *)
+
+type accessor = Getter | Setter
+
+val property : accessor:accessor -> Types.gir_property -> Doc_emit.t option
+(** A property accessor's doc at either layer: the property's translated GIR
+    doc, the same on its getter and setter, else "Get property: <name>" or "Set
+    property: <name>". *)

@@ -1,13 +1,18 @@
 (** The interface that is used to implement print preview.
 
-    A [GtkPrintOperationPreview] object is passed to the
-    [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation].
-
     Its methods, signals and properties are on
-    {!class-type-print_operation_preview_t}. The functions it is built on are in
+    {!class-type-print_operation_preview_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgtk.Raw.Print_operation_preview}. *)
 
-(** The methods, signals and properties of a [PrintOperationPreview]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PrintOperationPreview].}
+
+    The interface that is used to implement print preview.
+
+    A [GtkPrintOperationPreview] object is passed to the
+    [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation]. *)
 class type print_operation_preview_t = object
   method on_got_page_size :
     ?after:bool ->
@@ -61,3 +66,10 @@ class print_operation_preview :
   Raw.Print_operation_preview.t ->
   print_operation_preview_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Print_operation_preview.t}. *)
+
+(** {1:description Description}
+
+    The interface that is used to implement print preview.
+
+    A [GtkPrintOperationPreview] object is passed to the
+    [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation]. *)

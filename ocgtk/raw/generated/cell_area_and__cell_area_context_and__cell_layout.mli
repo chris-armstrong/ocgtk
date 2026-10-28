@@ -772,19 +772,27 @@ and Cell_area_context : sig
 
   external get_minimum_height : t -> int
     = "ml_gtk_cell_area_context_get_minimum_height"
-  (** Get property: minimum-height *)
+  (** The minimum height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_height(). *)
 
   external get_minimum_width : t -> int
     = "ml_gtk_cell_area_context_get_minimum_width"
-  (** Get property: minimum-width *)
+  (** The minimum width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_width(). *)
 
   external get_natural_height : t -> int
     = "ml_gtk_cell_area_context_get_natural_height"
-  (** Get property: natural-height *)
+  (** The natural height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_height(). *)
 
   external get_natural_width : t -> int
     = "ml_gtk_cell_area_context_get_natural_width"
-  (** Get property: natural-width *)
+  (** The natural width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      gtk_cell_area_get_preferred_width(). *)
 end
 
 and Cell_layout : sig

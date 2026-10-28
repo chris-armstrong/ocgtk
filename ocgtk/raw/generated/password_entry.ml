@@ -68,19 +68,21 @@ external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
 
 external get_activates_default : t -> bool
   = "ml_gtk_password_entry_get_activates_default"
-(** Get property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_password_entry_set_activates_default"
-(** Set property: activates-default *)
+(** Whether to activate the default widget when Enter is pressed. *)
 
 external get_placeholder_text : t -> string
   = "ml_gtk_password_entry_get_placeholder_text"
-(** Get property: placeholder-text *)
+(** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+    and unfocused. *)
 
 external set_placeholder_text : t -> string -> unit
   = "ml_gtk_password_entry_set_placeholder_text"
-(** Set property: placeholder-text *)
+(** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+    and unfocused. *)
 
 let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback

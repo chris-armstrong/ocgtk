@@ -4,7 +4,11 @@
     {!class-type-d_bus_error_entry_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_error_entry}. *)
 
-(** The methods, signals and properties of a [DBusErrorEntry]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusErrorEntry].}
+
+    Struct used in [Gio.DBusError.register_error_domain]. *)
 class type d_bus_error_entry_t = object
   method as_d_bus_error_entry : Raw.D_bus_error_entry.t
 end

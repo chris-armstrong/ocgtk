@@ -4,7 +4,11 @@
     {!class-type-file_attribute_info_t}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_info}. *)
 
-(** The methods, signals and properties of a [FileAttributeInfo]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileAttributeInfo].}
+
+    Information about a specific attribute. *)
 class type file_attribute_info_t = object
   method as_file_attribute_info : Raw.File_attribute_info.t
 end

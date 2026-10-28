@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Shadow_node}. *)
 
-(** The methods, signals and properties of a [ShadowNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ShadowNode].}
+
+    A render node drawing one or more shadows behind its single child node. *)
 class type shadow_node_t = object
   inherit Render_node.render_node_t
 
@@ -23,7 +27,7 @@ end
 class shadow_node : Raw.Shadow_node.t -> shadow_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Shadow_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t -> Raw.Shadow.t array -> Gsize.t -> shadow_node_t

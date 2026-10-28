@@ -1803,18 +1803,26 @@ and Widget : sig
   (* Properties *)
 
   external get_height_request : t -> int = "ml_gtk_widget_get_height_request"
-  (** Get property: height-request *)
+  (** Overrides for height request of the widget.
+
+      If this is -1, the natural request will be used. *)
 
   external set_height_request : t -> int -> unit
     = "ml_gtk_widget_set_height_request"
-  (** Set property: height-request *)
+  (** Overrides for height request of the widget.
+
+      If this is -1, the natural request will be used. *)
 
   external get_width_request : t -> int = "ml_gtk_widget_get_width_request"
-  (** Get property: width-request *)
+  (** Overrides for width request of the widget.
+
+      If this is -1, the natural request will be used. *)
 
   external set_width_request : t -> int -> unit
     = "ml_gtk_widget_set_width_request"
-  (** Set property: width-request *)
+  (** Overrides for width request of the widget.
+
+      If this is -1, the natural request will be used. *)
 
   val on_destroy :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -48,6 +48,12 @@ class type debug_controller_d_bus_t = object
       handler will cause a deadlock and must not be done. *)
 
   method connection : D_bus_connection.d_bus_connection_t
+  (** The D-Bus connection to expose the debugging interface on.
+
+      Typically this will be the same connection (to the system or session bus)
+      which the rest of the application or service’s D-Bus objects are
+      registered on. *)
+
   method as_debug_controller_d_bus : Raw.Debug_controller_d_bus.t
 end
 

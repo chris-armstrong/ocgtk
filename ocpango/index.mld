@@ -9,9 +9,9 @@ introspection data.
 The library is reached as {!Ocpango}, with one module per class, interface or
 record, such as {!Ocpango.Layout} and {!Ocpango.Font_description}.
 
+{b {{!page-modules}All classes and records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocpango.Enums} — enumerations and bitfields. }
 {- {!Ocpango.Constants} — constants. }
 {- {!Ocpango.Raw} — the C externals and abstract types the modules above are

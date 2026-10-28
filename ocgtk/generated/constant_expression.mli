@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Constant_expression}. *)
 
-(** The methods, signals and properties of a [ConstantExpression]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ConstantExpression].}
+
+    A constant value in a [GtkExpression]. *)
 class type constant_expression_t = object
   inherit Expression.expression_t
 
@@ -18,7 +22,7 @@ end
 class constant_expression : Raw.Constant_expression.t -> constant_expression_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Constant_expression.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_for_value : Gobject.Value.t -> constant_expression_t
 (** Creates an expression that always evaluates to the given [value]. *)

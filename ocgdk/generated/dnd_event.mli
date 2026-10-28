@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-dnd_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Dnd_event}. *)
 
-(** The methods, signals and properties of a [DNDEvent]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DNDEvent].}
+
+    An event related to drag and drop operations. *)
 class type dnd_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 

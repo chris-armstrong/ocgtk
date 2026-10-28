@@ -4,7 +4,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Container_node}. *)
 
-(** The methods, signals and properties of a [ContainerNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ContainerNode].}
+
+    A render node that can contain other render nodes. *)
 class type container_node_t = object
   inherit Render_node.render_node_t
 
@@ -20,7 +24,7 @@ end
 class container_node : Raw.Container_node.t -> container_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Container_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Raw.Render_node.t array -> int -> container_node_t
 (** Creates a new [GskRenderNode] instance for holding the given [children].

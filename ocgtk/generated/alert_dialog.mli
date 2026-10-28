@@ -1,14 +1,19 @@
 (** Collects the arguments that are needed to present a message to the user.
 
+    Its methods, signals and properties are on {!class-type-alert_dialog_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Alert_dialog}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [AlertDialog].}
+
+    Collects the arguments that are needed to present a message to the user.
+
     The message is shown with the [Gtk.AlertDialog.choose] function.
 
     If you don't need to wait for a button to be clicked, you can use
-    [Gtk.AlertDialog.show].
-
-    Its methods, signals and properties are on {!class-type-alert_dialog_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Alert_dialog}. *)
-
-(** The methods, signals and properties of a [AlertDialog]. *)
+    [Gtk.AlertDialog.show]. *)
 class type alert_dialog_t = object
   method choose_finish :
     Ocgio.Async_result.async_result_t -> (int, GError.t) result
@@ -74,3 +79,12 @@ end
 
 class alert_dialog : Raw.Alert_dialog.t -> alert_dialog_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Alert_dialog.t}. *)
+
+(** {1:description Description}
+
+    Collects the arguments that are needed to present a message to the user.
+
+    The message is shown with the [Gtk.AlertDialog.choose] function.
+
+    If you don't need to wait for a button to be clicked, you can use
+    [Gtk.AlertDialog.show]. *)

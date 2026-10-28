@@ -201,15 +201,24 @@ module rec Application : sig
 
   external get_register_session : t -> bool
     = "ml_gtk_application_get_register_session"
-  (** Get property: register-session *)
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
 
   external set_register_session : t -> bool -> unit
     = "ml_gtk_application_set_register_session"
-  (** Set property: register-session *)
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
 
   external get_screensaver_active : t -> bool
     = "ml_gtk_application_get_screensaver_active"
-  (** Get property: screensaver-active *)
+  (** This property is true if GTK believes that the screensaver is currently
+      active.
+
+      Tracking the screensaver state is currently only supported on Linux. *)
 
   val on_query_end :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -437,15 +446,24 @@ end = struct
 
   external get_register_session : t -> bool
     = "ml_gtk_application_get_register_session"
-  (** Get property: register-session *)
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
 
   external set_register_session : t -> bool -> unit
     = "ml_gtk_application_set_register_session"
-  (** Set property: register-session *)
+  (** Set this property to true to register with the session manager.
+
+      This will make GTK track the session state (such as the
+      [Gtk.Application:screensaver-active] property). *)
 
   external get_screensaver_active : t -> bool
     = "ml_gtk_application_get_screensaver_active"
-  (** Get property: screensaver-active *)
+  (** This property is true if GTK believes that the screensaver is currently
+      active.
+
+      Tracking the screensaver state is currently only supported on Linux. *)
 
   let on_query_end ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"query-end" ~callback
@@ -1013,18 +1031,18 @@ and Window : sig
   (* Properties *)
 
   external get_default_height : t -> int = "ml_gtk_window_get_default_height"
-  (** Get property: default-height *)
+  (** The default height of the window. *)
 
   external set_default_height : t -> int -> unit
     = "ml_gtk_window_set_default_height"
-  (** Set property: default-height *)
+  (** The default height of the window. *)
 
   external get_default_width : t -> int = "ml_gtk_window_get_default_width"
-  (** Get property: default-width *)
+  (** The default width of the window. *)
 
   external set_default_width : t -> int -> unit
     = "ml_gtk_window_set_default_width"
-  (** Set property: default-width *)
+  (** The default width of the window. *)
 
   val on_activate_default :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -1604,18 +1622,18 @@ end = struct
   (* Properties *)
 
   external get_default_height : t -> int = "ml_gtk_window_get_default_height"
-  (** Get property: default-height *)
+  (** The default height of the window. *)
 
   external set_default_height : t -> int -> unit
     = "ml_gtk_window_set_default_height"
-  (** Set property: default-height *)
+  (** The default height of the window. *)
 
   external get_default_width : t -> int = "ml_gtk_window_get_default_width"
-  (** Get property: default-width *)
+  (** The default width of the window. *)
 
   external set_default_width : t -> int -> unit
     = "ml_gtk_window_set_default_width"
-  (** Set property: default-width *)
+  (** The default width of the window. *)
 
   let on_activate_default ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"activate-default" ~callback

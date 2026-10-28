@@ -251,11 +251,11 @@ external append :
 
 external get_accept_unpaired_release : t -> bool
   = "ml_gtk_flow_box_get_accept_unpaired_release"
-(** Get property: accept-unpaired-release *)
+(** Whether to accept unpaired release events. *)
 
 external set_accept_unpaired_release : t -> bool -> unit
   = "ml_gtk_flow_box_set_accept_unpaired_release"
-(** Set property: accept-unpaired-release *)
+(** Whether to accept unpaired release events. *)
 
 val on_activate_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -1,5 +1,16 @@
 (** Constructs [Gdk.Texture] objects from GL textures.
 
+    Its methods, signals and properties are on
+    {!class-type-gl_texture_builder_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.Gl_texture_builder}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GLTextureBuilder].}
+
+    Constructs [Gdk.Texture] objects from GL textures.
+
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
     [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
@@ -9,13 +20,7 @@
 
     [GdkGLTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
-
-    Its methods, signals and properties are on
-    {!class-type-gl_texture_builder_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgdk.Raw.Gl_texture_builder}. *)
-
-(** The methods, signals and properties of a [GLTextureBuilder]. *)
+*)
 class type gl_texture_builder_t = object
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state previously set via
@@ -133,7 +138,22 @@ end
 class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Gl_texture_builder.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Constructs [Gdk.Texture] objects from GL textures.
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
+    [Gdk.GLTextureBuilder:width], and [Gdk.GLTextureBuilder:height] are
+    mandatory - and then call [Gdk.GLTextureBuilder.build] to create the new
+    texture.
+
+    [GdkGLTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> gl_texture_builder_t
 (** Creates a new texture builder. *)

@@ -4,7 +4,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_node_info}. *)
 
-(** The methods, signals and properties of a [DBusNodeInfo]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusNodeInfo].}
+
+    Information about nodes in a remote object hierarchy. *)
 class type d_bus_node_info_t = object
   method lookup_interface : string -> Raw.D_bus_interface_info.t option
   (** Looks up information about an interface.
@@ -21,7 +25,7 @@ end
 class d_bus_node_info : Raw.D_bus_node_info.t -> d_bus_node_info_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_node_info.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_for_xml : string -> (d_bus_node_info_t, GError.t) result
 (** Parses [xml_data] and returns a [GDBusNodeInfo] representing the data.

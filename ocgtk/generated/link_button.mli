@@ -1,5 +1,16 @@
 (** A button with a hyperlink.
 
+    Its methods, signals and properties are on {!class-type-link_button_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Link_button}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [LinkButton].}
+
+    A button with a hyperlink.
+
     An example GtkLinkButton
 
     It is useful to show quick links to resources.
@@ -36,13 +47,7 @@
 
     {b Accessibility}
 
-    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role.
-
-    Its methods, signals and properties are on {!class-type-link_button_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Link_button}. *)
-
-(** The methods, signals and properties of a [LinkButton]. *)
+    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
 class type link_button_t = object
   inherit Button.button_t
 
@@ -84,7 +89,49 @@ end
 class link_button : Raw.Link_button.t -> link_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Link_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A button with a hyperlink.
+
+    An example GtkLinkButton
+
+    It is useful to show quick links to resources.
+
+    A link button is created by calling either [Gtk.LinkButton.new] or
+    [Gtk.LinkButton.new_with_label]. If using the former, the URI you pass to
+    the constructor is used as a label for the widget.
+
+    The URI bound to a [GtkLinkButton] can be set specifically using
+    [Gtk.LinkButton.set_uri].
+
+    By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
+    is clicked. This behaviour can be overridden by connecting to the
+    [Gtk.LinkButton::activate-link] signal and returning [TRUE] from the signal
+    handler.
+
+    {b Shortcuts and Gestures}
+
+    [GtkLinkButton] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+
+    {b Actions}
+
+    [GtkLinkButton] defines a set of built-in actions:
+
+    - [clipboard.copy] copies the url to the clipboard.
+    - [menu.popup] opens the context menu.
+
+    {b CSS nodes}
+
+    [GtkLinkButton] has a single CSS node with name button. To differentiate it
+    from a plain [GtkButton], it gets the .link style class.
+
+    {b Accessibility}
+
+    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> link_button_t
 (** Creates a new [GtkLinkButton] with the URI as its text. *)

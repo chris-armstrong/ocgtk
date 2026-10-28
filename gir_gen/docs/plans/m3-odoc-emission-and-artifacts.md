@@ -1,12 +1,12 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–5 implemented; the conventions page of Phase 9 written
-early; Phases 6–8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
+**Status: Phases 0–6 implemented; the conventions page of Phase 9 written
+early; Phases 7, 8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
-`m3-phase3`). Phase 5: branch `m3-phase5`. Phase 6 onwards: one branch and PR
-per phase (see the rules below).
+`m3-phase3`). Phase 5: branch `m3-phase5`. Phase 6: branch `m3-phase6`.
+Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -816,6 +816,17 @@ constructor with real `<doc>` shows GIR-derived text at L1 and L2; a signal
 method page shows its doc. Each is visible in the PR's preview.
 
 ### Phase 6 — Property and record-field docs (both layers)
+
+**Status: done** (branch `m3-phase6`). The property's GIR doc goes on both
+its getter and its setter at both layers; the synthetic `Get/Set property:
+<name>` text is the fallback. No layer emits record fields (they appear only
+in the override system), so there are no field docs to wire. Two additions:
+the newly emitted docs exposed a translator gap, an unclosed fragment
+(`[signal@Gtk.Entry::icon-press[`, an upstream typo) that put an unbalanced
+`[` in a code span (8 odoc warnings), now parsed as literal text; and
+`Doc_emit.around` replaces the blank-line-before-comment code repeated at
+the method, constructor, signal and property sites. Result: 0 odoc
+warnings.
 
 *Goal:* property docs replace the synthetic `Get/Set property` text at every
 layer that emits properties.

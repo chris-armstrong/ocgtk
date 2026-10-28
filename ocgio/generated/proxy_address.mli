@@ -4,7 +4,11 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Proxy_address}. *)
 
-(** The methods, signals and properties of a [ProxyAddress]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ProxyAddress].}
+
+    A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
 class type proxy_address_t = object
   inherit Inet_socket_address.inet_socket_address_t
 
@@ -40,7 +44,7 @@ end
 class proxy_address : Raw.Proxy_address.t -> proxy_address_t
 (** Wraps a raw handle of {!Ocgio.Raw.Proxy_address.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Inet_address.inet_address_t ->

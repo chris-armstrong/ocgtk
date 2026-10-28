@@ -9,9 +9,9 @@ PangoCairo's GObject introspection data.
 The library is reached as {!Ocpangocairo}, with one module per class, interface or
 record, such as {!Ocpangocairo.Font} and {!Ocpangocairo.Font_map}.
 
+{b {{!page-modules}All interfaces}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocpangocairo.Enums} — enumerations and bitfields. }
 {- {!Ocpangocairo.Raw} — the C externals and abstract types the modules above are
    built on. }

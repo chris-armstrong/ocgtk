@@ -4,7 +4,9 @@
     {!class-type-io_stream_adapter_t}. The functions it is built on are in
     {!Ocgio.Raw.Io_stream_adapter}. *)
 
-(** The methods, signals and properties of a [IOStreamAdapter]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [IOStreamAdapter].} *)
 class type io_stream_adapter_t = object
   method as_io_stream_adapter : Raw.Io_stream_adapter.t
 end

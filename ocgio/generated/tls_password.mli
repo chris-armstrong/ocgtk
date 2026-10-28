@@ -5,7 +5,12 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Tls_password}. *)
 
-(** The methods, signals and properties of a [TlsPassword]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [TlsPassword].}
+
+    An abstract interface representing a password used in TLS. Often used in
+    user interaction such as unlocking a key storage token. *)
 class type tls_password_t = object
   method get_description : unit -> string
   (** Get a description string about what the password will be used for. *)
@@ -35,7 +40,7 @@ end
 class tls_password : Raw.Tls_password.t -> tls_password_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_password.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Enums.tlspasswordflags -> string -> tls_password_t
 (** Create a new [GTlsPassword] object. *)

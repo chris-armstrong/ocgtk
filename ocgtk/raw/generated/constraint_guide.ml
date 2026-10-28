@@ -74,43 +74,43 @@ external get_max_size : t -> int * int = "ml_gtk_constraint_guide_get_max_size"
 (* Properties *)
 
 external get_max_height : t -> int = "ml_gtk_constraint_guide_get_max_height"
-(** Get property: max-height *)
+(** The maximum height of the guide. *)
 
 external set_max_height : t -> int -> unit
   = "ml_gtk_constraint_guide_set_max_height"
-(** Set property: max-height *)
+(** The maximum height of the guide. *)
 
 external get_max_width : t -> int = "ml_gtk_constraint_guide_get_max_width"
-(** Get property: max-width *)
+(** The maximum width of the guide. *)
 
 external set_max_width : t -> int -> unit
   = "ml_gtk_constraint_guide_set_max_width"
-(** Set property: max-width *)
+(** The maximum width of the guide. *)
 
 external get_min_height : t -> int = "ml_gtk_constraint_guide_get_min_height"
-(** Get property: min-height *)
+(** The minimum height of the guide. *)
 
 external set_min_height : t -> int -> unit
   = "ml_gtk_constraint_guide_set_min_height"
-(** Set property: min-height *)
+(** The minimum height of the guide. *)
 
 external get_min_width : t -> int = "ml_gtk_constraint_guide_get_min_width"
-(** Get property: min-width *)
+(** The minimum width of the guide. *)
 
 external set_min_width : t -> int -> unit
   = "ml_gtk_constraint_guide_set_min_width"
-(** Set property: min-width *)
+(** The minimum width of the guide. *)
 
 external get_nat_height : t -> int = "ml_gtk_constraint_guide_get_nat_height"
-(** Get property: nat-height *)
+(** The preferred, or natural, height of the guide. *)
 
 external set_nat_height : t -> int -> unit
   = "ml_gtk_constraint_guide_set_nat_height"
-(** Set property: nat-height *)
+(** The preferred, or natural, height of the guide. *)
 
 external get_nat_width : t -> int = "ml_gtk_constraint_guide_get_nat_width"
-(** Get property: nat-width *)
+(** The preferred, or natural, width of the guide. *)
 
 external set_nat_width : t -> int -> unit
   = "ml_gtk_constraint_guide_set_nat_width"
-(** Set property: nat-width *)
+(** The preferred, or natural, width of the guide. *)

@@ -9,9 +9,9 @@ GdkPixbuf's GObject introspection data.
 The library is reached as {!Ocgdkpixbuf}, with one module per class, interface or
 record, such as {!Ocgdkpixbuf.Pixbuf} and {!Ocgdkpixbuf.Pixbuf_loader}.
 
+{b {{!page-modules}All classes and records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocgdkpixbuf.Enums} — enumerations and bitfields. }
 {- {!Ocgdkpixbuf.Constants} — constants. }
 {- {!Ocgdkpixbuf.Raw} — the C externals and abstract types the modules above are

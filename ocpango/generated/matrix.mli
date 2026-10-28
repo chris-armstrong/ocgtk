@@ -1,17 +1,23 @@
 (** A [PangoMatrix] specifies a transformation between user-space and device
     coordinates.
 
+    Its methods, signals and properties are on {!class-type-matrix_t}. Its full
+    description is under {!section-description}. The functions it is built on
+    are in {!Ocpango.Raw.Matrix}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Matrix].}
+
+    A [PangoMatrix] specifies a transformation between user-space and device
+    coordinates.
+
     The transformation is given by
 
     {[
     x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
     y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
-    ]}
-
-    Its methods, signals and properties are on {!class-type-matrix_t}. The
-    functions it is built on are in {!Ocpango.Raw.Matrix}. *)
-
-(** The methods, signals and properties of a [Matrix]. *)
+    ]} *)
 class type matrix_t = object
   method concat : Raw.Matrix.t -> unit
   (** Changes the transformation represented by [matrix] to be the
@@ -54,3 +60,15 @@ end
 
 class matrix : Raw.Matrix.t -> matrix_t
 (** Wraps a raw handle of {!Ocpango.Raw.Matrix.t}. *)
+
+(** {1:description Description}
+
+    A [PangoMatrix] specifies a transformation between user-space and device
+    coordinates.
+
+    The transformation is given by
+
+    {[
+    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
+    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
+    ]} *)

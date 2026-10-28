@@ -29,7 +29,11 @@ class type slice_list_model_t = object
       sliced from doesn't have enough items. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_slice_list_model : Raw.Slice_list_model.t
 end
 

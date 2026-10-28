@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Selection_filter_model}. *)
 
-(** The methods, signals and properties of a [SelectionFilterModel]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SelectionFilterModel].}
+
+    A list model that presents the selection from a [GtkSelectionModel]. *)
 class type selection_filter_model_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -20,7 +24,11 @@ class type selection_filter_model_t = object
       have set up an appropriate filter to ensure that item types match. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_selection_filter_model : Raw.Selection_filter_model.t
 end
 
@@ -29,7 +37,7 @@ class selection_filter_model :
   selection_filter_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Selection_filter_model.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Selection_model.selection_model_t option -> selection_filter_model_t
 (** Creates a new [GtkSelectionFilterModel] that will include the selected items

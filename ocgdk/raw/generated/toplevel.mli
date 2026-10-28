@@ -198,12 +198,12 @@ external begin_move :
 
 external get_fullscreen_mode : t -> Ocgdk_enums.fullscreenmode
   = "ml_gdk_toplevel_get_fullscreen_mode"
-(** Get property: fullscreen-mode *)
+(** The fullscreen mode of the surface. *)
 
 external set_fullscreen_mode : t -> Ocgdk_enums.fullscreenmode -> unit
   = "ml_gdk_toplevel_set_fullscreen_mode"
-(** Set property: fullscreen-mode *)
+(** The fullscreen mode of the surface. *)
 
 external get_shortcuts_inhibited : t -> bool
   = "ml_gdk_toplevel_get_shortcuts_inhibited"
-(** Get property: shortcuts-inhibited *)
+(** Whether the surface should inhibit keyboard shortcuts. *)

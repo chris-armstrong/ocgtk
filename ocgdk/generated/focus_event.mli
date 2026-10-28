@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-focus_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Focus_event}. *)
 
-(** The methods, signals and properties of a [FocusEvent]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FocusEvent].}
+
+    An event related to a keyboard focus change. *)
 class type focus_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 

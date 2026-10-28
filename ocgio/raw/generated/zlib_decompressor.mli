@@ -24,4 +24,4 @@ external get_file_info : t -> File_info.t option
 
 external get_format : t -> Ocgio_enums.zlibcompressorformat
   = "ml_g_zlib_decompressor_get_format"
-(** Get property: format *)
+(** The format of the compressed data. *)

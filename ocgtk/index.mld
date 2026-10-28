@@ -10,9 +10,9 @@ from GTK's GObject introspection data, apart from {!Ocgtk.Main} and
 The library is reached as {!Ocgtk}, with one module per class, interface or
 record, such as {!Ocgtk.Window}, {!Ocgtk.Button} and {!Ocgtk.Application}.
 
+{b {{!page-modules}All classes, interfaces and records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocgtk.Main} — initialising GTK and running the main loop. }
 {- {!Ocgtk.Version} — the GTK version, at run time and at compile time. }
 {- {!Ocgtk.Enums} — enumerations and bitfields. }

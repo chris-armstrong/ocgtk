@@ -4,7 +4,11 @@
     {!class-type-d_bus_interface_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_interface_info}. *)
 
-(** The methods, signals and properties of a [DBusInterfaceInfo]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusInterfaceInfo].}
+
+    Information about a D-Bus interface. *)
 class type d_bus_interface_info_t = object
   method cache_build : unit -> unit
   (** Builds a lookup-cache to speed up g_dbus_interface_info_lookup_method(),

@@ -95,4 +95,4 @@ external get_address_type : t -> Ocgio_enums.unixsocketaddresstype
 (* Properties *)
 
 external get_abstract : t -> bool = "ml_g_unix_socket_address_get_abstract"
-(** Get property: abstract *)
+(** Whether or not this is an abstract address *)

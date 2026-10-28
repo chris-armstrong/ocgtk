@@ -31,4 +31,5 @@ val modules_page_name : string
 
 val generate_modules_page : namespace:string -> entities:entity list -> string
 (** Content of [modules.mld]: one [{!modules: ...}] list each for the classes,
-    interfaces and records in [entities], sorted, leaving out empty ones. *)
+    interfaces and records in [entities], sorted, leaving out empty ones. The
+    title names the kinds listed, e.g. "Gtk classes, interfaces and records". *)

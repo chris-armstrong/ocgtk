@@ -12,7 +12,11 @@ class type selection_filter_model_t = object
       have set up an appropriate filter to ensure that item types match. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_selection_filter_model : Raw.Selection_filter_model.t
 end
 

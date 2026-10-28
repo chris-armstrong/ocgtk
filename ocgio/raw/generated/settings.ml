@@ -733,20 +733,34 @@ external apply : t -> unit = "ml_g_settings_apply"
 (* Properties *)
 
 external get_delay_apply : t -> bool = "ml_g_settings_get_delay_apply"
-(** Get property: delay-apply *)
+(** Whether the [Gio.Settings] object is in ‘delay-apply’ mode. *)
 
 external get_path : t -> string = "ml_g_settings_get_path"
-(** Get property: path *)
+(** The path within the backend where the settings are stored. *)
 
 external get_schema : t -> string = "ml_g_settings_get_schema"
-(** Get property: schema *)
+(** The name of the schema that describes the types of keys for this
+    [Gio.Settings] object.
+
+    The type of this property is {i not} [Gio.SettingsSchema].
+    [Gio.SettingsSchema] has only existed since version 2.32 and unfortunately
+    this name was used in previous versions to refer to the schema ID rather
+    than the schema itself. Take care to use the [Gio.Settings:settings-schema]
+    property if you wish to pass in a [Gio.SettingsSchema]. *)
 
 external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
-(** Get property: schema-id *)
+(** The name of the schema that describes the types of keys for this
+    [Gio.Settings] object. *)
 
 external get_settings_schema : t -> Settings_schema.t
   = "ml_g_settings_get_settings_schema"
-(** Get property: settings-schema *)
+(** The [Gio.SettingsSchema] describing the types of keys for this
+    [Gio.Settings] object.
+
+    Ideally, this property would be called [Gio.Settings:schema].
+    [Gio.SettingsSchema] has only existed since version 2.32, however, and
+    before then the [Gio.Settings:schema] property was used to refer to the ID
+    of the schema rather than the schema itself. Take care. *)
 
 let on_changed ?after obj ~callback =
   let closure =

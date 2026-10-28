@@ -1,6 +1,6 @@
-{0 Gsk modules}
+{0 Gsk classes and records}
 
-{!Ocgsk} has one module for each Gsk class, interface and record. The externals they are built on are in {!Ocgsk.Raw}.
+{!Ocgsk} has one module for each Gsk class and record. The externals they are built on are in {!Ocgsk.Raw}.
 
 {1 Classes}
 

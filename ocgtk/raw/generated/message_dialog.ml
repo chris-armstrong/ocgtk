@@ -82,37 +82,49 @@ external get_message_area :
 
 external get_message_type : t -> Ocgtk_enums.messagetype
   = "ml_gtk_message_dialog_get_message_type"
-(** Get property: message-type *)
+(** The type of the message. *)
 
 external set_message_type : t -> Ocgtk_enums.messagetype -> unit
   = "ml_gtk_message_dialog_set_message_type"
-(** Set property: message-type *)
+(** The type of the message. *)
 
 external get_secondary_text : t -> string
   = "ml_gtk_message_dialog_get_secondary_text"
-(** Get property: secondary-text *)
+(** The secondary text of the message dialog. *)
 
 external set_secondary_text : t -> string -> unit
   = "ml_gtk_message_dialog_set_secondary_text"
-(** Set property: secondary-text *)
+(** The secondary text of the message dialog. *)
 
 external get_secondary_use_markup : t -> bool
   = "ml_gtk_message_dialog_get_secondary_use_markup"
-(** Get property: secondary-use-markup *)
+(** [TRUE] if the secondary text of the dialog includes Pango markup.
+
+    See [Pango.parse_markup]. *)
 
 external set_secondary_use_markup : t -> bool -> unit
   = "ml_gtk_message_dialog_set_secondary_use_markup"
-(** Set property: secondary-use-markup *)
+(** [TRUE] if the secondary text of the dialog includes Pango markup.
+
+    See [Pango.parse_markup]. *)
 
 external get_text : t -> string = "ml_gtk_message_dialog_get_text"
-(** Get property: text *)
+(** The primary text of the message dialog.
+
+    If the dialog has a secondary text, this will appear as the title. *)
 
 external set_text : t -> string -> unit = "ml_gtk_message_dialog_set_text"
-(** Set property: text *)
+(** The primary text of the message dialog.
+
+    If the dialog has a secondary text, this will appear as the title. *)
 
 external get_use_markup : t -> bool = "ml_gtk_message_dialog_get_use_markup"
-(** Get property: use-markup *)
+(** [TRUE] if the primary text of the dialog includes Pango markup.
+
+    See [Pango.parse_markup]. *)
 
 external set_use_markup : t -> bool -> unit
   = "ml_gtk_message_dialog_set_use_markup"
-(** Set property: use-markup *)
+(** [TRUE] if the primary text of the dialog includes Pango markup.
+
+    See [Pango.parse_markup]. *)

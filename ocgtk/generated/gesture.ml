@@ -158,6 +158,8 @@ class type gesture_t = object
   (** Separates [gesture] into an isolated group. *)
 
   method n_points : int
+  (** The number of touch points that trigger recognition on this gesture. *)
+
   method as_gesture : Raw.Gesture.t
 end
 

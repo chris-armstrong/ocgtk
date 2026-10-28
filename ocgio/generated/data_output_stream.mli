@@ -6,7 +6,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_output_stream}. *)
 
-(** The methods, signals and properties of a [DataOutputStream]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DataOutputStream].}
+
+    Data output stream implements [Gio.OutputStream] and includes functions for
+    writing data directly to an output stream. *)
 class type data_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t
@@ -51,7 +56,7 @@ end
 class data_output_stream : Raw.Data_output_stream.t -> data_output_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Data_output_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Output_stream.output_stream_t -> data_output_stream_t
 (** Creates a new data output stream for [base_stream]. *)

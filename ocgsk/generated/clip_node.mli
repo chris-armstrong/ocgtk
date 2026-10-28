@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Clip_node}. *)
 
-(** The methods, signals and properties of a [ClipNode]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ClipNode].}
+
+    A render node applying a rectangular clip to its single child node. *)
 class type clip_node_t = object
   inherit Render_node.render_node_t
 
@@ -20,7 +24,7 @@ end
 class clip_node : Raw.Clip_node.t -> clip_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Clip_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Render_node.render_node_t -> Ocgraphene.Rect.rect_t -> clip_node_t
 (** Creates a [GskRenderNode] that will clip the [child] to the area given by

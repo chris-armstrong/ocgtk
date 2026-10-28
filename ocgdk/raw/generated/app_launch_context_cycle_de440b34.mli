@@ -67,7 +67,7 @@ module rec App_launch_context : sig
 
   external get_display : t -> Display.t
     = "ml_gdk_app_launch_context_get_display"
-  (** Get property: display *)
+  (** The display that the [GdkAppLaunchContext] is on. *)
 end
 [@@ocaml.doc
   "Handles launching an application in a graphical context.\n\n\
@@ -353,7 +353,7 @@ and Device : sig
   (* Properties *)
 
   external get_n_axes : t -> int = "ml_gdk_device_get_n_axes"
-  (** Get property: n-axes *)
+  (** Number of axes in the device. *)
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

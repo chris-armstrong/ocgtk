@@ -1,17 +1,22 @@
 (** Implements the [GtkMediaStream] interface for files.
 
+    Its methods, signals and properties are on {!class-type-media_file_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Media_file}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MediaFile].}
+
+    Implements the [GtkMediaStream] interface for files.
+
     This provides a simple way to play back video files with GTK.
 
     GTK provides a GIO extension point for [GtkMediaFile] implementations to
     allow for external implementations using various media frameworks.
 
-    GTK itself includes an implementation using GStreamer.
-
-    Its methods, signals and properties are on {!class-type-media_file_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Media_file}. *)
-
-(** The methods, signals and properties of a [MediaFile]. *)
+    GTK itself includes an implementation using GStreamer. *)
 class type media_file_t = object
   inherit Media_stream.media_stream_t
 
@@ -61,7 +66,18 @@ end
 class media_file : Raw.Media_file.t -> media_file_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Media_file.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Implements the [GtkMediaStream] interface for files.
+
+    This provides a simple way to play back video files with GTK.
+
+    GTK provides a GIO extension point for [GtkMediaFile] implementations to
+    allow for external implementations using various media frameworks.
+
+    GTK itself includes an implementation using GStreamer. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> media_file_t
 (** Creates a new empty media file. *)

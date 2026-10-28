@@ -7,7 +7,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Filename_completer}. *)
 
-(** The methods, signals and properties of a [FilenameCompleter]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FilenameCompleter].}
+
+    Completes partial file and directory names given a partial string by looking
+    in the file system for clues. Can return a list of possible completion
+    strings for widget implementations. *)
 class type filename_completer_t = object
   method on_got_completion_data :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -36,7 +42,7 @@ end
 class filename_completer : Raw.Filename_completer.t -> filename_completer_t
 (** Wraps a raw handle of {!Ocgio.Raw.Filename_completer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> filename_completer_t
 (** Creates a new filename completer. *)

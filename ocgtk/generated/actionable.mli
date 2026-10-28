@@ -1,5 +1,15 @@
 (** Provides a way to associate widgets with actions.
 
+    Its methods, signals and properties are on {!class-type-actionable_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Actionable}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Actionable].}
+
+    Provides a way to associate widgets with actions.
+
     It primarily consists of two properties: [Gtk.Actionable:action-name] and
     [Gtk.Actionable:action-target]. There are also some convenience APIs for
     setting these properties.
@@ -8,12 +18,7 @@
     widgets ancestors. Most commonly, these will be the actions with the “win.”
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
-    [Gtk.Widget.insert_action_group] will be consulted as well.
-
-    Its methods, signals and properties are on {!class-type-actionable_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Actionable}. *)
-
-(** The methods, signals and properties of a [Actionable]. *)
+    [Gtk.Widget.insert_action_group] will be consulted as well. *)
 class type actionable_t = object
   method get_action_name : unit -> string option
   (** Gets the action name for [actionable]. *)
@@ -67,3 +72,17 @@ end
 
 class actionable : Raw.Actionable.t -> actionable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Actionable.t}. *)
+
+(** {1:description Description}
+
+    Provides a way to associate widgets with actions.
+
+    It primarily consists of two properties: [Gtk.Actionable:action-name] and
+    [Gtk.Actionable:action-target]. There are also some convenience APIs for
+    setting these properties.
+
+    The action will be looked up in action groups that are found among the
+    widgets ancestors. Most commonly, these will be the actions with the “win.”
+    or “app.” prefix that are associated with the [GtkApplicationWindow] or
+    [GtkApplication], but other action groups that are added with
+    [Gtk.Widget.insert_action_group] will be consulted as well. *)

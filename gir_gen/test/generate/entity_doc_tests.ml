@@ -32,6 +32,50 @@ let test_l2_module_without_class_doc_starts_with_synopsis () =
     (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
        ~has_constructors:true ~class_doc:None)
 
+let long_doc = "A button.\n\nIt can hold a child."
+
+let test_l2_module_synopsis_is_first_paragraph () =
+  check_text "first paragraph, then the navigation with the description link"
+    "(** A button.\n\n\
+     Its methods, signals and properties are on {!class-type-button_t}. Its \
+     full description is under {!section-description}. The functions it is \
+     built on are in {!Ocgtk.Raw.Button}. *)"
+    (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+       ~has_constructors:false ~class_doc:(Some long_doc))
+
+(* A code block split at its blank line would leave markup open. *)
+let test_l2_module_block_first_paragraph_falls_back () =
+  let doc =
+    Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+      ~has_constructors:false
+      ~class_doc:(Some "```c\nint x;\n\nint y;\n```\n\nA button.")
+  in
+  Alcotest.(check bool)
+    ("the fallback sentence: " ^ text doc)
+    true
+    (Helpers.string_contains (text doc) "(** Bindings for [Button].\n\n")
+
+let test_description_with_long_doc () =
+  check_text "heading, then the whole class doc"
+    "(** {1:description Description}\n\nA button.\n\nIt can hold a child. *)"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some long_doc))
+
+let test_description_omitted_when_synopsis_is_all () =
+  check_text "nothing beyond the synopsis" "<none>"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some "A button."));
+  check_text "no class doc" "<none>"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:None)
+
+let test_class_type_with_class_doc () =
+  check_text "the bold line, then the class doc"
+    "(** {b The methods, signals and properties of a [Button].}\n\nA button. *)"
+    (Entity_doc.class_type ~class_name:"Button" ~class_doc:(Some "A button."))
+
+let test_class_type_without_class_doc () =
+  check_text "the bold line alone"
+    "(** {b The methods, signals and properties of a [Button].} *)"
+    (Entity_doc.class_type ~class_name:"Button" ~class_doc:None)
+
 let ctor ?ctor_doc () =
   Type_factory.make_gir_constructor ~ctor_name:"new_with_label"
     ~c_identifier:"gtk_button_new_with_label" ?ctor_doc ()
@@ -53,6 +97,25 @@ let test_constructor_gir_doc_wins () =
     (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
        (ctor ~ctor_doc:"Creates a labelled button." ()))
 
+let label_property ?prop_doc () =
+  Type_factory.make_gir_property ~prop_name:"label"
+    ~prop_type:(Type_factory.make_gir_type ~name:"utf8" ~c_type:"gchar*" ())
+    ~readable:true ~writable:true ?prop_doc ()
+
+let test_property_gir_doc_on_both_accessors () =
+  let prop = label_property ~prop_doc:"Text of the label." () in
+  check_text "getter" "(** Text of the label. *)"
+    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+  check_text "setter" "(** Text of the label. *)"
+    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+
+let test_property_fallback () =
+  let prop = label_property () in
+  check_text "getter" "(** Get property: label *)"
+    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+  check_text "setter" "(** Set property: label *)"
+    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+
 let test_l1_module_points_to_layer2 () =
   check_text "class doc, then the layer 2 module"
     "(** A button.\n\nThe class built on this module is in {!Ocgtk.Button}. *)"
@@ -72,12 +135,12 @@ let test_combined_module_links_members_sorted () =
     (Entity_doc.combined_module ~namespace:"Gtk" ~layer:Entity_doc.Layer2
        ~class_names:[ "Window"; "WidgetPaintable" ])
 
-let signature ?(methods = []) ~class_doc () =
+let signature ?(methods = []) ?(properties = []) ~class_doc () =
   Class_gen.generate_class_signature
     ~ctx:(Helpers.create_test_context ())
     ~class_doc ~class_name:"Button" ~c_type:"GtkButton"
-    ~parent_chain:[ "Widget" ] ~methods ~properties:[] ~signals:[]
-    ~constructors:[] ~entity_kind:Filtering.Class
+    ~parent_chain:[ "Widget" ] ~methods ~properties ~signals:[] ~constructors:[]
+    ~entity_kind:Filtering.Class
   |> Ml_ast_helpers.parse_interface
 
 let check_has msg ~sub doc =
@@ -93,10 +156,44 @@ let test_signature_carries_docs () =
   let ast = signature ~class_doc:(Some "A button.") () in
   check_has "module preamble" ~sub:"A button."
     (Ml_ast_helpers.module_preamble ast);
+  let class_type_doc =
+    Helpers.expect_some "class type button_t"
+      (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+        Ml_ast_helpers.doc_of_attributes ct.pci_attributes)
+  in
   check_has "class type" ~sub:"The methods, signals and properties of a"
-    (Helpers.expect_some "class type button_t"
-       (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
-         Ml_ast_helpers.doc_of_attributes ct.pci_attributes))
+    class_type_doc;
+  check_has "class type repeats the class doc" ~sub:"A button." class_type_doc
+
+(* The preamble stays short so the class type and class come before the long
+   description. Checked on the text, since the order of floating docs and items
+   is the point. *)
+let test_signature_layout_order () =
+  let text =
+    Class_gen.generate_class_signature
+      ~ctx:(Helpers.create_test_context ())
+      ~class_doc:(Some long_doc) ~class_name:"Button" ~c_type:"GtkButton"
+      ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[] ~signals:[]
+      ~constructors:[] ~entity_kind:Filtering.Class
+  in
+  let position sub =
+    match Re.Str.search_forward (Re.Str.regexp_string sub) text 0 with
+    | i -> i
+    | exception Not_found -> Alcotest.fail ("missing " ^ sub ^ " in:\n" ^ text)
+  in
+  let positions =
+    List.map position
+      [
+        "(** A button.";
+        "{1:class Class}";
+        "class type button_t";
+        "class button :";
+        "{1:description Description}";
+      ]
+  in
+  Alcotest.(check (list int))
+    "synopsis, Class heading, class type, class, description" positions
+    (List.sort compare positions)
 
 let test_signature_carries_method_docs () =
   let clicked =
@@ -116,6 +213,26 @@ let test_signature_carries_method_docs () =
     "the method's translated doc" (Some " Emits the clicked signal. ")
     method_doc
 
+let class_type_method_doc ast name =
+  Helpers.expect_some "class type button_t"
+    (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+      Helpers.expect_some ("method " ^ name)
+        (Ml_ast_helpers.find_method_in_class_type ct.pci_expr name)
+        (fun field -> Ml_ast_helpers.doc_of_attributes field.pctf_attributes))
+
+let test_signature_carries_property_docs () =
+  let ast =
+    signature
+      ~properties:[ label_property ~prop_doc:"Text of the label." () ]
+      ~class_doc:None ()
+  in
+  Alcotest.(check (option string))
+    "getter" (Some " Text of the label. ")
+    (class_type_method_doc ast "label");
+  Alcotest.(check (option string))
+    "setter" (Some " Text of the label. ")
+    (class_type_method_doc ast "set_label")
+
 let tests =
   [
     ( "layer 2 module doc with a class doc",
@@ -124,6 +241,21 @@ let tests =
     ( "layer 2 module doc without a class doc starts with a synopsis",
       `Quick,
       test_l2_module_without_class_doc_starts_with_synopsis );
+    ( "layer 2 module synopsis is the first paragraph",
+      `Quick,
+      test_l2_module_synopsis_is_first_paragraph );
+    ( "layer 2 module synopsis falls back after a block",
+      `Quick,
+      test_l2_module_block_first_paragraph_falls_back );
+    ("description with a long doc", `Quick, test_description_with_long_doc);
+    ( "description omitted when the synopsis is all",
+      `Quick,
+      test_description_omitted_when_synopsis_is_all );
+    ("layer 2 signature layout order", `Quick, test_signature_layout_order);
+    ("class type doc with a class doc", `Quick, test_class_type_with_class_doc);
+    ( "class type doc without a class doc",
+      `Quick,
+      test_class_type_without_class_doc );
     ( "constructor fallback links the gi-docgen page",
       `Quick,
       test_constructor_fallback_links_upstream );
@@ -131,6 +263,13 @@ let tests =
       `Quick,
       test_constructor_fallback_without_upstream_site );
     ("constructor GIR doc wins", `Quick, test_constructor_gir_doc_wins);
+    ( "property GIR doc on both accessors",
+      `Quick,
+      test_property_gir_doc_on_both_accessors );
+    ("property fallback", `Quick, test_property_fallback);
+    ( "layer 2 signature carries property docs",
+      `Quick,
+      test_signature_carries_property_docs );
     ( "layer 1 module doc points to layer 2",
       `Quick,
       test_l1_module_points_to_layer2 );

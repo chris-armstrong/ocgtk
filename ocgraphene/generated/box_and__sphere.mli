@@ -2,7 +2,10 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [Box]. *)
+(** {b The methods, signals and properties of a [Box].}
+
+    A 3D box, described as the volume between a minimum and a maximum vertices.
+*)
 class type box_t = object
   method contains_box : Raw.Box.t -> bool
   (** Checks whether the #graphene_box_t [a] contains the given #graphene_box_t
@@ -49,7 +52,9 @@ class type box_t = object
   method as_box : Raw.Box.t
 end
 
-(** The methods, signals and properties of a [Sphere]. *)
+(** {b The methods, signals and properties of a [Sphere].}
+
+    A sphere, represented by its center and radius. *)
 and sphere_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given [point] is contained in the volume of a

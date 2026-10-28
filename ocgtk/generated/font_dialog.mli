@@ -1,5 +1,16 @@
 (** Asynchronous API to present a font chooser dialog.
 
+    Its methods, signals and properties are on {!class-type-font_dialog_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Font_dialog}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FontDialog].}
+
+    Asynchronous API to present a font chooser dialog.
+
     [GtkFontDialog] collects the arguments that are needed to present the dialog
     to the user, such as a title for the dialog and whether it should be modal.
 
@@ -7,13 +18,7 @@
     variants.
 
     See [Gtk.FontDialogButton] for a convenient control that uses
-    [GtkFontDialog] and presents the results.
-
-    Its methods, signals and properties are on {!class-type-font_dialog_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Font_dialog}. *)
-
-(** The methods, signals and properties of a [FontDialog]. *)
+    [GtkFontDialog] and presents the results. *)
 class type font_dialog_t = object
   method choose_face_finish :
     Ocgio.Async_result.async_result_t ->
@@ -85,7 +90,20 @@ end
 class font_dialog : Raw.Font_dialog.t -> font_dialog_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Font_dialog.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Asynchronous API to present a font chooser dialog.
+
+    [GtkFontDialog] collects the arguments that are needed to present the dialog
+    to the user, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with the [Gtk.FontDialog.choose_font] function or its
+    variants.
+
+    See [Gtk.FontDialogButton] for a convenient control that uses
+    [GtkFontDialog] and presents the results. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> font_dialog_t
 (** Creates a new [GtkFontDialog] object. *)

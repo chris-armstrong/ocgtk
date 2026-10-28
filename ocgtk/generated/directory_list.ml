@@ -64,7 +64,11 @@ class type directory_list_t = object
       between the initial loading and when monitoring was turned on. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_directory_list : Raw.Directory_list.t
 end
 

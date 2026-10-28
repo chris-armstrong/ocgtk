@@ -6,7 +6,12 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Simple_action_group}. *)
 
-(** The methods, signals and properties of a [SimpleActionGroup]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SimpleActionGroup].}
+
+    [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
+    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
 class type simple_action_group_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t
@@ -35,7 +40,7 @@ end
 class simple_action_group : Raw.Simple_action_group.t -> simple_action_group_t
 (** Wraps a raw handle of {!Ocgio.Raw.Simple_action_group.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> simple_action_group_t
 (** Creates a new, empty, [GSimpleActionGroup]. *)

@@ -28,9 +28,19 @@ class type password_entry_t = object
       Setting this to [FALSE] also hides the text again. *)
 
   method activates_default : bool
+  (** Whether to activate the default widget when Enter is pressed. *)
+
   method set_activates_default : bool -> unit
+  (** Whether to activate the default widget when Enter is pressed. *)
+
   method placeholder_text : string
+  (** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+      and unfocused. *)
+
   method set_placeholder_text : string -> unit
+  (** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+      and unfocused. *)
+
   method as_password_entry : Raw.Password_entry.t
 end
 

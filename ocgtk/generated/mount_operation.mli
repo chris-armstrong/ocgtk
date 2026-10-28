@@ -1,6 +1,18 @@
 (** Asks the user for passwords and other information required to mount a
     volume.
 
+    Its methods, signals and properties are on {!class-type-mount_operation_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Mount_operation}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MountOperation].}
+
+    Asks the user for passwords and other information required to mount a
+    volume.
+
     [GtkMountOperation] is needed when mounting volumes: It is an implementation
     of [GMountOperation] that can be used with GIO functions for mounting
     volumes such as [Gio.File.mount_enclosing_volume],
@@ -8,13 +20,7 @@
     [Gio.Mount.unmount_with_operation] and others.
 
     When necessary, [GtkMountOperation] shows dialogs to let the user enter
-    passwords, ask questions or show processes blocking unmount.
-
-    Its methods, signals and properties are on {!class-type-mount_operation_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Mount_operation}. *)
-
-(** The methods, signals and properties of a [MountOperation]. *)
+    passwords, ask questions or show processes blocking unmount. *)
 class type mount_operation_t = object
   inherit Ocgio.Mount_operation.mount_operation_t
 
@@ -41,7 +47,21 @@ end
 class mount_operation : Raw.Mount_operation.t -> mount_operation_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Mount_operation.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Asks the user for passwords and other information required to mount a
+    volume.
+
+    [GtkMountOperation] is needed when mounting volumes: It is an implementation
+    of [GMountOperation] that can be used with GIO functions for mounting
+    volumes such as [Gio.File.mount_enclosing_volume],
+    [Gio.File.mount_mountable], [Gio.Volume.mount],
+    [Gio.Mount.unmount_with_operation] and others.
+
+    When necessary, [GtkMountOperation] shows dialogs to let the user enter
+    passwords, ask questions or show processes blocking unmount. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Application_and__window_and__window_group.window_t option -> mount_operation_t

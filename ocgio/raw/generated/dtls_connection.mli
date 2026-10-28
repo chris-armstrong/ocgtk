@@ -289,7 +289,8 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
 
 external get_base_socket : t -> Datagram_based.t
   = "ml_g_dtls_connection_get_base_socket"
-(** Get property: base-socket *)
+(** The [GDatagramBased] that the connection wraps. Note that this may be any
+    implementation of [GDatagramBased], not just a [GSocket]. *)
 
 val on_accept_certificate :
   ?after:bool ->

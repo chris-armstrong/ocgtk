@@ -87,7 +87,7 @@ external append : t -> string -> unit = "ml_gtk_string_list_append"
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_string_list_get_item_type"
-(** Get property: item-type *)
+(** The type of items. See [Gio.ListModel.get_item_type]. *)
 
 external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
-(** Get property: n-items *)
+(** The number of items. See [Gio.ListModel.get_n_items]. *)

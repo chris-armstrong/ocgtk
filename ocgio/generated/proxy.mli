@@ -7,7 +7,15 @@
     Its methods, signals and properties are on {!class-type-proxy_t}. The
     functions it is built on are in {!Ocgio.Raw.Proxy}. *)
 
-(** The methods, signals and properties of a [Proxy]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Proxy].}
+
+    A [GProxy] handles connecting to a remote host via a given type of proxy
+    server. It is implemented by the [gio-proxy] extension point. The extensions
+    are named after their proxy protocol name. As an example, a SOCKS5 proxy
+    implementation can be retrieved with the name [socks5] using the function
+    [Gio.IOExtensionPoint.get_extension_by_name]. *)
 class type proxy_t = object
   method connect :
     Io_stream.io_stream_t ->

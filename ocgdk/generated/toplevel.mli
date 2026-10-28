@@ -1,13 +1,18 @@
 (** A freestanding toplevel surface.
 
+    Its methods, signals and properties are on {!class-type-toplevel_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgdk.Raw.Toplevel}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Toplevel].}
+
+    A freestanding toplevel surface.
+
     The [GdkToplevel] interface provides useful APIs for interacting with the
     windowing system, such as controlling maximization and size of the surface,
-    setting icons and transient parents for dialogs.
-
-    Its methods, signals and properties are on {!class-type-toplevel_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Toplevel}. *)
-
-(** The methods, signals and properties of a [Toplevel]. *)
+    setting icons and transient parents for dialogs. *)
 class type toplevel_t = object
   method begin_move :
     App_launch_context_cycle_de440b34.device_t ->
@@ -173,10 +178,24 @@ class type toplevel_t = object
   (** Performs a title bar gesture. *)
 
   method fullscreen_mode : Enums.fullscreenmode
+  (** The fullscreen mode of the surface. *)
+
   method set_fullscreen_mode : Enums.fullscreenmode -> unit
+  (** The fullscreen mode of the surface. *)
+
   method shortcuts_inhibited : bool
+  (** Whether the surface should inhibit keyboard shortcuts. *)
+
   method as_toplevel : Raw.Toplevel.t
 end
 
 class toplevel : Raw.Toplevel.t -> toplevel_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Toplevel.t}. *)
+
+(** {1:description Description}
+
+    A freestanding toplevel surface.
+
+    The [GdkToplevel] interface provides useful APIs for interacting with the
+    windowing system, such as controlling maximization and size of the surface,
+    setting icons and transient parents for dialogs. *)

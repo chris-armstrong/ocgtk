@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-tree_drag_dest_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_drag_dest}. *)
 
-(** The methods, signals and properties of a [TreeDragDest]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [TreeDragDest].}
+
+    Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
 class type tree_drag_dest_t = object
   method drag_data_received : Raw.Tree_path.t -> Gobject.Value.t -> bool
   (** Asks the [GtkTreeDragDest] to insert a row before the path [dest],

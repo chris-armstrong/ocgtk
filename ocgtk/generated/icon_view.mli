@@ -1,5 +1,16 @@
 (** [GtkIconView] is a widget which displays data in a grid of icons.
 
+    Its methods, signals and properties are on {!class-type-icon_view_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Icon_view}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [IconView].}
+
+    [GtkIconView] is a widget which displays data in a grid of icons.
+
     An example GtkIconView
 
     [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
@@ -21,13 +32,7 @@
     ]}
 
     [GtkIconView] has a single CSS node with name iconview and style class
-    .view. For rubberband selection, a subnode with name rubberband is used.
-
-    Its methods, signals and properties are on {!class-type-icon_view_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Icon_view}. *)
-
-(** The methods, signals and properties of a [IconView]. *)
+    .view. For rubberband selection, a subnode with name rubberband is used. *)
 class type icon_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -378,6 +383,10 @@ class type icon_view_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] used to layout cell renderers for this view.
+
+      If no area is specified when creating the icon view with
+      gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
 
   method as_icon_view : Raw.Icon_view.t
 end
@@ -385,7 +394,34 @@ end
 class icon_view : Raw.Icon_view.t -> icon_view_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Icon_view.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GtkIconView] is a widget which displays data in a grid of icons.
+
+    An example GtkIconView
+
+    [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
+    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
+    select one or multiple items (depending on the selection mode, see
+    [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
+    keys, [GtkIconView] supports rubberband selection, which is controlled by
+    dragging the pointer.
+
+    Note that if the tree model is backed by an actual tree store (as opposed to
+    a flat list where the mapping to icons is obvious), [GtkIconView] will only
+    display the first level of the tree and ignore the tree’s branches.
+
+    {b CSS nodes}
+
+    {[
+    iconview.view
+    ╰── [rubberband]
+    ]}
+
+    [GtkIconView] has a single CSS node with name iconview and style class
+    .view. For rubberband selection, a subnode with name rubberband is used. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> icon_view_t
 (** Creates a new [GtkIconView] widget *)

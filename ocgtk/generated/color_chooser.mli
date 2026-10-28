@@ -1,16 +1,22 @@
 (** [GtkColorChooser] is an interface that is implemented by widgets for
     choosing colors.
 
+    Its methods, signals and properties are on {!class-type-color_chooser_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Color_chooser}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ColorChooser].}
+
+    [GtkColorChooser] is an interface that is implemented by widgets for
+    choosing colors.
+
     Depending on the situation, colors may be allowed to have alpha
     (translucency).
 
     In GTK, the main widgets that implement this interface are
-    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton].
-
-    Its methods, signals and properties are on {!class-type-color_chooser_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Color_chooser}. *)
-
-(** The methods, signals and properties of a [ColorChooser]. *)
+    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
 class type color_chooser_t = object
   method add_palette :
     Enums.orientation -> int -> int -> Ocgdk.Raw.Rgb_a.t array option -> unit
@@ -45,3 +51,14 @@ end
 
 class color_chooser : Raw.Color_chooser.t -> color_chooser_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Color_chooser.t}. *)
+
+(** {1:description Description}
+
+    [GtkColorChooser] is an interface that is implemented by widgets for
+    choosing colors.
+
+    Depending on the situation, colors may be allowed to have alpha
+    (translucency).
+
+    In GTK, the main widgets that implement this interface are
+    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)

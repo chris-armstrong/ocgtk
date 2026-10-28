@@ -1,5 +1,16 @@
 (** A widget displaying a single row of a GtkTreeModel
 
+    Its methods, signals and properties are on {!class-type-cell_view_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_view}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [CellView].}
+
+    A widget displaying a single row of a GtkTreeModel
+
     A [GtkCellView] displays a single row of a [GtkTreeModel] using a
     [GtkCellArea] and [GtkCellAreaContext]. A [GtkCellAreaContext] can be
     provided to the [GtkCellView] at construction time in order to keep the
@@ -17,13 +28,7 @@
 
     {b CSS nodes}
 
-    GtkCellView has a single CSS node with name cellview.
-
-    Its methods, signals and properties are on {!class-type-cell_view_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Cell_view}. *)
-
-(** The methods, signals and properties of a [CellView]. *)
+    GtkCellView has a single CSS node with name cellview. *)
 class type cell_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -76,9 +81,28 @@ class type cell_view_t = object
 
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** The [GtkCellArea] rendering cells
+
+      If no area is specified when creating the cell view with
+      gtk_cell_view_new_with_context() a horizontally oriented [GtkCellArea]Box
+      will be used.
+
+      since 3.0 *)
 
   method cell_area_context :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
+  (** The [GtkCellAreaContext] used to compute the geometry of the cell view.
+
+      A group of cell views can be assigned the same context in order to ensure
+      the sizes and cell alignments match across all the views with the same
+      context.
+
+      [GtkComboBox] menus uses this to assign the same context to all cell views
+      in the menu items for a single menu (each submenu creates its own context
+      since the size of each submenu does not depend on parent or sibling
+      menus).
+
+      since 3.0 *)
 
   method as_cell_view : Raw.Cell_view.t
 end
@@ -86,7 +110,30 @@ end
 class cell_view : Raw.Cell_view.t -> cell_view_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_view.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A widget displaying a single row of a GtkTreeModel
+
+    A [GtkCellView] displays a single row of a [GtkTreeModel] using a
+    [GtkCellArea] and [GtkCellAreaContext]. A [GtkCellAreaContext] can be
+    provided to the [GtkCellView] at construction time in order to keep the
+    cellview in context of a group of cell views, this ensures that the
+    renderers displayed will be properly aligned with each other (like the
+    aligned cells in the menus of [GtkComboBox]).
+
+    [GtkCellView] is [GtkOrientable] in order to decide in which orientation the
+    underlying [GtkCellAreaContext] should be allocated. Taking the
+    [GtkComboBox] menu as an example, cellviews should be oriented horizontally
+    if the menus are listed top-to-bottom and thus all share the same width but
+    may have separate individual heights (left-to-right menus should be
+    allocated vertically since they all share the same height but may have
+    variable widths).
+
+    {b CSS nodes}
+
+    GtkCellView has a single CSS node with name cellview. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_view_t
 (** Creates a new [GtkCellView] widget. *)

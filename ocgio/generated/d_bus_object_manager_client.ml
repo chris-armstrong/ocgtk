@@ -40,6 +40,8 @@ class type d_bus_object_manager_client_t = object
       property. *)
 
   method object_path : string
+  (** The object path the manager is for. *)
+
   method as_d_bus_object_manager_client : Raw.D_bus_object_manager_client.t
 end
 

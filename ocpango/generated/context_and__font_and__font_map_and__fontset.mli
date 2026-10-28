@@ -3,7 +3,16 @@
     has a module of its own that re-exports it; use that module rather than this
     one. *)
 
-(** The methods, signals and properties of a [Context]. *)
+(** {b The methods, signals and properties of a [Context].}
+
+    A [PangoContext] stores global information used to control the itemization
+    process.
+
+    The information stored by [PangoContext] includes the fontmap used to look
+    up fonts, and default values such as the default language, default gravity,
+    or default font.
+
+    To obtain a [PangoContext], use [Pango.FontMap.create_context]. *)
 class type context_t = object
   method changed : unit -> unit
   (** Forces a change in the context, which will cause any [PangoLayout] using
@@ -152,7 +161,10 @@ class type context_t = object
   method as_context : Raw.Context.t
 end
 
-(** The methods, signals and properties of a [Font]. *)
+(** {b The methods, signals and properties of a [Font].}
+
+    A [PangoFont] is used to represent a font in a rendering-system-independent
+    manner. *)
 and font_t = object
   method describe : unit -> Raw.Font_description.t
   (** Returns a description of the font, with font size set in points.
@@ -215,7 +227,13 @@ and font_t = object
   method as_font : Raw.Font.t
 end
 
-(** The methods, signals and properties of a [FontMap]. *)
+(** {b The methods, signals and properties of a [FontMap].}
+
+    A [PangoFontMap] represents the set of fonts available for a particular
+    rendering system.
+
+    This is a virtual object with implementations being specific to particular
+    rendering systems. *)
 and font_map_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -279,11 +297,22 @@ and font_map_t = object
       size. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items contained in this list. *)
+
   method n_items : int
+  (** The number of items contained in this list. *)
+
   method as_font_map : Raw.Font_map.t
 end
 
-(** The methods, signals and properties of a [Fontset]. *)
+(** {b The methods, signals and properties of a [Fontset].}
+
+    A [PangoFontset] represents a set of [PangoFont] to use when rendering text.
+
+    A [PangoFontset] is the result of resolving a [PangoFontDescription] against
+    a particular [PangoContext]. It has operations for finding the component
+    font for a particular Unicode character, and for finding a composite set of
+    metrics for the entire fontset. *)
 and fontset_t = object
   method get_font : int -> font_t
   (** Returns the font in the fontset that contains the best glyph for a Unicode

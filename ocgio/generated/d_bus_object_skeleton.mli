@@ -2,14 +2,20 @@
     The set of exported interfaces on the object may be dynamic and change at
     runtime.
 
-    This type is intended to be used with [Gio.DBusObjectManager].
-
     Its methods, signals and properties are on
-    {!class-type-d_bus_object_skeleton_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_object_skeleton}. *)
+    {!class-type-d_bus_object_skeleton_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_object_skeleton}. *)
 
-(** The methods, signals and properties of a [DBusObjectSkeleton]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusObjectSkeleton].}
+
+    A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
+    The set of exported interfaces on the object may be dynamic and change at
+    runtime.
+
+    This type is intended to be used with [Gio.DBusObjectManager]. *)
 class type d_bus_object_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 
@@ -59,7 +65,11 @@ class type d_bus_object_skeleton_t = object
   (** Sets the object path for [object]. *)
 
   method g_object_path : string
+  (** The object path where the object is exported. *)
+
   method set_g_object_path : string -> unit
+  (** The object path where the object is exported. *)
+
   method as_d_bus_object_skeleton : Raw.D_bus_object_skeleton.t
 end
 
@@ -68,7 +78,15 @@ class d_bus_object_skeleton :
   d_bus_object_skeleton_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_object_skeleton.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
+    The set of exported interfaces on the object may be dynamic and change at
+    runtime.
+
+    This type is intended to be used with [Gio.DBusObjectManager]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> d_bus_object_skeleton_t
 (** Creates a new [GDBusObjectSkeleton]. *)

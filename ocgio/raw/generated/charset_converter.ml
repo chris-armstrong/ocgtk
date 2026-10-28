@@ -32,7 +32,7 @@ external get_num_fallbacks : t -> int
 
 external get_from_charset : t -> string
   = "ml_g_charset_converter_get_from_charset"
-(** Get property: from-charset *)
+(** The character encoding to convert from. *)
 
 external get_to_charset : t -> string = "ml_g_charset_converter_get_to_charset"
-(** Get property: to-charset *)
+(** The character encoding to convert to. *)

@@ -60,4 +60,18 @@ external append_name : t -> string -> unit = "ml_g_themed_icon_append_name"
 
 external get_use_default_fallbacks : t -> bool
   = "ml_g_themed_icon_get_use_default_fallbacks"
-(** Get property: use-default-fallbacks *)
+[@@ocaml.doc
+  "Whether to use the default fallbacks found by shortening the icon name\n\
+   at '-' characters. If the \"names\" array has more than one element,\n\
+   ignores any past the first.\n\n\
+   For example, if the icon name was \"gnome-dev-cdrom-audio\", the array\n\
+   would become\n\n\
+   {[\n\
+   {\n\
+  \  \"gnome-dev-cdrom-audio\",\n\
+  \  \"gnome-dev-cdrom\",\n\
+  \  \"gnome-dev\",\n\
+  \  \"gnome\",\n\
+  \  NULL\n\
+   };\n\
+   ]}"]

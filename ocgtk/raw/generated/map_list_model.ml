@@ -59,7 +59,7 @@ external get_model : t -> Ocgio_raw.List_model.t option
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_map_list_model_get_item_type"
-(** Get property: item-type *)
+(** The type of items. See [Gio.ListModel.get_item_type]. *)
 
 external get_n_items : t -> int = "ml_gtk_map_list_model_get_n_items"
-(** Get property: n-items *)
+(** The number of items. See [Gio.ListModel.get_n_items]. *)

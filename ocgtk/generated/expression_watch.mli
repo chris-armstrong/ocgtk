@@ -1,12 +1,17 @@
 (** An opaque structure representing a watched [GtkExpression].
 
-    The contents of [GtkExpressionWatch] should only be accessed through the
-    provided API.
-
     Its methods, signals and properties are on {!class-type-expression_watch_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Expression_watch}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Expression_watch}. *)
 
-(** The methods, signals and properties of a [ExpressionWatch]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ExpressionWatch].}
+
+    An opaque structure representing a watched [GtkExpression].
+
+    The contents of [GtkExpressionWatch] should only be accessed through the
+    provided API. *)
 class type expression_watch_t = object
   method evaluate : Gobject.Value.t -> bool
   (** Evaluates the watched expression and on success stores the result in
@@ -28,3 +33,10 @@ end
 
 class expression_watch : Raw.Expression_watch.t -> expression_watch_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Expression_watch.t}. *)
+
+(** {1:description Description}
+
+    An opaque structure representing a watched [GtkExpression].
+
+    The contents of [GtkExpressionWatch] should only be accessed through the
+    provided API. *)

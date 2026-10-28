@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-custom_filter_t}.
     The functions it is built on are in {!Ocgtk.Raw.Custom_filter}. *)
 
-(** The methods, signals and properties of a [CustomFilter]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [CustomFilter].}
+
+    Determines whether to include items with a callback. *)
 class type custom_filter_t = object
   inherit Filter.filter_t
   method as_custom_filter : Raw.Custom_filter.t

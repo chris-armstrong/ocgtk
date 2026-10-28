@@ -2,6 +2,19 @@
     a remote object. A [GDBusProxy] can be constructed for both well-known and
     unique names.
 
+    Its methods, signals and properties are on {!class-type-d_bus_proxy_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_proxy}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [DBusProxy].}
+
+    [GDBusProxy] is a base class used for proxies to access a D-Bus interface on
+    a remote object. A [GDBusProxy] can be constructed for both well-known and
+    unique names.
+
     By default, [GDBusProxy] will cache all properties (and listen to changes)
     of the remote object, and proxy all signals that get emitted. This behaviour
     can be changed by passing suitable [Gio.DBusProxyFlags] when the proxy is
@@ -43,13 +56,7 @@
 
     An example using a proxy for a well-known name can be found in
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c}
-     [gdbus-example-watch-proxy.c]}.
-
-    Its methods, signals and properties are on {!class-type-d_bus_proxy_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgio.Raw.D_bus_proxy}. *)
-
-(** The methods, signals and properties of a [DBusProxy]. *)
+     [gdbus-example-watch-proxy.c]}. *)
 class type d_bus_proxy_t = object
   inherit Async_initable.async_initable_t
   inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
@@ -203,22 +210,147 @@ class type d_bus_proxy_t = object
       the [GDBusProxy:g]-interface-info property for more details. *)
 
   method g_connection : D_bus_connection.d_bus_connection_t
+  (** The [GDBusConnection] the proxy is for. *)
+
   method g_default_timeout : int
+  (** The timeout to use if -1 (specifying default timeout) is passed as
+      [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+      functions.
+
+      This allows applications to set a proxy-wide timeout for all remote method
+      invocations on the proxy. If this property is -1, the default timeout
+      (typically 25 seconds) is used. If set to [G_MAXINT], then no timeout is
+      used. *)
+
   method set_g_default_timeout : int -> unit
+  (** The timeout to use if -1 (specifying default timeout) is passed as
+      [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+      functions.
+
+      This allows applications to set a proxy-wide timeout for all remote method
+      invocations on the proxy. If this property is -1, the default timeout
+      (typically 25 seconds) is used. If set to [G_MAXINT], then no timeout is
+      used. *)
+
   method g_flags : Enums.dbusproxyflags
+  (** Flags from the [GDBusProxyFlags] enumeration. *)
+
   method g_interface_info : Raw.D_bus_interface_info.t
+  [@@ocaml.doc
+    "Ensure that interactions with this proxy conform to the given\n\
+     interface. This is mainly to ensure that malformed data received\n\
+     from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+     said to be the \"expected interface\".\n\n\
+     The checks performed are:\n\n\
+     - When completing a method call, if the type signature of\n\
+     the reply message isn't what's expected, the reply is\n\
+     discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+     - Received signals that have a type signature mismatch are dropped and\n\
+     a warning is logged via g_warning().\n\n\
+     - Properties received via the initial [GetAll()] call or via the\n\
+     [::PropertiesChanged] signal (on the\n\
+     org.freedesktop.DBus.Properties\n\
+     interface) or set using g_dbus_proxy_set_cached_property()\n\
+     with a type signature mismatch are ignored and a warning is\n\
+     logged via g_warning().\n\n\
+     Note that these checks are never done on methods, signals and\n\
+     properties that are not referenced in the given\n\
+     [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+     service-side is not considered an ABI break."]
+
   method set_g_interface_info : Raw.D_bus_interface_info.t -> unit
+  [@@ocaml.doc
+    "Ensure that interactions with this proxy conform to the given\n\
+     interface. This is mainly to ensure that malformed data received\n\
+     from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+     said to be the \"expected interface\".\n\n\
+     The checks performed are:\n\n\
+     - When completing a method call, if the type signature of\n\
+     the reply message isn't what's expected, the reply is\n\
+     discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+     - Received signals that have a type signature mismatch are dropped and\n\
+     a warning is logged via g_warning().\n\n\
+     - Properties received via the initial [GetAll()] call or via the\n\
+     [::PropertiesChanged] signal (on the\n\
+     org.freedesktop.DBus.Properties\n\
+     interface) or set using g_dbus_proxy_set_cached_property()\n\
+     with a type signature mismatch are ignored and a warning is\n\
+     logged via g_warning().\n\n\
+     Note that these checks are never done on methods, signals and\n\
+     properties that are not referenced in the given\n\
+     [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+     service-side is not considered an ABI break."]
+
   method g_interface_name : string
+  (** The D-Bus interface name the proxy is for. *)
+
   method g_name : string
+  (** The well-known or unique name that the proxy is for. *)
+
   method g_name_owner : string
+  (** The unique name that owns [GDBusProxy:g]-name or [NULL] if no-one
+      currently owns that name. You may connect to [GObject::notify] signal to
+      track changes to this property. *)
+
   method g_object_path : string
+  (** The object path the proxy is for. *)
+
   method as_d_bus_proxy : Raw.D_bus_proxy.t
 end
 
 class d_bus_proxy : Raw.D_bus_proxy.t -> d_bus_proxy_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_proxy.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GDBusProxy] is a base class used for proxies to access a D-Bus interface on
+    a remote object. A [GDBusProxy] can be constructed for both well-known and
+    unique names.
+
+    By default, [GDBusProxy] will cache all properties (and listen to changes)
+    of the remote object, and proxy all signals that get emitted. This behaviour
+    can be changed by passing suitable [Gio.DBusProxyFlags] when the proxy is
+    created. If the proxy is for a well-known name, the property cache is
+    flushed when the name owner vanishes and reloaded when a name owner appears.
+
+    The unique name owner of the proxy’s name is tracked and can be read from
+    [Gio.DBusProxy:g-name-owner]. Connect to the [GObject.Object::notify] signal
+    to get notified of changes. Additionally, only signals and property changes
+    emitted from the current name owner are considered and calls are always sent
+    to the current name owner. This avoids a number of race conditions when the
+    name is lost by one owner and claimed by another. However, if no name owner
+    currently exists, then calls will be sent to the well-known name which may
+    result in the message bus launching an owner (unless
+    [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] is set).
+
+    If the proxy is for a stateless D-Bus service, where the name owner may be
+    started and stopped between calls, the [Gio.DBusProxy:g-name-owner] tracking
+    of [GDBusProxy] will cause the proxy to drop signal and property changes
+    from the service after it has restarted for the first time. When interacting
+    with a stateless D-Bus service, do not use [GDBusProxy] — use direct D-Bus
+    method calls and signal connections.
+
+    The generic [Gio.DBusProxy::g-properties-changed] and
+    [Gio.DBusProxy::g-signal] signals are not very convenient to work with.
+    Therefore, the recommended way of working with proxies is to subclass
+    [GDBusProxy], and have more natural properties and signals in your derived
+    class. This example shows how this can easily be done using the
+    [gdbus-codegen] tool.
+
+    A [GDBusProxy] instance can be used from multiple threads but note that all
+    signals (e.g. [Gio.DBusProxy::g-signal],
+    [Gio.DBusProxy::g-properties-changed] and [GObject.Object::notify]) are
+    emitted in the thread-default main context (see
+    [GLib.MainContext.push_thread_default]) of the thread where the instance was
+    constructed.
+
+    {b A watch proxy example}
+
+    An example using a proxy for a well-known name can be found in
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c}
+     [gdbus-example-watch-proxy.c]}. *)
+
+(** {1:constructors Constructors} *)
 
 val new_finish : Async_result.async_result_t -> (d_bus_proxy_t, GError.t) result
 (** Finishes creating a [GDBusProxy]. *)

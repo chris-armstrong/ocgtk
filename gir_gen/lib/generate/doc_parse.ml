@@ -263,7 +263,7 @@ and fragment c =
     match sym_kind_of_keyword (Cursor.text_between start kw_end) with
     | None -> None
     | Some _ as kind ->
-        let+ close = Cursor.find_before_newline (Cursor.advance kw_end 1) ']' in
+        let* close = Cursor.find_before_newline (Cursor.advance kw_end 1) ']' in
         let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
         let raw =
           if
@@ -273,10 +273,18 @@ and fragment c =
           then String.sub raw 0 (String.length raw - 1)
           else raw
         in
-        let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
-        ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
-          Cursor.advance close 1,
-          [] )
+        (* An endpoint has no space or bracket; text that does (an unclosed
+           [[method@Foo[ and ...]) is not a fragment. *)
+        let is_endpoint =
+          not (String.exists (function ' ' | '[' -> true | _ -> false) raw)
+        in
+        if not is_endpoint then None
+        else
+          let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
+          Some
+            ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
+              Cursor.advance close 1,
+              [] )
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into

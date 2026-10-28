@@ -21,62 +21,62 @@ external get_child :
 (* Properties *)
 
 external get_detachable : t -> bool = "ml_gtk_notebook_page_get_detachable"
-(** Get property: detachable *)
+(** Whether the tab is detachable. *)
 
 external set_detachable : t -> bool -> unit
   = "ml_gtk_notebook_page_set_detachable"
-(** Set property: detachable *)
+(** Whether the tab is detachable. *)
 
 external get_menu :
   t ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_menu"
-(** Get property: menu *)
+(** The label widget displayed in the child's menu entry. *)
 
 external get_menu_label : t -> string = "ml_gtk_notebook_page_get_menu_label"
-(** Get property: menu-label *)
+(** The text of the menu widget. *)
 
 external set_menu_label : t -> string -> unit
   = "ml_gtk_notebook_page_set_menu_label"
-(** Set property: menu-label *)
+(** The text of the menu widget. *)
 
 external get_position : t -> int = "ml_gtk_notebook_page_get_position"
-(** Get property: position *)
+(** The index of the child in the parent. *)
 
 external set_position : t -> int -> unit = "ml_gtk_notebook_page_set_position"
-(** Set property: position *)
+(** The index of the child in the parent. *)
 
 external get_reorderable : t -> bool = "ml_gtk_notebook_page_get_reorderable"
-(** Get property: reorderable *)
+(** Whether the tab is reorderable by user action. *)
 
 external set_reorderable : t -> bool -> unit
   = "ml_gtk_notebook_page_set_reorderable"
-(** Set property: reorderable *)
+(** Whether the tab is reorderable by user action. *)
 
 external get_tab :
   t ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_tab"
-(** Get property: tab *)
+(** The tab widget for this page. *)
 
 external get_tab_expand : t -> bool = "ml_gtk_notebook_page_get_tab_expand"
-(** Get property: tab-expand *)
+(** Whether to expand the child's tab. *)
 
 external set_tab_expand : t -> bool -> unit
   = "ml_gtk_notebook_page_set_tab_expand"
-(** Set property: tab-expand *)
+(** Whether to expand the child's tab. *)
 
 external get_tab_fill : t -> bool = "ml_gtk_notebook_page_get_tab_fill"
-(** Get property: tab-fill *)
+(** Whether the child's tab should fill the allocated area. *)
 
 external set_tab_fill : t -> bool -> unit = "ml_gtk_notebook_page_set_tab_fill"
-(** Set property: tab-fill *)
+(** Whether the child's tab should fill the allocated area. *)
 
 external get_tab_label : t -> string = "ml_gtk_notebook_page_get_tab_label"
-(** Get property: tab-label *)
+(** The text of the tab widget. *)
 
 external set_tab_label : t -> string -> unit
   = "ml_gtk_notebook_page_set_tab_label"
-(** Set property: tab-label *)
+(** The text of the tab widget. *)

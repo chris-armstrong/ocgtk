@@ -1,6 +1,18 @@
 (** Contains information that is necessary position a [Gdk.Popup] relative to
     its parent.
 
+    Its methods, signals and properties are on {!class-type-popup_layout_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Popup_layout}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [PopupLayout].}
+
+    Contains information that is necessary position a [Gdk.Popup] relative to
+    its parent.
+
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,
     and the screen dimensions.
@@ -29,13 +41,7 @@
     popup has been presented. This can be used to adjust the rendering. For
     example, GtkPopover changes its arrow position accordingly. But you have to
     be careful avoid changing the size of the popover, or it has to be presented
-    again.
-
-    Its methods, signals and properties are on {!class-type-popup_layout_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgdk.Raw.Popup_layout}. *)
-
-(** The methods, signals and properties of a [PopupLayout]. *)
+    again. *)
 class type popup_layout_t = object
   method equal : Raw.Popup_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
@@ -89,7 +95,42 @@ end
 class popup_layout : Raw.Popup_layout.t -> popup_layout_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Popup_layout.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Contains information that is necessary position a [Gdk.Popup] relative to
+    its parent.
+
+    The positioning requires a negotiation with the windowing system, since it
+    depends on external constraints, such as the position of the parent surface,
+    and the screen dimensions.
+
+    The basic ingredients are a rectangle on the parent surface, and the anchor
+    on both that rectangle and the popup. The anchors specify a side or corner
+    to place next to each other.
+
+    Popup anchors
+
+    For cases where placing the anchors next to each other would make the popup
+    extend offscreen, the layout includes some hints for how to resolve this
+    problem. The hints may suggest to flip the anchor position to the other
+    side, or to 'slide' the popup along a side, or to resize it.
+
+    Flipping popups
+
+    Sliding popups
+
+    These hints may be combined.
+
+    Ultimatively, it is up to the windowing system to determine the position and
+    size of the popup. You can learn about the result by calling
+    [Gdk.Popup.get_position_x], [Gdk.Popup.get_position_y],
+    [Gdk.Popup.get_rect_anchor] and [Gdk.Popup.get_surface_anchor] after the
+    popup has been presented. This can be used to adjust the rendering. For
+    example, GtkPopover changes its arrow position accordingly. But you have to
+    be careful avoid changing the size of the popover, or it has to be presented
+    again. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Raw.Rectangle.t -> Enums.gravity -> Enums.gravity -> popup_layout_t
 (** Create a popup layout description.

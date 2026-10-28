@@ -1,53 +1,12 @@
-[@@@ocaml.text
-"Manages and looks up recently used files.\n\n\
- Each recently used file is identified by its URI, and has meta-data\n\
- associated to it, like the names and command lines of the applications\n\
- that have registered it, the number of time each application has\n\
- registered the same file, the mime type of the file and whether\n\
- the file should be displayed only by the applications that have\n\
- registered it.\n\n\
- The recently used files list is per user.\n\n\
- [GtkRecentManager] acts like a database of all the recently\n\
- used files. You can create new [GtkRecentManager] objects, but\n\
- it is more efficient to use the default manager created by GTK.\n\n\
- Adding a new recently used file is as simple as:\n\n\
- {[\n\
- GtkRecentManager *manager;\n\n\
- manager = gtk_recent_manager_get_default ();\n\
- gtk_recent_manager_add_item (manager, file_uri);\n\
- ]}\n\n\
- The [GtkRecentManager] will try to gather all the needed information\n\
- from the file itself through GIO.\n\n\
- Looking up the meta-data associated with a recently used file\n\
- given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
- {[\n\
- GtkRecentManager *manager;\n\
- GtkRecentInfo *info;\n\
- GError *error = NULL;\n\n\
- manager = gtk_recent_manager_get_default ();\n\
- info = gtk_recent_manager_lookup_item (manager, file_uri, &error);\n\
- if (error)\n\
-\  {\n\
-\    g_warning (\"Could not find the file: %s\", error->message);\n\
-\    g_error_free (error);\n\
-\  }\n\
- else\n\
-\ {\n\
-\   // Use the info object\n\
-\   gtk_recent_info_unref (info);\n\
-\ }\n\
- ]}\n\n\
- In order to retrieve the list of recently used files, you can use\n\
- [Gtk.RecentManager.get_items], which returns a list of\n\
- [Gtk.RecentInfo].\n\n\
- Note that the maximum age of the recently used files list is\n\
- controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
- property.\n\n\
- Its methods, signals and properties are on {!class-type-recent_manager_t}. \
- Its constructors are under {!section-constructors}. The functions it is built \
- on are in {!Ocgtk.Raw.Recent_manager}."]
+(** Manages and looks up recently used files.
 
-(** The methods, signals and properties of a [RecentManager]. *)
+    Its methods, signals and properties are on {!class-type-recent_manager_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Recent_manager}. *)
+
+(** {1:class Class} *)
+
 class type recent_manager_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -113,14 +72,112 @@ class type recent_manager_t = object
       handled by a recent manager. *)
 
   method filename : string
+  (** The full path to the file to be used to store and read the recently used
+      resources list *)
+
   method size : int
+  (** The size of the recently used resources list. *)
+
   method as_recent_manager : Raw.Recent_manager.t
 end
+  [@@ocaml.doc
+    "{b The methods, signals and properties of a [RecentManager].}\n\n\
+     Manages and looks up recently used files.\n\n\
+     Each recently used file is identified by its URI, and has meta-data\n\
+     associated to it, like the names and command lines of the applications\n\
+     that have registered it, the number of time each application has\n\
+     registered the same file, the mime type of the file and whether\n\
+     the file should be displayed only by the applications that have\n\
+     registered it.\n\n\
+     The recently used files list is per user.\n\n\
+     [GtkRecentManager] acts like a database of all the recently\n\
+     used files. You can create new [GtkRecentManager] objects, but\n\
+     it is more efficient to use the default manager created by GTK.\n\n\
+     Adding a new recently used file is as simple as:\n\n\
+     {[\n\
+     GtkRecentManager *manager;\n\n\
+     manager = gtk_recent_manager_get_default ();\n\
+     gtk_recent_manager_add_item (manager, file_uri);\n\
+     ]}\n\n\
+     The [GtkRecentManager] will try to gather all the needed information\n\
+     from the file itself through GIO.\n\n\
+     Looking up the meta-data associated with a recently used file\n\
+     given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
+     {[\n\
+     GtkRecentManager *manager;\n\
+     GtkRecentInfo *info;\n\
+     GError *error = NULL;\n\n\
+     manager = gtk_recent_manager_get_default ();\n\
+     info = gtk_recent_manager_lookup_item (manager, file_uri, &error);\n\
+     if (error)\n\
+    \  {\n\
+    \    g_warning (\"Could not find the file: %s\", error->message);\n\
+    \    g_error_free (error);\n\
+    \  }\n\
+     else\n\
+    \ {\n\
+    \   // Use the info object\n\
+    \   gtk_recent_info_unref (info);\n\
+    \ }\n\
+     ]}\n\n\
+     In order to retrieve the list of recently used files, you can use\n\
+     [Gtk.RecentManager.get_items], which returns a list of\n\
+     [Gtk.RecentInfo].\n\n\
+     Note that the maximum age of the recently used files list is\n\
+     controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
+     property."]
 
 class recent_manager : Raw.Recent_manager.t -> recent_manager_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Recent_manager.t}. *)
 
-(** {2:constructors Constructors} *)
+[@@@ocaml.text
+"{1:description Description}\n\n\
+ Manages and looks up recently used files.\n\n\
+ Each recently used file is identified by its URI, and has meta-data\n\
+ associated to it, like the names and command lines of the applications\n\
+ that have registered it, the number of time each application has\n\
+ registered the same file, the mime type of the file and whether\n\
+ the file should be displayed only by the applications that have\n\
+ registered it.\n\n\
+ The recently used files list is per user.\n\n\
+ [GtkRecentManager] acts like a database of all the recently\n\
+ used files. You can create new [GtkRecentManager] objects, but\n\
+ it is more efficient to use the default manager created by GTK.\n\n\
+ Adding a new recently used file is as simple as:\n\n\
+ {[\n\
+ GtkRecentManager *manager;\n\n\
+ manager = gtk_recent_manager_get_default ();\n\
+ gtk_recent_manager_add_item (manager, file_uri);\n\
+ ]}\n\n\
+ The [GtkRecentManager] will try to gather all the needed information\n\
+ from the file itself through GIO.\n\n\
+ Looking up the meta-data associated with a recently used file\n\
+ given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
+ {[\n\
+ GtkRecentManager *manager;\n\
+ GtkRecentInfo *info;\n\
+ GError *error = NULL;\n\n\
+ manager = gtk_recent_manager_get_default ();\n\
+ info = gtk_recent_manager_lookup_item (manager, file_uri, &error);\n\
+ if (error)\n\
+\  {\n\
+\    g_warning (\"Could not find the file: %s\", error->message);\n\
+\    g_error_free (error);\n\
+\  }\n\
+ else\n\
+\ {\n\
+\   // Use the info object\n\
+\   gtk_recent_info_unref (info);\n\
+\ }\n\
+ ]}\n\n\
+ In order to retrieve the list of recently used files, you can use\n\
+ [Gtk.RecentManager.get_items], which returns a list of\n\
+ [Gtk.RecentInfo].\n\n\
+ Note that the maximum age of the recently used files list is\n\
+ controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
+ property."]
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> recent_manager_t
 (** Creates a new recent manager object.

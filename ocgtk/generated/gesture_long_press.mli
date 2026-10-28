@@ -1,5 +1,16 @@
 (** Recognizes long press gestures.
 
+    Its methods, signals and properties are on
+    {!class-type-gesture_long_press_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Gesture_long_press}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GestureLongPress].}
+
+    Recognizes long press gestures.
+
     This gesture is also known as “Press and Hold”.
 
     When the timeout is exceeded, the gesture is triggering the
@@ -11,14 +22,7 @@
 
     How long the timeout is before the ::pressed signal gets emitted is
     determined by the [Gtk.Settings:gtk-long-press-time] setting. It can be
-    modified by the [Gtk.GestureLongPress:delay-factor] property.
-
-    Its methods, signals and properties are on
-    {!class-type-gesture_long_press_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Gesture_long_press}. *)
-
-(** The methods, signals and properties of a [GestureLongPress]. *)
+    modified by the [Gtk.GestureLongPress:delay-factor] property. *)
 class type gesture_long_press_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -50,7 +54,24 @@ end
 class gesture_long_press : Raw.Gesture_long_press.t -> gesture_long_press_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gesture_long_press.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Recognizes long press gestures.
+
+    This gesture is also known as “Press and Hold”.
+
+    When the timeout is exceeded, the gesture is triggering the
+    [Gtk.GestureLongPress::pressed] signal.
+
+    If the touchpoint is lifted before the timeout passes, or if it drifts too
+    far of the initial press point, the [Gtk.GestureLongPress::cancelled] signal
+    will be emitted.
+
+    How long the timeout is before the ::pressed signal gets emitted is
+    determined by the [Gtk.Settings:gtk-long-press-time] setting. It can be
+    modified by the [Gtk.GestureLongPress:delay-factor] property. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> gesture_long_press_t
 (** Returns a newly created [GtkGesture] that recognizes long presses. *)

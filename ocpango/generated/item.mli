@@ -1,13 +1,18 @@
 (** The [PangoItem] structure stores information about a segment of text.
 
+    Its methods, signals and properties are on {!class-type-item_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Item}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Item].}
+
+    The [PangoItem] structure stores information about a segment of text.
+
     You typically obtain [PangoItems] by itemizing a piece of text with
-    [itemize].
-
-    Its methods, signals and properties are on {!class-type-item_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocpango.Raw.Item}. *)
-
-(** The methods, signals and properties of a [Item]. *)
+    [itemize]. *)
 class type item_t = object
   method apply_attrs : Raw.Attr_iterator.t -> unit
   (** Add attributes to a [PangoItem].
@@ -48,7 +53,14 @@ end
 class item : Raw.Item.t -> item_t
 (** Wraps a raw handle of {!Ocpango.Raw.Item.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    The [PangoItem] structure stores information about a segment of text.
+
+    You typically obtain [PangoItems] by itemizing a piece of text with
+    [itemize]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> item_t
 (** Creates a new [PangoItem] structure initialized to default values. *)

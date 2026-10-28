@@ -4,7 +4,11 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Point3_d}. *)
 
-(** The methods, signals and properties of a [Point3D]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Point3D].}
+
+    A point with three components: X, Y, and Z. *)
 class type point3_d_t = object
   method dot : Raw.Point3_d.t -> float
   (** Computes the dot product of the two given #graphene_point3d_t. *)
@@ -37,7 +41,7 @@ end
 class point3_d : Raw.Point3_d.t -> point3_d_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Point3_d.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> point3_d_t
 (** Allocates a #graphene_point3d_t structure. *)

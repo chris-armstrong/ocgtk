@@ -1,16 +1,22 @@
 (** [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
     [GMenu] by adding [Gio.MenuItem] instances to it.
 
+    Its methods, signals and properties are on {!class-type-menu_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Menu}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Menu].}
+
+    [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
+    [GMenu] by adding [Gio.MenuItem] instances to it.
+
     There are some convenience functions to allow you to directly add items
     (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
     [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
-    submenu, use [Gio.Menu.insert_submenu].
-
-    Its methods, signals and properties are on {!class-type-menu_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgio.Raw.Menu}. *)
-
-(** The methods, signals and properties of a [Menu]. *)
+    submenu, use [Gio.Menu.insert_submenu]. *)
 class type menu_t = object
   inherit Menu_link_iter_and__menu_model.menu_model_t
 
@@ -121,7 +127,17 @@ end
 class menu : Raw.Menu.t -> menu_t
 (** Wraps a raw handle of {!Ocgio.Raw.Menu.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
+    [GMenu] by adding [Gio.MenuItem] instances to it.
+
+    There are some convenience functions to allow you to directly add items
+    (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
+    [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
+    submenu, use [Gio.Menu.insert_submenu]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> menu_t
 (** Creates a new [GMenu].

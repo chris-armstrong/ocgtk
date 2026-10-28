@@ -1,18 +1,24 @@
 (** [GFileInputStream] provides input streams that take their content from a
     file.
 
+    Its methods, signals and properties are on
+    {!class-type-file_input_stream_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
+    {!Ocgio.Raw.File_input_stream}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [FileInputStream].}
+
+    [GFileInputStream] provides input streams that take their content from a
+    file.
+
     [GFileInputStream] implements [Gio.Seekable], which allows the input stream
     to jump to arbitrary positions in the file, provided the filesystem of the
     file allows it. To find the position of a file input stream, use
     [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
     use [Gio.Seekable.can_seek]. To position a file input stream, use
-    [Gio.Seekable.seek].
-
-    Its methods, signals and properties are on
-    {!class-type-file_input_stream_t}. The functions it is built on are in
-    {!Ocgio.Raw.File_input_stream}. *)
-
-(** The methods, signals and properties of a [FileInputStream]. *)
+    [Gio.Seekable.seek]. *)
 class type file_input_stream_t = object
   inherit Input_stream.input_stream_t
   inherit Seekable.seekable_t
@@ -36,3 +42,15 @@ end
 
 class file_input_stream : Raw.File_input_stream.t -> file_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_input_stream.t}. *)
+
+(** {1:description Description}
+
+    [GFileInputStream] provides input streams that take their content from a
+    file.
+
+    [GFileInputStream] implements [Gio.Seekable], which allows the input stream
+    to jump to arbitrary positions in the file, provided the filesystem of the
+    file allows it. To find the position of a file input stream, use
+    [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
+    use [Gio.Seekable.can_seek]. To position a file input stream, use
+    [Gio.Seekable.seek]. *)

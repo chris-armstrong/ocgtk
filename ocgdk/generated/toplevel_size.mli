@@ -3,7 +3,11 @@
     Its methods, signals and properties are on {!class-type-toplevel_size_t}.
     The functions it is built on are in {!Ocgdk.Raw.Toplevel_size}. *)
 
-(** The methods, signals and properties of a [ToplevelSize]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ToplevelSize].}
+
+    Contains information that is useful to compute the size of a toplevel. *)
 class type toplevel_size_t = object
   method set_min_size : int -> int -> unit
   (** Sets the minimum size of the toplevel.

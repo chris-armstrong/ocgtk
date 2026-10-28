@@ -1,6 +1,18 @@
 (** Buffered input stream implements [Gio.FilterInputStream] and provides for
     buffered reads.
 
+    Its methods, signals and properties are on
+    {!class-type-buffered_input_stream_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Buffered_input_stream}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [BufferedInputStream].}
+
+    Buffered input stream implements [Gio.FilterInputStream] and provides for
+    buffered reads.
+
     By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
 
     To create a buffered input stream, use [Gio.BufferedInputStream.new], or
@@ -11,14 +23,7 @@
     [Gio.BufferedInputStream.get_buffer_size]. To change the size of a buffered
     input stream's buffer, use [Gio.BufferedInputStream.set_buffer_size]. Note
     that the buffer's size cannot be reduced below the size of the data within
-    the buffer.
-
-    Its methods, signals and properties are on
-    {!class-type-buffered_input_stream_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.Buffered_input_stream}. *)
-
-(** The methods, signals and properties of a [BufferedInputStream]. *)
+    the buffer. *)
 class type buffered_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Seekable.seekable_t
@@ -88,7 +93,24 @@ class buffered_input_stream :
   buffered_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Buffered_input_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Buffered input stream implements [Gio.FilterInputStream] and provides for
+    buffered reads.
+
+    By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
+
+    To create a buffered input stream, use [Gio.BufferedInputStream.new], or
+    [Gio.BufferedInputStream.new_sized] to specify the buffer's size at
+    construction.
+
+    To get the size of a buffer within a buffered input stream, use
+    [Gio.BufferedInputStream.get_buffer_size]. To change the size of a buffered
+    input stream's buffer, use [Gio.BufferedInputStream.set_buffer_size]. Note
+    that the buffer's size cannot be reduced below the size of the data within
+    the buffer. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Input_stream.input_stream_t -> buffered_input_stream_t
 (** Creates a new [Gio.InputStream] from the given [base_stream], with a buffer

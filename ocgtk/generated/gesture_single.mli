@@ -1,5 +1,15 @@
 (** A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
+    Its methods, signals and properties are on {!class-type-gesture_single_t}.
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Gesture_single}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GestureSingle].}
+
+    A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
+
     Under interaction, these gestures stick to the first interacting sequence,
     which is accessible through [Gtk.GestureSingle.get_current_sequence] while
     the gesture is being interacted with.
@@ -9,12 +19,7 @@
     Callers may also specify a different mouse button number to interact with
     through [Gtk.GestureSingle.set_button], or react to any mouse button by
     setting it to 0. While the gesture is active, the button being currently
-    pressed can be known through [Gtk.GestureSingle.get_current_button].
-
-    Its methods, signals and properties are on {!class-type-gesture_single_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Gesture_single}. *)
-
-(** The methods, signals and properties of a [GestureSingle]. *)
+    pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
 class type gesture_single_t = object
   inherit Gesture.gesture_t
 
@@ -66,3 +71,18 @@ end
 
 class gesture_single : Raw.Gesture_single.t -> gesture_single_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gesture_single.t}. *)
+
+(** {1:description Description}
+
+    A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
+
+    Under interaction, these gestures stick to the first interacting sequence,
+    which is accessible through [Gtk.GestureSingle.get_current_sequence] while
+    the gesture is being interacted with.
+
+    By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
+    [Gtk.GestureSingle.set_touch_only] can be used to change the touch behavior.
+    Callers may also specify a different mouse button number to interact with
+    through [Gtk.GestureSingle.set_button], or react to any mouse button by
+    setting it to 0. While the gesture is active, the button being currently
+    pressed can be known through [Gtk.GestureSingle.get_current_button]. *)

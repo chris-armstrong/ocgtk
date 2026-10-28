@@ -12,7 +12,11 @@ class type flatten_list_model_t = object
   (** Sets a new model to be flattened. *)
 
   method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
   method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
   method as_flatten_list_model : Raw.Flatten_list_model.t
 end
 

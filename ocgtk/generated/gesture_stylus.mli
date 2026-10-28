@@ -1,12 +1,18 @@
 (** Recognizes tablet stylus input.
 
-    The provided signals just relay the basic information of the stylus events.
-
     Its methods, signals and properties are on {!class-type-gesture_stylus_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Gesture_stylus}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Gesture_stylus}. *)
 
-(** The methods, signals and properties of a [GestureStylus]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [GestureStylus].}
+
+    Recognizes tablet stylus input.
+
+    The provided signals just relay the basic information of the stylus events.
+*)
 class type gesture_stylus_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -63,7 +69,14 @@ end
 class gesture_stylus : Raw.Gesture_stylus.t -> gesture_stylus_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gesture_stylus.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Recognizes tablet stylus input.
+
+    The provided signals just relay the basic information of the stylus events.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> gesture_stylus_t
 (** Creates a new [GtkGestureStylus]. *)

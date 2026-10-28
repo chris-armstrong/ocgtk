@@ -7,8 +7,13 @@
     Its methods, signals and properties are on {!class-type-menu_link_iter_t}.
     The functions it is built on are in {!Ocgio.Raw.Menu_link_iter}. *)
 
+(** {1:class Class} *)
+
 class type menu_link_iter_t = Menu_link_iter_and__menu_model.menu_link_iter_t
-(** The methods, signals and properties of a [MenuLinkIter]. *)
+(** {b The methods, signals and properties of a [MenuLinkIter].}
+
+    [GMenuLinkIter] is an opaque structure type. You must access it using the
+    functions below. *)
 
 class menu_link_iter : Raw.Menu_link_iter.t -> menu_link_iter_t
 (** Wraps a raw handle of {!Ocgio.Raw.Menu_link_iter.t}. *)

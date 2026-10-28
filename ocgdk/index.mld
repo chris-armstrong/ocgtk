@@ -9,9 +9,9 @@ generated from GDK's GObject introspection data.
 The library is reached as {!Ocgdk}, with one module per class, interface or
 record, such as {!Ocgdk.Display} and {!Ocgdk.Texture}.
 
+{b {{!page-modules}All classes, interfaces and records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocgdk.Enums} — enumerations and bitfields. }
 {- {!Ocgdk.Constants} — constants. }
 {- {!Ocgdk.Raw} — the C externals and abstract types the modules above are

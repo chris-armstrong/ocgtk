@@ -5,7 +5,11 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Object_expression}. *)
 
-(** The methods, signals and properties of a [ObjectExpression]. *)
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ObjectExpression].}
+
+    A [GObject] value in a [GtkExpression]. *)
 class type object_expression_t = object
   inherit Expression.expression_t
 
@@ -18,7 +22,7 @@ end
 class object_expression : Raw.Object_expression.t -> object_expression_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Object_expression.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : [ `object_ ] Gobject.obj -> object_expression_t
 (** Creates an expression evaluating to the given [object] with a weak
