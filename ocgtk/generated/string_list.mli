@@ -1,28 +1,11 @@
-[@@@ocaml.text
-"A list model that wraps an array of strings.\n\n\
- The objects in the model are of type [Gtk.StringObject] and have\n\
- a \"string\" property that can be used inside expressions.\n\n\
- [GtkStringList] is well-suited for any place where you would\n\
- typically use a char*\\[\\], but need a list model.\n\n\
- {b GtkStringList as GtkBuildable}\n\n\
- The [GtkStringList] implementation of the [GtkBuildable] interface\n\
- supports adding items directly using the [<items>] element and\n\
- specifying [<item>] elements for each item. Each [<item>] element\n\
- supports the regular translation attributes “translatable”,\n\
- “context” and “comments”.\n\n\
- Here is a UI definition fragment specifying a [GtkStringList]\n\n\
- {[\n\
- <object class=\"GtkStringList\">\n\
-\  <items>\n\
-\    <item translatable=\"yes\">Factory</item>\n\
-\    <item translatable=\"yes\">Home</item>\n\
-\    <item translatable=\"yes\">Subway</item>\n\
-\  </items>\n\
- </object>\n\
- ]}\n\n\
- Its methods, signals and properties are on {!class-type-string_list_t}. Its \
- constructors are under {!section-constructors}. The functions it is built on \
- are in {!Ocgtk.Raw.String_list}."]
+(** A list model that wraps an array of strings.
+
+    Its methods, signals and properties are on {!class-type-string_list_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.String_list}. *)
+
+(** {1:class Class} *)
 
 class type string_list_t = object
   inherit Ocgio.List_model.list_model_t
@@ -111,7 +94,31 @@ end
 class string_list : Raw.String_list.t -> string_list_t
 (** Wraps a raw handle of {!Ocgtk.Raw.String_list.t}. *)
 
-(** {2:constructors Constructors} *)
+[@@@ocaml.text
+"{1:description Description}\n\n\
+ A list model that wraps an array of strings.\n\n\
+ The objects in the model are of type [Gtk.StringObject] and have\n\
+ a \"string\" property that can be used inside expressions.\n\n\
+ [GtkStringList] is well-suited for any place where you would\n\
+ typically use a char*\\[\\], but need a list model.\n\n\
+ {b GtkStringList as GtkBuildable}\n\n\
+ The [GtkStringList] implementation of the [GtkBuildable] interface\n\
+ supports adding items directly using the [<items>] element and\n\
+ specifying [<item>] elements for each item. Each [<item>] element\n\
+ supports the regular translation attributes “translatable”,\n\
+ “context” and “comments”.\n\n\
+ Here is a UI definition fragment specifying a [GtkStringList]\n\n\
+ {[\n\
+ <object class=\"GtkStringList\">\n\
+\  <items>\n\
+\    <item translatable=\"yes\">Factory</item>\n\
+\    <item translatable=\"yes\">Home</item>\n\
+\    <item translatable=\"yes\">Subway</item>\n\
+\  </items>\n\
+ </object>\n\
+ ]}"]
+
+(** {1:constructors Constructors} *)
 
 val new_ : string array option -> string_list_t
 (** Creates a new [GtkStringList] with the given [strings]. *)

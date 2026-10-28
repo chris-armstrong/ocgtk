@@ -1,22 +1,12 @@
 (** Describes a constraint between attributes of two widgets, expressed as a
     linear equation.
 
-    The typical equation for a constraint is:
-
-    {[
-      target.target_attr = source.source_attr × multiplier + constant
-    ]}
-
-    Each [GtkConstraint] is part of a system that will be solved by a
-    [Gtk.ConstraintLayout] in order to allocate and position each child widget
-    or guide.
-
-    The source and target, as well as their attributes, of a [GtkConstraint]
-    instance are immutable after creation.
-
     Its methods, signals and properties are on {!class-type-constraint__t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Constraint}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Constraint}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Constraint].}
 
@@ -87,7 +77,25 @@ end
 class constraint_ : Raw.Constraint.t -> constraint__t
 (** Wraps a raw handle of {!Ocgtk.Raw.Constraint.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Describes a constraint between attributes of two widgets, expressed as a
+    linear equation.
+
+    The typical equation for a constraint is:
+
+    {[
+      target.target_attr = source.source_attr × multiplier + constant
+    ]}
+
+    Each [GtkConstraint] is part of a system that will be solved by a
+    [Gtk.ConstraintLayout] in order to allocate and position each child widget
+    or guide.
+
+    The source and target, as well as their attributes, of a [GtkConstraint]
+    instance are immutable after creation. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Constraint_target.constraint_target_t option ->

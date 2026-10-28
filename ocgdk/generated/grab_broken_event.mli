@@ -4,6 +4,8 @@
     {!class-type-grab_broken_event_t}. The functions it is built on are in
     {!Ocgdk.Raw.Grab_broken_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [GrabBrokenEvent].}
 
     An event related to a broken windowing system grab. *)

@@ -1,27 +1,11 @@
 (** Animates the transition of its child from invisible to visible.
 
-    The style of transition can be controlled with
-    [Gtk.Revealer.set_transition_type].
-
-    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
-
-    {b CSS nodes}
-
-    [GtkRevealer] has a single CSS node with name revealer. When styling
-    [GtkRevealer] using CSS, remember that it only hides its contents, not
-    itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [FALSE].
-
-    {b Accessibility}
-
-    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
-
-    The child of [GtkRevealer], if set, is always available in the accessibility
-    tree, regardless of the state of the revealer widget.
-
     Its methods, signals and properties are on {!class-type-revealer_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Revealer}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Revealer}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Revealer].}
 
@@ -106,7 +90,30 @@ end
 class revealer : Raw.Revealer.t -> revealer_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Revealer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Animates the transition of its child from invisible to visible.
+
+    The style of transition can be controlled with
+    [Gtk.Revealer.set_transition_type].
+
+    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
+
+    {b CSS nodes}
+
+    [GtkRevealer] has a single CSS node with name revealer. When styling
+    [GtkRevealer] using CSS, remember that it only hides its contents, not
+    itself. That means applied margin, padding and borders will be visible even
+    when the [Gtk.Revealer:reveal-child] property is set to [FALSE].
+
+    {b Accessibility}
+
+    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
+
+    The child of [GtkRevealer], if set, is always available in the accessibility
+    tree, regardless of the state of the revealer widget. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> revealer_t
 (** Creates a new [GtkRevealer]. *)

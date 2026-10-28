@@ -7,6 +7,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Filename_completer}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [FilenameCompleter].}
 
     Completes partial file and directory names given a partial string by looking
@@ -40,7 +42,7 @@ end
 class filename_completer : Raw.Filename_completer.t -> filename_completer_t
 (** Wraps a raw handle of {!Ocgio.Raw.Filename_completer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> filename_completer_t
 (** Creates a new filename completer. *)

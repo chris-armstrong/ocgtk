@@ -2,12 +2,12 @@
     implementations of the standardized [org.freedesktop.DBus.ObjectManager]
     interface.
 
-    See [Gio.DBusObjectManagerClient] for the client-side implementation and
-    [Gio.DBusObjectManagerServer] for the service-side implementation.
-
     Its methods, signals and properties are on
-    {!class-type-d_bus_object_manager_t}. The functions it is built on are in
+    {!class-type-d_bus_object_manager_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_manager}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DBusObjectManager].}
 
@@ -82,3 +82,12 @@ class d_bus_object_manager :
   Raw.D_bus_object_manager.t ->
   d_bus_object_manager_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_object_manager.t}. *)
+
+(** {1:description Description}
+
+    The [GDBusObjectManager] type is the base type for service- and client-side
+    implementations of the standardized [org.freedesktop.DBus.ObjectManager]
+    interface.
+
+    See [Gio.DBusObjectManagerClient] for the client-side implementation and
+    [Gio.DBusObjectManagerServer] for the service-side implementation. *)

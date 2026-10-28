@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_key}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [EventControllerKey].}
 
     Provides access to key events. *)
@@ -74,7 +76,7 @@ class event_controller_key :
   event_controller_key_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_key.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> event_controller_key_t
 (** Creates a new event controller that will handle key events. *)

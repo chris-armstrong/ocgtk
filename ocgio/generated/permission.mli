@@ -1,20 +1,11 @@
 (** A [GPermission] represents the status of the caller’s permission to perform
     a certain action.
 
-    You can query if the action is currently allowed and if it is possible to
-    acquire the permission so that the action will be allowed in the future.
+    Its methods, signals and properties are on {!class-type-permission_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgio.Raw.Permission}. *)
 
-    There is also an API to actually acquire the permission and one to release
-    it.
-
-    As an example, a [GPermission] might represent the ability for the user to
-    write to a [Gio.Settings] object. This [GPermission] object could then be
-    used to decide if it is appropriate to show a “Click here to unlock” button
-    in a dialog and to provide the mechanism to invoke when that button is
-    clicked.
-
-    Its methods, signals and properties are on {!class-type-permission_t}. The
-    functions it is built on are in {!Ocgio.Raw.Permission}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Permission].}
 
@@ -108,3 +99,20 @@ end
 
 class permission : Raw.Permission.t -> permission_t
 (** Wraps a raw handle of {!Ocgio.Raw.Permission.t}. *)
+
+(** {1:description Description}
+
+    A [GPermission] represents the status of the caller’s permission to perform
+    a certain action.
+
+    You can query if the action is currently allowed and if it is possible to
+    acquire the permission so that the action will be allowed in the future.
+
+    There is also an API to actually acquire the permission and one to release
+    it.
+
+    As an example, a [GPermission] might represent the ability for the user to
+    write to a [Gio.Settings] object. This [GPermission] object could then be
+    used to decide if it is appropriate to show a “Click here to unlock” button
+    in a dialog and to provide the mechanism to invoke when that button is
+    clicked. *)

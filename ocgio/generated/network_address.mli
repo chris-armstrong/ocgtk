@@ -2,16 +2,12 @@
     attempt to connect to that host, handling the possibility of multiple IP
     addresses and multiple address families.
 
-    The enumeration results of resolved addresses {i may} be cached as long as
-    this object is kept alive which may have unexpected results if alive for too
-    long.
-
-    See [Gio.SocketConnectable] for an example of using the connectable
-    interface.
-
     Its methods, signals and properties are on {!class-type-network_address_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgio.Raw.Network_address}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Network_address}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [NetworkAddress].}
 
@@ -46,7 +42,20 @@ end
 class network_address : Raw.Network_address.t -> network_address_t
 (** Wraps a raw handle of {!Ocgio.Raw.Network_address.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GNetworkAddress] provides an easy way to resolve a hostname and then
+    attempt to connect to that host, handling the possibility of multiple IP
+    addresses and multiple address families.
+
+    The enumeration results of resolved addresses {i may} be cached as long as
+    this object is kept alive which may have unexpected results if alive for too
+    long.
+
+    See [Gio.SocketConnectable] for an example of using the connectable
+    interface. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> UInt16.t -> network_address_t
 (** Creates a new [GSocketConnectable] for connecting to the given [hostname]

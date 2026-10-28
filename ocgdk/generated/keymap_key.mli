@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-keymap_key_t}. The
     functions it is built on are in {!Ocgdk.Raw.Keymap_key}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [KeymapKey].}
 
     Represents a hardware key that can be mapped to a keyval. *)

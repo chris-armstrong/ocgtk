@@ -5,6 +5,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Script_iter}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ScriptIter].}
 
     A [PangoScriptIter] is used to iterate through a string and identify ranges
@@ -22,7 +24,7 @@ end
 class script_iter : Raw.Script_iter.t -> script_iter_t
 (** Wraps a raw handle of {!Ocpango.Raw.Script_iter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string -> int -> script_iter_t
 (** Create a new [PangoScriptIter], used to break a string of Unicode text into

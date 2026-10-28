@@ -4,15 +4,12 @@
 (** A [PangoContext] stores global information used to control the itemization
     process.
 
-    The information stored by [PangoContext] includes the fontmap used to look
-    up fonts, and default values such as the default language, default gravity,
-    or default font.
+    Its methods, signals and properties are on {!class-type-context_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Context}. *)
 
-    To obtain a [PangoContext], use [Pango.FontMap.create_context].
-
-    Its methods, signals and properties are on {!class-type-context_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocpango.Raw.Context}. *)
+(** {1:class Class} *)
 
 class type context_t = Context_and__font_and__font_map_and__fontset.context_t
 (** {b The methods, signals and properties of a [Context].}
@@ -29,7 +26,18 @@ class type context_t = Context_and__font_and__font_map_and__fontset.context_t
 class context : Raw.Context.t -> context_t
 (** Wraps a raw handle of {!Ocpango.Raw.Context.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [PangoContext] stores global information used to control the itemization
+    process.
+
+    The information stored by [PangoContext] includes the fontmap used to look
+    up fonts, and default values such as the default language, default gravity,
+    or default font.
+
+    To obtain a [PangoContext], use [Pango.FontMap.create_context]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> context_t
 (** Creates a new [PangoContext] initialized to default values.

@@ -5,6 +5,8 @@
     {!class-type-tls_server_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Tls_server_connection}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TlsServerConnection].}
 
     [GTlsServerConnection] is the server-side subclass of [Gio.TlsConnection],

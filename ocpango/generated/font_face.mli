@@ -7,6 +7,8 @@
     Its methods, signals and properties are on {!class-type-font_face_t}. The
     functions it is built on are in {!Ocpango.Raw.Font_face}. *)
 
+(** {1:class Class} *)
+
 class type font_face_t = Font_face_and__font_family.font_face_t
 (** {b The methods, signals and properties of a [FontFace].}
 

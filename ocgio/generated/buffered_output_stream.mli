@@ -1,22 +1,12 @@
 (** Buffered output stream implements [Gio.FilterOutputStream] and provides for
     buffered writes.
 
-    By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
-
-    To create a buffered output stream, use [Gio.BufferedOutputStream.new], or
-    [Gio.BufferedOutputStream.new_sized] to specify the buffer's size at
-    construction.
-
-    To get the size of a buffer within a buffered input stream, use
-    [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
-    output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
-    that the buffer's size cannot be reduced below the size of the data within
-    the buffer.
-
     Its methods, signals and properties are on
-    {!class-type-buffered_output_stream_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.Buffered_output_stream}. *)
+    {!class-type-buffered_output_stream_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Buffered_output_stream}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [BufferedOutputStream].}
 
@@ -61,7 +51,24 @@ class buffered_output_stream :
   buffered_output_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Buffered_output_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Buffered output stream implements [Gio.FilterOutputStream] and provides for
+    buffered writes.
+
+    By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
+
+    To create a buffered output stream, use [Gio.BufferedOutputStream.new], or
+    [Gio.BufferedOutputStream.new_sized] to specify the buffer's size at
+    construction.
+
+    To get the size of a buffer within a buffered input stream, use
+    [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
+    output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
+    that the buffer's size cannot be reduced below the size of the data within
+    the buffer. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Output_stream.output_stream_t -> buffered_output_stream_t
 (** Creates a new buffered output stream for a base stream. *)

@@ -1,13 +1,11 @@
 (** Asynchronous API to present a file chooser dialog.
 
-    [GtkFileDialog] collects the arguments that are needed to present the dialog
-    to the user, such as a title for the dialog and whether it should be modal.
-
-    The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
-
     Its methods, signals and properties are on {!class-type-file_dialog_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.File_dialog}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.File_dialog}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileDialog].}
 
@@ -135,7 +133,17 @@ end
 class file_dialog : Raw.File_dialog.t -> file_dialog_t
 (** Wraps a raw handle of {!Ocgtk.Raw.File_dialog.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Asynchronous API to present a file chooser dialog.
+
+    [GtkFileDialog] collects the arguments that are needed to present the dialog
+    to the user, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> file_dialog_t
 (** Creates a new [GtkFileDialog] object. *)

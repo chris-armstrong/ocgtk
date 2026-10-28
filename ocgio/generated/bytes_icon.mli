@@ -5,6 +5,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Bytes_icon}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [BytesIcon].}
 
     [GBytesIcon] specifies an image held in memory in a common format (usually
@@ -22,7 +24,7 @@ end
 class bytes_icon : Raw.Bytes_icon.t -> bytes_icon_t
 (** Wraps a raw handle of {!Ocgio.Raw.Bytes_icon.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Glib_bytes.t -> bytes_icon_t
 (** Creates a new icon for a bytes.

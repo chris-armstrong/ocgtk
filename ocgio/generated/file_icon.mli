@@ -1,11 +1,12 @@
 (** [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 
-    It implements [Gio.LoadableIcon].
-
     Its methods, signals and properties are on {!class-type-file_icon_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgio.Raw.File_icon}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_icon}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileIcon].}
 
@@ -26,7 +27,14 @@ end
 class file_icon : Raw.File_icon.t -> file_icon_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_icon.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GFileIcon] specifies an icon by pointing to an image file to be used as
+    icon.
+
+    It implements [Gio.LoadableIcon]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : App_info_cycle_64c425a0.file_t -> file_icon_t
 (** Creates a new icon for a file. *)

@@ -7,6 +7,8 @@
     {!class-type-filter_input_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.Filter_input_stream}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [FilterInputStream].}
 
     Base class for input stream implementations that perform some kind of

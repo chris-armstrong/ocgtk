@@ -1,25 +1,12 @@
 (** The [GtkColorButton] allows to open a color chooser dialog to change the
     color.
 
-    An example GtkColorButton
-
-    It is suitable widget for selecting a color in a preference dialog.
-
-    {b CSS nodes}
-
-    {[
-    colorbutton
-    ╰── button.color
-        ╰── [content]
-    ]}
-
-    [GtkColorButton] has a single CSS node with name colorbutton which contains
-    a button node. To differentiate it from a plain [GtkButton], it gets the
-    .color style class.
-
     Its methods, signals and properties are on {!class-type-color_button_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Color_button}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Color_button}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ColorButton].}
 
@@ -98,7 +85,28 @@ end
 class color_button : Raw.Color_button.t -> color_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Color_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    The [GtkColorButton] allows to open a color chooser dialog to change the
+    color.
+
+    An example GtkColorButton
+
+    It is suitable widget for selecting a color in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    colorbutton
+    ╰── button.color
+        ╰── [content]
+    ]}
+
+    [GtkColorButton] has a single CSS node with name colorbutton which contains
+    a button node. To differentiate it from a plain [GtkButton], it gets the
+    .color style class. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> color_button_t
 (** Creates a new color button.

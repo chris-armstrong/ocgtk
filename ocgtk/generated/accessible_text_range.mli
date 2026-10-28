@@ -4,6 +4,8 @@
     {!class-type-accessible_text_range_t}. The functions it is built on are in
     {!Ocgtk.Raw.Accessible_text_range}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AccessibleTextRange].}
 
     A range inside the text of an accessible object. *)

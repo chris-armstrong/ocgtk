@@ -6,6 +6,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_output_stream}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DataOutputStream].}
 
     Data output stream implements [Gio.OutputStream] and includes functions for
@@ -54,7 +56,7 @@ end
 class data_output_stream : Raw.Data_output_stream.t -> data_output_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Data_output_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Output_stream.output_stream_t -> data_output_stream_t
 (** Creates a new data output stream for [base_stream]. *)

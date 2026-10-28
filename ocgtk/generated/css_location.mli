@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-css_location_t}. The
     functions it is built on are in {!Ocgtk.Raw.Css_location}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [CssLocation].}
 
     Points at a location inside a CSS stream. *)

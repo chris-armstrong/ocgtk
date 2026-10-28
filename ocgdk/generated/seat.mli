@@ -6,6 +6,8 @@
     Its methods, signals and properties are on {!class-type-seat_t}. The
     functions it is built on are in {!Ocgdk.Raw.Seat}. *)
 
+(** {1:class Class} *)
+
 class type seat_t = App_launch_context_cycle_de440b34.seat_t
 (** {b The methods, signals and properties of a [Seat].}
 

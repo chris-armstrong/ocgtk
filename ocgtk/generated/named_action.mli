@@ -1,11 +1,11 @@
 (** Activates a named action.
 
-    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
-    for ways to associate named actions with widgets.
-
     Its methods, signals and properties are on {!class-type-named_action_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Named_action}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Named_action}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [NamedAction].}
 
@@ -25,7 +25,14 @@ end
 class named_action : Raw.Named_action.t -> named_action_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Named_action.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Activates a named action.
+
+    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
+    for ways to associate named actions with widgets. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> named_action_t
 (** Creates an action that when activated, activates the named action on the

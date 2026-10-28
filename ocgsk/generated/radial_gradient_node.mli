@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Radial_gradient_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [RadialGradientNode].}
 
     A render node for a radial gradient. *)
@@ -37,7 +39,7 @@ class radial_gradient_node :
   radial_gradient_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Radial_gradient_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgraphene.Rect.rect_t ->

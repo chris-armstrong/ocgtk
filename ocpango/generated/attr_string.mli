@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-attr_string_t}. The
     functions it is built on are in {!Ocpango.Raw.Attr_string}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AttrString].}
 
     The [PangoAttrString] structure is used to represent attributes with a

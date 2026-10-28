@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Property_expression}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [PropertyExpression].}
 
     A [GObject] property value in a [GtkExpression]. *)
@@ -20,7 +22,7 @@ end
 class property_expression : Raw.Property_expression.t -> property_expression_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Property_expression.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Gobject.Type.t ->

@@ -1,10 +1,10 @@
 (** The [PangoLanguage] structure is used to represent a language.
 
-    [PangoLanguage] pointers can be efficiently copied and compared with each
-    other.
+    Its methods, signals and properties are on {!class-type-language_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Language}. *)
 
-    Its methods, signals and properties are on {!class-type-language_t}. The
-    functions it is built on are in {!Ocpango.Raw.Language}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Language].}
 
@@ -62,3 +62,10 @@ end
 
 class language : Raw.Language.t -> language_t
 (** Wraps a raw handle of {!Ocpango.Raw.Language.t}. *)
+
+(** {1:description Description}
+
+    The [PangoLanguage] structure is used to represent a language.
+
+    [PangoLanguage] pointers can be efficiently copied and compared with each
+    other. *)

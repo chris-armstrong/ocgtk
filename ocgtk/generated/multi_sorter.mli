@@ -1,11 +1,11 @@
 (** Combines multiple sorters by trying them in turn.
 
-    If the first sorter compares two items as equal, the second is tried next,
-    and so on.
-
     Its methods, signals and properties are on {!class-type-multi_sorter_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Multi_sorter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Multi_sorter}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MultiSorter].}
 
@@ -42,7 +42,14 @@ end
 class multi_sorter : Raw.Multi_sorter.t -> multi_sorter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Multi_sorter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Combines multiple sorters by trying them in turn.
+
+    If the first sorter compares two items as equal, the second is tried next,
+    and so on. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> multi_sorter_t
 (** Creates a new multi sorter.

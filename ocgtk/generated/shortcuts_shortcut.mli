@@ -1,11 +1,12 @@
 (** A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
     with a short text.
 
-    This widget is only meant to be used with [GtkShortcutsWindow].
-
     Its methods, signals and properties are on
-    {!class-type-shortcuts_shortcut_t}. The functions it is built on are in
+    {!class-type-shortcuts_shortcut_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgtk.Raw.Shortcuts_shortcut}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutsShortcut].}
 
@@ -167,3 +168,10 @@ end
 
 class shortcuts_shortcut : Raw.Shortcuts_shortcut.t -> shortcuts_shortcut_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_shortcut.t}. *)
+
+(** {1:description Description}
+
+    A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
+    with a short text.
+
+    This widget is only meant to be used with [GtkShortcutsWindow]. *)

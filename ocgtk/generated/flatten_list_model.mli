@@ -1,13 +1,11 @@
 (** A list model that concatenates other list models.
 
-    [GtkFlattenListModel] takes a list model containing list models, and
-    flattens it into a single model. Each list model becomes a section in the
-    single model.
-
     Its methods, signals and properties are on
-    {!class-type-flatten_list_model_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Flatten_list_model}. *)
+    {!class-type-flatten_list_model_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Flatten_list_model}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FlattenListModel].}
 
@@ -41,7 +39,15 @@ end
 class flatten_list_model : Raw.Flatten_list_model.t -> flatten_list_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Flatten_list_model.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A list model that concatenates other list models.
+
+    [GtkFlattenListModel] takes a list model containing list models, and
+    flattens it into a single model. Each list model becomes a section in the
+    single model. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Ocgio.List_model.list_model_t option -> flatten_list_model_t
 (** Creates a new [GtkFlattenListModel] that flattens [list]. *)

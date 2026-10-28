@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-buildable_parser_t}.
     The functions it is built on are in {!Ocgtk.Raw.Buildable_parser}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [BuildableParser].}
 
     A sub-parser for [GtkBuildable] implementations. *)

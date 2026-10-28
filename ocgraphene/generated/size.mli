@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Size}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [Size].}
 
     A size. *)
@@ -24,7 +26,7 @@ end
 class size : Raw.Size.t -> size_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Size.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> size_t
 (** Allocates a new #graphene_size_t.

@@ -1,12 +1,12 @@
 (** [GMemoryInputStream] is a class for using arbitrary memory chunks as input
     for GIO streaming input operations.
 
-    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
-
     Its methods, signals and properties are on
-    {!class-type-memory_input_stream_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.Memory_input_stream}. *)
+    {!class-type-memory_input_stream_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Memory_input_stream}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MemoryInputStream].}
 
@@ -29,7 +29,15 @@ end
 class memory_input_stream : Raw.Memory_input_stream.t -> memory_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Memory_input_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GMemoryInputStream] is a class for using arbitrary memory chunks as input
+    for GIO streaming input operations.
+
+    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> memory_input_stream_t
 (** Creates a new empty [GMemoryInputStream]. *)

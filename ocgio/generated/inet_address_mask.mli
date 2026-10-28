@@ -8,6 +8,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_address_mask}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [InetAddressMask].}
 
     [GInetAddressMask] represents a range of IPv4 or IPv6 addresses described by
@@ -41,7 +43,7 @@ end
 class inet_address_mask : Raw.Inet_address_mask.t -> inet_address_mask_t
 (** Wraps a raw handle of {!Ocgio.Raw.Inet_address_mask.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Inet_address.inet_address_t -> int -> (inet_address_mask_t, GError.t) result

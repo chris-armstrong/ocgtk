@@ -1,14 +1,11 @@
 (** Manages up to three children.
 
-    The start widget is allocated at the start of the layout (left in
-    left-to-right locales and right in right-to-left ones), and the end widget
-    at the end.
-
-    The center widget is centered regarding the full width of the layout's.
-
     Its methods, signals and properties are on {!class-type-center_layout_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Center_layout}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Center_layout}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CenterLayout].}
 
@@ -103,7 +100,17 @@ end
 class center_layout : Raw.Center_layout.t -> center_layout_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Center_layout.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Manages up to three children.
+
+    The start widget is allocated at the start of the layout (left in
+    left-to-right locales and right in right-to-left ones), and the end widget
+    at the end.
+
+    The center widget is centered regarding the full width of the layout's. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> center_layout_t
 (** Creates a new [GtkCenterLayout]. *)

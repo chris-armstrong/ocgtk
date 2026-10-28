@@ -4,6 +4,8 @@
     {!class-type-param_spec_expression_t}. The functions it is built on are in
     {!Ocgtk.Raw.Param_spec_expression}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ParamSpecExpression].}
 
     A [GParamSpec] for properties holding a [GtkExpression]. *)

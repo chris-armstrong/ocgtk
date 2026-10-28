@@ -1,11 +1,11 @@
 (** Provides detailed information on how a scroll operation should be performed.
 
-    Scrolling functions usually allow passing a [NULL] scroll info which will
-    cause the default values to be used and just scroll the element into view.
-
     Its methods, signals and properties are on {!class-type-scroll_info_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Scroll_info}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Scroll_info}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ScrollInfo].}
 
@@ -36,7 +36,15 @@ end
 class scroll_info : Raw.Scroll_info.t -> scroll_info_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Scroll_info.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Provides detailed information on how a scroll operation should be performed.
+
+    Scrolling functions usually allow passing a [NULL] scroll info which will
+    cause the default values to be used and just scroll the element into view.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> scroll_info_t
 (** Creates a new scroll info for scrolling an element into view. *)

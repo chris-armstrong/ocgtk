@@ -1,14 +1,11 @@
 (** A list model that wraps [GBookmarkFile].
 
-    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
-    returned from that function.
-
-    The [GFileInfo]s in the list have some attributes in the recent namespace
-    added: [recent::private] (boolean) and [recent:applications] (stringv).
-
     Its methods, signals and properties are on {!class-type-bookmark_list_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Bookmark_list}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Bookmark_list}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [BookmarkList].}
 
@@ -61,7 +58,17 @@ end
 class bookmark_list : Raw.Bookmark_list.t -> bookmark_list_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Bookmark_list.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A list model that wraps [GBookmarkFile].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    The [GFileInfo]s in the list have some attributes in the recent namespace
+    added: [recent::private] (boolean) and [recent:applications] (stringv). *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string option -> string option -> bookmark_list_t
 (** Creates a new [GtkBookmarkList] with the given [attributes]. *)

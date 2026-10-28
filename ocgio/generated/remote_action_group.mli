@@ -2,24 +2,12 @@
     instances that either transmit action invocations to other processes or
     receive action invocations in the local process from other processes.
 
-    The interface has [_full] variants of the two methods on [Gio.ActionGroup]
-    used to activate actions: [Gio.ActionGroup.activate_action] and
-    [Gio.ActionGroup.change_action_state]. These variants allow a ‘platform
-    data’ [GLib.Variant] to be specified: a dictionary providing context for the
-    action invocation (for example: timestamps, startup notification IDs, etc).
-
-    [Gio.DBusActionGroup] implements [GRemoteActionGroup]. This provides a
-    mechanism to send platform data for action invocations over D-Bus.
-
-    Additionally, [Gio.DBusConnection.export_action_group] will check if the
-    exported [Gio.ActionGroup] implements [GRemoteActionGroup] and use the
-    [_full] variants of the calls if available. This provides a mechanism by
-    which to receive platform data for action invocations that arrive by way of
-    D-Bus.
-
     Its methods, signals and properties are on
-    {!class-type-remote_action_group_t}. The functions it is built on are in
+    {!class-type-remote_action_group_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgio.Raw.Remote_action_group}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [RemoteActionGroup].}
 
@@ -68,3 +56,24 @@ end
 
 class remote_action_group : Raw.Remote_action_group.t -> remote_action_group_t
 (** Wraps a raw handle of {!Ocgio.Raw.Remote_action_group.t}. *)
+
+(** {1:description Description}
+
+    The [GRemoteActionGroup] interface is implemented by [Gio.ActionGroup]
+    instances that either transmit action invocations to other processes or
+    receive action invocations in the local process from other processes.
+
+    The interface has [_full] variants of the two methods on [Gio.ActionGroup]
+    used to activate actions: [Gio.ActionGroup.activate_action] and
+    [Gio.ActionGroup.change_action_state]. These variants allow a ‘platform
+    data’ [GLib.Variant] to be specified: a dictionary providing context for the
+    action invocation (for example: timestamps, startup notification IDs, etc).
+
+    [Gio.DBusActionGroup] implements [GRemoteActionGroup]. This provides a
+    mechanism to send platform data for action invocations over D-Bus.
+
+    Additionally, [Gio.DBusConnection.export_action_group] will check if the
+    exported [Gio.ActionGroup] implements [GRemoteActionGroup] and use the
+    [_full] variants of the calls if available. This provides a mechanism by
+    which to receive platform data for action invocations that arrive by way of
+    D-Bus. *)

@@ -1,12 +1,11 @@
 (** A [PangoLayoutLine] represents one of the lines resulting from laying out a
     paragraph via [PangoLayout].
 
-    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
-    and are only valid until the text, attributes, or settings of the parent
-    [PangoLayout] are modified.
+    Its methods, signals and properties are on {!class-type-layout_line_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Layout_line}. *)
 
-    Its methods, signals and properties are on {!class-type-layout_line_t}. The
-    functions it is built on are in {!Ocpango.Raw.Layout_line}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [LayoutLine].}
 
@@ -38,3 +37,12 @@ end
 
 class layout_line : Raw.Layout_line.t -> layout_line_t
 (** Wraps a raw handle of {!Ocpango.Raw.Layout_line.t}. *)
+
+(** {1:description Description}
+
+    A [PangoLayoutLine] represents one of the lines resulting from laying out a
+    paragraph via [PangoLayout].
+
+    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
+    and are only valid until the text, attributes, or settings of the parent
+    [PangoLayout] are modified. *)

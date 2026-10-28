@@ -1,10 +1,11 @@
 (** [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
-    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
-
     Its methods, signals and properties are on {!class-type-shortcut_label_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Shortcut_label}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcut_label}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutLabel].}
 
@@ -35,7 +36,14 @@ end
 class shortcut_label : Raw.Shortcut_label.t -> shortcut_label_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Shortcut_label.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
+
+    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> shortcut_label_t
 (** Creates a new [GtkShortcutLabel] with [accelerator] set. *)

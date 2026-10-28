@@ -1,16 +1,11 @@
 (** Describes a 3D transform.
 
-    Unlike [graphene_matrix_t], [GskTransform] retains the steps in how a
-    transform was constructed, and allows inspecting them. It is modeled after
-    the way CSS describes transforms.
-
-    [GskTransform] objects are immutable and cannot be changed after creation.
-    This means code can safely expose them as properties of objects without
-    having to worry about others changing them.
-
     Its methods, signals and properties are on {!class-type-transform_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgsk.Raw.Transform}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Transform}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Transform].}
 
@@ -138,7 +133,19 @@ end
 class transform : Raw.Transform.t -> transform_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Transform.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Describes a 3D transform.
+
+    Unlike [graphene_matrix_t], [GskTransform] retains the steps in how a
+    transform was constructed, and allows inspecting them. It is modeled after
+    the way CSS describes transforms.
+
+    [GskTransform] objects are immutable and cannot be changed after creation.
+    This means code can safely expose them as properties of objects without
+    having to worry about others changing them. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> transform_t
 (** Creates a new identity transform.

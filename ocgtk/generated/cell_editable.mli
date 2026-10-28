@@ -1,12 +1,10 @@
 (** Interface for widgets that can be used for editing cells
 
-    The [GtkCellEditable] interface must be implemented for widgets to be usable
-    to edit the contents of a [GtkTreeView] cell. It provides a way to specify
-    how temporary widgets should be configured for editing, get the new value,
-    etc.
-
     Its methods, signals and properties are on {!class-type-cell_editable_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Cell_editable}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Cell_editable}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellEditable].}
 
@@ -77,3 +75,12 @@ end
 
 class cell_editable : Raw.Cell_editable.t -> cell_editable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_editable.t}. *)
+
+(** {1:description Description}
+
+    Interface for widgets that can be used for editing cells
+
+    The [GtkCellEditable] interface must be implemented for widgets to be usable
+    to edit the contents of a [GtkTreeView] cell. It provides a way to specify
+    how temporary widgets should be configured for editing, get the new value,
+    etc. *)

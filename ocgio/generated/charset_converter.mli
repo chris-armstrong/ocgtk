@@ -6,6 +6,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Charset_converter}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [CharsetConverter].}
 
     [GCharsetConverter] is an implementation of [Gio.Converter] based on
@@ -35,7 +37,7 @@ end
 class charset_converter : Raw.Charset_converter.t -> charset_converter_t
 (** Wraps a raw handle of {!Ocgio.Raw.Charset_converter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string -> string -> (charset_converter_t, GError.t) result
 (** Creates a new [GCharsetConverter]. *)

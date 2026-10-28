@@ -5,6 +5,8 @@
     {!class-type-settings_schema_key_t}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_key}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [SettingsSchemaKey].}
 
     [GSettingsSchemaKey] is an opaque data structure and can only be accessed

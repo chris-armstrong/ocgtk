@@ -5,6 +5,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Menu_item}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [MenuItem].}
 
     [GMenuItem] is an opaque structure type. You must access it using the
@@ -140,7 +142,7 @@ end
 class menu_item : Raw.Menu_item.t -> menu_item_t
 (** Wraps a raw handle of {!Ocgio.Raw.Menu_item.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string option -> string option -> menu_item_t
 [@@ocaml.doc

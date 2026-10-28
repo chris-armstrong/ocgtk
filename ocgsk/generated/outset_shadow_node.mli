@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Outset_shadow_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [OutsetShadowNode].}
 
     A render node for an outset shadow. *)
@@ -38,7 +40,7 @@ end
 class outset_shadow_node : Raw.Outset_shadow_node.t -> outset_shadow_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Outset_shadow_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Raw.Rounded_rect.t ->

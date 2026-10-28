@@ -6,6 +6,8 @@
     {!class-type-tls_file_database_t}. The functions it is built on are in
     {!Ocgio.Raw.Tls_file_database}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TlsFileDatabase].}
 
     [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load

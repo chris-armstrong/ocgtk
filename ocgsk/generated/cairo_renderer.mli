@@ -1,10 +1,11 @@
 (** Renders a GSK rendernode tree with cairo.
 
-    Since it is using cairo, this renderer cannot support 3D transformations.
-
     Its methods, signals and properties are on {!class-type-cairo_renderer_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgsk.Raw.Cairo_renderer}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Cairo_renderer}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CairoRenderer].}
 
@@ -19,7 +20,13 @@ end
 class cairo_renderer : Raw.Cairo_renderer.t -> cairo_renderer_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Cairo_renderer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders a GSK rendernode tree with cairo.
+
+    Since it is using cairo, this renderer cannot support 3D transformations. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cairo_renderer_t
 (** Creates a new Cairo renderer.

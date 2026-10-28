@@ -5,6 +5,8 @@
     Its methods, signals and properties are on {!class-type-output_vector_t}.
     The functions it is built on are in {!Ocgio.Raw.Output_vector}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [OutputVector].}
 
     Structure used for scatter/gather data output. You generally pass in an

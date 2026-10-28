@@ -1,17 +1,11 @@
 (** Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
 
-    Typically you will use a [GskRenderer] instance to repeatedly call
-    [Gsk.Renderer.render] to update the contents of its associated
-    [Gdk.Surface].
-
-    It is necessary to realize a [GskRenderer] instance using
-    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
-    create the appropriate windowing system resources needed to render the
-    scene.
-
     Its methods, signals and properties are on {!class-type-renderer_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgsk.Raw.Renderer}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Renderer}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Renderer].}
 
@@ -88,7 +82,20 @@ end
 class renderer : Raw.Renderer.t -> renderer_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Renderer.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+
+    Typically you will use a [GskRenderer] instance to repeatedly call
+    [Gsk.Renderer.render] to update the contents of its associated
+    [Gdk.Surface].
+
+    It is necessary to realize a [GskRenderer] instance using
+    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
+    create the appropriate windowing system resources needed to render the
+    scene. *)
+
+(** {1:constructors Constructors} *)
 
 val new_for_surface : Ocgdk.Surface.surface_t -> renderer_t
 (** Creates an appropriate [GskRenderer] instance for the given surface.

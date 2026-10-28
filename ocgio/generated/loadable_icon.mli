@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-loadable_icon_t}.
     The functions it is built on are in {!Ocgio.Raw.Loadable_icon}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [LoadableIcon].}
 
     [GLoadableIcon] extends the [Gio.Icon] interface and adds the ability to

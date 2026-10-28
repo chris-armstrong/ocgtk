@@ -1,19 +1,11 @@
 (** Assists in creating [Gsk.RenderNode]s for widgets.
 
-    It functions in a similar way to a cairo context, and maintains a stack of
-    render nodes and their associated transformations.
-
-    The node at the top of the stack is the one that [gtk_snapshot_append_…()]
-    functions operate on. Use the [gtk_snapshot_push_…()] functions and
-    [Snapshot.pop] to change the current node.
-
-    The typical way to obtain a [GtkSnapshot] object is as an argument to the
-    [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
-    use [Gtk.Snapshot.new].
-
     Its methods, signals and properties are on {!class-type-snapshot_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Snapshot}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Snapshot}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Snapshot].}
 
@@ -455,7 +447,22 @@ end
 class snapshot : Raw.Snapshot.t -> snapshot_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Snapshot.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Assists in creating [Gsk.RenderNode]s for widgets.
+
+    It functions in a similar way to a cairo context, and maintains a stack of
+    render nodes and their associated transformations.
+
+    The node at the top of the stack is the one that [gtk_snapshot_append_…()]
+    functions operate on. Use the [gtk_snapshot_push_…()] functions and
+    [Snapshot.pop] to change the current node.
+
+    The typical way to obtain a [GtkSnapshot] object is as an argument to the
+    [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
+    use [Gtk.Snapshot.new]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> snapshot_t
 (** Creates a new [GtkSnapshot]. *)

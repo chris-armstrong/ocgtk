@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Content_formats_builder}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ContentFormatsBuilder].}
 
     Creates [GdkContentFormats] objects. *)
@@ -43,7 +45,7 @@ class content_formats_builder :
   content_formats_builder_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Content_formats_builder.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> content_formats_builder_t
 (** Create a new [GdkContentFormatsBuilder] object.

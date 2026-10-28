@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-subsurface_node_t}.
     The functions it is built on are in {!Ocgsk.Raw.Subsurface_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [SubsurfaceNode].}
 
     A render node that potentially diverts a part of the scene graph to a

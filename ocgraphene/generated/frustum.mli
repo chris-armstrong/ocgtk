@@ -1,11 +1,11 @@
 (** A 3D volume delimited by 2D clip planes.
 
-    The contents of the [graphene_frustum_t] are private, and should not be
-    modified directly.
+    Its methods, signals and properties are on {!class-type-frustum_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgraphene.Raw.Frustum}. *)
 
-    Its methods, signals and properties are on {!class-type-frustum_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgraphene.Raw.Frustum}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Frustum].}
 
@@ -53,7 +53,14 @@ end
 class frustum : Raw.Frustum.t -> frustum_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Frustum.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A 3D volume delimited by 2D clip planes.
+
+    The contents of the [graphene_frustum_t] are private, and should not be
+    modified directly. *)
+
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> frustum_t
 (** Allocates a new #graphene_frustum_t structure.

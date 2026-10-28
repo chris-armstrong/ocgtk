@@ -1,16 +1,12 @@
 (** Provides content for the clipboard or for drag-and-drop operations in a
     number of formats.
 
-    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
-    [Gdk.ContentProvider.new_for_bytes].
-
-    GDK knows how to handle common text and image formats out-of-the-box. See
-    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats.
-
     Its methods, signals and properties are on {!class-type-content_provider_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgdk.Raw.Content_provider}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Content_provider}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ContentProvider].}
 
@@ -55,7 +51,19 @@ end
 class content_provider : Raw.Content_provider.t -> content_provider_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Content_provider.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Provides content for the clipboard or for drag-and-drop operations in a
+    number of formats.
+
+    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
+    [Gdk.ContentProvider.new_for_bytes].
+
+    GDK knows how to handle common text and image formats out-of-the-box. See
+    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
+    support for application-specific data formats. *)
+
+(** {1:constructors Constructors} *)
 
 val new_for_bytes : string -> Glib_bytes.t -> content_provider_t
 (** Create a content provider that provides the given [bytes] as data for the

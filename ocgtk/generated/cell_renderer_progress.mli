@@ -1,12 +1,11 @@
 (** Renders numbers as progress bars
 
-    [GtkCellRendererProgress] renders a numeric value as a progress par in a
-    cell. Additionally, it can display a text on top of the progress bar.
-
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_progress_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Cell_renderer_progress}. *)
+    {!class-type-cell_renderer_progress_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Cell_renderer_progress}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellRendererProgress].}
 
@@ -102,7 +101,14 @@ class cell_renderer_progress :
   cell_renderer_progress_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_progress.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders numbers as progress bars
+
+    [GtkCellRendererProgress] renders a numeric value as a progress par in a
+    cell. Additionally, it can display a text on top of the progress bar. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_renderer_progress_t
 (** Creates a new [GtkCellRendererProgress]. *)

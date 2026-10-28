@@ -1,10 +1,10 @@
 (** [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
-    The actual type of the font will depend on the particular font technology
-    Cairo was compiled to use.
+    Its methods, signals and properties are on {!class-type-font_t}. Its full
+    description is under {!section-description}. The functions it is built on
+    are in {!Ocpangocairo.Raw.Font}. *)
 
-    Its methods, signals and properties are on {!class-type-font_t}. The
-    functions it is built on are in {!Ocpangocairo.Raw.Font}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Font].}
 
@@ -22,3 +22,10 @@ end
 
 class font : Raw.Font.t -> font_t
 (** Wraps a raw handle of {!Ocpangocairo.Raw.Font.t}. *)
+
+(** {1:description Description}
+
+    [PangoCairoFont] is an interface exported by fonts for use with Cairo.
+
+    The actual type of the font will depend on the particular font technology
+    Cairo was compiled to use. *)

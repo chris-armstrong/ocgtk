@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-notebook_page_t}.
     The functions it is built on are in {!Ocgtk.Raw.Notebook_page}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [NotebookPage].}
 
     An auxiliary object used by [GtkNotebook]. *)

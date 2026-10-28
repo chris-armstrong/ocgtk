@@ -4,6 +4,8 @@
     {!class-type-c_closure_expression_t}. The functions it is built on are in
     {!Ocgtk.Raw.C_closure_expression}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [CClosureExpression].}
 
     A variant of [GtkClosureExpression] using a C closure. *)

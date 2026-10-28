@@ -1,13 +1,12 @@
 (** A [PangoFontDescription] describes a font in an implementation-independent
     manner.
 
-    [PangoFontDescription] structures are used both to list what fonts are
-    available on the system and also for specifying the characteristics of a
-    font to load.
-
     Its methods, signals and properties are on {!class-type-font_description_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocpango.Raw.Font_description}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Font_description}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FontDescription].}
 
@@ -300,7 +299,16 @@ end
 class font_description : Raw.Font_description.t -> font_description_t
 (** Wraps a raw handle of {!Ocpango.Raw.Font_description.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [PangoFontDescription] describes a font in an implementation-independent
+    manner.
+
+    [PangoFontDescription] structures are used both to list what fonts are
+    available on the system and also for specifying the characteristics of a
+    font to load. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> font_description_t
 (** Creates a new font description structure with all fields unset. *)

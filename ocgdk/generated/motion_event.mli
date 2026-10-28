@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-motion_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Motion_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [MotionEvent].}
 
     An event related to a pointer or touch device motion. *)

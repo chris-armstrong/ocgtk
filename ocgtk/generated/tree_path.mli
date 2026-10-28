@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Tree_path}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TreePath].}
 
     An opaque structure representing a path to a row in a model. *)
@@ -60,7 +62,7 @@ end
 class tree_path : Raw.Tree_path.t -> tree_path_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_path.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> tree_path_t
 (** Creates a new [GtkTreePath] This refers to a row. *)

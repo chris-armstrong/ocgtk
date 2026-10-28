@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-color_stop_t}. The
     functions it is built on are in {!Ocgsk.Raw.Color_stop}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ColorStop].}
 
     A color stop in a gradient node. *)

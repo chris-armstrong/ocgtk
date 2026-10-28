@@ -5,6 +5,8 @@
     Its methods, signals and properties are on {!class-type-input_vector_t}. The
     functions it is built on are in {!Ocgio.Raw.Input_vector}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [InputVector].}
 
     Structure used for scatter/gather data input. You generally pass in an array

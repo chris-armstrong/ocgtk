@@ -1,12 +1,12 @@
 (** A [PangoGlyphString] is used to store strings of glyphs with geometry and
     visual attribute information.
 
-    The storage for the glyph information is owned by the structure which
-    simplifies memory management.
-
     Its methods, signals and properties are on {!class-type-glyph_string_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocpango.Raw.Glyph_string}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_string}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [GlyphString].}
 
@@ -33,7 +33,15 @@ end
 class glyph_string : Raw.Glyph_string.t -> glyph_string_t
 (** Wraps a raw handle of {!Ocpango.Raw.Glyph_string.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [PangoGlyphString] is used to store strings of glyphs with geometry and
+    visual attribute information.
+
+    The storage for the glyph information is owned by the structure which
+    simplifies memory management. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> glyph_string_t
 (** Create a new [PangoGlyphString]. *)

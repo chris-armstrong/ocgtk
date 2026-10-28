@@ -1,35 +1,11 @@
 (** The [GtkAppChooserButton] lets the user select an application.
 
-    An example GtkAppChooserButton
-
-    Initially, a [GtkAppChooserButton] selects the first application in its
-    list, which will either be the most-recently used application or, if
-    [Gtk.AppChooserButton:show-default-item] is [TRUE], the default application.
-
-    The list of applications shown in a [GtkAppChooserButton] includes the
-    recommended applications for the given content type. When
-    [Gtk.AppChooserButton:show-default-item] is set, the default application is
-    also included. To let the user chooser other applications, you can set the
-    [Gtk.AppChooserButton:show-dialog-item] property, which allows to open a
-    full [Gtk.AppChooserDialog].
-
-    It is possible to add custom items to the list, using
-    [Gtk.AppChooserButton.append_custom_item]. These items cause the
-    [Gtk.AppChooserButton::custom-item-activated] signal to be emitted when they
-    are selected.
-
-    To track changes in the selected application, use the
-    [Gtk.AppChooserButton::changed] signal.
-
-    {b CSS nodes}
-
-    [GtkAppChooserButton] has a single CSS node with the name
-    “appchooserbutton”.
-
     Its methods, signals and properties are on
-    {!class-type-app_chooser_button_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.App_chooser_button}. *)
+    {!class-type-app_chooser_button_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.App_chooser_button}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [AppChooserButton].}
 
@@ -146,7 +122,37 @@ end
 class app_chooser_button : Raw.App_chooser_button.t -> app_chooser_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.App_chooser_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    The [GtkAppChooserButton] lets the user select an application.
+
+    An example GtkAppChooserButton
+
+    Initially, a [GtkAppChooserButton] selects the first application in its
+    list, which will either be the most-recently used application or, if
+    [Gtk.AppChooserButton:show-default-item] is [TRUE], the default application.
+
+    The list of applications shown in a [GtkAppChooserButton] includes the
+    recommended applications for the given content type. When
+    [Gtk.AppChooserButton:show-default-item] is set, the default application is
+    also included. To let the user chooser other applications, you can set the
+    [Gtk.AppChooserButton:show-dialog-item] property, which allows to open a
+    full [Gtk.AppChooserDialog].
+
+    It is possible to add custom items to the list, using
+    [Gtk.AppChooserButton.append_custom_item]. These items cause the
+    [Gtk.AppChooserButton::custom-item-activated] signal to be emitted when they
+    are selected.
+
+    To track changes in the selected application, use the
+    [Gtk.AppChooserButton::changed] signal.
+
+    {b CSS nodes}
+
+    [GtkAppChooserButton] has a single CSS node with the name
+    “appchooserbutton”. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> app_chooser_button_t
 (** Creates a new [GtkAppChooserButton] for applications that can handle content

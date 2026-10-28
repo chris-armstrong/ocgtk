@@ -1,17 +1,11 @@
 (** Renders text in a cell
 
-    A [GtkCellRendererText] renders a given text in its cell, using the font,
-    color and style information provided by its properties. The text will be
-    ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
-    property allows it.
-
-    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
-    [GtkCellRendererText] allows to edit its text using an entry.
-
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_text_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Cell_renderer_text}. *)
+    {!class-type-cell_renderer_text_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Cell_renderer_text}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellRendererText].}
 
@@ -355,7 +349,19 @@ end
 class cell_renderer_text : Raw.Cell_renderer_text.t -> cell_renderer_text_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_text.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders text in a cell
+
+    A [GtkCellRendererText] renders a given text in its cell, using the font,
+    color and style information provided by its properties. The text will be
+    ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
+    property allows it.
+
+    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
+    [GtkCellRendererText] allows to edit its text using an entry. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_renderer_text_t
 (** Creates a new [GtkCellRendererText]. Adjust how text is drawn using object

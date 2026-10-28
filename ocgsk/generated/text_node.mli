@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Text_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TextNode].}
 
     A render node drawing a set of glyphs. *)
@@ -34,7 +36,7 @@ end
 class text_node : Raw.Text_node.t -> text_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Text_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocpango.Font.font_t ->

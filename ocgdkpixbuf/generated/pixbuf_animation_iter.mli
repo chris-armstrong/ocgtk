@@ -5,6 +5,8 @@
     {!class-type-pixbuf_animation_iter_t}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [PixbufAnimationIter].}
 
     An opaque object representing an iterator which points to a certain position

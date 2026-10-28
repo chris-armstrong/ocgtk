@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-button_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Button_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ButtonEvent].}
 
     An event related to a button on a pointer device. *)

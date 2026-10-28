@@ -1,11 +1,11 @@
 (** Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
 
-    The anchor can have multiple widgets anchored, to allow for multiple views.
-
     Its methods, signals and properties are on
-    {!class-type-text_child_anchor_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Text_child_anchor}. *)
+    {!class-type-text_child_anchor_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Text_child_anchor}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TextChildAnchor].}
 
@@ -28,7 +28,14 @@ end
 class text_child_anchor : Raw.Text_child_anchor.t -> text_child_anchor_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Text_child_anchor.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
+
+    The anchor can have multiple widgets anchored, to allow for multiple views.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> text_child_anchor_t
 (** Creates a new [GtkTextChildAnchor].

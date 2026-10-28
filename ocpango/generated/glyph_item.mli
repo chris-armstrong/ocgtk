@@ -1,12 +1,11 @@
 (** A [PangoGlyphItem] is a pair of a [PangoItem] and the glyphs resulting from
     shaping the items text.
 
-    As an example of the usage of [PangoGlyphItem], the results of shaping text
-    with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
-    list of [PangoGlyphItem].
+    Its methods, signals and properties are on {!class-type-glyph_item_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Glyph_item}. *)
 
-    Its methods, signals and properties are on {!class-type-glyph_item_t}. The
-    functions it is built on are in {!Ocpango.Raw.Glyph_item}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [GlyphItem].}
 
@@ -54,3 +53,12 @@ end
 
 class glyph_item : Raw.Glyph_item.t -> glyph_item_t
 (** Wraps a raw handle of {!Ocpango.Raw.Glyph_item.t}. *)
+
+(** {1:description Description}
+
+    A [PangoGlyphItem] is a pair of a [PangoItem] and the glyphs resulting from
+    shaping the items text.
+
+    As an example of the usage of [PangoGlyphItem], the results of shaping text
+    with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
+    list of [PangoGlyphItem]. *)

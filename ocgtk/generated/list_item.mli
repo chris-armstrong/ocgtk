@@ -1,20 +1,10 @@
 (** Used by list widgets to represent items in a [Gio.ListModel].
 
-    [GtkListItem] objects are managed by the list widget (with its factory) and
-    cannot be created by applications, but they need to be populated by
-    application code. This is done by calling [Gtk.ListItem.set_child].
+    Its methods, signals and properties are on {!class-type-list_item_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.List_item}. *)
 
-    [GtkListItem] objects exist in 2 stages:
-
-    + The unbound stage where the listitem is not currently connected to an item
-      in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [NULL].
-
-    + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [NULL].
-
-    Its methods, signals and properties are on {!class-type-list_item_t}. The
-    functions it is built on are in {!Ocgtk.Raw.List_item}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ListItem].}
 
@@ -138,3 +128,20 @@ end
 
 class list_item : Raw.List_item.t -> list_item_t
 (** Wraps a raw handle of {!Ocgtk.Raw.List_item.t}. *)
+
+(** {1:description Description}
+
+    Used by list widgets to represent items in a [Gio.ListModel].
+
+    [GtkListItem] objects are managed by the list widget (with its factory) and
+    cannot be created by applications, but they need to be populated by
+    application code. This is done by calling [Gtk.ListItem.set_child].
+
+    [GtkListItem] objects exist in 2 stages:
+
+    + The unbound stage where the listitem is not currently connected to an item
+      in the list. In that case, the [Gtk.ListItem:item] property is set to
+      [NULL].
+
+    + The bound stage where the listitem references an item from the list. The
+      [Gtk.ListItem:item] property is not [NULL]. *)

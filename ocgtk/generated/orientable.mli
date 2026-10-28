@@ -1,16 +1,10 @@
 (** An interface for widgets that can be oriented horizontally or vertically.
 
-    [GtkOrientable] is more flexible in that it allows the orientation to be
-    changed at runtime, allowing the widgets to “flip”.
+    Its methods, signals and properties are on {!class-type-orientable_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Orientable}. *)
 
-    {b CSS nodes}
-
-    [GtkWidget] types implementing the [GtkOrientable] interface will
-    automatically acquire the [horizontal] or [vertical] CSS class depending on
-    the value of the [Gtk.Orientable:orientation] property.
-
-    Its methods, signals and properties are on {!class-type-orientable_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Orientable}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Orientable].}
 
@@ -36,3 +30,16 @@ end
 
 class orientable : Raw.Orientable.t -> orientable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Orientable.t}. *)
+
+(** {1:description Description}
+
+    An interface for widgets that can be oriented horizontally or vertically.
+
+    [GtkOrientable] is more flexible in that it allows the orientation to be
+    changed at runtime, allowing the widgets to “flip”.
+
+    {b CSS nodes}
+
+    [GtkWidget] types implementing the [GtkOrientable] interface will
+    automatically acquire the [horizontal] or [vertical] CSS class depending on
+    the value of the [Gtk.Orientable:orientation] property. *)

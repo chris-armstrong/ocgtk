@@ -1,14 +1,11 @@
 (** [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
 
-    [GThemedIcon] contains a list of all of the icons present in an icon theme,
-    so that icons can be looked up quickly. [GThemedIcon] does not provide
-    actual pixmaps for icons, just the icon names. Ideally something like
-    [Gtk.IconTheme.choose_icon] should be used to resolve the list of names so
-    that fallback icons work nicely with themes that inherit other themes.
-
     Its methods, signals and properties are on {!class-type-themed_icon_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgio.Raw.Themed_icon}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Themed_icon}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ThemedIcon].}
 
@@ -60,7 +57,17 @@ end
 class themed_icon : Raw.Themed_icon.t -> themed_icon_t
 (** Wraps a raw handle of {!Ocgio.Raw.Themed_icon.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
+
+    [GThemedIcon] contains a list of all of the icons present in an icon theme,
+    so that icons can be looked up quickly. [GThemedIcon] does not provide
+    actual pixmaps for icons, just the icon names. Ideally something like
+    [Gtk.IconTheme.choose_icon] should be used to resolve the list of names so
+    that fallback icons work nicely with themes that inherit other themes. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string -> themed_icon_t
 (** Creates a new themed icon for [iconname]. *)

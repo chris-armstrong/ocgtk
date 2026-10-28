@@ -4,6 +4,8 @@
     {!class-type-d_bus_interface_skeleton_t}. The functions it is built on are
     in {!Ocgio.Raw.D_bus_interface_skeleton}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusInterfaceSkeleton].}
 
     Abstract base class for D-Bus interfaces on the service side. *)

@@ -3,37 +3,11 @@
 
 (** An interface for describing UI elements for Assistive Technologies.
 
-    Every accessible implementation has:
+    Its methods, signals and properties are on {!class-type-accessible_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Accessible}. *)
 
-    - a “role”, represented by a value of the [Gtk.AccessibleRole] enumeration
-    - “attributes”, represented by a set of [Gtk.AccessibleState],
-      [Gtk.AccessibleProperty] and [Gtk.AccessibleRelation] values
-
-    The role cannot be changed after instantiating a [GtkAccessible]
-    implementation.
-
-    The attributes are updated every time a UI element's state changes in a way
-    that should be reflected by assistive technologies. For instance, if a
-    [GtkWidget] visibility changes, the [GTK_ACCESSIBLE_STATE_HIDDEN] state will
-    also change to reflect the [Gtk.Widget:visible] property.
-
-    Every accessible implementation is part of a tree of accessible objects.
-    Normally, this tree corresponds to the widget tree, but can be customized by
-    reimplementing the [Gtk.Accessible.get_accessible_parent],
-    [Gtk.Accessible.get_first_accessible_child] and
-    [Gtk.Accessible.get_next_accessible_sibling] virtual functions.
-
-    Note that you can not create a top-level accessible object as of now, which
-    means that you must always have a parent accessible object.
-
-    Also note that when an accessible object does not correspond to a widget,
-    and it has children, whose implementation you don't control, it is necessary
-    to ensure the correct shape of the a11y tree by calling
-    [Gtk.Accessible.set_accessible_parent] and updating the sibling by
-    [Gtk.Accessible.update_next_accessible_sibling].
-
-    Its methods, signals and properties are on {!class-type-accessible_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Accessible}. *)
+(** {1:class Class} *)
 
 class type accessible_t = At_context_and__accessible.accessible_t
 (** {b The methods, signals and properties of a [Accessible].}
@@ -71,3 +45,36 @@ class type accessible_t = At_context_and__accessible.accessible_t
 
 class accessible : Raw.Accessible.t -> accessible_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Accessible.t}. *)
+
+(** {1:description Description}
+
+    An interface for describing UI elements for Assistive Technologies.
+
+    Every accessible implementation has:
+
+    - a “role”, represented by a value of the [Gtk.AccessibleRole] enumeration
+    - “attributes”, represented by a set of [Gtk.AccessibleState],
+      [Gtk.AccessibleProperty] and [Gtk.AccessibleRelation] values
+
+    The role cannot be changed after instantiating a [GtkAccessible]
+    implementation.
+
+    The attributes are updated every time a UI element's state changes in a way
+    that should be reflected by assistive technologies. For instance, if a
+    [GtkWidget] visibility changes, the [GTK_ACCESSIBLE_STATE_HIDDEN] state will
+    also change to reflect the [Gtk.Widget:visible] property.
+
+    Every accessible implementation is part of a tree of accessible objects.
+    Normally, this tree corresponds to the widget tree, but can be customized by
+    reimplementing the [Gtk.Accessible.get_accessible_parent],
+    [Gtk.Accessible.get_first_accessible_child] and
+    [Gtk.Accessible.get_next_accessible_sibling] virtual functions.
+
+    Note that you can not create a top-level accessible object as of now, which
+    means that you must always have a parent accessible object.
+
+    Also note that when an accessible object does not correspond to a widget,
+    and it has children, whose implementation you don't control, it is necessary
+    to ensure the correct shape of the a11y tree by calling
+    [Gtk.Accessible.set_accessible_parent] and updating the sibling by
+    [Gtk.Accessible.update_next_accessible_sibling]. *)

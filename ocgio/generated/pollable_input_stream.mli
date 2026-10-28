@@ -3,14 +3,12 @@
     non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
     than GIO-style.
 
-    Some classes may implement [GPollableInputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
-    returns false, then the behavior of other [GPollableInputStream] methods is
-    undefined.
-
     Its methods, signals and properties are on
-    {!class-type-pollable_input_stream_t}. The functions it is built on are in
+    {!class-type-pollable_input_stream_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgio.Raw.Pollable_input_stream}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [PollableInputStream].}
 
@@ -52,3 +50,15 @@ class pollable_input_stream :
   Raw.Pollable_input_stream.t ->
   pollable_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Pollable_input_stream.t}. *)
+
+(** {1:description Description}
+
+    [GPollableInputStream] is implemented by [Gio.InputStream]s that can be
+    polled for readiness to read. This can be used when interfacing with a
+    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
+    than GIO-style.
+
+    Some classes may implement [GPollableInputStream] but have only certain
+    instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
+    returns false, then the behavior of other [GPollableInputStream] methods is
+    undefined. *)

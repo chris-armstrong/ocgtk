@@ -5,6 +5,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_message}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusMessage].}
 
     A type for representing D-Bus messages that can be sent or received on a
@@ -240,7 +242,7 @@ end
 class d_bus_message : Raw.D_bus_message.t -> d_bus_message_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_message.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> d_bus_message_t
 (** Creates a new empty [GDBusMessage]. *)

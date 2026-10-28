@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Color_matrix_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ColorMatrixNode].}
 
     A render node controlling the color matrix of its single child node. *)
@@ -27,7 +29,7 @@ end
 class color_matrix_node : Raw.Color_matrix_node.t -> color_matrix_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Color_matrix_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t ->

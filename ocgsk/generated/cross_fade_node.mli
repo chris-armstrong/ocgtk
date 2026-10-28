@@ -4,6 +4,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Cross_fade_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [CrossFadeNode].}
 
     A render node cross fading between two child nodes. *)
@@ -25,7 +27,7 @@ end
 class cross_fade_node : Raw.Cross_fade_node.t -> cross_fade_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Cross_fade_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t ->

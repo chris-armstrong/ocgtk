@@ -1,27 +1,11 @@
 (** A widget displaying a single row of a GtkTreeModel
 
-    A [GtkCellView] displays a single row of a [GtkTreeModel] using a
-    [GtkCellArea] and [GtkCellAreaContext]. A [GtkCellAreaContext] can be
-    provided to the [GtkCellView] at construction time in order to keep the
-    cellview in context of a group of cell views, this ensures that the
-    renderers displayed will be properly aligned with each other (like the
-    aligned cells in the menus of [GtkComboBox]).
-
-    [GtkCellView] is [GtkOrientable] in order to decide in which orientation the
-    underlying [GtkCellAreaContext] should be allocated. Taking the
-    [GtkComboBox] menu as an example, cellviews should be oriented horizontally
-    if the menus are listed top-to-bottom and thus all share the same width but
-    may have separate individual heights (left-to-right menus should be
-    allocated vertically since they all share the same height but may have
-    variable widths).
-
-    {b CSS nodes}
-
-    GtkCellView has a single CSS node with name cellview.
-
     Its methods, signals and properties are on {!class-type-cell_view_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Cell_view}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_view}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellView].}
 
@@ -126,7 +110,30 @@ end
 class cell_view : Raw.Cell_view.t -> cell_view_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_view.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A widget displaying a single row of a GtkTreeModel
+
+    A [GtkCellView] displays a single row of a [GtkTreeModel] using a
+    [GtkCellArea] and [GtkCellAreaContext]. A [GtkCellAreaContext] can be
+    provided to the [GtkCellView] at construction time in order to keep the
+    cellview in context of a group of cell views, this ensures that the
+    renderers displayed will be properly aligned with each other (like the
+    aligned cells in the menus of [GtkComboBox]).
+
+    [GtkCellView] is [GtkOrientable] in order to decide in which orientation the
+    underlying [GtkCellAreaContext] should be allocated. Taking the
+    [GtkComboBox] menu as an example, cellviews should be oriented horizontally
+    if the menus are listed top-to-bottom and thus all share the same width but
+    may have separate individual heights (left-to-right menus should be
+    allocated vertically since they all share the same height but may have
+    variable widths).
+
+    {b CSS nodes}
+
+    GtkCellView has a single CSS node with name cellview. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_view_t
 (** Creates a new [GtkCellView] widget. *)

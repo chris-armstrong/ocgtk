@@ -1,12 +1,11 @@
 (** Shows controls for video playback.
 
-    An example GtkMediaControls
-
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video].
-
     Its methods, signals and properties are on {!class-type-media_controls_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Media_controls}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Media_controls}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MediaControls].}
 
@@ -32,7 +31,15 @@ end
 class media_controls : Raw.Media_controls.t -> media_controls_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Media_controls.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Shows controls for video playback.
+
+    An example GtkMediaControls
+
+    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Media_stream.media_stream_t option -> media_controls_t
 (** Creates a new [GtkMediaControls] managing the [stream] passed to it. *)

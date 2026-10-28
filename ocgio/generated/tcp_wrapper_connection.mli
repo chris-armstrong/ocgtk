@@ -9,6 +9,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Tcp_wrapper_connection}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TcpWrapperConnection].}
 
     A [GTcpWrapperConnection] can be used to wrap a [Gio.IOStream] that is based
@@ -30,7 +32,7 @@ class tcp_wrapper_connection :
   tcp_wrapper_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tcp_wrapper_connection.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Io_stream.io_stream_t ->

@@ -1,15 +1,11 @@
 (** Tracks the pointer position.
 
-    The event controller offers [Gtk.EventControllerMotion::enter] and
-    [Gtk.EventControllerMotion::leave] signals, as well as
-    [Gtk.EventControllerMotion:is-pointer] and
-    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
-    reflect changes in the pointer position as it moves over the widget.
-
     Its methods, signals and properties are on
-    {!class-type-event_controller_motion_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Event_controller_motion}. *)
+    {!class-type-event_controller_motion_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Event_controller_motion}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [EventControllerMotion].}
 
@@ -57,7 +53,17 @@ class event_controller_motion :
   event_controller_motion_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_motion.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Tracks the pointer position.
+
+    The event controller offers [Gtk.EventControllerMotion::enter] and
+    [Gtk.EventControllerMotion::leave] signals, as well as
+    [Gtk.EventControllerMotion:is-pointer] and
+    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
+    reflect changes in the pointer position as it moves over the widget. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> event_controller_motion_t
 (** Creates a new event controller that will handle motion events. *)

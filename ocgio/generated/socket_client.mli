@@ -1,20 +1,12 @@
 (** [GSocketClient] is a lightweight high-level utility class for connecting to
     a network host using a connection oriented socket type.
 
-    You create a [GSocketClient] object, set any options you want, and then call
-    a sync or async connect operation, which returns a [Gio.SocketConnection]
-    subclass on success.
-
-    The type of the [Gio.SocketConnection] object returned depends on the type
-    of the underlying socket that is in use. For instance, for a TCP/IP
-    connection it will be a [Gio.TcpConnection].
-
-    As [GSocketClient] is a lightweight object, you don't need to cache it. You
-    can just create a new one any time you need one.
-
     Its methods, signals and properties are on {!class-type-socket_client_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgio.Raw.Socket_client}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Socket_client}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SocketClient].}
 
@@ -385,7 +377,23 @@ end
 class socket_client : Raw.Socket_client.t -> socket_client_t
 (** Wraps a raw handle of {!Ocgio.Raw.Socket_client.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GSocketClient] is a lightweight high-level utility class for connecting to
+    a network host using a connection oriented socket type.
+
+    You create a [GSocketClient] object, set any options you want, and then call
+    a sync or async connect operation, which returns a [Gio.SocketConnection]
+    subclass on success.
+
+    The type of the [Gio.SocketConnection] object returned depends on the type
+    of the underlying socket that is in use. For instance, for a TCP/IP
+    connection it will be a [Gio.TcpConnection].
+
+    As [GSocketClient] is a lightweight object, you don't need to cache it. You
+    can just create a new one any time you need one. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> socket_client_t
 (** Creates a new [GSocketClient] with the default options. *)

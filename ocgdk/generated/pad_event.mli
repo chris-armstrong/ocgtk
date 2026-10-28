@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-pad_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Pad_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [PadEvent].}
 
     An event related to a pad-based device. *)

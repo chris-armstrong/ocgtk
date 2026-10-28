@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-io_scheduler_job_t}.
     The functions it is built on are in {!Ocgio.Raw.Io_scheduler_job}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [IOSchedulerJob].}
 
     Opaque class for defining and scheduling IO jobs. *)

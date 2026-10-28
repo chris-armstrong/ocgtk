@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-attr_language_t}.
     The functions it is built on are in {!Ocpango.Raw.Attr_language}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AttrLanguage].}
 
     The [PangoAttrLanguage] structure is used to represent attributes that are

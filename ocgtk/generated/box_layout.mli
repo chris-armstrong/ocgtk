@@ -1,19 +1,11 @@
 (** Arranges children in a single row or column.
 
-    Whether it is a row or column depends on the value of its
-    [Gtk.Orientable:orientation] property. Within the other dimension all
-    children all allocated the same size. The [GtkBoxLayout] will respect the
-    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
-
-    If you want all children to be assigned the same size, you can use the
-    [Gtk.BoxLayout:homogeneous] property.
-
-    If you want to specify the amount of space placed between each child, you
-    can use the [Gtk.BoxLayout:spacing] property.
-
     Its methods, signals and properties are on {!class-type-box_layout_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Box_layout}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Box_layout}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [BoxLayout].}
 
@@ -74,7 +66,22 @@ end
 class box_layout : Raw.Box_layout.t -> box_layout_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Box_layout.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Arranges children in a single row or column.
+
+    Whether it is a row or column depends on the value of its
+    [Gtk.Orientable:orientation] property. Within the other dimension all
+    children all allocated the same size. The [GtkBoxLayout] will respect the
+    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+
+    If you want all children to be assigned the same size, you can use the
+    [Gtk.BoxLayout:homogeneous] property.
+
+    If you want to specify the amount of space placed between each child, you
+    can use the [Gtk.BoxLayout:spacing] property. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Enums.orientation -> box_layout_t
 (** Creates a new [GtkBoxLayout]. *)

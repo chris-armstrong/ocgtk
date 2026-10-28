@@ -1,48 +1,11 @@
 (** Presents a large dynamic grid of items.
 
-    [GtkGridView] uses its factory to generate one child widget for each visible
-    item and shows them in a grid. The orientation of the grid view determines
-    if the grid reflows vertically or horizontally.
-
-    [GtkGridView] allows the user to select items according to the selection
-    characteristics of the model. For models that allow multiple selected items,
-    it is possible to turn on _rubberband selection_, using
-    [Gtk.GridView:enable-rubberband].
-
-    To learn more about the list widget framework, see the overview.
-
-    {b Actions}
-
-    [GtkGridView] defines a set of built-in actions:
-
-    - [list.activate-item] activates the item at given position by emitting the
-      the [Gtk.GridView::activate] signal.
-
-    {b CSS nodes}
-
-    {[
-    gridview
-    ├── child[.activatable]
-    │
-    ├── child[.activatable]
-    │
-    ┊
-    ╰── [rubberband]
-    ]}
-
-    [GtkGridView] uses a single CSS node with name [gridview]. Each child uses a
-    single CSS node with name [child]. If the [Gtk.ListItem:activatable]
-    property is set, the corresponding row will have the [.activatable] style
-    class. For rubberband selection, a subnode with name [rubberband] is used.
-
-    {b Accessibility}
-
-    [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role.
-
     Its methods, signals and properties are on {!class-type-grid_view_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Grid_view}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Grid_view}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [GridView].}
 
@@ -172,7 +135,51 @@ end
 class grid_view : Raw.Grid_view.t -> grid_view_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Grid_view.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Presents a large dynamic grid of items.
+
+    [GtkGridView] uses its factory to generate one child widget for each visible
+    item and shows them in a grid. The orientation of the grid view determines
+    if the grid reflows vertically or horizontally.
+
+    [GtkGridView] allows the user to select items according to the selection
+    characteristics of the model. For models that allow multiple selected items,
+    it is possible to turn on _rubberband selection_, using
+    [Gtk.GridView:enable-rubberband].
+
+    To learn more about the list widget framework, see the overview.
+
+    {b Actions}
+
+    [GtkGridView] defines a set of built-in actions:
+
+    - [list.activate-item] activates the item at given position by emitting the
+      the [Gtk.GridView::activate] signal.
+
+    {b CSS nodes}
+
+    {[
+    gridview
+    ├── child[.activatable]
+    │
+    ├── child[.activatable]
+    │
+    ┊
+    ╰── [rubberband]
+    ]}
+
+    [GtkGridView] uses a single CSS node with name [gridview]. Each child uses a
+    single CSS node with name [child]. If the [Gtk.ListItem:activatable]
+    property is set, the corresponding row will have the [.activatable] style
+    class. For rubberband selection, a subnode with name [rubberband] is used.
+
+    {b Accessibility}
+
+    [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
+    [Gtk.AccessibleRole.grid_cell] role. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Selection_model.selection_model_t option ->

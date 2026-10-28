@@ -1,20 +1,12 @@
 (** Constructs [Gdk.Texture] objects from system memory provided via
     [GLib.Bytes].
 
-    The operation is quite simple: Create a texture builder, set all the
-    necessary properties - keep in mind that the properties
-    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
-    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
-    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
-    texture.
-
-    [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
-    textures as well as kept around and reused to construct multiple textures.
-
     Its methods, signals and properties are on
-    {!class-type-memory_texture_builder_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgdk.Raw.Memory_texture_builder}. *)
+    {!class-type-memory_texture_builder_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.Memory_texture_builder}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MemoryTextureBuilder].}
 
@@ -150,7 +142,23 @@ class memory_texture_builder :
   memory_texture_builder_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Memory_texture_builder.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Constructs [Gdk.Texture] objects from system memory provided via
+    [GLib.Bytes].
+
+    The operation is quite simple: Create a texture builder, set all the
+    necessary properties - keep in mind that the properties
+    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
+    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
+    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
+    texture.
+
+    [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
+    textures as well as kept around and reused to construct multiple textures.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> memory_texture_builder_t
 (** Creates a new texture builder. *)

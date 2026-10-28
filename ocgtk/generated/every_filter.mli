@@ -1,10 +1,11 @@
 (** Matches an item when each of its filters matches.
 
-    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append].
-
     Its methods, signals and properties are on {!class-type-every_filter_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Every_filter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Every_filter}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [EveryFilter].}
 
@@ -19,7 +20,13 @@ end
 class every_filter : Raw.Every_filter.t -> every_filter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Every_filter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Matches an item when each of its filters matches.
+
+    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> every_filter_t
 [@@ocaml.doc

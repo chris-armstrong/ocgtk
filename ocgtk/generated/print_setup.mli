@@ -1,17 +1,11 @@
 (** An auxiliary object for printing that allows decoupling the setup from the
     printing.
 
-    A print setup is obtained by calling [Gtk.PrintDialog.setup], and can later
-    be passed to print functions such as [Gtk.PrintDialog.print].
+    Its methods, signals and properties are on {!class-type-print_setup_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgtk.Raw.Print_setup}. *)
 
-    Print setups can be reused for multiple print calls.
-
-    Applications may wish to store the page_setup and print_settings from the
-    print setup and copy them to the PrintDialog if they want to keep using
-    them.
-
-    Its methods, signals and properties are on {!class-type-print_setup_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Print_setup}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [PrintSetup].}
 
@@ -47,3 +41,17 @@ end
 
 class print_setup : Raw.Print_setup.t -> print_setup_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Print_setup.t}. *)
+
+(** {1:description Description}
+
+    An auxiliary object for printing that allows decoupling the setup from the
+    printing.
+
+    A print setup is obtained by calling [Gtk.PrintDialog.setup], and can later
+    be passed to print functions such as [Gtk.PrintDialog.print].
+
+    Print setups can be reused for multiple print calls.
+
+    Applications may wish to store the page_setup and print_settings from the
+    print setup and copy them to the PrintDialog if they want to keep using
+    them. *)

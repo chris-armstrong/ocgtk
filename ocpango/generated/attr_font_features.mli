@@ -5,6 +5,8 @@
     {!class-type-attr_font_features_t}. The functions it is built on are in
     {!Ocpango.Raw.Attr_font_features}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AttrFontFeatures].}
 
     The [PangoAttrFontFeatures] structure is used to represent OpenType font

@@ -1,20 +1,11 @@
 (** Shows a [GtkMediaStream] with media controls.
 
-    An example GtkVideo
+    Its methods, signals and properties are on {!class-type-video_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Video}. *)
 
-    The controls are available separately as [Gtk.MediaControls]. If you just
-    want to display a video without controls, you can treat it like any other
-    paintable and for example put it into a [Gtk.Picture].
-
-    [GtkVideo] aims to cover use cases such as previews, embedded animations,
-    etc. It supports autoplay, looping, and simple media controls. It does not
-    have support for video overlays, multichannel audio, device selection, or
-    input. If you are writing a full-fledged video player, you may want to use
-    the [Gdk.Paintable] API and a media framework such as Gstreamer directly.
-
-    Its methods, signals and properties are on {!class-type-video_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Video}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Video].}
 
@@ -94,7 +85,23 @@ end
 class video : Raw.Video.t -> video_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Video.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Shows a [GtkMediaStream] with media controls.
+
+    An example GtkVideo
+
+    The controls are available separately as [Gtk.MediaControls]. If you just
+    want to display a video without controls, you can treat it like any other
+    paintable and for example put it into a [Gtk.Picture].
+
+    [GtkVideo] aims to cover use cases such as previews, embedded animations,
+    etc. It supports autoplay, looping, and simple media controls. It does not
+    have support for video overlays, multichannel audio, device selection, or
+    input. If you are writing a full-fledged video player, you may want to use
+    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> video_t
 (** Creates a new empty [GtkVideo]. *)

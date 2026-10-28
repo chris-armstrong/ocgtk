@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-drag_surface_t}. The
     functions it is built on are in {!Ocgdk.Raw.Drag_surface}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DragSurface].}
 
     A surface that is used during DND. *)

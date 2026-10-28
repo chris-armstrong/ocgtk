@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Color_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ColorNode].}
 
     A render node for a solid color. *)
@@ -22,7 +24,7 @@ end
 class color_node : Raw.Color_node.t -> color_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Color_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Ocgdk.Rgb_a.rgb_a_t -> Ocgraphene.Rect.rect_t -> color_node_t
 (** Creates a [GskRenderNode] that will render the color specified by [rgba]

@@ -1,12 +1,11 @@
 (** Supports switching between multiple input methods.
 
-    Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to
-    implement their [im-module] property for switching between different input
-    methods.
-
     Its methods, signals and properties are on {!class-type-im_multicontext_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Im_multicontext}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Im_multicontext}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [IMMulticontext].}
 
@@ -36,7 +35,15 @@ end
 class im_multicontext : Raw.Im_multicontext.t -> im_multicontext_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Im_multicontext.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Supports switching between multiple input methods.
+
+    Text widgets such as [GtkText] or [GtkTextView] use a [GtkIMMultiContext] to
+    implement their [im-module] property for switching between different input
+    methods. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> im_multicontext_t
 (** Creates a new [GtkIMMulticontext]. *)

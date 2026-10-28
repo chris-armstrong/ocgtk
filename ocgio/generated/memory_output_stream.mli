@@ -1,13 +1,12 @@
 (** [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
     for GIO streaming output operations.
 
-    As of GLib 2.34, [GMemoryOutputStream] trivially implements
-    [Gio.PollableOutputStream]: it always polls as ready.
-
     Its methods, signals and properties are on
-    {!class-type-memory_output_stream_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.Memory_output_stream}. *)
+    {!class-type-memory_output_stream_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Memory_output_stream}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MemoryOutputStream].}
 
@@ -53,7 +52,15 @@ class memory_output_stream :
   memory_output_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Memory_output_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
+    for GIO streaming output operations.
+
+    As of GLib 2.34, [GMemoryOutputStream] trivially implements
+    [Gio.PollableOutputStream]: it always polls as ready. *)
+
+(** {1:constructors Constructors} *)
 
 val new_resizable : unit -> memory_output_stream_t
 (** Creates a new [GMemoryOutputStream], using g_realloc() and g_free() for

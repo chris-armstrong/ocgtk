@@ -1,17 +1,11 @@
 (** A [PangoFontMetrics] structure holds the overall metric information for a
     font.
 
-    The information in a [PangoFontMetrics] structure may be restricted to a
-    script. The fields of this structure are private to implementations of a
-    font backend. See the documentation of the corresponding getters for
-    documentation of their meaning.
+    Its methods, signals and properties are on {!class-type-font_metrics_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Font_metrics}. *)
 
-    For an overview of the most important metrics, see:
-
-    Font metrics
-
-    Its methods, signals and properties are on {!class-type-font_metrics_t}. The
-    functions it is built on are in {!Ocpango.Raw.Font_metrics}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FontMetrics].}
 
@@ -94,3 +88,17 @@ end
 
 class font_metrics : Raw.Font_metrics.t -> font_metrics_t
 (** Wraps a raw handle of {!Ocpango.Raw.Font_metrics.t}. *)
+
+(** {1:description Description}
+
+    A [PangoFontMetrics] structure holds the overall metric information for a
+    font.
+
+    The information in a [PangoFontMetrics] structure may be restricted to a
+    script. The fields of this structure are private to implementations of a
+    font backend. See the documentation of the corresponding getters for
+    documentation of their meaning.
+
+    For an overview of the most important metrics, see:
+
+    Font metrics *)

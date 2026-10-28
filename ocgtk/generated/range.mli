@@ -1,20 +1,10 @@
 (** Base class for widgets which visualize an adjustment.
 
-    Widgets that are derived from [GtkRange] include [Gtk.Scale] and
-    [Gtk.Scrollbar].
+    Its methods, signals and properties are on {!class-type-range_t}. Its full
+    description is under {!section-description}. The functions it is built on
+    are in {!Ocgtk.Raw.Range}. *)
 
-    Apart from signals for monitoring the parameters of the adjustment,
-    [GtkRange] provides properties and methods for setting a “fill level” on
-    range widgets. See [Gtk.Range.set_fill_level].
-
-    {b Shortcuts and Gestures}
-
-    The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
-    dragging, or initiating the drag with a long-press will enable the
-    fine-tuning mode.
-
-    Its methods, signals and properties are on {!class-type-range_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Range}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Range].}
 
@@ -207,3 +197,20 @@ end
 
 class range : Raw.Range.t -> range_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Range.t}. *)
+
+(** {1:description Description}
+
+    Base class for widgets which visualize an adjustment.
+
+    Widgets that are derived from [GtkRange] include [Gtk.Scale] and
+    [Gtk.Scrollbar].
+
+    Apart from signals for monitoring the parameters of the adjustment,
+    [GtkRange] provides properties and methods for setting a “fill level” on
+    range widgets. See [Gtk.Range.set_fill_level].
+
+    {b Shortcuts and Gestures}
+
+    The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
+    dragging, or initiating the drag with a long-press will enable the
+    fine-tuning mode. *)

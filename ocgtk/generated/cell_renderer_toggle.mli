@@ -1,14 +1,11 @@
 (** Renders a toggle button in a cell
 
-    [GtkCellRendererToggle] renders a toggle button in a cell. The button is
-    drawn as a radio or a checkbutton, depending on the
-    [GtkCellRendererToggle:radio] property. When activated, it emits the
-    [GtkCellRendererToggle::toggled] signal.
-
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_toggle_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Cell_renderer_toggle}. *)
+    {!class-type-cell_renderer_toggle_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Cell_renderer_toggle}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellRendererToggle].}
 
@@ -71,7 +68,16 @@ class cell_renderer_toggle :
   cell_renderer_toggle_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_toggle.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders a toggle button in a cell
+
+    [GtkCellRendererToggle] renders a toggle button in a cell. The button is
+    drawn as a radio or a checkbutton, depending on the
+    [GtkCellRendererToggle:radio] property. When activated, it emits the
+    [GtkCellRendererToggle::toggled] signal. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_renderer_toggle_t
 (** Creates a new [GtkCellRendererToggle]. Adjust rendering parameters using

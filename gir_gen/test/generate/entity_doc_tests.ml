@@ -32,6 +32,40 @@ let test_l2_module_without_class_doc_starts_with_synopsis () =
     (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
        ~has_constructors:true ~class_doc:None)
 
+let long_doc = "A button.\n\nIt can hold a child."
+
+let test_l2_module_synopsis_is_first_paragraph () =
+  check_text "first paragraph, then the navigation with the description link"
+    "(** A button.\n\n\
+     Its methods, signals and properties are on {!class-type-button_t}. Its \
+     full description is under {!section-description}. The functions it is \
+     built on are in {!Ocgtk.Raw.Button}. *)"
+    (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+       ~has_constructors:false ~class_doc:(Some long_doc))
+
+(* A code block split at its blank line would leave markup open. *)
+let test_l2_module_block_first_paragraph_falls_back () =
+  let doc =
+    Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+      ~has_constructors:false
+      ~class_doc:(Some "```c\nint x;\n\nint y;\n```\n\nA button.")
+  in
+  Alcotest.(check bool)
+    ("the fallback sentence: " ^ text doc)
+    true
+    (Helpers.string_contains (text doc) "(** Bindings for [Button].\n\n")
+
+let test_description_with_long_doc () =
+  check_text "heading, then the whole class doc"
+    "(** {1:description Description}\n\nA button.\n\nIt can hold a child. *)"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some long_doc))
+
+let test_description_omitted_when_synopsis_is_all () =
+  check_text "nothing beyond the synopsis" "<none>"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some "A button."));
+  check_text "no class doc" "<none>"
+    (Entity_doc.description ~class_name:"Button" ~class_doc:None)
+
 let test_class_type_with_class_doc () =
   check_text "the bold line, then the class doc"
     "(** {b The methods, signals and properties of a [Button].}\n\nA button. *)"
@@ -131,6 +165,36 @@ let test_signature_carries_docs () =
     class_type_doc;
   check_has "class type repeats the class doc" ~sub:"A button." class_type_doc
 
+(* The preamble stays short so the class type and class come before the long
+   description. Checked on the text, since the order of floating docs and items
+   is the point. *)
+let test_signature_layout_order () =
+  let text =
+    Class_gen.generate_class_signature
+      ~ctx:(Helpers.create_test_context ())
+      ~class_doc:(Some long_doc) ~class_name:"Button" ~c_type:"GtkButton"
+      ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[] ~signals:[]
+      ~constructors:[] ~entity_kind:Filtering.Class
+  in
+  let position sub =
+    match Re.Str.search_forward (Re.Str.regexp_string sub) text 0 with
+    | i -> i
+    | exception Not_found -> Alcotest.fail ("missing " ^ sub ^ " in:\n" ^ text)
+  in
+  let positions =
+    List.map position
+      [
+        "(** A button.";
+        "{1:class Class}";
+        "class type button_t";
+        "class button :";
+        "{1:description Description}";
+      ]
+  in
+  Alcotest.(check (list int))
+    "synopsis, Class heading, class type, class, description" positions
+    (List.sort compare positions)
+
 let test_signature_carries_method_docs () =
   let clicked =
     Type_factory.make_gir_method ~method_name:"clicked"
@@ -177,6 +241,17 @@ let tests =
     ( "layer 2 module doc without a class doc starts with a synopsis",
       `Quick,
       test_l2_module_without_class_doc_starts_with_synopsis );
+    ( "layer 2 module synopsis is the first paragraph",
+      `Quick,
+      test_l2_module_synopsis_is_first_paragraph );
+    ( "layer 2 module synopsis falls back after a block",
+      `Quick,
+      test_l2_module_block_first_paragraph_falls_back );
+    ("description with a long doc", `Quick, test_description_with_long_doc);
+    ( "description omitted when the synopsis is all",
+      `Quick,
+      test_description_omitted_when_synopsis_is_all );
+    ("layer 2 signature layout order", `Quick, test_signature_layout_order);
     ("class type doc with a class doc", `Quick, test_class_type_with_class_doc);
     ( "class type doc without a class doc",
       `Quick,

@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Border_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [BorderNode].}
 
     A render node for a border. *)
@@ -25,7 +27,7 @@ end
 class border_node : Raw.Border_node.t -> border_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Border_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Raw.Rounded_rect.t -> float array -> Ocgdk.Raw.Rgb_a.t array -> border_node_t

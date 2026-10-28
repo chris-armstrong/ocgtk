@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-log_attr_t}. The
     functions it is built on are in {!Ocpango.Raw.Log_attr}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [LogAttr].}
 
     The [PangoLogAttr] structure stores information about the attributes of a

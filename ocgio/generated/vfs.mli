@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-vfs_t}. The
     functions it is built on are in {!Ocgio.Raw.Vfs}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [Vfs].}
 
     Entry point for using GIO functionality. *)

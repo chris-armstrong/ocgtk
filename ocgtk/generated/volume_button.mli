@@ -1,11 +1,12 @@
 (** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 
-    An example GtkVolumeButton
-
     Its methods, signals and properties are on {!class-type-volume_button_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Volume_button}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Volume_button}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [VolumeButton].}
 
@@ -34,7 +35,14 @@ end
 class volume_button : Raw.Volume_button.t -> volume_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Volume_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
+    control.
+
+    An example GtkVolumeButton *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> volume_button_t
 (** Creates a [GtkVolumeButton].

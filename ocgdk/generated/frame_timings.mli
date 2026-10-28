@@ -1,13 +1,10 @@
 (** Holds timing information for a single frame of the application’s displays.
 
-    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
-    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
-    is useful for precise synchronization of video with the event or audio
-    streams, and for measuring quality metrics for the application’s display,
-    such as latency and jitter.
-
     Its methods, signals and properties are on {!class-type-frame_timings_t}.
-    The functions it is built on are in {!Ocgdk.Raw.Frame_timings}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgdk.Raw.Frame_timings}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FrameTimings].}
 
@@ -77,3 +74,13 @@ end
 
 class frame_timings : Raw.Frame_timings.t -> frame_timings_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Frame_timings.t}. *)
+
+(** {1:description Description}
+
+    Holds timing information for a single frame of the application’s displays.
+
+    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
+    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
+    is useful for precise synchronization of video with the event or audio
+    streams, and for measuring quality metrics for the application’s display,
+    such as latency and jitter. *)

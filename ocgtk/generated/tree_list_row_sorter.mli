@@ -1,20 +1,11 @@
 (** Applies a gives sorter to the levels in a tree.
 
-    Here is an example for setting up a column view with a tree model and a
-    [GtkTreeListSorter]:
-
-    {[
-    column_sorter = gtk_column_view_get_sorter view;
-    sorter = gtk_tree_list_row_sorter_new (g_object_ref column_sorter);
-    sort_model = gtk_sort_list_model_new (tree_model, sorter);
-    selection = gtk_single_selection_new sort_model;
-    gtk_column_view_set_model (view, G_LIST_MODEL selection)
-    ]}
-
     Its methods, signals and properties are on
-    {!class-type-tree_list_row_sorter_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Tree_list_row_sorter}. *)
+    {!class-type-tree_list_row_sorter_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Tree_list_row_sorter}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TreeListRowSorter].}
 
@@ -50,7 +41,22 @@ class tree_list_row_sorter :
   tree_list_row_sorter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_row_sorter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Applies a gives sorter to the levels in a tree.
+
+    Here is an example for setting up a column view with a tree model and a
+    [GtkTreeListSorter]:
+
+    {[
+    column_sorter = gtk_column_view_get_sorter view;
+    sorter = gtk_tree_list_row_sorter_new (g_object_ref column_sorter);
+    sort_model = gtk_sort_list_model_new (tree_model, sorter);
+    selection = gtk_single_selection_new sort_model;
+    gtk_column_view_set_model (view, G_LIST_MODEL selection)
+    ]} *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Sorter.sorter_t option -> tree_list_row_sorter_t
 (** Create a special-purpose sorter that applies the sorting of [sorter] to the

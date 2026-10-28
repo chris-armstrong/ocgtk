@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-assistant_page_t}.
     The functions it is built on are in {!Ocgtk.Raw.Assistant_page}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AssistantPage].}
 
     [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)

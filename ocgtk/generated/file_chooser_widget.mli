@@ -1,37 +1,11 @@
 (** [GtkFileChooserWidget] is a widget for choosing files.
 
-    It exposes the [Gtk.FileChooser] interface, and you should use the methods
-    of this interface to interact with the widget.
-
-    {b Shortcuts and Gestures}
-
-    [GtkFileChooserWidget] supports the following keyboard shortcuts:
-
-    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
-
-    The following signals have default keybindings:
-
-    - [Gtk.FileChooserWidget::desktop-folder]
-    - [Gtk.FileChooserWidget::down-folder]
-    - [Gtk.FileChooserWidget::home-folder]
-    - [Gtk.FileChooserWidget::location-popup]
-    - [Gtk.FileChooserWidget::location-popup-on-paste]
-    - [Gtk.FileChooserWidget::location-toggle-popup]
-    - [Gtk.FileChooserWidget::places-shortcut]
-    - [Gtk.FileChooserWidget::quick-bookmark]
-    - [Gtk.FileChooserWidget::recent-shortcut]
-    - [Gtk.FileChooserWidget::search-shortcut]
-    - [Gtk.FileChooserWidget::show-hidden]
-    - [Gtk.FileChooserWidget::up-folder]
-
-    {b CSS nodes}
-
-    [GtkFileChooserWidget] has a single CSS node with name filechooser.
-
     Its methods, signals and properties are on
-    {!class-type-file_chooser_widget_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.File_chooser_widget}. *)
+    {!class-type-file_chooser_widget_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.File_chooser_widget}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileChooserWidget].}
 
@@ -231,7 +205,39 @@ end
 class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
 (** Wraps a raw handle of {!Ocgtk.Raw.File_chooser_widget.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    [GtkFileChooserWidget] is a widget for choosing files.
+
+    It exposes the [Gtk.FileChooser] interface, and you should use the methods
+    of this interface to interact with the widget.
+
+    {b Shortcuts and Gestures}
+
+    [GtkFileChooserWidget] supports the following keyboard shortcuts:
+
+    - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+
+    The following signals have default keybindings:
+
+    - [Gtk.FileChooserWidget::desktop-folder]
+    - [Gtk.FileChooserWidget::down-folder]
+    - [Gtk.FileChooserWidget::home-folder]
+    - [Gtk.FileChooserWidget::location-popup]
+    - [Gtk.FileChooserWidget::location-popup-on-paste]
+    - [Gtk.FileChooserWidget::location-toggle-popup]
+    - [Gtk.FileChooserWidget::places-shortcut]
+    - [Gtk.FileChooserWidget::quick-bookmark]
+    - [Gtk.FileChooserWidget::recent-shortcut]
+    - [Gtk.FileChooserWidget::search-shortcut]
+    - [Gtk.FileChooserWidget::show-hidden]
+    - [Gtk.FileChooserWidget::up-folder]
+
+    {b CSS nodes}
+
+    [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : Enums.filechooseraction -> file_chooser_widget_t
 (** Creates a new [GtkFileChooserWidget].

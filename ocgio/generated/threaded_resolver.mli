@@ -5,6 +5,8 @@
     {!class-type-threaded_resolver_t}. The functions it is built on are in
     {!Ocgio.Raw.Threaded_resolver}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ThreadedResolver].}
 
     [GThreadedResolver] is an implementation of [GResolver] which calls the libc

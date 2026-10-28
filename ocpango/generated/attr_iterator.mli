@@ -1,12 +1,10 @@
 (** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
-    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
-    iterator is created, it can be advanced through the style changes in the
-    text using [Pango.AttrIterator.next]. At each style change, the range of the
-    current style segment and the attributes currently in effect can be queried.
-
     Its methods, signals and properties are on {!class-type-attr_iterator_t}.
-    The functions it is built on are in {!Ocpango.Raw.Attr_iterator}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocpango.Raw.Attr_iterator}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [AttrIterator].}
 
@@ -38,3 +36,13 @@ end
 
 class attr_iterator : Raw.Attr_iterator.t -> attr_iterator_t
 (** Wraps a raw handle of {!Ocpango.Raw.Attr_iterator.t}. *)
+
+(** {1:description Description}
+
+    A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
+
+    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
+    iterator is created, it can be advanced through the style changes in the
+    text using [Pango.AttrIterator.next]. At each style change, the range of the
+    current style segment and the attributes currently in effect can be queried.
+*)

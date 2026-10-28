@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Blend_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [BlendNode].}
 
     A render node applying a blending function between its two child nodes. *)
@@ -25,7 +27,7 @@ end
 class blend_node : Raw.Blend_node.t -> blend_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Blend_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t ->

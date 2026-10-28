@@ -1,21 +1,11 @@
 (** A [GtkShortcutsGroup] represents a group of related keyboard shortcuts or
     gestures.
 
-    The group has a title. It may optionally be associated with a view of the
-    application, which can be used to show only relevant shortcuts depending on
-    the application context.
-
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
-
-    The recommended way to construct a [GtkShortcutsGroup] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsGroup]
-    with one or more [Gtk.ShortcutsShortcut] instances.
-
-    If you need to add a shortcut programmatically, use
-    [Gtk.ShortcutsGroup.add_shortcut].
-
     Its methods, signals and properties are on {!class-type-shortcuts_group_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Shortcuts_group}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgtk.Raw.Shortcuts_group}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutsGroup].}
 
@@ -88,3 +78,21 @@ end
 
 class shortcuts_group : Raw.Shortcuts_group.t -> shortcuts_group_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_group.t}. *)
+
+(** {1:description Description}
+
+    A [GtkShortcutsGroup] represents a group of related keyboard shortcuts or
+    gestures.
+
+    The group has a title. It may optionally be associated with a view of the
+    application, which can be used to show only relevant shortcuts depending on
+    the application context.
+
+    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+
+    The recommended way to construct a [GtkShortcutsGroup] is with
+    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsGroup]
+    with one or more [Gtk.ShortcutsShortcut] instances.
+
+    If you need to add a shortcut programmatically, use
+    [Gtk.ShortcutsGroup.add_shortcut]. *)

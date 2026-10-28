@@ -5,6 +5,8 @@
     {!class-type-closure_expression_t}. The functions it is built on are in
     {!Ocgtk.Raw.Closure_expression}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ClosureExpression].}
 
     An expression using a custom [GClosure] to compute the value from its

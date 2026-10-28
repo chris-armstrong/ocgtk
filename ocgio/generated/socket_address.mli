@@ -8,6 +8,8 @@
     Its methods, signals and properties are on {!class-type-socket_address_t}.
     The functions it is built on are in {!Ocgio.Raw.Socket_address}. *)
 
+(** {1:class Class} *)
+
 class type socket_address_t =
   Socket_address_and__socket_address_enumerator_and__socket_connectable
   .socket_address_t

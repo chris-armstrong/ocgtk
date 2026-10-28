@@ -5,6 +5,8 @@
     {!class-type-dtls_server_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Dtls_server_connection}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DtlsServerConnection].}
 
     [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],

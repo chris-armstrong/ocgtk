@@ -20,6 +20,60 @@ let layer2_path ~namespace ~class_name =
    a sentence of its own rather than the navigation paragraph. *)
 let synopsis_fallback ~class_name = Fmt.str "Bindings for [%s]." class_name
 
+let translated class_doc =
+  Option.bind class_doc (fun raw ->
+      match String.trim (Doc_translate.translate Doc_translate.Member raw) with
+      | "" -> None
+      | text -> Some text)
+
+let count c s =
+  String.fold_left ~init:0 ~f:(fun n x -> if Char.equal x c then n + 1 else n) s
+
+(* A paragraph that reads on its own as a synopsis: prose, not a block, a list
+   or a tag, and with no markup left open for a later paragraph to close. *)
+let standalone_paragraph p =
+  let opens_block =
+    List.exists
+      [
+        "{[";
+        "{v";
+        "{@";
+        "{%";
+        "{ul";
+        "{ol";
+        "{-";
+        "{0";
+        "{1";
+        "{2";
+        "{3";
+        "{4";
+        "{5";
+        "{6";
+        "{t";
+        "{table";
+        "- ";
+        "+ ";
+        "@";
+      ] ~f:(fun prefix -> String.starts_with ~prefix p)
+  in
+  (not opens_block) && count '{' p = count '}' p && count '[' p = count ']' p
+
+let first_paragraph text =
+  match Re.Str.bounded_split (Re.Str.regexp "\n[ \t]*\n") text 2 with
+  | first :: _ when standalone_paragraph (String.trim first) ->
+      Some (String.trim first)
+  | _ -> None
+
+let synopsis ~class_name ~class_doc =
+  Option.bind (translated class_doc) first_paragraph
+  |> Option.value ~default:(synopsis_fallback ~class_name)
+
+(* The full class doc, unless the synopsis already says all of it. *)
+let description_text ~class_name ~class_doc =
+  Option.bind (translated class_doc) (fun text ->
+      if String.equal text (synopsis ~class_name ~class_doc) then None
+      else Some text)
+
 let l1_module ~namespace ~class_name ~class_doc =
   Doc_emit.item_doc ~indent:""
     ~fallback:(synopsis_fallback ~class_name)
@@ -34,16 +88,28 @@ let l2_module ~namespace ~class_name ~has_constructors ~class_doc =
       " Its constructors are under {!section-constructors}."
     else ""
   in
+  let description =
+    match description_text ~class_name ~class_doc with
+    | Some _ -> " Its full description is under {!section-description}."
+    | None -> ""
+  in
   Doc_emit.item_doc ~indent:""
-    ~fallback:(synopsis_fallback ~class_name)
+    ~fallback:(synopsis ~class_name ~class_doc)
     ~suffix:
       (Fmt.str
-         "Its methods, signals and properties are on {!class-type-%s}.%s The \
+         "Its methods, signals and properties are on {!class-type-%s}.%s%s The \
           functions it is built on are in {!%s}."
          (Utils.class_type_name class_name)
-         constructors
+         description constructors
          (layer1_path ~namespace ~class_name))
-    ~context:Doc_translate.Member class_doc
+    ~context:Doc_translate.Member None
+
+let class_heading = "(** {1:class Class} *)"
+
+let description ~class_name ~class_doc =
+  Option.bind (description_text ~class_name ~class_doc) (fun text ->
+      Doc_emit.item_doc ~indent:"" ~fallback:text
+        ~prefix:"{1:description Description}" ~context:Doc_translate.Member None)
 
 let class_type ~class_name ~class_doc =
   Doc_emit.item_doc ~indent:""
@@ -87,7 +153,7 @@ let upstream_base_url = function
   | "GdkPixbuf" -> Some "https://docs.gtk.org/gdk-pixbuf/"
   | _ -> None
 
-let constructors_heading = "(** {2:constructors Constructors} *)"
+let constructors_heading = "(** {1:constructors Constructors} *)"
 
 let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
   let c_function = Fmt.str "[%s]" ctor.c_identifier in

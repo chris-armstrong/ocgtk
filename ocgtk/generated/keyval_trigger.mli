@@ -4,6 +4,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Keyval_trigger}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [KeyvalTrigger].}
 
     Triggers when a specific keyval and modifiers are pressed. *)
@@ -22,7 +24,7 @@ end
 class keyval_trigger : Raw.Keyval_trigger.t -> keyval_trigger_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Keyval_trigger.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : int -> Ocgdk.Enums.modifiertype -> keyval_trigger_t
 (** Creates a [GtkShortcutTrigger] that will trigger whenever the key with the

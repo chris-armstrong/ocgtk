@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_source}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [SettingsSchemaSource].}
 
     This is an opaque structure type. You may not access it directly. *)
@@ -32,7 +34,7 @@ class settings_schema_source :
   settings_schema_source_t
 (** Wraps a raw handle of {!Ocgio.Raw.Settings_schema_source.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_from_directory :
   string ->

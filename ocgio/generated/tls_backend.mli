@@ -5,6 +5,8 @@
     Its methods, signals and properties are on {!class-type-tls_backend_t}. The
     functions it is built on are in {!Ocgio.Raw.Tls_backend}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TlsBackend].}
 
     TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an

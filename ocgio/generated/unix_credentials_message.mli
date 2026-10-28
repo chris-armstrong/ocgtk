@@ -3,23 +3,13 @@
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
     [G_SOCKET_FAMILY_UNIX] family).
 
-    For an easier way to send and receive credentials over stream-oriented UNIX
-    sockets, see [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials]. To receive credentials of a
-    foreign process connected to a socket, use [Gio.Socket.get_credentials].
-
-    Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
-    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
-    run time.
-
-    Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
-    UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
-    pkg-config file when using it. This is no longer necessary since GLib 2.72.
-
     Its methods, signals and properties are on
-    {!class-type-unix_credentials_message_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgio.Raw.Unix_credentials_message}. *)
+    {!class-type-unix_credentials_message_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Unix_credentials_message}.
+*)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [UnixCredentialsMessage].}
 
@@ -55,7 +45,28 @@ class unix_credentials_message :
   unix_credentials_message_t
 (** Wraps a raw handle of {!Ocgio.Raw.Unix_credentials_message.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
+    may be sent using [Gio.Socket.send_message] and received using
+    [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
+    [G_SOCKET_FAMILY_UNIX] family).
+
+    For an easier way to send and receive credentials over stream-oriented UNIX
+    sockets, see [Gio.UnixConnection.send_credentials] and
+    [Gio.UnixConnection.receive_credentials]. To receive credentials of a
+    foreign process connected to a socket, use [Gio.Socket.get_credentials].
+
+    Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
+    UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
+    pkg-config file when using it. This is no longer necessary since GLib 2.72.
+*)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> unix_credentials_message_t
 (** Creates a new [GUnixCredentialsMessage] with credentials matching the

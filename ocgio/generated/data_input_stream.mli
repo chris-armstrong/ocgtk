@@ -6,6 +6,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_input_stream}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DataInputStream].}
 
     Data input stream implements [Gio.InputStream] and includes functions for
@@ -101,7 +103,7 @@ end
 class data_input_stream : Raw.Data_input_stream.t -> data_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Data_input_stream.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Input_stream.input_stream_t -> data_input_stream_t
 (** Creates a new data input stream for the [base_stream]. *)

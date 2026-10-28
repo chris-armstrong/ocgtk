@@ -6,6 +6,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_action}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [SimpleAction].}
 
     A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
@@ -116,7 +118,7 @@ end
 class simple_action : Raw.Simple_action.t -> simple_action_t
 (** Wraps a raw handle of {!Ocgio.Raw.Simple_action.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : string -> Gvariant_type.t option -> simple_action_t
 (** Creates a new action.

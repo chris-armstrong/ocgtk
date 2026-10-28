@@ -4,6 +4,8 @@
     {!class-type-d_bus_property_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_property_info}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusPropertyInfo].}
 
     Information about a D-Bus property on a D-Bus interface. *)

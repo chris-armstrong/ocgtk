@@ -4,6 +4,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Accessible_list}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [AccessibleList].}
 
     Wraps a list of references to [Gtk.Accessible] objects. *)
@@ -17,7 +19,7 @@ end
 class accessible_list : Raw.Accessible_list.t -> accessible_list_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Accessible_list.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_from_array : Raw.Accessible.t array -> Gsize.t -> accessible_list_t
 (** Allocates a new list of accessible objects. *)

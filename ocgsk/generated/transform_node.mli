@@ -4,6 +4,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Transform_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TransformNode].}
 
     A render node applying a [GskTransform] to its single child node. *)
@@ -22,7 +24,7 @@ end
 class transform_node : Raw.Transform_node.t -> transform_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Transform_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Render_node.render_node_t -> Raw.Transform.t -> transform_node_t
 (** Creates a [GskRenderNode] that will transform the given [child] with the

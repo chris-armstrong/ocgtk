@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-recent_data_t}. The
     functions it is built on are in {!Ocgtk.Raw.Recent_data}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [RecentData].}
 
     Meta-data to be passed to gtk_recent_manager_add_full() when registering a

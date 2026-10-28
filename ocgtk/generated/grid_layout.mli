@@ -1,17 +1,11 @@
-[@@@ocaml.text
-"Arranges child widgets in rows and columns.\n\n\
- Children have an \"attach point\" defined by the horizontal and vertical\n\
- index of the cell they occupy; children can span multiple rows or columns.\n\
- The layout properties for setting the attach points and spans are set\n\
- using the [Gtk.GridLayoutChild] associated to each child widget.\n\n\
- The behaviour of [GtkGridLayout] when several children occupy the same\n\
- grid cell is undefined.\n\n\
- [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\
- attached to the same row or column; however, if you only ever need a\n\
- single row or column, you should consider using [GtkBoxLayout].\n\n\
- Its methods, signals and properties are on {!class-type-grid_layout_t}. Its \
- constructors are under {!section-constructors}. The functions it is built on \
- are in {!Ocgtk.Raw.Grid_layout}."]
+(** Arranges child widgets in rows and columns.
+
+    Its methods, signals and properties are on {!class-type-grid_layout_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Grid_layout}. *)
+
+(** {1:class Class} *)
 
 class type grid_layout_t = object
   inherit
@@ -80,7 +74,20 @@ end
 class grid_layout : Raw.Grid_layout.t -> grid_layout_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Grid_layout.t}. *)
 
-(** {2:constructors Constructors} *)
+[@@@ocaml.text
+"{1:description Description}\n\n\
+ Arranges child widgets in rows and columns.\n\n\
+ Children have an \"attach point\" defined by the horizontal and vertical\n\
+ index of the cell they occupy; children can span multiple rows or columns.\n\
+ The layout properties for setting the attach points and spans are set\n\
+ using the [Gtk.GridLayoutChild] associated to each child widget.\n\n\
+ The behaviour of [GtkGridLayout] when several children occupy the same\n\
+ grid cell is undefined.\n\n\
+ [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\
+ attached to the same row or column; however, if you only ever need a\n\
+ single row or column, you should consider using [GtkBoxLayout]."]
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> grid_layout_t
 (** Creates a new [GtkGridLayout]. *)

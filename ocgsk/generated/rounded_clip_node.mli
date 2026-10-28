@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Rounded_clip_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [RoundedClipNode].}
 
     A render node applying a rounded rectangle clip to its single child. *)
@@ -24,7 +26,7 @@ end
 class rounded_clip_node : Raw.Rounded_clip_node.t -> rounded_clip_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Rounded_clip_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t -> Raw.Rounded_rect.t -> rounded_clip_node_t

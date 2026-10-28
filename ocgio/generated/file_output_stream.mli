@@ -1,20 +1,12 @@
 (** [GFileOutputStream] provides output streams that write their content to a
     file.
 
-    [GFileOutputStream] implements [Gio.Seekable], which allows the output
-    stream to jump to arbitrary positions in the file and to truncate the file,
-    provided the filesystem of the file supports these operations.
-
-    To find the position of a file output stream, use [Gio.Seekable.tell]. To
-    find out if a file output stream supports seeking, use
-    [Gio.Seekable.can_seek].To position a file output stream, use
-    [Gio.Seekable.seek]. To find out if a file output stream supports
-    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
-    stream, use [Gio.Seekable.truncate].
-
     Its methods, signals and properties are on
-    {!class-type-file_output_stream_t}. The functions it is built on are in
+    {!class-type-file_output_stream_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgio.Raw.File_output_stream}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileOutputStream].}
 
@@ -72,3 +64,19 @@ end
 
 class file_output_stream : Raw.File_output_stream.t -> file_output_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.File_output_stream.t}. *)
+
+(** {1:description Description}
+
+    [GFileOutputStream] provides output streams that write their content to a
+    file.
+
+    [GFileOutputStream] implements [Gio.Seekable], which allows the output
+    stream to jump to arbitrary positions in the file and to truncate the file,
+    provided the filesystem of the file supports these operations.
+
+    To find the position of a file output stream, use [Gio.Seekable.tell]. To
+    find out if a file output stream supports seeking, use
+    [Gio.Seekable.can_seek].To position a file output stream, use
+    [Gio.Seekable.seek]. To find out if a file output stream supports
+    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
+    stream, use [Gio.Seekable.truncate]. *)

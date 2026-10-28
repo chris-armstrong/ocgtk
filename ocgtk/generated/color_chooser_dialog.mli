@@ -1,26 +1,11 @@
 (** A dialog for choosing a color.
 
-    An example GtkColorChooserDialog
-
-    [GtkColorChooserDialog] implements the [Gtk.ColorChooser] interface and does
-    not provide much API of its own.
-
-    To create a [GtkColorChooserDialog], use [Gtk.ColorChooserDialog.new].
-
-    To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
-    get the selected color use [Gtk.ColorChooser.get_rgba].
-
-    [GtkColorChooserDialog] has been deprecated in favor of [Gtk.ColorDialog].
-
-    {b CSS nodes}
-
-    [GtkColorChooserDialog] has a single CSS node with the name [window] and
-    style class [.colorchooser].
-
     Its methods, signals and properties are on
-    {!class-type-color_chooser_dialog_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Color_chooser_dialog}. *)
+    {!class-type-color_chooser_dialog_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Color_chooser_dialog}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ColorChooserDialog].}
 
@@ -66,7 +51,28 @@ class color_chooser_dialog :
   color_chooser_dialog_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Color_chooser_dialog.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A dialog for choosing a color.
+
+    An example GtkColorChooserDialog
+
+    [GtkColorChooserDialog] implements the [Gtk.ColorChooser] interface and does
+    not provide much API of its own.
+
+    To create a [GtkColorChooserDialog], use [Gtk.ColorChooserDialog.new].
+
+    To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
+    get the selected color use [Gtk.ColorChooser.get_rgba].
+
+    [GtkColorChooserDialog] has been deprecated in favor of [Gtk.ColorDialog].
+
+    {b CSS nodes}
+
+    [GtkColorChooserDialog] has a single CSS node with the name [window] and
+    style class [.colorchooser]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   string option ->

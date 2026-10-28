@@ -1,14 +1,11 @@
 (** A list model that presents a slice of another model.
 
-    This is useful when implementing paging by setting the size to the number of
-    elements per page and updating the offset whenever a different page is
-    opened.
-
-    [GtkSliceListModel] passes through sections from the underlying model.
-
     Its methods, signals and properties are on {!class-type-slice_list_model_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Slice_list_model}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Slice_list_model}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SliceListModel].}
 
@@ -61,7 +58,17 @@ end
 class slice_list_model : Raw.Slice_list_model.t -> slice_list_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Slice_list_model.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A list model that presents a slice of another model.
+
+    This is useful when implementing paging by setting the size to the number of
+    elements per page and updating the offset whenever a different page is
+    opened.
+
+    [GtkSliceListModel] passes through sections from the underlying model. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgio.List_model.list_model_t option -> int -> int -> slice_list_model_t

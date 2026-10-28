@@ -7,6 +7,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Tls_certificate}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TlsCertificate].}
 
     A certificate used for TLS authentication and encryption. This can represent
@@ -113,7 +115,7 @@ end
 class tls_certificate : Raw.Tls_certificate.t -> tls_certificate_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_certificate.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_from_file : string -> (tls_certificate_t, GError.t) result
 (** Creates a [GTlsCertificate] from the data in [file].

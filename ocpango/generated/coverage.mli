@@ -1,14 +1,12 @@
 (** A [PangoCoverage] structure is a map from Unicode characters to
     [Pango.CoverageLevel] values.
 
-    It is often necessary in Pango to determine if a particular font can
-    represent a particular character, and also how well it can represent that
-    character. The [PangoCoverage] is a data structure that is used to represent
-    that information. It is an opaque structure with no public fields.
-
     Its methods, signals and properties are on {!class-type-coverage_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocpango.Raw.Coverage}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Coverage}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Coverage].}
 
@@ -48,7 +46,17 @@ end
 class coverage : Raw.Coverage.t -> coverage_t
 (** Wraps a raw handle of {!Ocpango.Raw.Coverage.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A [PangoCoverage] structure is a map from Unicode characters to
+    [Pango.CoverageLevel] values.
+
+    It is often necessary in Pango to determine if a particular font can
+    represent a particular character, and also how well it can represent that
+    character. The [PangoCoverage] is a data structure that is used to represent
+    that information. It is an opaque structure with no public fields. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> coverage_t
 (** Create a new [PangoCoverage] *)

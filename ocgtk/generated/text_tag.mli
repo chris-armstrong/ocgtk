@@ -1,24 +1,11 @@
 (** Can be applied to text contained in a [GtkTextBuffer].
 
-    You may wish to begin by reading the text widget conceptual overview, which
-    gives an overview of all the objects and data types related to the text
-    widget and how they work together.
-
-    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
-    using them with that buffer.
-
-    [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
-    for numerous examples.
-
-    For each property of [GtkTextTag], there is a “set” property, e.g.
-    “font-set” corresponds to “font”. These “set” properties reflect whether a
-    property has been set or not.
-
-    They are maintained by GTK and you should not set them independently.
-
     Its methods, signals and properties are on {!class-type-text_tag_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Text_tag}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Text_tag}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TextTag].}
 
@@ -685,7 +672,27 @@ end
 class text_tag : Raw.Text_tag.t -> text_tag_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Text_tag.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Can be applied to text contained in a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
+    using them with that buffer.
+
+    [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
+    for numerous examples.
+
+    For each property of [GtkTextTag], there is a “set” property, e.g.
+    “font-set” corresponds to “font”. These “set” properties reflect whether a
+    property has been set or not.
+
+    They are maintained by GTK and you should not set them independently. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : string option -> text_tag_t
 (** Creates a [GtkTextTag]. *)

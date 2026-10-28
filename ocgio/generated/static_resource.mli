@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-static_resource_t}.
     The functions it is built on are in {!Ocgio.Raw.Static_resource}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [StaticResource].}
 
     [GStaticResource] is an opaque data structure and can only be accessed using

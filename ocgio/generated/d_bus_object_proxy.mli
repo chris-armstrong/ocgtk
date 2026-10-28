@@ -8,6 +8,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_proxy}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusObjectProxy].}
 
     A [GDBusObjectProxy] is an object used to represent a remote object with one
@@ -32,7 +34,7 @@ end
 class d_bus_object_proxy : Raw.D_bus_object_proxy.t -> d_bus_object_proxy_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_object_proxy.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : D_bus_connection.d_bus_connection_t -> string -> d_bus_object_proxy_t
 (** Creates a new [GDBusObjectProxy] for the given connection and object path.

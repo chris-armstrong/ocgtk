@@ -1,11 +1,11 @@
 (** [PangoCairoFontMap] is an interface exported by font maps for use with
     Cairo.
 
-    The actual type of the font map will depend on the particular font
-    technology Cairo was compiled to use.
+    Its methods, signals and properties are on {!class-type-font_map_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpangocairo.Raw.Font_map}. *)
 
-    Its methods, signals and properties are on {!class-type-font_map_t}. The
-    functions it is built on are in {!Ocpangocairo.Raw.Font_map}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FontMap].}
 
@@ -51,3 +51,11 @@ end
 
 class font_map : Raw.Font_map.t -> font_map_t
 (** Wraps a raw handle of {!Ocpangocairo.Raw.Font_map.t}. *)
+
+(** {1:description Description}
+
+    [PangoCairoFontMap] is an interface exported by font maps for use with
+    Cairo.
+
+    The actual type of the font map will depend on the particular font
+    technology Cairo was compiled to use. *)

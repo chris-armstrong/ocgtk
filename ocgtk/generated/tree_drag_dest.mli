@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-tree_drag_dest_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_drag_dest}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TreeDragDest].}
 
     Interface for Drag-and-Drop destinations in [GtkTreeView]. *)

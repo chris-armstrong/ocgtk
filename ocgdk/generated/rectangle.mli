@@ -1,21 +1,10 @@
 (** Represents a rectangle.
 
-    [GdkRectangle] is identical to [cairo_rectangle_t]. Together with Cairo’s
-    [cairo_region_t] data type, these are the central types for representing
-    sets of pixels.
+    Its methods, signals and properties are on {!class-type-rectangle_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocgdk.Raw.Rectangle}. *)
 
-    The intersection of two rectangles can be computed with
-    [Gdk.Rectangle.intersect]; to find the union of two rectangles use
-    [Gdk.Rectangle.union].
-
-    The [cairo_region_t] type provided by Cairo is usually used for managing
-    non-rectangular clipping of graphical operations.
-
-    The Graphene library has a number of other data types for regions and
-    volumes in 2D and 3D.
-
-    Its methods, signals and properties are on {!class-type-rectangle_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Rectangle}. *)
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Rectangle].}
 
@@ -46,3 +35,21 @@ end
 
 class rectangle : Raw.Rectangle.t -> rectangle_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Rectangle.t}. *)
+
+(** {1:description Description}
+
+    Represents a rectangle.
+
+    [GdkRectangle] is identical to [cairo_rectangle_t]. Together with Cairo’s
+    [cairo_region_t] data type, these are the central types for representing
+    sets of pixels.
+
+    The intersection of two rectangles can be computed with
+    [Gdk.Rectangle.intersect]; to find the union of two rectangles use
+    [Gdk.Rectangle.union].
+
+    The [cairo_region_t] type provided by Cairo is usually used for managing
+    non-rectangular clipping of graphical operations.
+
+    The Graphene library has a number of other data types for regions and
+    volumes in 2D and 3D. *)

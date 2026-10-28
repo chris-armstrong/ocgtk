@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [PixbufSimpleAnim].}
 
     An opaque struct representing a simple animation. *)
@@ -29,7 +31,7 @@ end
 class pixbuf_simple_anim : Raw.Pixbuf_simple_anim.t -> pixbuf_simple_anim_t
 (** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : int -> int -> float -> pixbuf_simple_anim_t
 (** Creates a new, empty animation. *)

@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-tree_list_model_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_list_model}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TreeListModel].}
 
     A list model that can create child models on demand. *)

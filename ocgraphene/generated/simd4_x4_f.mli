@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-simd4_x4_f_t}. The
     functions it is built on are in {!Ocgraphene.Raw.Simd4_x4_f}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [Simd4X4F].} *)
 class type simd4_x4_f_t = object
   method as_simd4_x4_f : Raw.Simd4_x4_f.t

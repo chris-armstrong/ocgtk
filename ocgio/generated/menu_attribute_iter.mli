@@ -5,6 +5,8 @@
     {!class-type-menu_attribute_iter_t}. The functions it is built on are in
     {!Ocgio.Raw.Menu_attribute_iter}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [MenuAttributeIter].}
 
     [GMenuAttributeIter] is an opaque structure type. You must access it using

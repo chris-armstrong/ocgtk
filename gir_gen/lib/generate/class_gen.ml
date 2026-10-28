@@ -163,6 +163,14 @@ let doc_around doc ~item =
 let floating_doc buf doc =
   Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc)) doc
 
+let class_heading buf = bprintf buf "%s\n\n" Entity_doc.class_heading
+
+(* The full class doc, between the class and the constructors. *)
+let description buf ~class_name ~class_doc =
+  Option.iter
+    (fun doc -> bprintf buf "\n%s\n" (Doc_emit.floating doc))
+    (Entity_doc.description ~class_name ~class_doc)
+
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~entity_kind ~properties ~signals ~constructors =
@@ -220,6 +228,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   let has_constructors = has_constructors ~ctx constructors in
   floating_doc buf
     (Entity_doc.l2_module ~namespace ~class_name ~has_constructors ~class_doc);
+  class_heading buf;
 
   (* Class type definition *)
   bprintf buf "%sclass type %s = object\n"
@@ -241,6 +250,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" class_snake module_names.layer1
             class_type_name));
+  description buf ~class_name ~class_doc;
 
   (* Constructor wrappers *)
   constructors_heading buf ~has_constructors;
@@ -491,6 +501,7 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   floating_doc buf
     (Entity_doc.l2_module ~namespace ~class_name:entity.name ~has_constructors
        ~class_doc:entity.doc);
+  class_heading buf;
   bprintf buf "%s\n"
     (doc_around
        (Entity_doc.class_type ~class_name:entity.name ~class_doc:entity.doc)
@@ -503,6 +514,7 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" entity_snake layer1_module_name
             entity_type_name));
+  description buf ~class_name:entity.name ~class_doc:entity.doc;
 
   (* Constructor wrapper signatures *)
   constructors_heading buf ~has_constructors;

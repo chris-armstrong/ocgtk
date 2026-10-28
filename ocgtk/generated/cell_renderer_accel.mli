@@ -1,13 +1,11 @@
 (** Renders a keyboard accelerator in a cell
 
-    [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key
-    combination like [Control + a]). If the cell renderer is editable, the
-    accelerator can be changed by simply typing the new combination.
-
     Its methods, signals and properties are on
-    {!class-type-cell_renderer_accel_t}. Its constructors are under
-    {!section-constructors}. The functions it is built on are in
-    {!Ocgtk.Raw.Cell_renderer_accel}. *)
+    {!class-type-cell_renderer_accel_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Cell_renderer_accel}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellRendererAccel].}
 
@@ -78,7 +76,15 @@ end
 class cell_renderer_accel : Raw.Cell_renderer_accel.t -> cell_renderer_accel_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_accel.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Renders a keyboard accelerator in a cell
+
+    [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key
+    combination like [Control + a]). If the cell renderer is editable, the
+    accelerator can be changed by simply typing the new combination. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_renderer_accel_t
 (** Creates a new [GtkCellRendererAccel]. *)

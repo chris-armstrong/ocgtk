@@ -3,13 +3,12 @@
 
 (** Communicates with platform-specific assistive technologies API.
 
-    Each platform supported by GTK implements a [GtkATContext] subclass, and is
-    responsible for updating the accessible state in response to state changes
-    in [GtkAccessible].
-
     Its methods, signals and properties are on {!class-type-at_context_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.At_context}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.At_context}. *)
+
+(** {1:class Class} *)
 
 class type at_context_t = At_context_and__accessible.at_context_t
 (** {b The methods, signals and properties of a [ATContext].}
@@ -23,7 +22,15 @@ class type at_context_t = At_context_and__accessible.at_context_t
 class at_context : Raw.At_context.t -> at_context_t
 (** Wraps a raw handle of {!Ocgtk.Raw.At_context.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Communicates with platform-specific assistive technologies API.
+
+    Each platform supported by GTK implements a [GtkATContext] subclass, and is
+    responsible for updating the accessible state in response to state changes
+    in [GtkAccessible]. *)
+
+(** {1:constructors Constructors} *)
 
 val create :
   Enums.accessiblerole ->

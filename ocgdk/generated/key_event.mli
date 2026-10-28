@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-key_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Key_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [KeyEvent].}
 
     An event related to a key-based device. *)

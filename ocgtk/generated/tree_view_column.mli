@@ -1,18 +1,11 @@
 (** A visible column in a [Gtk.TreeView] widget
 
-    The [GtkTreeViewColumn] object represents a visible column in a
-    [GtkTreeView] widget. It allows to set properties of the column header, and
-    functions as a holding pen for the cell renderers which determine how the
-    data in the column is displayed.
-
-    Please refer to the tree widget conceptual overview for an overview of all
-    the objects and data types related to the tree widget and how they work
-    together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers.
-
     Its methods, signals and properties are on {!class-type-tree_view_column_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Tree_view_column}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_view_column}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TreeViewColumn].}
 
@@ -256,7 +249,21 @@ end
 class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_view_column.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A visible column in a [Gtk.TreeView] widget
+
+    The [GtkTreeViewColumn] object represents a visible column in a
+    [GtkTreeView] widget. It allows to set properties of the column header, and
+    functions as a holding pen for the cell renderers which determine how the
+    data in the column is displayed.
+
+    Please refer to the tree widget conceptual overview for an overview of all
+    the objects and data types related to the tree widget and how they work
+    together, and to the [Gtk.TreeView] documentation for specifics about the
+    CSS node structure for treeviews and their headers. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : unit -> tree_view_column_t
 (** Creates a new [GtkTreeViewColumn]. *)

@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-dnd_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Dnd_event}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DNDEvent].}
 
     An event related to drag and drop operations. *)

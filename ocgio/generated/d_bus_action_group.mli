@@ -1,11 +1,11 @@
 (** [GDBusActionGroup] is an implementation of the [Gio.ActionGroup] interface.
 
-    [GDBusActionGroup] can be used as a proxy for an action group that is
-    exported over D-Bus with [Gio.DBusConnection.export_action_group].
-
     Its methods, signals and properties are on
-    {!class-type-d_bus_action_group_t}. The functions it is built on are in
+    {!class-type-d_bus_action_group_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_action_group}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DBusActionGroup].}
 
@@ -21,3 +21,10 @@ end
 
 class d_bus_action_group : Raw.D_bus_action_group.t -> d_bus_action_group_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_action_group.t}. *)
+
+(** {1:description Description}
+
+    [GDBusActionGroup] is an implementation of the [Gio.ActionGroup] interface.
+
+    [GDBusActionGroup] can be used as a proxy for an action group that is
+    exported over D-Bus with [Gio.DBusConnection.export_action_group]. *)

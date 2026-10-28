@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Selection_filter_model}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [SelectionFilterModel].}
 
     A list model that presents the selection from a [GtkSelectionModel]. *)
@@ -35,7 +37,7 @@ class selection_filter_model :
   selection_filter_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Selection_filter_model.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Selection_model.selection_model_t option -> selection_filter_model_t
 (** Creates a new [GtkSelectionFilterModel] that will include the selected items

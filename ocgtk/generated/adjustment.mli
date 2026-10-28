@@ -1,17 +1,11 @@
 (** A model for a numeric value.
 
-    The [GtkAdjustment] has an associated lower and upper bound. It also
-    contains step and page increments, and a page size.
-
-    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
-    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
-
-    The [GtkAdjustment] object does not update the value itself. Instead it is
-    left up to the owner of the [GtkAdjustment] to control the value.
-
     Its methods, signals and properties are on {!class-type-adjustment_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Adjustment}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Adjustment}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Adjustment].}
 
@@ -139,7 +133,20 @@ end
 class adjustment : Raw.Adjustment.t -> adjustment_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Adjustment.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    A model for a numeric value.
+
+    The [GtkAdjustment] has an associated lower and upper bound. It also
+    contains step and page increments, and a page size.
+
+    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
+    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+
+    The [GtkAdjustment] object does not update the value itself. Instead it is
+    left up to the owner of the [GtkAdjustment] to control the value. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : float -> float -> float -> float -> float -> float -> adjustment_t
 (** Creates a new [GtkAdjustment]. *)

@@ -3,23 +3,11 @@
     subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
     implement client-side and server-side DTLS, respectively.
 
-    For TLS support, see [Gio.TlsConnection].
-
-    As DTLS is datagram based, [GDtlsConnection] implements [Gio.DatagramBased],
-    presenting a datagram-socket-like API for the encrypted connection. This
-    operates over a base datagram connection, which is also a [GDatagramBased]
-    ([Gio.DtlsConnection:base-socket]).
-
-    To close a DTLS connection, use [Gio.DtlsConnection.close].
-
-    Neither [Gio.DtlsServerConnection] or [Gio.DtlsClientConnection] set the
-    peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
-    is up to the caller to do that if they wish. If they do not, and
-    [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
-    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O.
-
     Its methods, signals and properties are on {!class-type-dtls_connection_t}.
-    The functions it is built on are in {!Ocgio.Raw.Dtls_connection}. *)
+    Its full description is under {!section-description}. The functions it is
+    built on are in {!Ocgio.Raw.Dtls_connection}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DtlsConnection].}
 
@@ -337,3 +325,25 @@ end
 
 class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Dtls_connection.t}. *)
+
+(** {1:description Description}
+
+    [GDtlsConnection] is the base DTLS connection class type, which wraps a
+    [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
+    subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
+    implement client-side and server-side DTLS, respectively.
+
+    For TLS support, see [Gio.TlsConnection].
+
+    As DTLS is datagram based, [GDtlsConnection] implements [Gio.DatagramBased],
+    presenting a datagram-socket-like API for the encrypted connection. This
+    operates over a base datagram connection, which is also a [GDatagramBased]
+    ([Gio.DtlsConnection:base-socket]).
+
+    To close a DTLS connection, use [Gio.DtlsConnection.close].
+
+    Neither [Gio.DtlsServerConnection] or [Gio.DtlsClientConnection] set the
+    peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
+    is up to the caller to do that if they wish. If they do not, and
+    [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
+    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)

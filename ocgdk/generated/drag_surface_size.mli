@@ -4,6 +4,8 @@
     {!class-type-drag_surface_size_t}. The functions it is built on are in
     {!Ocgdk.Raw.Drag_surface_size}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DragSurfaceSize].}
 
     Contains information that is useful to compute the size of a drag surface.

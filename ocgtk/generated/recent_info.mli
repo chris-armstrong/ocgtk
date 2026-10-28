@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-recent_info_t}. The
     functions it is built on are in {!Ocgtk.Raw.Recent_info}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [RecentInfo].}
 
     Contains the metadata associated with an item in the recently used files

@@ -5,6 +5,8 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Zlib_compressor}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [ZlibCompressor].}
 
     [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
@@ -47,7 +49,7 @@ end
 class zlib_compressor : Raw.Zlib_compressor.t -> zlib_compressor_t
 (** Wraps a raw handle of {!Ocgio.Raw.Zlib_compressor.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Enums.zlibcompressorformat -> int -> zlib_compressor_t
 (** Creates a compressor. *)

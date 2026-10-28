@@ -3,11 +3,11 @@
 
 (** A [PangoFontFamily] is used to represent a family of related font faces.
 
-    The font faces in a family share a common design, but differ in slant,
-    weight, width or other aspects.
+    Its methods, signals and properties are on {!class-type-font_family_t}. Its
+    full description is under {!section-description}. The functions it is built
+    on are in {!Ocpango.Raw.Font_family}. *)
 
-    Its methods, signals and properties are on {!class-type-font_family_t}. The
-    functions it is built on are in {!Ocpango.Raw.Font_family}. *)
+(** {1:class Class} *)
 
 class type font_family_t = Font_face_and__font_family.font_family_t
 (** {b The methods, signals and properties of a [FontFamily].}
@@ -19,3 +19,10 @@ class type font_family_t = Font_face_and__font_family.font_family_t
 
 class font_family : Raw.Font_family.t -> font_family_t
 (** Wraps a raw handle of {!Ocpango.Raw.Font_family.t}. *)
+
+(** {1:description Description}
+
+    A [PangoFontFamily] is used to represent a family of related font faces.
+
+    The font faces in a family share a common design, but differ in slant,
+    weight, width or other aspects. *)

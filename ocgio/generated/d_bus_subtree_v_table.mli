@@ -5,6 +5,8 @@
     {!class-type-d_bus_subtree_v_table_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_subtree_v_table}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusSubtreeVTable].}
 
     Virtual table for handling subtrees registered with

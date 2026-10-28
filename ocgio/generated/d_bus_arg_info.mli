@@ -3,6 +3,8 @@
     Its methods, signals and properties are on {!class-type-d_bus_arg_info_t}.
     The functions it is built on are in {!Ocgio.Raw.D_bus_arg_info}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [DBusArgInfo].}
 
     Information about an argument for a method or a signal. *)

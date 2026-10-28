@@ -7,6 +7,8 @@
     Its methods, signals and properties are on {!class-type-font_t}. The
     functions it is built on are in {!Ocpango.Raw.Font}. *)
 
+(** {1:class Class} *)
+
 class type font_t = Context_and__font_and__font_map_and__fontset.font_t
 (** {b The methods, signals and properties of a [Font].}
 

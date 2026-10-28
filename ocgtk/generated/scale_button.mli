@@ -1,29 +1,11 @@
 (** Provides a button which pops up a scale widget.
 
-    This kind of widget is commonly used for volume controls in multimedia
-    applications, and GTK provides a [Gtk.VolumeButton] subclass that is
-    tailored for this use case.
-
-    {b Shortcuts and Gestures}
-
-    The following signals have default keybindings:
-
-    - [Gtk.ScaleButton::popup]
-
-    {b CSS nodes}
-
-    {[
-    scalebutton.scale
-    ╰── button.toggle
-        ╰── <icon>
-    ]}
-
-    [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
-    style class, and contains a [button] node with a [.toggle] style class.
-
     Its methods, signals and properties are on {!class-type-scale_button_t}. Its
-    constructors are under {!section-constructors}. The functions it is built on
-    are in {!Ocgtk.Raw.Scale_button}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Scale_button}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ScaleButton].}
 
@@ -137,7 +119,32 @@ end
 class scale_button : Raw.Scale_button.t -> scale_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Scale_button.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Provides a button which pops up a scale widget.
+
+    This kind of widget is commonly used for volume controls in multimedia
+    applications, and GTK provides a [Gtk.VolumeButton] subclass that is
+    tailored for this use case.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.ScaleButton::popup]
+
+    {b CSS nodes}
+
+    {[
+    scalebutton.scale
+    ╰── button.toggle
+        ╰── <icon>
+    ]}
+
+    [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
+    style class, and contains a [button] node with a [.toggle] style class. *)
+
+(** {1:constructors Constructors} *)
 
 val new_ : float -> float -> float -> string array option -> scale_button_t
 (** Creates a [GtkScaleButton].

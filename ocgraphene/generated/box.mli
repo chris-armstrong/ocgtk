@@ -7,6 +7,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Box}. *)
 
+(** {1:class Class} *)
+
 class type box_t = Box_and__sphere.box_t
 (** {b The methods, signals and properties of a [Box].}
 
@@ -16,7 +18,7 @@ class type box_t = Box_and__sphere.box_t
 class box : Raw.Box.t -> box_t
 (** Wraps a raw handle of {!Ocgraphene.Raw.Box.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val alloc : unit -> box_t
 (** Allocates a new #graphene_box_t.

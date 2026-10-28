@@ -1,18 +1,11 @@
 (** An interface that supports symbolic colors in paintables.
 
-    [GdkPaintable]s implementing the interface will have the
-    [Gtk.SymbolicPaintable.snapshot_symbolic] function called and have the
-    colors for drawing symbolic icons passed. At least 4 colors are guaranteed
-    to be passed every time.
-
-    These 4 colors are the foreground color, and the colors to use for errors,
-    warnings and success information in that order.
-
-    More colors may be added in the future.
-
     Its methods, signals and properties are on
-    {!class-type-symbolic_paintable_t}. The functions it is built on are in
+    {!class-type-symbolic_paintable_t}. Its full description is under
+    {!section-description}. The functions it is built on are in
     {!Ocgtk.Raw.Symbolic_paintable}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SymbolicPaintable].}
 
@@ -45,3 +38,17 @@ end
 
 class symbolic_paintable : Raw.Symbolic_paintable.t -> symbolic_paintable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Symbolic_paintable.t}. *)
+
+(** {1:description Description}
+
+    An interface that supports symbolic colors in paintables.
+
+    [GdkPaintable]s implementing the interface will have the
+    [Gtk.SymbolicPaintable.snapshot_symbolic] function called and have the
+    colors for drawing symbolic icons passed. At least 4 colors are guaranteed
+    to be passed every time.
+
+    These 4 colors are the foreground color, and the colors to use for errors,
+    warnings and success information in that order.
+
+    More colors may be added in the future. *)

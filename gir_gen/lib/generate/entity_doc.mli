@@ -18,8 +18,21 @@ val l2_module :
   has_constructors:bool ->
   class_doc:string option ->
   Doc_emit.t option
-(** The layer 2 module's floating doc: the class doc, then where its members are
-    (the class type) and the layer 1 module it is built on. *)
+(** The layer 2 module's preamble, kept short so the declarations follow it
+    closely: a synopsis, then where the members, the full description and the
+    constructors are, and the layer 1 module it is built on. The synopsis is the
+    class doc's first paragraph when that paragraph stands on its own, else
+    "Bindings for [class_name]."; it is also the module's synopsis on its
+    parent's page. *)
+
+val class_heading : string
+(** The floating [Class] heading before the layer 2 class type and class. *)
+
+val description :
+  class_name:string -> class_doc:string option -> Doc_emit.t option
+(** The floating [Description] section after the class: a heading, then the
+    whole class doc. [None] without a class doc, or when the synopsis is the
+    whole of it. *)
 
 val class_type :
   class_name:string -> class_doc:string option -> Doc_emit.t option

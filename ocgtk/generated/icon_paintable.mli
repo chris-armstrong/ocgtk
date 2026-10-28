@@ -1,11 +1,12 @@
 (** Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 
-    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable].
-
     Its methods, signals and properties are on {!class-type-icon_paintable_t}.
-    Its constructors are under {!section-constructors}. The functions it is
-    built on are in {!Ocgtk.Raw.Icon_paintable}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Icon_paintable}. *)
+
+(** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [IconPaintable].}
 
@@ -56,7 +57,14 @@ end
 class icon_paintable : Raw.Icon_paintable.t -> icon_paintable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Icon_paintable.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:description Description}
+
+    Contains information found when looking up an icon in [GtkIconTheme] or
+    loading it from a file.
+
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
+
+(** {1:constructors Constructors} *)
 
 val new_for_file : Ocgio.File.file_t -> int -> int -> icon_paintable_t
 (** Creates a [GtkIconPaintable] for a file with a given size and scale.

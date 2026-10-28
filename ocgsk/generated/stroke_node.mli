@@ -5,6 +5,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Stroke_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [StrokeNode].}
 
     A render node that will fill the area determined by stroking the the given
@@ -28,7 +30,7 @@ end
 class stroke_node : Raw.Stroke_node.t -> stroke_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Stroke_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Render_node.render_node_t -> Raw.Path.t -> Raw.Stroke.t -> stroke_node_t

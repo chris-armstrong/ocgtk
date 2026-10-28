@@ -5,6 +5,8 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Texture_scale_node}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [TextureScaleNode].}
 
     A render node for a [GdkTexture], with control over scaling. *)
@@ -24,7 +26,7 @@ end
 class texture_scale_node : Raw.Texture_scale_node.t -> texture_scale_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Texture_scale_node.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ :
   Ocgdk.Texture.texture_t ->

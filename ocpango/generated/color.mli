@@ -4,6 +4,8 @@
     Its methods, signals and properties are on {!class-type-color_t}. The
     functions it is built on are in {!Ocpango.Raw.Color}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [Color].}
 
     The [PangoColor] structure is used to represent a color in an uncalibrated

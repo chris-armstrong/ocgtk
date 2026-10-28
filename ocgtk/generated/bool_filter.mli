@@ -4,6 +4,8 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Bool_filter}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [BoolFilter].}
 
     Evaluates a boolean expression to determine whether to include items. *)
@@ -31,7 +33,7 @@ end
 class bool_filter : Raw.Bool_filter.t -> bool_filter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Bool_filter.t}. *)
 
-(** {2:constructors Constructors} *)
+(** {1:constructors Constructors} *)
 
 val new_ : Expression.expression_t option -> bool_filter_t
 (** Creates a new bool filter. *)

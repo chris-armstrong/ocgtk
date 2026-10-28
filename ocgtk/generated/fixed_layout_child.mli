@@ -4,6 +4,8 @@
     {!class-type-fixed_layout_child_t}. The functions it is built on are in
     {!Ocgtk.Raw.Fixed_layout_child}. *)
 
+(** {1:class Class} *)
+
 (** {b The methods, signals and properties of a [FixedLayoutChild].}
 
     [GtkLayoutChild] subclass for children in a [GtkFixedLayout]. *)
