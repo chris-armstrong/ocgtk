@@ -12,6 +12,8 @@
 class type d_bus_interface_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
 
+  (** {2:signals Signals} *)
+
   method on_g_authorize_method :
     ?after:bool ->
     callback:
@@ -47,6 +49,8 @@ class type d_bus_interface_skeleton_t = object
       flags set, no dedicated thread is ever used and the call will be handled
       in the same thread as the object that [interface] belongs to was exported
       in. *)
+
+  (** {2:methods Methods} *)
 
   method export :
     D_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
@@ -106,11 +110,15 @@ class type d_bus_interface_skeleton_t = object
       To stop exporting on all connections the interface is exported on, use
       g_dbus_interface_skeleton_unexport(). *)
 
+  (** {2:properties Properties} *)
+
   method g_flags : Enums.dbusinterfaceskeletonflags
   (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
 
   method set_g_flags : Enums.dbusinterfaceskeletonflags -> unit
   (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_interface_skeleton : Raw.D_bus_interface_skeleton.t
 end

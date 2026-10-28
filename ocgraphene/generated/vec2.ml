@@ -1,4 +1,6 @@
 class type vec2_t = object
+  (** {2:methods Methods} *)
+
   method dot : Raw.Vec2.t -> float
   (** Computes the dot product of the two given vectors. *)
 
@@ -28,6 +30,8 @@ class type vec2_t = object
   method near : Raw.Vec2.t -> float -> bool
   (** Compares the two given #graphene_vec2_t vectors and checks whether their
       values are within the given [epsilon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_vec2 : Raw.Vec2.t
 end

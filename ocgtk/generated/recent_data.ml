@@ -1,4 +1,6 @@
 class type recent_data_t = object
+  (** {2:conversions Conversions} *)
+
   method as_recent_data : Raw.Recent_data.t
 end
 

@@ -1,6 +1,8 @@
 class type gesture_swipe_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_swipe :
     ?after:bool ->
     callback:(velocity_x:float -> velocity_y:float -> unit) ->
@@ -9,6 +11,8 @@ class type gesture_swipe_t = object
   (** Emitted when the recognized gesture is finished.
 
       Velocity and direction are a product of previously recorded events. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_swipe : Raw.Gesture_swipe.t
 end

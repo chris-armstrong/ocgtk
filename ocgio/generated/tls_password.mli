@@ -12,6 +12,8 @@
     An abstract interface representing a password used in TLS. Often used in
     user interaction such as unlocking a key storage token. *)
 class type tls_password_t = object
+  (** {2:methods Methods} *)
+
   method get_description : unit -> string
   (** Get a description string about what the password will be used for. *)
 
@@ -33,6 +35,8 @@ class type tls_password_t = object
   (** Set a user readable translated warning. Usually this warning is a
       representation of the password flags returned from
       g_tls_password_get_flags(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_password : Raw.Tls_password.t
 end

@@ -7,6 +7,8 @@
 (** {1:class Class} *)
 
 class type drag_t = object
+  (** {2:signals Signals} *)
+
   method on_cancel :
     ?after:bool ->
     callback:(reason:Enums.dragcancelreason -> unit) ->
@@ -23,6 +25,8 @@ class type drag_t = object
   method on_drop_performed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the drop operation is performed on an accepting client. *)
+
+  (** {2:methods Methods} *)
 
   method drop_done : bool -> unit
   (** Informs GDK that the drop ended.
@@ -72,6 +76,8 @@ class type drag_t = object
       hotspot.
 
       Initially, the hotspot is at the top left corner of the drag surface. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drag : Raw.Drag.t
 end

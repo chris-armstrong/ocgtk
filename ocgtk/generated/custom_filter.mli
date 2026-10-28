@@ -10,6 +10,9 @@
     Determines whether to include items with a callback. *)
 class type custom_filter_t = object
   inherit Filter.filter_t
+
+  (** {2:conversions Conversions} *)
+
   method as_custom_filter : Raw.Custom_filter.t
 end
 

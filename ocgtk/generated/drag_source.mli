@@ -10,6 +10,8 @@
 class type drag_source_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_drag_begin :
     ?after:bool ->
     callback:(drag:Ocgdk.Drag.drag_t -> unit) ->
@@ -54,6 +56,8 @@ class type drag_source_t = object
       start. The default handler for this signal returns the value of the
       [Gtk.DragSource:content] property, so if you set up that property ahead of
       time, you don't need to connect to this signal. *)
+
+  (** {2:methods Methods} *)
 
   method drag_cancel : unit -> unit
   (** Cancels a currently ongoing drag operation. *)
@@ -100,6 +104,8 @@ class type drag_source_t = object
       This function can be called before a drag is started, or in a
       [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drag_source : Raw.Drag_source.t
 end

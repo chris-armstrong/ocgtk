@@ -1,4 +1,6 @@
 class type constraint_target_t = object
+  (** {2:conversions Conversions} *)
+
   method as_constraint_target : Raw.Constraint_target.t
 end
 

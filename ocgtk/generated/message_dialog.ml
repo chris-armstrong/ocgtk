@@ -1,6 +1,8 @@
 class type message_dialog_t = object
   inherit Dialog.dialog_t
 
+  (** {2:methods Methods} *)
+
   method get_message_area :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -14,6 +16,8 @@ class type message_dialog_t = object
 
   method set_markup : string -> unit
   (** Sets the text of the message dialog. *)
+
+  (** {2:properties Properties} *)
 
   method message_type : Enums.messagetype
   (** The type of the message. *)
@@ -56,6 +60,8 @@ class type message_dialog_t = object
   (** [TRUE] if the primary text of the dialog includes Pango markup.
 
       See [Pango.parse_markup]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_message_dialog : Raw.Message_dialog.t
 end

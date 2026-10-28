@@ -9,6 +9,8 @@
 
     Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
 class type tree_drag_source_t = object
+  (** {2:methods Methods} *)
+
   method drag_data_delete : Raw.Tree_path.t -> bool
   (** Asks the [GtkTreeDragSource] to delete the row at [path], because it was
       moved somewhere else via drag-and-drop. Returns [FALSE] if the deletion
@@ -25,6 +27,8 @@ class type tree_drag_source_t = object
   (** Asks the [GtkTreeDragSource] whether a particular row can be used as the
       source of a DND operation. If the source doesn’t implement this interface,
       the row is assumed draggable. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_drag_source : Raw.Tree_drag_source.t
 end

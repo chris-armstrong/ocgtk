@@ -27,6 +27,8 @@ class type file_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Seekable.seekable_t
 
+  (** {2:methods Methods} *)
+
   method get_etag : unit -> string option
   (** Gets the entity tag for the file when it has been written. This must be
       called after the stream has been written and closed, as the etag can
@@ -58,6 +60,8 @@ class type file_output_stream_t = object
     Async_result.async_result_t -> (File_info.file_info_t, GError.t) result
   (** Finalizes the asynchronous query started by
       g_file_output_stream_query_info_async(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_output_stream : Raw.File_output_stream.t
 end

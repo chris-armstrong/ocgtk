@@ -14,6 +14,9 @@
     Since it is using cairo, this renderer cannot support 3D transformations. *)
 class type cairo_renderer_t = object
   inherit Renderer.renderer_t
+
+  (** {2:conversions Conversions} *)
+
   method as_cairo_renderer : Raw.Cairo_renderer.t
 end
 

@@ -20,6 +20,8 @@
     create the appropriate windowing system resources needed to render the
     scene. *)
 class type renderer_t = object
+  (** {2:methods Methods} *)
+
   method get_surface : unit -> Ocgdk.Surface.surface_t option
   (** Retrieves the surface that the renderer is associated with.
 
@@ -75,6 +77,8 @@ class type renderer_t = object
 
   method unrealize : unit -> unit
   (** Releases all the resources created by [Gsk.Renderer.realize]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_renderer : Raw.Renderer.t
 end

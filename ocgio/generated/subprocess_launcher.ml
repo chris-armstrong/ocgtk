@@ -1,4 +1,6 @@
 class type subprocess_launcher_t = object
+  (** {2:methods Methods} *)
+
   method close : unit -> unit
   (** Closes all the file descriptors previously passed to the object with
       g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(),
@@ -188,6 +190,8 @@ class type subprocess_launcher_t = object
 
       On UNIX, the variable's name can be an arbitrary byte string not
       containing '='. On Windows, it should be in UTF-8. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_subprocess_launcher : Raw.Subprocess_launcher.t
 end

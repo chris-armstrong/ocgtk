@@ -17,6 +17,8 @@
     implementation can be retrieved with the name [socks5] using the function
     [Gio.IOExtensionPoint.get_extension_by_name]. *)
 class type proxy_t = object
+  (** {2:methods Methods} *)
+
   method connect :
     Io_stream.io_stream_t ->
     Proxy_address.proxy_address_t ->
@@ -38,6 +40,8 @@ class type proxy_t = object
       protocol. When [FALSE] is returned, the caller should resolve the
       destination hostname first, and then pass a [GProxyAddress] containing the
       stringified IP address to g_proxy_connect() or g_proxy_connect_async(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_proxy : Raw.Proxy.t
 end

@@ -1,4 +1,6 @@
 class type d_bus_object_manager_t = object
+  (** {2:signals Signals} *)
+
   method on_interface_added :
     ?after:bool ->
     callback:
@@ -39,6 +41,8 @@ class type d_bus_object_manager_t = object
     Gobject.Signal.handler_id
   (** Emitted when [object] is removed from [manager]. *)
 
+  (** {2:methods Methods} *)
+
   method get_interface :
     string ->
     string ->
@@ -55,6 +59,8 @@ class type d_bus_object_manager_t = object
   method get_objects :
     unit -> D_bus_interface_and__d_bus_object.d_bus_object_t list
   (** Gets all [GDBusObject] objects known to [manager]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_object_manager : Raw.D_bus_object_manager.t
 end

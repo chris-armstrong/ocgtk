@@ -9,6 +9,8 @@
 (** {1:class Class} *)
 
 class type settings_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:(key:string -> unit) ->
@@ -63,6 +65,8 @@ class type settings_t = object
       This signal supports detailed connections. You can connect to the detailed
       signal [writable-changed::x] in order to only receive callbacks when the
       writability of [x] changes. *)
+
+  (** {2:methods Methods} *)
 
   method apply : unit -> unit
   (** Applies any changes that have been made to the settings.
@@ -434,6 +438,8 @@ class type settings_t = object
 
       If [value] is floating then this function consumes the reference. *)
 
+  (** {2:properties Properties} *)
+
   method delay_apply : bool
   (** Whether the [Gio.Settings] object is in ‘delay-apply’ mode. *)
 
@@ -463,6 +469,8 @@ class type settings_t = object
       [Gio.SettingsSchema] has only existed since version 2.32, however, and
       before then the [Gio.Settings:schema] property was used to refer to the ID
       of the schema rather than the schema itself. Take care. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings : Raw.Settings.t
 end

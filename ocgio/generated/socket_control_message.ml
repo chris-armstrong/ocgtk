@@ -1,4 +1,6 @@
 class type socket_control_message_t = object
+  (** {2:methods Methods} *)
+
   method get_level : unit -> int
   [@@ocaml.doc
     "Returns the \"level\" (i.e. the originating protocol) of the control \
@@ -12,6 +14,8 @@ class type socket_control_message_t = object
   method get_size : unit -> Gsize.t
   (** Returns the space required for the control message, not including headers
       or alignment. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_control_message : Raw.Socket_control_message.t
 end

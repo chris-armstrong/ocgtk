@@ -48,6 +48,8 @@ class type entry_completion_t = object
   inherit Buildable.buildable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
+  (** {2:signals Signals} *)
+
   method on_insert_prefix :
     ?after:bool ->
     callback:(prefix:string -> bool) ->
@@ -69,6 +71,8 @@ class type entry_completion_t = object
       completion_complete method.
 
       In other words when [GtkEntryCompletion] is out of suggestions. *)
+
+  (** {2:methods Methods} *)
 
   method complete : unit -> unit
   (** Requests a completion operation, or in other words a refiltering of the
@@ -175,6 +179,8 @@ class type entry_completion_t = object
       renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
       property directly. *)
 
+  (** {2:properties Properties} *)
+
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers in the treeview column.
@@ -182,6 +188,8 @@ class type entry_completion_t = object
       If no area is specified when creating the entry completion with
       [Gtk.EntryCompletion.new_with_area], a horizontally oriented
       [Gtk.CellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_entry_completion : Raw.Entry_completion.t
 end

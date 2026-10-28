@@ -12,11 +12,15 @@
 class type color_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_color : unit -> Ocgdk.Rgb_a.rgb_a_t
   (** Retrieves the color of the given [node].
 
       The value returned by this function will not be correct if the render node
       was created for a non-sRGB color. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_node : Raw.Color_node.t
 end

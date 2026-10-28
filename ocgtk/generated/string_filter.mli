@@ -26,6 +26,8 @@
 class type string_filter_t = object
   inherit Filter.filter_t
 
+  (** {2:methods Methods} *)
+
   method get_expression : unit -> Expression.expression_t option
   (** Gets the expression that the string filter uses to obtain strings from
       items. *)
@@ -53,6 +55,8 @@ class type string_filter_t = object
 
   method set_search : string option -> unit
   (** Sets the string to search for. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_string_filter : Raw.String_filter.t
 end

@@ -51,6 +51,8 @@ class type box_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method append :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -131,6 +133,8 @@ class type box_t = object
 
   method set_spacing : int -> unit
   (** Sets the number of pixels to place between children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_box : Raw.Box.t
 end

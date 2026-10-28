@@ -16,6 +16,8 @@
     [Gtk.BitsetIter.init_first], [Gtk.BitsetIter.init_last] or
     [Gtk.BitsetIter.init_at]. *)
 class type bitset_iter_t = object
+  (** {2:methods Methods} *)
+
   method get_value : unit -> int
   (** Gets the current value that [iter] points to.
 
@@ -24,6 +26,8 @@ class type bitset_iter_t = object
 
   method is_valid : unit -> bool
   (** Checks if [iter] points to a valid value. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bitset_iter : Raw.Bitset_iter.t
 end

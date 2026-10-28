@@ -11,6 +11,8 @@ class type string_list_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method append : string -> unit
   (** Appends [string] to [self].
 
@@ -59,11 +61,15 @@ class type string_list_t = object
      gtk_string_list_take (self, g_strdup_print (\"%d dollars\", lots));\n\
      ]}"]
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_string_list : Raw.String_list.t
 end

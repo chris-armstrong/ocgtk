@@ -6,8 +6,12 @@ class type list_base_t = object
   inherit Orientable.orientable_t
   inherit Scrollable.scrollable_t
 
+  (** {2:properties Properties} *)
+
   method orientation : Enums.orientation
   (** The orientation of the list. See GtkOrientable:orientation for details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_base : Raw.List_base.t
 end

@@ -14,6 +14,8 @@ class type label_t = object
 
   inherit Accessible_text.accessible_text_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_current_link :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Gets emitted when the user activates a link in the label.
@@ -68,6 +70,8 @@ class type label_t = object
         individual characters/lines
       - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
       - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer *)
+
+  (** {2:methods Methods} *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the label's attribute list.
@@ -390,6 +394,8 @@ class type label_t = object
   (** Sets the [yalign] of the label.
 
       See the [Gtk.Label:yalign] property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_label : Raw.Label.t
 end

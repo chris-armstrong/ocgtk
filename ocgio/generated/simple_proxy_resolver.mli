@@ -22,6 +22,8 @@
 class type simple_proxy_resolver_t = object
   inherit Proxy_resolver.proxy_resolver_t
 
+  (** {2:methods Methods} *)
+
   method set_default_proxy : string option -> unit
   [@@ocaml.doc
     "Sets the default proxy on [resolver], to be used for any URIs that\n\
@@ -46,6 +48,8 @@ class type simple_proxy_resolver_t = object
      \"socks://\", [GSimpleProxyResolver] will treat it\n\
      as referring to all three of the socks5, socks4a, and socks4 proxy\n\
      types."]
+
+  (** {2:conversions Conversions} *)
 
   method as_simple_proxy_resolver : Raw.Simple_proxy_resolver.t
 end

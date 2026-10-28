@@ -1,9 +1,13 @@
 class type notebook_page_t = object
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
   (** Returns the notebook child to which [page] belongs. *)
+
+  (** {2:properties Properties} *)
 
   method detachable : bool
   (** Whether the tab is detachable. *)
@@ -56,6 +60,8 @@ class type notebook_page_t = object
 
   method set_tab_label : string -> unit
   (** The text of the tab widget. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_notebook_page : Raw.Notebook_page.t
 end

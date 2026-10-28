@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type cicp_params_t = object
+  (** {2:methods Methods} *)
+
   method build_color_state : unit -> (Raw.Color_state.t, GError.t) result
   (** Creates a new [GdkColorState] object for the cicp parameters in [self].
 
@@ -34,10 +36,14 @@ class type cicp_params_t = object
   method set_transfer_function : int -> unit
   (** Sets the transfer-function property of [self]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_cicp_params : Raw.Cicp_params.t
 end
 
 and color_state_t = object
+  (** {2:methods Methods} *)
+
   method create_cicp_params : unit -> cicp_params_t option
   (** Create a [Gdk.CicpParams] representing the colorstate.
 
@@ -59,6 +65,8 @@ and color_state_t = object
 
   method ref : unit -> Raw.Color_state.t
   (** Increase the reference count of [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_state : Raw.Color_state.t
 end

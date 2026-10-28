@@ -3,6 +3,8 @@ class type spinner_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_spinning : unit -> bool
   (** Returns whether the spinner is spinning. *)
 
@@ -14,6 +16,8 @@ class type spinner_t = object
 
   method stop : unit -> unit
   (** Stops the animation of the spinner. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_spinner : Raw.Spinner.t
 end

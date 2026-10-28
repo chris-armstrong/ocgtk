@@ -1,4 +1,6 @@
 class type icon_t = object
+  (** {2:methods Methods} *)
+
   method equal : icon_t option -> bool
   (** Checks if two icons are equal. *)
 
@@ -29,6 +31,8 @@ class type icon_t = object
 
       - If [icon] is a [GThemedIcon] with exactly one name and no fallbacks, the
         encoding is simply the name (such as [network-server]). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon : Raw.Icon.t
 end

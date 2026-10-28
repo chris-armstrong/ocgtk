@@ -1,4 +1,6 @@
 class type content_formats_builder_t = object
+  (** {2:methods Methods} *)
+
   method add_formats : Raw.Content_formats.t -> unit
   (** Appends all formats from [formats] to [builder], skipping those that
       already exist. *)
@@ -24,6 +26,8 @@ class type content_formats_builder_t = object
 
       This function is intended primarily for bindings. C code should use
       [Gdk.ContentFormatsBuilder.free_to_formats]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_content_formats_builder : Raw.Content_formats_builder.t
 end

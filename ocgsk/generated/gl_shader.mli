@@ -8,6 +8,8 @@
 (** {1:class Class} *)
 
 class type gl_shader_t = object
+  (** {2:methods Methods} *)
+
   method compile : Renderer.renderer_t -> (bool, GError.t) result
   (** Tries to compile the [shader] for the given [renderer].
 
@@ -89,6 +91,8 @@ class type gl_shader_t = object
 
   method get_uniform_type : int -> Enums.gluniformtype
   (** Get the type of the declared uniform for this shader at index [idx]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gl_shader : Raw.Gl_shader.t
 end

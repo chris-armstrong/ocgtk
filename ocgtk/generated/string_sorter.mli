@@ -19,6 +19,8 @@
 class type string_sorter_t = object
   inherit Sorter.sorter_t
 
+  (** {2:methods Methods} *)
+
   method get_collation : unit -> Enums.collation
   (** Gets which collation method the sorter uses. *)
 
@@ -38,6 +40,8 @@ class type string_sorter_t = object
 
   method set_ignore_case : bool -> unit
   (** Sets whether the sorter will ignore case differences. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_string_sorter : Raw.String_sorter.t
 end

@@ -1,6 +1,8 @@
 class type stack_page_t = object
   inherit At_context_and__accessible.accessible_t
 
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -45,6 +47,8 @@ class type stack_page_t = object
 
   method set_visible : bool -> unit
   (** Sets whether [page] is visible in its [GtkStack]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack_page : Raw.Stack_page.t
 end

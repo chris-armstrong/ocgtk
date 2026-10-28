@@ -3,6 +3,8 @@ class type drop_target_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_accept :
     ?after:bool ->
     callback:(drop:Ocgdk.Drop.drop_t -> bool) ->
@@ -60,6 +62,8 @@ class type drop_target_t = object
     Gobject.Signal.handler_id
   (** Emitted while the pointer is moving over the drop target. *)
 
+  (** {2:methods Methods} *)
+
   method get_actions : unit -> Ocgdk.Enums.dragaction
   (** Gets the actions that this drop target supports. *)
 
@@ -101,6 +105,8 @@ class type drop_target_t = object
 
   method set_preload : bool -> unit
   (** Sets whether data should be preloaded on hover. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drop_target : Raw.Drop_target.t
 end

@@ -135,11 +135,11 @@ let test_combined_module_links_members_sorted () =
     (Entity_doc.combined_module ~namespace:"Gtk" ~layer:Entity_doc.Layer2
        ~class_names:[ "Window"; "WidgetPaintable" ])
 
-let signature ?(methods = []) ?(properties = []) ~class_doc () =
+let signature ?(methods = []) ?(properties = []) ?(signals = []) ~class_doc () =
   Class_gen.generate_class_signature
     ~ctx:(Helpers.create_test_context ())
     ~class_doc ~class_name:"Button" ~c_type:"GtkButton"
-    ~parent_chain:[ "Widget" ] ~methods ~properties ~signals:[] ~constructors:[]
+    ~parent_chain:[ "Widget" ] ~methods ~properties ~signals ~constructors:[]
     ~entity_kind:Filtering.Class
   |> Ml_ast_helpers.parse_interface
 
@@ -233,6 +233,45 @@ let test_signature_carries_property_docs () =
     "setter" (Some " Text of the label. ")
     (class_type_method_doc ast "set_label")
 
+let section_headings ast =
+  Helpers.expect_some "class type button_t"
+    (Ml_ast_helpers.find_class_type_declaration ast "button_t") (fun ct ->
+      Ml_ast_helpers.class_type_floating_docs ct.pci_expr)
+
+let check_sections msg expected ast =
+  Alcotest.(check (list string)) msg expected (section_headings ast)
+
+let clicked_method ?introspectable () =
+  Type_factory.make_gir_method ~method_name:"clicked"
+    ~c_identifier:"gtk_button_clicked" ~return_type:Type_factory.void_type
+    ?introspectable ()
+
+let test_sections_follow_emitted_members () =
+  check_sections "a section per kind of member, in body order"
+    [
+      " {2:signals Signals} ";
+      " {2:methods Methods} ";
+      " {2:properties Properties} ";
+      " {2:conversions Conversions} ";
+    ]
+    (signature
+       ~signals:[ Type_factory.make_void_signal ~signal_name:"activate" () ]
+       ~methods:[ clicked_method () ]
+       ~properties:[ label_property () ]
+       ~class_doc:None ())
+
+let test_empty_sections_left_out () =
+  check_sections "no members but the conversion"
+    [ " {2:conversions Conversions} " ]
+    (signature ~class_doc:None ())
+
+let test_filtered_methods_leave_no_section () =
+  check_sections "a method that is not bound"
+    [ " {2:conversions Conversions} " ]
+    (signature
+       ~methods:[ clicked_method ~introspectable:false () ]
+       ~class_doc:None ())
+
 let tests =
   [
     ( "layer 2 module doc with a class doc",
@@ -283,4 +322,13 @@ let tests =
     ( "layer 2 signature carries method docs",
       `Quick,
       test_signature_carries_method_docs );
+    ( "class type sections follow the emitted members",
+      `Quick,
+      test_sections_follow_emitted_members );
+    ( "empty class type sections are left out",
+      `Quick,
+      test_empty_sections_left_out );
+    ( "filtered methods leave no Methods section",
+      `Quick,
+      test_filtered_methods_leave_no_section );
   ]

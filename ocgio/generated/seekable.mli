@@ -22,6 +22,8 @@
     [lseek()]) on a normal file. Seeking past the end and writing data will
     usually cause the stream to resize by introducing zero bytes. *)
 class type seekable_t = object
+  (** {2:methods Methods} *)
+
   method can_seek : unit -> bool
   (** Tests if the stream supports the [GSeekableIface]. *)
 
@@ -43,6 +45,8 @@ class type seekable_t = object
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
       operation was partially finished when the operation was cancelled the
       partial result will be returned, without an error. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_seekable : Raw.Seekable.t
 end

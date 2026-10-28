@@ -3,6 +3,8 @@ class type search_bar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method connect_entry : Editable.editable_t -> unit
   (** Connects the [GtkEditable] widget passed as the one to be used in this
       search bar.
@@ -63,6 +65,8 @@ class type search_bar_t = object
       Applications that already have a “search” toggle button should not show a
       close button in their search bar, as it duplicates the role of the toggle
       button. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_search_bar : Raw.Search_bar.t
 end

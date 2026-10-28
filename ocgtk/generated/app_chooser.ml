@@ -1,4 +1,6 @@
 class type app_chooser_t = object
+  (** {2:methods Methods} *)
+
   method get_app_info : unit -> Ocgio.App_info.app_info_t option
   (** Returns the currently selected application. *)
 
@@ -8,6 +10,8 @@ class type app_chooser_t = object
 
   method refresh : unit -> unit
   (** Reloads the list of applications. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_app_chooser : Raw.App_chooser.t
 end

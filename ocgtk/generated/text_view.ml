@@ -6,6 +6,8 @@ class type text_view_t = object
   inherit Accessible_text.accessible_text_t
   inherit Scrollable.scrollable_t
 
+  (** {2:signals Signals} *)
+
   method on_backspace :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Gets emitted when the user asks for it.
@@ -174,6 +176,8 @@ class type text_view_t = object
       The ::toggle-overwrite signal is a keybinding signal.
 
       The default binding for this signal is <kbd>Insert</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method add_child_at_anchor :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -617,6 +621,8 @@ class type text_view_t = object
       See [Gtk.TextView.forward_display_line] for an explanation of display
       lines vs. paragraphs. *)
 
+  (** {2:properties Properties} *)
+
   method im_module : string
   (** Which IM (input method) module should be used for this text_view.
 
@@ -632,6 +638,8 @@ class type text_view_t = object
 
       Setting this to a non-[NULL] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_view : Raw.Text_view.t
 end

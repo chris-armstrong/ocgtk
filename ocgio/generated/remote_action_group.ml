@@ -1,4 +1,6 @@
 class type remote_action_group_t = object
+  (** {2:methods Methods} *)
+
   method activate_action_full :
     string -> Gvariant.t option -> Gvariant.t -> unit
   [@@ocaml.doc
@@ -19,6 +21,8 @@ class type remote_action_group_t = object
      user interaction timestamp or startup notification information.\n\n\
      [platform_data] must be non-[NULL] and must have the type\n\
      [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]
+
+  (** {2:conversions Conversions} *)
 
   method as_remote_action_group : Raw.Remote_action_group.t
 end

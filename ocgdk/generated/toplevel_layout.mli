@@ -19,6 +19,8 @@
     Toplevel surfaces are sovereign windows that can be presented to the user in
     various states (maximized, on all workspaces, etc). *)
 class type toplevel_layout_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Toplevel_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
 
@@ -44,6 +46,8 @@ class type toplevel_layout_t = object
   method set_resizable : bool -> unit
   (** Sets whether the layout should allow the user to resize the surface after
       it has been presented. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_toplevel_layout : Raw.Toplevel_layout.t
 end

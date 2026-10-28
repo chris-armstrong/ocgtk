@@ -1,4 +1,6 @@
 class type css_style_change_t = object
+  (** {2:conversions Conversions} *)
+
   method as_css_style_change : Raw.Css_style_change.t
 end
 

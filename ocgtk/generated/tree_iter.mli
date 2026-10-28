@@ -13,6 +13,8 @@
     Models are expected to put a unique integer in the [stamp] member, and put
     model-specific data in the three [user_data] members. *)
 class type tree_iter_t = object
+  (** {2:conversions Conversions} *)
+
   method as_tree_iter : Raw.Tree_iter.t
 end
 

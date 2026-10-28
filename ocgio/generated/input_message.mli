@@ -32,6 +32,8 @@
     Flags relevant to this message will be returned in [flags]. For example,
     [MSG_EOR] or [MSG_TRUNC]. *)
 class type input_message_t = object
+  (** {2:conversions Conversions} *)
+
   method as_input_message : Raw.Input_message.t
 end
 

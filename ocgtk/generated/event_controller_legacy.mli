@@ -18,12 +18,16 @@ class type event_controller_legacy_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_event :
     ?after:bool ->
     callback:(event:Ocgdk.Event.event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted for each GDK event delivered to [controller]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_legacy : Raw.Event_controller_legacy.t
 end

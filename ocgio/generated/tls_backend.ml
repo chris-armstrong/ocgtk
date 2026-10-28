@@ -1,4 +1,6 @@
 class type tls_backend_t = object
+  (** {2:methods Methods} *)
+
   method get_certificate_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsCertificate] implementation. *)
 
@@ -42,6 +44,8 @@ class type tls_backend_t = object
   [@@ocaml.doc
     "Checks if TLS is supported; if this returns [FALSE] for the default\n\
      [GTlsBackend], it means no \"real\" TLS backend is available."]
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_backend : Raw.Tls_backend.t
 end

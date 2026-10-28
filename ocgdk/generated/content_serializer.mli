@@ -23,6 +23,8 @@
 class type content_serializer_t = object
   inherit Ocgio.Async_result.async_result_t
 
+  (** {2:methods Methods} *)
+
   method get_cancellable : unit -> Ocgio.Cancellable.cancellable_t option
   (** Gets the cancellable for the current operation.
 
@@ -55,6 +57,8 @@ class type content_serializer_t = object
 
   method return_success : unit -> unit
   (** Indicate that the serialization has been successfully completed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_content_serializer : Raw.Content_serializer.t
 end

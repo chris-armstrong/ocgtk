@@ -11,6 +11,8 @@
 
     This is an opaque structure type. You may not access it directly. *)
 class type settings_schema_source_t = object
+  (** {2:methods Methods} *)
+
   method lookup : string -> bool -> Raw.Settings_schema.t option
   (** Looks up a schema with the identifier [schema_id] in [source].
 
@@ -25,6 +27,8 @@ class type settings_schema_source_t = object
 
   method ref : unit -> Raw.Settings_schema_source.t
   (** Increase the reference count of [source], returning a new reference. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings_schema_source : Raw.Settings_schema_source.t
 end

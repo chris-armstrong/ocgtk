@@ -6,6 +6,8 @@ class type text_t = object
   inherit Accessible_text.accessible_text_t
   inherit Editable.editable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user hits the <kbd>Enter</kbd> key.
@@ -129,6 +131,8 @@ class type text_t = object
       This is a keybinding signal.
 
       The default bindings for this signal is <kbd>Insert</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method get_activates_default : unit -> bool
   (** Returns whether pressing <kbd>Enter</kbd> will activate the default widget
@@ -298,6 +302,8 @@ class type text_t = object
 
       After calling this, the default invisible char is used again. *)
 
+  (** {2:properties Properties} *)
+
   method im_module : string
   (** Which input method module should be used.
 
@@ -322,6 +328,8 @@ class type text_t = object
 
   method scroll_offset : int
   (** Number of pixels scrolled of the screen to the left. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text : Raw.Text.t
 end

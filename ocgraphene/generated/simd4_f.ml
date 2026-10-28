@@ -1,4 +1,6 @@
 class type simd4_f_t = object
+  (** {2:conversions Conversions} *)
+
   method as_simd4_f : Raw.Simd4_f.t
 end
 

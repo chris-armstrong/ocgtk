@@ -54,6 +54,8 @@ class type graphics_offload_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_black_background : unit -> bool
   (** Returns whether the widget draws a black background.
 
@@ -94,6 +96,8 @@ class type graphics_offload_t = object
   method set_enabled : Enums.graphicsoffloadenabled -> unit
   (** Sets whether this GtkGraphicsOffload widget will attempt to offload the
       content of its child widget. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_graphics_offload : Raw.Graphics_offload.t
 end

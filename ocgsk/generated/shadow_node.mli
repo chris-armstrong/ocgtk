@@ -12,6 +12,8 @@
 class type shadow_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_child : unit -> Render_node.render_node_t
   (** Retrieves the child [GskRenderNode] of the shadow [node]. *)
 
@@ -20,6 +22,8 @@ class type shadow_node_t = object
 
   method get_shadow : Gsize.t -> Raw.Shadow.t
   (** Retrieves the shadow data at the given index [i]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shadow_node : Raw.Shadow_node.t
 end

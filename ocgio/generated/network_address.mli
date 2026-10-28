@@ -26,6 +26,8 @@ class type network_address_t = object
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
 
+  (** {2:methods Methods} *)
+
   method get_hostname : unit -> string
   (** Gets [addr]'s hostname. This might be either UTF-8 or ASCII-encoded,
       depending on what [addr] was created with. *)
@@ -35,6 +37,8 @@ class type network_address_t = object
 
   method get_scheme : unit -> string option
   (** Gets [addr]'s scheme *)
+
+  (** {2:conversions Conversions} *)
 
   method as_network_address : Raw.Network_address.t
 end

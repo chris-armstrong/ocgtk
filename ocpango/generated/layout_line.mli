@@ -16,6 +16,8 @@
     and are only valid until the text, attributes, or settings of the parent
     [PangoLayout] are modified. *)
 class type layout_line_t = object
+  (** {2:methods Methods} *)
+
   method get_length : unit -> int
   (** Returns the length of the line, in bytes. *)
 
@@ -31,6 +33,8 @@ class type layout_line_t = object
 
   method ref : unit -> Raw.Layout_line.t option
   (** Increase the reference count of a [PangoLayoutLine] by one. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_layout_line : Raw.Layout_line.t
 end

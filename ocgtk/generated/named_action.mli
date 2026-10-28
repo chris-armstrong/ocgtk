@@ -16,8 +16,12 @@
 class type named_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
+  (** {2:methods Methods} *)
+
   method get_action_name : unit -> string
   (** Returns the name of the action that will be activated. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_named_action : Raw.Named_action.t
 end

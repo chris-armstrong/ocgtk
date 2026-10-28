@@ -13,6 +13,8 @@
 
     [GtkBuildableParseContext] is an opaque struct. *)
 class type buildable_parse_context_t = object
+  (** {2:methods Methods} *)
+
   method get_element : unit -> string option
   (** Retrieves the name of the currently open element.
 
@@ -31,6 +33,8 @@ class type buildable_parse_context_t = object
       This function is intended to be used in the start_element and end_element
       handlers where gtk_buildable_parse_context_get_element() would merely
       return the name of the element that is being processed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_buildable_parse_context : Raw.Buildable_parse_context.t
 end

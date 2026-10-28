@@ -26,6 +26,8 @@
 
     Note that DMA buffers only exist on Linux. *)
 class type dmabuf_formats_t = object
+  (** {2:methods Methods} *)
+
   method contains : UInt32.t -> UInt64.t -> bool
   (** Returns whether a given format is contained in [formats]. *)
 
@@ -41,6 +43,8 @@ class type dmabuf_formats_t = object
 
   method ref : unit -> Raw.Dmabuf_formats.t
   (** Increases the reference count of [formats]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dmabuf_formats : Raw.Dmabuf_formats.t
 end

@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [FontFace].} *)
 class type font_face_t = object
+  (** {2:conversions Conversions} *)
+
   method as_font_face : Raw.Font_face.t
 end
 

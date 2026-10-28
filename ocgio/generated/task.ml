@@ -1,6 +1,8 @@
 class type task_t = object
   inherit Async_result.async_result_t
 
+  (** {2:methods Methods} *)
+
   method get_cancellable : unit -> Cancellable.cancellable_t option
   (** Gets [task]'s [GCancellable] *)
 
@@ -152,6 +154,8 @@ class type task_t = object
 
       This function is called automatically by [Gio.Task.set_source_tag] unless
       a name is set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_task : Raw.Task.t
 end

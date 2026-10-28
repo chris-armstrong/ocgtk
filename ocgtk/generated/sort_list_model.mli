@@ -39,6 +39,8 @@ class type sort_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
 
+  (** {2:methods Methods} *)
+
   method get_incremental : unit -> bool
   (** Returns whether incremental sorting is enabled.
 
@@ -101,11 +103,15 @@ class type sort_list_model_t = object
   method set_sorter : Sorter.sorter_t option -> unit
   (** Sets a new sorter on [self]. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_sort_list_model : Raw.Sort_list_model.t
 end

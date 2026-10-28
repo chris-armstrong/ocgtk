@@ -13,6 +13,8 @@
     array of [GOutputVectors] and the operation will use all the buffers as if
     they were one buffer. *)
 class type output_vector_t = object
+  (** {2:conversions Conversions} *)
+
   method as_output_vector : Raw.Output_vector.t
 end
 

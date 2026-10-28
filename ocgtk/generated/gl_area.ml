@@ -3,6 +3,8 @@ class type gl_area_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_create_context :
     ?after:bool ->
     callback:(unit -> Ocgdk.Gl_context.gl_context_t) ->
@@ -44,6 +46,8 @@ class type gl_area_t = object
       is emitted.
 
       The default handler sets up the GL viewport. *)
+
+  (** {2:methods Methods} *)
 
   method attach_buffers : unit -> unit
   (** Binds buffers to the framebuffer.
@@ -155,6 +159,8 @@ class type gl_area_t = object
 
       You should check the capabilities of the [GdkGLContext] before drawing
       with either API. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gl_area : Raw.Gl_area.t
 end

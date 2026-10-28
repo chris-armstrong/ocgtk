@@ -21,6 +21,8 @@
 class type cell_renderer_text_t = object
   inherit Cell_renderer.cell_renderer_t
 
+  (** {2:signals Signals} *)
+
   method on_edited :
     ?after:bool ->
     callback:(path:string -> new_text:string -> unit) ->
@@ -31,6 +33,8 @@ class type cell_renderer_text_t = object
       It is the responsibility of the application to update the model and store
       [new_text] at the position indicated by [path]. *)
 
+  (** {2:methods Methods} *)
+
   method set_fixed_height_from_font : int -> unit
   (** Sets the height of a renderer to explicitly be determined by the “font”
       and “y_pad” property set on it. Further changes in these properties do not
@@ -39,6 +43,8 @@ class type cell_renderer_text_t = object
       be used if calculating the size of a cell is too slow (ie, a massive
       number of cells displayed). If [number_of_rows] is -1, then the fixed
       height is unset, and the height is determined by the properties again. *)
+
+  (** {2:properties Properties} *)
 
   method align_set : bool
   (** Get property: align-set *)
@@ -342,6 +348,8 @@ class type cell_renderer_text_t = object
   (** Specifies the minimum width at which the text is wrapped. The wrap-mode
       property can be used to influence at what character positions the line
       breaks can be placed. Setting wrap-width to -1 turns wrapping off. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_text : Raw.Cell_renderer_text.t
 end

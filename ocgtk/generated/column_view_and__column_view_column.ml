@@ -8,6 +8,8 @@ class type column_view_t = object
 
   inherit Scrollable.scrollable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(position:int -> unit) ->
@@ -18,6 +20,8 @@ class type column_view_t = object
 
       This allows for a convenient way to handle activation in a columnview. See
       [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
+
+  (** {2:methods Methods} *)
 
   method append_column : column_view_column_t -> unit
   (** Appends the [column] to the end of the columns in [self]. *)
@@ -160,10 +164,14 @@ class type column_view_t = object
 
       If [column] is unset, the view will be unsorted. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_column_view : Raw.Column_view.t
 end
 
 and column_view_column_t = object
+  (** {2:methods Methods} *)
+
   method get_column_view : unit -> column_view_t option
   (** Gets the column view that's currently displaying this column.
 
@@ -251,6 +259,8 @@ and column_view_column_t = object
 
   method set_visible : bool -> unit
   (** Sets whether this column should be visible in views. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_column_view_column : Raw.Column_view_column.t
 end

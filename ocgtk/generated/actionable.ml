@@ -1,4 +1,6 @@
 class type actionable_t = object
+  (** {2:methods Methods} *)
+
   method get_action_name : unit -> string option
   (** Gets the action name for [actionable]. *)
 
@@ -45,6 +47,8 @@ class type actionable_t = object
 
       [detailed_action_name] is a string in the format accepted by
       [Gio.Action.parse_detailed_name]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_actionable : Raw.Actionable.t
 end

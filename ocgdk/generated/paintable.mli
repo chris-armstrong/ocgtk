@@ -52,6 +52,8 @@
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
     [Gdk.Paintable.new_empty]. *)
 class type paintable_t = object
+  (** {2:signals Signals} *)
+
   method on_invalidate_contents :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the contents of the [paintable] change.
@@ -69,6 +71,8 @@ class type paintable_t = object
 
       Examples for such an event would be a paintable displaying the contents of
       a toplevel surface being resized. *)
+
+  (** {2:methods Methods} *)
 
   method get_current_image : unit -> paintable_t
   (** Gets an immutable paintable for the current contents displayed by
@@ -158,6 +162,8 @@ class type paintable_t = object
       The paintable is drawn at the current (0,0) offset of the [snapshot]. If
       [width] and [height] are not larger than zero, this function will do
       nothing. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_paintable : Raw.Paintable.t
 end

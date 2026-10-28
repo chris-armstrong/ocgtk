@@ -1,4 +1,6 @@
 class type renderer_t = object
+  (** {2:methods Methods} *)
+
   method activate : unit -> unit
   (** Does initial setup before rendering operations on [renderer].
 
@@ -153,6 +155,8 @@ class type renderer_t = object
 
   method set_matrix : Raw.Matrix.t option -> unit
   (** Sets the transformation matrix that will be applied when rendering. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_renderer : Raw.Renderer.t
 end

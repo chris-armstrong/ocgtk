@@ -49,6 +49,8 @@ class type fixed_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_child_transform :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -89,6 +91,8 @@ class type fixed_t = object
       This is a convenience function that retrieves the [Gtk.FixedLayoutChild]
       instance associated to [widget] and calls
       [Gtk.FixedLayoutChild.set_transform]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fixed : Raw.Fixed.t
 end

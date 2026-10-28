@@ -100,6 +100,8 @@
 class type scale_t = object
   inherit Range.range_t
 
+  (** {2:methods Methods} *)
+
   method add_mark : float -> Enums.positiontype -> string option -> unit
   (** Adds a mark at [value].
 
@@ -160,6 +162,8 @@ class type scale_t = object
 
   method set_value_pos : Enums.positiontype -> unit
   (** Sets the position in which the current value is displayed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scale : Raw.Scale.t
 end

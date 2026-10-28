@@ -27,12 +27,16 @@
 class type shortcuts_group_t = object
   inherit Box.box_t
 
+  (** {2:methods Methods} *)
+
   method add_shortcut : Shortcuts_shortcut.shortcuts_shortcut_t -> unit
   (** Adds a shortcut to the shortcuts group.
 
       This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
       tag to add the child. Adding children with other API is not appropriate as
       [GtkShortcutsGroup] manages its children internally. *)
+
+  (** {2:properties Properties} *)
 
   method set_accel_size_group : Size_group.size_group_t -> unit
   (** The size group for the accelerator portion of shortcuts in this group.
@@ -72,6 +76,8 @@ class type shortcuts_group_t = object
       does not match the view of this group.
 
       Set this to [NULL] to make the group always visible. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcuts_group : Raw.Shortcuts_group.t
 end

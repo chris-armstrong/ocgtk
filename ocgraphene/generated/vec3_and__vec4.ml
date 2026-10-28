@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type vec3_t = object
+  (** {2:methods Methods} *)
+
   method dot : Raw.Vec3.t -> float
   (** Computes the dot product of the two given vectors. *)
 
@@ -36,10 +38,14 @@ class type vec3_t = object
   (** Compares the two given #graphene_vec3_t vectors and checks whether their
       values are within the given [epsilon]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_vec3 : Raw.Vec3.t
 end
 
 and vec4_t = object
+  (** {2:methods Methods} *)
+
   method dot : Raw.Vec4.t -> float
   (** Computes the dot product of the two given vectors. *)
 
@@ -88,6 +94,8 @@ and vec4_t = object
   method near : Raw.Vec4.t -> float -> bool
   (** Compares the two given #graphene_vec4_t vectors and checks whether their
       values are within the given [epsilon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_vec4 : Raw.Vec4.t
 end

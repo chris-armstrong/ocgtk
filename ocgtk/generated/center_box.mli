@@ -51,6 +51,8 @@ class type center_box_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_baseline_position : unit -> Enums.baselineposition
   (** Gets the baseline position of the center box.
 
@@ -124,6 +126,8 @@ class type center_box_t = object
   (** Sets the start widget.
 
       To remove the existing start widget, pass [NULL]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_center_box : Raw.Center_box.t
 end

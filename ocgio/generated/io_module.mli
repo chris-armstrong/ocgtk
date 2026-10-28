@@ -14,6 +14,8 @@
     modules. This is used internally to make GIO extensible, but can also be
     used by others to implement module loading. *)
 class type io_module_t = object
+  (** {2:conversions Conversions} *)
+
   method as_io_module : Raw.Io_module.t
 end
 

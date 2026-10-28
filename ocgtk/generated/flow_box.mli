@@ -71,6 +71,8 @@ class type flow_box_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_cursor_child :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user activates the [box].
@@ -144,6 +146,8 @@ class type flow_box_t = object
 
       The default bindings for this signal is
       <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method append :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -300,11 +304,15 @@ class type flow_box_t = object
   method unselect_child : Flow_box_child.flow_box_child_t -> unit
   (** Unselects a single child of [box], if the selection mode allows it. *)
 
+  (** {2:properties Properties} *)
+
   method accept_unpaired_release : bool
   (** Whether to accept unpaired release events. *)
 
   method set_accept_unpaired_release : bool -> unit
   (** Whether to accept unpaired release events. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_flow_box : Raw.Flow_box.t
 end

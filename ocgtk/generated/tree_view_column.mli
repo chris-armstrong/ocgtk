@@ -24,9 +24,13 @@ class type tree_view_column_t = object
   inherit Buildable.buildable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
+  (** {2:signals Signals} *)
+
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the column's header has been clicked. *)
+
+  (** {2:methods Methods} *)
 
   method cell_is_visible : unit -> bool
   (** Returns [TRUE] if any of the cells packed into the [tree_column] are
@@ -235,6 +239,8 @@ class type tree_view_column_t = object
       the header button is set with a [GtkLabel] set to the title of
       [tree_column]. *)
 
+  (** {2:properties Properties} *)
+
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this column.
@@ -242,6 +248,8 @@ class type tree_view_column_t = object
       If no area is specified when creating the tree view column with
       gtk_tree_view_column_new_with_area() a horizontally oriented
       [GtkCellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_view_column : Raw.Tree_view_column.t
 end

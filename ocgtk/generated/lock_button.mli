@@ -48,11 +48,15 @@
 class type lock_button_t = object
   inherit Button.button_t
 
+  (** {2:methods Methods} *)
+
   method get_permission : unit -> Ocgio.Permission.permission_t option
   (** Obtains the [GPermission] object that controls [button]. *)
 
   method set_permission : Ocgio.Permission.permission_t option -> unit
   (** Sets the [GPermission] object that controls [button]. *)
+
+  (** {2:properties Properties} *)
 
   method text_lock : string
   (** The text to display when prompting the user to lock. *)
@@ -83,6 +87,8 @@ class type lock_button_t = object
 
   method set_tooltip_unlock : string -> unit
   (** The tooltip to display when prompting the user to unlock. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_lock_button : Raw.Lock_button.t
 end

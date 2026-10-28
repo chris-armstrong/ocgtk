@@ -21,6 +21,8 @@
     print setup and copy them to the PrintDialog if they want to keep using
     them. *)
 class type print_setup_t = object
+  (** {2:methods Methods} *)
+
   method get_page_setup : unit -> Page_setup.page_setup_t
   (** Returns the page setup of [setup].
 
@@ -35,6 +37,8 @@ class type print_setup_t = object
 
   method ref : unit -> Raw.Print_setup.t
   (** Increase the reference count of [setup]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_setup : Raw.Print_setup.t
 end

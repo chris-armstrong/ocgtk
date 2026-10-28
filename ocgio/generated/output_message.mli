@@ -17,6 +17,8 @@
     If [address] is [NULL] then the message is sent to the default receiver (as
     previously set by g_socket_connect()). *)
 class type output_message_t = object
+  (** {2:conversions Conversions} *)
+
   method as_output_message : Raw.Output_message.t
 end
 

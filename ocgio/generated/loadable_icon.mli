@@ -11,6 +11,8 @@
     [GLoadableIcon] extends the [Gio.Icon] interface and adds the ability to
     load icons from streams. *)
 class type loadable_icon_t = object
+  (** {2:conversions Conversions} *)
+
   method as_loadable_icon : Raw.Loadable_icon.t
 end
 

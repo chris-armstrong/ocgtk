@@ -9,6 +9,8 @@
 
     Entry point for using GIO functionality. *)
 class type vfs_t = object
+  (** {2:methods Methods} *)
+
   method get_file_for_path : string -> App_info_cycle_64c425a0.file_t
   (** Gets a [GFile] for [path]. *)
 
@@ -33,6 +35,8 @@ class type vfs_t = object
   method unregister_uri_scheme : string -> bool
   (** Unregisters the URI handler for [scheme] previously registered with
       g_vfs_register_uri_scheme(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_vfs : Raw.Vfs.t
 end

@@ -10,6 +10,8 @@
 class type list_view_t = object
   inherit List_base.list_base_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(position:int -> unit) ->
@@ -22,6 +24,8 @@ class type list_view_t = object
 
       This allows for a convenient way to handle activation in a listview. See
       [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)
@@ -85,6 +89,8 @@ class type list_view_t = object
 
       This influences how the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
       keys move the focus in the listview. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_view : Raw.List_view.t
 end

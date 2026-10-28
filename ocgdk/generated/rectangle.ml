@@ -1,9 +1,13 @@
 class type rectangle_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : int -> int -> bool
   (** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
 
   method equal : Raw.Rectangle.t -> bool
   (** Checks if the two given rectangles are equal. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rectangle : Raw.Rectangle.t
 end

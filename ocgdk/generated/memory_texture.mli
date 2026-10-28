@@ -11,6 +11,9 @@
     A [GdkTexture] representing image data in memory. *)
 class type memory_texture_t = object
   inherit Texture.texture_t
+
+  (** {2:conversions Conversions} *)
+
   method as_memory_texture : Raw.Memory_texture.t
 end
 

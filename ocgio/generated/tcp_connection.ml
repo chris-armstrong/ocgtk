@@ -1,6 +1,8 @@
 class type tcp_connection_t = object
   inherit Socket_and__socket_connection.socket_connection_t
 
+  (** {2:methods Methods} *)
+
   method get_graceful_disconnect : unit -> bool
   (** Checks if graceful disconnects are used. See
       g_tcp_connection_set_graceful_disconnect(). *)
@@ -15,6 +17,8 @@ class type tcp_connection_t = object
       However, it also means we have to wait for all the data to reach the other
       side and for it to acknowledge this by closing the socket, which may take
       a while. For this reason it is disabled by default. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tcp_connection : Raw.Tcp_connection.t
 end

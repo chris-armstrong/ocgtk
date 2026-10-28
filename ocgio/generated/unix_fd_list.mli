@@ -23,6 +23,8 @@
 
     Since 2.74, the API is available for Windows. *)
 class type unix_fd_list_t = object
+  (** {2:methods Methods} *)
+
   method append : int -> (int, GError.t) result
   (** Adds a file descriptor to [list].
 
@@ -53,6 +55,8 @@ class type unix_fd_list_t = object
   method get_length : unit -> int
   (** Gets the length of [list] (ie: the number of file descriptors contained
       within). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_unix_fd_list : Raw.Unix_fd_list.t
 end

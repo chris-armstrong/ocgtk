@@ -1,4 +1,6 @@
 class type application_command_line_t = object
+  (** {2:methods Methods} *)
+
   method create_file_for_arg : string -> App_info_cycle_64c425a0.file_t
   (** Creates a [GFile] corresponding to a filename that was given as part of
       the invocation of [cmdline].
@@ -134,6 +136,8 @@ class type application_command_line_t = object
 
       This method is a no-op if g_application_command_line_done() has been
       called. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_application_command_line : Raw.Application_command_line.t
 end

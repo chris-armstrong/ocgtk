@@ -27,6 +27,8 @@
     The main use case for [GtkBitset] is implementing complex selections for
     [Gtk.SelectionModel]. *)
 class type bitset_t = object
+  (** {2:methods Methods} *)
+
   method add : int -> bool
   (** Adds [value] to [self] if it wasn't part of it before. *)
 
@@ -161,6 +163,8 @@ class type bitset_t = object
 
       It is allowed for [self] and [other] to be the same bitset. Nothing will
       happen in that case. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bitset : Raw.Bitset.t
 end

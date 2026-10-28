@@ -12,6 +12,8 @@
 
     The subclass of [GdkSnapshot] used by GTK is GtkSnapshot. *)
 class type snapshot_t = object
+  (** {2:conversions Conversions} *)
+
   method as_snapshot : Raw.Snapshot.t
 end
 

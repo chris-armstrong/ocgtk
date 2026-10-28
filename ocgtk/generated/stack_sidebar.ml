@@ -3,6 +3,8 @@ class type stack_sidebar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_stack : unit -> Stack.stack_t option
   (** Retrieves the stack. *)
 
@@ -11,6 +13,8 @@ class type stack_sidebar_t = object
 
       The sidebar widget will automatically update according to the order and
       items within the given [GtkStack]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack_sidebar : Raw.Stack_sidebar.t
 end

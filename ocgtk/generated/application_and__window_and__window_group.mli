@@ -5,6 +5,8 @@
 class type application_t = object
   inherit Ocgio.Application.application_t
 
+  (** {2:signals Signals} *)
+
   method on_query_end :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the session manager is about to end the session.
@@ -31,6 +33,8 @@ class type application_t = object
 
       This can happen as a side-effect of the window being destroyed or
       explicitly through [Gtk.Application.remove_window]. *)
+
+  (** {2:methods Methods} *)
 
   method add_window : window_t -> unit
   (** Adds a window to the application.
@@ -185,6 +189,8 @@ class type application_t = object
       See [Gtk.Application.inhibit].
 
       Inhibitors are also cleared when the application exits. *)
+
+  (** {2:properties Properties} *)
 
   method register_session : bool
   (** Set this property to true to register with the session manager.
@@ -349,6 +355,8 @@ and window_t = object
 
   inherit Shortcut_manager.shortcut_manager_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user activates the default widget.
@@ -390,6 +398,8 @@ and window_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the set of accelerators or mnemonics that are associated with
       the window changes. *)
+
+  (** {2:methods Methods} *)
 
   method close : unit -> unit
   (** Requests that the window is closed.
@@ -839,6 +849,8 @@ and window_t = object
       You can track result of this operation via the [Gdk.Toplevel:state]
       property. *)
 
+  (** {2:properties Properties} *)
+
   method default_height : int
   (** The default height of the window. *)
 
@@ -850,6 +862,8 @@ and window_t = object
 
   method set_default_width : int -> unit
   (** The default width of the window. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_window : Raw.Window.t
 end
@@ -872,6 +886,8 @@ end
     window group and drop their references on the window group; when all window
     have been removed, the window group will be freed. *)
 and window_group_t = object
+  (** {2:methods Methods} *)
+
   method add_window : window_t -> unit
   (** Adds a window to a [GtkWindowGroup]. *)
 
@@ -880,6 +896,8 @@ and window_group_t = object
 
   method remove_window : window_t -> unit
   (** Removes a window from a [GtkWindowGroup]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_window_group : Raw.Window_group.t
 end

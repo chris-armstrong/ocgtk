@@ -1,4 +1,6 @@
 class type scaled_font_t = object
+  (** {2:conversions Conversions} *)
+
   method as_scaled_font : Raw.Scaled_font.t
 end
 

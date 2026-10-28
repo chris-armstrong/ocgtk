@@ -1,6 +1,8 @@
 class type grid_view_t = object
   inherit List_base.list_base_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(position:int -> unit) ->
@@ -11,6 +13,8 @@ class type grid_view_t = object
 
       This allows for a convenient way to handle activation in a gridview. See
       [Gtk.ListItem:activatable] for details on how to use this signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)
@@ -76,6 +80,8 @@ class type grid_view_t = object
   method set_tab_behavior : Enums.listtabbehavior -> unit
   (** Sets the behavior of the <kbd>Tab</kbd> and
       <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_grid_view : Raw.Grid_view.t
 end

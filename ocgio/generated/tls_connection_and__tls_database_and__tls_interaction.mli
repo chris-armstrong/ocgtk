@@ -14,6 +14,8 @@
 class type tls_connection_t = object
   inherit Io_stream.io_stream_t
 
+  (** {2:signals Signals} *)
+
   method on_accept_certificate :
     ?after:bool ->
     callback:
@@ -60,6 +62,8 @@ class type tls_connection_t = object
       If you are doing I/O in another thread, you do not need to worry about
       this, and can simply block in the signal handler until the UI thread
       returns an answer. *)
+
+  (** {2:methods Methods} *)
 
   method emit_accept_certificate :
     Tls_certificate.tls_certificate_t -> Enums.tlscertificateflags -> bool
@@ -255,12 +259,16 @@ class type tls_connection_t = object
       on client-side connections, unless that bit is not set in
       [GTlsClientConnection:validation]-flags). *)
 
+  (** {2:properties Properties} *)
+
   method base_io_stream : Io_stream.io_stream_t
   (** The [GIOStream] that the connection wraps. The connection holds a
       reference to this stream, and may run operations on the stream from other
       threads throughout its lifetime. Consequently, after the [GIOStream] has
       been constructed, application code may only run its own operations on this
       stream when no [GIOStream] operations are running. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_connection : Raw.Tls_connection.t
 end
@@ -277,6 +285,8 @@ end
     Most common client applications will not directly interact with
     [GTlsDatabase]. It is used internally by [Gio.TlsConnection]. *)
 and tls_database_t = object
+  (** {2:methods Methods} *)
+
   method create_certificate_handle :
     Tls_certificate.tls_certificate_t -> string option
   (** Create a handle string for the certificate. The database will only be able
@@ -440,6 +450,8 @@ and tls_database_t = object
       [error] will be set accordingly. [error] is not set when [chain] is
       successfully analyzed but found to be invalid. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tls_database : Raw.Tls_database.t
 end
 
@@ -466,6 +478,8 @@ end
     [G_TLS_INTERACTION_UNHANDLED]. If a derived class implements an async
     method, it must also implement the corresponding finish method. *)
 and tls_interaction_t = object
+  (** {2:methods Methods} *)
+
   method ask_password :
     Tls_password.tls_password_t ->
     Cancellable.cancellable_t option ->
@@ -584,6 +598,8 @@ and tls_interaction_t = object
       If the interaction is cancelled by the cancellation object, or by the user
       then [G_TLS_INTERACTION_FAILED] will be returned with an error that
       contains a [G_IO_ERROR_CANCELLED] error code. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_interaction : Raw.Tls_interaction.t
 end

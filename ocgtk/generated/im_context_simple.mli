@@ -10,8 +10,12 @@
 class type im_context_simple_t = object
   inherit Im_context.im_context_t
 
+  (** {2:methods Methods} *)
+
   method add_compose_file : string -> unit
   (** Adds an additional table from the X11 compose file. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_im_context_simple : Raw.Im_context_simple.t
 end

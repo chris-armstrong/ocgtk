@@ -21,6 +21,8 @@
 
     More colors may be added in the future. *)
 class type symbolic_paintable_t = object
+  (** {2:methods Methods} *)
+
   method snapshot_symbolic :
     Ocgdk.Snapshot.snapshot_t ->
     float ->
@@ -32,6 +34,8 @@ class type symbolic_paintable_t = object
 
       If less than 4 colors are provided, GTK will pad the array with default
       colors. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_symbolic_paintable : Raw.Symbolic_paintable.t
 end

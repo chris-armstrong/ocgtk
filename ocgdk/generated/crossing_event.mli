@@ -11,6 +11,8 @@
 class type crossing_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
+  (** {2:methods Methods} *)
+
   method get_detail : unit -> Enums.notifytype
   (** Extracts the notify detail from a crossing event. *)
 
@@ -19,6 +21,8 @@ class type crossing_event_t = object
 
   method get_mode : unit -> Enums.crossingmode
   (** Extracts the crossing mode from a crossing event. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_crossing_event : Raw.Crossing_event.t
 end

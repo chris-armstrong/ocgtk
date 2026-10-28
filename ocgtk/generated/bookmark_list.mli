@@ -19,6 +19,8 @@
 class type bookmark_list_t = object
   inherit Ocgio.List_model.list_model_t
 
+  (** {2:methods Methods} *)
+
   method get_attributes : unit -> string option
   (** Gets the attributes queried on the children. *)
 
@@ -46,11 +48,15 @@ class type bookmark_list_t = object
 
       The default IO priority is [G_PRIORITY_DEFAULT]. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bookmark_list : Raw.Bookmark_list.t
 end

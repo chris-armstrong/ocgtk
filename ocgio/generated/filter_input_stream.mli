@@ -18,6 +18,8 @@
 class type filter_input_stream_t = object
   inherit Input_stream.input_stream_t
 
+  (** {2:methods Methods} *)
+
   method get_base_stream : unit -> Input_stream.input_stream_t
   (** Gets the base stream for the filter stream. *)
 
@@ -26,6 +28,8 @@ class type filter_input_stream_t = object
 
   method set_close_base_stream : bool -> unit
   (** Sets whether the base stream will be closed when [stream] is closed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_filter_input_stream : Raw.Filter_input_stream.t
 end

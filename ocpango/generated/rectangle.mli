@@ -14,6 +14,8 @@
     of a single glyph or section of text. (See, for instance,
     [Pango.Font.get_glyph_extents].) *)
 class type rectangle_t = object
+  (** {2:conversions Conversions} *)
+
   method as_rectangle : Raw.Rectangle.t
 end
 

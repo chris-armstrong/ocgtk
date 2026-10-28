@@ -1,4 +1,6 @@
 class type cell_editable_t = object
+  (** {2:signals Signals} *)
+
   method on_editing_done :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This signal is a sign for the cell renderer to update its value from the
@@ -27,6 +29,8 @@ class type cell_editable_t = object
       gtk_cell_editable_remove_widget() is a convenience method for emitting
       [GtkCellEditable::remove-widget]. *)
 
+  (** {2:methods Methods} *)
+
   method editing_done : unit -> unit
   (** Emits the [GtkCellEditable::editing-done] signal. *)
 
@@ -48,11 +52,15 @@ class type cell_editable_t = object
       its lifetime is temporary and does not persist across other edits and/or
       cells. *)
 
+  (** {2:properties Properties} *)
+
   method editing_canceled : bool
   (** Indicates whether editing on the cell has been canceled. *)
 
   method set_editing_canceled : bool -> unit
   (** Indicates whether editing on the cell has been canceled. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_editable : Raw.Cell_editable.t
 end

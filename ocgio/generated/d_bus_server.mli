@@ -37,6 +37,8 @@
 class type d_bus_server_t = object
   inherit Initable.initable_t
 
+  (** {2:signals Signals} *)
+
   method on_new_connection :
     ?after:bool ->
     callback:(connection:D_bus_connection.d_bus_connection_t -> bool) ->
@@ -63,6 +65,8 @@ class type d_bus_server_t = object
       suitable to call g_dbus_connection_register_object() or similar from the
       signal handler. *)
 
+  (** {2:methods Methods} *)
+
   method get_client_address : unit -> string
   (** Gets a
       {{:https://dbus.freedesktop.org/doc/dbus-specification.html#addresses}D-Bus
@@ -86,12 +90,16 @@ class type d_bus_server_t = object
   method stop : unit -> unit
   (** Stops [server]. *)
 
+  (** {2:properties Properties} *)
+
   method address : string
   (** The D-Bus address to listen on. *)
 
   method authentication_observer : D_bus_auth_observer.d_bus_auth_observer_t
   (** A [GDBusAuthObserver] object to assist in the authentication process or
       [NULL]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_server : Raw.D_bus_server.t
 end

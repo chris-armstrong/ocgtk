@@ -16,12 +16,16 @@
 
     There is also an implementation for use inside Flatpak sandboxes. *)
 class type network_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_network_changed :
     ?after:bool ->
     callback:(network_available:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the network configuration changes. *)
+
+  (** {2:methods Methods} *)
 
   method can_reach :
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -78,6 +82,8 @@ class type network_monitor_t = object
   method get_network_metered : unit -> bool
   (** Checks if the network is metered. See [GNetworkMonitor:network]-metered
       for more details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_network_monitor : Raw.Network_monitor.t
 end

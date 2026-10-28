@@ -1,4 +1,6 @@
 class type input_vector_t = object
+  (** {2:conversions Conversions} *)
+
   method as_input_vector : Raw.Input_vector.t
 end
 

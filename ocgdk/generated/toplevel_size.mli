@@ -9,6 +9,8 @@
 
     Contains information that is useful to compute the size of a toplevel. *)
 class type toplevel_size_t = object
+  (** {2:methods Methods} *)
+
   method set_min_size : int -> int -> unit
   (** Sets the minimum size of the toplevel.
 
@@ -36,6 +38,8 @@ class type toplevel_size_t = object
       The size should be within the bounds (see [Gdk.ToplevelSize.get_bounds]).
       The set size should be considered as a hint, and should not be assumed to
       be respected by the windowing system, or backend. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_toplevel_size : Raw.Toplevel_size.t
 end

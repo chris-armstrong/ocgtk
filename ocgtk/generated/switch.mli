@@ -14,6 +14,8 @@ class type switch_t = object
 
   inherit Actionable.actionable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to animate the switch.
@@ -38,6 +40,8 @@ class type switch_t = object
       signal handler should return [TRUE] to prevent the default handler from
       running. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Gets whether the [GtkSwitch] is in its “on” or “off” state. *)
 
@@ -54,6 +58,8 @@ class type switch_t = object
       handler in order to set up delayed state changes.
 
       See [Gtk.Switch::state-set] for details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_switch : Raw.Switch.t
 end

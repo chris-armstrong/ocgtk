@@ -15,6 +15,8 @@
     individual axis values, use the values of the values of the [Gdk.AxisUse]
     enumerations as indices. *)
 class type time_coord_t = object
+  (** {2:conversions Conversions} *)
+
   method as_time_coord : Raw.Time_coord.t
 end
 

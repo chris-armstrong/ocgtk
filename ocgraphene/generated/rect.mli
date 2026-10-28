@@ -21,6 +21,8 @@
     internally operate on a normalized copy; all functions returning a
     #graphene_rect_t will always return a normalized rectangle. *)
 class type rect_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : Raw.Point.t -> bool
   (** Checks whether a #graphene_rect_t contains the given coordinates. *)
 
@@ -90,6 +92,8 @@ class type rect_t = object
   (** Rounds the origin and the size of the given rectangle to their nearest
       integer values; the rounding is guaranteed to be large enough to contain
       the original rectangle. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rect : Raw.Rect.t
 end

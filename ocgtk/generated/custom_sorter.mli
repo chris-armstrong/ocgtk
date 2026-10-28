@@ -10,6 +10,9 @@
     Sorts items via a callback function. *)
 class type custom_sorter_t = object
   inherit Sorter.sorter_t
+
+  (** {2:conversions Conversions} *)
+
   method as_custom_sorter : Raw.Custom_sorter.t
 end
 

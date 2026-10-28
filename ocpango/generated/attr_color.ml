@@ -1,4 +1,6 @@
 class type attr_color_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_color : Raw.Attr_color.t
 end
 

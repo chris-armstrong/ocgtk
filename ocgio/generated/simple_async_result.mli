@@ -11,6 +11,8 @@
 class type simple_async_result_t = object
   inherit Async_result.async_result_t
 
+  (** {2:methods Methods} *)
+
   method complete : unit -> unit
   (** Completes an asynchronous I/O job immediately. Must be called in the
       thread where the asynchronous result was to be delivered, as it invokes
@@ -74,6 +76,8 @@ class type simple_async_result_t = object
   method set_op_res_gssize : int -> unit
   (** Sets the operation result within the asynchronous result to the given
       [op_res]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_simple_async_result : Raw.Simple_async_result.t
 end

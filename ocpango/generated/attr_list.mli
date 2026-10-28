@@ -23,6 +23,8 @@
     should not use a single [PangoAttrList] for more than one paragraph of text.
 *)
 class type attr_list_t = object
+  (** {2:methods Methods} *)
+
   method change : Raw.Attribute.t -> unit
   (** Insert the given attribute into the [PangoAttrList].
 
@@ -126,6 +128,8 @@ class type attr_list_t = object
 
       Attributes start and end positions are updated if they are behind [pos] +
       [remove]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_attr_list : Raw.Attr_list.t
 end

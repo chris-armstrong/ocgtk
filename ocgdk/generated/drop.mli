@@ -7,6 +7,8 @@
 (** {1:class Class} *)
 
 class type drop_t = object
+  (** {2:methods Methods} *)
+
   method finish : Enums.dragaction -> unit
   (** Ends the drag operation after a drop.
 
@@ -67,6 +69,8 @@ class type drop_t = object
       [GDK_DRAG_ENTER] or [GDK_DRAG_MOTION] events. If the destination does not
       yet know the exact actions it supports, it should set any possible actions
       first and then later call this function again. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drop : Raw.Drop.t
 end

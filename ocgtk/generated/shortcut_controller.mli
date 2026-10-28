@@ -58,6 +58,8 @@ class type shortcut_controller_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method add_shortcut : Shortcut.shortcut_t -> unit
   (** Adds [shortcut] to the list of shortcuts handled by [self].
 
@@ -104,11 +106,15 @@ class type shortcut_controller_t = object
       With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
       widget has focus. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_controller : Raw.Shortcut_controller.t
 end

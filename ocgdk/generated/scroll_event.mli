@@ -11,6 +11,8 @@
 class type scroll_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
+  (** {2:methods Methods} *)
+
   method get_direction : unit -> Enums.scrolldirection
   (** Extracts the direction of a scroll event. *)
 
@@ -29,6 +31,8 @@ class type scroll_event_t = object
       kinetic scrolling based on the current velocity.
 
       Stop scroll events always have a delta of 0/0. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scroll_event : Raw.Scroll_event.t
 end

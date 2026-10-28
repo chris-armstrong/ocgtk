@@ -14,6 +14,8 @@
     The contents of a #graphene_quad_t are private and should never be accessed
     directly. *)
 class type quad_t = object
+  (** {2:methods Methods} *)
+
   method contains : Raw.Point.t -> bool
   (** Checks if the given #graphene_quad_t contains the given #graphene_point_t.
   *)
@@ -31,6 +33,8 @@ class type quad_t = object
   method init_from_rect : Raw.Rect.t -> Raw.Quad.t
   (** Initializes a #graphene_quad_t using the four corners of the given
       #graphene_rect_t. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_quad : Raw.Quad.t
 end

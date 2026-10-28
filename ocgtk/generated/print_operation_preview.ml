@@ -1,4 +1,6 @@
 class type print_operation_preview_t = object
+  (** {2:signals Signals} *)
+
   method on_got_page_size :
     ?after:bool ->
     callback:
@@ -23,6 +25,8 @@ class type print_operation_preview_t = object
 
       A handler for this signal can be used for setup tasks. *)
 
+  (** {2:methods Methods} *)
+
   method end_preview : unit -> unit
   (** Ends a preview.
 
@@ -43,6 +47,8 @@ class type print_operation_preview_t = object
 
       Note that this function requires a suitable cairo context to be associated
       with the print context. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_operation_preview : Raw.Print_operation_preview.t
 end

@@ -2,6 +2,8 @@ class type map_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
 
+  (** {2:methods Methods} *)
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
   (** Gets the model that is currently being mapped or [NULL] if none. *)
 
@@ -15,11 +17,15 @@ class type map_list_model_t = object
       expected by the map function. It assumes that the caller knows what they
       are doing and have set up an appropriate map function. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_map_list_model : Raw.Map_list_model.t
 end

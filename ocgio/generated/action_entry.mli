@@ -19,6 +19,8 @@
 
     See [Gio.ActionMap.add_action_entries] for an example. *)
 class type action_entry_t = object
+  (** {2:conversions Conversions} *)
+
   method as_action_entry : Raw.Action_entry.t
 end
 

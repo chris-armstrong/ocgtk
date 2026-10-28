@@ -5,6 +5,8 @@ class type socket_t = object
   inherit Datagram_based.datagram_based_t
   inherit Initable.initable_t
 
+  (** {2:methods Methods} *)
+
   method accept :
     Cancellable.cancellable_t option -> (socket_t, GError.t) result
   (** Accept incoming connections on a connection-based socket. This removes the
@@ -471,14 +473,20 @@ class type socket_t = object
       No other types of sockets are currently considered as being capable of
       speaking IPv4. *)
 
+  (** {2:properties Properties} *)
+
   method type_ : Enums.sockettype
   (** The socket’s type. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket : Raw.Socket.t
 end
 
 and socket_connection_t = object
   inherit Io_stream.io_stream_t
+
+  (** {2:methods Methods} *)
 
   method connect :
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -521,6 +529,8 @@ and socket_connection_t = object
   method is_connected : unit -> bool
   (** Checks if [connection] is connected. This is equivalent to calling
       g_socket_is_connected() on [connection]'s underlying [GSocket]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_connection : Raw.Socket_connection.t
 end

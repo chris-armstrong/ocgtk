@@ -10,6 +10,8 @@
 (** {1:class Class} *)
 
 class type list_model_t = object
+  (** {2:signals Signals} *)
+
   method on_items_changed :
     ?after:bool ->
     callback:(position:int -> removed:int -> added:int -> unit) ->
@@ -21,6 +23,8 @@ class type list_model_t = object
 
       Note: If [removed != added], the positions of all later items in the model
       change. *)
+
+  (** {2:methods Methods} *)
 
   method get_item_type : unit -> Gobject.Type.t
   (** Gets the type of the items in [list].
@@ -73,6 +77,8 @@ class type list_model_t = object
       accesses to the model via the API, without returning to the mainloop, and
       without calling other code, will continue to view the same contents of the
       model. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_model : Raw.List_model.t
 end

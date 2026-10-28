@@ -31,6 +31,8 @@
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
     not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 class type dtls_connection_t = object
+  (** {2:signals Signals} *)
+
   method on_accept_certificate :
     ?after:bool ->
     callback:
@@ -77,6 +79,8 @@ class type dtls_connection_t = object
       If you are doing I/O in another thread, you do not need to worry about
       this, and can simply block in the signal handler until the UI thread
       returns an answer. *)
+
+  (** {2:methods Methods} *)
 
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Close the DTLS connection. This is equivalent to calling
@@ -316,9 +320,13 @@ class type dtls_connection_t = object
   (** Finish an asynchronous TLS shutdown operation. See
       g_dtls_connection_shutdown() for more information. *)
 
+  (** {2:properties Properties} *)
+
   method base_socket : Datagram_based.datagram_based_t
   (** The [GDatagramBased] that the connection wraps. Note that this may be any
       implementation of [GDatagramBased], not just a [GSocket]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dtls_connection : Raw.Dtls_connection.t
 end

@@ -30,6 +30,9 @@ class type separator_t = object
     .widget_t
 
   inherit Orientable.orientable_t
+
+  (** {2:conversions Conversions} *)
+
   method as_separator : Raw.Separator.t
 end
 

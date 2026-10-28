@@ -26,6 +26,8 @@
 class type cell_renderer_pixbuf_t = object
   inherit Cell_renderer.cell_renderer_t
 
+  (** {2:properties Properties} *)
+
   method gicon : Ocgio.Icon.icon_t
   (** The GIcon representing the icon to display. If the icon theme is changed,
       the image will be updated automatically. *)
@@ -72,6 +74,8 @@ class type cell_renderer_pixbuf_t = object
 
   method set_texture : Ocgdk.Texture.texture_t -> unit
   (** Set property: texture *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_pixbuf : Raw.Cell_renderer_pixbuf.t
 end

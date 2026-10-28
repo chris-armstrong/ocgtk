@@ -1,6 +1,8 @@
 class type css_provider_t = object
   inherit Style_provider.style_provider_t
 
+  (** {2:methods Methods} *)
+
   method load_from_bytes : Glib_bytes.t -> unit
   (** Loads [data] into [css_provider].
 
@@ -45,6 +47,8 @@ class type css_provider_t = object
       Using [Gtk.CssProvider.load_from_string] with the return value from this
       function on a new provider created with [Gtk.CssProvider.new] will
       basically create a duplicate of this [provider]. *)
+
+  (** {2:properties Properties} *)
 
   method prefers_color_scheme : Enums.interfacecolorscheme
   (** Define the color scheme used for rendering the user interface.
@@ -117,6 +121,8 @@ class type css_provider_t = object
       ]}
 
       Changing this setting will cause a re-render of the style sheet. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_css_provider : Raw.Css_provider.t
 end

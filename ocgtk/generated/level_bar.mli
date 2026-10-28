@@ -15,6 +15,8 @@ class type level_bar_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_offset_changed :
     ?after:bool ->
     callback:(name:string -> unit) ->
@@ -27,6 +29,8 @@ class type level_bar_t = object
      The signal supports detailed connections; you can connect to the\n\
      detailed signal \"changed::x\" in order to only receive callbacks when\n\
      the value of offset \"x\" changes."]
+
+  (** {2:methods Methods} *)
 
   method add_offset_value : string -> float -> unit
   (** Adds a new offset marker on [self] at the position specified by [value].
@@ -80,6 +84,8 @@ class type level_bar_t = object
 
   method set_value : float -> unit
   (** Sets the value of the [GtkLevelBar]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_level_bar : Raw.Level_bar.t
 end

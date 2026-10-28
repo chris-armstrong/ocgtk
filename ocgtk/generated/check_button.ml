@@ -5,6 +5,8 @@ class type check_button_t = object
 
   inherit Actionable.actionable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to when the check button is activated.
@@ -21,6 +23,8 @@ class type check_button_t = object
   method on_toggled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the buttons's [Gtk.CheckButton:active] property changes. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> bool
   (** Returns whether the check button is active. *)
@@ -94,6 +98,8 @@ class type check_button_t = object
       If [setting] is [TRUE], an underscore character in [self]'s label
       indicates a mnemonic accelerator key. This behavior is similar to
       [Gtk.Label:use-underline]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_check_button : Raw.Check_button.t
 end

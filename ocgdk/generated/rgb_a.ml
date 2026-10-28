@@ -1,4 +1,6 @@
 class type rgb_a_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Rgb_a.t -> bool
   (** Compares two [GdkRGBA] colors. *)
 
@@ -50,6 +52,8 @@ class type rgb_a_t = object
       Note that this string representation may lose some precision, since “r”,
       “g” and “b” are represented as 8-bit integers. If this is a concern, you
       should use a different representation. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rgb_a : Raw.Rgb_a.t
 end

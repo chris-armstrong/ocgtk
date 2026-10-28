@@ -1,4 +1,6 @@
 class type icon_theme_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the icon theme changes.
@@ -6,6 +8,8 @@ class type icon_theme_t = object
       This can happen because current icon theme is switched or because GTK
       detects that a change has occurred in the contents of the current icon
       theme. *)
+
+  (** {2:methods Methods} *)
 
   method add_resource_path : string -> unit
   (** Adds a resource path that will be looked at when looking for icons,
@@ -114,6 +118,8 @@ class type icon_theme_t = object
 
       This function cannot be called on the icon theme objects returned from
       [Gtk.IconTheme.get_for_display]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon_theme : Raw.Icon_theme.t
 end

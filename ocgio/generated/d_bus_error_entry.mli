@@ -10,6 +10,8 @@
 
     Struct used in [Gio.DBusError.register_error_domain]. *)
 class type d_bus_error_entry_t = object
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_error_entry : Raw.D_bus_error_entry.t
 end
 

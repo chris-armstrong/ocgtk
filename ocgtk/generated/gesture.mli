@@ -11,6 +11,8 @@ class type gesture_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:methods Methods} *)
+
   method get_device : unit -> Ocgdk.Device.device_t option
   (** Returns the logical [GdkDevice] that is currently operating on [gesture].
 
@@ -165,8 +167,12 @@ class type gesture_t = object
   method ungroup : unit -> unit
   (** Separates [gesture] into an isolated group. *)
 
+  (** {2:properties Properties} *)
+
   method n_points : int
   (** The number of touch points that trigger recognition on this gesture. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture : Raw.Gesture.t
 end

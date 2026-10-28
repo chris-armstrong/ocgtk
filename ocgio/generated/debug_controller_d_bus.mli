@@ -12,6 +12,8 @@ class type debug_controller_d_bus_t = object
   inherit Debug_controller.debug_controller_t
   inherit Initable.initable_t
 
+  (** {2:signals Signals} *)
+
   method on_authorize :
     ?after:bool ->
     callback:
@@ -38,6 +40,8 @@ class type debug_controller_d_bus_t = object
 
       The default class handler just returns [TRUE]. *)
 
+  (** {2:methods Methods} *)
+
   method stop : unit -> unit
   (** Stop the debug controller, unregistering its object from the bus.
 
@@ -57,12 +61,16 @@ class type debug_controller_d_bus_t = object
       Calling this method from within a [GDebugControllerDBus::authorize] signal
       handler will cause a deadlock and must not be done. *)
 
+  (** {2:properties Properties} *)
+
   method connection : D_bus_connection.d_bus_connection_t
   (** The D-Bus connection to expose the debugging interface on.
 
       Typically this will be the same connection (to the system or session bus)
       which the rest of the application or service’s D-Bus objects are
       registered on. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_debug_controller_d_bus : Raw.Debug_controller_d_bus.t
 end

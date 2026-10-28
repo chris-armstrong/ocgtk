@@ -3,6 +3,8 @@ class type revealer_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -52,6 +54,8 @@ class type revealer_t = object
       [revealer].
 
       Available types include various kinds of fades and slides. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_revealer : Raw.Revealer.t
 end

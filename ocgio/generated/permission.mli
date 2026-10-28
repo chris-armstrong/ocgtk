@@ -24,6 +24,8 @@
     in a dialog and to provide the mechanism to invoke when that button is
     clicked. *)
 class type permission_t = object
+  (** {2:methods Methods} *)
+
   method acquire : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Attempts to acquire the permission represented by [permission].
 
@@ -93,6 +95,8 @@ class type permission_t = object
 
       This is the second half of the asynchronous version of
       g_permission_release(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_permission : Raw.Permission.t
 end

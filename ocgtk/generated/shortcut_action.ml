@@ -1,4 +1,6 @@
 class type shortcut_action_t = object
+  (** {2:methods Methods} *)
+
   method activate :
     Enums.shortcutactionflags ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -18,6 +20,8 @@ class type shortcut_action_t = object
 
       This is a small wrapper around [Gtk.ShortcutAction.print] to help when
       debugging. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_action : Raw.Shortcut_action.t
 end

@@ -1,4 +1,6 @@
 class type menu_item_t = object
+  (** {2:methods Methods} *)
+
   method get_attribute_value :
     string -> Gvariant_type.t option -> Gvariant.t option
   (** Queries the named [attribute] on [menu_item].
@@ -122,6 +124,8 @@ class type menu_item_t = object
      link is unset.\n\n\
      The effect of having one menu appear as a submenu of another is\n\
      exactly as it sounds."]
+
+  (** {2:conversions Conversions} *)
 
   method as_menu_item : Raw.Menu_item.t
 end

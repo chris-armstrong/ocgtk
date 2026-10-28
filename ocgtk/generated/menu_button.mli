@@ -69,12 +69,16 @@ class type menu_button_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to when the menu button is activated.
 
       The [::activate] signal on [GtkMenuButton] is an action signal and
       emitting it causes the button to pop up its menu. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> bool
   (** Returns whether the menu button is active. *)
@@ -203,6 +207,8 @@ class type menu_button_t = object
 
   method set_use_underline : bool -> unit
   (** If true, an underline in the text indicates a mnemonic. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_menu_button : Raw.Menu_button.t
 end

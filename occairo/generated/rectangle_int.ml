@@ -1,4 +1,6 @@
 class type rectangle_int_t = object
+  (** {2:conversions Conversions} *)
+
   method as_rectangle_int : Raw.Rectangle_int.t
 end
 

@@ -1,12 +1,16 @@
 class type emoji_chooser_t = object
   inherit Popover.popover_t
 
+  (** {2:signals Signals} *)
+
   method on_emoji_picked :
     ?after:bool ->
     callback:(text:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the user selects an Emoji. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_emoji_chooser : Raw.Emoji_chooser.t
 end

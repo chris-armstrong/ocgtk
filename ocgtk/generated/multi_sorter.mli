@@ -18,6 +18,8 @@ class type multi_sorter_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method append : Sorter.sorter_t -> unit
   (** Add [sorter] to [self] to use for sorting at the end.
 
@@ -30,11 +32,15 @@ class type multi_sorter_t = object
 
       If [position] is larger than the number of sorters, nothing happens. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_multi_sorter : Raw.Multi_sorter.t
 end

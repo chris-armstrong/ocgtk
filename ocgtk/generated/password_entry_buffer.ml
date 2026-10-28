@@ -1,5 +1,8 @@
 class type password_entry_buffer_t = object
   inherit Entry_buffer.entry_buffer_t
+
+  (** {2:conversions Conversions} *)
+
   method as_password_entry_buffer : Raw.Password_entry_buffer.t
 end
 

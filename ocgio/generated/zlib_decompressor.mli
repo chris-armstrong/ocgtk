@@ -15,11 +15,17 @@
 class type zlib_decompressor_t = object
   inherit Converter.converter_t
 
+  (** {2:methods Methods} *)
+
   method get_file_info : unit -> File_info.file_info_t option
   (** Gets the [Gio.ZlibDecompressor:file-info] property. *)
 
+  (** {2:properties Properties} *)
+
   method format : Enums.zlibcompressorformat
   (** The format of the compressed data. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_zlib_decompressor : Raw.Zlib_decompressor.t
 end

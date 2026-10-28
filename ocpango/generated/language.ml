@@ -1,4 +1,6 @@
 class type language_t = object
+  (** {2:methods Methods} *)
+
   method get_sample_string : unit -> string
   [@@ocaml.doc
     "Get a string that is representative of the characters needed to\n\
@@ -42,6 +44,8 @@ class type language_t = object
   (** Gets the RFC-3066 format string representing the given language tag.
 
       Returns (transfer none): a string representing the language tag *)
+
+  (** {2:conversions Conversions} *)
 
   method as_language : Raw.Language.t
 end

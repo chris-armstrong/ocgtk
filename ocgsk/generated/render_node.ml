@@ -1,4 +1,6 @@
 class type render_node_t = object
+  (** {2:methods Methods} *)
+
   method draw : Occairo.Context.context_t -> unit
   (** Draws the contents of a render node on a cairo context.
 
@@ -40,6 +42,8 @@ class type render_node_t = object
 
       It is mostly intended for use inside a debugger to quickly dump a render
       node to a file for later inspection. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_render_node : Raw.Render_node.t
 end

@@ -36,6 +36,8 @@
     construction and automatically initialize them, throwing an exception on
     failure. *)
 class type initable_t = object
+  (** {2:methods Methods} *)
+
   method init : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Initializes the object implementing the interface.
 
@@ -75,6 +77,8 @@ class type initable_t = object
       this pattern, a caller would expect to be able to call g_initable_init()
       on the result of g_object_new(), regardless of whether it is in fact a new
       instance. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_initable : Raw.Initable.t
 end

@@ -1,6 +1,8 @@
 class type bool_filter_t = object
   inherit Filter.filter_t
 
+  (** {2:methods Methods} *)
+
   method get_expression : unit -> Expression.expression_t option
   (** Gets the expression that the filter evaluates for each item. *)
 
@@ -15,6 +17,8 @@ class type bool_filter_t = object
 
   method set_invert : bool -> unit
   (** Sets whether the filter should invert the expression. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bool_filter : Raw.Bool_filter.t
 end

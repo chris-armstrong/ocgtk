@@ -1,4 +1,6 @@
 class type size_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Size.t -> bool
   (** Checks whether the two give #graphene_size_t are equal. *)
 
@@ -8,6 +10,8 @@ class type size_t = object
   method init_from_size : Raw.Size.t -> Raw.Size.t
   (** Initializes a #graphene_size_t using the width and height of the given
       [src]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_size : Raw.Size.t
 end

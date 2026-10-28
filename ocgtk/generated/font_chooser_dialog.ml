@@ -1,6 +1,9 @@
 class type font_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Font_chooser.font_chooser_t
+
+  (** {2:conversions Conversions} *)
+
   method as_font_chooser_dialog : Raw.Font_chooser_dialog.t
 end
 

@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type box_t = object
+  (** {2:methods Methods} *)
+
   method contains_box : Raw.Box.t -> bool
   (** Checks whether the #graphene_box_t [a] contains the given #graphene_box_t
       [b]. *)
@@ -44,10 +46,14 @@ class type box_t = object
       If [n_vectors] is 0, the returned box is initialized with
       graphene_box_empty(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_box : Raw.Box.t
 end
 
 and sphere_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given [point] is contained in the volume of a
       #graphene_sphere_t. *)
@@ -84,6 +90,8 @@ and sphere_t = object
 
   method is_empty : unit -> bool
   (** Checks whether the sphere has a zero radius. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_sphere : Raw.Sphere.t
 end

@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Rectangle].} *)
 class type rectangle_t = object
+  (** {2:conversions Conversions} *)
+
   method as_rectangle : Raw.Rectangle.t
 end
 

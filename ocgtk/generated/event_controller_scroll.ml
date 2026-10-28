@@ -3,6 +3,8 @@ class type event_controller_scroll_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_decelerate :
     ?after:bool ->
     callback:(vel_x:float -> vel_y:float -> unit) ->
@@ -37,6 +39,8 @@ class type event_controller_scroll_t = object
 
       It will only be emitted on devices capable of it. *)
 
+  (** {2:methods Methods} *)
+
   method get_flags : unit -> Enums.eventcontrollerscrollflags
   (** Gets the flags conditioning the scroll controller behavior. *)
 
@@ -49,6 +53,8 @@ class type event_controller_scroll_t = object
 
   method set_flags : Enums.eventcontrollerscrollflags -> unit
   (** Sets the flags conditioning scroll controller behavior. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_scroll : Raw.Event_controller_scroll.t
 end

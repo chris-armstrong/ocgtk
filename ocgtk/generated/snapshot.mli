@@ -24,6 +24,8 @@
 class type snapshot_t = object
   inherit Ocgdk.Snapshot.snapshot_t
 
+  (** {2:methods Methods} *)
+
   method append_border :
     Ocgsk.Rounded_rect.rounded_rect_t ->
     float array ->

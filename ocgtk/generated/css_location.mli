@@ -9,6 +9,8 @@
 
     Points at a location inside a CSS stream. *)
 class type css_location_t = object
+  (** {2:conversions Conversions} *)
+
   method as_css_location : Raw.Css_location.t
 end
 

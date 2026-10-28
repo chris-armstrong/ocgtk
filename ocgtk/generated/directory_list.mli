@@ -10,6 +10,8 @@
 class type directory_list_t = object
   inherit Ocgio.List_model.list_model_t
 
+  (** {2:methods Methods} *)
+
   method get_attributes : unit -> string option
   (** Gets the attributes queried on the children. *)
 
@@ -72,11 +74,15 @@ class type directory_list_t = object
       list, the directory is reloaded to avoid missing files that appeared
       between the initial loading and when monitoring was turned on. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_directory_list : Raw.Directory_list.t
 end

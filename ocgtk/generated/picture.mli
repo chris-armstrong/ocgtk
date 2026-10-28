@@ -12,6 +12,8 @@ class type picture_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_alternative_text : unit -> string option
   (** Gets the alternative textual description of the picture.
 
@@ -110,6 +112,8 @@ class type picture_t = object
   (** Makes [self] load and display the resource at the given [resource_path].
 
       This is a utility function that calls [Gtk.Picture.set_file]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_picture : Raw.Picture.t
 end

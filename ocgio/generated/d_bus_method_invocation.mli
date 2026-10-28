@@ -18,6 +18,8 @@
     [Gio.DBusInterfaceVTable] that was passed to
     [Gio.DBusConnection.register_object]. *)
 class type d_bus_method_invocation_t = object
+  (** {2:methods Methods} *)
+
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] the method was invoked on. *)
 
@@ -135,6 +137,8 @@ class type d_bus_method_invocation_t = object
       This method will take ownership of [invocation]. See
       [GDBusInterfaceVTable] for more information about the ownership of
       [invocation]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_method_invocation : Raw.D_bus_method_invocation.t
 end

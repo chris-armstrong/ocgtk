@@ -12,6 +12,8 @@
 
     See also [Gtk.PrintSettings.set_page_ranges]. *)
 class type page_range_t = object
+  (** {2:conversions Conversions} *)
+
   method as_page_range : Raw.Page_range.t
 end
 

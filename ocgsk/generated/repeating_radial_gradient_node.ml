@@ -1,6 +1,8 @@
 class type repeating_radial_gradient_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:conversions Conversions} *)
+
   method as_repeating_radial_gradient_node :
     Raw.Repeating_radial_gradient_node.t
 end

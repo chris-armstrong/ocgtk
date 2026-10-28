@@ -12,6 +12,8 @@
     [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
     representing a client-side TLS connection. *)
 class type tls_client_connection_t = object
+  (** {2:methods Methods} *)
+
   method copy_session_state : tls_client_connection_t -> unit
   (** Possibly copies session state from one connection to another, for use in
       TLS session resumption. This is not normally needed, but may be used when
@@ -86,6 +88,8 @@ class type tls_client_connection_t = object
       This function does not work as originally designed and is impossible to
       use correctly. See [GTlsClientConnection:validation]-flags for more
       information. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_client_connection : Raw.Tls_client_connection.t
 end

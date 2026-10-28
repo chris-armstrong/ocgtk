@@ -17,6 +17,8 @@
 class type im_multicontext_t = object
   inherit Im_context.im_context_t
 
+  (** {2:methods Methods} *)
+
   method get_context_id : unit -> string
   (** Gets the id of the currently active delegate of the [context]. *)
 
@@ -28,6 +30,8 @@ class type im_multicontext_t = object
 
       Setting this to a non-[NULL] value overrides the system-wide IM module
       setting. See the [Gtk.Settings:gtk-im-module] property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_im_multicontext : Raw.Im_multicontext.t
 end

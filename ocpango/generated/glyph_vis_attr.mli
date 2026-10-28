@@ -19,6 +19,8 @@
     ordered in logical order, since visual order is meaningless; that is, in
     Arabic text, accent glyphs follow the glyphs for the base character. *)
 class type glyph_vis_attr_t = object
+  (** {2:conversions Conversions} *)
+
   method as_glyph_vis_attr : Raw.Glyph_vis_attr.t
 end
 

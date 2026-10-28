@@ -31,8 +31,12 @@
 class type threaded_socket_service_t = object
   inherit Socket_service.socket_service_t
 
+  (** {2:properties Properties} *)
+
   method max_threads : int
   (** The maximum number of threads handling clients for this service. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_threaded_socket_service : Raw.Threaded_socket_service.t
 end

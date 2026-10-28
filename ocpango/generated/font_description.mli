@@ -17,6 +17,8 @@
     available on the system and also for specifying the characteristics of a
     font to load. *)
 class type font_description_t = object
+  (** {2:methods Methods} *)
+
   method better_match :
     Raw.Font_description.t option -> Raw.Font_description.t -> bool
   (** Determines if the style attributes of [new_match] are a closer match for
@@ -292,6 +294,8 @@ class type font_description_t = object
   (** Unsets some of the fields in a [PangoFontDescription].
 
       The unset fields will get back to their default values. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_description : Raw.Font_description.t
 end

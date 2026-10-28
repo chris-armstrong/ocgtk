@@ -13,6 +13,8 @@
 class type inset_shadow_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_blur_radius : unit -> float
   (** Retrieves the blur radius to apply to the shadow. *)
 
@@ -33,6 +35,8 @@ class type inset_shadow_node_t = object
 
   method get_spread : unit -> float
   (** Retrieves how much the shadow spreads inwards. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inset_shadow_node : Raw.Inset_shadow_node.t
 end

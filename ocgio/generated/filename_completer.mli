@@ -15,9 +15,13 @@
     in the file system for clues. Can return a list of possible completion
     strings for widget implementations. *)
 class type filename_completer_t = object
+  (** {2:signals Signals} *)
+
   method on_got_completion_data :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the file name completion information comes available. *)
+
+  (** {2:methods Methods} *)
 
   method get_completion_suffix : string -> string option
   (** Obtains a suffix completion for [initial_text] from [completer].
@@ -35,6 +39,8 @@ class type filename_completer_t = object
 
       This function needs to be called before waiting for results from the
       completer to be populated. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_filename_completer : Raw.Filename_completer.t
 end

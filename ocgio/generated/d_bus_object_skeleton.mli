@@ -19,6 +19,8 @@
 class type d_bus_object_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 
+  (** {2:signals Signals} *)
+
   method on_authorize_method :
     ?after:bool ->
     callback:
@@ -35,6 +37,8 @@ class type d_bus_object_skeleton_t = object
       the enclosing object.
 
       The default class handler just returns [TRUE]. *)
+
+  (** {2:methods Methods} *)
 
   method add_interface :
     D_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
@@ -64,11 +68,15 @@ class type d_bus_object_skeleton_t = object
   method set_object_path : string -> unit
   (** Sets the object path for [object]. *)
 
+  (** {2:properties Properties} *)
+
   method g_object_path : string
   (** The object path where the object is exported. *)
 
   method set_g_object_path : string -> unit
   (** The object path where the object is exported. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_object_skeleton : Raw.D_bus_object_skeleton.t
 end

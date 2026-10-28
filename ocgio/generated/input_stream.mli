@@ -22,6 +22,8 @@
 
     All of these functions have async variants too. *)
 class type input_stream_t = object
+  (** {2:methods Methods} *)
+
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
 
@@ -118,6 +120,8 @@ class type input_stream_t = object
 
   method skip_finish : Async_result.async_result_t -> (int, GError.t) result
   (** Finishes a stream skip operation. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_input_stream : Raw.Input_stream.t
 end

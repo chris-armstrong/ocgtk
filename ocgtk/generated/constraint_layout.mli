@@ -14,6 +14,8 @@ class type constraint_layout_t = object
 
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method add_constraint : Constraint.constraint__t -> unit
   (** Adds a constraint to the layout manager.
 
@@ -69,6 +71,8 @@ class type constraint_layout_t = object
   method remove_guide : Constraint_guide.constraint_guide_t -> unit
   (** Removes [guide] from the layout manager, so that it no longer influences
       the layout. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_constraint_layout : Raw.Constraint_layout.t
 end

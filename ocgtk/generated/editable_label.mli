@@ -55,6 +55,8 @@ class type editable_label_t = object
 
   inherit Editable.editable_t
 
+  (** {2:methods Methods} *)
+
   method get_editing : unit -> bool
   (** Returns whether the label is currently in “editing mode”. *)
 
@@ -68,6 +70,8 @@ class type editable_label_t = object
       [Gtk.Editable:text] property value, otherwise the resulting text is
       discarded and the label will keep its previous [Gtk.Editable:text]
       property value. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_editable_label : Raw.Editable_label.t
 end

@@ -1,4 +1,6 @@
 class type cell_renderer_t = object
+  (** {2:signals Signals} *)
+
   method on_editing_canceled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This signal gets emitted when the user cancels the process of editing a
@@ -42,6 +44,8 @@ class type cell_renderer_t = object
           }
       }
       ]} *)
+
+  (** {2:methods Methods} *)
 
   method activate :
     Ocgdk.Event.event_t ->
@@ -144,6 +148,8 @@ class type cell_renderer_t = object
       response to the [GtkCellEditable::editing-done] signal of
       [GtkCellEditable]. *)
 
+  (** {2:properties Properties} *)
+
   method set_cell_background : string -> unit
   (** Set property: cell-background *)
 
@@ -203,6 +209,8 @@ class type cell_renderer_t = object
 
   method set_ypad : int -> unit
   (** Set property: ypad *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer : Raw.Cell_renderer.t
 end

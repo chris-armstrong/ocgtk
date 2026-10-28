@@ -24,6 +24,8 @@
 class type mount_operation_t = object
   inherit Ocgio.Mount_operation.mount_operation_t
 
+  (** {2:methods Methods} *)
+
   method get_display : unit -> Ocgdk.Display.display_t
   (** Gets the display on which windows of the [GtkMountOperation] will be
       shown. *)

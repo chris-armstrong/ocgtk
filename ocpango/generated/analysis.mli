@@ -11,6 +11,8 @@
     The [PangoAnalysis] structure stores information about the properties of a
     segment of text. *)
 class type analysis_t = object
+  (** {2:conversions Conversions} *)
+
   method as_analysis : Raw.Analysis.t
 end
 

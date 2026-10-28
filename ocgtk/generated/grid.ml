@@ -5,6 +5,8 @@ class type grid_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method attach :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -140,6 +142,8 @@ class type grid_t = object
 
   method set_row_spacing : int -> unit
   (** Sets the amount of space between rows of [grid]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_grid : Raw.Grid.t
 end

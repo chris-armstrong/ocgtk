@@ -3,6 +3,8 @@ class type bin_layout_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_manager_t
 
+  (** {2:conversions Conversions} *)
+
   method as_bin_layout : Raw.Bin_layout.t
 end
 

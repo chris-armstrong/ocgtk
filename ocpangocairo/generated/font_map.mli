@@ -15,6 +15,8 @@
     The actual type of the font map will depend on the particular font
     technology Cairo was compiled to use. *)
 class type font_map_t = object
+  (** {2:methods Methods} *)
+
   method get_font_type : unit -> Occairo.Enums.fonttype
   (** Gets the type of Cairo font backend that [fontmap] uses. *)
 
@@ -45,6 +47,8 @@ class type font_map_t = object
       This is a scale factor between points specified in a
       [PangoFontDescription] and Cairo units. The default value is 96, meaning
       that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_map : Raw.Font_map.t
 end

@@ -6,6 +6,8 @@ class type scale_button_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_popdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to dismiss the popup.
@@ -29,6 +31,8 @@ class type scale_button_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the value field has changed. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> bool
   (** Queries a [GtkScaleButton] and returns its current state.
@@ -79,6 +83,8 @@ class type scale_button_t = object
 
       The scale button emits the [Gtk.ScaleButton::value-changed] signal if the
       value changes. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scale_button : Raw.Scale_button.t
 end

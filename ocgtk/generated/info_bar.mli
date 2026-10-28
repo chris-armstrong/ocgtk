@@ -12,6 +12,8 @@ class type info_bar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Gets emitted when the user uses a keybinding to dismiss the info bar.
@@ -30,6 +32,8 @@ class type info_bar_t = object
       The signal is also emitted when the application programmer calls
       [Gtk.InfoBar.response]. The [response_id] depends on which action widget
       was clicked. *)
+
+  (** {2:methods Methods} *)
 
   method add_action_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -118,6 +122,8 @@ class type info_bar_t = object
   (** If true, a standard close button is shown.
 
       When clicked it emits the response [GTK_RESPONSE_CLOSE]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_info_bar : Raw.Info_bar.t
 end

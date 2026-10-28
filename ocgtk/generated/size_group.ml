@@ -1,6 +1,8 @@
 class type size_group_t = object
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method add_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -40,6 +42,8 @@ class type size_group_t = object
       ([GTK_SIZE_GROUP_HORIZONTAL]) all have the same vertical requisition
       ([GTK_SIZE_GROUP_VERTICAL]), or should all have the same requisition in
       both directions ([GTK_SIZE_GROUP_BOTH]). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_size_group : Raw.Size_group.t
 end

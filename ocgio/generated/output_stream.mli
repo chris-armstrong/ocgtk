@@ -26,6 +26,8 @@
     writing, splicing, flushing and closing streams, but {i may} implement
     asynchronous versions. *)
 class type output_stream_t = object
+  (** {2:methods Methods} *)
+
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
 
@@ -123,6 +125,8 @@ class type output_stream_t = object
 
   method write_finish : Async_result.async_result_t -> (int, GError.t) result
   (** Finishes a stream write operation. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_output_stream : Raw.Output_stream.t
 end

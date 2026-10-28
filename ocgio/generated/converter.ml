@@ -1,4 +1,6 @@
 class type converter_t = object
+  (** {2:methods Methods} *)
+
   method convert_bytes : Glib_bytes.t -> (Glib_bytes.t, GError.t) result
   (** Applies [converter] to the data in [bytes]. *)
 
@@ -6,6 +8,8 @@ class type converter_t = object
   (** Resets all internal state in the converter, making it behave as if it was
       just created. If the converter has any internal state that would produce
       output then that output is lost. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_converter : Raw.Converter.t
 end

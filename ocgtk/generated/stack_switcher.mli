@@ -47,11 +47,15 @@ class type stack_switcher_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_stack : unit -> Stack.stack_t option
   (** Retrieves the stack. *)
 
   method set_stack : Stack.stack_t option -> unit
   (** Sets the stack to control. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack_switcher : Raw.Stack_switcher.t
 end

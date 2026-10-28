@@ -1,6 +1,10 @@
 class type string_object_t = object
+  (** {2:methods Methods} *)
+
   method get_string : unit -> string
   (** Returns the string contained in a [GtkStringObject]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_string_object : Raw.String_object.t
 end

@@ -1,4 +1,6 @@
 class type settings_schema_key_t = object
+  (** {2:methods Methods} *)
+
   method get_default_value : unit -> Gvariant.t
   (** Gets the default value for [key].
 
@@ -84,6 +86,8 @@ class type settings_schema_key_t = object
 
   method ref : unit -> Raw.Settings_schema_key.t
   (** Increase the reference count of [key], returning a new reference. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings_schema_key : Raw.Settings_schema_key.t
 end

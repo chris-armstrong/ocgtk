@@ -49,6 +49,8 @@
     a check button with the given label; if a choice has options, it will be
     rendered as a combo box. *)
 class type file_chooser_t = object
+  (** {2:methods Methods} *)
+
   method add_choice :
     string -> string -> string array option -> string array option -> unit
   (** Adds a 'choice' to the file chooser.
@@ -232,6 +234,8 @@ class type file_chooser_t = object
       This is only relevant if the action is set to be
       [GTK_FILE_CHOOSER_ACTION_OPEN] or [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_chooser : Raw.File_chooser.t
 end

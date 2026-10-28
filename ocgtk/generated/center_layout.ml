@@ -3,6 +3,8 @@ class type center_layout_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_manager_t
 
+  (** {2:methods Methods} *)
+
   method get_baseline_position : unit -> Enums.baselineposition
   (** Returns the baseline position of the layout. *)
 
@@ -75,6 +77,8 @@ class type center_layout_t = object
   (** Sets the new start widget of [self].
 
       To remove the existing start widget, pass [NULL]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_center_layout : Raw.Center_layout.t
 end

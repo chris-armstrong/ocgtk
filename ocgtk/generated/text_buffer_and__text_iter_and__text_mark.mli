@@ -13,6 +13,8 @@
     GtkTextBuffer can support undoing changes to the buffer content, see
     [Gtk.TextBuffer.set_enable_undo]. *)
 class type text_buffer_t = object
+  (** {2:signals Signals} *)
+
   method on_begin_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted at the beginning of a single user-visible operation on a
@@ -73,6 +75,8 @@ class type text_buffer_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when a request has been made to undo the previous operation or set
       of operations that have been grouped together. *)
+
+  (** {2:methods Methods} *)
 
   method add_mark : text_mark_t -> Raw.Text_iter.t -> unit
   (** Adds the mark at position [where].
@@ -564,11 +568,15 @@ class type text_buffer_t = object
   method undo : unit -> unit
   (** Undoes the last undoable action on the buffer, if there is one. *)
 
+  (** {2:properties Properties} *)
+
   method cursor_position : int
   (** The position of the insert mark.
 
       This is an offset from the beginning of the buffer. It is useful for
       getting notified when the cursor moves. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_buffer : Raw.Text_buffer.t
 end
@@ -581,6 +589,8 @@ end
     gives an overview of all the objects and data types related to the text
     widget and how they work together. *)
 and text_iter_t = object
+  (** {2:methods Methods} *)
+
   method assign : Raw.Text_iter.t -> unit
   (** Assigns the value of [other] to [iter].
 
@@ -1204,6 +1214,8 @@ and text_iter_t = object
       This is equivalent to (gtk_text_iter_starts_tag() ||
       gtk_text_iter_ends_tag()) *)
 
+  (** {2:conversions Conversions} *)
+
   method as_text_iter : Raw.Text_iter.t
 end
 
@@ -1241,6 +1253,8 @@ end
     Marks are typically created using the [Gtk.TextBuffer.create_mark] function.
 *)
 and text_mark_t = object
+  (** {2:methods Methods} *)
+
   method get_buffer : unit -> text_buffer_t option
   (** Gets the buffer this mark is located inside.
 
@@ -1273,6 +1287,8 @@ and text_mark_t = object
       visible.
 
       Marks are not visible by default. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_mark : Raw.Text_mark.t
 end

@@ -1,4 +1,6 @@
 class type dtls_client_connection_t = object
+  (** {2:methods Methods} *)
+
   method get_server_identity :
     unit ->
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -29,6 +31,8 @@ class type dtls_client_connection_t = object
       This function does not work as originally designed and is impossible to
       use correctly. See [GDtlsClientConnection:validation]-flags for more
       information. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dtls_client_connection : Raw.Dtls_client_connection.t
 end

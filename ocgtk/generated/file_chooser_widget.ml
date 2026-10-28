@@ -5,6 +5,8 @@ class type file_chooser_widget_t = object
 
   inherit File_chooser.file_chooser_t
 
+  (** {2:signals Signals} *)
+
   method on_desktop_folder :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user asks for it.
@@ -147,6 +149,8 @@ class type file_chooser_widget_t = object
 
       The default binding for this signal is <kbd>Alt</kbd>-<kbd>Up</kbd>. *)
 
+  (** {2:properties Properties} *)
+
   method search_mode : bool
   (** Whether search mode is enabled. *)
 
@@ -158,6 +162,8 @@ class type file_chooser_widget_t = object
 
   method subtitle : string
   (** The subtitle of the file chooser widget. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_chooser_widget : Raw.File_chooser_widget.t
 end

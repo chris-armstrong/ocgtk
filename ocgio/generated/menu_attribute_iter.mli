@@ -12,6 +12,8 @@
     [GMenuAttributeIter] is an opaque structure type. You must access it using
     the functions below. *)
 class type menu_attribute_iter_t = object
+  (** {2:methods Methods} *)
+
   method get_name : unit -> string
   (** Gets the name of the attribute at the current iterator position, as a
       string.
@@ -31,6 +33,8 @@ class type menu_attribute_iter_t = object
       You must call this function when you first acquire the iterator to advance
       it to the first attribute (and determine if the first attribute exists at
       all). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_menu_attribute_iter : Raw.Menu_attribute_iter.t
 end

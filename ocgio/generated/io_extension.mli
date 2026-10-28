@@ -11,6 +11,8 @@
     [GIOExtension] is an opaque data structure and can only be accessed using
     the following functions. *)
 class type io_extension_t = object
+  (** {2:methods Methods} *)
+
   method get_name : unit -> string
   (** Gets the name under which [extension] was registered.
 
@@ -22,6 +24,8 @@ class type io_extension_t = object
 
   method get_type : unit -> Gobject.Type.t
   (** Gets the type associated with [extension]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_io_extension : Raw.Io_extension.t
 end

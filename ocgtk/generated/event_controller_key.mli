@@ -15,6 +15,8 @@ class type event_controller_key_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_im_update :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the input method context filters away a keypress and
@@ -46,6 +48,8 @@ class type event_controller_key_t = object
     Gobject.Signal.handler_id
   (** Emitted whenever the state of modifier keys and pointer buttons change. *)
 
+  (** {2:methods Methods} *)
+
   method forward :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -67,6 +71,8 @@ class type event_controller_key_t = object
 
   method set_im_context : Im_context.im_context_t option -> unit
   (** Sets the input method context of the key [controller]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_key : Raw.Event_controller_key.t
 end

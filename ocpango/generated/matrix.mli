@@ -19,6 +19,8 @@
     y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
     ]} *)
 class type matrix_t = object
+  (** {2:methods Methods} *)
+
   method concat : Raw.Matrix.t -> unit
   (** Changes the transformation represented by [matrix] to be the
       transformation given by first applying transformation given by
@@ -54,6 +56,8 @@ class type matrix_t = object
   (** Changes the transformation represented by [matrix] to be the
       transformation given by first translating by ([tx], [ty]) then applying
       the original transformation. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_matrix : Raw.Matrix.t
 end

@@ -12,6 +12,8 @@ class type grid_layout_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_manager_t
 
+  (** {2:methods Methods} *)
+
   method get_baseline_row : unit -> int
   (** Retrieves the row set with gtk_grid_layout_set_baseline_row(). *)
 
@@ -55,6 +57,8 @@ class type grid_layout_t = object
 
   method set_row_spacing : int -> unit
   (** Sets the amount of space to insert between consecutive rows. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_grid_layout : Raw.Grid_layout.t
 end

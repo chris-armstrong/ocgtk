@@ -1,4 +1,6 @@
 class type alert_dialog_t = object
+  (** {2:methods Methods} *)
+
   method choose_finish :
     Ocgio.Async_result.async_result_t -> (int, GError.t) result
   (** Finishes the [Gtk.AlertDialog.choose] call. *)
@@ -57,6 +59,8 @@ class type alert_dialog_t = object
       If you want to cancel the dialog or if the alert has more than one button,
       you should use that function instead and provide it with a
       [Gio.Cancellable] and callback respectively. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_alert_dialog : Raw.Alert_dialog.t
 end

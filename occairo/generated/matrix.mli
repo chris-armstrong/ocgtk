@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Matrix].} *)
 class type matrix_t = object
+  (** {2:conversions Conversions} *)
+
   method as_matrix : Raw.Matrix.t
 end
 

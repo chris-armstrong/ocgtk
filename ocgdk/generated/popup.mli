@@ -15,6 +15,8 @@
     [GdkPopup]s are typically used to implement menus and similar popups. They
     can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
 class type popup_t = object
+  (** {2:methods Methods} *)
+
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)
 
@@ -55,6 +57,8 @@ class type popup_t = object
       Presenting may fail, for example if the [popup] is set to autohide and is
       immediately hidden upon being presented. If presenting failed, the
       [Gdk.Surface::layout] signal will not me emitted. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_popup : Raw.Popup.t
 end

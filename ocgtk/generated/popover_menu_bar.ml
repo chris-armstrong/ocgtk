@@ -3,6 +3,8 @@ class type popover_menu_bar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method add_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -25,6 +27,8 @@ class type popover_menu_bar_t = object
 
   method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
   (** Sets a menu model from which [bar] should take its contents. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_popover_menu_bar : Raw.Popover_menu_bar.t
 end

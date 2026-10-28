@@ -13,6 +13,8 @@
     The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
 class type expression_watch_t = object
+  (** {2:methods Methods} *)
+
   method evaluate : Gobject.Value.t -> bool
   (** Evaluates the watched expression and on success stores the result in
       [value].
@@ -27,6 +29,8 @@ class type expression_watch_t = object
   (** Stops watching an expression.
 
       See [Gtk.Expression.watch] for how the watch was established. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_expression_watch : Raw.Expression_watch.t
 end

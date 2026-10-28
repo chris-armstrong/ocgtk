@@ -16,6 +16,8 @@
 class type gesture_rotate_t = object
   inherit Gesture.gesture_t
 
+  (** {2:signals Signals} *)
+
   method on_angle_changed :
     ?after:bool ->
     callback:(angle:float -> angle_delta:float -> unit) ->
@@ -23,12 +25,16 @@ class type gesture_rotate_t = object
     Gobject.Signal.handler_id
   (** Emitted when the angle between both tracked points changes. *)
 
+  (** {2:methods Methods} *)
+
   method get_angle_delta : unit -> float
   (** Gets the angle delta in radians.
 
       If [gesture] is active, this function returns the angle difference in
       radians since the gesture was first recognized. If [gesture] is not
       active, 0 is returned. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_rotate : Raw.Gesture_rotate.t
 end

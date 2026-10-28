@@ -1,4 +1,6 @@
 class type glyph_string_t = object
+  (** {2:methods Methods} *)
+
   method get_width : unit -> int
   (** Computes the logical width of the glyph string.
 
@@ -9,6 +11,8 @@ class type glyph_string_t = object
 
   method set_size : int -> unit
   (** Resize a glyph string to the given length. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_glyph_string : Raw.Glyph_string.t
 end

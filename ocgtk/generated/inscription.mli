@@ -32,6 +32,8 @@ class type inscription_t = object
 
   inherit Accessible_text.accessible_text_t
 
+  (** {2:methods Methods} *)
+
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the inscription's attribute list. *)
 
@@ -124,6 +126,8 @@ class type inscription_t = object
   (** Sets the [yalign] of the inscription.
 
       See the [Gtk.Inscription:yalign] property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inscription : Raw.Inscription.t
 end

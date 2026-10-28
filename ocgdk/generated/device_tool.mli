@@ -9,6 +9,8 @@
 
     A physical tool associated to a [GdkDevice]. *)
 class type device_tool_t = object
+  (** {2:methods Methods} *)
+
   method get_axes : unit -> Enums.axisflags
   (** Gets the axes of the tool. *)
 
@@ -32,6 +34,8 @@ class type device_tool_t = object
 
   method get_tool_type : unit -> Enums.devicetooltype
   (** Gets the [GdkDeviceToolType] of the tool. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_device_tool : Raw.Device_tool.t
 end

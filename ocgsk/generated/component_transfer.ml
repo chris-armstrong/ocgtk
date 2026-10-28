@@ -1,4 +1,6 @@
 class type component_transfer_t = object
+  (** {2:conversions Conversions} *)
+
   method as_component_transfer : Raw.Component_transfer.t
 end
 

@@ -10,6 +10,8 @@
 
     A range inside the text of an accessible object. *)
 class type accessible_text_range_t = object
+  (** {2:conversions Conversions} *)
+
   method as_accessible_text_range : Raw.Accessible_text_range.t
 end
 

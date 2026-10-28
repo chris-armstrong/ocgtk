@@ -1,4 +1,6 @@
 class type font_metrics_t = object
+  (** {2:methods Methods} *)
+
   method get_approximate_char_width : unit -> int
   (** Gets the approximate character width for a font metrics structure.
 
@@ -60,6 +62,8 @@ class type font_metrics_t = object
 
   method ref : unit -> Raw.Font_metrics.t option
   (** Increase the reference count of a font metrics structure by one. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_metrics : Raw.Font_metrics.t
 end

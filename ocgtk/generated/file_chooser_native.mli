@@ -12,6 +12,8 @@ class type file_chooser_native_t = object
   inherit Native_dialog.native_dialog_t
   inherit File_chooser.file_chooser_t
 
+  (** {2:methods Methods} *)
+
   method get_accept_label : unit -> string option
   (** Retrieves the custom label text for the accept button. *)
 
@@ -37,6 +39,8 @@ class type file_chooser_native_t = object
       keyboard accelerator called a mnemonic.
 
       Pressing Alt and that key should activate the button. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_chooser_native : Raw.File_chooser_native.t
 end

@@ -3,6 +3,8 @@ class type inet_socket_address_t = object
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_t
 
+  (** {2:methods Methods} *)
+
   method get_address : unit -> Inet_address.inet_address_t
   (** Gets [address]'s [GInetAddress]. *)
 
@@ -22,6 +24,8 @@ class type inet_socket_address_t = object
 
       If not overridden this value will be inherited from
       [Gio.InetSocketAddress:address]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inet_socket_address : Raw.Inet_socket_address.t
 end

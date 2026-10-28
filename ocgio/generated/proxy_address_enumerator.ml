@@ -3,6 +3,8 @@ class type proxy_address_enumerator_t = object
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_address_enumerator_t
 
+  (** {2:properties Properties} *)
+
   method connectable :
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
@@ -20,6 +22,8 @@ class type proxy_address_enumerator_t = object
 
   method uri : string
   (** The destination URI. Use [none://] for a generic socket. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_proxy_address_enumerator : Raw.Proxy_address_enumerator.t
 end

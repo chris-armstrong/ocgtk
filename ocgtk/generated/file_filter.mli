@@ -11,6 +11,8 @@ class type file_filter_t = object
   inherit Filter.filter_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method add_mime_type : string -> unit
   (** Adds a rule allowing a given mime type. *)
 
@@ -58,6 +60,8 @@ class type file_filter_t = object
 
   method to_gvariant : unit -> Gvariant.t
   (** Serialize a file filter to an [a{sv}] variant. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_filter : Raw.File_filter.t
 end

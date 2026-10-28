@@ -47,6 +47,8 @@ class type color_chooser_widget_t = object
 
   inherit Color_chooser.color_chooser_t
 
+  (** {2:properties Properties} *)
+
   method show_editor : bool
   (** [TRUE] when the color chooser is showing the single-color editor.
 
@@ -58,6 +60,8 @@ class type color_chooser_widget_t = object
 
       It can be set to switch the color chooser into single-color editing mode.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_chooser_widget : Raw.Color_chooser_widget.t
 end

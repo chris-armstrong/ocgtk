@@ -1,4 +1,6 @@
 class type attr_string_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_string : Raw.Attr_string.t
 end
 

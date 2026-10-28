@@ -16,6 +16,8 @@
     server), or the combination of a certificate and a private key (which is
     needed when acting as a [Gio.TlsServerConnection]). *)
 class type tls_certificate_t = object
+  (** {2:methods Methods} *)
+
   method get_issuer : unit -> tls_certificate_t option
   (** Gets the [GTlsCertificate] representing [cert]'s issuer, if known *)
 
@@ -69,6 +71,8 @@ class type tls_certificate_t = object
       be performed. The best way to verify TLS certificates used by a TLS
       connection is to let [GTlsConnection] handle the verification. *)
 
+  (** {2:properties Properties} *)
+
   method certificate_pem : string
   (** The PEM (ASCII) encoded representation of the certificate. This property
       and the [GTlsCertificate:certificate] property represent the same data,
@@ -108,6 +112,8 @@ class type tls_certificate_t = object
   (** A URI referencing a
       {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
        #11} object containing a private key. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_certificate : Raw.Tls_certificate.t
 end

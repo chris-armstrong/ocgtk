@@ -42,6 +42,8 @@
 class type column_view_sorter_t = object
   inherit Sorter.sorter_t
 
+  (** {2:methods Methods} *)
+
   method get_n_sort_columns : unit -> int
   (** Returns the number of columns by which the sorter sorts.
 
@@ -66,6 +68,8 @@ class type column_view_sorter_t = object
 
       If there is no primary sort column, then this function returns
       [GTK_SORT_ASCENDING]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_column_view_sorter : Raw.Column_view_sorter.t
 end

@@ -2,6 +2,8 @@ class type d_bus_connection_t = object
   inherit Async_initable.async_initable_t
   inherit Initable.initable_t
 
+  (** {2:methods Methods} *)
+
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
   (** Finishes an operation started with g_dbus_connection_call(). *)
@@ -250,6 +252,8 @@ class type d_bus_connection_t = object
 
   method unregister_subtree : int -> bool
   (** Unregisters a subtree. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_connection : Raw.D_bus_connection.t
 end

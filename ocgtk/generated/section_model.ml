@@ -1,4 +1,6 @@
 class type section_model_t = object
+  (** {2:signals Signals} *)
+
   method on_sections_changed :
     ?after:bool ->
     callback:(position:int -> n_items:int -> unit) ->
@@ -16,6 +18,8 @@ class type section_model_t = object
       [Gtk.SectionModel::sections-changed] signal for all the items it covers.
   *)
 
+  (** {2:methods Methods} *)
+
   method sections_changed : int -> int -> unit
   (** This function emits the [Gtk.SectionModel::sections-changed] signal to
       notify about changes to sections.
@@ -30,6 +34,8 @@ class type section_model_t = object
       It is recommended that when changes to the items cause section changes in
       a larger range, that the larger range is included in the emission of the
       [Gio.ListModel::items-changed] instead of emitting two signals. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_section_model : Raw.Section_model.t
 end

@@ -1,6 +1,8 @@
 class type about_dialog_t = object
   inherit Application_and__window_and__window_group.window_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_link :
     ?after:bool ->
     callback:(uri:string -> bool) ->
@@ -10,6 +12,8 @@ class type about_dialog_t = object
 
       Applications may connect to it to override the default behaviour, which is
       to call [Gtk.FileLauncher.launch]. *)
+
+  (** {2:methods Methods} *)
 
   method add_credit_section : string -> string array -> unit
   [@@ocaml.doc "Creates a new section in the \"Credits\" page."]
@@ -143,6 +147,8 @@ class type about_dialog_t = object
   method set_wrap_license : bool -> unit
   (** Sets whether the license text in the about dialog should be automatically
       wrapped. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_about_dialog : Raw.About_dialog.t
 end

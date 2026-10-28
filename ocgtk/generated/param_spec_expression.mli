@@ -10,6 +10,8 @@
 
     A [GParamSpec] for properties holding a [GtkExpression]. *)
 class type param_spec_expression_t = object
+  (** {2:conversions Conversions} *)
+
   method as_param_spec_expression : Raw.Param_spec_expression.t
 end
 

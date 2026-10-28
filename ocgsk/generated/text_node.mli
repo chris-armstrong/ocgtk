@@ -12,6 +12,8 @@
 class type text_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_color : unit -> Ocgdk.Rgb_a.rgb_a_t
   (** Retrieves the color used by the text [node].
 
@@ -29,6 +31,8 @@ class type text_node_t = object
 
   method has_color_glyphs : unit -> bool
   (** Checks whether the text [node] has color glyphs. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_node : Raw.Text_node.t
 end

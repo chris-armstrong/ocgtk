@@ -1,8 +1,12 @@
 class type button_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
+  (** {2:methods Methods} *)
+
   method get_button : unit -> int
   (** Extract the button number from a button event. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_button_event : Raw.Button_event.t
 end

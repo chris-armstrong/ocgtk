@@ -1,6 +1,8 @@
 class type menu_t = object
   inherit Menu_link_iter_and__menu_model.menu_model_t
 
+  (** {2:methods Methods} *)
+
   method append : string option -> string option -> unit
   (** Convenience function for appending a normal menu item to the end of
       [menu]. Combine g_menu_item_new() and g_menu_insert_item() for a more
@@ -101,6 +103,8 @@ class type menu_t = object
 
   method remove_all : unit -> unit
   (** Removes all items in the menu. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_menu : Raw.Menu.t
 end

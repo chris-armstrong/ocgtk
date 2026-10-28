@@ -13,6 +13,8 @@
 class type repeating_linear_gradient_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:conversions Conversions} *)
+
   method as_repeating_linear_gradient_node :
     Raw.Repeating_linear_gradient_node.t
 end

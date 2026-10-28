@@ -18,6 +18,8 @@
 class type cell_renderer_toggle_t = object
   inherit Cell_renderer.cell_renderer_t
 
+  (** {2:signals Signals} *)
+
   method on_toggled :
     ?after:bool ->
     callback:(path:string -> unit) ->
@@ -28,6 +30,8 @@ class type cell_renderer_toggle_t = object
       It is the responsibility of the application to update the model with the
       correct value to store at [path]. Often this is simply the opposite of the
       value currently stored at [path]. *)
+
+  (** {2:methods Methods} *)
 
   method get_activatable : unit -> bool
   (** Returns whether the cell renderer is activatable. See
@@ -54,11 +58,15 @@ class type cell_renderer_toggle_t = object
       (for [GtkTreeView], you set up a per-row setting using [GtkTreeViewColumn]
       to associate model columns with cell renderer properties). *)
 
+  (** {2:properties Properties} *)
+
   method inconsistent : bool
   (** Get property: inconsistent *)
 
   method set_inconsistent : bool -> unit
   (** Set property: inconsistent *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_toggle : Raw.Cell_renderer_toggle.t
 end

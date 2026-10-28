@@ -14,6 +14,9 @@
     To add filters to a [GtkAnyFilter], use [Gtk.MultiFilter.append]. *)
 class type any_filter_t = object
   inherit Multi_filter.multi_filter_t
+
+  (** {2:conversions Conversions} *)
+
   method as_any_filter : Raw.Any_filter.t
 end
 

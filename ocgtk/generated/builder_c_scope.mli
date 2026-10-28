@@ -25,6 +25,9 @@
     will require that [GModule] be supported on the platform. *)
 class type builder_c_scope_t = object
   inherit Builder_scope.builder_scope_t
+
+  (** {2:conversions Conversions} *)
+
   method as_builder_c_scope : Raw.Builder_c_scope.t
 end
 

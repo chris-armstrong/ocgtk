@@ -1,4 +1,6 @@
 class type scrollable_t = object
+  (** {2:methods Methods} *)
+
   method get_hadjustment : unit -> Adjustment.adjustment_t option
   (** Retrieves the [GtkAdjustment] used for horizontal scrolling. *)
 
@@ -28,6 +30,8 @@ class type scrollable_t = object
 
       The policy determines whether vertical scrolling should start below the
       minimum height or below the natural height. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scrollable : Raw.Scrollable.t
 end

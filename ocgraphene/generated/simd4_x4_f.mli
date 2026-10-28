@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Simd4X4F].} *)
 class type simd4_x4_f_t = object
+  (** {2:conversions Conversions} *)
+
   method as_simd4_x4_f : Raw.Simd4_x4_f.t
 end
 

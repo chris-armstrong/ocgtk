@@ -1,4 +1,6 @@
 class type volume_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_drive_changed :
     ?after:bool ->
     callback:(drive:App_info_cycle_64c425a0.drive_t -> unit) ->
@@ -86,6 +88,8 @@ class type volume_monitor_t = object
     Gobject.Signal.handler_id
   (** Emitted when a mountable volume is removed from the system. *)
 
+  (** {2:methods Methods} *)
+
   method get_connected_drives : unit -> App_info_cycle_64c425a0.drive_t list
   (** Gets a list of drives connected to the system.
 
@@ -109,6 +113,8 @@ class type volume_monitor_t = object
 
       The returned list should be freed with g_list_free(), after its elements
       have been unreffed with g_object_unref(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_volume_monitor : Raw.Volume_monitor.t
 end

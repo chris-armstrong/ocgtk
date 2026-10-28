@@ -5,6 +5,8 @@ class type box_layout_t = object
 
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_baseline_child : unit -> int
   (** Gets the value set by gtk_box_layout_set_baseline_child(). *)
 
@@ -36,6 +38,8 @@ class type box_layout_t = object
 
   method set_spacing : int -> unit
   (** Sets how much spacing to put between children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_box_layout : Raw.Box_layout.t
 end

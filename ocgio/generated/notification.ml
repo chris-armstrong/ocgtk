@@ -1,4 +1,6 @@
 class type notification_t = object
+  (** {2:methods Methods} *)
+
   method add_button : string -> string -> unit
   [@@ocaml.doc
     "Adds a button to [notification] that activates the action in\n\
@@ -66,6 +68,8 @@ class type notification_t = object
 
   method set_urgent : bool -> unit
   (** Deprecated in favor of g_notification_set_priority(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_notification : Raw.Notification.t
 end

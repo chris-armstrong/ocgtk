@@ -18,6 +18,8 @@ class type custom_layout_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_manager_t
 
+  (** {2:conversions Conversions} *)
+
   method as_custom_layout : Raw.Custom_layout.t
 end
 

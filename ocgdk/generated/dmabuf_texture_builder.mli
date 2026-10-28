@@ -75,6 +75,8 @@
       {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
 *)
 class type dmabuf_texture_builder_t = object
+  (** {2:methods Methods} *)
+
   method get_color_state : unit -> Raw.Color_state.t option
   (** Gets the color state previously set via
       gdk_dmabuf_texture_builder_set_color_state(). *)
@@ -193,6 +195,8 @@ class type dmabuf_texture_builder_t = object
   (** Sets the width of the texture.
 
       The width must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dmabuf_texture_builder : Raw.Dmabuf_texture_builder.t
 end

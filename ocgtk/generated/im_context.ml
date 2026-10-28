@@ -1,4 +1,6 @@
 class type im_context_t = object
+  (** {2:signals Signals} *)
+
   method on_commit :
     ?after:bool ->
     callback:(str:string -> unit) ->
@@ -46,6 +48,8 @@ class type im_context_t = object
 
       The callback should set the input method surrounding context by calling
       the [Gtk.IMContext.set_surrounding] method. *)
+
+  (** {2:methods Methods} *)
 
   method activate_osk : Ocgdk.Event.event_t option -> bool
   (** Requests the platform to show an on-screen keyboard for user input.
@@ -147,6 +151,8 @@ class type im_context_t = object
       use some other method to display feedback, such as displaying it in a
       child of the root window. *)
 
+  (** {2:properties Properties} *)
+
   method input_hints : Enums.inputhints
   (** Additional hints that allow input methods to fine-tune their behaviour. *)
 
@@ -164,6 +170,8 @@ class type im_context_t = object
 
       This property can be used by on-screen keyboards and other input methods
       to adjust their behaviour. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_im_context : Raw.Im_context.t
 end

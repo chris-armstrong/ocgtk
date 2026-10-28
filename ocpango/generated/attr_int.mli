@@ -11,6 +11,8 @@
     The [PangoAttrInt] structure is used to represent attributes with an integer
     or enumeration value. *)
 class type attr_int_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_int : Raw.Attr_int.t
 end
 

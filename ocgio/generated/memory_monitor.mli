@@ -13,6 +13,8 @@
 (** {1:class Class} *)
 
 class type memory_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_low_memory_warning :
     ?after:bool ->
     callback:(level:Enums.memorymonitorwarninglevel -> unit) ->
@@ -26,6 +28,8 @@ class type memory_monitor_t = object
 
       Since the [Gio.MemoryMonitor] is a singleton, this signal will be emitted
       in the [GLib.MainContext.default]\[global-default main context\]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_memory_monitor : Raw.Memory_monitor.t
 end

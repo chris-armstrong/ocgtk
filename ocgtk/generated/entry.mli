@@ -15,6 +15,8 @@ class type entry_t = object
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the entry is activated.
@@ -35,6 +37,8 @@ class type entry_t = object
     Gobject.Signal.handler_id
   (** Emitted on the button release from a mouse click over an activatable icon.
   *)
+
+  (** {2:methods Methods} *)
 
   method get_activates_default : unit -> bool
   (** Retrieves the value set by gtk_entry_set_activates_default(). *)
@@ -366,6 +370,8 @@ class type entry_t = object
   (** Unsets the invisible char, so that the default invisible char is used
       again. See [Gtk.Entry.set_invisible_char]. *)
 
+  (** {2:properties Properties} *)
+
   method enable_emoji_completion : bool
   (** Whether to suggest Emoji replacements for :-delimited names like
       [:heart:]. *)
@@ -632,6 +638,8 @@ class type entry_t = object
 
   method set_truncate_multiline : bool -> unit
   (** When [TRUE], pasted multi-line text is truncated to the first line. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_entry : Raw.Entry.t
 end

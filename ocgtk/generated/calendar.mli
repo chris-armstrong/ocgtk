@@ -64,6 +64,8 @@ class type calendar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_day_selected :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user selects a day. *)
@@ -83,6 +85,8 @@ class type calendar_t = object
   method on_prev_year :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when user switches to the previous year. *)
+
+  (** {2:methods Methods} *)
 
   method clear_marks : unit -> unit
   (** Remove all visual markers. *)
@@ -149,6 +153,8 @@ class type calendar_t = object
 
   method unmark_day : int -> unit
   (** Removes the visual marker from a particular day. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_calendar : Raw.Calendar.t
 end

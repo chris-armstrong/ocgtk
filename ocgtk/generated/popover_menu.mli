@@ -10,6 +10,8 @@
 class type popover_menu_t = object
   inherit Popover.popover_t
 
+  (** {2:methods Methods} *)
+
   method add_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -48,11 +50,15 @@ class type popover_menu_t = object
       The existing contents of [popover] are removed, and the [popover] is
       populated with new contents according to [model]. *)
 
+  (** {2:properties Properties} *)
+
   method visible_submenu : string
   (** The name of the visible submenu. *)
 
   method set_visible_submenu : string -> unit
   (** The name of the visible submenu. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_popover_menu : Raw.Popover_menu.t
 end

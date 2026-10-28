@@ -21,6 +21,8 @@
 
     To launch a file, use [Gtk.FileLauncher]. *)
 class type uri_launcher_t = object
+  (** {2:methods Methods} *)
+
   method can_launch :
     Application_and__window_and__window_group.window_t option -> bool
   (** Returns whether the launcher is likely to succeed in launching an
@@ -38,6 +40,8 @@ class type uri_launcher_t = object
 
   method set_uri : string option -> unit
   (** Sets the uri that will be opened. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_uri_launcher : Raw.Uri_launcher.t
 end

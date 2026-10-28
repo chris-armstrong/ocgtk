@@ -1,6 +1,8 @@
 class type stroke_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting drawn by the given [node]. *)
 
@@ -10,6 +12,8 @@ class type stroke_node_t = object
 
   method get_stroke : unit -> Raw.Stroke.t
   (** Retrieves the stroke attributes used in this [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stroke_node : Raw.Stroke_node.t
 end

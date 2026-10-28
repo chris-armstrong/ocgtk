@@ -10,6 +10,8 @@
 
     Collects the parameters that are needed when stroking a path. *)
 class type stroke_t = object
+  (** {2:methods Methods} *)
+
   method get_dash_offset : unit -> float
   (** Gets the dash offset. *)
 
@@ -86,6 +88,8 @@ class type stroke_t = object
   method to_cairo : Occairo.Context.context_t -> unit
   (** A helper function that sets the stroke parameters of a cairo context from
       a [GskStroke]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stroke : Raw.Stroke.t
 end

@@ -10,6 +10,8 @@
 class type print_operation_t = object
   inherit Print_operation_preview.print_operation_preview_t
 
+  (** {2:signals Signals} *)
+
   method on_begin_print :
     ?after:bool ->
     callback:(context:Print_context.print_context_t -> unit) ->
@@ -199,6 +201,8 @@ class type print_operation_t = object
 
       The actual page setup and print settings are passed to the custom widget,
       which can actualize itself according to this change. *)
+
+  (** {2:methods Methods} *)
 
   method cancel : unit -> unit
   (** Cancels a running print operation.
@@ -446,6 +450,8 @@ class type print_operation_t = object
       This may not be the top left corner of the sheet, depending on page
       orientation and the number of pages per sheet). Otherwise, the origin is
       at the top left corner of the imageable area (i.e. inside the margins). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_operation : Raw.Print_operation.t
 end

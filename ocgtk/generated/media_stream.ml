@@ -1,6 +1,8 @@
 class type media_stream_t = object
   inherit Ocgdk.Paintable.paintable_t
 
+  (** {2:methods Methods} *)
+
   method gerror : GError.t -> unit
   (** Sets [self] into an error state.
 
@@ -211,6 +213,8 @@ class type media_stream_t = object
       appropriate.
 
       The media stream must be prepared when this function is called. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_media_stream : Raw.Media_stream.t
 end

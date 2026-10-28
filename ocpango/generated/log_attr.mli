@@ -11,6 +11,8 @@
     The [PangoLogAttr] structure stores information about the attributes of a
     single character. *)
 class type log_attr_t = object
+  (** {2:conversions Conversions} *)
+
   method as_log_attr : Raw.Log_attr.t
 end
 

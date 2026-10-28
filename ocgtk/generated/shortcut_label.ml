@@ -3,6 +3,8 @@ class type shortcut_label_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_accelerator : unit -> string option
   (** Retrieves the current accelerator of [self]. *)
 
@@ -14,6 +16,8 @@ class type shortcut_label_t = object
 
   method set_disabled_text : string -> unit
   (** Sets the text to be displayed by [self] when no accelerator is set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_label : Raw.Shortcut_label.t
 end

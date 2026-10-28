@@ -6,11 +6,15 @@ class type scrollbar_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Returns the scrollbar's adjustment. *)
 
   method set_adjustment : Adjustment.adjustment_t option -> unit
   (** Makes the scrollbar use the given adjustment. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scrollbar : Raw.Scrollbar.t
 end

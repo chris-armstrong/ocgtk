@@ -12,11 +12,15 @@
 class type transform_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting transformed by the given [node]. *)
 
   method get_transform : unit -> Raw.Transform.t
   (** Retrieves the [GskTransform] used by the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_transform_node : Raw.Transform_node.t
 end

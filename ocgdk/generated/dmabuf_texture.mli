@@ -16,6 +16,9 @@
     Dma-buf textures can only be created on Linux. *)
 class type dmabuf_texture_t = object
   inherit Texture.texture_t
+
+  (** {2:conversions Conversions} *)
+
   method as_dmabuf_texture : Raw.Dmabuf_texture.t
 end
 

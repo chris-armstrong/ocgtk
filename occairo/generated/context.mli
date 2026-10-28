@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Context].} *)
 class type context_t = object
+  (** {2:conversions Conversions} *)
+
   method as_context : Raw.Context.t
 end
 

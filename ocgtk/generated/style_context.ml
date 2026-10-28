@@ -1,4 +1,6 @@
 class type style_context_t = object
+  (** {2:methods Methods} *)
+
   method add_class : string -> unit
   (** Adds a style class to [context], so later uses of the style context will
       make use of this new class for styling.
@@ -91,6 +93,8 @@ class type style_context_t = object
       This function is intended for testing and debugging of the CSS
       implementation in GTK. There are no guarantees about the format of the
       returned string, it may change. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_style_context : Raw.Style_context.t
 end

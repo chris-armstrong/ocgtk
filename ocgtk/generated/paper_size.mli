@@ -19,6 +19,8 @@
     The [GtkPaperSize] object stores not only the dimensions (width and height)
     of a paper size and its name, it also provides default print margins. *)
 class type paper_size_t = object
+  (** {2:methods Methods} *)
+
   method get_default_bottom_margin : Enums.unit -> float
   (** Gets the default bottom margin for the [GtkPaperSize]. *)
 
@@ -60,6 +62,8 @@ class type paper_size_t = object
 
   method to_gvariant : unit -> Gvariant.t
   (** Serialize a paper size to an [a{sv}] variant. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_paper_size : Raw.Paper_size.t
 end

@@ -6,6 +6,8 @@
 class type cell_area_t = object
   inherit Buildable.buildable_t
 
+  (** {2:signals Signals} *)
+
   method on_focus_changed :
     ?after:bool ->
     callback:(renderer:Cell_renderer.cell_renderer_t -> path:string -> unit) ->
@@ -28,6 +30,8 @@ class type cell_area_t = object
     Gobject.Signal.handler_id
   (** Indicates that editing finished on [renderer] and that [editable] should
       be removed from the owning cell-layouting widget. *)
+
+  (** {2:methods Methods} *)
 
   method activate :
     cell_area_context_t ->
@@ -211,6 +215,8 @@ class type cell_area_t = object
 
       See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_area : Raw.Cell_area.t
 end
@@ -501,6 +507,8 @@ end
     also be used for the same row when calling other [GtkCellArea] APIs such as
     gtk_cell_area_render() and gtk_cell_area_event(). *)
 and cell_area_context_t = object
+  (** {2:methods Methods} *)
+
   method allocate : int -> int -> unit
   (** Allocates a width and/or a height for all rows which are to be rendered
       with [context].
@@ -560,6 +568,8 @@ and cell_area_context_t = object
       recalculation of all the displayed row heights using
       gtk_cell_area_get_preferred_height_for_width(). *)
 
+  (** {2:properties Properties} *)
+
   method minimum_height : int
   (** The minimum height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
@@ -580,10 +590,14 @@ and cell_area_context_t = object
       [GtkTreeModel] rows that this context was requested for using
       gtk_cell_area_get_preferred_width(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_cell_area_context : Raw.Cell_area_context.t
 end
 
 and cell_layout_t = object
+  (** {2:methods Methods} *)
+
   method add_attribute : Cell_renderer.cell_renderer_t -> string -> int -> unit
   [@@ocaml.doc
     "Adds an attribute mapping to the list in [cell_layout].\n\n\
@@ -628,6 +642,8 @@ and cell_layout_t = object
 
       Note that [cell] has already to be packed into [cell_layout] for this to
       function properly. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_layout : Raw.Cell_layout.t
 end

@@ -13,6 +13,8 @@
     These are primarily used in container implementations when allocating a
     natural size for children. See [distribute_natural_allocation]. *)
 class type requested_size_t = object
+  (** {2:conversions Conversions} *)
+
   method as_requested_size : Raw.Requested_size.t
 end
 

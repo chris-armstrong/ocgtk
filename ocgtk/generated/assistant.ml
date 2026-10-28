@@ -1,6 +1,8 @@
 class type assistant_t = object
   inherit Application_and__window_and__window_group.window_t
 
+  (** {2:signals Signals} *)
+
   method on_apply :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the apply button is clicked.
@@ -43,6 +45,8 @@ class type assistant_t = object
 
       A handler for this signal can do any preparations which are necessary
       before showing [page]. *)
+
+  (** {2:methods Methods} *)
 
   method add_action_widget :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -193,12 +197,16 @@ class type assistant_t = object
       changing a value on the current page affects the future page flow of the
       assistant. *)
 
+  (** {2:properties Properties} *)
+
   method use_header_bar : int
   (** [TRUE] if the assistant uses a [GtkHeaderBar] for action buttons instead
       of the action-area.
 
       For technical reasons, this property is declared as an integer property,
       but you should only set it to [TRUE] or [FALSE]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_assistant : Raw.Assistant.t
 end

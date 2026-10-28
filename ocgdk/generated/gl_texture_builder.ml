@@ -1,4 +1,6 @@
 class type gl_texture_builder_t = object
+  (** {2:methods Methods} *)
+
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state previously set via
       gdk_gl_texture_builder_set_color_state(). *)
@@ -108,6 +110,8 @@ class type gl_texture_builder_t = object
   (** Sets the width of the texture.
 
       The width must be set before calling [Gdk.GLTextureBuilder.build]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gl_texture_builder : Raw.Gl_texture_builder.t
 end

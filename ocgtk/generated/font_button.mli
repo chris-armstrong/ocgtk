@@ -32,6 +32,8 @@ class type font_button_t = object
 
   inherit Font_chooser.font_chooser_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to when the font button is activated.
@@ -49,6 +51,8 @@ class type font_button_t = object
       Note that this signal is only emitted when the user changes the font. If
       you need to react to programmatic font changes as well, use the
       notify::font signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_modal : unit -> bool
   (** Gets whether the dialog is modal. *)
@@ -75,6 +79,8 @@ class type font_button_t = object
   method set_use_size : bool -> unit
   (** If [use_size] is [TRUE], the font name will be written using the selected
       size. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_button : Raw.Font_button.t
 end

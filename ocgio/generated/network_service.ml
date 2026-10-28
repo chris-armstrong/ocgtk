@@ -3,6 +3,8 @@ class type network_service_t = object
     Socket_address_and__socket_address_enumerator_and__socket_connectable
     .socket_connectable_t
 
+  (** {2:methods Methods} *)
+
   method get_domain : unit -> string
   (** Gets the domain that [srv] serves. This might be either UTF-8 or
       ASCII-encoded, depending on what [srv] was created with. *)
@@ -20,6 +22,8 @@ class type network_service_t = object
   method set_scheme : string -> unit
   (** Set's the URI scheme used to resolve proxies. By default, the service name
       is used as scheme. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_network_service : Raw.Network_service.t
 end

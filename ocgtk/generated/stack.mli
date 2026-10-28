@@ -12,6 +12,8 @@ class type stack_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method add_child :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -167,6 +169,8 @@ class type stack_t = object
 
       Note that the child widget has to be visible itself (see
       [Gtk.Widget.show]) in order to become the visible child of [stack]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack : Raw.Stack.t
 end

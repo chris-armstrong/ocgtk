@@ -1,5 +1,8 @@
 class type d_bus_menu_model_t = object
   inherit Menu_link_iter_and__menu_model.menu_model_t
+
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_menu_model : Raw.D_bus_menu_model.t
 end
 

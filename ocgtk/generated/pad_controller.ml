@@ -3,6 +3,8 @@ class type pad_controller_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:methods Methods} *)
+
   method set_action :
     Enums.padactiontype -> int -> int -> string -> string -> unit
   (** Adds an individual action to [controller].
@@ -20,11 +22,15 @@ class type pad_controller_t = object
 
       See [Gtk.PadActionEntry] and [Gtk.PadController.set_action]. *)
 
+  (** {2:properties Properties} *)
+
   method action_group : Ocgio.Action_group.action_group_t
   (** The action group of the controller. *)
 
   method pad : Ocgdk.Device.device_t
   (** The pad of the controller. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pad_controller : Raw.Pad_controller.t
 end

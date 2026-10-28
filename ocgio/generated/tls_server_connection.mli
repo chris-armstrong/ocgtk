@@ -12,6 +12,8 @@
     [GTlsServerConnection] is the server-side subclass of [Gio.TlsConnection],
     representing a server-side TLS connection. *)
 class type tls_server_connection_t = object
+  (** {2:properties Properties} *)
+
   method authentication_mode : Enums.tlsauthenticationmode
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
       calling g_tls_connection_handshake() if you want to rehandshake with a
@@ -21,6 +23,8 @@ class type tls_server_connection_t = object
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
       calling g_tls_connection_handshake() if you want to rehandshake with a
       different mode from the initial handshake. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tls_server_connection : Raw.Tls_server_connection.t
 end

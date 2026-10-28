@@ -14,6 +14,8 @@ class type list_store_t = object
   inherit Tree_model.tree_model_t
   inherit Tree_sortable.tree_sortable_t
 
+  (** {2:methods Methods} *)
+
   method clear : unit -> unit
   (** Removes all rows from the list store. *)
 
@@ -61,6 +63,8 @@ class type list_store_t = object
   method swap : Raw.Tree_iter.t -> Raw.Tree_iter.t -> unit
   (** Swaps [a] and [b] in [store]. Note that this function only works with
       unsorted stores. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_store : Raw.List_store.t
 end

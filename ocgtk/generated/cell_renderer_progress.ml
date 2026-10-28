@@ -2,6 +2,8 @@ class type cell_renderer_progress_t = object
   inherit Cell_renderer.cell_renderer_t
   inherit Orientable.orientable_t
 
+  (** {2:properties Properties} *)
+
   method inverted : bool
   (** Whether progess is inverted. *)
 
@@ -77,6 +79,8 @@ class type cell_renderer_progress_t = object
   [@@ocaml.doc
     "The \"value\" property determines the percentage to which the\n\
      progress bar will be \"filled in\"."]
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_progress : Raw.Cell_renderer_progress.t
 end

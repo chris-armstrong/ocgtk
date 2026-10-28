@@ -1,4 +1,6 @@
 class type recent_info_t = object
+  (** {2:methods Methods} *)
+
   method create_app_info :
     string option -> (Ocgio.App_info.app_info_t option, GError.t) result
   (** Creates a [GAppInfo] for the specified [GtkRecentInfo]
@@ -72,6 +74,8 @@ class type recent_info_t = object
 
   method ref : unit -> Raw.Recent_info.t
   (** Increases the reference count of [recent_info] by one. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_recent_info : Raw.Recent_info.t
 end

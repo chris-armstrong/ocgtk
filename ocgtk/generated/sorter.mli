@@ -28,6 +28,8 @@
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
 class type sorter_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:(change:Enums.sorterchange -> unit) ->
@@ -43,6 +45,8 @@ class type sorter_t = object
       Depending on the [change] parameter, it may be possible to update the sort
       order without a full resorting. Refer to the [Gtk.SorterChange]
       documentation for details. *)
+
+  (** {2:methods Methods} *)
 
   method changed : Enums.sorterchange -> unit
   (** Notifies all users of the sorter that it has changed.
@@ -77,6 +81,8 @@ class type sorter_t = object
       See [Gtk.SorterOrder] for details of the possible return values.
 
       This function is intended to allow optimizations. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_sorter : Raw.Sorter.t
 end

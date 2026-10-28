@@ -10,9 +10,13 @@
 
     Information about a D-Bus property on a D-Bus interface. *)
 class type d_bus_property_info_t = object
+  (** {2:methods Methods} *)
+
   method ref : unit -> Raw.D_bus_property_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the
       reference count. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_property_info : Raw.D_bus_property_info.t
 end

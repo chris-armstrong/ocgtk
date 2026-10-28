@@ -1,4 +1,6 @@
 class type page_setup_t = object
+  (** {2:methods Methods} *)
+
   method copy : unit -> page_setup_t
   (** Copies a [GtkPageSetup]. *)
 
@@ -78,6 +80,8 @@ class type page_setup_t = object
 
   method to_gvariant : unit -> Gvariant.t
   (** Serialize page setup to an a\{sv\} variant. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_page_setup : Raw.Page_setup.t
 end

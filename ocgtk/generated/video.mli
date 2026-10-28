@@ -27,6 +27,8 @@ class type video_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_autoplay : unit -> bool
   (** Returns [TRUE] if videos have been set to loop. *)
 
@@ -78,6 +80,8 @@ class type video_t = object
   (** Makes [self] play the resource at the given [resource_path].
 
       This is a utility function that calls [Gtk.Video.set_file]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_video : Raw.Video.t
 end

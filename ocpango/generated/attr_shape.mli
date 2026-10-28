@@ -11,6 +11,8 @@
     The [PangoAttrShape] structure is used to represent attributes which impose
     shape restrictions. *)
 class type attr_shape_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_shape : Raw.Attr_shape.t
 end
 

@@ -1,4 +1,6 @@
 class type pixbuf_animation_iter_t = object
+  (** {2:methods Methods} *)
+
   method get_delay_time : unit -> int
   (** Gets the number of milliseconds the current pixbuf should be displayed, or
       -1 if the current pixbuf should be displayed forever.
@@ -34,6 +36,8 @@ class type pixbuf_animation_iter_t = object
       The [::area_updated] signal is emitted for an area of the frame currently
       streaming in to the loader. So if you're on the currently loading frame,
       you will need to redraw the screen for the updated area. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pixbuf_animation_iter : Raw.Pixbuf_animation_iter.t
 end

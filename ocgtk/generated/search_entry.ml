@@ -5,6 +5,8 @@ class type search_entry_t = object
 
   inherit Editable.editable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the entry is activated.
@@ -54,6 +56,8 @@ class type search_entry_t = object
       this case.
 
       The default bindings for this signal is <kbd>Escape</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method get_input_hints : unit -> Enums.inputhints
   (** Gets the input purpose for [entry]. *)
@@ -107,11 +111,15 @@ class type search_entry_t = object
   (** Set the delay to be used between the last keypress and the
       [Gtk.SearchEntry::search-changed] signal being emitted. *)
 
+  (** {2:properties Properties} *)
+
   method activates_default : bool
   (** Whether to activate the default widget when Enter is pressed. *)
 
   method set_activates_default : bool -> unit
   (** Whether to activate the default widget when Enter is pressed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_search_entry : Raw.Search_entry.t
 end

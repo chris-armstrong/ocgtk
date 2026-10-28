@@ -12,11 +12,15 @@
 class type debug_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting drawn by the given [node]. *)
 
   method get_message : unit -> string
   (** Gets the debug message that was set on this node *)
+
+  (** {2:conversions Conversions} *)
 
   method as_debug_node : Raw.Debug_node.t
 end

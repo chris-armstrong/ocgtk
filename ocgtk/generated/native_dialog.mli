@@ -24,6 +24,8 @@
     widgets, and GTK does not keep them alive. It is your responsibility to keep
     a reference until you are done with the object. *)
 class type native_dialog_t = object
+  (** {2:signals Signals} *)
+
   method on_response :
     ?after:bool ->
     callback:(response_id:int -> unit) ->
@@ -35,6 +37,8 @@ class type native_dialog_t = object
 
       If you call [Gtk.NativeDialog.hide] before the user responds to the dialog
       this signal will not be emitted. *)
+
+  (** {2:methods Methods} *)
 
   method destroy : unit -> unit
   (** Destroys a dialog.
@@ -100,6 +104,8 @@ class type native_dialog_t = object
       emitted.
 
       Multiple calls while the dialog is visible will be ignored. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_native_dialog : Raw.Native_dialog.t
 end

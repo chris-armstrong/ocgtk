@@ -16,6 +16,8 @@ class type data_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t
 
+  (** {2:methods Methods} *)
+
   method get_byte_order : unit -> Enums.datastreambyteorder
   (** Gets the byte order for the stream. *)
 
@@ -49,6 +51,8 @@ class type data_output_stream_t = object
 
   method set_byte_order : Enums.datastreambyteorder -> unit
   (** Sets the byte order of the data output stream to [order]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_data_output_stream : Raw.Data_output_stream.t
 end

@@ -5,6 +5,8 @@ class type viewport_t = object
 
   inherit Scrollable.scrollable_t
 
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -36,6 +38,8 @@ class type viewport_t = object
   method set_scroll_to_focus : bool -> unit
   (** Sets whether the viewport should automatically scroll to keep the focused
       child in view. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_viewport : Raw.Viewport.t
 end

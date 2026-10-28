@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Glyph].} *)
 class type glyph_t = object
+  (** {2:conversions Conversions} *)
+
   method as_glyph : Raw.Glyph.t
 end
 

@@ -11,6 +11,8 @@
     The [PangoColor] structure is used to represent a color in an uncalibrated
     RGB color-space. *)
 class type color_t = object
+  (** {2:methods Methods} *)
+
   method parse : string -> bool
   (** Fill in the fields of a color from a string specification.
 
@@ -28,6 +30,8 @@ class type color_t = object
       The string is in the hexadecimal form [#rrrrggggbbbb], where [r], [g] and
       [b] are hex digits representing the red, green, and blue components
       respectively. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color : Raw.Color.t
 end

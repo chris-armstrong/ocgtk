@@ -30,6 +30,8 @@ class type range_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_adjust_bounds :
     ?after:bool ->
     callback:(value:float -> unit) ->
@@ -68,6 +70,8 @@ class type range_t = object
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the range value changes. *)
+
+  (** {2:methods Methods} *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Get the adjustment which is the “model” object for [GtkRange]. *)
@@ -191,6 +195,8 @@ class type range_t = object
       If the value is outside the minimum or maximum range values, it will be
       clamped to fit inside them. The range emits the [Gtk.Range::value-changed]
       signal if the value changes. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_range : Raw.Range.t
 end

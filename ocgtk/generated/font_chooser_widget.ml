@@ -5,6 +5,8 @@ class type font_chooser_widget_t = object
 
   inherit Font_chooser.font_chooser_t
 
+  (** {2:properties Properties} *)
+
   method tweak_action : Ocgio.Action.action_t
   (** A toggle action that can be used to switch to the tweak page of the font
       chooser widget, which lets the user tweak the OpenType features and
@@ -12,6 +14,8 @@ class type font_chooser_widget_t = object
 
       The action will be enabled or disabled depending on whether the selected
       font has any features or axes. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_chooser_widget : Raw.Font_chooser_widget.t
 end

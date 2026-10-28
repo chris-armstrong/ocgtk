@@ -14,11 +14,15 @@ class type fixed_layout_child_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_child_t
 
+  (** {2:methods Methods} *)
+
   method get_transform : unit -> Ocgsk.Transform.transform_t option
   (** Retrieves the transformation of the child. *)
 
   method set_transform : Ocgsk.Transform.transform_t -> unit
   (** Sets the transformation of the child of a [GtkFixedLayout]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fixed_layout_child : Raw.Fixed_layout_child.t
 end

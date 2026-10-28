@@ -1,4 +1,6 @@
 class type io_stream_adapter_t = object
+  (** {2:conversions Conversions} *)
+
   method as_io_stream_adapter : Raw.Io_stream_adapter.t
 end
 

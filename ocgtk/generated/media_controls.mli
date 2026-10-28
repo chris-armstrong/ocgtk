@@ -19,11 +19,15 @@ class type media_controls_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_media_stream : unit -> Media_stream.media_stream_t option
   (** Gets the media stream managed by [controls] or [NULL] if none. *)
 
   method set_media_stream : Media_stream.media_stream_t option -> unit
   (** Sets the stream that is controlled by [controls]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_media_controls : Raw.Media_controls.t
 end

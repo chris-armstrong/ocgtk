@@ -12,11 +12,15 @@
     A [PangoScriptIter] is used to iterate through a string and identify ranges
     in different scripts. *)
 class type script_iter_t = object
+  (** {2:methods Methods} *)
+
   method next : unit -> bool
   (** Advances a [PangoScriptIter] to the next range.
 
       If [iter] is already at the end, it is left unchanged and [FALSE] is
       returned. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_script_iter : Raw.Script_iter.t
 end

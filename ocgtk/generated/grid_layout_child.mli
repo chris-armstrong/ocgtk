@@ -14,6 +14,8 @@ class type grid_layout_child_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_child_t
 
+  (** {2:methods Methods} *)
+
   method get_column : unit -> int
   (** Retrieves the column number to which [child] attaches its left side. *)
 
@@ -37,6 +39,8 @@ class type grid_layout_child_t = object
 
   method set_row_span : int -> unit
   (** Sets the number of rows [child] spans to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_grid_layout_child : Raw.Grid_layout_child.t
 end

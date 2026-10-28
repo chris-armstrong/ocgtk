@@ -1,6 +1,8 @@
 class type combo_box_text_t = object
   inherit Combo_box.combo_box_t
 
+  (** {2:methods Methods} *)
+
   method append : string option -> string -> unit
   (** Appends [text] to the list of strings stored in [combo_box].
 
@@ -57,6 +59,8 @@ class type combo_box_text_t = object
 
   method remove_all : unit -> unit
   (** Removes all the text entries from the combo box. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_combo_box_text : Raw.Combo_box_text.t
 end

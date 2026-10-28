@@ -34,6 +34,8 @@
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_NOW]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT] *)
 class type accessible_range_t = object
+  (** {2:conversions Conversions} *)
+
   method as_accessible_range : Raw.Accessible_range.t
 end
 

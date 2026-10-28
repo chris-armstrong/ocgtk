@@ -17,6 +17,8 @@
     See the chapter on input handling for an overview of the basic concepts,
     such as the capture and bubble phases of event propagation. *)
 class type event_controller_t = object
+  (** {2:methods Methods} *)
+
   method get_current_event : unit -> Ocgdk.Event.event_t option
   (** Returns the event that is currently being handled by the controller.
 
@@ -74,6 +76,8 @@ class type event_controller_t = object
   method set_static_name : string option -> unit
   (** Sets a name on the controller that can be used for debugging. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_event_controller : Raw.Event_controller.t
 end
 
@@ -89,6 +93,8 @@ end
     A [GtkLayoutChild] instance is only ever valid while a widget is part of a
     layout. *)
 and layout_child_t = object
+  (** {2:methods Methods} *)
+
   method get_child_widget : unit -> widget_t
   (** Retrieves the [GtkWidget] associated to the given [layout_child]. *)
 
@@ -96,10 +102,14 @@ and layout_child_t = object
   (** Retrieves the [GtkLayoutManager] instance that created the given
       [layout_child]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout_child : Raw.Layout_child.t
 end
 
 and layout_manager_t = object
+  (** {2:methods Methods} *)
+
   method allocate : widget_t -> int -> int -> int -> unit
   (** Assigns the given [width], [height], and [baseline] to a [widget], and
       computes the position and sizes of the children of the [widget] using the
@@ -126,6 +136,8 @@ and layout_manager_t = object
 
       This function should be called by subclasses of [GtkLayoutManager] in
       response to changes to their layout management policies. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_layout_manager : Raw.Layout_manager.t
 end
@@ -186,6 +198,8 @@ end
     [GtkRoot] also maintains the location of keyboard focus inside its widget
     hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus]. *)
 and root_t = object
+  (** {2:methods Methods} *)
+
   method get_display : unit -> Ocgdk.Display.display_t
   (** Returns the display that this [GtkRoot] is on. *)
 
@@ -204,6 +218,8 @@ and root_t = object
 
       To set the focus to a particular widget in the root, it is usually more
       convenient to use [Gtk.Widget.grab_focus] instead of this function. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_root : Raw.Root.t
 end
@@ -234,6 +250,8 @@ end
     - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
       to be show. If you return [FALSE], it will not be shown. *)
 and tooltip_t = object
+  (** {2:methods Methods} *)
+
   method set_custom : widget_t option -> unit
   (** Replaces the widget packed into the tooltip with [custom_widget].
       [custom_widget] does not get destroyed when the tooltip goes away. By
@@ -276,6 +294,8 @@ and tooltip_t = object
       functions for this: gtk_tree_view_set_tooltip_row() and
       gtk_tree_view_set_tooltip_cell(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tooltip : Raw.Tooltip.t
 end
 
@@ -283,6 +303,8 @@ and widget_t = object
   inherit At_context_and__accessible.accessible_t
   inherit Buildable.buildable_t
   inherit Constraint_target.constraint_target_t
+
+  (** {2:signals Signals} *)
 
   method on_destroy :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -402,6 +424,8 @@ and widget_t = object
 
       This means that [Gtk.Widget.unrealize] has been called or the widget has
       been unmapped (that is, it is going to be hidden). *)
+
+  (** {2:methods Methods} *)
 
   method action_set_enabled : string -> bool -> unit
   (** Enables or disables an action installed with
@@ -1694,6 +1718,8 @@ and widget_t = object
 
       This function is for use in widget implementations. *)
 
+  (** {2:properties Properties} *)
+
   method height_request : int
   (** Overrides for height request of the widget.
 
@@ -1713,6 +1739,8 @@ and widget_t = object
   (** Overrides for width request of the widget.
 
       If this is -1, the natural request will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_widget : Raw.Widget.t
 end

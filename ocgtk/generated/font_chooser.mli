@@ -15,6 +15,8 @@
     In GTK, the main objects that implement this interface are
     [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
 class type font_chooser_t = object
+  (** {2:signals Signals} *)
+
   method on_font_activated :
     ?after:bool ->
     callback:(fontname:string -> unit) ->
@@ -25,6 +27,8 @@ class type font_chooser_t = object
       This usually happens when the user double clicks an item, or an item is
       selected and the user presses one of the keys Space, Shift+Space, Return
       or Enter. *)
+
+  (** {2:methods Methods} *)
 
   method get_font : unit -> string option
   (** Gets the currently-selected font name.
@@ -137,6 +141,8 @@ class type font_chooser_t = object
 
   method set_show_preview_entry : bool -> unit
   (** Shows or hides the editable preview entry. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_chooser : Raw.Font_chooser.t
 end

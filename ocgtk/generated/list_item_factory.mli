@@ -57,6 +57,8 @@
     view widget you want to use it with, such as via [Gtk.ListView.set_factory].
     Reusing factories across different views is allowed, but very uncommon. *)
 class type list_item_factory_t = object
+  (** {2:conversions Conversions} *)
+
   method as_list_item_factory : Raw.List_item_factory.t
 end
 

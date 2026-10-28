@@ -3,6 +3,8 @@ class type flow_box_child_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the user activates a child widget in a [GtkFlowBox].
@@ -14,6 +16,8 @@ class type flow_box_child_t = object
       own purposes.
 
       The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method changed : unit -> unit
   (** Marks [child] as changed, causing any state that depends on this to be
@@ -55,6 +59,8 @@ class type flow_box_child_t = object
     option ->
     unit
   (** Sets the child widget of [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_flow_box_child : Raw.Flow_box_child.t
 end

@@ -6,6 +6,8 @@ class type icon_view_t = object
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
   inherit Scrollable.scrollable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_cursor_item :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
   (** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
@@ -90,6 +92,8 @@ class type icon_view_t = object
       programmatically.
 
       The default binding for this signal is Ctrl-Shift-a. *)
+
+  (** {2:methods Methods} *)
 
   method create_drag_icon :
     Raw.Tree_path.t -> Ocgdk.Paintable.paintable_t option
@@ -346,12 +350,16 @@ class type icon_view_t = object
   (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling
       this method sets [GtkIconView]:reorderable to [FALSE]. *)
 
+  (** {2:properties Properties} *)
+
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this view.
 
       If no area is specified when creating the icon view with
       gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon_view : Raw.Icon_view.t
 end

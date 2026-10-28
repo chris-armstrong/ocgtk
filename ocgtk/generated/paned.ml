@@ -6,6 +6,8 @@ class type paned_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_accept_position :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
   (** Emitted to accept the current position of the handle when moving it using
@@ -72,6 +74,8 @@ class type paned_t = object
       This is a keybinding signal.
 
       The default binding is <kbd>Tab</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method get_end_child :
     unit ->
@@ -141,6 +145,8 @@ class type paned_t = object
   method set_wide_handle : bool -> unit
   (** Sets whether the separator should be wide. *)
 
+  (** {2:properties Properties} *)
+
   method max_position : int
   (** The largest possible value for the [Gtk.Paned:position] property.
 
@@ -158,6 +164,8 @@ class type paned_t = object
 
   method set_position_set : bool -> unit
   (** Whether the [Gtk.Paned:position] property has been set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_paned : Raw.Paned.t
 end

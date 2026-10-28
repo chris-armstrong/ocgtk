@@ -13,6 +13,8 @@
     of [GInputVectors] and the operation will store the read data starting in
     the first buffer, switching to the next as needed. *)
 class type input_vector_t = object
+  (** {2:conversions Conversions} *)
+
   method as_input_vector : Raw.Input_vector.t
 end
 

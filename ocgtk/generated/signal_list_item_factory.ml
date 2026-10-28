@@ -1,5 +1,8 @@
 class type signal_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
+
+  (** {2:conversions Conversions} *)
+
   method as_signal_list_item_factory : Raw.Signal_list_item_factory.t
 end
 

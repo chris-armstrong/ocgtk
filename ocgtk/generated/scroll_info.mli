@@ -15,6 +15,8 @@
     cause the default values to be used and just scroll the element into view.
 *)
 class type scroll_info_t = object
+  (** {2:methods Methods} *)
+
   method get_enable_horizontal : unit -> bool
   (** Checks if horizontal scrolling is enabled. *)
 
@@ -29,6 +31,8 @@ class type scroll_info_t = object
 
   method set_enable_vertical : bool -> unit
   (** Turns vertical scrolling on or off. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scroll_info : Raw.Scroll_info.t
 end

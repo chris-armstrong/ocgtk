@@ -19,6 +19,9 @@
     [GSimplePermission] will result in errors. *)
 class type simple_permission_t = object
   inherit Permission.permission_t
+
+  (** {2:conversions Conversions} *)
+
   method as_simple_permission : Raw.Simple_permission.t
 end
 

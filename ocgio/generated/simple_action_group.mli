@@ -16,6 +16,8 @@ class type simple_action_group_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t
 
+  (** {2:methods Methods} *)
+
   method insert : Action.action_t -> unit
   (** Adds an action to the action group.
 
@@ -33,6 +35,8 @@ class type simple_action_group_t = object
   (** Removes the named action from the action group.
 
       If no action of this name is in the group then nothing happens. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_simple_action_group : Raw.Simple_action_group.t
 end

@@ -1,4 +1,6 @@
 class type cancellable_t = object
+  (** {2:signals Signals} *)
+
   method on_cancelled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the operation has been cancelled.
@@ -51,6 +53,8 @@ class type cancellable_t = object
       Note that the cancelled signal is emitted in the thread that the user
       cancelled from, which may be the main thread. So, the cancellable signal
       should not do something that can block. *)
+
+  (** {2:methods Methods} *)
 
   method cancel : unit -> unit
   (** Will set [cancellable] to cancelled, and will emit the
@@ -157,6 +161,8 @@ class type cancellable_t = object
   method set_error_if_cancelled : unit -> (bool, GError.t) result
   (** If the [cancellable] is cancelled, sets the error to notify that the
       operation was cancelled. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cancellable : Raw.Cancellable.t
 end

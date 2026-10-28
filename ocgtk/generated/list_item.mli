@@ -23,6 +23,8 @@
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ListItem:item] property is not [NULL]. *)
 class type list_item_t = object
+  (** {2:methods Methods} *)
+
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
 
@@ -122,6 +124,8 @@ class type list_item_t = object
 
       By default, listitems are selectable. When rebinding them to a new item,
       they will also be reset to be selectable by GTK. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_item : Raw.List_item.t
 end

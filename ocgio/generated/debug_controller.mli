@@ -27,11 +27,15 @@
     should be all that’s needed to dynamically enable or disable debug output.
 *)
 class type debug_controller_t = object
+  (** {2:methods Methods} *)
+
   method get_debug_enabled : unit -> bool
   (** Get the value of [GDebugController:debug]-enabled. *)
 
   method set_debug_enabled : bool -> unit
   (** Set the value of [GDebugController:debug]-enabled. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_debug_controller : Raw.Debug_controller.t
 end

@@ -18,6 +18,8 @@
 class type gesture_click_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_pressed :
     ?after:bool ->
     callback:(n_press:int -> x:float -> y:float -> unit) ->
@@ -40,6 +42,8 @@ class type gesture_click_t = object
   method on_stopped :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever any time/distance threshold has been exceeded. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_click : Raw.Gesture_click.t
 end

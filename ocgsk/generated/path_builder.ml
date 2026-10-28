@@ -1,4 +1,6 @@
 class type path_builder_t = object
+  (** {2:methods Methods} *)
+
   method add_cairo_path : Occairo.Path.path_t -> unit
   (** Adds a Cairo path to the builder.
 
@@ -225,6 +227,8 @@ class type path_builder_t = object
 
       This function is intended primarily for language bindings. C code should
       use [Gsk.PathBuilder.free_to_path]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_path_builder : Raw.Path_builder.t
 end

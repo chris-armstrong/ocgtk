@@ -24,6 +24,8 @@
 class type cell_renderer_spinner_t = object
   inherit Cell_renderer.cell_renderer_t
 
+  (** {2:properties Properties} *)
+
   method active : bool
   (** Whether the spinner is active (ie. shown) in the cell *)
 
@@ -51,6 +53,8 @@ class type cell_renderer_spinner_t = object
   method set_size : Enums.iconsize -> unit
   (** The [GtkIconSize] value that specifies the size of the rendered spinner.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_spinner : Raw.Cell_renderer_spinner.t
 end

@@ -1,4 +1,6 @@
 class type action_t = object
+  (** {2:methods Methods} *)
+
   method activate : Gvariant.t option -> unit
   (** Activates the action.
 
@@ -82,6 +84,8 @@ class type action_t = object
       then this function will return [NULL]. In that case,
       [Gio.Action.get_state] will return [NULL] and you must not call
       [Gio.Action.change_state]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_action : Raw.Action.t
 end

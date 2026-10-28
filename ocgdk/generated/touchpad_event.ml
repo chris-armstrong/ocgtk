@@ -1,6 +1,8 @@
 class type touchpad_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
+  (** {2:methods Methods} *)
+
   method get_gesture_phase : unit -> Enums.touchpadgesturephase
   (** Extracts the touchpad gesture phase from a touchpad event. *)
 
@@ -12,6 +14,8 @@ class type touchpad_event_t = object
 
   method get_pinch_scale : unit -> float
   (** Extracts the scale from a touchpad pinch event. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_touchpad_event : Raw.Touchpad_event.t
 end

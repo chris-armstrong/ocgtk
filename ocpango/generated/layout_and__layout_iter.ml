@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type layout_t = object
+  (** {2:methods Methods} *)
+
   method context_changed : unit -> unit
   (** Forces recomputation of any state in the [PangoLayout] that might depend
       on the layout's context.
@@ -405,10 +407,14 @@ class type layout_t = object
       It is mostly intended for use inside a debugger to quickly dump a layout
       to a file for later inspection. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout : Raw.Layout.t
 end
 
 and layout_iter_t = object
+  (** {2:methods Methods} *)
+
   method at_last_line : unit -> bool
   (** Determines whether [iter] is on the last line of the layout. *)
 
@@ -469,6 +475,8 @@ and layout_iter_t = object
   (** Moves [iter] forward to the next run in visual order.
 
       If [iter] was already at the end of the layout, returns [FALSE]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_layout_iter : Raw.Layout_iter.t
 end

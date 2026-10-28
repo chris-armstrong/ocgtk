@@ -13,9 +13,13 @@
     The actual type of the font will depend on the particular font technology
     Cairo was compiled to use. *)
 class type font_t = object
+  (** {2:methods Methods} *)
+
   method get_scaled_font : unit -> Occairo.Scaled_font.scaled_font_t option
   (** Gets the [cairo_scaled_font_t] used by [font]. The scaled font can be
       referenced and kept using cairo_scaled_font_reference(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font : Raw.Font.t
 end

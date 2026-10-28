@@ -2,6 +2,8 @@ class type slice_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
 
+  (** {2:methods Methods} *)
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
   (** Gets the model that is currently being used or [NULL] if none. *)
 
@@ -28,11 +30,15 @@ class type slice_list_model_t = object
       It can however have fewer items if the offset is too large or the model
       sliced from doesn't have enough items. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_slice_list_model : Raw.Slice_list_model.t
 end

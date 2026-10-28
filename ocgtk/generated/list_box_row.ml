@@ -5,6 +5,8 @@ class type list_box_row_t = object
 
   inherit Actionable.actionable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This is a keybinding signal, which will cause this row to be activated.
@@ -12,6 +14,8 @@ class type list_box_row_t = object
       If you want to be notified when the user activates a row (by key or not),
       use the [Gtk.ListBox::row-activated] signal on the row’s parent
       [GtkListBox]. *)
+
+  (** {2:methods Methods} *)
 
   method changed : unit -> unit
   (** Marks [row] as changed, causing any state that depends on this to be
@@ -85,6 +89,8 @@ class type list_box_row_t = object
 
   method set_selectable : bool -> unit
   (** Set whether the row can be selected. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_box_row : Raw.List_box_row.t
 end

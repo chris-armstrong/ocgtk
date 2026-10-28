@@ -1,4 +1,6 @@
 class type loadable_icon_t = object
+  (** {2:conversions Conversions} *)
+
   method as_loadable_icon : Raw.Loadable_icon.t
 end
 

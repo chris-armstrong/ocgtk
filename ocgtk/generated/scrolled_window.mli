@@ -90,6 +90,8 @@ class type scrolled_window_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_edge_overshot :
     ?after:bool ->
     callback:(pos:Enums.positiontype -> unit) ->
@@ -143,6 +145,8 @@ class type scrolled_window_t = object
 
       The horizontal or vertical adjustment is updated which triggers a signal
       that the scrolled window’s child may listen to and scroll itself. *)
+
+  (** {2:methods Methods} *)
 
   method get_child :
     unit ->
@@ -312,6 +316,8 @@ class type scrolled_window_t = object
       If no window placement is set for a scrolled window, it defaults to
       [GTK_CORNER_TOP_LEFT]. *)
 
+  (** {2:properties Properties} *)
+
   method hscrollbar_policy : Enums.policytype
   (** When the horizontal scrollbar is displayed.
 
@@ -331,6 +337,8 @@ class type scrolled_window_t = object
   (** When the vertical scrollbar is displayed.
 
       Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scrolled_window : Raw.Scrolled_window.t
 end

@@ -76,6 +76,8 @@ class type combo_box_t = object
   inherit Cell_editable.cell_editable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to when the combo box is activated.
@@ -148,6 +150,8 @@ class type combo_box_t = object
       This is an keybinding signal.
 
       The default binding for this signal is Alt+Down. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> int
   (** Returns the index of the currently active item.
@@ -288,6 +292,8 @@ class type combo_box_t = object
       If [fixed] is [TRUE], the popup's width is set to match the allocated
       width of the combo box. *)
 
+  (** {2:properties Properties} *)
+
   method has_frame : bool
   (** The [has-frame] property controls whether a frame is drawn around the
       entry. *)
@@ -301,6 +307,8 @@ class type combo_box_t = object
 
       Note that this property is mainly useful, because it allows you to connect
       to notify::popup-shown. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_combo_box : Raw.Combo_box.t
 end

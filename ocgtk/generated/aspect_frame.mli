@@ -29,6 +29,8 @@ class type aspect_frame_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -72,6 +74,8 @@ class type aspect_frame_t = object
   method set_yalign : float -> unit
   (** Sets the vertical alignment of the child within the allocation of the
       [GtkAspectFrame]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_aspect_frame : Raw.Aspect_frame.t
 end

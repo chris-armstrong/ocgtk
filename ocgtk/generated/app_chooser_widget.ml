@@ -5,6 +5,8 @@ class type app_chooser_widget_t = object
 
   inherit App_chooser.app_chooser_t
 
+  (** {2:signals Signals} *)
+
   method on_application_activated :
     ?after:bool ->
     callback:(application:Ocgio.App_info.app_info_t -> unit) ->
@@ -22,6 +24,8 @@ class type app_chooser_widget_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when an application item is selected from the widget's list. *)
+
+  (** {2:methods Methods} *)
 
   method get_default_text : unit -> string option
   (** Returns the text that is shown if there are not applications that can
@@ -70,6 +74,8 @@ class type app_chooser_widget_t = object
   method set_show_recommended : bool -> unit
   (** Sets whether the app chooser should show recommended applications for the
       content type in a separate section. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_app_chooser_widget : Raw.App_chooser_widget.t
 end

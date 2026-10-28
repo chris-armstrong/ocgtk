@@ -3,6 +3,8 @@ class type shortcuts_shortcut_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:properties Properties} *)
+
   method set_accel_size_group : Size_group.size_group_t -> unit
   (** The size group for the accelerator portion of this shortcut.
 
@@ -146,6 +148,8 @@ class type shortcuts_shortcut_t = object
 
       This is used internally by GTK, and must not be modified by applications.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcuts_shortcut : Raw.Shortcuts_shortcut.t
 end

@@ -11,6 +11,8 @@ class type pixbuf_t = object
   inherit Ocgio.Icon.icon_t
   inherit Ocgio.Loadable_icon.loadable_icon_t
 
+  (** {2:methods Methods} *)
+
   method apply_embedded_orientation : unit -> pixbuf_t option
   [@@ocaml.doc
     "Takes an existing pixbuf and checks for the presence of an\n\
@@ -289,8 +291,12 @@ class type pixbuf_t = object
       If [key] already exists in the list of options attached to the [pixbuf],
       the new value is ignored and [FALSE] is returned. *)
 
+  (** {2:properties Properties} *)
+
   method pixel_bytes : Glib_bytes.t
   (** Get property: pixel-bytes *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pixbuf : Raw.Pixbuf.t
 end

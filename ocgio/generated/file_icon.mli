@@ -18,8 +18,12 @@ class type file_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
 
+  (** {2:methods Methods} *)
+
   method get_file : unit -> App_info_cycle_64c425a0.file_t
   (** Gets the [GFile] associated with the given [icon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_icon : Raw.File_icon.t
 end

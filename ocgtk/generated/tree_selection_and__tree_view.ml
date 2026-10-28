@@ -2,12 +2,16 @@
 (* Combined classes for cyclic dependencies *)
 
 class type tree_selection_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the selection has (possibly) changed. Please note that
       this signal is mostly a hint. It may only be emitted once when a range of
       rows are selected, and it may occasionally be emitted when nothing has
       happened. *)
+
+  (** {2:methods Methods} *)
 
   method count_selected_rows : unit -> int
   (** Returns the number of rows that have been selected in [tree]. *)
@@ -58,6 +62,8 @@ class type tree_selection_t = object
   (** Unselects a range of nodes, determined by [start_path] and [end_path]
       inclusive. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tree_selection : Raw.Tree_selection.t
 end
 
@@ -67,6 +73,8 @@ and tree_view_t = object
     .widget_t
 
   inherit Scrollable.scrollable_t
+
+  (** {2:signals Signals} *)
 
   method on_columns_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -122,6 +130,8 @@ and tree_view_t = object
 
   method on_unselect_all :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  (** {2:methods Methods} *)
 
   method append_column : Tree_view_column.tree_view_column_t -> int
   (** Appends [column] to the list of columns. If [tree_view] has “fixed_height”
@@ -488,11 +498,15 @@ and tree_view_t = object
   (** Undoes the effect of gtk_tree_view_enable_model_drag_source(). Calling
       this method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
+  (** {2:properties Properties} *)
+
   method enable_grid_lines : Enums.treeviewgridlines
   (** Get property: enable-grid-lines *)
 
   method set_enable_grid_lines : Enums.treeviewgridlines -> unit
   (** Set property: enable-grid-lines *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_view : Raw.Tree_view.t
 end

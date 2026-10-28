@@ -10,6 +10,8 @@
 
     Information about nodes in a remote object hierarchy. *)
 class type d_bus_node_info_t = object
+  (** {2:methods Methods} *)
+
   method lookup_interface : string -> Raw.D_bus_interface_info.t option
   (** Looks up information about an interface.
 
@@ -18,6 +20,8 @@ class type d_bus_node_info_t = object
   method ref : unit -> Raw.D_bus_node_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the
       reference count. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_node_info : Raw.D_bus_node_info.t
 end

@@ -52,6 +52,8 @@ class type action_bar_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_center_widget :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -95,6 +97,8 @@ class type action_bar_t = object
       Note: this does not show or hide the action bar in the
       [Gtk.Widget:visible] sense, so revealing has no effect if the action bar
       is hidden. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_action_bar : Raw.Action_bar.t
 end

@@ -1,6 +1,8 @@
 class type gesture_zoom_t = object
   inherit Gesture.gesture_t
 
+  (** {2:signals Signals} *)
+
   method on_scale_changed :
     ?after:bool ->
     callback:(scale:float -> unit) ->
@@ -8,12 +10,16 @@ class type gesture_zoom_t = object
     Gobject.Signal.handler_id
   (** Emitted whenever the distance between both tracked sequences changes. *)
 
+  (** {2:methods Methods} *)
+
   method get_scale_delta : unit -> float
   (** Gets the scale delta.
 
       If [gesture] is active, this function returns the zooming difference since
       the gesture was recognized (hence the starting point is considered 1:1).
       If [gesture] is not active, 1 is returned. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_zoom : Raw.Gesture_zoom.t
 end

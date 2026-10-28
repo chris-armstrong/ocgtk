@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Surface].} *)
 class type surface_t = object
+  (** {2:conversions Conversions} *)
+
   method as_surface : Raw.Surface.t
 end
 

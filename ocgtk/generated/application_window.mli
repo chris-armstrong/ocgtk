@@ -12,6 +12,8 @@ class type application_window_t = object
   inherit Ocgio.Action_group.action_group_t
   inherit Ocgio.Action_map.action_map_t
 
+  (** {2:methods Methods} *)
+
   method get_help_overlay : unit -> Shortcuts_window.shortcuts_window_t option
   (** Gets the [GtkShortcutsWindow] that is associated with [window].
 
@@ -38,6 +40,8 @@ class type application_window_t = object
   method set_show_menubar : bool -> unit
   (** Sets whether the window will display a menubar for the app menu and
       menubar as needed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_application_window : Raw.Application_window.t
 end

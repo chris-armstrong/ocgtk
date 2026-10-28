@@ -7,6 +7,8 @@
 
 (** {b The methods, signals and properties of a [Region].} *)
 class type region_t = object
+  (** {2:conversions Conversions} *)
+
   method as_region : Raw.Region.t
 end
 

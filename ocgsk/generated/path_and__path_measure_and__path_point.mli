@@ -20,6 +20,8 @@
 
     A Path *)
 class type path_t = object
+  (** {2:methods Methods} *)
+
   method in_fill : Ocgraphene.Point.point_t -> Enums.fillrule -> bool
   (** Returns whether a point is inside the fill area of a path.
 
@@ -53,6 +55,8 @@ class type path_t = object
       This is a wrapper around [Gsk.Path.print], see that function for details.
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_path : Raw.Path.t
 end
 
@@ -67,6 +71,8 @@ end
     A [GskPathMeasure] struct is a reference counted struct and should be
     treated as opaque. *)
 and path_measure_t = object
+  (** {2:methods Methods} *)
+
   method get_length : unit -> float
   (** Gets the length of the path being measured.
 
@@ -80,6 +86,8 @@ and path_measure_t = object
 
   method ref : unit -> Raw.Path_measure.t
   (** Increases the reference count of a [GskPathMeasure] by one. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_path_measure : Raw.Path_measure.t
 end
@@ -100,6 +108,8 @@ end
     callers responsibility to keep a reference to the path as long as the
     [GskPathPoint] is used. *)
 and path_point_t = object
+  (** {2:methods Methods} *)
+
   method compare : Raw.Path_point.t -> int
   (** Returns whether [point1] is before or after [point2]. *)
 
@@ -121,6 +131,8 @@ and path_point_t = object
       This is a convenience variant of [Gsk.PathPoint.get_tangent] that returns
       the angle between the tangent and the X axis. The angle can e.g. be used
       in gtk_snapshot_rotate(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_path_point : Raw.Path_point.t
 end

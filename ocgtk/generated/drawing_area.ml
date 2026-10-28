@@ -3,6 +3,8 @@ class type drawing_area_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_resize :
     ?after:bool ->
     callback:(width:int -> height:int -> unit) ->
@@ -13,6 +15,8 @@ class type drawing_area_t = object
 
       This is useful in order to keep state up to date with the widget size,
       like for instance a backing surface. *)
+
+  (** {2:methods Methods} *)
 
   method get_content_height : unit -> int
   (** Retrieves the content height of the [GtkDrawingArea]. *)
@@ -40,6 +44,8 @@ class type drawing_area_t = object
       [Gtk.Widget.set_halign] to avoid that.
 
       If the width is set to 0 (the default), the drawing area may disappear. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drawing_area : Raw.Drawing_area.t
 end

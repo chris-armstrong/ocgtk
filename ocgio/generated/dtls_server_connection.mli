@@ -12,6 +12,8 @@
     [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],
     representing a server-side DTLS connection. *)
 class type dtls_server_connection_t = object
+  (** {2:properties Properties} *)
+
   method authentication_mode : Enums.tlsauthenticationmode
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
       calling g_dtls_connection_handshake() if you want to rehandshake with a
@@ -21,6 +23,8 @@ class type dtls_server_connection_t = object
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
       calling g_dtls_connection_handshake() if you want to rehandshake with a
       different mode from the initial handshake. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dtls_server_connection : Raw.Dtls_server_connection.t
 end

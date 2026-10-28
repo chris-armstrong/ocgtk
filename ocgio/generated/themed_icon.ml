@@ -1,6 +1,8 @@
 class type themed_icon_t = object
   inherit Icon.icon_t
 
+  (** {2:methods Methods} *)
+
   method append_name : string -> unit
   (** Append a name to the list of icons from within [icon].
 
@@ -15,6 +17,8 @@ class type themed_icon_t = object
 
       Note that doing so invalidates the hash computed by prior calls to
       g_icon_hash(). *)
+
+  (** {2:properties Properties} *)
 
   method use_default_fallbacks : bool
   [@@ocaml.doc
@@ -32,6 +36,8 @@ class type themed_icon_t = object
     \  NULL\n\
      };\n\
      ]}"]
+
+  (** {2:conversions Conversions} *)
 
   method as_themed_icon : Raw.Themed_icon.t
 end

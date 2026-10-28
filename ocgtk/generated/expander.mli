@@ -12,9 +12,13 @@ class type expander_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Activates the [GtkExpander]. *)
+
+  (** {2:methods Methods} *)
 
   method get_child :
     unit ->
@@ -90,6 +94,8 @@ class type expander_t = object
 
   method set_use_underline : bool -> unit
   (** If true, an underline in the text indicates a mnemonic. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_expander : Raw.Expander.t
 end

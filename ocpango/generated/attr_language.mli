@@ -11,6 +11,8 @@
     The [PangoAttrLanguage] structure is used to represent attributes that are
     languages. *)
 class type attr_language_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_language : Raw.Attr_language.t
 end
 

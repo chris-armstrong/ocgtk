@@ -3,6 +3,8 @@ class type overlay_layout_child_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_child_t
 
+  (** {2:methods Methods} *)
+
   method get_clip_overlay : unit -> bool
   (** Retrieves whether the child is clipped. *)
 
@@ -14,6 +16,8 @@ class type overlay_layout_child_t = object
 
   method set_measure : bool -> unit
   (** Sets whether to measure this child. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_overlay_layout_child : Raw.Overlay_layout_child.t
 end

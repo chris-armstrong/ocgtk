@@ -1,4 +1,6 @@
 class type font_options_t = object
+  (** {2:conversions Conversions} *)
+
   method as_font_options : Raw.Font_options.t
 end
 

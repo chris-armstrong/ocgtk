@@ -20,6 +20,8 @@
     icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
     possible to sort trees properly. *)
 class type tree_list_row_t = object
+  (** {2:methods Methods} *)
+
   method get_child_row : int -> tree_list_row_t option
   (** If [self] is not expanded or [position] is greater than the number of
       children, [NULL] is returned. *)
@@ -80,6 +82,8 @@ class type tree_list_row_t = object
       the model.
 
       If the row is not expandable, this function does nothing. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_list_row : Raw.Tree_list_row.t
 end

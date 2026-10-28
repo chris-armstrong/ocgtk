@@ -1,4 +1,6 @@
 class type io_scheduler_job_t = object
+  (** {2:conversions Conversions} *)
+
   method as_io_scheduler_job : Raw.Io_scheduler_job.t
 end
 

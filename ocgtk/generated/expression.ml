@@ -1,4 +1,6 @@
 class type expression_t = object
+  (** {2:methods Methods} *)
+
   method bind :
     [ `object_ ] Gobject.obj ->
     string ->
@@ -50,6 +52,8 @@ class type expression_t = object
 
       If the reference was the last, the resources associated to the [self] are
       freed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_expression : Raw.Expression.t
 end

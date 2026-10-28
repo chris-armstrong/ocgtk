@@ -1,4 +1,6 @@
 class type color_stop_t = object
+  (** {2:conversions Conversions} *)
+
   method as_color_stop : Raw.Color_stop.t
 end
 

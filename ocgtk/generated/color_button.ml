@@ -5,6 +5,8 @@ class type color_button_t = object
 
   inherit Color_chooser.color_chooser_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to when the color button is activated.
@@ -23,6 +25,8 @@ class type color_button_t = object
       you need to react to programmatic color changes as well, use the
       notify::rgba signal. *)
 
+  (** {2:methods Methods} *)
+
   method get_modal : unit -> bool
   (** Gets whether the dialog is modal. *)
 
@@ -34,6 +38,8 @@ class type color_button_t = object
 
   method set_title : string -> unit
   (** Sets the title for the color chooser dialog. *)
+
+  (** {2:properties Properties} *)
 
   method show_editor : bool
   (** Whether the color chooser should open in editor mode.
@@ -48,6 +54,8 @@ class type color_button_t = object
       This property should be used in cases where the palette in the editor
       would be redundant, such as when the color button is already part of a
       palette. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_button : Raw.Color_button.t
 end

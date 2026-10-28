@@ -1,5 +1,8 @@
 class type closure_expression_t = object
   inherit Expression.expression_t
+
+  (** {2:conversions Conversions} *)
+
   method as_closure_expression : Raw.Closure_expression.t
 end
 

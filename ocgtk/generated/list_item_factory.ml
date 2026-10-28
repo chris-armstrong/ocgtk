@@ -1,4 +1,6 @@
 class type list_item_factory_t = object
+  (** {2:conversions Conversions} *)
+
   method as_list_item_factory : Raw.List_item_factory.t
 end
 

@@ -3,6 +3,8 @@ class type notebook_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_change_current_page :
     ?after:bool ->
     callback:(page:int -> bool) ->
@@ -123,6 +125,8 @@ class type notebook_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the user or a function changes the current page. *)
+
+  (** {2:methods Methods} *)
 
   method append_page :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -464,6 +468,8 @@ class type notebook_t = object
   (** Sets whether the notebook tab can be reordered via drag and drop or not.
   *)
 
+  (** {2:properties Properties} *)
+
   method enable_popup : bool
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
       switching menu. *)
@@ -471,6 +477,8 @@ class type notebook_t = object
   method set_enable_popup : bool -> unit
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
       switching menu. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_notebook : Raw.Notebook.t
 end

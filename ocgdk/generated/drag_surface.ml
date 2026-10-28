@@ -1,6 +1,10 @@
 class type drag_surface_t = object
+  (** {2:methods Methods} *)
+
   method present : int -> int -> bool
   (** Present [drag_surface]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drag_surface : Raw.Drag_surface.t
 end

@@ -1,6 +1,8 @@
 class type text_tag_table_t = object
   inherit Buildable.buildable_t
 
+  (** {2:signals Signals} *)
+
   method on_tag_added :
     ?after:bool ->
     callback:(tag:Text_tag.text_tag_t -> unit) ->
@@ -25,6 +27,8 @@ class type text_tag_table_t = object
       The [tag] is still valid by the time the signal is emitted, but it is not
       associated with a tag table any more. *)
 
+  (** {2:methods Methods} *)
+
   method add : Text_tag.text_tag_t -> bool
   (** Add a tag to the table.
 
@@ -45,6 +49,8 @@ class type text_tag_table_t = object
       If a [GtkTextBuffer] has [table] as its tag table, the tag is removed from
       the buffer. The table’s reference to the tag is removed, so the tag will
       end up destroyed if you don’t have a reference to it. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_tag_table : Raw.Text_tag_table.t
 end

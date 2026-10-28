@@ -18,6 +18,8 @@
     In GTK, the main widgets that implement this interface are
     [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
 class type color_chooser_t = object
+  (** {2:methods Methods} *)
+
   method add_palette :
     Enums.orientation -> int -> int -> Ocgdk.Raw.Rgb_a.t array option -> unit
   (** Adds a palette to the color chooser.
@@ -45,6 +47,8 @@ class type color_chooser_t = object
 
   method set_use_alpha : bool -> unit
   (** Sets whether or not the color chooser should use the alpha channel. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_chooser : Raw.Color_chooser.t
 end

@@ -1,4 +1,6 @@
 class type pixbuf_animation_t = object
+  (** {2:methods Methods} *)
+
   method get_height : unit -> int
   (** Queries the height of the bounding box of a pixbuf animation. *)
 
@@ -25,6 +27,8 @@ class type pixbuf_animation_t = object
       out to be a plain, unanimated image, then this function will return
       [TRUE]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pixbuf_animation : Raw.Pixbuf_animation.t
 end

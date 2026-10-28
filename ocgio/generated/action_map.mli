@@ -7,6 +7,8 @@
 (** {1:class Class} *)
 
 class type action_map_t = object
+  (** {2:methods Methods} *)
+
   method add_action : Action.action_t -> unit
   (** Adds an action to the [action_map].
 
@@ -47,6 +49,8 @@ class type action_map_t = object
      (entries));\n\
      }\n\
      ]}"]
+
+  (** {2:conversions Conversions} *)
 
   method as_action_map : Raw.Action_map.t
 end

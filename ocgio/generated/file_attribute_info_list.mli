@@ -13,6 +13,8 @@
     Acts as a lightweight registry for possible valid file attributes. The
     registry stores Key-Value pair formats as [GFileAttributeInfos]. *)
 class type file_attribute_info_list_t = object
+  (** {2:methods Methods} *)
+
   method add :
     string -> Enums.fileattributetype -> Enums.fileattributeinfoflags -> unit
   (** Adds a new attribute with [name] to the [list], setting its [type] and
@@ -26,6 +28,8 @@ class type file_attribute_info_list_t = object
 
   method ref : unit -> Raw.File_attribute_info_list.t
   (** References a file attribute info list. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_attribute_info_list : Raw.File_attribute_info_list.t
 end

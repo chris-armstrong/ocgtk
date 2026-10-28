@@ -1,6 +1,8 @@
 class type socket_service_t = object
   inherit Socket_listener.socket_listener_t
 
+  (** {2:methods Methods} *)
+
   method is_active : unit -> bool
   (** Check whether the service is active or not. An active service will accept
       new clients that connect, while a non-active service will let connecting
@@ -30,6 +32,8 @@ class type socket_service_t = object
       This must be called before calling g_socket_listener_close() as the socket
       service will start accepting connections immediately when a new socket is
       added. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_service : Raw.Socket_service.t
 end

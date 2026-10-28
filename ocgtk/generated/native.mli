@@ -23,6 +23,8 @@
     for rendering on that surface. To get the renderer, use
     [Gtk.Native.get_renderer]. *)
 class type native_t = object
+  (** {2:methods Methods} *)
+
   method get_renderer : unit -> Ocgsk.Renderer.renderer_t option
   (** Returns the renderer that is used for this [GtkNative]. *)
 
@@ -38,6 +40,8 @@ class type native_t = object
   (** Unrealizes a [GtkNative].
 
       This should only be used by subclasses. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_native : Raw.Native.t
 end

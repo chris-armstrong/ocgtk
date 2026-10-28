@@ -1,4 +1,6 @@
 class type shortcut_trigger_t = object
+  (** {2:methods Methods} *)
+
   method compare : shortcut_trigger_t -> int
   (** The types of [trigger1] and [trigger2] are [gconstpointer] only to allow
       use of this function as a [GCompareFunc].
@@ -43,6 +45,8 @@ class type shortcut_trigger_t = object
 
   method trigger : Ocgdk.Event.event_t -> bool -> Ocgdk.Enums.keymatch
   (** Checks if the given [event] triggers [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_trigger : Raw.Shortcut_trigger.t
 end

@@ -1,4 +1,6 @@
 class type file_attribute_info_t = object
+  (** {2:conversions Conversions} *)
+
   method as_file_attribute_info : Raw.File_attribute_info.t
 end
 

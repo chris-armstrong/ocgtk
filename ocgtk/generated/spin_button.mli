@@ -135,6 +135,8 @@ class type spin_button_t = object
   inherit Editable.editable_t
   inherit Orientable.orientable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the spin button is activated.
@@ -190,6 +192,8 @@ class type spin_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted right after the spinbutton wraps from its maximum to its minimum
       value or vice-versa. *)
+
+  (** {2:methods Methods} *)
 
   method configure : Adjustment.adjustment_t option -> float -> int -> unit
   (** Changes the properties of an existing spin button.
@@ -288,6 +292,8 @@ class type spin_button_t = object
 
   method update : unit -> unit
   (** Manually force an update of the spin button. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_spin_button : Raw.Spin_button.t
 end

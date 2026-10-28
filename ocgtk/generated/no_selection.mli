@@ -20,6 +20,8 @@ class type no_selection_t = object
   inherit Section_model.section_model_t
   inherit Selection_model.selection_model_t
 
+  (** {2:methods Methods} *)
+
   method get_model : unit -> Ocgio.List_model.list_model_t option
   (** Gets the model that [self] is wrapping. *)
 
@@ -28,11 +30,15 @@ class type no_selection_t = object
 
       If [model] is [NULL], this model will be empty. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_no_selection : Raw.No_selection.t
 end

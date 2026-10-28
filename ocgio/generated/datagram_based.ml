@@ -1,4 +1,6 @@
 class type datagram_based_t = object
+  (** {2:methods Methods} *)
+
   method receive_messages :
     Raw.Input_message.t array ->
     int ->
@@ -106,6 +108,8 @@ class type datagram_based_t = object
       messages successfully sent before the error will be returned. If
       [cancellable] is cancelled, [G_IO_ERROR_CANCELLED] is returned as with any
       other error. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_datagram_based : Raw.Datagram_based.t
 end

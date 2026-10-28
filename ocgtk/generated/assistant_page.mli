@@ -9,11 +9,15 @@
 
     [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
 class type assistant_page_t = object
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
   (** Returns the child to which [page] belongs. *)
+
+  (** {2:properties Properties} *)
 
   method complete : bool
   (** Whether all required fields are filled in.
@@ -38,6 +42,8 @@ class type assistant_page_t = object
 
   method set_title : string -> unit
   (** The title of the page. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_assistant_page : Raw.Assistant_page.t
 end

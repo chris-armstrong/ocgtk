@@ -9,6 +9,8 @@
 
     A sub-parser for [GtkBuildable] implementations. *)
 class type buildable_parser_t = object
+  (** {2:conversions Conversions} *)
+
   method as_buildable_parser : Raw.Buildable_parser.t
 end
 

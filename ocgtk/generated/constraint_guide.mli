@@ -22,6 +22,8 @@
 class type constraint_guide_t = object
   inherit Constraint_target.constraint_target_t
 
+  (** {2:methods Methods} *)
+
   method get_name : unit -> string option
   (** Retrieves the name set using gtk_constraint_guide_set_name(). *)
 
@@ -54,6 +56,8 @@ class type constraint_guide_t = object
   method set_strength : Enums.constraintstrength -> unit
   (** Sets the strength of the constraint on the natural size of the given
       [GtkConstraintGuide]. *)
+
+  (** {2:properties Properties} *)
 
   method max_height : int
   (** The maximum height of the guide. *)
@@ -90,6 +94,8 @@ class type constraint_guide_t = object
 
   method set_nat_width : int -> unit
   (** The preferred, or natural, width of the guide. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_constraint_guide : Raw.Constraint_guide.t
 end

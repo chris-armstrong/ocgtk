@@ -30,12 +30,16 @@ class type font_dialog_button_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the font dialog button is activated.
 
       The [::activate] signal on [GtkFontDialogButton] is an action signal and
       emitting it causes the button to pop up its dialog. *)
+
+  (** {2:methods Methods} *)
 
   method get_dialog : unit -> Font_dialog.font_dialog_t option
   (** Returns the [GtkFontDialog] of [self]. *)
@@ -95,6 +99,8 @@ class type font_dialog_button_t = object
   method set_use_size : bool -> unit
   (** If [use_size] is [TRUE], the font name will be written using the selected
       font size. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_dialog_button : Raw.Font_dialog_button.t
 end

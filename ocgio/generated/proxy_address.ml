@@ -1,6 +1,8 @@
 class type proxy_address_t = object
   inherit Inet_socket_address.inet_socket_address_t
 
+  (** {2:methods Methods} *)
+
   method get_destination_hostname : unit -> string
   (** Gets [proxy]'s destination hostname; that is, the name of the host that
       will be connected to via the proxy, not the name of the proxy itself. *)
@@ -26,6 +28,8 @@ class type proxy_address_t = object
 
   method get_username : unit -> string option
   (** Gets [proxy]'s username. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_proxy_address : Raw.Proxy_address.t
 end

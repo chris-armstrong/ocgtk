@@ -1,4 +1,6 @@
 class type socket_client_t = object
+  (** {2:signals Signals} *)
+
   method on_event :
     ?after:bool ->
     callback:
@@ -59,6 +61,8 @@ class type socket_client_t = object
 
       Note that there may be additional [GSocketClientEvent] values in the
       future; unrecognized [event] values should be ignored. *)
+
+  (** {2:methods Methods} *)
 
   method add_application_proxy : string -> unit
   (** Enable proxy protocols to be handled by the application. When the
@@ -340,11 +344,15 @@ class type socket_client_t = object
       use correctly. See [GSocketClient:tls]-validation-flags for more
       information. *)
 
+  (** {2:properties Properties} *)
+
   method type_ : Enums.sockettype
   (** The type to use for socket construction. *)
 
   method set_type : Enums.sockettype -> unit
   (** The type to use for socket construction. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_client : Raw.Socket_client.t
 end

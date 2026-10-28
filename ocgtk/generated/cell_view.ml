@@ -6,6 +6,8 @@ class type cell_view_t = object
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_displayed_row : unit -> Raw.Tree_path.t option
   (** Returns a [GtkTreePath] referring to the currently displayed row. If no
       row is currently displayed, [NULL] is returned. *)
@@ -48,6 +50,8 @@ class type cell_view_t = object
       will remove it before setting the new model. If [model] is [NULL], then it
       will unset the old model. *)
 
+  (** {2:properties Properties} *)
+
   method cell_area :
     Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   (** The [GtkCellArea] rendering cells
@@ -72,6 +76,8 @@ class type cell_view_t = object
       menus).
 
       since 3.0 *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_view : Raw.Cell_view.t
 end

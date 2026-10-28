@@ -15,6 +15,8 @@
     stop has an alignment, a position, and optionally a character to use as
     decimal point. *)
 class type tab_array_t = object
+  (** {2:methods Methods} *)
+
   method get_decimal_point : int -> int
   (** Gets the Unicode character to use as decimal point.
 
@@ -75,6 +77,8 @@ class type tab_array_t = object
       A typical example:
 
       100px 200px center:300px right:400px *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tab_array : Raw.Tab_array.t
 end

@@ -15,6 +15,8 @@ class type popover_t = object
   inherit Native.native_t
   inherit Shortcut_manager.shortcut_manager_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whend the user activates the default widget.
@@ -26,6 +28,8 @@ class type popover_t = object
   method on_closed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the popover is closed. *)
+
+  (** {2:methods Methods} *)
 
   method get_autohide : unit -> bool
   (** Returns whether the popover is modal.
@@ -130,6 +134,8 @@ class type popover_t = object
       This preference will be respected where possible, although on lack of
       space (eg. if close to the window edges), the [GtkPopover] may choose to
       appear on the opposite side. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_popover : Raw.Popover.t
 end

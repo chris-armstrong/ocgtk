@@ -49,6 +49,8 @@
     Since GLib 2.72, on Windows, the native credentials may contain the PID of a
     process. This corresponds to [G_CREDENTIALS_TYPE_WIN32_PID]. *)
 class type credentials_t = object
+  (** {2:methods Methods} *)
+
   method is_same_user : credentials_t -> (bool, GError.t) result
   (** Checks if [credentials] and [other_credentials] is the same user.
 
@@ -59,6 +61,8 @@ class type credentials_t = object
   (** Creates a human-readable textual representation of [credentials] that can
       be used in logging and debug messages. The format of the returned string
       may change in future GLib release. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_credentials : Raw.Credentials.t
 end

@@ -12,6 +12,8 @@ class type tree_expander_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -61,6 +63,8 @@ class type tree_expander_t = object
 
   method set_list_row : Tree_list_row.tree_list_row_t option -> unit
   (** Sets the tree list row that this expander should manage. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_expander : Raw.Tree_expander.t
 end

@@ -17,6 +17,8 @@
     The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
 *)
 class type file_dialog_t = object
+  (** {2:methods Methods} *)
+
   method get_accept_label : unit -> string option
   (** Retrieves the text used by the dialog on its accept button. *)
 
@@ -126,6 +128,8 @@ class type file_dialog_t = object
 
   method set_title : string -> unit
   (** Sets the title that will be shown on the file chooser dialog. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_dialog : Raw.File_dialog.t
 end

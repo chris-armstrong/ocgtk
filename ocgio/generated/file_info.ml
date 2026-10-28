@@ -1,4 +1,6 @@
 class type file_info_t = object
+  (** {2:methods Methods} *)
+
   method clear_status : unit -> unit
   (** Clears the status information from [info]. *)
 
@@ -287,6 +289,8 @@ class type file_info_t = object
 
   method unset_attribute_mask : unit -> unit
   (** Unsets a mask set by g_file_info_set_attribute_mask(), if one is set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_info : Raw.File_info.t
 end

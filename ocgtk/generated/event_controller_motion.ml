@@ -3,6 +3,8 @@ class type event_controller_motion_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_enter :
     ?after:bool ->
     callback:(x:float -> y:float -> unit) ->
@@ -21,11 +23,15 @@ class type event_controller_motion_t = object
     Gobject.Signal.handler_id
   (** Emitted when the pointer moves inside the widget. *)
 
+  (** {2:methods Methods} *)
+
   method contains_pointer : unit -> bool
   (** Returns if a pointer is within [self] or one of its children. *)
 
   method is_pointer : unit -> bool
   (** Returns if a pointer is within [self], but not one of its children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_motion : Raw.Event_controller_motion.t
 end

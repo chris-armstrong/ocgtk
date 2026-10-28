@@ -1,4 +1,6 @@
 class type list_header_t = object
+  (** {2:methods Methods} *)
+
   method get_child :
     unit ->
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -39,6 +41,8 @@ class type list_header_t = object
 
       This function is typically called by applications when setting up a header
       so that the widget can be reused when binding it multiple times. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_header : Raw.List_header.t
 end

@@ -11,6 +11,8 @@
     A [PangoGlyphInfo] structure represents a single glyph with positioning
     information and visual attributes. *)
 class type glyph_info_t = object
+  (** {2:conversions Conversions} *)
+
   method as_glyph_info : Raw.Glyph_info.t
 end
 

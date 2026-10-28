@@ -5,6 +5,8 @@ class type button_t = object
 
   inherit Actionable.actionable_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted to animate press then release.
@@ -18,6 +20,8 @@ class type button_t = object
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the button has been activated (pressed and released). *)
+
+  (** {2:methods Methods} *)
 
   method get_can_shrink : unit -> bool
   (** Retrieves whether the button can be smaller than the natural size of its
@@ -94,6 +98,8 @@ class type button_t = object
 
       If true, an underline in the text of the button label indicates the next
       character should be used for the mnemonic accelerator key. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_button : Raw.Button.t
 end

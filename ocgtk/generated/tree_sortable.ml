@@ -1,9 +1,13 @@
 class type tree_sortable_t = object
+  (** {2:signals Signals} *)
+
   method on_sort_column_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::sort-column-changed signal is emitted when the sort column or sort
       order of [sortable] is changed. The signal is emitted before the contents
       of [sortable] are resorted. *)
+
+  (** {2:methods Methods} *)
 
   method has_default_sort_func : unit -> bool
   (** Returns [TRUE] if the model has a default sort function. This is used
@@ -23,6 +27,8 @@ class type tree_sortable_t = object
 
   method sort_column_changed : unit -> unit
   (** Emits a [GtkTreeSortable::sort-column-changed] signal on [sortable]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_sortable : Raw.Tree_sortable.t
 end

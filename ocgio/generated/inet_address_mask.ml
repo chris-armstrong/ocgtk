@@ -1,6 +1,8 @@
 class type inet_address_mask_t = object
   inherit Initable.initable_t
 
+  (** {2:methods Methods} *)
+
   method equal : inet_address_mask_t -> bool
   (** Tests if [mask] and [mask2] are the same mask. *)
 
@@ -18,6 +20,8 @@ class type inet_address_mask_t = object
 
   method to_string : unit -> string
   (** Converts [mask] back to its corresponding string form. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inet_address_mask : Raw.Inet_address_mask.t
 end

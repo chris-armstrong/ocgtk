@@ -45,6 +45,8 @@ class type overlay_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  (** {2:methods Methods} *)
+
   method add_overlay :
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -107,6 +109,8 @@ class type overlay_t = object
       The overlay will request the size of the largest child that has this
       property set to [TRUE]. Children who are not included may be drawn outside
       of [overlay]'s allocation if they are too large. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_overlay : Raw.Overlay.t
 end

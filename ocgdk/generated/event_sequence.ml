@@ -1,4 +1,6 @@
 class type event_sequence_t = object
+  (** {2:conversions Conversions} *)
+
   method as_event_sequence : Raw.Event_sequence.t
 end
 

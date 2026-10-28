@@ -16,6 +16,8 @@
     streams, and for measuring quality metrics for the application’s display,
     such as latency and jitter. *)
 class type frame_timings_t = object
+  (** {2:methods Methods} *)
+
   method get_complete : unit -> bool
   (** Returns whether [timings] are complete.
 
@@ -68,6 +70,8 @@ class type frame_timings_t = object
 
   method ref : unit -> Raw.Frame_timings.t
   (** Increases the reference count of [timings]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_frame_timings : Raw.Frame_timings.t
 end

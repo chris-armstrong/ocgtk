@@ -6,6 +6,8 @@ class type progress_bar_t = object
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
 
+  (** {2:methods Methods} *)
+
   method get_ellipsize : unit -> Ocpango.Enums.ellipsizemode
   (** Returns the ellipsizing position of the progress bar.
 
@@ -85,6 +87,8 @@ class type progress_bar_t = object
       percentage. If [text] is the empty string, the progress bar will still be
       styled and sized suitably for containing text, as long as
       [Gtk.ProgressBar:show-text] is [TRUE]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_progress_bar : Raw.Progress_bar.t
 end

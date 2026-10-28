@@ -25,6 +25,8 @@
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
     will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
 class type device_pad_t = object
+  (** {2:methods Methods} *)
+
   method get_feature_group : Enums.devicepadfeature -> int -> int
   (** Returns the group the given [feature] and [idx] belong to.
 
@@ -42,6 +44,8 @@ class type device_pad_t = object
       Pads have at least one group. A pad group is a subcollection of
       buttons/strip/rings that is affected collectively by a same current mode.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_device_pad : Raw.Device_pad.t
 end

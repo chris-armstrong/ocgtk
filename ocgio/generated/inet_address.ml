@@ -1,4 +1,6 @@
 class type inet_address_t = object
+  (** {2:methods Methods} *)
+
   method equal : inet_address_t -> bool
   (** Checks if two [GInetAddress] instances are equal, e.g. the same address.
   *)
@@ -52,6 +54,8 @@ class type inet_address_t = object
 
   method to_string : unit -> string
   (** Converts [address] to string form. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inet_address : Raw.Inet_address.t
 end

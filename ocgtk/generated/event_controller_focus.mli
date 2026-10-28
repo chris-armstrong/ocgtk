@@ -22,6 +22,8 @@ class type event_controller_focus_t = object
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
+  (** {2:signals Signals} *)
+
   method on_enter :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the focus enters into the widget or one of its
@@ -44,11 +46,15 @@ class type event_controller_focus_t = object
       cases, you can monitor the [Gtk.EventControllerFocus:is-focus] property
       for changes. *)
 
+  (** {2:methods Methods} *)
+
   method contains_focus : unit -> bool
   (** Returns [TRUE] if focus is within [self] or one of its children. *)
 
   method is_focus : unit -> bool
   (** Returns [TRUE] if focus is within [self], but not one of its children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_focus : Raw.Event_controller_focus.t
 end

@@ -23,6 +23,8 @@
     {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
      specification}. *)
 class type rounded_rect_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : Ocgraphene.Point.point_t -> bool
   (** Checks if the given point is inside the rounded rectangle. *)
 
@@ -77,6 +79,8 @@ class type rounded_rect_t = object
 
       This function also works for growing rounded rectangles if you pass
       negative values for the [top], [right], [bottom] or [left]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rounded_rect : Raw.Rounded_rect.t
 end

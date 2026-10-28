@@ -14,6 +14,8 @@
     windowing system, such as controlling maximization and size of the surface,
     setting icons and transient parents for dialogs. *)
 class type toplevel_t = object
+  (** {2:methods Methods} *)
+
   method begin_move :
     App_launch_context_cycle_de440b34.device_t ->
     int ->
@@ -177,6 +179,8 @@ class type toplevel_t = object
   method titlebar_gesture : Enums.titlebargesture -> bool
   (** Performs a title bar gesture. *)
 
+  (** {2:properties Properties} *)
+
   method fullscreen_mode : Enums.fullscreenmode
   (** The fullscreen mode of the surface. *)
 
@@ -185,6 +189,8 @@ class type toplevel_t = object
 
   method shortcuts_inhibited : bool
   (** Whether the surface should inhibit keyboard shortcuts. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_toplevel : Raw.Toplevel.t
 end

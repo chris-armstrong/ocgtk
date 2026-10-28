@@ -16,6 +16,8 @@
 class type simple_action_t = object
   inherit Action.action_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(parameter:Gvariant.t -> unit) ->
@@ -74,6 +76,8 @@ class type simple_action_t = object
       The handler need not set the state to the requested value. It could set it
       to any value at all, or take some other action. *)
 
+  (** {2:methods Methods} *)
+
   method set_enabled : bool -> unit
   (** Sets the action as enabled or not.
 
@@ -100,6 +104,8 @@ class type simple_action_t = object
       See g_action_get_state_hint() for more information about action state
       hints. *)
 
+  (** {2:properties Properties} *)
+
   method name : string
   (** The name of the action. This is mostly meaningful for identifying the
       action once it has been added to a [GSimpleActionGroup]. *)
@@ -111,6 +117,8 @@ class type simple_action_t = object
   method state_type : Gvariant_type.t
   (** The [GVariantType] of the state that the action has, or [NULL] if the
       action is stateless. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_simple_action : Raw.Simple_action.t
 end

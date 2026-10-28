@@ -12,6 +12,8 @@
     Virtual table for handling subtrees registered with
     g_dbus_connection_register_subtree(). *)
 class type d_bus_subtree_v_table_t = object
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_subtree_v_table : Raw.D_bus_subtree_v_table.t
 end
 

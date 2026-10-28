@@ -1,4 +1,6 @@
 class type memory_texture_builder_t = object
+  (** {2:methods Methods} *)
+
   method build : unit -> Texture.texture_t
   (** Builds a new [GdkTexture] with the values set up in the builder.
 
@@ -108,6 +110,8 @@ class type memory_texture_builder_t = object
 
       The width must be set before calling [Gdk.MemoryTextureBuilder.build] and
       conform to size requirements of the provided format. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_memory_texture_builder : Raw.Memory_texture_builder.t
 end

@@ -1,4 +1,6 @@
 class type mount_operation_t = object
+  (** {2:signals Signals} *)
+
   method on_aborted :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted by the backend when e.g. a device becomes unavailable while a
@@ -52,6 +54,8 @@ class type mount_operation_t = object
       If the message contains a line break, the first line should be presented
       as a heading. For example, it may be used as the primary text in a
       [GtkMessageDialog]. *)
+
+  (** {2:methods Methods} *)
 
   method get_anonymous : unit -> bool
   (** Check to see whether the mount operation is being used for an anonymous
@@ -115,6 +119,8 @@ class type mount_operation_t = object
 
   method set_username : string option -> unit
   (** Sets the user name within [op] to [username]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_mount_operation : Raw.Mount_operation.t
 end

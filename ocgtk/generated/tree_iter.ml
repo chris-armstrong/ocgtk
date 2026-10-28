@@ -1,4 +1,6 @@
 class type tree_iter_t = object
+  (** {2:conversions Conversions} *)
+
   method as_tree_iter : Raw.Tree_iter.t
 end
 

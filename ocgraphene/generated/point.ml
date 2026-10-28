@@ -1,4 +1,6 @@
 class type point_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Point.t -> bool
   (** Checks if the two points [a] and [b] point to the same coordinates.
 
@@ -20,6 +22,8 @@ class type point_t = object
   method near : Raw.Point.t -> float -> bool
   (** Checks whether the two points [a] and [b] are within the threshold of
       [epsilon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_point : Raw.Point.t
 end

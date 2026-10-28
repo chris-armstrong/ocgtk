@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type euler_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Euler.t -> bool
   (** Checks if two #graphene_euler_t are equal. *)
 
@@ -83,10 +85,14 @@ class type euler_t = object
     float -> float -> float -> Enums.eulerorder -> Raw.Euler.t
   (** Initializes a #graphene_euler_t with the given angles and [order]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_euler : Raw.Euler.t
 end
 
 and matrix_t = object
+  (** {2:methods Methods} *)
+
   method determinant : unit -> float
   (** Computes the determinant of the given matrix. *)
 
@@ -294,10 +300,14 @@ and matrix_t = object
       This is the equivalent of calling graphene_matrix_init_translate() and
       then multiplying [m] with the translation matrix. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_matrix : Raw.Matrix.t
 end
 
 and plane_t = object
+  (** {2:methods Methods} *)
+
   method distance : Raw.Point3_d.t -> float
   (** Computes the distance of [point] from a #graphene_plane_t. *)
 
@@ -332,10 +342,14 @@ and plane_t = object
   (** Initializes the given #graphene_plane_t using the components of the given
       #graphene_vec4_t vector. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_plane : Raw.Plane.t
 end
 
 and quaternion_t = object
+  (** {2:methods Methods} *)
+
   method dot : Raw.Quaternion.t -> float
   (** Computes the dot product of two #graphene_quaternion_t. *)
 
@@ -377,10 +391,14 @@ and quaternion_t = object
   method init_identity : unit -> Raw.Quaternion.t
   (** Initializes a #graphene_quaternion_t using the identity transformation. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_quaternion : Raw.Quaternion.t
 end
 
 and ray_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Ray.t -> bool
   (** Checks whether the two given #graphene_ray_t are equal. *)
 
@@ -427,10 +445,14 @@ and ray_t = object
 
       See also: graphene_ray_intersect_triangle() *)
 
+  (** {2:conversions Conversions} *)
+
   method as_ray : Raw.Ray.t
 end
 
 and triangle_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given triangle [t] contains the point [p]. *)
 
@@ -459,6 +481,8 @@ and triangle_t = object
     Raw.Vec3.t option ->
     Raw.Triangle.t
   (** Initializes a #graphene_triangle_t using the three given vectors. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_triangle : Raw.Triangle.t
 end
