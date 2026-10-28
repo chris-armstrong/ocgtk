@@ -1,4 +1,4 @@
-{0 Gio modules}
+{0 Gio classes, interfaces and records}
 
 {!Ocgio} has one module for each Gio class, interface and record. The externals they are built on are in {!Ocgio.Raw}.
 

@@ -228,9 +228,9 @@ let test_modules_page () =
   in
   Alcotest.(check string)
     "classes, then records, sorted; no interfaces section"
-    "{0 Graphene modules}\n\n\
-     {!Ocgraphene} has one module for each Graphene class, interface and \
-     record. The externals they are built on are in {!Ocgraphene.Raw}.\n\n\
+    "{0 Graphene classes and records}\n\n\
+     {!Ocgraphene} has one module for each Graphene class and record. The \
+     externals they are built on are in {!Ocgraphene.Raw}.\n\n\
      {1 Classes}\n\n\
      {!modules:\n\
     \  Ocgraphene.Box\n\

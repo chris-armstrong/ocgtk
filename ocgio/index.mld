@@ -9,9 +9,9 @@ They are generated from GIO's GObject introspection data.
 The library is reached as {!Ocgio}, with one module per class, interface or
 record, such as {!Ocgio.File} and {!Ocgio.Application}.
 
+{b {{!page-modules}All classes, interfaces and records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Ocgio.Enums} — enumerations and bitfields. }
 {- {!Ocgio.Constants} — constants. }
 {- {!Ocgio.Raw} — the C externals and abstract types the modules above are

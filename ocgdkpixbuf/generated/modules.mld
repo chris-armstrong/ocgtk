@@ -1,6 +1,6 @@
-{0 GdkPixbuf modules}
+{0 GdkPixbuf classes and records}
 
-{!Ocgdkpixbuf} has one module for each GdkPixbuf class, interface and record. The externals they are built on are in {!Ocgdkpixbuf.Raw}.
+{!Ocgdkpixbuf} has one module for each GdkPixbuf class and record. The externals they are built on are in {!Ocgdkpixbuf.Raw}.
 
 {1 Classes}
 

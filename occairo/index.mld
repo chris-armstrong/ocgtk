@@ -9,9 +9,9 @@ surfaces. They are generated from Cairo's GObject introspection data.
 The library is reached as {!Occairo}, with one module per class, interface or
 record, such as {!Occairo.Context} and {!Occairo.Pattern}.
 
+{b {{!page-modules}All records}}
+
 {ul
-{- {{!page-modules}All modules} — every class, interface and record,
-   grouped by kind. }
 {- {!Occairo.Enums} — enumerations and bitfields. }
 {- {!Occairo.Raw} — the C externals and abstract types the modules above are
    built on. }

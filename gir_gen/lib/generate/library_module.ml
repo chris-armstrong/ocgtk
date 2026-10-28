@@ -55,23 +55,38 @@ let generate_modules_page ~namespace ~entities =
         | Interface _ -> (classes, m :: interfaces, records)
         | Record _ -> (classes, interfaces, m :: records))
   in
-  let section (heading, names) =
-    match List.sort ~cmp:String.compare names with
-    | [] -> None
-    | names ->
-        Some
-          (Fmt.str "{1 %s}\n\n{!modules:\n%s}\n" heading
-             (String.concat ~sep:""
-                (List.map names ~f:(fun m -> Fmt.str "  %s.%s\n" main_module m))))
+  let kinds =
+    List.filter
+      ~f:(fun (_, _, names) -> not (List.is_empty names))
+      [
+        ("Classes", "class", classes);
+        ("Interfaces", "interface", interfaces);
+        ("Records", "record", records);
+      ]
   in
-  let sections =
-    List.filter_map ~f:section
-      [ ("Classes", classes); ("Interfaces", interfaces); ("Records", records) ]
+  let section (heading, _, names) =
+    Fmt.str "{1 %s}\n\n{!modules:\n%s}\n" heading
+      (String.concat ~sep:""
+         (List.map (List.sort ~cmp:String.compare names) ~f:(fun m ->
+              Fmt.str "  %s.%s\n" main_module m)))
+  in
+  (* "a", "a and b", "a, b and c" *)
+  let listing words =
+    match List.rev words with
+    | [] -> ""
+    | [ w ] -> w
+    | last :: rest -> String.concat ~sep:", " (List.rev rest) ^ " and " ^ last
   in
   Fmt.str
-    "{0 %s modules}\n\n\
-     {!%s} has one module for each %s class, interface and record. The \
-     externals they are built on are in {!%s.Raw}.\n\n\
+    "{0 %s %s}\n\n\
+     {!%s} has one module for each %s %s. The externals they are built on are \
+     in {!%s.Raw}.\n\n\
      %s"
-    namespace main_module namespace main_module
-    (String.concat ~sep:"\n" sections)
+    namespace
+    (listing
+       (List.map kinds ~f:(fun (heading, _, _) ->
+            String.lowercase_ascii heading)))
+    main_module namespace
+    (listing (List.map kinds ~f:(fun (_, singular, _) -> singular)))
+    main_module
+    (String.concat ~sep:"\n" (List.map ~f:section kinds))

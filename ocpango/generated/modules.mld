@@ -1,6 +1,6 @@
-{0 Pango modules}
+{0 Pango classes and records}
 
-{!Ocpango} has one module for each Pango class, interface and record. The externals they are built on are in {!Ocpango.Raw}.
+{!Ocpango} has one module for each Pango class and record. The externals they are built on are in {!Ocpango.Raw}.
 
 {1 Classes}
 
