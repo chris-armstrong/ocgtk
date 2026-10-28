@@ -1,8 +1,7 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–6 implemented; Phase 7 in progress; the conventions page
-of Phase 9 written early; Phases 8 and 10 onwards not yet done (per-phase
-status below).** Phase 0 and 1: PRs #188 and #190, merged into
+**Status: Phases 0–7 implemented; the conventions page of Phase 9 written
+early; Phases 8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
@@ -847,8 +846,16 @@ GIR-derived text at L1 and L2 in the PR's preview.
 
 ### Phase 7 — L2 page structure (sections, inheritance, no-constructor text)
 
-**Status: in progress** (branch `m3-phase7`). *Revised 2026-10-28* for the
-per-package layout and for the page structure Phase 6 settled.
+**Status: done** (branch `m3-phase7`). *Revised 2026-10-28* for the
+per-package layout and for the page structure Phase 6 settled. Implemented as
+the four commits below. Notes: the inheritance block's link text is the
+ancestor's OCaml module path (`Ocgtk.Widget`); 225 class types inherit from
+`GObject.Object` or another GObject class with no layer 2 class type, named
+as code. All 677 class modules have a `Constructors` heading (the 22 files
+without one are combined modules). Change 4 also moves combined modules'
+references to other groups' members onto public paths; it changed 386
+generated files and kept the build green, which is the check that no member
+modules depend on each other. Result: 0 odoc warnings.
 
 *Goal:* every L2 class page follows the decision 10 layout, so a reader can
 find a class's members and learn how to get an instance without knowing the
@@ -1163,14 +1170,11 @@ closing checklist on top of them:
 
 ## Known limitations
 
-- **`inherit` lines to a cyclic group member link to the combined module.**
-  Since the per-package layout every `inherit` line is a link, but a parent
-  in a cyclic group (`Widget`) resolves to the combined module's page
-  (`Event_controller_and__…_widget`), and member signatures show the same
-  long name. Phase 7 (change 4) switches these to the member's own module.
-  The earlier limitation, unresolved `Ocgtk_gtk__*` paths from a
-  hand-written main module, went away with the layout change
-  ([unresolved-inherit-links](../research/unresolved-inherit-links.md)).
+- **A cyclic group member's own page shows its class type as an alias.**
+  `Ocgtk.Widget`'s module page reads `class type widget_t =
+  Event_controller_and__…_widget.widget_t`; odoc expands the alias on the
+  class type's page, so its members are listed there. Everywhere else, layer
+  2 refers to the member through its own module (Phase 7, change 4).
 
 ## Explicitly out of scope (later legs)
 
