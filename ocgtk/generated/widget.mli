@@ -4,8 +4,9 @@
 (** The base class for all widgets.
 
     Its methods, signals and properties are on {!class-type-widget_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Widget}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Widget}. *)
 
 (** {1:class Class} *)
 
@@ -716,3 +717,8 @@ class widget : Raw.Widget.t -> widget_t
  hello_button_clicked);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -1,7 +1,8 @@
 (** An event related to a pad-based device.
 
-    Its methods, signals and properties are on {!class-type-pad_event_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Pad_event}. *)
+    Its methods, signals and properties are on {!class-type-pad_event_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Pad_event}. *)
 
 (** {1:class Class} *)
 
@@ -25,3 +26,8 @@ end
 
 class pad_event : Raw.Pad_event.t -> pad_event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Pad_event.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

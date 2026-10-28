@@ -4,8 +4,9 @@
     implementation can be retrieved with the name [socks5] using the function
     [Gio.IOExtensionPoint.get_extension_by_name].
 
-    Its methods, signals and properties are on {!class-type-proxy_t}. The
-    functions it is built on are in {!Ocgio.Raw.Proxy}. *)
+    Its methods, signals and properties are on {!class-type-proxy_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Proxy}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +49,8 @@ end
 
 class proxy : Raw.Proxy.t -> proxy_t
 (** Wraps a raw handle of {!Ocgio.Raw.Proxy.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

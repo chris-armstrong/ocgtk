@@ -1,8 +1,9 @@
 (** [GtkStyleContext] stores styling information affecting a widget.
 
     Its methods, signals and properties are on {!class-type-style_context_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Style_context}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Style_context}. *)
 
 (** {1:class Class} *)
 
@@ -188,3 +189,8 @@ class style_context : Raw.Style_context.t -> style_context_t
     priority, keep in mind that the user settings in
     [XDG_CONFIG_HOME/gtk-4.0/gtk.css] will still take precedence over your
     changes, as it uses the [GTK_STYLE_PROVIDER_PRIORITY_USER] priority. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

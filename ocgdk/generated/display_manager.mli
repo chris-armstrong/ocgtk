@@ -1,8 +1,9 @@
 (** Offers notification when displays appear or disappear.
 
     Its methods, signals and properties are on {!class-type-display_manager_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Display_manager}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Display_manager}. *)
 
 (** {1:class Class} *)
 
@@ -120,3 +121,8 @@ class display_manager : Raw.Display_manager.t -> display_manager_t
  #endif\n\
 \  g_error (\"Unsupported GDK backend\");\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

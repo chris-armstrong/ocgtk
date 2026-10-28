@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-tree_model_filter_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Tree_model_filter}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Tree_model_filter}. *)
 
 (** {1:class Class} *)
 
@@ -206,3 +206,8 @@ class tree_model_filter : Raw.Tree_model_filter.t -> tree_model_filter_t
     case, either rely on [GtkTreeStore] to emit all signals because it does not
     implement reference counting, or for models that do implement reference
     counting, obtain references on these child levels yourself. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

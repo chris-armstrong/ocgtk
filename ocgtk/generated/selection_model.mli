@@ -1,8 +1,9 @@
 (** An interface that adds support for selection to list models.
 
     Its methods, signals and properties are on {!class-type-selection_model_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Selection_model}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Selection_model}. *)
 
 (** {1:class Class} *)
 
@@ -193,3 +194,8 @@ class selection_model : Raw.Selection_model.t -> selection_model_t
     Selections may happen asynchronously, so the only reliable way to find out
     when an item was selected is to listen to the signals that indicate
     selection. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

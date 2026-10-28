@@ -1,7 +1,8 @@
 (** Bindings for [NativeVolumeMonitor].
 
     Its methods, signals and properties are on
-    {!class-type-native_volume_monitor_t}. The functions it is built on are in
+    {!class-type-native_volume_monitor_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Native_volume_monitor}. *)
 
 (** {1:class Class} *)
@@ -22,3 +23,8 @@ class native_volume_monitor :
   Raw.Native_volume_monitor.t ->
   native_volume_monitor_t
 (** Wraps a raw handle of {!Ocgio.Raw.Native_volume_monitor.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

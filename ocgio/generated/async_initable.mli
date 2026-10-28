@@ -1,8 +1,9 @@
 (** [GAsyncInitable] is an interface for asynchronously initializable objects.
 
     Its methods, signals and properties are on {!class-type-async_initable_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Async_initable}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Async_initable}. *)
 
 (** {1:class Class} *)
 
@@ -232,3 +233,8 @@ class async_initable : Raw.Async_initable.t -> async_initable_t
       iface->init_finish = foo_init_finish;
     }
     ]} *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

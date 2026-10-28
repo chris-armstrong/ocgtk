@@ -4,8 +4,8 @@
 
     Its methods, signals and properties are on
     {!class-type-remote_action_group_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Remote_action_group}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Remote_action_group}. *)
 
 (** {1:class Class} *)
 
@@ -84,3 +84,8 @@ class remote_action_group : Raw.Remote_action_group.t -> remote_action_group_t
     [_full] variants of the calls if available. This provides a mechanism by
     which to receive platform data for action invocations that arrive by way of
     D-Bus. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

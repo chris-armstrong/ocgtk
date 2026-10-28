@@ -1,8 +1,9 @@
 (** The location and size of a rectangle region.
 
     Its methods, signals and properties are on {!class-type-rect_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgraphene.Raw.Rect}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgraphene.Raw.Rect}. *)
 
 (** {1:class Class} *)
 
@@ -115,3 +116,8 @@ class rect : Raw.Rect.t -> rect_t
     positive values. All functions taking a #graphene_rect_t as an argument will
     internally operate on a normalized copy; all functions returning a
     #graphene_rect_t will always return a normalized rectangle. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

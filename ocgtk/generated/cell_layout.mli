@@ -4,8 +4,9 @@
 (** An interface for packing cells
 
     Its methods, signals and properties are on {!class-type-cell_layout_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Cell_layout}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_layout}. *)
 
 (** {1:class Class} *)
 
@@ -201,3 +202,8 @@ class cell_layout : Raw.Cell_layout.t -> cell_layout_t
  to support alternative cell areas, you can do so by moving the\n\
  problematic calls out of [init()] and into a [constructor()]\n\
  for your class."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

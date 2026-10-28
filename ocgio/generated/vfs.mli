@@ -1,7 +1,8 @@
 (** Entry point for using GIO functionality.
 
-    Its methods, signals and properties are on {!class-type-vfs_t}. The
-    functions it is built on are in {!Ocgio.Raw.Vfs}. *)
+    Its methods, signals and properties are on {!class-type-vfs_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Vfs}. *)
 
 (** {1:class Class} *)
 
@@ -45,3 +46,8 @@ end
 
 class vfs : Raw.Vfs.t -> vfs_t
 (** Wraps a raw handle of {!Ocgio.Raw.Vfs.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

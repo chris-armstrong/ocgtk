@@ -1,8 +1,9 @@
 (** The tree interface used by GtkTreeView
 
     Its methods, signals and properties are on {!class-type-tree_model_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Tree_model}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_model}. *)
 
 (** {1:class Class} *)
 
@@ -467,3 +468,8 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  required for levels in which nodes are referenced. For the root level\n\
  however, signals must be emitted at all times (however the root level\n\
  is always referenced when any view is attached)."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,7 +1,8 @@
 (** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant].
 
     Its methods, signals and properties are on {!class-type-assistant_page_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Assistant_page}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Assistant_page}. *)
 
 (** {1:class Class} *)
 
@@ -52,3 +53,8 @@ end
 
 class assistant_page : Raw.Assistant_page.t -> assistant_page_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Assistant_page.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

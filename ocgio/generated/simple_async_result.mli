@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-simple_async_result_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Simple_async_result}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Simple_async_result}. *)
 
 (** {1:class Class} *)
 
@@ -379,3 +379,8 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
 \  return g_object_ref (cake);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -2,7 +2,8 @@
     parameters.
 
     Its methods, signals and properties are on
-    {!class-type-closure_expression_t}. The functions it is built on are in
+    {!class-type-closure_expression_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Closure_expression}. *)
 
 (** {1:class Class} *)
@@ -23,3 +24,8 @@ end
 
 class closure_expression : Raw.Closure_expression.t -> closure_expression_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Closure_expression.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

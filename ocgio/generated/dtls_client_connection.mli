@@ -2,7 +2,8 @@
     representing a client-side DTLS connection.
 
     Its methods, signals and properties are on
-    {!class-type-dtls_client_connection_t}. The functions it is built on are in
+    {!class-type-dtls_client_connection_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Dtls_client_connection}. *)
 
 (** {1:class Class} *)
@@ -58,3 +59,8 @@ class dtls_client_connection :
   Raw.Dtls_client_connection.t ->
   dtls_client_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Dtls_client_connection.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

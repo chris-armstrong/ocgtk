@@ -1,8 +1,9 @@
 (** The integration point for media playback inside GTK.
 
     Its methods, signals and properties are on {!class-type-media_stream_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Media_stream}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Media_stream}. *)
 
 (** {1:class Class} *)
 
@@ -263,3 +264,8 @@ class media_stream : Raw.Media_stream.t -> media_stream_t
     [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
     [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -6,8 +6,9 @@
     media. For example, an optical disc drive, or a USB flash drive.
 
     Its methods, signals and properties are on {!class-type-drive_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Drive}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Drive}. *)
 
 (** {1:class Class} *)
 
@@ -72,3 +73,8 @@ class drive : Raw.Drive.t -> drive_t
 
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

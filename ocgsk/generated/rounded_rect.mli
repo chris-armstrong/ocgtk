@@ -1,8 +1,9 @@
 (** A rectangular region with rounded corners.
 
     Its methods, signals and properties are on {!class-type-rounded_rect_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgsk.Raw.Rounded_rect}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Rounded_rect}. *)
 
 (** {1:class Class} *)
 
@@ -104,3 +105,8 @@ class rounded_rect : Raw.Rounded_rect.t -> rounded_rect_t
     The algorithm used for normalizing corner sizes is described in
     {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
      specification}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

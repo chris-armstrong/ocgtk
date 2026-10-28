@@ -2,8 +2,9 @@
     gestures.
 
     Its methods, signals and properties are on {!class-type-shortcuts_group_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Shortcuts_group}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcuts_group}. *)
 
 (** {1:class Class} *)
 
@@ -110,3 +111,8 @@ class shortcuts_group : Raw.Shortcuts_group.t -> shortcuts_group_t
 
     If you need to add a shortcut programmatically, use
     [Gtk.ShortcutsGroup.add_shortcut]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

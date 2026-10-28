@@ -5,8 +5,9 @@
     [PangoLayout].
 
     Its methods, signals and properties are on {!class-type-layout_iter_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Layout_iter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Layout_iter}. *)
 
 (** {1:class Class} *)
 
@@ -33,3 +34,8 @@ class layout_iter : Raw.Layout_iter.t -> layout_iter_t
 
     The [PangoLayoutIter] structure is opaque, and has no user-visible fields.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

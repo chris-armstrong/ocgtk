@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-content_deserializer_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgdk.Raw.Content_deserializer}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.Content_deserializer}. *)
 
 (** {1:class Class} *)
 
@@ -85,3 +85,8 @@ class content_deserializer :
     functions, use [content_register_deserializer].
 
     Also see [Gdk.ContentSerializer]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

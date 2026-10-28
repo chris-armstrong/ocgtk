@@ -4,8 +4,9 @@
     implement client-side and server-side DTLS, respectively.
 
     Its methods, signals and properties are on {!class-type-dtls_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Dtls_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Dtls_connection}. *)
 
 (** {1:class Class} *)
 
@@ -358,3 +359,8 @@ class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
     is up to the caller to do that if they wish. If they do not, and
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
     not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

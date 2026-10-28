@@ -2,8 +2,9 @@
     of [GInputVectors] and the operation will store the read data starting in
     the first buffer, switching to the next as needed.
 
-    Its methods, signals and properties are on {!class-type-input_vector_t}. The
-    functions it is built on are in {!Ocgio.Raw.Input_vector}. *)
+    Its methods, signals and properties are on {!class-type-input_vector_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Input_vector}. *)
 
 (** {1:class Class} *)
 
@@ -20,3 +21,8 @@ end
 
 class input_vector : Raw.Input_vector.t -> input_vector_t
 (** Wraps a raw handle of {!Ocgio.Raw.Input_vector.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

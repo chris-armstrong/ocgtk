@@ -4,8 +4,8 @@
 
     Its methods, signals and properties are on
     {!class-type-simple_proxy_resolver_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Simple_proxy_resolver}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Simple_proxy_resolver}. *)
 
 (** {1:class Class} *)
 
@@ -74,3 +74,8 @@ class simple_proxy_resolver :
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
     [Gio.SocketClient.set_proxy_resolver]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

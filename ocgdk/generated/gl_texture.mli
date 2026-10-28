@@ -1,7 +1,8 @@
 (** A [GdkTexture] representing a GL texture object.
 
-    Its methods, signals and properties are on {!class-type-gl_texture_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Gl_texture}. *)
+    Its methods, signals and properties are on {!class-type-gl_texture_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Gl_texture}. *)
 
 (** {1:class Class} *)
 
@@ -33,3 +34,8 @@ end
 
 class gl_texture : Raw.Gl_texture.t -> gl_texture_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Gl_texture.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

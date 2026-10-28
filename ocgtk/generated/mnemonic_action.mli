@@ -1,8 +1,9 @@
 (** Activates a widget with a mnemonic.
 
     Its methods, signals and properties are on {!class-type-mnemonic_action_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Mnemonic_action}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Mnemonic_action}. *)
 
 (** {1:class Class} *)
 
@@ -30,3 +31,8 @@ class mnemonic_action : Raw.Mnemonic_action.t -> mnemonic_action_t
     Activates a widget with a mnemonic.
 
     This means that [Gtk.Widget.mnemonic_activate] is called. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

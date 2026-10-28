@@ -2,8 +2,9 @@
     get the default resolver.
 
     Its methods, signals and properties are on {!class-type-resolver_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Resolver}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Resolver}. *)
 
 (** {1:class Class} *)
 
@@ -226,3 +227,8 @@ class resolver : Raw.Resolver.t -> resolver_t
 
     This is an abstract type; subclasses of it implement different resolvers for
     different platforms and situations. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

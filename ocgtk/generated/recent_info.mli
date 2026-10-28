@@ -1,8 +1,9 @@
 (** Contains the metadata associated with an item in the recently used files
     list.
 
-    Its methods, signals and properties are on {!class-type-recent_info_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Recent_info}. *)
+    Its methods, signals and properties are on {!class-type-recent_info_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Recent_info}. *)
 
 (** {1:class Class} *)
 
@@ -94,3 +95,8 @@ end
 
 class recent_info : Raw.Recent_info.t -> recent_info_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Recent_info.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

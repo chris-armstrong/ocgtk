@@ -1,8 +1,9 @@
 (** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
     Its methods, signals and properties are on {!class-type-attr_iterator_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocpango.Raw.Attr_iterator}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Attr_iterator}. *)
 
 (** {1:class Class} *)
 
@@ -50,3 +51,8 @@ class attr_iterator : Raw.Attr_iterator.t -> attr_iterator_t
     text using [Pango.AttrIterator.next]. At each style change, the range of the
     current style segment and the attributes currently in effect can be queried.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

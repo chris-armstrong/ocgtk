@@ -4,8 +4,8 @@
 
     Its methods, signals and properties are on
     {!class-type-d_bus_object_manager_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_object_manager}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_object_manager}. *)
 
 (** {1:class Class} *)
 
@@ -97,3 +97,8 @@ class d_bus_object_manager :
 
     See [Gio.DBusObjectManagerClient] for the client-side implementation and
     [Gio.DBusObjectManagerServer] for the service-side implementation. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

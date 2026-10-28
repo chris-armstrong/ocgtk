@@ -2,8 +2,9 @@
     particular type of attribute.
 
     Its methods, signals and properties are on {!class-type-attr_class_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Attr_class}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Attr_class}. *)
 
 (** {1:class Class} *)
 
@@ -30,3 +31,8 @@ class attr_class : Raw.Attr_class.t -> attr_class_t
 
     The functions in this structure should not be called directly. Instead, one
     should use the wrapper functions provided for [PangoAttribute]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

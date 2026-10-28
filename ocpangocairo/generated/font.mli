@@ -1,8 +1,9 @@
 (** [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
     Its methods, signals and properties are on {!class-type-font_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocpangocairo.Raw.Font}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpangocairo.Raw.Font}. *)
 
 (** {1:class Class} *)
 
@@ -36,3 +37,8 @@ class font : Raw.Font.t -> font_t
 
     The actual type of the font will depend on the particular font technology
     Cairo was compiled to use. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

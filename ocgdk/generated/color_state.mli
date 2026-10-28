@@ -4,8 +4,9 @@
 (** Provides information to interpret colors and pixels in a variety of ways.
 
     Its methods, signals and properties are on {!class-type-color_state_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Color_state}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Color_state}. *)
 
 (** {1:class Class} *)
 
@@ -34,3 +35,8 @@ class color_state : Raw.Color_state.t -> color_state_t
     Crucially, GTK knows how to convert colors from one color state to another.
 
     [GdkColorState] objects are immutable and therefore threadsafe. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

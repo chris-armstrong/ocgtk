@@ -1,8 +1,9 @@
 (** [GAppInfoMonitor] monitors application information for changes.
 
     Its methods, signals and properties are on {!class-type-app_info_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.App_info_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.App_info_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -104,3 +105,8 @@ class app_info_monitor : Raw.App_info_monitor.t -> app_info_monitor_t
     is that changes to the list of installed applications often come in groups
     (like during system updates) and rescanning the list on every change is
     pointless and expensive. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

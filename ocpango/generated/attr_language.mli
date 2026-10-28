@@ -2,7 +2,8 @@
     languages.
 
     Its methods, signals and properties are on {!class-type-attr_language_t}.
-    The functions it is built on are in {!Ocpango.Raw.Attr_language}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocpango.Raw.Attr_language}. *)
 
 (** {1:class Class} *)
 
@@ -18,3 +19,8 @@ end
 
 class attr_language : Raw.Attr_language.t -> attr_language_t
 (** Wraps a raw handle of {!Ocpango.Raw.Attr_language.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

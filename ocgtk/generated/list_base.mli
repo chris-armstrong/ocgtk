@@ -1,8 +1,9 @@
 (** The abstract base class for GTK's list widgets.
 
     Its methods, signals and properties are on {!class-type-list_base_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.List_base}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.List_base}. *)
 
 (** {1:class Class} *)
 
@@ -128,3 +129,8 @@ class list_base : Raw.List_base.t -> list_base_t
     - [listitem.select] changes selection if the item is selectable.
     - [listitem.scroll-to] moves the visible area of the list to this item with
       the minimum amount of scrolling required. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

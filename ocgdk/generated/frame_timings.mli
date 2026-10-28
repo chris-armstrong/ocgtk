@@ -1,8 +1,9 @@
 (** Holds timing information for a single frame of the application’s displays.
 
     Its methods, signals and properties are on {!class-type-frame_timings_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Frame_timings}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Frame_timings}. *)
 
 (** {1:class Class} *)
 
@@ -88,3 +89,8 @@ class frame_timings : Raw.Frame_timings.t -> frame_timings_t
     is useful for precise synchronization of video with the event or audio
     streams, and for measuring quality metrics for the application’s display,
     such as latency and jitter. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

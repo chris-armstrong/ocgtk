@@ -2,8 +2,9 @@
     Cairo.
 
     Its methods, signals and properties are on {!class-type-font_map_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpangocairo.Raw.Font_map}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpangocairo.Raw.Font_map}. *)
 
 (** {1:class Class} *)
 
@@ -66,3 +67,8 @@ class font_map : Raw.Font_map.t -> font_map_t
 
     The actual type of the font map will depend on the particular font
     technology Cairo was compiled to use. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

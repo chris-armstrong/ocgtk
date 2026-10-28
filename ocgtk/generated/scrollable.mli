@@ -1,8 +1,9 @@
 (** An interface for widgets with native scrolling ability.
 
     Its methods, signals and properties are on {!class-type-scrollable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Scrollable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Scrollable}. *)
 
 (** {1:class Class} *)
 
@@ -105,3 +106,8 @@ class scrollable : Raw.Scrollable.t -> scrollable_t
 
     - When any of the adjustments emits the [Gtk.Adjustment::value-changed]
       signal, the scrollable widget should scroll its contents. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

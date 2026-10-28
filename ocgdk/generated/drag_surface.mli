@@ -1,7 +1,8 @@
 (** A surface that is used during DND.
 
-    Its methods, signals and properties are on {!class-type-drag_surface_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Drag_surface}. *)
+    Its methods, signals and properties are on {!class-type-drag_surface_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Drag_surface}. *)
 
 (** {1:class Class} *)
 
@@ -24,3 +25,8 @@ end
 
 class drag_surface : Raw.Drag_surface.t -> drag_surface_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Drag_surface.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

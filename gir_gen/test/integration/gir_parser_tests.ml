@@ -63,6 +63,27 @@ let test_parse_class_without_ctype () =
   Alcotest.(check string)
     "C type should default to GtkCustomWidget" "GtkCustomWidget" widget.c_type
 
+let test_parse_class_abstract () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <class name="Widget" c:type="GtkWidget" abstract="1">
+    </class>
+    <class name="Button" c:type="GtkButton" parent="Widget">
+    </class>
+  |}
+  in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
+  let is_abstract name =
+    List.exists
+      (fun (cls : Gir_gen_lib.Types.gir_class) ->
+        String.equal cls.class_name name && cls.abstract)
+      classes
+  in
+  Alcotest.(check bool) "abstract=\"1\" is abstract" true (is_abstract "Widget");
+  Alcotest.(check bool)
+    "no attribute is not abstract" false (is_abstract "Button")
+
 let test_parse_class_with_constructors () =
   let gir_xml =
     wrap_namespace
@@ -1513,6 +1534,8 @@ let tests =
     Alcotest.test_case "Parse simple class" `Quick test_parse_simple_class;
     Alcotest.test_case "Parse class without c:type" `Quick
       test_parse_class_without_ctype;
+    Alcotest.test_case "Parse class abstract attribute" `Quick
+      test_parse_class_abstract;
     Alcotest.test_case "Parse class with constructors" `Quick
       test_parse_class_with_constructors;
     Alcotest.test_case "Parse class with methods" `Quick

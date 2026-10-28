@@ -1,8 +1,9 @@
 (** Used by list widgets to represent the headers they display.
 
     Its methods, signals and properties are on {!class-type-list_header_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.List_header}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.List_header}. *)
 
 (** {1:class Class} *)
 
@@ -74,3 +75,8 @@ class list_header : Raw.List_header.t -> list_header_t
     [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
     their factory, but provide a different set of properties suitable for
     managing the header instead of individual items. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -4,8 +4,9 @@
 (** The selection object for GtkTreeView
 
     Its methods, signals and properties are on {!class-type-tree_selection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Tree_selection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_selection}. *)
 
 (** {1:class Class} *)
 
@@ -68,3 +69,8 @@ class tree_selection : Raw.Tree_selection.t -> tree_selection_t
     Additionally, it may on occasion emit a [GtkTreeSelection]::changed signal
     when nothing has happened (mostly as a result of programmers calling
     select_row on an already selected row). *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

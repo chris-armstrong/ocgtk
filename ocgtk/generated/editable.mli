@@ -1,8 +1,9 @@
 (** Interface for single-line text editing widgets.
 
     Its methods, signals and properties are on {!class-type-editable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Editable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Editable}. *)
 
 (** {1:class Class} *)
 
@@ -426,3 +427,8 @@ class editable : Raw.Editable.t -> editable_t
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
  and [Gtk.Editable::delete-text] signals, you will need to connect\n\
  to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

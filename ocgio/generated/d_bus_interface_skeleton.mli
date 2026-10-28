@@ -1,8 +1,9 @@
 (** Abstract base class for D-Bus interfaces on the service side.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_interface_skeleton_t}. The functions it is built on are
-    in {!Ocgio.Raw.D_bus_interface_skeleton}. *)
+    {!class-type-d_bus_interface_skeleton_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_interface_skeleton}. *)
 
 (** {1:class Class} *)
 
@@ -132,3 +133,8 @@ class d_bus_interface_skeleton :
   Raw.D_bus_interface_skeleton.t ->
   d_bus_interface_skeleton_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface_skeleton.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

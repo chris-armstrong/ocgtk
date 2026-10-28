@@ -7,8 +7,9 @@
     client-side and server-side TLS, respectively.
 
     Its methods, signals and properties are on {!class-type-tls_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Tls_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Tls_connection}. *)
 
 (** {1:class Class} *)
 
@@ -36,3 +37,8 @@ class tls_connection : Raw.Tls_connection.t -> tls_connection_t
     client-side and server-side TLS, respectively.
 
     For DTLS (Datagram TLS) support, see [Gio.DtlsConnection]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

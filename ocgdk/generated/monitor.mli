@@ -4,8 +4,9 @@
 (** Represents the individual outputs that are associated with a [GdkDisplay].
 
     Its methods, signals and properties are on {!class-type-monitor_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Monitor}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Monitor}. *)
 
 (** {1:class Class} *)
 
@@ -30,3 +31,8 @@ class monitor : Raw.Monitor.t -> monitor_t
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
     [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
     to find a particular monitor. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

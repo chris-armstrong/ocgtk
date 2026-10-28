@@ -2,8 +2,9 @@
     domain sockets.
 
     Its methods, signals and properties are on {!class-type-unix_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Unix_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Unix_connection}. *)
 
 (** {1:class Class} *)
 
@@ -123,3 +124,8 @@ class unix_connection : Raw.Unix_connection.t -> unix_connection_t
     Before GLib 2.72, [<gio/gunixconnection.h>] belonged to the UNIX-specific
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

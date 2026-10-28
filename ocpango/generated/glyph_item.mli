@@ -2,8 +2,9 @@
     shaping the items text.
 
     Its methods, signals and properties are on {!class-type-glyph_item_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Glyph_item}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_item}. *)
 
 (** {1:class Class} *)
 
@@ -66,3 +67,8 @@ class glyph_item : Raw.Glyph_item.t -> glyph_item_t
     As an example of the usage of [PangoGlyphItem], the results of shaping text
     with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
     list of [PangoGlyphItem]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

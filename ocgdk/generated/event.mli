@@ -4,8 +4,9 @@
 (** Represents windowing system events.
 
     Its methods, signals and properties are on {!class-type-event_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Event}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Event}. *)
 
 (** {1:class Class} *)
 
@@ -32,3 +33,8 @@ class event : Raw.Event.t -> event_t
     [GdkEvent] and its related API is rarely needed.
 
     [GdkEvent] structs are immutable. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

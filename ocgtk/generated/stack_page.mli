@@ -1,7 +1,8 @@
 (** An auxiliary class used by [GtkStack].
 
-    Its methods, signals and properties are on {!class-type-stack_page_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Stack_page}. *)
+    Its methods, signals and properties are on {!class-type-stack_page_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Stack_page}. *)
 
 (** {1:class Class} *)
 
@@ -70,3 +71,8 @@ end
 
 class stack_page : Raw.Stack_page.t -> stack_page_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Stack_page.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

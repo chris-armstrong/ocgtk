@@ -1,7 +1,8 @@
 (** Sorts items via a callback function.
 
     Its methods, signals and properties are on {!class-type-custom_sorter_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Custom_sorter}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Custom_sorter}. *)
 
 (** {1:class Class} *)
 
@@ -20,3 +21,8 @@ end
 
 class custom_sorter : Raw.Custom_sorter.t -> custom_sorter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Custom_sorter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,8 @@
 (** A list model that can create child models on demand.
 
     Its methods, signals and properties are on {!class-type-tree_list_model_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_list_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_list_model}. *)
 
 (** {1:class Class} *)
 
@@ -88,3 +89,8 @@ end
 
 class tree_list_model : Raw.Tree_list_model.t -> tree_list_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_model.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,8 +1,9 @@
 (** A surface that is attached to another surface.
 
     Its methods, signals and properties are on {!class-type-popup_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Popup}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Popup}. *)
 
 (** {1:class Class} *)
 
@@ -77,3 +78,8 @@ class popup : Raw.Popup.t -> popup_t
 
     [GdkPopup]s are typically used to implement menus and similar popups. They
     can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

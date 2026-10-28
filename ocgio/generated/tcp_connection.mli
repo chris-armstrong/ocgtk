@@ -2,7 +2,8 @@
     sockets.
 
     Its methods, signals and properties are on {!class-type-tcp_connection_t}.
-    The functions it is built on are in {!Ocgio.Raw.Tcp_connection}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Tcp_connection}. *)
 
 (** {1:class Class} *)
 
@@ -40,3 +41,8 @@ end
 
 class tcp_connection : Raw.Tcp_connection.t -> tcp_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tcp_connection.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

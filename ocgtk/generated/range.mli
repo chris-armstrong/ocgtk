@@ -1,8 +1,9 @@
 (** Base class for widgets which visualize an adjustment.
 
     Its methods, signals and properties are on {!class-type-range_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Range}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Range}. *)
 
 (** {1:class Class} *)
 
@@ -229,3 +230,8 @@ class range : Raw.Range.t -> range_t
     The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
     dragging, or initiating the drag with a long-press will enable the
     fine-tuning mode. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

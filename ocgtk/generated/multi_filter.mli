@@ -1,7 +1,8 @@
 (** Base class for filters that combine multiple filters.
 
-    Its methods, signals and properties are on {!class-type-multi_filter_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Multi_filter}. *)
+    Its methods, signals and properties are on {!class-type-multi_filter_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Multi_filter}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +49,8 @@ end
 
 class multi_filter : Raw.Multi_filter.t -> multi_filter_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Multi_filter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

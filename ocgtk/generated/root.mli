@@ -4,8 +4,9 @@
 (** An interface for widgets that can act as the root of a widget hierarchy.
 
     Its methods, signals and properties are on {!class-type-root_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Root}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Root}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +49,8 @@ class root : Raw.Root.t -> root_t
 
     [GtkRoot] also maintains the location of keyboard focus inside its widget
     hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

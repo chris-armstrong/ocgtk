@@ -1,8 +1,9 @@
 (** Activates a widget.
 
     Its methods, signals and properties are on {!class-type-activate_action_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Activate_action}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Activate_action}. *)
 
 (** {1:class Class} *)
 
@@ -30,3 +31,8 @@ class activate_action : Raw.Activate_action.t -> activate_action_t
     Activates a widget.
 
     Widgets are activated by calling [Gtk.Widget.activate]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

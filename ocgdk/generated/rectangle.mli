@@ -1,8 +1,9 @@
 (** Represents a rectangle.
 
     Its methods, signals and properties are on {!class-type-rectangle_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Rectangle}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Rectangle}. *)
 
 (** {1:class Class} *)
 
@@ -57,3 +58,8 @@ class rectangle : Raw.Rectangle.t -> rectangle_t
 
     The Graphene library has a number of other data types for regions and
     volumes in 2D and 3D. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

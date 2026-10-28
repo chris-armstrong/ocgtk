@@ -2,8 +2,9 @@
     an application.
 
     Its methods, signals and properties are on {!class-type-app_chooser_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.App_chooser}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.App_chooser}. *)
 
 (** {1:class Class} *)
 
@@ -69,3 +70,8 @@ class app_chooser : Raw.App_chooser.t -> app_chooser_t
 
     To obtain the application that has been selected in a [GtkAppChooser], use
     [Gtk.AppChooser.get_app_info]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

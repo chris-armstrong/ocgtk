@@ -1,8 +1,9 @@
 (** Represents items in a cell in [Gtk.ColumnView].
 
     Its methods, signals and properties are on {!class-type-column_view_cell_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Column_view_cell}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Column_view_cell}. *)
 
 (** {1:class Class} *)
 
@@ -53,3 +54,8 @@ class column_view_cell : Raw.Column_view_cell.t -> column_view_cell_t
 
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ColumnViewCell:item] property is not [NULL]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

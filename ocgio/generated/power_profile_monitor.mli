@@ -5,8 +5,8 @@
 
     Its methods, signals and properties are on
     {!class-type-power_profile_monitor_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Power_profile_monitor}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Power_profile_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -85,3 +85,8 @@ class power_profile_monitor :
     Don’t forget to disconnect the [GObject.Object::notify] signal for
     [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
     [GPowerProfileMonitor] itself when exiting. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,8 +1,9 @@
 (** An object for rendering a single cell
 
     Its methods, signals and properties are on {!class-type-cell_renderer_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Cell_renderer}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_renderer}. *)
 
 (** {1:class Class} *)
 
@@ -302,3 +303,8 @@ class cell_renderer : Raw.Cell_renderer.t -> cell_renderer_t
     “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
     These “set” properties reflect whether a property has been set or not. You
     should not set them independently. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

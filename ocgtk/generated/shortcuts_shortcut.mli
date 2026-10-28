@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-shortcuts_shortcut_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Shortcuts_shortcut}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Shortcuts_shortcut}. *)
 
 (** {1:class Class} *)
 
@@ -186,3 +186,8 @@ class shortcuts_shortcut : Raw.Shortcuts_shortcut.t -> shortcuts_shortcut_t
     with a short text.
 
     This widget is only meant to be used with [GtkShortcutsWindow]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

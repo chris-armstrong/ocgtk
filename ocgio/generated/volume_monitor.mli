@@ -3,8 +3,9 @@
     show in a sidebar.
 
     Its methods, signals and properties are on {!class-type-volume_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Volume_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Volume_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -158,3 +159,8 @@ class volume_monitor : Raw.Volume_monitor.t -> volume_monitor_t
 
     In order to receive updates about volumes and mounts monitored through GVFS,
     a main loop must be running. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

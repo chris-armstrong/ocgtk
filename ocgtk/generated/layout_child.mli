@@ -4,8 +4,9 @@
 (** The base class for objects that are meant to hold layout properties.
 
     Its methods, signals and properties are on {!class-type-layout_child_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Layout_child}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Layout_child}. *)
 
 (** {1:class Class} *)
 
@@ -40,3 +41,8 @@ class layout_child : Raw.Layout_child.t -> layout_child_t
 
     A [GtkLayoutChild] instance is only ever valid while a widget is part of a
     layout. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

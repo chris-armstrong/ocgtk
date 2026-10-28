@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-d_bus_method_invocation_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_method_invocation}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_method_invocation}. *)
 
 (** {1:class Class} *)
 
@@ -159,3 +159,8 @@ class d_bus_method_invocation :
     as an argument to the [handle_method_call()] function in a
     [Gio.DBusInterfaceVTable] that was passed to
     [Gio.DBusConnection.register_object]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

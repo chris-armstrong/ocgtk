@@ -4,7 +4,8 @@
     flipping.
 
     Its methods, signals and properties are on
-    {!class-type-filter_input_stream_t}. The functions it is built on are in
+    {!class-type-filter_input_stream_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Filter_input_stream}. *)
 
 (** {1:class Class} *)
@@ -39,3 +40,8 @@ end
 
 class filter_input_stream : Raw.Filter_input_stream.t -> filter_input_stream_t
 (** Wraps a raw handle of {!Ocgio.Raw.Filter_input_stream.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

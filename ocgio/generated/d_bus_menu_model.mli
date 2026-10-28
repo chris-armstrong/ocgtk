@@ -3,7 +3,8 @@
     [Gio.DBusConnection.export_menu_model].
 
     Its methods, signals and properties are on {!class-type-d_bus_menu_model_t}.
-    The functions it is built on are in {!Ocgio.Raw.D_bus_menu_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.D_bus_menu_model}. *)
 
 (** {1:class Class} *)
 
@@ -24,3 +25,8 @@ end
 
 class d_bus_menu_model : Raw.D_bus_menu_model.t -> d_bus_menu_model_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_menu_model.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

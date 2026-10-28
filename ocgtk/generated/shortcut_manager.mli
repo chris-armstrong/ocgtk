@@ -1,8 +1,9 @@
 (** An interface that is used to implement shortcut scopes.
 
     Its methods, signals and properties are on {!class-type-shortcut_manager_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Shortcut_manager}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcut_manager}. *)
 
 (** {1:class Class} *)
 
@@ -41,3 +42,8 @@ class shortcut_manager : Raw.Shortcut_manager.t -> shortcut_manager_t
 
     Every widget that implements [GtkShortcutManager] will be used as a
     [GTK_SHORTCUT_SCOPE_MANAGED]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

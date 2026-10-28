@@ -2,8 +2,9 @@
     information for a single glyph.
 
     Its methods, signals and properties are on {!class-type-glyph_geometry_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocpango.Raw.Glyph_geometry}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_geometry}. *)
 
 (** {1:class Class} *)
 
@@ -50,3 +51,8 @@ class glyph_geometry : Raw.Glyph_geometry.t -> glyph_geometry_t
     + Render the current glyph at (x + x_offset, y + y_offset),
     + Advance the current point to (x + width, y)
     + Render the next glyph *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

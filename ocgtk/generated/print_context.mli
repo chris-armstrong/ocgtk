@@ -2,8 +2,9 @@
     printing.
 
     Its methods, signals and properties are on {!class-type-print_context_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Print_context}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Print_context}. *)
 
 (** {1:class Class} *)
 
@@ -172,3 +173,8 @@ class print_context : Raw.Print_context.t -> print_context_t
 \  g_object_unref (layout);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

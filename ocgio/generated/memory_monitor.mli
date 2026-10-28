@@ -7,8 +7,9 @@
       documentation}).
 
     Its methods, signals and properties are on {!class-type-memory_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Memory_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Memory_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -130,3 +131,8 @@ class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
  ]}\n\n\
  Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
  signal, and unref the [GMemoryMonitor] itself when exiting."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

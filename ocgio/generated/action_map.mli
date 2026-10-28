@@ -1,8 +1,9 @@
 (** [GActionMap] is an interface for action containers.
 
     Its methods, signals and properties are on {!class-type-action_map_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Action_map}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Action_map}. *)
 
 (** {1:class Class} *)
 
@@ -80,3 +81,8 @@ class action_map : Raw.Action_map.t -> action_map_t
  prefixed names (e.g. by prepending \"app.\" or \"win.\").\n\
  This is the motivation for the ‘Map’ part of the interface\n\
  name."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

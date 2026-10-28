@@ -1,7 +1,8 @@
 (** Contains information that is useful to compute the size of a drag surface.
 
     Its methods, signals and properties are on
-    {!class-type-drag_surface_size_t}. The functions it is built on are in
+    {!class-type-drag_surface_size_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Drag_surface_size}. *)
 
 (** {1:class Class} *)
@@ -23,3 +24,8 @@ end
 
 class drag_surface_size : Raw.Drag_surface_size.t -> drag_surface_size_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Drag_surface_size.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,8 @@
 (** A [GParamSpec] for properties holding a [GtkExpression].
 
     Its methods, signals and properties are on
-    {!class-type-param_spec_expression_t}. The functions it is built on are in
+    {!class-type-param_spec_expression_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Param_spec_expression}. *)
 
 (** {1:class Class} *)
@@ -21,3 +22,8 @@ class param_spec_expression :
   Raw.Param_spec_expression.t ->
   param_spec_expression_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Param_spec_expression.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

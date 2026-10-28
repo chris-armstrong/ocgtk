@@ -1,8 +1,9 @@
 (** Tells the application when to update and repaint a surface.
 
     Its methods, signals and properties are on {!class-type-frame_clock_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Frame_clock}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Frame_clock}. *)
 
 (** {1:class Class} *)
 
@@ -202,3 +203,8 @@ class frame_clock : Raw.Frame_clock.t -> frame_clock_t
     [Gdk.FrameClock.get_frame_time] and the value inside the
     [Gdk.FrameClock::update] signal of the clock, they will stay exactly
     synchronized. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

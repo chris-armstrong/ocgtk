@@ -1,8 +1,9 @@
 (** The interface for GTK input methods.
 
     Its methods, signals and properties are on {!class-type-im_context_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Im_context}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Im_context}. *)
 
 (** {1:class Class} *)
 
@@ -238,3 +239,8 @@ class im_context : Raw.Im_context.t -> im_context_t
  provides a [GIOExtension] for the extension point named \"gtk-im-module\".\n\n\
  To connect a widget to the users preferred input method, you should use\n\
  [Gtk.IMMulticontext]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

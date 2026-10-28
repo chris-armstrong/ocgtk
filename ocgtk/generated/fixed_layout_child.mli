@@ -1,7 +1,8 @@
 (** [GtkLayoutChild] subclass for children in a [GtkFixedLayout].
 
     Its methods, signals and properties are on
-    {!class-type-fixed_layout_child_t}. The functions it is built on are in
+    {!class-type-fixed_layout_child_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Fixed_layout_child}. *)
 
 (** {1:class Class} *)
@@ -32,3 +33,8 @@ end
 
 class fixed_layout_child : Raw.Fixed_layout_child.t -> fixed_layout_child_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Fixed_layout_child.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

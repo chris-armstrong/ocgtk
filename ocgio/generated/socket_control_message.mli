@@ -4,8 +4,8 @@
 
     Its methods, signals and properties are on
     {!class-type-socket_control_message_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Socket_control_message}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Socket_control_message}. *)
 
 (** {1:class Class} *)
 
@@ -80,3 +80,8 @@ class socket_control_message :
     class and implement the [deserialize] method. Also, make sure your class is
     registered with the [GObject.Type] type system before calling
     [Gio.Socket.receive_message] to read such a message. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

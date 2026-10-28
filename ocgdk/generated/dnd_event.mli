@@ -1,7 +1,8 @@
 (** An event related to drag and drop operations.
 
-    Its methods, signals and properties are on {!class-type-dnd_event_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Dnd_event}. *)
+    Its methods, signals and properties are on {!class-type-dnd_event_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Dnd_event}. *)
 
 (** {1:class Class} *)
 
@@ -25,3 +26,8 @@ end
 
 class dnd_event : Raw.Dnd_event.t -> dnd_event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Dnd_event.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

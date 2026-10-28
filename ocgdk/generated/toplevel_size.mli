@@ -1,7 +1,8 @@
 (** Contains information that is useful to compute the size of a toplevel.
 
     Its methods, signals and properties are on {!class-type-toplevel_size_t}.
-    The functions it is built on are in {!Ocgdk.Raw.Toplevel_size}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgdk.Raw.Toplevel_size}. *)
 
 (** {1:class Class} *)
 
@@ -46,3 +47,8 @@ end
 
 class toplevel_size : Raw.Toplevel_size.t -> toplevel_size_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Toplevel_size.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

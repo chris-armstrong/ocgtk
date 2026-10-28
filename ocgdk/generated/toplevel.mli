@@ -1,8 +1,9 @@
 (** A freestanding toplevel surface.
 
     Its methods, signals and properties are on {!class-type-toplevel_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Toplevel}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Toplevel}. *)
 
 (** {1:class Class} *)
 
@@ -208,3 +209,8 @@ class toplevel : Raw.Toplevel.t -> toplevel_t
     The [GdkToplevel] interface provides useful APIs for interacting with the
     windowing system, such as controlling maximization and size of the surface,
     setting icons and transient parents for dialogs. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

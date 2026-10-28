@@ -1,8 +1,9 @@
 (** Represents the source of an ongoing DND operation.
 
     Its methods, signals and properties are on {!class-type-drag_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Drag}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Drag}. *)
 
 (** {1:class Class} *)
 
@@ -107,3 +108,8 @@ class drag : Raw.Drag.t -> drag_t
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
  \"Drag and Drop\" section of the GTK documentation for more information."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -59,6 +59,9 @@ val doc_of_attributes : Ppxlib.Parsetree.attributes -> string option
 (** The text of an [ocaml.doc] attribute, which is also what a doc comment
     before or after an item parses to. *)
 
+val floating_docs : Ppxlib.Parsetree.signature -> string list
+(** The floating docs ([ocaml.text]) of a signature, in order. *)
+
 val module_preamble : Ppxlib.Parsetree.signature -> string option
 (** The text of the first floating doc ([ocaml.text]) of a signature. *)
 

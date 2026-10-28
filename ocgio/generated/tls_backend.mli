@@ -2,8 +2,9 @@
     internal type used to coordinate the different classes implemented by a TLS
     backend.
 
-    Its methods, signals and properties are on {!class-type-tls_backend_t}. The
-    functions it is built on are in {!Ocgio.Raw.Tls_backend}. *)
+    Its methods, signals and properties are on {!class-type-tls_backend_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Tls_backend}. *)
 
 (** {1:class Class} *)
 
@@ -66,3 +67,8 @@ end
 
 class tls_backend : Raw.Tls_backend.t -> tls_backend_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_backend.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

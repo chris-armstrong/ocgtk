@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-shortcuts_section_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Shortcuts_section}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Shortcuts_section}. *)
 
 (** {1:class Class} *)
 
@@ -170,3 +170,8 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
     The following signals have default keybindings:
 
     - [Gtk.ShortcutsSection::change-current-page] *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

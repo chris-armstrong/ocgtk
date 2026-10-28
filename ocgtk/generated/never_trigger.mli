@@ -1,7 +1,8 @@
 (** A [GtkShortcutTrigger] that never triggers.
 
     Its methods, signals and properties are on {!class-type-never_trigger_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Never_trigger}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Never_trigger}. *)
 
 (** {1:class Class} *)
 
@@ -21,3 +22,8 @@ end
 
 class never_trigger : Raw.Never_trigger.t -> never_trigger_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Never_trigger.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

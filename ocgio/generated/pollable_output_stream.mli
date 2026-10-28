@@ -5,8 +5,8 @@
 
     Its methods, signals and properties are on
     {!class-type-pollable_output_stream_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Pollable_output_stream}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Pollable_output_stream}. *)
 
 (** {1:class Class} *)
 
@@ -69,3 +69,8 @@ class pollable_output_stream :
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
     returns false, then the behavior of other [GPollableOutputStream] methods is
     undefined. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

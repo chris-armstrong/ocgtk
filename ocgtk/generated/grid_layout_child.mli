@@ -1,7 +1,8 @@
 (** [GtkLayoutChild] subclass for children in a [GtkGridLayout].
 
     Its methods, signals and properties are on
-    {!class-type-grid_layout_child_t}. The functions it is built on are in
+    {!class-type-grid_layout_child_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Grid_layout_child}. *)
 
 (** {1:class Class} *)
@@ -50,3 +51,8 @@ end
 
 class grid_layout_child : Raw.Grid_layout_child.t -> grid_layout_child_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Grid_layout_child.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,8 @@
 (** [GtkLayoutChild] subclass for children in a [GtkOverlayLayout].
 
     Its methods, signals and properties are on
-    {!class-type-overlay_layout_child_t}. The functions it is built on are in
+    {!class-type-overlay_layout_child_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Overlay_layout_child}. *)
 
 (** {1:class Class} *)
@@ -40,3 +41,8 @@ class overlay_layout_child :
   Raw.Overlay_layout_child.t ->
   overlay_layout_child_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Overlay_layout_child.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

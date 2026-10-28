@@ -1,8 +1,9 @@
 (** An interface for style information used by [Gtk.StyleContext].
 
     Its methods, signals and properties are on {!class-type-style_provider_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Style_provider}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Style_provider}. *)
 
 (** {1:class Class} *)
 
@@ -38,3 +39,8 @@ class style_provider : Raw.Style_provider.t -> style_provider_t
 
     GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

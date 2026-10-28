@@ -1,8 +1,9 @@
 (** Uses closures for size negotiation.
 
     Its methods, signals and properties are on {!class-type-custom_layout_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Custom_layout}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Custom_layout}. *)
 
 (** {1:class Class} *)
 
@@ -36,3 +37,8 @@ class custom_layout : Raw.Custom_layout.t -> custom_layout_t
     A [GtkCustomLayout] uses closures matching to the old [GtkWidget] virtual
     functions for size negotiation, as a convenience API to ease the porting
     towards the corresponding [GtkLayoutManager] virtual functions. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

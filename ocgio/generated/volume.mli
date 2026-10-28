@@ -6,8 +6,9 @@
     disc inserted into a disc drive.
 
     Its methods, signals and properties are on {!class-type-volume_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Volume}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Volume}. *)
 
 (** {1:class Class} *)
 
@@ -108,3 +109,8 @@ class volume : Raw.Volume.t -> volume_t
     able to provide the [G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE] identifier, which
     can be used to obtain a hal device by means of
     [libhal_manager_find_device_string_match()]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

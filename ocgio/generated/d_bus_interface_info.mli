@@ -1,7 +1,8 @@
 (** Information about a D-Bus interface.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_interface_info_t}. The functions it is built on are in
+    {!class-type-d_bus_interface_info_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_interface_info}. *)
 
 (** {1:class Class} *)
@@ -59,3 +60,8 @@ class d_bus_interface_info :
   Raw.D_bus_interface_info.t ->
   d_bus_interface_info_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface_info.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

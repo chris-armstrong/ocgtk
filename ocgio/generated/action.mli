@@ -1,8 +1,9 @@
 (** [GAction] represents a single named action.
 
     Its methods, signals and properties are on {!class-type-action_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Action}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Action}. *)
 
 (** {1:class Class} *)
 
@@ -159,3 +160,8 @@ class action : Raw.Action.t -> action_t
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
     a [Gio.SimpleActionGroup]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

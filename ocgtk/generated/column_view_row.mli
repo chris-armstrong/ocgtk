@@ -1,8 +1,9 @@
 (** Configures how rows are displayed in a [Gtk.ColumnView].
 
     Its methods, signals and properties are on {!class-type-column_view_row_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Column_view_row}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Column_view_row}. *)
 
 (** {1:class Class} *)
 
@@ -108,3 +109,8 @@ class column_view_row : Raw.Column_view_row.t -> column_view_row_t
 
     It is not used to set the widgets displayed in the individual cells. For
     that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,8 @@
 (** Invokes a callback.
 
     Its methods, signals and properties are on {!class-type-callback_action_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Callback_action}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Callback_action}. *)
 
 (** {1:class Class} *)
 
@@ -21,3 +22,8 @@ end
 
 class callback_action : Raw.Callback_action.t -> callback_action_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Callback_action.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

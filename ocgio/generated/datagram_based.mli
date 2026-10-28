@@ -1,8 +1,9 @@
 (** Interface for socket-like objects with datagram semantics.
 
     Its methods, signals and properties are on {!class-type-datagram_based_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Datagram_based}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Datagram_based}. *)
 
 (** {1:class Class} *)
 
@@ -229,3 +230,8 @@ class datagram_based : Raw.Datagram_based.t -> datagram_based_t
     Like most other APIs in GLib, [GDatagramBased] is not inherently thread
     safe. To use a [GDatagramBased] concurrently from multiple threads, you must
     implement your own locking. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

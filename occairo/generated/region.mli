@@ -1,7 +1,8 @@
 (** Bindings for [Region].
 
-    Its methods, signals and properties are on {!class-type-region_t}. The
-    functions it is built on are in {!Occairo.Raw.Region}. *)
+    Its methods, signals and properties are on {!class-type-region_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Occairo.Raw.Region}. *)
 
 (** {1:class Class} *)
 
@@ -14,3 +15,8 @@ end
 
 class region : Raw.Region.t -> region_t
 (** Wraps a raw handle of {!Occairo.Raw.Region.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

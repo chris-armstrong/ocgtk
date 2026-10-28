@@ -2,8 +2,9 @@
     [PangoGlyphItem].
 
     Its methods, signals and properties are on {!class-type-glyph_item_iter_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocpango.Raw.Glyph_item_iter}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_item_iter}. *)
 
 (** {1:class Class} *)
 
@@ -125,3 +126,8 @@ class glyph_item_iter : Raw.Glyph_item_iter.t -> glyph_item_iter_t
 
     None of the members of a [PangoGlyphItemIter] should be modified manually.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

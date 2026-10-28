@@ -5,8 +5,9 @@
     implements [Gio.AsyncInitable]).
 
     Its methods, signals and properties are on {!class-type-initable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Initable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Initable}. *)
 
 (** {1:class Class} *)
 
@@ -111,3 +112,8 @@ class initable : Raw.Initable.t -> initable_t
     the binding could check for objects implementing [GInitable] during normal
     construction and automatically initialize them, throwing an exception on
     failure. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

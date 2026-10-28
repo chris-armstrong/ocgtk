@@ -3,8 +3,9 @@
 
     Its methods, signals and properties are on
     {!class-type-application_command_line_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Application_command_line}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Application_command_line}.
+*)
 
 (** {1:class Class} *)
 
@@ -428,3 +429,8 @@ class application_command_line :
  hold the application until you are done with the commandline.\n\n\
  The complete example can be found here:\n\
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

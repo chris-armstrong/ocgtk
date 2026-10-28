@@ -1,8 +1,9 @@
 (** Iterates over the elements of a [Gtk.Bitset].
 
     Its methods, signals and properties are on {!class-type-bitset_iter_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Bitset_iter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Bitset_iter}. *)
 
 (** {1:class Class} *)
 
@@ -44,3 +45,8 @@ class bitset_iter : Raw.Bitset_iter.t -> bitset_iter_t
     Before a [GtkBitsetIter] can be used, it needs to be initialized with
     [Gtk.BitsetIter.init_first], [Gtk.BitsetIter.init_last] or
     [Gtk.BitsetIter.init_at]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

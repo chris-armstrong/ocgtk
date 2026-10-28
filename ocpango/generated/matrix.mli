@@ -2,8 +2,9 @@
     coordinates.
 
     Its methods, signals and properties are on {!class-type-matrix_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocpango.Raw.Matrix}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Matrix}. *)
 
 (** {1:class Class} *)
 
@@ -76,3 +77,8 @@ class matrix : Raw.Matrix.t -> matrix_t
     x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
     y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
     ]} *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

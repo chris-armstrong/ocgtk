@@ -2,7 +2,8 @@
     subsurface.
 
     Its methods, signals and properties are on {!class-type-subsurface_node_t}.
-    The functions it is built on are in {!Ocgsk.Raw.Subsurface_node}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgsk.Raw.Subsurface_node}. *)
 
 (** {1:class Class} *)
 
@@ -28,3 +29,8 @@ end
 
 class subsurface_node : Raw.Subsurface_node.t -> subsurface_node_t
 (** Wraps a raw handle of {!Ocgsk.Raw.Subsurface_node.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

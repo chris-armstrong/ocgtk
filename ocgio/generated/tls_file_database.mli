@@ -3,7 +3,8 @@
     library specific subtypes implement.
 
     Its methods, signals and properties are on
-    {!class-type-tls_file_database_t}. The functions it is built on are in
+    {!class-type-tls_file_database_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Tls_file_database}. *)
 
 (** {1:class Class} *)
@@ -38,3 +39,8 @@ end
 
 class tls_file_database : Raw.Tls_file_database.t -> tls_file_database_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_file_database.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

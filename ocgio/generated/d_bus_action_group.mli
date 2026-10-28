@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-d_bus_action_group_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_action_group}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_action_group}. *)
 
 (** {1:class Class} *)
 
@@ -37,3 +37,8 @@ class d_bus_action_group : Raw.D_bus_action_group.t -> d_bus_action_group_t
 
     [GDBusActionGroup] can be used as a proxy for an action group that is
     exported over D-Bus with [Gio.DBusConnection.export_action_group]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

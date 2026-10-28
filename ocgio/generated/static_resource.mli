@@ -2,7 +2,8 @@
     the following functions.
 
     Its methods, signals and properties are on {!class-type-static_resource_t}.
-    The functions it is built on are in {!Ocgio.Raw.Static_resource}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Static_resource}. *)
 
 (** {1:class Class} *)
 
@@ -40,3 +41,8 @@ end
 
 class static_resource : Raw.Static_resource.t -> static_resource_t
 (** Wraps a raw handle of {!Ocgio.Raw.Static_resource.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

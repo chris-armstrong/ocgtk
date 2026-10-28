@@ -6,8 +6,9 @@
     passwords.
 
     Its methods, signals and properties are on {!class-type-tls_interaction_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Tls_interaction}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Tls_interaction}. *)
 
 (** {1:class Class} *)
 
@@ -63,3 +64,8 @@ class tls_interaction : Raw.Tls_interaction.t -> tls_interaction_t
     initialization function. Any interactions not implemented will return
     [G_TLS_INTERACTION_UNHANDLED]. If a derived class implements an async
     method, it must also implement the corresponding finish method. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

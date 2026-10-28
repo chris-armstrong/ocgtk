@@ -1,8 +1,9 @@
 (** Collects the arguments that are needed to present a message to the user.
 
     Its methods, signals and properties are on {!class-type-alert_dialog_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Alert_dialog}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Alert_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -94,3 +95,8 @@ class alert_dialog : Raw.Alert_dialog.t -> alert_dialog_t
 
     If you don't need to wait for a button to be clicked, you can use
     [Gtk.AlertDialog.show]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

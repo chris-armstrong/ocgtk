@@ -2,8 +2,9 @@
     paragraph via [PangoLayout].
 
     Its methods, signals and properties are on {!class-type-layout_line_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Layout_line}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Layout_line}. *)
 
 (** {1:class Class} *)
 
@@ -50,3 +51,8 @@ class layout_line : Raw.Layout_line.t -> layout_line_t
     [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
     and are only valid until the text, attributes, or settings of the parent
     [PangoLayout] are modified. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

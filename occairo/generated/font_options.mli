@@ -1,7 +1,8 @@
 (** Bindings for [FontOptions].
 
-    Its methods, signals and properties are on {!class-type-font_options_t}. The
-    functions it is built on are in {!Occairo.Raw.Font_options}. *)
+    Its methods, signals and properties are on {!class-type-font_options_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Occairo.Raw.Font_options}. *)
 
 (** {1:class Class} *)
 
@@ -14,3 +15,8 @@ end
 
 class font_options : Raw.Font_options.t -> font_options_t
 (** Wraps a raw handle of {!Occairo.Raw.Font_options.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

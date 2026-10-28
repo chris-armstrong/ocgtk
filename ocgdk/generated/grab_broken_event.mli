@@ -1,7 +1,8 @@
 (** An event related to a broken windowing system grab.
 
     Its methods, signals and properties are on
-    {!class-type-grab_broken_event_t}. The functions it is built on are in
+    {!class-type-grab_broken_event_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Grab_broken_event}. *)
 
 (** {1:class Class} *)
@@ -29,3 +30,8 @@ end
 
 class grab_broken_event : Raw.Grab_broken_event.t -> grab_broken_event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Grab_broken_event.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

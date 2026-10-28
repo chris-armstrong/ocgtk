@@ -1,8 +1,9 @@
 (** [GtkMessageDialog] presents a dialog with some message text.
 
     Its methods, signals and properties are on {!class-type-message_dialog_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Message_dialog}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Message_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -185,3 +186,8 @@ class message_dialog : Raw.Message_dialog.t -> message_dialog_t
  {b GtkMessageDialog as GtkBuildable}\n\n\
  The [GtkMessageDialog] implementation of the [GtkBuildable] interface exposes\n\
  the message area as an internal child with the name “message_area”."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

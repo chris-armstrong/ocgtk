@@ -4,8 +4,9 @@
     both streams may use the same position.
 
     Its methods, signals and properties are on {!class-type-io_stream_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Io_stream}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Io_stream}. *)
 
 (** {1:class Class} *)
 
@@ -176,3 +177,8 @@ class io_stream : Raw.Io_stream.t -> io_stream_t
     the wrapper stream is idle. Note that the semantics of such operations may
     not be well-defined due to the state the wrapper stream leaves the base
     stream in (though they are guaranteed not to crash). *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

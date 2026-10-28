@@ -4,8 +4,9 @@
 (** Represents data shared between applications or inside an application.
 
     Its methods, signals and properties are on {!class-type-clipboard_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Clipboard}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Clipboard}. *)
 
 (** {1:class Class} *)
 
@@ -50,3 +51,8 @@ class clipboard : Raw.Clipboard.t -> clipboard_t
     [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For
     other data, use [Gdk.Clipboard.read_async], which provides a [GInputStream]
     object. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

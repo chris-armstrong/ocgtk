@@ -2,7 +2,8 @@
     the functions below.
 
     Its methods, signals and properties are on
-    {!class-type-menu_attribute_iter_t}. The functions it is built on are in
+    {!class-type-menu_attribute_iter_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Menu_attribute_iter}. *)
 
 (** {1:class Class} *)
@@ -43,3 +44,8 @@ end
 
 class menu_attribute_iter : Raw.Menu_attribute_iter.t -> menu_attribute_iter_t
 (** Wraps a raw handle of {!Ocgio.Raw.Menu_attribute_iter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

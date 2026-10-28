@@ -2,7 +2,8 @@
     representing a server-side TLS connection.
 
     Its methods, signals and properties are on
-    {!class-type-tls_server_connection_t}. The functions it is built on are in
+    {!class-type-tls_server_connection_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Tls_server_connection}. *)
 
 (** {1:class Class} *)
@@ -36,3 +37,8 @@ class tls_server_connection :
   Raw.Tls_server_connection.t ->
   tls_server_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_server_connection.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

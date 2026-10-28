@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-buildable_parse_context_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Buildable_parse_context}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Buildable_parse_context}. *)
 
 (** {1:class Class} *)
 
@@ -49,3 +49,8 @@ class buildable_parse_context :
     Provides context for parsing GtkBuilder UI files.
 
     [GtkBuildableParseContext] is an opaque struct. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

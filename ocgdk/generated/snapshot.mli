@@ -1,8 +1,9 @@
 (** Base type for snapshot operations.
 
     Its methods, signals and properties are on {!class-type-snapshot_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Snapshot}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Snapshot}. *)
 
 (** {1:class Class} *)
 
@@ -27,3 +28,8 @@ class snapshot : Raw.Snapshot.t -> snapshot_t
     Base type for snapshot operations.
 
     The subclass of [GdkSnapshot] used by GTK is GtkSnapshot. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

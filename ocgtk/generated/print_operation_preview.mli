@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-print_operation_preview_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Print_operation_preview}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Print_operation_preview}. *)
 
 (** {1:class Class} *)
 
@@ -79,3 +79,8 @@ class print_operation_preview :
 
     A [GtkPrintOperationPreview] object is passed to the
     [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,8 +1,9 @@
 (** The interface for sortable models used by GtkTreeView
 
     Its methods, signals and properties are on {!class-type-tree_sortable_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Tree_sortable}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_sortable}. *)
 
 (** {1:class Class} *)
 
@@ -61,3 +62,8 @@ class tree_sortable : Raw.Tree_sortable.t -> tree_sortable_t
     [GtkTreeSortable] is an interface to be implemented by tree models which
     support sorting. The [GtkTreeView] uses the methods provided by this
     interface to sort the model. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

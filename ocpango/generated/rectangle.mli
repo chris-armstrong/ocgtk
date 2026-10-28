@@ -1,8 +1,9 @@
 (** The [PangoRectangle] structure represents a rectangle.
 
     Its methods, signals and properties are on {!class-type-rectangle_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Rectangle}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Rectangle}. *)
 
 (** {1:class Class} *)
 
@@ -29,3 +30,8 @@ class rectangle : Raw.Rectangle.t -> rectangle_t
     [PangoRectangle] is frequently used to represent the logical or ink extents
     of a single glyph or section of text. (See, for instance,
     [Pango.Font.get_glyph_extents].) *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

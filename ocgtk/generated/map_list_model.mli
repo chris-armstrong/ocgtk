@@ -1,8 +1,9 @@
 (** A list model that maps the items in another model to different items.
 
     Its methods, signals and properties are on {!class-type-map_list_model_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Map_list_model}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Map_list_model}. *)
 
 (** {1:class Class} *)
 
@@ -111,3 +112,8 @@ class map_list_model : Raw.Map_list_model.t -> map_list_model_t
     are no longer needed and recreate them if necessary.
 
     [GtkMapListModel] passes through sections from the underlying model. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

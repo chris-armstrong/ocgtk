@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-file_input_stream_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.File_input_stream}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.File_input_stream}. *)
 
 (** {1:class Class} *)
 
@@ -64,3 +64,8 @@ class file_input_stream : Raw.File_input_stream.t -> file_input_stream_t
     [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
     use [Gio.Seekable.can_seek]. To position a file input stream, use
     [Gio.Seekable.seek]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

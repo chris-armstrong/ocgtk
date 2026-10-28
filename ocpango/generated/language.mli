@@ -1,8 +1,9 @@
 (** The [PangoLanguage] structure is used to represent a language.
 
     Its methods, signals and properties are on {!class-type-language_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Language}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Language}. *)
 
 (** {1:class Class} *)
 
@@ -73,3 +74,8 @@ class language : Raw.Language.t -> language_t
 
     [PangoLanguage] pointers can be efficiently copied and compared with each
     other. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,8 +1,9 @@
 (** An opaque structure representing a watched [GtkExpression].
 
     Its methods, signals and properties are on {!class-type-expression_watch_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Expression_watch}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Expression_watch}. *)
 
 (** {1:class Class} *)
 
@@ -44,3 +45,8 @@ class expression_watch : Raw.Expression_watch.t -> expression_watch_t
 
     The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

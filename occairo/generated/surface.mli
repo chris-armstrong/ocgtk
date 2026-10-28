@@ -1,7 +1,8 @@
 (** Bindings for [Surface].
 
-    Its methods, signals and properties are on {!class-type-surface_t}. The
-    functions it is built on are in {!Occairo.Raw.Surface}. *)
+    Its methods, signals and properties are on {!class-type-surface_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Occairo.Raw.Surface}. *)
 
 (** {1:class Class} *)
 
@@ -14,3 +15,8 @@ end
 
 class surface : Raw.Surface.t -> surface_t
 (** Wraps a raw handle of {!Occairo.Raw.Surface.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

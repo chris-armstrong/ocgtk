@@ -5,8 +5,8 @@
 
     Its methods, signals and properties are on
     {!class-type-app_launch_context_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgdk.Raw.App_launch_context}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.App_launch_context}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +48,8 @@ class app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
 \  g_warning (\"Launching failed: %s\\n\", error->message);\n\n\
  g_object_unref (context);\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

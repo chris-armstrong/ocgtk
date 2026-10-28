@@ -1,8 +1,9 @@
 (** Describes sorting criteria for a [Gtk.SortListModel].
 
     Its methods, signals and properties are on {!class-type-sorter_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Sorter}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Sorter}. *)
 
 (** {1:class Class} *)
 
@@ -113,3 +114,8 @@ class sorter : Raw.Sorter.t -> sorter_t
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

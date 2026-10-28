@@ -1,8 +1,9 @@
 (** The base class for gesture recognition.
 
     Its methods, signals and properties are on {!class-type-gesture_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Gesture}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Gesture}. *)
 
 (** {1:class Class} *)
 
@@ -325,3 +326,8 @@ class gesture : Raw.Gesture.t -> gesture_t
  do to enable this support are:\n\n\
  - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
  [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

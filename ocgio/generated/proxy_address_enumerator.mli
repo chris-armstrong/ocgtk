@@ -5,8 +5,9 @@
 
     Its methods, signals and properties are on
     {!class-type-proxy_address_enumerator_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Proxy_address_enumerator}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Proxy_address_enumerator}.
+*)
 
 (** {1:class Class} *)
 
@@ -70,3 +71,8 @@ class proxy_address_enumerator :
     [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
     [Gio.SocketAddressEnumerator] instance with one. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

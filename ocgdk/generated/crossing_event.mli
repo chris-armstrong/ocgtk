@@ -1,7 +1,8 @@
 (** An event caused by a pointing device moving between surfaces.
 
     Its methods, signals and properties are on {!class-type-crossing_event_t}.
-    The functions it is built on are in {!Ocgdk.Raw.Crossing_event}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgdk.Raw.Crossing_event}. *)
 
 (** {1:class Class} *)
 
@@ -31,3 +32,8 @@ end
 
 class crossing_event : Raw.Crossing_event.t -> crossing_event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Crossing_event.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

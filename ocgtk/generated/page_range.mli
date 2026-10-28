@@ -1,8 +1,9 @@
 (** A range of pages to print.
 
     Its methods, signals and properties are on {!class-type-page_range_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Page_range}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Page_range}. *)
 
 (** {1:class Class} *)
 
@@ -25,3 +26,8 @@ class page_range : Raw.Page_range.t -> page_range_t
     A range of pages to print.
 
     See also [Gtk.PrintSettings.set_page_ranges]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

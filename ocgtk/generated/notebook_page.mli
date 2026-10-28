@@ -1,7 +1,8 @@
 (** An auxiliary object used by [GtkNotebook].
 
     Its methods, signals and properties are on {!class-type-notebook_page_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Notebook_page}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Notebook_page}. *)
 
 (** {1:class Class} *)
 
@@ -80,3 +81,8 @@ end
 
 class notebook_page : Raw.Notebook_page.t -> notebook_page_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Notebook_page.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

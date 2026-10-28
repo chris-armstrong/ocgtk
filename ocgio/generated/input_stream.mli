@@ -1,8 +1,9 @@
 (** [GInputStream] is a base class for implementing streaming input.
 
     Its methods, signals and properties are on {!class-type-input_stream_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Input_stream}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Input_stream}. *)
 
 (** {1:class Class} *)
 
@@ -146,3 +147,8 @@ class input_stream : Raw.Input_stream.t -> input_stream_t
     streaming APIs.
 
     All of these functions have async variants too. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

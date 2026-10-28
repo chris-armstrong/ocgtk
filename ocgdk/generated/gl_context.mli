@@ -4,8 +4,9 @@
 (** Represents a platform-specific OpenGL draw context.
 
     Its methods, signals and properties are on {!class-type-gl_context_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Gl_context}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Gl_context}. *)
 
 (** {1:class Class} *)
 
@@ -95,3 +96,8 @@ class gl_context : Raw.Gl_context.t -> gl_context_t
  You can check which [GdkGLContext] is the current one by using\n\
  [Gdk.GLContext.get_current]; you can also unset any [GdkGLContext]\n\
  that is currently set by calling [Gdk.GLContext.clear_current]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

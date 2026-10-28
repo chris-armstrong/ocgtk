@@ -1,8 +1,9 @@
 (** Represents the target of an ongoing DND operation.
 
     Its methods, signals and properties are on {!class-type-drop_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Drop}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Drop}. *)
 
 (** {1:class Class} *)
 
@@ -106,3 +107,8 @@ class drop : Raw.Drop.t -> drop_t
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
  \"Drag and Drop\" section of the GTK documentation for more information."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

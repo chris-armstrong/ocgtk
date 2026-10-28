@@ -1,8 +1,9 @@
 (** [GActionGroup] represents a group of actions.
 
     Its methods, signals and properties are on {!class-type-action_group_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Action_group}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Action_group}. *)
 
 (** {1:class Class} *)
 
@@ -292,3 +293,8 @@ class action_group : Raw.Action_group.t -> action_group_t
     [Gio.ActionGroup.query_action]. The other virtual functions should not be
     implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

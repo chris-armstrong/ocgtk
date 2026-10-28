@@ -3,8 +3,9 @@
     the kernel's netlink interface and on NetworkManager.
 
     Its methods, signals and properties are on {!class-type-network_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Network_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Network_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -101,3 +102,8 @@ class network_monitor : Raw.Network_monitor.t -> network_monitor_t
     the kernel's netlink interface and on NetworkManager.
 
     There is also an implementation for use inside Flatpak sandboxes. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,8 +1,9 @@
 (** Base class for platform dialogs that don't use [GtkDialog].
 
     Its methods, signals and properties are on {!class-type-native_dialog_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Native_dialog}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Native_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -132,3 +133,8 @@ class native_dialog : Raw.Native_dialog.t -> native_dialog_t
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
     a reference until you are done with the object. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -2,7 +2,8 @@
     in an animation.
 
     Its methods, signals and properties are on
-    {!class-type-pixbuf_animation_iter_t}. The functions it is built on are in
+    {!class-type-pixbuf_animation_iter_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter}. *)
 
 (** {1:class Class} *)
@@ -61,3 +62,8 @@ class pixbuf_animation_iter :
   Raw.Pixbuf_animation_iter.t ->
   pixbuf_animation_iter_t
 (** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

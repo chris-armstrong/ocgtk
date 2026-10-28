@@ -1,7 +1,8 @@
 (** Interface for Drag-and-Drop destinations in [GtkTreeView].
 
     Its methods, signals and properties are on {!class-type-tree_drag_dest_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_drag_dest}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_drag_dest}. *)
 
 (** {1:class Class} *)
 
@@ -33,3 +34,8 @@ end
 
 class tree_drag_dest : Raw.Tree_drag_dest.t -> tree_drag_dest_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_drag_dest.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

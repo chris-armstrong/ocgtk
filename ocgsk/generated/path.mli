@@ -4,8 +4,9 @@
 (** Describes lines and curves that are more complex than simple rectangles.
 
     Its methods, signals and properties are on {!class-type-path_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgsk.Raw.Path}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Path}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +49,8 @@ class path : Raw.Path.t -> path_t
     typically constructed from Bézier segments.
 
     A Path *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -15,7 +15,6 @@ val l1_module :
 val l2_module :
   namespace:string ->
   class_name:string ->
-  has_constructors:bool ->
   class_doc:string option ->
   Doc_emit.t option
 (** The layer 2 module's preamble, kept short so the declarations follow it
@@ -76,7 +75,18 @@ val combined_module :
 
 val constructors_heading : string
 (** The floating [Constructors] heading, with the [constructors] label the layer
-    2 module doc links to. *)
+    2 module doc links to. Every layer 2 class module has one. *)
+
+(** Why a class has no constructors, which decides what its [Constructors]
+    section says instead. *)
+type instantiation =
+  | Abstract_class  (** GIR [abstract="1"]. *)
+  | Interface
+  | Returned_only  (** Any other class or record without a constructor. *)
+
+val no_constructors : instantiation -> Doc_emit.t option
+(** The canned line under the [Constructors] heading of a class with no
+    generated constructor. *)
 
 val constructor :
   namespace:string ->

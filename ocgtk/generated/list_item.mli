@@ -1,8 +1,9 @@
 (** Used by list widgets to represent items in a [Gio.ListModel].
 
     Its methods, signals and properties are on {!class-type-list_item_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.List_item}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.List_item}. *)
 
 (** {1:class Class} *)
 
@@ -151,3 +152,8 @@ class list_item : Raw.List_item.t -> list_item_t
 
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ListItem:item] property is not [NULL]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

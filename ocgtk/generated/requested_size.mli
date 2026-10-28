@@ -1,8 +1,9 @@
 (** Represents a request of a screen object in a given orientation.
 
     Its methods, signals and properties are on {!class-type-requested_size_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Requested_size}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Requested_size}. *)
 
 (** {1:class Class} *)
 
@@ -27,3 +28,8 @@ class requested_size : Raw.Requested_size.t -> requested_size_t
 
     These are primarily used in container implementations when allocating a
     natural size for children. See [distribute_natural_allocation]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

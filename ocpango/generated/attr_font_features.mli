@@ -2,7 +2,8 @@
     features as an attribute.
 
     Its methods, signals and properties are on
-    {!class-type-attr_font_features_t}. The functions it is built on are in
+    {!class-type-attr_font_features_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocpango.Raw.Attr_font_features}. *)
 
 (** {1:class Class} *)
@@ -19,3 +20,8 @@ end
 
 class attr_font_features : Raw.Attr_font_features.t -> attr_font_features_t
 (** Wraps a raw handle of {!Ocpango.Raw.Attr_font_features.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

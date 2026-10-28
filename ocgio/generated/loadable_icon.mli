@@ -2,7 +2,8 @@
     load icons from streams.
 
     Its methods, signals and properties are on {!class-type-loadable_icon_t}.
-    The functions it is built on are in {!Ocgio.Raw.Loadable_icon}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Loadable_icon}. *)
 
 (** {1:class Class} *)
 
@@ -21,3 +22,8 @@ end
 
 class loadable_icon : Raw.Loadable_icon.t -> loadable_icon_t
 (** Wraps a raw handle of {!Ocgio.Raw.Loadable_icon.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

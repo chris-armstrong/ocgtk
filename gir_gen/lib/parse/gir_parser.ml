@@ -566,6 +566,7 @@ let parse_gir_input input filter_classes =
             prefix ^ name
       in
       let parent = get_attr ~ctx "parent" attrs in
+      let abstract = get_attr ~ctx "abstract" attrs |> Utils.parse_bool in
       (* glib:type-name/get-type are namespaced attributes; the local names
          are "type-name" and "get-type". Like records, accept both spellings. *)
       let glib_get_type =
@@ -653,6 +654,7 @@ let parse_gir_input input filter_classes =
           glib_get_type;
           parent;
           implements = List.rev cc.cc_implements;
+          abstract;
           introspectable;
           constructors = List.rev cc.cc_constructors;
           methods;

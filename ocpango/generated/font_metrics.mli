@@ -2,8 +2,9 @@
     font.
 
     Its methods, signals and properties are on {!class-type-font_metrics_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Font_metrics}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Font_metrics}. *)
 
 (** {1:class Class} *)
 
@@ -106,3 +107,8 @@ class font_metrics : Raw.Font_metrics.t -> font_metrics_t
     For an overview of the most important metrics, see:
 
     Font metrics *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-file_chooser_dialog_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.File_chooser_dialog}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.File_chooser_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -303,3 +303,8 @@ class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
  {b CSS nodes}\n\n\
  [GtkFileChooserDialog] has a single CSS node with the name [window] and style\n\
  class [.filechooser]."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

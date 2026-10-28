@@ -2,8 +2,9 @@
     file handle.
 
     Its methods, signals and properties are on {!class-type-file_io_stream_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.File_io_stream}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_io_stream}. *)
 
 (** {1:class Class} *)
 
@@ -98,3 +99,8 @@ class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
     The default implementation of all the [GFileIOStream] operations and the
     implementation of [Gio.Seekable] just call into the same operations on the
     output stream. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

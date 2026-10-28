@@ -179,6 +179,7 @@ val make_gir_class :
   ?glib_get_type:string option ->
   ?implements:string list ->
   ?introspectable:bool ->
+  ?abstract:bool ->
   ?constructors:Gir_gen_lib.Types.gir_constructor list ->
   ?methods:Gir_gen_lib.Types.gir_method list ->
   ?properties:Gir_gen_lib.Types.gir_property list ->

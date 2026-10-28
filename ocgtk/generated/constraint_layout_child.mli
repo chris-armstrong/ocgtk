@@ -1,7 +1,8 @@
 (** [GtkLayoutChild] subclass for children in a [GtkConstraintLayout].
 
     Its methods, signals and properties are on
-    {!class-type-constraint_layout_child_t}. The functions it is built on are in
+    {!class-type-constraint_layout_child_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Constraint_layout_child}. *)
 
 (** {1:class Class} *)
@@ -26,3 +27,8 @@ class constraint_layout_child :
   Raw.Constraint_layout_child.t ->
   constraint_layout_child_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Constraint_layout_child.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

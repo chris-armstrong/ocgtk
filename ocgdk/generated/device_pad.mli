@@ -1,8 +1,9 @@
 (** An interface for tablet pad devices.
 
     Its methods, signals and properties are on {!class-type-device_pad_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Device_pad}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Device_pad}. *)
 
 (** {1:class Class} *)
 
@@ -74,3 +75,8 @@ class device_pad : Raw.Device_pad.t -> device_pad_t
     modes. The number of available modes in a group can be found out through
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
     will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

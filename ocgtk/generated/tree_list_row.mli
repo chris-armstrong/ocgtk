@@ -1,8 +1,9 @@
 (** The type of item used by [GtkTreeListModel].
 
     Its methods, signals and properties are on {!class-type-tree_list_row_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Tree_list_row}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_list_row}. *)
 
 (** {1:class Class} *)
 
@@ -106,3 +107,8 @@ class tree_list_row : Raw.Tree_list_row.t -> tree_list_row_t
     objects, such as the [Gtk.TreeExpander] widget that allows displaying an
     icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
     possible to sort trees properly. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

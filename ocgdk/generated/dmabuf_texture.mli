@@ -1,8 +1,9 @@
 (** A [GdkTexture] representing a DMA buffer.
 
     Its methods, signals and properties are on {!class-type-dmabuf_texture_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Dmabuf_texture}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Dmabuf_texture}. *)
 
 (** {1:class Class} *)
 
@@ -40,3 +41,8 @@ class dmabuf_texture : Raw.Dmabuf_texture.t -> dmabuf_texture_t
     object.
 
     Dma-buf textures can only be created on Linux. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

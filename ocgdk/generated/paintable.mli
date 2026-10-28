@@ -1,8 +1,9 @@
 (** An interface for content that can be painted.
 
     Its methods, signals and properties are on {!class-type-paintable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Paintable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Paintable}. *)
 
 (** {1:class Class} *)
 
@@ -216,3 +217,8 @@ class paintable : Raw.Paintable.t -> paintable_t
     for implementing subclasses and should not be used by applications:
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
     [Gdk.Paintable.new_empty]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,8 +1,9 @@
 (** Describes the filtering to be performed by a [Gtk.FilterListModel].
 
     Its methods, signals and properties are on {!class-type-filter_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Filter}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Filter}. *)
 
 (** {1:class Class} *)
 
@@ -98,3 +99,8 @@ class filter : Raw.Filter.t -> filter_t
 
     However, in particular for large lists or complex search methods, it is also
     possible to subclass [GtkFilter] and provide one's own filter. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

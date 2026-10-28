@@ -77,20 +77,23 @@ let doc_of_attributes (attributes : attributes) : string option =
       | _ -> None)
     attributes
 
-let module_preamble (ast : signature) : string option =
-  List.find_map
+let floating_text (attr : attribute) =
+  match attr.attr_name.txt with
+  | "ocaml.text" ->
+      doc_of_attributes
+        [ { attr with attr_name = { attr.attr_name with txt = "ocaml.doc" } } ]
+  | _ -> None
+
+let floating_docs (ast : signature) : string list =
+  List.filter_map
     (fun item ->
       match item.psig_desc with
-      | Psig_attribute ({ attr_name = { txt = "ocaml.text"; _ }; _ } as attr) ->
-          doc_of_attributes
-            [
-              {
-                attr with
-                attr_name = { attr.attr_name with txt = "ocaml.doc" };
-              };
-            ]
+      | Psig_attribute attr -> floating_text attr
       | _ -> None)
     ast
+
+let module_preamble (ast : signature) : string option =
+  match floating_docs ast with first :: _ -> Some first | [] -> None
 
 let type_declaration_doc (td : type_declaration) : string option =
   doc_of_attributes td.ptype_attributes
@@ -496,15 +499,7 @@ let class_type_floating_docs (class_type : class_type) : string list =
       List.filter_map
         (fun ctf ->
           match ctf.pctf_desc with
-          | Pctf_attribute
-              ({ attr_name = { txt = "ocaml.text"; _ }; _ } as attr) ->
-              doc_of_attributes
-                [
-                  {
-                    attr with
-                    attr_name = { attr.attr_name with txt = "ocaml.doc" };
-                  };
-                ]
+          | Pctf_attribute attr -> floating_text attr
           | _ -> None)
         pcsig_fields
   | _ -> []

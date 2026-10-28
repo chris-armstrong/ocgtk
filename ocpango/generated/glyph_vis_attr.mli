@@ -2,8 +2,9 @@
     and rendering phases.
 
     Its methods, signals and properties are on {!class-type-glyph_vis_attr_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocpango.Raw.Glyph_vis_attr}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_vis_attr}. *)
 
 (** {1:class Class} *)
 
@@ -38,3 +39,8 @@ class glyph_vis_attr : Raw.Glyph_vis_attr.t -> glyph_vis_attr_t
     Clusters are stored in visual order, within the cluster, glyphs are always
     ordered in logical order, since visual order is meaningless; that is, in
     Arabic text, accent glyphs follow the glyphs for the base character. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

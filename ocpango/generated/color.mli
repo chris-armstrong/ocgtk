@@ -1,8 +1,9 @@
 (** The [PangoColor] structure is used to represent a color in an uncalibrated
     RGB color-space.
 
-    Its methods, signals and properties are on {!class-type-color_t}. The
-    functions it is built on are in {!Ocpango.Raw.Color}. *)
+    Its methods, signals and properties are on {!class-type-color_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Color}. *)
 
 (** {1:class Class} *)
 
@@ -38,3 +39,8 @@ end
 
 class color : Raw.Color.t -> color_t
 (** Wraps a raw handle of {!Ocpango.Raw.Color.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

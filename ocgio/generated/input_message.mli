@@ -5,8 +5,9 @@
     received across all [GInputVectors].
 
     Its methods, signals and properties are on {!class-type-input_message_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Input_message}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Input_message}. *)
 
 (** {1:class Class} *)
 
@@ -61,3 +62,8 @@ class input_message : Raw.Input_message.t -> input_message_t
 
     Flags relevant to this message will be returned in [flags]. For example,
     [MSG_EOR] or [MSG_TRUNC]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

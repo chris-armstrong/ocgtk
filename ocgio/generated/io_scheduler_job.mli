@@ -1,7 +1,8 @@
 (** Opaque class for defining and scheduling IO jobs.
 
     Its methods, signals and properties are on {!class-type-io_scheduler_job_t}.
-    The functions it is built on are in {!Ocgio.Raw.Io_scheduler_job}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.Io_scheduler_job}. *)
 
 (** {1:class Class} *)
 
@@ -16,3 +17,8 @@ end
 
 class io_scheduler_job : Raw.Io_scheduler_job.t -> io_scheduler_job_t
 (** Wraps a raw handle of {!Ocgio.Raw.Io_scheduler_job.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

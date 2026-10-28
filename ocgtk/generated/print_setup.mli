@@ -2,8 +2,9 @@
     printing.
 
     Its methods, signals and properties are on {!class-type-print_setup_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Print_setup}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Print_setup}. *)
 
 (** {1:class Class} *)
 
@@ -59,3 +60,8 @@ class print_setup : Raw.Print_setup.t -> print_setup_t
     Applications may wish to store the page_setup and print_settings from the
     print setup and copy them to the PrintDialog if they want to keep using
     them. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

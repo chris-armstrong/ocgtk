@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-column_view_sorter_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Column_view_sorter}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Column_view_sorter}. *)
 
 (** {1:class Class} *)
 
@@ -111,3 +111,8 @@ class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
         gtk_column_view_sort_by_column (view, column, order);
       }
     ]} *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

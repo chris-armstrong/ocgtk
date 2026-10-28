@@ -1,8 +1,9 @@
 (** A [GTask] represents and manages a cancellable ‘task’.
 
     Its methods, signals and properties are on {!class-type-task_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Task}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Task}. *)
 
 (** {1:class Class} *)
 
@@ -1085,3 +1086,8 @@ class task : Raw.Task.t -> task_t
  - Keep iterating a main context in the main thread and defer\n\
  dropping the reference to the source object to that main\n\
  context when the task is finalized"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

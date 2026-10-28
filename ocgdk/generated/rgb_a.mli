@@ -2,8 +2,9 @@
     color.
 
     Its methods, signals and properties are on {!class-type-rgb_a_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Rgb_a}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Rgb_a}. *)
 
 (** {1:class Class} *)
 
@@ -90,3 +91,8 @@ class rgb_a : Raw.Rgb_a.t -> rgb_a_t
     range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0)
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other
     values will be clamped to this range when drawing. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

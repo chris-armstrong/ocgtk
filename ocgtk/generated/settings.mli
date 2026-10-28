@@ -1,8 +1,9 @@
 (** Provides a mechanism to share global settings between applications.
 
     Its methods, signals and properties are on {!class-type-settings_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Settings}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Settings}. *)
 
 (** {1:class Class} *)
 
@@ -767,3 +768,8 @@ class settings : Raw.Settings.t -> settings_t
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
     use [Gtk.Widget.get_settings]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

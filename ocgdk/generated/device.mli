@@ -4,8 +4,9 @@
 (** Represents an input device, such as a keyboard, mouse or touchpad.
 
     Its methods, signals and properties are on {!class-type-device_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Device}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Device}. *)
 
 (** {1:class Class} *)
 
@@ -28,3 +29,8 @@ class device : Raw.Device.t -> device_t
 
     See the [Gdk.Seat] documentation for more information about the various
     kinds of devices, and their relationships. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

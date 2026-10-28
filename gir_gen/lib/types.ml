@@ -217,6 +217,8 @@ type gir_class = {
   parent : string option;
   implements : string list;
   introspectable : bool;
+  abstract : bool;
+      (** GIR [abstract="1"]: the class has no instances of its own type. *)
   constructors : gir_constructor list;
   methods : gir_method list;
   properties : gir_property list;

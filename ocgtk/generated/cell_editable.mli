@@ -1,8 +1,9 @@
 (** Interface for widgets that can be used for editing cells
 
     Its methods, signals and properties are on {!class-type-cell_editable_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Cell_editable}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_editable}. *)
 
 (** {1:class Class} *)
 
@@ -95,3 +96,8 @@ class cell_editable : Raw.Cell_editable.t -> cell_editable_t
     to edit the contents of a [GtkTreeView] cell. It provides a way to specify
     how temporary widgets should be configured for editing, get the new value,
     etc. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)
