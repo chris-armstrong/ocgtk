@@ -1,19 +1,21 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
 **Status: Phases 0–7 implemented; the conventions page of Phase 9 written
-early; Phases 8 and 10 onwards not yet done (per-phase status below).** Phase 0 and 1: PRs #188 and #190, merged into
+early; Phases 8 and 10 not yet done (per-phase status below). The C code-block
+translation phases (formerly 11–14) are dropped from this leg.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
 `m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
-(branch `m3-phase6`). Phase 7: branch `m3-phase7`. Phase 7 onwards: one branch and PR per phase (see the rules below).
+(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
 for PRs and `main` only; L2 page structure (decision 10), new Phase 7,
 Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page); 2026-10-27 (artifact cache
 dropped for a local HTML diff, decision 3); 2026-10-28 (Phase 7 revised for
-the per-package layout and the Phase 6 page structure)**
+the per-package layout and the Phase 6 page structure; C code-block
+translation, Phases 11–14, dropped as too much for this leg)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -122,16 +124,13 @@ auto-managed `gh-pages` branch and in local build directories.
    leg; the gate arrives once classification stabilises.
 
 8. **C idioms are translated, not just degraded (added 2026-10-04).** GIR
-   prose and examples are written for C. Two phase groups handle them:
-   **Phase 8** (after Phases 5–7) does the trivial, deterministic AST
-   rewrites; **Phases 11–14** (end of cycle) do code-block translation.
+   prose and examples are written for C. **Phase 8** (after Phases 5–7)
+   does the trivial, deterministic AST rewrites in prose; translating C code
+   blocks is out of scope for this leg (see the end of this plan).
    Ownership boilerplate (`Free the returned object with g_object_unref()`,
    `should be freed with g_free()`) is **stripped**: the GC owns every value,
    so the sentence is actively misleading. Every strip is counted in the
-   generator's report. Code-block translation is **layer-aware**: L1 emission
-   uses L1 idioms (modules and functions of the `Raw` modules,
-   `Label.set_text l "x"`), L2 emission uses L2 idioms (classes and methods,
-   `l#set_text "x"`).
+   generator's report.
 
 9. **One PR per phase, stacked, with the preview as the checkpoint (added
    2026-10-05).** Each phase is its own PR, branched from the previous phase's
@@ -698,7 +697,7 @@ git worktree list                                                 # no worktree 
 ### Phase 4 — PR preview workflow (CI)
 
 *Goal:* every PR from here on gets a rendered-docs preview URL, which is the
-review surface for Phases 5–14.
+review surface for Phases 5–10.
 
 **Status: done** (PR #193; previews have deployed for every PR since). The action changed from
 `rajyan/preview-pages` (archived) to `rossjrw/pr-preview-action`; removal on
@@ -980,10 +979,6 @@ the resolver leg.
   `g_free`, `g_strfreev`, `g_list_free\w*` (allowlist, one place, unit-tested).
   The emptied-paragraph case removes the paragraph. Counted per pattern in
   the generator's report.
-- **Code blocks keep their language:** `Code_block of string` becomes
-  `Code_block of { lang : string option; body : string }`; `parse` records
-  the fence language (`c`, `C`, `xml`, …, or `|[ <!-- language="C" --> ` form)
-  and `render` still emits `{[ … ]}` for now. Phases 11–14 consume `lang`.
 
 *Deferred to the resolver leg (need a symbol index, not just a table):*
 `%GTK_FOO` constants → enum constructors, `foo_bar()` function references →
@@ -1051,81 +1046,6 @@ opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
 The trivially fixable buckets are zero at emission; the rest are recorded as
 TODO counts, not silently dropped.
 
-### C code-block translation (Phases 11–14, end of cycle; layer-aware)
-
-Corpus: ~210 fenced C blocks (`c`/`C`/`|[ language="C" ]|`) plus ~66 other
-languages (xml 53, css 4, glsl 4, plain 5). The C blocks range from 2-line
-snippets to whole functions (`connect_to_host`, `bake_cake_thread`), so the
-translator is deliberately conservative: it either translates a block fully
-or leaves it as honestly-labelled C. It never emits wrong OCaml.
-
-**Layer awareness.** The emission site passes `layer : L1 | L2` into the
-translator context. L1 docs (modules/functions of the `Raw` modules)
-render `Label.new_with_mnemonic "_Hello"` and `Label.set_mnemonic_widget
-label (Some entry)`; L2 docs (classes/methods) render
-`new label ~label:"_Hello" ()` / `label#set_mnemonic_widget (Some entry)`.
-The C → symbol step (below) is layer-independent; only the final rendering
-of each call differs. *Dependency:* L2 docs land in Phase 5, so the L2
-renderer is visible as soon as Phase 13 ships.
-
-### Phase 11 — Tier A: label C blocks honestly
-
-`Code_block {lang=Some ("c"|"C")}` that is not translated renders as `{v … v}`
-(verbatim, no OCaml highlighting) with a lead-in `C example:`. `xml`/`css`/
-`glsl`/`plain` render as `{v … v}` too (they are real languages applied as-is,
-e.g. GtkBuilder UI). `{[ … ]}` is reserved for translated OCaml. The
-balance/comment-safety fallbacks (invariant 3) still apply. Replaces the
-plan's "banner deferred" row. Depends on Phase 8 (`Code_block.lang`).
-
-### Phase 12 — Tier B: census and subset parser (go/no-go gate)
-
-**Tier B: mechanical translation of a restricted C subset.** Input
-subset: sequences of `T *x = fn (args);`, `fn (obj, args);`, `x = fn (args);`,
-`GTK_FOO (x)`/`G_OBJECT (x)` cast macros (dropped), `NULL`/`TRUE`/`FALSE`,
-`GTK_TYPE_*`/`G_TYPE_*` constants, string and numeric literals, and `//`
-comments. Anything outside the subset (control flow, struct/typedef,
-`static`, `->`, `&` out-params, varargs, `g_autoptr`) rejects the whole
-block to Tier A.
-
-This phase builds the C tokenizer and the subset statement parser, then runs
-the **corpus census**: how many of the ~210 blocks fit the subset, with the L1
-result eyeballed. The census result is recorded in this plan. **Gate:** if the
-fraction is small, stop here. Phase 11 and Phase 14 then cover the C blocks,
-and Phase 13 is not built.
-
-### Phase 13 — Tier B: resolution, adaptation and rendering
-
-Only if the Phase 12 gate passes. Pipeline: C tokenizer → statement parser
-(subset only; built in Phase 12) → symbol resolution via the generator's
-C-identifier table (`c:identifier` → namespace, type, method, constructor) →
-signature-driven adaptation (nullable param → `Some`/`None`, out/`GError**` →
-`result` with a `match`, `void` → `unit` sequencing, `let … in` chaining) →
-layer renderer (L1 or L2). Rejection reasons are counted in the generator's report, so
-the translated fraction is a tracked number. This phase also adds the compile
-check (below).
-
-### Phase 14 — Tier C: hand-written overrides for prominent examples
-
-A new override form in the existing s-expression system:
-`(doc-example <gir-entity> <index> (l1 "…ocaml…") (l2 "…ocaml…"))`, which
-replaces the nth code block of that entity's doc (checked: the C block must
-still be the one the override was written against, via a short hash, so a
-GIR update flags stale overrides instead of silently misapplying). Target
-the 10–20 most prominent examples (`GtkEntry` mnemonic, `GtkExpression`,
-`GTask`, `GtkBuilder`, `GtkListView` factory). Independent of Phase 13, so it
-also applies if the Phase 12 gate stops the translator.
-
-*Tests (Phases 12–14):* tokenizer/parser/translator unit tests per construct;
-golden tests for ~10 real corpus blocks in L1 and L2; a **compile check** for
-translated blocks — extract each emitted `{[ … ]}` OCaml snippet and typecheck
-it against the built `ocgtk` library (translated examples must at least
-typecheck; this is what makes Tier B trustworthy); override staleness test.
-
-*Acceptance (Phases 11–14):* the compile check is green; no `{[ … ]}` block in
-generated docs contains C tokens (`->`, `;` after a `)` call with `NULL`, `g_`);
-the generator's report gives translated / labelled / rejected counts per rejection
-reason; `dune build @doc` shows no new warnings.
-
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
@@ -1143,9 +1063,6 @@ reason; `dune build @doc` shows no new warnings.
   the final layout. The hand-written text can be drafted earlier.
 - 10 (warning classification) needs 4 (captured warnings) and a stable `@doc`
   from 5–9, so the buckets are not classified against a moving target.
-- 11–14 are end of cycle: 11 needs 8 (`Code_block.lang`); 12 needs 5 (the L2
-  renderer is only visible once L2 docs exist) and 10 (stable warning counts);
-  13 needs 12's gate; 14 needs only 5.
 
 ## Verification for the whole leg (after all phases)
 
@@ -1195,6 +1112,11 @@ closing checklist on top of them:
   methods whose return type is the class) → resolver leg; Phase 7 states
   only the canned no-constructor line.
 - Warning gate in CI (report-only this leg).
+- C code-block translation (~210 C blocks): labelling untranslated C blocks
+  as C, mechanical translation of a restricted C subset into layer-aware
+  OCaml with a compile check, and hand-written OCaml for prominent examples.
+  Planned here as Phases 11–14 until 2026-10-28; dropped as too much for this
+  leg. C blocks render as `{[ … ]}` meanwhile.
 - Library layout change (one library per namespace, dune-generated main
   module, flat public class modules); makes the `inherit` lines links. See
   [library-layout-proposal](../research/library-layout-proposal.md).
