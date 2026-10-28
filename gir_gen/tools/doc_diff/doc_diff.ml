@@ -3,8 +3,13 @@
 
 let ( let* ) = Result.bind
 
+(* Both trees are built and compared in dune's default build context, the
+   only one this repository defines. A workspace that adds contexts would
+   need this to name the one to compare. *)
+let build_context = "default"
+
 let html_dir build_dir =
-  List.fold_left Filename.concat build_dir [ "default"; "_doc"; "_html" ]
+  List.fold_left Filename.concat build_dir [ build_context; "_doc"; "_html" ]
 
 let wait pid =
   match snd (Unix.waitpid [] pid) with
@@ -16,14 +21,19 @@ let run ?(stdout = Unix.stdout) program args =
   let argv = Array.of_list (program :: args) in
   wait (Unix.create_process program argv Unix.stdin stdout Unix.stderr)
 
-let run_checked program args =
-  match run ~stdout:Unix.stderr program args with
+let spawn program args =
+  let argv = Array.of_list (program :: args) in
+  Unix.create_process program argv Unix.stdin Unix.stderr Unix.stderr
+
+let checked program args = function
   | 0 -> Ok ()
   | code ->
       Error
         (Printf.sprintf "%s exited with %d"
            (String.concat " " (program :: args))
            code)
+
+let run_checked program args = checked program args (wait (spawn program args))
 
 let capture program args =
   let ic =
@@ -35,9 +45,26 @@ let capture program args =
   | Unix.WEXITED _ | Unix.WSIGNALED _ | Unix.WSTOPPED _ ->
       Error (Printf.sprintf "%s failed" (String.concat " " (program :: args)))
 
-let build_docs ~root ~build_dir =
-  run_checked "dune"
-    [ "build"; "--root"; root; "--build-dir"; build_dir; "@doc" ]
+let build_docs_args ~root ~build_dir =
+  [ "build"; "--root"; root; "--build-dir"; build_dir; "@doc" ]
+
+(* The two builds share nothing but dune's cache, which is safe to use
+   concurrently, so they run side by side. Both are waited for before either
+   result is looked at, so no build outlives the worktree it reads. *)
+let build_docs_in_parallel builds =
+  let started =
+    List.map
+      (fun (root, build_dir) ->
+        let args = build_docs_args ~root ~build_dir in
+        (args, spawn "dune" args))
+      builds
+  in
+  let codes = List.map (fun (args, pid) -> (args, wait pid)) started in
+  List.fold_left
+    (fun acc (args, code) ->
+      let* () = acc in
+      checked "dune" args code)
+    (Ok ()) codes
 
 (* Both builds live in a git worktree, so the only directory removed
    afterwards is one git registered as that worktree, inside a temporary
@@ -66,8 +93,9 @@ let doc_diff ~brief base =
      modules there, which would show up as differences. Dune skips
      directories starting with an underscore, so the base build ignores it. *)
   let current_build = Filename.concat worktree "_build_current" in
-  let* () = build_docs ~root:worktree ~build_dir:base_build in
-  let* () = build_docs ~root:top ~build_dir:current_build in
+  let* () =
+    build_docs_in_parallel [ (worktree, base_build); (top, current_build) ]
+  in
   let flags = if brief then [ "-r"; "-q" ] else [ "-r" ] in
   Ok (run "diff" (flags @ [ html_dir base_build; html_dir current_build ]))
 
