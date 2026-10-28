@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [GLTextureBuilder].}
 
-    Inherits from: [GObject.Object]
-
     Constructs [Gdk.Texture] objects from GL textures.
 
     The operation is quite simple: Create a texture builder, set all the

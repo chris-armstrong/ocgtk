@@ -302,7 +302,6 @@ class type pixbuf_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Pixbuf].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements:\n\
      - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}\n\
      - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}\n\n\

@@ -170,7 +170,6 @@ class type task_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Task].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements:\n\
      - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}\n\n\
      A [GTask] represents and manages a cancellable ‘task’.\n\n\

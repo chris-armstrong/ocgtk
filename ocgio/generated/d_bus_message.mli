@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [DBusMessage].}
 
-    Inherits from: [GObject.Object]
-
     A type for representing D-Bus messages that can be sent or received on a
     [Gio.DBusConnection]. *)
 class type d_bus_message_t = object

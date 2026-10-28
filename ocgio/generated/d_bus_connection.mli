@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [DBusConnection].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Async_initable.class-type-async_initable_t}Ocgio.Async_initable}
     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}

@@ -4,8 +4,6 @@
 
 (** {b The methods, signals and properties of a [FontFace].}
 
-    Inherits from: [GObject.Object]
-
     A [PangoFontFace] is used to represent a group of fonts with the same
     family, slant, weight, and width, but varying sizes. *)
 class type font_face_t = object
@@ -39,8 +37,6 @@ class type font_face_t = object
 end
 
 (** {b The methods, signals and properties of a [FontFamily].}
-
-    Inherits from: [GObject.Object]
 
     Implements:
     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}

@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Filter].}
 
-    Inherits from: [GObject.Object]
-
     Describes the filtering to be performed by a [Gtk.FilterListModel].
 
     The model will use the filter to determine if it should include items or not

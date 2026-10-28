@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [PrintSettings].}
 
-    Inherits from: [GObject.Object]
-
     Collects the settings of a print dialog in a system-independent way.
 
     The main use for this object is that once you’ve printed you can get a

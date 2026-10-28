@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [PrintDialog].}
 
-    Inherits from: [GObject.Object]
-
     Asynchronous API to present a print dialog to the user.
 
     [GtkPrintDialog] collects the arguments that are needed to present the

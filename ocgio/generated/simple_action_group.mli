@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [SimpleActionGroup].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}
     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}

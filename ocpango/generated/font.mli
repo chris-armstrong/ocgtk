@@ -13,8 +13,6 @@
 class type font_t = Context_and__font_and__font_map_and__fontset.font_t
 (** {b The methods, signals and properties of a [Font].}
 
-    Inherits from: [GObject.Object]
-
     A [PangoFont] is used to represent a font in a rendering-system-independent
     manner. *)
 

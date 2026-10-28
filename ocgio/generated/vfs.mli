@@ -8,8 +8,6 @@
 
 (** {b The methods, signals and properties of a [Vfs].}
 
-    Inherits from: [GObject.Object]
-
     Entry point for using GIO functionality. *)
 class type vfs_t = object
   (** {2:methods Methods} *)

@@ -21,11 +21,15 @@ let button =
     ~implements:[ "Actionable"; "GObject.Unknown" ]
     ()
 
+let label =
+  Type_factory.make_gir_class ~class_name:"Label" ~c_type:"GtkLabel"
+    ~parent:"GObject.Object" ()
+
 let ctx () =
   let ctx = Helpers.create_test_context () in
   {
     ctx with
-    Types.classes = button :: ctx.classes;
+    Types.classes = button :: label :: ctx.classes;
     interfaces = actionable :: ctx.interfaces;
   }
 
@@ -40,6 +44,13 @@ let test_class_parent_and_interfaces () =
     [ "link Gtk.Actionable"; "code GObject.Unknown" ]
     inheritance.implements;
   check_ancestors "a class requires nothing" [] inheritance.requires
+
+let test_gobject_object_parent_left_out () =
+  let inheritance =
+    Class_gen_inheritance.of_entity ~ctx:(ctx ()) ~entity_kind:Filtering.Class
+      "Label"
+  in
+  check_ancestors "no parent" [] (Option.to_list inheritance.parent)
 
 let test_interface_prerequisites () =
   let inheritance =
@@ -63,6 +74,9 @@ let tests =
     ( "a class's parent and interfaces resolve to links or code",
       `Quick,
       test_class_parent_and_interfaces );
+    ( "a GObject.Object parent is left out",
+      `Quick,
+      test_gobject_object_parent_left_out );
     ( "an interface's prerequisites are what it requires",
       `Quick,
       test_interface_prerequisites );

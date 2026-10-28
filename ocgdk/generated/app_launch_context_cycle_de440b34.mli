@@ -106,8 +106,6 @@ end
 
 (** {b The methods, signals and properties of a [Clipboard].}
 
-    Inherits from: [GObject.Object]
-
     Represents data shared between applications or inside an application.
 
     To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
@@ -202,8 +200,6 @@ and clipboard_t = object
 end
 
 (** {b The methods, signals and properties of a [Device].}
-
-    Inherits from: [GObject.Object]
 
     Represents an input device, such as a keyboard, mouse or touchpad.
 
@@ -351,8 +347,6 @@ and device_t = object
 end
 
 (** {b The methods, signals and properties of a [Display].}
-
-    Inherits from: [GObject.Object]
 
     A representation of a workstation.
 
@@ -589,8 +583,6 @@ and display_t = object
 end
 
 (** {b The methods, signals and properties of a [DrawContext].}
-
-    Inherits from: [GObject.Object]
 
     Base class for objects implementing different rendering methods.
 
@@ -927,8 +919,6 @@ end
 
 (** {b The methods, signals and properties of a [Monitor].}
 
-    Inherits from: [GObject.Object]
-
     Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
@@ -1017,8 +1007,6 @@ end
 
 (** {b The methods, signals and properties of a [Seat].}
 
-    Inherits from: [GObject.Object]
-
     Represents a collection of input devices that belong to a user. *)
 and seat_t = object
   (** {2:signals Signals} *)
@@ -1083,8 +1071,6 @@ and seat_t = object
 end
 
 (** {b The methods, signals and properties of a [Surface].}
-
-    Inherits from: [GObject.Object]
 
     Represents a rectangular region on the screen.
 

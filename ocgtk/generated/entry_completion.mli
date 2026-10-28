@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [EntryCompletion].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}

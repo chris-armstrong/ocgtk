@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ListItem].}
 
-    Inherits from: [GObject.Object]
-
     Used by list widgets to represent items in a [Gio.ListModel].
 
     [GtkListItem] objects are managed by the list widget (with its factory) and

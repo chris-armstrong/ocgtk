@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ZlibCompressor].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
 

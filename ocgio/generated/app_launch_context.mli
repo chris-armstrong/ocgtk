@@ -15,8 +15,6 @@
 class type app_launch_context_t = App_info_cycle_64c425a0.app_launch_context_t
 (** {b The methods, signals and properties of a [AppLaunchContext].}
 
-    Inherits from: [GObject.Object]
-
     Integrating the launch with the launching application. This is used to
     handle for instance startup notification and launching the new application
     on the same screen as the launching window. *)

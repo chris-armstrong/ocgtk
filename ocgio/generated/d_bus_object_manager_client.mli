@@ -12,8 +12,6 @@
 
 (** {b The methods, signals and properties of a [DBusObjectManagerClient].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Async_initable.class-type-async_initable_t}Ocgio.Async_initable}
     - {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}Ocgio.D_bus_object_manager}

@@ -16,8 +16,6 @@
 class type file_enumerator_t = App_info_cycle_64c425a0.file_enumerator_t
 (** {b The methods, signals and properties of a [FileEnumerator].}
 
-    Inherits from: [GObject.Object]
-
     [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
     returning a [Gio.FileInfo] structure for each file enumerated (e.g.
     [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of

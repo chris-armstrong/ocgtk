@@ -14,8 +14,6 @@ class type window_group_t =
   Application_and__window_and__window_group.window_group_t
 (** {b The methods, signals and properties of a [WindowGroup].}
 
-    Inherits from: [GObject.Object]
-
     Creates groups of windows that behave like separate applications.
 
     It achieves this by limiting the effect of GTK grabs and modality to windows

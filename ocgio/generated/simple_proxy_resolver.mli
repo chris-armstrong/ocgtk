@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [SimpleProxyResolver].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}Ocgio.Proxy_resolver}
 

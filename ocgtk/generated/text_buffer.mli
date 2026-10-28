@@ -14,8 +14,6 @@ class type text_buffer_t =
   Text_buffer_and__text_iter_and__text_mark.text_buffer_t
 (** {b The methods, signals and properties of a [TextBuffer].}
 
-    Inherits from: [GObject.Object]
-
     Stores text and attributes for display in a [GtkTextView].
 
     You may wish to begin by reading the text widget conceptual overview, which

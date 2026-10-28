@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [SimpleAction].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Action.class-type-action_t}Ocgio.Action}
 

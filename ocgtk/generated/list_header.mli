@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ListHeader].}
 
-    Inherits from: [GObject.Object]
-
     Used by list widgets to represent the headers they display.
 
     [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via

@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [EmblemedIcon].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
 

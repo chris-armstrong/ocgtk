@@ -56,7 +56,6 @@ class type test_d_bus_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [TestDBus].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      A helper class for testing code which uses D-Bus without touching the \
      user’s\n\
      session bus.\n\n\

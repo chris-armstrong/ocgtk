@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [Constraint].}
 
-    Inherits from: [GObject.Object]
-
     Describes a constraint between attributes of two widgets, expressed as a
     linear equation.
 

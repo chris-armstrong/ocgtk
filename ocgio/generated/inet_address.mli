@@ -13,8 +13,6 @@
 
 (** {b The methods, signals and properties of a [InetAddress].}
 
-    Inherits from: [GObject.Object]
-
     [GInetAddress] represents an IPv4 or IPv6 internet address. Use
     [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
     up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]

@@ -15,8 +15,6 @@
 class type socket_t = Socket_and__socket_connection.socket_t
 (** {b The methods, signals and properties of a [Socket].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}

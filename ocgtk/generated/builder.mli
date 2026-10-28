@@ -176,7 +176,6 @@ class type builder_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Builder].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Reads XML descriptions of a user interface and instantiates the described \
      objects.\n\n\
      To create a [GtkBuilder] from a user interface description, call\n\

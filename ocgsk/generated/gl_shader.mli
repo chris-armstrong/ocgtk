@@ -98,7 +98,6 @@ class type gl_shader_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GLShader].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements a fragment shader using GLSL.\n\n\
      A fragment shader gets the coordinates being rendered as input and\n\
      produces the pixel values for that particular pixel. Additionally,\n\

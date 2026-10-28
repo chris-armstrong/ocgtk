@@ -854,8 +854,6 @@ end
 
 (** {b The methods, signals and properties of a [WindowGroup].}
 
-    Inherits from: [GObject.Object]
-
     Creates groups of windows that behave like separate applications.
 
     It achieves this by limiting the effect of GTK grabs and modality to windows

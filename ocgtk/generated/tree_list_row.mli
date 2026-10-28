@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [TreeListRow].}
 
-    Inherits from: [GObject.Object]
-
     The type of item used by [GtkTreeListModel].
 
     It allows navigating the model as a tree and modify the state of rows.

@@ -5,8 +5,6 @@
 
 (** {b The methods, signals and properties of a [SocketAddress].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
@@ -29,8 +27,6 @@ class type socket_address_t = object
 end
 
 (** {b The methods, signals and properties of a [SocketAddressEnumerator].}
-
-    Inherits from: [GObject.Object]
 
     [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
     instances. It is returned by enumeration functions such as

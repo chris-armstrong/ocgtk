@@ -12,8 +12,6 @@
 
 (** {b The methods, signals and properties of a [DBusObjectProxy].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.D_bus_object.class-type-d_bus_object_t}Ocgio.D_bus_object}
 

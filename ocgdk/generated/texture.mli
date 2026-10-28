@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Texture].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
     - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}

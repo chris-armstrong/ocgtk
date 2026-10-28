@@ -154,7 +154,6 @@ class type application_command_line_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ApplicationCommandLine].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      [GApplicationCommandLine] represents a command-line invocation of\n\
      an application.\n\n\
      It is created by [Gio.Application] and emitted\n\

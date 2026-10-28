@@ -15,7 +15,6 @@ class type layout_manager_t =
   .layout_manager_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [LayoutManager].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Handles the preferred size and allocation for children of a widget.\n\n\
      You typically subclass [GtkLayoutManager] if you want to implement a\n\
      layout policy for the children of a widget, or if you want to determine\n\

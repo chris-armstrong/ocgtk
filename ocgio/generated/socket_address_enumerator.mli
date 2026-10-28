@@ -20,8 +20,6 @@ class type socket_address_enumerator_t =
   .socket_address_enumerator_t
 (** {b The methods, signals and properties of a [SocketAddressEnumerator].}
 
-    Inherits from: [GObject.Object]
-
     [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
     instances. It is returned by enumeration functions such as
     [Gio.SocketConnectable.enumerate], which returns a

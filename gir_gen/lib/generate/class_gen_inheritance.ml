@@ -29,6 +29,13 @@ let ancestor ~ctx name =
   | Some _ -> Entity_doc.Bound { namespace; name = simple }
   | None -> Entity_doc.Unbound (namespace ^ "." ^ simple)
 
+(* Every class without another parent has GObject.Object, so naming it says
+   nothing. *)
+let is_root_class name = String.equal name "GObject.Object"
+
+let parent_ancestor ~ctx parent =
+  if is_root_class parent then None else Some (ancestor ~ctx parent)
+
 let of_entity ~ctx ~(entity_kind : Filtering.entity_kind) class_name =
   match entity_kind with
   | Record -> Entity_doc.no_inheritance
@@ -38,7 +45,7 @@ let of_entity ~ctx ~(entity_kind : Filtering.entity_kind) class_name =
       |> Option.fold ~none:Entity_doc.no_inheritance
            ~some:(fun (cls : gir_class) ->
              {
-               Entity_doc.parent = Option.map (ancestor ~ctx) cls.parent;
+               Entity_doc.parent = Option.bind cls.parent (parent_ancestor ~ctx);
                implements = List.map cls.implements ~f:(ancestor ~ctx);
                requires = [];
              })

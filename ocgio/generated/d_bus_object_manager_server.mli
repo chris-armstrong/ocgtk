@@ -15,8 +15,6 @@
 
 (** {b The methods, signals and properties of a [DBusObjectManagerServer].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}Ocgio.D_bus_object_manager}
 

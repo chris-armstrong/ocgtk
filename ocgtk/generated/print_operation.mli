@@ -451,7 +451,6 @@ class type print_operation_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [PrintOperation].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements:\n\
      - \
      {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t}Ocgtk.Print_operation_preview}\n\n\

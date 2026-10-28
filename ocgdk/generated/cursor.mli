@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Cursor].}
 
-    Inherits from: [GObject.Object]
-
     Used to create and destroy cursors.
 
     Cursors are immutable objects, so once you created them, there is no way to

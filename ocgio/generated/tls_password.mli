@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [TlsPassword].}
 
-    Inherits from: [GObject.Object]
-
     An abstract interface representing a password used in TLS. Often used in
     user interaction such as unlocking a key storage token. *)
 class type tls_password_t = object

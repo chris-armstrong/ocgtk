@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [DBusProxy].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Async_initable.class-type-async_initable_t}Ocgio.Async_initable}
     - {{!Ocgio.D_bus_interface.class-type-d_bus_interface_t}Ocgio.D_bus_interface}

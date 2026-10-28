@@ -5,8 +5,6 @@
 
 (** {b The methods, signals and properties of a [EventController].}
 
-    Inherits from: [GObject.Object]
-
     The base class for event controllers.
 
     These are ancillary objects associated to widgets, which react to
@@ -85,8 +83,6 @@ end
 
 (** {b The methods, signals and properties of a [LayoutChild].}
 
-    Inherits from: [GObject.Object]
-
     The base class for objects that are meant to hold layout properties.
 
     If a [GtkLayoutManager] has per-child properties, like their packing type,
@@ -147,7 +143,6 @@ and layout_manager_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [LayoutManager].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Handles the preferred size and allocation for children of a widget.\n\n\
      You typically subclass [GtkLayoutManager] if you want to implement a\n\
      layout policy for the children of a widget, or if you want to determine\n\
@@ -234,8 +229,6 @@ and root_t = object
 end
 
 (** {b The methods, signals and properties of a [Tooltip].}
-
-    Inherits from: [GObject.Object]
 
     Represents a widget tooltip.
 

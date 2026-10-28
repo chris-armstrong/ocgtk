@@ -19,8 +19,6 @@
 class type menu_model_t = Menu_link_iter_and__menu_model.menu_model_t
 (** {b The methods, signals and properties of a [MenuModel].}
 
-    Inherits from: [GObject.Object]
-
     [GMenuModel] represents the contents of a menu — an ordered list of menu
     items. The items are associated with actions, which can be activated through
     them. Items can be grouped in sections, and may have submenus associated

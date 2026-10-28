@@ -4,8 +4,6 @@
 
 (** {b The methods, signals and properties of a [MenuLinkIter].}
 
-    Inherits from: [GObject.Object]
-
     [GMenuLinkIter] is an opaque structure type. You must access it using the
     functions below. *)
 class type menu_link_iter_t = object
@@ -35,8 +33,6 @@ class type menu_link_iter_t = object
 end
 
 (** {b The methods, signals and properties of a [MenuModel].}
-
-    Inherits from: [GObject.Object]
 
     [GMenuModel] represents the contents of a menu — an ordered list of menu
     items. The items are associated with actions, which can be activated through

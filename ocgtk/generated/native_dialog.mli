@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [NativeDialog].}
 
-    Inherits from: [GObject.Object]
-
     Base class for platform dialogs that don't use [GtkDialog].
 
     Native dialogs are used in order to integrate better with a platform, by

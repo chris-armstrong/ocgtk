@@ -13,8 +13,6 @@
 class type file_monitor_t = App_info_cycle_64c425a0.file_monitor_t
 (** {b The methods, signals and properties of a [FileMonitor].}
 
-    Inherits from: [GObject.Object]
-
     Monitors a file or directory for changes.
 
     To obtain a [GFileMonitor] for a file or directory, use [Gio.File.monitor],

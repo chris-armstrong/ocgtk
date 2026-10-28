@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [PixbufAnimation].}
 
-    Inherits from: [GObject.Object]
-
     An opaque object representing an animation.
 
     The GdkPixBuf library provides a simple mechanism to load and represent

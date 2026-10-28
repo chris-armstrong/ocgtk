@@ -182,7 +182,6 @@ class type im_context_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [IMContext].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      The interface for GTK input methods.\n\n\
      [GtkIMContext] is used by GTK text input widgets like [GtkText]\n\
      to map from key events to Unicode character strings.\n\n\

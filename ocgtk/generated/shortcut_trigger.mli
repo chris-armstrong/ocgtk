@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ShortcutTrigger].}
 
-    Inherits from: [GObject.Object]
-
     Tracks how a [GtkShortcut] can be activated.
 
     To find out if a [GtkShortcutTrigger] triggers, you can call

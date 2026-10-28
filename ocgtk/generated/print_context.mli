@@ -58,7 +58,6 @@ class type print_context_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [PrintContext].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Encapsulates context information that is required when\n\
      drawing pages for printing.\n\n\
      This includes the cairo context and important parameters like page size\n\

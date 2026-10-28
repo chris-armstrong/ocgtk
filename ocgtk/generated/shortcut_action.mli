@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ShortcutAction].}
 
-    Inherits from: [GObject.Object]
-
     Encodes an action that can be triggered by a keyboard shortcut.
 
     [GtkShortcutActions] contain functions that allow easy presentation to end

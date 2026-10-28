@@ -16,8 +16,6 @@ class type socket_address_t =
   .socket_address_t
 (** {b The methods, signals and properties of a [SocketAddress].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 

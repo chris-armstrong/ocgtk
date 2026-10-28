@@ -8,4 +8,5 @@ val of_entity :
   string ->
   Entity_doc.inheritance
 (** [of_entity ~ctx ~entity_kind class_name]: a class's parent and interfaces,
-    an interface's prerequisites, nothing for a record. *)
+    an interface's prerequisites, nothing for a record. A parent of
+    [GObject.Object] is left out. *)

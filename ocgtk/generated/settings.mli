@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Settings].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgtk.Style_provider.class-type-style_provider_t}Ocgtk.Style_provider}
 

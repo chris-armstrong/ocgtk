@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [DBusActionGroup].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}
     - {{!Ocgio.Remote_action_group.class-type-remote_action_group_t}Ocgio.Remote_action_group}

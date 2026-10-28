@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Cancellable].}
 
-    Inherits from: [GObject.Object]
-
     [GCancellable] allows operations to be cancelled.
 
     [GCancellable] is a thread-safe operation cancellation stack used throughout

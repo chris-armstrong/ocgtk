@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [PixbufAnimationIter].}
 
-    Inherits from: [GObject.Object]
-
     An opaque object representing an iterator which points to a certain position
     in an animation. *)
 class type pixbuf_animation_iter_t = object

@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [WidgetPaintable].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
 

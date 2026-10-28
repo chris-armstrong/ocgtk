@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [SocketListener].}
 
-    Inherits from: [GObject.Object]
-
     A [GSocketListener] is an object that keeps track of a set of server sockets
     and helps you accept sockets from any of the socket, either sync or async.
 

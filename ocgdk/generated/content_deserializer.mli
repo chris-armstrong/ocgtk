@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ContentDeserializer].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}
 

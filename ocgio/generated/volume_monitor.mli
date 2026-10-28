@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [VolumeMonitor].}
 
-    Inherits from: [GObject.Object]
-
     [GVolumeMonitor] is for listing the user interesting devices and volumes on
     the computer. In other words, what a file selector or file manager would
     show in a sidebar.

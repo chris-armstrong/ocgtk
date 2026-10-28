@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [AlertDialog].}
 
-    Inherits from: [GObject.Object]
-
     Collects the arguments that are needed to present a message to the user.
 
     The message is shown with the [Gtk.AlertDialog.choose] function.

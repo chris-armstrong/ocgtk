@@ -15,8 +15,6 @@ class type tooltip_t =
   .tooltip_t
 (** {b The methods, signals and properties of a [Tooltip].}
 
-    Inherits from: [GObject.Object]
-
     Represents a widget tooltip.
 
     Basic tooltips can be realized simply by using [Gtk.Widget.set_tooltip_text]

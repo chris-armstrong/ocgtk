@@ -13,8 +13,6 @@
 class type font_family_t = Font_face_and__font_family.font_family_t
 (** {b The methods, signals and properties of a [FontFamily].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 

@@ -13,8 +13,6 @@
 class type fontset_t = Context_and__font_and__font_map_and__fontset.fontset_t
 (** {b The methods, signals and properties of a [Fontset].}
 
-    Inherits from: [GObject.Object]
-
     A [PangoFontset] represents a set of [PangoFont] to use when rendering text.
 
     A [PangoFontset] is the result of resolving a [PangoFontDescription] against

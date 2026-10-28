@@ -277,8 +277,6 @@ end
 
 (** {b The methods, signals and properties of a [TlsDatabase].}
 
-    Inherits from: [GObject.Object]
-
     [GTlsDatabase] is used to look up certificates and other information from a
     certificate or key store. It is an abstract base class which TLS library
     specific subtypes override.
@@ -458,8 +456,6 @@ and tls_database_t = object
 end
 
 (** {b The methods, signals and properties of a [TlsInteraction].}
-
-    Inherits from: [GObject.Object]
 
     [GTlsInteraction] provides a mechanism for the TLS connection and database
     code to interact with the user. It can be used to ask the user for

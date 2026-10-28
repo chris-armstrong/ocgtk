@@ -4,8 +4,6 @@
 
 (** {b The methods, signals and properties of a [TreeSelection].}
 
-    Inherits from: [GObject.Object]
-
     The selection object for GtkTreeView
 
     The [GtkTreeSelection] object is a helper object to manage the selection for

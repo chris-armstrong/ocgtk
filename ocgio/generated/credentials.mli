@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [Credentials].}
 
-    Inherits from: [GObject.Object]
-
     The [GCredentials] type is a reference-counted wrapper for native
     credentials.
 

@@ -14,8 +14,6 @@ class type cell_area_context_t =
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
 (** {b The methods, signals and properties of a [CellAreaContext].}
 
-    Inherits from: [GObject.Object]
-
     Stores geometrical information for a series of rows in a GtkCellArea
 
     The [GtkCellAreaContext] object is created by a given [GtkCellArea]

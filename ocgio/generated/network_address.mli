@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [NetworkAddress].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 

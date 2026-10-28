@@ -37,7 +37,6 @@ class type display_manager_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DisplayManager].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Offers notification when displays appear or disappear.\n\n\
      [GdkDisplayManager] is a singleton object.\n\n\
      You can use [Gdk.DisplayManager.get] to obtain the [GdkDisplayManager]\n\

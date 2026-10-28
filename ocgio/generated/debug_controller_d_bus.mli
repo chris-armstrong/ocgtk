@@ -76,7 +76,6 @@ class type debug_controller_d_bus_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DebugControllerDBus].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements:\n\
      - \
      {{!Ocgio.Debug_controller.class-type-debug_controller_t}Ocgio.Debug_controller}\n\

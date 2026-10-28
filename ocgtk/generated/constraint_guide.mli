@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ConstraintGuide].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
 

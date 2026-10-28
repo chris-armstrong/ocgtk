@@ -83,7 +83,6 @@ class type drag_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Drag].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Represents the source of an ongoing DND operation.\n\n\
      A [GdkDrag] is created when a drag is started, and stays alive for \
      duration of\n\

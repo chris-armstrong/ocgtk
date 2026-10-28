@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [ContentProvider].}
 
-    Inherits from: [GObject.Object]
-
     Provides content for the clipboard or for drag-and-drop operations in a
     number of formats.
 

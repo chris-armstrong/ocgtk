@@ -849,9 +849,10 @@ GIR-derived text at L1 and L2 in the PR's preview.
 **Status: done** (branch `m3-phase7`). *Revised 2026-10-28* for the
 per-package layout and for the page structure Phase 6 settled. Implemented as
 the four commits below. Notes: the inheritance block's link text is the
-ancestor's OCaml module path (`Ocgtk.Widget`); 225 class types inherit from
-`GObject.Object` or another GObject class with no layer 2 class type, named
-as code. All 677 class modules have a `Constructors` heading (the 22 files
+ancestor's OCaml module path (`Ocgtk.Widget`); a `GObject.Object` parent is
+left out (216 class types), and the 9 class types with another GObject parent
+(`InitiallyUnowned`, `ParamSpec`, `TypeModule`), which has no layer 2 class
+type, name it as code. All 677 class modules have a `Constructors` heading (the 22 files
 without one are combined modules). Change 4 also moves combined modules'
 references to other groups' members onto public paths; it changed 386
 generated files and kept the build green, which is the check that no member

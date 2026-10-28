@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [FileInfo].}
 
-    Inherits from: [GObject.Object]
-
     Stores information about a file system object referenced by a [Gio.File].
 
     Functionality for manipulating basic metadata for files. [GFileInfo]

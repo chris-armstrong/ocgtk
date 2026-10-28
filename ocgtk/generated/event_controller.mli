@@ -15,8 +15,6 @@ class type event_controller_t =
   .event_controller_t
 (** {b The methods, signals and properties of a [EventController].}
 
-    Inherits from: [GObject.Object]
-
     The base class for event controllers.
 
     These are ancillary objects associated to widgets, which react to

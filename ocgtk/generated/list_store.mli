@@ -70,7 +70,6 @@ class type list_store_t = object
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ListStore].}\n\n\
-     Inherits from: [GObject.Object]\n\n\
      Implements:\n\
      - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
      - {{!Ocgtk.Tree_drag_dest.class-type-tree_drag_dest_t}Ocgtk.Tree_drag_dest}\n\

@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Renderer].}
 
-    Inherits from: [GObject.Object]
-
     Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call

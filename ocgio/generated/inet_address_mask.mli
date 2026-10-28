@@ -12,8 +12,6 @@
 
 (** {b The methods, signals and properties of a [InetAddressMask].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
 

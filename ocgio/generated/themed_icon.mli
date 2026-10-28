@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ThemedIcon].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
 

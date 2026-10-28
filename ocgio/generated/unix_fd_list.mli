@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [UnixFDList].}
 
-    Inherits from: [GObject.Object]
-
     A [GUnixFDList] contains a list of file descriptors. It owns the file
     descriptors that it contains, closing them when finalized.
 

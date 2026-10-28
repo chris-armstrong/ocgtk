@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [TextChildAnchor].}
 
-    Inherits from: [GObject.Object]
-
     Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
 
     The anchor can have multiple widgets anchored, to allow for multiple views.

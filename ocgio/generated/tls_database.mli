@@ -16,8 +16,6 @@ class type tls_database_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
 (** {b The methods, signals and properties of a [TlsDatabase].}
 
-    Inherits from: [GObject.Object]
-
     [GTlsDatabase] is used to look up certificates and other information from a
     certificate or key store. It is an abstract base class which TLS library
     specific subtypes override.

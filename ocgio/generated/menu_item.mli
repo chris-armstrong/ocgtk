@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [MenuItem].}
 
-    Inherits from: [GObject.Object]
-
     [GMenuItem] is an opaque structure type. You must access it using the
     functions below. *)
 class type menu_item_t = object

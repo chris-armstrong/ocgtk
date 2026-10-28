@@ -494,8 +494,6 @@ end
 
 (** {b The methods, signals and properties of a [CellAreaContext].}
 
-    Inherits from: [GObject.Object]
-
     Stores geometrical information for a series of rows in a GtkCellArea
 
     The [GtkCellAreaContext] object is created by a given [GtkCellArea]

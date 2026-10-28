@@ -11,8 +11,6 @@
 
 (** {b The methods, signals and properties of a [SubprocessLauncher].}
 
-    Inherits from: [GObject.Object]
-
     This class contains a set of options for launching child processes, such as
     where its standard input and output will be directed, the argument list, the
     environment, and more.

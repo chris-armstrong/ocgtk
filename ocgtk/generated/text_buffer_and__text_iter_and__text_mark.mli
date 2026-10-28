@@ -4,8 +4,6 @@
 
 (** {b The methods, signals and properties of a [TextBuffer].}
 
-    Inherits from: [GObject.Object]
-
     Stores text and attributes for display in a [GtkTextView].
 
     You may wish to begin by reading the text widget conceptual overview, which
@@ -1222,8 +1220,6 @@ and text_iter_t = object
 end
 
 (** {b The methods, signals and properties of a [TextMark].}
-
-    Inherits from: [GObject.Object]
 
     Marks a position in a [GtkTextbuffer] that is preserved across
     modifications.

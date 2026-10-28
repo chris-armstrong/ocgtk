@@ -8,8 +8,6 @@
 
 (** {b The methods, signals and properties of a [AssistantPage].}
 
-    Inherits from: [GObject.Object]
-
     [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
 class type assistant_page_t = object
   (** {2:methods Methods} *)

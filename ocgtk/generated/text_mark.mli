@@ -14,8 +14,6 @@
 class type text_mark_t = Text_buffer_and__text_iter_and__text_mark.text_mark_t
 (** {b The methods, signals and properties of a [TextMark].}
 
-    Inherits from: [GObject.Object]
-
     Marks a position in a [GtkTextbuffer] that is preserved across
     modifications.
 

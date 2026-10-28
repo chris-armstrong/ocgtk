@@ -13,8 +13,6 @@
 class type clipboard_t = App_launch_context_cycle_de440b34.clipboard_t
 (** {b The methods, signals and properties of a [Clipboard].}
 
-    Inherits from: [GObject.Object]
-
     Represents data shared between applications or inside an application.
 
     To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or

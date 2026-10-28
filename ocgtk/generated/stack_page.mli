@@ -8,8 +8,6 @@
 
 (** {b The methods, signals and properties of a [StackPage].}
 
-    Inherits from: [GObject.Object]
-
     Implements:
     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
 

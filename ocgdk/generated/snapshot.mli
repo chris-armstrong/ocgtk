@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [Snapshot].}
 
-    Inherits from: [GObject.Object]
-
     Base type for snapshot operations.
 
     The subclass of [GdkSnapshot] used by GTK is GtkSnapshot. *)

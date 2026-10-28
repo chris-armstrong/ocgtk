@@ -10,8 +10,6 @@
 
 (** {b The methods, signals and properties of a [SocketClient].}
 
-    Inherits from: [GObject.Object]
-
     [GSocketClient] is a lightweight high-level utility class for connecting to
     a network host using a connection oriented socket type.
 

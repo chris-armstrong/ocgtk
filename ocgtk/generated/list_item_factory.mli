@@ -9,8 +9,6 @@
 
 (** {b The methods, signals and properties of a [ListItemFactory].}
 
-    Inherits from: [GObject.Object]
-
     Creates widgets for the items taken from a [GListModel].
 
     This is one of the core concepts of handling list widgets such as

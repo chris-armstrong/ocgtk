@@ -4,8 +4,6 @@
 
 (** {b The methods, signals and properties of a [CicpParams].}
 
-    Inherits from: [GObject.Object]
-
     Contains the parameters that define a colorstate with cicp parameters.
 
     Cicp parameters are specified in the ITU-T H.273
