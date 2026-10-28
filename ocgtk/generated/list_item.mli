@@ -16,7 +16,7 @@
     Its methods, signals and properties are on {!class-type-list_item_t}. The
     functions it is built on are in {!Ocgtk.Raw.List_item}. *)
 
-(** The methods, signals and properties of a [GtkListItem]. *)
+(** The methods, signals and properties of a [ListItem]. *)
 class type list_item_t = object
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
@@ -122,6 +122,4 @@ class type list_item_t = object
 end
 
 class list_item : Raw.List_item.t -> list_item_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_item.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkListItem], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.List_item.t}. *)

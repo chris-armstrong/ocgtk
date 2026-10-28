@@ -16,9 +16,7 @@
 
 class type tls_database_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
-(** The methods, signals and properties of a [GTlsDatabase]. *)
+(** The methods, signals and properties of a [TlsDatabase]. *)
 
 class tls_database : Raw.Tls_database.t -> tls_database_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_database.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GTlsDatabase], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Tls_database.t}. *)

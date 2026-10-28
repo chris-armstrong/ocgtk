@@ -348,9 +348,7 @@
 class type widget_t =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .widget_t
-(** The methods, signals and properties of a [GtkWidget]. *)
+(** The methods, signals and properties of a [Widget]. *)
 
 class widget : Raw.Widget.t -> widget_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Widget.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkWidget], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Widget.t}. *)

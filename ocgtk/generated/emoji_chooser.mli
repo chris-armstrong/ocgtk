@@ -41,7 +41,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Emoji_chooser}. *)
 
-(** The methods, signals and properties of a [GtkEmojiChooser]. *)
+(** The methods, signals and properties of a [EmojiChooser]. *)
 class type emoji_chooser_t = object
   inherit Popover.popover_t
 
@@ -56,9 +56,7 @@ class type emoji_chooser_t = object
 end
 
 class emoji_chooser : Raw.Emoji_chooser.t -> emoji_chooser_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Emoji_chooser.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkEmojiChooser], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Emoji_chooser.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -2,7 +2,7 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GtkTextBuffer]. *)
+(** The methods, signals and properties of a [TextBuffer]. *)
 class type text_buffer_t = object
   method on_begin_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -559,7 +559,7 @@ class type text_buffer_t = object
   method as_text_buffer : Raw.Text_buffer.t
 end
 
-(** The methods, signals and properties of a [GtkTextIter]. *)
+(** The methods, signals and properties of a [TextIter]. *)
 and text_iter_t = object
   method assign : Raw.Text_iter.t -> unit
   (** Assigns the value of [other] to [iter].
@@ -1187,7 +1187,7 @@ and text_iter_t = object
   method as_text_iter : Raw.Text_iter.t
 end
 
-(** The methods, signals and properties of a [GtkTextMark]. *)
+(** The methods, signals and properties of a [TextMark]. *)
 and text_mark_t = object
   method get_buffer : unit -> text_buffer_t option
   (** Gets the buffer this mark is located inside.
@@ -1225,18 +1225,12 @@ and text_mark_t = object
   method as_text_mark : Raw.Text_mark.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_buffer.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextBuffer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_buffer.t}. *)
 class text_buffer : Raw.Text_buffer.t -> text_buffer_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_iter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_iter.t}. *)
 
 and text_iter : Raw.Text_iter.t -> text_iter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_mark.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextMark], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_mark.t}. *)
 
 and text_mark : Raw.Text_mark.t -> text_mark_t
 

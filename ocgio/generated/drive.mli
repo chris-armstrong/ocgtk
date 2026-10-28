@@ -32,9 +32,7 @@
     functions it is built on are in {!Ocgio.Raw.Drive}. *)
 
 class type drive_t = App_info_cycle_64c425a0.drive_t
-(** The methods, signals and properties of a [GDrive]. *)
+(** The methods, signals and properties of a [Drive]. *)
 
 class drive : Raw.Drive.t -> drive_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Drive.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GDrive], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Drive.t}. *)

@@ -13,12 +13,10 @@
     Its methods, signals and properties are on {!class-type-shortcut_manager_t}.
     The functions it is built on are in {!Ocgtk.Raw.Shortcut_manager}. *)
 
-(** The methods, signals and properties of a [GtkShortcutManager]. *)
+(** The methods, signals and properties of a [ShortcutManager]. *)
 class type shortcut_manager_t = object
   method as_shortcut_manager : Raw.Shortcut_manager.t
 end
 
 class shortcut_manager : Raw.Shortcut_manager.t -> shortcut_manager_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut_manager.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkShortcutManager], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcut_manager.t}. *)

@@ -21,7 +21,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Widget_paintable}. *)
 
-(** The methods, signals and properties of a [GtkWidgetPaintable]. *)
+(** The methods, signals and properties of a [WidgetPaintable]. *)
 class type widget_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
 
@@ -43,9 +43,7 @@ class type widget_paintable_t = object
 end
 
 class widget_paintable : Raw.Widget_paintable.t -> widget_paintable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Widget_paintable.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkWidgetPaintable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Widget_paintable.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -18,7 +18,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Constraint}. *)
 
-(** The methods, signals and properties of a [GtkConstraint]. *)
+(** The methods, signals and properties of a [Constraint]. *)
 class type constraint__t = object
   method get_constant : unit -> float
   (** Retrieves the constant factor added to the source attributes' value. *)
@@ -69,9 +69,7 @@ class type constraint__t = object
 end
 
 class constraint_ : Raw.Constraint.t -> constraint__t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Constraint.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkConstraint], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Constraint.t}. *)
 
 (** {2:constructors Constructors} *)
 

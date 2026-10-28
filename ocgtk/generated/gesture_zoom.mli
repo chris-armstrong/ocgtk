@@ -8,7 +8,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Gesture_zoom}. *)
 
-(** The methods, signals and properties of a [GtkGestureZoom]. *)
+(** The methods, signals and properties of a [GestureZoom]. *)
 class type gesture_zoom_t = object
   inherit Gesture.gesture_t
 
@@ -30,9 +30,7 @@ class type gesture_zoom_t = object
 end
 
 class gesture_zoom : Raw.Gesture_zoom.t -> gesture_zoom_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_zoom.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGestureZoom], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_zoom.t}. *)
 
 (** {2:constructors Constructors} *)
 

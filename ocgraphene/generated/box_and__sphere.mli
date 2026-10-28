@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [graphene_box_t]. *)
+(** The methods, signals and properties of a [Box]. *)
 class type box_t = object
   method contains_box : Raw.Box.t -> bool
   (** Checks whether the #graphene_box_t [a] contains the given #graphene_box_t
@@ -49,7 +49,7 @@ class type box_t = object
   method as_box : Raw.Box.t
 end
 
-(** The methods, signals and properties of a [graphene_sphere_t]. *)
+(** The methods, signals and properties of a [Sphere]. *)
 and sphere_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given [point] is contained in the volume of a
@@ -91,13 +91,9 @@ and sphere_t = object
   method as_sphere : Raw.Sphere.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Box.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_box_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Box.t}. *)
 class box : Raw.Box.t -> box_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Sphere.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_sphere_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Sphere.t}. *)
 
 and sphere : Raw.Sphere.t -> sphere_t
 

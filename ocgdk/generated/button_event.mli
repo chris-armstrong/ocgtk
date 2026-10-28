@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-button_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Button_event}. *)
 
-(** The methods, signals and properties of a [GdkButtonEvent]. *)
+(** The methods, signals and properties of a [ButtonEvent]. *)
 class type button_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
@@ -14,6 +14,4 @@ class type button_event_t = object
 end
 
 class button_event : Raw.Button_event.t -> button_event_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Button_event.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkButtonEvent], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Button_event.t}. *)

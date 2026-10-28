@@ -79,12 +79,10 @@
     are in {!Ocgtk.Raw.Window}. *)
 
 class type window_t = Application_and__window_and__window_group.window_t
-(** The methods, signals and properties of a [GtkWindow]. *)
+(** The methods, signals and properties of a [Window]. *)
 
 class window : Raw.Window.t -> window_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Window.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkWindow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Window.t}. *)
 
 (** {2:constructors Constructors} *)
 

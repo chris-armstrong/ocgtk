@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Shader_args_builder}. *)
 
-(** The methods, signals and properties of a [GskShaderArgsBuilder]. *)
+(** The methods, signals and properties of a [ShaderArgsBuilder]. *)
 class type shader_args_builder_t = object
   method ref : unit -> Raw.Shader_args_builder.t
   (** Increases the reference count of a [GskShaderArgsBuilder] by one. *)
@@ -61,9 +61,7 @@ class type shader_args_builder_t = object
 end
 
 class shader_args_builder : Raw.Shader_args_builder.t -> shader_args_builder_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Shader_args_builder.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GskShaderArgsBuilder], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Shader_args_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

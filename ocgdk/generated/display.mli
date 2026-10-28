@@ -21,9 +21,7 @@
     functions it is built on are in {!Ocgdk.Raw.Display}. *)
 
 class type display_t = App_launch_context_cycle_de440b34.display_t
-(** The methods, signals and properties of a [GdkDisplay]. *)
+(** The methods, signals and properties of a [Display]. *)
 
 class display : Raw.Display.t -> display_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Display.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkDisplay], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Display.t}. *)

@@ -46,7 +46,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Combo_box_text}."]
 
-(** The methods, signals and properties of a [GtkComboBoxText]. *)
+(** The methods, signals and properties of a [ComboBoxText]. *)
 class type combo_box_text_t = object
   inherit Combo_box.combo_box_t
 
@@ -111,9 +111,7 @@ class type combo_box_text_t = object
 end
 
 class combo_box_text : Raw.Combo_box_text.t -> combo_box_text_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Combo_box_text.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkComboBoxText], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Combo_box_text.t}. *)
 
 (** {2:constructors Constructors} *)
 

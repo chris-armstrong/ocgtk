@@ -33,7 +33,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.File_chooser_widget}. *)
 
-(** The methods, signals and properties of a [GtkFileChooserWidget]. *)
+(** The methods, signals and properties of a [FileChooserWidget]. *)
 class type file_chooser_widget_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -191,9 +191,7 @@ class type file_chooser_widget_t = object
 end
 
 class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_chooser_widget.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkFileChooserWidget], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_chooser_widget.t}. *)
 
 (** {2:constructors Constructors} *)
 

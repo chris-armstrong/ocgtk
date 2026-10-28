@@ -40,7 +40,7 @@
     Its methods, signals and properties are on {!class-type-app_info_monitor_t}.
     The functions it is built on are in {!Ocgio.Raw.App_info_monitor}. *)
 
-(** The methods, signals and properties of a [GAppInfoMonitor]. *)
+(** The methods, signals and properties of a [AppInfoMonitor]. *)
 class type app_info_monitor_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -51,6 +51,4 @@ class type app_info_monitor_t = object
 end
 
 class app_info_monitor : Raw.App_info_monitor.t -> app_info_monitor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.App_info_monitor.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GAppInfoMonitor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.App_info_monitor.t}. *)

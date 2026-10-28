@@ -45,7 +45,7 @@
     Its methods, signals and properties are on {!class-type-paintable_t}. The
     functions it is built on are in {!Ocgdk.Raw.Paintable}. *)
 
-(** The methods, signals and properties of a [GdkPaintable]. *)
+(** The methods, signals and properties of a [Paintable]. *)
 class type paintable_t = object
   method on_invalidate_contents :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -158,6 +158,4 @@ class type paintable_t = object
 end
 
 class paintable : Raw.Paintable.t -> paintable_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Paintable.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkPaintable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Paintable.t}. *)

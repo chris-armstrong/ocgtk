@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-gl_texture_t}. The
     functions it is built on are in {!Ocgdk.Raw.Gl_texture}. *)
 
-(** The methods, signals and properties of a [GdkGLTexture]. *)
+(** The methods, signals and properties of a [GLTexture]. *)
 class type gl_texture_t = object
   inherit Texture.texture_t
 
@@ -17,6 +17,4 @@ class type gl_texture_t = object
 end
 
 class gl_texture : Raw.Gl_texture.t -> gl_texture_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Gl_texture.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkGLTexture], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Gl_texture.t}. *)

@@ -2,7 +2,7 @@
     together because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [PangoFontFace]. *)
+(** The methods, signals and properties of a [FontFace]. *)
 class type font_face_t = object
   method describe : unit -> Raw.Font_description.t
   (** Returns a font description that matches the face.
@@ -29,7 +29,7 @@ class type font_face_t = object
   method as_font_face : Raw.Font_face.t
 end
 
-(** The methods, signals and properties of a [PangoFontFamily]. *)
+(** The methods, signals and properties of a [FontFamily]. *)
 and font_family_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -70,12 +70,8 @@ and font_family_t = object
   method as_font_family : Raw.Font_family.t
 end
 
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_face.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontFace], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_face.t}. *)
 class font_face : Raw.Font_face.t -> font_face_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_family.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontFamily], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_family.t}. *)
 
 and font_family : Raw.Font_family.t -> font_family_t

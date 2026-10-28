@@ -6,7 +6,7 @@
     {!class-type-buildable_parse_context_t}. The functions it is built on are in
     {!Ocgtk.Raw.Buildable_parse_context}. *)
 
-(** The methods, signals and properties of a [GtkBuildableParseContext]. *)
+(** The methods, signals and properties of a [BuildableParseContext]. *)
 class type buildable_parse_context_t = object
   method get_element : unit -> string option
   (** Retrieves the name of the currently open element.
@@ -33,7 +33,4 @@ end
 class buildable_parse_context :
   Raw.Buildable_parse_context.t ->
   buildable_parse_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Buildable_parse_context.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkBuildableParseContext], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Buildable_parse_context.t}. *)

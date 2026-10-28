@@ -7,7 +7,7 @@
     {!class-type-filter_input_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.Filter_input_stream}. *)
 
-(** The methods, signals and properties of a [GFilterInputStream]. *)
+(** The methods, signals and properties of a [FilterInputStream]. *)
 class type filter_input_stream_t = object
   inherit Input_stream.input_stream_t
 
@@ -24,6 +24,4 @@ class type filter_input_stream_t = object
 end
 
 class filter_input_stream : Raw.Filter_input_stream.t -> filter_input_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Filter_input_stream.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GFilterInputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Filter_input_stream.t}. *)

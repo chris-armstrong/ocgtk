@@ -6,7 +6,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_action}. *)
 
-(** The methods, signals and properties of a [GSimpleAction]. *)
+(** The methods, signals and properties of a [SimpleAction]. *)
 class type simple_action_t = object
   inherit Action.action_t
 
@@ -101,9 +101,7 @@ class type simple_action_t = object
 end
 
 class simple_action : Raw.Simple_action.t -> simple_action_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Simple_action.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSimpleAction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Simple_action.t}. *)
 
 (** {2:constructors Constructors} *)
 

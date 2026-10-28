@@ -34,7 +34,7 @@
     Its methods, signals and properties are on {!class-type-frame_clock_t}. The
     functions it is built on are in {!Ocgdk.Raw.Frame_clock}. *)
 
-(** The methods, signals and properties of a [GdkFrameClock]. *)
+(** The methods, signals and properties of a [FrameClock]. *)
 class type frame_clock_t = object
   method on_after_paint :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -153,6 +153,4 @@ class type frame_clock_t = object
 end
 
 class frame_clock : Raw.Frame_clock.t -> frame_clock_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Frame_clock.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkFrameClock], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Frame_clock.t}. *)

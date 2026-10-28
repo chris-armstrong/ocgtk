@@ -21,7 +21,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Directory_list}."]
 
-(** The methods, signals and properties of a [GtkDirectoryList]. *)
+(** The methods, signals and properties of a [DirectoryList]. *)
 class type directory_list_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -93,9 +93,7 @@ class type directory_list_t = object
 end
 
 class directory_list : Raw.Directory_list.t -> directory_list_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Directory_list.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkDirectoryList], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Directory_list.t}. *)
 
 (** {2:constructors Constructors} *)
 

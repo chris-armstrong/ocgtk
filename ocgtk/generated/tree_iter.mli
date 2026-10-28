@@ -5,12 +5,10 @@
     Its methods, signals and properties are on {!class-type-tree_iter_t}. The
     functions it is built on are in {!Ocgtk.Raw.Tree_iter}. *)
 
-(** The methods, signals and properties of a [GtkTreeIter]. *)
+(** The methods, signals and properties of a [TreeIter]. *)
 class type tree_iter_t = object
   method as_tree_iter : Raw.Tree_iter.t
 end
 
 class tree_iter : Raw.Tree_iter.t -> tree_iter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_iter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreeIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_iter.t}. *)

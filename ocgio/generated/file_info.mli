@@ -39,7 +39,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.File_info}. *)
 
-(** The methods, signals and properties of a [GFileInfo]. *)
+(** The methods, signals and properties of a [FileInfo]. *)
 class type file_info_t = object
   method clear_status : unit -> unit
   (** Clears the status information from [info]. *)
@@ -334,9 +334,7 @@ class type file_info_t = object
 end
 
 class file_info : Raw.File_info.t -> file_info_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_info.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GFileInfo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_info.t}. *)
 
 (** {2:constructors Constructors} *)
 

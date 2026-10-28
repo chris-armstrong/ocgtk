@@ -14,7 +14,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.File_launcher}. *)
 
-(** The methods, signals and properties of a [GtkFileLauncher]. *)
+(** The methods, signals and properties of a [FileLauncher]. *)
 class type file_launcher_t = object
   method get_always_ask : unit -> bool
   (** Returns whether to ask the user which app to use. *)
@@ -50,9 +50,7 @@ class type file_launcher_t = object
 end
 
 class file_launcher : Raw.File_launcher.t -> file_launcher_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_launcher.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFileLauncher], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_launcher.t}. *)
 
 (** {2:constructors Constructors} *)
 

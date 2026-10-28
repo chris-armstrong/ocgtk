@@ -54,7 +54,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Property_action}. *)
 
-(** The methods, signals and properties of a [GPropertyAction]. *)
+(** The methods, signals and properties of a [PropertyAction]. *)
 class type property_action_t = object
   inherit Action.action_t
   method enabled : bool
@@ -67,9 +67,7 @@ class type property_action_t = object
 end
 
 class property_action : Raw.Property_action.t -> property_action_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Property_action.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GPropertyAction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Property_action.t}. *)
 
 (** {2:constructors Constructors} *)
 

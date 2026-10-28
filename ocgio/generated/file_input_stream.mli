@@ -12,7 +12,7 @@
     {!class-type-file_input_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.File_input_stream}. *)
 
-(** The methods, signals and properties of a [GFileInputStream]. *)
+(** The methods, signals and properties of a [FileInputStream]. *)
 class type file_input_stream_t = object
   inherit Input_stream.input_stream_t
   inherit Seekable.seekable_t
@@ -35,6 +35,4 @@ class type file_input_stream_t = object
 end
 
 class file_input_stream : Raw.File_input_stream.t -> file_input_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_input_stream.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GFileInputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_input_stream.t}. *)

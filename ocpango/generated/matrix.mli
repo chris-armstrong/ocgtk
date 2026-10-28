@@ -11,7 +11,7 @@
     Its methods, signals and properties are on {!class-type-matrix_t}. The
     functions it is built on are in {!Ocpango.Raw.Matrix}. *)
 
-(** The methods, signals and properties of a [PangoMatrix]. *)
+(** The methods, signals and properties of a [Matrix]. *)
 class type matrix_t = object
   method concat : Raw.Matrix.t -> unit
   (** Changes the transformation represented by [matrix] to be the
@@ -53,6 +53,4 @@ class type matrix_t = object
 end
 
 class matrix : Raw.Matrix.t -> matrix_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Matrix.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoMatrix], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Matrix.t}. *)

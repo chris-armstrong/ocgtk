@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Simd4F: Simd4F *)
 
-(** Bindings for [graphene_simd4f_t].
+(** Bindings for [Simd4F].
 
     The class built on this module is in {!Ocgraphene.Simd4_f}. *)
 

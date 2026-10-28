@@ -14,7 +14,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Uri_launcher}. *)
 
-(** The methods, signals and properties of a [GtkUriLauncher]. *)
+(** The methods, signals and properties of a [UriLauncher]. *)
 class type uri_launcher_t = object
   method can_launch :
     Application_and__window_and__window_group.window_t option -> bool
@@ -38,9 +38,7 @@ class type uri_launcher_t = object
 end
 
 class uri_launcher : Raw.Uri_launcher.t -> uri_launcher_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Uri_launcher.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkUriLauncher], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Uri_launcher.t}. *)
 
 (** {2:constructors Constructors} *)
 

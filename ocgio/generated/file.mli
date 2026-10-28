@@ -91,9 +91,7 @@
     functions it is built on are in {!Ocgio.Raw.File}. *)
 
 class type file_t = App_info_cycle_64c425a0.file_t
-(** The methods, signals and properties of a [GFile]. *)
+(** The methods, signals and properties of a [File]. *)
 
 class file : Raw.File.t -> file_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GFile], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File.t}. *)

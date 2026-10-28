@@ -16,7 +16,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Memory_texture_builder}. *)
 
-(** The methods, signals and properties of a [GdkMemoryTextureBuilder]. *)
+(** The methods, signals and properties of a [MemoryTextureBuilder]. *)
 class type memory_texture_builder_t = object
   method build : unit -> Texture.texture_t
   (** Builds a new [GdkTexture] with the values set up in the builder.
@@ -134,10 +134,7 @@ end
 class memory_texture_builder :
   Raw.Memory_texture_builder.t ->
   memory_texture_builder_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Memory_texture_builder.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkMemoryTextureBuilder], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgdk.Raw.Memory_texture_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

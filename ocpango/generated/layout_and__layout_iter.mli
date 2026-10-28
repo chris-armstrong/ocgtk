@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [PangoLayout]. *)
+(** The methods, signals and properties of a [Layout]. *)
 class type layout_t = object
   method context_changed : unit -> unit
   (** Forces recomputation of any state in the [PangoLayout] that might depend
@@ -410,7 +410,7 @@ class type layout_t = object
   method as_layout : Raw.Layout.t
 end
 
-(** The methods, signals and properties of a [PangoLayoutIter]. *)
+(** The methods, signals and properties of a [LayoutIter]. *)
 and layout_iter_t = object
   method at_last_line : unit -> bool
   (** Determines whether [iter] is on the last line of the layout. *)
@@ -476,13 +476,9 @@ and layout_iter_t = object
   method as_layout_iter : Raw.Layout_iter.t
 end
 
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Layout.t}. *)
 class layout : Raw.Layout.t -> layout_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout_iter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoLayoutIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Layout_iter.t}. *)
 
 and layout_iter : Raw.Layout_iter.t -> layout_iter_t
 

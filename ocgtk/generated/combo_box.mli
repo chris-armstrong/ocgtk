@@ -61,7 +61,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Combo_box}. *)
 
-(** The methods, signals and properties of a [GtkComboBox]. *)
+(** The methods, signals and properties of a [ComboBox]. *)
 class type combo_box_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -289,9 +289,7 @@ class type combo_box_t = object
 end
 
 class combo_box : Raw.Combo_box.t -> combo_box_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Combo_box.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkComboBox], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Combo_box.t}. *)
 
 (** {2:constructors Constructors} *)
 

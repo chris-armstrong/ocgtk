@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Entry_buffer}. *)
 
-(** The methods, signals and properties of a [GtkEntryBuffer]. *)
+(** The methods, signals and properties of a [EntryBuffer]. *)
 class type entry_buffer_t = object
   method on_deleted_text :
     ?after:bool ->
@@ -95,9 +95,7 @@ class type entry_buffer_t = object
 end
 
 class entry_buffer : Raw.Entry_buffer.t -> entry_buffer_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Entry_buffer.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkEntryBuffer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Entry_buffer.t}. *)
 
 (** {2:constructors Constructors} *)
 

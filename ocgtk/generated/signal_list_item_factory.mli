@@ -43,7 +43,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Signal_list_item_factory}. *)
 
-(** The methods, signals and properties of a [GtkSignalListItemFactory]. *)
+(** The methods, signals and properties of a [SignalListItemFactory]. *)
 class type signal_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
   method as_signal_list_item_factory : Raw.Signal_list_item_factory.t
@@ -52,10 +52,7 @@ end
 class signal_list_item_factory :
   Raw.Signal_list_item_factory.t ->
   signal_list_item_factory_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Signal_list_item_factory.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkSignalListItemFactory], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Signal_list_item_factory.t}. *)
 
 (** {2:constructors Constructors} *)
 

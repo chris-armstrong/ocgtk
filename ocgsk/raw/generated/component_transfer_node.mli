@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComponentTransferNode: ComponentTransferNode *)
 
-(** Bindings for [GskComponentTransferNode].
+(** Bindings for [ComponentTransferNode].
 
     The class built on this module is in {!Ocgsk.Component_transfer_node}. *)
 

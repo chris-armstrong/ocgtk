@@ -31,7 +31,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Image}."]
 
-(** The methods, signals and properties of a [GtkImage]. *)
+(** The methods, signals and properties of a [Image]. *)
 class type image_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -127,9 +127,7 @@ class type image_t = object
 end
 
 class image : Raw.Image.t -> image_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Image.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkImage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Image.t}. *)
 
 (** {2:constructors Constructors} *)
 

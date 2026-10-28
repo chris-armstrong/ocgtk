@@ -41,7 +41,7 @@
     Its methods, signals and properties are on {!class-type-file_chooser_t}. The
     functions it is built on are in {!Ocgtk.Raw.File_chooser}. *)
 
-(** The methods, signals and properties of a [GtkFileChooser]. *)
+(** The methods, signals and properties of a [FileChooser]. *)
 class type file_chooser_t = object
   method add_choice :
     string -> string -> string array option -> string array option -> unit
@@ -231,6 +231,4 @@ class type file_chooser_t = object
 end
 
 class file_chooser : Raw.File_chooser.t -> file_chooser_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_chooser.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFileChooser], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_chooser.t}. *)

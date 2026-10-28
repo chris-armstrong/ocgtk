@@ -10,7 +10,7 @@
     Its methods, signals and properties are on {!class-type-attribute_t}. The
     functions it is built on are in {!Ocpango.Raw.Attribute}. *)
 
-(** The methods, signals and properties of a [PangoAttribute]. *)
+(** The methods, signals and properties of a [Attribute]. *)
 class type attribute_t = object
   method as_color : unit -> Raw.Attr_color.t option
   (** Returns the attribute cast to [PangoAttrColor].
@@ -76,6 +76,4 @@ class type attribute_t = object
 end
 
 class attribute : Raw.Attribute.t -> attribute_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Attribute.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoAttribute], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Attribute.t}. *)

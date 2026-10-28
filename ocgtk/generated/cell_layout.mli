@@ -97,9 +97,7 @@
 
 class type cell_layout_t =
   Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-(** The methods, signals and properties of a [GtkCellLayout]. *)
+(** The methods, signals and properties of a [CellLayout]. *)
 
 class cell_layout : Raw.Cell_layout.t -> cell_layout_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_layout.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_layout.t}. *)

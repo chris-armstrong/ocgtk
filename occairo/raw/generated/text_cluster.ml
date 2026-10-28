@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextCluster: TextCluster *)
 
-(** Bindings for [cairo_text_cluster_t].
+(** Bindings for [TextCluster].
 
     The class built on this module is in {!Occairo.Text_cluster}. *)
 

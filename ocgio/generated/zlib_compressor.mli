@@ -5,7 +5,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Zlib_compressor}. *)
 
-(** The methods, signals and properties of a [GZlibCompressor]. *)
+(** The methods, signals and properties of a [ZlibCompressor]. *)
 class type zlib_compressor_t = object
   inherit Converter.converter_t
 
@@ -35,9 +35,7 @@ class type zlib_compressor_t = object
 end
 
 class zlib_compressor : Raw.Zlib_compressor.t -> zlib_compressor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Zlib_compressor.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GZlibCompressor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Zlib_compressor.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -14,7 +14,7 @@
     Its methods, signals and properties are on {!class-type-render_node_t}. The
     functions it is built on are in {!Ocgsk.Raw.Render_node}. *)
 
-(** The methods, signals and properties of a [GskRenderNode]. *)
+(** The methods, signals and properties of a [RenderNode]. *)
 class type render_node_t = object
   method draw : Occairo.Context.context_t -> unit
   (** Draws the contents of a render node on a cairo context.
@@ -62,6 +62,4 @@ class type render_node_t = object
 end
 
 class render_node : Raw.Render_node.t -> render_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Render_node.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskRenderNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Render_node.t}. *)

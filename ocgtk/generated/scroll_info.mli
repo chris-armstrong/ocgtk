@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Scroll_info}. *)
 
-(** The methods, signals and properties of a [GtkScrollInfo]. *)
+(** The methods, signals and properties of a [ScrollInfo]. *)
 class type scroll_info_t = object
   method get_enable_horizontal : unit -> bool
   (** Checks if horizontal scrolling is enabled. *)
@@ -28,9 +28,7 @@ class type scroll_info_t = object
 end
 
 class scroll_info : Raw.Scroll_info.t -> scroll_info_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Scroll_info.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkScrollInfo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Scroll_info.t}. *)
 
 (** {2:constructors Constructors} *)
 

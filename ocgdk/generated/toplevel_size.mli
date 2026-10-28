@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-toplevel_size_t}.
     The functions it is built on are in {!Ocgdk.Raw.Toplevel_size}. *)
 
-(** The methods, signals and properties of a [GdkToplevelSize]. *)
+(** The methods, signals and properties of a [ToplevelSize]. *)
 class type toplevel_size_t = object
   method set_min_size : int -> int -> unit
   (** Sets the minimum size of the toplevel.
@@ -37,6 +37,4 @@ class type toplevel_size_t = object
 end
 
 class toplevel_size : Raw.Toplevel_size.t -> toplevel_size_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Toplevel_size.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkToplevelSize], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Toplevel_size.t}. *)

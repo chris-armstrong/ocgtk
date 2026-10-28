@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NativeVolumeMonitor: NativeVolumeMonitor *)
 
-(** Bindings for [GNativeVolumeMonitor].
+(** Bindings for [NativeVolumeMonitor].
 
     The class built on this module is in {!Ocgio.Native_volume_monitor}. *)
 

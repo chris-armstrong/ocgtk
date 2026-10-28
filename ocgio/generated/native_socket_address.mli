@@ -7,7 +7,7 @@
     {!class-type-native_socket_address_t}. The functions it is built on are in
     {!Ocgio.Raw.Native_socket_address}. *)
 
-(** The methods, signals and properties of a [GNativeSocketAddress]. *)
+(** The methods, signals and properties of a [NativeSocketAddress]. *)
 class type native_socket_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -19,6 +19,4 @@ end
 class native_socket_address :
   Raw.Native_socket_address.t ->
   native_socket_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Native_socket_address.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GNativeSocketAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Native_socket_address.t}. *)

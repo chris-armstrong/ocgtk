@@ -17,7 +17,7 @@
     Its methods, signals and properties are on {!class-type-shortcuts_group_t}.
     The functions it is built on are in {!Ocgtk.Raw.Shortcuts_group}. *)
 
-(** The methods, signals and properties of a [GtkShortcutsGroup]. *)
+(** The methods, signals and properties of a [ShortcutsGroup]. *)
 class type shortcuts_group_t = object
   inherit Box.box_t
 
@@ -39,6 +39,4 @@ class type shortcuts_group_t = object
 end
 
 class shortcuts_group : Raw.Shortcuts_group.t -> shortcuts_group_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcuts_group.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkShortcutsGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_group.t}. *)

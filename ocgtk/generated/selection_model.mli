@@ -41,7 +41,7 @@
     Its methods, signals and properties are on {!class-type-selection_model_t}.
     The functions it is built on are in {!Ocgtk.Raw.Selection_model}. *)
 
-(** The methods, signals and properties of a [GtkSelectionModel]. *)
+(** The methods, signals and properties of a [SelectionModel]. *)
 class type selection_model_t = object
   method on_selection_changed :
     ?after:bool ->
@@ -136,6 +136,4 @@ class type selection_model_t = object
 end
 
 class selection_model : Raw.Selection_model.t -> selection_model_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Selection_model.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkSelectionModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Selection_model.t}. *)

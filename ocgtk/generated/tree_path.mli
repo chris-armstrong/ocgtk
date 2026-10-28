@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Tree_path}. *)
 
-(** The methods, signals and properties of a [GtkTreePath]. *)
+(** The methods, signals and properties of a [TreePath]. *)
 class type tree_path_t = object
   method append_index : int -> unit
   (** Appends a new index to a path.
@@ -56,9 +56,7 @@ class type tree_path_t = object
 end
 
 class tree_path : Raw.Tree_path.t -> tree_path_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_path.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreePath], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_path.t}. *)
 
 (** {2:constructors Constructors} *)
 

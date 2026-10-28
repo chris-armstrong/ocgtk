@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Icon_paintable}. *)
 
-(** The methods, signals and properties of a [GtkIconPaintable]. *)
+(** The methods, signals and properties of a [IconPaintable]. *)
 class type icon_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
   inherit Symbolic_paintable.symbolic_paintable_t
@@ -41,9 +41,7 @@ class type icon_paintable_t = object
 end
 
 class icon_paintable : Raw.Icon_paintable.t -> icon_paintable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Icon_paintable.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkIconPaintable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Icon_paintable.t}. *)
 
 (** {2:constructors Constructors} *)
 

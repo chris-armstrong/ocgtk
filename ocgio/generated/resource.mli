@@ -144,7 +144,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgio.Raw.Resource}."]
 
-(** The methods, signals and properties of a [GResource]. *)
+(** The methods, signals and properties of a [Resource]. *)
 class type resource_t = object
   method _register : unit -> unit
   (** Registers the resource with the process-global set of resources.
@@ -211,9 +211,7 @@ class type resource_t = object
 end
 
 class resource : Raw.Resource.t -> resource_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Resource.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GResource], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Resource.t}. *)
 
 (** {2:constructors Constructors} *)
 

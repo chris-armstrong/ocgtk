@@ -15,7 +15,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Gl_texture_builder}. *)
 
-(** The methods, signals and properties of a [GdkGLTextureBuilder]. *)
+(** The methods, signals and properties of a [GLTextureBuilder]. *)
 class type gl_texture_builder_t = object
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state previously set via
@@ -131,9 +131,7 @@ class type gl_texture_builder_t = object
 end
 
 class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Gl_texture_builder.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkGLTextureBuilder], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Gl_texture_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

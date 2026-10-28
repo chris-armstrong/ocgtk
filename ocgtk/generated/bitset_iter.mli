@@ -9,7 +9,7 @@
     Its methods, signals and properties are on {!class-type-bitset_iter_t}. The
     functions it is built on are in {!Ocgtk.Raw.Bitset_iter}. *)
 
-(** The methods, signals and properties of a [GtkBitsetIter]. *)
+(** The methods, signals and properties of a [BitsetIter]. *)
 class type bitset_iter_t = object
   method get_value : unit -> int
   (** Gets the current value that [iter] points to.
@@ -24,6 +24,4 @@ class type bitset_iter_t = object
 end
 
 class bitset_iter : Raw.Bitset_iter.t -> bitset_iter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Bitset_iter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBitsetIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Bitset_iter.t}. *)

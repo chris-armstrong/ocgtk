@@ -49,7 +49,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.D_bus_proxy}. *)
 
-(** The methods, signals and properties of a [GDBusProxy]. *)
+(** The methods, signals and properties of a [DBusProxy]. *)
 class type d_bus_proxy_t = object
   inherit Async_initable.async_initable_t
   inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
@@ -216,9 +216,7 @@ class type d_bus_proxy_t = object
 end
 
 class d_bus_proxy : Raw.D_bus_proxy.t -> d_bus_proxy_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_proxy.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GDBusProxy], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_proxy.t}. *)
 
 (** {2:constructors Constructors} *)
 

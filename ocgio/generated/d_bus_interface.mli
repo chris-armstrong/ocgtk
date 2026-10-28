@@ -12,9 +12,7 @@
 
 class type d_bus_interface_t =
   D_bus_interface_and__d_bus_object.d_bus_interface_t
-(** The methods, signals and properties of a [GDBusInterface]. *)
+(** The methods, signals and properties of a [DBusInterface]. *)
 
 class d_bus_interface : Raw.D_bus_interface.t -> d_bus_interface_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_interface.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDBusInterface], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface.t}. *)

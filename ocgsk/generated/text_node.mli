@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Text_node}. *)
 
-(** The methods, signals and properties of a [GskTextNode]. *)
+(** The methods, signals and properties of a [TextNode]. *)
 class type text_node_t = object
   inherit Render_node.render_node_t
 
@@ -30,9 +30,7 @@ class type text_node_t = object
 end
 
 class text_node : Raw.Text_node.t -> text_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Text_node.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskTextNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Text_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

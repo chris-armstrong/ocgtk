@@ -35,7 +35,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_chooser_widget}. *)
 
-(** The methods, signals and properties of a [GtkColorChooserWidget]. *)
+(** The methods, signals and properties of a [ColorChooserWidget]. *)
 class type color_chooser_widget_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -50,9 +50,7 @@ end
 class color_chooser_widget :
   Raw.Color_chooser_widget.t ->
   color_chooser_widget_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Color_chooser_widget.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkColorChooserWidget], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Color_chooser_widget.t}. *)
 
 (** {2:constructors Constructors} *)
 

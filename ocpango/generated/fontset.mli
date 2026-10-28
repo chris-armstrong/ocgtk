@@ -12,9 +12,7 @@
     functions it is built on are in {!Ocpango.Raw.Fontset}. *)
 
 class type fontset_t = Context_and__font_and__font_map_and__fontset.fontset_t
-(** The methods, signals and properties of a [PangoFontset]. *)
+(** The methods, signals and properties of a [Fontset]. *)
 
 class fontset : Raw.Fontset.t -> fontset_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Fontset.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontset], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Fontset.t}. *)

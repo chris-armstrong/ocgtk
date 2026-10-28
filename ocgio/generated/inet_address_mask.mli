@@ -8,7 +8,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_address_mask}. *)
 
-(** The methods, signals and properties of a [GInetAddressMask]. *)
+(** The methods, signals and properties of a [InetAddressMask]. *)
 class type inet_address_mask_t = object
   inherit Initable.initable_t
 
@@ -34,9 +34,7 @@ class type inet_address_mask_t = object
 end
 
 class inet_address_mask : Raw.Inet_address_mask.t -> inet_address_mask_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Inet_address_mask.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GInetAddressMask], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Inet_address_mask.t}. *)
 
 (** {2:constructors Constructors} *)
 

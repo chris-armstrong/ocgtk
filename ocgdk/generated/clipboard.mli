@@ -21,9 +21,7 @@
     functions it is built on are in {!Ocgdk.Raw.Clipboard}. *)
 
 class type clipboard_t = App_launch_context_cycle_de440b34.clipboard_t
-(** The methods, signals and properties of a [GdkClipboard]. *)
+(** The methods, signals and properties of a [Clipboard]. *)
 
 class clipboard : Raw.Clipboard.t -> clipboard_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Clipboard.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkClipboard], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Clipboard.t}. *)

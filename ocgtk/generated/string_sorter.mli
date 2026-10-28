@@ -10,7 +10,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.String_sorter}. *)
 
-(** The methods, signals and properties of a [GtkStringSorter]. *)
+(** The methods, signals and properties of a [StringSorter]. *)
 class type string_sorter_t = object
   inherit Sorter.sorter_t
 
@@ -38,9 +38,7 @@ class type string_sorter_t = object
 end
 
 class string_sorter : Raw.String_sorter.t -> string_sorter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.String_sorter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkStringSorter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.String_sorter.t}. *)
 
 (** {2:constructors Constructors} *)
 

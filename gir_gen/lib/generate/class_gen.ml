@@ -122,7 +122,7 @@ let generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
         else bprintf buf "  new %s obj_\n\n" class_snake
 
 (** Generate a constructor wrapper signature *)
-let generate_constructor_sig ~ctx ~buf ~class_name ~c_type ~class_type_name
+let generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
     ~current_layer2_module (ctor : gir_constructor) =
   if not (Layer1.Layer1_constructor.should_generate_constructor ~ctx ctor) then
     ()
@@ -132,22 +132,18 @@ let generate_constructor_sig ~ctx ~buf ~class_name ~c_type ~class_type_name
     let return_type = calculate_return_type ~class_type_name ctor in
     let doc =
       Entity_doc.constructor ~namespace:ctx.namespace.namespace_name ~class_name
-        ~c_type ctor
+        ctor
     in
-    (* The blank line keeps the comment from also reading as the previous
-       val's trailing doc. *)
-    (match Doc_emit.before_item doc with
-    | "" -> ()
-    | comment -> bprintf buf "\n%s" comment);
-    (match params with
-    | [] -> bprintf buf "val %s : unit -> %s\n" ocaml_ctor_name return_type
-    | _ ->
-        let sig_str =
+    let param_types =
+      match params with
+      | [] -> "unit -> "
+      | _ ->
           String.concat ~sep:""
-            (List.map params ~f:(fun pi -> Fmt.str "%s -> " pi.cp_type))
-        in
-        bprintf buf "val %s : %s%s\n" ocaml_ctor_name sig_str return_type);
-    bprintf buf "%s" (Doc_emit.after_item doc)
+            (List.map params ~f:(fun pi -> pi.cp_type ^ " -> "))
+    in
+    bprintf buf "%s"
+      (Doc_emit.around doc
+         (Fmt.str "val %s : %s%s\n" ocaml_ctor_name param_types return_type))
 
 let has_constructors ~ctx constructors =
   List.exists constructors
@@ -219,12 +215,11 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   let class_snake = sanitize_name class_name in
   let class_type_name = Utils.class_type_name class_name in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
-  let class_type_doc = Entity_doc.class_type ~c_type in
+  let class_type_doc = Entity_doc.class_type ~class_name in
 
   let has_constructors = has_constructors ~ctx constructors in
   floating_doc buf
-    (Entity_doc.l2_module ~namespace ~class_name ~c_type ~has_constructors
-       ~class_doc);
+    (Entity_doc.l2_module ~namespace ~class_name ~has_constructors ~class_doc);
 
   (* Class type definition *)
   bprintf buf "%sclass type %s = object\n"
@@ -242,7 +237,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   (* Class declaration referencing the class type *)
   bprintf buf "%s\n"
     (doc_around
-       (Entity_doc.class_ ~namespace ~class_name ~c_type)
+       (Entity_doc.class_ ~namespace ~class_name)
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" class_snake module_names.layer1
             class_type_name));
@@ -251,7 +246,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   constructors_heading buf ~has_constructors;
   List.iter constructors
     ~f:
-      (generate_constructor_sig ~ctx ~buf ~class_name ~c_type ~class_type_name
+      (generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
          ~current_layer2_module:module_names.layer2);
 
   Buffer.contents buf
@@ -378,7 +373,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
       ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
-    let doc = Entity_doc.class_type ~c_type in
+    let doc = Entity_doc.class_type ~class_name in
     if i = 0 then
       bprintf buf "%sclass type %s = object\n" (Doc_emit.before_item doc)
         class_type_name
@@ -405,13 +400,13 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
   (* Pass 2: class declarations referencing class types *)
   let generate_class_decl ~buf ~i ~class_snake ~module_name
-      ~current_layer2_module:_ ~class_name ~c_type ~methods:_ ~entity_kind:_
+      ~current_layer2_module:_ ~class_name ~c_type:_ ~methods:_ ~entity_kind:_
       ~properties:_ ~signals:_ ~same_cluster_classes:_ ~parent_name:_ =
     let class_type_name = Utils.class_type_name class_name in
     let keyword = if i = 0 then "class" else "\nand" in
     bprintf buf "%s"
       (doc_around
-         (Entity_doc.class_ ~namespace ~class_name ~c_type)
+         (Entity_doc.class_ ~namespace ~class_name)
          ~item:
            (Fmt.str "%s %s : %s.t -> %s\n" keyword class_snake module_name
               class_type_name))
@@ -431,7 +426,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       List.iter entity.constructors
         ~f:
           (generate_constructor_sig ~ctx ~buf ~class_name:entity.name
-             ~c_type:entity.c_type ~class_type_name ~current_layer2_module));
+             ~class_type_name ~current_layer2_module));
 
   Buffer.contents buf
 
@@ -490,18 +485,17 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
     combined_module_name;
   let has_constructors = has_constructors ~ctx entity.constructors in
   floating_doc buf
-    (Entity_doc.l2_module ~namespace ~class_name:entity.name
-       ~c_type:entity.c_type ~has_constructors ~class_doc:entity.doc);
+    (Entity_doc.l2_module ~namespace ~class_name:entity.name ~has_constructors
+       ~class_doc:entity.doc);
   bprintf buf "%s\n"
     (doc_around
-       (Entity_doc.class_type ~c_type:entity.c_type)
+       (Entity_doc.class_type ~class_name:entity.name)
        ~item:
          (Fmt.str "class type %s = %s.%s\n" entity_type_name
             combined_module_name entity_type_name));
   bprintf buf "%s"
     (doc_around
-       (Entity_doc.class_ ~namespace ~class_name:entity.name
-          ~c_type:entity.c_type)
+       (Entity_doc.class_ ~namespace ~class_name:entity.name)
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" entity_snake layer1_module_name
             entity_type_name));
@@ -511,8 +505,7 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   List.iter entity.constructors
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_name:entity.name
-         ~c_type:entity.c_type ~class_type_name:entity_type_name
-         ~current_layer2_module);
+         ~class_type_name:entity_type_name ~current_layer2_module);
   bprintf buf "\n";
 
   Buffer.contents buf

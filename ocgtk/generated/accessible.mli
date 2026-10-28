@@ -36,9 +36,7 @@
     functions it is built on are in {!Ocgtk.Raw.Accessible}. *)
 
 class type accessible_t = At_context_and__accessible.accessible_t
-(** The methods, signals and properties of a [GtkAccessible]. *)
+(** The methods, signals and properties of a [Accessible]. *)
 
 class accessible : Raw.Accessible.t -> accessible_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Accessible.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAccessible], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Accessible.t}. *)

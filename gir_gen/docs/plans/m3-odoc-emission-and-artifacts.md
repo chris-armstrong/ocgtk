@@ -735,12 +735,12 @@ five commits. Differences from the text below:
   constructor. Phase 7 adds the heading with the canned no-constructor line.
 - *Synopsis fallback.* odoc reuses a module doc's first paragraph as the
   synopsis on the parent page, where `{!class-type-…}` does not resolve, so a
-  module without a GIR class doc starts with "Bindings for [<C type>]."
+  module without a GIR class doc starts with "Bindings for [<class name>]."
   instead of the navigation paragraph (20 warnings without it).
 - *Combined modules* get a preamble naming the modules that re-export their
   members ("use that module rather than this one"), at both layers; each
   `module rec`/`and` arm, class type and class carries its own doc.
-- *Constructor fallback* ("Create a new [<C type>]. Wraps [<C function>].",
+- *Constructor fallback* ("Create a new [<class name>]. Wraps [<C function>].",
   linked for gi-docgen namespaces): every generated constructor in the
   current corpus has a GIR doc, so it shows only in unit tests for now.
 - *Placement:* ocamlformat moves type, method, constructor and signal docs

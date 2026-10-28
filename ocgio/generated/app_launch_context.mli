@@ -11,12 +11,10 @@
     {!Ocgio.Raw.App_launch_context}. *)
 
 class type app_launch_context_t = App_info_cycle_64c425a0.app_launch_context_t
-(** The methods, signals and properties of a [GAppLaunchContext]. *)
+(** The methods, signals and properties of a [AppLaunchContext]. *)
 
 class app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.App_launch_context.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GAppLaunchContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.App_launch_context.t}. *)
 
 (** {2:constructors Constructors} *)
 

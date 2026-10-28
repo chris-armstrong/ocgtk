@@ -5,7 +5,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Fill_node}. *)
 
-(** The methods, signals and properties of a [GskFillNode]. *)
+(** The methods, signals and properties of a [FillNode]. *)
 class type fill_node_t = object
   inherit Render_node.render_node_t
 
@@ -23,9 +23,7 @@ class type fill_node_t = object
 end
 
 class fill_node : Raw.Fill_node.t -> fill_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Fill_node.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskFillNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Fill_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

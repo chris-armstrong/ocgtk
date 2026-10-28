@@ -29,7 +29,7 @@
     Its methods, signals and properties are on {!class-type-action_t}. The
     functions it is built on are in {!Ocgio.Raw.Action}. *)
 
-(** The methods, signals and properties of a [GAction]. *)
+(** The methods, signals and properties of a [Action]. *)
 class type action_t = object
   method activate : Gvariant.t option -> unit
   (** Activates the action.
@@ -119,6 +119,4 @@ class type action_t = object
 end
 
 class action : Raw.Action.t -> action_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Action.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GAction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Action.t}. *)

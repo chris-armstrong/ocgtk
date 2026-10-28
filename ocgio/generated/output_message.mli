@@ -8,12 +8,10 @@
     Its methods, signals and properties are on {!class-type-output_message_t}.
     The functions it is built on are in {!Ocgio.Raw.Output_message}. *)
 
-(** The methods, signals and properties of a [GOutputMessage]. *)
+(** The methods, signals and properties of a [OutputMessage]. *)
 class type output_message_t = object
   method as_output_message : Raw.Output_message.t
 end
 
 class output_message : Raw.Output_message.t -> output_message_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Output_message.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GOutputMessage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Output_message.t}. *)

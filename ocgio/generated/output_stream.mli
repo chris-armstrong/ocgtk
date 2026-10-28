@@ -19,7 +19,7 @@
     Its methods, signals and properties are on {!class-type-output_stream_t}.
     The functions it is built on are in {!Ocgio.Raw.Output_stream}. *)
 
-(** The methods, signals and properties of a [GOutputStream]. *)
+(** The methods, signals and properties of a [OutputStream]. *)
 class type output_stream_t = object
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
@@ -123,6 +123,4 @@ class type output_stream_t = object
 end
 
 class output_stream : Raw.Output_stream.t -> output_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Output_stream.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GOutputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Output_stream.t}. *)

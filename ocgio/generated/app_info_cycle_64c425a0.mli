@@ -4,7 +4,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GAppInfo]. *)
+(** The methods, signals and properties of a [AppInfo]. *)
 class type app_info_t = object
   method add_supports_type : string -> (bool, GError.t) result
   (** Adds a content type to the application information to indicate the
@@ -155,7 +155,7 @@ class type app_info_t = object
   method as_app_info : Raw.App_info.t
 end
 
-(** The methods, signals and properties of a [GAppLaunchContext]. *)
+(** The methods, signals and properties of a [AppLaunchContext]. *)
 and app_launch_context_t = object
   method on_launch_failed :
     ?after:bool ->
@@ -270,7 +270,7 @@ and app_launch_context_t = object
   method as_app_launch_context : Raw.App_launch_context.t
 end
 
-(** The methods, signals and properties of a [GDrive]. *)
+(** The methods, signals and properties of a [Drive]. *)
 and drive_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -375,7 +375,7 @@ and drive_t = object
   method as_drive : Raw.Drive.t
 end
 
-(** The methods, signals and properties of a [GFile]. *)
+(** The methods, signals and properties of a [File]. *)
 and file_t = object
   method append_to :
     Enums.filecreateflags ->
@@ -1324,7 +1324,7 @@ and file_t = object
   method as_file : Raw.File.t
 end
 
-(** The methods, signals and properties of a [GFileEnumerator]. *)
+(** The methods, signals and properties of a [FileEnumerator]. *)
 and file_enumerator_t = object
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Releases all resources used by this enumerator, making the enumerator
@@ -1398,7 +1398,7 @@ and file_enumerator_t = object
   method as_file_enumerator : Raw.File_enumerator.t
 end
 
-(** The methods, signals and properties of a [GFileMonitor]. *)
+(** The methods, signals and properties of a [FileMonitor]. *)
 and file_monitor_t = object
   method on_changed :
     ?after:bool ->
@@ -1458,7 +1458,7 @@ and file_monitor_t = object
   method as_file_monitor : Raw.File_monitor.t
 end
 
-(** The methods, signals and properties of a [GMount]. *)
+(** The methods, signals and properties of a [Mount]. *)
 and mount_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -1596,7 +1596,7 @@ and mount_t = object
   method as_mount : Raw.Mount.t
 end
 
-(** The methods, signals and properties of a [GVolume]. *)
+(** The methods, signals and properties of a [Volume]. *)
 and volume_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -1698,43 +1698,27 @@ and volume_t = object
   method as_volume : Raw.Volume.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgio.Raw.App_info.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GAppInfo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.App_info.t}. *)
 class app_info : Raw.App_info.t -> app_info_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.App_launch_context.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GAppLaunchContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.App_launch_context.t}. *)
 
 and app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Drive.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GDrive], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Drive.t}. *)
 
 and drive : Raw.Drive.t -> drive_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GFile], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File.t}. *)
 
 and file : Raw.File.t -> file_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_enumerator.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GFileEnumerator], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_enumerator.t}. *)
 
 and file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_monitor.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GFileMonitor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_monitor.t}. *)
 
 and file_monitor : Raw.File_monitor.t -> file_monitor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Mount.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GMount], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Mount.t}. *)
 
 and mount : Raw.Mount.t -> mount_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Volume.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GVolume], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Volume.t}. *)
 
 and volume : Raw.Volume.t -> volume_t
 

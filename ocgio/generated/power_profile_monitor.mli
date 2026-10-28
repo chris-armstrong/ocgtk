@@ -27,7 +27,7 @@
     {!class-type-power_profile_monitor_t}. The functions it is built on are in
     {!Ocgio.Raw.Power_profile_monitor}. *)
 
-(** The methods, signals and properties of a [GPowerProfileMonitor]. *)
+(** The methods, signals and properties of a [PowerProfileMonitor]. *)
 class type power_profile_monitor_t = object
   method get_power_saver_enabled : unit -> bool
   (** Gets whether the system is in “Power Saver” mode.
@@ -42,6 +42,4 @@ end
 class power_profile_monitor :
   Raw.Power_profile_monitor.t ->
   power_profile_monitor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Power_profile_monitor.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GPowerProfileMonitor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Power_profile_monitor.t}. *)

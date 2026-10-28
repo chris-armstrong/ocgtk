@@ -18,7 +18,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_spin}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererSpin]. *)
+(** The methods, signals and properties of a [CellRendererSpin]. *)
 class type cell_renderer_spin_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
   method adjustment : Adjustment.adjustment_t
@@ -31,9 +31,7 @@ class type cell_renderer_spin_t = object
 end
 
 class cell_renderer_spin : Raw.Cell_renderer_spin.t -> cell_renderer_spin_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_spin.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkCellRendererSpin], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_spin.t}. *)
 
 (** {2:constructors Constructors} *)
 

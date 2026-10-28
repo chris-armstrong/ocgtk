@@ -12,7 +12,7 @@
     {!class-type-pollable_output_stream_t}. The functions it is built on are in
     {!Ocgio.Raw.Pollable_output_stream}. *)
 
-(** The methods, signals and properties of a [GPollableOutputStream]. *)
+(** The methods, signals and properties of a [PollableOutputStream]. *)
 class type pollable_output_stream_t = object
   method can_poll : unit -> bool
   (** Checks if [stream] is actually pollable. Some classes may implement
@@ -41,6 +41,4 @@ end
 class pollable_output_stream :
   Raw.Pollable_output_stream.t ->
   pollable_output_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Pollable_output_stream.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GPollableOutputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Pollable_output_stream.t}. *)

@@ -8,9 +8,7 @@
     The functions it is built on are in {!Ocgio.Raw.Menu_link_iter}. *)
 
 class type menu_link_iter_t = Menu_link_iter_and__menu_model.menu_link_iter_t
-(** The methods, signals and properties of a [GMenuLinkIter]. *)
+(** The methods, signals and properties of a [MenuLinkIter]. *)
 
 class menu_link_iter : Raw.Menu_link_iter.t -> menu_link_iter_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu_link_iter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GMenuLinkIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu_link_iter.t}. *)

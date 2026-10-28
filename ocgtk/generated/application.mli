@@ -63,12 +63,10 @@
 
 class type application_t =
   Application_and__window_and__window_group.application_t
-(** The methods, signals and properties of a [GtkApplication]. *)
+(** The methods, signals and properties of a [Application]. *)
 
 class application : Raw.Application.t -> application_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Application.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkApplication], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Application.t}. *)
 
 (** {2:constructors Constructors} *)
 

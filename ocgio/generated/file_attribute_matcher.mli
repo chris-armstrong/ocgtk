@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.File_attribute_matcher}. *)
 
-(** The methods, signals and properties of a [GFileAttributeMatcher]. *)
+(** The methods, signals and properties of a [FileAttributeMatcher]. *)
 class type file_attribute_matcher_t = object
   method enumerate_namespace : string -> bool
   [@@ocaml.doc
@@ -55,9 +55,7 @@ end
 class file_attribute_matcher :
   Raw.File_attribute_matcher.t ->
   file_attribute_matcher_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_attribute_matcher.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GFileAttributeMatcher], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_attribute_matcher.t}. *)
 
 (** {2:constructors Constructors} *)
 

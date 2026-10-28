@@ -2,7 +2,7 @@
     together because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GDBusInterface]. *)
+(** The methods, signals and properties of a [DBusInterface]. *)
 class type d_bus_interface_t = object
   method dup_object : unit -> d_bus_object_t option
   (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
@@ -19,7 +19,7 @@ class type d_bus_interface_t = object
   method as_d_bus_interface : Raw.D_bus_interface.t
 end
 
-(** The methods, signals and properties of a [GDBusObject]. *)
+(** The methods, signals and properties of a [DBusObject]. *)
 and d_bus_object_t = object
   method on_interface_added :
     ?after:bool ->
@@ -48,12 +48,8 @@ and d_bus_object_t = object
   method as_d_bus_object : Raw.D_bus_object.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_interface.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDBusInterface], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface.t}. *)
 class d_bus_interface : Raw.D_bus_interface.t -> d_bus_interface_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_object.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GDBusObject], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_object.t}. *)
 
 and d_bus_object : Raw.D_bus_object.t -> d_bus_object_t

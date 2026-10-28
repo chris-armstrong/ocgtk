@@ -13,7 +13,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_text}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererText]. *)
+(** The methods, signals and properties of a [CellRendererText]. *)
 class type cell_renderer_text_t = object
   inherit Cell_renderer.cell_renderer_t
 
@@ -128,9 +128,7 @@ class type cell_renderer_text_t = object
 end
 
 class cell_renderer_text : Raw.Cell_renderer_text.t -> cell_renderer_text_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_text.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkCellRendererText], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_text.t}. *)
 
 (** {2:constructors Constructors} *)
 

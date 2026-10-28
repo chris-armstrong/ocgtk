@@ -5,7 +5,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_message}. *)
 
-(** The methods, signals and properties of a [GDBusMessage]. *)
+(** The methods, signals and properties of a [DBusMessage]. *)
 class type d_bus_message_t = object
   method copy : unit -> (d_bus_message_t, GError.t) result
   (** Copies [message]. The copy is a deep copy and the returned [GDBusMessage]
@@ -235,9 +235,7 @@ class type d_bus_message_t = object
 end
 
 class d_bus_message : Raw.D_bus_message.t -> d_bus_message_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_message.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GDBusMessage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_message.t}. *)
 
 (** {2:constructors Constructors} *)
 

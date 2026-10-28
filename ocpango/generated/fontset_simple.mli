@@ -8,7 +8,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocpango.Raw.Fontset_simple}. *)
 
-(** The methods, signals and properties of a [PangoFontsetSimple]. *)
+(** The methods, signals and properties of a [FontsetSimple]. *)
 class type fontset_simple_t = object
   inherit Context_and__font_and__font_map_and__fontset.fontset_t
 
@@ -24,9 +24,7 @@ class type fontset_simple_t = object
 end
 
 class fontset_simple : Raw.Fontset_simple.t -> fontset_simple_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Fontset_simple.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoFontsetSimple], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Fontset_simple.t}. *)
 
 (** {2:constructors Constructors} *)
 

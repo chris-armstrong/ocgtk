@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Container_node}. *)
 
-(** The methods, signals and properties of a [GskContainerNode]. *)
+(** The methods, signals and properties of a [ContainerNode]. *)
 class type container_node_t = object
   inherit Render_node.render_node_t
 
@@ -18,9 +18,7 @@ class type container_node_t = object
 end
 
 class container_node : Raw.Container_node.t -> container_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Container_node.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskContainerNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Container_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -49,7 +49,7 @@
     Its methods, signals and properties are on {!class-type-io_stream_t}. The
     functions it is built on are in {!Ocgio.Raw.Io_stream}. *)
 
-(** The methods, signals and properties of a [GIOStream]. *)
+(** The methods, signals and properties of a [IOStream]. *)
 class type io_stream_t = object
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
@@ -111,6 +111,4 @@ class type io_stream_t = object
 end
 
 class io_stream : Raw.Io_stream.t -> io_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Io_stream.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GIOStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Io_stream.t}. *)

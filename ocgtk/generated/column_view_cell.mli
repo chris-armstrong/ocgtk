@@ -17,13 +17,11 @@
     Its methods, signals and properties are on {!class-type-column_view_cell_t}.
     The functions it is built on are in {!Ocgtk.Raw.Column_view_cell}. *)
 
-(** The methods, signals and properties of a [GtkColumnViewCell]. *)
+(** The methods, signals and properties of a [ColumnViewCell]. *)
 class type column_view_cell_t = object
   inherit List_item.list_item_t
   method as_column_view_cell : Raw.Column_view_cell.t
 end
 
 class column_view_cell : Raw.Column_view_cell.t -> column_view_cell_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Column_view_cell.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkColumnViewCell], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Column_view_cell.t}. *)

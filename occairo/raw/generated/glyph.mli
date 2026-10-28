@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Glyph: Glyph *)
 
-(** Bindings for [cairo_glyph_t].
+(** Bindings for [Glyph].
 
     The class built on this module is in {!Occairo.Glyph}. *)
 

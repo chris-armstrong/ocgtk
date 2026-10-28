@@ -6,16 +6,14 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Any_filter}. *)
 
-(** The methods, signals and properties of a [GtkAnyFilter]. *)
+(** The methods, signals and properties of a [AnyFilter]. *)
 class type any_filter_t = object
   inherit Multi_filter.multi_filter_t
   method as_any_filter : Raw.Any_filter.t
 end
 
 class any_filter : Raw.Any_filter.t -> any_filter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Any_filter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAnyFilter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Any_filter.t}. *)
 
 (** {2:constructors Constructors} *)
 

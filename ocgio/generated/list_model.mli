@@ -57,7 +57,7 @@
  Its methods, signals and properties are on {!class-type-list_model_t}. The \
  functions it is built on are in {!Ocgio.Raw.List_model}."]
 
-(** The methods, signals and properties of a [GListModel]. *)
+(** The methods, signals and properties of a [ListModel]. *)
 class type list_model_t = object
   method on_items_changed :
     ?after:bool ->
@@ -127,6 +127,4 @@ class type list_model_t = object
 end
 
 class list_model : Raw.List_model.t -> list_model_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.List_model.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GListModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.List_model.t}. *)

@@ -21,7 +21,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_dialog_button}. *)
 
-(** The methods, signals and properties of a [GtkColorDialogButton]. *)
+(** The methods, signals and properties of a [ColorDialogButton]. *)
 class type color_dialog_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -55,9 +55,7 @@ class type color_dialog_button_t = object
 end
 
 class color_dialog_button : Raw.Color_dialog_button.t -> color_dialog_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Color_dialog_button.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkColorDialogButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Color_dialog_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

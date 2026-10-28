@@ -16,7 +16,7 @@
     Its methods, signals and properties are on {!class-type-rounded_rect_t}. The
     functions it is built on are in {!Ocgsk.Raw.Rounded_rect}. *)
 
-(** The methods, signals and properties of a [GskRoundedRect]. *)
+(** The methods, signals and properties of a [RoundedRect]. *)
 class type rounded_rect_t = object
   method contains_point : Ocgraphene.Point.point_t -> bool
   (** Checks if the given point is inside the rounded rectangle. *)
@@ -77,6 +77,4 @@ class type rounded_rect_t = object
 end
 
 class rounded_rect : Raw.Rounded_rect.t -> rounded_rect_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Rounded_rect.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskRoundedRect], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Rounded_rect.t}. *)

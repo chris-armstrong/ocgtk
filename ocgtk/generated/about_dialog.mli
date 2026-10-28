@@ -42,7 +42,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.About_dialog}."]
 
-(** The methods, signals and properties of a [GtkAboutDialog]. *)
+(** The methods, signals and properties of a [AboutDialog]. *)
 class type about_dialog_t = object
   inherit Application_and__window_and__window_group.window_t
 
@@ -193,9 +193,7 @@ class type about_dialog_t = object
 end
 
 class about_dialog : Raw.About_dialog.t -> about_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.About_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAboutDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.About_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

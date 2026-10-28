@@ -16,7 +16,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Socket_listener}. *)
 
-(** The methods, signals and properties of a [GSocketListener]. *)
+(** The methods, signals and properties of a [SocketListener]. *)
 class type socket_listener_t = object
   method on_event :
     ?after:bool ->
@@ -112,9 +112,7 @@ class type socket_listener_t = object
 end
 
 class socket_listener : Raw.Socket_listener.t -> socket_listener_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_listener.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSocketListener], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_listener.t}. *)
 
 (** {2:constructors Constructors} *)
 

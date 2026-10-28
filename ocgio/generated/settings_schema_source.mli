@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Settings_schema_source}. *)
 
-(** The methods, signals and properties of a [GSettingsSchemaSource]. *)
+(** The methods, signals and properties of a [SettingsSchemaSource]. *)
 class type settings_schema_source_t = object
   method lookup : string -> bool -> Raw.Settings_schema.t option
   (** Looks up a schema with the identifier [schema_id] in [source].
@@ -28,9 +28,7 @@ end
 class settings_schema_source :
   Raw.Settings_schema_source.t ->
   settings_schema_source_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Settings_schema_source.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSettingsSchemaSource], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Settings_schema_source.t}. *)
 
 (** {2:constructors Constructors} *)
 

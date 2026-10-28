@@ -67,7 +67,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgio.Raw.Test_d_bus}."]
 
-(** The methods, signals and properties of a [GTestDBus]. *)
+(** The methods, signals and properties of a [TestDBus]. *)
 class type test_d_bus_t = object
   method add_service_dir : string -> unit
   (** Add a path where dbus-daemon will look up .service files. This can't be
@@ -112,9 +112,7 @@ class type test_d_bus_t = object
 end
 
 class test_d_bus : Raw.Test_d_bus.t -> test_d_bus_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Test_d_bus.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GTestDBus], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Test_d_bus.t}. *)
 
 (** {2:constructors Constructors} *)
 

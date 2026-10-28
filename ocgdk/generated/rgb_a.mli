@@ -10,7 +10,7 @@
     Its methods, signals and properties are on {!class-type-rgb_a_t}. The
     functions it is built on are in {!Ocgdk.Raw.Rgb_a}. *)
 
-(** The methods, signals and properties of a [GdkRGBA]. *)
+(** The methods, signals and properties of a [RGBA]. *)
 class type rgb_a_t = object
   method equal : Raw.Rgb_a.t -> bool
   (** Compares two [GdkRGBA] colors. *)
@@ -68,6 +68,4 @@ class type rgb_a_t = object
 end
 
 class rgb_a : Raw.Rgb_a.t -> rgb_a_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Rgb_a.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkRGBA], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Rgb_a.t}. *)

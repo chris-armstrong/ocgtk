@@ -272,9 +272,7 @@
 
 class type cell_area_t =
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
-(** The methods, signals and properties of a [GtkCellArea]. *)
+(** The methods, signals and properties of a [CellArea]. *)
 
 class cell_area : Raw.Cell_area.t -> cell_area_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellArea], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_area.t}. *)

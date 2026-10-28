@@ -31,7 +31,7 @@
     {!class-type-shortcuts_section_t}. The functions it is built on are in
     {!Ocgtk.Raw.Shortcuts_section}. *)
 
-(** The methods, signals and properties of a [GtkShortcutsSection]. *)
+(** The methods, signals and properties of a [ShortcutsSection]. *)
 class type shortcuts_section_t = object
   inherit Box.box_t
 
@@ -66,6 +66,4 @@ class type shortcuts_section_t = object
 end
 
 class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcuts_section.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkShortcutsSection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_section.t}. *)

@@ -4,7 +4,7 @@
     Its methods, signals and properties are on {!class-type-subsurface_node_t}.
     The functions it is built on are in {!Ocgsk.Raw.Subsurface_node}. *)
 
-(** The methods, signals and properties of a [GskSubsurfaceNode]. *)
+(** The methods, signals and properties of a [SubsurfaceNode]. *)
 class type subsurface_node_t = object
   inherit Render_node.render_node_t
 
@@ -15,6 +15,4 @@ class type subsurface_node_t = object
 end
 
 class subsurface_node : Raw.Subsurface_node.t -> subsurface_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Subsurface_node.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskSubsurfaceNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Subsurface_node.t}. *)

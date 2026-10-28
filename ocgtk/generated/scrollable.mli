@@ -29,7 +29,7 @@
     Its methods, signals and properties are on {!class-type-scrollable_t}. The
     functions it is built on are in {!Ocgtk.Raw.Scrollable}. *)
 
-(** The methods, signals and properties of a [GtkScrollable]. *)
+(** The methods, signals and properties of a [Scrollable]. *)
 class type scrollable_t = object
   method get_hadjustment : unit -> Adjustment.adjustment_t option
   (** Retrieves the [GtkAdjustment] used for horizontal scrolling. *)
@@ -65,6 +65,4 @@ class type scrollable_t = object
 end
 
 class scrollable : Raw.Scrollable.t -> scrollable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Scrollable.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkScrollable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Scrollable.t}. *)

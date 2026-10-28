@@ -33,7 +33,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Frame}."]
 
-(** The methods, signals and properties of a [GtkFrame]. *)
+(** The methods, signals and properties of a [Frame]. *)
 class type frame_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -91,9 +91,7 @@ class type frame_t = object
 end
 
 class frame : Raw.Frame.t -> frame_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Frame.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFrame], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Frame.t}. *)
 
 (** {2:constructors Constructors} *)
 

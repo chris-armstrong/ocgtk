@@ -58,7 +58,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Menu_button}. *)
 
-(** The methods, signals and properties of a [GtkMenuButton]. *)
+(** The methods, signals and properties of a [MenuButton]. *)
 class type menu_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -203,9 +203,7 @@ class type menu_button_t = object
 end
 
 class menu_button : Raw.Menu_button.t -> menu_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Menu_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkMenuButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Menu_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

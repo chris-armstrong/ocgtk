@@ -6,15 +6,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Requisition}. *)
 
-(** The methods, signals and properties of a [GtkRequisition]. *)
+(** The methods, signals and properties of a [Requisition]. *)
 class type requisition_t = object
   method as_requisition : Raw.Requisition.t
 end
 
 class requisition : Raw.Requisition.t -> requisition_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Requisition.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkRequisition], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Requisition.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -3,7 +3,7 @@
     has a module of its own that re-exports it; use that module rather than this
     one. *)
 
-(** The methods, signals and properties of a [PangoContext]. *)
+(** The methods, signals and properties of a [Context]. *)
 class type context_t = object
   method changed : unit -> unit
   (** Forces a change in the context, which will cause any [PangoLayout] using
@@ -152,7 +152,7 @@ class type context_t = object
   method as_context : Raw.Context.t
 end
 
-(** The methods, signals and properties of a [PangoFont]. *)
+(** The methods, signals and properties of a [Font]. *)
 and font_t = object
   method describe : unit -> Raw.Font_description.t
   (** Returns a description of the font, with font size set in points.
@@ -215,7 +215,7 @@ and font_t = object
   method as_font : Raw.Font.t
 end
 
-(** The methods, signals and properties of a [PangoFontMap]. *)
+(** The methods, signals and properties of a [FontMap]. *)
 and font_map_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -283,7 +283,7 @@ and font_map_t = object
   method as_font_map : Raw.Font_map.t
 end
 
-(** The methods, signals and properties of a [PangoFontset]. *)
+(** The methods, signals and properties of a [Fontset]. *)
 and fontset_t = object
   method get_font : int -> font_t
   (** Returns the font in the fontset that contains the best glyph for a Unicode
@@ -295,23 +295,15 @@ and fontset_t = object
   method as_fontset : Raw.Fontset.t
 end
 
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Context.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Context.t}. *)
 class context : Raw.Context.t -> context_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFont], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font.t}. *)
 
 and font : Raw.Font.t -> font_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_map.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontMap], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_map.t}. *)
 
 and font_map : Raw.Font_map.t -> font_map_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Fontset.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontset], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Fontset.t}. *)
 
 and fontset : Raw.Fontset.t -> fontset_t
 

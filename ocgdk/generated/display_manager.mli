@@ -38,7 +38,7 @@
  Its methods, signals and properties are on {!class-type-display_manager_t}. \
  The functions it is built on are in {!Ocgdk.Raw.Display_manager}."]
 
-(** The methods, signals and properties of a [GdkDisplayManager]. *)
+(** The methods, signals and properties of a [DisplayManager]. *)
 class type display_manager_t = object
   method on_display_opened :
     ?after:bool ->
@@ -67,6 +67,4 @@ class type display_manager_t = object
 end
 
 class display_manager : Raw.Display_manager.t -> display_manager_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Display_manager.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkDisplayManager], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Display_manager.t}. *)

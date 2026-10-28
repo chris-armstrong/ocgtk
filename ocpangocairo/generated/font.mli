@@ -6,7 +6,7 @@
     Its methods, signals and properties are on {!class-type-font_t}. The
     functions it is built on are in {!Ocpangocairo.Raw.Font}. *)
 
-(** The methods, signals and properties of a [PangoCairoFont]. *)
+(** The methods, signals and properties of a [Font]. *)
 class type font_t = object
   method get_scaled_font : unit -> Occairo.Scaled_font.scaled_font_t option
   (** Gets the [cairo_scaled_font_t] used by [font]. The scaled font can be
@@ -16,6 +16,4 @@ class type font_t = object
 end
 
 class font : Raw.Font.t -> font_t
-(** Wraps a layer 1 handle, {!Ocpangocairo.Raw.Font.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoCairoFont], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpangocairo.Raw.Font.t}. *)

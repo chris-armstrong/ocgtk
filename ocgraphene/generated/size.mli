@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Size}. *)
 
-(** The methods, signals and properties of a [graphene_size_t]. *)
+(** The methods, signals and properties of a [Size]. *)
 class type size_t = object
   method equal : Raw.Size.t -> bool
   (** Checks whether the two give #graphene_size_t are equal. *)
@@ -20,9 +20,7 @@ class type size_t = object
 end
 
 class size : Raw.Size.t -> size_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Size.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_size_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Size.t}. *)
 
 (** {2:constructors Constructors} *)
 

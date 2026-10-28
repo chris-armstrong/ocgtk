@@ -8,7 +8,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.String_object}. *)
 
-(** The methods, signals and properties of a [GtkStringObject]. *)
+(** The methods, signals and properties of a [StringObject]. *)
 class type string_object_t = object
   method get_string : unit -> string
   (** Returns the string contained in a [GtkStringObject]. *)
@@ -17,9 +17,7 @@ class type string_object_t = object
 end
 
 class string_object : Raw.String_object.t -> string_object_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.String_object.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkStringObject], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.String_object.t}. *)
 
 (** {2:constructors Constructors} *)
 

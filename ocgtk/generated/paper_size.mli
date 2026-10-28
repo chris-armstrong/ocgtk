@@ -12,7 +12,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Paper_size}. *)
 
-(** The methods, signals and properties of a [GtkPaperSize]. *)
+(** The methods, signals and properties of a [PaperSize]. *)
 class type paper_size_t = object
   method get_default_bottom_margin : Enums.unit -> float
   (** Gets the default bottom margin for the [GtkPaperSize]. *)
@@ -60,9 +60,7 @@ class type paper_size_t = object
 end
 
 class paper_size : Raw.Paper_size.t -> paper_size_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Paper_size.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPaperSize], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Paper_size.t}. *)
 
 (** {2:constructors Constructors} *)
 

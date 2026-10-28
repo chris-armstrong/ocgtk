@@ -13,7 +13,7 @@
     Its methods, signals and properties are on {!class-type-print_setup_t}. The
     functions it is built on are in {!Ocgtk.Raw.Print_setup}. *)
 
-(** The methods, signals and properties of a [GtkPrintSetup]. *)
+(** The methods, signals and properties of a [PrintSetup]. *)
 class type print_setup_t = object
   method get_page_setup : unit -> Page_setup.page_setup_t
   (** Returns the page setup of [setup].
@@ -34,6 +34,4 @@ class type print_setup_t = object
 end
 
 class print_setup : Raw.Print_setup.t -> print_setup_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_setup.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPrintSetup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_setup.t}. *)

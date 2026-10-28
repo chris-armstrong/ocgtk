@@ -37,7 +37,7 @@
     Its methods, signals and properties are on {!class-type-cell_renderer_t}.
     The functions it is built on are in {!Ocgtk.Raw.Cell_renderer}. *)
 
-(** The methods, signals and properties of a [GtkCellRenderer]. *)
+(** The methods, signals and properties of a [CellRenderer]. *)
 class type cell_renderer_t = object
   method on_editing_canceled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -208,6 +208,4 @@ class type cell_renderer_t = object
 end
 
 class cell_renderer : Raw.Cell_renderer.t -> cell_renderer_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellRenderer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer.t}. *)

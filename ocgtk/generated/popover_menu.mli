@@ -101,7 +101,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Popover_menu}."]
 
-(** The methods, signals and properties of a [GtkPopoverMenu]. *)
+(** The methods, signals and properties of a [PopoverMenu]. *)
 class type popover_menu_t = object
   inherit Popover.popover_t
 
@@ -149,9 +149,7 @@ class type popover_menu_t = object
 end
 
 class popover_menu : Raw.Popover_menu.t -> popover_menu_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Popover_menu.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPopoverMenu], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Popover_menu.t}. *)
 
 (** {2:constructors Constructors} *)
 

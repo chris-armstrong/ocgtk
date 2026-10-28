@@ -42,7 +42,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Graphics_offload}. *)
 
-(** The methods, signals and properties of a [GtkGraphicsOffload]. *)
+(** The methods, signals and properties of a [GraphicsOffload]. *)
 class type graphics_offload_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -93,9 +93,7 @@ class type graphics_offload_t = object
 end
 
 class graphics_offload : Raw.Graphics_offload.t -> graphics_offload_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Graphics_offload.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkGraphicsOffload], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Graphics_offload.t}. *)
 
 (** {2:constructors Constructors} *)
 

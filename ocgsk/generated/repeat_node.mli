@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Repeat_node}. *)
 
-(** The methods, signals and properties of a [GskRepeatNode]. *)
+(** The methods, signals and properties of a [RepeatNode]. *)
 class type repeat_node_t = object
   inherit Render_node.render_node_t
 
@@ -18,9 +18,7 @@ class type repeat_node_t = object
 end
 
 class repeat_node : Raw.Repeat_node.t -> repeat_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Repeat_node.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskRepeatNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Repeat_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

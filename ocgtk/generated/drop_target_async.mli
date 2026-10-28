@@ -36,7 +36,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Drop_target_async}. *)
 
-(** The methods, signals and properties of a [GtkDropTargetAsync]. *)
+(** The methods, signals and properties of a [DropTargetAsync]. *)
 class type drop_target_async_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -135,9 +135,7 @@ class type drop_target_async_t = object
 end
 
 class drop_target_async : Raw.Drop_target_async.t -> drop_target_async_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drop_target_async.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkDropTargetAsync], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Drop_target_async.t}. *)
 
 (** {2:constructors Constructors} *)
 

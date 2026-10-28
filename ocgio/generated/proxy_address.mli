@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Proxy_address}. *)
 
-(** The methods, signals and properties of a [GProxyAddress]. *)
+(** The methods, signals and properties of a [ProxyAddress]. *)
 class type proxy_address_t = object
   inherit Inet_socket_address.inet_socket_address_t
 
@@ -38,9 +38,7 @@ class type proxy_address_t = object
 end
 
 class proxy_address : Raw.Proxy_address.t -> proxy_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Proxy_address.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GProxyAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Proxy_address.t}. *)
 
 (** {2:constructors Constructors} *)
 

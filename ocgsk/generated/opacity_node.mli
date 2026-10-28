@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Opacity_node}. *)
 
-(** The methods, signals and properties of a [GskOpacityNode]. *)
+(** The methods, signals and properties of a [OpacityNode]. *)
 class type opacity_node_t = object
   inherit Render_node.render_node_t
 
@@ -18,9 +18,7 @@ class type opacity_node_t = object
 end
 
 class opacity_node : Raw.Opacity_node.t -> opacity_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Opacity_node.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskOpacityNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Opacity_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

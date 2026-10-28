@@ -46,7 +46,7 @@
     Its methods, signals and properties are on {!class-type-list_base_t}. The
     functions it is built on are in {!Ocgtk.Raw.List_base}. *)
 
-(** The methods, signals and properties of a [GtkListBase]. *)
+(** The methods, signals and properties of a [ListBase]. *)
 class type list_base_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -59,6 +59,4 @@ class type list_base_t = object
 end
 
 class list_base : Raw.List_base.t -> list_base_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_base.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkListBase], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.List_base.t}. *)

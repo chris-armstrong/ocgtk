@@ -77,12 +77,10 @@
     are in {!Ocgio.Raw.Socket}. *)
 
 class type socket_t = Socket_and__socket_connection.socket_t
-(** The methods, signals and properties of a [GSocket]. *)
+(** The methods, signals and properties of a [Socket]. *)
 
 class socket : Raw.Socket.t -> socket_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSocket], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket.t}. *)
 
 (** {2:constructors Constructors} *)
 

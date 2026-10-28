@@ -9,7 +9,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Alternative_trigger}. *)
 
-(** The methods, signals and properties of a [GtkAlternativeTrigger]. *)
+(** The methods, signals and properties of a [AlternativeTrigger]. *)
 class type alternative_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 
@@ -27,9 +27,7 @@ class type alternative_trigger_t = object
 end
 
 class alternative_trigger : Raw.Alternative_trigger.t -> alternative_trigger_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Alternative_trigger.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkAlternativeTrigger], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Alternative_trigger.t}. *)
 
 (** {2:constructors Constructors} *)
 

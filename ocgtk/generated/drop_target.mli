@@ -62,7 +62,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Drop_target}."]
 
-(** The methods, signals and properties of a [GtkDropTarget]. *)
+(** The methods, signals and properties of a [DropTarget]. *)
 class type drop_target_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -171,9 +171,7 @@ class type drop_target_t = object
 end
 
 class drop_target : Raw.Drop_target.t -> drop_target_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drop_target.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkDropTarget], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Drop_target.t}. *)
 
 (** {2:constructors Constructors} *)
 

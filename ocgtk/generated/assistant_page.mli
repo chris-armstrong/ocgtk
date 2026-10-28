@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-assistant_page_t}.
     The functions it is built on are in {!Ocgtk.Raw.Assistant_page}. *)
 
-(** The methods, signals and properties of a [GtkAssistantPage]. *)
+(** The methods, signals and properties of a [AssistantPage]. *)
 class type assistant_page_t = object
   method get_child :
     unit ->
@@ -21,6 +21,4 @@ class type assistant_page_t = object
 end
 
 class assistant_page : Raw.Assistant_page.t -> assistant_page_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Assistant_page.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAssistantPage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Assistant_page.t}. *)

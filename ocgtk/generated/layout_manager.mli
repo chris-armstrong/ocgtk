@@ -47,9 +47,7 @@
 class type layout_manager_t =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .layout_manager_t
-(** The methods, signals and properties of a [GtkLayoutManager]. *)
+(** The methods, signals and properties of a [LayoutManager]. *)
 
 class layout_manager : Raw.Layout_manager.t -> layout_manager_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Layout_manager.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkLayoutManager], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Layout_manager.t}. *)

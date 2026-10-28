@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Conic_gradient_node}. *)
 
-(** The methods, signals and properties of a [GskConicGradientNode]. *)
+(** The methods, signals and properties of a [ConicGradientNode]. *)
 class type conic_gradient_node_t = object
   inherit Render_node.render_node_t
 
@@ -31,9 +31,7 @@ class type conic_gradient_node_t = object
 end
 
 class conic_gradient_node : Raw.Conic_gradient_node.t -> conic_gradient_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Conic_gradient_node.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GskConicGradientNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Conic_gradient_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

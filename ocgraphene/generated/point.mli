@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Point}. *)
 
-(** The methods, signals and properties of a [graphene_point_t]. *)
+(** The methods, signals and properties of a [Point]. *)
 class type point_t = object
   method equal : Raw.Point.t -> bool
   (** Checks if the two points [a] and [b] point to the same coordinates.
@@ -32,9 +32,7 @@ class type point_t = object
 end
 
 class point : Raw.Point.t -> point_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Point.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_point_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Point.t}. *)
 
 (** {2:constructors Constructors} *)
 

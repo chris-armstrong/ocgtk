@@ -108,7 +108,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgio.Raw.Application}."]
 
-(** The methods, signals and properties of a [GApplication]. *)
+(** The methods, signals and properties of a [Application]. *)
 class type application_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t
@@ -548,9 +548,7 @@ class type application_t = object
 end
 
 class application : Raw.Application.t -> application_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Application.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GApplication], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Application.t}. *)
 
 (** {2:constructors Constructors} *)
 

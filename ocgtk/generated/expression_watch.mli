@@ -6,7 +6,7 @@
     Its methods, signals and properties are on {!class-type-expression_watch_t}.
     The functions it is built on are in {!Ocgtk.Raw.Expression_watch}. *)
 
-(** The methods, signals and properties of a [GtkExpressionWatch]. *)
+(** The methods, signals and properties of a [ExpressionWatch]. *)
 class type expression_watch_t = object
   method evaluate : Gobject.Value.t -> bool
   (** Evaluates the watched expression and on success stores the result in
@@ -27,6 +27,4 @@ class type expression_watch_t = object
 end
 
 class expression_watch : Raw.Expression_watch.t -> expression_watch_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Expression_watch.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkExpressionWatch], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Expression_watch.t}. *)

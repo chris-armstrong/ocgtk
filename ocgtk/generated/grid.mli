@@ -71,7 +71,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Grid}."]
 
-(** The methods, signals and properties of a [GtkGrid]. *)
+(** The methods, signals and properties of a [Grid]. *)
 class type grid_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -219,9 +219,7 @@ class type grid_t = object
 end
 
 class grid : Raw.Grid.t -> grid_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Grid.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGrid], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Grid.t}. *)
 
 (** {2:constructors Constructors} *)
 

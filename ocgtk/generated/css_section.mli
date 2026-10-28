@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Css_section}. *)
 
-(** The methods, signals and properties of a [GtkCssSection]. *)
+(** The methods, signals and properties of a [CssSection]. *)
 class type css_section_t = object
   method get_bytes : unit -> Glib_bytes.t option
   (** Gets the bytes that [section] was parsed from. *)
@@ -45,9 +45,7 @@ class type css_section_t = object
 end
 
 class css_section : Raw.Css_section.t -> css_section_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Css_section.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCssSection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Css_section.t}. *)
 
 (** {2:constructors Constructors} *)
 

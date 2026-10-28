@@ -47,7 +47,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Recent_manager}."]
 
-(** The methods, signals and properties of a [GtkRecentManager]. *)
+(** The methods, signals and properties of a [RecentManager]. *)
 class type recent_manager_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -118,9 +118,7 @@ class type recent_manager_t = object
 end
 
 class recent_manager : Raw.Recent_manager.t -> recent_manager_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Recent_manager.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkRecentManager], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Recent_manager.t}. *)
 
 (** {2:constructors Constructors} *)
 

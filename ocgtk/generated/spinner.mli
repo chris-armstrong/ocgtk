@@ -21,7 +21,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Spinner}. *)
 
-(** The methods, signals and properties of a [GtkSpinner]. *)
+(** The methods, signals and properties of a [Spinner]. *)
 class type spinner_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -43,9 +43,7 @@ class type spinner_t = object
 end
 
 class spinner : Raw.Spinner.t -> spinner_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Spinner.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSpinner], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Spinner.t}. *)
 
 (** {2:constructors Constructors} *)
 

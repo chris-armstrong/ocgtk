@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Flow_box_child}. *)
 
-(** The methods, signals and properties of a [GtkFlowBoxChild]. *)
+(** The methods, signals and properties of a [FlowBoxChild]. *)
 class type flow_box_child_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -70,9 +70,7 @@ class type flow_box_child_t = object
 end
 
 class flow_box_child : Raw.Flow_box_child.t -> flow_box_child_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Flow_box_child.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkFlowBoxChild], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Flow_box_child.t}. *)
 
 (** {2:constructors Constructors} *)
 

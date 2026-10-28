@@ -11,7 +11,7 @@
  Its methods, signals and properties are on {!class-type-action_map_t}. The \
  functions it is built on are in {!Ocgio.Raw.Action_map}."]
 
-(** The methods, signals and properties of a [GActionMap]. *)
+(** The methods, signals and properties of a [ActionMap]. *)
 class type action_map_t = object
   method add_action : Action.action_t -> unit
   (** Adds an action to the [action_map].
@@ -58,6 +58,4 @@ class type action_map_t = object
 end
 
 class action_map : Raw.Action_map.t -> action_map_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Action_map.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GActionMap], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Action_map.t}. *)

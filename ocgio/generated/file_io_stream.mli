@@ -20,7 +20,7 @@
     Its methods, signals and properties are on {!class-type-file_io_stream_t}.
     The functions it is built on are in {!Ocgio.Raw.File_io_stream}. *)
 
-(** The methods, signals and properties of a [GFileIOStream]. *)
+(** The methods, signals and properties of a [FileIOStream]. *)
 class type file_io_stream_t = object
   inherit Io_stream.io_stream_t
   inherit Seekable.seekable_t
@@ -61,6 +61,4 @@ class type file_io_stream_t = object
 end
 
 class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_io_stream.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GFileIOStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_io_stream.t}. *)

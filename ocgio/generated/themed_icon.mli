@@ -10,7 +10,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Themed_icon}. *)
 
-(** The methods, signals and properties of a [GThemedIcon]. *)
+(** The methods, signals and properties of a [ThemedIcon]. *)
 class type themed_icon_t = object
   inherit Icon.icon_t
 
@@ -34,9 +34,7 @@ class type themed_icon_t = object
 end
 
 class themed_icon : Raw.Themed_icon.t -> themed_icon_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Themed_icon.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GThemedIcon], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Themed_icon.t}. *)
 
 (** {2:constructors Constructors} *)
 

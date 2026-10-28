@@ -18,7 +18,7 @@
     Its methods, signals and properties are on {!class-type-debug_controller_t}.
     The functions it is built on are in {!Ocgio.Raw.Debug_controller}. *)
 
-(** The methods, signals and properties of a [GDebugController]. *)
+(** The methods, signals and properties of a [DebugController]. *)
 class type debug_controller_t = object
   method get_debug_enabled : unit -> bool
   (** Get the value of [GDebugController:debug]-enabled. *)
@@ -30,6 +30,4 @@ class type debug_controller_t = object
 end
 
 class debug_controller : Raw.Debug_controller.t -> debug_controller_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Debug_controller.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDebugController], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Debug_controller.t}. *)

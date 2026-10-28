@@ -10,9 +10,7 @@
     functions it is built on are in {!Ocpango.Raw.Font_family}. *)
 
 class type font_family_t = Font_face_and__font_family.font_family_t
-(** The methods, signals and properties of a [PangoFontFamily]. *)
+(** The methods, signals and properties of a [FontFamily]. *)
 
 class font_family : Raw.Font_family.t -> font_family_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_family.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontFamily], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_family.t}. *)

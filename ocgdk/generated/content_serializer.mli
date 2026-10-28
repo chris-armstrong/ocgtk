@@ -14,7 +14,7 @@
     {!class-type-content_serializer_t}. The functions it is built on are in
     {!Ocgdk.Raw.Content_serializer}. *)
 
-(** The methods, signals and properties of a [GdkContentSerializer]. *)
+(** The methods, signals and properties of a [ContentSerializer]. *)
 class type content_serializer_t = object
   inherit Ocgio.Async_result.async_result_t
 
@@ -55,6 +55,4 @@ class type content_serializer_t = object
 end
 
 class content_serializer : Raw.Content_serializer.t -> content_serializer_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Content_serializer.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkContentSerializer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Content_serializer.t}. *)

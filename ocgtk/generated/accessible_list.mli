@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Accessible_list}. *)
 
-(** The methods, signals and properties of a [GtkAccessibleList]. *)
+(** The methods, signals and properties of a [AccessibleList]. *)
 class type accessible_list_t = object
   method get_objects : unit -> At_context_and__accessible.accessible_t list
   (** Gets the list of objects this boxed type holds. *)
@@ -13,9 +13,7 @@ class type accessible_list_t = object
 end
 
 class accessible_list : Raw.Accessible_list.t -> accessible_list_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Accessible_list.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAccessibleList], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Accessible_list.t}. *)
 
 (** {2:constructors Constructors} *)
 

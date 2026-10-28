@@ -22,7 +22,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Color_chooser_dialog}. *)
 
-(** The methods, signals and properties of a [GtkColorChooserDialog]. *)
+(** The methods, signals and properties of a [ColorChooserDialog]. *)
 class type color_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Color_chooser.color_chooser_t
@@ -34,9 +34,7 @@ end
 class color_chooser_dialog :
   Raw.Color_chooser_dialog.t ->
   color_chooser_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Color_chooser_dialog.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkColorChooserDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Color_chooser_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

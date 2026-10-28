@@ -43,9 +43,7 @@
  functions it is built on are in {!Ocgdk.Raw.Gl_context}."]
 
 class type gl_context_t = App_launch_context_cycle_de440b34.gl_context_t
-(** The methods, signals and properties of a [GdkGLContext]. *)
+(** The methods, signals and properties of a [GLContext]. *)
 
 class gl_context : Raw.Gl_context.t -> gl_context_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Gl_context.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkGLContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Gl_context.t}. *)

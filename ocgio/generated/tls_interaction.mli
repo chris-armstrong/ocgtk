@@ -27,9 +27,7 @@
 
 class type tls_interaction_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-(** The methods, signals and properties of a [GTlsInteraction]. *)
+(** The methods, signals and properties of a [TlsInteraction]. *)
 
 class tls_interaction : Raw.Tls_interaction.t -> tls_interaction_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_interaction.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GTlsInteraction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Tls_interaction.t}. *)

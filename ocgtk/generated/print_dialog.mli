@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Print_dialog}. *)
 
-(** The methods, signals and properties of a [GtkPrintDialog]. *)
+(** The methods, signals and properties of a [PrintDialog]. *)
 class type print_dialog_t = object
   method get_accept_label : unit -> string
   (** Returns the label that will be shown on the accept button of the print
@@ -87,9 +87,7 @@ class type print_dialog_t = object
 end
 
 class print_dialog : Raw.Print_dialog.t -> print_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPrintDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

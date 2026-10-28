@@ -9,7 +9,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.File_dialog}. *)
 
-(** The methods, signals and properties of a [GtkFileDialog]. *)
+(** The methods, signals and properties of a [FileDialog]. *)
 class type file_dialog_t = object
   method get_accept_label : unit -> string option
   (** Retrieves the text used by the dialog on its accept button. *)
@@ -125,9 +125,7 @@ class type file_dialog_t = object
 end
 
 class file_dialog : Raw.File_dialog.t -> file_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFileDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

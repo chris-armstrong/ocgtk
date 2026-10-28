@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Matrix: Matrix *)
 
-(** Bindings for [cairo_matrix_t].
+(** Bindings for [Matrix].
 
     The class built on this module is in {!Occairo.Matrix}. *)
 

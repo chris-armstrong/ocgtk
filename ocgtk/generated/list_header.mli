@@ -7,7 +7,7 @@
     Its methods, signals and properties are on {!class-type-list_header_t}. The
     functions it is built on are in {!Ocgtk.Raw.List_header}. *)
 
-(** The methods, signals and properties of a [GtkListHeader]. *)
+(** The methods, signals and properties of a [ListHeader]. *)
 class type list_header_t = object
   method get_child :
     unit ->
@@ -54,6 +54,4 @@ class type list_header_t = object
 end
 
 class list_header : Raw.List_header.t -> list_header_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_header.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkListHeader], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.List_header.t}. *)

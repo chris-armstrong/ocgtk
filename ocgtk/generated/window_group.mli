@@ -23,12 +23,10 @@
 
 class type window_group_t =
   Application_and__window_and__window_group.window_group_t
-(** The methods, signals and properties of a [GtkWindowGroup]. *)
+(** The methods, signals and properties of a [WindowGroup]. *)
 
 class window_group : Raw.Window_group.t -> window_group_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Window_group.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkWindowGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Window_group.t}. *)
 
 (** {2:constructors Constructors} *)
 

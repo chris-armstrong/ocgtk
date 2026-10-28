@@ -9,7 +9,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocpango.Raw.Font_description}. *)
 
-(** The methods, signals and properties of a [PangoFontDescription]. *)
+(** The methods, signals and properties of a [FontDescription]. *)
 class type font_description_t = object
   method better_match :
     Raw.Font_description.t option -> Raw.Font_description.t -> bool
@@ -291,9 +291,7 @@ class type font_description_t = object
 end
 
 class font_description : Raw.Font_description.t -> font_description_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_description.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoFontDescription], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_description.t}. *)
 
 (** {2:constructors Constructors} *)
 

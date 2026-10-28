@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RectangleInt: RectangleInt *)
 
-(** Bindings for [cairo_rectangle_int_t].
+(** Bindings for [RectangleInt].
 
     The class built on this module is in {!Occairo.Rectangle_int}. *)
 

@@ -60,7 +60,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Header_bar}."]
 
-(** The methods, signals and properties of a [GtkHeaderBar]. *)
+(** The methods, signals and properties of a [HeaderBar]. *)
 class type header_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -154,9 +154,7 @@ class type header_bar_t = object
 end
 
 class header_bar : Raw.Header_bar.t -> header_bar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Header_bar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkHeaderBar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Header_bar.t}. *)
 
 (** {2:constructors Constructors} *)
 

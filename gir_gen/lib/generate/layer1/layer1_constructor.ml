@@ -34,11 +34,10 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
   Filtering.should_generate_constructor ~ctx ctor
 
 (** Generate a single constructor declaration and write it to the buffer *)
-let generate_constructor_decl ~ctx ~class_name ~c_type ~buf
-    (ctor : gir_constructor) =
+let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
   let doc =
     Entity_doc.constructor ~namespace:ctx.namespace.namespace_name ~class_name
-      ~c_type ctor
+      ctor
   in
   bprintf buf "%s" (Doc_emit.before_item doc);
   let ml_name = Utils.ml_constructor_name ~class_name ~constructor:ctor in

@@ -21,7 +21,7 @@
     Its methods, signals and properties are on {!class-type-dtls_connection_t}.
     The functions it is built on are in {!Ocgio.Raw.Dtls_connection}. *)
 
-(** The methods, signals and properties of a [GDtlsConnection]. *)
+(** The methods, signals and properties of a [DtlsConnection]. *)
 class type dtls_connection_t = object
   method on_accept_certificate :
     ?after:bool ->
@@ -313,6 +313,4 @@ class type dtls_connection_t = object
 end
 
 class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Dtls_connection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDtlsConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Dtls_connection.t}. *)

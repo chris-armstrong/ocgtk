@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Signal_action}. *)
 
-(** The methods, signals and properties of a [GtkSignalAction]. *)
+(** The methods, signals and properties of a [SignalAction]. *)
 class type signal_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
@@ -18,9 +18,7 @@ class type signal_action_t = object
 end
 
 class signal_action : Raw.Signal_action.t -> signal_action_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Signal_action.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSignalAction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Signal_action.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Constant_expression}. *)
 
-(** The methods, signals and properties of a [GtkConstantExpression]. *)
+(** The methods, signals and properties of a [ConstantExpression]. *)
 class type constant_expression_t = object
   inherit Expression.expression_t
 
@@ -16,9 +16,7 @@ class type constant_expression_t = object
 end
 
 class constant_expression : Raw.Constant_expression.t -> constant_expression_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Constant_expression.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkConstantExpression], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Constant_expression.t}. *)
 
 (** {2:constructors Constructors} *)
 

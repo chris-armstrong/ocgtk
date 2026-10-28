@@ -27,7 +27,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Icon_view}. *)
 
-(** The methods, signals and properties of a [GtkIconView]. *)
+(** The methods, signals and properties of a [IconView]. *)
 class type icon_view_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -383,9 +383,7 @@ class type icon_view_t = object
 end
 
 class icon_view : Raw.Icon_view.t -> icon_view_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Icon_view.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkIconView], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Icon_view.t}. *)
 
 (** {2:constructors Constructors} *)
 

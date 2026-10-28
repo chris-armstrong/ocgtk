@@ -4,7 +4,7 @@
     Its methods, signals and properties are on {!class-type-static_resource_t}.
     The functions it is built on are in {!Ocgio.Raw.Static_resource}. *)
 
-(** The methods, signals and properties of a [GStaticResource]. *)
+(** The methods, signals and properties of a [StaticResource]. *)
 class type static_resource_t = object
   method fini : unit -> unit
   (** Finalizes a [Gio.Resource] initialized by [Gio.StaticResource.init].
@@ -30,6 +30,4 @@ class type static_resource_t = object
 end
 
 class static_resource : Raw.Static_resource.t -> static_resource_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Static_resource.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GStaticResource], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Static_resource.t}. *)

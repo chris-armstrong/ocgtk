@@ -11,7 +11,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Toplevel_layout}. *)
 
-(** The methods, signals and properties of a [GdkToplevelLayout]. *)
+(** The methods, signals and properties of a [ToplevelLayout]. *)
 class type toplevel_layout_t = object
   method equal : Raw.Toplevel_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
@@ -43,9 +43,7 @@ class type toplevel_layout_t = object
 end
 
 class toplevel_layout : Raw.Toplevel_layout.t -> toplevel_layout_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Toplevel_layout.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkToplevelLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Toplevel_layout.t}. *)
 
 (** {2:constructors Constructors} *)
 

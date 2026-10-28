@@ -14,7 +14,7 @@
     Its methods, signals and properties are on {!class-type-gesture_single_t}.
     The functions it is built on are in {!Ocgtk.Raw.Gesture_single}. *)
 
-(** The methods, signals and properties of a [GtkGestureSingle]. *)
+(** The methods, signals and properties of a [GestureSingle]. *)
 class type gesture_single_t = object
   inherit Gesture.gesture_t
 
@@ -65,6 +65,4 @@ class type gesture_single_t = object
 end
 
 class gesture_single : Raw.Gesture_single.t -> gesture_single_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_single.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkGestureSingle], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_single.t}. *)

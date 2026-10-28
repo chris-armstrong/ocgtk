@@ -12,15 +12,13 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Component_transfer}. *)
 
-(** The methods, signals and properties of a [GskComponentTransfer]. *)
+(** The methods, signals and properties of a [ComponentTransfer]. *)
 class type component_transfer_t = object
   method as_component_transfer : Raw.Component_transfer.t
 end
 
 class component_transfer : Raw.Component_transfer.t -> component_transfer_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Component_transfer.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskComponentTransfer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Component_transfer.t}. *)
 
 (** {2:constructors Constructors} *)
 

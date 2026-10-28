@@ -16,12 +16,10 @@
 
 class type text_buffer_t =
   Text_buffer_and__text_iter_and__text_mark.text_buffer_t
-(** The methods, signals and properties of a [GtkTextBuffer]. *)
+(** The methods, signals and properties of a [TextBuffer]. *)
 
 class text_buffer : Raw.Text_buffer.t -> text_buffer_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_buffer.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextBuffer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_buffer.t}. *)
 
 (** {2:constructors Constructors} *)
 

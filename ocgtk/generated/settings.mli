@@ -28,7 +28,7 @@
     Its methods, signals and properties are on {!class-type-settings_t}. The
     functions it is built on are in {!Ocgtk.Raw.Settings}. *)
 
-(** The methods, signals and properties of a [GtkSettings]. *)
+(** The methods, signals and properties of a [Settings]. *)
 class type settings_t = object
   inherit Style_provider.style_provider_t
 
@@ -151,6 +151,4 @@ class type settings_t = object
 end
 
 class settings : Raw.Settings.t -> settings_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Settings.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSettings], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Settings.t}. *)

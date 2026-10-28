@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [graphene_vec3_t]. *)
+(** The methods, signals and properties of a [Vec3]. *)
 class type vec3_t = object
   method dot : Raw.Vec3.t -> float
   (** Computes the dot product of the two given vectors. *)
@@ -41,7 +41,7 @@ class type vec3_t = object
   method as_vec3 : Raw.Vec3.t
 end
 
-(** The methods, signals and properties of a [graphene_vec4_t]. *)
+(** The methods, signals and properties of a [Vec4]. *)
 and vec4_t = object
   method dot : Raw.Vec4.t -> float
   (** Computes the dot product of the two given vectors. *)
@@ -95,13 +95,9 @@ and vec4_t = object
   method as_vec4 : Raw.Vec4.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Vec3.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_vec3_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Vec3.t}. *)
 class vec3 : Raw.Vec3.t -> vec3_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Vec4.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_vec4_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Vec4.t}. *)
 
 and vec4 : Raw.Vec4.t -> vec4_t
 

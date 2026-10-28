@@ -24,7 +24,7 @@
  Its methods, signals and properties are on {!class-type-im_context_t}. The \
  functions it is built on are in {!Ocgtk.Raw.Im_context}."]
 
-(** The methods, signals and properties of a [GtkIMContext]. *)
+(** The methods, signals and properties of a [IMContext]. *)
 class type im_context_t = object
   method on_commit :
     ?after:bool ->
@@ -182,6 +182,4 @@ class type im_context_t = object
 end
 
 class im_context : Raw.Im_context.t -> im_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Im_context.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkIMContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Im_context.t}. *)

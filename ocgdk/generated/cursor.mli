@@ -35,7 +35,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.Cursor}. *)
 
-(** The methods, signals and properties of a [GdkCursor]. *)
+(** The methods, signals and properties of a [Cursor]. *)
 class type cursor_t = object
   method get_fallback : unit -> cursor_t option
   (** Returns the fallback for this [cursor].
@@ -78,9 +78,7 @@ class type cursor_t = object
 end
 
 class cursor : Raw.Cursor.t -> cursor_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Cursor.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkCursor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Cursor.t}. *)
 
 (** {2:constructors Constructors} *)
 

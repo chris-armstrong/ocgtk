@@ -70,7 +70,7 @@
  Its methods, signals and properties are on {!class-type-gesture_t}. The \
  functions it is built on are in {!Ocgtk.Raw.Gesture}."]
 
-(** The methods, signals and properties of a [GtkGesture]. *)
+(** The methods, signals and properties of a [Gesture]. *)
 class type gesture_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -235,6 +235,4 @@ class type gesture_t = object
 end
 
 class gesture : Raw.Gesture.t -> gesture_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGesture], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture.t}. *)

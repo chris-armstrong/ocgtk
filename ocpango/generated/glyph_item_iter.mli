@@ -42,7 +42,7 @@
     Its methods, signals and properties are on {!class-type-glyph_item_iter_t}.
     The functions it is built on are in {!Ocpango.Raw.Glyph_item_iter}. *)
 
-(** The methods, signals and properties of a [PangoGlyphItemIter]. *)
+(** The methods, signals and properties of a [GlyphItemIter]. *)
 class type glyph_item_iter_t = object
   method init_end : Raw.Glyph_item.t -> string -> bool
   (** Initializes a [PangoGlyphItemIter] structure to point to the last cluster
@@ -69,6 +69,4 @@ class type glyph_item_iter_t = object
 end
 
 class glyph_item_iter : Raw.Glyph_item_iter.t -> glyph_item_iter_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Glyph_item_iter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoGlyphItemIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Glyph_item_iter.t}. *)

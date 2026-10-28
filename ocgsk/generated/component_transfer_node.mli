@@ -1,11 +1,11 @@
-(** Bindings for [GskComponentTransferNode].
+(** Bindings for [ComponentTransferNode].
 
     Its methods, signals and properties are on
     {!class-type-component_transfer_node_t}. Its constructors are under
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Component_transfer_node}. *)
 
-(** The methods, signals and properties of a [GskComponentTransferNode]. *)
+(** The methods, signals and properties of a [ComponentTransferNode]. *)
 class type component_transfer_node_t = object
   inherit Render_node.render_node_t
 
@@ -21,10 +21,7 @@ end
 class component_transfer_node :
   Raw.Component_transfer_node.t ->
   component_transfer_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Component_transfer_node.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GskComponentTransferNode], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgsk.Raw.Component_transfer_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

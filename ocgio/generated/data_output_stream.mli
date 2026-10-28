@@ -6,7 +6,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_output_stream}. *)
 
-(** The methods, signals and properties of a [GDataOutputStream]. *)
+(** The methods, signals and properties of a [DataOutputStream]. *)
 class type data_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t
@@ -49,9 +49,7 @@ class type data_output_stream_t = object
 end
 
 class data_output_stream : Raw.Data_output_stream.t -> data_output_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Data_output_stream.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDataOutputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Data_output_stream.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-style_provider_t}.
     The functions it is built on are in {!Ocgtk.Raw.Style_provider}. *)
 
-(** The methods, signals and properties of a [GtkStyleProvider]. *)
+(** The methods, signals and properties of a [StyleProvider]. *)
 class type style_provider_t = object
   method on_gtk_private_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -17,6 +17,4 @@ class type style_provider_t = object
 end
 
 class style_provider : Raw.Style_provider.t -> style_provider_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Style_provider.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkStyleProvider], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Style_provider.t}. *)

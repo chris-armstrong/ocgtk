@@ -18,7 +18,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_pixbuf}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererPixbuf]. *)
+(** The methods, signals and properties of a [CellRendererPixbuf]. *)
 class type cell_renderer_pixbuf_t = object
   inherit Cell_renderer.cell_renderer_t
   method gicon : Ocgio.Icon.icon_t
@@ -40,9 +40,7 @@ end
 class cell_renderer_pixbuf :
   Raw.Cell_renderer_pixbuf.t ->
   cell_renderer_pixbuf_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_pixbuf.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkCellRendererPixbuf], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_pixbuf.t}. *)
 
 (** {2:constructors Constructors} *)
 

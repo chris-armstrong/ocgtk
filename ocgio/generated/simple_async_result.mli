@@ -145,7 +145,7 @@
  {!class-type-simple_async_result_t}. The functions it is built on are in \
  {!Ocgio.Raw.Simple_async_result}."]
 
-(** The methods, signals and properties of a [GSimpleAsyncResult]. *)
+(** The methods, signals and properties of a [SimpleAsyncResult]. *)
 class type simple_async_result_t = object
   inherit Async_result.async_result_t
 
@@ -217,6 +217,4 @@ class type simple_async_result_t = object
 end
 
 class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Simple_async_result.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSimpleAsyncResult], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Simple_async_result.t}. *)

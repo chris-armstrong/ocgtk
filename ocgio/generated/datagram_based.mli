@@ -52,7 +52,7 @@
     Its methods, signals and properties are on {!class-type-datagram_based_t}.
     The functions it is built on are in {!Ocgio.Raw.Datagram_based}. *)
 
-(** The methods, signals and properties of a [GDatagramBased]. *)
+(** The methods, signals and properties of a [DatagramBased]. *)
 class type datagram_based_t = object
   method receive_messages :
     Raw.Input_message.t array ->
@@ -166,6 +166,4 @@ class type datagram_based_t = object
 end
 
 class datagram_based : Raw.Datagram_based.t -> datagram_based_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Datagram_based.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDatagramBased], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Datagram_based.t}. *)

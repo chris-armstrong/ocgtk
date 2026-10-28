@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Keyval_trigger}. *)
 
-(** The methods, signals and properties of a [GtkKeyvalTrigger]. *)
+(** The methods, signals and properties of a [KeyvalTrigger]. *)
 class type keyval_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 
@@ -18,9 +18,7 @@ class type keyval_trigger_t = object
 end
 
 class keyval_trigger : Raw.Keyval_trigger.t -> keyval_trigger_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Keyval_trigger.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkKeyvalTrigger], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Keyval_trigger.t}. *)
 
 (** {2:constructors Constructors} *)
 

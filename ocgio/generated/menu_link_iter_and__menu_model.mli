@@ -2,7 +2,7 @@
     together because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GMenuLinkIter]. *)
+(** The methods, signals and properties of a [MenuLinkIter]. *)
 class type menu_link_iter_t = object
   method get_name : unit -> string
   (** Gets the name of the link at the current iterator position.
@@ -25,7 +25,7 @@ class type menu_link_iter_t = object
   method as_menu_link_iter : Raw.Menu_link_iter.t
 end
 
-(** The methods, signals and properties of a [GMenuModel]. *)
+(** The methods, signals and properties of a [MenuModel]. *)
 and menu_model_t = object
   method on_items_changed :
     ?after:bool ->
@@ -115,12 +115,8 @@ and menu_model_t = object
   method as_menu_model : Raw.Menu_model.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu_link_iter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GMenuLinkIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu_link_iter.t}. *)
 class menu_link_iter : Raw.Menu_link_iter.t -> menu_link_iter_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu_model.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GMenuModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu_model.t}. *)
 
 and menu_model : Raw.Menu_model.t -> menu_model_t

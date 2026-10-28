@@ -65,7 +65,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.List_box}. *)
 
-(** The methods, signals and properties of a [GtkListBox]. *)
+(** The methods, signals and properties of a [ListBox]. *)
 class type list_box_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -308,9 +308,7 @@ class type list_box_t = object
 end
 
 class list_box : Raw.List_box.t -> list_box_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_box.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkListBox], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.List_box.t}. *)
 
 (** {2:constructors Constructors} *)
 

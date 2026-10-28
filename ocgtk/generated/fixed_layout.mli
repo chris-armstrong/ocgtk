@@ -31,7 +31,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Fixed_layout}. *)
 
-(** The methods, signals and properties of a [GtkFixedLayout]. *)
+(** The methods, signals and properties of a [FixedLayout]. *)
 class type fixed_layout_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -41,9 +41,7 @@ class type fixed_layout_t = object
 end
 
 class fixed_layout : Raw.Fixed_layout.t -> fixed_layout_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Fixed_layout.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFixedLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Fixed_layout.t}. *)
 
 (** {2:constructors Constructors} *)
 

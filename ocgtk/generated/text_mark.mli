@@ -37,12 +37,10 @@
     are in {!Ocgtk.Raw.Text_mark}. *)
 
 class type text_mark_t = Text_buffer_and__text_iter_and__text_mark.text_mark_t
-(** The methods, signals and properties of a [GtkTextMark]. *)
+(** The methods, signals and properties of a [TextMark]. *)
 
 class text_mark : Raw.Text_mark.t -> text_mark_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_mark.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextMark], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_mark.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -45,7 +45,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdkpixbuf.Raw.Pixbuf_loader}. *)
 
-(** The methods, signals and properties of a [GdkPixbufLoader]. *)
+(** The methods, signals and properties of a [PixbufLoader]. *)
 class type pixbuf_loader_t = object
   method on_area_prepared :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -151,9 +151,7 @@ class type pixbuf_loader_t = object
 end
 
 class pixbuf_loader : Raw.Pixbuf_loader.t -> pixbuf_loader_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf_loader.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkPixbufLoader], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_loader.t}. *)
 
 (** {2:constructors Constructors} *)
 

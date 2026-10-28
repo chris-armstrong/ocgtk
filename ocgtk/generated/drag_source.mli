@@ -71,7 +71,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Drag_source}."]
 
-(** The methods, signals and properties of a [GtkDragSource]. *)
+(** The methods, signals and properties of a [DragSource]. *)
 class type drag_source_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -170,9 +170,7 @@ class type drag_source_t = object
 end
 
 class drag_source : Raw.Drag_source.t -> drag_source_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drag_source.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkDragSource], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Drag_source.t}. *)
 
 (** {2:constructors Constructors} *)
 

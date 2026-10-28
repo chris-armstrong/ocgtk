@@ -23,12 +23,9 @@
 class type socket_address_enumerator_t =
   Socket_address_and__socket_address_enumerator_and__socket_connectable
   .socket_address_enumerator_t
-(** The methods, signals and properties of a [GSocketAddressEnumerator]. *)
+(** The methods, signals and properties of a [SocketAddressEnumerator]. *)
 
 class socket_address_enumerator :
   Raw.Socket_address_enumerator.t ->
   socket_address_enumerator_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_address_enumerator.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSocketAddressEnumerator], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_address_enumerator.t}. *)

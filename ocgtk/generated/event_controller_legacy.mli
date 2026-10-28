@@ -8,7 +8,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_legacy}. *)
 
-(** The methods, signals and properties of a [GtkEventControllerLegacy]. *)
+(** The methods, signals and properties of a [EventControllerLegacy]. *)
 class type event_controller_legacy_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -27,10 +27,7 @@ end
 class event_controller_legacy :
   Raw.Event_controller_legacy.t ->
   event_controller_legacy_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller_legacy.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkEventControllerLegacy], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_legacy.t}. *)
 
 (** {2:constructors Constructors} *)
 

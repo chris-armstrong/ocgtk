@@ -72,7 +72,7 @@
  Its methods, signals and properties are on {!class-type-settings_schema_t}. \
  The functions it is built on are in {!Ocgio.Raw.Settings_schema}."]
 
-(** The methods, signals and properties of a [GSettingsSchema]. *)
+(** The methods, signals and properties of a [SettingsSchema]. *)
 class type settings_schema_t = object
   method get_id : unit -> string
   (** Get the ID of [schema]. *)
@@ -117,6 +117,4 @@ class type settings_schema_t = object
 end
 
 class settings_schema : Raw.Settings_schema.t -> settings_schema_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Settings_schema.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSettingsSchema], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Settings_schema.t}. *)

@@ -19,9 +19,7 @@
     functions it is built on are in {!Ocgsk.Raw.Path_point}. *)
 
 class type path_point_t = Path_and__path_measure_and__path_point.path_point_t
-(** The methods, signals and properties of a [GskPathPoint]. *)
+(** The methods, signals and properties of a [PathPoint]. *)
 
 class path_point : Raw.Path_point.t -> path_point_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path_point.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPathPoint], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path_point.t}. *)

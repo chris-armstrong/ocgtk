@@ -46,7 +46,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Check_button}."]
 
-(** The methods, signals and properties of a [GtkCheckButton]. *)
+(** The methods, signals and properties of a [CheckButton]. *)
 class type check_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -148,9 +148,7 @@ class type check_button_t = object
 end
 
 class check_button : Raw.Check_button.t -> check_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Check_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCheckButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Check_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

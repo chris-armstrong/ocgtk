@@ -63,7 +63,7 @@
     Its methods, signals and properties are on {!class-type-shortcuts_window_t}.
     The functions it is built on are in {!Ocgtk.Raw.Shortcuts_window}. *)
 
-(** The methods, signals and properties of a [GtkShortcutsWindow]. *)
+(** The methods, signals and properties of a [ShortcutsWindow]. *)
 class type shortcuts_window_t = object
   inherit Application_and__window_and__window_group.window_t
 
@@ -100,6 +100,4 @@ class type shortcuts_window_t = object
 end
 
 class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcuts_window.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkShortcutsWindow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_window.t}. *)

@@ -10,7 +10,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Slice_list_model}. *)
 
-(** The methods, signals and properties of a [GtkSliceListModel]. *)
+(** The methods, signals and properties of a [SliceListModel]. *)
 class type slice_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -47,9 +47,7 @@ class type slice_list_model_t = object
 end
 
 class slice_list_model : Raw.Slice_list_model.t -> slice_list_model_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Slice_list_model.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkSliceListModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Slice_list_model.t}. *)
 
 (** {2:constructors Constructors} *)
 

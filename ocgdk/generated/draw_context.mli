@@ -15,9 +15,7 @@
     functions it is built on are in {!Ocgdk.Raw.Draw_context}. *)
 
 class type draw_context_t = App_launch_context_cycle_de440b34.draw_context_t
-(** The methods, signals and properties of a [GdkDrawContext]. *)
+(** The methods, signals and properties of a [DrawContext]. *)
 
 class draw_context : Raw.Draw_context.t -> draw_context_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Draw_context.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkDrawContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Draw_context.t}. *)

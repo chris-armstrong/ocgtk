@@ -27,12 +27,10 @@
     Its methods, signals and properties are on {!class-type-accessible_range_t}.
     The functions it is built on are in {!Ocgtk.Raw.Accessible_range}. *)
 
-(** The methods, signals and properties of a [GtkAccessibleRange]. *)
+(** The methods, signals and properties of a [AccessibleRange]. *)
 class type accessible_range_t = object
   method as_accessible_range : Raw.Accessible_range.t
 end
 
 class accessible_range : Raw.Accessible_range.t -> accessible_range_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Accessible_range.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAccessibleRange], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Accessible_range.t}. *)

@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Mnemonic_trigger}. *)
 
-(** The methods, signals and properties of a [GtkMnemonicTrigger]. *)
+(** The methods, signals and properties of a [MnemonicTrigger]. *)
 class type mnemonic_trigger_t = object
   inherit Shortcut_trigger.shortcut_trigger_t
 
@@ -18,9 +18,7 @@ class type mnemonic_trigger_t = object
 end
 
 class mnemonic_trigger : Raw.Mnemonic_trigger.t -> mnemonic_trigger_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Mnemonic_trigger.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkMnemonicTrigger], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Mnemonic_trigger.t}. *)
 
 (** {2:constructors Constructors} *)
 

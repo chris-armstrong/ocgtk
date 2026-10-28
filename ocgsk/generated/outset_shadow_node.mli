@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Outset_shadow_node}. *)
 
-(** The methods, signals and properties of a [GskOutsetShadowNode]. *)
+(** The methods, signals and properties of a [OutsetShadowNode]. *)
 class type outset_shadow_node_t = object
   inherit Render_node.render_node_t
 
@@ -34,9 +34,7 @@ class type outset_shadow_node_t = object
 end
 
 class outset_shadow_node : Raw.Outset_shadow_node.t -> outset_shadow_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Outset_shadow_node.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskOutsetShadowNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Outset_shadow_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

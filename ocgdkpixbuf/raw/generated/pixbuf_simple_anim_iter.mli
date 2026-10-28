@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufSimpleAnimIter: PixbufSimpleAnimIter *)
 
-(** Bindings for [GdkPixbufSimpleAnimIter].
+(** Bindings for [PixbufSimpleAnimIter].
 
     The class built on this module is in {!Ocgdkpixbuf.Pixbuf_simple_anim_iter}.
 *)

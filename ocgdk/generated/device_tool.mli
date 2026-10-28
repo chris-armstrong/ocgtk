@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-device_tool_t}. The
     functions it is built on are in {!Ocgdk.Raw.Device_tool}. *)
 
-(** The methods, signals and properties of a [GdkDeviceTool]. *)
+(** The methods, signals and properties of a [DeviceTool]. *)
 class type device_tool_t = object
   method get_axes : unit -> Enums.axisflags
   (** Gets the axes of the tool. *)
@@ -33,6 +33,4 @@ class type device_tool_t = object
 end
 
 class device_tool : Raw.Device_tool.t -> device_tool_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Device_tool.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkDeviceTool], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Device_tool.t}. *)

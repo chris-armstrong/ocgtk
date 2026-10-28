@@ -5,30 +5,27 @@
 val l1_module :
   namespace:string ->
   class_name:string ->
-  c_type:string ->
   class_doc:string option ->
   Doc_emit.t option
 (** The layer 1 module's floating doc: the class doc, then a pointer to the
-    layer 2 module. Without a class doc, it starts with "Bindings for [c_type]."
-    instead, because the first paragraph is also the module's synopsis on its
-    parent's page. *)
+    layer 2 module. Without a class doc, it starts with "Bindings for
+    [class_name]." instead, because the first paragraph is also the module's
+    synopsis on its parent's page. *)
 
 val l2_module :
   namespace:string ->
   class_name:string ->
-  c_type:string ->
   has_constructors:bool ->
   class_doc:string option ->
   Doc_emit.t option
 (** The layer 2 module's floating doc: the class doc, then where its members are
     (the class type) and the layer 1 module it is built on. *)
 
-val class_type : c_type:string -> Doc_emit.t option
+val class_type : class_name:string -> Doc_emit.t option
 (** The canned doc of the layer 2 [class type]. *)
 
-val class_ :
-  namespace:string -> class_name:string -> c_type:string -> Doc_emit.t option
-(** The canned doc of the layer 2 [class]: when to apply it directly. *)
+val class_ : namespace:string -> class_name:string -> Doc_emit.t option
+(** The canned doc of the layer 2 [class]: the layer 1 type it wraps. *)
 
 type layer = Layer1 | Layer2
 
@@ -47,9 +44,8 @@ val constructors_heading : string
 val constructor :
   namespace:string ->
   class_name:string ->
-  c_type:string ->
   Types.gir_constructor ->
   Doc_emit.t option
 (** A constructor's doc at either layer: its translated GIR doc, else "Create a
-    new [c_type]. Wraps [c_function]." with the C function linked to its
+    new [class_name]. Wraps [c_function]." with the C function linked to its
     gi-docgen page when the namespace has a gi-docgen site. *)

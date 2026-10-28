@@ -376,14 +376,7 @@ let generate_method_signatures ~ctx ~property_method_names:_
     let doc =
       Doc_emit.item_doc ~indent:"    " ~context:Doc_translate.Member meth.doc
     in
-    let buf = Buffer.create 256 in
-    (* The blank line keeps the comment from also reading as the previous
-       method's trailing doc, which ocamlformat rejects as ambiguous. *)
-    (match Doc_emit.before_item doc with
-    | "" -> ()
-    | comment -> bprintf buf "\n%s" comment);
-    if has_type_var then
-      bprintf buf "    method %s : 'a. %s\n" ocaml_name signature
-    else bprintf buf "    method %s : %s\n" ocaml_name signature;
-    bprintf buf "%s" (Doc_emit.after_item doc);
-    (Buffer.contents buf, seen)
+    let quantifier = if has_type_var then "'a. " else "" in
+    ( Doc_emit.around doc
+        (Fmt.str "    method %s : %s%s\n" ocaml_name quantifier signature),
+      seen )

@@ -4,7 +4,7 @@
     {!class-type-d_bus_interface_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_interface_info}. *)
 
-(** The methods, signals and properties of a [GDBusInterfaceInfo]. *)
+(** The methods, signals and properties of a [DBusInterfaceInfo]. *)
 class type d_bus_interface_info_t = object
   method cache_build : unit -> unit
   (** Builds a lookup-cache to speed up g_dbus_interface_info_lookup_method(),
@@ -50,6 +50,4 @@ end
 class d_bus_interface_info :
   Raw.D_bus_interface_info.t ->
   d_bus_interface_info_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_interface_info.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusInterfaceInfo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface_info.t}. *)

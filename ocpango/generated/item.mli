@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Item}. *)
 
-(** The methods, signals and properties of a [PangoItem]. *)
+(** The methods, signals and properties of a [Item]. *)
 class type item_t = object
   method apply_attrs : Raw.Attr_iterator.t -> unit
   (** Add attributes to a [PangoItem].
@@ -46,9 +46,7 @@ class type item_t = object
 end
 
 class item : Raw.Item.t -> item_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Item.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoItem], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Item.t}. *)
 
 (** {2:constructors Constructors} *)
 

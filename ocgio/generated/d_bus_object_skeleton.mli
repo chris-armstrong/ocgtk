@@ -9,7 +9,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_skeleton}. *)
 
-(** The methods, signals and properties of a [GDBusObjectSkeleton]. *)
+(** The methods, signals and properties of a [DBusObjectSkeleton]. *)
 class type d_bus_object_skeleton_t = object
   inherit D_bus_interface_and__d_bus_object.d_bus_object_t
 
@@ -66,9 +66,7 @@ end
 class d_bus_object_skeleton :
   Raw.D_bus_object_skeleton.t ->
   d_bus_object_skeleton_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_object_skeleton.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusObjectSkeleton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_object_skeleton.t}. *)
 
 (** {2:constructors Constructors} *)
 

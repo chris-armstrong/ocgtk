@@ -5,7 +5,7 @@
     {!class-type-pixbuf_animation_iter_t}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter}. *)
 
-(** The methods, signals and properties of a [GdkPixbufAnimationIter]. *)
+(** The methods, signals and properties of a [PixbufAnimationIter]. *)
 class type pixbuf_animation_iter_t = object
   method get_delay_time : unit -> int
   (** Gets the number of milliseconds the current pixbuf should be displayed, or
@@ -49,6 +49,4 @@ end
 class pixbuf_animation_iter :
   Raw.Pixbuf_animation_iter.t ->
   pixbuf_animation_iter_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkPixbufAnimationIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_animation_iter.t}. *)

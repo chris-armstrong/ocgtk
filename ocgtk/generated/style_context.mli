@@ -38,7 +38,7 @@
     Its methods, signals and properties are on {!class-type-style_context_t}.
     The functions it is built on are in {!Ocgtk.Raw.Style_context}. *)
 
-(** The methods, signals and properties of a [GtkStyleContext]. *)
+(** The methods, signals and properties of a [StyleContext]. *)
 class type style_context_t = object
   method add_class : string -> unit
   (** Adds a style class to [context], so later uses of the style context will
@@ -137,6 +137,4 @@ class type style_context_t = object
 end
 
 class style_context : Raw.Style_context.t -> style_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Style_context.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkStyleContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Style_context.t}. *)

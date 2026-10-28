@@ -30,9 +30,7 @@
     The functions it is built on are in {!Ocgtk.Raw.Tree_selection}. *)
 
 class type tree_selection_t = Tree_selection_and__tree_view.tree_selection_t
-(** The methods, signals and properties of a [GtkTreeSelection]. *)
+(** The methods, signals and properties of a [TreeSelection]. *)
 
 class tree_selection : Raw.Tree_selection.t -> tree_selection_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_selection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTreeSelection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_selection.t}. *)

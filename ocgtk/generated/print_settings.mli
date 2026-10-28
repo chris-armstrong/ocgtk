@@ -14,7 +14,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Print_settings}. *)
 
-(** The methods, signals and properties of a [GtkPrintSettings]. *)
+(** The methods, signals and properties of a [PrintSettings]. *)
 class type print_settings_t = object
   method copy : unit -> print_settings_t
   (** Copies a [GtkPrintSettings] object. *)
@@ -258,9 +258,7 @@ class type print_settings_t = object
 end
 
 class print_settings : Raw.Print_settings.t -> print_settings_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_settings.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkPrintSettings], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_settings.t}. *)
 
 (** {2:constructors Constructors} *)
 

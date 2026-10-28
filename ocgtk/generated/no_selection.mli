@@ -9,7 +9,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.No_selection}. *)
 
-(** The methods, signals and properties of a [GtkNoSelection]. *)
+(** The methods, signals and properties of a [NoSelection]. *)
 class type no_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -29,9 +29,7 @@ class type no_selection_t = object
 end
 
 class no_selection : Raw.No_selection.t -> no_selection_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.No_selection.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkNoSelection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.No_selection.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -9,7 +9,7 @@
     Its methods, signals and properties are on {!class-type-converter_t}. The
     functions it is built on are in {!Ocgio.Raw.Converter}. *)
 
-(** The methods, signals and properties of a [GConverter]. *)
+(** The methods, signals and properties of a [Converter]. *)
 class type converter_t = object
   method convert_bytes : Glib_bytes.t -> (Glib_bytes.t, GError.t) result
   (** Applies [converter] to the data in [bytes]. *)
@@ -23,6 +23,4 @@ class type converter_t = object
 end
 
 class converter : Raw.Converter.t -> converter_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Converter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GConverter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Converter.t}. *)

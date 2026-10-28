@@ -61,7 +61,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Info_bar}."]
 
-(** The methods, signals and properties of a [GtkInfoBar]. *)
+(** The methods, signals and properties of a [InfoBar]. *)
 class type info_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -178,9 +178,7 @@ class type info_bar_t = object
 end
 
 class info_bar : Raw.Info_bar.t -> info_bar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Info_bar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkInfoBar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Info_bar.t}. *)
 
 (** {2:constructors Constructors} *)
 

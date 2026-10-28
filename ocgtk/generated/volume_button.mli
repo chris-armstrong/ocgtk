@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Volume_button}. *)
 
-(** The methods, signals and properties of a [GtkVolumeButton]. *)
+(** The methods, signals and properties of a [VolumeButton]. *)
 class type volume_button_t = object
   inherit Scale_button.scale_button_t
   method use_symbolic : bool
@@ -16,9 +16,7 @@ class type volume_button_t = object
 end
 
 class volume_button : Raw.Volume_button.t -> volume_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Volume_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkVolumeButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Volume_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

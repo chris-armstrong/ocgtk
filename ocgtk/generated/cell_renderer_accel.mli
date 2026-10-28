@@ -9,7 +9,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_accel}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererAccel]. *)
+(** The methods, signals and properties of a [CellRendererAccel]. *)
 class type cell_renderer_accel_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
 
@@ -44,9 +44,7 @@ class type cell_renderer_accel_t = object
 end
 
 class cell_renderer_accel : Raw.Cell_renderer_accel.t -> cell_renderer_accel_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_accel.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkCellRendererAccel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_accel.t}. *)
 
 (** {2:constructors Constructors} *)
 

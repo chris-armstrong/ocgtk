@@ -44,7 +44,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Grid_view}. *)
 
-(** The methods, signals and properties of a [GtkGridView]. *)
+(** The methods, signals and properties of a [GridView]. *)
 class type grid_view_t = object
   inherit List_base.list_base_t
 
@@ -128,9 +128,7 @@ class type grid_view_t = object
 end
 
 class grid_view : Raw.Grid_view.t -> grid_view_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Grid_view.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGridView], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Grid_view.t}. *)
 
 (** {2:constructors Constructors} *)
 

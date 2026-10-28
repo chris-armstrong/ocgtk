@@ -53,7 +53,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Calendar}. *)
 
-(** The methods, signals and properties of a [GtkCalendar]. *)
+(** The methods, signals and properties of a [Calendar]. *)
 class type calendar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -149,9 +149,7 @@ class type calendar_t = object
 end
 
 class calendar : Raw.Calendar.t -> calendar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Calendar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCalendar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Calendar.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -8,7 +8,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_progress}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererProgress]. *)
+(** The methods, signals and properties of a [CellRendererProgress]. *)
 class type cell_renderer_progress_t = object
   inherit Cell_renderer.cell_renderer_t
   inherit Orientable.orientable_t
@@ -30,10 +30,7 @@ end
 class cell_renderer_progress :
   Raw.Cell_renderer_progress.t ->
   cell_renderer_progress_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_progress.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkCellRendererProgress], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_progress.t}. *)
 
 (** {2:constructors Constructors} *)
 

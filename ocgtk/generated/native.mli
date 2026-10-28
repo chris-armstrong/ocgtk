@@ -16,7 +16,7 @@
     Its methods, signals and properties are on {!class-type-native_t}. The
     functions it is built on are in {!Ocgtk.Raw.Native}. *)
 
-(** The methods, signals and properties of a [GtkNative]. *)
+(** The methods, signals and properties of a [Native]. *)
 class type native_t = object
   method get_renderer : unit -> Ocgsk.Renderer.renderer_t option
   (** Returns the renderer that is used for this [GtkNative]. *)
@@ -38,6 +38,4 @@ class type native_t = object
 end
 
 class native : Raw.Native.t -> native_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Native.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkNative], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Native.t}. *)

@@ -11,9 +11,7 @@
     The functions it is built on are in {!Ocgdk.Raw.Cairo_context}. *)
 
 class type cairo_context_t = App_launch_context_cycle_de440b34.cairo_context_t
-(** The methods, signals and properties of a [GdkCairoContext]. *)
+(** The methods, signals and properties of a [CairoContext]. *)
 
 class cairo_context : Raw.Cairo_context.t -> cairo_context_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Cairo_context.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkCairoContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Cairo_context.t}. *)

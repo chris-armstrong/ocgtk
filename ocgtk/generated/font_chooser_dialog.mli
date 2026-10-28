@@ -22,7 +22,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Font_chooser_dialog}. *)
 
-(** The methods, signals and properties of a [GtkFontChooserDialog]. *)
+(** The methods, signals and properties of a [FontChooserDialog]. *)
 class type font_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Font_chooser.font_chooser_t
@@ -30,9 +30,7 @@ class type font_chooser_dialog_t = object
 end
 
 class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Font_chooser_dialog.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkFontChooserDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Font_chooser_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -17,12 +17,10 @@
     Its methods, signals and properties are on {!class-type-glyph_geometry_t}.
     The functions it is built on are in {!Ocpango.Raw.Glyph_geometry}. *)
 
-(** The methods, signals and properties of a [PangoGlyphGeometry]. *)
+(** The methods, signals and properties of a [GlyphGeometry]. *)
 class type glyph_geometry_t = object
   method as_glyph_geometry : Raw.Glyph_geometry.t
 end
 
 class glyph_geometry : Raw.Glyph_geometry.t -> glyph_geometry_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Glyph_geometry.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoGlyphGeometry], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Glyph_geometry.t}. *)

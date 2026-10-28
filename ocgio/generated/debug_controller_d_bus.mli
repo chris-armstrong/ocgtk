@@ -108,7 +108,7 @@
  {!section-constructors}. The functions it is built on are in \
  {!Ocgio.Raw.Debug_controller_d_bus}."]
 
-(** The methods, signals and properties of a [GDebugControllerDBus]. *)
+(** The methods, signals and properties of a [DebugControllerDBus]. *)
 class type debug_controller_d_bus_t = object
   inherit Debug_controller.debug_controller_t
   inherit Initable.initable_t
@@ -165,9 +165,7 @@ end
 class debug_controller_d_bus :
   Raw.Debug_controller_d_bus.t ->
   debug_controller_d_bus_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Debug_controller_d_bus.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDebugControllerDBus], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Debug_controller_d_bus.t}. *)
 
 (** {2:constructors Constructors} *)
 

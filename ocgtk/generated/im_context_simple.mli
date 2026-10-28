@@ -28,7 +28,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Im_context_simple}."]
 
-(** The methods, signals and properties of a [GtkIMContextSimple]. *)
+(** The methods, signals and properties of a [IMContextSimple]. *)
 class type im_context_simple_t = object
   inherit Im_context.im_context_t
 
@@ -39,9 +39,7 @@ class type im_context_simple_t = object
 end
 
 class im_context_simple : Raw.Im_context_simple.t -> im_context_simple_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Im_context_simple.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkIMContextSimple], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Im_context_simple.t}. *)
 
 (** {2:constructors Constructors} *)
 

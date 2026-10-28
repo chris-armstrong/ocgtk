@@ -136,7 +136,7 @@
  {!class-type-application_command_line_t}. The functions it is built on are in \
  {!Ocgio.Raw.Application_command_line}."]
 
-(** The methods, signals and properties of a [GApplicationCommandLine]. *)
+(** The methods, signals and properties of a [ApplicationCommandLine]. *)
 class type application_command_line_t = object
   method create_file_for_arg : string -> App_info_cycle_64c425a0.file_t
   (** Creates a [GFile] corresponding to a filename that was given as part of
@@ -280,7 +280,4 @@ end
 class application_command_line :
   Raw.Application_command_line.t ->
   application_command_line_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Application_command_line.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GApplicationCommandLine], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgio.Raw.Application_command_line.t}. *)

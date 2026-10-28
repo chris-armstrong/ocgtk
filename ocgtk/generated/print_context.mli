@@ -56,7 +56,7 @@
  Its methods, signals and properties are on {!class-type-print_context_t}. The \
  functions it is built on are in {!Ocgtk.Raw.Print_context}."]
 
-(** The methods, signals and properties of a [GtkPrintContext]. *)
+(** The methods, signals and properties of a [PrintContext]. *)
 class type print_context_t = object
   method create_pango_context : unit -> Ocpango.Context.context_t
   (** Creates a new [PangoContext] that can be used with the [GtkPrintContext].
@@ -103,6 +103,4 @@ class type print_context_t = object
 end
 
 class print_context : Raw.Print_context.t -> print_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_context.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPrintContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_context.t}. *)

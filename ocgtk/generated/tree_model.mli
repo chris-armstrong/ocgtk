@@ -167,7 +167,7 @@
  Its methods, signals and properties are on {!class-type-tree_model_t}. The \
  functions it is built on are in {!Ocgtk.Raw.Tree_model}."]
 
-(** The methods, signals and properties of a [GtkTreeModel]. *)
+(** The methods, signals and properties of a [TreeModel]. *)
 class type tree_model_t = object
   method filter_new : Raw.Tree_path.t option -> tree_model_t
   (** Creates a new [GtkTreeModel], with [child_model] as the child_model and
@@ -287,6 +287,4 @@ class type tree_model_t = object
 end
 
 class tree_model : Raw.Tree_model.t -> tree_model_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_model.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreeModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_model.t}. *)

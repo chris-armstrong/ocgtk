@@ -107,7 +107,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgdkpixbuf.Raw.Pixbuf}."]
 
-(** The methods, signals and properties of a [GdkPixbuf]. *)
+(** The methods, signals and properties of a [Pixbuf]. *)
 class type pixbuf_t = object
   inherit Ocgio.Icon.icon_t
   inherit Ocgio.Loadable_icon.loadable_icon_t
@@ -395,9 +395,7 @@ class type pixbuf_t = object
 end
 
 class pixbuf : Raw.Pixbuf.t -> pixbuf_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkPixbuf], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Cancellable}. *)
 
-(** The methods, signals and properties of a [GCancellable]. *)
+(** The methods, signals and properties of a [Cancellable]. *)
 class type cancellable_t = object
   method on_cancelled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -172,9 +172,7 @@ class type cancellable_t = object
 end
 
 class cancellable : Raw.Cancellable.t -> cancellable_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Cancellable.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GCancellable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Cancellable.t}. *)
 
 (** {2:constructors Constructors} *)
 

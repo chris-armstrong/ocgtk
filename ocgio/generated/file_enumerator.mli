@@ -30,9 +30,7 @@
     The functions it is built on are in {!Ocgio.Raw.File_enumerator}. *)
 
 class type file_enumerator_t = App_info_cycle_64c425a0.file_enumerator_t
-(** The methods, signals and properties of a [GFileEnumerator]. *)
+(** The methods, signals and properties of a [FileEnumerator]. *)
 
 class file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_enumerator.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GFileEnumerator], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_enumerator.t}. *)

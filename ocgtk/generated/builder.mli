@@ -306,7 +306,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Builder}."]
 
-(** The methods, signals and properties of a [GtkBuilder]. *)
+(** The methods, signals and properties of a [Builder]. *)
 class type builder_t = object
   method add_from_file : string -> (bool, GError.t) result
   (** Parses a file containing a UI definition and merges it with the current
@@ -471,9 +471,7 @@ class type builder_t = object
 end
 
 class builder : Raw.Builder.t -> builder_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Builder.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBuilder], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

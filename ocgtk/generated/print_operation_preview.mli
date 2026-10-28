@@ -7,7 +7,7 @@
     {!class-type-print_operation_preview_t}. The functions it is built on are in
     {!Ocgtk.Raw.Print_operation_preview}. *)
 
-(** The methods, signals and properties of a [GtkPrintOperationPreview]. *)
+(** The methods, signals and properties of a [PrintOperationPreview]. *)
 class type print_operation_preview_t = object
   method on_got_page_size :
     ?after:bool ->
@@ -60,7 +60,4 @@ end
 class print_operation_preview :
   Raw.Print_operation_preview.t ->
   print_operation_preview_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_operation_preview.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkPrintOperationPreview], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_operation_preview.t}. *)

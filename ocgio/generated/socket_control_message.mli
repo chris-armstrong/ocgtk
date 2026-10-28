@@ -22,7 +22,7 @@
     {!class-type-socket_control_message_t}. The functions it is built on are in
     {!Ocgio.Raw.Socket_control_message}. *)
 
-(** The methods, signals and properties of a [GSocketControlMessage]. *)
+(** The methods, signals and properties of a [SocketControlMessage]. *)
 class type socket_control_message_t = object
   method get_level : unit -> int
   [@@ocaml.doc
@@ -44,6 +44,4 @@ end
 class socket_control_message :
   Raw.Socket_control_message.t ->
   socket_control_message_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_control_message.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSocketControlMessage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_control_message.t}. *)

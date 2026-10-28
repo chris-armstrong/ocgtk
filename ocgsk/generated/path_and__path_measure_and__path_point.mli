@@ -2,7 +2,7 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GskPath]. *)
+(** The methods, signals and properties of a [Path]. *)
 class type path_t = object
   method in_fill : Ocgraphene.Point.point_t -> Enums.fillrule -> bool
   (** Returns whether a point is inside the fill area of a path.
@@ -40,7 +40,7 @@ class type path_t = object
   method as_path : Raw.Path.t
 end
 
-(** The methods, signals and properties of a [GskPathMeasure]. *)
+(** The methods, signals and properties of a [PathMeasure]. *)
 and path_measure_t = object
   method get_length : unit -> float
   (** Gets the length of the path being measured.
@@ -59,7 +59,7 @@ and path_measure_t = object
   method as_path_measure : Raw.Path_measure.t
 end
 
-(** The methods, signals and properties of a [GskPathPoint]. *)
+(** The methods, signals and properties of a [PathPoint]. *)
 and path_point_t = object
   method compare : Raw.Path_point.t -> int
   (** Returns whether [point1] is before or after [point2]. *)
@@ -86,18 +86,12 @@ and path_point_t = object
   method as_path_point : Raw.Path_point.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPath], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path.t}. *)
 class path : Raw.Path.t -> path_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path_measure.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPathMeasure], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path_measure.t}. *)
 
 and path_measure : Raw.Path_measure.t -> path_measure_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path_point.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPathPoint], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path_point.t}. *)
 
 and path_point : Raw.Path_point.t -> path_point_t
 

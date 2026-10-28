@@ -21,7 +21,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Unix_credentials_message}. *)
 
-(** The methods, signals and properties of a [GUnixCredentialsMessage]. *)
+(** The methods, signals and properties of a [UnixCredentialsMessage]. *)
 class type unix_credentials_message_t = object
   inherit Socket_control_message.socket_control_message_t
 
@@ -34,10 +34,7 @@ end
 class unix_credentials_message :
   Raw.Unix_credentials_message.t ->
   unix_credentials_message_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Unix_credentials_message.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GUnixCredentialsMessage], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgio.Raw.Unix_credentials_message.t}. *)
 
 (** {2:constructors Constructors} *)
 

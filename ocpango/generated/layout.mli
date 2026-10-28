@@ -33,12 +33,10 @@
     are in {!Ocpango.Raw.Layout}. *)
 
 class type layout_t = Layout_and__layout_iter.layout_t
-(** The methods, signals and properties of a [PangoLayout]. *)
+(** The methods, signals and properties of a [Layout]. *)
 
 class layout : Raw.Layout.t -> layout_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Layout.t}. *)
 
 (** {2:constructors Constructors} *)
 

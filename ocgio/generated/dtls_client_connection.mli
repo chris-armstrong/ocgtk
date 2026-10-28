@@ -5,7 +5,7 @@
     {!class-type-dtls_client_connection_t}. The functions it is built on are in
     {!Ocgio.Raw.Dtls_client_connection}. *)
 
-(** The methods, signals and properties of a [GDtlsClientConnection]. *)
+(** The methods, signals and properties of a [DtlsClientConnection]. *)
 class type dtls_client_connection_t = object
   method get_server_identity :
     unit ->
@@ -44,6 +44,4 @@ end
 class dtls_client_connection :
   Raw.Dtls_client_connection.t ->
   dtls_client_connection_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Dtls_client_connection.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDtlsClientConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Dtls_client_connection.t}. *)

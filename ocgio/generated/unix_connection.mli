@@ -15,7 +15,7 @@
     Its methods, signals and properties are on {!class-type-unix_connection_t}.
     The functions it is built on are in {!Ocgio.Raw.Unix_connection}. *)
 
-(** The methods, signals and properties of a [GUnixConnection]. *)
+(** The methods, signals and properties of a [UnixConnection]. *)
 class type unix_connection_t = object
   inherit Socket_and__socket_connection.socket_connection_t
 
@@ -93,6 +93,4 @@ class type unix_connection_t = object
 end
 
 class unix_connection : Raw.Unix_connection.t -> unix_connection_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Unix_connection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GUnixConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Unix_connection.t}. *)

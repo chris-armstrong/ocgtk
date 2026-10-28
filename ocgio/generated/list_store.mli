@@ -8,7 +8,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.List_store}. *)
 
-(** The methods, signals and properties of a [GListStore]. *)
+(** The methods, signals and properties of a [ListStore]. *)
 class type list_store_t = object
   inherit List_model.list_model_t
 
@@ -61,9 +61,7 @@ class type list_store_t = object
 end
 
 class list_store : Raw.List_store.t -> list_store_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.List_store.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GListStore], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.List_store.t}. *)
 
 (** {2:constructors Constructors} *)
 

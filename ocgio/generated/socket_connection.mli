@@ -24,9 +24,7 @@
 
 class type socket_connection_t =
   Socket_and__socket_connection.socket_connection_t
-(** The methods, signals and properties of a [GSocketConnection]. *)
+(** The methods, signals and properties of a [SocketConnection]. *)
 
 class socket_connection : Raw.Socket_connection.t -> socket_connection_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_connection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSocketConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_connection.t}. *)

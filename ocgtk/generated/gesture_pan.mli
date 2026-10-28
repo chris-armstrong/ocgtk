@@ -16,7 +16,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Gesture_pan}. *)
 
-(** The methods, signals and properties of a [GtkGesturePan]. *)
+(** The methods, signals and properties of a [GesturePan]. *)
 class type gesture_pan_t = object
   inherit Gesture_drag.gesture_drag_t
 
@@ -38,9 +38,7 @@ class type gesture_pan_t = object
 end
 
 class gesture_pan : Raw.Gesture_pan.t -> gesture_pan_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_pan.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGesturePan], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_pan.t}. *)
 
 (** {2:constructors Constructors} *)
 

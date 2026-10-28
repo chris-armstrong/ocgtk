@@ -15,7 +15,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Box_layout}. *)
 
-(** The methods, signals and properties of a [GtkBoxLayout]. *)
+(** The methods, signals and properties of a [BoxLayout]. *)
 class type box_layout_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -59,9 +59,7 @@ class type box_layout_t = object
 end
 
 class box_layout : Raw.Box_layout.t -> box_layout_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Box_layout.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBoxLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Box_layout.t}. *)
 
 (** {2:constructors Constructors} *)
 

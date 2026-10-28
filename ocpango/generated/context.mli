@@ -15,12 +15,10 @@
     are in {!Ocpango.Raw.Context}. *)
 
 class type context_t = Context_and__font_and__font_map_and__fontset.context_t
-(** The methods, signals and properties of a [PangoContext]. *)
+(** The methods, signals and properties of a [Context]. *)
 
 class context : Raw.Context.t -> context_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Context.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Context.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -16,7 +16,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Socket_client}. *)
 
-(** The methods, signals and properties of a [GSocketClient]. *)
+(** The methods, signals and properties of a [SocketClient]. *)
 class type socket_client_t = object
   method on_event :
     ?after:bool ->
@@ -365,9 +365,7 @@ class type socket_client_t = object
 end
 
 class socket_client : Raw.Socket_client.t -> socket_client_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_client.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSocketClient], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_client.t}. *)
 
 (** {2:constructors Constructors} *)
 

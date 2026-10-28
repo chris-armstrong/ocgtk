@@ -14,7 +14,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Mount_operation}. *)
 
-(** The methods, signals and properties of a [GtkMountOperation]. *)
+(** The methods, signals and properties of a [MountOperation]. *)
 class type mount_operation_t = object
   inherit Ocgio.Mount_operation.mount_operation_t
 
@@ -39,9 +39,7 @@ class type mount_operation_t = object
 end
 
 class mount_operation : Raw.Mount_operation.t -> mount_operation_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Mount_operation.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkMountOperation], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Mount_operation.t}. *)
 
 (** {2:constructors Constructors} *)
 

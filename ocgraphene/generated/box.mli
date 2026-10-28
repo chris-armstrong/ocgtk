@@ -8,12 +8,10 @@
     are in {!Ocgraphene.Raw.Box}. *)
 
 class type box_t = Box_and__sphere.box_t
-(** The methods, signals and properties of a [graphene_box_t]. *)
+(** The methods, signals and properties of a [Box]. *)
 
 class box : Raw.Box.t -> box_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Box.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_box_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Box.t}. *)
 
 (** {2:constructors Constructors} *)
 

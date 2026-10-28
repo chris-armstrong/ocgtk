@@ -45,7 +45,7 @@
  Its methods, signals and properties are on {!class-type-memory_monitor_t}. \
  The functions it is built on are in {!Ocgio.Raw.Memory_monitor}."]
 
-(** The methods, signals and properties of a [GMemoryMonitor]. *)
+(** The methods, signals and properties of a [MemoryMonitor]. *)
 class type memory_monitor_t = object
   method on_low_memory_warning :
     ?after:bool ->
@@ -65,6 +65,4 @@ class type memory_monitor_t = object
 end
 
 class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Memory_monitor.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GMemoryMonitor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Memory_monitor.t}. *)

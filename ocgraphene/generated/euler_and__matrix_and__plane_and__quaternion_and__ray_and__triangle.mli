@@ -4,7 +4,7 @@
     Each has a module of its own that re-exports it; use that module rather than
     this one. *)
 
-(** The methods, signals and properties of a [graphene_euler_t]. *)
+(** The methods, signals and properties of a [Euler]. *)
 class type euler_t = object
   method equal : Raw.Euler.t -> bool
   (** Checks if two #graphene_euler_t are equal. *)
@@ -90,7 +90,7 @@ class type euler_t = object
   method as_euler : Raw.Euler.t
 end
 
-(** The methods, signals and properties of a [graphene_matrix_t]. *)
+(** The methods, signals and properties of a [Matrix]. *)
 and matrix_t = object
   method determinant : unit -> float
   (** Computes the determinant of the given matrix. *)
@@ -302,7 +302,7 @@ and matrix_t = object
   method as_matrix : Raw.Matrix.t
 end
 
-(** The methods, signals and properties of a [graphene_plane_t]. *)
+(** The methods, signals and properties of a [Plane]. *)
 and plane_t = object
   method distance : Raw.Point3_d.t -> float
   (** Computes the distance of [point] from a #graphene_plane_t. *)
@@ -341,7 +341,7 @@ and plane_t = object
   method as_plane : Raw.Plane.t
 end
 
-(** The methods, signals and properties of a [graphene_quaternion_t]. *)
+(** The methods, signals and properties of a [Quaternion]. *)
 and quaternion_t = object
   method dot : Raw.Quaternion.t -> float
   (** Computes the dot product of two #graphene_quaternion_t. *)
@@ -387,7 +387,7 @@ and quaternion_t = object
   method as_quaternion : Raw.Quaternion.t
 end
 
-(** The methods, signals and properties of a [graphene_ray_t]. *)
+(** The methods, signals and properties of a [Ray]. *)
 and ray_t = object
   method equal : Raw.Ray.t -> bool
   (** Checks whether the two given #graphene_ray_t are equal. *)
@@ -438,7 +438,7 @@ and ray_t = object
   method as_ray : Raw.Ray.t
 end
 
-(** The methods, signals and properties of a [graphene_triangle_t]. *)
+(** The methods, signals and properties of a [Triangle]. *)
 and triangle_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether the given triangle [t] contains the point [p]. *)
@@ -472,33 +472,21 @@ and triangle_t = object
   method as_triangle : Raw.Triangle.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Euler.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_euler_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Euler.t}. *)
 class euler : Raw.Euler.t -> euler_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Matrix.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_matrix_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Matrix.t}. *)
 
 and matrix : Raw.Matrix.t -> matrix_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Plane.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_plane_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Plane.t}. *)
 
 and plane : Raw.Plane.t -> plane_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Quaternion.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [graphene_quaternion_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Quaternion.t}. *)
 
 and quaternion : Raw.Quaternion.t -> quaternion_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Ray.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_ray_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Ray.t}. *)
 
 and ray : Raw.Ray.t -> ray_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Triangle.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_triangle_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Triangle.t}. *)
 
 and triangle : Raw.Triangle.t -> triangle_t
 

@@ -2,7 +2,7 @@
     defined together because they refer to each other. Each has a module of its
     own that re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GtkApplication]. *)
+(** The methods, signals and properties of a [Application]. *)
 class type application_t = object
   inherit Ocgio.Application.application_t
 
@@ -192,7 +192,7 @@ class type application_t = object
   method screensaver_active : bool
 end
 
-(** The methods, signals and properties of a [GtkWindow]. *)
+(** The methods, signals and properties of a [Window]. *)
 and window_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -703,7 +703,7 @@ and window_t = object
   method as_window : Raw.Window.t
 end
 
-(** The methods, signals and properties of a [GtkWindowGroup]. *)
+(** The methods, signals and properties of a [WindowGroup]. *)
 and window_group_t = object
   method add_window : window_t -> unit
   (** Adds a window to a [GtkWindowGroup]. *)
@@ -717,18 +717,12 @@ and window_group_t = object
   method as_window_group : Raw.Window_group.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Application.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkApplication], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Application.t}. *)
 class application : Raw.Application.t -> application_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Window.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkWindow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Window.t}. *)
 
 and window : Raw.Window.t -> window_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Window_group.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkWindowGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Window_group.t}. *)
 
 and window_group : Raw.Window_group.t -> window_group_t
 

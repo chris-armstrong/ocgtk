@@ -30,9 +30,7 @@
     functions it is built on are in {!Ocgio.Raw.Mount}. *)
 
 class type mount_t = App_info_cycle_64c425a0.mount_t
-(** The methods, signals and properties of a [GMount]. *)
+(** The methods, signals and properties of a [Mount]. *)
 
 class mount : Raw.Mount.t -> mount_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Mount.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GMount], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Mount.t}. *)

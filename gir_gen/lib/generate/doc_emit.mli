@@ -50,6 +50,12 @@ val after_item : t option -> string
 (** The [ocaml.doc] attribute to write after an item, or [""] when the doc is
     absent or a comment. *)
 
+val around : t option -> string -> string
+(** [around doc item] is [item] with its doc: a comment before it, after a blank
+    line so it cannot also read as the previous item's doc, or an attribute
+    after it. For items written one after another, such as the methods of a
+    class type or a module's vals. *)
+
 val member_suffix : t option -> string
 (** The text to write after a polymorphic-variant tag: a leading-space comment,
     or an [ocaml.doc] attribute on the tag. [""] when the doc is absent. *)

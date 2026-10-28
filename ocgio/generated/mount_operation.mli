@@ -25,7 +25,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Mount_operation}. *)
 
-(** The methods, signals and properties of a [GMountOperation]. *)
+(** The methods, signals and properties of a [MountOperation]. *)
 class type mount_operation_t = object
   method on_aborted :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -148,9 +148,7 @@ class type mount_operation_t = object
 end
 
 class mount_operation : Raw.Mount_operation.t -> mount_operation_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Mount_operation.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GMountOperation], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Mount_operation.t}. *)
 
 (** {2:constructors Constructors} *)
 

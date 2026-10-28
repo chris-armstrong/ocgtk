@@ -38,7 +38,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Lock_button}. *)
 
-(** The methods, signals and properties of a [GtkLockButton]. *)
+(** The methods, signals and properties of a [LockButton]. *)
 class type lock_button_t = object
   inherit Button.button_t
 
@@ -62,9 +62,7 @@ class type lock_button_t = object
 end
 
 class lock_button : Raw.Lock_button.t -> lock_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Lock_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkLockButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Lock_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

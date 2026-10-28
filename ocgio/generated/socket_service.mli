@@ -27,7 +27,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Socket_service}. *)
 
-(** The methods, signals and properties of a [GSocketService]. *)
+(** The methods, signals and properties of a [SocketService]. *)
 class type socket_service_t = object
   inherit Socket_listener.socket_listener_t
 
@@ -65,9 +65,7 @@ class type socket_service_t = object
 end
 
 class socket_service : Raw.Socket_service.t -> socket_service_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_service.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSocketService], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_service.t}. *)
 
 (** {2:constructors Constructors} *)
 

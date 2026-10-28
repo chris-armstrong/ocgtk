@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Texture_node}. *)
 
-(** The methods, signals and properties of a [GskTextureNode]. *)
+(** The methods, signals and properties of a [TextureNode]. *)
 class type texture_node_t = object
   inherit Render_node.render_node_t
 
@@ -15,9 +15,7 @@ class type texture_node_t = object
 end
 
 class texture_node : Raw.Texture_node.t -> texture_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Texture_node.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskTextureNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Texture_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

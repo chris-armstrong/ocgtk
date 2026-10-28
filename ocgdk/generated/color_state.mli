@@ -14,9 +14,7 @@
     functions it is built on are in {!Ocgdk.Raw.Color_state}. *)
 
 class type color_state_t = Cicp_params_and__color_state.color_state_t
-(** The methods, signals and properties of a [GdkColorState]. *)
+(** The methods, signals and properties of a [ColorState]. *)
 
 class color_state : Raw.Color_state.t -> color_state_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Color_state.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkColorState], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Color_state.t}. *)

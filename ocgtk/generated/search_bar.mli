@@ -52,7 +52,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Search_bar}. *)
 
-(** The methods, signals and properties of a [GtkSearchBar]. *)
+(** The methods, signals and properties of a [SearchBar]. *)
 class type search_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -123,9 +123,7 @@ class type search_bar_t = object
 end
 
 class search_bar : Raw.Search_bar.t -> search_bar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Search_bar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSearchBar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Search_bar.t}. *)
 
 (** {2:constructors Constructors} *)
 

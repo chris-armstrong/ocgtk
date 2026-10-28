@@ -6,7 +6,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Gesture_stylus}. *)
 
-(** The methods, signals and properties of a [GtkGestureStylus]. *)
+(** The methods, signals and properties of a [GestureStylus]. *)
 class type gesture_stylus_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -61,9 +61,7 @@ class type gesture_stylus_t = object
 end
 
 class gesture_stylus : Raw.Gesture_stylus.t -> gesture_stylus_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_stylus.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkGestureStylus], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_stylus.t}. *)
 
 (** {2:constructors Constructors} *)
 

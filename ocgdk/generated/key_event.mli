@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-key_event_t}. The
     functions it is built on are in {!Ocgdk.Raw.Key_event}. *)
 
-(** The methods, signals and properties of a [GdkKeyEvent]. *)
+(** The methods, signals and properties of a [KeyEvent]. *)
 class type key_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
@@ -39,6 +39,4 @@ class type key_event_t = object
 end
 
 class key_event : Raw.Key_event.t -> key_event_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Key_event.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkKeyEvent], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Key_event.t}. *)

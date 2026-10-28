@@ -27,7 +27,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.Texture}. *)
 
-(** The methods, signals and properties of a [GdkTexture]. *)
+(** The methods, signals and properties of a [Texture]. *)
 class type texture_t = object
   inherit Paintable.paintable_t
   inherit Ocgio.Icon.icon_t
@@ -98,9 +98,7 @@ class type texture_t = object
 end
 
 class texture : Raw.Texture.t -> texture_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Texture.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkTexture], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Texture.t}. *)
 
 (** {2:constructors Constructors} *)
 

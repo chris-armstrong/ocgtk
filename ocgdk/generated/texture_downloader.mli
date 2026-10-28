@@ -13,7 +13,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Texture_downloader}. *)
 
-(** The methods, signals and properties of a [GdkTextureDownloader]. *)
+(** The methods, signals and properties of a [TextureDownloader]. *)
 class type texture_downloader_t = object
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state that the data will be downloaded in. *)
@@ -42,9 +42,7 @@ class type texture_downloader_t = object
 end
 
 class texture_downloader : Raw.Texture_downloader.t -> texture_downloader_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Texture_downloader.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkTextureDownloader], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Texture_downloader.t}. *)
 
 (** {2:constructors Constructors} *)
 

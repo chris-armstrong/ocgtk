@@ -13,7 +13,7 @@
  Its methods, signals and properties are on {!class-type-drop_t}. The \
  functions it is built on are in {!Ocgdk.Raw.Drop}."]
 
-(** The methods, signals and properties of a [GdkDrop]. *)
+(** The methods, signals and properties of a [Drop]. *)
 class type drop_t = object
   method finish : Enums.dragaction -> unit
   (** Ends the drag operation after a drop.
@@ -80,6 +80,4 @@ class type drop_t = object
 end
 
 class drop : Raw.Drop.t -> drop_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Drop.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkDrop], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Drop.t}. *)

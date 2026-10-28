@@ -9,7 +9,7 @@
     Its methods, signals and properties are on {!class-type-frame_timings_t}.
     The functions it is built on are in {!Ocgdk.Raw.Frame_timings}. *)
 
-(** The methods, signals and properties of a [GdkFrameTimings]. *)
+(** The methods, signals and properties of a [FrameTimings]. *)
 class type frame_timings_t = object
   method get_complete : unit -> bool
   (** Returns whether [timings] are complete.
@@ -68,6 +68,4 @@ class type frame_timings_t = object
 end
 
 class frame_timings : Raw.Frame_timings.t -> frame_timings_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Frame_timings.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkFrameTimings], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Frame_timings.t}. *)

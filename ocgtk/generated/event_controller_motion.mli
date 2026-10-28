@@ -11,7 +11,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_motion}. *)
 
-(** The methods, signals and properties of a [GtkEventControllerMotion]. *)
+(** The methods, signals and properties of a [EventControllerMotion]. *)
 class type event_controller_motion_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -47,10 +47,7 @@ end
 class event_controller_motion :
   Raw.Event_controller_motion.t ->
   event_controller_motion_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller_motion.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkEventControllerMotion], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_motion.t}. *)
 
 (** {2:constructors Constructors} *)
 

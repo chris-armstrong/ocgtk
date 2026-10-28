@@ -14,7 +14,7 @@
     {!class-type-symbolic_paintable_t}. The functions it is built on are in
     {!Ocgtk.Raw.Symbolic_paintable}. *)
 
-(** The methods, signals and properties of a [GtkSymbolicPaintable]. *)
+(** The methods, signals and properties of a [SymbolicPaintable]. *)
 class type symbolic_paintable_t = object
   method snapshot_symbolic :
     Ocgdk.Snapshot.snapshot_t ->
@@ -32,6 +32,4 @@ class type symbolic_paintable_t = object
 end
 
 class symbolic_paintable : Raw.Symbolic_paintable.t -> symbolic_paintable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Symbolic_paintable.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkSymbolicPaintable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Symbolic_paintable.t}. *)

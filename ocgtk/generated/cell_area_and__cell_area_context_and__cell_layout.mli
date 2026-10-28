@@ -3,7 +3,7 @@
     Each has a module of its own that re-exports it; use that module rather than
     this one. *)
 
-(** The methods, signals and properties of a [GtkCellArea]. *)
+(** The methods, signals and properties of a [CellArea]. *)
 class type cell_area_t = object
   inherit Buildable.buildable_t
 
@@ -216,7 +216,7 @@ class type cell_area_t = object
   method as_cell_area : Raw.Cell_area.t
 end
 
-(** The methods, signals and properties of a [GtkCellAreaContext]. *)
+(** The methods, signals and properties of a [CellAreaContext]. *)
 and cell_area_context_t = object
   method allocate : int -> int -> unit
   (** Allocates a width and/or a height for all rows which are to be rendered
@@ -284,7 +284,7 @@ and cell_area_context_t = object
   method as_cell_area_context : Raw.Cell_area_context.t
 end
 
-(** The methods, signals and properties of a [GtkCellLayout]. *)
+(** The methods, signals and properties of a [CellLayout]. *)
 and cell_layout_t = object
   method add_attribute : Cell_renderer.cell_renderer_t -> string -> int -> unit
   [@@ocaml.doc
@@ -334,17 +334,11 @@ and cell_layout_t = object
   method as_cell_layout : Raw.Cell_layout.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellArea], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_area.t}. *)
 class cell_area : Raw.Cell_area.t -> cell_area_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area_context.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkCellAreaContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_area_context.t}. *)
 
 and cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_layout.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_layout.t}. *)
 
 and cell_layout : Raw.Cell_layout.t -> cell_layout_t

@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Frustum}. *)
 
-(** The methods, signals and properties of a [graphene_frustum_t]. *)
+(** The methods, signals and properties of a [Frustum]. *)
 class type frustum_t = object
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether a point is inside the volume defined by the given
@@ -46,9 +46,7 @@ class type frustum_t = object
 end
 
 class frustum : Raw.Frustum.t -> frustum_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Frustum.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_frustum_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Frustum.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Context: Context *)
 
-(** Bindings for [cairo_t].
+(** Bindings for [Context].
 
     The class built on this module is in {!Occairo.Context}. *)
 

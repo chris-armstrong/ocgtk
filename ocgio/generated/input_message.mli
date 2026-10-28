@@ -21,12 +21,10 @@
     Its methods, signals and properties are on {!class-type-input_message_t}.
     The functions it is built on are in {!Ocgio.Raw.Input_message}. *)
 
-(** The methods, signals and properties of a [GInputMessage]. *)
+(** The methods, signals and properties of a [InputMessage]. *)
 class type input_message_t = object
   method as_input_message : Raw.Input_message.t
 end
 
 class input_message : Raw.Input_message.t -> input_message_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Input_message.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GInputMessage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Input_message.t}. *)

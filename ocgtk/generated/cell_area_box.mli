@@ -19,7 +19,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Cell_area_box}."]
 
-(** The methods, signals and properties of a [GtkCellAreaBox]. *)
+(** The methods, signals and properties of a [CellAreaBox]. *)
 class type cell_area_box_t = object
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   inherit Orientable.orientable_t
@@ -34,9 +34,7 @@ class type cell_area_box_t = object
 end
 
 class cell_area_box : Raw.Cell_area_box.t -> cell_area_box_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area_box.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellAreaBox], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_area_box.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -12,7 +12,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Content_provider}. *)
 
-(** The methods, signals and properties of a [GdkContentProvider]. *)
+(** The methods, signals and properties of a [ContentProvider]. *)
 class type content_provider_t = object
   method on_content_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -43,9 +43,7 @@ class type content_provider_t = object
 end
 
 class content_provider : Raw.Content_provider.t -> content_provider_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Content_provider.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkContentProvider], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Content_provider.t}. *)
 
 (** {2:constructors Constructors} *)
 

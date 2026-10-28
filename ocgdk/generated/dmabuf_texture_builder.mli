@@ -68,7 +68,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Dmabuf_texture_builder}. *)
 
-(** The methods, signals and properties of a [GdkDmabufTextureBuilder]. *)
+(** The methods, signals and properties of a [DmabufTextureBuilder]. *)
 class type dmabuf_texture_builder_t = object
   method get_color_state : unit -> Raw.Color_state.t option
   (** Gets the color state previously set via
@@ -195,10 +195,7 @@ end
 class dmabuf_texture_builder :
   Raw.Dmabuf_texture_builder.t ->
   dmabuf_texture_builder_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Dmabuf_texture_builder.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkDmabufTextureBuilder], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgdk.Raw.Dmabuf_texture_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

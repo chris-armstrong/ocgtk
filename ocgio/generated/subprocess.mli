@@ -61,7 +61,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Subprocess}. *)
 
-(** The methods, signals and properties of a [GSubprocess]. *)
+(** The methods, signals and properties of a [Subprocess]. *)
 class type subprocess_t = object
   inherit Initable.initable_t
 
@@ -195,9 +195,7 @@ class type subprocess_t = object
 end
 
 class subprocess : Raw.Subprocess.t -> subprocess_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Subprocess.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSubprocess], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Subprocess.t}. *)
 
 (** {2:constructors Constructors} *)
 

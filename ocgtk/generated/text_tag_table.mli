@@ -20,7 +20,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Text_tag_table}."]
 
-(** The methods, signals and properties of a [GtkTextTagTable]. *)
+(** The methods, signals and properties of a [TextTagTable]. *)
 class type text_tag_table_t = object
   inherit Buildable.buildable_t
 
@@ -73,9 +73,7 @@ class type text_tag_table_t = object
 end
 
 class text_tag_table : Raw.Text_tag_table.t -> text_tag_table_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_tag_table.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTextTagTable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_tag_table.t}. *)
 
 (** {2:constructors Constructors} *)
 

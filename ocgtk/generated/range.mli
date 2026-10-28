@@ -16,7 +16,7 @@
     Its methods, signals and properties are on {!class-type-range_t}. The
     functions it is built on are in {!Ocgtk.Raw.Range}. *)
 
-(** The methods, signals and properties of a [GtkRange]. *)
+(** The methods, signals and properties of a [Range]. *)
 class type range_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -191,6 +191,4 @@ class type range_t = object
 end
 
 class range : Raw.Range.t -> range_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Range.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkRange], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Range.t}. *)

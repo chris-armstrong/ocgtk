@@ -21,9 +21,7 @@
     functions it is built on are in {!Ocgsk.Raw.Path}. *)
 
 class type path_t = Path_and__path_measure_and__path_point.path_t
-(** The methods, signals and properties of a [GskPath]. *)
+(** The methods, signals and properties of a [Path]. *)
 
 class path : Raw.Path.t -> path_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPath], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path.t}. *)

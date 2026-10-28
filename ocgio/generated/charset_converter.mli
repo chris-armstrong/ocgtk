@@ -6,7 +6,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Charset_converter}. *)
 
-(** The methods, signals and properties of a [GCharsetConverter]. *)
+(** The methods, signals and properties of a [CharsetConverter]. *)
 class type charset_converter_t = object
   inherit Converter.converter_t
   inherit Initable.initable_t
@@ -26,9 +26,7 @@ class type charset_converter_t = object
 end
 
 class charset_converter : Raw.Charset_converter.t -> charset_converter_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Charset_converter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GCharsetConverter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Charset_converter.t}. *)
 
 (** {2:constructors Constructors} *)
 

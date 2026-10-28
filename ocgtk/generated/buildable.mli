@@ -14,7 +14,7 @@
     Its methods, signals and properties are on {!class-type-buildable_t}. The
     functions it is built on are in {!Ocgtk.Raw.Buildable}. *)
 
-(** The methods, signals and properties of a [GtkBuildable]. *)
+(** The methods, signals and properties of a [Buildable]. *)
 class type buildable_t = object
   method get_buildable_id : unit -> string option
   (** Gets the ID of the [buildable] object.
@@ -26,6 +26,4 @@ class type buildable_t = object
 end
 
 class buildable : Raw.Buildable.t -> buildable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Buildable.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBuildable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Buildable.t}. *)

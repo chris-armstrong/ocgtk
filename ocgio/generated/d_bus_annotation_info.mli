@@ -4,7 +4,7 @@
     {!class-type-d_bus_annotation_info_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_annotation_info}. *)
 
-(** The methods, signals and properties of a [GDBusAnnotationInfo]. *)
+(** The methods, signals and properties of a [DBusAnnotationInfo]. *)
 class type d_bus_annotation_info_t = object
   method ref : unit -> Raw.D_bus_annotation_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the
@@ -16,6 +16,4 @@ end
 class d_bus_annotation_info :
   Raw.D_bus_annotation_info.t ->
   d_bus_annotation_info_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_annotation_info.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusAnnotationInfo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_annotation_info.t}. *)

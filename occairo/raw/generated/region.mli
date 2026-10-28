@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Region: Region *)
 
-(** Bindings for [cairo_region_t].
+(** Bindings for [Region].
 
     The class built on this module is in {!Occairo.Region}. *)
 

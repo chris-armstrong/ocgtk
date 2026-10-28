@@ -10,7 +10,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Bookmark_list}. *)
 
-(** The methods, signals and properties of a [GtkBookmarkList]. *)
+(** The methods, signals and properties of a [BookmarkList]. *)
 class type bookmark_list_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -47,9 +47,7 @@ class type bookmark_list_t = object
 end
 
 class bookmark_list : Raw.Bookmark_list.t -> bookmark_list_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Bookmark_list.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBookmarkList], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Bookmark_list.t}. *)
 
 (** {2:constructors Constructors} *)
 

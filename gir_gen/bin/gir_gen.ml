@@ -858,7 +858,7 @@ let generate_cycle_member_shims ~ctx ~dirs ~module_group =
               (Generate.Ml_interface.generate_cycle_member_shim ~output_mode
                  ~namespace:ctx.Types.namespace.namespace_name
                  ~combined_module_name ~member_name:entity.name
-                 ~member_c_type:entity.c_type ~member_doc:entity.doc))
+                 ~member_doc:entity.doc))
         [
           (Generate.Ml_interface.Interface, ".mli");
           (Generate.Ml_interface.Implementation, ".ml");

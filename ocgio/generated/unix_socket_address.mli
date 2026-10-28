@@ -23,7 +23,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Unix_socket_address}. *)
 
-(** The methods, signals and properties of a [GUnixSocketAddress]. *)
+(** The methods, signals and properties of a [UnixSocketAddress]. *)
 class type unix_socket_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -53,9 +53,7 @@ class type unix_socket_address_t = object
 end
 
 class unix_socket_address : Raw.Unix_socket_address.t -> unix_socket_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Unix_socket_address.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GUnixSocketAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Unix_socket_address.t}. *)
 
 (** {2:constructors Constructors} *)
 

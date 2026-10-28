@@ -31,9 +31,7 @@
 class type tooltip_t =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .tooltip_t
-(** The methods, signals and properties of a [GtkTooltip]. *)
+(** The methods, signals and properties of a [Tooltip]. *)
 
 class tooltip : Raw.Tooltip.t -> tooltip_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tooltip.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTooltip], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tooltip.t}. *)

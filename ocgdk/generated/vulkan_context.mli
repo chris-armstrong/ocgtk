@@ -14,9 +14,7 @@
     The functions it is built on are in {!Ocgdk.Raw.Vulkan_context}. *)
 
 class type vulkan_context_t = App_launch_context_cycle_de440b34.vulkan_context_t
-(** The methods, signals and properties of a [GdkVulkanContext]. *)
+(** The methods, signals and properties of a [VulkanContext]. *)
 
 class vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Vulkan_context.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkVulkanContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Vulkan_context.t}. *)

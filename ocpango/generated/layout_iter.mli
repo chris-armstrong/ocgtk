@@ -12,9 +12,7 @@
     functions it is built on are in {!Ocpango.Raw.Layout_iter}. *)
 
 class type layout_iter_t = Layout_and__layout_iter.layout_iter_t
-(** The methods, signals and properties of a [PangoLayoutIter]. *)
+(** The methods, signals and properties of a [LayoutIter]. *)
 
 class layout_iter : Raw.Layout_iter.t -> layout_iter_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout_iter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoLayoutIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Layout_iter.t}. *)

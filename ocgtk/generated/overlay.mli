@@ -34,7 +34,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Overlay}. *)
 
-(** The methods, signals and properties of a [GtkOverlay]. *)
+(** The methods, signals and properties of a [Overlay]. *)
 class type overlay_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -107,9 +107,7 @@ class type overlay_t = object
 end
 
 class overlay : Raw.Overlay.t -> overlay_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Overlay.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkOverlay], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Overlay.t}. *)
 
 (** {2:constructors Constructors} *)
 

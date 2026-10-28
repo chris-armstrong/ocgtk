@@ -42,7 +42,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Link_button}. *)
 
-(** The methods, signals and properties of a [GtkLinkButton]. *)
+(** The methods, signals and properties of a [LinkButton]. *)
 class type link_button_t = object
   inherit Button.button_t
 
@@ -82,9 +82,7 @@ class type link_button_t = object
 end
 
 class link_button : Raw.Link_button.t -> link_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Link_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkLinkButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Link_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

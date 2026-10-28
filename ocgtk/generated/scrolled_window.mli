@@ -79,7 +79,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Scrolled_window}. *)
 
-(** The methods, signals and properties of a [GtkScrolledWindow]. *)
+(** The methods, signals and properties of a [ScrolledWindow]. *)
 class type scrolled_window_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -315,9 +315,7 @@ class type scrolled_window_t = object
 end
 
 class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Scrolled_window.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkScrolledWindow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Scrolled_window.t}. *)
 
 (** {2:constructors Constructors} *)
 

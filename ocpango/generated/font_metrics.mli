@@ -13,7 +13,7 @@
     Its methods, signals and properties are on {!class-type-font_metrics_t}. The
     functions it is built on are in {!Ocpango.Raw.Font_metrics}. *)
 
-(** The methods, signals and properties of a [PangoFontMetrics]. *)
+(** The methods, signals and properties of a [FontMetrics]. *)
 class type font_metrics_t = object
   method get_approximate_char_width : unit -> int
   (** Gets the approximate character width for a font metrics structure.
@@ -81,6 +81,4 @@ class type font_metrics_t = object
 end
 
 class font_metrics : Raw.Font_metrics.t -> font_metrics_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_metrics.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoFontMetrics], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_metrics.t}. *)

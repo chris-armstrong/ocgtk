@@ -12,16 +12,14 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Simple_io_stream}. *)
 
-(** The methods, signals and properties of a [GSimpleIOStream]. *)
+(** The methods, signals and properties of a [SimpleIOStream]. *)
 class type simple_io_stream_t = object
   inherit Io_stream.io_stream_t
   method as_simple_io_stream : Raw.Simple_io_stream.t
 end
 
 class simple_io_stream : Raw.Simple_io_stream.t -> simple_io_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Simple_io_stream.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSimpleIOStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Simple_io_stream.t}. *)
 
 (** {2:constructors Constructors} *)
 

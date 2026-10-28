@@ -10,7 +10,7 @@
     {!class-type-d_bus_method_invocation_t}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_method_invocation}. *)
 
-(** The methods, signals and properties of a [GDBusMethodInvocation]. *)
+(** The methods, signals and properties of a [DBusMethodInvocation]. *)
 class type d_bus_method_invocation_t = object
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] the method was invoked on. *)
@@ -136,6 +136,4 @@ end
 class d_bus_method_invocation :
   Raw.D_bus_method_invocation.t ->
   d_bus_method_invocation_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_method_invocation.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusMethodInvocation], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_method_invocation.t}. *)

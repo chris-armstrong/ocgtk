@@ -43,7 +43,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.File_filter}."]
 
-(** The methods, signals and properties of a [GtkFileFilter]. *)
+(** The methods, signals and properties of a [FileFilter]. *)
 class type file_filter_t = object
   inherit Filter.filter_t
   inherit Buildable.buildable_t
@@ -100,9 +100,7 @@ class type file_filter_t = object
 end
 
 class file_filter : Raw.File_filter.t -> file_filter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_filter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFileFilter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_filter.t}. *)
 
 (** {2:constructors Constructors} *)
 

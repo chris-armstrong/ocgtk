@@ -11,7 +11,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Media_file}. *)
 
-(** The methods, signals and properties of a [GtkMediaFile]. *)
+(** The methods, signals and properties of a [MediaFile]. *)
 class type media_file_t = object
   inherit Media_stream.media_stream_t
 
@@ -59,9 +59,7 @@ class type media_file_t = object
 end
 
 class media_file : Raw.Media_file.t -> media_file_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Media_file.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkMediaFile], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Media_file.t}. *)
 
 (** {2:constructors Constructors} *)
 

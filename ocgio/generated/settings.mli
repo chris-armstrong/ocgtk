@@ -321,7 +321,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgio.Raw.Settings}."]
 
-(** The methods, signals and properties of a [GSettings]. *)
+(** The methods, signals and properties of a [Settings]. *)
 class type settings_t = object
   method on_changed :
     ?after:bool ->
@@ -757,9 +757,7 @@ class type settings_t = object
 end
 
 class settings : Raw.Settings.t -> settings_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Settings.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSettings], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Settings.t}. *)
 
 (** {2:constructors Constructors} *)
 

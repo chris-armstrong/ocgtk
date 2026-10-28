@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_key}. *)
 
-(** The methods, signals and properties of a [GtkEventControllerKey]. *)
+(** The methods, signals and properties of a [EventControllerKey]. *)
 class type event_controller_key_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -70,9 +70,7 @@ end
 class event_controller_key :
   Raw.Event_controller_key.t ->
   event_controller_key_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller_key.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkEventControllerKey], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_key.t}. *)
 
 (** {2:constructors Constructors} *)
 

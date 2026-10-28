@@ -67,7 +67,7 @@
     {!class-type-tree_model_filter_t}. The functions it is built on are in
     {!Ocgtk.Raw.Tree_model_filter}. *)
 
-(** The methods, signals and properties of a [GtkTreeModelFilter]. *)
+(** The methods, signals and properties of a [TreeModelFilter]. *)
 class type tree_model_filter_t = object
   inherit Tree_drag_source.tree_drag_source_t
   inherit Tree_model.tree_model_t
@@ -117,6 +117,4 @@ class type tree_model_filter_t = object
 end
 
 class tree_model_filter : Raw.Tree_model_filter.t -> tree_model_filter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_model_filter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTreeModelFilter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_model_filter.t}. *)

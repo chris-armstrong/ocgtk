@@ -11,7 +11,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Subprocess_launcher}. *)
 
-(** The methods, signals and properties of a [GSubprocessLauncher]. *)
+(** The methods, signals and properties of a [SubprocessLauncher]. *)
 class type subprocess_launcher_t = object
   method close : unit -> unit
   (** Closes all the file descriptors previously passed to the object with
@@ -207,9 +207,7 @@ class type subprocess_launcher_t = object
 end
 
 class subprocess_launcher : Raw.Subprocess_launcher.t -> subprocess_launcher_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Subprocess_launcher.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSubprocessLauncher], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Subprocess_launcher.t}. *)
 
 (** {2:constructors Constructors} *)
 

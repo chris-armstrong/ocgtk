@@ -79,7 +79,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Level_bar}."]
 
-(** The methods, signals and properties of a [GtkLevelBar]. *)
+(** The methods, signals and properties of a [LevelBar]. *)
 class type level_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -158,9 +158,7 @@ class type level_bar_t = object
 end
 
 class level_bar : Raw.Level_bar.t -> level_bar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Level_bar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkLevelBar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Level_bar.t}. *)
 
 (** {2:constructors Constructors} *)
 

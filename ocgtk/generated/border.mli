@@ -6,15 +6,13 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Border}. *)
 
-(** The methods, signals and properties of a [GtkBorder]. *)
+(** The methods, signals and properties of a [Border]. *)
 class type border_t = object
   method as_border : Raw.Border.t
 end
 
 class border : Raw.Border.t -> border_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Border.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBorder], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Border.t}. *)
 
 (** {2:constructors Constructors} *)
 

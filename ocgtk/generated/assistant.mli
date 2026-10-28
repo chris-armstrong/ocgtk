@@ -38,7 +38,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Assistant}. *)
 
-(** The methods, signals and properties of a [GtkAssistant]. *)
+(** The methods, signals and properties of a [Assistant]. *)
 class type assistant_t = object
   inherit Application_and__window_and__window_group.window_t
 
@@ -239,9 +239,7 @@ class type assistant_t = object
 end
 
 class assistant : Raw.Assistant.t -> assistant_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Assistant.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAssistant], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Assistant.t}. *)
 
 (** {2:constructors Constructors} *)
 

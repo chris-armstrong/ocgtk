@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GtkATContext]. *)
+(** The methods, signals and properties of a [ATContext]. *)
 class type at_context_t = object
   method on_state_change :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -20,7 +20,7 @@ class type at_context_t = object
   method as_at_context : Raw.At_context.t
 end
 
-(** The methods, signals and properties of a [GtkAccessible]. *)
+(** The methods, signals and properties of a [Accessible]. *)
 and accessible_t = object
   method announce : string -> Enums.accessibleannouncementpriority -> unit
   (** Requests the user's screen reader to announce the given message.
@@ -93,13 +93,9 @@ and accessible_t = object
   method as_accessible : Raw.Accessible.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.At_context.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkATContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.At_context.t}. *)
 class at_context : Raw.At_context.t -> at_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Accessible.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAccessible], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Accessible.t}. *)
 
 and accessible : Raw.Accessible.t -> accessible_t
 

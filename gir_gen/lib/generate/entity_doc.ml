@@ -18,24 +18,24 @@ let layer2_path ~namespace ~class_name =
 (* The first paragraph is the module's synopsis on its parent's page too, where
    the class type is not in scope, so a module without a class doc starts with
    a sentence of its own rather than the navigation paragraph. *)
-let synopsis_fallback ~c_type = Fmt.str "Bindings for [%s]." c_type
+let synopsis_fallback ~class_name = Fmt.str "Bindings for [%s]." class_name
 
-let l1_module ~namespace ~class_name ~c_type ~class_doc =
+let l1_module ~namespace ~class_name ~class_doc =
   Doc_emit.item_doc ~indent:""
-    ~fallback:(synopsis_fallback ~c_type)
+    ~fallback:(synopsis_fallback ~class_name)
     ~suffix:
       (Fmt.str "The class built on this module is in {!%s}."
          (layer2_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
-let l2_module ~namespace ~class_name ~c_type ~has_constructors ~class_doc =
+let l2_module ~namespace ~class_name ~has_constructors ~class_doc =
   let constructors =
     if has_constructors then
       " Its constructors are under {!section-constructors}."
     else ""
   in
   Doc_emit.item_doc ~indent:""
-    ~fallback:(synopsis_fallback ~c_type)
+    ~fallback:(synopsis_fallback ~class_name)
     ~suffix:
       (Fmt.str
          "Its methods, signals and properties are on {!class-type-%s}.%s The \
@@ -45,17 +45,13 @@ let l2_module ~namespace ~class_name ~c_type ~has_constructors ~class_doc =
          (layer1_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
-let class_type ~c_type =
-  canned (Fmt.str "The methods, signals and properties of a [%s]." c_type)
+let class_type ~class_name =
+  canned (Fmt.str "The methods, signals and properties of a [%s]." class_name)
 
-let class_ ~namespace ~class_name ~c_type =
+let class_ ~namespace ~class_name =
   canned
-    (Fmt.str
-       "Wraps a layer 1 handle, {!%s.t}. Apply it directly only to convert a \
-        handle obtained from layer 1: constructors, and methods that return a \
-        [%s], give one already wrapped."
-       (layer1_path ~namespace ~class_name)
-       c_type)
+    (Fmt.str "Wraps a raw handle of {!%s.t}."
+       (layer1_path ~namespace ~class_name))
 
 type layer = Layer1 | Layer2
 
@@ -90,7 +86,7 @@ let upstream_base_url = function
 
 let constructors_heading = "(** {2:constructors Constructors} *)"
 
-let constructor ~namespace ~class_name ~c_type (ctor : Types.gir_constructor) =
+let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
   let c_function = Fmt.str "[%s]" ctor.c_identifier in
   let wrapped =
     upstream_base_url namespace
@@ -99,5 +95,5 @@ let constructor ~namespace ~class_name ~c_type (ctor : Types.gir_constructor) =
           c_function)
   in
   Doc_emit.item_doc ~indent:""
-    ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." c_type wrapped)
+    ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." class_name wrapped)
     ~context:Doc_translate.Member ctor.ctor_doc

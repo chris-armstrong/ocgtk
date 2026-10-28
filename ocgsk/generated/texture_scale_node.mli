@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Texture_scale_node}. *)
 
-(** The methods, signals and properties of a [GskTextureScaleNode]. *)
+(** The methods, signals and properties of a [TextureScaleNode]. *)
 class type texture_scale_node_t = object
   inherit Render_node.render_node_t
 
@@ -20,9 +20,7 @@ class type texture_scale_node_t = object
 end
 
 class texture_scale_node : Raw.Texture_scale_node.t -> texture_scale_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Texture_scale_node.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskTextureScaleNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Texture_scale_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -14,7 +14,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Shortcut_trigger}. *)
 
-(** The methods, signals and properties of a [GtkShortcutTrigger]. *)
+(** The methods, signals and properties of a [ShortcutTrigger]. *)
 class type shortcut_trigger_t = object
   method compare : shortcut_trigger_t -> int
   (** The types of [trigger1] and [trigger2] are [gconstpointer] only to allow
@@ -65,9 +65,7 @@ class type shortcut_trigger_t = object
 end
 
 class shortcut_trigger : Raw.Shortcut_trigger.t -> shortcut_trigger_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut_trigger.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkShortcutTrigger], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcut_trigger.t}. *)
 
 (** {2:constructors Constructors} *)
 

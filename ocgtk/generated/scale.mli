@@ -91,7 +91,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Scale}. *)
 
-(** The methods, signals and properties of a [GtkScale]. *)
+(** The methods, signals and properties of a [Scale]. *)
 class type scale_t = object
   inherit Range.range_t
 
@@ -160,9 +160,7 @@ class type scale_t = object
 end
 
 class scale : Raw.Scale.t -> scale_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Scale.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkScale], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Scale.t}. *)
 
 (** {2:constructors Constructors} *)
 

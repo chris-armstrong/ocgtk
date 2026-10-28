@@ -10,7 +10,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Menu}. *)
 
-(** The methods, signals and properties of a [GMenu]. *)
+(** The methods, signals and properties of a [Menu]. *)
 class type menu_t = object
   inherit Menu_link_iter_and__menu_model.menu_model_t
 
@@ -119,9 +119,7 @@ class type menu_t = object
 end
 
 class menu : Raw.Menu.t -> menu_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GMenu], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu.t}. *)
 
 (** {2:constructors Constructors} *)
 

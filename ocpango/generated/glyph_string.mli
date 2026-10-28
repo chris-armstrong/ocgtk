@@ -8,7 +8,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Glyph_string}. *)
 
-(** The methods, signals and properties of a [PangoGlyphString]. *)
+(** The methods, signals and properties of a [GlyphString]. *)
 class type glyph_string_t = object
   method get_width : unit -> int
   (** Computes the logical width of the glyph string.
@@ -25,9 +25,7 @@ class type glyph_string_t = object
 end
 
 class glyph_string : Raw.Glyph_string.t -> glyph_string_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Glyph_string.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoGlyphString], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Glyph_string.t}. *)
 
 (** {2:constructors Constructors} *)
 

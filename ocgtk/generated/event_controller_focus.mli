@@ -12,7 +12,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Event_controller_focus}. *)
 
-(** The methods, signals and properties of a [GtkEventControllerFocus]. *)
+(** The methods, signals and properties of a [EventControllerFocus]. *)
 class type event_controller_focus_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -52,10 +52,7 @@ end
 class event_controller_focus :
   Raw.Event_controller_focus.t ->
   event_controller_focus_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller_focus.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkEventControllerFocus], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Event_controller_focus.t}. *)
 
 (** {2:constructors Constructors} *)
 

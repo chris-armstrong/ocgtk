@@ -11,12 +11,10 @@
     Its methods, signals and properties are on {!class-type-glyph_vis_attr_t}.
     The functions it is built on are in {!Ocpango.Raw.Glyph_vis_attr}. *)
 
-(** The methods, signals and properties of a [PangoGlyphVisAttr]. *)
+(** The methods, signals and properties of a [GlyphVisAttr]. *)
 class type glyph_vis_attr_t = object
   method as_glyph_vis_attr : Raw.Glyph_vis_attr.t
 end
 
 class glyph_vis_attr : Raw.Glyph_vis_attr.t -> glyph_vis_attr_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Glyph_vis_attr.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [PangoGlyphVisAttr], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Glyph_vis_attr.t}. *)

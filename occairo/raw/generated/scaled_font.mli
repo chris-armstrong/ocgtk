@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScaledFont: ScaledFont *)
 
-(** Bindings for [cairo_scaled_font_t].
+(** Bindings for [ScaledFont].
 
     The class built on this module is in {!Occairo.Scaled_font}. *)
 

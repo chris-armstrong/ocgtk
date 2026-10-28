@@ -44,7 +44,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Page_setup}. *)
 
-(** The methods, signals and properties of a [GtkPageSetup]. *)
+(** The methods, signals and properties of a [PageSetup]. *)
 class type page_setup_t = object
   method copy : unit -> page_setup_t
   (** Copies a [GtkPageSetup]. *)
@@ -130,9 +130,7 @@ class type page_setup_t = object
 end
 
 class page_setup : Raw.Page_setup.t -> page_setup_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Page_setup.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkPageSetup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Page_setup.t}. *)
 
 (** {2:constructors Constructors} *)
 

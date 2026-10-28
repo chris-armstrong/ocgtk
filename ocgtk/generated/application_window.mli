@@ -60,7 +60,7 @@
  {!section-constructors}. The functions it is built on are in \
  {!Ocgtk.Raw.Application_window}."]
 
-(** The methods, signals and properties of a [GtkApplicationWindow]. *)
+(** The methods, signals and properties of a [ApplicationWindow]. *)
 class type application_window_t = object
   inherit Application_and__window_and__window_group.window_t
   inherit Ocgio.Action_group.action_group_t
@@ -97,9 +97,7 @@ class type application_window_t = object
 end
 
 class application_window : Raw.Application_window.t -> application_window_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Application_window.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkApplicationWindow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Application_window.t}. *)
 
 (** {2:constructors Constructors} *)
 

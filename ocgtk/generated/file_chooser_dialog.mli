@@ -136,7 +136,7 @@
  {!class-type-file_chooser_dialog_t}. The functions it is built on are in \
  {!Ocgtk.Raw.File_chooser_dialog}."]
 
-(** The methods, signals and properties of a [GtkFileChooserDialog]. *)
+(** The methods, signals and properties of a [FileChooserDialog]. *)
 class type file_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit File_chooser.file_chooser_t
@@ -144,6 +144,4 @@ class type file_chooser_dialog_t = object
 end
 
 class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.File_chooser_dialog.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkFileChooserDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.File_chooser_dialog.t}. *)

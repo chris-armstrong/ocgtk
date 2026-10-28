@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Pattern: Pattern *)
 
-(** Bindings for [cairo_pattern_t].
+(** Bindings for [Pattern].
 
     The class built on this module is in {!Occairo.Pattern}. *)
 

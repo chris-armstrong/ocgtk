@@ -46,7 +46,7 @@
  {!class-type-io_extension_point_t}. The functions it is built on are in \
  {!Ocgio.Raw.Io_extension_point}."]
 
-(** The methods, signals and properties of a [GIOExtensionPoint]. *)
+(** The methods, signals and properties of a [IOExtensionPoint]. *)
 class type io_extension_point_t = object
   method get_extension_by_name : string -> Raw.Io_extension.t
   (** Finds a [GIOExtension] for an extension point by name. *)
@@ -66,6 +66,4 @@ class type io_extension_point_t = object
 end
 
 class io_extension_point : Raw.Io_extension_point.t -> io_extension_point_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Io_extension_point.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GIOExtensionPoint], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Io_extension_point.t}. *)

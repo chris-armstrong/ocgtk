@@ -82,12 +82,10 @@
  are in {!Ocgtk.Raw.Tree_view}."]
 
 class type tree_view_t = Tree_selection_and__tree_view.tree_view_t
-(** The methods, signals and properties of a [GtkTreeView]. *)
+(** The methods, signals and properties of a [TreeView]. *)
 
 class tree_view : Raw.Tree_view.t -> tree_view_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_view.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreeView], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_view.t}. *)
 
 (** {2:constructors Constructors} *)
 

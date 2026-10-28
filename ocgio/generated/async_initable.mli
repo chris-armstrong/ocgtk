@@ -103,7 +103,7 @@
     Its methods, signals and properties are on {!class-type-async_initable_t}.
     The functions it is built on are in {!Ocgio.Raw.Async_initable}. *)
 
-(** The methods, signals and properties of a [GAsyncInitable]. *)
+(** The methods, signals and properties of a [AsyncInitable]. *)
 class type async_initable_t = object
   method init_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes asynchronous initialization and returns the result. See
@@ -118,6 +118,4 @@ class type async_initable_t = object
 end
 
 class async_initable : Raw.Async_initable.t -> async_initable_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Async_initable.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GAsyncInitable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Async_initable.t}. *)

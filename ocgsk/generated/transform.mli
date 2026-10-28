@@ -12,7 +12,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Transform}. *)
 
-(** The methods, signals and properties of a [GskTransform]. *)
+(** The methods, signals and properties of a [Transform]. *)
 class type transform_t = object
   method equal : Raw.Transform.t option -> bool
   (** Checks two transforms for equality. *)
@@ -126,9 +126,7 @@ class type transform_t = object
 end
 
 class transform : Raw.Transform.t -> transform_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Transform.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskTransform], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Transform.t}. *)
 
 (** {2:constructors Constructors} *)
 

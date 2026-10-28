@@ -116,9 +116,7 @@
     functions it is built on are in {!Ocgio.Raw.Menu_model}. *)
 
 class type menu_model_t = Menu_link_iter_and__menu_model.menu_model_t
-(** The methods, signals and properties of a [GMenuModel]. *)
+(** The methods, signals and properties of a [MenuModel]. *)
 
 class menu_model : Raw.Menu_model.t -> menu_model_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu_model.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GMenuModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu_model.t}. *)

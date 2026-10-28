@@ -11,12 +11,10 @@
     are in {!Ocgraphene.Raw.Vec3}. *)
 
 class type vec3_t = Vec3_and__vec4.vec3_t
-(** The methods, signals and properties of a [graphene_vec3_t]. *)
+(** The methods, signals and properties of a [Vec3]. *)
 
 class vec3 : Raw.Vec3.t -> vec3_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Vec3.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_vec3_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Vec3.t}. *)
 
 (** {2:constructors Constructors} *)
 

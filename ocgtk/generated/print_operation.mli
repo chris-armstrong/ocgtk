@@ -53,7 +53,7 @@
  Its constructors are under {!section-constructors}. The functions it is built \
  on are in {!Ocgtk.Raw.Print_operation}."]
 
-(** The methods, signals and properties of a [GtkPrintOperation]. *)
+(** The methods, signals and properties of a [PrintOperation]. *)
 class type print_operation_t = object
   inherit Print_operation_preview.print_operation_preview_t
 
@@ -498,9 +498,7 @@ class type print_operation_t = object
 end
 
 class print_operation : Raw.Print_operation.t -> print_operation_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Print_operation.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkPrintOperation], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Print_operation.t}. *)
 
 (** {2:constructors Constructors} *)
 

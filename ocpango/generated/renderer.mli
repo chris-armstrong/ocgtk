@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-renderer_t}. The
     functions it is built on are in {!Ocpango.Raw.Renderer}. *)
 
-(** The methods, signals and properties of a [PangoRenderer]. *)
+(** The methods, signals and properties of a [Renderer]. *)
 class type renderer_t = object
   method activate : unit -> unit
   (** Does initial setup before rendering operations on [renderer].
@@ -169,6 +169,4 @@ class type renderer_t = object
 end
 
 class renderer : Raw.Renderer.t -> renderer_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Renderer.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoRenderer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Renderer.t}. *)

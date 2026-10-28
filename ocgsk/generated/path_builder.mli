@@ -40,7 +40,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Path_builder}. *)
 
-(** The methods, signals and properties of a [GskPathBuilder]. *)
+(** The methods, signals and properties of a [PathBuilder]. *)
 class type path_builder_t = object
   method add_cairo_path : Occairo.Path.path_t -> unit
   (** Adds a Cairo path to the builder.
@@ -273,9 +273,7 @@ class type path_builder_t = object
 end
 
 class path_builder : Raw.Path_builder.t -> path_builder_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path_builder.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPathBuilder], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

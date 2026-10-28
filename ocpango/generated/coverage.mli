@@ -10,7 +10,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Coverage}. *)
 
-(** The methods, signals and properties of a [PangoCoverage]. *)
+(** The methods, signals and properties of a [Coverage]. *)
 class type coverage_t = object
   method copy : unit -> coverage_t
   (** Copy an existing [PangoCoverage]. *)
@@ -38,9 +38,7 @@ class type coverage_t = object
 end
 
 class coverage : Raw.Coverage.t -> coverage_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Coverage.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoCoverage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Coverage.t}. *)
 
 (** {2:constructors Constructors} *)
 

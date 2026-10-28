@@ -20,7 +20,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Threaded_socket_service}. *)
 
-(** The methods, signals and properties of a [GThreadedSocketService]. *)
+(** The methods, signals and properties of a [ThreadedSocketService]. *)
 class type threaded_socket_service_t = object
   inherit Socket_service.socket_service_t
   method max_threads : int
@@ -30,9 +30,7 @@ end
 class threaded_socket_service :
   Raw.Threaded_socket_service.t ->
   threaded_socket_service_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Threaded_socket_service.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GThreadedSocketService], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Threaded_socket_service.t}. *)
 
 (** {2:constructors Constructors} *)
 

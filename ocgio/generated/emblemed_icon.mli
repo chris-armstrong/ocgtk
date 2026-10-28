@@ -9,7 +9,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Emblemed_icon}. *)
 
-(** The methods, signals and properties of a [GEmblemedIcon]. *)
+(** The methods, signals and properties of a [EmblemedIcon]. *)
 class type emblemed_icon_t = object
   inherit Icon.icon_t
 
@@ -30,9 +30,7 @@ class type emblemed_icon_t = object
 end
 
 class emblemed_icon : Raw.Emblemed_icon.t -> emblemed_icon_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Emblemed_icon.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GEmblemedIcon], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Emblemed_icon.t}. *)
 
 (** {2:constructors Constructors} *)
 

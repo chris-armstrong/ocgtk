@@ -454,7 +454,7 @@
  Its methods, signals and properties are on {!class-type-task_t}. The \
  functions it is built on are in {!Ocgio.Raw.Task}."]
 
-(** The methods, signals and properties of a [GTask]. *)
+(** The methods, signals and properties of a [Task]. *)
 class type task_t = object
   inherit Async_result.async_result_t
 
@@ -614,6 +614,4 @@ class type task_t = object
 end
 
 class task : Raw.Task.t -> task_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Task.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GTask], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Task.t}. *)

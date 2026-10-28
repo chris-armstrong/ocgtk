@@ -35,7 +35,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.Popup_layout}. *)
 
-(** The methods, signals and properties of a [GdkPopupLayout]. *)
+(** The methods, signals and properties of a [PopupLayout]. *)
 class type popup_layout_t = object
   method equal : Raw.Popup_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
@@ -87,9 +87,7 @@ class type popup_layout_t = object
 end
 
 class popup_layout : Raw.Popup_layout.t -> popup_layout_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Popup_layout.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkPopupLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Popup_layout.t}. *)
 
 (** {2:constructors Constructors} *)
 

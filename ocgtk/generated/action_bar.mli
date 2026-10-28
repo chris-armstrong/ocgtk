@@ -41,7 +41,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Action_bar}. *)
 
-(** The methods, signals and properties of a [GtkActionBar]. *)
+(** The methods, signals and properties of a [ActionBar]. *)
 class type action_bar_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -95,9 +95,7 @@ class type action_bar_t = object
 end
 
 class action_bar : Raw.Action_bar.t -> action_bar_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Action_bar.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkActionBar], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Action_bar.t}. *)
 
 (** {2:constructors Constructors} *)
 

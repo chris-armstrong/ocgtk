@@ -41,7 +41,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Credentials}. *)
 
-(** The methods, signals and properties of a [GCredentials]. *)
+(** The methods, signals and properties of a [Credentials]. *)
 class type credentials_t = object
   method is_same_user : credentials_t -> (bool, GError.t) result
   (** Checks if [credentials] and [other_credentials] is the same user.
@@ -58,9 +58,7 @@ class type credentials_t = object
 end
 
 class credentials : Raw.Credentials.t -> credentials_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Credentials.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GCredentials], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Credentials.t}. *)
 
 (** {2:constructors Constructors} *)
 

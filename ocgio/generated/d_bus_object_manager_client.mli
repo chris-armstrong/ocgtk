@@ -71,7 +71,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.D_bus_object_manager_client}. *)
 
-(** The methods, signals and properties of a [GDBusObjectManagerClient]. *)
+(** The methods, signals and properties of a [DBusObjectManagerClient]. *)
 class type d_bus_object_manager_client_t = object
   inherit Async_initable.async_initable_t
   inherit D_bus_object_manager.d_bus_object_manager_t
@@ -120,10 +120,7 @@ end
 class d_bus_object_manager_client :
   Raw.D_bus_object_manager_client.t ->
   d_bus_object_manager_client_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_object_manager_client.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusObjectManagerClient], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_object_manager_client.t}. *)
 
 (** {2:constructors Constructors} *)
 

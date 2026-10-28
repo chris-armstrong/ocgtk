@@ -11,7 +11,7 @@
     {!class-type-simple_proxy_resolver_t}. The functions it is built on are in
     {!Ocgio.Raw.Simple_proxy_resolver}. *)
 
-(** The methods, signals and properties of a [GSimpleProxyResolver]. *)
+(** The methods, signals and properties of a [SimpleProxyResolver]. *)
 class type simple_proxy_resolver_t = object
   inherit Proxy_resolver.proxy_resolver_t
 
@@ -46,6 +46,4 @@ end
 class simple_proxy_resolver :
   Raw.Simple_proxy_resolver.t ->
   simple_proxy_resolver_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Simple_proxy_resolver.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GSimpleProxyResolver], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Simple_proxy_resolver.t}. *)

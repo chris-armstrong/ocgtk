@@ -20,7 +20,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Bitset}. *)
 
-(** The methods, signals and properties of a [GtkBitset]. *)
+(** The methods, signals and properties of a [Bitset]. *)
 class type bitset_t = object
   method add : int -> bool
   (** Adds [value] to [self] if it wasn't part of it before. *)
@@ -161,9 +161,7 @@ class type bitset_t = object
 end
 
 class bitset : Raw.Bitset.t -> bitset_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Bitset.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkBitset], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Bitset.t}. *)
 
 (** {2:constructors Constructors} *)
 

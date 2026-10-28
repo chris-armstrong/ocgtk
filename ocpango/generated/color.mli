@@ -4,7 +4,7 @@
     Its methods, signals and properties are on {!class-type-color_t}. The
     functions it is built on are in {!Ocpango.Raw.Color}. *)
 
-(** The methods, signals and properties of a [PangoColor]. *)
+(** The methods, signals and properties of a [Color]. *)
 class type color_t = object
   method parse : string -> bool
   (** Fill in the fields of a color from a string specification.
@@ -28,6 +28,4 @@ class type color_t = object
 end
 
 class color : Raw.Color.t -> color_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Color.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoColor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Color.t}. *)

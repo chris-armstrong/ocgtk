@@ -14,7 +14,7 @@
     Its methods, signals and properties are on {!class-type-rect_t}. The
     functions it is built on are in {!Ocgraphene.Raw.Rect}. *)
 
-(** The methods, signals and properties of a [graphene_rect_t]. *)
+(** The methods, signals and properties of a [Rect]. *)
 class type rect_t = object
   method contains_point : Raw.Point.t -> bool
   (** Checks whether a #graphene_rect_t contains the given coordinates. *)
@@ -90,6 +90,4 @@ class type rect_t = object
 end
 
 class rect : Raw.Rect.t -> rect_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Rect.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_rect_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Rect.t}. *)

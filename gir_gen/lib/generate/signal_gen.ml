@@ -214,17 +214,10 @@ let l2_callback_type ~current_layer2_module (e : signal_emission) : string =
 (* emit_l1_val                                                        *)
 (* ================================================================= *)
 
-(* The signal's doc around a declaration. The blank line before a comment
-   keeps it from also reading as the previous item's trailing doc, which
-   ocamlformat rejects as ambiguous. *)
 let with_signal_doc ~indent (e : signal_emission) declaration =
-  let doc =
-    Doc_emit.item_doc ~indent ~context:Doc_translate.Member e.signal.doc
-  in
-  let before =
-    match Doc_emit.before_item doc with "" -> "" | comment -> "\n" ^ comment
-  in
-  before ^ declaration ^ Doc_emit.after_item doc
+  Doc_emit.around
+    (Doc_emit.item_doc ~indent ~context:Doc_translate.Member e.signal.doc)
+    declaration
 
 let emit_l1_val ~current_class (e : signal_emission) : string =
   with_signal_doc ~indent:"" e

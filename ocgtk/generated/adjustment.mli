@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Adjustment}. *)
 
-(** The methods, signals and properties of a [GtkAdjustment]. *)
+(** The methods, signals and properties of a [Adjustment]. *)
 class type adjustment_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -126,9 +126,7 @@ class type adjustment_t = object
 end
 
 class adjustment : Raw.Adjustment.t -> adjustment_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Adjustment.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAdjustment], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Adjustment.t}. *)
 
 (** {2:constructors Constructors} *)
 

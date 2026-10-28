@@ -17,7 +17,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Cell_renderer_combo}. *)
 
-(** The methods, signals and properties of a [GtkCellRendererCombo]. *)
+(** The methods, signals and properties of a [CellRendererCombo]. *)
 class type cell_renderer_combo_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
   method has_entry : bool
@@ -30,9 +30,7 @@ class type cell_renderer_combo_t = object
 end
 
 class cell_renderer_combo : Raw.Cell_renderer_combo.t -> cell_renderer_combo_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_renderer_combo.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkCellRendererCombo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_renderer_combo.t}. *)
 
 (** {2:constructors Constructors} *)
 

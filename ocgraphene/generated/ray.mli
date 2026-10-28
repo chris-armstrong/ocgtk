@@ -12,12 +12,10 @@
 
 class type ray_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.ray_t
-(** The methods, signals and properties of a [graphene_ray_t]. *)
+(** The methods, signals and properties of a [Ray]. *)
 
 class ray : Raw.Ray.t -> ray_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Ray.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_ray_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Ray.t}. *)
 
 (** {2:constructors Constructors} *)
 

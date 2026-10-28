@@ -17,7 +17,7 @@
     Its methods, signals and properties are on {!class-type-native_dialog_t}.
     The functions it is built on are in {!Ocgtk.Raw.Native_dialog}. *)
 
-(** The methods, signals and properties of a [GtkNativeDialog]. *)
+(** The methods, signals and properties of a [NativeDialog]. *)
 class type native_dialog_t = object
   method on_response :
     ?after:bool ->
@@ -100,6 +100,4 @@ class type native_dialog_t = object
 end
 
 class native_dialog : Raw.Native_dialog.t -> native_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Native_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkNativeDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Native_dialog.t}. *)

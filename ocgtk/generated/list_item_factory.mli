@@ -50,12 +50,10 @@
     {!class-type-list_item_factory_t}. The functions it is built on are in
     {!Ocgtk.Raw.List_item_factory}. *)
 
-(** The methods, signals and properties of a [GtkListItemFactory]. *)
+(** The methods, signals and properties of a [ListItemFactory]. *)
 class type list_item_factory_t = object
   method as_list_item_factory : Raw.List_item_factory.t
 end
 
 class list_item_factory : Raw.List_item_factory.t -> list_item_factory_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.List_item_factory.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkListItemFactory], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.List_item_factory.t}. *)

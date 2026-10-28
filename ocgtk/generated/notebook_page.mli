@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-notebook_page_t}.
     The functions it is built on are in {!Ocgtk.Raw.Notebook_page}. *)
 
-(** The methods, signals and properties of a [GtkNotebookPage]. *)
+(** The methods, signals and properties of a [NotebookPage]. *)
 class type notebook_page_t = object
   method get_child :
     unit ->
@@ -39,6 +39,4 @@ class type notebook_page_t = object
 end
 
 class notebook_page : Raw.Notebook_page.t -> notebook_page_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Notebook_page.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkNotebookPage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Notebook_page.t}. *)

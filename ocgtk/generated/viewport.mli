@@ -22,7 +22,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Viewport}. *)
 
-(** The methods, signals and properties of a [GtkViewport]. *)
+(** The methods, signals and properties of a [Viewport]. *)
 class type viewport_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -66,9 +66,7 @@ class type viewport_t = object
 end
 
 class viewport : Raw.Viewport.t -> viewport_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Viewport.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkViewport], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Viewport.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -69,12 +69,10 @@
     are in {!Ocgtk.Raw.Column_view}. *)
 
 class type column_view_t = Column_view_and__column_view_column.column_view_t
-(** The methods, signals and properties of a [GtkColumnView]. *)
+(** The methods, signals and properties of a [ColumnView]. *)
 
 class column_view : Raw.Column_view.t -> column_view_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Column_view.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkColumnView], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Column_view.t}. *)
 
 (** {2:constructors Constructors} *)
 

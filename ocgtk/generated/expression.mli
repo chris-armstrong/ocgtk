@@ -153,7 +153,7 @@
  Its methods, signals and properties are on {!class-type-expression_t}. The \
  functions it is built on are in {!Ocgtk.Raw.Expression}."]
 
-(** The methods, signals and properties of a [GtkExpression]. *)
+(** The methods, signals and properties of a [Expression]. *)
 class type expression_t = object
   method bind :
     [ `object_ ] Gobject.obj ->
@@ -211,6 +211,4 @@ class type expression_t = object
 end
 
 class expression : Raw.Expression.t -> expression_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Expression.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkExpression], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Expression.t}. *)

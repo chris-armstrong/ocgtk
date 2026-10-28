@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgsk.Raw.Cross_fade_node}. *)
 
-(** The methods, signals and properties of a [GskCrossFadeNode]. *)
+(** The methods, signals and properties of a [CrossFadeNode]. *)
 class type cross_fade_node_t = object
   inherit Render_node.render_node_t
 
@@ -21,9 +21,7 @@ class type cross_fade_node_t = object
 end
 
 class cross_fade_node : Raw.Cross_fade_node.t -> cross_fade_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Cross_fade_node.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GskCrossFadeNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Cross_fade_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

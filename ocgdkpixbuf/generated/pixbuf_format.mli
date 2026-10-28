@@ -7,7 +7,7 @@
     Its methods, signals and properties are on {!class-type-pixbuf_format_t}.
     The functions it is built on are in {!Ocgdkpixbuf.Raw.Pixbuf_format}. *)
 
-(** The methods, signals and properties of a [GdkPixbufFormat]. *)
+(** The methods, signals and properties of a [PixbufFormat]. *)
 class type pixbuf_format_t = object
   method get_description : unit -> string option
   (** Returns a description of the format. *)
@@ -63,6 +63,4 @@ class type pixbuf_format_t = object
 end
 
 class pixbuf_format : Raw.Pixbuf_format.t -> pixbuf_format_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf_format.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkPixbufFormat], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_format.t}. *)

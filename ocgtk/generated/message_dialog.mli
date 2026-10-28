@@ -48,7 +48,7 @@
  Its methods, signals and properties are on {!class-type-message_dialog_t}. \
  The functions it is built on are in {!Ocgtk.Raw.Message_dialog}."]
 
-(** The methods, signals and properties of a [GtkMessageDialog]. *)
+(** The methods, signals and properties of a [MessageDialog]. *)
 class type message_dialog_t = object
   inherit Dialog.dialog_t
 
@@ -80,6 +80,4 @@ class type message_dialog_t = object
 end
 
 class message_dialog : Raw.Message_dialog.t -> message_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Message_dialog.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkMessageDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Message_dialog.t}. *)

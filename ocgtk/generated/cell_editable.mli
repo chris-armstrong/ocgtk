@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-cell_editable_t}.
     The functions it is built on are in {!Ocgtk.Raw.Cell_editable}. *)
 
-(** The methods, signals and properties of a [GtkCellEditable]. *)
+(** The methods, signals and properties of a [CellEditable]. *)
 class type cell_editable_t = object
   method on_editing_done :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -65,6 +65,4 @@ class type cell_editable_t = object
 end
 
 class cell_editable : Raw.Cell_editable.t -> cell_editable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_editable.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCellEditable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_editable.t}. *)

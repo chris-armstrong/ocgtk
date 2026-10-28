@@ -21,7 +21,7 @@
     Its methods, signals and properties are on {!class-type-sorter_t}. The
     functions it is built on are in {!Ocgtk.Raw.Sorter}. *)
 
-(** The methods, signals and properties of a [GtkSorter]. *)
+(** The methods, signals and properties of a [Sorter]. *)
 class type sorter_t = object
   method on_changed :
     ?after:bool ->
@@ -77,6 +77,4 @@ class type sorter_t = object
 end
 
 class sorter : Raw.Sorter.t -> sorter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Sorter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSorter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Sorter.t}. *)

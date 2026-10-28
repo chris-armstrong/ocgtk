@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Debug_node}. *)
 
-(** The methods, signals and properties of a [GskDebugNode]. *)
+(** The methods, signals and properties of a [DebugNode]. *)
 class type debug_node_t = object
   inherit Render_node.render_node_t
 
@@ -18,9 +18,7 @@ class type debug_node_t = object
 end
 
 class debug_node : Raw.Debug_node.t -> debug_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Debug_node.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskDebugNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Debug_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

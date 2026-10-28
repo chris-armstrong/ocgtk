@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-tree_list_model_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_list_model}. *)
 
-(** The methods, signals and properties of a [GtkTreeListModel]. *)
+(** The methods, signals and properties of a [TreeListModel]. *)
 class type tree_list_model_t = object
   inherit Ocgio.List_model.list_model_t
 
@@ -68,6 +68,4 @@ class type tree_list_model_t = object
 end
 
 class tree_list_model : Raw.Tree_list_model.t -> tree_list_model_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_list_model.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTreeListModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_model.t}. *)

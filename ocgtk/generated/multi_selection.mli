@@ -4,7 +4,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Multi_selection}. *)
 
-(** The methods, signals and properties of a [GtkMultiSelection]. *)
+(** The methods, signals and properties of a [MultiSelection]. *)
 class type multi_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -24,9 +24,7 @@ class type multi_selection_t = object
 end
 
 class multi_selection : Raw.Multi_selection.t -> multi_selection_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Multi_selection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkMultiSelection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Multi_selection.t}. *)
 
 (** {2:constructors Constructors} *)
 

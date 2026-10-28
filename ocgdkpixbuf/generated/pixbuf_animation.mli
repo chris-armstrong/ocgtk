@@ -16,7 +16,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdkpixbuf.Raw.Pixbuf_animation}. *)
 
-(** The methods, signals and properties of a [GdkPixbufAnimation]. *)
+(** The methods, signals and properties of a [PixbufAnimation]. *)
 class type pixbuf_animation_t = object
   method get_height : unit -> int
   (** Queries the height of the bounding box of a pixbuf animation. *)
@@ -49,9 +49,7 @@ class type pixbuf_animation_t = object
 end
 
 class pixbuf_animation : Raw.Pixbuf_animation.t -> pixbuf_animation_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf_animation.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkPixbufAnimation], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_animation.t}. *)
 
 (** {2:constructors Constructors} *)
 

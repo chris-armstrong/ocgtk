@@ -34,7 +34,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgdk.Raw.Content_formats}. *)
 
-(** The methods, signals and properties of a [GdkContentFormats]. *)
+(** The methods, signals and properties of a [ContentFormats]. *)
 class type content_formats_t = object
   method contain_gtype : Gobject.Type.t -> bool
   (** Checks if a given [GType] is part of the given [formats]. *)
@@ -93,9 +93,7 @@ class type content_formats_t = object
 end
 
 class content_formats : Raw.Content_formats.t -> content_formats_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Content_formats.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkContentFormats], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Content_formats.t}. *)
 
 (** {2:constructors Constructors} *)
 

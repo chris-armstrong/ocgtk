@@ -14,7 +14,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Tree_view_column}. *)
 
-(** The methods, signals and properties of a [GtkTreeViewColumn]. *)
+(** The methods, signals and properties of a [TreeViewColumn]. *)
 class type tree_view_column_t = object
   inherit Buildable.buildable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
@@ -237,9 +237,7 @@ class type tree_view_column_t = object
 end
 
 class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_view_column.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTreeViewColumn], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_view_column.t}. *)
 
 (** {2:constructors Constructors} *)
 

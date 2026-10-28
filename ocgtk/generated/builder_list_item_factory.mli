@@ -31,7 +31,7 @@
  {!section-constructors}. The functions it is built on are in \
  {!Ocgtk.Raw.Builder_list_item_factory}."]
 
-(** The methods, signals and properties of a [GtkBuilderListItemFactory]. *)
+(** The methods, signals and properties of a [BuilderListItemFactory]. *)
 class type builder_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
 
@@ -51,10 +51,7 @@ end
 class builder_list_item_factory :
   Raw.Builder_list_item_factory.t ->
   builder_list_item_factory_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Builder_list_item_factory.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkBuilderListItemFactory], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgtk.Raw.Builder_list_item_factory.t}. *)
 
 (** {2:constructors Constructors} *)
 

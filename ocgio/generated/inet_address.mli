@@ -12,7 +12,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Inet_address}. *)
 
-(** The methods, signals and properties of a [GInetAddress]. *)
+(** The methods, signals and properties of a [InetAddress]. *)
 class type inet_address_t = object
   method equal : inet_address_t -> bool
   (** Checks if two [GInetAddress] instances are equal, e.g. the same address.
@@ -72,9 +72,7 @@ class type inet_address_t = object
 end
 
 class inet_address : Raw.Inet_address.t -> inet_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Inet_address.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GInetAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Inet_address.t}. *)
 
 (** {2:constructors Constructors} *)
 

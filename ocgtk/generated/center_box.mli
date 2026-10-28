@@ -37,7 +37,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Center_box}. *)
 
-(** The methods, signals and properties of a [GtkCenterBox]. *)
+(** The methods, signals and properties of a [CenterBox]. *)
 class type center_box_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -123,9 +123,7 @@ class type center_box_t = object
 end
 
 class center_box : Raw.Center_box.t -> center_box_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Center_box.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCenterBox], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Center_box.t}. *)
 
 (** {2:constructors Constructors} *)
 

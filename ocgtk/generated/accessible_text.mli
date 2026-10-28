@@ -11,7 +11,7 @@
     Its methods, signals and properties are on {!class-type-accessible_text_t}.
     The functions it is built on are in {!Ocgtk.Raw.Accessible_text}. *)
 
-(** The methods, signals and properties of a [GtkAccessibleText]. *)
+(** The methods, signals and properties of a [AccessibleText]. *)
 class type accessible_text_t = object
   method update_caret_position : unit -> unit
   (** Updates the position of the caret.
@@ -43,6 +43,4 @@ class type accessible_text_t = object
 end
 
 class accessible_text : Raw.Accessible_text.t -> accessible_text_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Accessible_text.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAccessibleText], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Accessible_text.t}. *)

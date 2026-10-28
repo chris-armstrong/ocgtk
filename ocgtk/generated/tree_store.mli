@@ -28,7 +28,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Tree_store}."]
 
-(** The methods, signals and properties of a [GtkTreeStore]. *)
+(** The methods, signals and properties of a [TreeStore]. *)
 class type tree_store_t = object
   inherit Buildable.buildable_t
   inherit Tree_drag_dest.tree_drag_dest_t
@@ -111,9 +111,7 @@ class type tree_store_t = object
 end
 
 class tree_store : Raw.Tree_store.t -> tree_store_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_store.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreeStore], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_store.t}. *)
 
 (** {2:constructors Constructors} *)
 

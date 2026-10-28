@@ -11,9 +11,7 @@
     functions it is built on are in {!Ocpango.Raw.Font_map}. *)
 
 class type font_map_t = Context_and__font_and__font_map_and__fontset.font_map_t
-(** The methods, signals and properties of a [PangoFontMap]. *)
+(** The methods, signals and properties of a [FontMap]. *)
 
 class font_map : Raw.Font_map.t -> font_map_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Font_map.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoFontMap], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Font_map.t}. *)

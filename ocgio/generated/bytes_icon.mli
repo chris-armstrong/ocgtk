@@ -5,7 +5,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Bytes_icon}. *)
 
-(** The methods, signals and properties of a [GBytesIcon]. *)
+(** The methods, signals and properties of a [BytesIcon]. *)
 class type bytes_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
@@ -17,9 +17,7 @@ class type bytes_icon_t = object
 end
 
 class bytes_icon : Raw.Bytes_icon.t -> bytes_icon_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Bytes_icon.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GBytesIcon], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Bytes_icon.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -47,7 +47,7 @@
     Its methods, signals and properties are on {!class-type-action_group_t}. The
     functions it is built on are in {!Ocgio.Raw.Action_group}. *)
 
-(** The methods, signals and properties of a [GActionGroup]. *)
+(** The methods, signals and properties of a [ActionGroup]. *)
 class type action_group_t = object
   method on_action_added :
     ?after:bool ->
@@ -232,6 +232,4 @@ class type action_group_t = object
 end
 
 class action_group : Raw.Action_group.t -> action_group_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Action_group.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GActionGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Action_group.t}. *)

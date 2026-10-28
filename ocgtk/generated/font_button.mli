@@ -19,7 +19,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Font_button}. *)
 
-(** The methods, signals and properties of a [GtkFontButton]. *)
+(** The methods, signals and properties of a [FontButton]. *)
 class type font_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -75,9 +75,7 @@ class type font_button_t = object
 end
 
 class font_button : Raw.Font_button.t -> font_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Font_button.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFontButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Font_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

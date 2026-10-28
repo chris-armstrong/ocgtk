@@ -13,7 +13,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Constraint_guide}. *)
 
-(** The methods, signals and properties of a [GtkConstraintGuide]. *)
+(** The methods, signals and properties of a [ConstraintGuide]. *)
 class type constraint_guide_t = object
   inherit Constraint_target.constraint_target_t
 
@@ -66,9 +66,7 @@ class type constraint_guide_t = object
 end
 
 class constraint_guide : Raw.Constraint_guide.t -> constraint_guide_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Constraint_guide.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkConstraintGuide], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Constraint_guide.t}. *)
 
 (** {2:constructors Constructors} *)
 

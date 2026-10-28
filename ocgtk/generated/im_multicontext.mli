@@ -8,7 +8,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Im_multicontext}. *)
 
-(** The methods, signals and properties of a [GtkIMMulticontext]. *)
+(** The methods, signals and properties of a [IMMulticontext]. *)
 class type im_multicontext_t = object
   inherit Im_context.im_context_t
 
@@ -28,9 +28,7 @@ class type im_multicontext_t = object
 end
 
 class im_multicontext : Raw.Im_multicontext.t -> im_multicontext_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Im_multicontext.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkIMMulticontext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Im_multicontext.t}. *)
 
 (** {2:constructors Constructors} *)
 

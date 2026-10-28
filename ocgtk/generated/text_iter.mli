@@ -11,9 +11,7 @@
     functions it is built on are in {!Ocgtk.Raw.Text_iter}. *)
 
 class type text_iter_t = Text_buffer_and__text_iter_and__text_mark.text_iter_t
-(** The methods, signals and properties of a [GtkTextIter]. *)
+(** The methods, signals and properties of a [TextIter]. *)
 
 class text_iter : Raw.Text_iter.t -> text_iter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_iter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTextIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_iter.t}. *)

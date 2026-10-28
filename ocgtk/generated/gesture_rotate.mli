@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Gesture_rotate}. *)
 
-(** The methods, signals and properties of a [GtkGestureRotate]. *)
+(** The methods, signals and properties of a [GestureRotate]. *)
 class type gesture_rotate_t = object
   inherit Gesture.gesture_t
 
@@ -29,9 +29,7 @@ class type gesture_rotate_t = object
 end
 
 class gesture_rotate : Raw.Gesture_rotate.t -> gesture_rotate_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_rotate.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkGestureRotate], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_rotate.t}. *)
 
 (** {2:constructors Constructors} *)
 

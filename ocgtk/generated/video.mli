@@ -16,7 +16,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Video}. *)
 
-(** The methods, signals and properties of a [GtkVideo]. *)
+(** The methods, signals and properties of a [Video]. *)
 class type video_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -78,9 +78,7 @@ class type video_t = object
 end
 
 class video : Raw.Video.t -> video_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Video.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkVideo], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Video.t}. *)
 
 (** {2:constructors Constructors} *)
 

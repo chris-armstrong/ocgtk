@@ -18,7 +18,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Srv_target}. *)
 
-(** The methods, signals and properties of a [GSrvTarget]. *)
+(** The methods, signals and properties of a [SrvTarget]. *)
 class type srv_target_t = object
   method get_hostname : unit -> string
   (** Gets [target]'s hostname (in ASCII form; if you are going to present this
@@ -41,9 +41,7 @@ class type srv_target_t = object
 end
 
 class srv_target : Raw.Srv_target.t -> srv_target_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Srv_target.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSrvTarget], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Srv_target.t}. *)
 
 (** {2:constructors Constructors} *)
 

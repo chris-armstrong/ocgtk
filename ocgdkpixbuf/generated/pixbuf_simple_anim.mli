@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim}. *)
 
-(** The methods, signals and properties of a [GdkPixbufSimpleAnim]. *)
+(** The methods, signals and properties of a [PixbufSimpleAnim]. *)
 class type pixbuf_simple_anim_t = object
   inherit Pixbuf_animation.pixbuf_animation_t
 
@@ -25,9 +25,7 @@ class type pixbuf_simple_anim_t = object
 end
 
 class pixbuf_simple_anim : Raw.Pixbuf_simple_anim.t -> pixbuf_simple_anim_t
-(** Wraps a layer 1 handle, {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkPixbufSimpleAnim], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdkpixbuf.Raw.Pixbuf_simple_anim.t}. *)
 
 (** {2:constructors Constructors} *)
 

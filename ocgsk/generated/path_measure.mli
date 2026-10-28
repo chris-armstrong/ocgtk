@@ -16,12 +16,10 @@
 
 class type path_measure_t =
   Path_and__path_measure_and__path_point.path_measure_t
-(** The methods, signals and properties of a [GskPathMeasure]. *)
+(** The methods, signals and properties of a [PathMeasure]. *)
 
 class path_measure : Raw.Path_measure.t -> path_measure_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Path_measure.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskPathMeasure], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Path_measure.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -19,7 +19,7 @@
     Its methods, signals and properties are on {!class-type-filter_t}. The
     functions it is built on are in {!Ocgtk.Raw.Filter}. *)
 
-(** The methods, signals and properties of a [GtkFilter]. *)
+(** The methods, signals and properties of a [Filter]. *)
 class type filter_t = object
   method on_changed :
     ?after:bool ->
@@ -64,6 +64,4 @@ class type filter_t = object
 end
 
 class filter : Raw.Filter.t -> filter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Filter.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFilter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Filter.t}. *)

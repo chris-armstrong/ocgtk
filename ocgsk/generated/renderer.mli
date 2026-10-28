@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Renderer}. *)
 
-(** The methods, signals and properties of a [GskRenderer]. *)
+(** The methods, signals and properties of a [Renderer]. *)
 class type renderer_t = object
   method get_surface : unit -> Ocgdk.Surface.surface_t option
   (** Retrieves the surface that the renderer is associated with.
@@ -75,9 +75,7 @@ class type renderer_t = object
 end
 
 class renderer : Raw.Renderer.t -> renderer_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Renderer.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskRenderer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Renderer.t}. *)
 
 (** {2:constructors Constructors} *)
 

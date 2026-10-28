@@ -20,9 +20,7 @@
 
 class type cell_area_context_t =
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
-(** The methods, signals and properties of a [GtkCellAreaContext]. *)
+(** The methods, signals and properties of a [CellAreaContext]. *)
 
 class cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Cell_area_context.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkCellAreaContext], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Cell_area_context.t}. *)

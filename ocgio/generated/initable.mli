@@ -25,7 +25,7 @@
     Its methods, signals and properties are on {!class-type-initable_t}. The
     functions it is built on are in {!Ocgio.Raw.Initable}. *)
 
-(** The methods, signals and properties of a [GInitable]. *)
+(** The methods, signals and properties of a [Initable]. *)
 class type initable_t = object
   method init : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Initializes the object implementing the interface.
@@ -71,6 +71,4 @@ class type initable_t = object
 end
 
 class initable : Raw.Initable.t -> initable_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Initable.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GInitable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Initable.t}. *)

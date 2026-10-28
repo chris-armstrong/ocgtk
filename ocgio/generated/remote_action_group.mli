@@ -21,7 +21,7 @@
     {!class-type-remote_action_group_t}. The functions it is built on are in
     {!Ocgio.Raw.Remote_action_group}. *)
 
-(** The methods, signals and properties of a [GRemoteActionGroup]. *)
+(** The methods, signals and properties of a [RemoteActionGroup]. *)
 class type remote_action_group_t = object
   method activate_action_full :
     string -> Gvariant.t option -> Gvariant.t -> unit
@@ -48,6 +48,4 @@ class type remote_action_group_t = object
 end
 
 class remote_action_group : Raw.Remote_action_group.t -> remote_action_group_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Remote_action_group.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GRemoteActionGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Remote_action_group.t}. *)

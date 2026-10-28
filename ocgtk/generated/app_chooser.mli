@@ -19,7 +19,7 @@
     Its methods, signals and properties are on {!class-type-app_chooser_t}. The
     functions it is built on are in {!Ocgtk.Raw.App_chooser}. *)
 
-(** The methods, signals and properties of a [GtkAppChooser]. *)
+(** The methods, signals and properties of a [AppChooser]. *)
 class type app_chooser_t = object
   method get_app_info : unit -> Ocgio.App_info.app_info_t option
   (** Returns the currently selected application. *)
@@ -35,6 +35,4 @@ class type app_chooser_t = object
 end
 
 class app_chooser : Raw.App_chooser.t -> app_chooser_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.App_chooser.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkAppChooser], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.App_chooser.t}. *)

@@ -15,7 +15,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Snapshot}. *)
 
-(** The methods, signals and properties of a [GtkSnapshot]. *)
+(** The methods, signals and properties of a [Snapshot]. *)
 class type snapshot_t = object
   inherit Ocgdk.Snapshot.snapshot_t
 
@@ -440,9 +440,7 @@ class type snapshot_t = object
 end
 
 class snapshot : Raw.Snapshot.t -> snapshot_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Snapshot.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSnapshot], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Snapshot.t}. *)
 
 (** {2:constructors Constructors} *)
 

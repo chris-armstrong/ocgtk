@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontOptions: FontOptions *)
 
-(** Bindings for [cairo_font_options_t].
+(** Bindings for [FontOptions].
 
     The class built on this module is in {!Occairo.Font_options}. *)
 

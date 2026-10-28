@@ -13,7 +13,7 @@
     Its methods, signals and properties are on {!class-type-tree_list_row_t}.
     The functions it is built on are in {!Ocgtk.Raw.Tree_list_row}. *)
 
-(** The methods, signals and properties of a [GtkTreeListRow]. *)
+(** The methods, signals and properties of a [TreeListRow]. *)
 class type tree_list_row_t = object
   method get_child_row : int -> tree_list_row_t option
   (** If [self] is not expanded or [position] is greater than the number of
@@ -80,6 +80,4 @@ class type tree_list_row_t = object
 end
 
 class tree_list_row : Raw.Tree_list_row.t -> tree_list_row_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_list_row.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkTreeListRow], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_row.t}. *)

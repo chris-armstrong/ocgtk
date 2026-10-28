@@ -37,7 +37,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Entry_completion}. *)
 
-(** The methods, signals and properties of a [GtkEntryCompletion]. *)
+(** The methods, signals and properties of a [EntryCompletion]. *)
 class type entry_completion_t = object
   inherit Buildable.buildable_t
   inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
@@ -176,9 +176,7 @@ class type entry_completion_t = object
 end
 
 class entry_completion : Raw.Entry_completion.t -> entry_completion_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Entry_completion.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkEntryCompletion], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Entry_completion.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -16,7 +16,7 @@
     Its methods, signals and properties are on {!class-type-permission_t}. The
     functions it is built on are in {!Ocgio.Raw.Permission}. *)
 
-(** The methods, signals and properties of a [GPermission]. *)
+(** The methods, signals and properties of a [Permission]. *)
 class type permission_t = object
   method acquire : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Attempts to acquire the permission represented by [permission].
@@ -92,6 +92,4 @@ class type permission_t = object
 end
 
 class permission : Raw.Permission.t -> permission_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Permission.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GPermission], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Permission.t}. *)

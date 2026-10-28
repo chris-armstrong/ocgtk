@@ -14,7 +14,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Attr_list}. *)
 
-(** The methods, signals and properties of a [PangoAttrList]. *)
+(** The methods, signals and properties of a [AttrList]. *)
 class type attr_list_t = object
   method change : Raw.Attribute.t -> unit
   (** Insert the given attribute into the [PangoAttrList].
@@ -124,9 +124,7 @@ class type attr_list_t = object
 end
 
 class attr_list : Raw.Attr_list.t -> attr_list_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Attr_list.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoAttrList], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Attr_list.t}. *)
 
 (** {2:constructors Constructors} *)
 

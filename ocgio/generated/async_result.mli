@@ -72,7 +72,7 @@
  Its methods, signals and properties are on {!class-type-async_result_t}. The \
  functions it is built on are in {!Ocgio.Raw.Async_result}."]
 
-(** The methods, signals and properties of a [GAsyncResult]. *)
+(** The methods, signals and properties of a [AsyncResult]. *)
 class type async_result_t = object
   method get_source_object : unit -> [ `object_ ] Gobject.obj option
   (** Gets the source object from a [Gio.AsyncResult]. *)
@@ -92,6 +92,4 @@ class type async_result_t = object
 end
 
 class async_result : Raw.Async_result.t -> async_result_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Async_result.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GAsyncResult], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Async_result.t}. *)

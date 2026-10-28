@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Named_action}. *)
 
-(** The methods, signals and properties of a [GtkNamedAction]. *)
+(** The methods, signals and properties of a [NamedAction]. *)
 class type named_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
@@ -18,9 +18,7 @@ class type named_action_t = object
 end
 
 class named_action : Raw.Named_action.t -> named_action_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Named_action.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkNamedAction], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Named_action.t}. *)
 
 (** {2:constructors Constructors} *)
 

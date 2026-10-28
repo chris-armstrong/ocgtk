@@ -7,7 +7,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Tls_certificate}. *)
 
-(** The methods, signals and properties of a [GTlsCertificate]. *)
+(** The methods, signals and properties of a [TlsCertificate]. *)
 class type tls_certificate_t = object
   method get_issuer : unit -> tls_certificate_t option
   (** Gets the [GTlsCertificate] representing [cert]'s issuer, if known *)
@@ -70,9 +70,7 @@ class type tls_certificate_t = object
 end
 
 class tls_certificate : Raw.Tls_certificate.t -> tls_certificate_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_certificate.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GTlsCertificate], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Tls_certificate.t}. *)
 
 (** {2:constructors Constructors} *)
 

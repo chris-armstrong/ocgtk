@@ -19,7 +19,7 @@
     Its methods, signals and properties are on {!class-type-dmabuf_formats_t}.
     The functions it is built on are in {!Ocgdk.Raw.Dmabuf_formats}. *)
 
-(** The methods, signals and properties of a [GdkDmabufFormats]. *)
+(** The methods, signals and properties of a [DmabufFormats]. *)
 class type dmabuf_formats_t = object
   method contains : UInt32.t -> UInt64.t -> bool
   (** Returns whether a given format is contained in [formats]. *)
@@ -41,6 +41,4 @@ class type dmabuf_formats_t = object
 end
 
 class dmabuf_formats : Raw.Dmabuf_formats.t -> dmabuf_formats_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Dmabuf_formats.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkDmabufFormats], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Dmabuf_formats.t}. *)

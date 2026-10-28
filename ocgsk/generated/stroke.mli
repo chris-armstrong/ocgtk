@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Stroke}. *)
 
-(** The methods, signals and properties of a [GskStroke]. *)
+(** The methods, signals and properties of a [Stroke]. *)
 class type stroke_t = object
   method get_dash_offset : unit -> float
   (** Gets the dash offset. *)
@@ -87,9 +87,7 @@ class type stroke_t = object
 end
 
 class stroke : Raw.Stroke.t -> stroke_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Stroke.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskStroke], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Stroke.t}. *)
 
 (** {2:constructors Constructors} *)
 

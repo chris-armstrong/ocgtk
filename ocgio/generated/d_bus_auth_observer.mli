@@ -57,7 +57,7 @@
  {!section-constructors}. The functions it is built on are in \
  {!Ocgio.Raw.D_bus_auth_observer}."]
 
-(** The methods, signals and properties of a [GDBusAuthObserver]. *)
+(** The methods, signals and properties of a [DBusAuthObserver]. *)
 class type d_bus_auth_observer_t = object
   method on_allow_mechanism :
     ?after:bool ->
@@ -89,9 +89,7 @@ class type d_bus_auth_observer_t = object
 end
 
 class d_bus_auth_observer : Raw.D_bus_auth_observer.t -> d_bus_auth_observer_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_auth_observer.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GDBusAuthObserver], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_auth_observer.t}. *)
 
 (** {2:constructors Constructors} *)
 

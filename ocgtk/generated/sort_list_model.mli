@@ -29,7 +29,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Sort_list_model}. *)
 
-(** The methods, signals and properties of a [GtkSortListModel]. *)
+(** The methods, signals and properties of a [SortListModel]. *)
 class type sort_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -102,9 +102,7 @@ class type sort_list_model_t = object
 end
 
 class sort_list_model : Raw.Sort_list_model.t -> sort_list_model_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Sort_list_model.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkSortListModel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Sort_list_model.t}. *)
 
 (** {2:constructors Constructors} *)
 

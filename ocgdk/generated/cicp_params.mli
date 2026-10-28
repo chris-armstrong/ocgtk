@@ -25,12 +25,10 @@
     are in {!Ocgdk.Raw.Cicp_params}. *)
 
 class type cicp_params_t = Cicp_params_and__color_state.cicp_params_t
-(** The methods, signals and properties of a [GdkCicpParams]. *)
+(** The methods, signals and properties of a [CicpParams]. *)
 
 class cicp_params : Raw.Cicp_params.t -> cicp_params_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Cicp_params.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkCicpParams], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Cicp_params.t}. *)
 
 (** {2:constructors Constructors} *)
 

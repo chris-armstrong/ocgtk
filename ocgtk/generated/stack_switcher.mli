@@ -33,7 +33,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Stack_switcher}. *)
 
-(** The methods, signals and properties of a [GtkStackSwitcher]. *)
+(** The methods, signals and properties of a [StackSwitcher]. *)
 class type stack_switcher_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -51,9 +51,7 @@ class type stack_switcher_t = object
 end
 
 class stack_switcher : Raw.Stack_switcher.t -> stack_switcher_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Stack_switcher.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkStackSwitcher], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Stack_switcher.t}. *)
 
 (** {2:constructors Constructors} *)
 

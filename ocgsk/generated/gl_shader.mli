@@ -93,7 +93,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgsk.Raw.Gl_shader}."]
 
-(** The methods, signals and properties of a [GskGLShader]. *)
+(** The methods, signals and properties of a [GLShader]. *)
 class type gl_shader_t = object
   method compile : Renderer.renderer_t -> (bool, GError.t) result
   (** Tries to compile the [shader] for the given [renderer].
@@ -181,9 +181,7 @@ class type gl_shader_t = object
 end
 
 class gl_shader : Raw.Gl_shader.t -> gl_shader_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Gl_shader.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskGLShader], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Gl_shader.t}. *)
 
 (** {2:constructors Constructors} *)
 

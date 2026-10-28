@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgraphene.Raw.Vec2}. *)
 
-(** The methods, signals and properties of a [graphene_vec2_t]. *)
+(** The methods, signals and properties of a [Vec2]. *)
 class type vec2_t = object
   method dot : Raw.Vec2.t -> float
   (** Computes the dot product of the two given vectors. *)
@@ -43,9 +43,7 @@ class type vec2_t = object
 end
 
 class vec2 : Raw.Vec2.t -> vec2_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Vec2.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_vec2_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Vec2.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -19,9 +19,7 @@
 class type event_controller_t =
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .event_controller_t
-(** The methods, signals and properties of a [GtkEventController]. *)
+(** The methods, signals and properties of a [EventController]. *)
 
 class event_controller : Raw.Event_controller.t -> event_controller_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Event_controller.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkEventController], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Event_controller.t}. *)

@@ -31,7 +31,7 @@
     Its methods, signals and properties are on {!class-type-icon_t}. The
     functions it is built on are in {!Ocgio.Raw.Icon}. *)
 
-(** The methods, signals and properties of a [GIcon]. *)
+(** The methods, signals and properties of a [Icon]. *)
 class type icon_t = object
   method equal : icon_t option -> bool
   (** Checks if two icons are equal. *)
@@ -68,6 +68,4 @@ class type icon_t = object
 end
 
 class icon : Raw.Icon.t -> icon_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Icon.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GIcon], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Icon.t}. *)

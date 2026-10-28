@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-stack_page_t}. The
     functions it is built on are in {!Ocgtk.Raw.Stack_page}. *)
 
-(** The methods, signals and properties of a [GtkStackPage]. *)
+(** The methods, signals and properties of a [StackPage]. *)
 class type stack_page_t = object
   inherit At_context_and__accessible.accessible_t
 
@@ -56,6 +56,4 @@ class type stack_page_t = object
 end
 
 class stack_page : Raw.Stack_page.t -> stack_page_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Stack_page.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkStackPage], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Stack_page.t}. *)

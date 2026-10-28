@@ -7,7 +7,7 @@
     Its methods, signals and properties are on {!class-type-proxy_t}. The
     functions it is built on are in {!Ocgio.Raw.Proxy}. *)
 
-(** The methods, signals and properties of a [GProxy]. *)
+(** The methods, signals and properties of a [Proxy]. *)
 class type proxy_t = object
   method connect :
     Io_stream.io_stream_t ->
@@ -35,6 +35,4 @@ class type proxy_t = object
 end
 
 class proxy : Raw.Proxy.t -> proxy_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Proxy.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GProxy], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Proxy.t}. *)

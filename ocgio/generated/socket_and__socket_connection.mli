@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GSocket]. *)
+(** The methods, signals and properties of a [Socket]. *)
 class type socket_t = object
   inherit Datagram_based.datagram_based_t
   inherit Initable.initable_t
@@ -477,7 +477,7 @@ class type socket_t = object
   method as_socket : Raw.Socket.t
 end
 
-(** The methods, signals and properties of a [GSocketConnection]. *)
+(** The methods, signals and properties of a [SocketConnection]. *)
 and socket_connection_t = object
   inherit Io_stream.io_stream_t
 
@@ -526,13 +526,9 @@ and socket_connection_t = object
   method as_socket_connection : Raw.Socket_connection.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GSocket], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket.t}. *)
 class socket : Raw.Socket.t -> socket_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Socket_connection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GSocketConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_connection.t}. *)
 
 and socket_connection : Raw.Socket_connection.t -> socket_connection_t
 

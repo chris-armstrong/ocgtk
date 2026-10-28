@@ -5,7 +5,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Tls_password}. *)
 
-(** The methods, signals and properties of a [GTlsPassword]. *)
+(** The methods, signals and properties of a [TlsPassword]. *)
 class type tls_password_t = object
   method get_description : unit -> string
   (** Get a description string about what the password will be used for. *)
@@ -33,9 +33,7 @@ class type tls_password_t = object
 end
 
 class tls_password : Raw.Tls_password.t -> tls_password_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_password.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GTlsPassword], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Tls_password.t}. *)
 
 (** {2:constructors Constructors} *)
 

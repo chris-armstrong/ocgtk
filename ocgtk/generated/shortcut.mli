@@ -17,7 +17,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Shortcut}. *)
 
-(** The methods, signals and properties of a [GtkShortcut]. *)
+(** The methods, signals and properties of a [Shortcut]. *)
 class type shortcut_t = object
   method get_action : unit -> Shortcut_action.shortcut_action_t option
   (** Gets the action that is activated by this shortcut. *)
@@ -41,9 +41,7 @@ class type shortcut_t = object
 end
 
 class shortcut : Raw.Shortcut.t -> shortcut_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkShortcut], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcut.t}. *)
 
 (** {2:constructors Constructors} *)
 

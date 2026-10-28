@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgsk.Raw.Color_node}. *)
 
-(** The methods, signals and properties of a [GskColorNode]. *)
+(** The methods, signals and properties of a [ColorNode]. *)
 class type color_node_t = object
   inherit Render_node.render_node_t
 
@@ -18,9 +18,7 @@ class type color_node_t = object
 end
 
 class color_node : Raw.Color_node.t -> color_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Color_node.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GskColorNode], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Color_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -36,7 +36,6 @@ val generate_cycle_member_shim :
   namespace:string ->
   combined_module_name:string ->
   member_name:string ->
-  member_c_type:string ->
   member_doc:string option ->
   string
 (** The layer 1 module of a member of a cycle, outside the combined module:

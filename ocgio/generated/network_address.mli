@@ -13,7 +13,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Network_address}. *)
 
-(** The methods, signals and properties of a [GNetworkAddress]. *)
+(** The methods, signals and properties of a [NetworkAddress]. *)
 class type network_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -33,9 +33,7 @@ class type network_address_t = object
 end
 
 class network_address : Raw.Network_address.t -> network_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Network_address.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GNetworkAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Network_address.t}. *)
 
 (** {2:constructors Constructors} *)
 

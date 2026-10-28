@@ -17,16 +17,14 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Builder_c_scope}. *)
 
-(** The methods, signals and properties of a [GtkBuilderCScope]. *)
+(** The methods, signals and properties of a [BuilderCScope]. *)
 class type builder_c_scope_t = object
   inherit Builder_scope.builder_scope_t
   method as_builder_c_scope : Raw.Builder_c_scope.t
 end
 
 class builder_c_scope : Raw.Builder_c_scope.t -> builder_c_scope_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Builder_c_scope.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkBuilderCScope], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Builder_c_scope.t}. *)
 
 (** {2:constructors Constructors} *)
 

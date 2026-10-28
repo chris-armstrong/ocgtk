@@ -6,7 +6,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Data_input_stream}. *)
 
-(** The methods, signals and properties of a [GDataInputStream]. *)
+(** The methods, signals and properties of a [DataInputStream]. *)
 class type data_input_stream_t = object
   inherit Buffered_input_stream.buffered_input_stream_t
 
@@ -96,9 +96,7 @@ class type data_input_stream_t = object
 end
 
 class data_input_stream : Raw.Data_input_stream.t -> data_input_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Data_input_stream.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDataInputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Data_input_stream.t}. *)
 
 (** {2:constructors Constructors} *)
 

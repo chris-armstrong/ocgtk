@@ -7,7 +7,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Multi_sorter}. *)
 
-(** The methods, signals and properties of a [GtkMultiSorter]. *)
+(** The methods, signals and properties of a [MultiSorter]. *)
 class type multi_sorter_t = object
   inherit Sorter.sorter_t
   inherit Ocgio.List_model.list_model_t
@@ -31,9 +31,7 @@ class type multi_sorter_t = object
 end
 
 class multi_sorter : Raw.Multi_sorter.t -> multi_sorter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Multi_sorter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkMultiSorter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Multi_sorter.t}. *)
 
 (** {2:constructors Constructors} *)
 

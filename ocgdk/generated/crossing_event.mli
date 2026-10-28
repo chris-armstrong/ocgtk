@@ -3,7 +3,7 @@
     Its methods, signals and properties are on {!class-type-crossing_event_t}.
     The functions it is built on are in {!Ocgdk.Raw.Crossing_event}. *)
 
-(** The methods, signals and properties of a [GdkCrossingEvent]. *)
+(** The methods, signals and properties of a [CrossingEvent]. *)
 class type crossing_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
@@ -20,6 +20,4 @@ class type crossing_event_t = object
 end
 
 class crossing_event : Raw.Crossing_event.t -> crossing_event_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Crossing_event.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkCrossingEvent], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Crossing_event.t}. *)

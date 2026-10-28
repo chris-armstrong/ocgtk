@@ -7,7 +7,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Text_child_anchor}. *)
 
-(** The methods, signals and properties of a [GtkTextChildAnchor]. *)
+(** The methods, signals and properties of a [TextChildAnchor]. *)
 class type text_child_anchor_t = object
   method get_deleted : unit -> bool
   (** Determines whether a child anchor has been deleted from the buffer.
@@ -21,9 +21,7 @@ class type text_child_anchor_t = object
 end
 
 class text_child_anchor : Raw.Text_child_anchor.t -> text_child_anchor_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Text_child_anchor.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTextChildAnchor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Text_child_anchor.t}. *)
 
 (** {2:constructors Constructors} *)
 

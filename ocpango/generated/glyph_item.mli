@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-glyph_item_t}. The
     functions it is built on are in {!Ocpango.Raw.Glyph_item}. *)
 
-(** The methods, signals and properties of a [PangoGlyphItem]. *)
+(** The methods, signals and properties of a [GlyphItem]. *)
 class type glyph_item_t = object
   method apply_attrs : string -> Raw.Attr_list.t -> Raw.Glyph_item.t list
   (** Splits a shaped item ([PangoGlyphItem]) into multiple items based on an
@@ -46,6 +46,4 @@ class type glyph_item_t = object
 end
 
 class glyph_item : Raw.Glyph_item.t -> glyph_item_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Glyph_item.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoGlyphItem], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Glyph_item.t}. *)

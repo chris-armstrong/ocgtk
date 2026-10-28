@@ -5,8 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgsk.Raw.Repeating_radial_gradient_node}. *)
 
-(** The methods, signals and properties of a [GskRepeatingRadialGradientNode].
-*)
+(** The methods, signals and properties of a [RepeatingRadialGradientNode]. *)
 class type repeating_radial_gradient_node_t = object
   inherit Render_node.render_node_t
 
@@ -17,10 +16,7 @@ end
 class repeating_radial_gradient_node :
   Raw.Repeating_radial_gradient_node.t ->
   repeating_radial_gradient_node_t
-(** Wraps a layer 1 handle, {!Ocgsk.Raw.Repeating_radial_gradient_node.t}. Apply
-    it directly only to convert a handle obtained from layer 1: constructors,
-    and methods that return a [GskRepeatingRadialGradientNode], give one already
-    wrapped. *)
+(** Wraps a raw handle of {!Ocgsk.Raw.Repeating_radial_gradient_node.t}. *)
 
 (** {2:constructors Constructors} *)
 

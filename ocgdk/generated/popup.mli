@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-popup_t}. The
     functions it is built on are in {!Ocgdk.Raw.Popup}. *)
 
-(** The methods, signals and properties of a [GdkPopup]. *)
+(** The methods, signals and properties of a [Popup]. *)
 class type popup_t = object
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)
@@ -55,6 +55,4 @@ class type popup_t = object
 end
 
 class popup : Raw.Popup.t -> popup_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Popup.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkPopup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Popup.t}. *)

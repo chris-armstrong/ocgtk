@@ -54,7 +54,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.D_bus_connection}. *)
 
-(** The methods, signals and properties of a [GDBusConnection]. *)
+(** The methods, signals and properties of a [DBusConnection]. *)
 class type d_bus_connection_t = object
   inherit Async_initable.async_initable_t
   inherit Initable.initable_t
@@ -312,9 +312,7 @@ class type d_bus_connection_t = object
 end
 
 class d_bus_connection : Raw.D_bus_connection.t -> d_bus_connection_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.D_bus_connection.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GDBusConnection], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.D_bus_connection.t}. *)
 
 (** {2:constructors Constructors} *)
 

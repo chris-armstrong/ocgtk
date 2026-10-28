@@ -38,7 +38,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Fixed}. *)
 
-(** The methods, signals and properties of a [GtkFixed]. *)
+(** The methods, signals and properties of a [Fixed]. *)
 class type fixed_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -89,9 +89,7 @@ class type fixed_t = object
 end
 
 class fixed : Raw.Fixed.t -> fixed_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Fixed.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFixed], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Fixed.t}. *)
 
 (** {2:constructors Constructors} *)
 

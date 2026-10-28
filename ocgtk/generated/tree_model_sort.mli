@@ -98,7 +98,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Tree_model_sort}. *)
 
-(** The methods, signals and properties of a [GtkTreeModelSort]. *)
+(** The methods, signals and properties of a [TreeModelSort]. *)
 class type tree_model_sort_t = object
   inherit Tree_drag_source.tree_drag_source_t
   inherit Tree_model.tree_model_t
@@ -143,9 +143,7 @@ class type tree_model_sort_t = object
 end
 
 class tree_model_sort : Raw.Tree_model_sort.t -> tree_model_sort_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Tree_model_sort.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkTreeModelSort], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Tree_model_sort.t}. *)
 
 (** {2:constructors Constructors} *)
 

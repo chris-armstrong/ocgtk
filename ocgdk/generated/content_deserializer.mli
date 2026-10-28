@@ -13,7 +13,7 @@
     {!class-type-content_deserializer_t}. The functions it is built on are in
     {!Ocgdk.Raw.Content_deserializer}. *)
 
-(** The methods, signals and properties of a [GdkContentDeserializer]. *)
+(** The methods, signals and properties of a [ContentDeserializer]. *)
 class type content_deserializer_t = object
   inherit Ocgio.Async_result.async_result_t
 
@@ -57,6 +57,4 @@ end
 class content_deserializer :
   Raw.Content_deserializer.t ->
   content_deserializer_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Content_deserializer.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkContentDeserializer], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Content_deserializer.t}. *)

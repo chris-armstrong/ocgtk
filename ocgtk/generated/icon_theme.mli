@@ -32,7 +32,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Icon_theme}."]
 
-(** The methods, signals and properties of a [GtkIconTheme]. *)
+(** The methods, signals and properties of a [IconTheme]. *)
 class type icon_theme_t = object
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -154,9 +154,7 @@ class type icon_theme_t = object
 end
 
 class icon_theme : Raw.Icon_theme.t -> icon_theme_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Icon_theme.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkIconTheme], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Icon_theme.t}. *)
 
 (** {2:constructors Constructors} *)
 

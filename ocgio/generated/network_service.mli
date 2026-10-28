@@ -10,7 +10,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgio.Raw.Network_service}. *)
 
-(** The methods, signals and properties of a [GNetworkService]. *)
+(** The methods, signals and properties of a [NetworkService]. *)
 class type network_service_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -38,9 +38,7 @@ class type network_service_t = object
 end
 
 class network_service : Raw.Network_service.t -> network_service_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Network_service.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GNetworkService], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Network_service.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -9,7 +9,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Inet_socket_address}. *)
 
-(** The methods, signals and properties of a [GInetSocketAddress]. *)
+(** The methods, signals and properties of a [InetSocketAddress]. *)
 class type inet_socket_address_t = object
   inherit
     Socket_address_and__socket_address_enumerator_and__socket_connectable
@@ -39,9 +39,7 @@ class type inet_socket_address_t = object
 end
 
 class inet_socket_address : Raw.Inet_socket_address.t -> inet_socket_address_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Inet_socket_address.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GInetSocketAddress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Inet_socket_address.t}. *)
 
 (** {2:constructors Constructors} *)
 

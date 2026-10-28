@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Font_dialog}. *)
 
-(** The methods, signals and properties of a [GtkFontDialog]. *)
+(** The methods, signals and properties of a [FontDialog]. *)
 class type font_dialog_t = object
   method choose_face_finish :
     Ocgio.Async_result.async_result_t ->
@@ -83,9 +83,7 @@ class type font_dialog_t = object
 end
 
 class font_dialog : Raw.Font_dialog.t -> font_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Font_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkFontDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Font_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

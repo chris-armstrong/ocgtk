@@ -12,12 +12,10 @@
 
 class type plane_t =
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.plane_t
-(** The methods, signals and properties of a [graphene_plane_t]. *)
+(** The methods, signals and properties of a [Plane]. *)
 
 class plane : Raw.Plane.t -> plane_t
-(** Wraps a layer 1 handle, {!Ocgraphene.Raw.Plane.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [graphene_plane_t], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgraphene.Raw.Plane.t}. *)
 
 (** {2:constructors Constructors} *)
 

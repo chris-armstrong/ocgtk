@@ -10,7 +10,7 @@
     Its methods, signals and properties are on {!class-type-color_chooser_t}.
     The functions it is built on are in {!Ocgtk.Raw.Color_chooser}. *)
 
-(** The methods, signals and properties of a [GtkColorChooser]. *)
+(** The methods, signals and properties of a [ColorChooser]. *)
 class type color_chooser_t = object
   method add_palette :
     Enums.orientation -> int -> int -> Ocgdk.Raw.Rgb_a.t array option -> unit
@@ -44,6 +44,4 @@ class type color_chooser_t = object
 end
 
 class color_chooser : Raw.Color_chooser.t -> color_chooser_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Color_chooser.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkColorChooser], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Color_chooser.t}. *)

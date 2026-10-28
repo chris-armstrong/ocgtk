@@ -89,7 +89,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Size_group}."]
 
-(** The methods, signals and properties of a [GtkSizeGroup]. *)
+(** The methods, signals and properties of a [SizeGroup]. *)
 class type size_group_t = object
   inherit Buildable.buildable_t
 
@@ -137,9 +137,7 @@ class type size_group_t = object
 end
 
 class size_group : Raw.Size_group.t -> size_group_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Size_group.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkSizeGroup], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Size_group.t}. *)
 
 (** {2:constructors Constructors} *)
 

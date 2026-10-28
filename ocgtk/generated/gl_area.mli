@@ -94,7 +94,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Gl_area}."]
 
-(** The methods, signals and properties of a [GtkGLArea]. *)
+(** The methods, signals and properties of a [GLArea]. *)
 class type gl_area_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -257,9 +257,7 @@ class type gl_area_t = object
 end
 
 class gl_area : Raw.Gl_area.t -> gl_area_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gl_area.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkGLArea], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gl_area.t}. *)
 
 (** {2:constructors Constructors} *)
 

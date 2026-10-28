@@ -5,7 +5,7 @@
     Its methods, signals and properties are on {!class-type-tls_backend_t}. The
     functions it is built on are in {!Ocgio.Raw.Tls_backend}. *)
 
-(** The methods, signals and properties of a [GTlsBackend]. *)
+(** The methods, signals and properties of a [TlsBackend]. *)
 class type tls_backend_t = object
   method get_certificate_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsCertificate] implementation. *)
@@ -55,6 +55,4 @@ class type tls_backend_t = object
 end
 
 class tls_backend : Raw.Tls_backend.t -> tls_backend_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Tls_backend.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GTlsBackend], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Tls_backend.t}. *)

@@ -5,7 +5,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgdk.Raw.Content_formats_builder}. *)
 
-(** The methods, signals and properties of a [GdkContentFormatsBuilder]. *)
+(** The methods, signals and properties of a [ContentFormatsBuilder]. *)
 class type content_formats_builder_t = object
   method add_formats : Raw.Content_formats.t -> unit
   (** Appends all formats from [formats] to [builder], skipping those that
@@ -39,10 +39,7 @@ end
 class content_formats_builder :
   Raw.Content_formats_builder.t ->
   content_formats_builder_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Content_formats_builder.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GdkContentFormatsBuilder], give one already wrapped.
-*)
+(** Wraps a raw handle of {!Ocgdk.Raw.Content_formats_builder.t}. *)
 
 (** {2:constructors Constructors} *)
 

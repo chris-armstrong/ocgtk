@@ -2,7 +2,7 @@
     because they refer to each other. Each has a module of its own that
     re-exports it; use that module rather than this one. *)
 
-(** The methods, signals and properties of a [GdkCicpParams]. *)
+(** The methods, signals and properties of a [CicpParams]. *)
 class type cicp_params_t = object
   method build_color_state : unit -> (Raw.Color_state.t, GError.t) result
   (** Creates a new [GdkColorState] object for the cicp parameters in [self].
@@ -39,7 +39,7 @@ class type cicp_params_t = object
   method as_cicp_params : Raw.Cicp_params.t
 end
 
-(** The methods, signals and properties of a [GdkColorState]. *)
+(** The methods, signals and properties of a [ColorState]. *)
 and color_state_t = object
   method create_cicp_params : unit -> cicp_params_t option
   (** Create a [Gdk.CicpParams] representing the colorstate.
@@ -66,13 +66,9 @@ and color_state_t = object
   method as_color_state : Raw.Color_state.t
 end
 
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Cicp_params.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkCicpParams], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Cicp_params.t}. *)
 class cicp_params : Raw.Cicp_params.t -> cicp_params_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Color_state.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkColorState], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Color_state.t}. *)
 
 and color_state : Raw.Color_state.t -> color_state_t
 

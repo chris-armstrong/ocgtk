@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-layout_line_t}. The
     functions it is built on are in {!Ocpango.Raw.Layout_line}. *)
 
-(** The methods, signals and properties of a [PangoLayoutLine]. *)
+(** The methods, signals and properties of a [LayoutLine]. *)
 class type layout_line_t = object
   method get_length : unit -> int
   (** Returns the length of the line, in bytes. *)
@@ -30,6 +30,4 @@ class type layout_line_t = object
 end
 
 class layout_line : Raw.Layout_line.t -> layout_line_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Layout_line.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoLayoutLine], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Layout_line.t}. *)

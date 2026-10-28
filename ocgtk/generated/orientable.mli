@@ -12,7 +12,7 @@
     Its methods, signals and properties are on {!class-type-orientable_t}. The
     functions it is built on are in {!Ocgtk.Raw.Orientable}. *)
 
-(** The methods, signals and properties of a [GtkOrientable]. *)
+(** The methods, signals and properties of a [Orientable]. *)
 class type orientable_t = object
   method get_orientation : unit -> Enums.orientation
   (** Retrieves the orientation of the [orientable]. *)
@@ -24,6 +24,4 @@ class type orientable_t = object
 end
 
 class orientable : Raw.Orientable.t -> orientable_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Orientable.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkOrientable], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Orientable.t}. *)

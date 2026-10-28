@@ -18,9 +18,7 @@
     functions it is built on are in {!Ocgio.Raw.File_monitor}. *)
 
 class type file_monitor_t = App_info_cycle_64c425a0.file_monitor_t
-(** The methods, signals and properties of a [GFileMonitor]. *)
+(** The methods, signals and properties of a [FileMonitor]. *)
 
 class file_monitor : Raw.File_monitor.t -> file_monitor_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.File_monitor.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GFileMonitor], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.File_monitor.t}. *)

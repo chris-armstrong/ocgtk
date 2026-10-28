@@ -33,7 +33,7 @@
     {!class-type-column_view_sorter_t}. The functions it is built on are in
     {!Ocgtk.Raw.Column_view_sorter}. *)
 
-(** The methods, signals and properties of a [GtkColumnViewSorter]. *)
+(** The methods, signals and properties of a [ColumnViewSorter]. *)
 class type column_view_sorter_t = object
   inherit Sorter.sorter_t
 
@@ -66,6 +66,4 @@ class type column_view_sorter_t = object
 end
 
 class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Column_view_sorter.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkColumnViewSorter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Column_view_sorter.t}. *)

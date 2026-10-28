@@ -14,7 +14,7 @@
     Its methods, signals and properties are on {!class-type-media_stream_t}. The
     functions it is built on are in {!Ocgtk.Raw.Media_stream}. *)
 
-(** The methods, signals and properties of a [GtkMediaStream]. *)
+(** The methods, signals and properties of a [MediaStream]. *)
 class type media_stream_t = object
   inherit Ocgdk.Paintable.paintable_t
 
@@ -233,6 +233,4 @@ class type media_stream_t = object
 end
 
 class media_stream : Raw.Media_stream.t -> media_stream_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Media_stream.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkMediaStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Media_stream.t}. *)

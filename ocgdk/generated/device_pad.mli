@@ -18,7 +18,7 @@
     Its methods, signals and properties are on {!class-type-device_pad_t}. The
     functions it is built on are in {!Ocgdk.Raw.Device_pad}. *)
 
-(** The methods, signals and properties of a [GdkDevicePad]. *)
+(** The methods, signals and properties of a [DevicePad]. *)
 class type device_pad_t = object
   method get_feature_group : Enums.devicepadfeature -> int -> int
   (** Returns the group the given [feature] and [idx] belong to.
@@ -42,6 +42,4 @@ class type device_pad_t = object
 end
 
 class device_pad : Raw.Device_pad.t -> device_pad_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Device_pad.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkDevicePad], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Device_pad.t}. *)

@@ -18,7 +18,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgio.Raw.Buffered_input_stream}. *)
 
-(** The methods, signals and properties of a [GBufferedInputStream]. *)
+(** The methods, signals and properties of a [BufferedInputStream]. *)
 class type buffered_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Seekable.seekable_t
@@ -86,9 +86,7 @@ end
 class buffered_input_stream :
   Raw.Buffered_input_stream.t ->
   buffered_input_stream_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Buffered_input_stream.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GBufferedInputStream], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Buffered_input_stream.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -20,7 +20,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_dialog}. *)
 
-(** The methods, signals and properties of a [GtkAppChooserDialog]. *)
+(** The methods, signals and properties of a [AppChooserDialog]. *)
 class type app_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit App_chooser.app_chooser_t
@@ -44,9 +44,7 @@ class type app_chooser_dialog_t = object
 end
 
 class app_chooser_dialog : Raw.App_chooser_dialog.t -> app_chooser_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.App_chooser_dialog.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAppChooserDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.App_chooser_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

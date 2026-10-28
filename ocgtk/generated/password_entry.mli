@@ -35,7 +35,7 @@
     Its constructors are under {!section-constructors}. The functions it is
     built on are in {!Ocgtk.Raw.Password_entry}. *)
 
-(** The methods, signals and properties of a [GtkPasswordEntry]. *)
+(** The methods, signals and properties of a [PasswordEntry]. *)
 class type password_entry_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -73,9 +73,7 @@ class type password_entry_t = object
 end
 
 class password_entry : Raw.Password_entry.t -> password_entry_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Password_entry.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkPasswordEntry], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Password_entry.t}. *)
 
 (** {2:constructors Constructors} *)
 

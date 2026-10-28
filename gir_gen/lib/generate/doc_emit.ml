@@ -88,6 +88,14 @@ let after_item = function
   | Some (Attribute a) -> "[@@ocaml.doc \"" ^ string_literal_body a ^ "\"]\n\n"
   | Some (Comment _) | None -> ""
 
+(* The blank line keeps a comment from also reading as the previous item's
+   trailing doc, which ocamlformat rejects as ambiguous. *)
+let around doc item =
+  let before =
+    match before_item doc with "" -> "" | comment -> "\n" ^ comment
+  in
+  before ^ item ^ after_item doc
+
 let member_suffix = function
   | Some (Comment c) -> " " ^ c
   | Some (Attribute a) -> " [@ocaml.doc \"" ^ string_literal_body a ^ "\"]"

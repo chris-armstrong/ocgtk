@@ -5,7 +5,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Script_iter}. *)
 
-(** The methods, signals and properties of a [PangoScriptIter]. *)
+(** The methods, signals and properties of a [ScriptIter]. *)
 class type script_iter_t = object
   method next : unit -> bool
   (** Advances a [PangoScriptIter] to the next range.
@@ -17,9 +17,7 @@ class type script_iter_t = object
 end
 
 class script_iter : Raw.Script_iter.t -> script_iter_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Script_iter.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoScriptIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Script_iter.t}. *)
 
 (** {2:constructors Constructors} *)
 

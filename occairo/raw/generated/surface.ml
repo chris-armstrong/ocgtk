@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Surface: Surface *)
 
-(** Bindings for [cairo_surface_t].
+(** Bindings for [Surface].
 
     The class built on this module is in {!Occairo.Surface}. *)
 

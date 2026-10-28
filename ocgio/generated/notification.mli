@@ -47,7 +47,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgio.Raw.Notification}. *)
 
-(** The methods, signals and properties of a [GNotification]. *)
+(** The methods, signals and properties of a [Notification]. *)
 class type notification_t = object
   method add_button : string -> string -> unit
   [@@ocaml.doc
@@ -121,9 +121,7 @@ class type notification_t = object
 end
 
 class notification : Raw.Notification.t -> notification_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Notification.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GNotification], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Notification.t}. *)
 
 (** {2:constructors Constructors} *)
 

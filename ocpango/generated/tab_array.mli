@@ -8,7 +8,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocpango.Raw.Tab_array}. *)
 
-(** The methods, signals and properties of a [PangoTabArray]. *)
+(** The methods, signals and properties of a [TabArray]. *)
 class type tab_array_t = object
   method get_decimal_point : int -> int
   (** Gets the Unicode character to use as decimal point.
@@ -75,9 +75,7 @@ class type tab_array_t = object
 end
 
 class tab_array : Raw.Tab_array.t -> tab_array_t
-(** Wraps a layer 1 handle, {!Ocpango.Raw.Tab_array.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [PangoTabArray], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocpango.Raw.Tab_array.t}. *)
 
 (** {2:constructors Constructors} *)
 

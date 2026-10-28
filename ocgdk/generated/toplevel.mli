@@ -7,7 +7,7 @@
     Its methods, signals and properties are on {!class-type-toplevel_t}. The
     functions it is built on are in {!Ocgdk.Raw.Toplevel}. *)
 
-(** The methods, signals and properties of a [GdkToplevel]. *)
+(** The methods, signals and properties of a [Toplevel]. *)
 class type toplevel_t = object
   method begin_move :
     App_launch_context_cycle_de440b34.device_t ->
@@ -179,6 +179,4 @@ class type toplevel_t = object
 end
 
 class toplevel : Raw.Toplevel.t -> toplevel_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Toplevel.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkToplevel], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Toplevel.t}. *)

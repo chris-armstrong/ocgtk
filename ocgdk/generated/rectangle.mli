@@ -17,7 +17,7 @@
     Its methods, signals and properties are on {!class-type-rectangle_t}. The
     functions it is built on are in {!Ocgdk.Raw.Rectangle}. *)
 
-(** The methods, signals and properties of a [GdkRectangle]. *)
+(** The methods, signals and properties of a [Rectangle]. *)
 class type rectangle_t = object
   method contains_point : int -> int -> bool
   (** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
@@ -29,6 +29,4 @@ class type rectangle_t = object
 end
 
 class rectangle : Raw.Rectangle.t -> rectangle_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Rectangle.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkRectangle], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Rectangle.t}. *)

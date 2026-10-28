@@ -5,7 +5,7 @@
     {!class-type-menu_attribute_iter_t}. The functions it is built on are in
     {!Ocgio.Raw.Menu_attribute_iter}. *)
 
-(** The methods, signals and properties of a [GMenuAttributeIter]. *)
+(** The methods, signals and properties of a [MenuAttributeIter]. *)
 class type menu_attribute_iter_t = object
   method get_name : unit -> string
   (** Gets the name of the attribute at the current iterator position, as a
@@ -31,6 +31,4 @@ class type menu_attribute_iter_t = object
 end
 
 class menu_attribute_iter : Raw.Menu_attribute_iter.t -> menu_attribute_iter_t
-(** Wraps a layer 1 handle, {!Ocgio.Raw.Menu_attribute_iter.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GMenuAttributeIter], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgio.Raw.Menu_attribute_iter.t}. *)

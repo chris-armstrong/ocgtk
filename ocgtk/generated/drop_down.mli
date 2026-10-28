@@ -44,7 +44,7 @@
  constructors are under {!section-constructors}. The functions it is built on \
  are in {!Ocgtk.Raw.Drop_down}."]
 
-(** The methods, signals and properties of a [GtkDropDown]. *)
+(** The methods, signals and properties of a [DropDown]. *)
 class type drop_down_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -136,9 +136,7 @@ class type drop_down_t = object
 end
 
 class drop_down : Raw.Drop_down.t -> drop_down_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drop_down.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkDropDown], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Drop_down.t}. *)
 
 (** {2:constructors Constructors} *)
 

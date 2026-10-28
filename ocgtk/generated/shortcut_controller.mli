@@ -45,7 +45,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Shortcut_controller}. *)
 
-(** The methods, signals and properties of a [GtkShortcutController]. *)
+(** The methods, signals and properties of a [ShortcutController]. *)
 class type shortcut_controller_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -106,9 +106,7 @@ class type shortcut_controller_t = object
 end
 
 class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Shortcut_controller.t}. Apply it
-    directly only to convert a handle obtained from layer 1: constructors, and
-    methods that return a [GtkShortcutController], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcut_controller.t}. *)
 
 (** {2:constructors Constructors} *)
 

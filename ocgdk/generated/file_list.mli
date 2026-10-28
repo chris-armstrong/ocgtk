@@ -4,7 +4,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgdk.Raw.File_list}. *)
 
-(** The methods, signals and properties of a [GdkFileList]. *)
+(** The methods, signals and properties of a [FileList]. *)
 class type file_list_t = object
   method get_files : unit -> Ocgio.File.file_t list
   (** Retrieves the list of files inside a [GdkFileList].
@@ -15,9 +15,7 @@ class type file_list_t = object
 end
 
 class file_list : Raw.File_list.t -> file_list_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.File_list.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GdkFileList], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.File_list.t}. *)
 
 (** {2:constructors Constructors} *)
 

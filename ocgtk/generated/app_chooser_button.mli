@@ -31,7 +31,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.App_chooser_button}. *)
 
-(** The methods, signals and properties of a [GtkAppChooserButton]. *)
+(** The methods, signals and properties of a [AppChooserButton]. *)
 class type app_chooser_button_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -116,9 +116,7 @@ class type app_chooser_button_t = object
 end
 
 class app_chooser_button : Raw.App_chooser_button.t -> app_chooser_button_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.App_chooser_button.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkAppChooserButton], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.App_chooser_button.t}. *)
 
 (** {2:constructors Constructors} *)
 

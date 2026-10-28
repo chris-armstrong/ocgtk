@@ -7,7 +7,7 @@
     Its methods, signals and properties are on {!class-type-custom_layout_t}.
     The functions it is built on are in {!Ocgtk.Raw.Custom_layout}. *)
 
-(** The methods, signals and properties of a [GtkCustomLayout]. *)
+(** The methods, signals and properties of a [CustomLayout]. *)
 class type custom_layout_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -17,6 +17,4 @@ class type custom_layout_t = object
 end
 
 class custom_layout : Raw.Custom_layout.t -> custom_layout_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Custom_layout.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkCustomLayout], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Custom_layout.t}. *)

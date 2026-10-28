@@ -18,7 +18,7 @@
     {!section-constructors}. The functions it is built on are in
     {!Ocgtk.Raw.Gesture_long_press}. *)
 
-(** The methods, signals and properties of a [GtkGestureLongPress]. *)
+(** The methods, signals and properties of a [GestureLongPress]. *)
 class type gesture_long_press_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -48,9 +48,7 @@ class type gesture_long_press_t = object
 end
 
 class gesture_long_press : Raw.Gesture_long_press.t -> gesture_long_press_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Gesture_long_press.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GtkGestureLongPress], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Gesture_long_press.t}. *)
 
 (** {2:constructors Constructors} *)
 

@@ -13,7 +13,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Color_dialog}. *)
 
-(** The methods, signals and properties of a [GtkColorDialog]. *)
+(** The methods, signals and properties of a [ColorDialog]. *)
 class type color_dialog_t = object
   method choose_rgba_finish :
     Ocgio.Async_result.async_result_t -> (Ocgdk.Rgb_a.rgb_a_t, GError.t) result
@@ -46,9 +46,7 @@ class type color_dialog_t = object
 end
 
 class color_dialog : Raw.Color_dialog.t -> color_dialog_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Color_dialog.t}. Apply it directly only
-    to convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkColorDialog], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Color_dialog.t}. *)
 
 (** {2:constructors Constructors} *)
 

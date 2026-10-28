@@ -8,7 +8,7 @@
     Its methods, signals and properties are on {!class-type-touchpad_event_t}.
     The functions it is built on are in {!Ocgdk.Raw.Touchpad_event}. *)
 
-(** The methods, signals and properties of a [GdkTouchpadEvent]. *)
+(** The methods, signals and properties of a [TouchpadEvent]. *)
 class type touchpad_event_t = object
   inherit App_launch_context_cycle_de440b34.event_t
 
@@ -28,6 +28,4 @@ class type touchpad_event_t = object
 end
 
 class touchpad_event : Raw.Touchpad_event.t -> touchpad_event_t
-(** Wraps a layer 1 handle, {!Ocgdk.Raw.Touchpad_event.t}. Apply it directly
-    only to convert a handle obtained from layer 1: constructors, and methods
-    that return a [GdkTouchpadEvent], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgdk.Raw.Touchpad_event.t}. *)

@@ -14,7 +14,7 @@
     constructors are under {!section-constructors}. The functions it is built on
     are in {!Ocgtk.Raw.Drag_icon}. *)
 
-(** The methods, signals and properties of a [GtkDragIcon]. *)
+(** The methods, signals and properties of a [DragIcon]. *)
 class type drag_icon_t = object
   inherit
     Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -44,9 +44,7 @@ class type drag_icon_t = object
 end
 
 class drag_icon : Raw.Drag_icon.t -> drag_icon_t
-(** Wraps a layer 1 handle, {!Ocgtk.Raw.Drag_icon.t}. Apply it directly only to
-    convert a handle obtained from layer 1: constructors, and methods that
-    return a [GtkDragIcon], give one already wrapped. *)
+(** Wraps a raw handle of {!Ocgtk.Raw.Drag_icon.t}. *)
 
 (** {2:constructors Constructors} *)
 
