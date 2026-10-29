@@ -11,6 +11,14 @@
 >
 > Lives under `gir_gen/docs/research/` to distinguish a WIP design PRD from the
 > settled plans in `gir_gen/docs/plans/`.
+>
+> **Library layout (revised 2026-10-28).** Module paths, file names and the
+> reference examples follow the per-package layout
+> ([library-layout.md](../plans/library-layout.md)): one opam package per
+> namespace (`ocgtk` is Gtk only), layer 1 at `Oc<ns>.Raw.<Type>`, layer 2 at
+> `Oc<ns>.<Type>`, enums at `Oc<ns>.Enums`, constants at `Oc<ns>.Constants`.
+> The reference forms in §7 were re-probed against the generated bindings
+> (§4.3, second probe).
 
 This is a companion to the GIR generator architecture; see
 [../../../architecture/cross_namespace_types.md](../../../architecture/cross_namespace_types.md) for the references
@@ -71,46 +79,63 @@ This section records them so the rest of the document is self-contained.
 
 ### 2.1 Layer 1 and Layer 2
 
-Every GObject class/interface generates two OCaml layers (see
-[../../../architecture/overview.md](../../../architecture/overview.md)):
+Every GObject class, interface and record generates two OCaml layers (see
+[../../../architecture/overview.md](../../../architecture/overview.md)). Each
+namespace is its own opam package `oc<ns>` (`ocgtk` is Gtk only) with three
+libraries:
 
-- **Layer 1 (L1)** — a module per type, `Ocgtk_<ns>.<Ns>.<Type>`, exposing a
+- **Layer 1 (L1)**, library `oc<ns>.raw` (`<pkg>/raw/generated/`) — a module
+  per type, public path `Oc<ns>.Raw.<Type>` (`Ocgtk.Raw.Button`), exposing a
   `type t` (the GType-tagged pointer) and `external` functions: constructors
   (`external new_ : …`), methods (`external set_label : …`), and property
   accessors (`external get_<prop>` / `external set_<prop>`). Signals appear as
-  L1 free functions too.
-- **Layer 2 (L2)** — a class per type, `Ocgtk_<ns>.<Ns>.G<Type>`, exposing
-  `class type <type>_t` and `class <type>` with `method …` declarations that
-  forward to L1.
+  L1 free functions too (`val on_<signal>`). `Oc<ns>.Raw` is a generated
+  module of aliases (`module Button = Ocgtk_raw.Button`), so odoc's canonical
+  page for an L1 module is under `Ocgtk_raw`; references are written through
+  the public `Oc<ns>.Raw.<Type>` path and resolve to it.
+- **Layer 2 (L2)**, library `oc<ns>` (`<pkg>/generated/`) — a module per
+  type, public path `Oc<ns>.<Type>` (`Ocgtk.Button`), exposing
+  `class type <type>_t`, `class <type>` with `method …` declarations that
+  forward to L1, and the constructors as module-level `val`s that return the
+  class type. Records get an L2 class type too (`Ocgdk.Rgb_a.rgb_a_t`).
+- **Enums and bitfields**, library `oc<ns>.enums` — polymorphic-variant
+  types, public path `Oc<ns>.Enums.<type>` (a generated `include` of
+  `Oc<ns>_enums`, so both paths resolve; `Oc<ns>.Enums` is the one written).
+- **Constants** — `Oc<ns>.Constants.<name>`, in the L2 library only.
 
-Enums and bitfields are **L1 only**: `Ocgtk_<ns>.<Ns>_enums.<type>` as
-polymorphic-variant types. Constants are L1 only:
-`Ocgtk_<ns>.<Ns>_constants.<name>`. Standalone functions, records, and
-callbacks are L1-only as well (see outstanding questions for the exact module
-layout of the last two).
+Standalone functions (namespace-level and class-static) and callbacks are
+not generated today, so they have no target (§7.2).
 
-### 2.2 Stable shim/alias module names (SCC is hidden)
+### 2.2 Stable shim module names (SCC is hidden)
 
 Some classes are mutually recursive and are absorbed by the dependency
 analyser's Tarjan SCC pass into a single **combined module**, e.g.
-`GApplication_and__window_and__window_group`. The combined name is an
-implementation detail: each class also gets a **shim module** with a stable
-name that re-exports from the combined module:
+`Application_and__window_and__window_group` (one file per layer, under the
+same name in `raw/generated/` and `generated/`). The combined name is an
+implementation detail: each member also gets a **shim module** with a stable
+name that re-exports from the combined module, at both layers:
 
 ```ocaml
-(* gWindow.mli — shim *)
-class type window_t = GApplication_and__window_and__window_group.window_t
-class window : Application_and__window_and__window_group.Window.t -> window_t
+(* ocgtk/generated/window.mli — L2 shim *)
+class type window_t = Application_and__window_and__window_group.window_t
+class window : Raw.Window.t -> window_t
 val new_ : unit -> window_t
+
+(* ocgtk/raw/generated/window.mli — L1 shim *)
+include module type of struct
+  include Application_and__window_and__window_group.Window
+end
 ```
 
 So the **public, stable name** for a class is always a pure function of the
-type name — `Ocgtk_gtk.Gtk.GWindow.window_t`, never the combined
+type name — `Ocgtk.Window.window_t`, never the combined
 `…_and__window_and__window_group.window_t`. The L1 module
-`Ocgtk_gtk.Gtk.Window` is likewise a stable alias of the combined module's L1
-part. **This is decisive for reference resolution (§7): doc references always
-point at the stable shim/alias name, so SCC grouping is irrelevant to the
-doc path.**
+`Ocgtk.Raw.Window` is likewise the shim of the combined module's L1 part.
+**This is decisive for reference resolution (§7): doc references always
+point at the stable shim name, so SCC grouping is irrelevant to the doc
+path.** The probe (§4.3) confirms that a method reached through a shim's
+class-type alias (`{!Ocgtk.Widget.class-type-widget_t.method-show}`)
+resolves and links to the shim's page.
 
 ### 2.3 Name translators (deterministic)
 
@@ -118,18 +143,29 @@ The generator already turns GIR names into OCaml names with pure functions in
 `gir_gen/lib/utils.ml` and the generators:
 
 - `Utils.module_name_of_class = to_snake_case >> capitalize_ascii`
-  (`AboutDialog` → `About_dialog`).
+  (`AboutDialog` → `About_dialog`, `RGBA` → `Rgb_a`); the same name is used
+  for the L1 module, the L2 module and (lowercased, with `_t`) the class
+  type.
 - `Utils.to_snake_case` (CamelCase → snake_case).
 - `Utils.sanitize_identifier` (OCaml keyword escape, e.g. `new` → `new_`).
-- Property accessors: `"set_" ^ prop_snake |> sanitize_identifier` and
-  `"get_" ^ prop_snake` (e.g. property `system-information` →
-  `set_system_information` / `get_system_information`).
-- Signal accessors: `"on_" ^ name` (e.g. signal `activate` → `on_activate`).
-- Constructor: `sanitize_identifier` of the GIR name (`new` → `new_`).
+- Property accessors, for a property no GIR method claims (§7.2):
+  L1 `external get_<prop>` / `external set_<prop>`; L2 `method <prop>`
+  (getter, no `get_` prefix) / `method set_<prop>`, with
+  `prop = Utils.ocaml_property_name` (e.g. `gtk-alternative-button-order` →
+  `gtk_alternative_button_order`). A property that a GIR method claims via
+  `get-property` / `set-property` gets no accessors of its own; the method
+  (`get_label`, `set_label`) is its accessor at both layers.
+- Signal accessors: `"on_" ^ name` (e.g. signal `activate` → `on_activate`),
+  an L1 `val` and an L2 `method`.
+- Constructor: `sanitize_identifier` of the GIR name (`new` → `new_`), an L1
+  `external` and an L2 module-level `val`.
 - Enum/bitfield type: lowercased name (`AxisUse` → `axisuse`), in
-  `<ns>_enums`.
+  `Oc<ns>.Enums`.
 - Constant: lowercased name (`ACTION_ALL` → `action_all`), in
-  `<ns>_constants`.
+  `Oc<ns>.Constants`.
+- Namespace → package module: `Gtk` → `Ocgtk`, `Gdk` → `Ocgdk`, `Gio` →
+  `Ocgio`, `GdkPixbuf` → `Ocgdkpixbuf`, `cairo` → `Occairo`, … (`Oc` ^ the
+  lowercased namespace).
 
 These are **deterministic functions of the GIR name**, so an odoc reference
 path is computable without any lookup table (see §7).
@@ -199,11 +235,11 @@ broken links (§7.7).
 Generated bindings never raise. Every GIR callable with `throws="1"` is
 bound returning `('a, GError.t) result` — e.g. `pixbuf_loader.mli`:
 `external new_with_mime_type : string -> (t, GError.t) result` — with
-`GError.t` defined in the handwritten `ocgtk/src/common/gError.mli`.
+`GError.t` defined in the handwritten `ocglib/gError.mli`.
 Raising is confined to **handwritten** support modules, for exceptional
-conditions: the integer bounds wrappers (`common/int32.mli` etc. raise
-`Invalid_argument`), the GVariant accessors (`common/gvariant.mli` raises
-`Failure`), and `gtk/core/gMain.ml`, which raises on GTK initialisation
+conditions: the integer bounds wrappers (`ocglib/int32.mli` etc. raise
+`Invalid_argument`), the GVariant accessors (`ocglib/gvariant.mli` raises
+`Failure`), and `ocgtk/core/main.ml`, which raises on GTK initialisation
 failure. Those modules document their raises by hand (`@raise` tags in
 their handwritten `.mli` files). This split drives the error-documentation
 policy (§13).
@@ -395,8 +431,8 @@ the OCaml analog is our per-namespace module-path table (§7).
 
 **Decision:** the fragment keyword gives the **kind** of the target. This is
 the foundation of the resolver (§7): `[class@…]` ⇒ class, `[enum@…]` ⇒ enum,
-etc., so the module family (`G<Type>` vs `<ns>_enums` vs `<ns>_constants`) is
-selectable without any lookup. Only `[id@…]` (C symbol, no kind hint) and
+etc., so the module family (`Oc<ns>.<Type>` vs `Oc<ns>.Enums` vs
+`Oc<ns>.Constants`) is selectable without any lookup. Only `[id@…]` (C symbol, no kind hint) and
 `[type@…]` (ambiguous kind) need a lookup or a fallback.
 
 **Alternatives considered and dismissed:**
@@ -659,8 +695,9 @@ Unresolved references emit a **warning** (not an error) and render as a
 code-span-ish text. This is the graceful-degradation lever we use for
 references we cannot resolve (§7).
 
-**Decision:** emit fully-qualified `{!Ocgtk_<ns>.….item}` paths so odoc's
-linker resolves them across libraries in the workspace.
+**Decision:** emit fully-qualified `{!Oc<ns>.….item}` paths (rooted at the
+package's main module) so odoc's linker resolves them across libraries and
+packages in the workspace.
 
 **Alternatives considered and dismissed:**
 - *Generate a Markdown sidecar and a separate renderer (the gtk-rs
@@ -751,6 +788,47 @@ the built HTML or the emitted warnings, not read from documentation.
 - Unresolved references emit a warning and render as an
   `xref-unresolved` span — the graceful degradation of §7.6 confirmed.
 
+**Second probe: reference forms against the generated bindings
+(2026-10-28, odoc 3.2.1).** The same list of references was appended to
+`ocgtk/generated/button.mli` (an L2 doc) and `ocgtk/raw/generated/button.mli`
+(an L1 doc), built with `dune build @doc`, and each link target read from
+the HTML. Every form below resolved from **both** layers with no warning;
+the deliberate miss (`…class-type-button_t.method-nonexistent`) warned and
+rendered unlinked.
+
+| Reference | Links to |
+|---|---|
+| `{!Ocgtk.Button.class-type-button_t.method-set_label}` | `Ocgtk/Button/class-type-button_t/#method-set_label` |
+| `{!Ocgtk.Button.button_t.method-set_label}` (no kind prefix) | same |
+| `{!Ocgtk.Button.class-type-button_t.method-on_clicked}` (signal) | `…#method-on_clicked` |
+| `{!Ocgtk.Widget.class-type-widget_t.method-show}` (shim of a cyclic group) | `Ocgtk/Widget/class-type-widget_t/#method-show` |
+| `{!Ocgtk.Text_iter.class-type-text_iter_t.method-get_offset}` (record, shim) | `Ocgtk/Text_iter/class-type-text_iter_t/#method-get_offset` |
+| `{!Ocgtk.Button.new_with_label}` (L2 constructor) | `Ocgtk/Button/#val-new_with_label` |
+| `{!Ocgtk.Raw.Button.new_with_label}`, `{!Ocgtk.Raw.Button.set_label}` | `Ocgtk_raw/Button/#val-…` |
+| `{!Ocgtk.Raw.Widget.show}` (L1, cyclic group) | `Ocgtk_raw/Widget/#val-show` |
+| `{!Ocgtk.Enums.orientation}` | `Ocgtk/Enums/#type-orientation` |
+| ``{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}``, ``{!Ocgtk.Enums.type-orientation.`HORIZONTAL}`` | `Ocgtk/Enums/#type-orientation.HORIZONTAL` |
+| `{!Ocgtk.Constants.accessible_attribute_background}` (from L1 too) | `Ocgtk/Constants/#val-…` |
+| `{!Ocgdk.Rgb_a.class-type-rgb_a_t.method-to_string}` (cross-package) | `ocgdk/Ocgdk/Rgb_a/class-type-rgb_a_t/#method-to_string` |
+| `{!Ocgio.Action_group.class-type-action_group_t}` (cross-package iface) | `ocgio/Ocgio/Action_group/class-type-action_group_t/` |
+
+Findings:
+
+- **The kind prefix is optional but is emitted.** `button_t.method-x` and
+  `class-type-button_t.method-x` link identically; the resolver emits the
+  `class-type-` form, which is what the generated docs already use for the
+  Inherits block and the module preambles, and which cannot be shadowed by
+  the `class button` of the same module.
+- **Shims are transparent.** A method reached through
+  `class type widget_t = <Combined>.widget_t` resolves, and the anchor exists
+  on the shim's own class-type page. No reference needs the combined name.
+- **L1 docs can link to L2 and vice versa.** References are resolved
+  package-wide, so an L1 doc can name `Ocgtk.Button…` and an L2 doc
+  `Ocgtk.Raw.Button…`, even though `ocgtk.raw` cannot depend on `ocgtk`.
+- **`Oc<ns>.Raw.<Type>` resolves to the `Ocgtk_raw` page** (the canonical
+  page of the alias), while `Oc<ns>.Enums` has a page of its own (it is an
+  `include`). Both are written through the public paths.
+
 **Comment attachment:**
 
 - A comment separated from the following element by **no** blank line is
@@ -812,7 +890,7 @@ odoc:
 
     The following signals have default keybindings:
 
-    - {!Ocgtk_gtk.Gtk.GButton.button_t.method-on_activate} *)
+    - {!Ocgtk.Button.class-type-button_t.method-on_activate} *)
 ```
 
 **Decision:** translate every markdown construct above; escape odoc specials.
@@ -1012,38 +1090,76 @@ deterministic member name).
 ### 7.2 The fragment keyword gives the kind
 
 For every gi-docgen fragment except `[id@]` and `[type@]`, the keyword *is* the
-kind, so the module family is selectable with no lookup:
+kind, so the module family is selectable with no lookup. With `P` the
+package module of the endpoint's namespace (`Ocgtk`, `Ocgdk`, …; §2.3), `T`
+the type's module name and `t` its lowercased form, the target is (the
+column is the layer of the doc being emitted, §7.8):
 
-- `[class@…]` / `[iface@…]` → L2 class type `G<Type>.<type>_t`
-- `[enum@…]` / `[flags@…]` → `<ns>_enums.<type>`
-- `[const@…]` → `<ns>_constants.<name>`
-- `[struct@…]` → L1 record module `<Type>`
-- `[method@Ns.Type.m]` → L2 `G<Type>.<type>_t.method-<m>`
-- `[ctor@Ns.Type.m]` → L1 `<Type>.<m>`
-- `[func@Ns.f]` → L1 `<Ns>.<f>` (or functions sub-module — TBD)
-- `[property@Ns.Type:p]` → `<Type>.set_<p>` (the accessor)
-- `[signal@Ns.Type::s]` → `G<Type>.<type>_t.method-on_<s>`
-- `[callback@…]` / `[vfunc@…]` → fallback `[code]` in v1 (not generated yet)
-- `[id@c_symbol]` → c-index or fallback `[code]`
-- `[type@Ns.Type]` → ambiguous kind; fallback `[code]` or guess class
-- `[alias@…]` / `[error@…]` → fallback `[code]` (not generated; errors bound
-  manually in `gError.ml`)
+| Fragment | From an L2 doc | From an L1 doc |
+|---|---|---|
+| `[class@Ns.Type]`, `[iface@…]`, `[struct@…]` | `{!P.T.class-type-t_t}` | `{!P.Raw.T}` |
+| `[method@Ns.Type.m]` | `{!P.T.class-type-t_t.method-m}` | `{!P.Raw.T.m}` |
+| `[ctor@Ns.Type.c]` | `{!P.T.c}` (module-level `val`) | `{!P.Raw.T.c}` |
+| `[signal@Ns.Type::s]` | `{!P.T.class-type-t_t.method-on_s}` | `{!P.Raw.T.on_s}` |
+| `[property@Ns.Type:p]` | the property's accessor method (below) | the property's accessor (below) |
+| `[enum@Ns.E]`, `[flags@…]` | `{!P.Enums.e}` | same |
+| `[enum@Ns.E.MEMBER]` | `{!P.Enums.type-e.constructor-MEMBER}` | same |
+| `[const@Ns.C]` | `{!P.Constants.c}` | same |
 
-### 7.3 Stable shim/alias paths — no SCC resolution needed
+`m`, `c`, `s` and `p` go through the name translators of §2.3
+(`sanitize_identifier`, `ocaml_property_name`, `on_` prefix). Records
+(`[struct@]`) route exactly like classes: every generated record has an L2
+class type (`Ocgdk.Rgb_a.rgb_a_t`, `Ocgtk.Text_iter.text_iter_t`). A record
+the generator does not emit (class structs such as `GtkButtonClass`, private
+structs) has no target and falls back to code (§7.6); the resolver checks
+that the type is known (§7.4, §7.5) before computing a path.
 
-Per §2.2, every class has a **stable shim/alias module name** that hides the
+**Property targets.** A property has no page of its own; it links to its
+accessor, and the accessor carries the property's doc. The accessor is
+chosen from the live generation context (§7.5), in this order:
+
+1. the GIR method that claims the property as its getter
+   (`get-property="p"`, the `get_property` field of `gir_method`), e.g.
+   `[property@Gtk.Button:label]` → `get_label`;
+2. the generated getter when no method claims it and the property is
+   readable — L2 `method p` (no `get_` prefix), L1 `get_p`;
+3. the setter by the same two rules (`set-property` method, else the
+   generated `set_p`) for a write-only property;
+4. otherwise (construct-only and not readable, or filtered by
+   `filtering.ml`: array-typed or an unsupported type) no target: code.
+
+This needs the property's class and its methods, so it works only for the
+current namespace in v1. Cross-namespace property references fall back to
+code; they are rare (7 of 570 `[property@]` fragments in the bundled GIR, all
+from Gtk) and the v2 emitted-symbol map (§7.7) covers them.
+
+**Not generated, always code (out of scope):**
+
+- `[func@Ns.f]`, `[func@Ns.Type.f]` — neither namespace-level nor
+  class-static functions are generated (§2.1).
+- `[callback@…]`, `[vfunc@…]` — not generated.
+- `[alias@…]` / `[error@…]` — not generated; errors are bound by hand in
+  `ocglib/gError.ml`.
+- `[id@c_symbol]` — needs a C-symbol index (§7.5); code in v1.
+- `[type@Ns.Type]` — ambiguous kind; resolved by looking the type up
+  (§7.4, §7.5) like a `#Type` sigil, else code.
+
+### 7.3 Stable shim paths — no SCC resolution needed
+
+Per §2.2, every class has a **stable shim module name** that hides the
 SCC combined module. So the reference path is a **pure function of the type
 name + kind + layer**, e.g.:
 
-- `[class@Gtk.Widget]` → `{!Ocgtk_gtk.Gtk.GWidget.widget_t}` (shim, not the
-  combined `…_and__widget` module)
-- `[class@Gtk.Window]` → `{!Ocgtk_gtk.Gtk.GWindow.window_t}` (shim)
-- `[ctor@Gtk.Window.new]` → `{!Ocgtk_gtk.Gtk.Window.new_}` (L1 alias)
+- `[class@Gtk.Widget]` → `{!Ocgtk.Widget.class-type-widget_t}` (shim, not
+  the combined `Event_controller_and__…_and__widget` module)
+- `[class@Gtk.Window]` → `{!Ocgtk.Window.class-type-window_t}` (shim)
+- `[ctor@Gtk.Window.new]` → `{!Ocgtk.Window.new_}` (L2 shim) or
+  `{!Ocgtk.Raw.Window.new_}` (L1 shim)
 
 The combined-module name **never** appears in a doc reference. This holds for
 both cross-namespace and internal links.
 
-**Decision:** compute paths from stable shim/alias names. Do not consult the
+**Decision:** compute paths from stable shim names. Do not consult the
 SCC/dependency-analysis tables for the doc path.
 
 **Alternatives considered and dismissed:**
@@ -1066,10 +1182,12 @@ legacy sigil** where the fragment does not already state it — specifically:
 - `#TypeName` where `TypeName` is in another namespace → match `cr_c_type`
   (or `cr_name`) to get `cr_type` → compute the path.
 - `%CONST` where the constant is in another namespace → match `Crt_Constant`
-  by name → `{!<ns>_constants.<name>}` (this resolves the heavily-used
+  by name → `{!<P>.Constants.<name>}` (this resolves the heavily-used
   `%GDK_KEY_*` constants cross-namespace).
-- The *type* part of `#Type:property` / `#Type::signal` cross-namespace →
-  `.refs` gives the type's kind; the member name is then deterministic.
+- The *type* part of `#Type::signal` cross-namespace → `.refs` gives the
+  type's kind; the signal name is then deterministic (`on_<s>`). A
+  cross-namespace `#Type:property` still falls back to code, because the
+  accessor depends on the type's methods (§7.2).
 
 `.refs` does **not** help for: enum/bitfield **members** (`%ENUM_MEMBER`),
 `symbol_name()`, `[id@…]`, `[type@…]`, or member existence — those need
@@ -1099,6 +1217,9 @@ For the **current** namespace, the in-process `generation_context` (§2.5) is
 richer than `.refs`: it has member lists and real c-identifiers. It supplies:
 - the kind of a same-namespace `#Type` / `%CONST` / `#Type:prop` /
   `#Type::sig`,
+- the accessor of a same-namespace property (`gir_method.get_property` /
+  `set_property`, the property's `readable` / `writable` /
+  `construct_only`; §7.2),
 - a same-namespace c-symbol index for `symbol_name()` / `[id@…]` (each
   `gir_method`/`gir_function` has `c_identifier`),
 - same-namespace enum member c-identifiers for `%ENUM_MEMBER`.
@@ -1123,6 +1244,11 @@ or resolvable (§7.4/§7.5), the **only** v1 cause of a broken `{!…}` link is 
 computed `{!…method-x}` then points at something that was not emitted; odoc
 warns and renders the text. This is acceptable for a first pass.
 
+For a current-namespace reference the resolver can check most of this
+itself, from the live context and `filtering.ml`'s predicates (§7.5;
+property targets already do, §7.2). The miss is then a code span, not a
+broken link. Cross-namespace member references are not checked in v1.
+
 The **v2** refinement (out of scope for the design, but noted) is an
 **emitted-symbol → module-path map produced during the generation pass** — a
 byproduct of generation, member-level and carrying the real (shim) path. It
@@ -1146,77 +1272,91 @@ emitted-map yet.
 The target layer depends on **where the doc is emitted** (per the project
 decision in the M3 discussion):
 
-- **In an L1 doc** → link to L1 targets: classes/interfaces to the L1 wrapper
-  module (`<Type>`), enums/bitfields to `<ns>_enums`, functions to the L1
-  module val.
-- **In an L2 doc** → link to L2 for the things L2 translates — **classes and
-  interfaces** (`G<Type>.<type>_t`, class methods) — and fall back to **L1**
-  for the things L2 does not translate: **functions, enumerations, bitfields**
-  (and likely records/constants).
+- **In an L1 doc** → link to L1 targets: classes, interfaces and records to
+  the L1 module (`P.Raw.T`), members to its `external`s and `val`s.
+- **In an L2 doc** → link to L2 for everything L2 has: classes, interfaces
+  and records (`P.T.class-type-t_t`), their methods, signals and property
+  accessors, and constructors (`P.T.c`, the module-level `val`).
+- **Either layer** → enumerations, bitfields and constants have one home
+  (`P.Enums`, `P.Constants`), so both layers link there.
 
-Routing table:
+Routing table (paths in §7.2):
 
-| entity kind | in L2? | from an L1 doc | from an L2 doc |
-|---|---|---|---|
-| class / interface | yes | L1 wrapper module `<Type>` | L2 `G<Type>.<type>_t` |
-| enum / bitfield | no | `<ns>_enums.<type>` | `<ns>_enums.<type>` (L1) |
-| function | no | L1 val | L1 val |
-| record | no (assumed) | L1 `<Type>` | L1 `<Type>` |
-| method / property / signal / ctor | — | L1 `external`/accessor | L2 `method`/accessor |
+| entity kind | from an L1 doc | from an L2 doc |
+|---|---|---|
+| class / interface / record | `P.Raw.T` | `P.T.class-type-t_t` |
+| method / signal / property accessor | `P.Raw.T.<name>` | `P.T.class-type-t_t.method-<name>` |
+| constructor | `P.Raw.T.<name>` | `P.T.<name>` |
+| enum / bitfield / member | `P.Enums.…` | `P.Enums.…` |
+| constant | `P.Constants.<name>` | `P.Constants.<name>` |
+| function / callback | not generated: code | not generated: code |
+
+References resolve package-wide (§4.3, second probe), so the layer rule is a
+choice of what the reader is shown, not a constraint: `ocgtk.raw` cannot
+depend on `ocgtk`, but an L1 doc can still link into it.
 
 The resolver is one function parameterised by (layer, entity-kind).
 
 **Decision:** parameterise the resolver by the layer of the doc being emitted.
 
 **Alternatives considered and dismissed:**
-- *Always link to L2.* Dismissed: enums/bitfields/functions are not in L2; an
-  L2-method doc referencing `[enum@Gtk.Orientation]` must go to the L1
-  `<ns>_enums` module.
+- *Always link to L2.* Dismissed: an L1 reader working with `t` and
+  `external`s would be sent to class pages for every type mention.
 - *Always link to L1.* Dismissed: loses the L2 class-method navigation that an
   L2 user expects.
 
 **Outstanding questions:**
-- Confirm whether any **records** get an L2 class type. If not, treat records
-  as L1-only like enums. (Records are value structs; they are expected to be
-  L1-only.)
-- Confirm where **standalone functions, records, and callbacks** are emitted
-  (root namespace module vs. dedicated sub-modules) — affects the path
-  computation for `[func@…]`, `[struct@…]`, `[callback@…]`.
+- None. Records get an L2 class type (checked across all packages: every L1
+  module has an L2 module of the same name with a class type; only the L2
+  `Constants` module has none).
+  Functions and callbacks are not generated and are out of scope until they
+  are.
 
 ### 7.9 Worked reference examples (real GIR → resolved odoc)
 
-All examples real; context = L2 doc.
+All examples real; context = L2 doc. Every target below exists in the
+generated bindings.
 
 ```
-[class@Gtk.Button]                → {!Ocgtk_gtk.Gtk.GButton.button_t}
-[iface@Gio.ActionGroup]          → {!Ocgtk_gio.Gio.GAction_group.action_group_t}
-[ctor@Gtk.Builder.new_from_file] → {!Ocgtk_gtk.Gtk.Builder.new_from_file}   (L1 external)
+[class@Gtk.Button]                → {!Ocgtk.Button.class-type-button_t}
+[iface@Gio.ActionGroup]          → {!Ocgio.Action_group.class-type-action_group_t}
+[struct@Gtk.TextIter]            → {!Ocgtk.Text_iter.class-type-text_iter_t}   (record, cyclic-group shim)
+[struct@Gdk.RGBA]                → {!Ocgdk.Rgb_a.class-type-rgb_a_t}
+[ctor@Gtk.Builder.new_from_file] → {!Ocgtk.Builder.new_from_file}   (L2 val)
 [method@Gtk.AboutDialog.set_logo_icon_name]
-  → {!Ocgtk_gtk.Gtk.GAbout_dialog.about_dialog_t.method-set_logo_icon_name}  (form confirmed, §4.3)
-[func@Gtk.Window.list_toplevels] → {!Ocgtk_gtk.Gtk.Window.list_toplevels}   (module layout TBD)
-[signal@Gtk.Button::activate]    → {!Ocgtk_gtk.Gtk.GButton.button_t.method-on_activate}
-[property@Gtk.AboutDialog:system-information]
-  → {!Ocgtk_gtk.Gtk.About_dialog.set_system_information}
-[enum@Gtk.Orientation]          → {!Ocgtk_gtk.Gtk_enums.orientation}
-[enum@Gtk.Orientation.HORIZONTAL] → {!…type-orientation.constructor-HORIZONTAL}  (works, §4.3; `[HORIZONTAL]` stays the fallback)
-[flags@Gdk.PaintableFlags]      → {!Ocgtk_gdk.Gdk_enums.paintable_flags}
+  → {!Ocgtk.About_dialog.class-type-about_dialog_t.method-set_logo_icon_name}
+[method@Gtk.Widget.show]         → {!Ocgtk.Widget.class-type-widget_t.method-show}   (cyclic-group shim, §4.3)
+[signal@Gtk.Button::activate]    → {!Ocgtk.Button.class-type-button_t.method-on_activate}
+[property@Gtk.Button:label]      → {!Ocgtk.Button.class-type-button_t.method-get_label}   (claimed by get_label)
+[property@Gtk.Settings:gtk-alternative-button-order]
+  → {!Ocgtk.Settings.class-type-settings_t.method-gtk_alternative_button_order}   (generated getter)
+[enum@Gtk.Orientation]           → {!Ocgtk.Enums.orientation}
+[enum@Gtk.Orientation.HORIZONTAL] → {!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}
+[flags@Gdk.PaintableFlags]       → {!Ocgdk.Enums.paintableflags}
 [const@Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]
-  → {!Ocgtk_gtk.Gtk_constants.accessible_attribute_overline_none}
-[struct@Gtk.TextIter]          → {!Ocgtk_gtk.Gtk.Text_iter}   (record module name TBD)
-[callback@Gtk.ListBoxUpdateHeaderFunc] → [ListBoxUpdateHeaderFunc]   (not generated; fallback)
-[vfunc@Gtk.Widget.measure]     → [Widget.measure]   (backlog; fallback)
-[id@gtk_window_new]            → {!…new_} via c-index, else [gtk_window_new]
+  → {!Ocgtk.Constants.accessible_attribute_overline_none}
+[func@Gtk.Window.list_toplevels] → [Gtk.Window.list_toplevels]   (not generated; code)
+[callback@Gtk.ListBoxUpdateHeaderFunc] → [Gtk.ListBoxUpdateHeaderFunc]   (not generated; code)
+[vfunc@Gtk.Widget.measure]       → [Gtk.Widget.measure]   (not generated; code)
+[id@gtk_window_new]              → [gtk_window_new]   (v1 code; v2 c-index)
 
-#GtkWidget (legacy)            → {!Ocgtk_gtk.Gtk.GWidget.widget_t}   (via .refs/live AST kind)
-#GObject  (legacy, not generated) → [GObject]   (fallback to code)
-%GDK_KEY_a (legacy constant)  → {!Ocgtk_gdk.Gdk_constants.key_a}   (via .refs constant index)
-%GTK_ALIGN_CENTER (enum member) → [GTK_ALIGN_CENTER] (cross-ns; v1 fallback; v2 member table)
-@self / @amount / @row         → [self] / [amount] / [row]   (always code; @ is odoc tag sigil)
-gtk_about_dialog_new()         → [gtk_about_dialog_new]   (v1 fallback; v2 c-index)
+#GtkWidget (legacy)              → {!Ocgtk.Widget.class-type-widget_t}   (via .refs/live AST kind)
+#GObject  (legacy, not generated) → [GObject]   (code)
+%GDK_KEY_a (legacy constant)     → {!Ocgdk.Constants.key_a}   (via .refs constant index)
+%GTK_ALIGN_CENTER (enum member)  → [GTK_ALIGN_CENTER]   (cross-ns; v1 code; v2 member table)
+@self / @amount / @row           → [self] / [amount] / [row]   (always code; @ is odoc tag sigil)
+gtk_about_dialog_new()           → [gtk_about_dialog_new]   (v1 code; v2 c-index)
 ```
 
-In an L1 doc, the class/interface and method/property/signal rows flip to the
-L1 wrapper module / L1 `external` val.
+In an L1 doc, the class/interface/record, method, signal, property and
+constructor rows flip to `P.Raw.T` and its `external`s / `val`s
+(`{!Ocgtk.Raw.Button}`, `{!Ocgtk.Raw.Button.get_label}`,
+`{!Ocgtk.Raw.Settings.get_gtk_alternative_button_order}`,
+`{!Ocgtk.Raw.Button.on_activate}`); the enum and constant rows are the same.
+
+A flags member (`Gdk.PaintableFlags.SIZE`) is a tag of the
+`<flags>_flag` type, not of the list type:
+`{!Ocgdk.Enums.type-paintableflags_flag.constructor-SIZE}`.
 
 ---
 
@@ -1227,7 +1367,7 @@ L1 wrapper module / L1 `external` val.
 
 ```ocaml
 (** @deprecated Since 4.10: Use
-    {!Ocgtk_gtk.Gtk.GCalendar.calendar_t.method-set_date} instead. *)
+    {!Ocgtk.Calendar.class-type-calendar_t.method-set_date} instead. *)
 ```
 
 `<doc-deprecated>` prose reuses the §6/§7 translator (it contains links).
@@ -1302,19 +1442,22 @@ The same GIR `<doc>` text lands on both generated layers of a type through
 one shared pipeline; only the reference target paths (§7.8) and the `self`
 adaptation differ:
 
-- **L1** (`<type>.mli`, one module per type): the entity doc becomes the
-  module's leading comment; each `external`/`val` carries its member doc or
-  a synthetic synopsis (§12). C-addressed prose is mechanically adapted:
-  `GtkButton *button` → the module's `t`, `@button` → the argument.
-- **L2** (`g<Type>.mli`): the same entity doc becomes the file's leading
-  comment, and the `class type <type>_t`'s preceding comment; method prose is
-  adapted to the method form — `gtk_button_set_label(button, label)` →
-  `[set_label label]`, `@button` / `GtkButton *button` → the implicit
-  `self`.
-- **Namespace entry aliases** (`Gtk.mli`'s `module Button = Button` inside
-  `Wrappers`, `module Button = GButton` at top level): each alias carries a
-  synopsis + `@since` comment so the public alias path is never a bare
-  re-export page.
+- **L1** (`<pkg>/raw/generated/<type>.mli`, one module per type,
+  `Oc<ns>.Raw.<Type>`): the entity doc becomes the module's leading comment;
+  each `external`/`val` carries its member doc or a synthetic synopsis
+  (§12). C-addressed prose is mechanically adapted: `GtkButton *button` →
+  the module's `t`, `@button` → the argument.
+- **L2** (`<pkg>/generated/<type>.mli`, `Oc<ns>.<Type>`): the same entity
+  doc becomes the file's leading comment, and the `class type <type>_t`'s
+  preceding comment; method prose is adapted to the method form —
+  `gtk_button_set_label(button, label)` → `[set_label label]`, `@button` /
+  `GtkButton *button` → the implicit `self`.
+- **Package main modules** (`Ocgtk`, `Ocgdk`, …) are generated by dune from
+  the library's modules, so they carry no per-module comment; the package
+  `index.mld` and the generated `modules.mld` list (with each module's
+  synopsis) stand in for them. `Oc<ns>.Raw` is a generated module of
+  aliases (`module Button = Ocgtk_raw.Button`); odoc renders an alias as a
+  link to the aliased module's page, which carries the docs.
 - **Opening rule:** every module-level doc opens with the synopsis
   paragraph — never a heading. The page title already names the entity
   (implicit level 0), and a doc that starts with a heading loses its
@@ -1340,26 +1483,27 @@ headings and appear in the local TOC.
 SCC-combined files (§2.2) need a rule for where the entity doc lands,
 because the public name and the physical file differ:
 
-- **L1**: the combined file is `module rec A : sig … and B : sig … end`; each
-  inner module is already its own odoc page. The entity doc is the **first
-  special comment inside the inner module's `sig`** — the reliable form for
-  a module-signature doc. No physical splitting is required.
+- **L1**: the combined file (`raw/generated/<first>_and__<rest>.mli`) is
+  `module rec A : sig … and B : sig … end`; each inner module is already its
+  own odoc page. The entity doc is the **first special comment inside the
+  inner module's `sig`** — the reliable form for a module-signature doc. The
+  L1 **shim** (`raw/generated/<type>.mli`, `include module type of struct
+  include <Combined>.<Type> end`) is the public page `Oc<ns>.Raw.<Type>`
+  and repeats the entity doc as its leading comment. No physical splitting
+  is required.
 - **L2**: the combined file's `class type … and …` chain renders as several
   class types on **one** module page, so the standalone **shim**
-  (`g<Context>.mli` re-exporting `class type context_t`) is the
-  authoritative public page — the namespace entry alias points at the shim,
-  and §7.3 already resolves references to the shim/alias path. The shim's
-  single, non-`and`-chained `class type` takes a preceding doc comment
-  reliably. The combined file's chained class types repeat the entity doc
-  **best-effort** (preceding comment attempted on each `and`-chained `class
-  type`; fallback: a leading `{1 …}` heading comment inside the `object …
-  end` body) so the combined page is not bare — the shim remains
-  authoritative.
-- Alias pages for cyclic entities (L1 `Wrappers.X = <Combined>.X`, L2
-  `X = g<Shim>`) carry the synopsis + `@since` per §11.1.
+  (`generated/<type>.mli` re-exporting `class type <type>_t`) is the
+  authoritative public page `Oc<ns>.<Type>`, and §7.3 already resolves
+  references to the shim path. The shim's single, non-`and`-chained
+  `class type` takes a preceding doc comment reliably. The combined file's
+  chained class types repeat the entity doc **best-effort** (preceding
+  comment attempted on each `and`-chained `class type`; fallback: a leading
+  `{1 …}` heading comment inside the `object … end` body) so the combined
+  page is not bare — the shim remains authoritative.
 
-**Decision:** duplicate the entity doc deliberately — shim authoritative,
-combined file best-effort, alias pages synopsis-only. The duplication is
+**Decision:** duplicate the entity doc deliberately — shims authoritative at
+both layers, combined files best-effort. The duplication is
 regenerated, not hand-written, and guarantees that every public path shows
 documentation.
 
@@ -1405,13 +1549,13 @@ prose, just heading + references.
 
 | Page | Doc source |
 |---|---|
-| `<Ns>.mli` (namespace entry) | namespace `<doc>` synopsis; per-alias synopses (§11.1) |
-| `<ns>_enums.mli` | each `<enum>`/`<bitfield>` type + `<member>` docs |
-| `<ns>_constants.mli` | already emitted (`constant_code.ml`); gains the §6 translation |
-| `<type>.mli` (L1) | entity `<doc>` + member docs (§11.1) |
-| `g<type>.mli` (L2; the **shim** for cyclic entities) | entity `<doc>` + Inherits/Implements (§11.4) |
-| `<first>_and__<rest>.mli` (L1 combined) | per-participant docs lifted into each inner `sig` (§11.3) |
-| `g<first>_and__<rest>.mli` (L2 combined) | best-effort duplicate (§11.3) |
+| `<pkg>/index.mld` + generated `modules.mld` (package root) | hand-written intro; module list with synopses (§11.1) |
+| `<pkg>/enums/generated/oc<ns>_enums.mli` (`Oc<ns>.Enums`) | each `<enum>`/`<bitfield>` type + `<member>` docs |
+| `<pkg>/generated/constants.mli` (`Oc<ns>.Constants`) | already emitted (`constant_code.ml`); gains the §6 translation |
+| `<pkg>/raw/generated/<type>.mli` (L1; the **shim** for cyclic entities) | entity `<doc>` + member docs (§11.1) |
+| `<pkg>/generated/<type>.mli` (L2; the **shim** for cyclic entities) | entity `<doc>` + Inherits/Implements (§11.4) |
+| `<pkg>/raw/generated/<first>_and__<rest>.mli` (L1 combined) | per-participant docs lifted into each inner `sig` (§11.3) |
+| `<pkg>/generated/<first>_and__<rest>.mli` (L2 combined) | best-effort duplicate (§11.3) |
 
 ---
 
@@ -1425,8 +1569,8 @@ as-is.
 
 | Item | Actual shape today (verified) | Synthetic synopsis |
 |---|---|---|
-| Hierarchy accessor | L2 `method as_button : Button.t` (`gButton.mli`) — the PR spec assumed an L1 `external`; in this codebase they are L2 methods | `[as_<type>] returns [self] typed as [<Type>.t].` |
-| Enum/bitfield converters | `val <name>_of_int : int -> <name>` / `<name>_to_int` in `<ns>_enums.mli` | `[of_int n]` converts the C integer `[n]` to the variant; `[to_int v]` converts back |
+| Hierarchy accessor | L2 `method as_button : Raw.Button.t` (`ocgtk/generated/button.mli`) — the PR spec assumed an L1 `external`; in this codebase they are L2 methods | `[as_<type>] returns [self] typed as [Raw.<Type>.t].` |
+| Enum/bitfield converters | `val <name>_of_int : int -> <name>` / `<name>_to_int` in `Oc<ns>.Enums` | `[of_int n]` converts the C integer `[n]` to the variant; `[to_int v]` converts back |
 | Signal connector | `val on_<sig>` / `method on_<sig>` — currently emitted with **no doc at all** | `[on_<sig> ~callback …] connects [callback] to the [<sig>] signal.`, then the signal's GIR doc as body if present |
 | Docless `new_*` constructor | currently an unconditional `(** Create a new <Entity> *)` that ignores `ctor_doc` (e.g. `pixbuf_loader.mli`), even though `ctor_doc` is parsed | GIR doc when present; else `[new_<…> args] creates a new [<entity>].` |
 
@@ -1459,9 +1603,9 @@ an `@raise` tag** — not from `throws`, not inferred from prose.
   omit `@return` when nothing meaningful can be derived — a vacuous tag is
   worse than none.
 - **Handwritten code raises and documents itself, by hand:** the exceptional
-  raisers — the `common/` integer and GVariant wrappers (`@raise
+  raisers — the `ocglib/` integer and GVariant wrappers (`@raise
   Invalid_argument`, `@raise Failure` in their handwritten `.mli`) and
-  `gtk/core/gMain.ml` (raises on GTK initialisation failure, e.g. when the
+  `ocgtk/core/main.ml` (raises on GTK initialisation failure, e.g. when the
   C-level `gtk_init` fails or another internal C issue) — keep hand-written
   `@raise` tags. The generator has no part in them: an `@raise` appearing in
   generated output is a bug.
@@ -1493,11 +1637,12 @@ These are the open items that should be resolved (mostly by a `dune build
    members) — **resolved (§4.3)**: `{!P.type-t.constructor-X}` and
    `{!constructor:P.t.X}` both resolve; `[NAME]` code stays the fallback
    for exotic targets (§7.9).
-4. **Module layout of standalone functions, records, callbacks** — root
-   namespace module vs. dedicated sub-modules; affects `[func@…]`,
-   `[struct@…]`, `[callback@…]` path computation (§7.8).
-5. **Records in L2?** — confirm records are L1-only (like enums) for the
-   routing table (§7.8).
+4. **Module layout of standalone functions, records, callbacks** —
+   **resolved (§2.1, §7.2)**: records are per-type modules at both layers;
+   functions and callbacks are not generated, so `[func@…]` and
+   `[callback@…]` are out of scope and render as code.
+5. **Records in L2?** — **resolved (§7.8)**: every generated record has an
+   L2 class type and routes like a class.
 6. **`deprecated`/`deprecated-version` AST capture** — confirm they are not
    on `gir_method`/etc. today; enumerate which nodes carry them (§8).
 7. **Parameter-name alignment** — confirm generated signatures preserve GIR
@@ -1531,9 +1676,12 @@ These are the open items that should be resolved (mostly by a `dune build
 - **Legacy sigils:** attempt resolution (`.refs` for cross-ns kind, live AST
   for current-ns), fall back to `[code]` on miss. Guard rules prevent
   URL/heading false positives. `@param`/`symbol()` → `[code]` in v1.
-- **Reference paths:** deterministic from stable **shim/alias** module names
+- **Reference paths:** deterministic from stable **shim** module names
+  (`Oc<ns>.<Type>`, `Oc<ns>.Raw.<Type>`, `Oc<ns>.Enums`, `Oc<ns>.Constants`)
   + the fragment kind (or `.refs`/AST kind for legacy sigils) + the name
-  translators. **No SCC resolution** (shims hide it).
+  translators. **No SCC resolution** (shims hide it). Methods and signals
+  use `class-type-<t>_t.method-<m>`. Properties link to their accessor,
+  chosen from the live context; cross-namespace properties are code in v1.
 - **`.refs`:** optional, narrow — only cross-ns legacy-sigil *kind* and
   constant resolution. Not a prerequisite; not extended for v1.
 - **Fallback:** unresolved references → odoc inline code (gi-docgen parity;
@@ -1541,7 +1689,9 @@ These are the open items that should be resolved (mostly by a `dune build
 - **Broken links (v1):** only filtered/skipped members. Accepted. v2
   emitted-map suppresses them (out of scope here).
 - **L1/L2:** resolver parameterised by the doc's layer; L2 docs link to L2
-  for classes/interfaces and to L1 for functions/enums/bitfields/records.
+  for classes, interfaces, records, their members and constructors; L1 docs
+  link to L1; both link enums, bitfields and constants to `Oc<ns>.Enums` /
+  `Oc<ns>.Constants`. Functions and callbacks are not generated: code.
 - **Deprecation:** `deprecated-version` + `<doc-deprecated>` → one
   `@deprecated Since V: prose` tag.
 - **Params/returns:** → `@param`/`@return` when arg names match; else fold
@@ -1563,9 +1713,8 @@ These are the open items that should be resolved (mostly by a `dune build
 - **Page model (§11):** one shared translation; L1 module + member comments,
   L2 file + class-type comments with `self` adaptation; grouping `{1 …}`
   floating headings replace plain separator comments (fixed order, only
-  when non-empty); cyclic entities document the **shim** as the
-  authoritative L2 page, the combined file best-effort, alias pages
-  synopsis-only.
+  when non-empty); cyclic entities document the **shims** as the
+  authoritative pages at both layers, the combined files best-effort.
 - **Inherits/Implements (§11.4):** mechanical `{1 Inherits}` / `{1
   Implements}` reference blocks on L2 docs; L2 → L2 resolution, `.refs`
   supplies cross-namespace hierarchy.
@@ -1575,5 +1724,5 @@ These are the open items that should be resolved (mostly by a `dune build
 - **Stability (§3.10):** absent from the corpus (zero occurrences); capture
   cheaply if present; `Unstable` → `{i Unstable API.}` prefix; no tag.
 - **Errors (§13):** `throws` → `@return [Ok v]` / `[Error e]`; `@raise` is
-  never generated — only handwritten modules (`common/`, `core/`) document
+  never generated — only handwritten modules (`ocglib/`, `ocgtk/core/`) document
   raises, by hand.
