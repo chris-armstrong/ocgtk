@@ -1,13 +1,14 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–7 implemented; the conventions page of Phase 9 written
-early; Phases 8 and 10 not yet done (per-phase status below). The C code-block
-translation phases (formerly 11–14) are dropped from this leg.** Phase 0 and 1: PRs #188 and #190, merged into
+**Status: Phases 0–8 implemented; the conventions page of Phase 9 written
+early; Phase 10 not yet done (per-phase status below). The C code-block
+translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
+cross-reference resolution (PRD §7), added 2026-10-28; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
 `m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
-(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 7 onwards: one branch and PR per phase (see the rules below).
+(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -15,7 +16,8 @@ for PRs and `main` only; L2 page structure (decision 10), new Phase 7,
 Phases 7–13 renumbered to 8–14, Phase 9 replaced by a conventions page); 2026-10-27 (artifact cache
 dropped for a local HTML diff, decision 3); 2026-10-28 (Phase 7 revised for
 the per-package layout and the Phase 6 page structure; C code-block
-translation, Phases 11–14, dropped as too much for this leg)**
+translation, Phases 11–14, dropped as too much for this leg; cross-reference
+resolution added as new Phases 11–13, decision 11)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -37,7 +39,8 @@ contains the doc-parsing PR #184 and the
 
 First *visible* vertical slice of M3: GIR `<doc>` text (already captured in the
 AST by PR #184) is translated to odoc markup, emitted across the L1 and L2
-bindings, and rendered to browsable odoc HTML with:
+bindings, with GIR symbol references turned into odoc links where the target
+is generated (Phases 11–13), and rendered to browsable odoc HTML with:
 
 - a **GitHub Pages preview** for every PR (a live doc-preview URL) and for
   `main`; pushes to other branches are not previewed,
@@ -200,6 +203,36 @@ auto-managed `gh-pages` branch and in local build directories.
     because `mermaid.run()` derives ids from `Date.now()` and diagrams
     rendered in the same millisecond collide.
 
+11. **Cross-references link only to targets known to be generated (added
+    2026-10-28).** Phases 11–13 implement the PRD §7 resolver. The PRD
+    accepts broken links to filtered members in v1 (§7.7); this plan does
+    not, because every phase since Phase 2 ends with 0 odoc warnings and a
+    broken `{!…}` is a warning. So the resolver links a reference only when
+    the index says the target was emitted, and renders everything else as
+    the code span it renders today. Consequences:
+
+    - **Types and constants link in every generated namespace** (current
+      namespace from the generation context, others from the references
+      files). **Members** (methods, constructors, signals, properties, enum
+      members) **link only within the current namespace**, where the
+      generator knows what it emitted. Cross-namespace member references
+      are about 4% of Gtk's member fragments (about 100 of 2,449, to Gdk,
+      Gio, Gsk and Pango) and stay code; a references-file member table is
+      out of scope.
+    - **Link text is unchanged.** A resolved reference renders as
+      `{{!path}[endpoint]}`: the code span readers see today, now a link.
+      The HTML diff of the resolver phases is therefore links only.
+    - **Paths and layer routing** follow PRD §7.2 and §7.8: from an L1 doc to
+      `Oc<ns>.Raw.<Type>` and its values, from an L2 doc to
+      `Oc<ns>.<Type>.class-type-<t>_t` and its methods (constructors to the
+      module-level `val`), and from either to `Oc<ns>.Enums` and
+      `Oc<ns>.Constants`. Enum, bitfield and constant docs use the L2
+      routing: they are shared by both layers, and L2 is the reader-facing
+      one.
+    - **Not linked at all:** functions and callbacks (not generated),
+      vfuncs, aliases, error domains, and types of namespaces that are not
+      generated (GLib, GObject).
+
 ## Translator design: parse → flat AST → render
 
 `gir_gen/lib/generate/doc_translate.ml` + `.mli` is split into two pure
@@ -211,6 +244,12 @@ val parse : context -> string -> t      (* GIR markdown -> AST *)
 val render : t -> string               (* AST -> odoc markup *)
 val translate : context -> string -> string   (* = render ∘ parse *)
 ```
+
+From Phase 11 a third pure stage sits between them, `Doc_resolve.resolve :
+env -> t -> t * fallback list` (`Sym_ref` → `Ref` on a hit), and the emission
+path is render ∘ resolve ∘ parse. `env` carries the namespace, the layer
+being emitted and the symbol index (Phase 11). Parse and render do not
+change role: parse never produces `Ref`, render never looks anything up.
 
 `context` distinguishes entity/module docs from member/item docs (heading
 policy differs, PRD §6.6). **Parse must not bake in escaping or odoc
@@ -242,8 +281,9 @@ type inline =
   (* @param sigils — always [code] at render, never bare @ (tag hazard,
      PRD §6.5) *)
   | Param_ref of string
-  (* RESOLVED odoc {!path} — produced ONLY by the future resolver leg;
-     parse never emits this *)
+  (* RESOLVED odoc {!path} — produced ONLY by the resolver (Phase 11);
+     parse never emits this. Phase 11 makes it
+     Ref of { path : string; text : string } (decision 11) *)
   | Ref of string
 
 and sym_kind =
@@ -268,9 +308,11 @@ degraded" (`Sym_ref`/`Page_ref`) must be distinct, or the §7 resolver leg
 would have to re-parse raw text to find upgradable references. With the
 nodes in place, both deferred legs are **pure AST rewrites**:
 
-- **Cross-reference resolver (PRD §7)**: `Sym_ref → Ref` on hit,
-  `Sym_ref → Code` on miss (§7.6), parameterised by layer (§7.8). Zero
-  parser changes, zero render-policy changes.
+- **Cross-reference resolver (PRD §7, Phases 11–13)**: `Sym_ref → Ref`
+  on a hit; a miss stays `Sym_ref` and keeps its code-span rendering
+  (§7.6), parameterised by layer (§7.8). No render-policy changes; the
+  one parser change is recording which sigil a `Sym_ref` came from
+  (Phase 13).
 - **Upstream-URL mapping (PRD §6.3)**: rewrite `Page_ref` against the
   per-namespace base-URL table. Also a pure node rewrite.
 
@@ -289,9 +331,9 @@ are unit-testable.
 | `Bold` / `Italic` | `{b …}` / `{i …}` | — |
 | `Link` | `{{:url}text}` | — |
 | `Page_ref` | bare text (degraded; counted) | §6.3 upstream URLs |
-| `Sym_ref` | `[endpoint]` code span (degraded; counted) | §7 resolver |
+| `Sym_ref` | `[endpoint]` code span (degraded; counted) | §7 resolver (Phases 11–13): unresolved ones keep this rendering |
 | `Param_ref` | `[name]` code span (PRD §6.5) | — |
-| `Ref` | unreachable in v1 | resolver output |
+| `Ref` | unreachable in v1 | `{{!path}[text]}` (Phase 11) |
 | `Para` / blank lines | paragraphs | — |
 | `Heading` | entity docs: normalised `{1 …}` (shallowest → `{1}`, cap `{5}`); member docs: `{b …}` lead-in (odoc demotes item-doc headings to plain paragraphs — PRD §4.3) | — |
 | `List` | odoc shortcut lists | — |
@@ -346,6 +388,7 @@ design, recorded as fallbacks for the warnings report): admonitions
 | Record fields | — (`field_doc` parsed, dropped) | Phase 6, if a layer has a counterpart; else the one site |
 | Alias pages | — | deferred (page-model leg, PRD §11) |
 | Namespace module intros (`GdkPixbuf.mli`, ...) | `library_module.ml` | **new**: short generated intro linking the conventions page (Phase 9) |
+| Every site above | `Doc_emit.item_doc` and the direct `Doc_translate` calls in `entity_doc.ml` | **new wiring** (Phase 11): pass the resolver `env` built from `ctx` (namespace, `target_library`, index) |
 
 - Delete the two suppression sites in `bin/gir_gen.ml` (class/interface
   entity-doc blanking, now gone; `enum_doc`/`bitfield_doc` field blanking in
@@ -383,6 +426,10 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `.github/workflows/doc-preview.yml` | Phase 4. Builds `@doc` (read-only job), deploys PR previews and `main` (write job). |
 | `.github/workflows/doc-preview-cleanup.yml` | Phase 4. Removes a PR's preview on close (`pull_request_target`, no PR code run). |
 | `scripts/doc-preview-landing.sh` | Phase 4. Writes the landing `index.html` linking the package roots, with build provenance. Runs locally too. |
+| `gir_gen/lib/generate/doc_index.ml` / `.mli` | Phase 11. The symbol index the resolver reads: generated types and constants per namespace (Phase 11), current-namespace members (Phase 12), C-name tables (Phase 13). Built once per namespace with the generation context. |
+| `gir_gen/lib/generate/doc_resolve.ml` / `.mli` | Phase 11. `env`, `env_of_ctx`, `resolve`: endpoint parsing, PRD §7.2 paths through `Module_paths`, layer routing, miss reasons. |
+| `gir_gen/lib/generate/emitted_members.ml` / `.mli` | Phase 12. The members a class, interface or record emits at each layer, under their OCaml names; used by the emitters and by the index. |
+| `gir_gen/test/generate/doc_resolve_tests.ml`, `doc_index_tests.ml`, `emitted_members_tests.ml` | Phases 11–13. One case per PRD §7.2 row at both layers, every miss reason. |
 
 **Modified:**
 
@@ -398,6 +445,10 @@ design, recorded as fallbacks for the warnings report): admonitions
 | `lib/generate/layer1/layer1_constructor.ml` | New: `ctor_doc` when present, synthetic fallback. |
 | `lib/generate/signal_gen.ml`, `signal_gen.mli` | New: signal `doc` on the L1 `on_<sig>` val and the L2 signal methods; `signal_emission` carries the doc. |
 | `lib/generate/layer1/layer1_property.ml`, `lib/generate/class_gen_property.ml` | Property docs, both layers (Phase 6). |
+| `lib/generate/doc_ast.ml`, `doc_render.ml`, `doc_emit.ml`, `entity_doc.ml` | Phase 11: `Ref` record, its rendering, the `Sym_ref_unresolved` fallback, the `env` parameter. Phase 13: `Sym_ref` records which sigil it came from. |
+| `lib/types.ml` | Phase 11: the generation context carries the doc index. |
+| `lib/generate/doc_parse.ml` | Phase 13: sigil origin on `Sym_ref`; `symbol()` C-call references. |
+| L1/L2 member emitters (`layer1_*`, `class_gen_*`, `signal_gen.ml`) | Phase 12: take their member lists from `Emitted_members` (no output change). |
 | `ocgtk/dune`, `gir_gen/dune` | `(documentation)` stanzas (leg 0). |
 
 **No change:** `.opam` files (`odoc {with-doc}` already emitted by dune),
@@ -948,12 +999,44 @@ warnings; in the PR's preview:
 
 ### Phase 8 — C-idiom AST rewrites (scalars, primitive types, ownership)
 
+**Status: done** (branch `m3-phase8`). New module `Doc_c_idiom` holds the
+literal names, the primitive lookup, the null-phrase pass and the ownership
+filter; `doc_c_idiom_tests.ml` covers them. Corpus: about 5,700 C literals,
+91 primitive sigils, and 858 ownership sentences stripped (678/98/82 over the
+three patterns). 0 odoc warnings. Departures from the plan below:
+
+- **`ret_shape` is `Plain | Throws`**, built by
+  `Doc_translate.ret_shape_of_throws`. `Option` would have rendered exactly
+  like `Plain`. Contrary to "no emission-site changes", three sites pass it:
+  L1 methods, L2 methods and `Entity_doc.constructor` (both layers). Only
+  `Throws` changes output: "%NULL on error" (and six similar phrases)
+  becomes "an [Error] result"; on a non-throwing item it stays
+  "[None] on error".
+- **`C_prim` reads `Type_mappings.type_mappings`**, the generator's own
+  table, so docs name the types the signatures use: `#gsize` →
+  `[Gsize.t]`, `#gchar` → `[int]`, not the table above. Names it does not
+  list (`goffset`, `guchar`, `gint8`) stay literal text, as before.
+  `gpointer`/`gconstpointer` read as the word "pointer" rather than being
+  dropped, so the sentence keeps its noun.
+- **Ownership patterns are instruction-shaped**: "free/release/delete …
+  with/using g_*", "use/call g_*free/unref*", "unref(f)ed … with/using". The
+  bare `g_object_unref`/`g_free` patterns stripped explanatory sentences
+  (Initable's "all operations … except g_object_ref() and g_object_unref()
+  are considered to be invalid", "using g_realloc() and g_free() for memory
+  allocation"). All 97 distinct stripped sentences were reviewed.
+- **No-residual check** skips inline code spans as well as code blocks, and
+  matches `freed? with g_(free|object_unref)` rather than any mention. The
+  acceptance grep still finds `` [@sibling == %NULL] `` in
+  `Grid.attach_next_to` (a C expression in a code span, which the guard
+  keeps as `Code`) and C comments inside Gio `Task` code blocks.
+- "non-%NULL" renders as "non-[None]".
+
 Corpus anchors (sampled over Gtk/Gio/Gdk/Pango/Gsk/GdkPixbuf/cairo/Graphene,
 ~39,700 docs): `%TRUE`/`%FALSE`/`%NULL` ≈ 4,200 docs, backticked
 `` `TRUE` ``/`` `NULL` `` ≈ 490, ownership/free sentences ≈ 430, `#gboolean`-style
 primitive sigils ≈ 130. All are context-free or need only the method's
 return shape, so no symbol index is required — this phase does not wait for
-the resolver leg.
+the resolver (Phases 11–13).
 
 *Changes (all pure parse/AST/render; no emission-site changes):*
 
@@ -980,9 +1063,9 @@ the resolver leg.
   The emptied-paragraph case removes the paragraph. Counted per pattern in
   the generator's report.
 
-*Deferred to the resolver leg (need a symbol index, not just a table):*
-`%GTK_FOO` constants → enum constructors, `foo_bar()` function references →
-`Ref`, bare `::signal` / `Type:prop` sigils. They stay `Sym_ref` here.
+*Deferred to Phase 13 (need a symbol index, not just a table):*
+`%GTK_FOO` constants and enum members, `foo_bar()` C-call references, bare
+`::signal` / `Type:prop` sigils. They stay `Sym_ref` here.
 
 *Tests:* parse and render unit tests for every row above; the corpus smoke
 test gains counters (`C_lit`, `C_prim`, ownership strips) and a
@@ -1046,6 +1129,175 @@ opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
 The trivially fixable buckets are zero at emission; the rest are recorded as
 TODO counts, not silently dropped.
 
+### Phase 11 — Cross-references I: the resolver, and links to types and constants
+
+*Goal:* gi-docgen fragments that name a type or a constant become odoc links,
+from both layers, to every generated namespace (decision 11). The resolver,
+its index and the wiring to every emission site land here; Phases 12 and 13
+only add index tables and resolver cases.
+
+*Corpus anchors* (bundled GIR, all namespaces): `[class@]` 1,294,
+`[iface@]` 319, `[type@]` 201, `[enum@]` 198 (some name a member, Phase 12),
+`[struct@]` 195, `[const@]` 50, `[flags@]` 29: about 2,300 fragments.
+
+*Changes:*
+1. **`Ref` and its rendering.** `Ref of string` becomes
+   `Ref of { path : string; text : string }`, rendered `{{!path}[text]}`,
+   where `text` is the endpoint the degraded form shows today. Before
+   wiring, a one-off odoc probe (like decision 10's) confirms that a
+   code-span link text renders and resolves across packages. `Ref`'s text
+   goes through the same balance check as `Code`.
+2. **`Doc_index`, type level.** Built once per namespace and carried on the
+   generation context (a new field, filled where the context is created).
+   For the current namespace it lists the generated classes, interfaces,
+   records, enums, bitfields and constants from the context, using the same
+   `should_generate_*` predicates as the emitters. For every other namespace
+   it reads `ctx.cross_references`. Each entry has the GIR name, the C name
+   (for Phase 13), the kind and the OCaml names (module, class type, enum
+   type, constant). First check PRD §14 question 10: whether the references
+   files list only generated types (class structs are already absent). If
+   they list ungenerated ones, add what the index needs to the references
+   file in this phase.
+3. **`Doc_resolve`.** `env = { namespace; layer : target_library; index }`,
+   `env_of_ctx ctx`, and `resolve`, a pure rewrite of `Sym_ref` nodes.
+   - *Endpoint parsing:* a first component that is a known namespace
+     (current, or in `cross_references`) is the namespace; otherwise the
+     endpoint is relative to `env.namespace`. Anchors are dropped, as today.
+   - *Paths:* built with `Module_paths` (`main_module`, `raw_alias_module`,
+     `enums_alias_module`, `constants_module`, `layer2_module_name`) per the
+     PRD §7.2 table and the layer rule in decision 11. `[type@]` takes its
+     kind from the index.
+   - *Kinds:* `class`, `iface`, `struct`, `enum` (type only), `flags`,
+     `const`, `type`. Every other kind is left as `Sym_ref` for Phases 12
+     and 13, or for good (decision 11).
+   - *Misses:* `Sym_ref_degraded of string` becomes
+     `Sym_ref_unresolved of { endpoint; reason }`, where `reason` is one of
+     `Namespace_not_generated`, `Unknown_target`, `Member_in_other_namespace`,
+     `Kind_not_generated` and `Not_resolved_yet` (kinds a later phase
+     handles). The node itself stays `Sym_ref`, so the rendering is
+     unchanged.
+4. **Wiring.** `Doc_emit.item_doc` and the direct `Doc_translate` calls in
+   `entity_doc.ml` take `~refs:Doc_resolve.env`. Every caller already has
+   `ctx`. Enum and constant sites pass the L2 layer (decision 11). Unit
+   tests that have no context pass an empty index, which resolves nothing.
+5. **Resolution summary.** Generation logs counts per namespace, per kind
+   and per miss reason. This is the report the phase's acceptance reads; the
+   corpus smoke test keeps testing parse and render without an index.
+
+*Tests:* `doc_resolve_tests` with a fixture index: each type-level row of
+PRD §7.2 from both layers; a relative endpoint; a cross-package type
+(`[class@Gdk.Texture]` from Gtk); a record (class type, not module); a flags
+type (`paintableflags`); `[type@]` resolved by kind lookup; GObject and GLib
+types (`Namespace_not_generated`); an unknown type (`Unknown_target`); a
+method fragment (`Not_resolved_yet`); an anchor; a backticked endpoint.
+`doc_render_tests` for `Ref`, including the balance fallback.
+`doc_index_tests` for the generated-type filter.
+
+*Acceptance:* the standing invariant; `dune build @doc` with 0 odoc
+warnings (a warning is a wrong path or a missing type: a blocker); the
+resolution summary shows no `Unknown_target` for a current-namespace class,
+interface, record or enum, other than named exceptions recorded here;
+`doc_diff` against the phase's base shows only code spans becoming links; in
+the PR's preview, `Ocgtk.Button`'s class doc links `[Gtk.ToggleButton]` to
+`Ocgtk/Toggle_button/class-type-toggle_button_t/` on the L2 page and to
+`Ocgtk_raw/Toggle_button/` on the L1 page, and `Ocgtk.Drag_source`'s
+`[Gdk.ContentProvider]` links into the `ocgdk` package.
+
+### Phase 12 — Cross-references II: members in the current namespace
+
+*Goal:* method, constructor, signal, property and enum-member fragments link
+when they name the current namespace, from both layers.
+
+*Corpus anchors:* `[method@]` 2,529, `[property@]` 579, `[signal@]` 508,
+`[ctor@]` 160, and the member form of `[enum@]`. About 96% of Gtk's member
+fragments name Gtk itself.
+
+*Changes:*
+1. **Inventory every place a member is dropped or renamed** before it is
+   written: `filtering.ml` (methods, properties, constructors), the
+   signature-conflict checks and `ocaml_method_name` in
+   `class_gen_conflict_detection.ml`, the signal skip rules in
+   `signal_gen.ml`, the `Failure` catch that skips methods in
+   `c_stub_helpers.ml`, and properties a method claims (PRD §7.2). Record
+   the list in this phase's notes. Any drop that is only known after
+   emission must be made computable first.
+2. **`Emitted_members`.** One pure function per entity kind that returns
+   what the entity emits at each layer under its OCaml names: L1 and L2
+   methods, constructors (L1 `external`, L2 module-level `val`), signals
+   (`on_<s>`), and each property's accessor (getter or setter, per the PRD
+   §7.2 order). The emitters are changed to take their member lists from it.
+   This commit must leave the regeneration diff empty, which is the check
+   that the selection matches the emitters.
+3. **Index and resolver.** `Doc_index` gains per-type member tables for the
+   current namespace, from `Emitted_members`, and enum and bitfield member
+   tables. `Doc_resolve` handles `method`, `ctor`, `signal`, `property` and
+   `enum` with a member, along the PRD §7.2 rows at both layers. A flags
+   member links to the `<flags>_flag` type's tag
+   (`type-paintableflags_flag.constructor-SIZE`). A member of another
+   namespace is `Member_in_other_namespace`. A member the entity does not
+   emit at the doc's layer is `Unknown_target`.
+
+*Tests:* `emitted_members_tests` for every drop and rename in the inventory,
+and for the property rule's four cases (claimed getter, generated getter,
+setter only, none). `doc_resolve_tests` for each member row from both
+layers: a filtered method (code), a renamed method (the renamed target), a
+property claimed by `get_label`, a property-only getter (`method <p>` at L2,
+`get_<p>` at L1), a property whose accessors exist at one layer only
+(`Gtk.MenuButton:direction`: L1 has `get_direction`, L2 drops it and
+`set_direction` because they clash with `Widget`'s, so the L2 reference is
+code), a constructor (L2 `val`, L1 `external`), a signal, an enum member, a
+flags member, and a cross-namespace method (code).
+
+*Acceptance:* the standing invariant, including an empty regeneration diff
+after change 2; `dune build @doc` with 0 odoc warnings (a warning means
+`Emitted_members` and an emitter disagree: a blocker); in the PR's preview,
+`[signal@Gtk.Button::activate]` in `Button`'s class doc links to
+`method-on_activate` on its class type page (L2) and to
+`Ocgtk_raw/Button/#val-on_activate` (L1); `MenuButton`'s
+`[Gtk.MenuButton:direction]` links to `get_direction` from L1 docs and stays
+code in L2 docs.
+
+### Phase 13 — Cross-references III: legacy sigils and C symbols
+
+*Goal:* the gtk-doc sigils and C-symbol references that PRD §3.5 and §7.4–7.5
+say are resolvable link, under the same rule as the fragments (decision 11).
+
+*Changes:*
+1. **AST.** `Sym_ref` records where it came from:
+   `origin : Fragment | Hash | Percent | C_call`. Today a `#Type` and a
+   `%CONST` sigil both parse to `Sym_ref { kind = None }`, and the resolver
+   cannot tell them apart. `parse` also recognises a C call, an identifier
+   with an underscore followed by `()` (`gtk_widget_show()`), as
+   `Sym_ref { origin = C_call }`. Its degraded rendering is the code span
+   `[gtk_widget_show ()]`, the gi-docgen rendering, so these become code
+   even where they do not resolve.
+2. **C-name tables in `Doc_index`:** types by C type (`GtkWidget`, from the
+   context and from `cr_c_type`); constants by C identifier (`GDK_KEY_a`;
+   the references files carry it as `cr_c_type`); for the current namespace,
+   enum and bitfield members by C identifier, and methods and constructors
+   by `c_identifier`.
+3. **Resolver cases.**
+   - `#Type` → the type, in any generated namespace.
+   - `#Type:prop`, `#Type::sig` → the member, current namespace only.
+   - `%CONST` → the constant, in any generated namespace
+     (`%GDK_KEY_a` → `{!Ocgdk.Constants.key_a}`).
+   - `%ENUM_MEMBER` → the member, current namespace only.
+   - `symbol()` and `[id@symbol]` → the method or constructor, current
+     namespace only.
+
+   Misses render as code, as today.
+
+*Tests:* parse cases for each origin, including the PRD §3.5 guards (URL
+fragments, headings, hex colours) and C calls inside code spans (left as
+code); resolver cases for each row above at both layers; a sigil whose name
+is also a constant in another namespace; `%TRUE` is not looked up (Phase 8
+made it `C_lit`).
+
+*Acceptance:* the standing invariant; `dune build @doc` with 0 odoc
+warnings; the resolution summary per origin; in the PR's preview, a
+`%GDK_KEY_*` sigil in a Gtk doc links into `Ocgdk.Constants`, and a
+`gtk_widget_*()` call in a Gtk doc links to the method.
+
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
@@ -1063,6 +1315,13 @@ TODO counts, not silently dropped.
   the final layout. The hand-written text can be drafted earlier.
 - 10 (warning classification) needs 4 (captured warnings) and a stable `@doc`
   from 5–9, so the buckets are not classified against a moving target.
+- 11 (resolver, types) needs 7: the class type and constructor anchors it
+  links to are Phase 7's. It does not need 8–10, and can land before them.
+  The resolver adds no odoc warnings by design (decision 11), so Phase 10
+  does not wait for it.
+- 12 (members) needs 11.
+- 13 (sigils) needs 12 (member tables) and 8 (`%TRUE`, `%NULL` and `#gint`
+  are no longer `Sym_ref`, so they are never looked up).
 
 ## Verification for the whole leg (after all phases)
 
@@ -1085,6 +1344,10 @@ closing checklist on top of them:
 - Layer check: every entity, method, constructor, signal and property site
   that emits at L1 also emits its doc at L2, or is recorded here as a named
   exception.
+- Cross-references: 0 odoc warnings with the resolver on; the resolution
+  summary's misses are all reasons decision 11 accepts (ungenerated
+  namespaces and kinds, other-namespace members), apart from named
+  exceptions recorded with Phases 11–13.
 
 ## Known limitations
 
@@ -1098,18 +1361,20 @@ closing checklist on top of them:
 
 - Alias pages (page model, PRD §11).
 - `@param`/`@return`/`@deprecated` tag emission; generalised `@since`.
-- Constants (`%GTK_FOO`), `foo_bar()` function refs and bare `::signal`
-  sigils → resolver leg (need a symbol index; Phase 8 only does the
-  table-driven idioms).
-- Cross-reference resolution (PRD §7) — the `Sym_ref` → `[code]` fallback
-  covers it; the resolver leg is a pure AST rewrite.
+- Cross-namespace member references (about 100 in Gtk): need a member
+  table in the references files (the PRD §7.7 emitted-symbol map). They
+  stay code (decision 11).
+- References to functions, callbacks, vfuncs, aliases and error domains,
+  which are not generated, and to GLib and GObject types, which have no
+  generated namespace.
 - Upstream-URL mapping for relative `.html` links (PRD §6.3) — likewise a
   pure `Page_ref` rewrite.
 - Page-model refinements: synthetic synopses (§12), screenshots,
   `<docsection>` fold into index pages. (Class-type grouping headings and
   the Inherits/Implements block moved into this leg as Phase 7.)
 - "Returned by" lists for classes without constructors (the functions and
-  methods whose return type is the class) → resolver leg; Phase 7 states
+  methods whose return type is the class) → a later leg, on Phase 12's
+  member index; Phase 7 states
   only the canned no-constructor line.
 - Warning gate in CI (report-only this leg).
 - C code-block translation (~210 C blocks): labelling untranslated C blocks
