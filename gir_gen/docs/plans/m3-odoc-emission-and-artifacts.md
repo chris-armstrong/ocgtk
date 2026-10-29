@@ -1,9 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–11 implemented (per-phase status below). The C code-block
+**Status: Phases 0–13 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
-cross-reference resolution (PRD §7), added 2026-10-28; Phase 11 done, 12 and
-13 not started. Phase 14,
+cross-reference resolution (PRD §7), added 2026-10-28; all done. Phase 14,
 property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
