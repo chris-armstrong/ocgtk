@@ -48,8 +48,8 @@ for the file format and editing workflow.
 ## doc-preview-landing.sh
 
 Writes the landing `index.html` at the root of a rendered odoc HTML tree. It
-links the conventions page and each package's odoc root, and records the ref, commit and odoc warning
-count of the build. The doc preview workflow
+links the conventions page and each package's odoc root, and records the ref, commit and odoc warnings
+(total and buckets) of the build. The doc preview workflow
 (`.github/workflows/doc-preview.yml`) runs it before deploying to `gh-pages`.
 
 ```bash
@@ -67,3 +67,10 @@ variables are optional; see the script header for the list.
 The diff of the rendered odoc HTML of a base commit and the working tree
 lives in the generator project. See
 [gir_gen/tools/doc_diff/README.md](../gir_gen/tools/doc_diff/README.md).
+
+## doc_warnings
+
+The classifier of the odoc warnings in a `dune build @doc` log, which the doc
+preview workflow uses for its job summary and the landing page, lives in the
+generator project. See
+[gir_gen/tools/doc_warnings/README.md](../gir_gen/tools/doc_warnings/README.md).

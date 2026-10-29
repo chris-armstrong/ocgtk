@@ -79,17 +79,25 @@ jobs:
       - name: Install OCaml dependencies
         run: opam install . ./gir_gen --deps-only --with-test --with-doc
 
-      # odoc warnings are reported, not fatal (report-only policy). Compiler
-      # warnings ("Warning 50 [...]") are not counted, only odoc's own
-      # "Warning:" lines.
+      # odoc warnings are reported, not fatal (report-only policy).
       - name: Build documentation
-        id: doc
         run: |
           set -o pipefail
           opam exec -- dune build @doc --cache=disabled 2>&1 | tee doc-build.log
-          warnings=$(grep -c '^Warning: ' doc-build.log || true)
+
+      # Compiler warnings ("Warning 50 [...]") and dune's own messages are
+      # left out; odoc's warnings are counted by bucket.
+      - name: Classify odoc warnings
+        id: doc
+        run: |
+          classify() {
+            opam exec -- dune exec --display=quiet \
+              gir_gen/tools/doc_warnings/doc_warnings.exe -- "$@" doc-build.log
+          }
+          warnings=$(classify --format line)
           echo "warnings=$warnings" >> "$GITHUB_OUTPUT"
           echo "odoc warnings: $warnings"
+          classify --format markdown > doc-warnings.md
 
       - name: Write landing page
         env:
@@ -115,13 +123,12 @@ jobs:
           retention-days: 3
 
       - name: Job summary
-        env:
-          WARNINGS: ${{ steps.doc.outputs.warnings }}
         run: |
           {
             echo "### Doc build"
             echo "- Commit: \`$BUILD_SHA\`"
-            echo "- odoc warnings: $WARNINGS"
+            echo
+            cat doc-warnings.md
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload doc build log
