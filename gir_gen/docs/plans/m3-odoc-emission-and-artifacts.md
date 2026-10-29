@@ -1685,7 +1685,8 @@ closing checklist on top of them:
 - `@param`/`@return`/`@deprecated` tag emission; generalised `@since`.
 - Cross-namespace member references (about 100 in Gtk): need a member
   table in the references files (the PRD §7.7 emitted-symbol map). They
-  stay code (decision 11).
+  stay code (decision 11). Planned in
+  [cross-namespace-member-references](cross-namespace-member-references.md).
 - References to functions, callbacks, vfuncs, aliases and error domains,
   which are not generated, and to GLib and GObject types, which have no
   generated namespace.
