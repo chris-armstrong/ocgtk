@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Application_command_line (ocgio.Ocgio.Application_command_line)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgio</a> &#x00BB; <a href="../index.html">Ocgio</a> &#x00BB; Application_command_line</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgio.Application_command_line</span></code></h1><p><code>GApplicationCommandLine</code> represents a command-line invocation of an application.</p><p>Its methods, signals and properties are on <a href="class-type-application_command_line_t/index.html"><code>application_command_line_t</code></a>. Its full description is under <a href="#description" title="description">Description</a>. Its constructors are under <a href="#constructors" title="constructors">Constructors</a>. The functions it is built on are in <a href="../../Ocgio_raw/Application_command_line/index.html"><code>Ocgio.Raw.Application_command_line</code></a>.</p></header><div class="odoc-tocs"><nav class="odoc-toc odoc-local-toc"><ul><li><a href="#class">Class</a></li><li><a href="#description">Description</a></li><li><a href="#constructors">Constructors</a></li></ul></nav></div><div class="odoc-content"><h2 id="class"><a href="#class" class="anchor"></a>Class</h2><div class="odoc-spec"><div class="spec class-type anchored" id="class-type-application_command_line_t"><a href="#class-type-application_command_line_t" class="anchor"></a><code><span><span class="keyword">class</span> <span class="keyword">type</span>  </span><span><a href="class-type-application_command_line_t/index.html">application_command_line_t</a></span><span> = <span class="keyword">object</span> ... <span class="keyword">end</span></span></code></div><div class="spec-doc"><p><b>The methods, signals and properties of a <code>ApplicationCommandLine</code>.</b></p></div></div><div class="odoc-spec"><div class="spec class anchored" id="class-application_command_line"><a href="#class-application_command_line" class="anchor"></a><code><span><span class="keyword">class</span> </span><span><a href="class-application_command_line/index.html">application_command_line</a></span><span> : <span><a href="../../Ocgio_raw/Application_command_line/index.html#type-t">Ocgio.Raw.Application_command_line.t</a> <span class="arrow">&#45;&gt;</span></span> <a href="class-type-application_command_line_t/index.html">application_command_line_t</a></span></code></div><div class="spec-doc"><p>Wraps a raw handle of <a href="../../Ocgio_raw/Application_command_line/index.html#type-t"><code>Ocgio.Raw.Application_command_line.t</code></a>.</p></div></div><h2 id="description"><a href="#description" class="anchor"></a>Description</h2><p><code>GApplicationCommandLine</code> represents a command-line invocation of an application.</p><p>It is created by <a href="../Application/class-type-application_t/index.html" title="Ocgio.Application.application_t"><code>Gio.Application</code></a> and emitted in the <a href="../Application/class-type-application_t/index.html#method-on_command_line" title="Ocgio.Application.application_t.on_command_line"><code>Gio.Application::command-line</code></a> signal and virtual function.</p><p>The class contains the list of arguments that the program was invoked with. It is also possible to query if the commandline invocation was local (ie: the current process is running in direct response to the invocation) or remote (ie: some other process forwarded the commandline to this process).</p><p>The <code>GApplicationCommandLine</code> object can provide the <code>argc</code> and <code>argv</code> parameters for use with the <code>GLib.OptionContext</code> command-line parsing API, with the <code>Gio.ApplicationCommandLine.get_arguments</code> function. See <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c">gapplication-example-cmdline3.c</a> for an example.</p><p>The exit status of the originally-invoked process may be set and messages can be printed to stdout or stderr of that process.</p><p>For remote invocation, the originally-invoked process exits when <a href="class-type-application_command_line_t/index.html#method-done_" title="Ocgio.Application_command_line.application_command_line_t.done_"><code>Gio.ApplicationCommandLine.done</code></a> method is called. This method is also automatically called when the object is disposed.</p><p>The main use for <code>GApplicationCommandLine</code> (and the <a href="../Application/class-type-application_t/index.html#method-on_command_line" title="Ocgio.Application.application_t.on_command_line"><code>Gio.Application::command-line</code></a> signal) is 'Emacs server' like use cases: You can set the <code>EDITOR</code> environment variable to have e.g. git use your favourite editor to edit commit messages, and if you already have an instance of the editor running, the editing will happen in the running instance, instead of opening a new one. An important aspect of this use case is that the process that gets started by git does not return until the editing is done.</p><p>Normally, the commandline is completely handled in the <a href="../Application/class-type-application_t/index.html#method-on_command_line" title="Ocgio.Application.application_t.on_command_line"><code>Gio.Application::command-line</code></a> handler. The launching instance exits once the signal handler in the primary instance has returned, and the return value of the signal handler becomes the exit status of the launching instance.</p><pre class="language-ocaml"><code>static int
+command_line (GApplication            *application,
+              GApplicationCommandLine *cmdline)
+{
+  gchar **argv;
+  gint argc;
+  gint i;
+
+  argv = g_application_command_line_get_arguments (cmdline, &amp;argc);
+
+  g_application_command_line_print (cmdline,
+                                    &quot;This text is written back\n&quot;
+                                    &quot;to stdout of the caller\n&quot;);
+
+  for (i = 0; i &lt; argc; i++)
+    g_print (&quot;argument %d: %s\n&quot;, i, argv[i]);
+
+  g_strfreev (argv);
+
+  return 0;
+}</code></pre><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline.c">gapplication-example-cmdline.c</a></p><p>In more complicated cases, the handling of the commandline can be split between the launcher and the primary instance.</p><pre class="language-ocaml"><code>static gboolean
+ test_local_cmdline (GApplication   *application,
+                     gchar        ***arguments,
+                     gint           *exit_status)
+{
+  gint i, j;
+  gchar **argv;
+
+  argv = *arguments;
+
+  if (argv[0] == NULL)
+    {
+      *exit_status = 0;
+      return FALSE;
+    }
+
+  i = 1;
+  while (argv[i])
+    {
+      if (g_str_has_prefix (argv[i], &quot;--local-&quot;))
+        {
+          g_print (&quot;handling argument %s locally\n&quot;, argv[i]);
+          g_free (argv[i]);
+          for (j = i; argv[j]; j++)
+            argv[j] = argv[j + 1];
+        }
+      else
+        {
+          g_print (&quot;not handling argument %s locally\n&quot;, argv[i]);
+          i++;
+        }
+    }
+
+  *exit_status = 0;
+
+  return FALSE;
+}
+
+static void
+test_application_class_init (TestApplicationClass *class)
+{
+  G_APPLICATION_CLASS (class)-&gt;local_command_line = test_local_cmdline;
+
+  ...
+}</code></pre><p>In this example of split commandline handling, options that start with <code>--local-</code> are handled locally, all other options are passed to the <a href="../Application/class-type-application_t/index.html#method-on_command_line" title="Ocgio.Application.application_t.on_command_line"><code>Gio.Application::command-line</code></a> handler which runs in the primary instance.</p><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c">gapplication-example-cmdline2.c</a></p><p>If handling the commandline requires a lot of work, it may be better to defer it.</p><pre class="language-ocaml"><code>static gboolean
+my_cmdline_handler (gpointer data)
+{
+  GApplicationCommandLine *cmdline = data;
+
+  // do the heavy lifting in an idle
+
+  g_application_command_line_set_exit_status (cmdline, 0);
+  g_object_unref (cmdline); // this releases the application
+
+  return G_SOURCE_REMOVE;
+}
+
+static int
+command_line (GApplication            *application,
+              GApplicationCommandLine *cmdline)
+{
+  // keep the application running until we are done with this commandline
+  g_application_hold (application);
+
+  g_object_set_data_full (G_OBJECT (cmdline),
+                          &quot;application&quot;, application,
+                          (GDestroyNotify)g_application_release);
+
+  g_object_ref (cmdline);
+  g_idle_add (my_cmdline_handler, cmdline);
+
+  return 0;
+}</code></pre><p>In this example the commandline is not completely handled before the <a href="../Application/class-type-application_t/index.html#method-on_command_line" title="Ocgio.Application.application_t.on_command_line"><code>Gio.Application::command-line</code></a> handler returns. Instead, we keep a reference to the <code>GApplicationCommandLine</code> object and handle it later (in this example, in an idle). Note that it is necessary to hold the application until you are done with the commandline.</p><p>The complete example can be found here: <a href="https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c">gapplication-example-cmdline3.c</a></p><h2 id="constructors"><a href="#constructors" class="anchor"></a>Constructors</h2><p>This class is not instantiated directly - it is used as a return value by methods on other classes.</p></div></body></html>
