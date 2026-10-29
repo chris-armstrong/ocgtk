@@ -179,26 +179,36 @@ end
      Reads XML descriptions of a user interface and instantiates the described \
      objects.\n\n\
      To create a [GtkBuilder] from a user interface description, call\n\
-     [Gtk.Builder.new_from_file], [Gtk.Builder.new_from_resource]\n\
-     or [Gtk.Builder.new_from_string].\n\n\
+     {{!Ocgtk.Builder.val-new_from_file}[Gtk.Builder.new_from_file]}, \
+     {{!Ocgtk.Builder.val-new_from_resource}[Gtk.Builder.new_from_resource]}\n\
+     or {{!Ocgtk.Builder.val-new_from_string}[Gtk.Builder.new_from_string]}.\n\n\
      In the (unusual) case that you want to add user interface\n\
      descriptions from multiple sources to the same [GtkBuilder] you can\n\
-     call [Gtk.Builder.new] to get an empty builder and populate it by\n\
-     (multiple) calls to [Gtk.Builder.add_from_file],\n\
-     [Gtk.Builder.add_from_resource] or\n\
-     [Gtk.Builder.add_from_string].\n\n\
+     call {{!Ocgtk.Builder.val-new_}[Gtk.Builder.new]} to get an empty builder \
+     and populate it by\n\
+     (multiple) calls to \
+     {{!Ocgtk.Builder.class-type-builder_t.method-add_from_file}[Gtk.Builder.add_from_file]},\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-add_from_resource}[Gtk.Builder.add_from_resource]} \
+     or\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]}.\n\n\
      A [GtkBuilder] holds a reference to all objects that it has constructed\n\
      and drops these references when it is finalized. This finalization can\n\
      cause the destruction of non-widget objects or widgets which are not\n\
      contained in a toplevel window. For toplevel windows constructed by a\n\
      builder, it is the responsibility of the user to call\n\
-     [Gtk.Window.destroy] to get rid of them and all the widgets\n\
+     {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]} \
+     to get rid of them and all the widgets\n\
      they contain.\n\n\
-     The functions [Gtk.Builder.get_object] and\n\
-     [Gtk.Builder.get_objects] can be used to access the widgets in\n\
+     The functions \
+     {{!Ocgtk.Builder.class-type-builder_t.method-get_object}[Gtk.Builder.get_object]} \
+     and\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-get_objects}[Gtk.Builder.get_objects]} \
+     can be used to access the widgets in\n\
      the interface by the names assigned to them inside the UI description.\n\
      Toplevel windows returned by these functions will stay around until the\n\
-     user explicitly destroys them with [Gtk.Window.destroy]. Other\n\
+     user explicitly destroys them with \
+     {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]}. \
+     Other\n\
      widgets will either be part of a larger hierarchy constructed by the\n\
      builder (in which case you should not have to worry about their lifecycle),\n\
      or without a parent, in which case they have to be added to some container\n\
@@ -213,7 +223,9 @@ end
      The toplevel element is [<interface>]. It optionally takes a “domain”\n\
      attribute, which will make the builder look for translated strings\n\
      using [dgettext()] in the domain specified. This can also be done by\n\
-     calling [Gtk.Builder.set_translation_domain] on the builder.\n\
+     calling \
+     {{!Ocgtk.Builder.class-type-builder_t.method-set_translation_domain}[Gtk.Builder.set_translation_domain]} \
+     on the builder.\n\
      For example:\n\n\
      {[\n\
      <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
@@ -249,7 +261,8 @@ end
      [g_type_ensure()] for each object type before parsing the UI definition.\n\n\
      Objects may be given a name with the “id” attribute, which allows the\n\
      application to retrieve them from the builder with\n\
-     [Gtk.Builder.get_object]. An id is also necessary to use the\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-get_object}[Gtk.Builder.get_object]}. \
+     An id is also necessary to use the\n\
      object as property value in other parts of the UI definition. GTK\n\
      reserves ids starting and ending with [___] (three consecutive\n\
      underscores) for its own purposes.\n\n\
@@ -306,20 +319,25 @@ end
      - [GVariant] (in the format understood by [GLib.Variant.parse])\n\
      - textures (can be specified as an object id, a resource path or a \
      filename of an image file to load relative to the Builder file or the CWD \
-     if [Gtk.Builder.add_from_string] was used)\n\
+     if \
+     {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]} \
+     was used)\n\
      - GFile (like textures, can be specified as an object id, a URI or a \
      filename of a file to load relative to the Builder file or the CWD if \
-     [Gtk.Builder.add_from_string] was used)\n\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]} \
+     was used)\n\n\
      Objects can be referred to by their name and by default refer to\n\
      objects declared in the local XML fragment and objects exposed via\n\
-     [Gtk.Builder.expose_object]. In general, [GtkBuilder] allows\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-expose_object}[Gtk.Builder.expose_object]}. \
+     In general, [GtkBuilder] allows\n\
      forward references to objects declared in the local XML; an object\n\
      doesn’t have to be constructed before it can be referred to. The\n\
      exception to this rule is that an object has to be constructed before\n\
      it can be used as the value of a construct-only property.\n\n\
      {b Child objects}\n\n\
      Many widgets have properties for child widgets, such as\n\
-     [Gtk.Expander:child]. In this case, the preferred way to\n\
+     {{!Ocgtk.Expander.class-type-expander_t.method-get_child}[Gtk.Expander:child]}. \
+     In this case, the preferred way to\n\
      specify the child widget in a ui file is to simply set the property:\n\n\
      {[\n\
      <object class=\"GtkExpander\">\n\
@@ -505,26 +523,36 @@ class builder : Raw.Builder.t -> builder_t
  Reads XML descriptions of a user interface and instantiates the described \
  objects.\n\n\
  To create a [GtkBuilder] from a user interface description, call\n\
- [Gtk.Builder.new_from_file], [Gtk.Builder.new_from_resource]\n\
- or [Gtk.Builder.new_from_string].\n\n\
+ {{!Ocgtk.Builder.val-new_from_file}[Gtk.Builder.new_from_file]}, \
+ {{!Ocgtk.Builder.val-new_from_resource}[Gtk.Builder.new_from_resource]}\n\
+ or {{!Ocgtk.Builder.val-new_from_string}[Gtk.Builder.new_from_string]}.\n\n\
  In the (unusual) case that you want to add user interface\n\
  descriptions from multiple sources to the same [GtkBuilder] you can\n\
- call [Gtk.Builder.new] to get an empty builder and populate it by\n\
- (multiple) calls to [Gtk.Builder.add_from_file],\n\
- [Gtk.Builder.add_from_resource] or\n\
- [Gtk.Builder.add_from_string].\n\n\
+ call {{!Ocgtk.Builder.val-new_}[Gtk.Builder.new]} to get an empty builder and \
+ populate it by\n\
+ (multiple) calls to \
+ {{!Ocgtk.Builder.class-type-builder_t.method-add_from_file}[Gtk.Builder.add_from_file]},\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-add_from_resource}[Gtk.Builder.add_from_resource]} \
+ or\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]}.\n\n\
  A [GtkBuilder] holds a reference to all objects that it has constructed\n\
  and drops these references when it is finalized. This finalization can\n\
  cause the destruction of non-widget objects or widgets which are not\n\
  contained in a toplevel window. For toplevel windows constructed by a\n\
  builder, it is the responsibility of the user to call\n\
- [Gtk.Window.destroy] to get rid of them and all the widgets\n\
+ {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]} to \
+ get rid of them and all the widgets\n\
  they contain.\n\n\
- The functions [Gtk.Builder.get_object] and\n\
- [Gtk.Builder.get_objects] can be used to access the widgets in\n\
+ The functions \
+ {{!Ocgtk.Builder.class-type-builder_t.method-get_object}[Gtk.Builder.get_object]} \
+ and\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-get_objects}[Gtk.Builder.get_objects]} \
+ can be used to access the widgets in\n\
  the interface by the names assigned to them inside the UI description.\n\
  Toplevel windows returned by these functions will stay around until the\n\
- user explicitly destroys them with [Gtk.Window.destroy]. Other\n\
+ user explicitly destroys them with \
+ {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]}. \
+ Other\n\
  widgets will either be part of a larger hierarchy constructed by the\n\
  builder (in which case you should not have to worry about their lifecycle),\n\
  or without a parent, in which case they have to be added to some container\n\
@@ -539,7 +567,9 @@ class builder : Raw.Builder.t -> builder_t
  The toplevel element is [<interface>]. It optionally takes a “domain”\n\
  attribute, which will make the builder look for translated strings\n\
  using [dgettext()] in the domain specified. This can also be done by\n\
- calling [Gtk.Builder.set_translation_domain] on the builder.\n\
+ calling \
+ {{!Ocgtk.Builder.class-type-builder_t.method-set_translation_domain}[Gtk.Builder.set_translation_domain]} \
+ on the builder.\n\
  For example:\n\n\
  {[\n\
  <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
@@ -575,7 +605,8 @@ class builder : Raw.Builder.t -> builder_t
  [g_type_ensure()] for each object type before parsing the UI definition.\n\n\
  Objects may be given a name with the “id” attribute, which allows the\n\
  application to retrieve them from the builder with\n\
- [Gtk.Builder.get_object]. An id is also necessary to use the\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-get_object}[Gtk.Builder.get_object]}. \
+ An id is also necessary to use the\n\
  object as property value in other parts of the UI definition. GTK\n\
  reserves ids starting and ending with [___] (three consecutive\n\
  underscores) for its own purposes.\n\n\
@@ -631,20 +662,24 @@ class builder : Raw.Builder.t -> builder_t
  - [GVariant] (in the format understood by [GLib.Variant.parse])\n\
  - textures (can be specified as an object id, a resource path or a filename \
  of an image file to load relative to the Builder file or the CWD if \
- [Gtk.Builder.add_from_string] was used)\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]} \
+ was used)\n\
  - GFile (like textures, can be specified as an object id, a URI or a filename \
  of a file to load relative to the Builder file or the CWD if \
- [Gtk.Builder.add_from_string] was used)\n\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]} \
+ was used)\n\n\
  Objects can be referred to by their name and by default refer to\n\
  objects declared in the local XML fragment and objects exposed via\n\
- [Gtk.Builder.expose_object]. In general, [GtkBuilder] allows\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-expose_object}[Gtk.Builder.expose_object]}. \
+ In general, [GtkBuilder] allows\n\
  forward references to objects declared in the local XML; an object\n\
  doesn’t have to be constructed before it can be referred to. The\n\
  exception to this rule is that an object has to be constructed before\n\
  it can be used as the value of a construct-only property.\n\n\
  {b Child objects}\n\n\
  Many widgets have properties for child widgets, such as\n\
- [Gtk.Expander:child]. In this case, the preferred way to\n\
+ {{!Ocgtk.Expander.class-type-expander_t.method-get_child}[Gtk.Expander:child]}. \
+ In this case, the preferred way to\n\
  specify the child widget in a ui file is to simply set the property:\n\n\
  {[\n\
  <object class=\"GtkExpander\">\n\
@@ -821,9 +856,11 @@ val new_ : unit -> builder_t
 (** Creates a new empty builder object.
 
     This function is only useful if you intend to make multiple calls to
-    [Gtk.Builder.add_from_file], [Gtk.Builder.add_from_resource] or
-    [Gtk.Builder.add_from_string] in order to merge multiple UI descriptions
-    into a single builder. *)
+    {{!Ocgtk.Builder.class-type-builder_t.method-add_from_file}[Gtk.Builder.add_from_file]},
+    {{!Ocgtk.Builder.class-type-builder_t.method-add_from_resource}[Gtk.Builder.add_from_resource]}
+    or
+    {{!Ocgtk.Builder.class-type-builder_t.method-add_from_string}[Gtk.Builder.add_from_string]}
+    in order to merge multiple UI descriptions into a single builder. *)
 
 val new_from_file : string -> builder_t
 (** Parses the UI definition in the file [filename].

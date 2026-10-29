@@ -12,9 +12,10 @@
     Provides information about supported DMA buffer formats.
 
     You can query whether a given format is supported with
-    [Gdk.DmabufFormats.contains] and you can iterate over the list of all
-    supported formats with [Gdk.DmabufFormats.get_n_formats] and
-    [Gdk.DmabufFormats.get_format].
+    {{!Ocgdk.Dmabuf_formats.class-type-dmabuf_formats_t.method-contains}[Gdk.DmabufFormats.contains]}
+    and you can iterate over the list of all supported formats with
+    {{!Ocgdk.Dmabuf_formats.class-type-dmabuf_formats_t.method-get_n_formats}[Gdk.DmabufFormats.get_n_formats]}
+    and [Gdk.DmabufFormats.get_format].
 
     The list of supported formats is sorted by preference, with the best formats
     coming first.
@@ -60,9 +61,10 @@ class dmabuf_formats : Raw.Dmabuf_formats.t -> dmabuf_formats_t
     Provides information about supported DMA buffer formats.
 
     You can query whether a given format is supported with
-    [Gdk.DmabufFormats.contains] and you can iterate over the list of all
-    supported formats with [Gdk.DmabufFormats.get_n_formats] and
-    [Gdk.DmabufFormats.get_format].
+    {{!Ocgdk.Dmabuf_formats.class-type-dmabuf_formats_t.method-contains}[Gdk.DmabufFormats.contains]}
+    and you can iterate over the list of all supported formats with
+    {{!Ocgdk.Dmabuf_formats.class-type-dmabuf_formats_t.method-get_n_formats}[Gdk.DmabufFormats.get_n_formats]}
+    and [Gdk.DmabufFormats.get_format].
 
     The list of supported formats is sorted by preference, with the best formats
     coming first.

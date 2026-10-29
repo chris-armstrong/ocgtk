@@ -26,10 +26,13 @@
     org.freedesktop.DBus.ObjectManager interface).
 
     Once an instance of this type has been created, you can connect to the
-    [Gio.DBusObjectManager::object-added] and
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_added}
+     [Gio.DBusObjectManager::object-added]} and
     \[signal@Gio.DBusObjectManager::object-removed signals\] and inspect the
     {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[Gio.DBusObjectProxy]}
-    objects returned by [Gio.DBusObjectManager.get_objects].
+    objects returned by
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-get_objects}
+     [Gio.DBusObjectManager.get_objects]}.
 
     If the name for a [GDBusObjectManagerClient] is not owned by anyone at
     object construction time, the default behavior is to request the message bus
@@ -39,31 +42,43 @@
     first place. E.g. in some cases it is not possible to launch an owner for
     the requested name. In this case, [GDBusObjectManagerClient] object
     construction still succeeds but there will be no object proxies (e.g.
-    [Gio.DBusObjectManager.get_objects] returns the empty list) and the
-    [Gio.DBusObjectManagerClient:name-owner] property is [None].
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-get_objects}
+     [Gio.DBusObjectManager.get_objects]} returns the empty list) and the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} property is [None].
 
     The owner of the requested name can come and go (for example consider a
     system service being restarted) – [GDBusObjectManagerClient] handles this
     case too; simply connect to the [GObject.Object::notify] signal to watch for
-    changes on the [Gio.DBusObjectManagerClient:name-owner] property. When the
-    name owner vanishes, the behavior is that
-    [Gio.DBusObjectManagerClient:name-owner] is set to [None] (this includes
+    changes on the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} property. When the name owner
+    vanishes, the behavior is that
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is set to [None] (this includes
     emission of the [GObject.Object::notify] signal) and then
-    [Gio.DBusObjectManager::object-removed] signals are synthesized for all
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_removed}
+     [Gio.DBusObjectManager::object-removed]} signals are synthesized for all
     currently existing object proxies. Since
-    [Gio.DBusObjectManagerClient:name-owner] is [None] when this happens, you
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is [None] when this happens, you
     can use this information to disambiguate a synthesized signal from a genuine
     signal caused by object removal on the remote
     {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}[Gio.DBusObjectManager]}.
     Similarly, when a new name owner appears,
-    [Gio.DBusObjectManager::object-added] signals are synthesized while
-    [Gio.DBusObjectManagerClient:name-owner] is still [None]. Only when all
-    object proxies have been added, the [Gio.DBusObjectManagerClient:name-owner]
-    is set to the new name owner (this includes emission of the
-    [GObject.Object::notify] signal). Furthermore, you are guaranteed that
-    [Gio.DBusObjectManagerClient:name-owner] will alternate between a name owner
-    (e.g. [:1.42]) and [None] even in the case where the name of interest is
-    atomically replaced
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_added}
+     [Gio.DBusObjectManager::object-added]} signals are synthesized while
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is still [None]. Only when all
+    object proxies have been added, the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is set to the new name owner
+    (this includes emission of the [GObject.Object::notify] signal).
+    Furthermore, you are guaranteed that
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} will alternate between a name
+    owner (e.g. [:1.42]) and [None] even in the case where the name of interest
+    is atomically replaced
 
     Ultimately, [GDBusObjectManagerClient] is used to obtain
     {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]} instances.
@@ -78,13 +93,20 @@
     To avoid having the application connect to signals on the returned
     {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[Gio.DBusObjectProxy]}
     and {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]} objects,
-    the [Gio.DBusObject::interface-added], [Gio.DBusObject::interface-removed],
-    [Gio.DBusProxy::g-properties-changed] and [Gio.DBusProxy::g-signal] signals
-    are also emitted on the [GDBusObjectManagerClient] instance managing these
-    objects. The signals emitted are [Gio.DBusObjectManager::interface-added],
-    [Gio.DBusObjectManager::interface-removed],
+    the
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t.method-on_interface_added}[Gio.DBusObject::interface-added]},
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t.method-on_interface_removed}[Gio.DBusObject::interface-removed]},
+    [Gio.DBusProxy::g-properties-changed] and
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]}
+    signals are also emitted on the [GDBusObjectManagerClient] instance managing
+    these objects. The signals emitted are
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_interface_added}
+     [Gio.DBusObjectManager::interface-added]},
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_interface_removed}
+     [Gio.DBusObjectManager::interface-removed]},
     [Gio.DBusObjectManagerClient::interface-proxy-properties-changed] and
-    [Gio.DBusObjectManagerClient::interface-proxy-signal].
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-on_interface_proxy_signal}
+     [Gio.DBusObjectManagerClient::interface-proxy-signal]}.
 
     Note that all callbacks and signals are emitted in the thread-default main
     context (see [GLib.MainContext.push_thread_default]) that the
@@ -163,10 +185,13 @@ class d_bus_object_manager_client :
     org.freedesktop.DBus.ObjectManager interface).
 
     Once an instance of this type has been created, you can connect to the
-    [Gio.DBusObjectManager::object-added] and
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_added}
+     [Gio.DBusObjectManager::object-added]} and
     \[signal@Gio.DBusObjectManager::object-removed signals\] and inspect the
     {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[Gio.DBusObjectProxy]}
-    objects returned by [Gio.DBusObjectManager.get_objects].
+    objects returned by
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-get_objects}
+     [Gio.DBusObjectManager.get_objects]}.
 
     If the name for a [GDBusObjectManagerClient] is not owned by anyone at
     object construction time, the default behavior is to request the message bus
@@ -176,31 +201,43 @@ class d_bus_object_manager_client :
     first place. E.g. in some cases it is not possible to launch an owner for
     the requested name. In this case, [GDBusObjectManagerClient] object
     construction still succeeds but there will be no object proxies (e.g.
-    [Gio.DBusObjectManager.get_objects] returns the empty list) and the
-    [Gio.DBusObjectManagerClient:name-owner] property is [None].
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-get_objects}
+     [Gio.DBusObjectManager.get_objects]} returns the empty list) and the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} property is [None].
 
     The owner of the requested name can come and go (for example consider a
     system service being restarted) – [GDBusObjectManagerClient] handles this
     case too; simply connect to the [GObject.Object::notify] signal to watch for
-    changes on the [Gio.DBusObjectManagerClient:name-owner] property. When the
-    name owner vanishes, the behavior is that
-    [Gio.DBusObjectManagerClient:name-owner] is set to [None] (this includes
+    changes on the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} property. When the name owner
+    vanishes, the behavior is that
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is set to [None] (this includes
     emission of the [GObject.Object::notify] signal) and then
-    [Gio.DBusObjectManager::object-removed] signals are synthesized for all
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_removed}
+     [Gio.DBusObjectManager::object-removed]} signals are synthesized for all
     currently existing object proxies. Since
-    [Gio.DBusObjectManagerClient:name-owner] is [None] when this happens, you
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is [None] when this happens, you
     can use this information to disambiguate a synthesized signal from a genuine
     signal caused by object removal on the remote
     {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}[Gio.DBusObjectManager]}.
     Similarly, when a new name owner appears,
-    [Gio.DBusObjectManager::object-added] signals are synthesized while
-    [Gio.DBusObjectManagerClient:name-owner] is still [None]. Only when all
-    object proxies have been added, the [Gio.DBusObjectManagerClient:name-owner]
-    is set to the new name owner (this includes emission of the
-    [GObject.Object::notify] signal). Furthermore, you are guaranteed that
-    [Gio.DBusObjectManagerClient:name-owner] will alternate between a name owner
-    (e.g. [:1.42]) and [None] even in the case where the name of interest is
-    atomically replaced
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_object_added}
+     [Gio.DBusObjectManager::object-added]} signals are synthesized while
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is still [None]. Only when all
+    object proxies have been added, the
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} is set to the new name owner
+    (this includes emission of the [GObject.Object::notify] signal).
+    Furthermore, you are guaranteed that
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-get_name_owner}
+     [Gio.DBusObjectManagerClient:name-owner]} will alternate between a name
+    owner (e.g. [:1.42]) and [None] even in the case where the name of interest
+    is atomically replaced
 
     Ultimately, [GDBusObjectManagerClient] is used to obtain
     {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]} instances.
@@ -215,13 +252,20 @@ class d_bus_object_manager_client :
     To avoid having the application connect to signals on the returned
     {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[Gio.DBusObjectProxy]}
     and {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]} objects,
-    the [Gio.DBusObject::interface-added], [Gio.DBusObject::interface-removed],
-    [Gio.DBusProxy::g-properties-changed] and [Gio.DBusProxy::g-signal] signals
-    are also emitted on the [GDBusObjectManagerClient] instance managing these
-    objects. The signals emitted are [Gio.DBusObjectManager::interface-added],
-    [Gio.DBusObjectManager::interface-removed],
+    the
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t.method-on_interface_added}[Gio.DBusObject::interface-added]},
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t.method-on_interface_removed}[Gio.DBusObject::interface-removed]},
+    [Gio.DBusProxy::g-properties-changed] and
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]}
+    signals are also emitted on the [GDBusObjectManagerClient] instance managing
+    these objects. The signals emitted are
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_interface_added}
+     [Gio.DBusObjectManager::interface-added]},
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t.method-on_interface_removed}
+     [Gio.DBusObjectManager::interface-removed]},
     [Gio.DBusObjectManagerClient::interface-proxy-properties-changed] and
-    [Gio.DBusObjectManagerClient::interface-proxy-signal].
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t.method-on_interface_proxy_signal}
+     [Gio.DBusObjectManagerClient::interface-proxy-signal]}.
 
     Note that all callbacks and signals are emitted in the thread-default main
     context (see [GLib.MainContext.push_thread_default]) that the

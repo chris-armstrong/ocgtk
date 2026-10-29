@@ -29,7 +29,8 @@
  that is: have more than one solution. The behavior of an unstable layout\n\
  is undefined.\n\n\
  A constraint-based layout with conflicting constraints may be unsolvable,\n\
- and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
+ and lead to an unstable layout. You can use the \
+ {{!Ocgtk.Raw.Constraint.val-get_strength}[Gtk.Constraint:strength]}\n\
  property of {{!Ocgtk.Raw.Constraint}[Gtk.Constraint]} to \"nudge\" the layout \
  towards a solution.\n\n\
  {b GtkConstraintLayout as GtkBuildable}\n\n\
@@ -191,8 +192,9 @@ external add_constraint : t -> Constraint.t -> unit
   = "ml_gtk_constraint_layout_add_constraint"
 (** Adds a constraint to the layout manager.
 
-    The [Gtk.Constraint:source] and [Gtk.Constraint:target] properties of
-    [constraint] can be:
+    The {{!Ocgtk.Raw.Constraint.val-get_source}[Gtk.Constraint:source]} and
+    {{!Ocgtk.Raw.Constraint.val-get_target}[Gtk.Constraint:target]} properties
+    of [constraint] can be:
 
     - set to [None] to indicate that the constraint refers to the widget using
       [layout]

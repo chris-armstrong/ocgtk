@@ -38,7 +38,7 @@ external take : t -> string -> unit = "ml_gtk_string_list_take"
 [@@ocaml.doc
   "Adds [string] to self at the end, and takes\n\
    ownership of it.\n\n\
-   This variant of [Gtk.StringList.append]\n\
+   This variant of {{!Ocgtk.Raw.String_list.val-append}[Gtk.StringList.append]}\n\
    is convenient for formatting strings:\n\n\
    {[\n\
    gtk_string_list_take (self, g_strdup_print (\"%d dollars\", lots));\n\
@@ -49,9 +49,10 @@ external splice : t -> int -> int -> string array option -> unit
 (** Changes [self] by removing [n_removals] strings and adding [additions] to
     it.
 
-    This function is more efficient than [Gtk.StringList.append] and
-    [Gtk.StringList.remove], because it only emits the ::items-changed signal
-    once for the change.
+    This function is more efficient than
+    {{!Ocgtk.Raw.String_list.val-append}[Gtk.StringList.append]} and
+    {{!Ocgtk.Raw.String_list.val-remove}[Gtk.StringList.remove]}, because it
+    only emits the ::items-changed signal once for the change.
 
     This function copies the strings in [additions].
 
@@ -81,7 +82,8 @@ external find : t -> string -> int = "ml_gtk_string_list_find"
 external append : t -> string -> unit = "ml_gtk_string_list_append"
 (** Appends [string] to [self].
 
-    The [string] will be copied. See [Gtk.StringList.take] for a way to avoid
+    The [string] will be copied. See
+    {{!Ocgtk.Raw.String_list.val-take}[Gtk.StringList.take]} for a way to avoid
     that. *)
 
 (* Properties *)

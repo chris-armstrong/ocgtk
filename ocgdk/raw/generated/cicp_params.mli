@@ -12,13 +12,14 @@
     replaced by a different value before creating a color state.
 
     [GdkCicpParams] can be used as a builder object to construct a color state
-    from Cicp data with [Gdk.CicpParams.build_color_state]. The function will
-    return an error if the given parameters are not supported.
+    from Cicp data with
+    {{!Ocgdk.Raw.Cicp_params.val-build_color_state}[Gdk.CicpParams.build_color_state]}.
+    The function will return an error if the given parameters are not supported.
 
     You can obtain a [GdkCicpParams] object from a color state with
-    [Gdk.ColorState.create_cicp_params]. This can be used to create a variant of
-    a color state, by changing just one of the cicp parameters, or just to
-    obtain information about the color state.
+    {{!Ocgdk.Raw.Color_state.val-create_cicp_params}[Gdk.ColorState.create_cicp_params]}.
+    This can be used to create a variant of a color state, by changing just one
+    of the cicp parameters, or just to obtain information about the color state.
 
     The class built on this module is in {!Ocgdk.Cicp_params}. *)
 

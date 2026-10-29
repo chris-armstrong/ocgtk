@@ -6,10 +6,14 @@
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
-    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
-    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
-    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
-    texture.
+    {{!Ocgdk.Raw.Memory_texture_builder.val-get_bytes}[Gdk.MemoryTextureBuilder:bytes]},
+    {{!Ocgdk.Raw.Memory_texture_builder.val-get_stride}[Gdk.MemoryTextureBuilder:stride]},
+    {{!Ocgdk.Raw.Memory_texture_builder.val-get_width}[Gdk.MemoryTextureBuilder:width]},
+    and
+    {{!Ocgdk.Raw.Memory_texture_builder.val-get_height}[Gdk.MemoryTextureBuilder:height]}
+    are mandatory - and then call
+    {{!Ocgdk.Raw.Memory_texture_builder.val-build}[Gdk.MemoryTextureBuilder.build]}
+    to create the new texture.
 
     [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
@@ -30,21 +34,25 @@ external set_width : t -> int -> unit
   = "ml_gdk_memory_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling [Gdk.MemoryTextureBuilder.build] and
-    conform to size requirements of the provided format. *)
+    The width must be set before calling
+    {{!Ocgdk.Raw.Memory_texture_builder.val-build}[Gdk.MemoryTextureBuilder.build]}
+    and conform to size requirements of the provided format. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_memory_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture.
 
-    See [Gdk.MemoryTextureBuilder.set_update_region] for an explanation. *)
+    See
+    {{!Ocgdk.Raw.Memory_texture_builder.val-set_update_region}[Gdk.MemoryTextureBuilder.set_update_region]}
+    for an explanation. *)
 
 external set_update_region : t -> Occairo_raw.Region.t option -> unit
   = "ml_gdk_memory_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture.
 
-    Together with [Gdk.MemoryTextureBuilder:update-texture], this describes an
-    update of a previous texture.
+    Together with
+    {{!Ocgdk.Raw.Memory_texture_builder.val-get_update_texture}[Gdk.MemoryTextureBuilder:update-texture]},
+    this describes an update of a previous texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then
@@ -62,7 +70,8 @@ external set_stride : t -> Gsize.t -> unit
   = "ml_gdk_memory_texture_builder_set_stride"
 (** Sets the rowstride of the bytes used.
 
-    The rowstride must be set before calling [Gdk.MemoryTextureBuilder.build].
+    The rowstride must be set before calling
+    {{!Ocgdk.Raw.Memory_texture_builder.val-build}[Gdk.MemoryTextureBuilder.build]}.
 *)
 
 external set_offset : t -> int -> Gsize.t -> unit
@@ -73,8 +82,9 @@ external set_height : t -> int -> unit
   = "ml_gdk_memory_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling [Gdk.MemoryTextureBuilder.build] and
-    conform to size requirements of the provided format. *)
+    The height must be set before calling
+    {{!Ocgdk.Raw.Memory_texture_builder.val-build}[Gdk.MemoryTextureBuilder.build]}
+    and conform to size requirements of the provided format. *)
 
 external set_format : t -> Ocgdk_enums.memoryformat -> unit
   = "ml_gdk_memory_texture_builder_set_format"
@@ -94,7 +104,9 @@ external set_bytes : t -> Glib_bytes.t option -> unit
   = "ml_gdk_memory_texture_builder_set_bytes"
 (** Sets the data to be shown but the texture.
 
-    The bytes must be set before calling [Gdk.MemoryTextureBuilder.build]. *)
+    The bytes must be set before calling
+    {{!Ocgdk.Raw.Memory_texture_builder.val-build}[Gdk.MemoryTextureBuilder.build]}.
+*)
 
 external get_width : t -> int = "ml_gdk_memory_texture_builder_get_width"
 (** Gets the width previously set via gdk_memory_texture_builder_set_width() or

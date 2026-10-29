@@ -17,7 +17,8 @@
     Note that [GtkSpinButton] will by default make its entry large enough to
     accommodate the lower and upper bounds of the adjustment. If this is not
     desired, the automatic sizing can be turned off by explicitly setting
-    [Gtk.Editable:width-chars] to a value != -1.
+    {{!Ocgtk.Raw.Editable.val-get_width_chars}[Gtk.Editable:width-chars]} to a
+    value != -1.
 
     {b Using a GtkSpinButton to get an integer}
 
@@ -86,7 +87,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.SpinButton::change-value]
+    - {{!Ocgtk.Raw.Spin_button.val-on_change_value}[Gtk.SpinButton::change-value]}
 
     {b CSS nodes}
 
@@ -116,7 +117,9 @@
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role.
+    [GtkSpinButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SPIN_BUTTON}[Gtk.AccessibleRole.spin_button]}
+    role.
 
     The class built on this module is in {!Ocgtk.Spin_button}. *)
 
@@ -140,7 +143,8 @@ external new_with_range : float -> float -> float -> t
 
     Note that the way in which the precision is derived works best if [step] is
     a power of ten. If the resulting precision is not suitable for your needs,
-    use [Gtk.SpinButton.set_digits] to correct it. *)
+    use {{!Ocgtk.Raw.Spin_button.val-set_digits}[Gtk.SpinButton.set_digits]} to
+    correct it. *)
 
 (* Methods *)
 
@@ -209,7 +213,8 @@ external set_activates_default : t -> bool -> unit
 (** Sets whether activating the spin button will activate the default widget for
     the window containing the spin button.
 
-    See [Gtk.SpinButton::activate] for what counts as activation. *)
+    See {{!Ocgtk.Raw.Spin_button.val-on_activate}[Gtk.SpinButton::activate]} for
+    what counts as activation. *)
 
 external get_wrap : t -> bool = "ml_gtk_spin_button_get_wrap"
 (** Returns whether the spin button’s value wraps around to the opposite limit
@@ -225,7 +230,9 @@ external get_update_policy : t -> Ocgtk_enums.spinbuttonupdatepolicy
   = "ml_gtk_spin_button_get_update_policy"
 (** Gets the update behavior of a spin button.
 
-    See [Gtk.SpinButton.set_update_policy]. *)
+    See
+    {{!Ocgtk.Raw.Spin_button.val-set_update_policy}[Gtk.SpinButton.set_update_policy]}.
+*)
 
 external get_snap_to_ticks : t -> bool = "ml_gtk_spin_button_get_snap_to_ticks"
 (** Returns whether the values are corrected to the nearest step. *)
@@ -233,7 +240,7 @@ external get_snap_to_ticks : t -> bool = "ml_gtk_spin_button_get_snap_to_ticks"
 external get_range : t -> float * float = "ml_gtk_spin_button_get_range"
 (** Gets the range allowed for [spin_button].
 
-    See [Gtk.SpinButton.set_range]. *)
+    See {{!Ocgtk.Raw.Spin_button.val-set_range}[Gtk.SpinButton.set_range]}. *)
 
 external get_numeric : t -> bool = "ml_gtk_spin_button_get_numeric"
 (** Returns whether non-numeric text can be typed into the spin button. *)
@@ -242,7 +249,9 @@ external get_increments : t -> float * float
   = "ml_gtk_spin_button_get_increments"
 (** Gets the current step and page the increments used by [spin_button].
 
-    See [Gtk.SpinButton.set_increments]. *)
+    See
+    {{!Ocgtk.Raw.Spin_button.val-set_increments}[Gtk.SpinButton.set_increments]}.
+*)
 
 external get_digits : t -> int = "ml_gtk_spin_button_get_digits"
 (** Fetches the precision of [spin_button]. *)
@@ -256,7 +265,9 @@ external get_adjustment : t -> Adjustment.t
 
 external get_activates_default : t -> bool
   = "ml_gtk_spin_button_get_activates_default"
-(** Retrieves the value set by [Gtk.SpinButton.set_activates_default]. *)
+(** Retrieves the value set by
+    {{!Ocgtk.Raw.Spin_button.val-set_activates_default}[Gtk.SpinButton.set_activates_default]}.
+*)
 
 external configure : t -> Adjustment.t option -> float -> int -> unit
   = "ml_gtk_spin_button_configure"
@@ -315,7 +326,8 @@ val on_value_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted when the value is changed.
 
-    Also see the [Gtk.SpinButton::output] signal. *)
+    Also see the
+    {{!Ocgtk.Raw.Spin_button.val-on_output}[Gtk.SpinButton::output]} signal. *)
 
 val on_wrapped :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

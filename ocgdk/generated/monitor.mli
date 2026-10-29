@@ -16,7 +16,9 @@ class type monitor_t = App_launch_context_cycle_de440b34.monitor_t
     Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
-    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitors}[Gdk.Display.get_monitors]}.
+    You can use
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
     to find a particular monitor. *)
 
 class monitor : Raw.Monitor.t -> monitor_t
@@ -27,7 +29,9 @@ class monitor : Raw.Monitor.t -> monitor_t
     Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
-    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitors}[Gdk.Display.get_monitors]}.
+    You can use
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
     to find a particular monitor. *)
 
 (** {1:constructors Constructors} *)

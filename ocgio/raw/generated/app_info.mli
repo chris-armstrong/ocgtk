@@ -7,7 +7,8 @@
  [GAppInfo] and [GAppLaunchContext] are used for describing and launching\n\
  applications installed on the system.\n\n\
  As of GLib 2.20, URIs will always be converted to POSIX paths\n\
- (using [Gio.File.get_path]) when using [Gio.AppInfo.launch]\n\
+ (using {{!Ocgio.Raw.File.val-get_path}[Gio.File.get_path]}) when using \
+ {{!Ocgio.Raw.App_info.val-launch}[Gio.AppInfo.launch]}\n\
  even if the application requested an URI and not a POSIX path. For example\n\
  for a desktop-file based application with the following Exec key:\n\n\
  {[\n\
@@ -24,11 +25,13 @@
  back to the GIO URI in the {{!Ocgio.Raw.File}[Gio.File]} constructors (since \
  GVfs\n\
  implements the GVfs extension point). As such, if the application\n\
- needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
+ needs to examine the URI, it needs to use \
+ {{!Ocgio.Raw.File.val-get_uri}[Gio.File.get_uri]}\n\
  or similar on {{!Ocgio.Raw.File}[Gio.File]}. In other words, an application \
  cannot\n\
  assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
- is equal to the result of [Gio.File.get_uri]. The following snippet\n\
+ is equal to the result of {{!Ocgio.Raw.File.val-get_uri}[Gio.File.get_uri]}. \
+ The following snippet\n\
  illustrates this:\n\n\
  {[\n\
  GFile *f;\n\

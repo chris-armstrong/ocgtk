@@ -15,8 +15,9 @@
     Sorts {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
     columns.
 
-    The sorter returned by [Gtk.ColumnView.get_sorter] is a
-    [GtkColumnViewSorter].
+    The sorter returned by
+    {{!Ocgtk.Column_view.class-type-column_view_t.method-get_sorter}[Gtk.ColumnView.get_sorter]}
+    is a [GtkColumnViewSorter].
 
     In column views, sorting can be configured by associating sorters with
     columns, and users can invert sort order by clicking on column headers. The
@@ -25,13 +26,16 @@
 
     If you are only interested in the primary sort column (i.e. the column where
     a sort indicator is shown in the header), then you can just look at
-    [Gtk.ColumnViewSorter:primary-sort-column] and
-    [Gtk.ColumnViewSorter:primary-sort-order].
+    {{!Ocgtk.Column_view_sorter.class-type-column_view_sorter_t.method-get_primary_sort_column}
+     [Gtk.ColumnViewSorter:primary-sort-column]} and
+    {{!Ocgtk.Column_view_sorter.class-type-column_view_sorter_t.method-get_primary_sort_order}
+     [Gtk.ColumnViewSorter:primary-sort-order]}.
 
     If you want to store the full sort configuration, including secondary sort
     columns that are used for tie breaking, then you can use
     [Gtk.ColumnViewSorter.get_nth_sort_column]. To get notified about changes,
-    use [Gtk.Sorter::changed].
+    use
+    {{!Ocgtk.Sorter.class-type-sorter_t.method-on_changed}[Gtk.Sorter::changed]}.
 
     To restore a saved sort configuration on a [GtkColumnView], use code like:
 
@@ -86,8 +90,9 @@ class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
     Sorts {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
     columns.
 
-    The sorter returned by [Gtk.ColumnView.get_sorter] is a
-    [GtkColumnViewSorter].
+    The sorter returned by
+    {{!Ocgtk.Column_view.class-type-column_view_t.method-get_sorter}[Gtk.ColumnView.get_sorter]}
+    is a [GtkColumnViewSorter].
 
     In column views, sorting can be configured by associating sorters with
     columns, and users can invert sort order by clicking on column headers. The
@@ -96,13 +101,16 @@ class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
 
     If you are only interested in the primary sort column (i.e. the column where
     a sort indicator is shown in the header), then you can just look at
-    [Gtk.ColumnViewSorter:primary-sort-column] and
-    [Gtk.ColumnViewSorter:primary-sort-order].
+    {{!Ocgtk.Column_view_sorter.class-type-column_view_sorter_t.method-get_primary_sort_column}
+     [Gtk.ColumnViewSorter:primary-sort-column]} and
+    {{!Ocgtk.Column_view_sorter.class-type-column_view_sorter_t.method-get_primary_sort_order}
+     [Gtk.ColumnViewSorter:primary-sort-order]}.
 
     If you want to store the full sort configuration, including secondary sort
     columns that are used for tie breaking, then you can use
     [Gtk.ColumnViewSorter.get_nth_sort_column]. To get notified about changes,
-    use [Gtk.Sorter::changed].
+    use
+    {{!Ocgtk.Sorter.class-type-sorter_t.method-on_changed}[Gtk.Sorter::changed]}.
 
     To restore a saved sort configuration on a [GtkColumnView], use code like:
 

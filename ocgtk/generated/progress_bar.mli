@@ -29,14 +29,16 @@
     read a fixed number of bytes from a file) and can monitor its progress, it
     can use the [GtkProgressBar] in percentage mode and the user sees a growing
     bar indicating the percentage of the work that has been completed. In this
-    mode, the application is required to call [Gtk.ProgressBar.set_fraction]
+    mode, the application is required to call
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t.method-set_fraction}[Gtk.ProgressBar.set_fraction]}
     periodically to update the progress bar.
 
     When an application has no accurate way of knowing the amount of work to do,
     it can use the [GtkProgressBar] in activity mode, which shows activity by a
     block moving back and forth within the progress area. In this mode, the
-    application is required to call [Gtk.ProgressBar.pulse] periodically to
-    update the progress bar.
+    application is required to call
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t.method-pulse}[Gtk.ProgressBar.pulse]}
+    periodically to update the progress bar.
 
     There is quite a bit of flexibility provided to control the appearance of
     the [GtkProgressBar]. Functions are provided to control the orientation of
@@ -62,10 +64,14 @@
 
     {b Accessibility}
 
-    [GtkProgressBar] uses the [Gtk.AccessibleRole.progress_bar] role and sets
-    the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
-    and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
-*)
+    [GtkProgressBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role and sets the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MIN}[Gtk.AccessibleProperty.value_min]},
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MAX}[Gtk.AccessibleProperty.value_max]}
+    and
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_NOW}[Gtk.AccessibleProperty.value_now]}
+    properties to reflect the progress. *)
 class type progress_bar_t = object
   inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
@@ -174,14 +180,16 @@ class progress_bar : Raw.Progress_bar.t -> progress_bar_t
     read a fixed number of bytes from a file) and can monitor its progress, it
     can use the [GtkProgressBar] in percentage mode and the user sees a growing
     bar indicating the percentage of the work that has been completed. In this
-    mode, the application is required to call [Gtk.ProgressBar.set_fraction]
+    mode, the application is required to call
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t.method-set_fraction}[Gtk.ProgressBar.set_fraction]}
     periodically to update the progress bar.
 
     When an application has no accurate way of knowing the amount of work to do,
     it can use the [GtkProgressBar] in activity mode, which shows activity by a
     block moving back and forth within the progress area. In this mode, the
-    application is required to call [Gtk.ProgressBar.pulse] periodically to
-    update the progress bar.
+    application is required to call
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t.method-pulse}[Gtk.ProgressBar.pulse]}
+    periodically to update the progress bar.
 
     There is quite a bit of flexibility provided to control the appearance of
     the [GtkProgressBar]. Functions are provided to control the orientation of
@@ -207,10 +215,14 @@ class progress_bar : Raw.Progress_bar.t -> progress_bar_t
 
     {b Accessibility}
 
-    [GtkProgressBar] uses the [Gtk.AccessibleRole.progress_bar] role and sets
-    the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
-    and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
-*)
+    [GtkProgressBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role and sets the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MIN}[Gtk.AccessibleProperty.value_min]},
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MAX}[Gtk.AccessibleProperty.value_max]}
+    and
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_NOW}[Gtk.AccessibleProperty.value_now]}
+    properties to reflect the progress. *)
 
 (** {1:constructors Constructors} *)
 

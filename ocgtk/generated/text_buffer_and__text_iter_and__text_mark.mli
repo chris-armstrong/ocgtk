@@ -11,7 +11,8 @@
     widget and how they work together.
 
     GtkTextBuffer can support undoing changes to the buffer content, see
-    [Gtk.TextBuffer.set_enable_undo]. *)
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-set_enable_undo}[Gtk.TextBuffer.set_enable_undo]}.
+*)
 class type text_buffer_t = object
   (** {2:signals Signals} *)
 
@@ -1244,14 +1245,16 @@ end
 
     Marks are reference counted, but the reference count only controls the
     validity of the memory; marks can be deleted from the buffer at any time
-    with [Gtk.TextBuffer.delete_mark]. Once deleted from the buffer, a mark is
-    essentially useless.
+    with
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-delete_mark}[Gtk.TextBuffer.delete_mark]}.
+    Once deleted from the buffer, a mark is essentially useless.
 
     Marks optionally have names; these can be convenient to avoid passing the
     [GtkTextMark] object around.
 
-    Marks are typically created using the [Gtk.TextBuffer.create_mark] function.
-*)
+    Marks are typically created using the
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-create_mark}[Gtk.TextBuffer.create_mark]}
+    function. *)
 and text_mark_t = object
   (** {2:methods Methods} *)
 
@@ -1308,11 +1311,14 @@ val new_ : Text_tag_table.text_tag_table_t option -> text_buffer_t
 val new_ : string option -> bool -> text_mark_t
 (** Creates a text mark.
 
-    Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [None], the
-    mark is anonymous; otherwise, the mark can be retrieved by name using
-    [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is inserted
-    at the mark’s current location, the mark will be moved to the left of the
-    newly-inserted text. If the mark has right gravity ([left_gravity] =
-    [false]), the mark will end up on the right of newly-inserted text. The
-    standard left-to-right cursor is a mark with right gravity (when you type,
-    the cursor stays on the right side of the text you’re typing). *)
+    Add it to a buffer using
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-add_mark}[Gtk.TextBuffer.add_mark]}.
+    If [name] is [None], the mark is anonymous; otherwise, the mark can be
+    retrieved by name using
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-get_mark}[Gtk.TextBuffer.get_mark]}.
+    If a mark has left gravity, and text is inserted at the mark’s current
+    location, the mark will be moved to the left of the newly-inserted text. If
+    the mark has right gravity ([left_gravity] = [false]), the mark will end up
+    on the right of newly-inserted text. The standard left-to-right cursor is a
+    mark with right gravity (when you type, the cursor stays on the right side
+    of the text you’re typing). *)

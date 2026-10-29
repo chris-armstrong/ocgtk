@@ -70,7 +70,8 @@ end
      and the window icon.\n\n\
      An example GtkWindowControls\n\n\
      [GtkWindowControls] only displays start or end side of the controls (see\n\
-     [Gtk.WindowControls:side]), so it's intended to be always used\n\
+     {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_side}[Gtk.WindowControls:side]}), \
+     so it's intended to be always used\n\
      in pair with another [GtkWindowControls] for the opposite side, for \
      example:\n\n\
      {[\n\
@@ -99,11 +100,17 @@ end
      A [GtkWindowControls]' CSS node is called windowcontrols. It contains\n\
      subnodes corresponding to each title button. Which of the title buttons\n\
      exist and where they are placed exactly depends on the desktop environment\n\
-     and [Gtk.WindowControls:decoration-layout] value.\n\n\
-     When [Gtk.WindowControls:empty] is true, it gets the .empty\n\
+     and \
+     {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_decoration_layout}[Gtk.WindowControls:decoration-layout]} \
+     value.\n\n\
+     When \
+     {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_empty}[Gtk.WindowControls:empty]} \
+     is true, it gets the .empty\n\
      style class.\n\n\
      {b Accessibility}\n\n\
-     [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role."]
+     [GtkWindowControls] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+     role."]
 
 class window_controls : Raw.Window_controls.t -> window_controls_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Window_controls.t}. *)
@@ -115,7 +122,8 @@ class window_controls : Raw.Window_controls.t -> window_controls_t
  and the window icon.\n\n\
  An example GtkWindowControls\n\n\
  [GtkWindowControls] only displays start or end side of the controls (see\n\
- [Gtk.WindowControls:side]), so it's intended to be always used\n\
+ {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_side}[Gtk.WindowControls:side]}), \
+ so it's intended to be always used\n\
  in pair with another [GtkWindowControls] for the opposite side, for example:\n\n\
  {[\n\
  <object class=\"GtkBox\">\n\
@@ -143,11 +151,17 @@ class window_controls : Raw.Window_controls.t -> window_controls_t
  A [GtkWindowControls]' CSS node is called windowcontrols. It contains\n\
  subnodes corresponding to each title button. Which of the title buttons\n\
  exist and where they are placed exactly depends on the desktop environment\n\
- and [Gtk.WindowControls:decoration-layout] value.\n\n\
- When [Gtk.WindowControls:empty] is true, it gets the .empty\n\
+ and \
+ {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_decoration_layout}[Gtk.WindowControls:decoration-layout]} \
+ value.\n\n\
+ When \
+ {{!Ocgtk.Window_controls.class-type-window_controls_t.method-get_empty}[Gtk.WindowControls:empty]} \
+ is true, it gets the .empty\n\
  style class.\n\n\
  {b Accessibility}\n\n\
- [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role."]
+ [GtkWindowControls] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

@@ -36,7 +36,8 @@
     Center’s ‘Notifications’ panel.
 
     The [.desktop] file must be named as [org.gnome.TestApplication.desktop],
-    where [org.gnome.TestApplication] is the ID passed to [Gio.Application.new].
+    where [org.gnome.TestApplication] is the ID passed to
+    {{!Ocgio.Raw.Application.val-new_}[Gio.Application.new]}.
 
     User interaction with a notification (either the default action, or buttons)
     must be associated with actions on the application (ie: [app.] actions). It
@@ -44,7 +45,8 @@
     because the object will not exist if the application is autostarted as a
     result of a notification being clicked.
 
-    A notification can be sent with [Gio.Application.send_notification].
+    A notification can be sent with
+    {{!Ocgio.Raw.Application.val-send_notification}[Gio.Application.send_notification]}.
 
     The class built on this module is in {!Ocgio.Notification}. *)
 

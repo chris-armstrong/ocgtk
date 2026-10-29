@@ -234,17 +234,21 @@ end
      resource base path (see [Gio.Application.set_resource_base_path]).\n\
      The menu with the ID \"menubar\" is taken as the application's\n\
      menubar. Additional menus (most interesting submenus) can be named\n\
-     and accessed via [Gtk.Application.get_menu_by_id] which allows for\n\
+     and accessed via \
+     {{!Ocgtk.Application.class-type-application_t.method-get_menu_by_id}[Gtk.Application.get_menu_by_id]} \
+     which allows for\n\
      dynamic population of a part of the menu structure.\n\n\
      Note that automatic resource loading uses the resource base path\n\
      that is set at construction time and will not work if the resource\n\
      base path is changed at a later time.\n\n\
      It is also possible to provide the menubar manually using\n\
-     [Gtk.Application.set_menubar].\n\n\
+     {{!Ocgtk.Application.class-type-application_t.method-set_menubar}[Gtk.Application.set_menubar]}.\n\n\
      [GtkApplication] will also automatically setup an icon search path for\n\
      the default icon theme by appending \"icons\" to the resource base\n\
      path. This allows your application to easily store its icons as\n\
-     resources. See [Gtk.IconTheme.add_resource_path] for more\n\
+     resources. See \
+     {{!Ocgtk.Icon_theme.class-type-icon_theme_t.method-add_resource_path}[Gtk.IconTheme.add_resource_path]} \
+     for more\n\
      information.\n\n\
      If there is a resource located at [gtk/help-overlay.ui] which\n\
      defines a \
@@ -259,7 +263,8 @@ end
      [win.show-help-overlay].\n\n\
      [GtkApplication] will also automatically set the application id as the\n\
      default window icon. Use [Gtk.Window.set_default_icon_name] or\n\
-     [Gtk.Window:icon-name] to override that behavior.\n\n\
+     {{!Ocgtk.Window.class-type-window_t.method-get_icon_name}[Gtk.Window:icon-name]} \
+     to override that behavior.\n\n\
      {b A simple application}\n\n\
      {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/bp/bloatpad.c}A \
      simple example}\n\
@@ -267,7 +272,9 @@ end
      [GtkApplication] registers with a session manager if possible and\n\
      offers various functionality related to the session life-cycle.\n\n\
      An application can block various ways to end the session with\n\
-     the [Gtk.Application.inhibit] function. Typical use cases for\n\
+     the \
+     {{!Ocgtk.Application.class-type-application_t.method-inhibit}[Gtk.Application.inhibit]} \
+     function. Typical use cases for\n\
      this kind of inhibiting are long-running, uninterruptible operations,\n\
      such as burning a CD or performing a disk backup. The session\n\
      manager may not honor the inhibitor, but it can be expected to\n\
@@ -315,9 +322,9 @@ end
 
     The following signals have default keybindings:
 
-    - [Gtk.Window::activate-default]
-    - [Gtk.Window::activate-focus]
-    - [Gtk.Window::enable-debugging]
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_default}[Gtk.Window::activate-default]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_focus}[Gtk.Window::activate-focus]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_enable_debugging}[Gtk.Window::enable-debugging]}
 
     {b Actions}
 
@@ -361,9 +368,13 @@ end
 
     {b Accessibility}
 
-    [GtkWindow] uses the [Gtk.AccessibleRole.window] role.
+    [GtkWindow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-WINDOW}[Gtk.AccessibleRole.window]}
+    role.
 
-    From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role. *)
+    From GTK 4.12 to 4.18, it used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-APPLICATION}[Gtk.AccessibleRole.application]}
+    role. *)
 and window_t = object
   inherit Widget.widget_t
   inherit Native.native_t
@@ -906,14 +917,15 @@ val new_ : unit -> window_t
 (** Creates a new [GtkWindow].
 
     To get an undecorated window (without window borders), use
-    [Gtk.Window.set_decorated].
+    {{!Ocgtk.Window.class-type-window_t.method-set_decorated}[Gtk.Window.set_decorated]}.
 
     All top-level windows created by this function are stored in an internal
     top-level window list. This list can be obtained from
     [Gtk.Window.list_toplevels]. Due to GTK keeping a reference to the window
     internally, this function does not return a reference to the caller.
 
-    To delete a [GtkWindow], call [Gtk.Window.destroy]. *)
+    To delete a [GtkWindow], call
+    {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]}. *)
 
 val new_ : string option -> Ocgio.Enums.applicationflags -> application_t
 (** Creates a new application instance.

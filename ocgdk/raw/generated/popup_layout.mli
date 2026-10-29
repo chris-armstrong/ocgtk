@@ -27,12 +27,14 @@
 
     Ultimatively, it is up to the windowing system to determine the position and
     size of the popup. You can learn about the result by calling
-    [Gdk.Popup.get_position_x], [Gdk.Popup.get_position_y],
-    [Gdk.Popup.get_rect_anchor] and [Gdk.Popup.get_surface_anchor] after the
-    popup has been presented. This can be used to adjust the rendering. For
-    example, GtkPopover changes its arrow position accordingly. But you have to
-    be careful avoid changing the size of the popover, or it has to be presented
-    again.
+    {{!Ocgdk.Raw.Popup.val-get_position_x}[Gdk.Popup.get_position_x]},
+    {{!Ocgdk.Raw.Popup.val-get_position_y}[Gdk.Popup.get_position_y]},
+    {{!Ocgdk.Raw.Popup.val-get_rect_anchor}[Gdk.Popup.get_rect_anchor]} and
+    {{!Ocgdk.Raw.Popup.val-get_surface_anchor}[Gdk.Popup.get_surface_anchor]}
+    after the popup has been presented. This can be used to adjust the
+    rendering. For example, GtkPopover changes its arrow position accordingly.
+    But you have to be careful avoid changing the size of the popover, or it has
+    to be presented again.
 
     The class built on this module is in {!Ocgdk.Popup_layout}. *)
 
@@ -44,16 +46,16 @@ external new_ : Rectangle.t -> Ocgdk_enums.gravity -> Ocgdk_enums.gravity -> t
   = "ml_gdk_popup_layout_new"
 (** Create a popup layout description.
 
-    Used together with [Gdk.Popup.present] to describe how a popup surface
-    should be placed and behave on-screen.
+    Used together with {{!Ocgdk.Raw.Popup.val-present}[Gdk.Popup.present]} to
+    describe how a popup surface should be placed and behave on-screen.
 
     [anchor_rect] is relative to the top-left corner of the surface's parent.
     [rect_anchor] and [surface_anchor] determine anchor points on [anchor_rect]
     and surface to pin together.
 
     The position of [anchor_rect]'s anchor point can optionally be offset using
-    [Gdk.PopupLayout.set_offset], which is equivalent to offsetting the position
-    of surface. *)
+    {{!Ocgdk.Raw.Popup_layout.val-set_offset}[Gdk.PopupLayout.set_offset]},
+    which is equivalent to offsetting the position of surface. *)
 
 (* Methods *)
 

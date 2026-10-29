@@ -71,8 +71,9 @@ val on_font_set :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted when the user selects a font.
 
-    When handling this signal, use [Gtk.FontChooser.get_font] to find out which
-    font was just selected.
+    When handling this signal, use
+    {{!Ocgtk.Raw.Font_chooser.val-get_font}[Gtk.FontChooser.get_font]} to find
+    out which font was just selected.
 
     Note that this signal is only emitted when the user changes the font. If you
     need to react to programmatic font changes as well, use the notify::font

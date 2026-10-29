@@ -5,25 +5,12 @@ type module_names = Class_gen_helpers.module_names = {
   layer2 : string;
 }
 
-type property_filters = Class_gen_helpers.property_filters = {
-  method_names : string list;
-  base_names : string list;
-}
-
 val sanitize_name : string -> string
 
 val require_type :
   location:string -> gir_type_name:string -> string option -> string
 
 val get_module_names : ctx:Types.generation_context -> string -> module_names
-
-val get_property_filters :
-  ctx:Types.generation_context ->
-  class_name:string ->
-  methods:Types.gir_method list ->
-  Types.gir_property list ->
-  property_filters
-
 val is_same_cluster_class : same_cluster_classes:'a list -> 'a -> bool
 val structural_type_for_class : ctx:'a -> string -> string
 val ocaml_method_name : class_name:'a -> c_type:'b -> Types.gir_method -> string

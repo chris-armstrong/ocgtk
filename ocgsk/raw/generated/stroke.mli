@@ -27,8 +27,10 @@ external set_miter_limit : t -> float -> unit = "ml_gsk_stroke_set_miter_limit"
 
     The limit is specfied in units of line width and must be non-negative.
 
-    For joins of type [Gsk.LineJoin.miter] that exceed the miter limit, the join
-    gets rendered as if it was of type [Gsk.LineJoin.bevel]. *)
+    For joins of type
+    {{!Ocgsk.Enums.type-linejoin.constructor-MITER}[Gsk.LineJoin.miter]} that
+    exceed the miter limit, the join gets rendered as if it was of type
+    {{!Ocgsk.Enums.type-linejoin.constructor-BEVEL}[Gsk.LineJoin.bevel]}. *)
 
 external set_line_width : t -> float -> unit = "ml_gsk_stroke_set_line_width"
 (** Sets the line width to be used when stroking.
@@ -53,7 +55,8 @@ external set_dash_offset : t -> float -> unit = "ml_gsk_stroke_set_dash_offset"
     This is an offset into the length of the path, not an index into the array
     values of the dash array.
 
-    See [Gsk.Stroke.set_dash] for more details on dashing. *)
+    See {{!Ocgsk.Raw.Stroke.val-set_dash}[Gsk.Stroke.set_dash]} for more details
+    on dashing. *)
 
 external set_dash : t -> float array option -> Gsize.t -> unit
   = "ml_gsk_stroke_set_dash"
@@ -64,7 +67,9 @@ external set_dash : t -> float array option -> Gsize.t -> unit
    portions of the stroke.\n\n\
    Each \"on\" segment will have caps applied as if the segment were a\n\
    separate contour. In particular, it is valid to use an \"on\" length\n\
-   of 0 with [Gsk.LineCap.round] or [Gsk.LineCap.square]\n\
+   of 0 with \
+   {{!Ocgsk.Enums.type-linecap.constructor-ROUND}[Gsk.LineCap.round]} or \
+   {{!Ocgsk.Enums.type-linecap.constructor-SQUARE}[Gsk.LineCap.square]}\n\
    to draw dots or squares along a path.\n\n\
    If [n_dash] is 0, if all elements in [dash] are 0, or if there are\n\
    negative values in [dash], then dashing is disabled.\n\n\
@@ -74,7 +79,7 @@ external set_dash : t -> float array option -> Gsize.t -> unit
    element in [dash] defining an \"on\" or \"off\" in alternating passes\n\
    through the array.\n\n\
    You can specify a starting offset into the dash with\n\
-   [Gsk.Stroke.set_dash_offset]."]
+   {{!Ocgsk.Raw.Stroke.val-set_dash_offset}[Gsk.Stroke.set_dash_offset]}."]
 
 external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
 (** Gets the miter limit. *)

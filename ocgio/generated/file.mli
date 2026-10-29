@@ -38,7 +38,7 @@ class type file_t = App_info_cycle_64c425a0.file_t
     - [Gio.File.new_tmp_dir_async] to asynchronously create a temporary
       directory.
     - [Gio.File.parse_name] from a UTF-8 string gotten from
-      [Gio.File.get_parse_name].
+      {{!Ocgio.File.class-type-file_t.method-get_parse_name}[Gio.File.get_parse_name]}.
     - [Gio.File.new_build_filename] or [Gio.File.new_build_filenamev] to create
       a file from path elements.
 
@@ -49,23 +49,29 @@ class type file_t = App_info_cycle_64c425a0.file_t
 
     [GFile]s make up hierarchies of directories and files that correspond to the
     files on a filesystem. You can move through the file system with [GFile]
-    using [Gio.File.get_parent] to get an identifier for the parent directory,
-    [Gio.File.get_child] to get a child within a directory, and
-    [Gio.File.resolve_relative_path] to resolve a relative path between two
-    [GFile]s. There can be multiple hierarchies, so you may not end up at the
-    same root if you repeatedly call [Gio.File.get_parent] on two different
-    files.
+    using
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} to
+    get an identifier for the parent directory,
+    {{!Ocgio.File.class-type-file_t.method-get_child}[Gio.File.get_child]} to
+    get a child within a directory, and
+    {{!Ocgio.File.class-type-file_t.method-resolve_relative_path}[Gio.File.resolve_relative_path]}
+    to resolve a relative path between two [GFile]s. There can be multiple
+    hierarchies, so you may not end up at the same root if you repeatedly call
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} on
+    two different files.
 
-    All [GFile]s have a basename (get with [Gio.File.get_basename]). These names
-    are byte strings that are used to identify the file on the filesystem
-    (relative to its parent directory) and there is no guarantees that they have
-    any particular charset encoding or even make any sense at all. If you want
-    to use filenames in a user interface you should use the display name that
-    you can get by requesting the [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
-    attribute with [Gio.File.query_info]. This is guaranteed to be in UTF-8 and
-    can be used in a user interface. But always store the real basename or the
-    [GFile] to use to actually access the file, because there is no way to go
-    from a display name to the actual name.
+    All [GFile]s have a basename (get with
+    {{!Ocgio.File.class-type-file_t.method-get_basename}[Gio.File.get_basename]}).
+    These names are byte strings that are used to identify the file on the
+    filesystem (relative to its parent directory) and there is no guarantees
+    that they have any particular charset encoding or even make any sense at
+    all. If you want to use filenames in a user interface you should use the
+    display name that you can get by requesting the
+    [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME] attribute with
+    {{!Ocgio.File.class-type-file_t.method-query_info}[Gio.File.query_info]}.
+    This is guaranteed to be in UTF-8 and can be used in a user interface. But
+    always store the real basename or the [GFile] to use to actually access the
+    file, because there is no way to go from a display name to the actual name.
 
     Using [GFile] as an identifier has the same weaknesses as using a path in
     that there may be multiple aliases for the same file. For instance, hard or
@@ -131,7 +137,7 @@ class file : Raw.File.t -> file_t
     - [Gio.File.new_tmp_dir_async] to asynchronously create a temporary
       directory.
     - [Gio.File.parse_name] from a UTF-8 string gotten from
-      [Gio.File.get_parse_name].
+      {{!Ocgio.File.class-type-file_t.method-get_parse_name}[Gio.File.get_parse_name]}.
     - [Gio.File.new_build_filename] or [Gio.File.new_build_filenamev] to create
       a file from path elements.
 
@@ -142,23 +148,29 @@ class file : Raw.File.t -> file_t
 
     [GFile]s make up hierarchies of directories and files that correspond to the
     files on a filesystem. You can move through the file system with [GFile]
-    using [Gio.File.get_parent] to get an identifier for the parent directory,
-    [Gio.File.get_child] to get a child within a directory, and
-    [Gio.File.resolve_relative_path] to resolve a relative path between two
-    [GFile]s. There can be multiple hierarchies, so you may not end up at the
-    same root if you repeatedly call [Gio.File.get_parent] on two different
-    files.
+    using
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} to
+    get an identifier for the parent directory,
+    {{!Ocgio.File.class-type-file_t.method-get_child}[Gio.File.get_child]} to
+    get a child within a directory, and
+    {{!Ocgio.File.class-type-file_t.method-resolve_relative_path}[Gio.File.resolve_relative_path]}
+    to resolve a relative path between two [GFile]s. There can be multiple
+    hierarchies, so you may not end up at the same root if you repeatedly call
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} on
+    two different files.
 
-    All [GFile]s have a basename (get with [Gio.File.get_basename]). These names
-    are byte strings that are used to identify the file on the filesystem
-    (relative to its parent directory) and there is no guarantees that they have
-    any particular charset encoding or even make any sense at all. If you want
-    to use filenames in a user interface you should use the display name that
-    you can get by requesting the [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
-    attribute with [Gio.File.query_info]. This is guaranteed to be in UTF-8 and
-    can be used in a user interface. But always store the real basename or the
-    [GFile] to use to actually access the file, because there is no way to go
-    from a display name to the actual name.
+    All [GFile]s have a basename (get with
+    {{!Ocgio.File.class-type-file_t.method-get_basename}[Gio.File.get_basename]}).
+    These names are byte strings that are used to identify the file on the
+    filesystem (relative to its parent directory) and there is no guarantees
+    that they have any particular charset encoding or even make any sense at
+    all. If you want to use filenames in a user interface you should use the
+    display name that you can get by requesting the
+    [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME] attribute with
+    {{!Ocgio.File.class-type-file_t.method-query_info}[Gio.File.query_info]}.
+    This is guaranteed to be in UTF-8 and can be used in a user interface. But
+    always store the real basename or the [GFile] to use to actually access the
+    file, because there is no way to go from a display name to the actual name.
 
     Using [GFile] as an identifier has the same weaknesses as using a path in
     that there may be multiple aliases for the same file. For instance, hard or

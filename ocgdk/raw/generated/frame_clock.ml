@@ -15,24 +15,29 @@
     implementation or with mozRequestAnimationFrame in Firefox, for example.
 
     A frame clock is idle until someone requests a frame with
-    [Gdk.FrameClock.request_phase]. At some later point that makes sense for the
-    synchronization being implemented, the clock will process a frame and emit
-    signals for each phase that has been requested. (See the signals of the
-    [GdkFrameClock] class for documentation of the phases.
-    [GDK_FRAME_CLOCK_PHASE_UPDATE] and the [Gdk.FrameClock::update] signal are
+    {{!Ocgdk.Raw.Frame_clock.val-request_phase}[Gdk.FrameClock.request_phase]}.
+    At some later point that makes sense for the synchronization being
+    implemented, the clock will process a frame and emit signals for each phase
+    that has been requested. (See the signals of the [GdkFrameClock] class for
+    documentation of the phases. [GDK_FRAME_CLOCK_PHASE_UPDATE] and the
+    {{!Ocgdk.Raw.Frame_clock.val-on_update}[Gdk.FrameClock::update]} signal are
     most interesting for application writers, and are used to update the
-    animations, using the frame time given by [Gdk.FrameClock.get_frame_time].
+    animations, using the frame time given by
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}.
 
     The frame time is reported in microseconds and generally in the same
     timescale as g_get_monotonic_time(), however, it is not the same as
     g_get_monotonic_time(). The frame time does not advance during the time a
     frame is being painted, and outside of a frame, an attempt is made so that
-    all calls to [Gdk.FrameClock.get_frame_time] that are called at a “similar”
-    time get the same value. This means that if different animations are timed
-    by looking at the difference in time between an initial value from
-    [Gdk.FrameClock.get_frame_time] and the value inside the
-    [Gdk.FrameClock::update] signal of the clock, they will stay exactly
-    synchronized.
+    all calls to
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    that are called at a “similar” time get the same value. This means that if
+    different animations are timed by looking at the difference in time between
+    an initial value from
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    and the value inside the
+    {{!Ocgdk.Raw.Frame_clock.val-on_update}[Gdk.FrameClock::update]} signal of
+    the clock, they will stay exactly synchronized.
 
     The class built on this module is in {!Ocgdk.Frame_clock}. *)
 
@@ -51,8 +56,9 @@ external request_phase : t -> Ocgdk_enums.frameclockphase -> unit
     will be combined together and only one frame processed. If you are
     displaying animated content and want to continually request the
     [GDK_FRAME_CLOCK_PHASE_UPDATE] phase for a period of time, you should use
-    [Gdk.FrameClock.begin_updating] instead, since this allows GTK to adjust
-    system parameters to get maximally smooth animations. *)
+    {{!Ocgdk.Raw.Frame_clock.val-begin_updating}[Gdk.FrameClock.begin_updating]}
+    instead, since this allows GTK to adjust system parameters to get maximally
+    smooth animations. *)
 
 external get_timings : t -> int64 -> Frame_timings.t option
   = "ml_gdk_frame_clock_get_timings"
@@ -60,7 +66,10 @@ external get_timings : t -> int64 -> Frame_timings.t option
     current frame or a recent frame.
 
     The [GdkFrameTimings] object may not yet be complete: see
-    [Gdk.FrameTimings.get_complete] and [Gdk.FrameClock.get_history_start]. *)
+    {{!Ocgdk.Raw.Frame_timings.val-get_complete}[Gdk.FrameTimings.get_complete]}
+    and
+    {{!Ocgdk.Raw.Frame_clock.val-get_history_start}[Gdk.FrameClock.get_history_start]}.
+*)
 
 external get_refresh_info : t -> int64 -> int64 * int64
   = "ml_gdk_frame_clock_get_refresh_info"
@@ -76,9 +85,12 @@ external get_history_start : t -> int64 = "ml_gdk_frame_clock_get_history_start"
 (** Returns the frame counter for the oldest frame available in history.
 
     [GdkFrameClock] internally keeps a history of [GdkFrameTimings] objects for
-    recent frames that can be retrieved with [Gdk.FrameClock.get_timings]. The
+    recent frames that can be retrieved with
+    {{!Ocgdk.Raw.Frame_clock.val-get_timings}[Gdk.FrameClock.get_timings]}. The
     set of stored frames is the set from the counter values given by
-    [Gdk.FrameClock.get_history_start] and [Gdk.FrameClock.get_frame_counter],
+    {{!Ocgdk.Raw.Frame_clock.val-get_history_start}[Gdk.FrameClock.get_history_start]}
+    and
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_counter}[Gdk.FrameClock.get_frame_counter]},
     inclusive. *)
 
 external get_frame_time : t -> int64 = "ml_gdk_frame_clock_get_frame_time"
@@ -104,13 +116,16 @@ external get_current_timings : t -> Frame_timings.t option
 external end_updating : t -> unit = "ml_gdk_frame_clock_end_updating"
 (** Stops updates for an animation.
 
-    See the documentation for [Gdk.FrameClock.begin_updating]. *)
+    See the documentation for
+    {{!Ocgdk.Raw.Frame_clock.val-begin_updating}[Gdk.FrameClock.begin_updating]}.
+*)
 
 external begin_updating : t -> unit = "ml_gdk_frame_clock_begin_updating"
 (** Starts updates for an animation.
 
-    Until a matching call to [Gdk.FrameClock.end_updating] is made, the frame
-    clock will continually request a new frame with the
+    Until a matching call to
+    {{!Ocgdk.Raw.Frame_clock.val-end_updating}[Gdk.FrameClock.end_updating]} is
+    made, the frame clock will continually request a new frame with the
     [GDK_FRAME_CLOCK_PHASE_UPDATE] phase. This function may be called multiple
     times and frames will be requested until gdk_frame_clock_end_updating() is
     called the same number of times. *)

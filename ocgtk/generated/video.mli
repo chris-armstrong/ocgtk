@@ -127,8 +127,9 @@ val new_for_file : Ocgio.File.file_t option -> video_t
 val new_for_filename : string option -> video_t
 (** Creates a [GtkVideo] to play back the given [filename].
 
-    This is a utility function that calls [Gtk.Video.new_for_file], See that
-    function for details. *)
+    This is a utility function that calls
+    {{!Ocgtk.Video.val-new_for_file}[Gtk.Video.new_for_file]}, See that function
+    for details. *)
 
 val new_for_media_stream : Media_stream.media_stream_t option -> video_t
 (** Creates a [GtkVideo] to play back the given [stream]. *)
@@ -136,4 +137,5 @@ val new_for_media_stream : Media_stream.media_stream_t option -> video_t
 val new_for_resource : string option -> video_t
 (** Creates a [GtkVideo] to play back the resource at the given [resource_path].
 
-    This is a utility function that calls [Gtk.Video.new_for_file]. *)
+    This is a utility function that calls
+    {{!Ocgtk.Video.val-new_for_file}[Gtk.Video.new_for_file]}. *)

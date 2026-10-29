@@ -14,13 +14,16 @@
     {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}.
 
     The model will use the filter to determine if it should include items or not
-    by calling [Gtk.Filter.match] for each item and only keeping the ones that
-    the function returns true for.
+    by calling
+    {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]} for
+    each item and only keeping the ones that the function returns true for.
 
     Filters may change what items they match through their lifetime. In that
-    case, they will emit the [Gtk.Filter::changed] signal to notify that
-    previous filter results are no longer valid and that items should be checked
-    again via [Gtk.Filter.match].
+    case, they will emit the
+    {{!Ocgtk.Filter.class-type-filter_t.method-on_changed}[Gtk.Filter::changed]}
+    signal to notify that previous filter results are no longer valid and that
+    items should be checked again via
+    {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]}.
 
     GTK provides various pre-made filter implementations for common filtering
     operations. These filters often include properties that can be linked to
@@ -86,13 +89,16 @@ class filter : Raw.Filter.t -> filter_t
     {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}.
 
     The model will use the filter to determine if it should include items or not
-    by calling [Gtk.Filter.match] for each item and only keeping the ones that
-    the function returns true for.
+    by calling
+    {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]} for
+    each item and only keeping the ones that the function returns true for.
 
     Filters may change what items they match through their lifetime. In that
-    case, they will emit the [Gtk.Filter::changed] signal to notify that
-    previous filter results are no longer valid and that items should be checked
-    again via [Gtk.Filter.match].
+    case, they will emit the
+    {{!Ocgtk.Filter.class-type-filter_t.method-on_changed}[Gtk.Filter::changed]}
+    signal to notify that previous filter results are no longer valid and that
+    items should be checked again via
+    {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]}.
 
     GTK provides various pre-made filter implementations for common filtering
     operations. These filters often include properties that can be linked to

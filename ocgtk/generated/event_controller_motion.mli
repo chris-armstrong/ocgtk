@@ -14,11 +14,16 @@
 
     Tracks the pointer position.
 
-    The event controller offers [Gtk.EventControllerMotion::enter] and
-    [Gtk.EventControllerMotion::leave] signals, as well as
-    [Gtk.EventControllerMotion:is-pointer] and
-    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
-    reflect changes in the pointer position as it moves over the widget. *)
+    The event controller offers
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-on_enter}
+     [Gtk.EventControllerMotion::enter]} and
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-on_leave}
+     [Gtk.EventControllerMotion::leave]} signals, as well as
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-is_pointer}
+     [Gtk.EventControllerMotion:is-pointer]} and
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-contains_pointer}
+     [Gtk.EventControllerMotion:contains-pointer]} properties which are updated
+    to reflect changes in the pointer position as it moves over the widget. *)
 class type event_controller_motion_t = object
   inherit Event_controller.event_controller_t
 
@@ -64,11 +69,16 @@ class event_controller_motion :
 
     Tracks the pointer position.
 
-    The event controller offers [Gtk.EventControllerMotion::enter] and
-    [Gtk.EventControllerMotion::leave] signals, as well as
-    [Gtk.EventControllerMotion:is-pointer] and
-    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
-    reflect changes in the pointer position as it moves over the widget. *)
+    The event controller offers
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-on_enter}
+     [Gtk.EventControllerMotion::enter]} and
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-on_leave}
+     [Gtk.EventControllerMotion::leave]} signals, as well as
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-is_pointer}
+     [Gtk.EventControllerMotion:is-pointer]} and
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t.method-contains_pointer}
+     [Gtk.EventControllerMotion:contains-pointer]} properties which are updated
+    to reflect changes in the pointer position as it moves over the widget. *)
 
 (** {1:constructors Constructors} *)
 

@@ -10,24 +10,30 @@
  and\n\
  {{!Ocgtk.Raw.Popover_menu_bar}[Gtk.PopoverMenuBar]} do. If you want to make a \
  custom widget that\n\
- has an attached popover, you need to call [Gtk.Popover.present]\n\
+ has an attached popover, you need to call \
+ {{!Ocgtk.Raw.Popover.val-present}[Gtk.Popover.present]}\n\
  in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
  positioning of the popover.\n\n\
  The position of a popover relative to the widget it is attached to\n\
- can also be changed with [Gtk.Popover.set_position]. By default,\n\
+ can also be changed with \
+ {{!Ocgtk.Raw.Popover.val-set_position}[Gtk.Popover.set_position]}. By default,\n\
  it points to the whole widget area, but it can be made to point to\n\
- a specific area using [Gtk.Popover.set_pointing_to].\n\n\
+ a specific area using \
+ {{!Ocgtk.Raw.Popover.val-set_pointing_to}[Gtk.Popover.set_pointing_to]}.\n\n\
  By default, [GtkPopover] performs a grab, in order to ensure input\n\
  events get redirected to it while it is shown, and also so the popover\n\
  is dismissed in the expected situations (clicks outside the popover,\n\
  or the Escape key being pressed). If no such modal behavior is desired\n\
- on a popover, [Gtk.Popover.set_autohide] may be called on it to\n\
+ on a popover, \
+ {{!Ocgtk.Raw.Popover.val-set_autohide}[Gtk.Popover.set_autohide]} may be \
+ called on it to\n\
  tweak its behavior.\n\n\
  {b GtkPopover as menu replacement}\n\n\
  [GtkPopover] is often used to replace menus. The best way to do this\n\
  is to use the {{!Ocgtk.Raw.Popover_menu}[Gtk.PopoverMenu]} subclass which \
  supports being\n\
- populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
+ populated from a [GMenuModel] with \
+ {{!Ocgtk.Raw.Popover_menu.val-new_from_model}[Gtk.PopoverMenu.new_from_model]}.\n\n\
  {[\n\
  <section>\n\
 \  <attribute name=\"display-hint\">horizontal-buttons</attribute>\n\
@@ -53,7 +59,8 @@
  - <kbd>Escape</kbd> closes the popover.\n\
  - <kbd>Alt</kbd> makes the mnemonics visible.\n\n\
  The following signals have default keybindings:\n\n\
- - [Gtk.Popover::activate-default]\n\n\
+ - \
+ {{!Ocgtk.Raw.Popover.val-on_activate_default}[Gtk.Popover::activate-default]}\n\n\
  {b CSS nodes}\n\n\
  {[\n\
  popover.background[.menu]\n\
@@ -168,7 +175,8 @@ external present : t -> unit = "ml_gtk_popover_present"
     [GtkPopover] as child. When using a layout manager, this is happening
     automatically.
 
-    To make a popover appear on screen, use [Gtk.Popover.popup]. *)
+    To make a popover appear on screen, use
+    {{!Ocgtk.Raw.Popover.val-popup}[Gtk.Popover.popup]}. *)
 
 external popup : t -> unit = "ml_gtk_popover_popup"
 (** Pops [popover] up. *)
@@ -177,7 +185,8 @@ external popdown : t -> unit = "ml_gtk_popover_popdown"
 (** Pops [popover] down.
 
     This may have the side-effect of closing a parent popover as well. See
-    [Gtk.Popover:cascade-popdown]. *)
+    {{!Ocgtk.Raw.Popover.val-get_cascade_popdown}[Gtk.Popover:cascade-popdown]}.
+*)
 
 external get_position : t -> Ocgtk_enums.positiontype
   = "ml_gtk_popover_get_position"
@@ -192,7 +201,8 @@ external get_pointing_to : t -> bool * Ocgdk_raw.Rectangle.t
     fill in [rect] with the parent widget coordinates. *)
 
 external get_offset : t -> int * int = "ml_gtk_popover_get_offset"
-(** Gets the offset previous set with [Gtk.Popover.set_offset]. *)
+(** Gets the offset previous set with
+    {{!Ocgtk.Raw.Popover.val-set_offset}[Gtk.Popover.set_offset]}. *)
 
 external get_mnemonics_visible : t -> bool
   = "ml_gtk_popover_get_mnemonics_visible"
@@ -216,7 +226,8 @@ external get_cascade_popdown : t -> bool = "ml_gtk_popover_get_cascade_popdown"
 external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
 (** Returns whether the popover is modal.
 
-    See [Gtk.Popover.set_autohide] for the implications of this. *)
+    See {{!Ocgtk.Raw.Popover.val-set_autohide}[Gtk.Popover.set_autohide]} for
+    the implications of this. *)
 
 (* Properties *)
 

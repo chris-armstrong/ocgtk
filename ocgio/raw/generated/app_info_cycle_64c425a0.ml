@@ -81,11 +81,13 @@ module rec App_info : sig
       Some URIs can be changed when passed through a GFile (for instance
       unsupported URIs with strange formats like mailto:), so if you have a
       textual URI you want to pass in as argument, consider using
-      [Gio.AppInfo.launch_uris] instead.
+      {{!Ocgio.Raw.App_info.val-launch_uris}[Gio.AppInfo.launch_uris]} instead.
 
       The launched application inherits the environment of the launching
-      process, but it can be modified with [Gio.AppLaunchContext.setenv] and
-      [Gio.AppLaunchContext.unsetenv].
+      process, but it can be modified with
+      {{!Ocgio.Raw.App_launch_context.val-setenv}[Gio.AppLaunchContext.setenv]}
+      and
+      {{!Ocgio.Raw.App_launch_context.val-unsetenv}[Gio.AppLaunchContext.unsetenv]}.
 
       On UNIX, this function sets the [GIO_LAUNCHED_DESKTOP_FILE] environment
       variable with the path of the launched desktop file and
@@ -102,8 +104,8 @@ module rec App_info : sig
       return [None].
 
       This function does not take in consideration associations added with
-      [Gio.AppInfo.add_supports_type], but only those exported directly by the
-      application. *)
+      {{!Ocgio.Raw.App_info.val-add_supports_type}[Gio.AppInfo.add_supports_type]},
+      but only those exported directly by the application. *)
 
   external get_name : t -> string = "ml_g_app_info_get_name"
   (** Gets the installed name of the application. *)
@@ -124,9 +126,9 @@ module rec App_info : sig
   (** Gets the executable’s name for the installed application.
 
       This is intended to be used for debugging or labelling what program is
-      going to be run. To launch the executable, use [Gio.AppInfo.launch] and
-      related functions, rather than spawning the return value from this
-      function. *)
+      going to be run. To launch the executable, use
+      {{!Ocgio.Raw.App_info.val-launch}[Gio.AppInfo.launch]} and related
+      functions, rather than spawning the return value from this function. *)
 
   external get_display_name : t -> string = "ml_g_app_info_get_display_name"
   (** Gets the display name of the application. The display name is often more
@@ -155,7 +157,8 @@ module rec App_info : sig
 
       On some platforms, there may be a difference between user-defined
       {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s which can be deleted, and
-      system-wide ones which cannot. See [Gio.AppInfo.can_delete]. *)
+      system-wide ones which cannot. See
+      {{!Ocgio.Raw.App_info.val-can_delete}[Gio.AppInfo.can_delete]}. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
@@ -163,7 +166,8 @@ module rec App_info : sig
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
   (** Obtains the information whether the {{!Ocgio.Raw.App_info}[Gio.AppInfo]}
-      can be deleted. See [Gio.AppInfo.delete]. *)
+      can be deleted. See
+      {{!Ocgio.Raw.App_info.val-delete}[Gio.AppInfo.delete]}. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -249,11 +253,13 @@ end = struct
       Some URIs can be changed when passed through a GFile (for instance
       unsupported URIs with strange formats like mailto:), so if you have a
       textual URI you want to pass in as argument, consider using
-      [Gio.AppInfo.launch_uris] instead.
+      {{!Ocgio.Raw.App_info.val-launch_uris}[Gio.AppInfo.launch_uris]} instead.
 
       The launched application inherits the environment of the launching
-      process, but it can be modified with [Gio.AppLaunchContext.setenv] and
-      [Gio.AppLaunchContext.unsetenv].
+      process, but it can be modified with
+      {{!Ocgio.Raw.App_launch_context.val-setenv}[Gio.AppLaunchContext.setenv]}
+      and
+      {{!Ocgio.Raw.App_launch_context.val-unsetenv}[Gio.AppLaunchContext.unsetenv]}.
 
       On UNIX, this function sets the [GIO_LAUNCHED_DESKTOP_FILE] environment
       variable with the path of the launched desktop file and
@@ -270,8 +276,8 @@ end = struct
       return [None].
 
       This function does not take in consideration associations added with
-      [Gio.AppInfo.add_supports_type], but only those exported directly by the
-      application. *)
+      {{!Ocgio.Raw.App_info.val-add_supports_type}[Gio.AppInfo.add_supports_type]},
+      but only those exported directly by the application. *)
 
   external get_name : t -> string = "ml_g_app_info_get_name"
   (** Gets the installed name of the application. *)
@@ -292,9 +298,9 @@ end = struct
   (** Gets the executable’s name for the installed application.
 
       This is intended to be used for debugging or labelling what program is
-      going to be run. To launch the executable, use [Gio.AppInfo.launch] and
-      related functions, rather than spawning the return value from this
-      function. *)
+      going to be run. To launch the executable, use
+      {{!Ocgio.Raw.App_info.val-launch}[Gio.AppInfo.launch]} and related
+      functions, rather than spawning the return value from this function. *)
 
   external get_display_name : t -> string = "ml_g_app_info_get_display_name"
   (** Gets the display name of the application. The display name is often more
@@ -323,7 +329,8 @@ end = struct
 
       On some platforms, there may be a difference between user-defined
       {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s which can be deleted, and
-      system-wide ones which cannot. See [Gio.AppInfo.can_delete]. *)
+      system-wide ones which cannot. See
+      {{!Ocgio.Raw.App_info.val-can_delete}[Gio.AppInfo.can_delete]}. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
@@ -331,7 +338,8 @@ end = struct
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
   (** Obtains the information whether the {{!Ocgio.Raw.App_info}[Gio.AppInfo]}
-      can be deleted. See [Gio.AppInfo.delete]. *)
+      can be deleted. See
+      {{!Ocgio.Raw.App_info.val-delete}[Gio.AppInfo.delete]}. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -365,7 +373,8 @@ and App_launch_context : sig
     = "ml_g_app_launch_context_launch_failed"
   (** Called when an application has failed to launch, so that it can cancel the
       application startup notification started in
-      [Gio.AppLaunchContext.get_startup_notify_id]. *)
+      {{!Ocgio.Raw.App_launch_context.val-get_startup_notify_id}[Gio.AppLaunchContext.get_startup_notify_id]}.
+  *)
 
   external get_startup_notify_id :
     t -> App_info.t option -> File.t list option -> string option
@@ -407,10 +416,11 @@ and App_launch_context : sig
     t ->
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
-  (** The [Gio.AppLaunchContext::launch-failed] signal is emitted when a
-      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} launch fails. The startup
-      notification id is provided, so that the launcher can cancel the startup
-      notification.
+  (** The
+      {{!Ocgio.Raw.App_launch_context.val-on_launch_failed}[Gio.AppLaunchContext::launch-failed]}
+      signal is emitted when a {{!Ocgio.Raw.App_info}[Gio.AppInfo]} launch
+      fails. The startup notification id is provided, so that the launcher can
+      cancel the startup notification.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -421,12 +431,13 @@ and App_launch_context : sig
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
-  (** The [Gio.AppLaunchContext::launch-started] signal is emitted when a
-      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is about to be launched. If non-null
-      the [platform_data] is an GVariant dictionary mapping strings to variants
-      (ie [a{sv}]), which contains additional, platform-specific data about this
-      launch. On UNIX, at least the [startup-notification-id] keys will be
-      present.
+  (** The
+      {{!Ocgio.Raw.App_launch_context.val-on_launch_started}[Gio.AppLaunchContext::launch-started]}
+      signal is emitted when a {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is about to
+      be launched. If non-null the [platform_data] is an GVariant dictionary
+      mapping strings to variants (ie [a{sv}]), which contains additional,
+      platform-specific data about this launch. On UNIX, at least the
+      [startup-notification-id] keys will be present.
 
       The value of the [startup-notification-id] key (type [s]) is a startup
       notification ID corresponding to the format from the
@@ -435,7 +446,9 @@ and App_launch_context : sig
       It allows tracking the progress of the launchee through startup.
 
       It is guaranteed that this signal is followed by either a
-      [Gio.AppLaunchContext::launched] or [Gio.AppLaunchContext::launch-failed]
+      {{!Ocgio.Raw.App_launch_context.val-on_launched}[Gio.AppLaunchContext::launched]}
+      or
+      {{!Ocgio.Raw.App_launch_context.val-on_launch_failed}[Gio.AppLaunchContext::launch-failed]}
       signal.
 
       Because a launch operation may involve spawning multiple instances of the
@@ -447,8 +460,10 @@ and App_launch_context : sig
     t ->
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
-  (** The [Gio.AppLaunchContext::launched] signal is emitted when a
-      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is successfully launched.
+  (** The
+      {{!Ocgio.Raw.App_launch_context.val-on_launched}[Gio.AppLaunchContext::launched]}
+      signal is emitted when a {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is
+      successfully launched.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -464,10 +479,11 @@ and App_launch_context : sig
       subsequent releases.
 
       On Windows, [pid] is guaranteed to be valid only for the duration of the
-      [Gio.AppLaunchContext::launched] signal emission; after the signal is
-      emitted, GLib will call [GLib.spawn_close_pid]. If you need to keep the
-      [GLib.Pid] after the signal has been emitted, then you can duplicate [pid]
-      using [DuplicateHandle()]. *)
+      {{!Ocgio.Raw.App_launch_context.val-on_launched}[Gio.AppLaunchContext::launched]}
+      signal emission; after the signal is emitted, GLib will call
+      [GLib.spawn_close_pid]. If you need to keep the [GLib.Pid] after the
+      signal has been emitted, then you can duplicate [pid] using
+      [DuplicateHandle()]. *)
 end = struct
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
@@ -494,7 +510,8 @@ end = struct
     = "ml_g_app_launch_context_launch_failed"
   (** Called when an application has failed to launch, so that it can cancel the
       application startup notification started in
-      [Gio.AppLaunchContext.get_startup_notify_id]. *)
+      {{!Ocgio.Raw.App_launch_context.val-get_startup_notify_id}[Gio.AppLaunchContext.get_startup_notify_id]}.
+  *)
 
   external get_startup_notify_id :
     t -> App_info.t option -> File.t list option -> string option
@@ -1156,7 +1173,8 @@ and File : sig
     \  example, you can expect the returned \
      {{!Ocgio.Raw.File_info}[Gio.FileInfo]} to have very few\n\
     \  attributes set. You should check whether an attribute is set using\n\
-    \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
+    \  {{!Ocgio.Raw.File_info.val-has_attribute}[Gio.FileInfo.has_attribute]} \
+     before trying to retrieve its value.\n\n\
     \  It is guaranteed that if any of the following attributes are listed in\n\
     \  [attributes], they will always be set in the returned \
      {{!Ocgio.Raw.File_info}[Gio.FileInfo]},\n\
@@ -1178,7 +1196,8 @@ and File : sig
     \  returned.\n\n\
     \  For symlinks, normally the information about the target of the\n\
     \  symlink is returned, rather than information about the symlink\n\
-    \  itself. However if you pass [Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]\n\
+    \  itself. However if you pass \
+     {{!Ocgio.Enums.type-filequeryinfoflags_flag.constructor-NOFOLLOW_SYMLINKS}[Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]}\n\
     \  in [flags] the information about the symlink itself will be returned.\n\
     \  Also, for symlinks that point to non-existing files the information\n\
     \  about the symlink itself will be returned.\n\n\
@@ -1235,9 +1254,10 @@ and File : sig
     = "ml_g_file_query_exists"
   (** Utility function to check if a particular file exists.
 
-      The fallback implementation of this API is using [Gio.File.query_info] and
-      therefore may do blocking I/O. To asynchronously query the existence of a
-      file, use [Gio.File.query_info_async].
+      The fallback implementation of this API is using
+      {{!Ocgio.Raw.File.val-query_info}[Gio.File.query_info]} and therefore may
+      do blocking I/O. To asynchronously query the existence of a file, use
+      [Gio.File.query_info_async].
 
       Note that in many cases it is
       {{:https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use}racy to
@@ -2177,7 +2197,8 @@ end = struct
     \  example, you can expect the returned \
      {{!Ocgio.Raw.File_info}[Gio.FileInfo]} to have very few\n\
     \  attributes set. You should check whether an attribute is set using\n\
-    \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
+    \  {{!Ocgio.Raw.File_info.val-has_attribute}[Gio.FileInfo.has_attribute]} \
+     before trying to retrieve its value.\n\n\
     \  It is guaranteed that if any of the following attributes are listed in\n\
     \  [attributes], they will always be set in the returned \
      {{!Ocgio.Raw.File_info}[Gio.FileInfo]},\n\
@@ -2199,7 +2220,8 @@ end = struct
     \  returned.\n\n\
     \  For symlinks, normally the information about the target of the\n\
     \  symlink is returned, rather than information about the symlink\n\
-    \  itself. However if you pass [Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]\n\
+    \  itself. However if you pass \
+     {{!Ocgio.Enums.type-filequeryinfoflags_flag.constructor-NOFOLLOW_SYMLINKS}[Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]}\n\
     \  in [flags] the information about the symlink itself will be returned.\n\
     \  Also, for symlinks that point to non-existing files the information\n\
     \  about the symlink itself will be returned.\n\n\
@@ -2256,9 +2278,10 @@ end = struct
     = "ml_g_file_query_exists"
   (** Utility function to check if a particular file exists.
 
-      The fallback implementation of this API is using [Gio.File.query_info] and
-      therefore may do blocking I/O. To asynchronously query the existence of a
-      file, use [Gio.File.query_info_async].
+      The fallback implementation of this API is using
+      {{!Ocgio.Raw.File.val-query_info}[Gio.File.query_info]} and therefore may
+      do blocking I/O. To asynchronously query the existence of a file, use
+      [Gio.File.query_info_async].
 
       Note that in many cases it is
       {{:https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use}racy to

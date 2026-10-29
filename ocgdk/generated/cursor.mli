@@ -16,9 +16,12 @@
     something about it.
 
     Cursors by themselves are not very interesting: they must be bound to a
-    window for users to see them. This is done with [Gdk.Surface.set_cursor] or
-    [Gdk.Surface.set_device_cursor]. Applications will typically use
-    higher-level GTK functions such as gtk_widget_set_cursor() instead.
+    window for users to see them. This is done with
+    {{!Ocgdk.Surface.class-type-surface_t.method-set_cursor}[Gdk.Surface.set_cursor]}
+    or
+    {{!Ocgdk.Surface.class-type-surface_t.method-set_device_cursor}[Gdk.Surface.set_device_cursor]}.
+    Applications will typically use higher-level GTK functions such as
+    gtk_widget_set_cursor() instead.
 
     Cursors are not bound to a given
     {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.
@@ -28,13 +31,15 @@
     {b Named and texture cursors}
 
     There are multiple ways to create cursors. The platform's own cursors can be
-    created with [Gdk.Cursor.new_from_name]. That function lists the commonly
-    available names that are shared with the CSS specification. Other names may
-    be available, depending on the platform in use. On some platforms, what
-    images are used for named cursors may be influenced by the cursor theme.
+    created with {{!Ocgdk.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]}.
+    That function lists the commonly available names that are shared with the
+    CSS specification. Other names may be available, depending on the platform
+    in use. On some platforms, what images are used for named cursors may be
+    influenced by the cursor theme.
 
-    Another option to create a cursor is to use [Gdk.Cursor.new_from_texture]
-    and provide an image to use for the cursor.
+    Another option to create a cursor is to use
+    {{!Ocgdk.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} and
+    provide an image to use for the cursor.
 
     To ease work with unsupported cursors, a fallback cursor can be provided. If
     a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]} cannot use a cursor
@@ -100,9 +105,12 @@ class cursor : Raw.Cursor.t -> cursor_t
     something about it.
 
     Cursors by themselves are not very interesting: they must be bound to a
-    window for users to see them. This is done with [Gdk.Surface.set_cursor] or
-    [Gdk.Surface.set_device_cursor]. Applications will typically use
-    higher-level GTK functions such as gtk_widget_set_cursor() instead.
+    window for users to see them. This is done with
+    {{!Ocgdk.Surface.class-type-surface_t.method-set_cursor}[Gdk.Surface.set_cursor]}
+    or
+    {{!Ocgdk.Surface.class-type-surface_t.method-set_device_cursor}[Gdk.Surface.set_device_cursor]}.
+    Applications will typically use higher-level GTK functions such as
+    gtk_widget_set_cursor() instead.
 
     Cursors are not bound to a given
     {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.
@@ -112,13 +120,15 @@ class cursor : Raw.Cursor.t -> cursor_t
     {b Named and texture cursors}
 
     There are multiple ways to create cursors. The platform's own cursors can be
-    created with [Gdk.Cursor.new_from_name]. That function lists the commonly
-    available names that are shared with the CSS specification. Other names may
-    be available, depending on the platform in use. On some platforms, what
-    images are used for named cursors may be influenced by the cursor theme.
+    created with {{!Ocgdk.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]}.
+    That function lists the commonly available names that are shared with the
+    CSS specification. Other names may be available, depending on the platform
+    in use. On some platforms, what images are used for named cursors may be
+    influenced by the cursor theme.
 
-    Another option to create a cursor is to use [Gdk.Cursor.new_from_texture]
-    and provide an image to use for the cursor.
+    Another option to create a cursor is to use
+    {{!Ocgdk.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} and
+    provide an image to use for the cursor.
 
     To ease work with unsupported cursors, a fallback cursor can be provided. If
     a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]} cannot use a cursor

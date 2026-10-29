@@ -22,8 +22,9 @@
 
     An example GtkEmojiChooser
 
-    [GtkEmojiChooser] emits the [Gtk.EmojiChooser::emoji-picked] signal when an
-    Emoji is selected.
+    [GtkEmojiChooser] emits the
+    {{!Ocgtk.Emoji_chooser.class-type-emoji_chooser_t.method-on_emoji_picked}[Gtk.EmojiChooser::emoji-picked]}
+    signal when an Emoji is selected.
 
     {b Shortcuts and Gestures}
 
@@ -83,8 +84,9 @@ class emoji_chooser : Raw.Emoji_chooser.t -> emoji_chooser_t
 
     An example GtkEmojiChooser
 
-    [GtkEmojiChooser] emits the [Gtk.EmojiChooser::emoji-picked] signal when an
-    Emoji is selected.
+    [GtkEmojiChooser] emits the
+    {{!Ocgtk.Emoji_chooser.class-type-emoji_chooser_t.method-on_emoji_picked}[Gtk.EmojiChooser::emoji-picked]}
+    signal when an Emoji is selected.
 
     {b Shortcuts and Gestures}
 

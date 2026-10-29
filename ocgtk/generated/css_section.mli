@@ -12,7 +12,8 @@
     Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region. *)
+    {{!Ocgtk.Css_section.class-type-css_section_t.method-get_parent}[CssSection.get_parent]}
+    to get the containing region. *)
 class type css_section_t = object
   (** {2:methods Methods} *)
 
@@ -61,7 +62,8 @@ class css_section : Raw.Css_section.t -> css_section_t
     Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region. *)
+    {{!Ocgtk.Css_section.class-type-css_section_t.method-get_parent}[CssSection.get_parent]}
+    to get the containing region. *)
 
 (** {1:constructors Constructors} *)
 

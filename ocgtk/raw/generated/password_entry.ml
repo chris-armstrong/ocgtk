@@ -32,7 +32,9 @@
 
     {b Accessibility}
 
-    [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role.
+    [GtkPasswordEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role.
 
     The class built on this module is in {!Ocgtk.Password_entry}. *)
 

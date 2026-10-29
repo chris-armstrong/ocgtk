@@ -36,9 +36,11 @@ external forward :
 (** Forwards the current event of this [controller] to a [widget].
 
     This function can only be used in handlers for the
-    [Gtk.EventControllerKey::key-pressed],
-    [Gtk.EventControllerKey::key-released] or
-    [Gtk.EventControllerKey::modifiers] signals. *)
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_pressed}[Gtk.EventControllerKey::key-pressed]},
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_released}[Gtk.EventControllerKey::key-released]}
+    or
+    {{!Ocgtk.Raw.Event_controller_key.val-on_modifiers}[Gtk.EventControllerKey::modifiers]}
+    signals. *)
 
 let on_im_update ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"im-update" ~callback

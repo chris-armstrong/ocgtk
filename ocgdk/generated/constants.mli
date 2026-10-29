@@ -4,8 +4,10 @@
 val action_all : int
 (** Defines all possible DND actions.
 
-    This can be used in [Gdk.Drop.status] messages when any drop can be accepted
-    or a more specific drop method is not yet known. *)
+    This can be used in
+    {{!Ocgdk.Drop.class-type-drop_t.method-status}[Gdk.Drop.status]} messages
+    when any drop can be accepted or a more specific drop method is not yet
+    known. *)
 
 val button_middle : int
 (** The middle button. *)

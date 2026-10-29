@@ -5,11 +5,14 @@
     and helps you accept sockets from any of the socket, either sync or async.
 
     Add addresses and ports to listen on using [Gio.SocketListener.add_address]
-    and [Gio.SocketListener.add_inet_port]. These will be listened on until
-    [Gio.SocketListener.close] is called. Dropping your final reference to the
-    [GSocketListener] will not cause [Gio.SocketListener.close] to be called
-    implicitly, as some references to the [GSocketListener] may be held
-    internally.
+    and
+    {{!Ocgio.Raw.Socket_listener.val-add_inet_port}[Gio.SocketListener.add_inet_port]}.
+    These will be listened on until
+    {{!Ocgio.Raw.Socket_listener.val-close}[Gio.SocketListener.close]} is
+    called. Dropping your final reference to the [GSocketListener] will not
+    cause {{!Ocgio.Raw.Socket_listener.val-close}[Gio.SocketListener.close]} to
+    be called implicitly, as some references to the [GSocketListener] may be
+    held internally.
 
     If you want to implement a network server, also look at
     {{!Ocgio.Raw.Socket_service}[Gio.SocketService]} and
@@ -49,7 +52,7 @@ external add_socket :
 
     For parallel calls to {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]}
     methods to work, the socket must be in non-blocking mode. (See
-    [Gio.Socket:blocking].)
+    {{!Ocgio.Raw.Socket.val-get_blocking}[Gio.Socket:blocking]}.)
 
     [source_object] will be passed out in the various calls to accept to
     identify this particular source, which is useful if you're listening on
@@ -75,7 +78,8 @@ external add_inet_port :
     other. If listening on both fails, an error will be returned.
 
     If you need to distinguish whether listening on IPv4 or IPv6 or both was
-    successful, connect to [Gio.SocketListener::event].
+    successful, connect to
+    {{!Ocgio.Raw.Socket_listener.val-on_event}[Gio.SocketListener::event]}.
 
     [source_object] will be passed out in the various calls to accept to
     identify this particular source, which is useful if you're listening on
@@ -102,7 +106,8 @@ external add_any_inet_port :
     other. If listening on both fails, an error will be returned.
 
     If you need to distinguish whether listening on IPv4 or IPv6 or both was
-    successful, connect to [Gio.SocketListener::event].
+    successful, connect to
+    {{!Ocgio.Raw.Socket_listener.val-on_event}[Gio.SocketListener::event]}.
 
     [source_object] will be passed out in the various calls to accept to
     identify this particular source, which is useful if you're listening on

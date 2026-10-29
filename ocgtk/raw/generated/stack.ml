@@ -10,15 +10,18 @@
  {{!Ocgtk.Raw.Stack_sidebar}[Gtk.StackSidebar]} can\n\
  be used with [GtkStack] to provide this functionality.\n\n\
  Transitions between pages can be animated as slides or fades. This\n\
- can be controlled with [Gtk.Stack.set_transition_type].\n\
- These animations respect the [Gtk.Settings:gtk-enable-animations]\n\
+ can be controlled with \
+ {{!Ocgtk.Raw.Stack.val-set_transition_type}[Gtk.Stack.set_transition_type]}.\n\
+ These animations respect the \
+ {{!Ocgtk.Raw.Settings.val-get_gtk_enable_animations}[Gtk.Settings:gtk-enable-animations]}\n\
  setting.\n\n\
  [GtkStack] maintains a {{!Ocgtk.Raw.Stack_page}[Gtk.StackPage]} object for \
  each added\n\
  child, which holds additional per-child properties. You\n\
- obtain the [GtkStackPage] for a child with [Gtk.Stack.get_page]\n\
+ obtain the [GtkStackPage] for a child with \
+ {{!Ocgtk.Raw.Stack.val-get_page}[Gtk.Stack.get_page]}\n\
  and you can obtain a [GtkSelectionModel] containing all the pages\n\
- with [Gtk.Stack.get_pages].\n\n\
+ with {{!Ocgtk.Raw.Stack.val-get_pages}[Gtk.Stack.get_pages]}.\n\n\
  {b GtkStack as GtkBuildable}\n\n\
  To set child-specific properties in a .ui file, create [GtkStackPage]\n\
  objects explicitly, and set the child widget as a property on it:\n\n\
@@ -39,7 +42,9 @@
  {b CSS nodes}\n\n\
  [GtkStack] has a single CSS node named stack.\n\n\
  {b Accessibility}\n\n\
- [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack\n\
+ [GtkStack] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_PANEL}[Gtk.AccessibleRole.tab_panel]} \
+ role for the stack\n\
  pages, which are the accessible parent objects of the child widgets.\n\n\
  The class built on this module is in {!Ocgtk.Stack}."]
 
@@ -60,16 +65,18 @@ external set_visible_child_name : t -> string -> unit
     between the two will be animated with the current transition type of
     [stack].
 
-    Note that the child widget has to be visible itself (see [Gtk.Widget.show])
-    in order to become the visible child of [stack]. *)
+    Note that the child widget has to be visible itself (see
+    {{!Ocgtk.Raw.Widget.val-show}[Gtk.Widget.show]}) in order to become the
+    visible child of [stack]. *)
 
 external set_visible_child_full :
   t -> string -> Ocgtk_enums.stacktransitiontype -> unit
   = "ml_gtk_stack_set_visible_child_full"
 (** Makes the child with the given name visible.
 
-    Note that the child widget has to be visible itself (see [Gtk.Widget.show])
-    in order to become the visible child of [stack]. *)
+    Note that the child widget has to be visible itself (see
+    {{!Ocgtk.Raw.Widget.val-show}[Gtk.Widget.show]}) in order to become the
+    visible child of [stack]. *)
 
 external set_visible_child :
   t ->
@@ -84,7 +91,8 @@ external set_visible_child :
     [stack].
 
     Note that the [child] widget has to be visible itself (see
-    [Gtk.Widget.show]) in order to become the visible child of [stack]. *)
+    {{!Ocgtk.Raw.Widget.val-show}[Gtk.Widget.show]}) in order to become the
+    visible child of [stack]. *)
 
 external set_vhomogeneous : t -> bool -> unit = "ml_gtk_stack_set_vhomogeneous"
 (** Sets the [GtkStack] to be vertically homogeneous or not.
@@ -113,9 +121,11 @@ external set_interpolate_size : t -> bool -> unit
 (** Sets whether or not [stack] will interpolate its size when changing the
     visible child.
 
-    If the [Gtk.Stack:interpolate-size] property is set to [true], [stack] will
-    interpolate its size between the current one and the one it'll take after
-    changing the visible child, according to the set transition duration. *)
+    If the
+    {{!Ocgtk.Raw.Stack.val-get_interpolate_size}[Gtk.Stack:interpolate-size]}
+    property is set to [true], [stack] will interpolate its size between the
+    current one and the one it'll take after changing the visible child,
+    according to the set transition duration. *)
 
 external set_hhomogeneous : t -> bool -> unit = "ml_gtk_stack_set_hhomogeneous"
 (** Sets the [GtkStack] to be horizontally homogeneous or not.

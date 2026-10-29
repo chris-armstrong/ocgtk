@@ -24,13 +24,15 @@ class type cicp_params_t = Cicp_params_and__color_state.cicp_params_t
     replaced by a different value before creating a color state.
 
     [GdkCicpParams] can be used as a builder object to construct a color state
-    from Cicp data with [Gdk.CicpParams.build_color_state]. The function will
-    return an error if the given parameters are not supported.
+    from Cicp data with
+    {{!Ocgdk.Cicp_params.class-type-cicp_params_t.method-build_color_state}[Gdk.CicpParams.build_color_state]}.
+    The function will return an error if the given parameters are not supported.
 
     You can obtain a [GdkCicpParams] object from a color state with
-    [Gdk.ColorState.create_cicp_params]. This can be used to create a variant of
-    a color state, by changing just one of the cicp parameters, or just to
-    obtain information about the color state. *)
+    {{!Ocgdk.Color_state.class-type-color_state_t.method-create_cicp_params}[Gdk.ColorState.create_cicp_params]}.
+    This can be used to create a variant of a color state, by changing just one
+    of the cicp parameters, or just to obtain information about the color state.
+*)
 
 class cicp_params : Raw.Cicp_params.t -> cicp_params_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Cicp_params.t}. *)
@@ -48,13 +50,15 @@ class cicp_params : Raw.Cicp_params.t -> cicp_params_t
     replaced by a different value before creating a color state.
 
     [GdkCicpParams] can be used as a builder object to construct a color state
-    from Cicp data with [Gdk.CicpParams.build_color_state]. The function will
-    return an error if the given parameters are not supported.
+    from Cicp data with
+    {{!Ocgdk.Cicp_params.class-type-cicp_params_t.method-build_color_state}[Gdk.CicpParams.build_color_state]}.
+    The function will return an error if the given parameters are not supported.
 
     You can obtain a [GdkCicpParams] object from a color state with
-    [Gdk.ColorState.create_cicp_params]. This can be used to create a variant of
-    a color state, by changing just one of the cicp parameters, or just to
-    obtain information about the color state. *)
+    {{!Ocgdk.Color_state.class-type-color_state_t.method-create_cicp_params}[Gdk.ColorState.create_cicp_params]}.
+    This can be used to create a variant of a color state, by changing just one
+    of the cicp parameters, or just to obtain information about the color state.
+*)
 
 (** {1:constructors Constructors} *)
 

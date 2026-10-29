@@ -175,7 +175,9 @@ end
      The division between the two panes is adjustable by the user\n\
      by dragging a handle.\n\n\
      Child widgets are added to the panes of the widget with\n\
-     [Gtk.Paned.set_start_child] and [Gtk.Paned.set_end_child].\n\
+     {{!Ocgtk.Paned.class-type-paned_t.method-set_start_child}[Gtk.Paned.set_start_child]} \
+     and \
+     {{!Ocgtk.Paned.class-type-paned_t.method-set_end_child}[Gtk.Paned.set_end_child]}.\n\
      The division between the two children is set by default from the size\n\
      requests of the children, but it can be adjusted by the user.\n\n\
      A paned widget draws a separator between the two child widgets and a\n\
@@ -193,15 +195,22 @@ end
      If \"resize\" is false for both children, then this is treated as if\n\
      \"resize\" is true for both children.\n\n\
      The application can set the position of the slider as if it were set\n\
-     by the user, by calling [Gtk.Paned.set_position].\n\n\
+     by the user, by calling \
+     {{!Ocgtk.Paned.class-type-paned_t.method-set_position}[Gtk.Paned.set_position]}.\n\n\
      {b Shortcuts and Gestures}\n\n\
      The following signals have default keybindings:\n\n\
-     - [Gtk.Paned::accept-position]\n\
-     - [Gtk.Paned::cancel-position]\n\
-     - [Gtk.Paned::cycle-child-focus]\n\
-     - [Gtk.Paned::cycle-handle-focus]\n\
-     - [Gtk.Paned::move-handle]\n\
-     - [Gtk.Paned::toggle-handle-focus]\n\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_accept_position}[Gtk.Paned::accept-position]}\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_cancel_position}[Gtk.Paned::cancel-position]}\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_cycle_child_focus}[Gtk.Paned::cycle-child-focus]}\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_cycle_handle_focus}[Gtk.Paned::cycle-handle-focus]}\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_move_handle}[Gtk.Paned::move-handle]}\n\
+     - \
+     {{!Ocgtk.Paned.class-type-paned_t.method-on_toggle_handle_focus}[Gtk.Paned::toggle-handle-focus]}\n\n\
      {b CSS nodes}\n\n\
      {[\n\
      paned\n\
@@ -242,7 +251,9 @@ class paned : Raw.Paned.t -> paned_t
  The division between the two panes is adjustable by the user\n\
  by dragging a handle.\n\n\
  Child widgets are added to the panes of the widget with\n\
- [Gtk.Paned.set_start_child] and [Gtk.Paned.set_end_child].\n\
+ {{!Ocgtk.Paned.class-type-paned_t.method-set_start_child}[Gtk.Paned.set_start_child]} \
+ and \
+ {{!Ocgtk.Paned.class-type-paned_t.method-set_end_child}[Gtk.Paned.set_end_child]}.\n\
  The division between the two children is set by default from the size\n\
  requests of the children, but it can be adjusted by the user.\n\n\
  A paned widget draws a separator between the two child widgets and a\n\
@@ -260,15 +271,22 @@ class paned : Raw.Paned.t -> paned_t
  If \"resize\" is false for both children, then this is treated as if\n\
  \"resize\" is true for both children.\n\n\
  The application can set the position of the slider as if it were set\n\
- by the user, by calling [Gtk.Paned.set_position].\n\n\
+ by the user, by calling \
+ {{!Ocgtk.Paned.class-type-paned_t.method-set_position}[Gtk.Paned.set_position]}.\n\n\
  {b Shortcuts and Gestures}\n\n\
  The following signals have default keybindings:\n\n\
- - [Gtk.Paned::accept-position]\n\
- - [Gtk.Paned::cancel-position]\n\
- - [Gtk.Paned::cycle-child-focus]\n\
- - [Gtk.Paned::cycle-handle-focus]\n\
- - [Gtk.Paned::move-handle]\n\
- - [Gtk.Paned::toggle-handle-focus]\n\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_accept_position}[Gtk.Paned::accept-position]}\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_cancel_position}[Gtk.Paned::cancel-position]}\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_cycle_child_focus}[Gtk.Paned::cycle-child-focus]}\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_cycle_handle_focus}[Gtk.Paned::cycle-handle-focus]}\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_move_handle}[Gtk.Paned::move-handle]}\n\
+ - \
+ {{!Ocgtk.Paned.class-type-paned_t.method-on_toggle_handle_focus}[Gtk.Paned::toggle-handle-focus]}\n\n\
  {b CSS nodes}\n\n\
  {[\n\
  paned\n\

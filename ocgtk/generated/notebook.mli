@@ -362,11 +362,16 @@ end
      An example GtkNotebook\n\n\
      There are many configuration options for [GtkNotebook]. Among\n\
      other things, you can choose on which edge the tabs appear\n\
-     (see [Gtk.Notebook.set_tab_pos]), whether, if there are\n\
+     (see \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-set_tab_pos}[Gtk.Notebook.set_tab_pos]}), \
+     whether, if there are\n\
      too many tabs to fit the notebook should be made bigger or scrolling\n\
-     arrows added (see [Gtk.Notebook.set_scrollable]), and whether\n\
+     arrows added (see \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-set_scrollable}[Gtk.Notebook.set_scrollable]}), \
+     and whether\n\
      there will be a popup menu allowing the users to switch pages.\n\
-     (see [Gtk.Notebook.popup_enable]).\n\n\
+     (see \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-popup_enable}[Gtk.Notebook.popup_enable]}).\n\n\
      {b GtkNotebook as GtkBuildable}\n\n\
      The [GtkNotebook] implementation of the [GtkBuildable] interface\n\
      supports placing children into tabs by specifying “tab” as the\n\
@@ -399,11 +404,16 @@ end
      - <kbd>Home</kbd> moves the focus to the first tab.\n\
      - <kbd>End</kbd> moves the focus to the last tab.\n\n\
      Additionally, the following signals have default keybindings:\n\n\
-     - [Gtk.Notebook::change-current-page]\n\
-     - [Gtk.Notebook::focus-tab]\n\
-     - [Gtk.Notebook::move-focus-out]\n\
-     - [Gtk.Notebook::reorder-tab]\n\
-     - [Gtk.Notebook::select-page]\n\n\
+     - \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-on_change_current_page}[Gtk.Notebook::change-current-page]}\n\
+     - \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-on_focus_tab}[Gtk.Notebook::focus-tab]}\n\
+     - \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-on_move_focus_out}[Gtk.Notebook::move-focus-out]}\n\
+     - \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-on_reorder_tab}[Gtk.Notebook::reorder-tab]}\n\
+     - \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-on_select_page}[Gtk.Notebook::select-page]}\n\n\
      Tabs support drag-and-drop between notebooks sharing the same [group-name],\n\
      or to new windows by handling the [::create-window] signal.\n\n\
      {b Actions}\n\n\
@@ -436,7 +446,8 @@ end
      to the [tabs] node. If the notebook is scrollable, CSS nodes with\n\
      name [arrow] are placed as first and last child of the [tabs] node.\n\n\
      The main node gets the [.frame] style class when the notebook\n\
-     has a border (see [Gtk.Notebook.set_show_border]).\n\n\
+     has a border (see \
+     {{!Ocgtk.Notebook.class-type-notebook_t.method-set_show_border}[Gtk.Notebook.set_show_border]}).\n\n\
      The header node gets one of the style class [.top], [.bottom],\n\
      [.left] or [.right], depending on where the tabs are placed. For\n\
      reorderable pages, the tab node gets the [.reorderable-page] class.\n\n\
@@ -446,10 +457,18 @@ end
      direction.\n\n\
      {b Accessibility}\n\n\
      [GtkNotebook] uses the following roles:\n\n\
-     - [Gtk.AccessibleRole.group] for the notebook widget\n\
-     - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
-     - [Gtk.AccessibleRole.tab] role for each tab\n\
-     - [Gtk.AccessibleRole.tab_panel] for each page"]
+     - \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+     for the notebook widget\n\
+     - \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_LIST}[Gtk.AccessibleRole.tab_list]} \
+     for the list of tabs\n\
+     - \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB}[Gtk.AccessibleRole.tab]} \
+     role for each tab\n\
+     - \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_PANEL}[Gtk.AccessibleRole.tab_panel]} \
+     for each page"]
 
 class notebook : Raw.Notebook.t -> notebook_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Notebook.t}. *)
@@ -460,11 +479,16 @@ class notebook : Raw.Notebook.t -> notebook_t
  An example GtkNotebook\n\n\
  There are many configuration options for [GtkNotebook]. Among\n\
  other things, you can choose on which edge the tabs appear\n\
- (see [Gtk.Notebook.set_tab_pos]), whether, if there are\n\
+ (see \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-set_tab_pos}[Gtk.Notebook.set_tab_pos]}), \
+ whether, if there are\n\
  too many tabs to fit the notebook should be made bigger or scrolling\n\
- arrows added (see [Gtk.Notebook.set_scrollable]), and whether\n\
+ arrows added (see \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-set_scrollable}[Gtk.Notebook.set_scrollable]}), \
+ and whether\n\
  there will be a popup menu allowing the users to switch pages.\n\
- (see [Gtk.Notebook.popup_enable]).\n\n\
+ (see \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-popup_enable}[Gtk.Notebook.popup_enable]}).\n\n\
  {b GtkNotebook as GtkBuildable}\n\n\
  The [GtkNotebook] implementation of the [GtkBuildable] interface\n\
  supports placing children into tabs by specifying “tab” as the\n\
@@ -496,11 +520,16 @@ class notebook : Raw.Notebook.t -> notebook_t
  - <kbd>Home</kbd> moves the focus to the first tab.\n\
  - <kbd>End</kbd> moves the focus to the last tab.\n\n\
  Additionally, the following signals have default keybindings:\n\n\
- - [Gtk.Notebook::change-current-page]\n\
- - [Gtk.Notebook::focus-tab]\n\
- - [Gtk.Notebook::move-focus-out]\n\
- - [Gtk.Notebook::reorder-tab]\n\
- - [Gtk.Notebook::select-page]\n\n\
+ - \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-on_change_current_page}[Gtk.Notebook::change-current-page]}\n\
+ - \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-on_focus_tab}[Gtk.Notebook::focus-tab]}\n\
+ - \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-on_move_focus_out}[Gtk.Notebook::move-focus-out]}\n\
+ - \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-on_reorder_tab}[Gtk.Notebook::reorder-tab]}\n\
+ - \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-on_select_page}[Gtk.Notebook::select-page]}\n\n\
  Tabs support drag-and-drop between notebooks sharing the same [group-name],\n\
  or to new windows by handling the [::create-window] signal.\n\n\
  {b Actions}\n\n\
@@ -533,7 +562,8 @@ class notebook : Raw.Notebook.t -> notebook_t
  to the [tabs] node. If the notebook is scrollable, CSS nodes with\n\
  name [arrow] are placed as first and last child of the [tabs] node.\n\n\
  The main node gets the [.frame] style class when the notebook\n\
- has a border (see [Gtk.Notebook.set_show_border]).\n\n\
+ has a border (see \
+ {{!Ocgtk.Notebook.class-type-notebook_t.method-set_show_border}[Gtk.Notebook.set_show_border]}).\n\n\
  The header node gets one of the style class [.top], [.bottom],\n\
  [.left] or [.right], depending on where the tabs are placed. For\n\
  reorderable pages, the tab node gets the [.reorderable-page] class.\n\n\
@@ -543,10 +573,18 @@ class notebook : Raw.Notebook.t -> notebook_t
  direction.\n\n\
  {b Accessibility}\n\n\
  [GtkNotebook] uses the following roles:\n\n\
- - [Gtk.AccessibleRole.group] for the notebook widget\n\
- - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
- - [Gtk.AccessibleRole.tab] role for each tab\n\
- - [Gtk.AccessibleRole.tab_panel] for each page"]
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ for the notebook widget\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_LIST}[Gtk.AccessibleRole.tab_list]} \
+ for the list of tabs\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB}[Gtk.AccessibleRole.tab]} \
+ role for each tab\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_PANEL}[Gtk.AccessibleRole.tab_panel]} \
+ for each page"]
 
 (** {1:constructors Constructors} *)
 

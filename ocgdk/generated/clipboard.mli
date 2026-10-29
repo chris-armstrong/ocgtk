@@ -15,13 +15,19 @@ class type clipboard_t = App_launch_context_cycle_de440b34.clipboard_t
 
     Represents data shared between applications or inside an application.
 
-    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
-    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
-    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+    To get a [GdkClipboard] object, use
+    {{!Ocgdk.Display.class-type-display_t.method-get_clipboard}[Gdk.Display.get_clipboard]}
+    or
+    {{!Ocgdk.Display.class-type-display_t.method-get_primary_clipboard}[Gdk.Display.get_primary_clipboard]}.
+    You can find out about the data that is currently available in a clipboard
+    using
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-get_formats}[Gdk.Clipboard.get_formats]}.
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a
+    can use
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-set_content}[Gdk.Clipboard.set_content]},
+    which takes a
     {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 
@@ -37,13 +43,19 @@ class clipboard : Raw.Clipboard.t -> clipboard_t
 
     Represents data shared between applications or inside an application.
 
-    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
-    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
-    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+    To get a [GdkClipboard] object, use
+    {{!Ocgdk.Display.class-type-display_t.method-get_clipboard}[Gdk.Display.get_clipboard]}
+    or
+    {{!Ocgdk.Display.class-type-display_t.method-get_primary_clipboard}[Gdk.Display.get_primary_clipboard]}.
+    You can find out about the data that is currently available in a clipboard
+    using
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-get_formats}[Gdk.Clipboard.get_formats]}.
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a
+    can use
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-set_content}[Gdk.Clipboard.set_content]},
+    which takes a
     {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 

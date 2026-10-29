@@ -4,9 +4,10 @@
 (** A [PangoLayoutLine] represents one of the lines resulting from laying out a
     paragraph via [PangoLayout].
 
-    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
-    and are only valid until the text, attributes, or settings of the parent
-    [PangoLayout] are modified.
+    [PangoLayoutLine] structures are obtained by calling
+    {{!Ocpango.Raw.Layout.val-get_line}[Pango.Layout.get_line]} and are only
+    valid until the text, attributes, or settings of the parent [PangoLayout]
+    are modified.
 
     The class built on this module is in {!Ocpango.Layout_line}. *)
 
@@ -63,10 +64,11 @@ external get_pixel_extents : t -> Rectangle.t * Rectangle.t
   = "ml_pango_layout_line_get_pixel_extents"
 (** Computes the logical and ink extents of [layout_line] in device units.
 
-    This function just calls [Pango.LayoutLine.get_extents] followed by two
-    [extents_to_pixels] calls, rounding [ink_rect] and [logical_rect] such that
-    the rounded rectangles fully contain the unrounded one (that is, passes them
-    as first argument to [extents_to_pixels]). *)
+    This function just calls
+    {{!Ocpango.Raw.Layout_line.val-get_extents}[Pango.LayoutLine.get_extents]}
+    followed by two [extents_to_pixels] calls, rounding [ink_rect] and
+    [logical_rect] such that the rounded rectangles fully contain the unrounded
+    one (that is, passes them as first argument to [extents_to_pixels]). *)
 
 external get_length : t -> int = "ml_pango_layout_line_get_length"
 (** Returns the length of the line, in bytes. *)
@@ -76,12 +78,15 @@ external get_height : t -> int = "ml_pango_layout_line_get_height"
     in this line.
 
     Note that the actual baseline-to-baseline distance between lines of text is
-    influenced by other factors, such as [Pango.Layout.set_spacing] and
-    [Pango.Layout.set_line_spacing]. *)
+    influenced by other factors, such as
+    {{!Ocpango.Raw.Layout.val-set_spacing}[Pango.Layout.set_spacing]} and
+    {{!Ocpango.Raw.Layout.val-set_line_spacing}[Pango.Layout.set_line_spacing]}.
+*)
 
 external get_extents : t -> Rectangle.t * Rectangle.t
   = "ml_pango_layout_line_get_extents"
 (** Computes the logical and ink extents of a layout line.
 
-    See [Pango.Font.get_glyph_extents] for details about the interpretation of
-    the rectangles. *)
+    See
+    {{!Ocpango.Raw.Font.val-get_glyph_extents}[Pango.Font.get_glyph_extents]}
+    for details about the interpretation of the rectangles. *)

@@ -412,9 +412,12 @@ end
      - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or\n\
      <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all.\n\n\
      Additionally, the following signals have default keybindings:\n\n\
-     - [Gtk.Label::activate-current-link]\n\
-     - [Gtk.Label::copy-clipboard]\n\
-     - [Gtk.Label::move-cursor]\n\n\
+     - \
+     {{!Ocgtk.Label.class-type-label_t.method-on_activate_current_link}[Gtk.Label::activate-current-link]}\n\
+     - \
+     {{!Ocgtk.Label.class-type-label_t.method-on_copy_clipboard}[Gtk.Label::copy-clipboard]}\n\
+     - \
+     {{!Ocgtk.Label.class-type-label_t.method-on_move_cursor}[Gtk.Label::move-cursor]}\n\n\
      {b Actions}\n\n\
      [GtkLabel] defines a set of built-in actions:\n\n\
      - [clipboard.copy] copies the text to the clipboard.\n\
@@ -469,19 +472,23 @@ end
      sense with translatable attributes. Use markup embedded in the translatable\n\
      content instead.\n\n\
      {b Accessibility}\n\n\
-     [GtkLabel] uses the [Gtk.AccessibleRole.label] role.\n\n\
+     [GtkLabel] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-LABEL}[Gtk.AccessibleRole.label]} \
+     role.\n\n\
      {b Mnemonics}\n\n\
      Labels may contain “mnemonics”. Mnemonics are underlined characters in the\n\
      label, used for keyboard navigation. Mnemonics are created by providing a\n\
      string with an underscore before the mnemonic character, such as \
      [\"_File\"],\n\
-     to the functions [Gtk.Label.new_with_mnemonic] or\n\
-     [Gtk.Label.set_text_with_mnemonic].\n\n\
+     to the functions \
+     {{!Ocgtk.Label.val-new_with_mnemonic}[Gtk.Label.new_with_mnemonic]} or\n\
+     {{!Ocgtk.Label.class-type-label_t.method-set_text_with_mnemonic}[Gtk.Label.set_text_with_mnemonic]}.\n\n\
      Mnemonics automatically activate any activatable widget the label is\n\
      inside, such as a {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}; if \
      the label is not inside the\n\
      mnemonic’s target widget, you have to tell the label about the target\n\
-     using [Gtk.Label.set_mnemonic_widget].\n\n\
+     using \
+     {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.\n\n\
      Here’s a simple example where the label is inside a button:\n\n\
      {[\n\
      // Pressing Alt+H will activate this button\n\
@@ -498,7 +505,7 @@ end
      To create a mnemonic for a widget alongside the label, such as a\n\
      {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}, you have to point the \
      label at the entry with\n\
-     [Gtk.Label.set_mnemonic_widget]:\n\n\
+     {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}:\n\n\
      {[\n\
      // Pressing Alt+H will focus the entry\n\
      GtkWidget *entry = gtk_entry_new ();\n\
@@ -515,15 +522,20 @@ end
      ]}\n\n\
      (See the Pango manual for complete documentation\\] of available\n\
      tags, [Pango.parse_markup])\n\n\
-     The markup passed to [Gtk.Label.set_markup] must be valid XML; for example,\n\
+     The markup passed to \
+     {{!Ocgtk.Label.class-type-label_t.method-set_markup}[Gtk.Label.set_markup]} \
+     must be valid XML; for example,\n\
      literal [<], [>] and [&] characters must be escaped as [&lt;], [&gt;], \
      and [&amp;].\n\
      If you pass text obtained from the user, file, or a network to\n\
-     [Gtk.Label.set_markup], you’ll want to escape it with\n\
+     {{!Ocgtk.Label.class-type-label_t.method-set_markup}[Gtk.Label.set_markup]}, \
+     you’ll want to escape it with\n\
      [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
      Markup strings are just a convenient way to set the \
      {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]}\n\
-     on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
+     on a label; \
+     {{!Ocgtk.Label.class-type-label_t.method-set_attributes}[Gtk.Label.set_attributes]} \
+     may be a simpler way to set\n\
      attributes in some cases. Be careful though; \
      {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]} tends\n\
      to cause internationalization problems, unless you’re applying attributes\n\
@@ -534,7 +546,8 @@ end
      knowledge of the exact\n\
      string being displayed, so translations will cause problems.\n\n\
      {b Selectable labels}\n\n\
-     Labels can be made selectable with [Gtk.Label.set_selectable].\n\
+     Labels can be made selectable with \
+     {{!Ocgtk.Label.class-type-label_t.method-set_selectable}[Gtk.Label.set_selectable]}.\n\
      Selectable labels allow the user to copy the label contents to the\n\
      clipboard. Only labels that contain useful-to-copy information — such\n\
      as error messages — should be made selectable.\n\n\
@@ -543,12 +556,20 @@ end
      performance problems if it contains more than a small number.\n\
      Paragraphs are separated by newlines or other paragraph separators\n\
      understood by Pango.\n\n\
-     Labels can automatically wrap text if you call [Gtk.Label.set_wrap].\n\n\
-     [Gtk.Label.set_justify] sets how the lines in a label align\n\
+     Labels can automatically wrap text if you call \
+     {{!Ocgtk.Label.class-type-label_t.method-set_wrap}[Gtk.Label.set_wrap]}.\n\n\
+     {{!Ocgtk.Label.class-type-label_t.method-set_justify}[Gtk.Label.set_justify]} \
+     sets how the lines in a label align\n\
      with one another. If you want to set how the label as a whole aligns\n\
-     in its available space, see the [Gtk.Widget:halign] and\n\
-     [Gtk.Widget:valign] properties.\n\n\
-     The [Gtk.Label:width-chars] and [Gtk.Label:max-width-chars]\n\
+     in its available space, see the \
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]} \
+     and\n\
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]} \
+     properties.\n\n\
+     The \
+     {{!Ocgtk.Label.class-type-label_t.method-get_width_chars}[Gtk.Label:width-chars]} \
+     and \
+     {{!Ocgtk.Label.class-type-label_t.method-get_max_width_chars}[Gtk.Label:max-width-chars]}\n\
      properties can be used to control the size allocation of ellipsized or\n\
      wrapped labels. For ellipsizing labels, if either is specified (and less\n\
      than the actual text size), it is used as the minimum width, and the actual\n\
@@ -574,8 +595,11 @@ end
      gtk_label_set_markup (GTK_LABEL (label), text);\n\
      ]}\n\n\
      It is possible to implement custom handling for links and their tooltips\n\
-     with the [Gtk.Label::activate-link] signal and the\n\
-     [Gtk.Label.get_current_uri] function."]
+     with the \
+     {{!Ocgtk.Label.class-type-label_t.method-on_activate_link}[Gtk.Label::activate-link]} \
+     signal and the\n\
+     {{!Ocgtk.Label.class-type-label_t.method-get_current_uri}[Gtk.Label.get_current_uri]} \
+     function."]
 
 class label : Raw.Label.t -> label_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Label.t}. *)
@@ -595,9 +619,12 @@ class label : Raw.Label.t -> label_t
  - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or\n\
  <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all.\n\n\
  Additionally, the following signals have default keybindings:\n\n\
- - [Gtk.Label::activate-current-link]\n\
- - [Gtk.Label::copy-clipboard]\n\
- - [Gtk.Label::move-cursor]\n\n\
+ - \
+ {{!Ocgtk.Label.class-type-label_t.method-on_activate_current_link}[Gtk.Label::activate-current-link]}\n\
+ - \
+ {{!Ocgtk.Label.class-type-label_t.method-on_copy_clipboard}[Gtk.Label::copy-clipboard]}\n\
+ - \
+ {{!Ocgtk.Label.class-type-label_t.method-on_move_cursor}[Gtk.Label::move-cursor]}\n\n\
  {b Actions}\n\n\
  [GtkLabel] defines a set of built-in actions:\n\n\
  - [clipboard.copy] copies the text to the clipboard.\n\
@@ -650,18 +677,22 @@ class label : Raw.Label.t -> label_t
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkLabel] uses the [Gtk.AccessibleRole.label] role.\n\n\
+ [GtkLabel] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-LABEL}[Gtk.AccessibleRole.label]} \
+ role.\n\n\
  {b Mnemonics}\n\n\
  Labels may contain “mnemonics”. Mnemonics are underlined characters in the\n\
  label, used for keyboard navigation. Mnemonics are created by providing a\n\
  string with an underscore before the mnemonic character, such as [\"_File\"],\n\
- to the functions [Gtk.Label.new_with_mnemonic] or\n\
- [Gtk.Label.set_text_with_mnemonic].\n\n\
+ to the functions \
+ {{!Ocgtk.Label.val-new_with_mnemonic}[Gtk.Label.new_with_mnemonic]} or\n\
+ {{!Ocgtk.Label.class-type-label_t.method-set_text_with_mnemonic}[Gtk.Label.set_text_with_mnemonic]}.\n\n\
  Mnemonics automatically activate any activatable widget the label is\n\
  inside, such as a {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}; if the \
  label is not inside the\n\
  mnemonic’s target widget, you have to tell the label about the target\n\
- using [Gtk.Label.set_mnemonic_widget].\n\n\
+ using \
+ {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.\n\n\
  Here’s a simple example where the label is inside a button:\n\n\
  {[\n\
  // Pressing Alt+H will activate this button\n\
@@ -678,7 +709,7 @@ class label : Raw.Label.t -> label_t
  To create a mnemonic for a widget alongside the label, such as a\n\
  {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}, you have to point the label \
  at the entry with\n\
- [Gtk.Label.set_mnemonic_widget]:\n\n\
+ {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}:\n\n\
  {[\n\
  // Pressing Alt+H will focus the entry\n\
  GtkWidget *entry = gtk_entry_new ();\n\
@@ -695,15 +726,20 @@ class label : Raw.Label.t -> label_t
  ]}\n\n\
  (See the Pango manual for complete documentation\\] of available\n\
  tags, [Pango.parse_markup])\n\n\
- The markup passed to [Gtk.Label.set_markup] must be valid XML; for example,\n\
+ The markup passed to \
+ {{!Ocgtk.Label.class-type-label_t.method-set_markup}[Gtk.Label.set_markup]} \
+ must be valid XML; for example,\n\
  literal [<], [>] and [&] characters must be escaped as [&lt;], [&gt;], and \
  [&amp;].\n\
  If you pass text obtained from the user, file, or a network to\n\
- [Gtk.Label.set_markup], you’ll want to escape it with\n\
+ {{!Ocgtk.Label.class-type-label_t.method-set_markup}[Gtk.Label.set_markup]}, \
+ you’ll want to escape it with\n\
  [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
  Markup strings are just a convenient way to set the \
  {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]}\n\
- on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
+ on a label; \
+ {{!Ocgtk.Label.class-type-label_t.method-set_attributes}[Gtk.Label.set_attributes]} \
+ may be a simpler way to set\n\
  attributes in some cases. Be careful though; \
  {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]} tends\n\
  to cause internationalization problems, unless you’re applying attributes\n\
@@ -714,7 +750,8 @@ class label : Raw.Label.t -> label_t
  knowledge of the exact\n\
  string being displayed, so translations will cause problems.\n\n\
  {b Selectable labels}\n\n\
- Labels can be made selectable with [Gtk.Label.set_selectable].\n\
+ Labels can be made selectable with \
+ {{!Ocgtk.Label.class-type-label_t.method-set_selectable}[Gtk.Label.set_selectable]}.\n\
  Selectable labels allow the user to copy the label contents to the\n\
  clipboard. Only labels that contain useful-to-copy information — such\n\
  as error messages — should be made selectable.\n\n\
@@ -723,12 +760,19 @@ class label : Raw.Label.t -> label_t
  performance problems if it contains more than a small number.\n\
  Paragraphs are separated by newlines or other paragraph separators\n\
  understood by Pango.\n\n\
- Labels can automatically wrap text if you call [Gtk.Label.set_wrap].\n\n\
- [Gtk.Label.set_justify] sets how the lines in a label align\n\
+ Labels can automatically wrap text if you call \
+ {{!Ocgtk.Label.class-type-label_t.method-set_wrap}[Gtk.Label.set_wrap]}.\n\n\
+ {{!Ocgtk.Label.class-type-label_t.method-set_justify}[Gtk.Label.set_justify]} \
+ sets how the lines in a label align\n\
  with one another. If you want to set how the label as a whole aligns\n\
- in its available space, see the [Gtk.Widget:halign] and\n\
- [Gtk.Widget:valign] properties.\n\n\
- The [Gtk.Label:width-chars] and [Gtk.Label:max-width-chars]\n\
+ in its available space, see the \
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]} and\n\
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]} \
+ properties.\n\n\
+ The \
+ {{!Ocgtk.Label.class-type-label_t.method-get_width_chars}[Gtk.Label:width-chars]} \
+ and \
+ {{!Ocgtk.Label.class-type-label_t.method-get_max_width_chars}[Gtk.Label:max-width-chars]}\n\
  properties can be used to control the size allocation of ellipsized or\n\
  wrapped labels. For ellipsizing labels, if either is specified (and less\n\
  than the actual text size), it is used as the minimum width, and the actual\n\
@@ -754,8 +798,11 @@ class label : Raw.Label.t -> label_t
  gtk_label_set_markup (GTK_LABEL (label), text);\n\
  ]}\n\n\
  It is possible to implement custom handling for links and their tooltips\n\
- with the [Gtk.Label::activate-link] signal and the\n\
- [Gtk.Label.get_current_uri] function."]
+ with the \
+ {{!Ocgtk.Label.class-type-label_t.method-on_activate_link}[Gtk.Label::activate-link]} \
+ signal and the\n\
+ {{!Ocgtk.Label.class-type-label_t.method-get_current_uri}[Gtk.Label.get_current_uri]} \
+ function."]
 
 (** {1:constructors Constructors} *)
 
@@ -772,10 +819,11 @@ val new_with_mnemonic : string option -> label_t
     underscores). The first underlined character represents a keyboard
     accelerator called a mnemonic. The mnemonic key can be used to activate
     another widget, chosen automatically, or explicitly using
-    [Gtk.Label.set_mnemonic_widget].
+    {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
 
-    If [Gtk.Label.set_mnemonic_widget] is not called, then the first activatable
-    ancestor of the label will be chosen as the mnemonic widget. For instance,
-    if the label is inside a button or menu item, the button or menu item will
-    automatically become the mnemonic widget and be activated by the mnemonic.
-*)
+    If
+    {{!Ocgtk.Label.class-type-label_t.method-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}
+    is not called, then the first activatable ancestor of the label will be
+    chosen as the mnemonic widget. For instance, if the label is inside a button
+    or menu item, the button or menu item will automatically become the mnemonic
+    widget and be activated by the mnemonic. *)

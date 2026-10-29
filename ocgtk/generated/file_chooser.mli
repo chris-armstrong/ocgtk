@@ -46,11 +46,12 @@
     {b Adding options}
 
     You can add extra widgets to a file chooser to provide options that are not
-    present in the default design, by using [Gtk.FileChooser.add_choice]. Each
-    choice has an identifier and a user visible label; additionally, each choice
-    can have multiple options. If a choice has no option, it will be rendered as
-    a check button with the given label; if a choice has options, it will be
-    rendered as a combo box. *)
+    present in the default design, by using
+    {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-add_choice}[Gtk.FileChooser.add_choice]}.
+    Each choice has an identifier and a user visible label; additionally, each
+    choice can have multiple options. If a choice has no option, it will be
+    rendered as a check button with the given label; if a choice has options, it
+    will be rendered as a combo box. *)
 class type file_chooser_t = object
   (** {2:methods Methods} *)
 
@@ -284,11 +285,12 @@ class file_chooser : Raw.File_chooser.t -> file_chooser_t
     {b Adding options}
 
     You can add extra widgets to a file chooser to provide options that are not
-    present in the default design, by using [Gtk.FileChooser.add_choice]. Each
-    choice has an identifier and a user visible label; additionally, each choice
-    can have multiple options. If a choice has no option, it will be rendered as
-    a check button with the given label; if a choice has options, it will be
-    rendered as a combo box. *)
+    present in the default design, by using
+    {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-add_choice}[Gtk.FileChooser.add_choice]}.
+    Each choice has an identifier and a user visible label; additionally, each
+    choice can have multiple options. If a choice has no option, it will be
+    rendered as a check button with the given label; if a choice has options, it
+    will be rendered as a combo box. *)
 
 (** {1:constructors Constructors} *)
 

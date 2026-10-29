@@ -19,8 +19,9 @@
     by a [GtkFilter].
 
     The model can be set up to do incremental filtering, so that filtering long
-    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t.method-set_incremental}
+     [Gtk.FilterListModel.set_incremental]} for details.
 
     [GtkFilterListModel] passes through sections from the underlying model. *)
 class type filter_list_model_t = object
@@ -123,8 +124,9 @@ class filter_list_model : Raw.Filter_list_model.t -> filter_list_model_t
     by a [GtkFilter].
 
     The model can be set up to do incremental filtering, so that filtering long
-    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t.method-set_incremental}
+     [Gtk.FilterListModel.set_incremental]} for details.
 
     [GtkFilterListModel] passes through sections from the underlying model. *)
 

@@ -15,10 +15,12 @@
     Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the
-    [Gtk.GestureDrag::drag-begin], [Gtk.GestureDrag::drag-update] and
-    [Gtk.GestureDrag::drag-end] signals, and the relevant coordinates can be
-    extracted through [Gtk.GestureDrag.get_offset] and
-    [Gtk.GestureDrag.get_start_point]. *)
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_begin}[Gtk.GestureDrag::drag-begin]},
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_update}[Gtk.GestureDrag::drag-update]}
+    and
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_end}[Gtk.GestureDrag::drag-end]}
+    signals, and the relevant coordinates can be extracted through
+    [Gtk.GestureDrag.get_offset] and [Gtk.GestureDrag.get_start_point]. *)
 class type gesture_drag_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -58,10 +60,12 @@ class gesture_drag : Raw.Gesture_drag.t -> gesture_drag_t
     Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the
-    [Gtk.GestureDrag::drag-begin], [Gtk.GestureDrag::drag-update] and
-    [Gtk.GestureDrag::drag-end] signals, and the relevant coordinates can be
-    extracted through [Gtk.GestureDrag.get_offset] and
-    [Gtk.GestureDrag.get_start_point]. *)
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_begin}[Gtk.GestureDrag::drag-begin]},
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_update}[Gtk.GestureDrag::drag-update]}
+    and
+    {{!Ocgtk.Gesture_drag.class-type-gesture_drag_t.method-on_drag_end}[Gtk.GestureDrag::drag-end]}
+    signals, and the relevant coordinates can be extracted through
+    [Gtk.GestureDrag.get_offset] and [Gtk.GestureDrag.get_start_point]. *)
 
 (** {1:constructors Constructors} *)
 

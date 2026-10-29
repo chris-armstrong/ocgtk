@@ -8,11 +8,11 @@
     the model.
 
     Columns have a title, and can optionally have a header menu set with
-    [Gtk.ColumnViewColumn.set_header_menu].
+    {{!Ocgtk.Raw.Column_view_column.val-set_header_menu}[Gtk.ColumnViewColumn.set_header_menu]}.
 
     A sorter can be associated with a column using
-    [Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
-    clicking on the column header.
+    {{!Ocgtk.Raw.Column_view_column.val-set_sorter}[Gtk.ColumnViewColumn.set_sorter]},
+    to let users influence sorting by clicking on the column header.
 
     The class built on this module is in {!Ocgtk.Column_view_column}. *)
 

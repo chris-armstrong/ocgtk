@@ -26,7 +26,9 @@ external set_context_id : t -> string option -> unit
     delegate corresponding to the new context id.
 
     Setting this to a non-[None] value overrides the system-wide IM module
-    setting. See the [Gtk.Settings:gtk-im-module] property. *)
+    setting. See the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    property. *)
 
 external get_context_id : t -> string = "ml_gtk_im_multicontext_get_context_id"
 (** Gets the id of the currently active delegate of the [context]. *)

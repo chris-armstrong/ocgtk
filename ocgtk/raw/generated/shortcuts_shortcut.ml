@@ -26,7 +26,8 @@ external get_accelerator : t -> string
   = "ml_gtk_shortcuts_shortcut_get_accelerator"
 [@@ocaml.doc
   "The accelerator(s) represented by this object.\n\n\
-   This property is used if [Gtk.ShortcutsShortcut:shortcut-type]\n\
+   This property is used if \
+   {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_shortcut_type}[Gtk.ShortcutsShortcut:shortcut-type]}\n\
    is set to [GTK_SHORTCUT_ACCELERATOR].\n\n\
    The syntax of this property is (an extension of) the syntax understood\n\
    by [Gtk.accelerator_parse]. Multiple accelerators can be specified\n\
@@ -51,7 +52,8 @@ external set_accelerator : t -> string -> unit
   = "ml_gtk_shortcuts_shortcut_set_accelerator"
 [@@ocaml.doc
   "The accelerator(s) represented by this object.\n\n\
-   This property is used if [Gtk.ShortcutsShortcut:shortcut-type]\n\
+   This property is used if \
+   {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_shortcut_type}[Gtk.ShortcutsShortcut:shortcut-type]}\n\
    is set to [GTK_SHORTCUT_ACCELERATOR].\n\n\
    The syntax of this property is (an extension of) the syntax understood\n\
    by [Gtk.accelerator_parse]. Multiple accelerators can be specified\n\
@@ -78,8 +80,10 @@ external get_action_name : t -> string
 
     If this is set for a shortcut of type [GTK_SHORTCUT_ACCELERATOR], then GTK
     will use the accelerators that are associated with the action via
-    [Gtk.Application.set_accels_for_action], and setting
-    [Gtk.ShortcutsShortcut:accelerator] is not necessary. *)
+    {{!Ocgtk.Raw.Application.val-set_accels_for_action}[Gtk.Application.set_accels_for_action]},
+    and setting
+    {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_accelerator}[Gtk.ShortcutsShortcut:accelerator]}
+    is not necessary. *)
 
 external set_action_name : t -> string -> unit
   = "ml_gtk_shortcuts_shortcut_set_action_name"
@@ -87,8 +91,10 @@ external set_action_name : t -> string -> unit
 
     If this is set for a shortcut of type [GTK_SHORTCUT_ACCELERATOR], then GTK
     will use the accelerators that are associated with the action via
-    [Gtk.Application.set_accels_for_action], and setting
-    [Gtk.ShortcutsShortcut:accelerator] is not necessary. *)
+    {{!Ocgtk.Raw.Application.val-set_accels_for_action}[Gtk.Application.set_accels_for_action]},
+    and setting
+    {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_accelerator}[Gtk.ShortcutsShortcut:accelerator]}
+    is not necessary. *)
 
 external get_direction : t -> Ocgtk_enums.textdirection
   = "ml_gtk_shortcuts_shortcut_get_direction"
@@ -107,8 +113,9 @@ external set_direction : t -> Ocgtk_enums.textdirection -> unit
 external get_icon : t -> Ocgio_raw.Icon.t = "ml_gtk_shortcuts_shortcut_get_icon"
 (** An icon to represent the shortcut or gesture.
 
-    This property is used if [Gtk.ShortcutsShortcut:shortcut-type] is set to
-    [GTK_SHORTCUT_GESTURE].
+    This property is used if
+    {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_shortcut_type}[Gtk.ShortcutsShortcut:shortcut-type]}
+    is set to [GTK_SHORTCUT_GESTURE].
 
     For the other predefined gesture types, GTK provides an icon on its own. *)
 
@@ -116,8 +123,9 @@ external set_icon : t -> Ocgio_raw.Icon.t -> unit
   = "ml_gtk_shortcuts_shortcut_set_icon"
 (** An icon to represent the shortcut or gesture.
 
-    This property is used if [Gtk.ShortcutsShortcut:shortcut-type] is set to
-    [GTK_SHORTCUT_GESTURE].
+    This property is used if
+    {{!Ocgtk.Raw.Shortcuts_shortcut.val-get_shortcut_type}[Gtk.ShortcutsShortcut:shortcut-type]}
+    is set to [GTK_SHORTCUT_GESTURE].
 
     For the other predefined gesture types, GTK provides an icon on its own. *)
 

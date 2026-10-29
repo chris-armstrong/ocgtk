@@ -19,8 +19,8 @@ class type cairo_context_t = App_launch_context_cycle_de440b34.cairo_context_t
     Represents the platform-specific draw context.
 
     [GdkCairoContext]s are created for a surface using
-    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
-    on that surface. *)
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_cairo_context}[Gdk.Surface.create_cairo_context]},
+    and the context can then be used to draw on that surface. *)
 
 class cairo_context : Raw.Cairo_context.t -> cairo_context_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Cairo_context.t}. *)
@@ -30,8 +30,8 @@ class cairo_context : Raw.Cairo_context.t -> cairo_context_t
     Represents the platform-specific draw context.
 
     [GdkCairoContext]s are created for a surface using
-    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
-    on that surface. *)
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_cairo_context}[Gdk.Surface.create_cairo_context]},
+    and the context can then be used to draw on that surface. *)
 
 (** {1:constructors Constructors} *)
 

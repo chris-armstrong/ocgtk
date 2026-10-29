@@ -26,9 +26,9 @@
     the model as a grid of icons with labels. Like
     {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}, it allows to
     select one or multiple items (depending on the selection mode, see
-    [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
-    keys, [GtkIconView] supports rubberband selection, which is controlled by
-    dragging the pointer.
+    {{!Ocgtk.Icon_view.class-type-icon_view_t.method-set_selection_mode}[Gtk.IconView.set_selection_mode]}).
+    In addition to selection with the arrow keys, [GtkIconView] supports
+    rubberband selection, which is controlled by dragging the pointer.
 
     Note that if the tree model is backed by an actual tree store (as opposed to
     a flat list where the mapping to icons is obvious), [GtkIconView] will only
@@ -411,9 +411,9 @@ class icon_view : Raw.Icon_view.t -> icon_view_t
     the model as a grid of icons with labels. Like
     {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}, it allows to
     select one or multiple items (depending on the selection mode, see
-    [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
-    keys, [GtkIconView] supports rubberband selection, which is controlled by
-    dragging the pointer.
+    {{!Ocgtk.Icon_view.class-type-icon_view_t.method-set_selection_mode}[Gtk.IconView.set_selection_mode]}).
+    In addition to selection with the arrow keys, [GtkIconView] supports
+    rubberband selection, which is controlled by dragging the pointer.
 
     Note that if the tree model is backed by an actual tree store (as opposed to
     a flat list where the mapping to icons is obvious), [GtkIconView] will only

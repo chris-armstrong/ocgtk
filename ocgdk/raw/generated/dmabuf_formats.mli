@@ -4,9 +4,11 @@
 (** Provides information about supported DMA buffer formats.
 
     You can query whether a given format is supported with
-    [Gdk.DmabufFormats.contains] and you can iterate over the list of all
-    supported formats with [Gdk.DmabufFormats.get_n_formats] and
-    [Gdk.DmabufFormats.get_format].
+    {{!Ocgdk.Raw.Dmabuf_formats.val-contains}[Gdk.DmabufFormats.contains]} and
+    you can iterate over the list of all supported formats with
+    {{!Ocgdk.Raw.Dmabuf_formats.val-get_n_formats}[Gdk.DmabufFormats.get_n_formats]}
+    and
+    {{!Ocgdk.Raw.Dmabuf_formats.val-get_format}[Gdk.DmabufFormats.get_format]}.
 
     The list of supported formats is sorted by preference, with the best formats
     coming first.
@@ -35,7 +37,8 @@ external get_n_formats : t -> Gsize.t = "ml_gdk_dmabuf_formats_get_n_formats"
 (** Returns the number of formats that the [formats] object contains.
 
     Note that DMA buffers are a Linux concept, so on other platforms,
-    [Gdk.DmabufFormats.get_n_formats] will always return zero. *)
+    {{!Ocgdk.Raw.Dmabuf_formats.val-get_n_formats}[Gdk.DmabufFormats.get_n_formats]}
+    will always return zero. *)
 
 external get_format : t -> Gsize.t -> UInt32.t * UInt64.t
   = "ml_gdk_dmabuf_formats_get_format"

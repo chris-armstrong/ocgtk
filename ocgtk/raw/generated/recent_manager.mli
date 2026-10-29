@@ -22,7 +22,8 @@
  The [GtkRecentManager] will try to gather all the needed information\n\
  from the file itself through GIO.\n\n\
  Looking up the meta-data associated with a recently used file\n\
- given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
+ given its URI requires calling \
+ {{!Ocgtk.Raw.Recent_manager.val-lookup_item}[Gtk.RecentManager.lookup_item]}:\n\n\
  {[\n\
  GtkRecentManager *manager;\n\
  GtkRecentInfo *info;\n\
@@ -41,10 +42,12 @@
 \ }\n\
  ]}\n\n\
  In order to retrieve the list of recently used files, you can use\n\
- [Gtk.RecentManager.get_items], which returns a list of\n\
+ {{!Ocgtk.Raw.Recent_manager.val-get_items}[Gtk.RecentManager.get_items]}, \
+ which returns a list of\n\
  {{!Ocgtk.Raw.Recent_info}[Gtk.RecentInfo]}.\n\n\
  Note that the maximum age of the recently used files list is\n\
- controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
+ controllable through the \
+ {{!Ocgtk.Raw.Settings.val-get_gtk_recent_files_max_age}[Gtk.Settings:gtk-recent-files-max-age]}\n\
  property.\n\n\
  The class built on this module is in {!Ocgtk.Recent_manager}."]
 
@@ -57,8 +60,9 @@ external new_ : unit -> t = "ml_gtk_recent_manager_new"
 
     Recent manager objects are used to handle the list of recently used
     resources. A [GtkRecentManager] object monitors the recently used resources
-    list, and emits the [Gtk.RecentManager::changed] signal each time something
-    inside the list changes.
+    list, and emits the
+    {{!Ocgtk.Raw.Recent_manager.val-on_changed}[Gtk.RecentManager::changed]}
+    signal each time something inside the list changes.
 
     [GtkRecentManager] objects are expensive: be sure to create them only when
     needed. You should use [Gtk.RecentManager.get_default] instead. *)
@@ -100,10 +104,11 @@ external add_item : t -> string -> bool = "ml_gtk_recent_manager_add_item"
 
     This function automatically retrieves some of the needed metadata and
     setting other metadata to common default values; it then feeds the data to
-    [Gtk.RecentManager.add_full].
+    {{!Ocgtk.Raw.Recent_manager.val-add_full}[Gtk.RecentManager.add_full]}.
 
-    See [Gtk.RecentManager.add_full] if you want to explicitly define the
-    metadata for the resource pointed by [uri]. *)
+    See {{!Ocgtk.Raw.Recent_manager.val-add_full}[Gtk.RecentManager.add_full]}
+    if you want to explicitly define the metadata for the resource pointed by
+    [uri]. *)
 
 external add_full : t -> string -> Recent_data.t -> bool
   = "ml_gtk_recent_manager_add_full"
@@ -139,5 +144,6 @@ val on_changed :
 (** Emitted when the current recently used resources manager changes its
     contents.
 
-    This can happen either by calling [Gtk.RecentManager.add_item] or by another
-    application. *)
+    This can happen either by calling
+    {{!Ocgtk.Raw.Recent_manager.val-add_item}[Gtk.RecentManager.add_item]} or by
+    another application. *)

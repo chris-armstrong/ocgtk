@@ -1,7 +1,6 @@
 module StringSet = Common.StringSet
 
 type module_names = Common.module_names
-type property_filters = Common.property_filters
 
 val sanitize_name : string -> string
 val ocaml_method_name : class_name:'a -> c_type:'b -> Types.gir_method -> string

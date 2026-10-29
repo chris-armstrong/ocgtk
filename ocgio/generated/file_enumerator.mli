@@ -4,8 +4,10 @@
 (** [GFileEnumerator] allows you to operate on a set of
     {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
-    file enumerated (e.g. [Gio.File.enumerate_children] will return a
-    [GFileEnumerator] for each of the children within a directory).
+    file enumerated (e.g.
+    {{!Ocgio.File.class-type-file_t.method-enumerate_children}[Gio.File.enumerate_children]}
+    will return a [GFileEnumerator] for each of the children within a
+    directory).
 
     Its methods, signals and properties are on {!class-type-file_enumerator_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -20,13 +22,15 @@ class type file_enumerator_t = App_info_cycle_64c425a0.file_enumerator_t
     [GFileEnumerator] allows you to operate on a set of
     {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
-    file enumerated (e.g. [Gio.File.enumerate_children] will return a
-    [GFileEnumerator] for each of the children within a directory).
+    file enumerated (e.g.
+    {{!Ocgio.File.class-type-file_t.method-enumerate_children}[Gio.File.enumerate_children]}
+    will return a [GFileEnumerator] for each of the children within a
+    directory).
 
     To get the next file's information from a [GFileEnumerator], use
-    [Gio.FileEnumerator.next_file] or its asynchronous version,
-    [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-next_file}[Gio.FileEnumerator.next_file]}
+    or its asynchronous version, [Gio.FileEnumerator.next_files_async]. Note
+    that the asynchronous version will return a list of
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
     the synchronous will only return the next file in the enumerator.
 
@@ -39,8 +43,9 @@ class type file_enumerator_t = App_info_cycle_64c425a0.file_enumerator_t
     If your application needs a specific ordering, such as by name or
     modification time, you will have to implement that in your application code.
 
-    To close a [GFileEnumerator], use [Gio.FileEnumerator.close], or its
-    asynchronous version, [Gio.FileEnumerator.close_async]. Once a
+    To close a [GFileEnumerator], use
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-close}[Gio.FileEnumerator.close]},
+    or its asynchronous version, [Gio.FileEnumerator.close_async]. Once a
     [GFileEnumerator] is closed, no further actions may be performed on it, and
     it should be freed with [GObject.Object.unref]. *)
 
@@ -52,13 +57,15 @@ class file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
     [GFileEnumerator] allows you to operate on a set of
     {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
-    file enumerated (e.g. [Gio.File.enumerate_children] will return a
-    [GFileEnumerator] for each of the children within a directory).
+    file enumerated (e.g.
+    {{!Ocgio.File.class-type-file_t.method-enumerate_children}[Gio.File.enumerate_children]}
+    will return a [GFileEnumerator] for each of the children within a
+    directory).
 
     To get the next file's information from a [GFileEnumerator], use
-    [Gio.FileEnumerator.next_file] or its asynchronous version,
-    [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-next_file}[Gio.FileEnumerator.next_file]}
+    or its asynchronous version, [Gio.FileEnumerator.next_files_async]. Note
+    that the asynchronous version will return a list of
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
     the synchronous will only return the next file in the enumerator.
 
@@ -71,8 +78,9 @@ class file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
     If your application needs a specific ordering, such as by name or
     modification time, you will have to implement that in your application code.
 
-    To close a [GFileEnumerator], use [Gio.FileEnumerator.close], or its
-    asynchronous version, [Gio.FileEnumerator.close_async]. Once a
+    To close a [GFileEnumerator], use
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-close}[Gio.FileEnumerator.close]},
+    or its asynchronous version, [Gio.FileEnumerator.close_async]. Once a
     [GFileEnumerator] is closed, no further actions may be performed on it, and
     it should be freed with [GObject.Object.unref]. *)
 

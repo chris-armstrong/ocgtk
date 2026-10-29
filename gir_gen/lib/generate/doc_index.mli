@@ -4,7 +4,10 @@
    generated, since a link to anything else is a broken odoc reference. The
    index lists the generated types and constants of the current namespace,
    from the generation context and the generator's own filters, and those of
-   every namespace with a references file, which lists only generated types. *)
+   every namespace with a references file, which lists only generated types.
+   Members are listed for the current namespace only: the members of each
+   generated type at each layer, from [Emitted_members], and the members of
+   each enumeration and bitfield. *)
 
 open Types
 
@@ -21,6 +24,12 @@ val build :
   constants:gir_constant list ->
   cross_references:generation_context_namespace_cross_references StringMap.t ->
   doc_index
-(** The index for generating [namespace]. Classes, records and constants are
-    filtered by the same predicates the emitters use, so the lists may be the
-    unfiltered ones. *)
+(** The index for generating [namespace], without the member tables of its
+    classes, interfaces and records. Classes, records and constants are filtered
+    by the same predicates the emitters use, so the lists may be the unfiltered
+    ones. *)
+
+val with_members : ctx:generation_context -> entity list -> doc_index
+(** [ctx.doc_index] with the member tables of [entities], the generated classes,
+    interfaces and records of the current namespace. Deciding what an entity
+    emits needs the generation context, so this is a second step. *)

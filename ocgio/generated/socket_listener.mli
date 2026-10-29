@@ -14,11 +14,15 @@
     and helps you accept sockets from any of the socket, either sync or async.
 
     Add addresses and ports to listen on using [Gio.SocketListener.add_address]
-    and [Gio.SocketListener.add_inet_port]. These will be listened on until
-    [Gio.SocketListener.close] is called. Dropping your final reference to the
-    [GSocketListener] will not cause [Gio.SocketListener.close] to be called
-    implicitly, as some references to the [GSocketListener] may be held
-    internally.
+    and
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-add_inet_port}[Gio.SocketListener.add_inet_port]}.
+    These will be listened on until
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-close}[Gio.SocketListener.close]}
+    is called. Dropping your final reference to the [GSocketListener] will not
+    cause
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-close}[Gio.SocketListener.close]}
+    to be called implicitly, as some references to the [GSocketListener] may be
+    held internally.
 
     If you want to implement a network server, also look at
     {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
@@ -136,11 +140,15 @@ class socket_listener : Raw.Socket_listener.t -> socket_listener_t
     and helps you accept sockets from any of the socket, either sync or async.
 
     Add addresses and ports to listen on using [Gio.SocketListener.add_address]
-    and [Gio.SocketListener.add_inet_port]. These will be listened on until
-    [Gio.SocketListener.close] is called. Dropping your final reference to the
-    [GSocketListener] will not cause [Gio.SocketListener.close] to be called
-    implicitly, as some references to the [GSocketListener] may be held
-    internally.
+    and
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-add_inet_port}[Gio.SocketListener.add_inet_port]}.
+    These will be listened on until
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-close}[Gio.SocketListener.close]}
+    is called. Dropping your final reference to the [GSocketListener] will not
+    cause
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-close}[Gio.SocketListener.close]}
+    to be called implicitly, as some references to the [GSocketListener] may be
+    held internally.
 
     If you want to implement a network server, also look at
     {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and

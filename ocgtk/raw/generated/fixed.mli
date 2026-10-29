@@ -59,7 +59,9 @@ external set_child_transform :
 
     This is a convenience function that retrieves the
     {{!Ocgtk.Raw.Fixed_layout_child}[Gtk.FixedLayoutChild]} instance associated
-    to [widget] and calls [Gtk.FixedLayoutChild.set_transform]. *)
+    to [widget] and calls
+    {{!Ocgtk.Raw.Fixed_layout_child.val-set_transform}[Gtk.FixedLayoutChild.set_transform]}.
+*)
 
 external remove :
   t ->
@@ -108,4 +110,6 @@ external get_child_position :
 (** Retrieves the translation transformation of the given child [GtkWidget] in
     the [GtkFixed].
 
-    See also: [Gtk.Fixed.get_child_transform]. *)
+    See also:
+    {{!Ocgtk.Raw.Fixed.val-get_child_transform}[Gtk.Fixed.get_child_transform]}.
+*)

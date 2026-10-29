@@ -35,5 +35,6 @@ external is_valid : t -> bool = "ml_gtk_bitset_iter_is_valid"
 external get_value : t -> int = "ml_gtk_bitset_iter_get_value"
 (** Gets the current value that [iter] points to.
 
-    If [iter] is not valid and [Gtk.BitsetIter.is_valid] returns [false], this
-    function returns 0. *)
+    If [iter] is not valid and
+    {{!Ocgtk.Raw.Bitset_iter.val-is_valid}[Gtk.BitsetIter.is_valid]} returns
+    [false], this function returns 0. *)

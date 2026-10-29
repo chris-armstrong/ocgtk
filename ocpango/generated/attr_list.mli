@@ -15,8 +15,9 @@
 
     The attributes in a [PangoAttrList] are, in general, allowed to overlap in
     an arbitrary fashion. However, if the attributes are manipulated only
-    through [Pango.AttrList.change], the overlap between properties will meet
-    stricter criteria.
+    through
+    {{!Ocpango.Attr_list.class-type-attr_list_t.method-change}[Pango.AttrList.change]},
+    the overlap between properties will meet stricter criteria.
 
     Since the [PangoAttrList] structure is stored as a linear list, it is not
     suitable for storing attributes for large amounts of text. In general, you
@@ -144,8 +145,9 @@ class attr_list : Raw.Attr_list.t -> attr_list_t
 
     The attributes in a [PangoAttrList] are, in general, allowed to overlap in
     an arbitrary fashion. However, if the attributes are manipulated only
-    through [Pango.AttrList.change], the overlap between properties will meet
-    stricter criteria.
+    through
+    {{!Ocpango.Attr_list.class-type-attr_list_t.method-change}[Pango.AttrList.change]},
+    the overlap between properties will meet stricter criteria.
 
     Since the [PangoAttrList] structure is stored as a linear list, it is not
     suitable for storing attributes for large amounts of text. In general, you

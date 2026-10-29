@@ -17,17 +17,22 @@
     It allows querying the features provided by the pad device.
 
     Tablet pads may contain one or more groups, each containing a subset of the
-    buttons/rings/strips available. [Gdk.DevicePad.get_n_groups] can be used to
-    obtain the number of groups, [Gdk.DevicePad.get_n_features] and
-    [Gdk.DevicePad.get_feature_group] can be combined to find out the number of
-    buttons/rings/strips the device has, and how are they grouped.
+    buttons/rings/strips available.
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_groups}[Gdk.DevicePad.get_n_groups]}
+    can be used to obtain the number of groups,
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_features}[Gdk.DevicePad.get_n_features]}
+    and
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_feature_group}[Gdk.DevicePad.get_feature_group]}
+    can be combined to find out the number of buttons/rings/strips the device
+    has, and how are they grouped.
 
     Each of those groups have different modes, which may be used to map each
     individual pad feature to multiple actions. Only one mode is effective
     (current) for each given group, different groups may have different current
     modes. The number of available modes in a group can be found out through
-    [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
-    will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_group_n_modes}[Gdk.DevicePad.get_group_n_modes]},
+    and the current mode for a given group will be notified through events of
+    type [GDK_PAD_GROUP_MODE]. *)
 class type device_pad_t = object
   (** {2:methods Methods} *)
 
@@ -64,17 +69,22 @@ class device_pad : Raw.Device_pad.t -> device_pad_t
     It allows querying the features provided by the pad device.
 
     Tablet pads may contain one or more groups, each containing a subset of the
-    buttons/rings/strips available. [Gdk.DevicePad.get_n_groups] can be used to
-    obtain the number of groups, [Gdk.DevicePad.get_n_features] and
-    [Gdk.DevicePad.get_feature_group] can be combined to find out the number of
-    buttons/rings/strips the device has, and how are they grouped.
+    buttons/rings/strips available.
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_groups}[Gdk.DevicePad.get_n_groups]}
+    can be used to obtain the number of groups,
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_features}[Gdk.DevicePad.get_n_features]}
+    and
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_feature_group}[Gdk.DevicePad.get_feature_group]}
+    can be combined to find out the number of buttons/rings/strips the device
+    has, and how are they grouped.
 
     Each of those groups have different modes, which may be used to map each
     individual pad feature to multiple actions. Only one mode is effective
     (current) for each given group, different groups may have different current
     modes. The number of available modes in a group can be found out through
-    [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
-    will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+    {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_group_n_modes}[Gdk.DevicePad.get_group_n_modes]},
+    and the current mode for a given group will be notified through events of
+    type [GDK_PAD_GROUP_MODE]. *)
 
 (** {1:constructors Constructors} *)
 

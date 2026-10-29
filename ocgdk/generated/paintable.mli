@@ -19,11 +19,11 @@
     or {{:https://www.w3.org/TR/SVG2/pservers.html}SVG Paint Servers}.
 
     A [GdkPaintable] can be snapshot at any time and size using
-    [Gdk.Paintable.snapshot]. How the paintable interprets that size and if it
-    scales or centers itself into the given rectangle is implementation defined,
-    though if you are implementing a [GdkPaintable] and don't know what to do,
-    it is suggested that you scale your paintable ignoring any potential aspect
-    ratio.
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-snapshot}[Gdk.Paintable.snapshot]}.
+    How the paintable interprets that size and if it scales or centers itself
+    into the given rectangle is implementation defined, though if you are
+    implementing a [GdkPaintable] and don't know what to do, it is suggested
+    that you scale your paintable ignoring any potential aspect ratio.
 
     The contents that a [GdkPaintable] produces may depend on the
     {{!Ocgdk.Snapshot.class-type-snapshot_t}[Gdk.Snapshot]} passed to it. For
@@ -33,25 +33,30 @@
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call
-    [Gdk.Paintable.invalidate_contents] which will emit the
-    [Gdk.Paintable::invalidate-contents] signal. If a paintable is known to
-    never change its contents, it will set the [GDK_PAINTABLE_STATIC_CONTENTS]
-    flag. If a consumer cannot deal with changing contents, it may call
-    [Gdk.Paintable.get_current_image] which will return a static paintable and
-    use that.
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_contents}[Gdk.Paintable.invalidate_contents]}
+    which will emit the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal. If a paintable is known to never change its contents, it will set
+    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
+    changing contents, it may call
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-get_current_image}[Gdk.Paintable.get_current_image]}
+    which will return a static paintable and use that.
 
     A paintable can report an intrinsic (or preferred) size or aspect ratio it
     wishes to be rendered at, though it doesn't have to. Consumers of the
     interface can use this information to layout thepaintable appropriately.
     Just like the contents, the size of a paintable can change. A paintable will
-    indicate this by calling [Gdk.Paintable.invalidate_size] which will emit the
-    [Gdk.Paintable::invalidate-size] signal. And just like for contents, if a
-    paintable is known to never change its size, it will set the
-    [GDK_PAINTABLE_STATIC_SIZE] flag.
+    indicate this by calling
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_size}[Gdk.Paintable.invalidate_size]}
+    which will emit the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal. And just like for contents, if a paintable is known to never change
+    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
-    [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_contents}[Gdk.Paintable.invalidate_contents]},
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_size}[Gdk.Paintable.invalidate_size]},
     [Gdk.Paintable.new_empty]. *)
 class type paintable_t = object
   (** {2:signals Signals} *)
@@ -185,11 +190,11 @@ class paintable : Raw.Paintable.t -> paintable_t
     or {{:https://www.w3.org/TR/SVG2/pservers.html}SVG Paint Servers}.
 
     A [GdkPaintable] can be snapshot at any time and size using
-    [Gdk.Paintable.snapshot]. How the paintable interprets that size and if it
-    scales or centers itself into the given rectangle is implementation defined,
-    though if you are implementing a [GdkPaintable] and don't know what to do,
-    it is suggested that you scale your paintable ignoring any potential aspect
-    ratio.
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-snapshot}[Gdk.Paintable.snapshot]}.
+    How the paintable interprets that size and if it scales or centers itself
+    into the given rectangle is implementation defined, though if you are
+    implementing a [GdkPaintable] and don't know what to do, it is suggested
+    that you scale your paintable ignoring any potential aspect ratio.
 
     The contents that a [GdkPaintable] produces may depend on the
     {{!Ocgdk.Snapshot.class-type-snapshot_t}[Gdk.Snapshot]} passed to it. For
@@ -199,25 +204,30 @@ class paintable : Raw.Paintable.t -> paintable_t
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call
-    [Gdk.Paintable.invalidate_contents] which will emit the
-    [Gdk.Paintable::invalidate-contents] signal. If a paintable is known to
-    never change its contents, it will set the [GDK_PAINTABLE_STATIC_CONTENTS]
-    flag. If a consumer cannot deal with changing contents, it may call
-    [Gdk.Paintable.get_current_image] which will return a static paintable and
-    use that.
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_contents}[Gdk.Paintable.invalidate_contents]}
+    which will emit the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal. If a paintable is known to never change its contents, it will set
+    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
+    changing contents, it may call
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-get_current_image}[Gdk.Paintable.get_current_image]}
+    which will return a static paintable and use that.
 
     A paintable can report an intrinsic (or preferred) size or aspect ratio it
     wishes to be rendered at, though it doesn't have to. Consumers of the
     interface can use this information to layout thepaintable appropriately.
     Just like the contents, the size of a paintable can change. A paintable will
-    indicate this by calling [Gdk.Paintable.invalidate_size] which will emit the
-    [Gdk.Paintable::invalidate-size] signal. And just like for contents, if a
-    paintable is known to never change its size, it will set the
-    [GDK_PAINTABLE_STATIC_SIZE] flag.
+    indicate this by calling
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_size}[Gdk.Paintable.invalidate_size]}
+    which will emit the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal. And just like for contents, if a paintable is known to never change
+    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
-    [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_contents}[Gdk.Paintable.invalidate_contents]},
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-invalidate_size}[Gdk.Paintable.invalidate_size]},
     [Gdk.Paintable.new_empty]. *)
 
 (** {1:constructors Constructors} *)

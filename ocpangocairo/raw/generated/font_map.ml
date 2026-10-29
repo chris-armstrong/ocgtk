@@ -45,7 +45,9 @@ external set_default : t -> unit = "ml_pango_cairo_font_map_set_default"
 external get_resolution : t -> float = "ml_pango_cairo_font_map_get_resolution"
 (** Gets the resolution for the fontmap.
 
-    See [PangoCairo.FontMap.set_resolution]. *)
+    See
+    {{!Ocpangocairo.Raw.Font_map.val-set_resolution}[PangoCairo.FontMap.set_resolution]}.
+*)
 
 external get_font_type : t -> Occairo_enums.fonttype
   = "ml_pango_cairo_font_map_get_font_type"

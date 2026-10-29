@@ -21,7 +21,8 @@
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
-    [GtkAssistantPage] for a child with [Gtk.Assistant.get_page].
+    [GtkAssistantPage] for a child with
+    {{!Ocgtk.Raw.Assistant.val-get_page}[Gtk.Assistant.get_page]}.
 
     {b GtkAssistant as GtkBuildable}
 
@@ -246,7 +247,8 @@ val on_apply :
     wizard has collected data. If the action takes a long time to complete, you
     might consider putting a page of type [GTK_ASSISTANT_PAGE_PROGRESS] after
     the confirmation page and handle this operation within the
-    [Gtk.Assistant::prepare] signal of the progress page. *)
+    {{!Ocgtk.Raw.Assistant.val-on_prepare}[Gtk.Assistant::prepare]} signal of
+    the progress page. *)
 
 val on_cancel :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

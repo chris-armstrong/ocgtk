@@ -4,7 +4,8 @@
 (** Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
-    [Gtk.GestureRotate::angle-changed] signal is emitted.
+    {{!Ocgtk.Raw.Gesture_rotate.val-on_angle_changed}[Gtk.GestureRotate::angle-changed]}
+    signal is emitted.
 
     The class built on this module is in {!Ocgtk.Gesture_rotate}. *)
 

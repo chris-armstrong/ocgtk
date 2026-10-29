@@ -10,9 +10,10 @@ module rec Context : sig
   (** Creates a new [PangoContext] initialized to default values.
 
       This function is not particularly useful as it should always be followed
-      by a [Pango.Context.set_font_map] call, and the function
-      [Pango.FontMap.create_context] does these two steps together and hence
-      users are recommended to use that.
+      by a {{!Ocpango.Raw.Context.val-set_font_map}[Pango.Context.set_font_map]}
+      call, and the function
+      {{!Ocpango.Raw.Font_map.val-create_context}[Pango.FontMap.create_context]}
+      does these two steps together and hence users are recommended to use that.
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK
@@ -55,8 +56,9 @@ module rec Context : sig
   (** Sets the gravity hint for the context.
 
       The gravity hint is used in laying vertical text out, and is only relevant
-      if gravity of the context as returned by [Pango.Context.get_gravity] is
-      set to [PANGO_GRAVITY_EAST] or [PANGO_GRAVITY_WEST]. *)
+      if gravity of the context as returned by
+      {{!Ocpango.Raw.Context.val-get_gravity}[Pango.Context.get_gravity]} is set
+      to [PANGO_GRAVITY_EAST] or [PANGO_GRAVITY_WEST]. *)
 
   external set_font_map : t -> Font_map.t option -> unit
     = "ml_pango_context_set_font_map"
@@ -140,7 +142,7 @@ module rec Context : sig
   (** Gets the transformation matrix that will be applied when rendering with
       this context.
 
-      See [Pango.Context.set_matrix]. *)
+      See {{!Ocpango.Raw.Context.val-set_matrix}[Pango.Context.set_matrix]}. *)
 
   external get_language : t -> Language.t = "ml_pango_context_get_language"
   (** Retrieves the global language tag for the context. *)
@@ -149,14 +151,17 @@ module rec Context : sig
     = "ml_pango_context_get_gravity_hint"
   (** Retrieves the gravity hint for the context.
 
-      See [Pango.Context.set_gravity_hint] for details. *)
+      See
+      {{!Ocpango.Raw.Context.val-set_gravity_hint}[Pango.Context.set_gravity_hint]}
+      for details. *)
 
   external get_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_gravity"
   (** Retrieves the gravity for the context.
 
-      This is similar to [Pango.Context.get_base_gravity], except for when the
-      base gravity is [PANGO_GRAVITY_AUTO] for which
+      This is similar to
+      {{!Ocpango.Raw.Context.val-get_base_gravity}[Pango.Context.get_base_gravity]},
+      except for when the base gravity is [PANGO_GRAVITY_AUTO] for which
       [Pango.Gravity.get_for_matrix] is used to return the gravity from the
       current context matrix. *)
 
@@ -172,13 +177,16 @@ module rec Context : sig
     = "ml_pango_context_get_base_gravity"
   (** Retrieves the base gravity for the context.
 
-      See [Pango.Context.set_base_gravity]. *)
+      See
+      {{!Ocpango.Raw.Context.val-set_base_gravity}[Pango.Context.set_base_gravity]}.
+  *)
 
   external get_base_dir : t -> Ocpango_enums.direction
     = "ml_pango_context_get_base_dir"
   (** Retrieves the base direction for the context.
 
-      See [Pango.Context.set_base_dir]. *)
+      See {{!Ocpango.Raw.Context.val-set_base_dir}[Pango.Context.set_base_dir]}.
+  *)
 
   external changed : t -> unit = "ml_pango_context_changed"
   (** Forces a change in the context, which will cause any [PangoLayout] using
@@ -196,9 +204,10 @@ end = struct
   (** Creates a new [PangoContext] initialized to default values.
 
       This function is not particularly useful as it should always be followed
-      by a [Pango.Context.set_font_map] call, and the function
-      [Pango.FontMap.create_context] does these two steps together and hence
-      users are recommended to use that.
+      by a {{!Ocpango.Raw.Context.val-set_font_map}[Pango.Context.set_font_map]}
+      call, and the function
+      {{!Ocpango.Raw.Font_map.val-create_context}[Pango.FontMap.create_context]}
+      does these two steps together and hence users are recommended to use that.
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK
@@ -241,8 +250,9 @@ end = struct
   (** Sets the gravity hint for the context.
 
       The gravity hint is used in laying vertical text out, and is only relevant
-      if gravity of the context as returned by [Pango.Context.get_gravity] is
-      set to [PANGO_GRAVITY_EAST] or [PANGO_GRAVITY_WEST]. *)
+      if gravity of the context as returned by
+      {{!Ocpango.Raw.Context.val-get_gravity}[Pango.Context.get_gravity]} is set
+      to [PANGO_GRAVITY_EAST] or [PANGO_GRAVITY_WEST]. *)
 
   external set_font_map : t -> Font_map.t option -> unit
     = "ml_pango_context_set_font_map"
@@ -326,7 +336,7 @@ end = struct
   (** Gets the transformation matrix that will be applied when rendering with
       this context.
 
-      See [Pango.Context.set_matrix]. *)
+      See {{!Ocpango.Raw.Context.val-set_matrix}[Pango.Context.set_matrix]}. *)
 
   external get_language : t -> Language.t = "ml_pango_context_get_language"
   (** Retrieves the global language tag for the context. *)
@@ -335,14 +345,17 @@ end = struct
     = "ml_pango_context_get_gravity_hint"
   (** Retrieves the gravity hint for the context.
 
-      See [Pango.Context.set_gravity_hint] for details. *)
+      See
+      {{!Ocpango.Raw.Context.val-set_gravity_hint}[Pango.Context.set_gravity_hint]}
+      for details. *)
 
   external get_gravity : t -> Ocpango_enums.gravity
     = "ml_pango_context_get_gravity"
   (** Retrieves the gravity for the context.
 
-      This is similar to [Pango.Context.get_base_gravity], except for when the
-      base gravity is [PANGO_GRAVITY_AUTO] for which
+      This is similar to
+      {{!Ocpango.Raw.Context.val-get_base_gravity}[Pango.Context.get_base_gravity]},
+      except for when the base gravity is [PANGO_GRAVITY_AUTO] for which
       [Pango.Gravity.get_for_matrix] is used to return the gravity from the
       current context matrix. *)
 
@@ -358,13 +371,16 @@ end = struct
     = "ml_pango_context_get_base_gravity"
   (** Retrieves the base gravity for the context.
 
-      See [Pango.Context.set_base_gravity]. *)
+      See
+      {{!Ocpango.Raw.Context.val-set_base_gravity}[Pango.Context.set_base_gravity]}.
+  *)
 
   external get_base_dir : t -> Ocpango_enums.direction
     = "ml_pango_context_get_base_dir"
   (** Retrieves the base direction for the context.
 
-      See [Pango.Context.set_base_dir]. *)
+      See {{!Ocpango.Raw.Context.val-set_base_dir}[Pango.Context.set_base_dir]}.
+  *)
 
   external changed : t -> unit = "ml_pango_context_changed"
   (** Forces a change in the context, which will cause any [PangoLayout] using
@@ -450,13 +466,15 @@ and Font : sig
   (** Returns a description of the font, with absolute font size set in device
       units.
 
-      Use [Pango.Font.describe] if you want the font size in points. *)
+      Use {{!Ocpango.Raw.Font.val-describe}[Pango.Font.describe]} if you want
+      the font size in points. *)
 
   external describe : t -> Font_description.t = "ml_pango_font_describe"
   (** Returns a description of the font, with font size set in points.
 
-      Use [Pango.Font.describe_with_absolute_size] if you want the font size in
-      device units. *)
+      Use
+      {{!Ocpango.Raw.Font.val-describe_with_absolute_size}[Pango.Font.describe_with_absolute_size]}
+      if you want the font size in device units. *)
 end = struct
   type t = [ `font | `object_ ] Gobject.obj
 
@@ -532,13 +550,15 @@ end = struct
   (** Returns a description of the font, with absolute font size set in device
       units.
 
-      Use [Pango.Font.describe] if you want the font size in points. *)
+      Use {{!Ocpango.Raw.Font.val-describe}[Pango.Font.describe]} if you want
+      the font size in points. *)
 
   external describe : t -> Font_description.t = "ml_pango_font_describe"
   (** Returns a description of the font, with font size set in points.
 
-      Use [Pango.Font.describe_with_absolute_size] if you want the font size in
-      device units. *)
+      Use
+      {{!Ocpango.Raw.Font.val-describe_with_absolute_size}[Pango.Font.describe_with_absolute_size]}
+      if you want the font size in device units. *)
 end
 
 and Font_map : sig
@@ -601,8 +621,9 @@ and Font_map : sig
   external create_context : t -> Context.t = "ml_pango_font_map_create_context"
   (** Creates a [PangoContext] connected to [fontmap].
 
-      This is equivalent to [Pango.Context.new] followed by
-      [Pango.Context.set_font_map].
+      This is equivalent to {{!Ocpango.Raw.Context.val-new_}[Pango.Context.new]}
+      followed by
+      {{!Ocpango.Raw.Context.val-set_font_map}[Pango.Context.set_font_map]}.
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK
@@ -692,8 +713,9 @@ end = struct
   external create_context : t -> Context.t = "ml_pango_font_map_create_context"
   (** Creates a [PangoContext] connected to [fontmap].
 
-      This is equivalent to [Pango.Context.new] followed by
-      [Pango.Context.set_font_map].
+      This is equivalent to {{!Ocpango.Raw.Context.val-new_}[Pango.Context.new]}
+      followed by
+      {{!Ocpango.Raw.Context.val-set_font_map}[Pango.Context.set_font_map]}.
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK

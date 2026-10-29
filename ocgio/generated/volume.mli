@@ -21,7 +21,7 @@ class type volume_t = App_info_cycle_64c425a0.volume_t
 
     If a [GVolume] is currently mounted, the corresponding
     {{!Ocgio.Mount.class-type-mount_t}[Gio.Mount]} can be retrieved using
-    [Gio.Volume.get_mount].
+    {{!Ocgio.Volume.class-type-volume_t.method-get_mount}[Gio.Volume.get_mount]}.
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
     information about asynchronous operations, see
@@ -40,11 +40,13 @@ class type volume_t = App_info_cycle_64c425a0.volume_t
     success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} instance
     will be passed to the callback. That callback should then call
-    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    with the [GVolume] instance and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If a [GLib.Error] is
-    present when [Gio.Volume.mount_finish] is called, then it will be filled
-    with any error information.
+    present when
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
     [GnomeVFSDrive].
@@ -58,7 +60,8 @@ class type volume_t = App_info_cycle_64c425a0.volume_t
     filesystem labels, traditional Unix devices (e.g. [/dev/sda2]), UUIDs. GIO
     uses predefined strings as names for the different kinds of identifiers:
     [G_VOLUME_IDENTIFIER_KIND_UUID], [G_VOLUME_IDENTIFIER_KIND_LABEL], etc. Use
-    [Gio.Volume.get_identifier] to obtain an identifier for a volume.
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[Gio.Volume.get_identifier]}
+    to obtain an identifier for a volume.
 
     Note that [G_VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available when the
     GVFS hal volume monitor is in use. Other volume monitors will generally be
@@ -77,7 +80,7 @@ class volume : Raw.Volume.t -> volume_t
 
     If a [GVolume] is currently mounted, the corresponding
     {{!Ocgio.Mount.class-type-mount_t}[Gio.Mount]} can be retrieved using
-    [Gio.Volume.get_mount].
+    {{!Ocgio.Volume.class-type-volume_t.method-get_mount}[Gio.Volume.get_mount]}.
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
     information about asynchronous operations, see
@@ -96,11 +99,13 @@ class volume : Raw.Volume.t -> volume_t
     success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} instance
     will be passed to the callback. That callback should then call
-    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    with the [GVolume] instance and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If a [GLib.Error] is
-    present when [Gio.Volume.mount_finish] is called, then it will be filled
-    with any error information.
+    present when
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
     [GnomeVFSDrive].
@@ -114,7 +119,8 @@ class volume : Raw.Volume.t -> volume_t
     filesystem labels, traditional Unix devices (e.g. [/dev/sda2]), UUIDs. GIO
     uses predefined strings as names for the different kinds of identifiers:
     [G_VOLUME_IDENTIFIER_KIND_UUID], [G_VOLUME_IDENTIFIER_KIND_LABEL], etc. Use
-    [Gio.Volume.get_identifier] to obtain an identifier for a volume.
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[Gio.Volume.get_identifier]}
+    to obtain an identifier for a volume.
 
     Note that [G_VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available when the
     GVFS hal volume monitor is in use. Other volume monitors will generally be

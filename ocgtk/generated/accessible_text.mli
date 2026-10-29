@@ -18,9 +18,11 @@
     objects that have text formatted with attributes, or non-trivial text
     contents.
 
-    You should use the [Gtk.AccessibleProperty.LABEL] or the
-    [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
-    containing simple, unformatted text. *)
+    You should use the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-LABEL}[Gtk.AccessibleProperty.LABEL]}
+    or the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-DESCRIPTION}[Gtk.AccessibleProperty.DESCRIPTION]}
+    properties for accessible objects containing simple, unformatted text. *)
 class type accessible_text_t = object
   (** {2:methods Methods} *)
 
@@ -66,9 +68,11 @@ class accessible_text : Raw.Accessible_text.t -> accessible_text_t
     objects that have text formatted with attributes, or non-trivial text
     contents.
 
-    You should use the [Gtk.AccessibleProperty.LABEL] or the
-    [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
-    containing simple, unformatted text. *)
+    You should use the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-LABEL}[Gtk.AccessibleProperty.LABEL]}
+    or the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-DESCRIPTION}[Gtk.AccessibleProperty.DESCRIPTION]}
+    properties for accessible objects containing simple, unformatted text. *)
 
 (** {1:constructors Constructors} *)
 

@@ -25,9 +25,9 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.Window::activate-default]
-    - [Gtk.Window::activate-focus]
-    - [Gtk.Window::enable-debugging]
+    - {{!Ocgtk.Raw.Window.val-on_activate_default}[Gtk.Window::activate-default]}
+    - {{!Ocgtk.Raw.Window.val-on_activate_focus}[Gtk.Window::activate-focus]}
+    - {{!Ocgtk.Raw.Window.val-on_enable_debugging}[Gtk.Window::enable-debugging]}
 
     {b Actions}
 
@@ -71,9 +71,13 @@
 
     {b Accessibility}
 
-    [GtkWindow] uses the [Gtk.AccessibleRole.window] role.
+    [GtkWindow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-WINDOW}[Gtk.AccessibleRole.window]}
+    role.
 
-    From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role.
+    From GTK 4.12 to 4.18, it used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-APPLICATION}[Gtk.AccessibleRole.application]}
+    role.
 
     The class built on this module is in {!Ocgtk.Window}. *)
 

@@ -4,7 +4,8 @@
 (** Tracks how a [GtkShortcut] can be activated.
 
     To find out if a [GtkShortcutTrigger] triggers, you can call
-    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+    {{!Ocgtk.Raw.Shortcut_trigger.val-trigger}[Gtk.ShortcutTrigger.trigger]} on
+    a [GdkEvent].
 
     [GtkShortcutTriggers] contain functions that allow easy presentation to end
     users as well as being printed for debugging.

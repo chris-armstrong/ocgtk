@@ -65,25 +65,31 @@ end
      Example GtkToggleButtons\n\n\
      Clicking again will cause the toggle button to return to its normal \
      state.\n\n\
-     A toggle button is created by calling either [Gtk.ToggleButton.new] or\n\
-     [Gtk.ToggleButton.new_with_label]. If using the former, it is advisable\n\
+     A toggle button is created by calling either \
+     {{!Ocgtk.Toggle_button.val-new_}[Gtk.ToggleButton.new]} or\n\
+     {{!Ocgtk.Toggle_button.val-new_with_label}[Gtk.ToggleButton.new_with_label]}. \
+     If using the former, it is advisable\n\
      to pack a widget, (such as a [GtkLabel] and/or a [GtkImage]), into the \
      toggle\n\
      button’s container. (See \
      {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]} for more information).\n\n\
      The state of a [GtkToggleButton] can be set specifically using\n\
-     [Gtk.ToggleButton.set_active], and retrieved using\n\
-     [Gtk.ToggleButton.get_active].\n\n\
+     {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-set_active}[Gtk.ToggleButton.set_active]}, \
+     and retrieved using\n\
+     {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-get_active}[Gtk.ToggleButton.get_active]}.\n\n\
      {b Grouping}\n\n\
      Toggle buttons can be grouped together, to form mutually exclusive\n\
      groups - only one of the buttons can be toggled at a time, and toggling\n\
      another one will switch the currently toggled one off.\n\n\
-     To add a [GtkToggleButton] to a group, use [Gtk.ToggleButton.set_group].\n\n\
+     To add a [GtkToggleButton] to a group, use \
+     {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-set_group}[Gtk.ToggleButton.set_group]}.\n\n\
      {b CSS nodes}\n\n\
      [GtkToggleButton] has a single CSS node with name button. To differentiate\n\
      it from a plain [GtkButton], it gets the [.toggle] style class.\n\n\
      {b Accessibility}\n\n\
-     [GtkToggleButton] uses the [Gtk.AccessibleRole.toggle_button] role.\n\n\
+     [GtkToggleButton] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-TOGGLE_BUTTON}[Gtk.AccessibleRole.toggle_button]} \
+     role.\n\n\
      {b Creating two [GtkToggleButton] widgets.}\n\n\
      {[\n\
      static void\n\
@@ -127,24 +133,30 @@ class toggle_button : Raw.Toggle_button.t -> toggle_button_t
  Shows a button which remains “pressed-in” when clicked.\n\n\
  Example GtkToggleButtons\n\n\
  Clicking again will cause the toggle button to return to its normal state.\n\n\
- A toggle button is created by calling either [Gtk.ToggleButton.new] or\n\
- [Gtk.ToggleButton.new_with_label]. If using the former, it is advisable\n\
+ A toggle button is created by calling either \
+ {{!Ocgtk.Toggle_button.val-new_}[Gtk.ToggleButton.new]} or\n\
+ {{!Ocgtk.Toggle_button.val-new_with_label}[Gtk.ToggleButton.new_with_label]}. \
+ If using the former, it is advisable\n\
  to pack a widget, (such as a [GtkLabel] and/or a [GtkImage]), into the toggle\n\
  button’s container. (See {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]} \
  for more information).\n\n\
  The state of a [GtkToggleButton] can be set specifically using\n\
- [Gtk.ToggleButton.set_active], and retrieved using\n\
- [Gtk.ToggleButton.get_active].\n\n\
+ {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-set_active}[Gtk.ToggleButton.set_active]}, \
+ and retrieved using\n\
+ {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-get_active}[Gtk.ToggleButton.get_active]}.\n\n\
  {b Grouping}\n\n\
  Toggle buttons can be grouped together, to form mutually exclusive\n\
  groups - only one of the buttons can be toggled at a time, and toggling\n\
  another one will switch the currently toggled one off.\n\n\
- To add a [GtkToggleButton] to a group, use [Gtk.ToggleButton.set_group].\n\n\
+ To add a [GtkToggleButton] to a group, use \
+ {{!Ocgtk.Toggle_button.class-type-toggle_button_t.method-set_group}[Gtk.ToggleButton.set_group]}.\n\n\
  {b CSS nodes}\n\n\
  [GtkToggleButton] has a single CSS node with name button. To differentiate\n\
  it from a plain [GtkButton], it gets the [.toggle] style class.\n\n\
  {b Accessibility}\n\n\
- [GtkToggleButton] uses the [Gtk.AccessibleRole.toggle_button] role.\n\n\
+ [GtkToggleButton] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TOGGLE_BUTTON}[Gtk.AccessibleRole.toggle_button]} \
+ role.\n\n\
  {b Creating two [GtkToggleButton] widgets.}\n\n\
  {[\n\
  static void\n\
@@ -185,7 +197,8 @@ class toggle_button : Raw.Toggle_button.t -> toggle_button_t
 val new_ : unit -> toggle_button_t
 (** Creates a new toggle button.
 
-    A widget should be packed into the button, as in [Gtk.Button.new]. *)
+    A widget should be packed into the button, as in
+    {{!Ocgtk.Button.val-new_}[Gtk.Button.new]}. *)
 
 val new_with_label : string -> toggle_button_t
 (** Creates a new toggle button with a text label. *)
@@ -193,5 +206,6 @@ val new_with_label : string -> toggle_button_t
 val new_with_mnemonic : string -> toggle_button_t
 (** Creates a new [GtkToggleButton] containing a label.
 
-    The label will be created using [Gtk.Label.new_with_mnemonic], so
+    The label will be created using
+    {{!Ocgtk.Label.val-new_with_mnemonic}[Gtk.Label.new_with_mnemonic]}, so
     underscores in [label] indicate the mnemonic for the button. *)

@@ -94,61 +94,56 @@ let calculate_return_type ~class_type_name ctor =
   in
   return_type
 
-(** Generate a constructor wrapper implementation *)
+(** Generate a constructor wrapper implementation. The caller selects the
+    constructors ({!Emitted_members.constructors}). *)
 let generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
     ~current_layer2_module ~layer1_ctor_prefix (ctor : gir_constructor) =
-  if not (Filtering.should_generate_constructor ~ctx ctor) then ()
-  else
-    let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
-    let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
-    let return_type = calculate_return_type ~class_type_name ctor in
-    match params with
-    | [] ->
-        bprintf buf "let %s () : %s =\n" ocaml_ctor_name return_type;
-        bprintf buf "  new %s (%s.%s ())\n\n" class_snake layer1_ctor_prefix
-          ocaml_ctor_name
-    | _ ->
-        let sig_str =
-          String.concat ~sep:" "
-            (List.map params ~f:(fun pi ->
-                 Fmt.str "(%s : %s)" pi.cp_name pi.cp_type))
-        in
-        bprintf buf "let %s %s : %s =\n" ocaml_ctor_name sig_str return_type;
-        generate_param_unwrapping ~ctx ~buf params;
-        let call_str =
-          String.concat ~sep:" " (List.map params ~f:(fun pi -> pi.cp_name))
-        in
-        bprintf buf "  let obj_ = %s.%s %s in\n" layer1_ctor_prefix
-          ocaml_ctor_name call_str;
-        if ctor.throws then
-          bprintf buf "Result.map (fun obj_ ->  new %s obj_) obj_\n\n"
-            class_snake
-        else bprintf buf "  new %s obj_\n\n" class_snake
+  let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
+  let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
+  let return_type = calculate_return_type ~class_type_name ctor in
+  match params with
+  | [] ->
+      bprintf buf "let %s () : %s =\n" ocaml_ctor_name return_type;
+      bprintf buf "  new %s (%s.%s ())\n\n" class_snake layer1_ctor_prefix
+        ocaml_ctor_name
+  | _ ->
+      let sig_str =
+        String.concat ~sep:" "
+          (List.map params ~f:(fun pi ->
+               Fmt.str "(%s : %s)" pi.cp_name pi.cp_type))
+      in
+      bprintf buf "let %s %s : %s =\n" ocaml_ctor_name sig_str return_type;
+      generate_param_unwrapping ~ctx ~buf params;
+      let call_str =
+        String.concat ~sep:" " (List.map params ~f:(fun pi -> pi.cp_name))
+      in
+      bprintf buf "  let obj_ = %s.%s %s in\n" layer1_ctor_prefix
+        ocaml_ctor_name call_str;
+      if ctor.throws then
+        bprintf buf "Result.map (fun obj_ ->  new %s obj_) obj_\n\n" class_snake
+      else bprintf buf "  new %s obj_\n\n" class_snake
 
-(** Generate a constructor wrapper signature *)
+(** Generate a constructor wrapper signature. The caller selects the
+    constructors ({!Emitted_members.constructors}). *)
 let generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
     ~current_layer2_module (ctor : gir_constructor) =
-  if not (Layer1.Layer1_constructor.should_generate_constructor ~ctx ctor) then
-    ()
-  else
-    let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
-    let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
-    let return_type = calculate_return_type ~class_type_name ctor in
-    let doc = Entity_doc.constructor ~refs:(l2_refs ctx) ~class_name ctor in
-    let param_types =
-      match params with
-      | [] -> "unit -> "
-      | _ ->
-          String.concat ~sep:""
-            (List.map params ~f:(fun pi -> pi.cp_type ^ " -> "))
-    in
-    bprintf buf "%s"
-      (Doc_emit.around doc
-         (Fmt.str "val %s : %s%s\n" ocaml_ctor_name param_types return_type))
+  let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
+  let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
+  let return_type = calculate_return_type ~class_type_name ctor in
+  let doc = Entity_doc.constructor ~refs:(l2_refs ctx) ~class_name ctor in
+  let param_types =
+    match params with
+    | [] -> "unit -> "
+    | _ ->
+        String.concat ~sep:""
+          (List.map params ~f:(fun pi -> pi.cp_type ^ " -> "))
+  in
+  bprintf buf "%s"
+    (Doc_emit.around doc
+       (Fmt.str "val %s : %s%s\n" ocaml_ctor_name param_types return_type))
 
 let has_constructors ~ctx constructors =
-  List.exists constructors
-    ~f:(Layer1.Layer1_constructor.should_generate_constructor ~ctx)
+  not (List.is_empty (Emitted_members.constructors ~ctx constructors))
 
 let instantiation ~ctx ~(entity_kind : Filtering.entity_kind) class_name =
   match entity_kind with
@@ -233,7 +228,8 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
   bprintf buf "end\n\n";
 
   (* Constructor wrappers *)
-  List.iter constructors
+  List.iter
+    (Emitted_members.constructors ~ctx constructors)
     ~f:
       (generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
          ~current_layer2_module:module_names.layer2
@@ -286,7 +282,8 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
 
   (* Constructor wrappers *)
   constructors_heading buf ~ctx ~entity_kind ~class_name constructors;
-  List.iter constructors
+  List.iter
+    (Emitted_members.constructors ~ctx constructors)
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
          ~current_layer2_module:module_names.layer2);
@@ -392,7 +389,8 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
       let module_name =
         Class_utils.get_qualified_module_name ~ctx entity.name
       in
-      List.iter entity.constructors
+      List.iter
+        (Emitted_members.constructors ~ctx entity.constructors)
         ~f:
           (generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
              ~current_layer2_module ~layer1_ctor_prefix:module_name));
@@ -474,7 +472,8 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   let current_layer2_module = combined_module_name in
   List.iter entities ~f:(fun entity ->
       let class_type_name = Utils.class_type_name entity.name in
-      List.iter entity.constructors
+      List.iter
+        (Emitted_members.constructors ~ctx entity.constructors)
         ~f:
           (generate_constructor_sig ~ctx ~buf ~class_name:entity.name
              ~class_type_name ~current_layer2_module));
@@ -507,7 +506,8 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
 
   (* Constructor wrappers *)
   let layer1_ctor_prefix = layer1_module_name in
-  List.iter entity.constructors
+  List.iter
+    (Emitted_members.constructors ~ctx entity.constructors)
     ~f:
       (generate_constructor_impl ~ctx ~buf ~class_snake:entity_snake
          ~class_type_name:entity_type_name ~current_layer2_module
@@ -559,7 +559,8 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   (* Constructor wrapper signatures *)
   constructors_heading buf ~ctx ~entity_kind ~class_name:entity.name
     entity.constructors;
-  List.iter entity.constructors
+  List.iter
+    (Emitted_members.constructors ~ctx entity.constructors)
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_name:entity.name
          ~class_type_name:entity_type_name ~current_layer2_module);

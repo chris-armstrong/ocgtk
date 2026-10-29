@@ -36,7 +36,8 @@
     Note that [GtkSpinButton] will by default make its entry large enough to
     accommodate the lower and upper bounds of the adjustment. If this is not
     desired, the automatic sizing can be turned off by explicitly setting
-    [Gtk.Editable:width-chars] to a value != -1.
+    {{!Ocgtk.Editable.class-type-editable_t.method-get_width_chars}[Gtk.Editable:width-chars]}
+    to a value != -1.
 
     {b Using a GtkSpinButton to get an integer}
 
@@ -105,7 +106,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.SpinButton::change-value]
+    - {{!Ocgtk.Spin_button.class-type-spin_button_t.method-on_change_value}[Gtk.SpinButton::change-value]}
 
     {b CSS nodes}
 
@@ -135,7 +136,9 @@
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+    [GtkSpinButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SPIN_BUTTON}[Gtk.AccessibleRole.spin_button]}
+    role. *)
 class type spin_button_t = object
   inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
@@ -327,7 +330,8 @@ class spin_button : Raw.Spin_button.t -> spin_button_t
     Note that [GtkSpinButton] will by default make its entry large enough to
     accommodate the lower and upper bounds of the adjustment. If this is not
     desired, the automatic sizing can be turned off by explicitly setting
-    [Gtk.Editable:width-chars] to a value != -1.
+    {{!Ocgtk.Editable.class-type-editable_t.method-get_width_chars}[Gtk.Editable:width-chars]}
+    to a value != -1.
 
     {b Using a GtkSpinButton to get an integer}
 
@@ -396,7 +400,7 @@ class spin_button : Raw.Spin_button.t -> spin_button_t
 
     The following signals have default keybindings:
 
-    - [Gtk.SpinButton::change-value]
+    - {{!Ocgtk.Spin_button.class-type-spin_button_t.method-on_change_value}[Gtk.SpinButton::change-value]}
 
     {b CSS nodes}
 
@@ -426,7 +430,9 @@ class spin_button : Raw.Spin_button.t -> spin_button_t
 
     {b Accessibility}
 
-    [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+    [GtkSpinButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SPIN_BUTTON}[Gtk.AccessibleRole.spin_button]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
@@ -444,4 +450,6 @@ val new_with_range : float -> float -> float -> spin_button_t
 
     Note that the way in which the precision is derived works best if [step] is
     a power of ten. If the resulting precision is not suitable for your needs,
-    use [Gtk.SpinButton.set_digits] to correct it. *)
+    use
+    {{!Ocgtk.Spin_button.class-type-spin_button_t.method-set_digits}[Gtk.SpinButton.set_digits]}
+    to correct it. *)

@@ -20,14 +20,18 @@
 
     An example GtkCalendar
 
-    A [GtkCalendar] can be created with [Gtk.Calendar.new].
+    A [GtkCalendar] can be created with
+    {{!Ocgtk.Calendar.val-new_}[Gtk.Calendar.new]}.
 
     The selected date can be retrieved from a [GtkCalendar] using
     [Gtk.Calendar.get_date]. It can be altered with [Gtk.Calendar.set_date].
 
-    To place a visual marker on a particular day, use [Gtk.Calendar.mark_day]
-    and to remove the marker, [Gtk.Calendar.unmark_day]. Alternative, all marks
-    can be cleared with [Gtk.Calendar.clear_marks].
+    To place a visual marker on a particular day, use
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-mark_day}[Gtk.Calendar.mark_day]}
+    and to remove the marker,
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-unmark_day}[Gtk.Calendar.unmark_day]}.
+    Alternative, all marks can be cleared with
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-clear_marks}[Gtk.Calendar.clear_marks]}.
 
     Users should be aware that, although the Gregorian calendar is the legal
     calendar in most countries, it was adopted progressively between 1582 and
@@ -173,14 +177,18 @@ class calendar : Raw.Calendar.t -> calendar_t
 
     An example GtkCalendar
 
-    A [GtkCalendar] can be created with [Gtk.Calendar.new].
+    A [GtkCalendar] can be created with
+    {{!Ocgtk.Calendar.val-new_}[Gtk.Calendar.new]}.
 
     The selected date can be retrieved from a [GtkCalendar] using
     [Gtk.Calendar.get_date]. It can be altered with [Gtk.Calendar.set_date].
 
-    To place a visual marker on a particular day, use [Gtk.Calendar.mark_day]
-    and to remove the marker, [Gtk.Calendar.unmark_day]. Alternative, all marks
-    can be cleared with [Gtk.Calendar.clear_marks].
+    To place a visual marker on a particular day, use
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-mark_day}[Gtk.Calendar.mark_day]}
+    and to remove the marker,
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-unmark_day}[Gtk.Calendar.unmark_day]}.
+    Alternative, all marks can be cleared with
+    {{!Ocgtk.Calendar.class-type-calendar_t.method-clear_marks}[Gtk.Calendar.clear_marks]}.
 
     Users should be aware that, although the Gregorian calendar is the legal
     calendar in most countries, it was adopted progressively between 1582 and

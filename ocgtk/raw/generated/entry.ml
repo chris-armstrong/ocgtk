@@ -8,24 +8,31 @@
  entered text is longer than the allocation of the widget, the widget\n\
  will scroll so that the cursor position is visible.\n\n\
  When using an entry for passwords and other sensitive information, it\n\
- can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+ can be put into “password mode” using \
+ {{!Ocgtk.Raw.Entry.val-set_visibility}[Gtk.Entry.set_visibility]}.\n\
  In this mode, entered text is displayed using a “invisible” character.\n\
  By default, GTK picks the best invisible character that is available\n\
  in the current font, but it can be changed with\n\
- [Gtk.Entry.set_invisible_char].\n\n\
+ {{!Ocgtk.Raw.Entry.val-set_invisible_char}[Gtk.Entry.set_invisible_char]}.\n\n\
  [GtkEntry] has the ability to display progress or activity\n\
  information behind the text. To make an entry display such information,\n\
- use [Gtk.Entry.set_progress_fraction] or\n\
- [Gtk.Entry.set_progress_pulse_step].\n\n\
+ use \
+ {{!Ocgtk.Raw.Entry.val-set_progress_fraction}[Gtk.Entry.set_progress_fraction]} \
+ or\n\
+ {{!Ocgtk.Raw.Entry.val-set_progress_pulse_step}[Gtk.Entry.set_progress_pulse_step]}.\n\n\
  Additionally, [GtkEntry] can show icons at either side of the entry.\n\
  These icons can be activatable by clicking, can be set up as drag source\n\
  and can have tooltips. To add an icon, use\n\
- [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+ {{!Ocgtk.Raw.Entry.val-set_icon_from_gicon}[Gtk.Entry.set_icon_from_gicon]} \
+ or one of the various other functions\n\
  that set an icon from an icon name or a paintable. To trigger an action when\n\
- the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+ the user clicks an icon, connect to the \
+ {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]} signal.\n\
  To allow DND operations from an icon, use\n\
- [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
- [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+ {{!Ocgtk.Raw.Entry.val-set_icon_drag_source}[Gtk.Entry.set_icon_drag_source]}. \
+ To set a tooltip on an icon, use\n\
+ {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]} \
+ or the corresponding function\n\
  for markup.\n\n\
  Note that functionality or information that is only available by clicking\n\
  on an icon in an entry may not be accessible at all to users which are not\n\
@@ -70,7 +77,9 @@
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role.\n\n\
+ [GtkEntry] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Entry}."]
 
 type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -87,7 +96,9 @@ external new_with_buffer : Entry_buffer.t -> t = "ml_gtk_entry_new_with_buffer"
 
 external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 (** Unsets the invisible char, so that the default invisible char is used again.
-    See [Gtk.Entry.set_invisible_char]. *)
+    See
+    {{!Ocgtk.Raw.Entry.val-set_invisible_char}[Gtk.Entry.set_invisible_char]}.
+*)
 
 external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 (** Sets whether the contents of the entry are visible or not.
@@ -97,9 +108,11 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
     copied elsewhere.
 
     By default, GTK picks the best invisible character available in the current
-    font, but it can be changed with [Gtk.Entry.set_invisible_char].
+    font, but it can be changed with
+    {{!Ocgtk.Raw.Entry.val-set_invisible_char}[Gtk.Entry.set_invisible_char]}.
 
-    Note that you probably want to set [Gtk.Entry:input-purpose] to
+    Note that you probably want to set
+    {{!Ocgtk.Raw.Entry.val-get_input_purpose}[Gtk.Entry:input-purpose]} to
     [GTK_INPUT_PURPOSE_PASSWORD] or [GTK_INPUT_PURPOSE_PIN] to inform input
     methods about the purpose of this entry, in addition to setting visibility
     to [false]. *)
@@ -115,7 +128,8 @@ external set_progress_pulse_step : t -> float -> unit
 (** Sets the fraction of total entry width to move the progress bouncing block
     for each pulse.
 
-    Use [Gtk.Entry.progress_pulse] to pulse the progress. *)
+    Use {{!Ocgtk.Raw.Entry.val-progress_pulse}[Gtk.Entry.progress_pulse]} to
+    pulse the progress. *)
 
 external set_progress_fraction : t -> float -> unit
   = "ml_gtk_entry_set_progress_fraction"
@@ -152,13 +166,15 @@ external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
     truncated to fit. The length is in characters.
 
     This is equivalent to getting [entry]'s [GtkEntryBuffer] and calling
-    [Gtk.EntryBuffer.set_max_length] on it. *)
+    {{!Ocgtk.Raw.Entry_buffer.val-set_max_length}[Gtk.EntryBuffer.set_max_length]}
+    on it. *)
 
 external set_invisible_char : t -> int -> unit
   = "ml_gtk_entry_set_invisible_char"
 (** Sets the character to use in place of the actual text in “password mode”.
 
-    See [Gtk.Entry.set_visibility] for how to enable “password mode”.
+    See {{!Ocgtk.Raw.Entry.val-set_visibility}[Gtk.Entry.set_visibility]} for
+    how to enable “password mode”.
 
     By default, GTK picks the best invisible char available in the current font.
     If you set the invisible char to 0, then the user will get no feedback at
@@ -182,13 +198,18 @@ external set_icon_tooltip_text :
 
     Use [None] for [tooltip] to remove an existing tooltip.
 
-    See also [Gtk.Widget.set_tooltip_text] and
-    [Gtk.Entry.set_icon_tooltip_markup].
+    See also
+    {{!Ocgtk.Raw.Widget.val-set_tooltip_text}[Gtk.Widget.set_tooltip_text]} and
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_markup}[Gtk.Entry.set_icon_tooltip_markup]}.
 
-    If you unset the widget tooltip via [Gtk.Widget.set_tooltip_text] or
-    [Gtk.Widget.set_tooltip_markup], this sets [Gtk.Widget:has-tooltip] to
-    [false], which suppresses icon tooltips too. You can resolve this by then
-    calling [Gtk.Widget.set_has_tooltip] to set [Gtk.Widget:has-tooltip] back to
+    If you unset the widget tooltip via
+    {{!Ocgtk.Raw.Widget.val-set_tooltip_text}[Gtk.Widget.set_tooltip_text]} or
+    {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]},
+    this sets {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]}
+    to [false], which suppresses icon tooltips too. You can resolve this by then
+    calling
+    {{!Ocgtk.Raw.Widget.val-set_has_tooltip}[Gtk.Widget.set_has_tooltip]} to set
+    {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} back to
     [true], or setting at least one non-empty tooltip on any icon achieves the
     same result. *)
 
@@ -202,8 +223,11 @@ external set_icon_tooltip_markup :
 
     Use [None] for [tooltip] to remove an existing tooltip.
 
-    See also [Gtk.Widget.set_tooltip_markup] and
-    [Gtk.Entry.set_icon_tooltip_text]. *)
+    See also
+    {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]}
+    and
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]}.
+*)
 
 external set_icon_sensitive : t -> Ocgtk_enums.entryiconposition -> bool -> unit
   = "ml_gtk_entry_set_icon_sensitive"
@@ -288,7 +312,7 @@ external set_alignment : t -> float -> unit = "ml_gtk_entry_set_alignment"
     This controls the horizontal positioning of the contents when the displayed
     text is shorter than the width of the entry.
 
-    See also: [Gtk.Editable:xalign] *)
+    See also: {{!Ocgtk.Raw.Editable.val-get_alignment}[Gtk.Editable:xalign]} *)
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_entry_set_activates_default"
@@ -310,33 +334,36 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
     Causes the entry’s progress indicator to enter “activity mode”, where a
     block bounces back and forth. Each call to gtk_entry_progress_pulse() causes
     the block to move by a little bit (the amount of movement per pulse is
-    determined by [Gtk.Entry.set_progress_pulse_step]). *)
+    determined by
+    {{!Ocgtk.Raw.Entry.val-set_progress_pulse_step}[Gtk.Entry.set_progress_pulse_step]}).
+*)
 
 external grab_focus_without_selecting : t -> bool
   = "ml_gtk_entry_grab_focus_without_selecting"
 (** Causes [entry] to have keyboard focus.
 
-    It behaves like [Gtk.Widget.grab_focus], except that it doesn't select the
-    contents of the entry. You only want to call this on some special entries
-    which the user usually doesn't want to replace all text in, such as
-    search-as-you-type entries. *)
+    It behaves like {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]},
+    except that it doesn't select the contents of the entry. You only want to
+    call this on some special entries which the user usually doesn't want to
+    replace all text in, such as search-as-you-type entries. *)
 
 external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
 (** Retrieves whether the text in [entry] is visible.
 
-    See [Gtk.Entry.set_visibility]. *)
+    See {{!Ocgtk.Raw.Entry.val-set_visibility}[Gtk.Entry.set_visibility]}. *)
 
 external get_text_length : t -> UInt16.t = "ml_gtk_entry_get_text_length"
 (** Retrieves the current length of the text in [entry].
 
     This is equivalent to getting [entry]'s [GtkEntryBuffer] and calling
-    [Gtk.EntryBuffer.get_length] on it. *)
+    {{!Ocgtk.Raw.Entry_buffer.val-get_length}[Gtk.EntryBuffer.get_length]} on
+    it. *)
 
 external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_entry_get_tabs"
 (** Gets the tabstops of the [GtkEntry].
 
-    See [Gtk.Entry.set_tabs]. *)
+    See {{!Ocgtk.Raw.Entry.val-set_tabs}[Gtk.Entry.set_tabs]}. *)
 
 external get_progress_pulse_step : t -> float
   = "ml_gtk_entry_get_progress_pulse_step"
@@ -346,7 +373,9 @@ external get_progress_fraction : t -> float
   = "ml_gtk_entry_get_progress_fraction"
 (** Returns the current fraction of the task that’s been completed.
 
-    See [Gtk.Entry.set_progress_fraction]. *)
+    See
+    {{!Ocgtk.Raw.Entry.val-set_progress_fraction}[Gtk.Entry.set_progress_fraction]}.
+*)
 
 external get_placeholder_text : t -> string option
   = "ml_gtk_entry_get_placeholder_text"
@@ -369,7 +398,7 @@ external get_menu_entry_icon_text :
 external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
 (** Retrieves the maximum allowed length of the text in [entry].
 
-    See [Gtk.Entry.set_max_length]. *)
+    See {{!Ocgtk.Raw.Entry.val-set_max_length}[Gtk.Entry.set_max_length]}. *)
 
 external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
 (** Retrieves the character displayed in place of the actual text in “password
@@ -435,7 +464,9 @@ external get_icon_at_pos : t -> int -> int -> int
 
     The position’s coordinates are relative to the [entry]’s top left corner. If
     [x], [y] doesn’t lie inside an icon, -1 is returned. This function is
-    intended for use in a [Gtk.Widget::query-tooltip] signal handler. *)
+    intended for use in a
+    {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]} signal
+    handler. *)
 
 external get_icon_area :
   t -> Ocgtk_enums.entryiconposition -> Ocgdk_raw.Rectangle.t
@@ -476,12 +507,12 @@ external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_entry_get_attributes"
 (** Gets the attribute list of the [GtkEntry].
 
-    See [Gtk.Entry.set_attributes]. *)
+    See {{!Ocgtk.Raw.Entry.val-set_attributes}[Gtk.Entry.set_attributes]}. *)
 
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
 (** Gets the value set by gtk_entry_set_alignment().
 
-    See also: [Gtk.Editable:xalign] *)
+    See also: {{!Ocgtk.Raw.Editable.val-get_alignment}[Gtk.Editable:xalign]} *)
 
 external get_activates_default : t -> bool
   = "ml_gtk_entry_get_activates_default"
@@ -505,7 +536,9 @@ external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
     See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
-    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+    setting. See the GtkSettings
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
 (** Which IM (input method) module should be used for this entry.
@@ -513,7 +546,9 @@ external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
     See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
-    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+    setting. See the GtkSettings
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    property. *)
 
 external get_invisible_char_set : t -> bool
   = "ml_gtk_entry_get_invisible_char_set"
@@ -591,8 +626,9 @@ external get_primary_icon_activatable : t -> bool
   = "ml_gtk_entry_get_primary_icon_activatable"
 (** Whether the primary icon is activatable.
 
-    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
-    only on sensitive, activatable icons.
+    GTK emits the {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]}
+    and {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]}
+    signals only on sensitive, activatable icons.
 
     Sensitive, but non-activatable icons can be used for purely informational
     purposes. *)
@@ -601,8 +637,9 @@ external set_primary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_primary_icon_activatable"
 (** Whether the primary icon is activatable.
 
-    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
-    only on sensitive, activatable icons.
+    GTK emits the {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]}
+    and {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]}
+    signals only on sensitive, activatable icons.
 
     Sensitive, but non-activatable icons can be used for purely informational
     purposes. *)
@@ -636,8 +673,9 @@ external get_primary_icon_sensitive : t -> bool
 (** Whether the primary icon is sensitive.
 
     An insensitive icon appears grayed out. GTK does not emit the
-    [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
-    allow DND from insensitive icons.
+    {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]} and
+    {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]} signals
+    and does not allow DND from insensitive icons.
 
     An icon should be set insensitive if the action that would trigger when
     clicked is currently not available. *)
@@ -647,8 +685,9 @@ external set_primary_icon_sensitive : t -> bool -> unit
 (** Whether the primary icon is sensitive.
 
     An insensitive icon appears grayed out. GTK does not emit the
-    [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals and does not
-    allow DND from insensitive icons.
+    {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]} and
+    {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]} signals
+    and does not allow DND from insensitive icons.
 
     An icon should be set insensitive if the action that would trigger when
     clicked is currently not available. *)
@@ -661,25 +700,33 @@ external get_primary_icon_tooltip_markup : t -> string
   = "ml_gtk_entry_get_primary_icon_tooltip_markup"
 (** The contents of the tooltip on the primary icon, with markup.
 
-    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_markup}[Gtk.Entry.set_icon_tooltip_markup]}.
+*)
 
 external set_primary_icon_tooltip_markup : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_tooltip_markup"
 (** The contents of the tooltip on the primary icon, with markup.
 
-    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_markup}[Gtk.Entry.set_icon_tooltip_markup]}.
+*)
 
 external get_primary_icon_tooltip_text : t -> string
   = "ml_gtk_entry_get_primary_icon_tooltip_text"
 (** The contents of the tooltip on the primary icon.
 
-    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]}.
+*)
 
 external set_primary_icon_tooltip_text : t -> string -> unit
   = "ml_gtk_entry_set_primary_icon_tooltip_text"
 (** The contents of the tooltip on the primary icon.
 
-    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]}.
+*)
 
 external get_scroll_offset : t -> int = "ml_gtk_entry_get_scroll_offset"
 (** Number of pixels of the entry scrolled off the screen to the left. *)
@@ -688,8 +735,9 @@ external get_secondary_icon_activatable : t -> bool
   = "ml_gtk_entry_get_secondary_icon_activatable"
 (** Whether the secondary icon is activatable.
 
-    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
-    only on sensitive, activatable icons.
+    GTK emits the {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]}
+    and {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]}
+    signals only on sensitive, activatable icons.
 
     Sensitive, but non-activatable icons can be used for purely informational
     purposes. *)
@@ -698,8 +746,9 @@ external set_secondary_icon_activatable : t -> bool -> unit
   = "ml_gtk_entry_set_secondary_icon_activatable"
 (** Whether the secondary icon is activatable.
 
-    GTK emits the [Gtk.Entry::icon-press] and [Gtk.Entry::icon-release] signals
-    only on sensitive, activatable icons.
+    GTK emits the {{!Ocgtk.Raw.Entry.val-on_icon_press}[Gtk.Entry::icon-press]}
+    and {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]}
+    signals only on sensitive, activatable icons.
 
     Sensitive, but non-activatable icons can be used for purely informational
     purposes. *)
@@ -733,8 +782,9 @@ external get_secondary_icon_sensitive : t -> bool
 (** Whether the secondary icon is sensitive.
 
     An insensitive icon appears grayed out. GTK does not emit the
-    \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
-    does not allow DND from insensitive icons.
+    \[signal@Gtk.Entry::icon-press\[ and
+    {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]} signals
+    and does not allow DND from insensitive icons.
 
     An icon should be set insensitive if the action that would trigger when
     clicked is currently not available. *)
@@ -744,8 +794,9 @@ external set_secondary_icon_sensitive : t -> bool -> unit
 (** Whether the secondary icon is sensitive.
 
     An insensitive icon appears grayed out. GTK does not emit the
-    \[signal@Gtk.Entry::icon-press\[ and [Gtk.Entry::icon-release] signals and
-    does not allow DND from insensitive icons.
+    \[signal@Gtk.Entry::icon-press\[ and
+    {{!Ocgtk.Raw.Entry.val-on_icon_release}[Gtk.Entry::icon-release]} signals
+    and does not allow DND from insensitive icons.
 
     An icon should be set insensitive if the action that would trigger when
     clicked is currently not available. *)
@@ -758,25 +809,33 @@ external get_secondary_icon_tooltip_markup : t -> string
   = "ml_gtk_entry_get_secondary_icon_tooltip_markup"
 (** The contents of the tooltip on the secondary icon, with markup.
 
-    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_markup}[Gtk.Entry.set_icon_tooltip_markup]}.
+*)
 
 external set_secondary_icon_tooltip_markup : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_tooltip_markup"
 (** The contents of the tooltip on the secondary icon, with markup.
 
-    Also see [Gtk.Entry.set_icon_tooltip_markup]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_markup}[Gtk.Entry.set_icon_tooltip_markup]}.
+*)
 
 external get_secondary_icon_tooltip_text : t -> string
   = "ml_gtk_entry_get_secondary_icon_tooltip_text"
 (** The contents of the tooltip on the secondary icon.
 
-    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]}.
+*)
 
 external set_secondary_icon_tooltip_text : t -> string -> unit
   = "ml_gtk_entry_set_secondary_icon_tooltip_text"
 (** The contents of the tooltip on the secondary icon.
 
-    Also see [Gtk.Entry.set_icon_tooltip_text]. *)
+    Also see
+    {{!Ocgtk.Raw.Entry.val-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]}.
+*)
 
 external get_show_emoji_icon : t -> bool = "ml_gtk_entry_get_show_emoji_icon"
 (** Whether the entry will show an Emoji icon in the secondary icon position to

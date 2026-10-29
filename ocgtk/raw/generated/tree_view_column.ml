@@ -204,7 +204,9 @@ external get_sort_column_id : t -> int
 (** Gets the logical [sort_column_id] that the model sorts on when this column
     is selected for sorting.
 
-    See [Gtk.TreeViewColumn.set_sort_column_id]. *)
+    See
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_column_id}[Gtk.TreeViewColumn.set_sort_column_id]}.
+*)
 
 external get_sizing : t -> Ocgtk_enums.treeviewcolumnsizing
   = "ml_gtk_tree_view_column_get_sizing"

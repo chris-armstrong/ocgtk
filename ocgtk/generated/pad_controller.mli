@@ -177,8 +177,10 @@ val new_ :
     order is not guaranteed.
 
     The [GtkPadController] is created with no mapped actions. In order to map
-    pad events to actions, use [Gtk.PadController.set_action_entries] or
-    [Gtk.PadController.set_action].
+    pad events to actions, use
+    {{!Ocgtk.Pad_controller.class-type-pad_controller_t.method-set_action_entries}
+     [Gtk.PadController.set_action_entries]} or
+    {{!Ocgtk.Pad_controller.class-type-pad_controller_t.method-set_action}[Gtk.PadController.set_action]}.
 
     Be aware that pad events will only be delivered to [GtkWindow]s, so adding a
     pad controller to any other type of widget will not have an effect. *)

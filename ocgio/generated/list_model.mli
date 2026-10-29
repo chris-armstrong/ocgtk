@@ -92,7 +92,9 @@ end
      updates.\n\n\
      Each object in the list may also report changes in itself via some\n\
      mechanism (normally the [GObject.Object::notify] signal).  Taken\n\
-     together with the [Gio.ListModel::items-changed] signal, this provides\n\
+     together with the \
+     {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]} \
+     signal, this provides\n\
      for a list that can change its membership, and in which the members can\n\
      change their individual properties.\n\n\
      A good example would be the list of visible wireless network access\n\
@@ -104,10 +106,12 @@ end
      then you need to connect signals to the objects that you are\n\
      interested in.\n\n\
      All items in a [GListModel] are of (or derived from) the same type.\n\
-     [Gio.ListModel.get_item_type] returns that type.  The type may be an\n\
+     {{!Ocgio.List_model.class-type-list_model_t.method-get_item_type}[Gio.ListModel.get_item_type]} \
+     returns that type.  The type may be an\n\
      interface, in which case all objects in the list must implement it.\n\n\
      The semantics are close to that of an array:\n\
-     [Gio.ListModel.get_n_items] returns the number of items in the list\n\
+     {{!Ocgio.List_model.class-type-list_model_t.method-get_n_items}[Gio.ListModel.get_n_items]} \
+     returns the number of items in the list\n\
      and [Gio.ListModel.get_item] returns an item at a (0-based) position.\n\
      In order to allow implementations to calculate the list length lazily,\n\
      you can also iterate over items: starting from 0, repeatedly call\n\
@@ -129,8 +133,11 @@ end
      implementations to provide properties [item-type] and [n-items] to\n\
      ease working with them. While it is not required, it is recommended\n\
      that implementations provide these two properties. They should return\n\
-     the values of [Gio.ListModel.get_item_type] and\n\
-     [Gio.ListModel.get_n_items] respectively and be defined as such:\n\n\
+     the values of \
+     {{!Ocgio.List_model.class-type-list_model_t.method-get_item_type}[Gio.ListModel.get_item_type]} \
+     and\n\
+     {{!Ocgio.List_model.class-type-list_model_t.method-get_n_items}[Gio.ListModel.get_n_items]} \
+     respectively and be defined as such:\n\n\
      {[\n\
      properties[PROP_ITEM_TYPE] =\n\
     \  g_param_spec_gtype (\"item-type\", NULL, NULL, G_TYPE_OBJECT,\n\
@@ -153,7 +160,9 @@ class list_model : Raw.List_model.t -> list_model_t
  updates.\n\n\
  Each object in the list may also report changes in itself via some\n\
  mechanism (normally the [GObject.Object::notify] signal).  Taken\n\
- together with the [Gio.ListModel::items-changed] signal, this provides\n\
+ together with the \
+ {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]} \
+ signal, this provides\n\
  for a list that can change its membership, and in which the members can\n\
  change their individual properties.\n\n\
  A good example would be the list of visible wireless network access\n\
@@ -165,10 +174,12 @@ class list_model : Raw.List_model.t -> list_model_t
  then you need to connect signals to the objects that you are\n\
  interested in.\n\n\
  All items in a [GListModel] are of (or derived from) the same type.\n\
- [Gio.ListModel.get_item_type] returns that type.  The type may be an\n\
+ {{!Ocgio.List_model.class-type-list_model_t.method-get_item_type}[Gio.ListModel.get_item_type]} \
+ returns that type.  The type may be an\n\
  interface, in which case all objects in the list must implement it.\n\n\
  The semantics are close to that of an array:\n\
- [Gio.ListModel.get_n_items] returns the number of items in the list\n\
+ {{!Ocgio.List_model.class-type-list_model_t.method-get_n_items}[Gio.ListModel.get_n_items]} \
+ returns the number of items in the list\n\
  and [Gio.ListModel.get_item] returns an item at a (0-based) position.\n\
  In order to allow implementations to calculate the list length lazily,\n\
  you can also iterate over items: starting from 0, repeatedly call\n\
@@ -190,8 +201,11 @@ class list_model : Raw.List_model.t -> list_model_t
  implementations to provide properties [item-type] and [n-items] to\n\
  ease working with them. While it is not required, it is recommended\n\
  that implementations provide these two properties. They should return\n\
- the values of [Gio.ListModel.get_item_type] and\n\
- [Gio.ListModel.get_n_items] respectively and be defined as such:\n\n\
+ the values of \
+ {{!Ocgio.List_model.class-type-list_model_t.method-get_item_type}[Gio.ListModel.get_item_type]} \
+ and\n\
+ {{!Ocgio.List_model.class-type-list_model_t.method-get_n_items}[Gio.ListModel.get_n_items]} \
+ respectively and be defined as such:\n\n\
  {[\n\
  properties[PROP_ITEM_TYPE] =\n\
 \  g_param_spec_gtype (\"item-type\", NULL, NULL, G_TYPE_OBJECT,\n\

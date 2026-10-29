@@ -6,7 +6,8 @@
     Most common shortcuts are using this controller implicitly, e.g. by adding a
     mnemonic underline to a {{!Ocgtk.Raw.Label}[Gtk.Label]}, or by installing a
     key binding using [Gtk.WidgetClass.add_binding], or by adding accelerators
-    to global actions using [Gtk.Application.set_accels_for_action].
+    to global actions using
+    {{!Ocgtk.Raw.Application.val-set_accels_for_action}[Gtk.Application.set_accels_for_action]}.
 
     But it is possible to create your own shortcut controller, and add shortcuts
     to it.
@@ -40,11 +41,12 @@
 
     This example creates a {{!Ocgtk.Raw.Activate_action}[Gtk.ActivateAction]}
     for triggering the [activate] signal of the
-    {{!Ocgtk.Raw.Button}[Gtk.Button]}. See [Gtk.ShortcutAction.parse_string] for
-    the syntax for other kinds of
+    {{!Ocgtk.Raw.Button}[Gtk.Button]}. See
+    {{!Ocgtk.Raw.Shortcut_action.val-parse_string}[Gtk.ShortcutAction.parse_string]}
+    for the syntax for other kinds of
     {{!Ocgtk.Raw.Shortcut_action}[Gtk.ShortcutAction]}. See
-    [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
-    triggers.
+    {{!Ocgtk.Raw.Shortcut_trigger.val-parse_string}[Gtk.ShortcutTrigger.parse_string]}
+    to learn more about the syntax for triggers.
 
     The class built on this module is in {!Ocgtk.Shortcut_controller}. *)
 
@@ -104,7 +106,9 @@ external get_scope : t -> Ocgtk_enums.shortcutscope
   = "ml_gtk_shortcut_controller_get_scope"
 (** Gets the scope for when this controller activates its shortcuts.
 
-    See [Gtk.ShortcutController.set_scope] for details. *)
+    See
+    {{!Ocgtk.Raw.Shortcut_controller.val-set_scope}[Gtk.ShortcutController.set_scope]}
+    for details. *)
 
 external get_mnemonics_modifiers : t -> Ocgdk_enums.modifiertype
   = "ml_gtk_shortcut_controller_get_mnemonics_modifiers"

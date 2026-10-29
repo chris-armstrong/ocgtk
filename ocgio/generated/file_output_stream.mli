@@ -24,12 +24,16 @@
     output stream to jump to arbitrary positions in the file and to truncate the
     file, provided the filesystem of the file supports these operations.
 
-    To find the position of a file output stream, use [Gio.Seekable.tell]. To
+    To find the position of a file output stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-tell}[Gio.Seekable.tell]}. To
     find out if a file output stream supports seeking, use
-    [Gio.Seekable.can_seek].To position a file output stream, use
-    [Gio.Seekable.seek]. To find out if a file output stream supports
-    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
-    stream, use [Gio.Seekable.truncate]. *)
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_seek}[Gio.Seekable.can_seek]}.To
+    position a file output stream, use [Gio.Seekable.seek]. To find out if a
+    file output stream supports truncating, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_truncate}[Gio.Seekable.can_truncate]}.
+    To truncate a file output stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-truncate}[Gio.Seekable.truncate]}.
+*)
 class type file_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Seekable.seekable_t
@@ -86,12 +90,16 @@ class file_output_stream : Raw.File_output_stream.t -> file_output_stream_t
     output stream to jump to arbitrary positions in the file and to truncate the
     file, provided the filesystem of the file supports these operations.
 
-    To find the position of a file output stream, use [Gio.Seekable.tell]. To
+    To find the position of a file output stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-tell}[Gio.Seekable.tell]}. To
     find out if a file output stream supports seeking, use
-    [Gio.Seekable.can_seek].To position a file output stream, use
-    [Gio.Seekable.seek]. To find out if a file output stream supports
-    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
-    stream, use [Gio.Seekable.truncate]. *)
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_seek}[Gio.Seekable.can_seek]}.To
+    position a file output stream, use [Gio.Seekable.seek]. To find out if a
+    file output stream supports truncating, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_truncate}[Gio.Seekable.can_truncate]}.
+    To truncate a file output stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-truncate}[Gio.Seekable.truncate]}.
+*)
 
 (** {1:constructors Constructors} *)
 

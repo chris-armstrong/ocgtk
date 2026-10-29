@@ -13,7 +13,9 @@
     handle opened in read-write mode.
 
     To do the actual reading and writing you need to get the substreams with
-    [Gio.IOStream.get_input_stream] and [Gio.IOStream.get_output_stream].
+    {{!Ocgio.Raw.Io_stream.val-get_input_stream}[Gio.IOStream.get_input_stream]}
+    and
+    {{!Ocgio.Raw.Io_stream.val-get_output_stream}[Gio.IOStream.get_output_stream]}.
 
     The [GIOStream] object owns the input and the output streams, not the other
     way around, so keeping the substreams alive will not keep the [GIOStream]
@@ -21,12 +23,13 @@
     closing the substreams, so even if the substreams stay alive they will
     always return [G_IO_ERROR_CLOSED] for all operations.
 
-    To close a stream use [Gio.IOStream.close] which will close the common
-    stream object and also the individual substreams. You can also close the
-    substreams themselves. In most cases this only marks the substream as
-    closed, so further I/O on it fails but common state in the [GIOStream] may
-    still be open. However, some streams may support ‘half-closed’ states where
-    one direction of the stream is actually shut down.
+    To close a stream use {{!Ocgio.Raw.Io_stream.val-close}[Gio.IOStream.close]}
+    which will close the common stream object and also the individual
+    substreams. You can also close the substreams themselves. In most cases this
+    only marks the substream as closed, so further I/O on it fails but common
+    state in the [GIOStream] may still be open. However, some streams may
+    support ‘half-closed’ states where one direction of the stream is actually
+    shut down.
 
     Operations on [GIOStream]s cannot be started while another operation on the
     [GIOStream] or its substreams is in progress. Specifically, an application

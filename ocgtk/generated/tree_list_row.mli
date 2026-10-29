@@ -14,7 +14,8 @@
     It allows navigating the model as a tree and modify the state of rows.
 
     [GtkTreeListRow] instances are created by a [GtkTreeListModel] only when the
-    [Gtk.TreeListModel:passthrough] property is not set.
+    {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t.method-get_passthrough}
+     [Gtk.TreeListModel:passthrough]} property is not set.
 
     There are various support objects that can make use of [GtkTreeListRow]
     objects, such as the
@@ -101,7 +102,8 @@ class tree_list_row : Raw.Tree_list_row.t -> tree_list_row_t
     It allows navigating the model as a tree and modify the state of rows.
 
     [GtkTreeListRow] instances are created by a [GtkTreeListModel] only when the
-    [Gtk.TreeListModel:passthrough] property is not set.
+    {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t.method-get_passthrough}
+     [Gtk.TreeListModel:passthrough]} property is not set.
 
     There are various support objects that can make use of [GtkTreeListRow]
     objects, such as the

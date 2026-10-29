@@ -15,16 +15,19 @@
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by
-    application code. This is done by calling [Gtk.ListItem.set_child].
+    application code. This is done by calling
+    {{!Ocgtk.List_item.class-type-list_item_t.method-set_child}[Gtk.ListItem.set_child]}.
 
     [GtkListItem] objects exist in 2 stages:
 
     + The unbound stage where the listitem is not currently connected to an item
-      in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [None].
+      in the list. In that case, the
+      {{!Ocgtk.List_item.class-type-list_item_t.method-get_item}[Gtk.ListItem:item]}
+      property is set to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [None]. *)
+      {{!Ocgtk.List_item.class-type-list_item_t.method-get_item}[Gtk.ListItem:item]}
+      property is not [None]. *)
 class type list_item_t = object
   (** {2:methods Methods} *)
 
@@ -135,16 +138,19 @@ class list_item : Raw.List_item.t -> list_item_t
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by
-    application code. This is done by calling [Gtk.ListItem.set_child].
+    application code. This is done by calling
+    {{!Ocgtk.List_item.class-type-list_item_t.method-set_child}[Gtk.ListItem.set_child]}.
 
     [GtkListItem] objects exist in 2 stages:
 
     + The unbound stage where the listitem is not currently connected to an item
-      in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [None].
+      in the list. In that case, the
+      {{!Ocgtk.List_item.class-type-list_item_t.method-get_item}[Gtk.ListItem:item]}
+      property is set to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [None]. *)
+      {{!Ocgtk.List_item.class-type-list_item_t.method-get_item}[Gtk.ListItem:item]}
+      property is not [None]. *)
 
 (** {1:constructors Constructors} *)
 

@@ -14,15 +14,18 @@
 
     Provides a way to associate widgets with actions.
 
-    It primarily consists of two properties: [Gtk.Actionable:action-name] and
-    [Gtk.Actionable:action-target]. There are also some convenience APIs for
-    setting these properties.
+    It primarily consists of two properties:
+    {{!Ocgtk.Actionable.class-type-actionable_t.method-get_action_name}[Gtk.Actionable:action-name]}
+    and
+    {{!Ocgtk.Actionable.class-type-actionable_t.method-get_action_target_value}[Gtk.Actionable:action-target]}.
+    There are also some convenience APIs for setting these properties.
 
     The action will be looked up in action groups that are found among the
     widgets ancestors. Most commonly, these will be the actions with the “win.”
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
-    [Gtk.Widget.insert_action_group] will be consulted as well. *)
+    {{!Ocgtk.Widget.class-type-widget_t.method-insert_action_group}[Gtk.Widget.insert_action_group]}
+    will be consulted as well. *)
 class type actionable_t = object
   (** {2:methods Methods} *)
 
@@ -85,15 +88,18 @@ class actionable : Raw.Actionable.t -> actionable_t
 
     Provides a way to associate widgets with actions.
 
-    It primarily consists of two properties: [Gtk.Actionable:action-name] and
-    [Gtk.Actionable:action-target]. There are also some convenience APIs for
-    setting these properties.
+    It primarily consists of two properties:
+    {{!Ocgtk.Actionable.class-type-actionable_t.method-get_action_name}[Gtk.Actionable:action-name]}
+    and
+    {{!Ocgtk.Actionable.class-type-actionable_t.method-get_action_target_value}[Gtk.Actionable:action-target]}.
+    There are also some convenience APIs for setting these properties.
 
     The action will be looked up in action groups that are found among the
     widgets ancestors. Most commonly, these will be the actions with the “win.”
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
-    [Gtk.Widget.insert_action_group] will be consulted as well. *)
+    {{!Ocgtk.Widget.class-type-widget_t.method-insert_action_group}[Gtk.Widget.insert_action_group]}
+    will be consulted as well. *)
 
 (** {1:constructors Constructors} *)
 

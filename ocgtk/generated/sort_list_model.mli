@@ -26,8 +26,9 @@
     [GtkMultiSorter] and appending the previous sorter to it.
 
     The model can be set up to do incremental sorting, so that sorting long
-    lists doesn't block the UI. See [Gtk.SortListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-set_incremental}
+     [Gtk.SortListModel.set_incremental]} for details.
 
     [GtkSortListModel] is a generic model and because of that it cannot take
     advantage of any external knowledge when sorting. If you run into
@@ -35,10 +36,13 @@
     you write your own sorting list model.
 
     [GtkSortListModel] allows sorting the items into sections. It implements
-    [GtkSectionModel] and when [Gtk.SortListModel:section-sorter] is set, it
-    will sort all items with that sorter and items comparing equal with it will
-    be put into the same section. The [Gtk.SortListModel:sorter] will then be
-    used to sort items inside their sections. *)
+    [GtkSectionModel] and when
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-get_section_sorter}
+     [Gtk.SortListModel:section-sorter]} is set, it will sort all items with
+    that sorter and items comparing equal with it will be put into the same
+    section. The
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-get_sorter}[Gtk.SortListModel:sorter]}
+    will then be used to sort items inside their sections. *)
 class type sort_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -138,8 +142,9 @@ class sort_list_model : Raw.Sort_list_model.t -> sort_list_model_t
     [GtkMultiSorter] and appending the previous sorter to it.
 
     The model can be set up to do incremental sorting, so that sorting long
-    lists doesn't block the UI. See [Gtk.SortListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-set_incremental}
+     [Gtk.SortListModel.set_incremental]} for details.
 
     [GtkSortListModel] is a generic model and because of that it cannot take
     advantage of any external knowledge when sorting. If you run into
@@ -147,10 +152,13 @@ class sort_list_model : Raw.Sort_list_model.t -> sort_list_model_t
     you write your own sorting list model.
 
     [GtkSortListModel] allows sorting the items into sections. It implements
-    [GtkSectionModel] and when [Gtk.SortListModel:section-sorter] is set, it
-    will sort all items with that sorter and items comparing equal with it will
-    be put into the same section. The [Gtk.SortListModel:sorter] will then be
-    used to sort items inside their sections. *)
+    [GtkSectionModel] and when
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-get_section_sorter}
+     [Gtk.SortListModel:section-sorter]} is set, it will sort all items with
+    that sorter and items comparing equal with it will be put into the same
+    section. The
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t.method-get_sorter}[Gtk.SortListModel:sorter]}
+    will then be used to sort items inside their sections. *)
 
 (** {1:constructors Constructors} *)
 

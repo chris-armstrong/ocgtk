@@ -445,7 +445,8 @@ end
     A [PangoLayoutIter] can be used to iterate over the visual extents of a
     [PangoLayout].
 
-    To obtain a [PangoLayoutIter], use [Pango.Layout.get_iter].
+    To obtain a [PangoLayoutIter], use
+    {{!Ocpango.Layout.class-type-layout_t.method-get_iter}[Pango.Layout.get_iter]}.
 
     The [PangoLayoutIter] structure is opaque, and has no user-visible fields.
 *)

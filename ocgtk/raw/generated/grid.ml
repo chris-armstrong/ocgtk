@@ -5,10 +5,12 @@
 "Arranges its child widgets in rows and columns.\n\n\
  An example GtkGrid\n\n\
  It supports arbitrary positions and horizontal/vertical spans.\n\n\
- Children are added using [Gtk.Grid.attach]. They can span multiple\n\
+ Children are added using {{!Ocgtk.Raw.Grid.val-attach}[Gtk.Grid.attach]}. \
+ They can span multiple\n\
  rows or columns. It is also possible to add a child next to an existing\n\
- child, using [Gtk.Grid.attach_next_to]. To remove a child from the\n\
- grid, use [Gtk.Grid.remove].\n\n\
+ child, using {{!Ocgtk.Raw.Grid.val-attach_next_to}[Gtk.Grid.attach_next_to]}. \
+ To remove a child from the\n\
+ grid, use {{!Ocgtk.Raw.Grid.val-remove}[Gtk.Grid.remove]}.\n\n\
  The behaviour of [GtkGrid] when several children occupy the same grid\n\
  cell is undefined.\n\n\
  {b GtkGrid as GtkBuildable}\n\n\
@@ -71,8 +73,12 @@
  {b CSS nodes}\n\n\
  [GtkGrid] uses a single CSS node with name [grid].\n\n\
  {b Accessibility}\n\n\
- Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
- Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role.\n\n\
+ Until GTK 4.10, [GtkGrid] used the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
+ Starting from GTK 4.12, [GtkGrid] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Grid}."]
 
 type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -135,8 +141,9 @@ external remove :
   unit = "ml_gtk_grid_remove"
 (** Removes a child from [grid].
 
-    The child must have been added with [Gtk.Grid.attach] or
-    [Gtk.Grid.attach_next_to]. *)
+    The child must have been added with
+    {{!Ocgtk.Raw.Grid.val-attach}[Gtk.Grid.attach]} or
+    {{!Ocgtk.Raw.Grid.val-attach_next_to}[Gtk.Grid.attach_next_to]}. *)
 
 external query_child :
   t ->
@@ -184,7 +191,9 @@ external get_row_baseline_position : t -> int -> Ocgtk_enums.baselineposition
   = "ml_gtk_grid_get_row_baseline_position"
 (** Returns the baseline position of [row].
 
-    See [Gtk.Grid.set_row_baseline_position]. *)
+    See
+    {{!Ocgtk.Raw.Grid.val-set_row_baseline_position}[Gtk.Grid.set_row_baseline_position]}.
+*)
 
 external get_column_spacing : t -> int = "ml_gtk_grid_get_column_spacing"
 (** Returns the amount of space between the columns of [grid]. *)

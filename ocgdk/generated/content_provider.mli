@@ -13,8 +13,10 @@
     Provides content for the clipboard or for drag-and-drop operations in a
     number of formats.
 
-    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
-    [Gdk.ContentProvider.new_for_bytes].
+    To create a [GdkContentProvider], use
+    {{!Ocgdk.Content_provider.val-new_for_value}[Gdk.ContentProvider.new_for_value]}
+    or
+    {{!Ocgdk.Content_provider.val-new_for_bytes}[Gdk.ContentProvider.new_for_bytes]}.
 
     GDK knows how to handle common text and image formats out-of-the-box. See
     {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}
@@ -64,8 +66,10 @@ class content_provider : Raw.Content_provider.t -> content_provider_t
     Provides content for the clipboard or for drag-and-drop operations in a
     number of formats.
 
-    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
-    [Gdk.ContentProvider.new_for_bytes].
+    To create a [GdkContentProvider], use
+    {{!Ocgdk.Content_provider.val-new_for_value}[Gdk.ContentProvider.new_for_value]}
+    or
+    {{!Ocgdk.Content_provider.val-new_for_bytes}[Gdk.ContentProvider.new_for_bytes]}.
 
     GDK knows how to handle common text and image formats out-of-the-box. See
     {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}

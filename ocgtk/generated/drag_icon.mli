@@ -24,9 +24,10 @@
     destroyed when the drag ends.
 
     To set up a drag icon and associate it with an ongoing drag operation, use
-    [Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use it
-    like any other widget and use [Gtk.DragIcon.set_child] to set whatever
-    widget should be used for the drag icon.
+    {{!Ocgtk.Drag_icon.val-get_for_drag}[Gtk.DragIcon.get_for_drag]} to get the
+    icon for a drag. You can then use it like any other widget and use
+    {{!Ocgtk.Drag_icon.class-type-drag_icon_t.method-set_child}[Gtk.DragIcon.set_child]}
+    to set whatever widget should be used for the drag icon.
 
     Keep in mind that drag icons do not allow user input. *)
 class type drag_icon_t = object
@@ -58,9 +59,10 @@ class drag_icon : Raw.Drag_icon.t -> drag_icon_t
     destroyed when the drag ends.
 
     To set up a drag icon and associate it with an ongoing drag operation, use
-    [Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use it
-    like any other widget and use [Gtk.DragIcon.set_child] to set whatever
-    widget should be used for the drag icon.
+    {{!Ocgtk.Drag_icon.val-get_for_drag}[Gtk.DragIcon.get_for_drag]} to get the
+    icon for a drag. You can then use it like any other widget and use
+    {{!Ocgtk.Drag_icon.class-type-drag_icon_t.method-set_child}[Gtk.DragIcon.set_child]}
+    to set whatever widget should be used for the drag icon.
 
     Keep in mind that drag icons do not allow user input. *)
 

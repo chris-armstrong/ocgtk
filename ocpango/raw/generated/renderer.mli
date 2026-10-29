@@ -24,7 +24,8 @@ external set_color : t -> Ocpango_enums.renderpart -> Color.t option -> unit
   = "ml_pango_renderer_set_color"
 (** Sets the color for part of the rendering.
 
-    Also see [Pango.Renderer.set_alpha]. *)
+    Also see {{!Ocpango.Raw.Renderer.val-set_alpha}[Pango.Renderer.set_alpha]}.
+*)
 
 external set_alpha : t -> Ocpango_enums.renderpart -> UInt16.t -> unit
   = "ml_pango_renderer_set_alpha"
@@ -49,12 +50,12 @@ external part_changed : t -> Ocpango_enums.renderpart -> unit
 
     When the stipple changes or underlines with different stipples might be
     joined together. Pango automatically calls this for changes to colors. (See
-    [Pango.Renderer.set_color]) *)
+    {{!Ocpango.Raw.Renderer.val-set_color}[Pango.Renderer.set_color]}) *)
 
 external get_matrix : t -> Matrix.t option = "ml_pango_renderer_get_matrix"
 (** Gets the transformation matrix that will be applied when rendering.
 
-    See [Pango.Renderer.set_matrix]. *)
+    See {{!Ocpango.Raw.Renderer.val-set_matrix}[Pango.Renderer.set_matrix]}. *)
 
 external get_layout_line : t -> Layout_line.t option
   = "ml_pango_renderer_get_layout_line"
@@ -106,7 +107,8 @@ external draw_rectangle :
     [PangoRenderer].
 
     This should be called while [renderer] is already active. Use
-    [Pango.Renderer.activate] to activate a renderer. *)
+    {{!Ocpango.Raw.Renderer.val-activate}[Pango.Renderer.activate]} to activate
+    a renderer. *)
 
 external draw_layout_line : t -> Layout_line.t -> int -> int -> unit
   = "ml_pango_renderer_draw_layout_line"
@@ -150,10 +152,11 @@ external draw_glyph_item :
     Note that [text] is the start of the text for layout, which is then indexed
     by [glyph_item->item->offset].
 
-    If [text] is [None], this simply calls [Pango.Renderer.draw_glyphs].
+    If [text] is [None], this simply calls
+    {{!Ocpango.Raw.Renderer.val-draw_glyphs}[Pango.Renderer.draw_glyphs]}.
 
     The default implementation of this method simply falls back to
-    [Pango.Renderer.draw_glyphs]. *)
+    {{!Ocpango.Raw.Renderer.val-draw_glyphs}[Pango.Renderer.draw_glyphs]}. *)
 
 external draw_glyph :
   t ->
@@ -173,19 +176,23 @@ external draw_error_underline : t -> int -> int -> int -> int -> unit
     segments and the resulting rectangle is centered in the original rectangle.
 
     This should be called while [renderer] is already active. Use
-    [Pango.Renderer.activate] to activate a renderer. *)
+    {{!Ocpango.Raw.Renderer.val-activate}[Pango.Renderer.activate]} to activate
+    a renderer. *)
 
 external deactivate : t -> unit = "ml_pango_renderer_deactivate"
 (** Cleans up after rendering operations on [renderer].
 
-    See docs for [Pango.Renderer.activate]. *)
+    See docs for
+    {{!Ocpango.Raw.Renderer.val-activate}[Pango.Renderer.activate]}. *)
 
 external activate : t -> unit = "ml_pango_renderer_activate"
 (** Does initial setup before rendering operations on [renderer].
 
-    [Pango.Renderer.deactivate] should be called when done drawing. Calls such
-    as [Pango.Renderer.draw_layout] automatically activate the layout before
-    drawing on it.
+    {{!Ocpango.Raw.Renderer.val-deactivate}[Pango.Renderer.deactivate]} should
+    be called when done drawing. Calls such as
+    {{!Ocpango.Raw.Renderer.val-draw_layout}[Pango.Renderer.draw_layout]}
+    automatically activate the layout before drawing on it.
 
-    Calls to [Pango.Renderer.activate] and [Pango.Renderer.deactivate] can be
+    Calls to {{!Ocpango.Raw.Renderer.val-activate}[Pango.Renderer.activate]} and
+    {{!Ocpango.Raw.Renderer.val-deactivate}[Pango.Renderer.deactivate]} can be
     nested and the renderer will only be initialized and deinitialized once. *)

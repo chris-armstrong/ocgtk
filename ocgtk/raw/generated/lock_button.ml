@@ -33,9 +33,14 @@
     If the user has the permission and cannot drop it, the button is hidden.
 
     The text (and tooltips) that are shown in the various cases can be adjusted
-    with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
-    [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
-    [Gtk.LockButton:tooltip-not-authorized] properties.
+    with the
+    {{!Ocgtk.Raw.Lock_button.val-get_text_lock}[Gtk.LockButton:text-lock]},
+    {{!Ocgtk.Raw.Lock_button.val-get_text_unlock}[Gtk.LockButton:text-unlock]},
+    {{!Ocgtk.Raw.Lock_button.val-get_tooltip_lock}[Gtk.LockButton:tooltip-lock]},
+    {{!Ocgtk.Raw.Lock_button.val-get_tooltip_unlock}[Gtk.LockButton:tooltip-unlock]}
+    and
+    {{!Ocgtk.Raw.Lock_button.val-get_tooltip_not_authorized}[Gtk.LockButton:tooltip-not-authorized]}
+    properties.
 
     The class built on this module is in {!Ocgtk.Lock_button}. *)
 

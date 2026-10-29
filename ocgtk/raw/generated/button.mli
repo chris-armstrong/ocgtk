@@ -13,7 +13,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.Button::activate]
+    - {{!Ocgtk.Raw.Button.val-on_activate}[Gtk.Button::activate]}
 
     {b CSS nodes}
 
@@ -38,7 +38,9 @@
 
     {b Accessibility}
 
-    [GtkButton] uses the [Gtk.AccessibleRole.button] role.
+    [GtkButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role.
 
     The class built on this module is in {!Ocgtk.Button}. *)
 
@@ -49,7 +51,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_button_get_type"
 external new_ : unit -> t = "ml_gtk_button_new"
 (** Creates a new [GtkButton] widget.
 
-    To add a child widget to the button, use [Gtk.Button.set_child]. *)
+    To add a child widget to the button, use
+    {{!Ocgtk.Raw.Button.val-set_child}[Gtk.Button.set_child]}. *)
 
 external new_from_icon_name : string -> t = "ml_gtk_button_new_from_icon_name"
 (** Creates a new button containing an icon from the current icon theme.
@@ -121,21 +124,26 @@ external set_can_shrink : t -> bool -> unit = "ml_gtk_button_set_can_shrink"
 external get_use_underline : t -> bool = "ml_gtk_button_get_use_underline"
 (** gets whether underlines are interpreted as mnemonics.
 
-    See [Gtk.Button.set_use_underline]. *)
+    See
+    {{!Ocgtk.Raw.Button.val-set_use_underline}[Gtk.Button.set_use_underline]}.
+*)
 
 external get_label : t -> string option = "ml_gtk_button_get_label"
 (** Fetches the text from the label of the button.
 
-    If the label text has not been set with [Gtk.Button.set_label] the return
-    value will be [None]. This will be the case if you create an empty button
-    with [Gtk.Button.new] to use as a container. *)
+    If the label text has not been set with
+    {{!Ocgtk.Raw.Button.val-set_label}[Gtk.Button.set_label]} the return value
+    will be [None]. This will be the case if you create an empty button with
+    {{!Ocgtk.Raw.Button.val-new_}[Gtk.Button.new]} to use as a container. *)
 
 external get_icon_name : t -> string option = "ml_gtk_button_get_icon_name"
 (** Returns the icon name of the button.
 
-    If the icon name has not been set with [Gtk.Button.set_icon_name] the return
+    If the icon name has not been set with
+    {{!Ocgtk.Raw.Button.val-set_icon_name}[Gtk.Button.set_icon_name]} the return
     value will be [None]. This will be the case if you create an empty button
-    with [Gtk.Button.new] to use as a container. *)
+    with {{!Ocgtk.Raw.Button.val-new_}[Gtk.Button.new]} to use as a container.
+*)
 
 external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
 (** Returns whether the button has a frame. *)
@@ -159,7 +167,8 @@ val on_activate :
 (** Emitted to animate press then release.
 
     This is an action signal. Applications should never connect to this signal,
-    but use the [Gtk.Button::clicked] signal.
+    but use the {{!Ocgtk.Raw.Button.val-on_clicked}[Gtk.Button::clicked]}
+    signal.
 
     The default bindings for this signal are all forms of the <kbd>␣</kbd> and
     <kbd>Enter</kbd> keys. *)

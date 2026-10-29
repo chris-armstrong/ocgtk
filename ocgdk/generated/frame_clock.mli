@@ -23,24 +23,29 @@
     implementation or with mozRequestAnimationFrame in Firefox, for example.
 
     A frame clock is idle until someone requests a frame with
-    [Gdk.FrameClock.request_phase]. At some later point that makes sense for the
-    synchronization being implemented, the clock will process a frame and emit
-    signals for each phase that has been requested. (See the signals of the
-    [GdkFrameClock] class for documentation of the phases.
-    [GDK_FRAME_CLOCK_PHASE_UPDATE] and the [Gdk.FrameClock::update] signal are
-    most interesting for application writers, and are used to update the
-    animations, using the frame time given by [Gdk.FrameClock.get_frame_time].
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-request_phase}[Gdk.FrameClock.request_phase]}.
+    At some later point that makes sense for the synchronization being
+    implemented, the clock will process a frame and emit signals for each phase
+    that has been requested. (See the signals of the [GdkFrameClock] class for
+    documentation of the phases. [GDK_FRAME_CLOCK_PHASE_UPDATE] and the
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-on_update}[Gdk.FrameClock::update]}
+    signal are most interesting for application writers, and are used to update
+    the animations, using the frame time given by
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}.
 
     The frame time is reported in microseconds and generally in the same
     timescale as g_get_monotonic_time(), however, it is not the same as
     g_get_monotonic_time(). The frame time does not advance during the time a
     frame is being painted, and outside of a frame, an attempt is made so that
-    all calls to [Gdk.FrameClock.get_frame_time] that are called at a “similar”
-    time get the same value. This means that if different animations are timed
-    by looking at the difference in time between an initial value from
-    [Gdk.FrameClock.get_frame_time] and the value inside the
-    [Gdk.FrameClock::update] signal of the clock, they will stay exactly
-    synchronized. *)
+    all calls to
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    that are called at a “similar” time get the same value. This means that if
+    different animations are timed by looking at the difference in time between
+    an initial value from
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    and the value inside the
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-on_update}[Gdk.FrameClock::update]}
+    signal of the clock, they will stay exactly synchronized. *)
 class type frame_clock_t = object
   (** {2:signals Signals} *)
 
@@ -183,24 +188,29 @@ class frame_clock : Raw.Frame_clock.t -> frame_clock_t
     implementation or with mozRequestAnimationFrame in Firefox, for example.
 
     A frame clock is idle until someone requests a frame with
-    [Gdk.FrameClock.request_phase]. At some later point that makes sense for the
-    synchronization being implemented, the clock will process a frame and emit
-    signals for each phase that has been requested. (See the signals of the
-    [GdkFrameClock] class for documentation of the phases.
-    [GDK_FRAME_CLOCK_PHASE_UPDATE] and the [Gdk.FrameClock::update] signal are
-    most interesting for application writers, and are used to update the
-    animations, using the frame time given by [Gdk.FrameClock.get_frame_time].
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-request_phase}[Gdk.FrameClock.request_phase]}.
+    At some later point that makes sense for the synchronization being
+    implemented, the clock will process a frame and emit signals for each phase
+    that has been requested. (See the signals of the [GdkFrameClock] class for
+    documentation of the phases. [GDK_FRAME_CLOCK_PHASE_UPDATE] and the
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-on_update}[Gdk.FrameClock::update]}
+    signal are most interesting for application writers, and are used to update
+    the animations, using the frame time given by
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}.
 
     The frame time is reported in microseconds and generally in the same
     timescale as g_get_monotonic_time(), however, it is not the same as
     g_get_monotonic_time(). The frame time does not advance during the time a
     frame is being painted, and outside of a frame, an attempt is made so that
-    all calls to [Gdk.FrameClock.get_frame_time] that are called at a “similar”
-    time get the same value. This means that if different animations are timed
-    by looking at the difference in time between an initial value from
-    [Gdk.FrameClock.get_frame_time] and the value inside the
-    [Gdk.FrameClock::update] signal of the clock, they will stay exactly
-    synchronized. *)
+    all calls to
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    that are called at a “similar” time get the same value. This means that if
+    different animations are timed by looking at the difference in time between
+    an initial value from
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    and the value inside the
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-on_update}[Gdk.FrameClock::update]}
+    signal of the clock, they will stay exactly synchronized. *)
 
 (** {1:constructors Constructors} *)
 

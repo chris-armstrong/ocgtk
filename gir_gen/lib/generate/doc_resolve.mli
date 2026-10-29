@@ -11,7 +11,18 @@
    record links to its layer 1 module ([Ocgtk.Raw.Button]); from a layer 2
    doc, to its class type ([Ocgtk.Button.class-type-button_t]). Enumerations,
    bitfields and constants have one home, [Enums] and [Constants], whatever
-   the layer. Members, legacy sigils and C symbols are not linked. *)
+   the layer.
+
+   Members link only within the doc's own namespace, the only one whose
+   emitted members the index lists, and only to a member the type emits at
+   the doc's layer. From a layer 1 doc, a method, constructor, signal or
+   property links to the layer 1 value ([Ocgtk.Raw.Button.val-get_label]);
+   from a layer 2 doc, a constructor links to the module's value
+   ([Ocgtk.Button.val-new_]) and the others to the class type's method
+   ([Ocgtk.Button.class-type-button_t.method-on_clicked]). A property links
+   to its accessor (see [Emitted_members.names]). An enumeration or bitfield
+   member links to its polymorphic variant tag in [Enums]. Legacy sigils and
+   C symbols are not linked. *)
 
 type env = {
   namespace : string;  (** The namespace the doc belongs to. *)
@@ -41,14 +52,15 @@ type miss_reason =
       (** The endpoint's namespace is not in the index: not generated (GLib,
           GObject), or not a dependency of the doc's namespace. *)
   | Unknown_target
-      (** The namespace is indexed but does not generate the target. *)
+      (** The namespace is indexed but does not generate the target, or the type
+          does not emit the member at the doc's layer. *)
   | Member_in_other_namespace
       (** A member of a type of another namespace: only members of the current
           namespace can be checked. *)
   | Kind_not_generated
       (** Functions, callbacks, virtual functions, aliases and error domains:
           never generated. *)
-  | Not_resolved_yet  (** Members, legacy sigils and C symbols. *)
+  | Not_resolved_yet  (** Legacy sigils and C symbols. *)
 [@@deriving eq]
 
 val miss_reason_name : miss_reason -> string

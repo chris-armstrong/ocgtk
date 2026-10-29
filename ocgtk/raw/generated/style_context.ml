@@ -6,14 +6,16 @@
     In order to construct the final style information, [GtkStyleContext] queries
     information from all attached [GtkStyleProviders]. Style providers can be
     either attached explicitly to the context through
-    [Gtk.StyleContext.add_provider], or to the display through
-    [Gtk.StyleContext.add_provider_for_display]. The resulting style is a
-    combination of all providers’ information in priority order.
+    {{!Ocgtk.Raw.Style_context.val-add_provider}[Gtk.StyleContext.add_provider]},
+    or to the display through [Gtk.StyleContext.add_provider_for_display]. The
+    resulting style is a combination of all providers’ information in priority
+    order.
 
     For GTK widgets, any [GtkStyleContext] returned by
-    [Gtk.Widget.get_style_context] will already have a [GdkDisplay] and RTL/LTR
-    information set. The style context will also be updated automatically if any
-    of these settings change on the widget.
+    {{!Ocgtk.Raw.Widget.val-get_style_context}[Gtk.Widget.get_style_context]}
+    will already have a [GdkDisplay] and RTL/LTR information set. The style
+    context will also be updated automatically if any of these settings change
+    on the widget.
 
     {b Style Classes}
 
@@ -73,23 +75,27 @@ external set_display : t -> Ocgdk_raw.Display.t -> unit
     such as the display's [GtkSettings] instance.
 
     If you are using a [GtkStyleContext] returned from
-    [Gtk.Widget.get_style_context], you do not need to call this yourself. *)
+    {{!Ocgtk.Raw.Widget.val-get_style_context}[Gtk.Widget.get_style_context]},
+    you do not need to call this yourself. *)
 
 external save : t -> unit = "ml_gtk_style_context_save"
 (** Saves the [context] state.
 
     This allows temporary modifications done through
-    [Gtk.StyleContext.add_class], [Gtk.StyleContext.remove_class],
-    [Gtk.StyleContext.set_state] to be quickly reverted in one go through
-    [Gtk.StyleContext.restore].
+    {{!Ocgtk.Raw.Style_context.val-add_class}[Gtk.StyleContext.add_class]},
+    {{!Ocgtk.Raw.Style_context.val-remove_class}[Gtk.StyleContext.remove_class]},
+    {{!Ocgtk.Raw.Style_context.val-set_state}[Gtk.StyleContext.set_state]} to be
+    quickly reverted in one go through
+    {{!Ocgtk.Raw.Style_context.val-restore}[Gtk.StyleContext.restore]}.
 
-    The matching call to [Gtk.StyleContext.restore] must be done before GTK
-    returns to the main loop. *)
+    The matching call to
+    {{!Ocgtk.Raw.Style_context.val-restore}[Gtk.StyleContext.restore]} must be
+    done before GTK returns to the main loop. *)
 
 external restore : t -> unit = "ml_gtk_style_context_restore"
 (** Restores [context] state to a previous stage.
 
-    See [Gtk.StyleContext.save]. *)
+    See {{!Ocgtk.Raw.Style_context.val-save}[Gtk.StyleContext.save]}. *)
 
 external remove_provider : t -> Style_provider.t -> unit
   = "ml_gtk_style_context_remove_provider"
@@ -111,9 +117,10 @@ external get_state : t -> Ocgtk_enums.stateflags
 (** Returns the state used for style matching.
 
     This method should only be used to retrieve the [GtkStateFlags] to pass to
-    [GtkStyleContext] methods, like [Gtk.StyleContext.get_padding]. If you need
-    to retrieve the current state of a [GtkWidget], use
-    [Gtk.Widget.get_state_flags]. *)
+    [GtkStyleContext] methods, like
+    {{!Ocgtk.Raw.Style_context.val-get_padding}[Gtk.StyleContext.get_padding]}.
+    If you need to retrieve the current state of a [GtkWidget], use
+    {{!Ocgtk.Raw.Widget.val-get_state_flags}[Gtk.Widget.get_state_flags]}. *)
 
 external get_scale : t -> int = "ml_gtk_style_context_get_scale"
 (** Returns the scale used for assets. *)

@@ -6,17 +6,24 @@
     An example GtkScrollbar
 
     Its position and movement are controlled by the adjustment that is passed to
-    or created by [Gtk.Scrollbar.new]. See
+    or created by {{!Ocgtk.Raw.Scrollbar.val-new_}[Gtk.Scrollbar.new]}. See
     {{!Ocgtk.Raw.Adjustment}[Gtk.Adjustment]} for more details. The
-    [Gtk.Adjustment:value] field sets the position of the thumb and must be
-    between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
-    [Gtk.Adjustment:page-size]. The [Gtk.Adjustment:page-size] represents the
-    size of the visible scrollable area.
+    {{!Ocgtk.Raw.Adjustment.val-get_value}[Gtk.Adjustment:value]} field sets the
+    position of the thumb and must be between
+    {{!Ocgtk.Raw.Adjustment.val-get_lower}[Gtk.Adjustment:lower]} and
+    {{!Ocgtk.Raw.Adjustment.val-get_upper}[Gtk.Adjustment:upper]} -
+    {{!Ocgtk.Raw.Adjustment.val-get_page_size}[Gtk.Adjustment:page-size]}. The
+    {{!Ocgtk.Raw.Adjustment.val-get_page_size}[Gtk.Adjustment:page-size]}
+    represents the size of the visible scrollable area.
 
-    The fields [Gtk.Adjustment:step-increment] and
-    [Gtk.Adjustment:page-increment] fields are added to or subtracted from the
-    [Gtk.Adjustment:value] when the user asks to move by a step (using e.g. the
-    cursor arrow keys) or by a page (using e.g. the Page Down/Up keys).
+    The fields
+    {{!Ocgtk.Raw.Adjustment.val-get_step_increment}[Gtk.Adjustment:step-increment]}
+    and
+    {{!Ocgtk.Raw.Adjustment.val-get_page_increment}[Gtk.Adjustment:page-increment]}
+    fields are added to or subtracted from the
+    {{!Ocgtk.Raw.Adjustment.val-get_value}[Gtk.Adjustment:value]} when the user
+    asks to move by a step (using e.g. the cursor arrow keys) or by a page
+    (using e.g. the Page Down/Up keys).
 
     {b CSS nodes}
 
@@ -41,7 +48,9 @@
 
     {b Accessibility}
 
-    [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role.
+    [GtkScrollbar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SCROLLBAR}[Gtk.AccessibleRole.scrollbar]}
+    role.
 
     The class built on this module is in {!Ocgtk.Scrollbar}. *)
 

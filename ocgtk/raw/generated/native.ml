@@ -7,15 +7,17 @@
     The obvious example of a [GtkNative] is [GtkWindow].
 
     Every widget that is not itself a [GtkNative] is contained in one, and you
-    can get it with [Gtk.Widget.get_native].
+    can get it with {{!Ocgtk.Raw.Widget.val-get_native}[Gtk.Widget.get_native]}.
 
-    To get the surface of a [GtkNative], use [Gtk.Native.get_surface]. It is
-    also possible to find the [GtkNative] to which a surface belongs, with
+    To get the surface of a [GtkNative], use
+    {{!Ocgtk.Raw.Native.val-get_surface}[Gtk.Native.get_surface]}. It is also
+    possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
     In addition to a {{!Ocgdk.Raw.Surface}[Gdk.Surface]}, a [GtkNative] also
     provides a {{!Ocgsk.Raw.Renderer}[Gsk.Renderer]} for rendering on that
-    surface. To get the renderer, use [Gtk.Native.get_renderer].
+    surface. To get the renderer, use
+    {{!Ocgtk.Raw.Native.val-get_renderer}[Gtk.Native.get_renderer]}.
 
     The class built on this module is in {!Ocgtk.Native}. *)
 

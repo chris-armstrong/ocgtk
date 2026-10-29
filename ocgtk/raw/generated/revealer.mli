@@ -4,20 +4,26 @@
 (** Animates the transition of its child from invisible to visible.
 
     The style of transition can be controlled with
-    [Gtk.Revealer.set_transition_type].
+    {{!Ocgtk.Raw.Revealer.val-set_transition_type}[Gtk.Revealer.set_transition_type]}.
 
-    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
+    These animations respect the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_enable_animations}[Gtk.Settings:gtk-enable-animations]}
+    setting.
 
     {b CSS nodes}
 
     [GtkRevealer] has a single CSS node with name revealer. When styling
     [GtkRevealer] using CSS, remember that it only hides its contents, not
     itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [false].
+    when the
+    {{!Ocgtk.Raw.Revealer.val-get_reveal_child}[Gtk.Revealer:reveal-child]}
+    property is set to [false].
 
     {b Accessibility}
 
-    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
+    [GtkRevealer] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget.
@@ -73,7 +79,9 @@ external get_reveal_child : t -> bool = "ml_gtk_revealer_get_reveal_child"
 
     This function returns [true] as soon as the transition is to the revealed
     state is started. To learn whether the child is fully revealed (ie the
-    transition is completed), use [Gtk.Revealer.get_child_revealed]. *)
+    transition is completed), use
+    {{!Ocgtk.Raw.Revealer.val-get_child_revealed}[Gtk.Revealer.get_child_revealed]}.
+*)
 
 external get_child_revealed : t -> bool = "ml_gtk_revealer_get_child_revealed"
 (** Returns whether the child is fully revealed.

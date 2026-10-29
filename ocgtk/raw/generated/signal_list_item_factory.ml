@@ -10,11 +10,11 @@
       row and adding them to the listitem.
 
     + [Gtk.SignalListItemFactory::bind] is emitted to bind the item passed via
-      [Gtk.ListItem:item] to the widgets that have been created in step 1 or to
-      add item-specific widgets. Signals are connected to listen to changes -
-      both to changes in the item to update the widgets or to changes in the
-      widgets to update the item. After this signal has been called, the
-      listitem may be shown in a list widget.
+      {{!Ocgtk.Raw.List_item.val-get_item}[Gtk.ListItem:item]} to the widgets
+      that have been created in step 1 or to add item-specific widgets. Signals
+      are connected to listen to changes - both to changes in the item to update
+      the widgets or to changes in the widgets to update the item. After this
+      signal has been called, the listitem may be shown in a list widget.
 
     + [Gtk.SignalListItemFactory::unbind] is emitted to undo everything done in
       step 2. Usually this means disconnecting signal handlers. Once this signal

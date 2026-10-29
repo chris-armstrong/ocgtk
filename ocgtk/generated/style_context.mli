@@ -14,14 +14,16 @@
     In order to construct the final style information, [GtkStyleContext] queries
     information from all attached [GtkStyleProviders]. Style providers can be
     either attached explicitly to the context through
-    [Gtk.StyleContext.add_provider], or to the display through
-    [Gtk.StyleContext.add_provider_for_display]. The resulting style is a
-    combination of all providers’ information in priority order.
+    {{!Ocgtk.Style_context.class-type-style_context_t.method-add_provider}[Gtk.StyleContext.add_provider]},
+    or to the display through [Gtk.StyleContext.add_provider_for_display]. The
+    resulting style is a combination of all providers’ information in priority
+    order.
 
     For GTK widgets, any [GtkStyleContext] returned by
-    [Gtk.Widget.get_style_context] will already have a [GdkDisplay] and RTL/LTR
-    information set. The style context will also be updated automatically if any
-    of these settings change on the widget.
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_style_context}[Gtk.Widget.get_style_context]}
+    will already have a [GdkDisplay] and RTL/LTR information set. The style
+    context will also be updated automatically if any of these settings change
+    on the widget.
 
     {b Style Classes}
 
@@ -156,14 +158,16 @@ class style_context : Raw.Style_context.t -> style_context_t
     In order to construct the final style information, [GtkStyleContext] queries
     information from all attached [GtkStyleProviders]. Style providers can be
     either attached explicitly to the context through
-    [Gtk.StyleContext.add_provider], or to the display through
-    [Gtk.StyleContext.add_provider_for_display]. The resulting style is a
-    combination of all providers’ information in priority order.
+    {{!Ocgtk.Style_context.class-type-style_context_t.method-add_provider}[Gtk.StyleContext.add_provider]},
+    or to the display through [Gtk.StyleContext.add_provider_for_display]. The
+    resulting style is a combination of all providers’ information in priority
+    order.
 
     For GTK widgets, any [GtkStyleContext] returned by
-    [Gtk.Widget.get_style_context] will already have a [GdkDisplay] and RTL/LTR
-    information set. The style context will also be updated automatically if any
-    of these settings change on the widget.
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_style_context}[Gtk.Widget.get_style_context]}
+    will already have a [GdkDisplay] and RTL/LTR information set. The style
+    context will also be updated automatically if any of these settings change
+    on the widget.
 
     {b Style Classes}
 

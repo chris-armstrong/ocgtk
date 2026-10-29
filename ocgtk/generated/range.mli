@@ -26,7 +26,8 @@
 
     Apart from signals for monitoring the parameters of the adjustment,
     [GtkRange] provides properties and methods for setting a “fill level” on
-    range widgets. See [Gtk.Range.set_fill_level].
+    range widgets. See
+    {{!Ocgtk.Range.class-type-range_t.method-set_fill_level}[Gtk.Range.set_fill_level]}.
 
     {b Shortcuts and Gestures}
 
@@ -222,7 +223,8 @@ class range : Raw.Range.t -> range_t
 
     Apart from signals for monitoring the parameters of the adjustment,
     [GtkRange] provides properties and methods for setting a “fill level” on
-    range widgets. See [Gtk.Range.set_fill_level].
+    range widgets. See
+    {{!Ocgtk.Range.class-type-range_t.method-set_fill_level}[Gtk.Range.set_fill_level]}.
 
     {b Shortcuts and Gestures}
 

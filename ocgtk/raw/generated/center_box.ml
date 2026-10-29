@@ -6,8 +6,11 @@
 
     An example GtkCenterBox
 
-    To add children to [GtkCenterBox], use [Gtk.CenterBox.set_start_widget],
-    [Gtk.CenterBox.set_center_widget] and [Gtk.CenterBox.set_end_widget].
+    To add children to [GtkCenterBox], use
+    {{!Ocgtk.Raw.Center_box.val-set_start_widget}[Gtk.CenterBox.set_start_widget]},
+    {{!Ocgtk.Raw.Center_box.val-set_center_widget}[Gtk.CenterBox.set_center_widget]}
+    and
+    {{!Ocgtk.Raw.Center_box.val-set_end_widget}[Gtk.CenterBox.set_end_widget]}.
 
     The sizing and positioning of children can be influenced with the align and
     expand properties of the children.
@@ -31,9 +34,12 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkCenterBox] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkCenterBox] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
-    Starting from GTK 4.12, [GtkCenterBox] uses the [Gtk.AccessibleRole.generic]
+    Starting from GTK 4.12, [GtkCenterBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
     role.
 
     The class built on this module is in {!Ocgtk.Center_box}. *)
@@ -132,6 +138,8 @@ external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_center_box_get_baseline_position"
 (** Gets the baseline position of the center box.
 
-    See [Gtk.CenterBox.set_baseline_position]. *)
+    See
+    {{!Ocgtk.Raw.Center_box.val-set_baseline_position}[Gtk.CenterBox.set_baseline_position]}.
+*)
 
 (* Properties *)

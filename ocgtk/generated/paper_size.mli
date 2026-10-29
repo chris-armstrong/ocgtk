@@ -98,7 +98,8 @@ val new_custom :
 val new_from_gvariant : Gvariant.t -> paper_size_t
 (** Deserialize a paper size from a [GVariant].
 
-    The `GVariant must be in the format produced by [Gtk.PaperSize.to_gvariant].
+    The `GVariant must be in the format produced by
+    {{!Ocgtk.Paper_size.class-type-paper_size_t.method-to_gvariant}[Gtk.PaperSize.to_gvariant]}.
 *)
 
 val new_from_ipp : string -> float -> float -> paper_size_t

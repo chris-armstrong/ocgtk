@@ -21,18 +21,20 @@
     Adding contours to the path can be done in two ways. The easiest option is
     to use the [gsk_path_builder_add_*] group of functions that add predefined
     contours to the current path, either common shapes like
-    [Gsk.PathBuilder.add_circle] or by adding from other paths like
-    [Gsk.PathBuilder.add_path].
+    {{!Ocgsk.Raw.Path_builder.val-add_circle}[Gsk.PathBuilder.add_circle]} or by
+    adding from other paths like
+    {{!Ocgsk.Raw.Path_builder.val-add_path}[Gsk.PathBuilder.add_path]}.
 
     The [gsk_path_builder_add_*] methods always add complete contours, and do
     not use or modify the current point.
 
     The other option is to define each line and curve manually with the
     [gsk_path_builder_*_to] group of functions. You start with a call to
-    [Gsk.PathBuilder.move_to] to set the starting point and then use multiple
-    calls to any of the drawing functions to move the pen along the plane. Once
-    you are done, you can call [Gsk.PathBuilder.close] to close the path by
-    connecting it back with a line to the starting point.
+    {{!Ocgsk.Raw.Path_builder.val-move_to}[Gsk.PathBuilder.move_to]} to set the
+    starting point and then use multiple calls to any of the drawing functions
+    to move the pen along the plane. Once you are done, you can call
+    {{!Ocgsk.Raw.Path_builder.val-close}[Gsk.PathBuilder.close]} to close the
+    path by connecting it back with a line to the starting point.
 
     This is similar to how paths are drawn in Cairo.
 
@@ -84,7 +86,8 @@ external rel_svg_arc_to :
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.svg_arc_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-svg_arc_to}[Gsk.PathBuilder.svg_arc_to]}. *)
 
 external rel_quad_to : t -> float -> float -> float -> float -> unit
   = "ml_gsk_path_builder_rel_quad_to"
@@ -94,21 +97,24 @@ external rel_quad_to : t -> float -> float -> float -> float -> unit
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.quad_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-quad_to}[Gsk.PathBuilder.quad_to]}. *)
 
 external rel_move_to : t -> float -> float -> unit
   = "ml_gsk_path_builder_rel_move_to"
 (** Starts a new contour by placing the pen at [x], [y] relative to the current
     point.
 
-    This is the relative version of [Gsk.PathBuilder.move_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-move_to}[Gsk.PathBuilder.move_to]}. *)
 
 external rel_line_to : t -> float -> float -> unit
   = "ml_gsk_path_builder_rel_line_to"
 (** Draws a line from the current point to a point offset from it by [x], [y]
     and makes it the new current point.
 
-    This is the relative version of [Gsk.PathBuilder.line_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-line_to}[Gsk.PathBuilder.line_to]}. *)
 
 external rel_html_arc_to :
   t -> float -> float -> float -> float -> float -> unit
@@ -118,7 +124,8 @@ external rel_html_arc_to :
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.html_arc_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-html_arc_to}[Gsk.PathBuilder.html_arc_to]}. *)
 
 external rel_cubic_to :
   t -> float -> float -> float -> float -> float -> float -> unit
@@ -131,7 +138,8 @@ external rel_cubic_to :
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.cubic_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-cubic_to}[Gsk.PathBuilder.cubic_to]}. *)
 
 external rel_conic_to : t -> float -> float -> float -> float -> float -> unit
   = "ml_gsk_path_builder_rel_conic_to_bytecode"
@@ -143,7 +151,8 @@ external rel_conic_to : t -> float -> float -> float -> float -> float -> unit
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.conic_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-conic_to}[Gsk.PathBuilder.conic_to]}. *)
 
 external rel_arc_to : t -> float -> float -> float -> float -> unit
   = "ml_gsk_path_builder_rel_arc_to"
@@ -152,7 +161,8 @@ external rel_arc_to : t -> float -> float -> float -> float -> unit
 
     All coordinates are given relative to the current point.
 
-    This is the relative version of [Gsk.PathBuilder.arc_to]. *)
+    This is the relative version of
+    {{!Ocgsk.Raw.Path_builder.val-arc_to}[Gsk.PathBuilder.arc_to]}. *)
 
 external ref : t -> t = "ml_gsk_path_builder_ref"
 (** Acquires a reference on the given builder.
@@ -241,7 +251,8 @@ external conic_to : t -> float -> float -> float -> float -> float -> unit
 external close : t -> unit = "ml_gsk_path_builder_close"
 (** Ends the current contour with a line back to the start point.
 
-    Note that this is different from calling [Gsk.PathBuilder.line_to] with the
+    Note that this is different from calling
+    {{!Ocgsk.Raw.Path_builder.val-line_to}[Gsk.PathBuilder.line_to]} with the
     start point in that the contour will be closed. A closed contour behaves
     differently from an open one. When stroking, its start and end point are
     considered connected, so they will be joined via the line join, and not
@@ -256,7 +267,8 @@ external arc_to : t -> float -> float -> float -> float -> unit
 
     Note: Two points and their tangents do not determine a unique ellipse, so
     GSK just picks one. If you need more precise control, use
-    [Gsk.PathBuilder.conic_to] or [Gsk.PathBuilder.svg_arc_to].
+    {{!Ocgsk.Raw.Path_builder.val-conic_to}[Gsk.PathBuilder.conic_to]} or
+    {{!Ocgsk.Raw.Path_builder.val-svg_arc_to}[Gsk.PathBuilder.svg_arc_to]}.
 
     Arc To *)
 
@@ -273,7 +285,8 @@ external add_segment :
     beginning to [end]. If the path is closed, these segments will be connected.
 
     Note that this method always adds a path with the given start point and end
-    point. To add a closed path, use [Gsk.PathBuilder.add_path]. *)
+    point. To add a closed path, use
+    {{!Ocgsk.Raw.Path_builder.val-add_path}[Gsk.PathBuilder.add_path]}. *)
 
 external add_rounded_rect : t -> Rounded_rect.t -> unit
   = "ml_gsk_path_builder_add_rounded_rect"

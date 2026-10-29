@@ -35,7 +35,8 @@
     instances.
 
     If you need to add a shortcut programmatically, use
-    [Gtk.ShortcutsGroup.add_shortcut]. *)
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t.method-add_shortcut}[Gtk.ShortcutsGroup.add_shortcut]}.
+*)
 class type shortcuts_group_t = object
   inherit Box.box_t
 
@@ -116,7 +117,8 @@ class shortcuts_group : Raw.Shortcuts_group.t -> shortcuts_group_t
     instances.
 
     If you need to add a shortcut programmatically, use
-    [Gtk.ShortcutsGroup.add_shortcut]. *)
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t.method-add_shortcut}[Gtk.ShortcutsGroup.add_shortcut]}.
+*)
 
 (** {1:constructors Constructors} *)
 

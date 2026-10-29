@@ -33,7 +33,9 @@ end
      {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}Ocgtk.List_item_factory}\n\n\
      Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
      The templates must extend the class that the parent widget expects.\n\
-     For example, a factory provided to [Gtk.ListView:factory] must have\n\
+     For example, a factory provided to \
+     {{!Ocgtk.List_view.class-type-list_view_t.method-get_factory}[Gtk.ListView:factory]} \
+     must have\n\
      a template that extends \
      {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]}.\n\n\
      Templates typically use \
@@ -71,7 +73,9 @@ class builder_list_item_factory :
 "{1:description Description}\n\n\
  Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
  The templates must extend the class that the parent widget expects.\n\
- For example, a factory provided to [Gtk.ListView:factory] must have\n\
+ For example, a factory provided to \
+ {{!Ocgtk.List_view.class-type-list_view_t.method-get_factory}[Gtk.ListView:factory]} \
+ must have\n\
  a template that extends \
  {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]}.\n\n\
  Templates typically use \

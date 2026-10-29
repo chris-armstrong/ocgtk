@@ -15,8 +15,9 @@
     layout margins that a word processor uses; they are typically used to
     determine the minimal size for the layout margins.
 
-    To obtain a [GtkPageSetup] use [Gtk.PageSetup.new] to get the defaults, or
-    use [Gtk.print_run_page_setup_dialog] to show the page setup dialog and
+    To obtain a [GtkPageSetup] use
+    {{!Ocgtk.Raw.Page_setup.val-new_}[Gtk.PageSetup.new]} to get the defaults,
+    or use [Gtk.print_run_page_setup_dialog] to show the page setup dialog and
     receive the resulting page setup.
 
     {b A page setup dialog}
@@ -57,14 +58,15 @@ external new_from_file : string -> (t, GError.t) result
 (** Reads the page setup from the file [file_name].
 
     Returns a new [GtkPageSetup] object with the restored page setup, or an
-    [Error] result. See [Gtk.PageSetup.to_file]. *)
+    [Error] result. See
+    {{!Ocgtk.Raw.Page_setup.val-to_file}[Gtk.PageSetup.to_file]}. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_page_setup_new_from_gvariant"
 (** Desrialize a page setup from an a\{sv\} variant.
 
-    The variant must be in the format produced by [Gtk.PageSetup.to_gvariant].
-*)
+    The variant must be in the format produced by
+    {{!Ocgtk.Raw.Page_setup.val-to_gvariant}[Gtk.PageSetup.to_gvariant]}. *)
 
 (* Methods *)
 
@@ -92,7 +94,9 @@ external set_paper_size : t -> Paper_size.t -> unit
   = "ml_gtk_page_setup_set_paper_size"
 (** Sets the paper size of the [GtkPageSetup] without changing the margins.
 
-    See [Gtk.PageSetup.set_paper_size_and_default_margins]. *)
+    See
+    {{!Ocgtk.Raw.Page_setup.val-set_paper_size_and_default_margins}[Gtk.PageSetup.set_paper_size_and_default_margins]}.
+*)
 
 external set_orientation : t -> Ocgtk_enums.pageorientation -> unit
   = "ml_gtk_page_setup_set_orientation"
@@ -110,7 +114,7 @@ external load_file : t -> string -> (bool, GError.t) result
   = "ml_gtk_page_setup_load_file"
 (** Reads the page setup from the file [file_name].
 
-    See [Gtk.PageSetup.to_file]. *)
+    See {{!Ocgtk.Raw.Page_setup.val-to_file}[Gtk.PageSetup.to_file]}. *)
 
 external get_top_margin : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_page_setup_get_top_margin"
@@ -125,7 +129,9 @@ external get_paper_width : t -> Ocgtk_enums.unit -> float
 (** Returns the paper width in units of [unit].
 
     Note that this function takes orientation, but not margins into
-    consideration. See [Gtk.PageSetup.get_page_width]. *)
+    consideration. See
+    {{!Ocgtk.Raw.Page_setup.val-get_page_width}[Gtk.PageSetup.get_page_width]}.
+*)
 
 external get_paper_size : t -> Paper_size.t = "ml_gtk_page_setup_get_paper_size"
 (** Gets the paper size of the [GtkPageSetup]. *)
@@ -135,21 +141,27 @@ external get_paper_height : t -> Ocgtk_enums.unit -> float
 (** Returns the paper height in units of [unit].
 
     Note that this function takes orientation, but not margins into
-    consideration. See [Gtk.PageSetup.get_page_height]. *)
+    consideration. See
+    {{!Ocgtk.Raw.Page_setup.val-get_page_height}[Gtk.PageSetup.get_page_height]}.
+*)
 
 external get_page_width : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_page_setup_get_page_width"
 (** Returns the page width in units of [unit].
 
     Note that this function takes orientation and margins into consideration.
-    See [Gtk.PageSetup.get_paper_width]. *)
+    See
+    {{!Ocgtk.Raw.Page_setup.val-get_paper_width}[Gtk.PageSetup.get_paper_width]}.
+*)
 
 external get_page_height : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_page_setup_get_page_height"
 (** Returns the page height in units of [unit].
 
     Note that this function takes orientation and margins into consideration.
-    See [Gtk.PageSetup.get_paper_height]. *)
+    See
+    {{!Ocgtk.Raw.Page_setup.val-get_paper_height}[Gtk.PageSetup.get_paper_height]}.
+*)
 
 external get_orientation : t -> Ocgtk_enums.pageorientation
   = "ml_gtk_page_setup_get_orientation"

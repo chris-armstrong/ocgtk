@@ -48,7 +48,9 @@
 
     {b Accessibility}
 
-    [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkPasswordEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role. *)
 class type password_entry_t = object
   inherit Widget.widget_t
   inherit Editable.editable_t
@@ -136,7 +138,9 @@ class password_entry : Raw.Password_entry.t -> password_entry_t
 
     {b Accessibility}
 
-    [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkPasswordEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

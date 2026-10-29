@@ -9,10 +9,12 @@
 
     The obvious example of a [GtkRoot] is [GtkWindow].
 
-    To get the display to which a [GtkRoot] belongs, use [Gtk.Root.get_display].
+    To get the display to which a [GtkRoot] belongs, use
+    {{!Ocgtk.Raw.Root.val-get_display}[Gtk.Root.get_display]}.
 
     [GtkRoot] also maintains the location of keyboard focus inside its widget
-    hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus].
+    hierarchy, with {{!Ocgtk.Raw.Root.val-set_focus}[Gtk.Root.set_focus]} and
+    {{!Ocgtk.Raw.Root.val-get_focus}[Gtk.Root.get_focus]}.
 
     The class built on this module is in {!Ocgtk.Root}. *)
 

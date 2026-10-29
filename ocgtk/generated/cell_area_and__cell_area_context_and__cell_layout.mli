@@ -264,7 +264,8 @@ end
      The \
      {{!Ocgtk.Cell_area_context.class-type-cell_area_context_t}[Gtk.CellAreaContext]} \
      is an opaque object specific to the\n\
-     [GtkCellArea] which created it (see [Gtk.CellArea.create_context]).\n\n\
+     [GtkCellArea] which created it (see \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-create_context}[Gtk.CellArea.create_context]}).\n\n\
      The owning cell-layouting widget can create as many contexts as\n\
      it wishes to calculate sizes of rows which should receive the\n\
      same size in at least one orientation (horizontally or vertically),\n\
@@ -405,14 +406,18 @@ end
      [Gtk.distribute_natural_allocation].\n\n\
      {b Handling Events and Driving Keyboard Focus}\n\n\
      Passing events to the area is as simple as handling events on any\n\
-     normal widget and then passing them to the [Gtk.CellArea.event]\n\
+     normal widget and then passing them to the \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-event}[Gtk.CellArea.event]}\n\
      API as they come in. Usually [GtkCellArea] is only interested in\n\
      button events, however some customized derived areas can be implemented\n\
      who are interested in handling other events. Handling an event can\n\
-     trigger the [Gtk.CellArea::focus-changed] signal to fire; as well\n\
+     trigger the \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-on_focus_changed}[Gtk.CellArea::focus-changed]} \
+     signal to fire; as well\n\
      as [Gtk.CellArea::add-editable] in the case that an editable cell\n\
      was clicked and needs to start editing. You can call\n\
-     [Gtk.CellArea.stop_editing] at any time to cancel any cell editing\n\
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-stop_editing}[Gtk.CellArea.stop_editing]} \
+     at any time to cancel any cell editing\n\
      that is currently in progress.\n\n\
      The [GtkCellArea] drives keyboard focus from cell to cell in a way\n\
      similar to [GtkWidget]. For layouting widgets that support giving\n\
@@ -502,9 +507,11 @@ end
      properties for a cell area class and [Gtk.CellAreaClass.find_cell_property]\n\
      or [Gtk.CellAreaClass.list_cell_properties] to get information about\n\
      existing cell properties.\n\n\
-     To set the value of a cell property, use [Gtk.CellArea.cell_set_property],\n\
+     To set the value of a cell property, use \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-cell_set_property}[Gtk.CellArea.cell_set_property]},\n\
      [Gtk.CellArea.cell_set] or [Gtk.CellArea.cell_set_valist]. To obtain\n\
-     the value of a cell property, use [Gtk.CellArea.cell_get_property]\n\
+     the value of a cell property, use \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-cell_get_property}[Gtk.CellArea.cell_get_property]}\n\
      [Gtk.CellArea.cell_get] or [Gtk.CellArea.cell_get_valist]."]
 
 (** {b The methods, signals and properties of a [CellAreaContext].}

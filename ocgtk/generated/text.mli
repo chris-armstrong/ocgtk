@@ -32,10 +32,12 @@
     the cursor position is visible.
 
     When using an entry for passwords and other sensitive information, it can be
-    put into “password mode” using [Gtk.Text.set_visibility]. In this mode,
-    entered text is displayed using an “invisible” character. By default, GTK
-    picks the best invisible character that is available in the current font,
-    but it can be changed with [Gtk.Text.set_invisible_char].
+    put into “password mode” using
+    {{!Ocgtk.Text.class-type-text_t.method-set_visibility}[Gtk.Text.set_visibility]}.
+    In this mode, entered text is displayed using an “invisible” character. By
+    default, GTK picks the best invisible character that is available in the
+    current font, but it can be changed with
+    {{!Ocgtk.Text.class-type-text_t.method-set_invisible_char}[Gtk.Text.set_invisible_char]}.
 
     If you want to add icons or progress display in an entry, look at
     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. There are other alternatives
@@ -63,15 +65,15 @@
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.Text::activate]
-    - [Gtk.Text::backspace]
-    - [Gtk.Text::copy-clipboard]
-    - [Gtk.Text::cut-clipboard]
-    - [Gtk.Text::delete-from-cursor]
-    - [Gtk.Text::insert-emoji]
-    - [Gtk.Text::move-cursor]
-    - [Gtk.Text::paste-clipboard]
-    - [Gtk.Text::toggle-overwrite]
+    - {{!Ocgtk.Text.class-type-text_t.method-on_activate}[Gtk.Text::activate]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_backspace}[Gtk.Text::backspace]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_copy_clipboard}[Gtk.Text::copy-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_cut_clipboard}[Gtk.Text::cut-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_delete_from_cursor}[Gtk.Text::delete-from-cursor]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_insert_emoji}[Gtk.Text::insert-emoji]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_move_cursor}[Gtk.Text::move-cursor]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_paste_clipboard}[Gtk.Text::paste-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_toggle_overwrite}[Gtk.Text::toggle-overwrite]}
 
     {b Actions}
 
@@ -128,10 +130,11 @@
 
     {b Accessibility}
 
-    [GtkText] uses the [Gtk.AccessibleRole.none] role, which causes it to be
-    skipped for accessibility. This is because [GtkText] is expected to be used
-    as a delegate for a [GtkEditable] implementation that will be represented to
-    accessibility. *)
+    [GtkText] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-NONE}[Gtk.AccessibleRole.none]}
+    role, which causes it to be skipped for accessibility. This is because
+    [GtkText] is expected to be used as a delegate for a [GtkEditable]
+    implementation that will be represented to accessibility. *)
 class type text_t = object
   inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
@@ -484,10 +487,12 @@ class text : Raw.Text.t -> text_t
     the cursor position is visible.
 
     When using an entry for passwords and other sensitive information, it can be
-    put into “password mode” using [Gtk.Text.set_visibility]. In this mode,
-    entered text is displayed using an “invisible” character. By default, GTK
-    picks the best invisible character that is available in the current font,
-    but it can be changed with [Gtk.Text.set_invisible_char].
+    put into “password mode” using
+    {{!Ocgtk.Text.class-type-text_t.method-set_visibility}[Gtk.Text.set_visibility]}.
+    In this mode, entered text is displayed using an “invisible” character. By
+    default, GTK picks the best invisible character that is available in the
+    current font, but it can be changed with
+    {{!Ocgtk.Text.class-type-text_t.method-set_invisible_char}[Gtk.Text.set_invisible_char]}.
 
     If you want to add icons or progress display in an entry, look at
     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. There are other alternatives
@@ -515,15 +520,15 @@ class text : Raw.Text.t -> text_t
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.Text::activate]
-    - [Gtk.Text::backspace]
-    - [Gtk.Text::copy-clipboard]
-    - [Gtk.Text::cut-clipboard]
-    - [Gtk.Text::delete-from-cursor]
-    - [Gtk.Text::insert-emoji]
-    - [Gtk.Text::move-cursor]
-    - [Gtk.Text::paste-clipboard]
-    - [Gtk.Text::toggle-overwrite]
+    - {{!Ocgtk.Text.class-type-text_t.method-on_activate}[Gtk.Text::activate]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_backspace}[Gtk.Text::backspace]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_copy_clipboard}[Gtk.Text::copy-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_cut_clipboard}[Gtk.Text::cut-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_delete_from_cursor}[Gtk.Text::delete-from-cursor]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_insert_emoji}[Gtk.Text::insert-emoji]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_move_cursor}[Gtk.Text::move-cursor]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_paste_clipboard}[Gtk.Text::paste-clipboard]}
+    - {{!Ocgtk.Text.class-type-text_t.method-on_toggle_overwrite}[Gtk.Text::toggle-overwrite]}
 
     {b Actions}
 
@@ -580,10 +585,11 @@ class text : Raw.Text.t -> text_t
 
     {b Accessibility}
 
-    [GtkText] uses the [Gtk.AccessibleRole.none] role, which causes it to be
-    skipped for accessibility. This is because [GtkText] is expected to be used
-    as a delegate for a [GtkEditable] implementation that will be represented to
-    accessibility. *)
+    [GtkText] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-NONE}[Gtk.AccessibleRole.none]}
+    role, which causes it to be skipped for accessibility. This is because
+    [GtkText] is expected to be used as a delegate for a [GtkEditable]
+    implementation that will be represented to accessibility. *)
 
 (** {1:constructors Constructors} *)
 

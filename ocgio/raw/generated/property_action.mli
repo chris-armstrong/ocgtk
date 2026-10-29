@@ -53,8 +53,10 @@
     is actually stored in {{!Ocgio.Raw.Settings}[Gio.Settings]}. In that case,
     the real source of the value is* {{!Ocgio.Raw.Settings}[Gio.Settings]}. If
     you want a {{!Ocgio.Raw.Action}[Gio.Action]} to control a setting stored in
-    {{!Ocgio.Raw.Settings}[Gio.Settings]}, see [Gio.Settings.create_action]
-    instead, and possibly combine its use with [Gio.Settings.bind].
+    {{!Ocgio.Raw.Settings}[Gio.Settings]}, see
+    {{!Ocgio.Raw.Settings.val-create_action}[Gio.Settings.create_action]}
+    instead, and possibly combine its use with
+    {{!Ocgio.Raw.Settings.val-bind}[Gio.Settings.bind]}.
 
     The class built on this module is in {!Ocgio.Property_action}. *)
 

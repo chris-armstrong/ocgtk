@@ -4,11 +4,13 @@
 (** [GInputStream] is a base class for implementing streaming input.
 
     It has functions to read from a stream ([Gio.InputStream.read]), to close a
-    stream ([Gio.InputStream.close]) and to skip some content
-    ([Gio.InputStream.skip]).
+    stream ({{!Ocgio.Raw.Input_stream.val-close}[Gio.InputStream.close]}) and to
+    skip some content
+    ({{!Ocgio.Raw.Input_stream.val-skip}[Gio.InputStream.skip]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Raw.Output_stream.val-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} for details
     of thread safety of streaming APIs.

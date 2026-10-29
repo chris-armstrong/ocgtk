@@ -27,12 +27,6 @@ let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
   Layer1_helpers.format_external ~ocaml_name:ocaml_ctor_name ~signature ~ml_name
     ~param_count
 
-(** Check if a constructor should be generated in the interface. Delegates to
-    the shared [Filtering.should_generate_constructor] so that layer 0 (C stubs)
-    and layer 1 (OCaml externals) agree on what is emitted. *)
-let should_generate_constructor ~ctx (ctor : gir_constructor) =
-  Filtering.should_generate_constructor ~ctx ctor
-
 (** Generate a single constructor declaration and write it to the buffer *)
 let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
   let doc =

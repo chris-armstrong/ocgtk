@@ -25,19 +25,23 @@
 
     A [GtkSelectionModel] supports a single boolean per item indicating if an
     item is selected or not. This can be queried via
-    [Gtk.SelectionModel.is_selected]. When the selected state of one or more
-    items changes, the model will emit the
-    [Gtk.SelectionModel::selection-changed] signal by calling the
-    [Gtk.SelectionModel.selection_changed] function. The positions given in that
-    signal may have their selection state changed, though that is not a
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-is_selected}[Gtk.SelectionModel.is_selected]}.
+    When the selected state of one or more items changes, the model will emit
+    the
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
+     [Gtk.SelectionModel::selection-changed]} signal by calling the
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-selection_changed}
+     [Gtk.SelectionModel.selection_changed]} function. The positions given in
+    that signal may have their selection state changed, though that is not a
     requirement. If new items added to the model via the
     [Gio.ListModel::items-changed] signal are selected or not is up to the
     implementation.
 
     Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no [Gtk.SelectionModel::selection-changed] will be emitted for
-    them. So to track which items are selected, it is necessary to listen to
-    both signals.
+    selected and no
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
+     [Gtk.SelectionModel::selection-changed]} will be emitted for them. So to
+    track which items are selected, it is necessary to listen to both signals.
 
     Additionally, the interface can expose functionality to select and unselect
     items. If these functions are implemented, GTK's list widgets will allow
@@ -170,19 +174,23 @@ class selection_model : Raw.Selection_model.t -> selection_model_t
 
     A [GtkSelectionModel] supports a single boolean per item indicating if an
     item is selected or not. This can be queried via
-    [Gtk.SelectionModel.is_selected]. When the selected state of one or more
-    items changes, the model will emit the
-    [Gtk.SelectionModel::selection-changed] signal by calling the
-    [Gtk.SelectionModel.selection_changed] function. The positions given in that
-    signal may have their selection state changed, though that is not a
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-is_selected}[Gtk.SelectionModel.is_selected]}.
+    When the selected state of one or more items changes, the model will emit
+    the
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
+     [Gtk.SelectionModel::selection-changed]} signal by calling the
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-selection_changed}
+     [Gtk.SelectionModel.selection_changed]} function. The positions given in
+    that signal may have their selection state changed, though that is not a
     requirement. If new items added to the model via the
     [Gio.ListModel::items-changed] signal are selected or not is up to the
     implementation.
 
     Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no [Gtk.SelectionModel::selection-changed] will be emitted for
-    them. So to track which items are selected, it is necessary to listen to
-    both signals.
+    selected and no
+    {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
+     [Gtk.SelectionModel::selection-changed]} will be emitted for them. So to
+    track which items are selected, it is necessary to listen to both signals.
 
     Additionally, the interface can expose functionality to select and unselect
     items. If these functions are implemented, GTK's list widgets will allow

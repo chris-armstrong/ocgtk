@@ -6,7 +6,8 @@
     is either always or never allowed. The value is given at construction and
     doesn’t change.
 
-    Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
+    Calling {{!Ocgio.Raw.Permission.val-acquire}[Gio.Permission.acquire]} or
+    {{!Ocgio.Raw.Permission.val-release}[Gio.Permission.release]} on a
     [GSimplePermission] will result in errors.
 
     The class built on this module is in {!Ocgio.Simple_permission}. *)

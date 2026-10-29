@@ -4,8 +4,8 @@
 (** The type of items in a [GtkStringList].
 
     A [GtkStringObject] is a wrapper around a [const char*]; it has a
-    [Gtk.StringObject:string] property that can be used for property bindings
-    and expressions.
+    {{!Ocgtk.Raw.String_object.val-get_string}[Gtk.StringObject:string]}
+    property that can be used for property bindings and expressions.
 
     The class built on this module is in {!Ocgtk.String_object}. *)
 

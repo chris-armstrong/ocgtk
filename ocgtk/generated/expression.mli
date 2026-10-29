@@ -82,10 +82,13 @@ end
      refers to. An evaluation always happens in the context of a current object\n\
      called [this] (it mirrors the behavior of object-oriented languages),\n\
      which may or may not influence the result of the evaluation. Use\n\
-     [Gtk.Expression.evaluate] for evaluating an expression.\n\n\
+     {{!Ocgtk.Expression.class-type-expression_t.method-evaluate}[Gtk.Expression.evaluate]} \
+     for evaluating an expression.\n\n\
      Various methods for defining expressions exist, from simple constants via\n\
      [Gtk.ConstantExpression.new] to looking up properties in a [GObject]\n\
-     (even recursively) via [Gtk.PropertyExpression.new] or providing\n\
+     (even recursively) via \
+     {{!Ocgtk.Property_expression.val-new_}[Gtk.PropertyExpression.new]} or \
+     providing\n\
      custom functions to transform and combine expressions via\n\
      [Gtk.ClosureExpression.new].\n\n\
      Here is an example of a complex expression:\n\n\
@@ -118,11 +121,12 @@ end
      which will cause a callback to be called whenever the value of the \
      expression may\n\
      have changed; [Gtk.Expression.watch] starts watching an expression, and\n\
-     [Gtk.ExpressionWatch.unwatch] stops.\n\n\
+     {{!Ocgtk.Expression_watch.class-type-expression_watch_t.method-unwatch}[Gtk.ExpressionWatch.unwatch]} \
+     stops.\n\n\
      Watches can be created for automatically updating the property of an \
      object,\n\
      similar to GObject's [GBinding] mechanism, by using \
-     [Gtk.Expression.bind].\n\n\
+     {{!Ocgtk.Expression.class-type-expression_t.method-bind}[Gtk.Expression.bind]}.\n\n\
      {b GtkExpression in GObject properties}\n\n\
      In order to use a [GtkExpression] as a [GObject] property, you must use the\n\
      [Gtk.param_spec_expression] when creating a [GParamSpec] to install in the\n\
@@ -191,7 +195,8 @@ end
      String ([type='gchararray']) constants can be marked for translation with \
      the\n\
      [translatable=] attribute, and will then be looked up in the\n\
-     [Gtk.Builder:translation-domain] when the expression is constructed.\n\n\
+     {{!Ocgtk.Builder.class-type-builder_t.method-get_translation_domain}[Gtk.Builder:translation-domain]} \
+     when the expression is constructed.\n\n\
      {[\n\
     \  <constant type='gchararray' translatable='yes'>I'm \
      translatable!</constant>\n\
@@ -255,10 +260,13 @@ class expression : Raw.Expression.t -> expression_t
  refers to. An evaluation always happens in the context of a current object\n\
  called [this] (it mirrors the behavior of object-oriented languages),\n\
  which may or may not influence the result of the evaluation. Use\n\
- [Gtk.Expression.evaluate] for evaluating an expression.\n\n\
+ {{!Ocgtk.Expression.class-type-expression_t.method-evaluate}[Gtk.Expression.evaluate]} \
+ for evaluating an expression.\n\n\
  Various methods for defining expressions exist, from simple constants via\n\
  [Gtk.ConstantExpression.new] to looking up properties in a [GObject]\n\
- (even recursively) via [Gtk.PropertyExpression.new] or providing\n\
+ (even recursively) via \
+ {{!Ocgtk.Property_expression.val-new_}[Gtk.PropertyExpression.new]} or \
+ providing\n\
  custom functions to transform and combine expressions via\n\
  [Gtk.ClosureExpression.new].\n\n\
  Here is an example of a complex expression:\n\n\
@@ -287,9 +295,11 @@ class expression : Raw.Expression.t -> expression_t
  which will cause a callback to be called whenever the value of the expression \
  may\n\
  have changed; [Gtk.Expression.watch] starts watching an expression, and\n\
- [Gtk.ExpressionWatch.unwatch] stops.\n\n\
+ {{!Ocgtk.Expression_watch.class-type-expression_watch_t.method-unwatch}[Gtk.ExpressionWatch.unwatch]} \
+ stops.\n\n\
  Watches can be created for automatically updating the property of an object,\n\
- similar to GObject's [GBinding] mechanism, by using [Gtk.Expression.bind].\n\n\
+ similar to GObject's [GBinding] mechanism, by using \
+ {{!Ocgtk.Expression.class-type-expression_t.method-bind}[Gtk.Expression.bind]}.\n\n\
  {b GtkExpression in GObject properties}\n\n\
  In order to use a [GtkExpression] as a [GObject] property, you must use the\n\
  [Gtk.param_spec_expression] when creating a [GParamSpec] to install in the\n\
@@ -354,7 +364,8 @@ class expression : Raw.Expression.t -> expression_t
  ]}\n\n\
  String ([type='gchararray']) constants can be marked for translation with the\n\
  [translatable=] attribute, and will then be looked up in the\n\
- [Gtk.Builder:translation-domain] when the expression is constructed.\n\n\
+ {{!Ocgtk.Builder.class-type-builder_t.method-get_translation_domain}[Gtk.Builder:translation-domain]} \
+ when the expression is constructed.\n\n\
  {[\n\
 \  <constant type='gchararray' translatable='yes'>I'm translatable!</constant>\n\
  ]}\n\n\

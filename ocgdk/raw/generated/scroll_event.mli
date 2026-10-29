@@ -36,5 +36,5 @@ external get_deltas : t -> float * float = "ml_gdk_scroll_event_get_deltas"
 
     The deltas will be zero unless the scroll direction is [GDK_SCROLL_SMOOTH].
 
-    For the representation unit of these deltas, see [Gdk.ScrollEvent.get_unit].
-*)
+    For the representation unit of these deltas, see
+    {{!Ocgdk.Raw.Scroll_event.val-get_unit}[Gdk.ScrollEvent.get_unit]}. *)

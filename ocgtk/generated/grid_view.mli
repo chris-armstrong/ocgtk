@@ -27,7 +27,7 @@
     [GtkGridView] allows the user to select items according to the selection
     characteristics of the model. For models that allow multiple selected items,
     it is possible to turn on _rubberband selection_, using
-    [Gtk.GridView:enable-rubberband].
+    {{!Ocgtk.Grid_view.class-type-grid_view_t.method-get_enable_rubberband}[Gtk.GridView:enable-rubberband]}.
 
     To learn more about the list widget framework, see the overview.
 
@@ -36,7 +36,9 @@
     [GtkGridView] defines a set of built-in actions:
 
     - [list.activate-item] activates the item at given position by emitting the
-      the [Gtk.GridView::activate] signal.
+      the
+      {{!Ocgtk.Grid_view.class-type-grid_view_t.method-on_activate}[Gtk.GridView::activate]}
+      signal.
 
     {b CSS nodes}
 
@@ -51,14 +53,18 @@
     ]}
 
     [GtkGridView] uses a single CSS node with name [gridview]. Each child uses a
-    single CSS node with name [child]. If the [Gtk.ListItem:activatable]
+    single CSS node with name [child]. If the
+    {{!Ocgtk.List_item.class-type-list_item_t.method-get_activatable}[Gtk.ListItem:activatable]}
     property is set, the corresponding row will have the [.activatable] style
     class. For rubberband selection, a subnode with name [rubberband] is used.
 
     {b Accessibility}
 
-    [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role. *)
+    [GtkGridView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and the items use the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role. *)
 class type grid_view_t = object
   inherit List_base.list_base_t
 
@@ -161,7 +167,7 @@ class grid_view : Raw.Grid_view.t -> grid_view_t
     [GtkGridView] allows the user to select items according to the selection
     characteristics of the model. For models that allow multiple selected items,
     it is possible to turn on _rubberband selection_, using
-    [Gtk.GridView:enable-rubberband].
+    {{!Ocgtk.Grid_view.class-type-grid_view_t.method-get_enable_rubberband}[Gtk.GridView:enable-rubberband]}.
 
     To learn more about the list widget framework, see the overview.
 
@@ -170,7 +176,9 @@ class grid_view : Raw.Grid_view.t -> grid_view_t
     [GtkGridView] defines a set of built-in actions:
 
     - [list.activate-item] activates the item at given position by emitting the
-      the [Gtk.GridView::activate] signal.
+      the
+      {{!Ocgtk.Grid_view.class-type-grid_view_t.method-on_activate}[Gtk.GridView::activate]}
+      signal.
 
     {b CSS nodes}
 
@@ -185,14 +193,18 @@ class grid_view : Raw.Grid_view.t -> grid_view_t
     ]}
 
     [GtkGridView] uses a single CSS node with name [gridview]. Each child uses a
-    single CSS node with name [child]. If the [Gtk.ListItem:activatable]
+    single CSS node with name [child]. If the
+    {{!Ocgtk.List_item.class-type-list_item_t.method-get_activatable}[Gtk.ListItem:activatable]}
     property is set, the corresponding row will have the [.activatable] style
     class. For rubberband selection, a subnode with name [rubberband] is used.
 
     {b Accessibility}
 
-    [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role. *)
+    [GtkGridView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and the items use the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

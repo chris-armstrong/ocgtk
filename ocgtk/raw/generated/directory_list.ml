@@ -6,12 +6,15 @@
  It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s\n\
  returned from that function.\n\n\
  Enumeration will start automatically when the\n\
- [Gtk.DirectoryList:file] property is set.\n\n\
+ {{!Ocgtk.Raw.Directory_list.val-get_file}[Gtk.DirectoryList:file]} property \
+ is set.\n\n\
  While the [GtkDirectoryList] is being filled, the\n\
- [Gtk.DirectoryList:loading] property will be set to [true]. You can\n\
+ {{!Ocgtk.Raw.Directory_list.val-is_loading}[Gtk.DirectoryList:loading]} \
+ property will be set to [true]. You can\n\
  listen to that property if you want to show information like a [GtkSpinner]\n\
  or a \"Loading...\" text.\n\n\
- If loading fails at any point, the [Gtk.DirectoryList:error]\n\
+ If loading fails at any point, the \
+ {{!Ocgtk.Raw.Directory_list.val-get_error}[Gtk.DirectoryList:error]}\n\
  property will be set to give more indication about the failure.\n\n\
  The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
  attribute set to the [GFile] they refer to. This way you can get at the file\n\

@@ -323,13 +323,15 @@ end
      you have a chunk of static data compiled into your application, you\n\
      can pass in [None] as the destroy notification function so that the\n\
      data will not be freed.\n\n\
-     The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
+     The {{!Ocgdkpixbuf.Pixbuf.val-new_}[GdkPixbuf.Pixbuf.new]} constructor \
+     function can be used\n\
      as a convenience to create a pixbuf with an empty buffer; this is\n\
      equivalent to allocating a data buffer using [malloc()] and then\n\
      wrapping it with [gdk_pixbuf_new_from_data()]. The [gdk_pixbuf_new()]\n\
      function will compute an optimal rowstride so that rendering can be\n\
      performed with an efficient algorithm.\n\n\
-     You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
+     You can also copy an existing pixbuf with the \
+     {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-copy}[Pixbuf.copy]}\n\
      function. This is not the same as just acquiring a reference to\n\
      the old pixbuf instance: the copy function will actually duplicate\n\
      the pixel data in memory and create a new \
@@ -348,13 +350,14 @@ end
      in each row pixels are stored from left to right.\n\n\
      There may be padding at the end of a row.\n\n\
      The \"rowstride\" value of a pixbuf, as returned by \
-     [GdkPixbuf.Pixbuf.get_rowstride],\n\
+     {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-get_rowstride}[GdkPixbuf.Pixbuf.get_rowstride]},\n\
      indicates the number of bytes between rows.\n\n\
      {b NOTE}: If you are copying raw pixbuf data with [memcpy()] note that the\n\
      last row in the pixbuf may not be as wide as the full rowstride, but rather\n\
      just as wide as the pixel data needs to be; that is: it is unsafe to do\n\
      [memcpy (dest, pixels, rowstride * height)] to copy a whole pixbuf. Use\n\
-     [GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the\n\
+     {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-copy}[GdkPixbuf.Pixbuf.copy]} \
+     instead, or compute the width in bytes of the\n\
      last row as:\n\n\
      {[\n\
      last_row = width * ((n_channels * bits_per_sample + 7) / 8);\n\
@@ -432,13 +435,15 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  you have a chunk of static data compiled into your application, you\n\
  can pass in [None] as the destroy notification function so that the\n\
  data will not be freed.\n\n\
- The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
+ The {{!Ocgdkpixbuf.Pixbuf.val-new_}[GdkPixbuf.Pixbuf.new]} constructor \
+ function can be used\n\
  as a convenience to create a pixbuf with an empty buffer; this is\n\
  equivalent to allocating a data buffer using [malloc()] and then\n\
  wrapping it with [gdk_pixbuf_new_from_data()]. The [gdk_pixbuf_new()]\n\
  function will compute an optimal rowstride so that rendering can be\n\
  performed with an efficient algorithm.\n\n\
- You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
+ You can also copy an existing pixbuf with the \
+ {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-copy}[Pixbuf.copy]}\n\
  function. This is not the same as just acquiring a reference to\n\
  the old pixbuf instance: the copy function will actually duplicate\n\
  the pixel data in memory and create a new \
@@ -457,13 +462,14 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  in each row pixels are stored from left to right.\n\n\
  There may be padding at the end of a row.\n\n\
  The \"rowstride\" value of a pixbuf, as returned by \
- [GdkPixbuf.Pixbuf.get_rowstride],\n\
+ {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-get_rowstride}[GdkPixbuf.Pixbuf.get_rowstride]},\n\
  indicates the number of bytes between rows.\n\n\
  {b NOTE}: If you are copying raw pixbuf data with [memcpy()] note that the\n\
  last row in the pixbuf may not be as wide as the full rowstride, but rather\n\
  just as wide as the pixel data needs to be; that is: it is unsafe to do\n\
  [memcpy (dest, pixels, rowstride * height)] to copy a whole pixbuf. Use\n\
- [GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the\n\
+ {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-copy}[GdkPixbuf.Pixbuf.copy]} \
+ instead, or compute the width in bytes of the\n\
  last row as:\n\n\
  {[\n\
  last_row = width * ((n_channels * bits_per_sample + 7) / 8);\n\
@@ -602,7 +608,8 @@ val new_from_file_at_size : string -> int -> int -> (pixbuf_t, GError.t) result
     image's aspect ratio. Note that the returned pixbuf may be smaller than
     [width] x [height], if the aspect ratio requires it. To load and image at
     the requested size, regardless of aspect ratio, use
-    [GdkPixbuf.Pixbuf.new_from_file_at_scale]. *)
+    {{!Ocgdkpixbuf.Pixbuf.val-new_from_file_at_scale}[GdkPixbuf.Pixbuf.new_from_file_at_scale]}.
+*)
 
 val new_from_resource : string -> (pixbuf_t, GError.t) result
 (** Creates a new pixbuf by loading an image from an resource.

@@ -12,11 +12,14 @@
     [GInputStream] is a base class for implementing streaming input.
 
     It has functions to read from a stream ([Gio.InputStream.read]), to close a
-    stream ([Gio.InputStream.close]) and to skip some content
-    ([Gio.InputStream.skip]).
+    stream
+    ({{!Ocgio.Input_stream.class-type-input_stream_t.method-close}[Gio.InputStream.close]})
+    and to skip some content
+    ({{!Ocgio.Input_stream.class-type-input_stream_t.method-skip}[Gio.InputStream.skip]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Output_stream.class-type-output_stream_t.method-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for
     {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of
@@ -136,11 +139,14 @@ class input_stream : Raw.Input_stream.t -> input_stream_t
     [GInputStream] is a base class for implementing streaming input.
 
     It has functions to read from a stream ([Gio.InputStream.read]), to close a
-    stream ([Gio.InputStream.close]) and to skip some content
-    ([Gio.InputStream.skip]).
+    stream
+    ({{!Ocgio.Input_stream.class-type-input_stream_t.method-close}[Gio.InputStream.close]})
+    and to skip some content
+    ({{!Ocgio.Input_stream.class-type-input_stream_t.method-skip}[Gio.InputStream.skip]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Output_stream.class-type-output_stream_t.method-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for
     {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of

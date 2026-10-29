@@ -3,7 +3,8 @@
 
 (** Activates a named action.
 
-    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
+    See [Gtk.WidgetClass.install_action] and
+    {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]}
     for ways to associate named actions with widgets.
 
     The class built on this module is in {!Ocgtk.Named_action}. *)
@@ -18,7 +19,9 @@ external new_ : string -> t = "ml_gtk_named_action_new"
 
     It also passes the given arguments to it.
 
-    See [Gtk.Widget.insert_action_group] for how to add actions to widgets. *)
+    See
+    {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]}
+    for how to add actions to widgets. *)
 
 (* Methods *)
 

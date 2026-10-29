@@ -19,8 +19,11 @@
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
 
-    Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
-    [GSimplePermission] will result in errors. *)
+    Calling
+    {{!Ocgio.Permission.class-type-permission_t.method-acquire}[Gio.Permission.acquire]}
+    or
+    {{!Ocgio.Permission.class-type-permission_t.method-release}[Gio.Permission.release]}
+    on a [GSimplePermission] will result in errors. *)
 class type simple_permission_t = object
   inherit Permission.permission_t
 
@@ -39,8 +42,11 @@ class simple_permission : Raw.Simple_permission.t -> simple_permission_t
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
 
-    Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
-    [GSimplePermission] will result in errors. *)
+    Calling
+    {{!Ocgio.Permission.class-type-permission_t.method-acquire}[Gio.Permission.acquire]}
+    or
+    {{!Ocgio.Permission.class-type-permission_t.method-release}[Gio.Permission.release]}
+    on a [GSimplePermission] will result in errors. *)
 
 (** {1:constructors Constructors} *)
 

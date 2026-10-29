@@ -38,8 +38,9 @@ external to_filename : t -> string option
 (** Creates a filename representation of a font description.
 
     The filename is identical to the result from calling
-    [Pango.FontDescription.to_string], but with underscores instead of
-    characters that are untypical in filenames, and in lower case only. *)
+    {{!Ocpango.Raw.Font_description.val-to_string}[Pango.FontDescription.to_string]},
+    but with underscores instead of characters that are untypical in filenames,
+    and in lower case only. *)
 
 external set_weight : t -> Ocpango_enums.weight -> unit
   = "ml_pango_font_description_set_weight"
@@ -53,11 +54,12 @@ external set_variations_static : t -> string -> unit
   = "ml_pango_font_description_set_variations_static"
 (** Sets the variations field of a font description.
 
-    This is like [Pango.FontDescription.set_variations], except that no copy of
-    [variations] is made. The caller must make sure that the string passed in
-    stays around until [desc] has been freed or the name is set again. This
-    function can be used if [variations] is a static string such as a C string
-    literal, or if [desc] is only needed temporarily. *)
+    This is like
+    {{!Ocpango.Raw.Font_description.val-set_variations}[Pango.FontDescription.set_variations]},
+    except that no copy of [variations] is made. The caller must make sure that
+    the string passed in stays around until [desc] has been freed or the name is
+    set again. This function can be used if [variations] is a static string such
+    as a C string literal, or if [desc] is only needed temporarily. *)
 
 external set_variations : t -> string option -> unit
   = "ml_pango_font_description_set_variations"
@@ -108,7 +110,8 @@ external set_stretch : t -> Ocpango_enums.stretch -> unit
 external set_size : t -> int -> unit = "ml_pango_font_description_set_size"
 (** Sets the size field of a font description in fractional points.
 
-    This is mutually exclusive with [Pango.FontDescription.set_absolute_size].
+    This is mutually exclusive with
+    {{!Ocpango.Raw.Font_description.val-set_absolute_size}[Pango.FontDescription.set_absolute_size]}.
 *)
 
 external set_gravity : t -> Ocpango_enums.gravity -> unit
@@ -126,11 +129,12 @@ external set_features_static : t -> string -> unit
   = "ml_pango_font_description_set_features_static"
 (** Sets the features field of a font description.
 
-    This is like [Pango.FontDescription.set_features], except that no copy of
-    [featuresis] made. The caller must make sure that the string passed in stays
-    around until [desc] has been freed or the name is set again. This function
-    can be used if [features] is a static string such as a C string literal, or
-    if [desc] is only needed temporarily. *)
+    This is like
+    {{!Ocpango.Raw.Font_description.val-set_features}[Pango.FontDescription.set_features]},
+    except that no copy of [featuresis] made. The caller must make sure that the
+    string passed in stays around until [desc] has been freed or the name is set
+    again. This function can be used if [features] is a static string such as a
+    C string literal, or if [desc] is only needed temporarily. *)
 
 external set_features : t -> string option -> unit
   = "ml_pango_font_description_set_features"
@@ -164,11 +168,12 @@ external set_family_static : t -> string -> unit
 (** Sets the family name field of a font description, without copying the
     string.
 
-    This is like [Pango.FontDescription.set_family], except that no copy of
-    [family] is made. The caller must make sure that the string passed in stays
-    around until [desc] has been freed or the name is set again. This function
-    can be used if [family] is a static string such as a C string literal, or if
-    [desc] is only needed temporarily. *)
+    This is like
+    {{!Ocpango.Raw.Font_description.val-set_family}[Pango.FontDescription.set_family]},
+    except that no copy of [family] is made. The caller must make sure that the
+    string passed in stays around until [desc] has been freed or the name is set
+    again. This function can be used if [family] is a static string such as a C
+    string literal, or if [desc] is only needed temporarily. *)
 
 external set_family : t -> string -> unit
   = "ml_pango_font_description_set_family"
@@ -190,18 +195,21 @@ external set_absolute_size : t -> float -> unit
   = "ml_pango_font_description_set_absolute_size"
 (** Sets the size field of a font description, in device units.
 
-    This is mutually exclusive with [Pango.FontDescription.set_size] which sets
-    the font size in points. *)
+    This is mutually exclusive with
+    {{!Ocpango.Raw.Font_description.val-set_size}[Pango.FontDescription.set_size]}
+    which sets the font size in points. *)
 
 external merge_static : t -> t -> bool -> unit
   = "ml_pango_font_description_merge_static"
 (** Merges the fields that are set in [desc_to_merge] into the fields in [desc],
     without copying allocated fields.
 
-    This is like [Pango.FontDescription.merge], but only a shallow copy is made
-    of the family name and other allocated fields. [desc] can only be used until
-    [desc_to_merge] is modified or freed. This is meant to be used when the
-    merged font description is only needed temporarily. *)
+    This is like
+    {{!Ocpango.Raw.Font_description.val-merge}[Pango.FontDescription.merge]},
+    but only a shallow copy is made of the family name and other allocated
+    fields. [desc] can only be used until [desc_to_merge] is modified or freed.
+    This is meant to be used when the merged font description is only needed
+    temporarily. *)
 
 external merge : t -> t option -> bool -> unit
   = "ml_pango_font_description_merge"
@@ -223,44 +231,59 @@ external get_weight : t -> Ocpango_enums.weight
   = "ml_pango_font_description_get_weight"
 (** Gets the weight field of a font description.
 
-    See [Pango.FontDescription.set_weight]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_weight}[Pango.FontDescription.set_weight]}.
+*)
 
 external get_variations : t -> string option
   = "ml_pango_font_description_get_variations"
 (** Gets the variations field of a font description.
 
-    See [Pango.FontDescription.set_variations]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_variations}[Pango.FontDescription.set_variations]}.
+*)
 
 external get_variant : t -> Ocpango_enums.variant
   = "ml_pango_font_description_get_variant"
 (** Gets the variant field of a [PangoFontDescription].
 
-    See [Pango.FontDescription.set_variant]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_variant}[Pango.FontDescription.set_variant]}.
+*)
 
 external get_style : t -> Ocpango_enums.style
   = "ml_pango_font_description_get_style"
 (** Gets the style field of a [PangoFontDescription].
 
-    See [Pango.FontDescription.set_style]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_style}[Pango.FontDescription.set_style]}.
+*)
 
 external get_stretch : t -> Ocpango_enums.stretch
   = "ml_pango_font_description_get_stretch"
 (** Gets the stretch field of a font description.
 
-    See [Pango.FontDescription.set_stretch]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_stretch}[Pango.FontDescription.set_stretch]}.
+*)
 
 external get_size_is_absolute : t -> bool
   = "ml_pango_font_description_get_size_is_absolute"
 (** Determines whether the size of the font is in points (not absolute) or
     device units (absolute).
 
-    See [Pango.FontDescription.set_size] and
-    [Pango.FontDescription.set_absolute_size]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_size}[Pango.FontDescription.set_size]}
+    and
+    {{!Ocpango.Raw.Font_description.val-set_absolute_size}[Pango.FontDescription.set_absolute_size]}.
+*)
 
 external get_size : t -> int = "ml_pango_font_description_get_size"
 (** Gets the size field of a font description.
 
-    See [Pango.FontDescription.set_size]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_size}[Pango.FontDescription.set_size]}.
+*)
 
 external get_set_fields : t -> Ocpango_enums.fontmask
   = "ml_pango_font_description_get_set_fields"
@@ -270,19 +293,25 @@ external get_gravity : t -> Ocpango_enums.gravity
   = "ml_pango_font_description_get_gravity"
 (** Gets the gravity field of a font description.
 
-    See [Pango.FontDescription.set_gravity]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_gravity}[Pango.FontDescription.set_gravity]}.
+*)
 
 external get_features : t -> string option
   = "ml_pango_font_description_get_features"
 (** Gets the features field of a font description.
 
-    See [Pango.FontDescription.set_features]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_features}[Pango.FontDescription.set_features]}.
+*)
 
 external get_family : t -> string option
   = "ml_pango_font_description_get_family"
 (** Gets the family name field of a font description.
 
-    See [Pango.FontDescription.set_family]. *)
+    See
+    {{!Ocpango.Raw.Font_description.val-set_family}[Pango.FontDescription.set_family]}.
+*)
 
 external get_color : t -> Ocpango_enums.fontcolor
   = "ml_pango_font_description_get_color"

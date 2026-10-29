@@ -28,8 +28,9 @@ external new_ : string option -> int -> t = "ml_gtk_entry_buffer_new"
 external set_text : t -> string -> int -> unit = "ml_gtk_entry_buffer_set_text"
 (** Sets the text in the buffer.
 
-    This is roughly equivalent to calling [Gtk.EntryBuffer.delete_text] and
-    [Gtk.EntryBuffer.insert_text].
+    This is roughly equivalent to calling
+    {{!Ocgtk.Raw.Entry_buffer.val-delete_text}[Gtk.EntryBuffer.delete_text]} and
+    {{!Ocgtk.Raw.Entry_buffer.val-insert_text}[Gtk.EntryBuffer.insert_text]}.
 
     Note that [n_chars] is in characters, not in bytes. *)
 
@@ -67,7 +68,8 @@ external get_length : t -> int = "ml_gtk_entry_buffer_get_length"
 external get_bytes : t -> Gsize.t = "ml_gtk_entry_buffer_get_bytes"
 (** Retrieves the length in bytes of the buffer.
 
-    See [Gtk.EntryBuffer.get_length]. *)
+    See {{!Ocgtk.Raw.Entry_buffer.val-get_length}[Gtk.EntryBuffer.get_length]}.
+*)
 
 external emit_inserted_text : t -> int -> string -> int -> unit
   = "ml_gtk_entry_buffer_emit_inserted_text"

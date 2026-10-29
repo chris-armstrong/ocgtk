@@ -11,10 +11,12 @@
     sections of a model they are wrapping.
 
     When the section groupings of a model change, the model will emit the
-    [Gtk.SectionModel::sections-changed] signal by calling the
-    [Gtk.SectionModel.sections_changed] function. All sections in the given
-    range then need to be queried again. The [Gio.ListModel::items-changed]
-    signal has the same effect, all sections in that range are invalidated, too.
+    {{!Ocgtk.Raw.Section_model.val-on_sections_changed}[Gtk.SectionModel::sections-changed]}
+    signal by calling the
+    {{!Ocgtk.Raw.Section_model.val-sections_changed}[Gtk.SectionModel.sections_changed]}
+    function. All sections in the given range then need to be queried again. The
+    [Gio.ListModel::items-changed] signal has the same effect, all sections in
+    that range are invalidated, too.
 
     The class built on this module is in {!Ocgtk.Section_model}. *)
 
@@ -29,15 +31,17 @@ external from_gobject : 'a Gobject.obj -> t
 
 external sections_changed : t -> int -> int -> unit
   = "ml_gtk_section_model_sections_changed"
-(** This function emits the [Gtk.SectionModel::sections-changed] signal to
-    notify about changes to sections.
+(** This function emits the
+    {{!Ocgtk.Raw.Section_model.val-on_sections_changed}[Gtk.SectionModel::sections-changed]}
+    signal to notify about changes to sections.
 
     It must cover all positions that used to be a section start or that are now
     a section start. It does not have to cover all positions for which the
     section has changed.
 
     The [Gio.ListModel::items-changed] implies the effect of the
-    [Gtk.SectionModel::sections-changed] signal for all the items it covers.
+    {{!Ocgtk.Raw.Section_model.val-on_sections_changed}[Gtk.SectionModel::sections-changed]}
+    signal for all the items it covers.
 
     It is recommended that when changes to the items cause section changes in a
     larger range, that the larger range is included in the emission of the
@@ -65,4 +69,5 @@ val on_sections_changed :
     would be rather useless to emit such a signal.
 
     The [Gio.ListModel::items-changed] implies the effect of the
-    [Gtk.SectionModel::sections-changed] signal for all the items it covers. *)
+    {{!Ocgtk.Raw.Section_model.val-on_sections_changed}[Gtk.SectionModel::sections-changed]}
+    signal for all the items it covers. *)

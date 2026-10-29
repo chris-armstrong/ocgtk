@@ -24,12 +24,16 @@ class type display_t = App_launch_context_cycle_de440b34.display_t
 
     Most of the input device handling has been factored out into separate
     {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
-    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
-    [Gdk.Display.list_seats].
+    or more seats, which can be accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_default_seat}[Gdk.Display.get_default_seat]}
+    and
+    {{!Ocgdk.Display.class-type-display_t.method-list_seats}[Gdk.Display.list_seats]}.
 
     Output devices are represented by
     {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
-    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
+    accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
+    and similar APIs. *)
 
 class display : Raw.Display.t -> display_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Display.t}. *)
@@ -47,12 +51,16 @@ class display : Raw.Display.t -> display_t
 
     Most of the input device handling has been factored out into separate
     {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
-    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
-    [Gdk.Display.list_seats].
+    or more seats, which can be accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_default_seat}[Gdk.Display.get_default_seat]}
+    and
+    {{!Ocgdk.Display.class-type-display_t.method-list_seats}[Gdk.Display.list_seats]}.
 
     Output devices are represented by
     {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
-    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
+    accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
+    and similar APIs. *)
 
 (** {1:constructors Constructors} *)
 

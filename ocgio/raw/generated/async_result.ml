@@ -85,8 +85,9 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_result_from_gobject"
 external legacy_propagate_error : t -> (bool, GError.t) result
   = "ml_g_async_result_legacy_propagate_error"
 (** If [res] is a {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]},
-    this is equivalent to [Gio.SimpleAsyncResult.propagate_error]. Otherwise it
-    returns [false].
+    this is equivalent to
+    {{!Ocgio.Raw.Simple_async_result.val-propagate_error}[Gio.SimpleAsyncResult.propagate_error]}.
+    Otherwise it returns [false].
 
     This can be used for legacy error handling in async [*_finish()] wrapper
     functions that traditionally handled

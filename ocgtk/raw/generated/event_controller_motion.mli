@@ -3,11 +3,16 @@
 
 (** Tracks the pointer position.
 
-    The event controller offers [Gtk.EventControllerMotion::enter] and
-    [Gtk.EventControllerMotion::leave] signals, as well as
-    [Gtk.EventControllerMotion:is-pointer] and
-    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
-    reflect changes in the pointer position as it moves over the widget.
+    The event controller offers
+    {{!Ocgtk.Raw.Event_controller_motion.val-on_enter}[Gtk.EventControllerMotion::enter]}
+    and
+    {{!Ocgtk.Raw.Event_controller_motion.val-on_leave}[Gtk.EventControllerMotion::leave]}
+    signals, as well as
+    {{!Ocgtk.Raw.Event_controller_motion.val-is_pointer}[Gtk.EventControllerMotion:is-pointer]}
+    and
+    {{!Ocgtk.Raw.Event_controller_motion.val-contains_pointer}[Gtk.EventControllerMotion:contains-pointer]}
+    properties which are updated to reflect changes in the pointer position as
+    it moves over the widget.
 
     The class built on this module is in {!Ocgtk.Event_controller_motion}. *)
 

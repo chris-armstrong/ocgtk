@@ -87,7 +87,9 @@ external get_font_features : t -> string option
    that were chosen by the user. To get informed about changes, listen\n\
    to \"notify::font-features\".\n\n\
    Note that the button will only let users choose font features\n\
-   if [Gtk.FontDialogButton:level] is set to\n\
+   if \
+   {{!Ocgtk.Raw.Font_dialog_button.val-get_level}[Gtk.FontDialogButton:level]} \
+   is set to\n\
    [GTK_FONT_LEVEL_FEATURES]."]
 
 external get_font_desc : t -> Ocpango_raw.Font_description.t option

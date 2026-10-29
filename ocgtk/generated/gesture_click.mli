@@ -15,9 +15,11 @@
     Recognizes click gestures.
 
     It is able to recognize multiple clicks on a nearby zone, which can be
-    listened for through the [Gtk.GestureClick::pressed] signal. Whenever time
-    or distance between clicks exceed the GTK defaults,
-    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset. *)
+    listened for through the
+    {{!Ocgtk.Gesture_click.class-type-gesture_click_t.method-on_pressed}[Gtk.GestureClick::pressed]}
+    signal. Whenever time or distance between clicks exceed the GTK defaults,
+    {{!Ocgtk.Gesture_click.class-type-gesture_click_t.method-on_stopped}[Gtk.GestureClick::stopped]}
+    is emitted, and the click counter is reset. *)
 class type gesture_click_t = object
   inherit Gesture_single.gesture_single_t
 
@@ -59,9 +61,11 @@ class gesture_click : Raw.Gesture_click.t -> gesture_click_t
     Recognizes click gestures.
 
     It is able to recognize multiple clicks on a nearby zone, which can be
-    listened for through the [Gtk.GestureClick::pressed] signal. Whenever time
-    or distance between clicks exceed the GTK defaults,
-    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset. *)
+    listened for through the
+    {{!Ocgtk.Gesture_click.class-type-gesture_click_t.method-on_pressed}[Gtk.GestureClick::pressed]}
+    signal. Whenever time or distance between clicks exceed the GTK defaults,
+    {{!Ocgtk.Gesture_click.class-type-gesture_click_t.method-on_stopped}[Gtk.GestureClick::stopped]}
+    is emitted, and the click counter is reset. *)
 
 (** {1:constructors Constructors} *)
 

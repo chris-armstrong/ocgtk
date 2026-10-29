@@ -12,10 +12,13 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkAspectFrame] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkAspectFrame] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     Starting from GTK 4.12, [GtkAspectFrame] uses the
-    [Gtk.AccessibleRole.generic] role.
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role.
 
     The class built on this module is in {!Ocgtk.Aspect_frame}. *)
 

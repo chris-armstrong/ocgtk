@@ -13,8 +13,10 @@
     An interface for style information used by
     {{!Ocgtk.Style_context.class-type-style_context_t}[Gtk.StyleContext]}.
 
-    See [Gtk.StyleContext.add_provider] and
-    [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
+    See
+    {{!Ocgtk.Style_context.class-type-style_context_t.method-add_provider}[Gtk.StyleContext.add_provider]}
+    and [Gtk.StyleContext.add_provider_for_display] for adding
+    [GtkStyleProviders].
 
     GTK uses the [GtkStyleProvider] implementation for CSS in
     {{!Ocgtk.Css_provider.class-type-css_provider_t}[Gtk.CssProvider]}. *)
@@ -37,8 +39,10 @@ class style_provider : Raw.Style_provider.t -> style_provider_t
     An interface for style information used by
     {{!Ocgtk.Style_context.class-type-style_context_t}[Gtk.StyleContext]}.
 
-    See [Gtk.StyleContext.add_provider] and
-    [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
+    See
+    {{!Ocgtk.Style_context.class-type-style_context_t.method-add_provider}[Gtk.StyleContext.add_provider]}
+    and [Gtk.StyleContext.add_provider_for_display] for adding
+    [GtkStyleProviders].
 
     GTK uses the [GtkStyleProvider] implementation for CSS in
     {{!Ocgtk.Css_provider.class-type-css_provider_t}[Gtk.CssProvider]}. *)

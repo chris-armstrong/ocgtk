@@ -38,6 +38,7 @@ let () =
       ("Doc Emit", Doc_emit_tests.tests);
       ("Doc Resolve", Doc_resolve_tests.tests);
       ("Doc Index", Doc_index_tests.tests);
+      ("Emitted Members", Emitted_members_tests.tests);
       ("Dune File", Dune_file_tests.tests);
       ("Module Paths", Module_paths_tests.tests);
       (* Layer 2 — Class Generation (pure unit/pipeline) *)

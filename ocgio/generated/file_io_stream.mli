@@ -23,13 +23,16 @@
     I/O stream to jump to arbitrary positions in the file and to truncate the
     file, provided the filesystem of the file supports these operations.
 
-    To find the position of a file I/O stream, use [Gio.Seekable.tell].
+    To find the position of a file I/O stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-tell}[Gio.Seekable.tell]}.
 
     To find out if a file I/O stream supports seeking, use
-    [Gio.Seekable.can_seek]. To position a file I/O stream, use
-    [Gio.Seekable.seek]. To find out if a file I/O stream supports truncating,
-    use [Gio.Seekable.can_truncate]. To truncate a file I/O stream, use
-    [Gio.Seekable.truncate].
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_seek}[Gio.Seekable.can_seek]}.
+    To position a file I/O stream, use [Gio.Seekable.seek]. To find out if a
+    file I/O stream supports truncating, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_truncate}[Gio.Seekable.can_truncate]}.
+    To truncate a file I/O stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-truncate}[Gio.Seekable.truncate]}.
 
     The default implementation of all the [GFileIOStream] operations and the
     implementation of {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}
@@ -90,13 +93,16 @@ class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
     I/O stream to jump to arbitrary positions in the file and to truncate the
     file, provided the filesystem of the file supports these operations.
 
-    To find the position of a file I/O stream, use [Gio.Seekable.tell].
+    To find the position of a file I/O stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-tell}[Gio.Seekable.tell]}.
 
     To find out if a file I/O stream supports seeking, use
-    [Gio.Seekable.can_seek]. To position a file I/O stream, use
-    [Gio.Seekable.seek]. To find out if a file I/O stream supports truncating,
-    use [Gio.Seekable.can_truncate]. To truncate a file I/O stream, use
-    [Gio.Seekable.truncate].
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_seek}[Gio.Seekable.can_seek]}.
+    To position a file I/O stream, use [Gio.Seekable.seek]. To find out if a
+    file I/O stream supports truncating, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-can_truncate}[Gio.Seekable.can_truncate]}.
+    To truncate a file I/O stream, use
+    {{!Ocgio.Seekable.class-type-seekable_t.method-truncate}[Gio.Seekable.truncate]}.
 
     The default implementation of all the [GFileIOStream] operations and the
     implementation of {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}

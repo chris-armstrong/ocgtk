@@ -251,7 +251,9 @@ type keymatch =
   | `EXACT  (** The key event matches *) ]
 (** Describes how well an event matches a given keyval and modifiers.
 
-    [GdkKeyMatch] values are returned by [Gdk.KeyEvent.matches]. *)
+    [GdkKeyMatch] values are returned by
+    {{!Ocgdk.Key_event.class-type-key_event_t.method-matches}[Gdk.KeyEvent.matches]}.
+*)
 
 val keymatch_of_int : int -> keymatch
 val keymatch_to_int : keymatch -> int
@@ -815,7 +817,8 @@ type titlebargesture =
   [ `DOUBLE_CLICK  (** double click gesture *)
   | `RIGHT_CLICK  (** right click gesture *)
   | `MIDDLE_CLICK  (** middle click gesture *) ]
-(** The kind of title bar gesture to emit with [Gdk.Toplevel.titlebar_gesture].
+(** The kind of title bar gesture to emit with
+    {{!Ocgdk.Toplevel.class-type-toplevel_t.method-titlebar_gesture}[Gdk.Toplevel.titlebar_gesture]}.
     @since 4.4 *)
 
 val titlebargesture_of_int : int -> titlebargesture
@@ -1019,10 +1022,12 @@ val modifiertype_to_int : modifiertype -> int
 
 type paintableflags_flag =
   [ `SIZE
-    (** The size is immutable. The [Gdk.Paintable::invalidate-size] signal will
-        never be emitted. *)
+    (** The size is immutable. The
+        {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+        signal will never be emitted. *)
   | `CONTENTS
-    (** The content is immutable. The [Gdk.Paintable::invalidate-contents]
+    (** The content is immutable. The
+        {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
         signal will never be emitted. *) ]
 (** Flags about a paintable object.
 
@@ -1057,19 +1062,26 @@ type toplevelcapabilities_flag =
   [ `EDGE_CONSTRAINTS  (** Whether tiled window states are supported. *)
   | `INHIBIT_SHORTCUTS
     (** Whether inhibiting system shortcuts is supported. See
-        [Gdk.Toplevel.inhibit_system_shortcuts]. *)
+        {{!Ocgdk.Toplevel.class-type-toplevel_t.method-inhibit_system_shortcuts}[Gdk.Toplevel.inhibit_system_shortcuts]}.
+    *)
   | `TITLEBAR_GESTURES
     (** Whether titlebar gestures are supported. See
-        [Gdk.Toplevel.titlebar_gesture]. *)
+        {{!Ocgdk.Toplevel.class-type-toplevel_t.method-titlebar_gesture}[Gdk.Toplevel.titlebar_gesture]}.
+    *)
   | `WINDOW_MENU
     (** Whether showing the window menu is supported. See
-        [Gdk.Toplevel.show_window_menu]. *)
+        {{!Ocgdk.Toplevel.class-type-toplevel_t.method-show_window_menu}[Gdk.Toplevel.show_window_menu]}.
+    *)
   | `MAXIMIZE  (** Whether the toplevel can be maximized. *)
   | `FULLSCREEN  (** Whether the toplevel can be made fullscreen. *)
   | `MINIMIZE
-    (** Whether the toplevel can be minimized. See [Gdk.Toplevel.minimize]. *)
+    (** Whether the toplevel can be minimized. See
+        {{!Ocgdk.Toplevel.class-type-toplevel_t.method-minimize}[Gdk.Toplevel.minimize]}.
+    *)
   | `LOWER
-    (** Whether the toplevel can be lowered. See [Gdk.Toplevel.lower]. *) ]
+    (** Whether the toplevel can be lowered. See
+        {{!Ocgdk.Toplevel.class-type-toplevel_t.method-lower}[Gdk.Toplevel.lower]}.
+    *) ]
 (** Reflects what features a [GdkToplevel] supports.
     @since 4.20 *)
 

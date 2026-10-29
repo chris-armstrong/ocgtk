@@ -9,12 +9,15 @@
     truncate the file, provided the filesystem of the file supports these
     operations.
 
-    To find the position of a file output stream, use [Gio.Seekable.tell]. To
-    find out if a file output stream supports seeking, use
-    [Gio.Seekable.can_seek].To position a file output stream, use
-    [Gio.Seekable.seek]. To find out if a file output stream supports
-    truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
-    stream, use [Gio.Seekable.truncate].
+    To find the position of a file output stream, use
+    {{!Ocgio.Raw.Seekable.val-tell}[Gio.Seekable.tell]}. To find out if a file
+    output stream supports seeking, use
+    {{!Ocgio.Raw.Seekable.val-can_seek}[Gio.Seekable.can_seek]}.To position a
+    file output stream, use [Gio.Seekable.seek]. To find out if a file output
+    stream supports truncating, use
+    {{!Ocgio.Raw.Seekable.val-can_truncate}[Gio.Seekable.can_truncate]}. To
+    truncate a file output stream, use
+    {{!Ocgio.Raw.Seekable.val-truncate}[Gio.Seekable.truncate]}.
 
     The class built on this module is in {!Ocgio.File_output_stream}. *)
 

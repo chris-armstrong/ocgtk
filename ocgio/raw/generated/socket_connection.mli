@@ -17,7 +17,8 @@
     connection types for specific combination of socket family/type/protocol
     using [Gio.SocketConnection.factory_register_type].
 
-    To close a [GSocketConnection], use [Gio.IOStream.close]. Closing both
+    To close a [GSocketConnection], use
+    {{!Ocgio.Raw.Io_stream.val-close}[Gio.IOStream.close]}. Closing both
     substreams of the {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} separately will not
     close the underlying {{!Ocgio.Raw.Socket}[Gio.Socket]}.
 

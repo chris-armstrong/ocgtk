@@ -14,7 +14,9 @@
 
     Activates a widget.
 
-    Widgets are activated by calling [Gtk.Widget.activate]. *)
+    Widgets are activated by calling
+    {{!Ocgtk.Widget.class-type-widget_t.method-activate}[Gtk.Widget.activate]}.
+*)
 class type activate_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
@@ -30,7 +32,9 @@ class activate_action : Raw.Activate_action.t -> activate_action_t
 
     Activates a widget.
 
-    Widgets are activated by calling [Gtk.Widget.activate]. *)
+    Widgets are activated by calling
+    {{!Ocgtk.Widget.class-type-widget_t.method-activate}[Gtk.Widget.activate]}.
+*)
 
 (** {1:constructors Constructors} *)
 

@@ -3,14 +3,16 @@
 
 (** Represents data shared between applications or inside an application.
 
-    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
-    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
-    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+    To get a [GdkClipboard] object, use
+    {{!Ocgdk.Raw.Display.val-get_clipboard}[Gdk.Display.get_clipboard]} or
+    {{!Ocgdk.Raw.Display.val-get_primary_clipboard}[Gdk.Display.get_primary_clipboard]}.
+    You can find out about the data that is currently available in a clipboard
+    using {{!Ocgdk.Raw.Clipboard.val-get_formats}[Gdk.Clipboard.get_formats]}.
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a
-    {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]} object.
+    can use {{!Ocgdk.Raw.Clipboard.val-set_content}[Gdk.Clipboard.set_content]},
+    which takes a {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]} object.
 
     To read textual or image data from a clipboard, use
     [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For

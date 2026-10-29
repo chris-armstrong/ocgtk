@@ -25,7 +25,8 @@
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
-    [Gio.SocketClient.set_proxy_resolver]. *)
+    {{!Ocgio.Socket_client.class-type-socket_client_t.method-set_proxy_resolver}[Gio.SocketClient.set_proxy_resolver]}.
+*)
 class type simple_proxy_resolver_t = object
   inherit Proxy_resolver.proxy_resolver_t
 
@@ -77,7 +78,8 @@ class simple_proxy_resolver :
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
-    [Gio.SocketClient.set_proxy_resolver]. *)
+    {{!Ocgio.Socket_client.class-type-socket_client_t.method-set_proxy_resolver}[Gio.SocketClient.set_proxy_resolver]}.
+*)
 
 (** {1:constructors Constructors} *)
 

@@ -69,7 +69,7 @@ type accessibleplatformstate =
   | `FOCUSED  (** whether the accessible has focus *)
   | `ACTIVE  (** whether the accessible is active *) ]
 (** The various platform states which can be queried using
-    [Gtk.Accessible.get_platform_state].
+    {{!Ocgtk.Accessible.class-type-accessible_t.method-get_platform_state}[Gtk.Accessible.get_platform_state]}.
     @since 4.10 *)
 
 val accessibleplatformstate_of_int : int -> accessibleplatformstate
@@ -144,8 +144,8 @@ type accessibleproperty =
     (** Defines the current value for a range widget. Value type: double *)
   | `VALUE_TEXT
     (** Defines the human readable text alternative of
-        [Gtk.AccessibleProperty.VALUE_NOW] for a range widget. Value type:
-        string *)
+        {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_NOW}[Gtk.AccessibleProperty.VALUE_NOW]}
+        for a range widget. Value type: string *)
   | `HELP_TEXT
     (** Defines a string value that provides a description of non-standard
         keyboard interactions of the current element. Value type: string *) ]
@@ -211,7 +211,8 @@ type accessiblerelation =
         number of rows within a table, grid, or treegrid. Value type: integer *)
   | `ROW_INDEX_TEXT
     (** Defines a human readable text alternative of
-        [Gtk.AccessibleRelation.ROW_INDEX]. Value type: string *)
+        {{!Ocgtk.Enums.type-accessiblerelation.constructor-ROW_INDEX}[Gtk.AccessibleRelation.ROW_INDEX]}.
+        Value type: string *)
   | `ROW_SPAN
     (** Defines the number of rows spanned by a cell or gridcell within a table,
         grid, or treegrid. Value type: integer *)
@@ -435,16 +436,19 @@ type accessiblestate =
         {{!Ocgtk.Check_button.class-type-check_button_t}[CheckButton]}. Value
         type: {{!Ocgtk.Enums.type-accessibletristate}[AccessibleTristate]} *)
   | `DISABLED
-    (** A “disabled” state; corresponds to the [Widget:sensitive] property. It
-        indicates a UI element that is perceivable, but not editable or
-        operable. Value type: boolean *)
+    (** A “disabled” state; corresponds to the
+        {{!Ocgtk.Widget.class-type-widget_t.method-get_sensitive}[Widget:sensitive]}
+        property. It indicates a UI element that is perceivable, but not
+        editable or operable. Value type: boolean *)
   | `EXPANDED
-    (** An “expanded” state; corresponds to the [Expander:expanded] property.
-        Value type: boolean or undefined *)
+    (** An “expanded” state; corresponds to the
+        {{!Ocgtk.Expander.class-type-expander_t.method-get_expanded}[Expander:expanded]}
+        property. Value type: boolean or undefined *)
   | `HIDDEN
-    (** A “hidden” state; corresponds to the [Widget:visible] property. You can
-        use this state explicitly on UI elements that should not be exposed to
-        an assistive technology. Value type: boolean See also:
+    (** A “hidden” state; corresponds to the
+        {{!Ocgtk.Widget.class-type-widget_t.method-get_visible}[Widget:visible]}
+        property. You can use this state explicitly on UI elements that should
+        not be exposed to an assistive technology. Value type: boolean See also:
         [GTK_ACCESSIBLE_STATE_DISABLED] *)
   | `INVALID
     (** An “invalid” state; set when a widget is showing an error. Value type:
@@ -535,11 +539,12 @@ type align =
 (** Controls how a widget deals with extra space in a single dimension.
 
     Alignment only matters if the widget receives a “too large” allocation, for
-    example if you packed the widget with the [Gtk.Widget:hexpand] property
-    inside a {{!Ocgtk.Box.class-type-box_t}[Box]}, then the widget might get
-    extra space. If you have for example a 16x16 icon inside a 32x32 space, the
-    icon could be scaled and stretched, it could be centered, or it could be
-    positioned to one side of the space.
+    example if you packed the widget with the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_hexpand}[Gtk.Widget:hexpand]}
+    property inside a {{!Ocgtk.Box.class-type-box_t}[Box]}, then the widget
+    might get extra space. If you have for example a 16x16 icon inside a 32x32
+    space, the icon could be scaled and stretched, it could be centered, or it
+    could be positioned to one side of the space.
 
     Note that in horizontal context [GTK_ALIGN_START] and [GTK_ALIGN_END] are
     interpreted relative to text direction.
@@ -699,7 +704,9 @@ val buttonstype_to_int : buttonstype -> int
 
 type cellrendereraccelmode =
   [ `GTK  (** GTK accelerators mode *) | `OTHER  (** Other accelerator mode *) ]
-(** The available modes for [Gtk.CellRendererAccel:accel-mode]. *)
+(** The available modes for
+    {{!Ocgtk.Cell_renderer_accel.class-type-cell_renderer_accel_t.method-accel_mode}
+     [Gtk.CellRendererAccel:accel-mode]}. *)
 
 val cellrendereraccelmode_of_int : int -> cellrendereraccelmode
 val cellrendereraccelmode_to_int : cellrendereraccelmode -> int
@@ -939,17 +946,38 @@ val directiontype_to_int : directiontype -> int
 (* EditableProperties - enumeration *)
 
 type editableproperties =
-  [ `PROP_TEXT  (** the property id for [Gtk.Editable:text] *)
+  [ `PROP_TEXT
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_text}[Gtk.Editable:text]}
+    *)
   | `PROP_CURSOR_POSITION
-    (** the property id for [Gtk.Editable:cursor-position] *)
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_position}[Gtk.Editable:cursor-position]}
+    *)
   | `PROP_SELECTION_BOUND
-    (** the property id for [Gtk.Editable:selection-bound] *)
-  | `PROP_EDITABLE  (** the property id for [Gtk.Editable:editable] *)
-  | `PROP_WIDTH_CHARS  (** the property id for [Gtk.Editable:width-chars] *)
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-selection_bound}[Gtk.Editable:selection-bound]}
+    *)
+  | `PROP_EDITABLE
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_editable}[Gtk.Editable:editable]}
+    *)
+  | `PROP_WIDTH_CHARS
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_width_chars}[Gtk.Editable:width-chars]}
+    *)
   | `PROP_MAX_WIDTH_CHARS
-    (** the property id for [Gtk.Editable:max-width-chars] *)
-  | `PROP_XALIGN  (** the property id for [Gtk.Editable:xalign] *)
-  | `PROP_ENABLE_UNDO  (** the property id for [Gtk.Editable:enable-undo] *)
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_max_width_chars}[Gtk.Editable:max-width-chars]}
+    *)
+  | `PROP_XALIGN
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_alignment}[Gtk.Editable:xalign]}
+    *)
+  | `PROP_ENABLE_UNDO
+    (** the property id for
+        {{!Ocgtk.Editable.class-type-editable_t.method-get_enable_undo}[Gtk.Editable:enable-undo]}
+    *)
   | `NUM_PROPERTIES  (** the number of properties *) ]
 (** The identifiers for {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]}
     properties.
@@ -1033,18 +1061,21 @@ type filterchange =
     (** The filter is more strict than it was before: All items that it used to
         return false still return false, others now may, too. *)
   | `DIFFERENT_REWATCH
-    (** Similar to [Gtk.FilterChange.DIFFERENT], but signs that item watches
-        should be recreated. This is used by
+    (** Similar to
+        {{!Ocgtk.Enums.type-filterchange.constructor-DIFFERENT}[Gtk.FilterChange.DIFFERENT]},
+        but signs that item watches should be recreated. This is used by
         {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
         to keep the list up-to-date when items change. *)
   | `LESS_STRICT_REWATCH
-    (** Similar to [Gtk.FilterChange.LESS_STRICT], but signs that item watches
-        should be recreated. This is used by
+    (** Similar to
+        {{!Ocgtk.Enums.type-filterchange.constructor-LESS_STRICT}[Gtk.FilterChange.LESS_STRICT]},
+        but signs that item watches should be recreated. This is used by
         {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
         to keep the list up-to-date when items change. *)
   | `MORE_STRICT_REWATCH
-    (** Similar to [Gtk.FilterChange.MORE_STRICT], but signs that item watches
-        should be recreated. This is used by
+    (** Similar to
+        {{!Ocgtk.Enums.type-filterchange.constructor-MORE_STRICT}[Gtk.FilterChange.MORE_STRICT]},
+        but signs that item watches should be recreated. This is used by
         {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
         to keep the list up-to-date when items change. *) ]
 (** Describes changes in a filter in more detail and allows objects using the
@@ -1062,14 +1093,17 @@ val filterchange_to_int : filterchange -> int
 
 type filtermatch =
   [ `SOME
-    (** The filter matches some items, [Gtk.Filter.match] may return true or
-        false *)
+    (** The filter matches some items,
+        {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]}
+        may return true or false *)
   | `NONE
-    (** The filter does not match any item, [Gtk.Filter.match] will always
-        return false *)
+    (** The filter does not match any item,
+        {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]}
+        will always return false *)
   | `ALL
-    (** The filter matches all items, [Gtk.Filter.match] will alays return true
-    *) ]
+    (** The filter matches all items,
+        {{!Ocgtk.Filter.class-type-filter_t.method-match_}[Gtk.Filter.match]}
+        will alays return true *) ]
 (** Describes the known strictness of a filter.
 
     Note that for filters where the strictness is not known,
@@ -1090,7 +1124,8 @@ type fontlevel =
 (** The level of granularity for the font selection.
 
     Depending on this value, the [PangoFontDescription] that is returned by
-    [Gtk.FontDialogButton.get_font_desc] will have more or less fields set.
+    {{!Ocgtk.Font_dialog_button.class-type-font_dialog_button_t.method-get_font_desc}
+     [Gtk.FontDialogButton.get_font_desc]} will have more or less fields set.
     @since 4.10 *)
 
 val fontlevel_of_int : int -> fontlevel
@@ -1105,8 +1140,9 @@ type fontrendering =
   | `MANUAL
     (** Follow low-level font-related settings when configuring font rendering
     *) ]
-(** Values for the [Gtk.Settings:gtk-font-rendering] setting that influence how
-    GTK renders fonts.
+(** Values for the
+    {{!Ocgtk.Settings.class-type-settings_t.method-gtk_font_rendering}[Gtk.Settings:gtk-font-rendering]}
+    setting that influence how GTK renders fonts.
     @since 4.16 *)
 
 val fontrendering_of_int : int -> fontrendering
@@ -1242,9 +1278,11 @@ type interfacecolorscheme =
   | `DEFAULT  (** The default color scheme is used *)
   | `DARK  (** A dark color scheme is used *)
   | `LIGHT  (** A light color scheme is used *) ]
-(** Values for the [Gtk.Settings:gtk-interface-color-scheme] and
-    [Gtk.CssProvider:prefers-color-scheme] properties that indicates what color
-    scheme is used.
+(** Values for the
+    {{!Ocgtk.Settings.class-type-settings_t.method-gtk_interface_color_scheme}[Gtk.Settings:gtk-interface-color-scheme]}
+    and
+    {{!Ocgtk.Css_provider.class-type-css_provider_t.method-prefers_color_scheme}[Gtk.CssProvider:prefers-color-scheme]}
+    properties that indicates what color scheme is used.
 
     This information can be used inside CSS via media queries.
 
@@ -1262,9 +1300,11 @@ type interfacecontrast =
   | `NO_PREFERENCE  (** No particular preference for contrast *)
   | `MORE  (** More contrast is preferred *)
   | `LESS  (** Less contrast is preferred *) ]
-(** Values for the [Gtk.Settings:gtk-interface-contrast] and
-    [Gtk.CssProvider:prefers-contrast] properties that indicates the preferred
-    level of contrast.
+(** Values for the
+    {{!Ocgtk.Settings.class-type-settings_t.method-gtk_interface_contrast}[Gtk.Settings:gtk-interface-contrast]}
+    and
+    {{!Ocgtk.Css_provider.class-type-css_provider_t.method-prefers_contrast}[Gtk.CssProvider:prefers-contrast]}
+    properties that indicates the preferred level of contrast.
 
     This information can be used inside CSS via media queries.
 
@@ -1370,7 +1410,9 @@ type naturalwrapmode =
         using [PANGO_WRAP_WORD_CHAR] as the wrap mode. *) ]
 (** Options for selecting a different wrap mode for natural size requests.
 
-    See for example the [Gtk.Label:natural-wrap-mode] property.
+    See for example the
+    {{!Ocgtk.Label.class-type-label_t.method-get_natural_wrap_mode}[Gtk.Label:natural-wrap-mode]}
+    property.
     @since 4.6 *)
 
 val naturalwrapmode_of_int : int -> naturalwrapmode
@@ -1434,7 +1476,10 @@ type overflow =
         is not drawn and cannot be interacted with. *) ]
 (** Defines how content overflowing a given area should be handled.
 
-    This is used in [Gtk.Widget.set_overflow]. The [Gtk.Widget:overflow]
+    This is used in
+    {{!Ocgtk.Widget.class-type-widget_t.method-set_overflow}[Gtk.Widget.set_overflow]}.
+    The
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_overflow}[Gtk.Widget:overflow]}
     property is modeled after the CSS overflow property, but implements it only
     partially. *)
 
@@ -1580,7 +1625,9 @@ type printoperationaction =
     *) ]
 (** Determines what action the print operation should perform.
 
-    A parameter of this typs is passed to [Gtk.PrintOperation.run]. *)
+    A parameter of this typs is passed to
+    {{!Ocgtk.Print_operation.class-type-print_operation_t.method-run}[Gtk.PrintOperation.run]}.
+*)
 
 val printoperationaction_of_int : int -> printoperationaction
 val printoperationaction_to_int : printoperationaction -> int
@@ -1598,7 +1645,9 @@ type printoperationresult =
         returned when running asynchronously. *) ]
 (** The result of a print operation.
 
-    A value of this type is returned by [Gtk.PrintOperation.run]. *)
+    A value of this type is returned by
+    {{!Ocgtk.Print_operation.class-type-print_operation_t.method-run}[Gtk.PrintOperation.run]}.
+*)
 
 val printoperationresult_of_int : int -> printoperationresult
 val printoperationresult_to_int : printoperationresult -> int
@@ -1660,8 +1709,9 @@ type propagationlimit =
   | `SAME_NATIVE
     (** Events are only handled if their target is in the same
         {{!Ocgtk.Native.class-type-native_t}[Native]} (or widget with
-        [Gtk.Widget:limit-events] set) as the event controllers widget. Note
-        that some event types have two targets (origin and destination). *) ]
+        {{!Ocgtk.Widget.class-type-widget_t.method-get_limit_events}[Gtk.Widget:limit-events]}
+        set) as the event controllers widget. Note that some event types have
+        two targets (origin and destination). *) ]
 (** Describes limits of a
     {{!Ocgtk.Event_controller.class-type-event_controller_t}[EventController]}
     for handling events targeting other widgets. *)
@@ -1974,7 +2024,9 @@ type spinbuttonupdatepolicy =
 (** Determines whether the spin button displays values outside the adjustment
     bounds.
 
-    See [Gtk.SpinButton.set_update_policy]. *)
+    See
+    {{!Ocgtk.Spin_button.class-type-spin_button_t.method-set_update_policy}[Gtk.SpinButton.set_update_policy]}.
+*)
 
 val spinbuttonupdatepolicy_of_int : int -> spinbuttonupdatepolicy
 val spinbuttonupdatepolicy_to_int : spinbuttonupdatepolicy -> int
@@ -2075,13 +2127,23 @@ val symboliccolor_to_int : symboliccolor -> int
 (* SystemSetting - enumeration *)
 
 type systemsetting =
-  [ `DPI  (** the [Gtk.Settings:gtk-xft-dpi] setting has changed *)
-  | `FONT_NAME  (** The [Gtk.Settings:gtk-font-name] setting has changed *)
+  [ `DPI
+    (** the
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_xft_dpi}[Gtk.Settings:gtk-xft-dpi]}
+        setting has changed *)
+  | `FONT_NAME
+    (** The
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_font_name}[Gtk.Settings:gtk-font-name]}
+        setting has changed *)
   | `FONT_CONFIG
     (** The font configuration has changed in a way that requires text to be
-        redrawn. This can be any of the [Gtk.Settings:gtk-xft-antialias],
-        [Gtk.Settings:gtk-xft-hinting], [Gtk.Settings:gtk-xft-hintstyle],
-        [Gtk.Settings:gtk-xft-rgba] or [Gtk.Settings:gtk-fontconfig-timestamp]
+        redrawn. This can be any of the
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_xft_antialias}[Gtk.Settings:gtk-xft-antialias]},
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_xft_hinting}[Gtk.Settings:gtk-xft-hinting]},
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_xft_hintstyle}[Gtk.Settings:gtk-xft-hintstyle]},
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_xft_rgba}[Gtk.Settings:gtk-xft-rgba]}
+        or
+        {{!Ocgtk.Settings.class-type-settings_t.method-gtk_fontconfig_timestamp}[Gtk.Settings:gtk-fontconfig-timestamp]}
         settings *)
   | `DISPLAY  (** The display has changed *)
   | `ICON_THEME
@@ -2262,7 +2324,9 @@ type applicationinhibitflags_flag =
   ]
 (** Types of user actions that may be blocked by [GtkApplication].
 
-    See [Gtk.Application.inhibit]. *)
+    See
+    {{!Ocgtk.Application.class-type-application_t.method-inhibit}[Gtk.Application.inhibit]}.
+*)
 
 type applicationinhibitflags = applicationinhibitflags_flag list
 
@@ -2476,8 +2540,10 @@ type pickflags_flag =
   | `INSENSITIVE  (** Include widgets that are insensitive *)
   | `NON_TARGETABLE
     (** Include widgets that are marked as non-targetable. See
-        [Widget:can-target] *) ]
-(** Flags that influence the behavior of [Widget.pick]. *)
+        {{!Ocgtk.Widget.class-type-widget_t.method-get_can_target}[Widget:can-target]}
+    *) ]
+(** Flags that influence the behavior of
+    {{!Ocgtk.Widget.class-type-widget_t.method-pick}[Widget.pick]}. *)
 
 type pickflags = pickflags_flag list
 
@@ -2615,10 +2681,11 @@ type treemodelflags_flag =
   | `LIST_ONLY  (** the model is a list only, and never has children *) ]
 (** These flags indicate various properties of a [GtkTreeModel].
 
-    They are returned by [Gtk.TreeModel.get_flags], and must be static for the
-    lifetime of the object. A more complete description of
-    [GTK_TREE_MODEL_ITERS_PERSIST] can be found in the overview of this section.
-*)
+    They are returned by
+    {{!Ocgtk.Tree_model.class-type-tree_model_t.method-get_flags}[Gtk.TreeModel.get_flags]},
+    and must be static for the lifetime of the object. A more complete
+    description of [GTK_TREE_MODEL_ITERS_PERSIST] can be found in the overview
+    of this section. *)
 
 type treemodelflags = treemodelflags_flag list
 

@@ -15,10 +15,12 @@
     the cursor position is visible.
 
     When using an entry for passwords and other sensitive information, it can be
-    put into “password mode” using [Gtk.Text.set_visibility]. In this mode,
-    entered text is displayed using an “invisible” character. By default, GTK
-    picks the best invisible character that is available in the current font,
-    but it can be changed with [Gtk.Text.set_invisible_char].
+    put into “password mode” using
+    {{!Ocgtk.Raw.Text.val-set_visibility}[Gtk.Text.set_visibility]}. In this
+    mode, entered text is displayed using an “invisible” character. By default,
+    GTK picks the best invisible character that is available in the current
+    font, but it can be changed with
+    {{!Ocgtk.Raw.Text.val-set_invisible_char}[Gtk.Text.set_invisible_char]}.
 
     If you want to add icons or progress display in an entry, look at
     {{!Ocgtk.Raw.Entry}[Gtk.Entry]}. There are other alternatives for more
@@ -45,15 +47,15 @@
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.Text::activate]
-    - [Gtk.Text::backspace]
-    - [Gtk.Text::copy-clipboard]
-    - [Gtk.Text::cut-clipboard]
-    - [Gtk.Text::delete-from-cursor]
-    - [Gtk.Text::insert-emoji]
-    - [Gtk.Text::move-cursor]
-    - [Gtk.Text::paste-clipboard]
-    - [Gtk.Text::toggle-overwrite]
+    - {{!Ocgtk.Raw.Text.val-on_activate}[Gtk.Text::activate]}
+    - {{!Ocgtk.Raw.Text.val-on_backspace}[Gtk.Text::backspace]}
+    - {{!Ocgtk.Raw.Text.val-on_copy_clipboard}[Gtk.Text::copy-clipboard]}
+    - {{!Ocgtk.Raw.Text.val-on_cut_clipboard}[Gtk.Text::cut-clipboard]}
+    - {{!Ocgtk.Raw.Text.val-on_delete_from_cursor}[Gtk.Text::delete-from-cursor]}
+    - {{!Ocgtk.Raw.Text.val-on_insert_emoji}[Gtk.Text::insert-emoji]}
+    - {{!Ocgtk.Raw.Text.val-on_move_cursor}[Gtk.Text::move-cursor]}
+    - {{!Ocgtk.Raw.Text.val-on_paste_clipboard}[Gtk.Text::paste-clipboard]}
+    - {{!Ocgtk.Raw.Text.val-on_toggle_overwrite}[Gtk.Text::toggle-overwrite]}
 
     {b Actions}
 
@@ -110,10 +112,11 @@
 
     {b Accessibility}
 
-    [GtkText] uses the [Gtk.AccessibleRole.none] role, which causes it to be
-    skipped for accessibility. This is because [GtkText] is expected to be used
-    as a delegate for a [GtkEditable] implementation that will be represented to
-    accessibility.
+    [GtkText] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-NONE}[Gtk.AccessibleRole.none]}
+    role, which causes it to be skipped for accessibility. This is because
+    [GtkText] is expected to be used as a delegate for a [GtkEditable]
+    implementation that will be represented to accessibility.
 
     The class built on this module is in {!Ocgtk.Text}. *)
 
@@ -142,12 +145,15 @@ external set_visibility : t -> bool -> unit = "ml_gtk_text_set_visibility"
     to the clipboard.
 
     By default, GTK picks the best invisible character available in the current
-    font, but it can be changed with [Gtk.Text.set_invisible_char].
+    font, but it can be changed with
+    {{!Ocgtk.Raw.Text.val-set_invisible_char}[Gtk.Text.set_invisible_char]}.
 
-    Note that you probably want to set [Gtk.Text:input-purpose] to
-    [Gtk.InputPurpose.password] or [Gtk.InputPurpose.pin] to inform input
-    methods about the purpose of this widget, in addition to setting visibility
-    to false. *)
+    Note that you probably want to set
+    {{!Ocgtk.Raw.Text.val-get_input_purpose}[Gtk.Text:input-purpose]} to
+    {{!Ocgtk.Enums.type-inputpurpose.constructor-PASSWORD}[Gtk.InputPurpose.password]}
+    or {{!Ocgtk.Enums.type-inputpurpose.constructor-PIN}[Gtk.InputPurpose.pin]}
+    to inform input methods about the purpose of this widget, in addition to
+    setting visibility to false. *)
 
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_text_set_truncate_multiline"
@@ -179,7 +185,8 @@ external set_max_length : t -> int -> unit = "ml_gtk_text_set_max_length"
     truncated to fit.
 
     This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
-    [Gtk.EntryBuffer.set_max_length] on it. *)
+    {{!Ocgtk.Raw.Entry_buffer.val-set_max_length}[Gtk.EntryBuffer.set_max_length]}
+    on it. *)
 
 external set_invisible_char : t -> int -> unit
   = "ml_gtk_text_set_invisible_char"
@@ -229,8 +236,8 @@ external grab_focus_without_selecting : t -> bool
   = "ml_gtk_text_grab_focus_without_selecting"
 (** Causes the text widget to have the keyboard focus.
 
-    It behaves like [Gtk.Widget.grab_focus], except that it does not select the
-    contents of [self].
+    It behaves like {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]},
+    except that it does not select the contents of [self].
 
     You only want to call this on some special entries which the user usually
     doesn't want to replace all text in, such as search-as-you-type entries. *)
@@ -246,12 +253,13 @@ external get_text_length : t -> UInt16.t = "ml_gtk_text_get_text_length"
 (** Retrieves the length of the contents.
 
     This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
-    [Gtk.EntryBuffer.get_length] on it. *)
+    {{!Ocgtk.Raw.Entry_buffer.val-get_length}[Gtk.EntryBuffer.get_length]} on
+    it. *)
 
 external get_tabs : t -> Ocpango_raw.Tab_array.t option = "ml_gtk_text_get_tabs"
 (** Gets the tab stops for the text widget.
 
-    See [Gtk.Text.set_tabs]. *)
+    See {{!Ocgtk.Raw.Text.val-set_tabs}[Gtk.Text.set_tabs]}. *)
 
 external get_propagate_text_width : t -> bool
   = "ml_gtk_text_get_propagate_text_width"
@@ -262,27 +270,32 @@ external get_placeholder_text : t -> string option
 (** Retrieves the text that will be displayed when the text widget is empty and
     unfocused
 
-    See [Gtk.Text.set_placeholder_text]. *)
+    See
+    {{!Ocgtk.Raw.Text.val-set_placeholder_text}[Gtk.Text.set_placeholder_text]}.
+*)
 
 external get_overwrite_mode : t -> bool = "ml_gtk_text_get_overwrite_mode"
 (** Gets whether text is overwritten when typing.
 
-    See [Gtk.Text.set_overwrite_mode]. *)
+    See {{!Ocgtk.Raw.Text.val-set_overwrite_mode}[Gtk.Text.set_overwrite_mode]}.
+*)
 
 external get_max_length : t -> int = "ml_gtk_text_get_max_length"
 (** Retrieves the maximum allowed length of the contents.
 
-    See [Gtk.Text.set_max_length].
+    See {{!Ocgtk.Raw.Text.val-set_max_length}[Gtk.Text.set_max_length]}.
 
     This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
-    [Gtk.EntryBuffer.get_max_length] on it. *)
+    {{!Ocgtk.Raw.Entry_buffer.val-get_max_length}[Gtk.EntryBuffer.get_max_length]}
+    on it. *)
 
 external get_invisible_char : t -> int = "ml_gtk_text_get_invisible_char"
 (** Retrieves the character displayed when visibility is set to false.
 
     Note that GTK does not compute this value unless it needs it, so the value
     returned by this function is not very useful unless it has been explicitly
-    set with [Gtk.Text.set_invisible_char]. *)
+    set with
+    {{!Ocgtk.Raw.Text.val-set_invisible_char}[Gtk.Text.set_invisible_char]}. *)
 
 external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_text_get_input_purpose"
@@ -296,7 +309,7 @@ external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_text_get_extra_menu"
 (** Gets the extra menu model of the text widget.
 
-    See [Gtk.Text.set_extra_menu]. *)
+    See {{!Ocgtk.Raw.Text.val-set_extra_menu}[Gtk.Text.set_extra_menu]}. *)
 
 external get_enable_emoji_completion : t -> bool
   = "ml_gtk_text_get_enable_emoji_completion"
@@ -309,13 +322,15 @@ external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_text_get_attributes"
 (** Gets the attribute list that was set on the text widget.
 
-    See [Gtk.Text.set_attributes]. *)
+    See {{!Ocgtk.Raw.Text.val-set_attributes}[Gtk.Text.set_attributes]}. *)
 
 external get_activates_default : t -> bool = "ml_gtk_text_get_activates_default"
 (** Returns whether pressing <kbd>Enter</kbd> will activate the default widget
     for the window containing the widget.
 
-    See [Gtk.Text.set_activates_default]. *)
+    See
+    {{!Ocgtk.Raw.Text.val-set_activates_default}[Gtk.Text.set_activates_default]}.
+*)
 
 external compute_cursor_extents :
   t -> Gsize.t -> Ocgraphene_raw.Rect.t * Ocgraphene_raw.Rect.t
@@ -339,7 +354,9 @@ external get_im_module : t -> string = "ml_gtk_text_get_im_module"
     See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide input method.
-    See the [Gtk.Settings:gtk-im-module] setting. *)
+    See the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    setting. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
 (** Which input method module should be used.
@@ -347,7 +364,9 @@ external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
     See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide input method.
-    See the [Gtk.Settings:gtk-im-module] setting. *)
+    See the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    setting. *)
 
 external get_invisible_char_set : t -> bool
   = "ml_gtk_text_get_invisible_char_set"

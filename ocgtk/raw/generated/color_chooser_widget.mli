@@ -13,10 +13,13 @@
     The chooser automatically remembers the last selection, as well as custom
     colors.
 
-    To create a [GtkColorChooserWidget], use [Gtk.ColorChooserWidget.new].
+    To create a [GtkColorChooserWidget], use
+    {{!Ocgtk.Raw.Color_chooser_widget.val-new_}[Gtk.ColorChooserWidget.new]}.
 
-    To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
-    get the selected color use [Gtk.ColorChooser.get_rgba].
+    To change the initially selected color, use
+    {{!Ocgtk.Raw.Color_chooser.val-set_rgba}[Gtk.ColorChooser.set_rgba]}. To get
+    the selected color use
+    {{!Ocgtk.Raw.Color_chooser.val-get_rgba}[Gtk.ColorChooser.get_rgba]}.
 
     The [GtkColorChooserWidget] is used in the
     {{!Ocgtk.Raw.Color_chooser_dialog}[Gtk.ColorChooserDialog]} to provide a

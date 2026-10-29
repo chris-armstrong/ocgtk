@@ -34,7 +34,9 @@ external set_icon_name : t -> string -> unit = "ml_gtk_stack_page_set_icon_name"
 external get_visible : t -> bool = "ml_gtk_stack_page_get_visible"
 (** Returns whether [page] is visible in its [GtkStack].
 
-    This is independent from the [Gtk.Widget:visible] property of its widget. *)
+    This is independent from the
+    {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget:visible]} property of its
+    widget. *)
 
 external get_use_underline : t -> bool = "ml_gtk_stack_page_get_use_underline"
 (** Gets whether underlines in the page title indicate mnemonics. *)

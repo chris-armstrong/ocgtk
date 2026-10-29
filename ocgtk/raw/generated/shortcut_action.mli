@@ -11,8 +11,9 @@
     replace it with a new one. If you need to pass arguments to an action, these
     are specified by the higher-level [GtkShortcut] object.
 
-    To activate a [GtkShortcutAction] manually, [Gtk.ShortcutAction.activate]
-    can be called.
+    To activate a [GtkShortcutAction] manually,
+    {{!Ocgtk.Raw.Shortcut_action.val-activate}[Gtk.ShortcutAction.activate]} can
+    be called.
 
     GTK provides various actions:
 

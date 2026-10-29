@@ -4,15 +4,18 @@
 (** A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
     Under interaction, these gestures stick to the first interacting sequence,
-    which is accessible through [Gtk.GestureSingle.get_current_sequence] while
-    the gesture is being interacted with.
+    which is accessible through
+    {{!Ocgtk.Raw.Gesture_single.val-get_current_sequence}[Gtk.GestureSingle.get_current_sequence]}
+    while the gesture is being interacted with.
 
     By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
-    [Gtk.GestureSingle.set_touch_only] can be used to change the touch behavior.
-    Callers may also specify a different mouse button number to interact with
-    through [Gtk.GestureSingle.set_button], or react to any mouse button by
-    setting it to 0. While the gesture is active, the button being currently
-    pressed can be known through [Gtk.GestureSingle.get_current_button].
+    {{!Ocgtk.Raw.Gesture_single.val-set_touch_only}[Gtk.GestureSingle.set_touch_only]}
+    can be used to change the touch behavior. Callers may also specify a
+    different mouse button number to interact with through
+    {{!Ocgtk.Raw.Gesture_single.val-set_button}[Gtk.GestureSingle.set_button]},
+    or react to any mouse button by setting it to 0. While the gesture is
+    active, the button being currently pressed can be known through
+    {{!Ocgtk.Raw.Gesture_single.val-get_current_button}[Gtk.GestureSingle.get_current_button]}.
 
     The class built on this module is in {!Ocgtk.Gesture_single}. *)
 
@@ -51,13 +54,17 @@ external get_touch_only : t -> bool = "ml_gtk_gesture_single_get_touch_only"
 external get_exclusive : t -> bool = "ml_gtk_gesture_single_get_exclusive"
 (** Gets whether a gesture is exclusive.
 
-    For more information, see [Gtk.GestureSingle.set_exclusive]. *)
+    For more information, see
+    {{!Ocgtk.Raw.Gesture_single.val-set_exclusive}[Gtk.GestureSingle.set_exclusive]}.
+*)
 
 external get_current_sequence : t -> Ocgdk_raw.Event_sequence.t option
   = "ml_gtk_gesture_single_get_current_sequence"
 (** Returns the event sequence currently interacting with [gesture].
 
-    This is only meaningful if [Gtk.Gesture.is_active] returns [true]. *)
+    This is only meaningful if
+    {{!Ocgtk.Raw.Gesture.val-is_active}[Gtk.Gesture.is_active]} returns [true].
+*)
 
 external get_current_button : t -> int
   = "ml_gtk_gesture_single_get_current_button"

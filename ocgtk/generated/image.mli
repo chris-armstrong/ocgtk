@@ -128,7 +128,8 @@ end
      An example GtkImage\n\n\
      Various kinds of object can be displayed as an image; most typically,\n\
      you would load a [GdkTexture] from a file, using the convenience function\n\
-     [Gtk.Image.new_from_file], for instance:\n\n\
+     {{!Ocgtk.Image.val-new_from_file}[Gtk.Image.new_from_file]}, for \
+     instance:\n\n\
      {[\n\
      GtkWidget *image = gtk_image_new_from_file (\"myfile.png\");\n\
      ]}\n\n\
@@ -137,11 +138,13 @@ end
      If you want to handle errors in loading the file yourself, for example\n\
      by displaying an error message, then load the image with an image\n\
      loading framework such as libglycin, then create the [GtkImage] with\n\
-     [Gtk.Image.new_from_paintable].\n\n\
+     {{!Ocgtk.Image.val-new_from_paintable}[Gtk.Image.new_from_paintable]}.\n\n\
      Sometimes an application will want to avoid depending on external data\n\
      files, such as image files. See the documentation of [GResource] inside\n\
-     GIO, for details. In this case, [Gtk.Image:resource],\n\
-     [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
+     GIO, for details. In this case, \
+     {{!Ocgtk.Image.class-type-image_t.method-set_from_resource}[Gtk.Image:resource]},\n\
+     {{!Ocgtk.Image.val-new_from_resource}[Gtk.Image.new_from_resource]}, and \
+     {{!Ocgtk.Image.class-type-image_t.method-set_from_resource}[Gtk.Image.set_from_resource]}\n\
      should be used.\n\n\
      [GtkImage] displays its image as an icon, with a size that is determined\n\
      by the application. See \
@@ -151,9 +154,12 @@ end
      {b CSS nodes}\n\n\
      [GtkImage] has a single CSS node with the name [image]. The style classes\n\
      [.normal-icons] or [.large-icons] may appear, depending on the\n\
-     [Gtk.Image:icon-size] property.\n\n\
+     {{!Ocgtk.Image.class-type-image_t.method-get_icon_size}[Gtk.Image:icon-size]} \
+     property.\n\n\
      {b Accessibility}\n\n\
-     [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
+     [GtkImage] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-IMG}[Gtk.AccessibleRole.img]} \
+     role."]
 
 class image : Raw.Image.t -> image_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Image.t}. *)
@@ -164,7 +170,7 @@ class image : Raw.Image.t -> image_t
  An example GtkImage\n\n\
  Various kinds of object can be displayed as an image; most typically,\n\
  you would load a [GdkTexture] from a file, using the convenience function\n\
- [Gtk.Image.new_from_file], for instance:\n\n\
+ {{!Ocgtk.Image.val-new_from_file}[Gtk.Image.new_from_file]}, for instance:\n\n\
  {[\n\
  GtkWidget *image = gtk_image_new_from_file (\"myfile.png\");\n\
  ]}\n\n\
@@ -173,11 +179,13 @@ class image : Raw.Image.t -> image_t
  If you want to handle errors in loading the file yourself, for example\n\
  by displaying an error message, then load the image with an image\n\
  loading framework such as libglycin, then create the [GtkImage] with\n\
- [Gtk.Image.new_from_paintable].\n\n\
+ {{!Ocgtk.Image.val-new_from_paintable}[Gtk.Image.new_from_paintable]}.\n\n\
  Sometimes an application will want to avoid depending on external data\n\
  files, such as image files. See the documentation of [GResource] inside\n\
- GIO, for details. In this case, [Gtk.Image:resource],\n\
- [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
+ GIO, for details. In this case, \
+ {{!Ocgtk.Image.class-type-image_t.method-set_from_resource}[Gtk.Image:resource]},\n\
+ {{!Ocgtk.Image.val-new_from_resource}[Gtk.Image.new_from_resource]}, and \
+ {{!Ocgtk.Image.class-type-image_t.method-set_from_resource}[Gtk.Image.set_from_resource]}\n\
  should be used.\n\n\
  [GtkImage] displays its image as an icon, with a size that is determined\n\
  by the application. See {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]} \
@@ -186,9 +194,12 @@ class image : Raw.Image.t -> image_t
  {b CSS nodes}\n\n\
  [GtkImage] has a single CSS node with the name [image]. The style classes\n\
  [.normal-icons] or [.large-icons] may appear, depending on the\n\
- [Gtk.Image:icon-size] property.\n\n\
+ {{!Ocgtk.Image.class-type-image_t.method-get_icon_size}[Gtk.Image:icon-size]} \
+ property.\n\n\
  {b Accessibility}\n\n\
- [GtkImage] uses the [Gtk.AccessibleRole.img] role."]
+ [GtkImage] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-IMG}[Gtk.AccessibleRole.img]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 
@@ -206,8 +217,10 @@ val new_from_file : string -> image_t
     framework such as libglycin to load the file yourself, then create the
     [GtkImage] from the texture.
 
-    The storage type (see [Gtk.Image.get_storage_type]) of the returned image is
-    not defined, it will be whatever is appropriate for displaying the file. *)
+    The storage type (see
+    {{!Ocgtk.Image.class-type-image_t.method-get_storage_type}[Gtk.Image.get_storage_type]})
+    of the returned image is not defined, it will be whatever is appropriate for
+    displaying the file. *)
 
 val new_from_gicon : Ocgio.Icon.icon_t -> image_t
 (** Creates a [GtkImage] displaying an icon from the current icon theme.
@@ -248,12 +261,14 @@ val new_from_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> image_t
     unref it if you own references. [GtkImage] will add its own reference rather
     than adopting yours.
 
-    This is a helper for [Gtk.Image.new_from_paintable], and you can't get back
-    the exact pixbuf once this is called, only a texture.
+    This is a helper for
+    {{!Ocgtk.Image.val-new_from_paintable}[Gtk.Image.new_from_paintable]}, and
+    you can't get back the exact pixbuf once this is called, only a texture.
 
     Note that this function just creates an [GtkImage] from the pixbuf. The
     [GtkImage] created will not react to state changes. Should you want that,
-    you should use [Gtk.Image.new_from_icon_name]. *)
+    you should use
+    {{!Ocgtk.Image.val-new_from_icon_name}[Gtk.Image.new_from_icon_name]}. *)
 
 val new_from_resource : string -> image_t
 (** Creates a new [GtkImage] displaying the resource file [resource_path].
@@ -266,5 +281,7 @@ val new_from_resource : string -> image_t
     framework such as libglycin to load the file yourself, then create the
     [GtkImage] from the texture.
 
-    The storage type (see [Gtk.Image.get_storage_type]) of the returned image is
-    not defined, it will be whatever is appropriate for displaying the file. *)
+    The storage type (see
+    {{!Ocgtk.Image.class-type-image_t.method-get_storage_type}[Gtk.Image.get_storage_type]})
+    of the returned image is not defined, it will be whatever is appropriate for
+    displaying the file. *)

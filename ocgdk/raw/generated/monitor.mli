@@ -4,7 +4,9 @@
 (** Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
-    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    {{!Ocgdk.Raw.Display.val-get_monitors}[Gdk.Display.get_monitors]}. You can
+    use
+    {{!Ocgdk.Raw.Display.val-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
     to find a particular monitor.
 
     The class built on this module is in {!Ocgdk.Monitor}. *)

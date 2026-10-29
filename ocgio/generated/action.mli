@@ -12,15 +12,17 @@
     [GAction] represents a single named action.
 
     The main interface to an action is that it can be activated with
-    [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [None]). The correct
-    type for the parameter is determined by a static parameter type (which is
-    given at construction time).
+    {{!Ocgio.Action.class-type-action_t.method-activate}[Gio.Action.activate]}.
+    This results in the 'activate' signal being emitted. An activation has a
+    [GVariant] parameter (which may be [None]). The correct type for the
+    parameter is determined by a static parameter type (which is given at
+    construction time).
 
     An action may optionally have a state, in which case the state may be set
-    with [Gio.Action.change_state]. This call takes a [GLib.Variant]. The
-    correct type for the state is determined by a static state type (which is
-    given at construction time).
+    with
+    {{!Ocgio.Action.class-type-action_t.method-change_state}[Gio.Action.change_state]}.
+    This call takes a [GLib.Variant]. The correct type for the state is
+    determined by a static state type (which is given at construction time).
 
     The state may have a hint associated with it, specifying its valid range.
 
@@ -31,8 +33,11 @@
     In all cases, the implementing class is responsible for storing the name of
     the action, the parameter type, the enabled state, the optional state type
     and the state and emitting the appropriate signals when these change. The
-    implementor is responsible for filtering calls to [Gio.Action.activate] and
-    [Gio.Action.change_state] for type safety and for the state being enabled.
+    implementor is responsible for filtering calls to
+    {{!Ocgio.Action.class-type-action_t.method-activate}[Gio.Action.activate]}
+    and
+    {{!Ocgio.Action.class-type-action_t.method-change_state}[Gio.Action.change_state]}
+    for type safety and for the state being enabled.
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
     a
@@ -138,15 +143,17 @@ class action : Raw.Action.t -> action_t
     [GAction] represents a single named action.
 
     The main interface to an action is that it can be activated with
-    [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [None]). The correct
-    type for the parameter is determined by a static parameter type (which is
-    given at construction time).
+    {{!Ocgio.Action.class-type-action_t.method-activate}[Gio.Action.activate]}.
+    This results in the 'activate' signal being emitted. An activation has a
+    [GVariant] parameter (which may be [None]). The correct type for the
+    parameter is determined by a static parameter type (which is given at
+    construction time).
 
     An action may optionally have a state, in which case the state may be set
-    with [Gio.Action.change_state]. This call takes a [GLib.Variant]. The
-    correct type for the state is determined by a static state type (which is
-    given at construction time).
+    with
+    {{!Ocgio.Action.class-type-action_t.method-change_state}[Gio.Action.change_state]}.
+    This call takes a [GLib.Variant]. The correct type for the state is
+    determined by a static state type (which is given at construction time).
 
     The state may have a hint associated with it, specifying its valid range.
 
@@ -157,8 +164,11 @@ class action : Raw.Action.t -> action_t
     In all cases, the implementing class is responsible for storing the name of
     the action, the parameter type, the enabled state, the optional state type
     and the state and emitting the appropriate signals when these change. The
-    implementor is responsible for filtering calls to [Gio.Action.activate] and
-    [Gio.Action.change_state] for type safety and for the state being enabled.
+    implementor is responsible for filtering calls to
+    {{!Ocgio.Action.class-type-action_t.method-activate}[Gio.Action.activate]}
+    and
+    {{!Ocgio.Action.class-type-action_t.method-change_state}[Gio.Action.change_state]}
+    for type safety and for the state being enabled.
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
     a

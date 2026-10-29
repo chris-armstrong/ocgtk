@@ -8,7 +8,8 @@
     GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
+    instances of that class be pollable. If
+    {{!Ocgio.Raw.Pollable_output_stream.val-can_poll}[Gio.PollableOutputStream.can_poll]}
     returns false, then the behavior of other [GPollableOutputStream] methods is
     undefined.
 

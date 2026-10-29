@@ -63,5 +63,5 @@ val new_ :
 
     If the renderer doesn't support GL shaders, or if there is any problem when
     compiling the shader, then the node will draw pink. You should use
-    [Gsk.GLShader.compile] to ensure the [shader] will work for the renderer
-    before using it. *)
+    {{!Ocgsk.Gl_shader.class-type-gl_shader_t.method-compile}[Gsk.GLShader.compile]}
+    to ensure the [shader] will work for the renderer before using it. *)

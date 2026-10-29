@@ -8,11 +8,13 @@
  empty area, or by dragging the slider.\n\n\
  [GtkSwitch] can also express situations where the underlying state changes\n\
  with a delay. In this case, the slider position indicates the user's recent\n\
- change (represented by the [Gtk.Switch:active] property), while the\n\
+ change (represented by the \
+ {{!Ocgtk.Raw.Switch.val-get_active}[Gtk.Switch:active]} property), while the\n\
  trough color indicates the present underlying state (represented by the\n\
- [Gtk.Switch:state] property).\n\n\
+ {{!Ocgtk.Raw.Switch.val-get_state}[Gtk.Switch:state]} property).\n\n\
  GtkSwitch with delayed state change\n\n\
- See [Gtk.Switch::state-set] for details.\n\n\
+ See {{!Ocgtk.Raw.Switch.val-on_state_set}[Gtk.Switch::state-set]} for \
+ details.\n\n\
  {b Shortcuts and Gestures}\n\n\
  [GtkSwitch] supports pan and drag gestures to move the slider.\n\n\
  {b CSS nodes}\n\n\
@@ -26,7 +28,9 @@
  subnodes for the slider and the on and off images. Neither of them is\n\
  using any style classes.\n\n\
  {b Accessibility}\n\n\
- [GtkSwitch] uses the [Gtk.AccessibleRole.switch] role.\n\n\
+ [GtkSwitch] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-SWITCH}[Gtk.AccessibleRole.switch]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Switch}."]
 
 type t = [ `switch | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -41,10 +45,12 @@ external new_ : unit -> t = "ml_gtk_switch_new"
 external set_state : t -> bool -> unit = "ml_gtk_switch_set_state"
 (** Sets the underlying state of the [GtkSwitch].
 
-    This function is typically called from a [Gtk.Switch::state-set] signal
-    handler in order to set up delayed state changes.
+    This function is typically called from a
+    {{!Ocgtk.Raw.Switch.val-on_state_set}[Gtk.Switch::state-set]} signal handler
+    in order to set up delayed state changes.
 
-    See [Gtk.Switch::state-set] for details. *)
+    See {{!Ocgtk.Raw.Switch.val-on_state_set}[Gtk.Switch::state-set]} for
+    details. *)
 
 external set_active : t -> bool -> unit = "ml_gtk_switch_set_active"
 (** Changes the state of [self] to the desired one. *)

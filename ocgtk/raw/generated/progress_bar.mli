@@ -12,13 +12,15 @@
     read a fixed number of bytes from a file) and can monitor its progress, it
     can use the [GtkProgressBar] in percentage mode and the user sees a growing
     bar indicating the percentage of the work that has been completed. In this
-    mode, the application is required to call [Gtk.ProgressBar.set_fraction]
+    mode, the application is required to call
+    {{!Ocgtk.Raw.Progress_bar.val-set_fraction}[Gtk.ProgressBar.set_fraction]}
     periodically to update the progress bar.
 
     When an application has no accurate way of knowing the amount of work to do,
     it can use the [GtkProgressBar] in activity mode, which shows activity by a
     block moving back and forth within the progress area. In this mode, the
-    application is required to call [Gtk.ProgressBar.pulse] periodically to
+    application is required to call
+    {{!Ocgtk.Raw.Progress_bar.val-pulse}[Gtk.ProgressBar.pulse]} periodically to
     update the progress bar.
 
     There is quite a bit of flexibility provided to control the appearance of
@@ -45,9 +47,14 @@
 
     {b Accessibility}
 
-    [GtkProgressBar] uses the [Gtk.AccessibleRole.progress_bar] role and sets
-    the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
-    and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
+    [GtkProgressBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role and sets the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MIN}[Gtk.AccessibleProperty.value_min]},
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_MAX}[Gtk.AccessibleProperty.value_max]}
+    and
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-VALUE_NOW}[Gtk.AccessibleProperty.value_now]}
+    properties to reflect the progress.
 
     The class built on this module is in {!Ocgtk.Progress_bar}. *)
 
@@ -63,31 +70,41 @@ external new_ : unit -> t = "ml_gtk_progress_bar_new"
 external set_text : t -> string option -> unit = "ml_gtk_progress_bar_set_text"
 (** Causes the given [text] to appear next to the progress bar.
 
-    If [text] is [None] and [Gtk.ProgressBar:show-text] is [true], the current
-    value of [Gtk.ProgressBar:fraction] will be displayed as a percentage.
+    If [text] is [None] and
+    {{!Ocgtk.Raw.Progress_bar.val-get_show_text}[Gtk.ProgressBar:show-text]} is
+    [true], the current value of
+    {{!Ocgtk.Raw.Progress_bar.val-get_fraction}[Gtk.ProgressBar:fraction]} will
+    be displayed as a percentage.
 
-    If [text] is non-[None] and [Gtk.ProgressBar:show-text] is [true], the text
-    will be displayed. In this case, it will not display the progress
-    percentage. If [text] is the empty string, the progress bar will still be
-    styled and sized suitably for containing text, as long as
-    [Gtk.ProgressBar:show-text] is [true]. *)
+    If [text] is non-[None] and
+    {{!Ocgtk.Raw.Progress_bar.val-get_show_text}[Gtk.ProgressBar:show-text]} is
+    [true], the text will be displayed. In this case, it will not display the
+    progress percentage. If [text] is the empty string, the progress bar will
+    still be styled and sized suitably for containing text, as long as
+    {{!Ocgtk.Raw.Progress_bar.val-get_show_text}[Gtk.ProgressBar:show-text]} is
+    [true]. *)
 
 external set_show_text : t -> bool -> unit = "ml_gtk_progress_bar_set_show_text"
 (** Sets whether the progress bar will show text next to the bar.
 
-    The shown text is either the value of the [Gtk.ProgressBar:text] property
-    or, if that is [None], the [Gtk.ProgressBar:fraction] value, as a
-    percentage.
+    The shown text is either the value of the
+    {{!Ocgtk.Raw.Progress_bar.val-get_text}[Gtk.ProgressBar:text]} property or,
+    if that is [None], the
+    {{!Ocgtk.Raw.Progress_bar.val-get_fraction}[Gtk.ProgressBar:fraction]}
+    value, as a percentage.
 
     To make a progress bar that is styled and sized suitably for containing text
-    (even if the actual text is blank), set [Gtk.ProgressBar:show-text] to
-    [true] and [Gtk.ProgressBar:text] to the empty string (not [None]). *)
+    (even if the actual text is blank), set
+    {{!Ocgtk.Raw.Progress_bar.val-get_show_text}[Gtk.ProgressBar:show-text]} to
+    [true] and {{!Ocgtk.Raw.Progress_bar.val-get_text}[Gtk.ProgressBar:text]} to
+    the empty string (not [None]). *)
 
 external set_pulse_step : t -> float -> unit
   = "ml_gtk_progress_bar_set_pulse_step"
 (** Sets the fraction of total progress bar length to move the bouncing block.
 
-    The bouncing block is moved when [Gtk.ProgressBar.pulse] is called. *)
+    The bouncing block is moved when
+    {{!Ocgtk.Raw.Progress_bar.val-pulse}[Gtk.ProgressBar.pulse]} is called. *)
 
 external set_inverted : t -> bool -> unit = "ml_gtk_progress_bar_set_inverted"
 (** Sets whether the progress bar is inverted.
@@ -111,9 +128,12 @@ external pulse : t -> unit = "ml_gtk_progress_bar_pulse"
 (** Indicates that some progress has been made, but you don’t know how much.
 
     Causes the progress bar to enter “activity mode,” where a block bounces back
-    and forth. Each call to [Gtk.ProgressBar.pulse] causes the block to move by
-    a little bit (the amount of movement per pulse is determined by
-    [Gtk.ProgressBar.set_pulse_step]). *)
+    and forth. Each call to
+    {{!Ocgtk.Raw.Progress_bar.val-pulse}[Gtk.ProgressBar.pulse]} causes the
+    block to move by a little bit (the amount of movement per pulse is
+    determined by
+    {{!Ocgtk.Raw.Progress_bar.val-set_pulse_step}[Gtk.ProgressBar.set_pulse_step]}).
+*)
 
 external get_text : t -> string option = "ml_gtk_progress_bar_get_text"
 (** Retrieves the text that is displayed with the progress bar.
@@ -124,12 +144,16 @@ external get_text : t -> string option = "ml_gtk_progress_bar_get_text"
 external get_show_text : t -> bool = "ml_gtk_progress_bar_get_show_text"
 (** Returns whether the [GtkProgressBar] shows text.
 
-    See [Gtk.ProgressBar.set_show_text]. *)
+    See
+    {{!Ocgtk.Raw.Progress_bar.val-set_show_text}[Gtk.ProgressBar.set_show_text]}.
+*)
 
 external get_pulse_step : t -> float = "ml_gtk_progress_bar_get_pulse_step"
 (** Retrieves the pulse step.
 
-    See [Gtk.ProgressBar.set_pulse_step]. *)
+    See
+    {{!Ocgtk.Raw.Progress_bar.val-set_pulse_step}[Gtk.ProgressBar.set_pulse_step]}.
+*)
 
 external get_inverted : t -> bool = "ml_gtk_progress_bar_get_inverted"
 (** Returns whether the progress bar is inverted. *)
@@ -141,6 +165,8 @@ external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_progress_bar_get_ellipsize"
 (** Returns the ellipsizing position of the progress bar.
 
-    See [Gtk.ProgressBar.set_ellipsize]. *)
+    See
+    {{!Ocgtk.Raw.Progress_bar.val-set_ellipsize}[Gtk.ProgressBar.set_ellipsize]}.
+*)
 
 (* Properties *)

@@ -4,15 +4,15 @@
 (** [GAction] represents a single named action.
 
     The main interface to an action is that it can be activated with
-    [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [None]). The correct
-    type for the parameter is determined by a static parameter type (which is
-    given at construction time).
+    {{!Ocgio.Raw.Action.val-activate}[Gio.Action.activate]}. This results in the
+    'activate' signal being emitted. An activation has a [GVariant] parameter
+    (which may be [None]). The correct type for the parameter is determined by a
+    static parameter type (which is given at construction time).
 
     An action may optionally have a state, in which case the state may be set
-    with [Gio.Action.change_state]. This call takes a [GLib.Variant]. The
-    correct type for the state is determined by a static state type (which is
-    given at construction time).
+    with {{!Ocgio.Raw.Action.val-change_state}[Gio.Action.change_state]}. This
+    call takes a [GLib.Variant]. The correct type for the state is determined by
+    a static state type (which is given at construction time).
 
     The state may have a hint associated with it, specifying its valid range.
 
@@ -23,8 +23,10 @@
     In all cases, the implementing class is responsible for storing the name of
     the action, the parameter type, the enabled state, the optional state type
     and the state and emitting the appropriate signals when these change. The
-    implementor is responsible for filtering calls to [Gio.Action.activate] and
-    [Gio.Action.change_state] for type safety and for the state being enabled.
+    implementor is responsible for filtering calls to
+    {{!Ocgio.Raw.Action.val-activate}[Gio.Action.activate]} and
+    {{!Ocgio.Raw.Action.val-change_state}[Gio.Action.change_state]} for type
+    safety and for the state being enabled.
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
     a {{!Ocgio.Raw.Simple_action_group}[Gio.SimpleActionGroup]}.
@@ -43,15 +45,20 @@ external get_state_type : t -> Gvariant_type.t option
 (** Queries the type of the state of [action].
 
     If the action is stateful (e.g. created with
-    [Gio.SimpleAction.new_stateful]) then this function returns the
-    [GLib.VariantType] of the state. This is the type of the initial value given
-    as the state. All calls to [Gio.Action.change_state] must give a
-    [GLib.Variant] of this type and [Gio.Action.get_state] will return a
+    {{!Ocgio.Raw.Simple_action.val-new_stateful}[Gio.SimpleAction.new_stateful]})
+    then this function returns the [GLib.VariantType] of the state. This is the
+    type of the initial value given as the state. All calls to
+    {{!Ocgio.Raw.Action.val-change_state}[Gio.Action.change_state]} must give a
+    [GLib.Variant] of this type and
+    {{!Ocgio.Raw.Action.val-get_state}[Gio.Action.get_state]} will return a
     [GLib.Variant] of the same type.
 
-    If the action is not stateful (e.g. created with [Gio.SimpleAction.new])
-    then this function will return [None]. In that case, [Gio.Action.get_state]
-    will return [None] and you must not call [Gio.Action.change_state]. *)
+    If the action is not stateful (e.g. created with
+    {{!Ocgio.Raw.Simple_action.val-new_}[Gio.SimpleAction.new]}) then this
+    function will return [None]. In that case,
+    {{!Ocgio.Raw.Action.val-get_state}[Gio.Action.get_state]} will return [None]
+    and you must not call
+    {{!Ocgio.Raw.Action.val-change_state}[Gio.Action.change_state]}. *)
 
 external get_state_hint : t -> Gvariant.t option = "ml_g_action_get_state_hint"
 (** Requests a hint about the valid range of values for the state of [action].
@@ -77,7 +84,7 @@ external get_state : t -> Gvariant.t option = "ml_g_action_get_state"
 
     If the action is not stateful then [None] will be returned. If the action is
     stateful then the type of the return value is the type given by
-    [Gio.Action.get_state_type].
+    {{!Ocgio.Raw.Action.val-get_state_type}[Gio.Action.get_state_type]}.
 
     The return value (if non-[None]) should be freed with [GLib.Variant.unref]
     when it is no longer required. *)
@@ -87,7 +94,8 @@ external get_parameter_type : t -> Gvariant_type.t option
 (** Queries the type of the parameter that must be given when activating
     [action].
 
-    When activating the action using [Gio.Action.activate], the [GLib.Variant]
+    When activating the action using
+    {{!Ocgio.Raw.Action.val-activate}[Gio.Action.activate]}, the [GLib.Variant]
     given to that function must be of the type returned by this function.
 
     In the case that this function returns [None], you must not give any
@@ -106,11 +114,11 @@ external change_state : t -> Gvariant.t -> unit = "ml_g_action_change_state"
 (** Request for the state of [action] to be changed to [value].
 
     The action must be stateful and [value] must be of the correct type. See
-    [Gio.Action.get_state_type].
+    {{!Ocgio.Raw.Action.val-get_state_type}[Gio.Action.get_state_type]}.
 
     This call merely requests a change. The action may refuse to change its
     state or may change its state to something other than [value]. See
-    [Gio.Action.get_state_hint].
+    {{!Ocgio.Raw.Action.val-get_state_hint}[Gio.Action.get_state_hint]}.
 
     If the [value] [GLib.Variant] is floating, it is consumed. *)
 

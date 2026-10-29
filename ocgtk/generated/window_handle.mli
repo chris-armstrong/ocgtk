@@ -28,10 +28,13 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkWindowHandle] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkWindowHandle] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     Starting from GTK 4.12, [GtkWindowHandle] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role. *)
 class type window_handle_t = object
   inherit Widget.widget_t
 
@@ -65,10 +68,13 @@ class window_handle : Raw.Window_handle.t -> window_handle_t
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkWindowHandle] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkWindowHandle] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     Starting from GTK 4.12, [GtkWindowHandle] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

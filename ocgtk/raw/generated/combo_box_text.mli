@@ -6,17 +6,23 @@
  use cases.\n\n\
  An example GtkComboBoxText\n\n\
  [GtkComboBoxText] hides the model-view complexity of [GtkComboBox].\n\n\
- To create a [GtkComboBoxText], use [Gtk.ComboBoxText.new] or\n\
- [Gtk.ComboBoxText.new_with_entry].\n\n\
+ To create a [GtkComboBoxText], use \
+ {{!Ocgtk.Raw.Combo_box_text.val-new_}[Gtk.ComboBoxText.new]} or\n\
+ {{!Ocgtk.Raw.Combo_box_text.val-new_with_entry}[Gtk.ComboBoxText.new_with_entry]}.\n\n\
  You can add items to a [GtkComboBoxText] with\n\
- [Gtk.ComboBoxText.append_text],\n\
- [Gtk.ComboBoxText.insert_text] or\n\
- [Gtk.ComboBoxText.prepend_text] and remove options with\n\
- [Gtk.ComboBoxText.remove].\n\n\
+ {{!Ocgtk.Raw.Combo_box_text.val-append_text}[Gtk.ComboBoxText.append_text]},\n\
+ {{!Ocgtk.Raw.Combo_box_text.val-insert_text}[Gtk.ComboBoxText.insert_text]} or\n\
+ {{!Ocgtk.Raw.Combo_box_text.val-prepend_text}[Gtk.ComboBoxText.prepend_text]} \
+ and remove options with\n\
+ {{!Ocgtk.Raw.Combo_box_text.val-remove}[Gtk.ComboBoxText.remove]}.\n\n\
  If the [GtkComboBoxText] contains an entry (via the\n\
- [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
- using [Gtk.ComboBoxText.get_active_text].\n\n\
- You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
+ {{!Ocgtk.Raw.Combo_box.val-get_has_entry}[Gtk.ComboBox:has-entry]} property), \
+ its contents can be retrieved\n\
+ using \
+ {{!Ocgtk.Raw.Combo_box_text.val-get_active_text}[Gtk.ComboBoxText.get_active_text]}.\n\n\
+ You should not call \
+ {{!Ocgtk.Raw.Combo_box.val-set_model}[Gtk.ComboBox.set_model]} or attempt to \
+ pack more\n\
  cells into this combo box via its {{!Ocgtk.Raw.Cell_layout}[Gtk.CellLayout]} \
  interface.\n\n\
  {b GtkComboBoxText as GtkBuildable}\n\n\
@@ -72,8 +78,9 @@ external prepend_text : t -> string -> unit
   = "ml_gtk_combo_box_text_prepend_text"
 (** Prepends [text] to the list of strings stored in [combo_box].
 
-    This is the same as calling [Gtk.ComboBoxText.insert_text] with a position
-    of 0. *)
+    This is the same as calling
+    {{!Ocgtk.Raw.Combo_box_text.val-insert_text}[Gtk.ComboBoxText.insert_text]}
+    with a position of 0. *)
 
 external prepend : t -> string option -> string -> unit
   = "ml_gtk_combo_box_text_prepend"
@@ -81,8 +88,9 @@ external prepend : t -> string option -> string -> unit
 
     If [id] is non-[None] then it is used as the ID of the row.
 
-    This is the same as calling [Gtk.ComboBoxText.insert] with a position of 0.
-*)
+    This is the same as calling
+    {{!Ocgtk.Raw.Combo_box_text.val-insert}[Gtk.ComboBoxText.insert]} with a
+    position of 0. *)
 
 external insert_text : t -> int -> string -> unit
   = "ml_gtk_combo_box_text_insert_text"
@@ -90,15 +98,16 @@ external insert_text : t -> int -> string -> unit
 
     If [position] is negative then [text] is appended.
 
-    This is the same as calling [Gtk.ComboBoxText.insert] with a [None] ID
-    string. *)
+    This is the same as calling
+    {{!Ocgtk.Raw.Combo_box_text.val-insert}[Gtk.ComboBoxText.insert]} with a
+    [None] ID string. *)
 
 external insert : t -> int -> string option -> string -> unit
   = "ml_gtk_combo_box_text_insert"
 (** Inserts [text] at [position] in the list of strings stored in [combo_box].
 
     If [id] is non-[None] then it is used as the ID of the row. See
-    [Gtk.ComboBox:id-column].
+    {{!Ocgtk.Raw.Combo_box.val-get_id_column}[Gtk.ComboBox:id-column]}.
 
     If [position] is negative then [text] is appended. *)
 
@@ -113,8 +122,9 @@ external get_active_text : t -> string option
 external append_text : t -> string -> unit = "ml_gtk_combo_box_text_append_text"
 (** Appends [text] to the list of strings stored in [combo_box].
 
-    This is the same as calling [Gtk.ComboBoxText.insert_text] with a position
-    of -1. *)
+    This is the same as calling
+    {{!Ocgtk.Raw.Combo_box_text.val-insert_text}[Gtk.ComboBoxText.insert_text]}
+    with a position of -1. *)
 
 external append : t -> string option -> string -> unit
   = "ml_gtk_combo_box_text_append"
@@ -122,5 +132,6 @@ external append : t -> string option -> string -> unit
 
     If [id] is non-[None] then it is used as the ID of the row.
 
-    This is the same as calling [Gtk.ComboBoxText.insert] with a position of -1.
-*)
+    This is the same as calling
+    {{!Ocgtk.Raw.Combo_box_text.val-insert}[Gtk.ComboBoxText.insert]} with a
+    position of -1. *)

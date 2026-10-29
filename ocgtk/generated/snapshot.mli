@@ -22,11 +22,12 @@
 
     The node at the top of the stack is the one that [gtk_snapshot_append_…()]
     functions operate on. Use the [gtk_snapshot_push_…()] functions and
-    [Snapshot.pop] to change the current node.
+    {{!Ocgtk.Snapshot.class-type-snapshot_t.method-pop}[Snapshot.pop]} to change
+    the current node.
 
     The typical way to obtain a [GtkSnapshot] object is as an argument to the
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
-    use [Gtk.Snapshot.new]. *)
+    use {{!Ocgtk.Snapshot.val-new_}[Gtk.Snapshot.new]}. *)
 class type snapshot_t = object
   inherit Ocgdk.Snapshot.snapshot_t
 
@@ -466,11 +467,12 @@ class snapshot : Raw.Snapshot.t -> snapshot_t
 
     The node at the top of the stack is the one that [gtk_snapshot_append_…()]
     functions operate on. Use the [gtk_snapshot_push_…()] functions and
-    [Snapshot.pop] to change the current node.
+    {{!Ocgtk.Snapshot.class-type-snapshot_t.method-pop}[Snapshot.pop]} to change
+    the current node.
 
     The typical way to obtain a [GtkSnapshot] object is as an argument to the
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
-    use [Gtk.Snapshot.new]. *)
+    use {{!Ocgtk.Snapshot.val-new_}[Gtk.Snapshot.new]}. *)
 
 (** {1:constructors Constructors} *)
 

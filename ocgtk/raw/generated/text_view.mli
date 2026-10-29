@@ -22,16 +22,16 @@
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.TextView::backspace]
-    - [Gtk.TextView::copy-clipboard]
-    - [Gtk.TextView::cut-clipboard]
-    - [Gtk.TextView::delete-from-cursor]
-    - [Gtk.TextView::insert-emoji]
-    - [Gtk.TextView::move-cursor]
-    - [Gtk.TextView::paste-clipboard]
-    - [Gtk.TextView::select-all]
-    - [Gtk.TextView::toggle-cursor-visible]
-    - [Gtk.TextView::toggle-overwrite]
+    - {{!Ocgtk.Raw.Text_view.val-on_backspace}[Gtk.TextView::backspace]}
+    - {{!Ocgtk.Raw.Text_view.val-on_copy_clipboard}[Gtk.TextView::copy-clipboard]}
+    - {{!Ocgtk.Raw.Text_view.val-on_cut_clipboard}[Gtk.TextView::cut-clipboard]}
+    - {{!Ocgtk.Raw.Text_view.val-on_delete_from_cursor}[Gtk.TextView::delete-from-cursor]}
+    - {{!Ocgtk.Raw.Text_view.val-on_insert_emoji}[Gtk.TextView::insert-emoji]}
+    - {{!Ocgtk.Raw.Text_view.val-on_move_cursor}[Gtk.TextView::move-cursor]}
+    - {{!Ocgtk.Raw.Text_view.val-on_paste_clipboard}[Gtk.TextView::paste-clipboard]}
+    - {{!Ocgtk.Raw.Text_view.val-on_select_all}[Gtk.TextView::select-all]}
+    - {{!Ocgtk.Raw.Text_view.val-on_toggle_cursor_visible}[Gtk.TextView::toggle-cursor-visible]}
+    - {{!Ocgtk.Raw.Text_view.val-on_toggle_overwrite}[Gtk.TextView::toggle-overwrite]}
 
     {b Actions}
 
@@ -74,7 +74,9 @@
 
     {b Accessibility}
 
-    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role.
+    [GtkTextView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role.
 
     The class built on this module is in {!Ocgtk.Text_view}. *)
 
@@ -85,10 +87,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_text_view_get_type"
 external new_ : unit -> t = "ml_gtk_text_view_new"
 (** Creates a new [GtkTextView].
 
-    If you don’t call [Gtk.TextView.set_buffer] before using the text view, an
-    empty default buffer will be created for you. Get the buffer with
-    [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
-    [Gtk.TextView.new_with_buffer]. *)
+    If you don’t call
+    {{!Ocgtk.Raw.Text_view.val-set_buffer}[Gtk.TextView.set_buffer]} before
+    using the text view, an empty default buffer will be created for you. Get
+    the buffer with
+    {{!Ocgtk.Raw.Text_view.val-get_buffer}[Gtk.TextView.get_buffer]}. If you
+    want to specify your own buffer, consider
+    {{!Ocgtk.Raw.Text_view.val-new_with_buffer}[Gtk.TextView.new_with_buffer]}.
+*)
 
 external new_with_buffer :
   Text_buffer_and__text_iter_and__text_mark.Text_buffer.t -> t
@@ -97,8 +103,9 @@ external new_with_buffer :
 
     One buffer can be shared among many widgets. [buffer] may be [None] to
     create a default buffer, in which case this function is equivalent to
-    [Gtk.TextView.new]. The text view adds its own reference count to the
-    buffer; it does not take over an existing reference. *)
+    {{!Ocgtk.Raw.Text_view.val-new_}[Gtk.TextView.new]}. The text view adds its
+    own reference count to the buffer; it does not take over an existing
+    reference. *)
 
 (* Methods *)
 
@@ -113,8 +120,9 @@ external starts_display_line :
   = "ml_gtk_text_view_starts_display_line"
 (** Determines whether [iter] is at the start of a display line.
 
-    See [Gtk.TextView.forward_display_line] for an explanation of display lines
-    vs. paragraphs. *)
+    See
+    {{!Ocgtk.Raw.Text_view.val-forward_display_line}[Gtk.TextView.forward_display_line]}
+    for an explanation of display lines vs. paragraphs. *)
 
 external set_wrap_mode : t -> Ocgtk_enums.wrapmode -> unit
   = "ml_gtk_text_view_set_wrap_mode"
@@ -232,7 +240,8 @@ external set_cursor_visible : t -> bool -> unit
     you may want to turn the cursor off.
 
     Note that this property may be overridden by the
-    [Gtk.Settings:gtk-keynav-use-caret] setting. *)
+    {{!Ocgtk.Raw.Settings.val-get_gtk_keynav_use_caret}[Gtk.Settings:gtk-keynav-use-caret]}
+    setting. *)
 
 external set_buffer :
   t -> Text_buffer_and__text_iter_and__text_mark.Text_buffer.t option -> unit
@@ -301,7 +310,8 @@ external scroll_to_iter :
     Note that this function uses the currently-computed height of the lines in
     the text buffer. Line heights are computed in an idle handler; so this
     function may not have the desired effect if it’s called before the height
-    computations. To avoid oddness, consider using [Gtk.TextView.scroll_to_mark]
+    computations. To avoid oddness, consider using
+    {{!Ocgtk.Raw.Text_view.val-scroll_to_mark}[Gtk.TextView.scroll_to_mark]}
     which saves a point to be scrolled to after line validation. *)
 
 external scroll_mark_onscreen :
@@ -362,7 +372,7 @@ external move_overlay :
   unit = "ml_gtk_text_view_move_overlay"
 (** Updates the position of a child.
 
-    See [Gtk.TextView.add_overlay]. *)
+    See {{!Ocgtk.Raw.Text_view.val-add_overlay}[Gtk.TextView.add_overlay]}. *)
 
 external move_mark_onscreen :
   t -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t -> bool
@@ -376,7 +386,8 @@ external im_context_filter_keypress : t -> Ocgdk_raw.Event.t -> bool
     release events.
 
     If this function returns [true], then no further processing should be done
-    for this key event. See [Gtk.IMContext.filter_keypress].
+    for this key event. See
+    {{!Ocgtk.Raw.Im_context.val-filter_keypress}[Gtk.IMContext.filter_keypress]}.
 
     Note that you are expected to call this function from your handler when
     overriding key event handling. This is needed in the case when you need to
@@ -413,7 +424,8 @@ external get_visible_rect : t -> Ocgdk_raw.Rectangle.t
 (** Fills [visible_rect] with the currently-visible region of the buffer, in
     buffer coordinates.
 
-    Convert to window coordinates with [Gtk.TextView.buffer_to_window_coords].
+    Convert to window coordinates with
+    {{!Ocgtk.Raw.Text_view.val-buffer_to_window_coords}[Gtk.TextView.buffer_to_window_coords]}.
 *)
 
 external get_visible_offset : t -> float option * float option
@@ -422,8 +434,9 @@ external get_visible_offset : t -> float option * float option
     textview's text contents.
 
     This allows for more-precise positioning than what is provided by
-    [Gtk.TextView.get_visible_rect] as you can discover what device pixel is
-    being quantized for text positioning.
+    {{!Ocgtk.Raw.Text_view.val-get_visible_rect}[Gtk.TextView.get_visible_rect]}
+    as you can discover what device pixel is being quantized for text
+    positioning.
 
     You might want this when making ulterior widgets align with quantized device
     pixels of the textview contents such as line numbers. *)
@@ -461,14 +474,17 @@ external get_pixels_below_lines : t -> int
 (** Gets the default number of pixels to put below paragraphs.
 
     The line space is the sum of the value returned by this function and the
-    value returned by [Gtk.TextView.get_pixels_above_lines]. *)
+    value returned by
+    {{!Ocgtk.Raw.Text_view.val-get_pixels_above_lines}[Gtk.TextView.get_pixels_above_lines]}.
+*)
 
 external get_pixels_above_lines : t -> int
   = "ml_gtk_text_view_get_pixels_above_lines"
 (** Gets the default number of pixels to put above paragraphs.
 
-    Adding this function with [Gtk.TextView.get_pixels_below_lines] is equal to
-    the line space between each paragraph. *)
+    Adding this function with
+    {{!Ocgtk.Raw.Text_view.val-get_pixels_below_lines}[Gtk.TextView.get_pixels_below_lines]}
+    is equal to the line space between each paragraph. *)
 
 external get_overwrite : t -> bool = "ml_gtk_text_view_get_overwrite"
 (** Returns whether the [GtkTextView] is in overwrite mode or not. *)
@@ -490,7 +506,8 @@ external get_line_yrange :
     height of the line.
 
     The coordinate is a buffer coordinate; convert to window coordinates with
-    [Gtk.TextView.buffer_to_window_coords]. *)
+    {{!Ocgtk.Raw.Text_view.val-buffer_to_window_coords}[Gtk.TextView.buffer_to_window_coords]}.
+*)
 
 external get_line_at_y :
   t -> int -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t * int
@@ -499,8 +516,9 @@ external get_line_at_y :
     [y].
 
     [y] is in buffer coordinates, convert from window coordinates with
-    [Gtk.TextView.window_to_buffer_coords]. If non-[None], [line_top] will be
-    filled with the coordinate of the top edge of the line. *)
+    {{!Ocgtk.Raw.Text_view.val-window_to_buffer_coords}[Gtk.TextView.window_to_buffer_coords]}.
+    If non-[None], [line_top] will be filled with the coordinate of the top edge
+    of the line. *)
 
 external get_left_margin : t -> int = "ml_gtk_text_view_get_left_margin"
 (** Gets the default left margin size of paragraphs in the [text_view].
@@ -520,8 +538,9 @@ external get_iter_location :
 (** Gets a rectangle which roughly contains the character at [iter].
 
     The rectangle position is in buffer coordinates; use
-    [Gtk.TextView.buffer_to_window_coords] to convert these coordinates to
-    coordinates for one of the windows in the text view. *)
+    {{!Ocgtk.Raw.Text_view.val-buffer_to_window_coords}[Gtk.TextView.buffer_to_window_coords]}
+    to convert these coordinates to coordinates for one of the windows in the
+    text view. *)
 
 external get_iter_at_position :
   t ->
@@ -535,10 +554,11 @@ external get_iter_at_position :
     Buffer coordinates are coordinates for the entire buffer, not just the
     currently-displayed portion. If you have coordinates from an event, you have
     to convert those to buffer coordinates with
-    [Gtk.TextView.window_to_buffer_coords].
+    {{!Ocgtk.Raw.Text_view.val-window_to_buffer_coords}[Gtk.TextView.window_to_buffer_coords]}.
 
-    Note that this is different from [Gtk.TextView.get_iter_at_location], which
-    returns cursor locations, i.e. positions between characters. *)
+    Note that this is different from
+    {{!Ocgtk.Raw.Text_view.val-get_iter_at_location}[Gtk.TextView.get_iter_at_location]},
+    which returns cursor locations, i.e. positions between characters. *)
 
 external get_iter_at_location :
   t ->
@@ -551,7 +571,8 @@ external get_iter_at_location :
     Buffer coordinates are coordinates for the entire buffer, not just the
     currently-displayed portion. If you have coordinates from an event, you have
     to convert those to buffer coordinates with
-    [Gtk.TextView.window_to_buffer_coords]. *)
+    {{!Ocgtk.Raw.Text_view.val-window_to_buffer_coords}[Gtk.TextView.window_to_buffer_coords]}.
+*)
 
 external get_input_purpose : t -> Ocgtk_enums.inputpurpose
   = "ml_gtk_text_view_get_input_purpose"
@@ -576,7 +597,7 @@ external get_gutter :
   option = "ml_gtk_text_view_get_gutter"
 (** Gets a [GtkWidget] that has previously been set as gutter.
 
-    See [Gtk.TextView.set_gutter].
+    See {{!Ocgtk.Raw.Text_view.val-set_gutter}[Gtk.TextView.set_gutter]}.
 
     [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
     [GTK_TEXT_WINDOW_TOP], or [GTK_TEXT_WINDOW_BOTTOM]. *)
@@ -616,8 +637,9 @@ external get_cursor_locations :
     sequence.
 
     The rectangle position is in buffer coordinates; use
-    [Gtk.TextView.buffer_to_window_coords] to convert these coordinates to
-    coordinates for one of the windows in the text view. *)
+    {{!Ocgtk.Raw.Text_view.val-buffer_to_window_coords}[Gtk.TextView.buffer_to_window_coords]}
+    to convert these coordinates to coordinates for one of the windows in the
+    text view. *)
 
 external get_buffer :
   t -> Text_buffer_and__text_iter_and__text_mark.Text_buffer.t
@@ -633,7 +655,9 @@ external get_bottom_margin : t -> int = "ml_gtk_text_view_get_bottom_margin"
 external get_accepts_tab : t -> bool = "ml_gtk_text_view_get_accepts_tab"
 (** Returns whether pressing the <kbd>Tab</kbd> key inserts a tab characters.
 
-    See [Gtk.TextView.set_accepts_tab]. *)
+    See
+    {{!Ocgtk.Raw.Text_view.val-set_accepts_tab}[Gtk.TextView.set_accepts_tab]}.
+*)
 
 external forward_display_line_end :
   t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> bool
@@ -699,7 +723,8 @@ external add_overlay :
 (** Adds [child] at a fixed coordinate in the [GtkTextView]'s text window.
 
     The [xpos] and [ypos] must be in buffer coordinates (see
-    [Gtk.TextView.get_iter_location] to convert to buffer coordinates).
+    {{!Ocgtk.Raw.Text_view.val-get_iter_location}[Gtk.TextView.get_iter_location]}
+    to convert to buffer coordinates).
 
     [child] will scroll with the text view.
 
@@ -723,7 +748,9 @@ external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
     See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
-    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+    setting. See the GtkSettings
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 (** Which IM (input method) module should be used for this text_view.
@@ -731,7 +758,9 @@ external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
     See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
-    setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
+    setting. See the GtkSettings
+    {{!Ocgtk.Raw.Settings.val-get_gtk_im_module}[Gtk.Settings:gtk-im-module]}
+    property. *)
 
 val on_backspace :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

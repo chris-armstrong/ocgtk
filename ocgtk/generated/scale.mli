@@ -25,8 +25,11 @@
     To use it, you’ll probably want to investigate the methods on its base
     class, {{!Ocgtk.Range.class-type-range_t}[Gtk.Range]}, in addition to the
     methods for [GtkScale] itself. To set the value of a scale, you would
-    normally use [Gtk.Range.set_value]. To detect changes to the value, you
-    would normally use the [Gtk.Range::value-changed] signal.
+    normally use
+    {{!Ocgtk.Range.class-type-range_t.method-set_value}[Gtk.Range.set_value]}.
+    To detect changes to the value, you would normally use the
+    {{!Ocgtk.Range.class-type-range_t.method-on_value_changed}[Gtk.Range::value-changed]}
+    signal.
 
     Note that using the same upper and lower bounds for the [GtkScale] (through
     the [GtkRange] methods) will hide the slider itself. This is useful for
@@ -37,9 +40,11 @@
 
     [GtkScale] supports a custom [<marks>] element, which can contain multiple
     [<mark\>] elements. The “value” and “position” attributes have the same
-    meaning as [Gtk.Scale.add_mark] parameters of the same name. If the element
-    is not empty, its content is taken as the markup to show at the mark. It can
-    be translated with the usual ”translatable” and “context” attributes.
+    meaning as
+    {{!Ocgtk.Scale.class-type-scale_t.method-add_mark}[Gtk.Scale.add_mark]}
+    parameters of the same name. If the element is not empty, its content is
+    taken as the markup to show at the mark. It can be translated with the usual
+    ”translatable” and “context” attributes.
 
     {b Shortcuts and Gestures}
 
@@ -79,11 +84,13 @@
     The main node gets the style class .fine-tune added when the scale is in
     'fine-tuning' mode.
 
-    If the scale has an origin (see [Gtk.Scale.set_has_origin]), there is a
-    subnode with name highlight below the trough node that is used for rendering
-    the highlighted part of the trough.
+    If the scale has an origin (see
+    {{!Ocgtk.Scale.class-type-scale_t.method-set_has_origin}[Gtk.Scale.set_has_origin]}),
+    there is a subnode with name highlight below the trough node that is used
+    for rendering the highlighted part of the trough.
 
-    If the scale is showing a fill level (see [Gtk.Range.set_show_fill_level]),
+    If the scale is showing a fill level (see
+    {{!Ocgtk.Range.class-type-range_t.method-set_show_fill_level}[Gtk.Range.set_show_fill_level]}),
     there is a subnode with name fill below the trough node that is used for
     rendering the filled in part of the trough.
 
@@ -99,13 +106,16 @@
     The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
     added depending on what marks are present.
 
-    If the scale is displaying the value (see [Gtk.Scale:draw-value]), there is
-    subnode with name value. This node will get the .top or .bottom style
-    classes similar to the marks node.
+    If the scale is displaying the value (see
+    {{!Ocgtk.Scale.class-type-scale_t.method-get_draw_value}[Gtk.Scale:draw-value]}),
+    there is subnode with name value. This node will get the .top or .bottom
+    style classes similar to the marks node.
 
     {b Accessibility}
 
-    [GtkScale] uses the [Gtk.AccessibleRole.slider] role. *)
+    [GtkScale] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SLIDER}[Gtk.AccessibleRole.slider]}
+    role. *)
 class type scale_t = object
   inherit Range.range_t
 
@@ -189,8 +199,11 @@ class scale : Raw.Scale.t -> scale_t
     To use it, you’ll probably want to investigate the methods on its base
     class, {{!Ocgtk.Range.class-type-range_t}[Gtk.Range]}, in addition to the
     methods for [GtkScale] itself. To set the value of a scale, you would
-    normally use [Gtk.Range.set_value]. To detect changes to the value, you
-    would normally use the [Gtk.Range::value-changed] signal.
+    normally use
+    {{!Ocgtk.Range.class-type-range_t.method-set_value}[Gtk.Range.set_value]}.
+    To detect changes to the value, you would normally use the
+    {{!Ocgtk.Range.class-type-range_t.method-on_value_changed}[Gtk.Range::value-changed]}
+    signal.
 
     Note that using the same upper and lower bounds for the [GtkScale] (through
     the [GtkRange] methods) will hide the slider itself. This is useful for
@@ -201,9 +214,11 @@ class scale : Raw.Scale.t -> scale_t
 
     [GtkScale] supports a custom [<marks>] element, which can contain multiple
     [<mark\>] elements. The “value” and “position” attributes have the same
-    meaning as [Gtk.Scale.add_mark] parameters of the same name. If the element
-    is not empty, its content is taken as the markup to show at the mark. It can
-    be translated with the usual ”translatable” and “context” attributes.
+    meaning as
+    {{!Ocgtk.Scale.class-type-scale_t.method-add_mark}[Gtk.Scale.add_mark]}
+    parameters of the same name. If the element is not empty, its content is
+    taken as the markup to show at the mark. It can be translated with the usual
+    ”translatable” and “context” attributes.
 
     {b Shortcuts and Gestures}
 
@@ -243,11 +258,13 @@ class scale : Raw.Scale.t -> scale_t
     The main node gets the style class .fine-tune added when the scale is in
     'fine-tuning' mode.
 
-    If the scale has an origin (see [Gtk.Scale.set_has_origin]), there is a
-    subnode with name highlight below the trough node that is used for rendering
-    the highlighted part of the trough.
+    If the scale has an origin (see
+    {{!Ocgtk.Scale.class-type-scale_t.method-set_has_origin}[Gtk.Scale.set_has_origin]}),
+    there is a subnode with name highlight below the trough node that is used
+    for rendering the highlighted part of the trough.
 
-    If the scale is showing a fill level (see [Gtk.Range.set_show_fill_level]),
+    If the scale is showing a fill level (see
+    {{!Ocgtk.Range.class-type-range_t.method-set_show_fill_level}[Gtk.Range.set_show_fill_level]}),
     there is a subnode with name fill below the trough node that is used for
     rendering the filled in part of the trough.
 
@@ -263,13 +280,16 @@ class scale : Raw.Scale.t -> scale_t
     The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
     added depending on what marks are present.
 
-    If the scale is displaying the value (see [Gtk.Scale:draw-value]), there is
-    subnode with name value. This node will get the .top or .bottom style
-    classes similar to the marks node.
+    If the scale is displaying the value (see
+    {{!Ocgtk.Scale.class-type-scale_t.method-get_draw_value}[Gtk.Scale:draw-value]}),
+    there is subnode with name value. This node will get the .top or .bottom
+    style classes similar to the marks node.
 
     {b Accessibility}
 
-    [GtkScale] uses the [Gtk.AccessibleRole.slider] role. *)
+    [GtkScale] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SLIDER}[Gtk.AccessibleRole.slider]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
@@ -286,4 +306,6 @@ val new_with_range : Enums.orientation -> float -> float -> float -> scale_t
 
     Note that the way in which the precision is derived works best if [step] is
     a power of ten. If the resulting precision is not suitable for your needs,
-    use [Gtk.Scale.set_digits] to correct it. *)
+    use
+    {{!Ocgtk.Scale.class-type-scale_t.method-set_digits}[Gtk.Scale.set_digits]}
+    to correct it. *)

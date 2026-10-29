@@ -16,8 +16,10 @@
     Particular types of attributes include this structure as their initial
     portion. The common portion of the attribute holds the range to which the
     value in the type-specific part of the attribute applies and should be
-    initialized using [Pango.Attribute.init]. By default, an attribute will have
-    an all-inclusive range of \[0,[G_MAXUINT]\]. *)
+    initialized using
+    {{!Ocpango.Attribute.class-type-attribute_t.method-init}[Pango.Attribute.init]}.
+    By default, an attribute will have an all-inclusive range of
+    \[0,[G_MAXUINT]\]. *)
 class type attribute_t = object
   (** {2:methods Methods} *)
 
@@ -97,8 +99,10 @@ class attribute : Raw.Attribute.t -> attribute_t
     Particular types of attributes include this structure as their initial
     portion. The common portion of the attribute holds the range to which the
     value in the type-specific part of the attribute applies and should be
-    initialized using [Pango.Attribute.init]. By default, an attribute will have
-    an all-inclusive range of \[0,[G_MAXUINT]\]. *)
+    initialized using
+    {{!Ocpango.Attribute.class-type-attribute_t.method-init}[Pango.Attribute.init]}.
+    By default, an attribute will have an all-inclusive range of
+    \[0,[G_MAXUINT]\]. *)
 
 (** {1:constructors Constructors} *)
 

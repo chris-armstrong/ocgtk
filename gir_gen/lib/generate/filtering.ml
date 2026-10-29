@@ -40,43 +40,6 @@ let should_generate_property ~ctx ~class_name:_ ~methods (prop : gir_property) =
         m "matches method %s=%b\n" prop.prop_name matches_method);
     (not matches_method) && has_simple_type ~ctx prop.prop_type
 
-let property_method_names ~ctx ~class_name ~methods
-    (properties : gir_property list) =
-  let names, _ =
-    List.fold_left properties ~init:([], StringSet.empty)
-      ~f:(fun (acc, seen) (prop : gir_property) ->
-        if not (should_generate_property ~ctx ~class_name ~methods prop) then
-          (acc, seen)
-        else
-          let prop_snake = Utils.sanitize_property_name prop.prop_name in
-          let acc, seen =
-            if prop.readable && not (StringSet.mem ("get_" ^ prop_snake) seen)
-            then
-              ( ("get_" ^ prop_snake) :: acc,
-                StringSet.add ("get_" ^ prop_snake) seen )
-            else (acc, seen)
-          in
-          let acc, seen =
-            if
-              prop.writable && (not prop.construct_only)
-              && not (StringSet.mem ("set_" ^ prop_snake) seen)
-            then
-              ( ("set_" ^ prop_snake) :: acc,
-                StringSet.add ("set_" ^ prop_snake) seen )
-            else (acc, seen)
-          in
-          (acc, seen))
-  in
-  names
-
-let property_base_names ~ctx ~class_name ~methods
-    (properties : gir_property list) =
-  properties
-  |> List.filter ~f:(fun prop ->
-      should_generate_property ~ctx ~class_name ~methods prop)
-  |> List.map ~f:(fun (prop : gir_property) ->
-      Utils.sanitize_property_name prop.prop_name)
-
 (** Check if a C type is a string type. *)
 let is_string_type ctype =
   match ctype with

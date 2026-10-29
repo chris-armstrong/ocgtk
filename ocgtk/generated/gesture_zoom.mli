@@ -14,8 +14,8 @@
     Recognizes 2-finger pinch/zoom gestures.
 
     Whenever the distance between both tracked sequences changes, the
-    [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor. *)
+    {{!Ocgtk.Gesture_zoom.class-type-gesture_zoom_t.method-on_scale_changed}[Gtk.GestureZoom::scale-changed]}
+    signal is emitted to report the scale factor. *)
 class type gesture_zoom_t = object
   inherit Gesture.gesture_t
 
@@ -50,8 +50,8 @@ class gesture_zoom : Raw.Gesture_zoom.t -> gesture_zoom_t
     Recognizes 2-finger pinch/zoom gestures.
 
     Whenever the distance between both tracked sequences changes, the
-    [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor. *)
+    {{!Ocgtk.Gesture_zoom.class-type-gesture_zoom_t.method-on_scale_changed}[Gtk.GestureZoom::scale-changed]}
+    signal is emitted to report the scale factor. *)
 
 (** {1:constructors Constructors} *)
 

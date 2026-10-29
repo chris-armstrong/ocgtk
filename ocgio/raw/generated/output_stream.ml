@@ -4,11 +4,13 @@
 (** [GOutputStream] is a base class for implementing streaming output.
 
     It has functions to write to a stream ([Gio.OutputStream.write]), to close a
-    stream ([Gio.OutputStream.close]) and to flush pending writes
-    ([Gio.OutputStream.flush]).
+    stream ({{!Ocgio.Raw.Output_stream.val-close}[Gio.OutputStream.close]}) and
+    to flush pending writes
+    ({{!Ocgio.Raw.Output_stream.val-flush}[Gio.OutputStream.flush]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Raw.Output_stream.val-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} for details
     of thread safety of streaming APIs.

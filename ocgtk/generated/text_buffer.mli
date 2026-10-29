@@ -21,7 +21,8 @@ class type text_buffer_t =
     widget and how they work together.
 
     GtkTextBuffer can support undoing changes to the buffer content, see
-    [Gtk.TextBuffer.set_enable_undo]. *)
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-set_enable_undo}[Gtk.TextBuffer.set_enable_undo]}.
+*)
 
 class text_buffer : Raw.Text_buffer.t -> text_buffer_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Text_buffer.t}. *)
@@ -35,7 +36,8 @@ class text_buffer : Raw.Text_buffer.t -> text_buffer_t
     widget and how they work together.
 
     GtkTextBuffer can support undoing changes to the buffer content, see
-    [Gtk.TextBuffer.set_enable_undo]. *)
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t.method-set_enable_undo}[Gtk.TextBuffer.set_enable_undo]}.
+*)
 
 (** {1:constructors Constructors} *)
 

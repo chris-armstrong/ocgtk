@@ -17,13 +17,16 @@
     authenticating and authorizing other processes.
 
     Some operating systems supports looking up the credentials of the remote
-    peer of a communication endpoint - see e.g. [Gio.Socket.get_credentials].
+    peer of a communication endpoint - see e.g.
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
 
     Some operating systems supports securely sending and receiving credentials
     over a Unix Domain Socket, see
     {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[Gio.UnixCredentialsMessage]},
-    [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials] for details.
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]} for details.
 
     On Linux, the native credential type is a [struct ucred] - see the man
     page[unix(7)]) for details. This corresponds to
@@ -80,13 +83,16 @@ class credentials : Raw.Credentials.t -> credentials_t
     authenticating and authorizing other processes.
 
     Some operating systems supports looking up the credentials of the remote
-    peer of a communication endpoint - see e.g. [Gio.Socket.get_credentials].
+    peer of a communication endpoint - see e.g.
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
 
     Some operating systems supports securely sending and receiving credentials
     over a Unix Domain Socket, see
     {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[Gio.UnixCredentialsMessage]},
-    [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials] for details.
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]} for details.
 
     On Linux, the native credential type is a [struct ucred] - see the man
     page[unix(7)]) for details. This corresponds to

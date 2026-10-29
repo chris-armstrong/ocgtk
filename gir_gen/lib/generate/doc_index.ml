@@ -5,10 +5,26 @@ open Types
 
 let empty = StringMap.empty
 
+let empty_namespace =
+  {
+    di_types = StringMap.empty;
+    di_constants = StringMap.empty;
+    di_members = StringMap.empty;
+    di_enum_members = StringMap.empty;
+  }
+
 let add_all ~f items map =
   List.fold_left items ~init:map ~f:(fun map item ->
       let name, value = f item in
       StringMap.add name value map)
+
+let variants member_names =
+  add_all
+    ~f:(fun name ->
+      ( String.uppercase_ascii
+          (String.map name ~f:(function '-' -> '_' | c -> c)),
+        Enum_code.variant_name_of_member name ))
+    member_names StringMap.empty
 
 let current_namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
     =
@@ -35,7 +51,24 @@ let current_namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
       (List.filter ~f:Constant_code.is_generated constants)
       StringMap.empty
   in
-  { di_types; di_constants }
+  let di_enum_members =
+    StringMap.empty
+    |> add_all
+         ~f:(fun (e : gir_enum) ->
+           ( e.enum_name,
+             variants
+               (List.map e.members ~f:(fun (m : gir_enum_member) ->
+                    m.member_name)) ))
+         enums
+    |> add_all
+         ~f:(fun (b : gir_bitfield) ->
+           ( b.bitfield_name,
+             variants
+               (List.map b.flags ~f:(fun (f : gir_bitfield_member) ->
+                    f.flag_name)) ))
+         bitfields
+  in
+  { empty_namespace with di_types; di_constants; di_enum_members }
 
 let of_cross_references (ncr : generation_context_namespace_cross_references) =
   StringMap.fold
@@ -57,8 +90,7 @@ let of_cross_references (ncr : generation_context_namespace_cross_references) =
                 (Constant_code.ocaml_name_of_constant entity.cr_name)
                 acc.di_constants;
           })
-    ncr.ncr_entities
-    { di_types = StringMap.empty; di_constants = StringMap.empty }
+    ncr.ncr_entities empty_namespace
 
 let build ~namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
     ~cross_references =
@@ -66,3 +98,16 @@ let build ~namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
   |> StringMap.add namespace
        (current_namespace ~classes ~interfaces ~records ~enums ~bitfields
           ~constants)
+
+let with_members ~(ctx : generation_context) entities =
+  let namespace = ctx.namespace.namespace_name in
+  let add ns =
+    {
+      ns with
+      di_members =
+        add_all
+          ~f:(fun (e : entity) -> (e.name, Emitted_members.names ~ctx e))
+          entities ns.di_members;
+    }
+  in
+  StringMap.update namespace (Option.map add) ctx.doc_index

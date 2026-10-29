@@ -25,7 +25,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gsk_render_node_get_type"
 
 external write_to_file : t -> string -> (bool, GError.t) result
   = "ml_gsk_render_node_write_to_file"
-(** This function is equivalent to calling [Gsk.RenderNode.serialize] followed
+(** This function is equivalent to calling
+    {{!Ocgsk.Raw.Render_node.val-serialize}[Gsk.RenderNode.serialize]} followed
     by [GLib.file_set_contents].
 
     See those two functions for details on the arguments.

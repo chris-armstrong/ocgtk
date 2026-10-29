@@ -22,31 +22,39 @@
 
     To use [GdkPixbufLoader] to load an image, create a new instance, and call
     [GdkPixbuf.PixbufLoader.write] to send the data to it. When done,
-    [GdkPixbuf.PixbufLoader.close] should be called to end the stream and
-    finalize everything.
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-close}[GdkPixbuf.PixbufLoader.close]}
+    should be called to end the stream and finalize everything.
 
     The loader will emit three important signals throughout the process:
 
-    - [GdkPixbuf.PixbufLoader::size-prepared] will be emitted as soon as the
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_size_prepared}
+       [GdkPixbuf.PixbufLoader::size-prepared]} will be emitted as soon as the
       image has enough information to determine the size of the image to be
       used. If you want to scale the image while loading it, you can call
-      [GdkPixbuf.PixbufLoader.set_size] in response to this signal.
-    - [GdkPixbuf.PixbufLoader::area-prepared] will be emitted as soon as the
+      {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-set_size}[GdkPixbuf.PixbufLoader.set_size]}
+      in response to this signal.
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_prepared}
+       [GdkPixbuf.PixbufLoader::area-prepared]} will be emitted as soon as the
       pixbuf of the desired has been allocated. You can obtain the [GdkPixbuf]
-      instance by calling [GdkPixbuf.PixbufLoader.get_pixbuf]. If you want to
-      use it, simply acquire a reference to it. You can also call
+      instance by calling
+      {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-get_pixbuf}[GdkPixbuf.PixbufLoader.get_pixbuf]}.
+      If you want to use it, simply acquire a reference to it. You can also call
       [gdk_pixbuf_loader_get_pixbuf()] later to get the same pixbuf.
-    - [GdkPixbuf.PixbufLoader::area-updated] will be emitted every time a region
-      is updated. This way you can update a partially completed image. Note that
-      you do not know anything about the completeness of an image from the
-      updated area. For example, in an interlaced image you will need to make
-      several passes before the image is done loading.
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_updated}
+       [GdkPixbuf.PixbufLoader::area-updated]} will be emitted every time a
+      region is updated. This way you can update a partially completed image.
+      Note that you do not know anything about the completeness of an image from
+      the updated area. For example, in an interlaced image you will need to
+      make several passes before the image is done loading.
 
     {b Loading an animation}
 
     Loading an animation is almost as easy as loading an image. Once the first
-    [GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted, you can
-    call [GdkPixbuf.PixbufLoader.get_animation] to get the
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_prepared}
+     [GdkPixbuf.PixbufLoader::area-prepared]} signal has been emitted, you can
+    call
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-get_animation}
+     [GdkPixbuf.PixbufLoader.get_animation]} to get the
     {{!Ocgdkpixbuf.Pixbuf_animation.class-type-pixbuf_animation_t}[GdkPixbuf.PixbufAnimation]}
     instance, and then call and [GdkPixbuf.PixbufAnimation.get_iter] to get a
     {{!Ocgdkpixbuf.Pixbuf_animation_iter.class-type-pixbuf_animation_iter_t}[GdkPixbuf.PixbufAnimationIter]}
@@ -179,31 +187,39 @@ class pixbuf_loader : Raw.Pixbuf_loader.t -> pixbuf_loader_t
 
     To use [GdkPixbufLoader] to load an image, create a new instance, and call
     [GdkPixbuf.PixbufLoader.write] to send the data to it. When done,
-    [GdkPixbuf.PixbufLoader.close] should be called to end the stream and
-    finalize everything.
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-close}[GdkPixbuf.PixbufLoader.close]}
+    should be called to end the stream and finalize everything.
 
     The loader will emit three important signals throughout the process:
 
-    - [GdkPixbuf.PixbufLoader::size-prepared] will be emitted as soon as the
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_size_prepared}
+       [GdkPixbuf.PixbufLoader::size-prepared]} will be emitted as soon as the
       image has enough information to determine the size of the image to be
       used. If you want to scale the image while loading it, you can call
-      [GdkPixbuf.PixbufLoader.set_size] in response to this signal.
-    - [GdkPixbuf.PixbufLoader::area-prepared] will be emitted as soon as the
+      {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-set_size}[GdkPixbuf.PixbufLoader.set_size]}
+      in response to this signal.
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_prepared}
+       [GdkPixbuf.PixbufLoader::area-prepared]} will be emitted as soon as the
       pixbuf of the desired has been allocated. You can obtain the [GdkPixbuf]
-      instance by calling [GdkPixbuf.PixbufLoader.get_pixbuf]. If you want to
-      use it, simply acquire a reference to it. You can also call
+      instance by calling
+      {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-get_pixbuf}[GdkPixbuf.PixbufLoader.get_pixbuf]}.
+      If you want to use it, simply acquire a reference to it. You can also call
       [gdk_pixbuf_loader_get_pixbuf()] later to get the same pixbuf.
-    - [GdkPixbuf.PixbufLoader::area-updated] will be emitted every time a region
-      is updated. This way you can update a partially completed image. Note that
-      you do not know anything about the completeness of an image from the
-      updated area. For example, in an interlaced image you will need to make
-      several passes before the image is done loading.
+    - {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_updated}
+       [GdkPixbuf.PixbufLoader::area-updated]} will be emitted every time a
+      region is updated. This way you can update a partially completed image.
+      Note that you do not know anything about the completeness of an image from
+      the updated area. For example, in an interlaced image you will need to
+      make several passes before the image is done loading.
 
     {b Loading an animation}
 
     Loading an animation is almost as easy as loading an image. Once the first
-    [GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted, you can
-    call [GdkPixbuf.PixbufLoader.get_animation] to get the
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-on_area_prepared}
+     [GdkPixbuf.PixbufLoader::area-prepared]} signal has been emitted, you can
+    call
+    {{!Ocgdkpixbuf.Pixbuf_loader.class-type-pixbuf_loader_t.method-get_animation}
+     [GdkPixbuf.PixbufLoader.get_animation]} to get the
     {{!Ocgdkpixbuf.Pixbuf_animation.class-type-pixbuf_animation_t}[GdkPixbuf.PixbufAnimation]}
     instance, and then call and [GdkPixbuf.PixbufAnimation.get_iter] to get a
     {{!Ocgdkpixbuf.Pixbuf_animation_iter.class-type-pixbuf_animation_iter_t}[GdkPixbuf.PixbufAnimationIter]}

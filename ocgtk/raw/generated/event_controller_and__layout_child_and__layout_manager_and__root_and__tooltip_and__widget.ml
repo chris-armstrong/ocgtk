@@ -300,7 +300,9 @@ and Root : sig
       If [focus] is [None], unsets the focus widget for the root.
 
       To set the focus to a particular widget in the root, it is usually more
-      convenient to use [Gtk.Widget.grab_focus] instead of this function. *)
+      convenient to use
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} instead of
+      this function. *)
 
   external get_focus : t -> Widget.t option = "ml_gtk_root_get_focus"
   (** Retrieves the current focused widget within the root.
@@ -326,7 +328,9 @@ end = struct
       If [focus] is [None], unsets the focus widget for the root.
 
       To set the focus to a particular widget in the root, it is usually more
-      convenient to use [Gtk.Widget.grab_focus] instead of this function. *)
+      convenient to use
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} instead of
+      this function. *)
 
   external get_focus : t -> Widget.t option = "ml_gtk_root_get_focus"
   (** Retrieves the current focused widget within the root.
@@ -360,7 +364,7 @@ and Tooltip : sig
   (** Sets the text of the tooltip to be [text].
 
       If [text] is [None], the label will be hidden. See also
-      [Gtk.Tooltip.set_markup]. *)
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[Gtk.Tooltip.set_markup]}. *)
 
   external set_markup : t -> string option -> unit = "ml_gtk_tooltip_set_markup"
   (** Sets the text of the tooltip to be [markup].
@@ -413,7 +417,7 @@ end = struct
   (** Sets the text of the tooltip to be [text].
 
       If [text] is [None], the label will be hidden. See also
-      [Gtk.Tooltip.set_markup]. *)
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[Gtk.Tooltip.set_markup]}. *)
 
   external set_markup : t -> string option -> unit = "ml_gtk_tooltip_set_markup"
   (** Sets the text of the tooltip to be [markup].
@@ -458,7 +462,7 @@ and Widget : sig
     = "ml_gtk_widget_unset_state_flags"
   (** Turns off flag values for the current widget state.
 
-      See [Gtk.Widget.set_state_flags].
+      See {{!Ocgtk.Raw.Widget.val-set_state_flags}[Gtk.Widget.set_state_flags]}.
 
       This function is for use in widget implementations. *)
 
@@ -533,17 +537,20 @@ and Widget : sig
   (** Sets the visibility state of [widget].
 
       Note that setting this to true doesn’t mean the widget is actually
-      viewable, see [Gtk.Widget.get_visible]. *)
+      viewable, see
+      {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget.get_visible]}. *)
 
   external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
   (** Sets whether the vexpand flag will be used.
 
-      See [Gtk.Widget.set_hexpand_set] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-set_hexpand_set}[Gtk.Widget.set_hexpand_set]}
+      for more detail. *)
 
   external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
   (** Sets whether the widget would like any available extra vertical space.
 
-      See [Gtk.Widget.set_hexpand] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} for more
+      detail. *)
 
   external set_valign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_valign"
@@ -555,11 +562,13 @@ and Widget : sig
 
       If [text] contains any markup, it will be escaped.
 
-      This function will take care of setting [Gtk.Widget:has-tooltip] as a side
-      effect, and of the default handler for the [Gtk.Widget::query-tooltip]
+      This function will take care of setting
+      {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} as a
+      side effect, and of the default handler for the
+      {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]}
       signal.
 
-      See also [Gtk.Tooltip.set_text]. *)
+      See also {{!Ocgtk.Raw.Tooltip.val-set_text}[Gtk.Tooltip.set_text]}. *)
 
   external set_tooltip_markup : t -> string option -> unit
     = "ml_gtk_widget_set_tooltip_markup"
@@ -567,11 +576,13 @@ and Widget : sig
 
       [markup] must contain Pango markup.
 
-      This function will take care of setting the [Gtk.Widget:has-tooltip] as a
+      This function will take care of setting the
+      {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} as a
       side effect, and of the default handler for the
-      [Gtk.Widget::query-tooltip] signal.
+      {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]}
+      signal.
 
-      See also [Gtk.Tooltip.set_markup]. *)
+      See also {{!Ocgtk.Raw.Tooltip.val-set_markup}[Gtk.Tooltip.set_markup]}. *)
 
   external set_state_flags : t -> Ocgtk_enums.stateflags -> bool -> unit
     = "ml_gtk_widget_set_state_flags"
@@ -579,9 +590,12 @@ and Widget : sig
 
       Typical widget states are insensitive, prelighted, etc.
 
-      This function accepts the values [Gtk.StateFlags.dir-ltr] and
-      [Gtk.StateFlags.dir-rtl] but ignores them. If you want to set the widget's
-      direction, use [Gtk.Widget.set_direction].
+      This function accepts the values
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-DIR_LTR}[Gtk.StateFlags.dir-ltr]}
+      and
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-DIR_RTL}[Gtk.StateFlags.dir-rtl]}
+      but ignores them. If you want to set the widget's direction, use
+      {{!Ocgtk.Raw.Widget.val-set_direction}[Gtk.Widget.set_direction]}.
 
       This function is for use in widget implementations. *)
 
@@ -593,10 +607,12 @@ and Widget : sig
       You can use this function to force a widget to be larger than it normally
       would be.
 
-      In most cases, [Gtk.Window.set_default_size] is a better choice for
-      toplevel windows than this function; setting the default size will still
-      allow users to shrink the window. Setting the size request will force them
-      to leave the window at least as large as the size request.
+      In most cases,
+      {{!Ocgtk.Raw.Window.val-set_default_size}[Gtk.Window.set_default_size]} is
+      a better choice for toplevel windows than this function; setting the
+      default size will still allow users to shrink the window. Setting the size
+      request will force them to leave the window at least as large as the size
+      request.
 
       Note the inherent danger of setting any fixed size - themes, translations
       into other languages, different fonts, and user action can all change the
@@ -612,10 +628,12 @@ and Widget : sig
       size request of the widget will be used instead.
 
       The size request set here does not include any margin from the properties
-      [Gtk.Widget:margin-start], [Gtk.Widget:margin-end],
-      [Gtk.Widget:margin-top], and [Gtk.Widget:margin-bottom], but it does
-      include pretty much all other padding or border properties set by any
-      subclass of [GtkWidget]. *)
+      {{!Ocgtk.Raw.Widget.val-get_margin_start}[Gtk.Widget:margin-start]},
+      {{!Ocgtk.Raw.Widget.val-get_margin_end}[Gtk.Widget:margin-end]},
+      {{!Ocgtk.Raw.Widget.val-get_margin_top}[Gtk.Widget:margin-top]}, and
+      {{!Ocgtk.Raw.Widget.val-get_margin_bottom}[Gtk.Widget:margin-bottom]}, but
+      it does include pretty much all other padding or border properties set by
+      any subclass of [GtkWidget]. *)
 
   external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
   (** Sets the sensitivity of the widget.
@@ -635,7 +653,7 @@ and Widget : sig
 
       This takes care of details such as updating the state and style of the
       child to reflect its new location and resizing the parent. The opposite
-      function is [Gtk.Widget.unparent].
+      function is {{!Ocgtk.Raw.Widget.val-unparent}[Gtk.Widget.unparent]}.
 
       This function is useful only when implementing subclasses of [GtkWidget].
   *)
@@ -651,7 +669,9 @@ and Widget : sig
       This setting is provided for widget implementations and should not be used
       by application code.
 
-      The default value is [Gtk.Overflow.visible]. *)
+      The default value is
+      {{!Ocgtk.Enums.type-overflow.constructor-VISIBLE}[Gtk.Overflow.visible]}.
+  *)
 
   external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
   (** Requests the widget to be rendered partially transparent.
@@ -715,9 +735,11 @@ and Widget : sig
   external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
   (** Sets whether the hexpand flag will be used.
 
-      The [Gtk.Widget:hexpand-set] property will be set automatically when you
-      call [Gtk.Widget.set_hexpand] to set hexpand, so the most likely reason to
-      use this function would be to unset an explicit expand flag.
+      The {{!Ocgtk.Raw.Widget.val-get_hexpand_set}[Gtk.Widget:hexpand-set]}
+      property will be set automatically when you call
+      {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} to set
+      hexpand, so the most likely reason to use this function would be to unset
+      an explicit expand flag.
 
       If hexpand is set, then it overrides any computed expand value based on
       child widgets. If hexpand is not set, then the expand value depends on
@@ -738,18 +760,22 @@ and Widget : sig
 
       By default, widgets automatically expand if any of their children want to
       expand. (To see if a widget will automatically expand given its current
-      children and state, call [Gtk.Widget.compute_expand]. A widget can decide
-      how the expandability of children affects its own expansion by overriding
-      the [compute_expand] virtual method on [GtkWidget].).
+      children and state, call
+      {{!Ocgtk.Raw.Widget.val-compute_expand}[Gtk.Widget.compute_expand]}. A
+      widget can decide how the expandability of children affects its own
+      expansion by overriding the [compute_expand] virtual method on
+      [GtkWidget].).
 
       Setting hexpand explicitly with this function will override the automatic
       expand behavior.
 
       This function forces the widget to expand or not to expand, regardless of
-      children. The override occurs because [Gtk.Widget.set_hexpand] sets the
-      hexpand-set property (see [Gtk.Widget.set_hexpand_set]) which causes the
-      widget’s hexpand value to be used, rather than looking at children and
-      widget state. *)
+      children. The override occurs because
+      {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} sets the
+      hexpand-set property (see
+      {{!Ocgtk.Raw.Widget.val-set_hexpand_set}[Gtk.Widget.set_hexpand_set]})
+      which causes the widget’s hexpand value to be used, rather than looking at
+      children and widget state. *)
 
   external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
   (** Sets the [has-tooltip] property on the widget. *)
@@ -786,8 +812,8 @@ and Widget : sig
       can-focus and not have an ancestor that is marked as not can-focus in
       order to receive input focus.
 
-      See [Gtk.Widget.grab_focus] for actually setting the input focus on a
-      widget. *)
+      See {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} for
+      actually setting the input focus on a widget. *)
 
   external set_focus_on_click : t -> bool -> unit
     = "ml_gtk_widget_set_focus_on_click"
@@ -803,8 +829,8 @@ and Widget : sig
   (** Set the focus child of the widget.
 
       This function is only suitable for widget implementations. If you want a
-      certain widget to get the input focus, call [Gtk.Widget.grab_focus] on it.
-  *)
+      certain widget to get the input focus, call
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} on it. *)
 
   external set_direction : t -> Ocgtk_enums.textdirection -> unit
     = "ml_gtk_widget_set_direction"
@@ -821,8 +847,9 @@ and Widget : sig
       explicitly visual rather than logical (such as buttons for text
       justification).
 
-      If the direction is set to [Gtk.TextDirection.none], then the value set by
-      [Gtk.Widget.set_default_direction] will be used. *)
+      If the direction is set to
+      {{!Ocgtk.Enums.type-textdirection.constructor-NONE}[Gtk.TextDirection.none]},
+      then the value set by [Gtk.Widget.set_default_direction] will be used. *)
 
   external set_cursor_from_name : t -> string option -> unit
     = "ml_gtk_widget_set_cursor_from_name"
@@ -830,10 +857,13 @@ and Widget : sig
 
       This is a utility function that creates a cursor via
       [Gdk.Cursor.new_from_name] and then sets it on [widget] with
-      [Gtk.Widget.set_cursor]. See those functions for details.
+      {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]}. See those
+      functions for details.
 
       On top of that, this function allows [name] to be [None], which will do
-      the same as calling [Gtk.Widget.set_cursor] with a [None] cursor. *)
+      the same as calling
+      {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]} with a [None]
+      cursor. *)
 
   external set_cursor : t -> Ocgdk_raw.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
@@ -851,9 +881,11 @@ and Widget : sig
   (** Sets whether the widget should be mapped along with its parent.
 
       The child visibility can be set for widget before it is added to a
-      container with [Gtk.Widget.set_parent], to avoid mapping children
-      unnecessary before immediately unmapping them. However it will be reset to
-      its default state of true when the widget is removed from a container.
+      container with
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, to avoid
+      mapping children unnecessary before immediately unmapping them. However it
+      will be reset to its default state of true when the widget is removed from
+      a container.
 
       Note that changing the child visibility of a widget does not queue a
       resize on the widget. Most of the time, the size of a widget is computed
@@ -877,8 +909,8 @@ and Widget : sig
       focusable and not have an ancestor that is marked as not can-focus in
       order to receive input focus.
 
-      See [Gtk.Widget.grab_focus] for actually setting the input focus on a
-      widget. *)
+      See {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} for
+      actually setting the input focus on a widget. *)
 
   external remove_tick_callback : t -> int -> unit
     = "ml_gtk_widget_remove_tick_callback"
@@ -889,10 +921,12 @@ and Widget : sig
     = "ml_gtk_widget_remove_mnemonic_label"
   (** Removes a widget from the list of mnemonic labels for this widget.
 
-      See [Gtk.Widget.list_mnemonic_labels].
+      See
+      {{!Ocgtk.Raw.Widget.val-list_mnemonic_labels}[Gtk.Widget.list_mnemonic_labels]}.
 
       The widget must have previously been added to the list with
-      [Gtk.Widget.add_mnemonic_label]. *)
+      {{!Ocgtk.Raw.Widget.val-add_mnemonic_label}[Gtk.Widget.add_mnemonic_label]}.
+  *)
 
   external remove_css_class : t -> string -> unit
     = "ml_gtk_widget_remove_css_class"
@@ -925,7 +959,8 @@ and Widget : sig
       This function is primarily used in widget implementations, and isn’t very
       useful otherwise. Many times when you think you might need it, a better
       approach is to connect to a signal that will be called after the widget is
-      realized automatically, such as [Gtk.Widget::realize]. *)
+      realized automatically, such as
+      {{!Ocgtk.Raw.Widget.val-on_realize}[Gtk.Widget::realize]}. *)
 
   external queue_resize : t -> unit = "ml_gtk_widget_queue_resize"
   (** Flags a widget to have its size renegotiated.
@@ -954,10 +989,13 @@ and Widget : sig
   external queue_allocate : t -> unit = "ml_gtk_widget_queue_allocate"
   (** Flags the widget for a rerun of the [Gtk.Widget.size_allocate] function.
 
-      Use this function instead of [Gtk.Widget.queue_resize] when the [widget]'s
-      size request didn't change but it wants to reposition its contents.
+      Use this function instead of
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[Gtk.Widget.queue_resize]} when the
+      [widget]'s size request didn't change but it wants to reposition its
+      contents.
 
-      An example user of this function is [Gtk.Widget.set_halign].
+      An example user of this function is
+      {{!Ocgtk.Raw.Widget.val-set_halign}[Gtk.Widget.set_halign]}.
 
       This function is only for use in widget implementations. *)
 
@@ -969,7 +1007,8 @@ and Widget : sig
       to be the top left of [widget]'s content area.
 
       Usually widgets will return [None] if the given coordinate is not
-      contained in [widget] checked via [Gtk.Widget.contains]. Otherwise they
+      contained in [widget] checked via
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}. Otherwise they
       will recursively try to find a child that does not return [None]. Widgets
       are however free to customize their picking algorithm.
 
@@ -1000,7 +1039,9 @@ and Widget : sig
 
   external mnemonic_activate : t -> bool -> bool
     = "ml_gtk_widget_mnemonic_activate"
-  (** Emits the [Gtk.Widget::mnemonic-activate] signal. *)
+  (** Emits the
+      {{!Ocgtk.Raw.Widget.val-on_mnemonic_activate}[Gtk.Widget::mnemonic-activate]}
+      signal. *)
 
   external measure :
     t -> Ocgtk_enums.orientation -> int -> int * int * int * int
@@ -1025,7 +1066,7 @@ and Widget : sig
   (** Returns the widgets for which this widget is the target of a mnemonic.
 
       Typically, these widgets will be labels. See, for example,
-      [Gtk.Label.set_mnemonic_widget].
+      {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
 
       The widgets in the list are not individually referenced. If you want to
       iterate through the list and perform actions involving callbacks that
@@ -1035,26 +1076,35 @@ and Widget : sig
 
   external keynav_failed : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_keynav_failed"
-  (** Emits the [Gtk.Widget::keynav-failed] signal on the widget.
+  (** Emits the
+      {{!Ocgtk.Raw.Widget.val-on_keynav_failed}[Gtk.Widget::keynav-failed]}
+      signal on the widget.
 
       This function should be called whenever keyboard navigation within a
       single widget hits a boundary.
 
       The return value of this function should be interpreted in a way similar
-      to the return value of [Gtk.Widget.child_focus]. When true is returned,
-      stay in the widget, the failed keyboard navigation is ok and/or there is
-      nowhere we can/should move the focus to. When false is returned, the
-      caller should continue with keyboard navigation outside the widget, e.g.
-      by calling [Gtk.Widget.child_focus] on the widget’s toplevel.
+      to the return value of
+      {{!Ocgtk.Raw.Widget.val-child_focus}[Gtk.Widget.child_focus]}. When true
+      is returned, stay in the widget, the failed keyboard navigation is ok
+      and/or there is nowhere we can/should move the focus to. When false is
+      returned, the caller should continue with keyboard navigation outside the
+      widget, e.g. by calling
+      {{!Ocgtk.Raw.Widget.val-child_focus}[Gtk.Widget.child_focus]} on the
+      widget’s toplevel.
 
-      The default [Gtk.Widget::keynav-failed] handler returns false for
-      [Gtk.DirectionType.tab-forward] and [Gtk.DirectionType.tab-backward]. For
-      the other values of {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]}
-      it returns true.
+      The default
+      {{!Ocgtk.Raw.Widget.val-on_keynav_failed}[Gtk.Widget::keynav-failed]}
+      handler returns false for
+      {{!Ocgtk.Enums.type-directiontype.constructor-TAB_FORWARD}[Gtk.DirectionType.tab-forward]}
+      and
+      {{!Ocgtk.Enums.type-directiontype.constructor-TAB_BACKWARD}[Gtk.DirectionType.tab-backward]}.
+      For the other values of
+      {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]} it returns true.
 
       Whenever the default handler returns true, it also calls
-      [Gtk.Widget.error_bell] to notify the user of the failed keyboard
-      navigation.
+      {{!Ocgtk.Raw.Widget.val-error_bell}[Gtk.Widget.error_bell]} to notify the
+      user of the failed keyboard navigation.
 
       A use case for providing an own implementation of [::keynav-failed]
       (either by connecting to it or by overriding it) would be a row of
@@ -1067,7 +1117,8 @@ and Widget : sig
 
       This function does not check if the widget is obscured in any way.
 
-      See also [Gtk.Widget.get_visible] and [Gtk.Widget.set_visible]. *)
+      See also {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget.get_visible]} and
+      {{!Ocgtk.Raw.Widget.val-set_visible}[Gtk.Widget.set_visible]}. *)
 
   external is_sensitive : t -> bool = "ml_gtk_widget_is_sensitive"
   (** Returns the widget’s effective sensitivity.
@@ -1078,9 +1129,11 @@ and Widget : sig
   external is_focus : t -> bool = "ml_gtk_widget_is_focus"
   (** Determines if the widget is the focus widget within its toplevel.
 
-      This does not mean that the [Gtk.Widget:has-focus] property is necessarily
-      set; [Gtk.Widget:has-focus] will only be set if the toplevel widget
-      additionally has the global input focus. *)
+      This does not mean that the
+      {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget:has-focus]} property is
+      necessarily set; {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget:has-focus]}
+      will only be set if the toplevel widget additionally has the global input
+      focus. *)
 
   external is_drawable : t -> bool = "ml_gtk_widget_is_drawable"
   (** Determines whether the widget can be drawn to.
@@ -1094,8 +1147,10 @@ and Widget : sig
     = "ml_gtk_widget_insert_before"
   (** Sets the parent widget of the widget.
 
-      In contrast to [Gtk.Widget.set_parent], this function inserts [widget] at
-      a specific position into the list of children of the [parent] widget.
+      In contrast to
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, this function
+      inserts [widget] at a specific position into the list of children of the
+      [parent] widget.
 
       It will be placed before [next_sibling], or at the end if [next_sibling]
       is [None].
@@ -1113,8 +1168,10 @@ and Widget : sig
     = "ml_gtk_widget_insert_after"
   (** Sets the parent widget of the widget.
 
-      In contrast to [Gtk.Widget.set_parent], this function inserts [widget] at
-      a specific position into the list of children of the [parent] widget.
+      In contrast to
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, this function
+      inserts [widget] at a specific position into the list of children of the
+      [parent] widget.
 
       It will be placed after [previous_sibling], or at the beginning if
       [previous_sibling] is [None].
@@ -1182,17 +1239,19 @@ and Widget : sig
 
       This is a convenience function that takes into account whether focus
       indication should currently be shown in the toplevel window of [widget].
-      See [Gtk.Window.get_focus_visible] for more information about focus
-      indication.
+      See
+      {{!Ocgtk.Raw.Window.val-get_focus_visible}[Gtk.Window.get_focus_visible]}
+      for more information about focus indication.
 
       To find out if the widget has the global input focus, use
-      [Gtk.Widget.has_focus]. *)
+      {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget.has_focus]}. *)
 
   external has_focus : t -> bool = "ml_gtk_widget_has_focus"
   (** Determines if the widget has the global input focus.
 
-      See [Gtk.Widget.is_focus] for the difference between having the global
-      input focus, and only having the focus within a toplevel. *)
+      See {{!Ocgtk.Raw.Widget.val-is_focus}[Gtk.Widget.is_focus]} for the
+      difference between having the global input focus, and only having the
+      focus within a toplevel. *)
 
   external has_default : t -> bool = "ml_gtk_widget_has_default"
   (** Determines whether the widget is the current default widget within its
@@ -1209,8 +1268,9 @@ and Widget : sig
       implementation cannot transfer the focus to a descendant of [widget] that
       is focusable, it will not take focus and false will be returned.
 
-      Calling [Gtk.Widget.grab_focus] on an already focused widget is allowed,
-      should not have an effect, and return true. *)
+      Calling {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} on an
+      already focused widget is allowed, should not have an effect, and return
+      true. *)
 
   external get_width : t -> int = "ml_gtk_widget_get_width"
   (** Returns the content width of the widget.
@@ -1219,7 +1279,8 @@ and Widget : sig
       implementation, which is the width you should be using in
       [Gtk.Widget.snapshot].
 
-      For pointer events, see [Gtk.Widget.contains].
+      For pointer events, see
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -1227,21 +1288,24 @@ and Widget : sig
   (** Determines whether the widget is visible.
 
       If you want to take into account whether the widget’s parent is also
-      marked as visible, use [Gtk.Widget.is_visible] instead.
+      marked as visible, use
+      {{!Ocgtk.Raw.Widget.val-is_visible}[Gtk.Widget.is_visible]} instead.
 
       This function does not check if the widget is obscured in any way.
 
-      See [Gtk.Widget.set_visible]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_visible}[Gtk.Widget.set_visible]}. *)
 
   external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
   (** Gets whether the [vexpand] flag has been explicitly set.
 
-      See [Gtk.Widget.get_hexpand_set] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-get_hexpand_set}[Gtk.Widget.get_hexpand_set]}
+      for more detail. *)
 
   external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
   (** Gets whether the widget would like any available extra vertical space.
 
-      See [Gtk.Widget.get_hexpand] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget.get_hexpand]} for more
+      detail. *)
 
   external get_valign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_valign"
   (** Gets the vertical alignment of the widget. *)
@@ -1250,14 +1314,16 @@ and Widget : sig
     = "ml_gtk_widget_get_tooltip_text"
   (** Gets the contents of the tooltip for the widget.
 
-      If the [widget]'s tooltip was set using [Gtk.Widget.set_tooltip_markup],
+      If the [widget]'s tooltip was set using
+      {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]},
       this function will return the escaped text. *)
 
   external get_tooltip_markup : t -> string option
     = "ml_gtk_widget_get_tooltip_markup"
   (** Gets the contents of the tooltip for the widget.
 
-      If the tooltip has not been set using [Gtk.Widget.set_tooltip_markup],
+      If the tooltip has not been set using
+      {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]},
       this function returns [None]. *)
 
   external get_template_child :
@@ -1284,14 +1350,15 @@ and Widget : sig
     = "ml_gtk_widget_get_state_flags"
   (** Returns the widget state as a flag set.
 
-      It is worth mentioning that the effective [Gtk.StateFlags.insensitive]
+      It is worth mentioning that the effective
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-INSENSITIVE}[Gtk.StateFlags.insensitive]}
       state will be returned, that is, also based on parent insensitivity, even
       if [widget] itself is sensitive.
 
       Also note that if you are looking for a way to obtain the
       {{!Ocgtk.Enums.type-stateflags}[Gtk.StateFlags]} to pass to a
       {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]} method, you should look at
-      [Gtk.StyleContext.get_state]. *)
+      {{!Ocgtk.Raw.Style_context.val-get_state}[Gtk.StyleContext.get_state]}. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
   (** Gets the size request that was explicitly set for the widget.
@@ -1300,10 +1367,12 @@ and Widget : sig
       has not been set explicitly and the natural requisition of the widget will
       be used instead.
 
-      See [Gtk.Widget.set_size_request].
+      See
+      {{!Ocgtk.Raw.Widget.val-set_size_request}[Gtk.Widget.set_size_request]}.
 
-      To get the size a widget will actually request, call [Gtk.Widget.measure]
-      instead of this function. *)
+      To get the size a widget will actually request, call
+      {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} instead of this
+      function. *)
 
   external get_size : t -> Ocgtk_enums.orientation -> int
     = "ml_gtk_widget_get_size"
@@ -1311,11 +1380,13 @@ and Widget : sig
 
       Which dimension is returned depends on [orientation].
 
-      This is equivalent to calling [Gtk.Widget.get_width] for
-      [Gtk.Orientation.horizontal] or [Gtk.Widget.get_height] for
-      [Gtk.Orientation.vertical], but can be used when writing
-      orientation-independent code, such as when implementing
-      {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
+      This is equivalent to calling
+      {{!Ocgtk.Raw.Widget.val-get_width}[Gtk.Widget.get_width]} for
+      {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[Gtk.Orientation.horizontal]}
+      or {{!Ocgtk.Raw.Widget.val-get_height}[Gtk.Widget.get_height]} for
+      {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[Gtk.Orientation.vertical]},
+      but can be used when writing orientation-independent code, such as when
+      implementing {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -1331,10 +1402,11 @@ and Widget : sig
   (** Returns the widget’s sensitivity.
 
       This function returns the value that has been set using
-      [Gtk.Widget.set_sensitive]).
+      {{!Ocgtk.Raw.Widget.val-set_sensitive}[Gtk.Widget.set_sensitive]}).
 
       The effective sensitivity of a widget is however determined by both its
-      own and its parent widget’s sensitivity. See [Gtk.Widget.is_sensitive]. *)
+      own and its parent widget’s sensitivity. See
+      {{!Ocgtk.Raw.Widget.val-is_sensitive}[Gtk.Widget.is_sensitive]}. *)
 
   external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
   (** Retrieves the internal scale factor that maps from window coordinates to
@@ -1373,7 +1445,9 @@ and Widget : sig
       within its toplevel when it has the focus, even if another widget is the
       default.
 
-      See [Gtk.Widget.set_receives_default]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_receives_default}[Gtk.Widget.set_receives_default]}.
+  *)
 
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
   (** Determines whether the widget is realized. *)
@@ -1408,7 +1482,8 @@ and Widget : sig
       required height for the natural width is generally smaller than the
       required height for the minimum width.
 
-      Use [Gtk.Widget.measure] if you want to support baseline alignment. *)
+      Use {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} if you want to
+      support baseline alignment. *)
 
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
   (** Returns the parent widget of the widget. *)
@@ -1420,11 +1495,13 @@ and Widget : sig
       The [PangoContext] will have the appropriate font map, font description,
       and base direction set.
 
-      Unlike the context returned by [Gtk.Widget.create_pango_context], this
-      context is owned by the widget (it can be used until the screen for the
-      widget changes or the widget is removed from its toplevel), and will be
-      updated to match any changes to the widget’s attributes. This can be
-      tracked by listening to changes of the [Gtk.Widget:root] property on the
+      Unlike the context returned by
+      {{!Ocgtk.Raw.Widget.val-create_pango_context}[Gtk.Widget.create_pango_context]},
+      this context is owned by the widget (it can be used until the screen for
+      the widget changes or the widget is removed from its toplevel), and will
+      be updated to match any changes to the widget’s attributes. This can be
+      tracked by listening to changes of the
+      {{!Ocgtk.Raw.Widget.val-get_root}[Gtk.Widget:root]} property on the
       widget. *)
 
   external get_overflow : t -> Ocgtk_enums.overflow
@@ -1434,7 +1511,7 @@ and Widget : sig
   external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
   (** Fetches the requested opacity for the widget.
 
-      See [Gtk.Widget.set_opacity]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_opacity}[Gtk.Widget.set_opacity]}. *)
 
   external get_next_sibling : t -> t option = "ml_gtk_widget_get_next_sibling"
   (** Returns the widget’s next sibling.
@@ -1452,7 +1529,8 @@ and Widget : sig
   external get_name : t -> string = "ml_gtk_widget_get_name"
   (** Retrieves the name of a widget.
 
-      See [Gtk.Widget.set_name] for the significance of widget names. *)
+      See {{!Ocgtk.Raw.Widget.val-set_name}[Gtk.Widget.set_name]} for the
+      significance of widget names. *)
 
   external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
   (** Gets the top margin of the widget. *)
@@ -1470,13 +1548,17 @@ and Widget : sig
   (** Returns whether the widget is mapped. *)
 
   external get_limit_events : t -> bool = "ml_gtk_widget_get_limit_events"
-  (** Gets the value of the [Gtk.Widget:limit-events] property. *)
+  (** Gets the value of the
+      {{!Ocgtk.Raw.Widget.val-get_limit_events}[Gtk.Widget:limit-events]}
+      property. *)
 
   external get_layout_manager : t -> Layout_manager.t option
     = "ml_gtk_widget_get_layout_manager"
   (** Retrieves the layout manager of the widget.
 
-      See [Gtk.Widget.set_layout_manager]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_layout_manager}[Gtk.Widget.set_layout_manager]}.
+  *)
 
   external get_last_child : t -> t option = "ml_gtk_widget_get_last_child"
   (** Returns the widget’s last child.
@@ -1486,10 +1568,10 @@ and Widget : sig
   external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
   (** Gets whether the [hexpand] flag has been explicitly set.
 
-      If [Gtk.Widget:hexpand] property is set, then it overrides any computed
-      expand value based on child widgets. If [hexpand] is not set, then the
-      expand value depends on whether any children of the widget would like to
-      expand.
+      If {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget:hexpand]} property is
+      set, then it overrides any computed expand value based on child widgets.
+      If [hexpand] is not set, then the expand value depends on whether any
+      children of the widget would like to expand.
 
       There are few reasons to use this function, but it’s here for completeness
       and consistency. *)
@@ -1501,9 +1583,10 @@ and Widget : sig
       receive the extra space. For example, a list or scrollable area or
       document in your window would often be set to expand.
 
-      Widgets with children should use [Gtk.Widget.compute_expand] rather than
-      this function, to see whether any of its children, has the expand flag
-      set. If any child of a widget wants to expand, the parent may ask to
+      Widgets with children should use
+      {{!Ocgtk.Raw.Widget.val-compute_expand}[Gtk.Widget.compute_expand]} rather
+      than this function, to see whether any of its children, has the expand
+      flag set. If any child of a widget wants to expand, the parent may ask to
       expand also.
 
       This function only looks at the widget’s own hexpand flag, rather than
@@ -1517,7 +1600,8 @@ and Widget : sig
       implementation, which is the height you should be using in
       [Gtk.Widget.snapshot].
 
-      For pointer events, see [Gtk.Widget.contains].
+      For pointer events, see
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -1529,7 +1613,8 @@ and Widget : sig
 
       For backwards compatibility reasons this method will never return one of
       the baseline alignments, but instead it will convert it to
-      [Gtk.Align.fill] or [Gtk.Align.center].
+      {{!Ocgtk.Enums.type-align.constructor-FILL}[Gtk.Align.fill]} or
+      {{!Ocgtk.Enums.type-align.constructor-CENTER}[Gtk.Align.center]}.
 
       Baselines are not supported for horizontal alignment. *)
 
@@ -1547,10 +1632,10 @@ and Widget : sig
 
       [Gdk.FrameClock.request_phase] will result in a new frame on the clock,
       but won’t necessarily repaint any widgets. To repaint a widget, you have
-      to use [Gtk.Widget.queue_draw] which invalidates the widget (thus
-      scheduling it to receive a draw on the next frame).
-      [Gtk.Widget.queue_draw] will also end up requesting a frame on the
-      appropriate frame clock.
+      to use {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
+      invalidates the widget (thus scheduling it to receive a draw on the next
+      frame). {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} will
+      also end up requesting a frame on the appropriate frame clock.
 
       A widget’s frame clock will not change while the widget is mapped.
       Reparenting a widget (which implies a temporary unmap) can change the
@@ -1562,24 +1647,28 @@ and Widget : sig
     = "ml_gtk_widget_get_font_options"
   (** Returns the [cairo_font_options_t] of the widget.
 
-      Seee [Gtk.Widget.set_font_options]. *)
+      Seee
+      {{!Ocgtk.Raw.Widget.val-set_font_options}[Gtk.Widget.set_font_options]}.
+  *)
 
   external get_font_map : t -> Ocpango_raw.Font_map.t option
     = "ml_gtk_widget_get_font_map"
   (** Gets the font map of the widget.
 
-      See [Gtk.Widget.set_font_map]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_font_map}[Gtk.Widget.set_font_map]}. *)
 
   external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
   (** Determines whether the widget can own the input focus.
 
-      See [Gtk.Widget.set_focusable]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_focusable}[Gtk.Widget.set_focusable]}. *)
 
   external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
   (** Returns whether the widget should grab focus when it is clicked with the
       mouse.
 
-      See [Gtk.Widget.set_focus_on_click]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_focus_on_click}[Gtk.Widget.set_focus_on_click]}.
+  *)
 
   external get_focus_child : t -> t option = "ml_gtk_widget_get_focus_child"
   (** Returns the focus child of the widget. *)
@@ -1603,13 +1692,14 @@ and Widget : sig
     = "ml_gtk_widget_get_direction"
   (** Gets the reading direction for the widget.
 
-      See [Gtk.Widget.set_direction]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_direction}[Gtk.Widget.set_direction]}. *)
 
   external get_cursor : t -> Ocgdk_raw.Cursor.t option
     = "ml_gtk_widget_get_cursor"
   (** Gets the cursor set on the widget.
 
-      See [Gtk.Widget.set_cursor] for details. *)
+      See {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]} for
+      details. *)
 
   external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
   (** Returns the CSS name of the widget. *)
@@ -1634,7 +1724,8 @@ and Widget : sig
       yet. *)
 
   external get_child_visible : t -> bool = "ml_gtk_widget_get_child_visible"
-  (** Gets the value set with [Gtk.Widget.set_child_visible].
+  (** Gets the value set with
+      {{!Ocgtk.Raw.Widget.val-set_child_visible}[Gtk.Widget.set_child_visible]}.
 
       If you feel a need to use this function, your code probably needs
       reorganization.
@@ -1649,7 +1740,7 @@ and Widget : sig
   (** Determines whether the input focus can enter the widget or any of its
       children.
 
-      See [Gtk.Widget.set_can_focus]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_can_focus}[Gtk.Widget.set_can_focus]}. *)
 
   external get_baseline : t -> int = "ml_gtk_widget_get_baseline"
   (** Returns the baseline that has currently been allocated to the widget.
@@ -1666,8 +1757,9 @@ and Widget : sig
       first [GtkBox] that’s an ancestor of [widget]. No reference will be added
       to the returned widget; it should not be unreferenced.
 
-      Note that unlike [Gtk.Widget.is_ancestor], this function considers
-      [widget] to be an ancestor of itself. *)
+      Note that unlike
+      {{!Ocgtk.Raw.Widget.val-is_ancestor}[Gtk.Widget.is_ancestor]}, this
+      function considers [widget] to be an ancestor of itself. *)
 
   external get_allocated_width : t -> int = "ml_gtk_widget_get_allocated_width"
   (** Returns the width that has currently been allocated to the widget.
@@ -1691,8 +1783,9 @@ and Widget : sig
   external error_bell : t -> unit = "ml_gtk_widget_error_bell"
   (** Notifies the user about an input-related error on the widget.
 
-      If the [Gtk.Settings:gtk-error-bell] setting is true, it calls
-      [Gdk.Surface.beep], otherwise it does nothing.
+      If the
+      {{!Ocgtk.Raw.Settings.val-get_gtk_error_bell}[Gtk.Settings:gtk-error-bell]}
+      setting is true, it calls [Gdk.Surface.beep], otherwise it does nothing.
 
       Note that the effect of [Gdk.Surface.beep] can be configured in many ways,
       depending on the windowing backend and the desktop environment or window
@@ -1706,14 +1799,16 @@ and Widget : sig
     = "ml_gtk_widget_dispose_template"
   (** Clears the template children for the widget.
 
-      This function is the opposite of [Gtk.Widget.init_template], and it is
-      used to clear all the template children from a widget instance. If you
+      This function is the opposite of
+      {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]}, and it
+      is used to clear all the template children from a widget instance. If you
       bound a template child to a field in the instance structure, or in the
       instance private data structure, the field will be set to [None] after
       this function returns.
 
       You should call this function inside the [GObjectClass.dispose()]
-      implementation of any widget that called [Gtk.Widget.init_template].
+      implementation of any widget that called
+      {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]}.
       Typically, you will want to call this function last, right before chaining
       up to the parent type's dispose implementation, e.g.
 
@@ -1739,7 +1834,8 @@ and Widget : sig
 
       If you keep a [PangoLayout] created in this way around, you need to
       re-create it when the widgets [PangoContext] is replaced. This can be
-      tracked by listening to changes of the [Gtk.Widget:root] property on the
+      tracked by listening to changes of the
+      {{!Ocgtk.Raw.Widget.val-get_root}[Gtk.Widget:root]} property on the
       widget. *)
 
   external create_pango_context : t -> Ocpango_raw.Context.t
@@ -1749,7 +1845,9 @@ and Widget : sig
       The [PangoContext] will have the appropriate font map, font options, font
       description, and base direction set.
 
-      See also [Gtk.Widget.get_pango_context]. *)
+      See also
+      {{!Ocgtk.Raw.Widget.val-get_pango_context}[Gtk.Widget.get_pango_context]}.
+  *)
 
   external contains : t -> float -> float -> bool = "ml_gtk_widget_contains"
   (** Tests if a given point is contained in the widget.
@@ -1785,7 +1883,8 @@ and Widget : sig
       possible.
 
       Widgets with children should check this, rather than looking at
-      [Gtk.Widget.get_hexpand] or [Gtk.Widget.get_vexpand].
+      {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget.get_hexpand]} or
+      {{!Ocgtk.Raw.Widget.val-get_vexpand}[Gtk.Widget.get_vexpand]}.
 
       This function already checks whether the widget is visible, so visibility
       does not need to be checked separately. Non-visible widgets are not
@@ -1824,13 +1923,15 @@ and Widget : sig
       The default [focus()] virtual function for a widget should return true if
       moving in [direction] left the focus on a focusable location inside that
       widget, and false if moving in [direction] moved the focus outside the
-      widget. When returning true, widgets normally call [Gtk.Widget.grab_focus]
-      to place the focus accordingly; when returning false, they don’t modify
-      the current focus location.
+      widget. When returning true, widgets normally call
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} to place the
+      focus accordingly; when returning false, they don’t modify the current
+      focus location.
 
       This function is used by custom widget implementations; if you're writing
-      an app, you’d use [Gtk.Widget.grab_focus] to move the focus to a
-      particular widget. *)
+      an app, you’d use
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} to move the
+      focus to a particular widget. *)
 
   external allocate :
     t -> int -> int -> int -> Ocgsk_raw.Transform.t option -> unit
@@ -1851,7 +1952,8 @@ and Widget : sig
     = "ml_gtk_widget_add_mnemonic_label"
   (** Adds a widget to the list of mnemonic labels for this widget.
 
-      See [Gtk.Widget.list_mnemonic_labels].
+      See
+      {{!Ocgtk.Raw.Widget.val-list_mnemonic_labels}[Gtk.Widget.list_mnemonic_labels]}.
 
       Note that the list of mnemonic labels for the widget is cleared when the
       widget is destroyed, so the caller must make sure to update its internal
@@ -1863,7 +1965,9 @@ and Widget : sig
       After calling this function, the widget’s style will match for
       [css_class], according to CSS matching rules.
 
-      Use [Gtk.Widget.remove_css_class] to remove the style again. *)
+      Use
+      {{!Ocgtk.Raw.Widget.val-remove_css_class}[Gtk.Widget.remove_css_class]} to
+      remove the style again. *)
 
   external add_controller : t -> Event_controller.t -> unit
     = "ml_gtk_widget_add_controller"
@@ -1889,8 +1993,9 @@ and Widget : sig
       its ancestors.
 
       If the action is in an action group added with
-      [Gtk.Widget.insert_action_group], the [name] is expected to be prefixed
-      with the prefix that was used when the group was inserted.
+      {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]},
+      the [name] is expected to be prefixed with the prefix that was used when
+      the group was inserted.
 
       The arguments must match the actions expected parameter type, as returned
       by [Gio.Action.get_parameter_type]. *)
@@ -1905,7 +2010,7 @@ and Widget : sig
 
       If you wish to handle the activation keybinding yourself, it is
       recommended to use [Gtk.WidgetClass.add_shortcut] with an action created
-      with [Gtk.SignalAction.new].
+      with {{!Ocgtk.Raw.Signal_action.val-new_}[Gtk.SignalAction.new]}.
 
       If [widget] is not activatable, the function returns false. *)
 
@@ -1965,19 +2070,20 @@ and Widget : sig
     Gobject.Signal.handler_id
   (** Emitted if keyboard navigation fails.
 
-      See [Gtk.Widget.keynav_failed] for details. *)
+      See {{!Ocgtk.Raw.Widget.val-keynav_failed}[Gtk.Widget.keynav_failed]} for
+      details. *)
 
   val on_map :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
   (** Emitted when [widget] is going to be mapped.
 
       A widget is mapped when the widget is visible (which is controlled with
-      [Gtk.Widget:visible]) and all its parents up to the toplevel widget are
-      also visible.
+      {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget:visible]}) and all its
+      parents up to the toplevel widget are also visible.
 
       The [::map] signal can be used to determine whether a widget will be
       drawn, for instance it can resume an animation that was stopped during the
-      emission of [Gtk.Widget::unmap]. *)
+      emission of {{!Ocgtk.Raw.Widget.val-on_unmap}[Gtk.Widget::unmap]}. *)
 
   val on_mnemonic_activate :
     ?after:bool ->
@@ -2008,9 +2114,10 @@ and Widget : sig
     Gobject.Signal.handler_id
   (** Emitted when the widget’s tooltip is about to be shown.
 
-      This happens when the [Gtk.Widget:has-tooltip] property is true and the
-      hover timeout has expired with the cursor hovering above [widget]; or
-      emitted when [widget] got focus in keyboard mode.
+      This happens when the
+      {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} property
+      is true and the hover timeout has expired with the cursor hovering above
+      [widget]; or emitted when [widget] got focus in keyboard mode.
 
       Using the given coordinates, the signal handler should determine whether a
       tooltip should be shown for [widget]. If this is the case true should be
@@ -2024,8 +2131,9 @@ and Widget : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
   (** Emitted when [widget] is associated with a [GdkSurface].
 
-      This means that [Gtk.Widget.realize] has been called or the widget has
-      been mapped (that is, it is going to be drawn). *)
+      This means that {{!Ocgtk.Raw.Widget.val-realize}[Gtk.Widget.realize]} has
+      been called or the widget has been mapped (that is, it is going to be
+      drawn). *)
 
   val on_show :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -2038,7 +2146,8 @@ and Widget : sig
     Gobject.Signal.handler_id
   (** Emitted when the widget state changes.
 
-      See [Gtk.Widget.get_state_flags]. *)
+      See {{!Ocgtk.Raw.Widget.val-get_state_flags}[Gtk.Widget.get_state_flags]}.
+  *)
 
   val on_unmap :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -2054,8 +2163,9 @@ and Widget : sig
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
   (** Emitted when the [GdkSurface] associated with [widget] is destroyed.
 
-      This means that [Gtk.Widget.unrealize] has been called or the widget has
-      been unmapped (that is, it is going to be hidden). *)
+      This means that {{!Ocgtk.Raw.Widget.val-unrealize}[Gtk.Widget.unrealize]}
+      has been called or the widget has been unmapped (that is, it is going to
+      be hidden). *)
 end = struct
   type t = [ `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -2067,7 +2177,7 @@ end = struct
     = "ml_gtk_widget_unset_state_flags"
   (** Turns off flag values for the current widget state.
 
-      See [Gtk.Widget.set_state_flags].
+      See {{!Ocgtk.Raw.Widget.val-set_state_flags}[Gtk.Widget.set_state_flags]}.
 
       This function is for use in widget implementations. *)
 
@@ -2142,17 +2252,20 @@ end = struct
   (** Sets the visibility state of [widget].
 
       Note that setting this to true doesn’t mean the widget is actually
-      viewable, see [Gtk.Widget.get_visible]. *)
+      viewable, see
+      {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget.get_visible]}. *)
 
   external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
   (** Sets whether the vexpand flag will be used.
 
-      See [Gtk.Widget.set_hexpand_set] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-set_hexpand_set}[Gtk.Widget.set_hexpand_set]}
+      for more detail. *)
 
   external set_vexpand : t -> bool -> unit = "ml_gtk_widget_set_vexpand"
   (** Sets whether the widget would like any available extra vertical space.
 
-      See [Gtk.Widget.set_hexpand] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} for more
+      detail. *)
 
   external set_valign : t -> Ocgtk_enums.align -> unit
     = "ml_gtk_widget_set_valign"
@@ -2164,11 +2277,13 @@ end = struct
 
       If [text] contains any markup, it will be escaped.
 
-      This function will take care of setting [Gtk.Widget:has-tooltip] as a side
-      effect, and of the default handler for the [Gtk.Widget::query-tooltip]
+      This function will take care of setting
+      {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} as a
+      side effect, and of the default handler for the
+      {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]}
       signal.
 
-      See also [Gtk.Tooltip.set_text]. *)
+      See also {{!Ocgtk.Raw.Tooltip.val-set_text}[Gtk.Tooltip.set_text]}. *)
 
   external set_tooltip_markup : t -> string option -> unit
     = "ml_gtk_widget_set_tooltip_markup"
@@ -2176,11 +2291,13 @@ end = struct
 
       [markup] must contain Pango markup.
 
-      This function will take care of setting the [Gtk.Widget:has-tooltip] as a
+      This function will take care of setting the
+      {{!Ocgtk.Raw.Widget.val-get_has_tooltip}[Gtk.Widget:has-tooltip]} as a
       side effect, and of the default handler for the
-      [Gtk.Widget::query-tooltip] signal.
+      {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]}
+      signal.
 
-      See also [Gtk.Tooltip.set_markup]. *)
+      See also {{!Ocgtk.Raw.Tooltip.val-set_markup}[Gtk.Tooltip.set_markup]}. *)
 
   external set_state_flags : t -> Ocgtk_enums.stateflags -> bool -> unit
     = "ml_gtk_widget_set_state_flags"
@@ -2188,9 +2305,12 @@ end = struct
 
       Typical widget states are insensitive, prelighted, etc.
 
-      This function accepts the values [Gtk.StateFlags.dir-ltr] and
-      [Gtk.StateFlags.dir-rtl] but ignores them. If you want to set the widget's
-      direction, use [Gtk.Widget.set_direction].
+      This function accepts the values
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-DIR_LTR}[Gtk.StateFlags.dir-ltr]}
+      and
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-DIR_RTL}[Gtk.StateFlags.dir-rtl]}
+      but ignores them. If you want to set the widget's direction, use
+      {{!Ocgtk.Raw.Widget.val-set_direction}[Gtk.Widget.set_direction]}.
 
       This function is for use in widget implementations. *)
 
@@ -2202,10 +2322,12 @@ end = struct
       You can use this function to force a widget to be larger than it normally
       would be.
 
-      In most cases, [Gtk.Window.set_default_size] is a better choice for
-      toplevel windows than this function; setting the default size will still
-      allow users to shrink the window. Setting the size request will force them
-      to leave the window at least as large as the size request.
+      In most cases,
+      {{!Ocgtk.Raw.Window.val-set_default_size}[Gtk.Window.set_default_size]} is
+      a better choice for toplevel windows than this function; setting the
+      default size will still allow users to shrink the window. Setting the size
+      request will force them to leave the window at least as large as the size
+      request.
 
       Note the inherent danger of setting any fixed size - themes, translations
       into other languages, different fonts, and user action can all change the
@@ -2221,10 +2343,12 @@ end = struct
       size request of the widget will be used instead.
 
       The size request set here does not include any margin from the properties
-      [Gtk.Widget:margin-start], [Gtk.Widget:margin-end],
-      [Gtk.Widget:margin-top], and [Gtk.Widget:margin-bottom], but it does
-      include pretty much all other padding or border properties set by any
-      subclass of [GtkWidget]. *)
+      {{!Ocgtk.Raw.Widget.val-get_margin_start}[Gtk.Widget:margin-start]},
+      {{!Ocgtk.Raw.Widget.val-get_margin_end}[Gtk.Widget:margin-end]},
+      {{!Ocgtk.Raw.Widget.val-get_margin_top}[Gtk.Widget:margin-top]}, and
+      {{!Ocgtk.Raw.Widget.val-get_margin_bottom}[Gtk.Widget:margin-bottom]}, but
+      it does include pretty much all other padding or border properties set by
+      any subclass of [GtkWidget]. *)
 
   external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
   (** Sets the sensitivity of the widget.
@@ -2244,7 +2368,7 @@ end = struct
 
       This takes care of details such as updating the state and style of the
       child to reflect its new location and resizing the parent. The opposite
-      function is [Gtk.Widget.unparent].
+      function is {{!Ocgtk.Raw.Widget.val-unparent}[Gtk.Widget.unparent]}.
 
       This function is useful only when implementing subclasses of [GtkWidget].
   *)
@@ -2260,7 +2384,9 @@ end = struct
       This setting is provided for widget implementations and should not be used
       by application code.
 
-      The default value is [Gtk.Overflow.visible]. *)
+      The default value is
+      {{!Ocgtk.Enums.type-overflow.constructor-VISIBLE}[Gtk.Overflow.visible]}.
+  *)
 
   external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
   (** Requests the widget to be rendered partially transparent.
@@ -2324,9 +2450,11 @@ end = struct
   external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
   (** Sets whether the hexpand flag will be used.
 
-      The [Gtk.Widget:hexpand-set] property will be set automatically when you
-      call [Gtk.Widget.set_hexpand] to set hexpand, so the most likely reason to
-      use this function would be to unset an explicit expand flag.
+      The {{!Ocgtk.Raw.Widget.val-get_hexpand_set}[Gtk.Widget:hexpand-set]}
+      property will be set automatically when you call
+      {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} to set
+      hexpand, so the most likely reason to use this function would be to unset
+      an explicit expand flag.
 
       If hexpand is set, then it overrides any computed expand value based on
       child widgets. If hexpand is not set, then the expand value depends on
@@ -2347,18 +2475,22 @@ end = struct
 
       By default, widgets automatically expand if any of their children want to
       expand. (To see if a widget will automatically expand given its current
-      children and state, call [Gtk.Widget.compute_expand]. A widget can decide
-      how the expandability of children affects its own expansion by overriding
-      the [compute_expand] virtual method on [GtkWidget].).
+      children and state, call
+      {{!Ocgtk.Raw.Widget.val-compute_expand}[Gtk.Widget.compute_expand]}. A
+      widget can decide how the expandability of children affects its own
+      expansion by overriding the [compute_expand] virtual method on
+      [GtkWidget].).
 
       Setting hexpand explicitly with this function will override the automatic
       expand behavior.
 
       This function forces the widget to expand or not to expand, regardless of
-      children. The override occurs because [Gtk.Widget.set_hexpand] sets the
-      hexpand-set property (see [Gtk.Widget.set_hexpand_set]) which causes the
-      widget’s hexpand value to be used, rather than looking at children and
-      widget state. *)
+      children. The override occurs because
+      {{!Ocgtk.Raw.Widget.val-set_hexpand}[Gtk.Widget.set_hexpand]} sets the
+      hexpand-set property (see
+      {{!Ocgtk.Raw.Widget.val-set_hexpand_set}[Gtk.Widget.set_hexpand_set]})
+      which causes the widget’s hexpand value to be used, rather than looking at
+      children and widget state. *)
 
   external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
   (** Sets the [has-tooltip] property on the widget. *)
@@ -2395,8 +2527,8 @@ end = struct
       can-focus and not have an ancestor that is marked as not can-focus in
       order to receive input focus.
 
-      See [Gtk.Widget.grab_focus] for actually setting the input focus on a
-      widget. *)
+      See {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} for
+      actually setting the input focus on a widget. *)
 
   external set_focus_on_click : t -> bool -> unit
     = "ml_gtk_widget_set_focus_on_click"
@@ -2412,8 +2544,8 @@ end = struct
   (** Set the focus child of the widget.
 
       This function is only suitable for widget implementations. If you want a
-      certain widget to get the input focus, call [Gtk.Widget.grab_focus] on it.
-  *)
+      certain widget to get the input focus, call
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} on it. *)
 
   external set_direction : t -> Ocgtk_enums.textdirection -> unit
     = "ml_gtk_widget_set_direction"
@@ -2430,8 +2562,9 @@ end = struct
       explicitly visual rather than logical (such as buttons for text
       justification).
 
-      If the direction is set to [Gtk.TextDirection.none], then the value set by
-      [Gtk.Widget.set_default_direction] will be used. *)
+      If the direction is set to
+      {{!Ocgtk.Enums.type-textdirection.constructor-NONE}[Gtk.TextDirection.none]},
+      then the value set by [Gtk.Widget.set_default_direction] will be used. *)
 
   external set_cursor_from_name : t -> string option -> unit
     = "ml_gtk_widget_set_cursor_from_name"
@@ -2439,10 +2572,13 @@ end = struct
 
       This is a utility function that creates a cursor via
       [Gdk.Cursor.new_from_name] and then sets it on [widget] with
-      [Gtk.Widget.set_cursor]. See those functions for details.
+      {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]}. See those
+      functions for details.
 
       On top of that, this function allows [name] to be [None], which will do
-      the same as calling [Gtk.Widget.set_cursor] with a [None] cursor. *)
+      the same as calling
+      {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]} with a [None]
+      cursor. *)
 
   external set_cursor : t -> Ocgdk_raw.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
@@ -2460,9 +2596,11 @@ end = struct
   (** Sets whether the widget should be mapped along with its parent.
 
       The child visibility can be set for widget before it is added to a
-      container with [Gtk.Widget.set_parent], to avoid mapping children
-      unnecessary before immediately unmapping them. However it will be reset to
-      its default state of true when the widget is removed from a container.
+      container with
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, to avoid
+      mapping children unnecessary before immediately unmapping them. However it
+      will be reset to its default state of true when the widget is removed from
+      a container.
 
       Note that changing the child visibility of a widget does not queue a
       resize on the widget. Most of the time, the size of a widget is computed
@@ -2486,8 +2624,8 @@ end = struct
       focusable and not have an ancestor that is marked as not can-focus in
       order to receive input focus.
 
-      See [Gtk.Widget.grab_focus] for actually setting the input focus on a
-      widget. *)
+      See {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} for
+      actually setting the input focus on a widget. *)
 
   external remove_tick_callback : t -> int -> unit
     = "ml_gtk_widget_remove_tick_callback"
@@ -2498,10 +2636,12 @@ end = struct
     = "ml_gtk_widget_remove_mnemonic_label"
   (** Removes a widget from the list of mnemonic labels for this widget.
 
-      See [Gtk.Widget.list_mnemonic_labels].
+      See
+      {{!Ocgtk.Raw.Widget.val-list_mnemonic_labels}[Gtk.Widget.list_mnemonic_labels]}.
 
       The widget must have previously been added to the list with
-      [Gtk.Widget.add_mnemonic_label]. *)
+      {{!Ocgtk.Raw.Widget.val-add_mnemonic_label}[Gtk.Widget.add_mnemonic_label]}.
+  *)
 
   external remove_css_class : t -> string -> unit
     = "ml_gtk_widget_remove_css_class"
@@ -2534,7 +2674,8 @@ end = struct
       This function is primarily used in widget implementations, and isn’t very
       useful otherwise. Many times when you think you might need it, a better
       approach is to connect to a signal that will be called after the widget is
-      realized automatically, such as [Gtk.Widget::realize]. *)
+      realized automatically, such as
+      {{!Ocgtk.Raw.Widget.val-on_realize}[Gtk.Widget::realize]}. *)
 
   external queue_resize : t -> unit = "ml_gtk_widget_queue_resize"
   (** Flags a widget to have its size renegotiated.
@@ -2563,10 +2704,13 @@ end = struct
   external queue_allocate : t -> unit = "ml_gtk_widget_queue_allocate"
   (** Flags the widget for a rerun of the [Gtk.Widget.size_allocate] function.
 
-      Use this function instead of [Gtk.Widget.queue_resize] when the [widget]'s
-      size request didn't change but it wants to reposition its contents.
+      Use this function instead of
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[Gtk.Widget.queue_resize]} when the
+      [widget]'s size request didn't change but it wants to reposition its
+      contents.
 
-      An example user of this function is [Gtk.Widget.set_halign].
+      An example user of this function is
+      {{!Ocgtk.Raw.Widget.val-set_halign}[Gtk.Widget.set_halign]}.
 
       This function is only for use in widget implementations. *)
 
@@ -2578,7 +2722,8 @@ end = struct
       to be the top left of [widget]'s content area.
 
       Usually widgets will return [None] if the given coordinate is not
-      contained in [widget] checked via [Gtk.Widget.contains]. Otherwise they
+      contained in [widget] checked via
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}. Otherwise they
       will recursively try to find a child that does not return [None]. Widgets
       are however free to customize their picking algorithm.
 
@@ -2609,7 +2754,9 @@ end = struct
 
   external mnemonic_activate : t -> bool -> bool
     = "ml_gtk_widget_mnemonic_activate"
-  (** Emits the [Gtk.Widget::mnemonic-activate] signal. *)
+  (** Emits the
+      {{!Ocgtk.Raw.Widget.val-on_mnemonic_activate}[Gtk.Widget::mnemonic-activate]}
+      signal. *)
 
   external measure :
     t -> Ocgtk_enums.orientation -> int -> int * int * int * int
@@ -2634,7 +2781,7 @@ end = struct
   (** Returns the widgets for which this widget is the target of a mnemonic.
 
       Typically, these widgets will be labels. See, for example,
-      [Gtk.Label.set_mnemonic_widget].
+      {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
 
       The widgets in the list are not individually referenced. If you want to
       iterate through the list and perform actions involving callbacks that
@@ -2644,26 +2791,35 @@ end = struct
 
   external keynav_failed : t -> Ocgtk_enums.directiontype -> bool
     = "ml_gtk_widget_keynav_failed"
-  (** Emits the [Gtk.Widget::keynav-failed] signal on the widget.
+  (** Emits the
+      {{!Ocgtk.Raw.Widget.val-on_keynav_failed}[Gtk.Widget::keynav-failed]}
+      signal on the widget.
 
       This function should be called whenever keyboard navigation within a
       single widget hits a boundary.
 
       The return value of this function should be interpreted in a way similar
-      to the return value of [Gtk.Widget.child_focus]. When true is returned,
-      stay in the widget, the failed keyboard navigation is ok and/or there is
-      nowhere we can/should move the focus to. When false is returned, the
-      caller should continue with keyboard navigation outside the widget, e.g.
-      by calling [Gtk.Widget.child_focus] on the widget’s toplevel.
+      to the return value of
+      {{!Ocgtk.Raw.Widget.val-child_focus}[Gtk.Widget.child_focus]}. When true
+      is returned, stay in the widget, the failed keyboard navigation is ok
+      and/or there is nowhere we can/should move the focus to. When false is
+      returned, the caller should continue with keyboard navigation outside the
+      widget, e.g. by calling
+      {{!Ocgtk.Raw.Widget.val-child_focus}[Gtk.Widget.child_focus]} on the
+      widget’s toplevel.
 
-      The default [Gtk.Widget::keynav-failed] handler returns false for
-      [Gtk.DirectionType.tab-forward] and [Gtk.DirectionType.tab-backward]. For
-      the other values of {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]}
-      it returns true.
+      The default
+      {{!Ocgtk.Raw.Widget.val-on_keynav_failed}[Gtk.Widget::keynav-failed]}
+      handler returns false for
+      {{!Ocgtk.Enums.type-directiontype.constructor-TAB_FORWARD}[Gtk.DirectionType.tab-forward]}
+      and
+      {{!Ocgtk.Enums.type-directiontype.constructor-TAB_BACKWARD}[Gtk.DirectionType.tab-backward]}.
+      For the other values of
+      {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]} it returns true.
 
       Whenever the default handler returns true, it also calls
-      [Gtk.Widget.error_bell] to notify the user of the failed keyboard
-      navigation.
+      {{!Ocgtk.Raw.Widget.val-error_bell}[Gtk.Widget.error_bell]} to notify the
+      user of the failed keyboard navigation.
 
       A use case for providing an own implementation of [::keynav-failed]
       (either by connecting to it or by overriding it) would be a row of
@@ -2676,7 +2832,8 @@ end = struct
 
       This function does not check if the widget is obscured in any way.
 
-      See also [Gtk.Widget.get_visible] and [Gtk.Widget.set_visible]. *)
+      See also {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget.get_visible]} and
+      {{!Ocgtk.Raw.Widget.val-set_visible}[Gtk.Widget.set_visible]}. *)
 
   external is_sensitive : t -> bool = "ml_gtk_widget_is_sensitive"
   (** Returns the widget’s effective sensitivity.
@@ -2687,9 +2844,11 @@ end = struct
   external is_focus : t -> bool = "ml_gtk_widget_is_focus"
   (** Determines if the widget is the focus widget within its toplevel.
 
-      This does not mean that the [Gtk.Widget:has-focus] property is necessarily
-      set; [Gtk.Widget:has-focus] will only be set if the toplevel widget
-      additionally has the global input focus. *)
+      This does not mean that the
+      {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget:has-focus]} property is
+      necessarily set; {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget:has-focus]}
+      will only be set if the toplevel widget additionally has the global input
+      focus. *)
 
   external is_drawable : t -> bool = "ml_gtk_widget_is_drawable"
   (** Determines whether the widget can be drawn to.
@@ -2703,8 +2862,10 @@ end = struct
     = "ml_gtk_widget_insert_before"
   (** Sets the parent widget of the widget.
 
-      In contrast to [Gtk.Widget.set_parent], this function inserts [widget] at
-      a specific position into the list of children of the [parent] widget.
+      In contrast to
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, this function
+      inserts [widget] at a specific position into the list of children of the
+      [parent] widget.
 
       It will be placed before [next_sibling], or at the end if [next_sibling]
       is [None].
@@ -2722,8 +2883,10 @@ end = struct
     = "ml_gtk_widget_insert_after"
   (** Sets the parent widget of the widget.
 
-      In contrast to [Gtk.Widget.set_parent], this function inserts [widget] at
-      a specific position into the list of children of the [parent] widget.
+      In contrast to
+      {{!Ocgtk.Raw.Widget.val-set_parent}[Gtk.Widget.set_parent]}, this function
+      inserts [widget] at a specific position into the list of children of the
+      [parent] widget.
 
       It will be placed after [previous_sibling], or at the beginning if
       [previous_sibling] is [None].
@@ -2791,17 +2954,19 @@ end = struct
 
       This is a convenience function that takes into account whether focus
       indication should currently be shown in the toplevel window of [widget].
-      See [Gtk.Window.get_focus_visible] for more information about focus
-      indication.
+      See
+      {{!Ocgtk.Raw.Window.val-get_focus_visible}[Gtk.Window.get_focus_visible]}
+      for more information about focus indication.
 
       To find out if the widget has the global input focus, use
-      [Gtk.Widget.has_focus]. *)
+      {{!Ocgtk.Raw.Widget.val-has_focus}[Gtk.Widget.has_focus]}. *)
 
   external has_focus : t -> bool = "ml_gtk_widget_has_focus"
   (** Determines if the widget has the global input focus.
 
-      See [Gtk.Widget.is_focus] for the difference between having the global
-      input focus, and only having the focus within a toplevel. *)
+      See {{!Ocgtk.Raw.Widget.val-is_focus}[Gtk.Widget.is_focus]} for the
+      difference between having the global input focus, and only having the
+      focus within a toplevel. *)
 
   external has_default : t -> bool = "ml_gtk_widget_has_default"
   (** Determines whether the widget is the current default widget within its
@@ -2818,8 +2983,9 @@ end = struct
       implementation cannot transfer the focus to a descendant of [widget] that
       is focusable, it will not take focus and false will be returned.
 
-      Calling [Gtk.Widget.grab_focus] on an already focused widget is allowed,
-      should not have an effect, and return true. *)
+      Calling {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} on an
+      already focused widget is allowed, should not have an effect, and return
+      true. *)
 
   external get_width : t -> int = "ml_gtk_widget_get_width"
   (** Returns the content width of the widget.
@@ -2828,7 +2994,8 @@ end = struct
       implementation, which is the width you should be using in
       [Gtk.Widget.snapshot].
 
-      For pointer events, see [Gtk.Widget.contains].
+      For pointer events, see
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -2836,21 +3003,24 @@ end = struct
   (** Determines whether the widget is visible.
 
       If you want to take into account whether the widget’s parent is also
-      marked as visible, use [Gtk.Widget.is_visible] instead.
+      marked as visible, use
+      {{!Ocgtk.Raw.Widget.val-is_visible}[Gtk.Widget.is_visible]} instead.
 
       This function does not check if the widget is obscured in any way.
 
-      See [Gtk.Widget.set_visible]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_visible}[Gtk.Widget.set_visible]}. *)
 
   external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
   (** Gets whether the [vexpand] flag has been explicitly set.
 
-      See [Gtk.Widget.get_hexpand_set] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-get_hexpand_set}[Gtk.Widget.get_hexpand_set]}
+      for more detail. *)
 
   external get_vexpand : t -> bool = "ml_gtk_widget_get_vexpand"
   (** Gets whether the widget would like any available extra vertical space.
 
-      See [Gtk.Widget.get_hexpand] for more detail. *)
+      See {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget.get_hexpand]} for more
+      detail. *)
 
   external get_valign : t -> Ocgtk_enums.align = "ml_gtk_widget_get_valign"
   (** Gets the vertical alignment of the widget. *)
@@ -2859,14 +3029,16 @@ end = struct
     = "ml_gtk_widget_get_tooltip_text"
   (** Gets the contents of the tooltip for the widget.
 
-      If the [widget]'s tooltip was set using [Gtk.Widget.set_tooltip_markup],
+      If the [widget]'s tooltip was set using
+      {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]},
       this function will return the escaped text. *)
 
   external get_tooltip_markup : t -> string option
     = "ml_gtk_widget_get_tooltip_markup"
   (** Gets the contents of the tooltip for the widget.
 
-      If the tooltip has not been set using [Gtk.Widget.set_tooltip_markup],
+      If the tooltip has not been set using
+      {{!Ocgtk.Raw.Widget.val-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]},
       this function returns [None]. *)
 
   external get_template_child :
@@ -2893,14 +3065,15 @@ end = struct
     = "ml_gtk_widget_get_state_flags"
   (** Returns the widget state as a flag set.
 
-      It is worth mentioning that the effective [Gtk.StateFlags.insensitive]
+      It is worth mentioning that the effective
+      {{!Ocgtk.Enums.type-stateflags_flag.constructor-INSENSITIVE}[Gtk.StateFlags.insensitive]}
       state will be returned, that is, also based on parent insensitivity, even
       if [widget] itself is sensitive.
 
       Also note that if you are looking for a way to obtain the
       {{!Ocgtk.Enums.type-stateflags}[Gtk.StateFlags]} to pass to a
       {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]} method, you should look at
-      [Gtk.StyleContext.get_state]. *)
+      {{!Ocgtk.Raw.Style_context.val-get_state}[Gtk.StyleContext.get_state]}. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
   (** Gets the size request that was explicitly set for the widget.
@@ -2909,10 +3082,12 @@ end = struct
       has not been set explicitly and the natural requisition of the widget will
       be used instead.
 
-      See [Gtk.Widget.set_size_request].
+      See
+      {{!Ocgtk.Raw.Widget.val-set_size_request}[Gtk.Widget.set_size_request]}.
 
-      To get the size a widget will actually request, call [Gtk.Widget.measure]
-      instead of this function. *)
+      To get the size a widget will actually request, call
+      {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} instead of this
+      function. *)
 
   external get_size : t -> Ocgtk_enums.orientation -> int
     = "ml_gtk_widget_get_size"
@@ -2920,11 +3095,13 @@ end = struct
 
       Which dimension is returned depends on [orientation].
 
-      This is equivalent to calling [Gtk.Widget.get_width] for
-      [Gtk.Orientation.horizontal] or [Gtk.Widget.get_height] for
-      [Gtk.Orientation.vertical], but can be used when writing
-      orientation-independent code, such as when implementing
-      {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
+      This is equivalent to calling
+      {{!Ocgtk.Raw.Widget.val-get_width}[Gtk.Widget.get_width]} for
+      {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[Gtk.Orientation.horizontal]}
+      or {{!Ocgtk.Raw.Widget.val-get_height}[Gtk.Widget.get_height]} for
+      {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[Gtk.Orientation.vertical]},
+      but can be used when writing orientation-independent code, such as when
+      implementing {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -2940,10 +3117,11 @@ end = struct
   (** Returns the widget’s sensitivity.
 
       This function returns the value that has been set using
-      [Gtk.Widget.set_sensitive]).
+      {{!Ocgtk.Raw.Widget.val-set_sensitive}[Gtk.Widget.set_sensitive]}).
 
       The effective sensitivity of a widget is however determined by both its
-      own and its parent widget’s sensitivity. See [Gtk.Widget.is_sensitive]. *)
+      own and its parent widget’s sensitivity. See
+      {{!Ocgtk.Raw.Widget.val-is_sensitive}[Gtk.Widget.is_sensitive]}. *)
 
   external get_scale_factor : t -> int = "ml_gtk_widget_get_scale_factor"
   (** Retrieves the internal scale factor that maps from window coordinates to
@@ -2982,7 +3160,9 @@ end = struct
       within its toplevel when it has the focus, even if another widget is the
       default.
 
-      See [Gtk.Widget.set_receives_default]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_receives_default}[Gtk.Widget.set_receives_default]}.
+  *)
 
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
   (** Determines whether the widget is realized. *)
@@ -3017,7 +3197,8 @@ end = struct
       required height for the natural width is generally smaller than the
       required height for the minimum width.
 
-      Use [Gtk.Widget.measure] if you want to support baseline alignment. *)
+      Use {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} if you want to
+      support baseline alignment. *)
 
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
   (** Returns the parent widget of the widget. *)
@@ -3029,11 +3210,13 @@ end = struct
       The [PangoContext] will have the appropriate font map, font description,
       and base direction set.
 
-      Unlike the context returned by [Gtk.Widget.create_pango_context], this
-      context is owned by the widget (it can be used until the screen for the
-      widget changes or the widget is removed from its toplevel), and will be
-      updated to match any changes to the widget’s attributes. This can be
-      tracked by listening to changes of the [Gtk.Widget:root] property on the
+      Unlike the context returned by
+      {{!Ocgtk.Raw.Widget.val-create_pango_context}[Gtk.Widget.create_pango_context]},
+      this context is owned by the widget (it can be used until the screen for
+      the widget changes or the widget is removed from its toplevel), and will
+      be updated to match any changes to the widget’s attributes. This can be
+      tracked by listening to changes of the
+      {{!Ocgtk.Raw.Widget.val-get_root}[Gtk.Widget:root]} property on the
       widget. *)
 
   external get_overflow : t -> Ocgtk_enums.overflow
@@ -3043,7 +3226,7 @@ end = struct
   external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
   (** Fetches the requested opacity for the widget.
 
-      See [Gtk.Widget.set_opacity]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_opacity}[Gtk.Widget.set_opacity]}. *)
 
   external get_next_sibling : t -> t option = "ml_gtk_widget_get_next_sibling"
   (** Returns the widget’s next sibling.
@@ -3061,7 +3244,8 @@ end = struct
   external get_name : t -> string = "ml_gtk_widget_get_name"
   (** Retrieves the name of a widget.
 
-      See [Gtk.Widget.set_name] for the significance of widget names. *)
+      See {{!Ocgtk.Raw.Widget.val-set_name}[Gtk.Widget.set_name]} for the
+      significance of widget names. *)
 
   external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
   (** Gets the top margin of the widget. *)
@@ -3079,13 +3263,17 @@ end = struct
   (** Returns whether the widget is mapped. *)
 
   external get_limit_events : t -> bool = "ml_gtk_widget_get_limit_events"
-  (** Gets the value of the [Gtk.Widget:limit-events] property. *)
+  (** Gets the value of the
+      {{!Ocgtk.Raw.Widget.val-get_limit_events}[Gtk.Widget:limit-events]}
+      property. *)
 
   external get_layout_manager : t -> Layout_manager.t option
     = "ml_gtk_widget_get_layout_manager"
   (** Retrieves the layout manager of the widget.
 
-      See [Gtk.Widget.set_layout_manager]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_layout_manager}[Gtk.Widget.set_layout_manager]}.
+  *)
 
   external get_last_child : t -> t option = "ml_gtk_widget_get_last_child"
   (** Returns the widget’s last child.
@@ -3095,10 +3283,10 @@ end = struct
   external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
   (** Gets whether the [hexpand] flag has been explicitly set.
 
-      If [Gtk.Widget:hexpand] property is set, then it overrides any computed
-      expand value based on child widgets. If [hexpand] is not set, then the
-      expand value depends on whether any children of the widget would like to
-      expand.
+      If {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget:hexpand]} property is
+      set, then it overrides any computed expand value based on child widgets.
+      If [hexpand] is not set, then the expand value depends on whether any
+      children of the widget would like to expand.
 
       There are few reasons to use this function, but it’s here for completeness
       and consistency. *)
@@ -3110,9 +3298,10 @@ end = struct
       receive the extra space. For example, a list or scrollable area or
       document in your window would often be set to expand.
 
-      Widgets with children should use [Gtk.Widget.compute_expand] rather than
-      this function, to see whether any of its children, has the expand flag
-      set. If any child of a widget wants to expand, the parent may ask to
+      Widgets with children should use
+      {{!Ocgtk.Raw.Widget.val-compute_expand}[Gtk.Widget.compute_expand]} rather
+      than this function, to see whether any of its children, has the expand
+      flag set. If any child of a widget wants to expand, the parent may ask to
       expand also.
 
       This function only looks at the widget’s own hexpand flag, rather than
@@ -3126,7 +3315,8 @@ end = struct
       implementation, which is the height you should be using in
       [Gtk.Widget.snapshot].
 
-      For pointer events, see [Gtk.Widget.contains].
+      For pointer events, see
+      {{!Ocgtk.Raw.Widget.val-contains}[Gtk.Widget.contains]}.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -3138,7 +3328,8 @@ end = struct
 
       For backwards compatibility reasons this method will never return one of
       the baseline alignments, but instead it will convert it to
-      [Gtk.Align.fill] or [Gtk.Align.center].
+      {{!Ocgtk.Enums.type-align.constructor-FILL}[Gtk.Align.fill]} or
+      {{!Ocgtk.Enums.type-align.constructor-CENTER}[Gtk.Align.center]}.
 
       Baselines are not supported for horizontal alignment. *)
 
@@ -3156,10 +3347,10 @@ end = struct
 
       [Gdk.FrameClock.request_phase] will result in a new frame on the clock,
       but won’t necessarily repaint any widgets. To repaint a widget, you have
-      to use [Gtk.Widget.queue_draw] which invalidates the widget (thus
-      scheduling it to receive a draw on the next frame).
-      [Gtk.Widget.queue_draw] will also end up requesting a frame on the
-      appropriate frame clock.
+      to use {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
+      invalidates the widget (thus scheduling it to receive a draw on the next
+      frame). {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} will
+      also end up requesting a frame on the appropriate frame clock.
 
       A widget’s frame clock will not change while the widget is mapped.
       Reparenting a widget (which implies a temporary unmap) can change the
@@ -3171,24 +3362,28 @@ end = struct
     = "ml_gtk_widget_get_font_options"
   (** Returns the [cairo_font_options_t] of the widget.
 
-      Seee [Gtk.Widget.set_font_options]. *)
+      Seee
+      {{!Ocgtk.Raw.Widget.val-set_font_options}[Gtk.Widget.set_font_options]}.
+  *)
 
   external get_font_map : t -> Ocpango_raw.Font_map.t option
     = "ml_gtk_widget_get_font_map"
   (** Gets the font map of the widget.
 
-      See [Gtk.Widget.set_font_map]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_font_map}[Gtk.Widget.set_font_map]}. *)
 
   external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
   (** Determines whether the widget can own the input focus.
 
-      See [Gtk.Widget.set_focusable]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_focusable}[Gtk.Widget.set_focusable]}. *)
 
   external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
   (** Returns whether the widget should grab focus when it is clicked with the
       mouse.
 
-      See [Gtk.Widget.set_focus_on_click]. *)
+      See
+      {{!Ocgtk.Raw.Widget.val-set_focus_on_click}[Gtk.Widget.set_focus_on_click]}.
+  *)
 
   external get_focus_child : t -> t option = "ml_gtk_widget_get_focus_child"
   (** Returns the focus child of the widget. *)
@@ -3212,13 +3407,14 @@ end = struct
     = "ml_gtk_widget_get_direction"
   (** Gets the reading direction for the widget.
 
-      See [Gtk.Widget.set_direction]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_direction}[Gtk.Widget.set_direction]}. *)
 
   external get_cursor : t -> Ocgdk_raw.Cursor.t option
     = "ml_gtk_widget_get_cursor"
   (** Gets the cursor set on the widget.
 
-      See [Gtk.Widget.set_cursor] for details. *)
+      See {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]} for
+      details. *)
 
   external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
   (** Returns the CSS name of the widget. *)
@@ -3243,7 +3439,8 @@ end = struct
       yet. *)
 
   external get_child_visible : t -> bool = "ml_gtk_widget_get_child_visible"
-  (** Gets the value set with [Gtk.Widget.set_child_visible].
+  (** Gets the value set with
+      {{!Ocgtk.Raw.Widget.val-set_child_visible}[Gtk.Widget.set_child_visible]}.
 
       If you feel a need to use this function, your code probably needs
       reorganization.
@@ -3258,7 +3455,7 @@ end = struct
   (** Determines whether the input focus can enter the widget or any of its
       children.
 
-      See [Gtk.Widget.set_can_focus]. *)
+      See {{!Ocgtk.Raw.Widget.val-set_can_focus}[Gtk.Widget.set_can_focus]}. *)
 
   external get_baseline : t -> int = "ml_gtk_widget_get_baseline"
   (** Returns the baseline that has currently been allocated to the widget.
@@ -3275,8 +3472,9 @@ end = struct
       first [GtkBox] that’s an ancestor of [widget]. No reference will be added
       to the returned widget; it should not be unreferenced.
 
-      Note that unlike [Gtk.Widget.is_ancestor], this function considers
-      [widget] to be an ancestor of itself. *)
+      Note that unlike
+      {{!Ocgtk.Raw.Widget.val-is_ancestor}[Gtk.Widget.is_ancestor]}, this
+      function considers [widget] to be an ancestor of itself. *)
 
   external get_allocated_width : t -> int = "ml_gtk_widget_get_allocated_width"
   (** Returns the width that has currently been allocated to the widget.
@@ -3300,8 +3498,9 @@ end = struct
   external error_bell : t -> unit = "ml_gtk_widget_error_bell"
   (** Notifies the user about an input-related error on the widget.
 
-      If the [Gtk.Settings:gtk-error-bell] setting is true, it calls
-      [Gdk.Surface.beep], otherwise it does nothing.
+      If the
+      {{!Ocgtk.Raw.Settings.val-get_gtk_error_bell}[Gtk.Settings:gtk-error-bell]}
+      setting is true, it calls [Gdk.Surface.beep], otherwise it does nothing.
 
       Note that the effect of [Gdk.Surface.beep] can be configured in many ways,
       depending on the windowing backend and the desktop environment or window
@@ -3315,14 +3514,16 @@ end = struct
     = "ml_gtk_widget_dispose_template"
   (** Clears the template children for the widget.
 
-      This function is the opposite of [Gtk.Widget.init_template], and it is
-      used to clear all the template children from a widget instance. If you
+      This function is the opposite of
+      {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]}, and it
+      is used to clear all the template children from a widget instance. If you
       bound a template child to a field in the instance structure, or in the
       instance private data structure, the field will be set to [None] after
       this function returns.
 
       You should call this function inside the [GObjectClass.dispose()]
-      implementation of any widget that called [Gtk.Widget.init_template].
+      implementation of any widget that called
+      {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]}.
       Typically, you will want to call this function last, right before chaining
       up to the parent type's dispose implementation, e.g.
 
@@ -3348,7 +3549,8 @@ end = struct
 
       If you keep a [PangoLayout] created in this way around, you need to
       re-create it when the widgets [PangoContext] is replaced. This can be
-      tracked by listening to changes of the [Gtk.Widget:root] property on the
+      tracked by listening to changes of the
+      {{!Ocgtk.Raw.Widget.val-get_root}[Gtk.Widget:root]} property on the
       widget. *)
 
   external create_pango_context : t -> Ocpango_raw.Context.t
@@ -3358,7 +3560,9 @@ end = struct
       The [PangoContext] will have the appropriate font map, font options, font
       description, and base direction set.
 
-      See also [Gtk.Widget.get_pango_context]. *)
+      See also
+      {{!Ocgtk.Raw.Widget.val-get_pango_context}[Gtk.Widget.get_pango_context]}.
+  *)
 
   external contains : t -> float -> float -> bool = "ml_gtk_widget_contains"
   (** Tests if a given point is contained in the widget.
@@ -3394,7 +3598,8 @@ end = struct
       possible.
 
       Widgets with children should check this, rather than looking at
-      [Gtk.Widget.get_hexpand] or [Gtk.Widget.get_vexpand].
+      {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget.get_hexpand]} or
+      {{!Ocgtk.Raw.Widget.val-get_vexpand}[Gtk.Widget.get_vexpand]}.
 
       This function already checks whether the widget is visible, so visibility
       does not need to be checked separately. Non-visible widgets are not
@@ -3433,13 +3638,15 @@ end = struct
       The default [focus()] virtual function for a widget should return true if
       moving in [direction] left the focus on a focusable location inside that
       widget, and false if moving in [direction] moved the focus outside the
-      widget. When returning true, widgets normally call [Gtk.Widget.grab_focus]
-      to place the focus accordingly; when returning false, they don’t modify
-      the current focus location.
+      widget. When returning true, widgets normally call
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} to place the
+      focus accordingly; when returning false, they don’t modify the current
+      focus location.
 
       This function is used by custom widget implementations; if you're writing
-      an app, you’d use [Gtk.Widget.grab_focus] to move the focus to a
-      particular widget. *)
+      an app, you’d use
+      {{!Ocgtk.Raw.Widget.val-grab_focus}[Gtk.Widget.grab_focus]} to move the
+      focus to a particular widget. *)
 
   external allocate :
     t -> int -> int -> int -> Ocgsk_raw.Transform.t option -> unit
@@ -3460,7 +3667,8 @@ end = struct
     = "ml_gtk_widget_add_mnemonic_label"
   (** Adds a widget to the list of mnemonic labels for this widget.
 
-      See [Gtk.Widget.list_mnemonic_labels].
+      See
+      {{!Ocgtk.Raw.Widget.val-list_mnemonic_labels}[Gtk.Widget.list_mnemonic_labels]}.
 
       Note that the list of mnemonic labels for the widget is cleared when the
       widget is destroyed, so the caller must make sure to update its internal
@@ -3472,7 +3680,9 @@ end = struct
       After calling this function, the widget’s style will match for
       [css_class], according to CSS matching rules.
 
-      Use [Gtk.Widget.remove_css_class] to remove the style again. *)
+      Use
+      {{!Ocgtk.Raw.Widget.val-remove_css_class}[Gtk.Widget.remove_css_class]} to
+      remove the style again. *)
 
   external add_controller : t -> Event_controller.t -> unit
     = "ml_gtk_widget_add_controller"
@@ -3498,8 +3708,9 @@ end = struct
       its ancestors.
 
       If the action is in an action group added with
-      [Gtk.Widget.insert_action_group], the [name] is expected to be prefixed
-      with the prefix that was used when the group was inserted.
+      {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]},
+      the [name] is expected to be prefixed with the prefix that was used when
+      the group was inserted.
 
       The arguments must match the actions expected parameter type, as returned
       by [Gio.Action.get_parameter_type]. *)
@@ -3514,7 +3725,7 @@ end = struct
 
       If you wish to handle the activation keybinding yourself, it is
       recommended to use [Gtk.WidgetClass.add_shortcut] with an action created
-      with [Gtk.SignalAction.new].
+      with {{!Ocgtk.Raw.Signal_action.val-new_}[Gtk.SignalAction.new]}.
 
       If [widget] is not activatable, the function returns false. *)
 

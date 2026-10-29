@@ -33,32 +33,40 @@
  [Gio.SimpleAsyncResult.set_error_va] if your application or binding\n\
  requires passing a variable argument list directly), and the error can then\n\
  be propagated through the use of\n\
- [Gio.SimpleAsyncResult.propagate_error].\n\n\
+ {{!Ocgio.Raw.Simple_async_result.val-propagate_error}[Gio.SimpleAsyncResult.propagate_error]}.\n\n\
  An asynchronous operation can be made to ignore a cancellation event by\n\
- calling [Gio.SimpleAsyncResult.set_handle_cancellation] with a\n\
+ calling \
+ {{!Ocgio.Raw.Simple_async_result.val-set_handle_cancellation}[Gio.SimpleAsyncResult.set_handle_cancellation]} \
+ with a\n\
  [GSimpleAsyncResult] for the operation and [false]. This is useful for\n\
  operations that are dangerous to cancel, such as close (which would\n\
  cause a leak if cancelled before being run).\n\n\
  [GSimpleAsyncResult] can integrate into GLib’s event loop,\n\
  [GLib.MainLoop], or it can use [GLib.Thread]s.\n\
- [Gio.SimpleAsyncResult.complete] will finish an I/O task directly\n\
+ {{!Ocgio.Raw.Simple_async_result.val-complete}[Gio.SimpleAsyncResult.complete]} \
+ will finish an I/O task directly\n\
  from the point where it is called.\n\
- [Gio.SimpleAsyncResult.complete_in_idle] will finish it from an idle\n\
+ {{!Ocgio.Raw.Simple_async_result.val-complete_in_idle}[Gio.SimpleAsyncResult.complete_in_idle]} \
+ will finish it from an idle\n\
  handler in the  thread-default main context (see\n\
  [GLib.MainContext.push_thread_default]) where the [GSimpleAsyncResult]\n\
  was created. [Gio.SimpleAsyncResult.run_in_thread] will run the job in\n\
  a separate thread and then use\n\
- [Gio.SimpleAsyncResult.complete_in_idle] to deliver the result.\n\n\
+ {{!Ocgio.Raw.Simple_async_result.val-complete_in_idle}[Gio.SimpleAsyncResult.complete_in_idle]} \
+ to deliver the result.\n\n\
  To set the results of an asynchronous function,\n\
  [Gio.SimpleAsyncResult.set_op_res_gpointer],\n\
- [Gio.SimpleAsyncResult.set_op_res_gboolean], and\n\
- [Gio.SimpleAsyncResult.set_op_res_gssize]\n\
+ {{!Ocgio.Raw.Simple_async_result.val-set_op_res_gboolean}[Gio.SimpleAsyncResult.set_op_res_gboolean]}, \
+ and\n\
+ {{!Ocgio.Raw.Simple_async_result.val-set_op_res_gssize}[Gio.SimpleAsyncResult.set_op_res_gssize]}\n\
  are provided, setting the operation's result to a [gpointer], [gboolean], or\n\
  [gssize], respectively.\n\n\
  Likewise, to get the result of an asynchronous function,\n\
  [Gio.SimpleAsyncResult.get_op_res_gpointer],\n\
- [Gio.SimpleAsyncResult.get_op_res_gboolean], and\n\
- [Gio.SimpleAsyncResult.get_op_res_gssize] are\n\
+ {{!Ocgio.Raw.Simple_async_result.val-get_op_res_gboolean}[Gio.SimpleAsyncResult.get_op_res_gboolean]}, \
+ and\n\
+ {{!Ocgio.Raw.Simple_async_result.val-get_op_res_gssize}[Gio.SimpleAsyncResult.get_op_res_gssize]} \
+ are\n\
  provided, getting the operation’s result as a [gpointer], [gboolean], and\n\
  [gssize], respectively.\n\n\
  For the details of the requirements implementations must respect, see\n\

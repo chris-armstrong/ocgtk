@@ -4,15 +4,20 @@
 (** Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its
-    [Gtk.Orientable:orientation] property. Within the other dimension all
-    children all allocated the same size. The [GtkBoxLayout] will respect the
-    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+    {{!Ocgtk.Raw.Orientable.val-get_orientation}[Gtk.Orientable:orientation]}
+    property. Within the other dimension all children all allocated the same
+    size. The [GtkBoxLayout] will respect the
+    {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and
+    {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties of each
+    child widget.
 
     If you want all children to be assigned the same size, you can use the
-    [Gtk.BoxLayout:homogeneous] property.
+    {{!Ocgtk.Raw.Box_layout.val-get_homogeneous}[Gtk.BoxLayout:homogeneous]}
+    property.
 
     If you want to specify the amount of space placed between each child, you
-    can use the [Gtk.BoxLayout:spacing] property.
+    can use the {{!Ocgtk.Raw.Box_layout.val-get_spacing}[Gtk.BoxLayout:spacing]}
+    property.
 
     The class built on this module is in {!Ocgtk.Box_layout}. *)
 

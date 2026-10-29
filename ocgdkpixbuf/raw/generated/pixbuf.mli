@@ -19,13 +19,15 @@
  you have a chunk of static data compiled into your application, you\n\
  can pass in [None] as the destroy notification function so that the\n\
  data will not be freed.\n\n\
- The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
+ The {{!Ocgdkpixbuf.Raw.Pixbuf.val-new_}[GdkPixbuf.Pixbuf.new]} constructor \
+ function can be used\n\
  as a convenience to create a pixbuf with an empty buffer; this is\n\
  equivalent to allocating a data buffer using [malloc()] and then\n\
  wrapping it with [gdk_pixbuf_new_from_data()]. The [gdk_pixbuf_new()]\n\
  function will compute an optimal rowstride so that rendering can be\n\
  performed with an efficient algorithm.\n\n\
- You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
+ You can also copy an existing pixbuf with the \
+ {{!Ocgdkpixbuf.Raw.Pixbuf.val-copy}[Pixbuf.copy]}\n\
  function. This is not the same as just acquiring a reference to\n\
  the old pixbuf instance: the copy function will actually duplicate\n\
  the pixel data in memory and create a new {{!Ocgdkpixbuf.Raw.Pixbuf}[Pixbuf]} \
@@ -44,13 +46,14 @@
  in each row pixels are stored from left to right.\n\n\
  There may be padding at the end of a row.\n\n\
  The \"rowstride\" value of a pixbuf, as returned by \
- [GdkPixbuf.Pixbuf.get_rowstride],\n\
+ {{!Ocgdkpixbuf.Raw.Pixbuf.val-get_rowstride}[GdkPixbuf.Pixbuf.get_rowstride]},\n\
  indicates the number of bytes between rows.\n\n\
  {b NOTE}: If you are copying raw pixbuf data with [memcpy()] note that the\n\
  last row in the pixbuf may not be as wide as the full rowstride, but rather\n\
  just as wide as the pixel data needs to be; that is: it is unsafe to do\n\
  [memcpy (dest, pixels, rowstride * height)] to copy a whole pixbuf. Use\n\
- [GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the\n\
+ {{!Ocgdkpixbuf.Raw.Pixbuf.val-copy}[GdkPixbuf.Pixbuf.copy]} instead, or \
+ compute the width in bytes of the\n\
  last row as:\n\n\
  {[\n\
  last_row = width * ((n_channels * bits_per_sample + 7) / 8);\n\
@@ -198,7 +201,8 @@ external new_from_file_at_size : string -> int -> int -> (t, GError.t) result
     image's aspect ratio. Note that the returned pixbuf may be smaller than
     [width] x [height], if the aspect ratio requires it. To load and image at
     the requested size, regardless of aspect ratio, use
-    [GdkPixbuf.Pixbuf.new_from_file_at_scale]. *)
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-new_from_file_at_scale}[GdkPixbuf.Pixbuf.new_from_file_at_scale]}.
+*)
 
 external new_from_resource : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_resource"
@@ -305,13 +309,15 @@ external scale_simple :
     reasonable quality and speed.
 
     You can scale a sub-portion of [src] by creating a sub-pixbuf pointing into
-    [src]; see [GdkPixbuf.Pixbuf.new_subpixbuf].
+    [src]; see
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-new_subpixbuf}[GdkPixbuf.Pixbuf.new_subpixbuf]}.
 
     If [dest_width] and [dest_height] are equal to the width and height of
     [src], this function will return an unscaled copy of [src].
 
-    For more complicated scaling/alpha blending see [GdkPixbuf.Pixbuf.scale] and
-    [GdkPixbuf.Pixbuf.composite]. *)
+    For more complicated scaling/alpha blending see
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-scale}[GdkPixbuf.Pixbuf.scale]} and
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-composite}[GdkPixbuf.Pixbuf.composite]}. *)
 
 external scale :
   t ->

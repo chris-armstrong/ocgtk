@@ -12,7 +12,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ScaleButton::popup]
+    - {{!Ocgtk.Raw.Scale_button.val-on_popup}[Gtk.ScaleButton::popup]}
 
     {b CSS nodes}
 
@@ -46,8 +46,9 @@ external set_value : t -> float -> unit = "ml_gtk_scale_button_set_value"
     If the value is outside the minimum or maximum range values, it will be
     clamped to fit inside them.
 
-    The scale button emits the [Gtk.ScaleButton::value-changed] signal if the
-    value changes. *)
+    The scale button emits the
+    {{!Ocgtk.Raw.Scale_button.val-on_value_changed}[Gtk.ScaleButton::value-changed]}
+    signal if the value changes. *)
 
 external set_icons : t -> string array -> unit = "ml_gtk_scale_button_set_icons"
 (** Sets the icons to be used by the scale button. *)
@@ -60,7 +61,8 @@ external set_adjustment : t -> Adjustment.t -> unit
 (** Sets the [GtkAdjustment] to be used as a model for the [GtkScaleButton]’s
     scale.
 
-    See [Gtk.Range.set_adjustment] for details. *)
+    See {{!Ocgtk.Raw.Range.val-set_adjustment}[Gtk.Range.set_adjustment]} for
+    details. *)
 
 external get_value : t -> float = "ml_gtk_scale_button_get_value"
 (** Gets the current value of the scale button. *)
@@ -86,7 +88,8 @@ external get_adjustment : t -> Adjustment.t
   = "ml_gtk_scale_button_get_adjustment"
 (** Gets the [GtkAdjustment] associated with the [GtkScaleButton]’s scale.
 
-    See [Gtk.Range.get_adjustment] for details. *)
+    See {{!Ocgtk.Raw.Range.val-get_adjustment}[Gtk.Range.get_adjustment]} for
+    details. *)
 
 external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 (** Queries a [GtkScaleButton] and returns its current state.

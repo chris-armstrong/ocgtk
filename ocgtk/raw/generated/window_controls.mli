@@ -7,7 +7,8 @@
  and the window icon.\n\n\
  An example GtkWindowControls\n\n\
  [GtkWindowControls] only displays start or end side of the controls (see\n\
- [Gtk.WindowControls:side]), so it's intended to be always used\n\
+ {{!Ocgtk.Raw.Window_controls.val-get_side}[Gtk.WindowControls:side]}), so \
+ it's intended to be always used\n\
  in pair with another [GtkWindowControls] for the opposite side, for example:\n\n\
  {[\n\
  <object class=\"GtkBox\">\n\
@@ -35,11 +36,16 @@
  A [GtkWindowControls]' CSS node is called windowcontrols. It contains\n\
  subnodes corresponding to each title button. Which of the title buttons\n\
  exist and where they are placed exactly depends on the desktop environment\n\
- and [Gtk.WindowControls:decoration-layout] value.\n\n\
- When [Gtk.WindowControls:empty] is true, it gets the .empty\n\
+ and \
+ {{!Ocgtk.Raw.Window_controls.val-get_decoration_layout}[Gtk.WindowControls:decoration-layout]} \
+ value.\n\n\
+ When {{!Ocgtk.Raw.Window_controls.val-get_empty}[Gtk.WindowControls:empty]} \
+ is true, it gets the .empty\n\
  style class.\n\n\
  {b Accessibility}\n\n\
- [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ [GtkWindowControls] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Window_controls}."]
 
 type t =
@@ -63,13 +69,17 @@ external set_side : t -> Ocgtk_enums.packtype -> unit
   = "ml_gtk_window_controls_set_side"
 (** Determines which part of decoration layout the window controls widget uses.
 
-    See [Gtk.WindowControls:decoration-layout]. *)
+    See
+    {{!Ocgtk.Raw.Window_controls.val-get_decoration_layout}[Gtk.WindowControls:decoration-layout]}.
+*)
 
 external set_decoration_layout : t -> string option -> unit
   = "ml_gtk_window_controls_set_decoration_layout"
 (** Sets the decoration layout for the title buttons.
 
-    This overrides the [Gtk.Settings:gtk-decoration-layout] setting.
+    This overrides the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_decoration_layout}[Gtk.Settings:gtk-decoration-layout]}
+    setting.
 
     The format of the string is button names, separated by commas. A colon
     separates the buttons that should appear on the left from those on the
@@ -79,8 +89,10 @@ external set_decoration_layout : t -> string option -> unit
     For example, “icon:minimize,maximize,close” specifies a icon on the left,
     and minimize, maximize and close buttons on the right.
 
-    If [Gtk.WindowControls:side] value is [Gtk.PackType.start], [self] will
-    display the part before the colon, otherwise after that. *)
+    If {{!Ocgtk.Raw.Window_controls.val-get_side}[Gtk.WindowControls:side]}
+    value is
+    {{!Ocgtk.Enums.type-packtype.constructor-START}[Gtk.PackType.start]}, [self]
+    will display the part before the colon, otherwise after that. *)
 
 external get_use_native_controls : t -> bool
   = "ml_gtk_window_controls_get_use_native_controls"

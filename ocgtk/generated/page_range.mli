@@ -11,7 +11,9 @@
 
     A range of pages to print.
 
-    See also [Gtk.PrintSettings.set_page_ranges]. *)
+    See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_page_ranges}[Gtk.PrintSettings.set_page_ranges]}.
+*)
 class type page_range_t = object
   (** {2:conversions Conversions} *)
 
@@ -25,7 +27,9 @@ class page_range : Raw.Page_range.t -> page_range_t
 
     A range of pages to print.
 
-    See also [Gtk.PrintSettings.set_page_ranges]. *)
+    See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_page_ranges}[Gtk.PrintSettings.set_page_ranges]}.
+*)
 
 (** {1:constructors Constructors} *)
 

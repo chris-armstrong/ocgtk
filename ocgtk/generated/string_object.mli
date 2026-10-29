@@ -12,8 +12,8 @@
     The type of items in a [GtkStringList].
 
     A [GtkStringObject] is a wrapper around a [const char*]; it has a
-    [Gtk.StringObject:string] property that can be used for property bindings
-    and expressions. *)
+    {{!Ocgtk.String_object.class-type-string_object_t.method-get_string}[Gtk.StringObject:string]}
+    property that can be used for property bindings and expressions. *)
 class type string_object_t = object
   (** {2:methods Methods} *)
 
@@ -33,8 +33,8 @@ class string_object : Raw.String_object.t -> string_object_t
     The type of items in a [GtkStringList].
 
     A [GtkStringObject] is a wrapper around a [const char*]; it has a
-    [Gtk.StringObject:string] property that can be used for property bindings
-    and expressions. *)
+    {{!Ocgtk.String_object.class-type-string_object_t.method-get_string}[Gtk.StringObject:string]}
+    property that can be used for property bindings and expressions. *)
 
 (** {1:constructors Constructors} *)
 

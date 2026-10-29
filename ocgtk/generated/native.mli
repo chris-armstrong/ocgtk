@@ -19,16 +19,20 @@
     The obvious example of a [GtkNative] is [GtkWindow].
 
     Every widget that is not itself a [GtkNative] is contained in one, and you
-    can get it with [Gtk.Widget.get_native].
+    can get it with
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_native}[Gtk.Widget.get_native]}.
 
-    To get the surface of a [GtkNative], use [Gtk.Native.get_surface]. It is
-    also possible to find the [GtkNative] to which a surface belongs, with
+    To get the surface of a [GtkNative], use
+    {{!Ocgtk.Native.class-type-native_t.method-get_surface}[Gtk.Native.get_surface]}.
+    It is also possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
     In addition to a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}, a
     [GtkNative] also provides a
     {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} for rendering on
-    that surface. To get the renderer, use [Gtk.Native.get_renderer]. *)
+    that surface. To get the renderer, use
+    {{!Ocgtk.Native.class-type-native_t.method-get_renderer}[Gtk.Native.get_renderer]}.
+*)
 class type native_t = object
   (** {2:methods Methods} *)
 
@@ -64,16 +68,20 @@ class native : Raw.Native.t -> native_t
     The obvious example of a [GtkNative] is [GtkWindow].
 
     Every widget that is not itself a [GtkNative] is contained in one, and you
-    can get it with [Gtk.Widget.get_native].
+    can get it with
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_native}[Gtk.Widget.get_native]}.
 
-    To get the surface of a [GtkNative], use [Gtk.Native.get_surface]. It is
-    also possible to find the [GtkNative] to which a surface belongs, with
+    To get the surface of a [GtkNative], use
+    {{!Ocgtk.Native.class-type-native_t.method-get_surface}[Gtk.Native.get_surface]}.
+    It is also possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
     In addition to a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}, a
     [GtkNative] also provides a
     {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} for rendering on
-    that surface. To get the renderer, use [Gtk.Native.get_renderer]. *)
+    that surface. To get the renderer, use
+    {{!Ocgtk.Native.class-type-native_t.method-get_renderer}[Gtk.Native.get_renderer]}.
+*)
 
 (** {1:constructors Constructors} *)
 

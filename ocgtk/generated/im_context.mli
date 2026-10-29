@@ -190,8 +190,11 @@ end
      method may provide feedback about this process by displaying the \
      intermediate\n\
      composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
-     [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
-     and [Gtk.IMContext::preedit-end] signals.\n\n\
+     {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_start}[Gtk.IMContext::preedit-start]}, \
+     {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_changed}[Gtk.IMContext::preedit-changed]}\n\
+     and \
+     {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_end}[Gtk.IMContext::preedit-end]} \
+     signals.\n\n\
      For instance, the built-in GTK input method \
      {{!Ocgtk.Im_context_simple.class-type-im_context_simple_t}[Gtk.IMContextSimple]}\n\
      implements the input of arbitrary Unicode code points by holding down the\n\
@@ -220,8 +223,11 @@ class im_context : Raw.Im_context.t -> im_context_t
  outputting the composed result. This is called {i preediting}, and an input\n\
  method may provide feedback about this process by displaying the intermediate\n\
  composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
- [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
- and [Gtk.IMContext::preedit-end] signals.\n\n\
+ {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_start}[Gtk.IMContext::preedit-start]}, \
+ {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_changed}[Gtk.IMContext::preedit-changed]}\n\
+ and \
+ {{!Ocgtk.Im_context.class-type-im_context_t.method-on_preedit_end}[Gtk.IMContext::preedit-end]} \
+ signals.\n\n\
  For instance, the built-in GTK input method \
  {{!Ocgtk.Im_context_simple.class-type-im_context_simple_t}[Gtk.IMContextSimple]}\n\
  implements the input of arbitrary Unicode code points by holding down the\n\

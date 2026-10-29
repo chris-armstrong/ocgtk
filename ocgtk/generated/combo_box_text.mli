@@ -88,17 +88,24 @@ end
      use cases.\n\n\
      An example GtkComboBoxText\n\n\
      [GtkComboBoxText] hides the model-view complexity of [GtkComboBox].\n\n\
-     To create a [GtkComboBoxText], use [Gtk.ComboBoxText.new] or\n\
-     [Gtk.ComboBoxText.new_with_entry].\n\n\
+     To create a [GtkComboBoxText], use \
+     {{!Ocgtk.Combo_box_text.val-new_}[Gtk.ComboBoxText.new]} or\n\
+     {{!Ocgtk.Combo_box_text.val-new_with_entry}[Gtk.ComboBoxText.new_with_entry]}.\n\n\
      You can add items to a [GtkComboBoxText] with\n\
-     [Gtk.ComboBoxText.append_text],\n\
-     [Gtk.ComboBoxText.insert_text] or\n\
-     [Gtk.ComboBoxText.prepend_text] and remove options with\n\
-     [Gtk.ComboBoxText.remove].\n\n\
+     {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-append_text}[Gtk.ComboBoxText.append_text]},\n\
+     {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-insert_text}[Gtk.ComboBoxText.insert_text]} \
+     or\n\
+     {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-prepend_text}[Gtk.ComboBoxText.prepend_text]} \
+     and remove options with\n\
+     {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-remove}[Gtk.ComboBoxText.remove]}.\n\n\
      If the [GtkComboBoxText] contains an entry (via the\n\
-     [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
-     using [Gtk.ComboBoxText.get_active_text].\n\n\
-     You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
+     {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_has_entry}[Gtk.ComboBox:has-entry]} \
+     property), its contents can be retrieved\n\
+     using \
+     {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-get_active_text}[Gtk.ComboBoxText.get_active_text]}.\n\n\
+     You should not call \
+     {{!Ocgtk.Combo_box.class-type-combo_box_t.method-set_model}[Gtk.ComboBox.set_model]} \
+     or attempt to pack more\n\
      cells into this combo box via its \
      {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} \
      interface.\n\n\
@@ -140,17 +147,24 @@ class combo_box_text : Raw.Combo_box_text.t -> combo_box_text_t
  use cases.\n\n\
  An example GtkComboBoxText\n\n\
  [GtkComboBoxText] hides the model-view complexity of [GtkComboBox].\n\n\
- To create a [GtkComboBoxText], use [Gtk.ComboBoxText.new] or\n\
- [Gtk.ComboBoxText.new_with_entry].\n\n\
+ To create a [GtkComboBoxText], use \
+ {{!Ocgtk.Combo_box_text.val-new_}[Gtk.ComboBoxText.new]} or\n\
+ {{!Ocgtk.Combo_box_text.val-new_with_entry}[Gtk.ComboBoxText.new_with_entry]}.\n\n\
  You can add items to a [GtkComboBoxText] with\n\
- [Gtk.ComboBoxText.append_text],\n\
- [Gtk.ComboBoxText.insert_text] or\n\
- [Gtk.ComboBoxText.prepend_text] and remove options with\n\
- [Gtk.ComboBoxText.remove].\n\n\
+ {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-append_text}[Gtk.ComboBoxText.append_text]},\n\
+ {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-insert_text}[Gtk.ComboBoxText.insert_text]} \
+ or\n\
+ {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-prepend_text}[Gtk.ComboBoxText.prepend_text]} \
+ and remove options with\n\
+ {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-remove}[Gtk.ComboBoxText.remove]}.\n\n\
  If the [GtkComboBoxText] contains an entry (via the\n\
- [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
- using [Gtk.ComboBoxText.get_active_text].\n\n\
- You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
+ {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_has_entry}[Gtk.ComboBox:has-entry]} \
+ property), its contents can be retrieved\n\
+ using \
+ {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t.method-get_active_text}[Gtk.ComboBoxText.get_active_text]}.\n\n\
+ You should not call \
+ {{!Ocgtk.Combo_box.class-type-combo_box_t.method-set_model}[Gtk.ComboBox.set_model]} \
+ or attempt to pack more\n\
  cells into this combo box via its \
  {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface.\n\n\
  {b GtkComboBoxText as GtkBuildable}\n\n\

@@ -278,7 +278,7 @@ end
      GtkEditableInterface.get_delegate()\n\
      vfunc returns.\n\n\
      In your instance_init function, create your text widget, and then call\n\
-     [Gtk.Editable.init_delegate]:\n\n\
+     {{!Ocgtk.Editable.class-type-editable_t.method-init_delegate}[Gtk.Editable.init_delegate]}:\n\n\
      {[\n\
      static void\n\
      my_widget_init (MyWidget *self)\n\
@@ -289,7 +289,9 @@ end
     \  ...\n\
      }\n\
      ]}\n\n\
-     In your dispose function, call [Gtk.Editable.finish_delegate] before\n\
+     In your dispose function, call \
+     {{!Ocgtk.Editable.class-type-editable_t.method-finish_delegate}[Gtk.Editable.finish_delegate]} \
+     before\n\
      destroying your text widget:\n\n\
      {[\n\
      static void\n\
@@ -313,12 +315,16 @@ end
      ]}\n\n\
      It is important to note that if you create a [GtkEditable] that uses\n\
      a delegate, the low level [Gtk.Editable::insert-text] and\n\
-     [Gtk.Editable::delete-text] signals will be propagated from the\n\
+     {{!Ocgtk.Editable.class-type-editable_t.method-on_delete_text}[Gtk.Editable::delete-text]} \
+     signals will be propagated from the\n\
      \"wrapper\" editable to the delegate, but they will not be propagated from\n\
      the delegate to the \"wrapper\" editable, as they would cause an infinite\n\
      recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
-     and [Gtk.Editable::delete-text] signals, you will need to connect\n\
-     to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+     and \
+     {{!Ocgtk.Editable.class-type-editable_t.method-on_delete_text}[Gtk.Editable::delete-text]} \
+     signals, you will need to connect\n\
+     to them on the delegate obtained via \
+     {{!Ocgtk.Editable.class-type-editable_t.method-get_delegate}[Gtk.Editable.get_delegate]}."]
 
 class editable : Raw.Editable.t -> editable_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Editable.t}. *)
@@ -391,7 +397,7 @@ class editable : Raw.Editable.t -> editable_t
  work by forwarding to the delegate that the GtkEditableInterface.get_delegate()\n\
  vfunc returns.\n\n\
  In your instance_init function, create your text widget, and then call\n\
- [Gtk.Editable.init_delegate]:\n\n\
+ {{!Ocgtk.Editable.class-type-editable_t.method-init_delegate}[Gtk.Editable.init_delegate]}:\n\n\
  {[\n\
  static void\n\
  my_widget_init (MyWidget *self)\n\
@@ -402,7 +408,9 @@ class editable : Raw.Editable.t -> editable_t
 \  ...\n\
  }\n\
  ]}\n\n\
- In your dispose function, call [Gtk.Editable.finish_delegate] before\n\
+ In your dispose function, call \
+ {{!Ocgtk.Editable.class-type-editable_t.method-finish_delegate}[Gtk.Editable.finish_delegate]} \
+ before\n\
  destroying your text widget:\n\n\
  {[\n\
  static void\n\
@@ -425,12 +433,16 @@ class editable : Raw.Editable.t -> editable_t
  ]}\n\n\
  It is important to note that if you create a [GtkEditable] that uses\n\
  a delegate, the low level [Gtk.Editable::insert-text] and\n\
- [Gtk.Editable::delete-text] signals will be propagated from the\n\
+ {{!Ocgtk.Editable.class-type-editable_t.method-on_delete_text}[Gtk.Editable::delete-text]} \
+ signals will be propagated from the\n\
  \"wrapper\" editable to the delegate, but they will not be propagated from\n\
  the delegate to the \"wrapper\" editable, as they would cause an infinite\n\
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
- and [Gtk.Editable::delete-text] signals, you will need to connect\n\
- to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+ and \
+ {{!Ocgtk.Editable.class-type-editable_t.method-on_delete_text}[Gtk.Editable::delete-text]} \
+ signals, you will need to connect\n\
+ to them on the delegate obtained via \
+ {{!Ocgtk.Editable.class-type-editable_t.method-get_delegate}[Gtk.Editable.get_delegate]}."]
 
 (** {1:constructors Constructors} *)
 

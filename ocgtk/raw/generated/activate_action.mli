@@ -3,7 +3,8 @@
 
 (** Activates a widget.
 
-    Widgets are activated by calling [Gtk.Widget.activate].
+    Widgets are activated by calling
+    {{!Ocgtk.Raw.Widget.val-activate}[Gtk.Widget.activate]}.
 
     The class built on this module is in {!Ocgtk.Activate_action}. *)
 

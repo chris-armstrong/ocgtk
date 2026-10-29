@@ -26,13 +26,14 @@
 
     For keyboard presses to start a search, the search bar must be told of a
     widget to capture key events from through
-    [Gtk.SearchBar.set_key_capture_widget]. This widget will typically be the
-    top-level window, or a parent container of the search bar. Common shortcuts
-    such as Ctrl+F should be handled as an application action, or through the
-    menu items.
+    {{!Ocgtk.Search_bar.class-type-search_bar_t.method-set_key_capture_widget}[Gtk.SearchBar.set_key_capture_widget]}.
+    This widget will typically be the top-level window, or a parent container of
+    the search bar. Common shortcuts such as Ctrl+F should be handled as an
+    application action, or through the menu items.
 
     You will also need to tell the search bar about which entry you are using as
-    your search entry using [Gtk.SearchBar.connect_entry].
+    your search entry using
+    {{!Ocgtk.Search_bar.class-type-search_bar_t.method-connect_entry}[Gtk.SearchBar.connect_entry]}.
 
     {b Creating a search bar}
 
@@ -64,7 +65,9 @@
 
     {b Accessibility}
 
-    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
+    [GtkSearchBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH}[Gtk.AccessibleRole.search]}
+    role. *)
 class type search_bar_t = object
   inherit Widget.widget_t
 
@@ -135,13 +138,14 @@ class search_bar : Raw.Search_bar.t -> search_bar_t
 
     For keyboard presses to start a search, the search bar must be told of a
     widget to capture key events from through
-    [Gtk.SearchBar.set_key_capture_widget]. This widget will typically be the
-    top-level window, or a parent container of the search bar. Common shortcuts
-    such as Ctrl+F should be handled as an application action, or through the
-    menu items.
+    {{!Ocgtk.Search_bar.class-type-search_bar_t.method-set_key_capture_widget}[Gtk.SearchBar.set_key_capture_widget]}.
+    This widget will typically be the top-level window, or a parent container of
+    the search bar. Common shortcuts such as Ctrl+F should be handled as an
+    application action, or through the menu items.
 
     You will also need to tell the search bar about which entry you are using as
-    your search entry using [Gtk.SearchBar.connect_entry].
+    your search entry using
+    {{!Ocgtk.Search_bar.class-type-search_bar_t.method-connect_entry}[Gtk.SearchBar.connect_entry]}.
 
     {b Creating a search bar}
 
@@ -173,7 +177,9 @@ class search_bar : Raw.Search_bar.t -> search_bar_t
 
     {b Accessibility}
 
-    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
+    [GtkSearchBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH}[Gtk.AccessibleRole.search]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
@@ -181,4 +187,6 @@ val new_ : unit -> search_bar_t
 (** Creates a [GtkSearchBar].
 
     You will need to tell it about which widget is going to be your text entry
-    using [Gtk.SearchBar.connect_entry]. *)
+    using
+    {{!Ocgtk.Search_bar.class-type-search_bar_t.method-connect_entry}[Gtk.SearchBar.connect_entry]}.
+*)

@@ -68,6 +68,7 @@ val new_ : Sorter.sorter_t option -> tree_list_row_sorter_t
 (** Create a special-purpose sorter that applies the sorting of [sorter] to the
     levels of a [GtkTreeListModel].
 
-    Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
-    [false] as it can only sort
+    Note that this sorter relies on
+    {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t.method-get_passthrough}
+     [Gtk.TreeListModel:passthrough]} being [false] as it can only sort
     {{!Ocgtk.Tree_list_row.class-type-tree_list_row_t}[Gtk.TreeListRow]}s. *)

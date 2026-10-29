@@ -10,16 +10,19 @@
  On platforms which do not provide a native print dialog, GTK\n\
  uses its own, see [Gtk.PrintUnixDialog].\n\n\
  The typical way to use the high-level printing API is to create\n\
- a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
+ a [GtkPrintOperation] object with \
+ {{!Ocgtk.Raw.Print_operation.val-new_}[Gtk.PrintOperation.new]}\n\
  when the user selects to print. Then you set some properties on it,\n\
  e.g. the page size, any {{!Ocgtk.Raw.Print_settings}[Gtk.PrintSettings]} from \
  previous print\n\
  operations, the number of pages, the current page, etc.\n\n\
- Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
+ Then you start the print operation by calling \
+ {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]}.\n\
  It will then show a dialog, let the user select a printer and options.\n\
  When the user finished the dialog, various signals will be emitted on\n\
  the [GtkPrintOperation], the main one being\n\
- [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
+ {{!Ocgtk.Raw.Print_operation.val-on_draw_page}[Gtk.PrintOperation::draw-page]}, \
+ which you are supposed to handle\n\
  and render the page on the provided \
  {{!Ocgtk.Raw.Print_context}[Gtk.PrintContext]} using Cairo.\n\n\
  {b The high-level printing API}\n\n\
@@ -50,9 +53,10 @@
  By default [GtkPrintOperation] uses an external application to do\n\
  print preview. To implement a custom print preview, an application\n\
  must connect to the preview signal. The functions\n\
- [Gtk.PrintOperationPreview.render_page],\n\
- [Gtk.PrintOperationPreview.end_preview] and\n\
- [Gtk.PrintOperationPreview.is_selected]\n\
+ {{!Ocgtk.Raw.Print_operation_preview.val-render_page}[Gtk.PrintOperationPreview.render_page]},\n\
+ {{!Ocgtk.Raw.Print_operation_preview.val-end_preview}[Gtk.PrintOperationPreview.end_preview]} \
+ and\n\
+ {{!Ocgtk.Raw.Print_operation_preview.val-is_selected}[Gtk.PrintOperationPreview.is_selected]}\n\
  are useful when implementing a print preview.\n\n\
  The class built on this module is in {!Ocgtk.Print_operation}."]
 
@@ -105,16 +109,21 @@ external set_print_settings : t -> Print_settings.t option -> unit
 (** Sets the print settings for [op].
 
     This is typically used to re-establish print settings from a previous print
-    operation, see [Gtk.PrintOperation.run]. *)
+    operation, see
+    {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]}. *)
 
 external set_n_pages : t -> int -> unit = "ml_gtk_print_operation_set_n_pages"
 (** Sets the number of pages in the document.
 
     This must be set to a positive number before the rendering starts. It may be
-    set in a [Gtk.PrintOperation::begin-print] signal handler.
+    set in a
+    {{!Ocgtk.Raw.Print_operation.val-on_begin_print}[Gtk.PrintOperation::begin-print]}
+    signal handler.
 
     Note that the page numbers passed to the
-    [Gtk.PrintOperation::request-page-setup] and [Gtk.PrintOperation::draw-page]
+    {{!Ocgtk.Raw.Print_operation.val-on_request_page_setup}[Gtk.PrintOperation::request-page-setup]}
+    and
+    {{!Ocgtk.Raw.Print_operation.val-on_draw_page}[Gtk.PrintOperation::draw-page]}
     signals are 0-based, i.e. if the user chooses to print all pages, the last
     ::draw-page signal will be for page [n_pages] - 1. *)
 
@@ -133,8 +142,10 @@ external set_has_selection : t -> bool -> unit
 (** Sets whether there is a selection to print.
 
     Application has to set number of pages to which the selection will draw by
-    [Gtk.PrintOperation.set_n_pages] in a handler for the
-    [Gtk.PrintOperation::begin-print] signal. *)
+    {{!Ocgtk.Raw.Print_operation.val-set_n_pages}[Gtk.PrintOperation.set_n_pages]}
+    in a handler for the
+    {{!Ocgtk.Raw.Print_operation.val-on_begin_print}[Gtk.PrintOperation::begin-print]}
+    signal. *)
 
 external set_export_filename : t -> string -> unit
   = "ml_gtk_print_operation_set_export_filename"
@@ -163,15 +174,18 @@ external set_defer_drawing : t -> unit
     This can be used for drawing page in another thread.
 
     This function must be called in the callback of the
-    [Gtk.PrintOperation::draw-page] signal. *)
+    {{!Ocgtk.Raw.Print_operation.val-on_draw_page}[Gtk.PrintOperation::draw-page]}
+    signal. *)
 
 external set_default_page_setup : t -> Page_setup.t option -> unit
   = "ml_gtk_print_operation_set_default_page_setup"
 (** Makes [default_page_setup] the default page setup for [op].
 
-    This page setup will be used by [Gtk.PrintOperation.run], but it can be
-    overridden on a per-page basis by connecting to the
-    [Gtk.PrintOperation::request-page-setup] signal. *)
+    This page setup will be used by
+    {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]}, but it can
+    be overridden on a per-page basis by connecting to the
+    {{!Ocgtk.Raw.Print_operation.val-on_request_page_setup}[Gtk.PrintOperation::request-page-setup]}
+    signal. *)
 
 external set_custom_tab_label : t -> string option -> unit
   = "ml_gtk_print_operation_set_custom_tab_label"
@@ -181,8 +195,9 @@ external set_current_page : t -> int -> unit
   = "ml_gtk_print_operation_set_current_page"
 (** Sets the current page.
 
-    If this is called before [Gtk.PrintOperation.run], the user will be able to
-    select to print only the current page.
+    If this is called before
+    {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]}, the user
+    will be able to select to print only the current page.
 
     Note that this only makes sense for pre-paginated documents. *)
 
@@ -203,12 +218,14 @@ external run :
   "Runs the print operation.\n\n\
    Normally that this function does not return until the rendering\n\
    of all pages is complete. You can connect to the\n\
-   [Gtk.PrintOperation::status-changed] signal on [op] to obtain\n\
+   {{!Ocgtk.Raw.Print_operation.val-on_status_changed}[Gtk.PrintOperation::status-changed]} \
+   signal on [op] to obtain\n\
    some information about the progress of the print operation.\n\n\
    Furthermore, it may use a recursive mainloop to show the print dialog.\n\n\
    If you set the \\[Gtk.PrintOperation:allow-async\\] property, the operation\n\
    will run asynchronously if this is supported on the platform. The\n\
-   [Gtk.PrintOperation::done] signal will be emitted with the result\n\
+   {{!Ocgtk.Raw.Print_operation.val-on_done_}[Gtk.PrintOperation::done]} \
+   signal will be emitted with the result\n\
    of the operation when the it is done (i.e. when the dialog is canceled,\n\
    or when the print succeeds or fails).\n\n\
    {[\n\
@@ -268,22 +285,26 @@ external get_status_string : t -> string
     The string is translated and suitable for displaying the print status e.g.
     in a [GtkStatusbar].
 
-    Use [Gtk.PrintOperation.get_status] to obtain a status value that is
-    suitable for programmatic use. *)
+    Use
+    {{!Ocgtk.Raw.Print_operation.val-get_status}[Gtk.PrintOperation.get_status]}
+    to obtain a status value that is suitable for programmatic use. *)
 
 external get_status : t -> Ocgtk_enums.printstatus
   = "ml_gtk_print_operation_get_status"
 (** Returns the status of the print operation.
 
-    Also see [Gtk.PrintOperation.get_status_string]. *)
+    Also see
+    {{!Ocgtk.Raw.Print_operation.val-get_status_string}[Gtk.PrintOperation.get_status_string]}.
+*)
 
 external get_print_settings : t -> Print_settings.t option
   = "ml_gtk_print_operation_get_print_settings"
 (** Returns the current print settings.
 
     Note that the return value is [None] until either
-    [Gtk.PrintOperation.set_print_settings] or [Gtk.PrintOperation.run] have
-    been called. *)
+    {{!Ocgtk.Raw.Print_operation.val-set_print_settings}[Gtk.PrintOperation.set_print_settings]}
+    or {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]} have been
+    called. *)
 
 external get_n_pages_to_print : t -> int
   = "ml_gtk_print_operation_get_n_pages_to_print"
@@ -292,9 +313,10 @@ external get_n_pages_to_print : t -> int
     Note that this value is set during print preparation phase
     ([GTK_PRINT_STATUS_PREPARING]), so this function should never be called
     before the data generation phase ([GTK_PRINT_STATUS_GENERATING_DATA]). You
-    can connect to the [Gtk.PrintOperation::status-changed] signal and call
-    gtk_print_operation_get_n_pages_to_print() when print status is
-    [GTK_PRINT_STATUS_GENERATING_DATA].
+    can connect to the
+    {{!Ocgtk.Raw.Print_operation.val-on_status_changed}[Gtk.PrintOperation::status-changed]}
+    signal and call gtk_print_operation_get_n_pages_to_print() when print status
+    is [GTK_PRINT_STATUS_GENERATING_DATA].
 
     This is typically used to track the progress of print operation. *)
 
@@ -307,8 +329,10 @@ external get_error : t -> (unit, GError.t) result
 (** Call this when the result of a print operation is
     [GTK_PRINT_OPERATION_RESULT_ERROR].
 
-    It can be called either after [Gtk.PrintOperation.run] returns, or in the
-    [Gtk.PrintOperation::done] signal handler.
+    It can be called either after
+    {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]} returns, or
+    in the {{!Ocgtk.Raw.Print_operation.val-on_done_}[Gtk.PrintOperation::done]}
+    signal handler.
 
     The returned [GError] will contain more details on what went wrong. *)
 
@@ -325,16 +349,20 @@ external draw_page_finish : t -> unit
 (** Signal that drawing of particular page is complete.
 
     It is called after completion of page drawing (e.g. drawing in another
-    thread). If [Gtk.PrintOperation.set_defer_drawing] was called before, then
-    this function has to be called by application. Otherwise it is called by GTK
-    itself. *)
+    thread). If
+    {{!Ocgtk.Raw.Print_operation.val-set_defer_drawing}[Gtk.PrintOperation.set_defer_drawing]}
+    was called before, then this function has to be called by application.
+    Otherwise it is called by GTK itself. *)
 
 external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 (** Cancels a running print operation.
 
-    This function may be called from a [Gtk.PrintOperation::begin-print],
-    [Gtk.PrintOperation::paginate] or [Gtk.PrintOperation::draw-page] signal
-    handler to stop the currently running print operation. *)
+    This function may be called from a
+    {{!Ocgtk.Raw.Print_operation.val-on_begin_print}[Gtk.PrintOperation::begin-print]},
+    {{!Ocgtk.Raw.Print_operation.val-on_paginate}[Gtk.PrintOperation::paginate]}
+    or
+    {{!Ocgtk.Raw.Print_operation.val-on_draw_page}[Gtk.PrintOperation::draw-page]}
+    signal handler to stop the currently running print operation. *)
 
 (* Properties *)
 

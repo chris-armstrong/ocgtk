@@ -7,7 +7,7 @@
  operation with events of type [GDK_DRAG_ENTER], [GDK_DRAG_LEAVE],\n\
  [GDK_DRAG_MOTION] and [GDK_DROP_START]. The [GdkDrop] object can be obtained\n\
  from these {{!Ocgdk.Raw.Event}[Gdk.Event]} types using \
- [Gdk.DNDEvent.get_drop].\n\n\
+ {{!Ocgdk.Raw.Dnd_event.val-get_drop}[Gdk.DNDEvent.get_drop]}.\n\n\
  The actual data transfer is initiated from the target side via an async\n\
  read, using one of the [GdkDrop] methods for this purpose:\n\
  [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].\n\n\
@@ -27,8 +27,9 @@ external status : t -> Ocgdk_enums.dragaction -> Ocgdk_enums.dragaction -> unit
 (** Selects all actions that are potentially supported by the destination.
 
     When calling this function, do not restrict the passed in actions to the
-    ones provided by [Gdk.Drop.get_actions]. Those actions may change in the
-    future, even depending on the actions you provide here.
+    ones provided by {{!Ocgdk.Raw.Drop.val-get_actions}[Gdk.Drop.get_actions]}.
+    Those actions may change in the future, even depending on the actions you
+    provide here.
 
     The [preferred] action is a hint to the drag-and-drop mechanism about which
     action to use when multiple actions are possible.
@@ -71,21 +72,23 @@ external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drop_get_actions"
 (** Returns the possible actions for this [GdkDrop].
 
     If this value contains multiple actions - i.e. [Gdk.DragAction.is_unique]
-    returns false for the result - [Gdk.Drop.finish] must choose the action to
+    returns false for the result -
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]} must choose the action to
     use when accepting the drop. This will only happen if you passed
-    [GDK_ACTION_ASK] as one of the possible actions in [Gdk.Drop.status].
-    [GDK_ACTION_ASK] itself will not be included in the actions returned by this
-    function.
+    [GDK_ACTION_ASK] as one of the possible actions in
+    {{!Ocgdk.Raw.Drop.val-status}[Gdk.Drop.status]}. [GDK_ACTION_ASK] itself
+    will not be included in the actions returned by this function.
 
     This value may change over the lifetime of the {{!Ocgdk.Raw.Drop}[Gdk.Drop]}
     both as a response to source side actions as well as to calls to
-    [Gdk.Drop.status] or [Gdk.Drop.finish]. The source side will not change this
-    value anymore once a drop has started. *)
+    {{!Ocgdk.Raw.Drop.val-status}[Gdk.Drop.status]} or
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]}. The source side will not
+    change this value anymore once a drop has started. *)
 
 external finish : t -> Ocgdk_enums.dragaction -> unit = "ml_gdk_drop_finish"
 (** Ends the drag operation after a drop.
 
     The [action] must be a single action selected from the actions available via
-    [Gdk.Drop.get_actions]. *)
+    {{!Ocgdk.Raw.Drop.val-get_actions}[Gdk.Drop.get_actions]}. *)
 
 (* Properties *)

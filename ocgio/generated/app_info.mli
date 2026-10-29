@@ -19,7 +19,10 @@ class type app_info_t = App_info_cycle_64c425a0.app_info_t
      [GAppInfo] and [GAppLaunchContext] are used for describing and launching\n\
      applications installed on the system.\n\n\
      As of GLib 2.20, URIs will always be converted to POSIX paths\n\
-     (using [Gio.File.get_path]) when using [Gio.AppInfo.launch]\n\
+     (using \
+     {{!Ocgio.File.class-type-file_t.method-get_path}[Gio.File.get_path]}) \
+     when using \
+     {{!Ocgio.App_info.class-type-app_info_t.method-launch}[Gio.AppInfo.launch]}\n\
      even if the application requested an URI and not a POSIX path. For example\n\
      for a desktop-file based application with the following Exec key:\n\n\
      {[\n\
@@ -36,11 +39,14 @@ class type app_info_t = App_info_cycle_64c425a0.app_info_t
      back to the GIO URI in the {{!Ocgio.File.class-type-file_t}[Gio.File]} \
      constructors (since GVfs\n\
      implements the GVfs extension point). As such, if the application\n\
-     needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
+     needs to examine the URI, it needs to use \
+     {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}\n\
      or similar on {{!Ocgio.File.class-type-file_t}[Gio.File]}. In other \
      words, an application cannot\n\
      assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
-     is equal to the result of [Gio.File.get_uri]. The following snippet\n\
+     is equal to the result of \
+     {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}. The \
+     following snippet\n\
      illustrates this:\n\n\
      {[\n\
      GFile *f;\n\
@@ -72,7 +78,9 @@ class app_info : Raw.App_info.t -> app_info_t
  [GAppInfo] and [GAppLaunchContext] are used for describing and launching\n\
  applications installed on the system.\n\n\
  As of GLib 2.20, URIs will always be converted to POSIX paths\n\
- (using [Gio.File.get_path]) when using [Gio.AppInfo.launch]\n\
+ (using {{!Ocgio.File.class-type-file_t.method-get_path}[Gio.File.get_path]}) \
+ when using \
+ {{!Ocgio.App_info.class-type-app_info_t.method-launch}[Gio.AppInfo.launch]}\n\
  even if the application requested an URI and not a POSIX path. For example\n\
  for a desktop-file based application with the following Exec key:\n\n\
  {[\n\
@@ -89,11 +97,14 @@ class app_info : Raw.App_info.t -> app_info_t
  back to the GIO URI in the {{!Ocgio.File.class-type-file_t}[Gio.File]} \
  constructors (since GVfs\n\
  implements the GVfs extension point). As such, if the application\n\
- needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
+ needs to examine the URI, it needs to use \
+ {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}\n\
  or similar on {{!Ocgio.File.class-type-file_t}[Gio.File]}. In other words, an \
  application cannot\n\
  assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
- is equal to the result of [Gio.File.get_uri]. The following snippet\n\
+ is equal to the result of \
+ {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}. The \
+ following snippet\n\
  illustrates this:\n\n\
  {[\n\
  GFile *f;\n\

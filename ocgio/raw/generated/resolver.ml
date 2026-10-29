@@ -5,9 +5,11 @@
     get the default resolver.
 
     [GResolver] provides cancellable synchronous and asynchronous DNS
-    resolution, for hostnames ([Gio.Resolver.lookup_by_address],
-    [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
-    records ([Gio.Resolver.lookup_service]).
+    resolution, for hostnames
+    ({{!Ocgio.Raw.Resolver.val-lookup_by_address}[Gio.Resolver.lookup_by_address]},
+    {{!Ocgio.Raw.Resolver.val-lookup_by_name}[Gio.Resolver.lookup_by_name]} and
+    their async variants) and SRV (service) records
+    ({{!Ocgio.Raw.Resolver.val-lookup_service}[Gio.Resolver.lookup_service]}).
 
     {{!Ocgio.Raw.Network_address}[Gio.NetworkAddress]} and
     {{!Ocgio.Raw.Network_service}[Gio.NetworkService]} provide wrappers around

@@ -65,7 +65,8 @@ external set_modal : t -> bool -> unit = "ml_gdk_toplevel_set_modal"
     handle modal surfaces in a special way.
 
     You should only use this on surfaces for which you have previously called
-    [Gdk.Toplevel.set_transient_for]. *)
+    {{!Ocgdk.Raw.Toplevel.val-set_transient_for}[Gdk.Toplevel.set_transient_for]}.
+*)
 
 external set_icon_list : t -> Texture.t list -> unit
   = "ml_gdk_toplevel_set_icon_list"
@@ -100,7 +101,9 @@ external restore_system_shortcuts : t -> unit
   = "ml_gdk_toplevel_restore_system_shortcuts"
 (** Restore default system keyboard shortcuts which were previously inhibited.
 
-    This undoes the effect of [Gdk.Toplevel.inhibit_system_shortcuts]. *)
+    This undoes the effect of
+    {{!Ocgdk.Raw.Toplevel.val-inhibit_system_shortcuts}[Gdk.Toplevel.inhibit_system_shortcuts]}.
+*)
 
 external present : t -> Toplevel_layout.t -> unit = "ml_gdk_toplevel_present"
 (** Present [toplevel] after having processed the [GdkToplevelLayout] rules.
@@ -134,8 +137,10 @@ external inhibit_system_shortcuts :
     system actions.
 
     If granted, the rerouting remains active until the default shortcuts
-    processing is restored with [Gdk.Toplevel.restore_system_shortcuts], or the
-    request is revoked by the desktop environment, windowing system or the user.
+    processing is restored with
+    {{!Ocgdk.Raw.Toplevel.val-restore_system_shortcuts}[Gdk.Toplevel.restore_system_shortcuts]},
+    or the request is revoked by the desktop environment, windowing system or
+    the user.
 
     A typical use case for this API is remote desktop or virtual machine viewers
     which need to inhibit the default system keyboard shortcuts so that the
@@ -145,7 +150,9 @@ external inhibit_system_shortcuts :
     deny the request or even choose to ignore the request entirely.
 
     The caller can be notified whenever the request is granted or revoked by
-    listening to the [Gdk.Toplevel:shortcuts-inhibited] property. *)
+    listening to the
+    {{!Ocgdk.Raw.Toplevel.val-get_shortcuts_inhibited}[Gdk.Toplevel:shortcuts-inhibited]}
+    property. *)
 
 external get_state : t -> Ocgdk_enums.toplevelstate
   = "ml_gdk_toplevel_get_state"

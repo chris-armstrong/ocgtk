@@ -12,29 +12,37 @@
     file attributes.
 
     To obtain a [GFileInfo] for a {{!Ocgio.Raw.File}[Gio.File]}, use
-    [Gio.File.query_info] (or its async variant). To obtain a [GFileInfo] for a
-    file input or output stream, use [Gio.FileInputStream.query_info] or
-    [Gio.FileOutputStream.query_info] (or their async variants).
+    {{!Ocgio.Raw.File.val-query_info}[Gio.File.query_info]} (or its async
+    variant). To obtain a [GFileInfo] for a file input or output stream, use
+    {{!Ocgio.Raw.File_input_stream.val-query_info}[Gio.FileInputStream.query_info]}
+    or
+    {{!Ocgio.Raw.File_output_stream.val-query_info}[Gio.FileOutputStream.query_info]}
+    (or their async variants).
 
     To change the actual attributes of a file, you should then set the attribute
-    in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
-    [Gio.File.set_attributes_async] on a [GFile].
+    in the [GFileInfo] and call
+    {{!Ocgio.Raw.File.val-set_attributes_from_info}[Gio.File.set_attributes_from_info]}
+    or [Gio.File.set_attributes_async] on a [GFile].
 
     However, not all attributes can be changed in the file. For instance, the
-    actual size of a file cannot be changed via [Gio.FileInfo.set_size]. You may
-    call [Gio.File.query_settable_attributes] and
-    [Gio.File.query_writable_namespaces] to discover the settable attributes of
-    a particular file at runtime.
+    actual size of a file cannot be changed via
+    {{!Ocgio.Raw.File_info.val-set_size}[Gio.FileInfo.set_size]}. You may call
+    {{!Ocgio.Raw.File.val-query_settable_attributes}[Gio.File.query_settable_attributes]}
+    and
+    {{!Ocgio.Raw.File.val-query_writable_namespaces}[Gio.File.query_writable_namespaces]}
+    to discover the settable attributes of a particular file at runtime.
 
-    The direct accessors, such as [Gio.FileInfo.get_name], are slightly more
-    optimized than the generic attribute accessors, such as
-    [Gio.FileInfo.get_attribute_byte_string].This optimization will matter only
-    if calling the API in a tight loop.
+    The direct accessors, such as
+    {{!Ocgio.Raw.File_info.val-get_name}[Gio.FileInfo.get_name]}, are slightly
+    more optimized than the generic attribute accessors, such as
+    {{!Ocgio.Raw.File_info.val-get_attribute_byte_string}[Gio.FileInfo.get_attribute_byte_string]}.This
+    optimization will matter only if calling the API in a tight loop.
 
     It is an error to call these accessors without specifying their required
     file attributes when creating the [GFileInfo]. Use
-    [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
-    attributes are specified for a [GFileInfo].
+    {{!Ocgio.Raw.File_info.val-has_attribute}[Gio.FileInfo.has_attribute]} or
+    {{!Ocgio.Raw.File_info.val-list_attributes}[Gio.FileInfo.list_attributes]}
+    to check what attributes are specified for a [GFileInfo].
 
     {{!Ocgio.Raw.File_attribute_matcher}[Gio.FileAttributeMatcher]} allows for
     searching through a [GFileInfo] for attributes.
@@ -350,7 +358,8 @@ external get_attribute_as_string : t -> string -> string option
    humans. It’s not meant to be a machine readable or reversible escaping\n\
    format.\n\n\
    To format file name attributes of type\n\
-   [Gio.FileAttributeType.BYTE_STRING] for output as UTF-8, use\n\
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[Gio.FileAttributeType.BYTE_STRING]} \
+   for output as UTF-8, use\n\
    [GLib.filename_to_utf8] instead:\n\n\
    {[\n\
    const char *trash_orig_path_byte_string;\n\

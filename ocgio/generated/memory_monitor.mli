@@ -82,7 +82,8 @@ end
     \  return m;\n\
      }\n\
      ]}\n\n\
-     Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
+     Don’t forget to disconnect the \
+     {{!Ocgio.Memory_monitor.class-type-memory_monitor_t.method-on_low_memory_warning}[Gio.MemoryMonitor::low-memory-warning]}\n\
      signal, and unref the [GMemoryMonitor] itself when exiting."]
 
 class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
@@ -133,7 +134,8 @@ class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
 \  return m;\n\
  }\n\
  ]}\n\n\
- Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
+ Don’t forget to disconnect the \
+ {{!Ocgio.Memory_monitor.class-type-memory_monitor_t.method-on_low_memory_warning}[Gio.MemoryMonitor::low-memory-warning]}\n\
  signal, and unref the [GMemoryMonitor] itself when exiting."]
 
 (** {1:constructors Constructors} *)

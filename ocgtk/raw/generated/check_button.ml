@@ -4,11 +4,14 @@
 [@@@ocaml.text
 "Places a label next to an indicator.\n\n\
  Example GtkCheckButtons\n\n\
- A [GtkCheckButton] is created by calling either [Gtk.CheckButton.new]\n\
- or [Gtk.CheckButton.new_with_label].\n\n\
+ A [GtkCheckButton] is created by calling either \
+ {{!Ocgtk.Raw.Check_button.val-new_}[Gtk.CheckButton.new]}\n\
+ or \
+ {{!Ocgtk.Raw.Check_button.val-new_with_label}[Gtk.CheckButton.new_with_label]}.\n\n\
  The state of a [GtkCheckButton] can be set specifically using\n\
- [Gtk.CheckButton.set_active], and retrieved using\n\
- [Gtk.CheckButton.get_active].\n\n\
+ {{!Ocgtk.Raw.Check_button.val-set_active}[Gtk.CheckButton.set_active]}, and \
+ retrieved using\n\
+ {{!Ocgtk.Raw.Check_button.val-get_active}[Gtk.CheckButton.get_active]}.\n\n\
  {b Inconsistent state}\n\n\
  In addition to \"on\" and \"off\", check buttons can be an\n\
  \"in between\" state that is neither on nor off. This can be used\n\
@@ -16,7 +19,7 @@
  text or spreadsheet cells) that are affected by a check button,\n\
  and the current values in that range are inconsistent.\n\n\
  To set a [GtkCheckButton] to inconsistent state, use\n\
- [Gtk.CheckButton.set_inconsistent].\n\n\
+ {{!Ocgtk.Raw.Check_button.val-set_inconsistent}[Gtk.CheckButton.set_inconsistent]}.\n\n\
  {b Grouping}\n\n\
  Check buttons can be grouped together, to form mutually exclusive\n\
  groups - only one of the buttons can be toggled at a time, and toggling\n\
@@ -24,7 +27,8 @@
  Grouped check buttons use a different indicator, and are commonly referred\n\
  to as {i radio buttons}.\n\n\
  Example GtkRadioButtons\n\n\
- To add a [GtkCheckButton] to a group, use [Gtk.CheckButton.set_group].\n\n\
+ To add a [GtkCheckButton] to a group, use \
+ {{!Ocgtk.Raw.Check_button.val-set_group}[Gtk.CheckButton.set_group]}.\n\n\
  When the code must keep track of the state of a group of radio buttons, it\n\
  is recommended to keep track of such state through a stateful\n\
  [GAction] with a target for each button. Using the [toggled] signals to keep\n\
@@ -39,12 +43,15 @@
  ╰── [label]\n\
  ]}\n\n\
  A [GtkCheckButton] has a main node with name checkbutton. If the\n\
- [Gtk.CheckButton:label] or [Gtk.CheckButton:child]\n\
+ {{!Ocgtk.Raw.Check_button.val-get_label}[Gtk.CheckButton:label]} or \
+ {{!Ocgtk.Raw.Check_button.val-get_child}[Gtk.CheckButton:child]}\n\
  properties are set, it contains a child widget. The indicator node\n\
  is named check when no group is set, and radio if the checkbutton\n\
  is grouped together with other checkbuttons.\n\n\
  {b Accessibility}\n\n\
- [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role.\n\n\
+ [GtkCheckButton] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-CHECKBOX}[Gtk.AccessibleRole.checkbox]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Check_button}."]
 
 type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -70,14 +77,17 @@ external set_use_underline : t -> bool -> unit
 
     If [setting] is [true], an underscore character in [self]'s label indicates
     a mnemonic accelerator key. This behavior is similar to
-    [Gtk.Label:use-underline]. *)
+    {{!Ocgtk.Raw.Label.val-get_use_underline}[Gtk.Label:use-underline]}. *)
 
 external set_label : t -> string option -> unit
   = "ml_gtk_check_button_set_label"
 (** Sets the text of [self].
 
-    If [Gtk.CheckButton:use-underline] is [true], an underscore in [label] is
-    interpreted as mnemonic indicator, see [Gtk.CheckButton.set_use_underline]
+    If
+    {{!Ocgtk.Raw.Check_button.val-get_use_underline}[Gtk.CheckButton:use-underline]}
+    is [true], an underscore in [label] is interpreted as mnemonic indicator,
+    see
+    {{!Ocgtk.Raw.Check_button.val-set_use_underline}[Gtk.CheckButton.set_use_underline]}
     for details on this behavior. *)
 
 external set_inconsistent : t -> bool -> unit
@@ -126,8 +136,8 @@ external get_use_underline : t -> bool = "ml_gtk_check_button_get_use_underline"
 (** Returns whether underlines in the label indicate mnemonics. *)
 
 external get_label : t -> string option = "ml_gtk_check_button_get_label"
-(** Returns the label of the check button or [None] if [CheckButton:child] is
-    set. *)
+(** Returns the label of the check button or [None] if
+    {{!Ocgtk.Raw.Check_button.val-get_child}[CheckButton:child]} is set. *)
 
 external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
 (** Returns whether the check button is in an inconsistent state. *)
@@ -138,8 +148,8 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_check_button_get_child"
-(** Gets the child widget of [button] or [None] if [CheckButton:label] is set.
-*)
+(** Gets the child widget of [button] or [None] if
+    {{!Ocgtk.Raw.Check_button.val-get_label}[CheckButton:label]} is set. *)
 
 external get_active : t -> bool = "ml_gtk_check_button_get_active"
 (** Returns whether the check button is active. *)

@@ -143,25 +143,32 @@ end
      {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]} and\n\
      {{!Ocgtk.Popover_menu_bar.class-type-popover_menu_bar_t}[Gtk.PopoverMenuBar]} \
      do. If you want to make a custom widget that\n\
-     has an attached popover, you need to call [Gtk.Popover.present]\n\
+     has an attached popover, you need to call \
+     {{!Ocgtk.Popover.class-type-popover_t.method-present}[Gtk.Popover.present]}\n\
      in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
      positioning of the popover.\n\n\
      The position of a popover relative to the widget it is attached to\n\
-     can also be changed with [Gtk.Popover.set_position]. By default,\n\
+     can also be changed with \
+     {{!Ocgtk.Popover.class-type-popover_t.method-set_position}[Gtk.Popover.set_position]}. \
+     By default,\n\
      it points to the whole widget area, but it can be made to point to\n\
-     a specific area using [Gtk.Popover.set_pointing_to].\n\n\
+     a specific area using \
+     {{!Ocgtk.Popover.class-type-popover_t.method-set_pointing_to}[Gtk.Popover.set_pointing_to]}.\n\n\
      By default, [GtkPopover] performs a grab, in order to ensure input\n\
      events get redirected to it while it is shown, and also so the popover\n\
      is dismissed in the expected situations (clicks outside the popover,\n\
      or the Escape key being pressed). If no such modal behavior is desired\n\
-     on a popover, [Gtk.Popover.set_autohide] may be called on it to\n\
+     on a popover, \
+     {{!Ocgtk.Popover.class-type-popover_t.method-set_autohide}[Gtk.Popover.set_autohide]} \
+     may be called on it to\n\
      tweak its behavior.\n\n\
      {b GtkPopover as menu replacement}\n\n\
      [GtkPopover] is often used to replace menus. The best way to do this\n\
      is to use the \
      {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} \
      subclass which supports being\n\
-     populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
+     populated from a [GMenuModel] with \
+     {{!Ocgtk.Popover_menu.val-new_from_model}[Gtk.PopoverMenu.new_from_model]}.\n\n\
      {[\n\
      <section>\n\
     \  <attribute name=\"display-hint\">horizontal-buttons</attribute>\n\
@@ -187,7 +194,8 @@ end
      - <kbd>Escape</kbd> closes the popover.\n\
      - <kbd>Alt</kbd> makes the mnemonics visible.\n\n\
      The following signals have default keybindings:\n\n\
-     - [Gtk.Popover::activate-default]\n\n\
+     - \
+     {{!Ocgtk.Popover.class-type-popover_t.method-on_activate_default}[Gtk.Popover::activate-default]}\n\n\
      {b CSS nodes}\n\n\
      {[\n\
      popover.background[.menu]\n\
@@ -233,25 +241,32 @@ class popover : Raw.Popover.t -> popover_t
  {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]} and\n\
  {{!Ocgtk.Popover_menu_bar.class-type-popover_menu_bar_t}[Gtk.PopoverMenuBar]} \
  do. If you want to make a custom widget that\n\
- has an attached popover, you need to call [Gtk.Popover.present]\n\
+ has an attached popover, you need to call \
+ {{!Ocgtk.Popover.class-type-popover_t.method-present}[Gtk.Popover.present]}\n\
  in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
  positioning of the popover.\n\n\
  The position of a popover relative to the widget it is attached to\n\
- can also be changed with [Gtk.Popover.set_position]. By default,\n\
+ can also be changed with \
+ {{!Ocgtk.Popover.class-type-popover_t.method-set_position}[Gtk.Popover.set_position]}. \
+ By default,\n\
  it points to the whole widget area, but it can be made to point to\n\
- a specific area using [Gtk.Popover.set_pointing_to].\n\n\
+ a specific area using \
+ {{!Ocgtk.Popover.class-type-popover_t.method-set_pointing_to}[Gtk.Popover.set_pointing_to]}.\n\n\
  By default, [GtkPopover] performs a grab, in order to ensure input\n\
  events get redirected to it while it is shown, and also so the popover\n\
  is dismissed in the expected situations (clicks outside the popover,\n\
  or the Escape key being pressed). If no such modal behavior is desired\n\
- on a popover, [Gtk.Popover.set_autohide] may be called on it to\n\
+ on a popover, \
+ {{!Ocgtk.Popover.class-type-popover_t.method-set_autohide}[Gtk.Popover.set_autohide]} \
+ may be called on it to\n\
  tweak its behavior.\n\n\
  {b GtkPopover as menu replacement}\n\n\
  [GtkPopover] is often used to replace menus. The best way to do this\n\
  is to use the \
  {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} subclass \
  which supports being\n\
- populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
+ populated from a [GMenuModel] with \
+ {{!Ocgtk.Popover_menu.val-new_from_model}[Gtk.PopoverMenu.new_from_model]}.\n\n\
  {[\n\
  <section>\n\
 \  <attribute name=\"display-hint\">horizontal-buttons</attribute>\n\
@@ -277,7 +292,8 @@ class popover : Raw.Popover.t -> popover_t
  - <kbd>Escape</kbd> closes the popover.\n\
  - <kbd>Alt</kbd> makes the mnemonics visible.\n\n\
  The following signals have default keybindings:\n\n\
- - [Gtk.Popover::activate-default]\n\n\
+ - \
+ {{!Ocgtk.Popover.class-type-popover_t.method-on_activate_default}[Gtk.Popover::activate-default]}\n\n\
  {b CSS nodes}\n\n\
  {[\n\
  popover.background[.menu]\n\

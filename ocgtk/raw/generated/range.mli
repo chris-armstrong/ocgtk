@@ -8,7 +8,8 @@
 
     Apart from signals for monitoring the parameters of the adjustment,
     [GtkRange] provides properties and methods for setting a “fill level” on
-    range widgets. See [Gtk.Range.set_fill_level].
+    range widgets. See
+    {{!Ocgtk.Raw.Range.val-set_fill_level}[Gtk.Range.set_fill_level]}.
 
     {b Shortcuts and Gestures}
 
@@ -28,8 +29,9 @@ external set_value : t -> float -> unit = "ml_gtk_range_set_value"
 (** Sets the current value of the range.
 
     If the value is outside the minimum or maximum range values, it will be
-    clamped to fit inside them. The range emits the [Gtk.Range::value-changed]
-    signal if the value changes. *)
+    clamped to fit inside them. The range emits the
+    {{!Ocgtk.Raw.Range.val-on_value_changed}[Gtk.Range::value-changed]} signal
+    if the value changes. *)
 
 external set_slider_size_fixed : t -> bool -> unit
   = "ml_gtk_range_set_slider_size_fixed"
@@ -42,20 +44,20 @@ external set_show_fill_level : t -> bool -> unit
   = "ml_gtk_range_set_show_fill_level"
 (** Sets whether a graphical fill level is show on the trough.
 
-    See [Gtk.Range.set_fill_level] for a general description of the fill level
-    concept. *)
+    See {{!Ocgtk.Raw.Range.val-set_fill_level}[Gtk.Range.set_fill_level]} for a
+    general description of the fill level concept. *)
 
 external set_round_digits : t -> int -> unit = "ml_gtk_range_set_round_digits"
 (** Sets the number of digits to round the value to when it changes.
 
-    See [Gtk.Range::change-value]. *)
+    See {{!Ocgtk.Raw.Range.val-on_change_value}[Gtk.Range::change-value]}. *)
 
 external set_restrict_to_fill_level : t -> bool -> unit
   = "ml_gtk_range_set_restrict_to_fill_level"
 (** Sets whether the slider is restricted to the fill level.
 
-    See [Gtk.Range.set_fill_level] for a general description of the fill level
-    concept. *)
+    See {{!Ocgtk.Raw.Range.val-set_fill_level}[Gtk.Range.set_fill_level]} for a
+    general description of the fill level concept. *)
 
 external set_range : t -> float -> float -> unit = "ml_gtk_range_set_range"
 (** Sets the allowable values in the [GtkRange].
@@ -84,7 +86,7 @@ external set_flippable : t -> bool -> unit = "ml_gtk_range_set_flippable"
     If a range is flippable, it will switch its direction if it is horizontal
     and its direction is [GTK_TEXT_DIR_RTL].
 
-    See [Gtk.Widget.get_direction]. *)
+    See {{!Ocgtk.Raw.Widget.val-get_direction}[Gtk.Widget.get_direction]}. *)
 
 external set_fill_level : t -> float -> unit = "ml_gtk_range_set_fill_level"
 (** Set the new position of the fill level indicator.
@@ -97,12 +99,13 @@ external set_fill_level : t -> float -> unit = "ml_gtk_range_set_fill_level"
 
     This amount of prebuffering can be displayed on the range’s trough and is
     themeable separately from the trough. To enable fill level display, use
-    [Gtk.Range.set_show_fill_level]. The range defaults to not showing the fill
-    level.
+    {{!Ocgtk.Raw.Range.val-set_show_fill_level}[Gtk.Range.set_show_fill_level]}.
+    The range defaults to not showing the fill level.
 
     Additionally, it’s possible to restrict the range’s slider position to
     values which are smaller than the fill level. This is controlled by
-    [Gtk.Range.set_restrict_to_fill_level] and is by default enabled. *)
+    {{!Ocgtk.Raw.Range.val-set_restrict_to_fill_level}[Gtk.Range.set_restrict_to_fill_level]}
+    and is by default enabled. *)
 
 external set_adjustment : t -> Adjustment.t -> unit
   = "ml_gtk_range_set_adjustment"
@@ -123,7 +126,9 @@ external get_slider_size_fixed : t -> bool
   = "ml_gtk_range_get_slider_size_fixed"
 (** This function is useful mainly for [GtkRange] subclasses.
 
-    See [Gtk.Range.set_slider_size_fixed]. *)
+    See
+    {{!Ocgtk.Raw.Range.val-set_slider_size_fixed}[Gtk.Range.set_slider_size_fixed]}.
+*)
 
 external get_slider_range : t -> int * int = "ml_gtk_range_get_slider_range"
 (** This function returns sliders range along the long dimension, in
@@ -137,7 +142,7 @@ external get_show_fill_level : t -> bool = "ml_gtk_range_get_show_fill_level"
 external get_round_digits : t -> int = "ml_gtk_range_get_round_digits"
 (** Gets the number of digits to round the value to when it changes.
 
-    See [Gtk.Range::change-value]. *)
+    See {{!Ocgtk.Raw.Range.val-on_change_value}[Gtk.Range::change-value]}. *)
 
 external get_restrict_to_fill_level : t -> bool
   = "ml_gtk_range_get_restrict_to_fill_level"
@@ -153,12 +158,12 @@ external get_range_rect : t -> Ocgdk_raw.Rectangle.t
 external get_inverted : t -> bool = "ml_gtk_range_get_inverted"
 (** Gets whether the range is inverted.
 
-    See [Gtk.Range.set_inverted]. *)
+    See {{!Ocgtk.Raw.Range.val-set_inverted}[Gtk.Range.set_inverted]}. *)
 
 external get_flippable : t -> bool = "ml_gtk_range_get_flippable"
 (** Gets whether the [GtkRange] respects text direction.
 
-    See [Gtk.Range.set_flippable]. *)
+    See {{!Ocgtk.Raw.Range.val-set_flippable}[Gtk.Range.set_flippable]}. *)
 
 external get_fill_level : t -> float = "ml_gtk_range_get_fill_level"
 (** Gets the current position of the fill level indicator. *)
@@ -192,7 +197,7 @@ val on_change_value :
     The value parameter is unrounded. An application that overrides the
     ::change-value signal is responsible for clamping the value to the desired
     number of decimal digits; the default GTK handler clamps the value based on
-    [Gtk.Range:round-digits]. *)
+    {{!Ocgtk.Raw.Range.val-get_round_digits}[Gtk.Range:round-digits]}. *)
 
 val on_move_slider :
   ?after:bool ->

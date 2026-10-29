@@ -26,7 +26,7 @@ external to_string : t -> string = "ml_gdk_rgba_to_string"
     the range 0 to 1.
 
     These string forms are string forms that are supported by the CSS3 colors
-    module, and can be parsed by [Gdk.RGBA.parse].
+    module, and can be parsed by {{!Ocgdk.Raw.Rgb_a.val-parse}[Gdk.RGBA.parse]}.
 
     Note that this string representation may lose some precision, since “r”, “g”
     and “b” are represented as 8-bit integers. If this is a concern, you should

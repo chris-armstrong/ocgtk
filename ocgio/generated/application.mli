@@ -463,8 +463,11 @@ end
      this class outside of a higher level framework.\n\n\
      [GApplication] provides convenient life-cycle management by maintaining\n\
      a \"use count\" for the primary application instance. The use count can\n\
-     be changed using [Gio.Application.hold] and\n\
-     [Gio.Application.release]. If it drops to zero, the application\n\
+     be changed using \
+     {{!Ocgio.Application.class-type-application_t.method-hold}[Gio.Application.hold]} \
+     and\n\
+     {{!Ocgio.Application.class-type-application_t.method-release}[Gio.Application.release]}. \
+     If it drops to zero, the application\n\
      exits. Higher-level classes such as [GtkApplication] employ the use count\n\
      to ensure that the application stays alive as long as it has any opened\n\
      windows.\n\n\
@@ -485,11 +488,15 @@ end
      if it is the primary instance. Instead, the main() function of a\n\
      [GApplication] should do very little more than instantiating the\n\
      application instance, possibly connecting signal handlers, then\n\
-     calling [Gio.Application.run]. All checks for uniqueness are done\n\
+     calling \
+     {{!Ocgio.Application.class-type-application_t.method-run}[Gio.Application.run]}. \
+     All checks for uniqueness are done\n\
      internally. If the application is the primary instance then the\n\
      startup signal is emitted and the mainloop runs. If the application\n\
      is not the primary instance then a signal is sent to the primary\n\
-     instance and [Gio.Application.run] promptly returns. See the code\n\
+     instance and \
+     {{!Ocgio.Application.class-type-application_t.method-run}[Gio.Application.run]} \
+     promptly returns. See the code\n\
      examples below.\n\n\
      If used, the expected form of an application identifier is the\n\
      same as that of a\n\
@@ -511,15 +518,20 @@ end
      any object paths that you wish to register are registered before \
      [GApplication]\n\
      attempts to acquire the bus name of your application (which happens in\n\
-     [Gio.Application.register]). Unfortunately, this means that you cannot\n\
-     use [Gio.Application:is-remote] to decide if you want to register\n\
+     {{!Ocgio.Application.class-type-application_t.method-register}[Gio.Application.register]}). \
+     Unfortunately, this means that you cannot\n\
+     use \
+     {{!Ocgio.Application.class-type-application_t.method-get_is_remote}[Gio.Application:is-remote]} \
+     to decide if you want to register\n\
      object paths.\n\n\
      [GApplication] also implements the \
      {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
      {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
      interfaces and lets you easily export actions by adding them with\n\
-     [Gio.ActionMap.add_action]. When invoking an action by calling\n\
-     [Gio.ActionGroup.activate_action] on the application, it is always\n\
+     {{!Ocgio.Action_map.class-type-action_map_t.method-add_action}[Gio.ActionMap.add_action]}. \
+     When invoking an action by calling\n\
+     {{!Ocgio.Action_group.class-type-action_group_t.method-activate_action}[Gio.ActionGroup.activate_action]} \
+     on the application, it is always\n\
      invoked in the primary instance. The actions are also exported on\n\
      the session bus, and GIO provides the \
      {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]} \
@@ -537,7 +549,9 @@ end
      - via 'Open' (i.e. opening some files)\n\n\
      - by handling a command-line\n\n\
      - via activating an action\n\n\
-     The [Gio.Application::startup] signal lets you handle the application\n\
+     The \
+     {{!Ocgio.Application.class-type-application_t.method-on_startup}[Gio.Application::startup]} \
+     signal lets you handle the application\n\
      initialization for all of these in a single place.\n\n\
      Regardless of which of these entry points is used to start the\n\
      application, [GApplication] passes some ‘platform data’ from the\n\
@@ -548,9 +562,11 @@ end
      in your [GApplication] subclass. When dealing with\n\
      {{!Ocgio.Application_command_line.class-type-application_command_line_t}[Gio.ApplicationCommandLine]} \
      objects, the platform data is\n\
-     directly available via [Gio.ApplicationCommandLine.get_cwd],\n\
-     [Gio.ApplicationCommandLine.get_environ] and\n\
-     [Gio.ApplicationCommandLine.get_platform_data].\n\n\
+     directly available via \
+     {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_cwd}[Gio.ApplicationCommandLine.get_cwd]},\n\
+     {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_environ}[Gio.ApplicationCommandLine.get_environ]} \
+     and\n\
+     {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_platform_data}[Gio.ApplicationCommandLine.get_platform_data]}.\n\n\
      As the name indicates, the platform data may vary depending on the\n\
      operating system, but it always includes the current directory (key\n\
      [cwd]), and optionally the environment (ie the set of environment\n\
@@ -561,7 +577,8 @@ end
      [Gio.Application.add_platform_data] virtual function. For instance,\n\
      [GtkApplication] adds startup notification data in this way.\n\n\
      To parse commandline arguments you may handle the\n\
-     [Gio.Application::command-line] signal or override the\n\
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     signal or override the\n\
      [Gio.Application.local_command_line] virtual function, to parse them in\n\
      either the primary instance or the local instance, respectively.\n\n\
      For an example of opening files with a [GApplication], see\n\
@@ -584,8 +601,11 @@ class application : Raw.Application.t -> application_t
  this class outside of a higher level framework.\n\n\
  [GApplication] provides convenient life-cycle management by maintaining\n\
  a \"use count\" for the primary application instance. The use count can\n\
- be changed using [Gio.Application.hold] and\n\
- [Gio.Application.release]. If it drops to zero, the application\n\
+ be changed using \
+ {{!Ocgio.Application.class-type-application_t.method-hold}[Gio.Application.hold]} \
+ and\n\
+ {{!Ocgio.Application.class-type-application_t.method-release}[Gio.Application.release]}. \
+ If it drops to zero, the application\n\
  exits. Higher-level classes such as [GtkApplication] employ the use count\n\
  to ensure that the application stays alive as long as it has any opened\n\
  windows.\n\n\
@@ -606,11 +626,15 @@ class application : Raw.Application.t -> application_t
  if it is the primary instance. Instead, the main() function of a\n\
  [GApplication] should do very little more than instantiating the\n\
  application instance, possibly connecting signal handlers, then\n\
- calling [Gio.Application.run]. All checks for uniqueness are done\n\
+ calling \
+ {{!Ocgio.Application.class-type-application_t.method-run}[Gio.Application.run]}. \
+ All checks for uniqueness are done\n\
  internally. If the application is the primary instance then the\n\
  startup signal is emitted and the mainloop runs. If the application\n\
  is not the primary instance then a signal is sent to the primary\n\
- instance and [Gio.Application.run] promptly returns. See the code\n\
+ instance and \
+ {{!Ocgio.Application.class-type-application_t.method-run}[Gio.Application.run]} \
+ promptly returns. See the code\n\
  examples below.\n\n\
  If used, the expected form of an application identifier is the\n\
  same as that of a\n\
@@ -630,15 +654,20 @@ class application : Raw.Application.t -> application_t
  (even if a main loop is not running). For this reason, you must ensure that\n\
  any object paths that you wish to register are registered before [GApplication]\n\
  attempts to acquire the bus name of your application (which happens in\n\
- [Gio.Application.register]). Unfortunately, this means that you cannot\n\
- use [Gio.Application:is-remote] to decide if you want to register\n\
+ {{!Ocgio.Application.class-type-application_t.method-register}[Gio.Application.register]}). \
+ Unfortunately, this means that you cannot\n\
+ use \
+ {{!Ocgio.Application.class-type-application_t.method-get_is_remote}[Gio.Application:is-remote]} \
+ to decide if you want to register\n\
  object paths.\n\n\
  [GApplication] also implements the \
  {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
  {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
  interfaces and lets you easily export actions by adding them with\n\
- [Gio.ActionMap.add_action]. When invoking an action by calling\n\
- [Gio.ActionGroup.activate_action] on the application, it is always\n\
+ {{!Ocgio.Action_map.class-type-action_map_t.method-add_action}[Gio.ActionMap.add_action]}. \
+ When invoking an action by calling\n\
+ {{!Ocgio.Action_group.class-type-action_group_t.method-activate_action}[Gio.ActionGroup.activate_action]} \
+ on the application, it is always\n\
  invoked in the primary instance. The actions are also exported on\n\
  the session bus, and GIO provides the \
  {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]} \
@@ -656,7 +685,9 @@ class application : Raw.Application.t -> application_t
  - via 'Open' (i.e. opening some files)\n\n\
  - by handling a command-line\n\n\
  - via activating an action\n\n\
- The [Gio.Application::startup] signal lets you handle the application\n\
+ The \
+ {{!Ocgio.Application.class-type-application_t.method-on_startup}[Gio.Application::startup]} \
+ signal lets you handle the application\n\
  initialization for all of these in a single place.\n\n\
  Regardless of which of these entry points is used to start the\n\
  application, [GApplication] passes some ‘platform data’ from the\n\
@@ -667,9 +698,11 @@ class application : Raw.Application.t -> application_t
  in your [GApplication] subclass. When dealing with\n\
  {{!Ocgio.Application_command_line.class-type-application_command_line_t}[Gio.ApplicationCommandLine]} \
  objects, the platform data is\n\
- directly available via [Gio.ApplicationCommandLine.get_cwd],\n\
- [Gio.ApplicationCommandLine.get_environ] and\n\
- [Gio.ApplicationCommandLine.get_platform_data].\n\n\
+ directly available via \
+ {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_cwd}[Gio.ApplicationCommandLine.get_cwd]},\n\
+ {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_environ}[Gio.ApplicationCommandLine.get_environ]} \
+ and\n\
+ {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-get_platform_data}[Gio.ApplicationCommandLine.get_platform_data]}.\n\n\
  As the name indicates, the platform data may vary depending on the\n\
  operating system, but it always includes the current directory (key\n\
  [cwd]), and optionally the environment (ie the set of environment\n\
@@ -680,7 +713,8 @@ class application : Raw.Application.t -> application_t
  [Gio.Application.add_platform_data] virtual function. For instance,\n\
  [GtkApplication] adds startup notification data in this way.\n\n\
  To parse commandline arguments you may handle the\n\
- [Gio.Application::command-line] signal or override the\n\
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ signal or override the\n\
  [Gio.Application.local_command_line] virtual function, to parse them in\n\
  either the primary instance or the local instance, respectively.\n\n\
  For an example of opening files with a [GApplication], see\n\

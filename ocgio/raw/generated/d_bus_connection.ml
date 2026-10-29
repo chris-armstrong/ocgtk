@@ -25,7 +25,8 @@
     the connection.
 
     If you construct an uninitialized [GDBusConnection], such as via
-    [GObject.Object.new], you must initialize it via [Gio.Initable.init] or
+    [GObject.Object.new], you must initialize it via
+    {{!Ocgio.Raw.Initable.val-init}[Gio.Initable.init]} or
     [Gio.AsyncInitable.init_async] before using its methods or properties.
     Calling methods or accessing properties on a [GDBusConnection] that has not
     completed initialization successfully is considered to be invalid, and leads
@@ -136,11 +137,11 @@ external unexport_menu_model : t -> int -> unit
 external unexport_action_group : t -> int -> unit
   = "ml_g_dbus_connection_unexport_action_group"
 (** Reverses the effect of a previous call to
-    [Gio.DBusConnection.export_action_group].
+    {{!Ocgio.Raw.D_bus_connection.val-export_action_group}[Gio.DBusConnection.export_action_group]}.
 
     It is an error to call this function with an ID that wasn’t returned from
-    [Gio.DBusConnection.export_action_group] or to call it with the same ID more
-    than once. *)
+    {{!Ocgio.Raw.D_bus_connection.val-export_action_group}[Gio.DBusConnection.export_action_group]}
+    or to call it with the same ID more than once. *)
 
 external start_message_processing : t -> unit
   = "ml_g_dbus_connection_start_message_processing"
@@ -360,8 +361,8 @@ external export_action_group :
     [error] set accordingly).
 
     You can unexport the action group using
-    [Gio.DBusConnection.unexport_action_group] with the return value of this
-    function.
+    {{!Ocgio.Raw.D_bus_connection.val-unexport_action_group}[Gio.DBusConnection.unexport_action_group]}
+    with the return value of this function.
 
     The thread default main context is taken at the time of this call. All
     incoming action activations and state change requests are reported from this

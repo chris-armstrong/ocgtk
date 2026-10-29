@@ -59,4 +59,5 @@ val new_ : Expression.expression_t option -> numeric_sorter_t
 (** Creates a new numeric sorter using the given [expression].
 
     Smaller numbers will be sorted first. You can call
-    [Gtk.NumericSorter.set_sort_order] to change this. *)
+    {{!Ocgtk.Numeric_sorter.class-type-numeric_sorter_t.method-set_sort_order}[Gtk.NumericSorter.set_sort_order]}
+    to change this. *)

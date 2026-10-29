@@ -24,9 +24,10 @@ external new_ : Sorter.t option -> t = "ml_gtk_tree_list_row_sorter_new"
 (** Create a special-purpose sorter that applies the sorting of [sorter] to the
     levels of a [GtkTreeListModel].
 
-    Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
-    [false] as it can only sort {{!Ocgtk.Raw.Tree_list_row}[Gtk.TreeListRow]}s.
-*)
+    Note that this sorter relies on
+    {{!Ocgtk.Raw.Tree_list_model.val-get_passthrough}[Gtk.TreeListModel:passthrough]}
+    being [false] as it can only sort
+    {{!Ocgtk.Raw.Tree_list_row}[Gtk.TreeListRow]}s. *)
 
 (* Methods *)
 
@@ -34,8 +35,9 @@ external set_sorter : t -> Sorter.t option -> unit
   = "ml_gtk_tree_list_row_sorter_set_sorter"
 (** Sets the sorter to use for items with the same parent.
 
-    This sorter will be passed the [Gtk.TreeListRow:item] of the tree list rows
-    passed to [self]. *)
+    This sorter will be passed the
+    {{!Ocgtk.Raw.Tree_list_row.val-get_item}[Gtk.TreeListRow:item]} of the tree
+    list rows passed to [self]. *)
 
 external get_sorter : t -> Sorter.t option
   = "ml_gtk_tree_list_row_sorter_get_sorter"

@@ -7,7 +7,8 @@
  The division between the two panes is adjustable by the user\n\
  by dragging a handle.\n\n\
  Child widgets are added to the panes of the widget with\n\
- [Gtk.Paned.set_start_child] and [Gtk.Paned.set_end_child].\n\
+ {{!Ocgtk.Raw.Paned.val-set_start_child}[Gtk.Paned.set_start_child]} and \
+ {{!Ocgtk.Raw.Paned.val-set_end_child}[Gtk.Paned.set_end_child]}.\n\
  The division between the two children is set by default from the size\n\
  requests of the children, but it can be adjusted by the user.\n\n\
  A paned widget draws a separator between the two child widgets and a\n\
@@ -25,15 +26,17 @@
  If \"resize\" is false for both children, then this is treated as if\n\
  \"resize\" is true for both children.\n\n\
  The application can set the position of the slider as if it were set\n\
- by the user, by calling [Gtk.Paned.set_position].\n\n\
+ by the user, by calling \
+ {{!Ocgtk.Raw.Paned.val-set_position}[Gtk.Paned.set_position]}.\n\n\
  {b Shortcuts and Gestures}\n\n\
  The following signals have default keybindings:\n\n\
- - [Gtk.Paned::accept-position]\n\
- - [Gtk.Paned::cancel-position]\n\
- - [Gtk.Paned::cycle-child-focus]\n\
- - [Gtk.Paned::cycle-handle-focus]\n\
- - [Gtk.Paned::move-handle]\n\
- - [Gtk.Paned::toggle-handle-focus]\n\n\
+ - {{!Ocgtk.Raw.Paned.val-on_accept_position}[Gtk.Paned::accept-position]}\n\
+ - {{!Ocgtk.Raw.Paned.val-on_cancel_position}[Gtk.Paned::cancel-position]}\n\
+ - {{!Ocgtk.Raw.Paned.val-on_cycle_child_focus}[Gtk.Paned::cycle-child-focus]}\n\
+ - {{!Ocgtk.Raw.Paned.val-on_cycle_handle_focus}[Gtk.Paned::cycle-handle-focus]}\n\
+ - {{!Ocgtk.Raw.Paned.val-on_move_handle}[Gtk.Paned::move-handle]}\n\
+ - \
+ {{!Ocgtk.Raw.Paned.val-on_toggle_handle_focus}[Gtk.Paned::toggle-handle-focus]}\n\n\
  {b CSS nodes}\n\n\
  {[\n\
  paned\n\
@@ -90,19 +93,25 @@ external set_start_child :
 
 external set_shrink_start_child : t -> bool -> unit
   = "ml_gtk_paned_set_shrink_start_child"
-(** Sets whether the [Gtk.Paned:start-child] can shrink. *)
+(** Sets whether the
+    {{!Ocgtk.Raw.Paned.val-get_start_child}[Gtk.Paned:start-child]} can shrink.
+*)
 
 external set_shrink_end_child : t -> bool -> unit
   = "ml_gtk_paned_set_shrink_end_child"
-(** Sets whether the [Gtk.Paned:end-child] can shrink. *)
+(** Sets whether the {{!Ocgtk.Raw.Paned.val-get_end_child}[Gtk.Paned:end-child]}
+    can shrink. *)
 
 external set_resize_start_child : t -> bool -> unit
   = "ml_gtk_paned_set_resize_start_child"
-(** Sets whether the [Gtk.Paned:start-child] can be resized. *)
+(** Sets whether the
+    {{!Ocgtk.Raw.Paned.val-get_start_child}[Gtk.Paned:start-child]} can be
+    resized. *)
 
 external set_resize_end_child : t -> bool -> unit
   = "ml_gtk_paned_set_resize_end_child"
-(** Sets whether the [Gtk.Paned:end-child] can be resized. *)
+(** Sets whether the {{!Ocgtk.Raw.Paned.val-get_end_child}[Gtk.Paned:end-child]}
+    can be resized. *)
 
 external set_position : t -> int -> unit = "ml_gtk_paned_set_position"
 (** Sets the position of the divider between the two panes. *)
@@ -131,17 +140,24 @@ external get_start_child :
 
 external get_shrink_start_child : t -> bool
   = "ml_gtk_paned_get_shrink_start_child"
-(** Returns whether the [Gtk.Paned:start-child] can shrink. *)
+(** Returns whether the
+    {{!Ocgtk.Raw.Paned.val-get_start_child}[Gtk.Paned:start-child]} can shrink.
+*)
 
 external get_shrink_end_child : t -> bool = "ml_gtk_paned_get_shrink_end_child"
-(** Returns whether the [Gtk.Paned:end-child] can shrink. *)
+(** Returns whether the
+    {{!Ocgtk.Raw.Paned.val-get_end_child}[Gtk.Paned:end-child]} can shrink. *)
 
 external get_resize_start_child : t -> bool
   = "ml_gtk_paned_get_resize_start_child"
-(** Returns whether the [Gtk.Paned:start-child] can be resized. *)
+(** Returns whether the
+    {{!Ocgtk.Raw.Paned.val-get_start_child}[Gtk.Paned:start-child]} can be
+    resized. *)
 
 external get_resize_end_child : t -> bool = "ml_gtk_paned_get_resize_end_child"
-(** Returns whether the [Gtk.Paned:end-child] can be resized. *)
+(** Returns whether the
+    {{!Ocgtk.Raw.Paned.val-get_end_child}[Gtk.Paned:end-child]} can be resized.
+*)
 
 external get_position : t -> int = "ml_gtk_paned_get_position"
 (** Obtains the position of the divider between the two panes. *)
@@ -157,22 +173,26 @@ external get_end_child :
 (* Properties *)
 
 external get_max_position : t -> int = "ml_gtk_paned_get_max_position"
-(** The largest possible value for the [Gtk.Paned:position] property.
+(** The largest possible value for the
+    {{!Ocgtk.Raw.Paned.val-get_position}[Gtk.Paned:position]} property.
 
     This property is derived from the size and shrinkability of the widget's
     children. *)
 
 external get_min_position : t -> int = "ml_gtk_paned_get_min_position"
-(** The smallest possible value for the [Gtk.Paned:position] property.
+(** The smallest possible value for the
+    {{!Ocgtk.Raw.Paned.val-get_position}[Gtk.Paned:position]} property.
 
     This property is derived from the size and shrinkability of the widget's
     children. *)
 
 external get_position_set : t -> bool = "ml_gtk_paned_get_position_set"
-(** Whether the [Gtk.Paned:position] property has been set. *)
+(** Whether the {{!Ocgtk.Raw.Paned.val-get_position}[Gtk.Paned:position]}
+    property has been set. *)
 
 external set_position_set : t -> bool -> unit = "ml_gtk_paned_set_position_set"
-(** Whether the [Gtk.Paned:position] property has been set. *)
+(** Whether the {{!Ocgtk.Raw.Paned.val-get_position}[Gtk.Paned:position]}
+    property has been set. *)
 
 let on_accept_position ?after obj ~callback =
   let closure =

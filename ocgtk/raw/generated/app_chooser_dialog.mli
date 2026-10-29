@@ -7,12 +7,13 @@
 
     Note that [GtkAppChooserDialog] does not have any interesting methods of its
     own. Instead, you should get the embedded [GtkAppChooserWidget] using
-    [Gtk.AppChooserDialog.get_widget] and call its methods if the generic
+    {{!Ocgtk.Raw.App_chooser_dialog.val-get_widget}[Gtk.AppChooserDialog.get_widget]}
+    and call its methods if the generic
     {{!Ocgtk.Raw.App_chooser}[Gtk.AppChooser]} interface is not sufficient for
     your needs.
 
     To set the heading that is shown above the [GtkAppChooserWidget], use
-    [Gtk.AppChooserDialog.set_heading].
+    {{!Ocgtk.Raw.App_chooser_dialog.val-set_heading}[Gtk.AppChooserDialog.set_heading]}.
 
     {b CSS nodes}
 

@@ -18,9 +18,11 @@
     and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
-    [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
-    {{!Ocgtk.Raw.Entry}[Gtk.Entry]}. This entry can be accessed by calling
-    [Gtk.ComboBox.get_child] on the combo box.
+    {{!Ocgtk.Raw.Combo_box.val-get_has_entry}[Gtk.ComboBox:has-entry]} property
+    allows the [GtkComboBox] to contain a {{!Ocgtk.Raw.Entry}[Gtk.Entry]}. This
+    entry can be accessed by calling
+    {{!Ocgtk.Raw.Combo_box.val-get_child}[Gtk.ComboBox.get_child]} on the combo
+    box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
     can be a bit overwhelming. In this case,
@@ -59,7 +61,9 @@
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role.
+    [GtkComboBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]}
+    role.
 
     The class built on this module is in {!Ocgtk.Combo_box}. *)
 
@@ -75,7 +79,8 @@ external new_with_entry : unit -> t = "ml_gtk_combo_box_new_with_entry"
 
     In order to use a combo box with entry, you need to tell it which column of
     the model contains the text for the entry by calling
-    [Gtk.ComboBox.set_entry_text_column]. *)
+    {{!Ocgtk.Raw.Combo_box.val-set_entry_text_column}[Gtk.ComboBox.set_entry_text_column]}.
+*)
 
 external new_with_model : Tree_model.t -> t = "ml_gtk_combo_box_new_with_model"
 (** Creates a new [GtkComboBox] with a model. *)
@@ -84,7 +89,8 @@ external new_with_model_and_entry : Tree_model.t -> t
   = "ml_gtk_combo_box_new_with_model_and_entry"
 (** Creates a new empty [GtkComboBox] with an entry and a model.
 
-    See also [Gtk.ComboBox.new_with_entry]. *)
+    See also
+    {{!Ocgtk.Raw.Combo_box.val-new_with_entry}[Gtk.ComboBox.new_with_entry]}. *)
 
 (* Methods *)
 
@@ -103,8 +109,8 @@ external set_model : t -> Tree_model.t option -> unit
     it will unset the model.
 
     Note that this function does not clear the cell renderers, you have to call
-    [Gtk.CellLayout.clear] yourself if you need to set up different cell
-    renderers for the new model. *)
+    {{!Ocgtk.Raw.Cell_layout.val-clear}[Gtk.CellLayout.clear]} yourself if you
+    need to set up different cell renderers for the new model. *)
 
 external set_id_column : t -> int -> unit = "ml_gtk_combo_box_set_id_column"
 (** Sets the model column which [combo_box] should use to get string IDs for
@@ -125,7 +131,8 @@ external set_entry_text_column : t -> int -> unit
     [G_TYPE_STRING].
 
     This is only relevant if [combo_box] has been created with
-    [Gtk.ComboBox:has-entry] as [true]. *)
+    {{!Ocgtk.Raw.Combo_box.val-get_has_entry}[Gtk.ComboBox:has-entry]} as
+    [true]. *)
 
 external set_child :
   t ->
@@ -155,8 +162,9 @@ external set_active_id : t -> string option -> bool
     If [active_id] is [None], the active row is unset. Rows having a [None] ID
     string cannot be made active by this function.
 
-    If the [Gtk.ComboBox:id-column] property of [combo_box] is unset or if no
-    row has the given ID then the function does nothing and returns [false]. *)
+    If the {{!Ocgtk.Raw.Combo_box.val-get_id_column}[Gtk.ComboBox:id-column]}
+    property of [combo_box] is unset or if no row has the given ID then the
+    function does nothing and returns [false]. *)
 
 external set_active : t -> int -> unit = "ml_gtk_combo_box_set_active"
 (** Sets the active item of [combo_box] to be the item at [index]. *)
@@ -226,16 +234,17 @@ external get_active_id : t -> string option = "ml_gtk_combo_box_get_active_id"
 (** Returns the ID of the active row of [combo_box].
 
     This value is taken from the active row and the column specified by the
-    [Gtk.ComboBox:id-column] property of [combo_box] (see
-    [Gtk.ComboBox.set_id_column]).
+    {{!Ocgtk.Raw.Combo_box.val-get_id_column}[Gtk.ComboBox:id-column]} property
+    of [combo_box] (see
+    {{!Ocgtk.Raw.Combo_box.val-set_id_column}[Gtk.ComboBox.set_id_column]}).
 
     The returned value is an interned string which means that you can compare
     the pointer by value to other interned strings and that you must not free
     it.
 
-    If the [Gtk.ComboBox:id-column] property of [combo_box] is not set, or if no
-    row is active, or if the active row has a [None] ID value, then [None] is
-    returned. *)
+    If the {{!Ocgtk.Raw.Combo_box.val-get_id_column}[Gtk.ComboBox:id-column]}
+    property of [combo_box] is not set, or if no row is active, or if the active
+    row has a [None] ID value, then [None] is returned. *)
 
 external get_active : t -> int = "ml_gtk_combo_box_get_active"
 (** Returns the index of the currently active item.
@@ -273,8 +282,10 @@ val on_changed :
 (** Emitted when the active item is changed.
 
     The can be due to the user selecting a different item from the list, or due
-    to a call to [Gtk.ComboBox.set_active_iter]. It will also be emitted while
-    typing into the entry of a combo box with an entry. *)
+    to a call to
+    {{!Ocgtk.Raw.Combo_box.val-set_active_iter}[Gtk.ComboBox.set_active_iter]}.
+    It will also be emitted while typing into the entry of a combo box with an
+    entry. *)
 
 val on_format_entry_text :
   ?after:bool ->
@@ -283,11 +294,12 @@ val on_format_entry_text :
   Gobject.Signal.handler_id
 [@@ocaml.doc
   "Emitted to allow changing how the text in a combo box's entry is displayed.\n\n\
-   See [Gtk.ComboBox:has-entry].\n\n\
+   See {{!Ocgtk.Raw.Combo_box.val-get_has_entry}[Gtk.ComboBox:has-entry]}.\n\n\
    Connect a signal handler which returns an allocated string representing\n\
    [path]. That string will then be used to set the text in the combo box's\n\
    entry. The default signal handler uses the text from the\n\
-   [Gtk.ComboBox:entry-text-column] model column.\n\n\
+   {{!Ocgtk.Raw.Combo_box.val-get_entry_text_column}[Gtk.ComboBox:entry-text-column]} \
+   model column.\n\n\
    Here's an example signal handler which fetches data from the model and\n\
    displays it in the entry.\n\n\
    {[\n\

@@ -8,8 +8,9 @@
     To use it, you’ll probably want to investigate the methods on its base
     class, {{!Ocgtk.Raw.Range}[Gtk.Range]}, in addition to the methods for
     [GtkScale] itself. To set the value of a scale, you would normally use
-    [Gtk.Range.set_value]. To detect changes to the value, you would normally
-    use the [Gtk.Range::value-changed] signal.
+    {{!Ocgtk.Raw.Range.val-set_value}[Gtk.Range.set_value]}. To detect changes
+    to the value, you would normally use the
+    {{!Ocgtk.Raw.Range.val-on_value_changed}[Gtk.Range::value-changed]} signal.
 
     Note that using the same upper and lower bounds for the [GtkScale] (through
     the [GtkRange] methods) will hide the slider itself. This is useful for
@@ -20,9 +21,10 @@
 
     [GtkScale] supports a custom [<marks>] element, which can contain multiple
     [<mark\>] elements. The “value” and “position” attributes have the same
-    meaning as [Gtk.Scale.add_mark] parameters of the same name. If the element
-    is not empty, its content is taken as the markup to show at the mark. It can
-    be translated with the usual ”translatable” and “context” attributes.
+    meaning as {{!Ocgtk.Raw.Scale.val-add_mark}[Gtk.Scale.add_mark]} parameters
+    of the same name. If the element is not empty, its content is taken as the
+    markup to show at the mark. It can be translated with the usual
+    ”translatable” and “context” attributes.
 
     {b Shortcuts and Gestures}
 
@@ -62,11 +64,13 @@
     The main node gets the style class .fine-tune added when the scale is in
     'fine-tuning' mode.
 
-    If the scale has an origin (see [Gtk.Scale.set_has_origin]), there is a
-    subnode with name highlight below the trough node that is used for rendering
-    the highlighted part of the trough.
+    If the scale has an origin (see
+    {{!Ocgtk.Raw.Scale.val-set_has_origin}[Gtk.Scale.set_has_origin]}), there is
+    a subnode with name highlight below the trough node that is used for
+    rendering the highlighted part of the trough.
 
-    If the scale is showing a fill level (see [Gtk.Range.set_show_fill_level]),
+    If the scale is showing a fill level (see
+    {{!Ocgtk.Raw.Range.val-set_show_fill_level}[Gtk.Range.set_show_fill_level]}),
     there is a subnode with name fill below the trough node that is used for
     rendering the filled in part of the trough.
 
@@ -82,13 +86,16 @@
     The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
     added depending on what marks are present.
 
-    If the scale is displaying the value (see [Gtk.Scale:draw-value]), there is
+    If the scale is displaying the value (see
+    {{!Ocgtk.Raw.Scale.val-get_draw_value}[Gtk.Scale:draw-value]}), there is
     subnode with name value. This node will get the .top or .bottom style
     classes similar to the marks node.
 
     {b Accessibility}
 
-    [GtkScale] uses the [Gtk.AccessibleRole.slider] role.
+    [GtkScale] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SLIDER}[Gtk.AccessibleRole.slider]}
+    role.
 
     The class built on this module is in {!Ocgtk.Scale}. *)
 
@@ -113,7 +120,8 @@ external new_with_range :
 
     Note that the way in which the precision is derived works best if [step] is
     a power of ten. If the resulting precision is not suitable for your needs,
-    use [Gtk.Scale.set_digits] to correct it. *)
+    use {{!Ocgtk.Raw.Scale.val-set_digits}[Gtk.Scale.set_digits]} to correct it.
+*)
 
 (* Methods *)
 
@@ -124,9 +132,9 @@ external set_value_pos : t -> Ocgtk_enums.positiontype -> unit
 external set_has_origin : t -> bool -> unit = "ml_gtk_scale_set_has_origin"
 (** Sets whether the scale has an origin.
 
-    If [Gtk.Scale:has-origin] is set to [true] (the default), the scale will
-    highlight the part of the trough between the origin (bottom or left side)
-    and the current value. *)
+    If {{!Ocgtk.Raw.Scale.val-get_has_origin}[Gtk.Scale:has-origin]} is set to
+    [true] (the default), the scale will highlight the part of the trough
+    between the origin (bottom or left side) and the current value. *)
 
 external set_draw_value : t -> bool -> unit = "ml_gtk_scale_set_draw_value"
 (** Specifies whether the current value is displayed as a string next to the
@@ -137,9 +145,11 @@ external set_digits : t -> int -> unit = "ml_gtk_scale_set_digits"
 
     Also causes the value of the adjustment to be rounded to this number of
     digits, so the retrieved value matches the displayed one, if
-    [Gtk.Scale:draw-value] is [true] when the value changes. If you want to
-    enforce rounding the value when [Gtk.Scale:draw-value] is [false], you can
-    set [Gtk.Range:round-digits] instead.
+    {{!Ocgtk.Raw.Scale.val-get_draw_value}[Gtk.Scale:draw-value]} is [true] when
+    the value changes. If you want to enforce rounding the value when
+    {{!Ocgtk.Raw.Scale.val-get_draw_value}[Gtk.Scale:draw-value]} is [false],
+    you can set
+    {{!Ocgtk.Raw.Range.val-get_round_digits}[Gtk.Range:round-digits]} instead.
 
     Note that rounding to a small number of digits can interfere with the smooth
     autoscrolling that is built into [GtkScale]. As an alternative, you can use
@@ -156,8 +166,8 @@ external get_layout_offsets : t -> int * int = "ml_gtk_scale_get_layout_offsets"
     Remember when using the [PangoLayout] function you need to convert to and
     from pixels using [PANGO_PIXELS()] or [PANGO_SCALE].
 
-    If the [Gtk.Scale:draw-value] property is [false], the return values are
-    undefined. *)
+    If the {{!Ocgtk.Raw.Scale.val-get_draw_value}[Gtk.Scale:draw-value]}
+    property is [false], the return values are undefined. *)
 
 external get_layout : t -> Ocpango_raw.Layout.t option
   = "ml_gtk_scale_get_layout"
@@ -190,6 +200,7 @@ external add_mark :
 
     If [markup] is not [None], text is shown next to the tick mark.
 
-    To remove marks from a scale, use [Gtk.Scale.clear_marks]. *)
+    To remove marks from a scale, use
+    {{!Ocgtk.Raw.Scale.val-clear_marks}[Gtk.Scale.clear_marks]}. *)
 
 (* Properties *)

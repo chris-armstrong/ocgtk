@@ -3,12 +3,16 @@
 
 (** Tracks keyboard focus.
 
-    The event controller offers [Gtk.EventControllerFocus::enter] and
-    [Gtk.EventControllerFocus::leave] signals, as well as
-    [Gtk.EventControllerFocus:is-focus] and
-    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
-    reflect focus changes inside the widget hierarchy that is rooted at the
-    controllers widget.
+    The event controller offers
+    {{!Ocgtk.Raw.Event_controller_focus.val-on_enter}[Gtk.EventControllerFocus::enter]}
+    and
+    {{!Ocgtk.Raw.Event_controller_focus.val-on_leave}[Gtk.EventControllerFocus::leave]}
+    signals, as well as
+    {{!Ocgtk.Raw.Event_controller_focus.val-is_focus}[Gtk.EventControllerFocus:is-focus]}
+    and
+    {{!Ocgtk.Raw.Event_controller_focus.val-contains_focus}[Gtk.EventControllerFocus:contains-focus]}
+    properties which are updated to reflect focus changes inside the widget
+    hierarchy that is rooted at the controllers widget.
 
     The class built on this module is in {!Ocgtk.Event_controller_focus}. *)
 
@@ -39,7 +43,8 @@ val on_enter :
     widget becomes the focus location, in certain cases (such as when the focus
     moves from a descendent of the widget to the widget itself). If you are
     interested in these cases, you can monitor the
-    [Gtk.EventControllerFocus:is-focus] property for changes. *)
+    {{!Ocgtk.Raw.Event_controller_focus.val-is_focus}[Gtk.EventControllerFocus:is-focus]}
+    property for changes. *)
 
 val on_leave :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -49,4 +54,6 @@ val on_leave :
     Note that this means you may not get a ::leave signal even though the focus
     moves away from the widget, in certain cases (such as when the focus moves
     from the widget to a descendent). If you are interested in these cases, you
-    can monitor the [Gtk.EventControllerFocus:is-focus] property for changes. *)
+    can monitor the
+    {{!Ocgtk.Raw.Event_controller_focus.val-is_focus}[Gtk.EventControllerFocus:is-focus]}
+    property for changes. *)

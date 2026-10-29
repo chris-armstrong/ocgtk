@@ -19,17 +19,21 @@
     in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
-    them with [Gio.ActionGroup.activate_action]. Activating an action may
-    require a [GLib.Variant] parameter. The required type of the parameter can
-    be inquired with [Gio.ActionGroup.get_action_parameter_type]. Actions may be
-    disabled, see [Gio.ActionGroup.get_action_enabled]. Activating a disabled
-    action has no effect.
+    them with
+    {{!Ocgio.Action_group.class-type-action_group_t.method-activate_action}[Gio.ActionGroup.activate_action]}.
+    Activating an action may require a [GLib.Variant] parameter. The required
+    type of the parameter can be inquired with
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_parameter_type}
+     [Gio.ActionGroup.get_action_parameter_type]}. Actions may be disabled, see
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}.
+    Activating a disabled action has no effect.
 
     Actions may optionally have a state in the form of a [GLib.Variant]. The
     current state of an action can be inquired with
-    [Gio.ActionGroup.get_action_state]. Activating a stateful action may change
-    its state, but it is also possible to set the state by calling
-    [Gio.ActionGroup.change_action_state].
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_state}[Gio.ActionGroup.get_action_state]}.
+    Activating a stateful action may change its state, but it is also possible
+    to set the state by calling
+    {{!Ocgio.Action_group.class-type-action_group_t.method-change_action_state}[Gio.ActionGroup.change_action_state]}.
 
     As typical example, consider a text editing application which has an option
     to change the current font to ‘bold’. A good way to represent this would be
@@ -37,24 +41,26 @@
     the state.
 
     Each action in the group has a unique name (which is a string). All method
-    calls, except [Gio.ActionGroup.list_actions] take the name of an action as
-    an argument.
+    calls, except
+    {{!Ocgio.Action_group.class-type-action_group_t.method-list_actions}[Gio.ActionGroup.list_actions]}
+    take the name of an action as an argument.
 
     The [GActionGroup] API is meant to be the ‘public’ API to the action group.
     The calls here are exactly the interaction that ‘external forces’ (eg: UI,
     incoming D-Bus messages, etc.) are supposed to have with actions. ‘Internal’
     APIs (ie: ones meant only to be accessed by the action group implementation)
     are found on subclasses. This is why you will find – for example –
-    [Gio.ActionGroup.get_action_enabled] but not an equivalent
-    [set_action_enabled()] method.
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}
+    but not an equivalent [set_action_enabled()] method.
 
     Signals are emitted on the action group in response to state changes on
     individual actions.
 
     Implementations of [GActionGroup] should provide implementations for the
-    virtual functions [Gio.ActionGroup.list_actions] and
-    [Gio.ActionGroup.query_action]. The other virtual functions should not be
-    implemented — their ‘wrappers’ are actually implemented with calls to
+    virtual functions
+    {{!Ocgio.Action_group.class-type-action_group_t.method-list_actions}[Gio.ActionGroup.list_actions]}
+    and [Gio.ActionGroup.query_action]. The other virtual functions should not
+    be implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
 class type action_group_t = object
   (** {2:signals Signals} *)
@@ -260,17 +266,21 @@ class action_group : Raw.Action_group.t -> action_group_t
     in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
-    them with [Gio.ActionGroup.activate_action]. Activating an action may
-    require a [GLib.Variant] parameter. The required type of the parameter can
-    be inquired with [Gio.ActionGroup.get_action_parameter_type]. Actions may be
-    disabled, see [Gio.ActionGroup.get_action_enabled]. Activating a disabled
-    action has no effect.
+    them with
+    {{!Ocgio.Action_group.class-type-action_group_t.method-activate_action}[Gio.ActionGroup.activate_action]}.
+    Activating an action may require a [GLib.Variant] parameter. The required
+    type of the parameter can be inquired with
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_parameter_type}
+     [Gio.ActionGroup.get_action_parameter_type]}. Actions may be disabled, see
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}.
+    Activating a disabled action has no effect.
 
     Actions may optionally have a state in the form of a [GLib.Variant]. The
     current state of an action can be inquired with
-    [Gio.ActionGroup.get_action_state]. Activating a stateful action may change
-    its state, but it is also possible to set the state by calling
-    [Gio.ActionGroup.change_action_state].
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_state}[Gio.ActionGroup.get_action_state]}.
+    Activating a stateful action may change its state, but it is also possible
+    to set the state by calling
+    {{!Ocgio.Action_group.class-type-action_group_t.method-change_action_state}[Gio.ActionGroup.change_action_state]}.
 
     As typical example, consider a text editing application which has an option
     to change the current font to ‘bold’. A good way to represent this would be
@@ -278,24 +288,26 @@ class action_group : Raw.Action_group.t -> action_group_t
     the state.
 
     Each action in the group has a unique name (which is a string). All method
-    calls, except [Gio.ActionGroup.list_actions] take the name of an action as
-    an argument.
+    calls, except
+    {{!Ocgio.Action_group.class-type-action_group_t.method-list_actions}[Gio.ActionGroup.list_actions]}
+    take the name of an action as an argument.
 
     The [GActionGroup] API is meant to be the ‘public’ API to the action group.
     The calls here are exactly the interaction that ‘external forces’ (eg: UI,
     incoming D-Bus messages, etc.) are supposed to have with actions. ‘Internal’
     APIs (ie: ones meant only to be accessed by the action group implementation)
     are found on subclasses. This is why you will find – for example –
-    [Gio.ActionGroup.get_action_enabled] but not an equivalent
-    [set_action_enabled()] method.
+    {{!Ocgio.Action_group.class-type-action_group_t.method-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}
+    but not an equivalent [set_action_enabled()] method.
 
     Signals are emitted on the action group in response to state changes on
     individual actions.
 
     Implementations of [GActionGroup] should provide implementations for the
-    virtual functions [Gio.ActionGroup.list_actions] and
-    [Gio.ActionGroup.query_action]. The other virtual functions should not be
-    implemented — their ‘wrappers’ are actually implemented with calls to
+    virtual functions
+    {{!Ocgio.Action_group.class-type-action_group_t.method-list_actions}[Gio.ActionGroup.list_actions]}
+    and [Gio.ActionGroup.query_action]. The other virtual functions should not
+    be implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
 
 (** {1:constructors Constructors} *)

@@ -80,7 +80,8 @@ and Font_family : sig
       different faces.
 
       Such axes are also known as _variations_; see
-      [Pango.FontDescription.set_variations] for more information. *)
+      {{!Ocpango.Raw.Font_description.val-set_variations}[Pango.FontDescription.set_variations]}
+      for more information. *)
 
   external is_monospace : t -> bool = "ml_pango_font_family_is_monospace"
   (** A monospace font is a font designed for text display where the the
@@ -93,9 +94,10 @@ and Font_family : sig
       character is typically double-width in a monospace font.
 
       The best way to find out the grid-cell size is to call
-      [Pango.FontMetrics.get_approximate_digit_width], since the results of
-      [Pango.FontMetrics.get_approximate_char_width] may be affected by
-      double-width characters. *)
+      {{!Ocpango.Raw.Font_metrics.val-get_approximate_digit_width}[Pango.FontMetrics.get_approximate_digit_width]},
+      since the results of
+      {{!Ocpango.Raw.Font_metrics.val-get_approximate_char_width}[Pango.FontMetrics.get_approximate_char_width]}
+      may be affected by double-width characters. *)
 
   external get_name : t -> string = "ml_pango_font_family_get_name"
   (** Gets the name of the family.

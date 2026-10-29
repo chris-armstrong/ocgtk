@@ -4,8 +4,8 @@
 (** Recognizes 2-finger pinch/zoom gestures.
 
     Whenever the distance between both tracked sequences changes, the
-    [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-    factor.
+    {{!Ocgtk.Raw.Gesture_zoom.val-on_scale_changed}[Gtk.GestureZoom::scale-changed]}
+    signal is emitted to report the scale factor.
 
     The class built on this module is in {!Ocgtk.Gesture_zoom}. *)
 

@@ -3,10 +3,13 @@
 
 (** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
-    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
-    iterator is created, it can be advanced through the style changes in the
-    text using [Pango.AttrIterator.next]. At each style change, the range of the
-    current style segment and the attributes currently in effect can be queried.
+    A new iterator is created with
+    {{!Ocpango.Raw.Attr_list.val-get_iterator}[Pango.AttrList.get_iterator]}.
+    Once the iterator is created, it can be advanced through the style changes
+    in the text using
+    {{!Ocpango.Raw.Attr_iterator.val-next}[Pango.AttrIterator.next]}. At each
+    style change, the range of the current style segment and the attributes
+    currently in effect can be queried.
 
     The class built on this module is in {!Ocpango.Attr_iterator}. *)
 

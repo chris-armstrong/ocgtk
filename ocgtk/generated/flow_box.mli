@@ -37,9 +37,10 @@
     The children of a [GtkFlowBox] can be dynamically sorted and filtered.
 
     Although a [GtkFlowBox] must have only [GtkFlowBoxChild] children, you can
-    add any kind of widget to it via [Gtk.FlowBox.insert], and a
-    [GtkFlowBoxChild] widget will automatically be inserted between the box and
-    the widget.
+    add any kind of widget to it via
+    {{!Ocgtk.Flow_box.class-type-flow_box_t.method-insert}[Gtk.FlowBox.insert]},
+    and a [GtkFlowBoxChild] widget will automatically be inserted between the
+    box and the widget.
 
     Also see {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]}.
 
@@ -47,10 +48,10 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.FlowBox::move-cursor]
-    - [Gtk.FlowBox::select-all]
-    - [Gtk.FlowBox::toggle-cursor-child]
-    - [Gtk.FlowBox::unselect-all]
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_move_cursor}[Gtk.FlowBox::move-cursor]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_select_all}[Gtk.FlowBox::select-all]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_toggle_cursor_child}[Gtk.FlowBox::toggle-cursor-child]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_unselect_all}[Gtk.FlowBox::unselect-all]}
 
     {b CSS nodes}
 
@@ -70,8 +71,11 @@
 
     {b Accessibility}
 
-    [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
-    uses the [Gtk.AccessibleRole.grid_cell] role. *)
+    [GtkFlowBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and [GtkFlowBoxChild] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role. *)
 class type flow_box_t = object
   inherit Widget.widget_t
   inherit Orientable.orientable_t
@@ -334,9 +338,10 @@ class flow_box : Raw.Flow_box.t -> flow_box_t
     The children of a [GtkFlowBox] can be dynamically sorted and filtered.
 
     Although a [GtkFlowBox] must have only [GtkFlowBoxChild] children, you can
-    add any kind of widget to it via [Gtk.FlowBox.insert], and a
-    [GtkFlowBoxChild] widget will automatically be inserted between the box and
-    the widget.
+    add any kind of widget to it via
+    {{!Ocgtk.Flow_box.class-type-flow_box_t.method-insert}[Gtk.FlowBox.insert]},
+    and a [GtkFlowBoxChild] widget will automatically be inserted between the
+    box and the widget.
 
     Also see {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]}.
 
@@ -344,10 +349,10 @@ class flow_box : Raw.Flow_box.t -> flow_box_t
 
     The following signals have default keybindings:
 
-    - [Gtk.FlowBox::move-cursor]
-    - [Gtk.FlowBox::select-all]
-    - [Gtk.FlowBox::toggle-cursor-child]
-    - [Gtk.FlowBox::unselect-all]
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_move_cursor}[Gtk.FlowBox::move-cursor]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_select_all}[Gtk.FlowBox::select-all]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_toggle_cursor_child}[Gtk.FlowBox::toggle-cursor-child]}
+    - {{!Ocgtk.Flow_box.class-type-flow_box_t.method-on_unselect_all}[Gtk.FlowBox::unselect-all]}
 
     {b CSS nodes}
 
@@ -367,8 +372,11 @@ class flow_box : Raw.Flow_box.t -> flow_box_t
 
     {b Accessibility}
 
-    [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
-    uses the [Gtk.AccessibleRole.grid_cell] role. *)
+    [GtkFlowBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and [GtkFlowBoxChild] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

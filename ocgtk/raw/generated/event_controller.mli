@@ -6,9 +6,10 @@
     These are ancillary objects associated to widgets, which react to
     [GdkEvents], and possibly trigger actions as a consequence.
 
-    Event controllers are added to a widget with [Gtk.Widget.add_controller]. It
-    is rarely necessary to explicitly remove a controller with
-    [Gtk.Widget.remove_controller].
+    Event controllers are added to a widget with
+    {{!Ocgtk.Raw.Widget.val-add_controller}[Gtk.Widget.add_controller]}. It is
+    rarely necessary to explicitly remove a controller with
+    {{!Ocgtk.Raw.Widget.val-remove_controller}[Gtk.Widget.remove_controller]}.
 
     See the chapter on input handling for an overview of the basic concepts,
     such as the capture and bubble phases of event propagation.

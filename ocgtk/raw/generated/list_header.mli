@@ -42,7 +42,8 @@ external get_n_items : t -> int = "ml_gtk_list_header_get_n_items"
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_list_header_get_item"
 (** Gets the model item at the start of the section. This is the item that
-    occupies the list model at position [Gtk.ListHeader:start].
+    occupies the list model at position
+    {{!Ocgtk.Raw.List_header.val-get_start}[Gtk.ListHeader:start]}.
 
     If [self] is unbound, this function returns [None]. *)
 

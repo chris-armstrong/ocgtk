@@ -350,9 +350,10 @@ module rec Socket : sig
 
       Pass [-1] to [timeout_us] to block indefinitely until data is received (or
       the connection is closed, or there is an error). Pass [0] to use the
-      default timeout from [Gio.Socket:timeout], or pass a positive number to
-      wait for that many microseconds for data before returning
-      [G_IO_ERROR_TIMED_OUT]. *)
+      default timeout from
+      {{!Ocgio.Raw.Socket.val-get_timeout}[Gio.Socket:timeout]}, or pass a
+      positive number to wait for that many microseconds for data before
+      returning [G_IO_ERROR_TIMED_OUT]. *)
 
   external listen : t -> (bool, GError.t) result = "ml_g_socket_listen"
   (** Marks the socket as a server socket, i.e. a socket that is used to accept
@@ -1018,9 +1019,10 @@ end = struct
 
       Pass [-1] to [timeout_us] to block indefinitely until data is received (or
       the connection is closed, or there is an error). Pass [0] to use the
-      default timeout from [Gio.Socket:timeout], or pass a positive number to
-      wait for that many microseconds for data before returning
-      [G_IO_ERROR_TIMED_OUT]. *)
+      default timeout from
+      {{!Ocgio.Raw.Socket.val-get_timeout}[Gio.Socket:timeout]}, or pass a
+      positive number to wait for that many microseconds for data before
+      returning [G_IO_ERROR_TIMED_OUT]. *)
 
   external listen : t -> (bool, GError.t) result = "ml_g_socket_listen"
   (** Marks the socket as a server socket, i.e. a socket that is used to accept

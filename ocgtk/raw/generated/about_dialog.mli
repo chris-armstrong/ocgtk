@@ -13,7 +13,8 @@
  displays these as clickable links. By default, it calls \
  [Gtk.FileLauncher.launch]\n\
  when a user clicks one. The behaviour can be overridden with the\n\
- [Gtk.AboutDialog::activate-link] signal.\n\n\
+ {{!Ocgtk.Raw.About_dialog.val-on_activate_link}[Gtk.AboutDialog::activate-link]} \
+ signal.\n\n\
  To specify a person with an email address, use a string like\n\
  [Edgar Allan Poe <edgar@poe.com>]. To specify a website with a title,\n\
  use a string like [GTK team https://www.gtk.org].\n\n\
@@ -96,7 +97,9 @@ external set_system_information : t -> string option -> unit
 
     If [system_information] is [None], the system information page is hidden.
 
-    See [Gtk.AboutDialog:system-information]. *)
+    See
+    {{!Ocgtk.Raw.About_dialog.val-get_system_information}[Gtk.AboutDialog:system-information]}.
+*)
 
 external set_program_name : t -> string option -> unit
   = "ml_gtk_about_dialog_set_program_name"

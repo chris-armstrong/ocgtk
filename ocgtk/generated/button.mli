@@ -29,7 +29,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.Button::activate]
+    - {{!Ocgtk.Button.class-type-button_t.method-on_activate}[Gtk.Button::activate]}
 
     {b CSS nodes}
 
@@ -55,7 +55,9 @@
 
     {b Accessibility}
 
-    [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role. *)
 class type button_t = object
   inherit Widget.widget_t
   inherit Actionable.actionable_t
@@ -168,7 +170,7 @@ class button : Raw.Button.t -> button_t
 
     The following signals have default keybindings:
 
-    - [Gtk.Button::activate]
+    - {{!Ocgtk.Button.class-type-button_t.method-on_activate}[Gtk.Button::activate]}
 
     {b CSS nodes}
 
@@ -194,14 +196,18 @@ class button : Raw.Button.t -> button_t
 
     {b Accessibility}
 
-    [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> button_t
 (** Creates a new [GtkButton] widget.
 
-    To add a child widget to the button, use [Gtk.Button.set_child]. *)
+    To add a child widget to the button, use
+    {{!Ocgtk.Button.class-type-button_t.method-set_child}[Gtk.Button.set_child]}.
+*)
 
 val new_from_icon_name : string -> button_t
 (** Creates a new button containing an icon from the current icon theme.

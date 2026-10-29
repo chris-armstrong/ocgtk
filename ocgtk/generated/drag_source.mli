@@ -122,7 +122,7 @@ end
      the desired action, and the icon to\n\
      use during the drag operation. After setting it up, the drag\n\
      source must be added to a widget as an event controller, using\n\
-     [Gtk.Widget.add_controller].\n\n\
+     {{!Ocgtk.Widget.class-type-widget_t.method-add_controller}[Gtk.Widget.add_controller]}.\n\n\
      {[\n\
      static void\n\
      my_widget_init (MyWidget *self)\n\
@@ -139,7 +139,9 @@ end
      Setting up the content provider and icon ahead of time only makes\n\
      sense when the data does not change. More commonly, you will want\n\
      to set them up just in time. To do so, [GtkDragSource] has\n\
-     [Gtk.DragSource::prepare] and [Gtk.DragSource::drag-begin]\n\
+     {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_prepare}[Gtk.DragSource::prepare]} \
+     and \
+     {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_begin}[Gtk.DragSource::drag-begin]}\n\
      signals.\n\n\
      The ::prepare signal is emitted before a drag is started, and\n\
      can be used to set the content provider and actions that the\n\
@@ -181,7 +183,8 @@ end
      but it is not normally necessary to connect to any signals,\n\
      except for one case: when the supported actions include\n\
      [GDK_ACTION_MOVE], you need to listen for the\n\
-     [Gtk.DragSource::drag-end] signal and delete the\n\
+     {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_end}[Gtk.DragSource::drag-end]} \
+     signal and delete the\n\
      data after it has been transferred."]
 
 class drag_source : Raw.Drag_source.t -> drag_source_t
@@ -198,7 +201,7 @@ class drag_source : Raw.Drag_source.t -> drag_source_t
  the desired action, and the icon to\n\
  use during the drag operation. After setting it up, the drag\n\
  source must be added to a widget as an event controller, using\n\
- [Gtk.Widget.add_controller].\n\n\
+ {{!Ocgtk.Widget.class-type-widget_t.method-add_controller}[Gtk.Widget.add_controller]}.\n\n\
  {[\n\
  static void\n\
  my_widget_init (MyWidget *self)\n\
@@ -215,7 +218,9 @@ class drag_source : Raw.Drag_source.t -> drag_source_t
  Setting up the content provider and icon ahead of time only makes\n\
  sense when the data does not change. More commonly, you will want\n\
  to set them up just in time. To do so, [GtkDragSource] has\n\
- [Gtk.DragSource::prepare] and [Gtk.DragSource::drag-begin]\n\
+ {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_prepare}[Gtk.DragSource::prepare]} \
+ and \
+ {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_begin}[Gtk.DragSource::drag-begin]}\n\
  signals.\n\n\
  The ::prepare signal is emitted before a drag is started, and\n\
  can be used to set the content provider and actions that the\n\
@@ -257,7 +262,8 @@ class drag_source : Raw.Drag_source.t -> drag_source_t
  but it is not normally necessary to connect to any signals,\n\
  except for one case: when the supported actions include\n\
  [GDK_ACTION_MOVE], you need to listen for the\n\
- [Gtk.DragSource::drag-end] signal and delete the\n\
+ {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_end}[Gtk.DragSource::drag-end]} \
+ signal and delete the\n\
  data after it has been transferred."]
 
 (** {1:constructors Constructors} *)

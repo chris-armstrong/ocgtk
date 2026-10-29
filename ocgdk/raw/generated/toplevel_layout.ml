@@ -5,7 +5,7 @@
     screen.
 
     The [GdkToplevelLayout] struct is necessary for using
-    [Gdk.Toplevel.present].
+    {{!Ocgdk.Raw.Toplevel.val-present}[Gdk.Toplevel.present]}.
 
     Toplevel surfaces are sovereign windows that can be presented to the user in
     various states (maximized, on all workspaces, etc).
@@ -19,11 +19,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_toplevel_layout_get_type"
 external new_ : unit -> t = "ml_gdk_toplevel_layout_new"
 (** Create a toplevel layout description.
 
-    Used together with [Gdk.Toplevel.present] to describe how a toplevel surface
-    should be placed and behave on-screen.
+    Used together with {{!Ocgdk.Raw.Toplevel.val-present}[Gdk.Toplevel.present]}
+    to describe how a toplevel surface should be placed and behave on-screen.
 
     The size is in ”application pixels”, not ”device pixels” (see
-    [Gdk.Surface.get_scale]). *)
+    {{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]}). *)
 
 (* Methods *)
 

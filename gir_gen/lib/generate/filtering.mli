@@ -16,22 +16,6 @@ val should_generate_property :
   gir_property ->
   bool
 
-(* Get property method names *)
-val property_method_names :
-  ctx:generation_context ->
-  class_name:string ->
-  methods:gir_method list ->
-  gir_property list ->
-  string list
-
-(* Get property base names *)
-val property_base_names :
-  ctx:generation_context ->
-  class_name:string ->
-  methods:gir_method list ->
-  gir_property list ->
-  string list
-
 (* Discriminator for the entity flavour a method belongs to. Threaded as a
    non-optional argument through every method-emission entry point so the
    record-specific copy/free/unref filter can be folded into one predicate

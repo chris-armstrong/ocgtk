@@ -5,15 +5,17 @@
     term.
 
     The strings are obtained from the items by evaluating an expression set with
-    [Gtk.StringFilter.set_expression], and they are compared against a search
-    term set with [Gtk.StringFilter.set_search].
+    {{!Ocgtk.Raw.String_filter.val-set_expression}[Gtk.StringFilter.set_expression]},
+    and they are compared against a search term set with
+    {{!Ocgtk.Raw.String_filter.val-set_search}[Gtk.StringFilter.set_search]}.
 
     [GtkStringFilter] has several different modes of comparison - it can match
     the whole string, just a prefix, or any substring. Use
-    [Gtk.StringFilter.set_match_mode] choose a mode.
+    {{!Ocgtk.Raw.String_filter.val-set_match_mode}[Gtk.StringFilter.set_match_mode]}
+    choose a mode.
 
     It is also possible to make case-insensitive comparisons, with
-    [Gtk.StringFilter.set_ignore_case].
+    {{!Ocgtk.Raw.String_filter.val-set_ignore_case}[Gtk.StringFilter.set_ignore_case]}.
 
     The class built on this module is in {!Ocgtk.String_filter}. *)
 

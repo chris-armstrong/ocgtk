@@ -66,7 +66,9 @@ class type widget_t =
      on the toplevel.\n\n\
      After the toplevel window has initially requested its size in both\n\
      dimensions it can go on to allocate itself a reasonable size (or a size\n\
-     previously specified with [Gtk.Window.set_default_size]). During the\n\
+     previously specified with \
+     {{!Ocgtk.Window.class-type-window_t.method-set_default_size}[Gtk.Window.set_default_size]}). \
+     During the\n\
      recursive allocation process it’s important to note that request cycles\n\
      will be recursively executed while widgets allocate their children.\n\
      Each widget, once allocated a size, will go on to first share the\n\
@@ -161,7 +163,9 @@ class type widget_t =
      both a minimum and natural size.\n\n\
      If a widget ends up baseline aligned it will be allocated all the space in\n\
      the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
-     found via [Gtk.Widget.get_baseline]. If the baseline has a\n\
+     found via \
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_baseline}[Gtk.Widget.get_baseline]}. \
+     If the baseline has a\n\
      value other than -1 you need to align the widget such that the baseline\n\
      appears at the position.\n\n\
      {b GtkWidget as GtkBuildable}\n\n\
@@ -291,7 +295,9 @@ class type widget_t =
      \"/com/example/ui/foowidget.ui\");\n\
      }\n\
      ]}\n\n\
-     You will also need to call [Gtk.Widget.init_template] from the\n\
+     You will also need to call \
+     {{!Ocgtk.Widget.class-type-widget_t.method-init_template}[Gtk.Widget.init_template]} \
+     from the\n\
      instance initialization function:\n\n\
      {[\n\
      static void\n\
@@ -301,7 +307,9 @@ class type widget_t =
     \  // Initialize the rest of the widget...\n\
      }\n\
      ]}\n\n\
-     as well as calling [Gtk.Widget.dispose_template] from the dispose\n\
+     as well as calling \
+     {{!Ocgtk.Widget.class-type-widget_t.method-dispose_template}[Gtk.Widget.dispose_template]} \
+     from the dispose\n\
      function:\n\n\
      {[\n\
      static void\n\
@@ -315,7 +323,8 @@ class type widget_t =
      }\n\
      ]}\n\n\
      You can access widgets defined in the template using the\n\
-     [Gtk.Widget.get_template_child] function, but you will typically declare\n\
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_template_child}[Gtk.Widget.get_template_child]} \
+     function, but you will typically declare\n\
      a pointer in the instance private data structure of your type using the \
      same\n\
      name as the widget in the template definition, and call\n\
@@ -428,7 +437,9 @@ class widget : Raw.Widget.t -> widget_t
  on the toplevel.\n\n\
  After the toplevel window has initially requested its size in both\n\
  dimensions it can go on to allocate itself a reasonable size (or a size\n\
- previously specified with [Gtk.Window.set_default_size]). During the\n\
+ previously specified with \
+ {{!Ocgtk.Window.class-type-window_t.method-set_default_size}[Gtk.Window.set_default_size]}). \
+ During the\n\
  recursive allocation process it’s important to note that request cycles\n\
  will be recursively executed while widgets allocate their children.\n\
  Each widget, once allocated a size, will go on to first share the\n\
@@ -523,7 +534,9 @@ class widget : Raw.Widget.t -> widget_t
  both a minimum and natural size.\n\n\
  If a widget ends up baseline aligned it will be allocated all the space in\n\
  the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
- found via [Gtk.Widget.get_baseline]. If the baseline has a\n\
+ found via \
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_baseline}[Gtk.Widget.get_baseline]}. \
+ If the baseline has a\n\
  value other than -1 you need to align the widget such that the baseline\n\
  appears at the position.\n\n\
  {b GtkWidget as GtkBuildable}\n\n\
@@ -645,7 +658,9 @@ class widget : Raw.Widget.t -> widget_t
  \"/com/example/ui/foowidget.ui\");\n\
  }\n\
  ]}\n\n\
- You will also need to call [Gtk.Widget.init_template] from the\n\
+ You will also need to call \
+ {{!Ocgtk.Widget.class-type-widget_t.method-init_template}[Gtk.Widget.init_template]} \
+ from the\n\
  instance initialization function:\n\n\
  {[\n\
  static void\n\
@@ -655,7 +670,9 @@ class widget : Raw.Widget.t -> widget_t
 \  // Initialize the rest of the widget...\n\
  }\n\
  ]}\n\n\
- as well as calling [Gtk.Widget.dispose_template] from the dispose\n\
+ as well as calling \
+ {{!Ocgtk.Widget.class-type-widget_t.method-dispose_template}[Gtk.Widget.dispose_template]} \
+ from the dispose\n\
  function:\n\n\
  {[\n\
  static void\n\
@@ -669,7 +686,8 @@ class widget : Raw.Widget.t -> widget_t
  }\n\
  ]}\n\n\
  You can access widgets defined in the template using the\n\
- [Gtk.Widget.get_template_child] function, but you will typically declare\n\
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_template_child}[Gtk.Widget.get_template_child]} \
+ function, but you will typically declare\n\
  a pointer in the instance private data structure of your type using the same\n\
  name as the widget in the template definition, and call\n\
  [Gtk.WidgetClass.bind_template_child_full] (or one of its wrapper macros\n\

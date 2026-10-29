@@ -2,8 +2,9 @@
 (* Shim module for SocketConnectable from cyclic group Socket_address_and__socket_address_enumerator_and__socket_connectable *)
 
 (** Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]} to get a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     to try out each socket address in turn until one succeeds, as shown in the
     sample code below.
@@ -21,8 +22,9 @@ class type socket_connectable_t =
 (** {b The methods, signals and properties of a [SocketConnectable].}
 
     Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]} to get a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     to try out each socket address in turn until one succeeds, as shown in the
     sample code below.
@@ -85,8 +87,9 @@ class socket_connectable : Raw.Socket_connectable.t -> socket_connectable_t
 (** {1:description Description}
 
     Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]} to get a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     to try out each socket address in turn until one succeeds, as shown in the
     sample code below.

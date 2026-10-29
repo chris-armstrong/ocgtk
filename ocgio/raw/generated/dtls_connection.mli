@@ -14,15 +14,17 @@
     {{!Ocgio.Raw.Datagram_based}[Gio.DatagramBased]}, presenting a
     datagram-socket-like API for the encrypted connection. This operates over a
     base datagram connection, which is also a [GDatagramBased]
-    ([Gio.DtlsConnection:base-socket]).
+    ({{!Ocgio.Raw.Dtls_connection.val-get_base_socket}[Gio.DtlsConnection:base-socket]}).
 
-    To close a DTLS connection, use [Gio.DtlsConnection.close].
+    To close a DTLS connection, use
+    {{!Ocgio.Raw.Dtls_connection.val-close}[Gio.DtlsConnection.close]}.
 
     Neither {{!Ocgio.Raw.Dtls_server_connection}[Gio.DtlsServerConnection]} or
     {{!Ocgio.Raw.Dtls_client_connection}[Gio.DtlsClientConnection]} set the peer
     address on their base {{!Ocgio.Raw.Datagram_based}[Gio.DatagramBased]} if it
     is a {{!Ocgio.Raw.Socket}[Gio.Socket]} — it is up to the caller to do that
-    if they wish. If they do not, and [Gio.Socket.close] is called on the base
+    if they wish. If they do not, and
+    {{!Ocgio.Raw.Socket.val-close}[Gio.Socket.close]} is called on the base
     socket, the [GDtlsConnection] will not raise a [G_IO_ERROR_NOT_CONNECTED]
     error on further I/O.
 

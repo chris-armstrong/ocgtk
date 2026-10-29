@@ -31,30 +31,37 @@
     it).
 
     Although a [GtkListBox] must have only [GtkListBoxRow] children, you can add
-    any kind of widget to it via [Gtk.ListBox.prepend], [Gtk.ListBox.append] and
-    [Gtk.ListBox.insert] and a [GtkListBoxRow] widget will automatically be
-    inserted between the list and the widget.
+    any kind of widget to it via
+    {{!Ocgtk.List_box.class-type-list_box_t.method-prepend}[Gtk.ListBox.prepend]},
+    {{!Ocgtk.List_box.class-type-list_box_t.method-append}[Gtk.ListBox.append]}
+    and
+    {{!Ocgtk.List_box.class-type-list_box_t.method-insert}[Gtk.ListBox.insert]}
+    and a [GtkListBoxRow] widget will automatically be inserted between the list
+    and the widget.
 
     [GtkListBoxRows] can be marked as activatable or selectable. If a row is
-    activatable, [Gtk.ListBox::row-activated] will be emitted for it when the
-    user tries to activate it. If it is selectable, the row will be marked as
-    selected when the user tries to select it.
+    activatable,
+    {{!Ocgtk.List_box.class-type-list_box_t.method-on_row_activated}[Gtk.ListBox::row-activated]}
+    will be emitted for it when the user tries to activate it. If it is
+    selectable, the row will be marked as selected when the user tries to select
+    it.
 
     {b GtkListBox as GtkBuildable}
 
     The [GtkListBox] implementation of the [GtkBuildable] interface supports
     setting a child as the placeholder by specifying “placeholder” as the “type”
-    attribute of a [<child>] element. See [Gtk.ListBox.set_placeholder] for
-    info.
+    attribute of a [<child>] element. See
+    {{!Ocgtk.List_box.class-type-list_box_t.method-set_placeholder}[Gtk.ListBox.set_placeholder]}
+    for info.
 
     {b Shortcuts and Gestures}
 
     The following signals have default keybindings:
 
-    - [Gtk.ListBox::move-cursor]
-    - [Gtk.ListBox::select-all]
-    - [Gtk.ListBox::toggle-cursor-row]
-    - [Gtk.ListBox::unselect-all]
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_move_cursor}[Gtk.ListBox::move-cursor]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_select_all}[Gtk.ListBox::select-all]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_toggle_cursor_row}[Gtk.ListBox::toggle-cursor-row]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_unselect_all}[Gtk.ListBox::unselect-all]}
 
     {b CSS nodes}
 
@@ -64,9 +71,10 @@
     ]}
 
     [GtkListBox] uses a single CSS node named list. It may carry the .separators
-    style class, when the [Gtk.ListBox:show-separators] property is set. Each
-    [GtkListBoxRow] uses a single CSS node named row. The row nodes get the
-    .activatable style class added when appropriate.
+    style class, when the
+    {{!Ocgtk.List_box.class-type-list_box_t.method-get_show_separators}[Gtk.ListBox:show-separators]}
+    property is set. Each [GtkListBoxRow] uses a single CSS node named row. The
+    row nodes get the .activatable style class added when appropriate.
 
     It may also carry the .boxed-list style class. In this case, the list will
     be automatically surrounded by a frame and have separators.
@@ -76,8 +84,11 @@
 
     {b Accessibility}
 
-    [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
-    uses the [Gtk.AccessibleRole.list_item] role. *)
+    [GtkListBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST}[Gtk.AccessibleRole.list]}
+    role and [GtkListBoxRow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST_ITEM}[Gtk.AccessibleRole.list_item]}
+    role. *)
 class type list_box_t = object
   inherit Widget.widget_t
 
@@ -332,30 +343,37 @@ class list_box : Raw.List_box.t -> list_box_t
     it).
 
     Although a [GtkListBox] must have only [GtkListBoxRow] children, you can add
-    any kind of widget to it via [Gtk.ListBox.prepend], [Gtk.ListBox.append] and
-    [Gtk.ListBox.insert] and a [GtkListBoxRow] widget will automatically be
-    inserted between the list and the widget.
+    any kind of widget to it via
+    {{!Ocgtk.List_box.class-type-list_box_t.method-prepend}[Gtk.ListBox.prepend]},
+    {{!Ocgtk.List_box.class-type-list_box_t.method-append}[Gtk.ListBox.append]}
+    and
+    {{!Ocgtk.List_box.class-type-list_box_t.method-insert}[Gtk.ListBox.insert]}
+    and a [GtkListBoxRow] widget will automatically be inserted between the list
+    and the widget.
 
     [GtkListBoxRows] can be marked as activatable or selectable. If a row is
-    activatable, [Gtk.ListBox::row-activated] will be emitted for it when the
-    user tries to activate it. If it is selectable, the row will be marked as
-    selected when the user tries to select it.
+    activatable,
+    {{!Ocgtk.List_box.class-type-list_box_t.method-on_row_activated}[Gtk.ListBox::row-activated]}
+    will be emitted for it when the user tries to activate it. If it is
+    selectable, the row will be marked as selected when the user tries to select
+    it.
 
     {b GtkListBox as GtkBuildable}
 
     The [GtkListBox] implementation of the [GtkBuildable] interface supports
     setting a child as the placeholder by specifying “placeholder” as the “type”
-    attribute of a [<child>] element. See [Gtk.ListBox.set_placeholder] for
-    info.
+    attribute of a [<child>] element. See
+    {{!Ocgtk.List_box.class-type-list_box_t.method-set_placeholder}[Gtk.ListBox.set_placeholder]}
+    for info.
 
     {b Shortcuts and Gestures}
 
     The following signals have default keybindings:
 
-    - [Gtk.ListBox::move-cursor]
-    - [Gtk.ListBox::select-all]
-    - [Gtk.ListBox::toggle-cursor-row]
-    - [Gtk.ListBox::unselect-all]
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_move_cursor}[Gtk.ListBox::move-cursor]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_select_all}[Gtk.ListBox::select-all]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_toggle_cursor_row}[Gtk.ListBox::toggle-cursor-row]}
+    - {{!Ocgtk.List_box.class-type-list_box_t.method-on_unselect_all}[Gtk.ListBox::unselect-all]}
 
     {b CSS nodes}
 
@@ -365,9 +383,10 @@ class list_box : Raw.List_box.t -> list_box_t
     ]}
 
     [GtkListBox] uses a single CSS node named list. It may carry the .separators
-    style class, when the [Gtk.ListBox:show-separators] property is set. Each
-    [GtkListBoxRow] uses a single CSS node named row. The row nodes get the
-    .activatable style class added when appropriate.
+    style class, when the
+    {{!Ocgtk.List_box.class-type-list_box_t.method-get_show_separators}[Gtk.ListBox:show-separators]}
+    property is set. Each [GtkListBoxRow] uses a single CSS node named row. The
+    row nodes get the .activatable style class added when appropriate.
 
     It may also carry the .boxed-list style class. In this case, the list will
     be automatically surrounded by a frame and have separators.
@@ -377,8 +396,11 @@ class list_box : Raw.List_box.t -> list_box_t
 
     {b Accessibility}
 
-    [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
-    uses the [Gtk.AccessibleRole.list_item] role. *)
+    [GtkListBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST}[Gtk.AccessibleRole.list]}
+    role and [GtkListBoxRow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST_ITEM}[Gtk.AccessibleRole.list_item]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

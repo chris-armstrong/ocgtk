@@ -27,12 +27,14 @@ external get_second : t -> Shortcut_trigger.t
   = "ml_gtk_alternative_trigger_get_second"
 (** Gets the second of the two alternative triggers that may trigger [self].
 
-    [Gtk.AlternativeTrigger.get_first] will return the other one. *)
+    {{!Ocgtk.Raw.Alternative_trigger.val-get_first}[Gtk.AlternativeTrigger.get_first]}
+    will return the other one. *)
 
 external get_first : t -> Shortcut_trigger.t
   = "ml_gtk_alternative_trigger_get_first"
 (** Gets the first of the two alternative triggers that may trigger [self].
 
-    [Gtk.AlternativeTrigger.get_second] will return the other one. *)
+    {{!Ocgtk.Raw.Alternative_trigger.val-get_second}[Gtk.AlternativeTrigger.get_second]}
+    will return the other one. *)
 
 (* Properties *)

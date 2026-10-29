@@ -32,12 +32,14 @@ external new_ : string option -> t = "ml_gtk_inscription_new"
 external set_yalign : t -> float -> unit = "ml_gtk_inscription_set_yalign"
 (** Sets the [yalign] of the inscription.
 
-    See the [Gtk.Inscription:yalign] property. *)
+    See the {{!Ocgtk.Raw.Inscription.val-get_yalign}[Gtk.Inscription:yalign]}
+    property. *)
 
 external set_xalign : t -> float -> unit = "ml_gtk_inscription_set_xalign"
 (** Sets the [xalign] of the inscription.
 
-    See the [Gtk.Inscription:xalign] property. *)
+    See the {{!Ocgtk.Raw.Inscription.val-get_xalign}[Gtk.Inscription:xalign]}
+    property. *)
 
 external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_inscription_set_wrap_mode"
@@ -53,28 +55,37 @@ external set_text : t -> string option -> unit = "ml_gtk_inscription_set_text"
 external set_nat_lines : t -> int -> unit = "ml_gtk_inscription_set_nat_lines"
 (** Sets the [nat-lines] of the inscription.
 
-    See the [Gtk.Inscription:nat-lines] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_nat_lines}[Gtk.Inscription:nat-lines]}
+    property. *)
 
 external set_nat_chars : t -> int -> unit = "ml_gtk_inscription_set_nat_chars"
 (** Sets the [nat-chars] of the inscription.
 
-    See the [Gtk.Inscription:nat-chars] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_nat_chars}[Gtk.Inscription:nat-chars]}
+    property. *)
 
 external set_min_lines : t -> int -> unit = "ml_gtk_inscription_set_min_lines"
 (** Sets the [min-lines] of the inscription.
 
-    See the [Gtk.Inscription:min-lines] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_min_lines}[Gtk.Inscription:min-lines]}
+    property. *)
 
 external set_min_chars : t -> int -> unit = "ml_gtk_inscription_set_min_chars"
 (** Sets the [min-chars] of the inscription.
 
-    See the [Gtk.Inscription:min-chars] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_min_chars}[Gtk.Inscription:min-chars]}
+    property. *)
 
 external set_markup : t -> string option -> unit
   = "ml_gtk_inscription_set_markup"
 (** Utility function to set the text and attributes to be displayed.
 
-    See the [Gtk.Inscription:markup] property. *)
+    See the {{!Ocgtk.Raw.Inscription.val-set_markup}[Gtk.Inscription:markup]}
+    property. *)
 
 external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
   = "ml_gtk_inscription_set_attributes"
@@ -85,18 +96,22 @@ external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
 external get_yalign : t -> float = "ml_gtk_inscription_get_yalign"
 (** Gets the [yalign] of the inscription.
 
-    See the [Gtk.Inscription:yalign] property. *)
+    See the {{!Ocgtk.Raw.Inscription.val-get_yalign}[Gtk.Inscription:yalign]}
+    property. *)
 
 external get_xalign : t -> float = "ml_gtk_inscription_get_xalign"
 (** Gets the [xalign] of the inscription.
 
-    See the [Gtk.Inscription:xalign] property. *)
+    See the {{!Ocgtk.Raw.Inscription.val-get_xalign}[Gtk.Inscription:xalign]}
+    property. *)
 
 external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_inscription_get_wrap_mode"
 (** Returns line wrap mode used by the inscription.
 
-    See [Gtk.Inscription.set_wrap_mode]. *)
+    See
+    {{!Ocgtk.Raw.Inscription.val-set_wrap_mode}[Gtk.Inscription.set_wrap_mode]}.
+*)
 
 external get_text_overflow : t -> Ocgtk_enums.inscriptionoverflow
   = "ml_gtk_inscription_get_text_overflow"
@@ -108,22 +123,30 @@ external get_text : t -> string option = "ml_gtk_inscription_get_text"
 external get_nat_lines : t -> int = "ml_gtk_inscription_get_nat_lines"
 (** Gets the [nat-lines] of the inscription.
 
-    See the [Gtk.Inscription:nat-lines] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_nat_lines}[Gtk.Inscription:nat-lines]}
+    property. *)
 
 external get_nat_chars : t -> int = "ml_gtk_inscription_get_nat_chars"
 (** Gets the [nat-chars] of the inscription.
 
-    See the [Gtk.Inscription:nat-chars] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_nat_chars}[Gtk.Inscription:nat-chars]}
+    property. *)
 
 external get_min_lines : t -> int = "ml_gtk_inscription_get_min_lines"
 (** Gets the [min-lines] of the inscription.
 
-    See the [Gtk.Inscription:min-lines] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_min_lines}[Gtk.Inscription:min-lines]}
+    property. *)
 
 external get_min_chars : t -> int = "ml_gtk_inscription_get_min_chars"
 (** Gets the [min-chars] of the inscription.
 
-    See the [Gtk.Inscription:min-chars] property. *)
+    See the
+    {{!Ocgtk.Raw.Inscription.val-get_min_chars}[Gtk.Inscription:min-chars]}
+    property. *)
 
 external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_inscription_get_attributes"

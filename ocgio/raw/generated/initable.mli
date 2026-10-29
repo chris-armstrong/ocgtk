@@ -3,7 +3,8 @@
 
 (** [GInitable] is implemented by objects that can fail during initialization.
     If an object implements this interface then it must be initialized as the
-    first thing after construction, either via [Gio.Initable.init] or
+    first thing after construction, either via
+    {{!Ocgio.Raw.Initable.val-init}[Gio.Initable.init]} or
     [Gio.AsyncInitable.init_async] (the latter is only available if it also
     implements {{!Ocgio.Raw.Async_initable}[Gio.AsyncInitable]}).
 
@@ -17,8 +18,9 @@
     method directly, instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.Initable.new] directly, or
     indirectly via a [foo_thing_new()] wrapper. This will call
-    [Gio.Initable.init] under the cover, returning [None] and setting a [GError]
-    on failure (at which point the instance is unreferenced).
+    {{!Ocgio.Raw.Initable.val-init}[Gio.Initable.init]} under the cover,
+    returning [None] and setting a [GError] on failure (at which point the
+    instance is unreferenced).
 
     For bindings in languages where the native constructor supports exceptions
     the binding could check for objects implementing [GInitable] during normal

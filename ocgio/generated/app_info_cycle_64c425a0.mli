@@ -164,7 +164,10 @@ end
      [GAppInfo] and [GAppLaunchContext] are used for describing and launching\n\
      applications installed on the system.\n\n\
      As of GLib 2.20, URIs will always be converted to POSIX paths\n\
-     (using [Gio.File.get_path]) when using [Gio.AppInfo.launch]\n\
+     (using \
+     {{!Ocgio.File.class-type-file_t.method-get_path}[Gio.File.get_path]}) \
+     when using \
+     {{!Ocgio.App_info.class-type-app_info_t.method-launch}[Gio.AppInfo.launch]}\n\
      even if the application requested an URI and not a POSIX path. For example\n\
      for a desktop-file based application with the following Exec key:\n\n\
      {[\n\
@@ -181,11 +184,14 @@ end
      back to the GIO URI in the {{!Ocgio.File.class-type-file_t}[Gio.File]} \
      constructors (since GVfs\n\
      implements the GVfs extension point). As such, if the application\n\
-     needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
+     needs to examine the URI, it needs to use \
+     {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}\n\
      or similar on {{!Ocgio.File.class-type-file_t}[Gio.File]}. In other \
      words, an application cannot\n\
      assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
-     is equal to the result of [Gio.File.get_uri]. The following snippet\n\
+     is equal to the result of \
+     {{!Ocgio.File.class-type-file_t.method-get_uri}[Gio.File.get_uri]}. The \
+     following snippet\n\
      illustrates this:\n\n\
      {[\n\
      GFile *f;\n\
@@ -357,7 +363,7 @@ end
     devices. Note that the actual semantics and side-effects of
     starting/stopping a [GDrive] may vary according to implementation. To choose
     the correct verbs in e.g. a file manager, use
-    [Gio.Drive.get_start_stop_type].
+    {{!Ocgio.Drive.class-type-drive_t.method-get_start_stop_type}[Gio.Drive.get_start_stop_type]}.
 
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API. *)
@@ -489,7 +495,7 @@ end
     - [Gio.File.new_tmp_dir_async] to asynchronously create a temporary
       directory.
     - [Gio.File.parse_name] from a UTF-8 string gotten from
-      [Gio.File.get_parse_name].
+      {{!Ocgio.File.class-type-file_t.method-get_parse_name}[Gio.File.get_parse_name]}.
     - [Gio.File.new_build_filename] or [Gio.File.new_build_filenamev] to create
       a file from path elements.
 
@@ -500,23 +506,29 @@ end
 
     [GFile]s make up hierarchies of directories and files that correspond to the
     files on a filesystem. You can move through the file system with [GFile]
-    using [Gio.File.get_parent] to get an identifier for the parent directory,
-    [Gio.File.get_child] to get a child within a directory, and
-    [Gio.File.resolve_relative_path] to resolve a relative path between two
-    [GFile]s. There can be multiple hierarchies, so you may not end up at the
-    same root if you repeatedly call [Gio.File.get_parent] on two different
-    files.
+    using
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} to
+    get an identifier for the parent directory,
+    {{!Ocgio.File.class-type-file_t.method-get_child}[Gio.File.get_child]} to
+    get a child within a directory, and
+    {{!Ocgio.File.class-type-file_t.method-resolve_relative_path}[Gio.File.resolve_relative_path]}
+    to resolve a relative path between two [GFile]s. There can be multiple
+    hierarchies, so you may not end up at the same root if you repeatedly call
+    {{!Ocgio.File.class-type-file_t.method-get_parent}[Gio.File.get_parent]} on
+    two different files.
 
-    All [GFile]s have a basename (get with [Gio.File.get_basename]). These names
-    are byte strings that are used to identify the file on the filesystem
-    (relative to its parent directory) and there is no guarantees that they have
-    any particular charset encoding or even make any sense at all. If you want
-    to use filenames in a user interface you should use the display name that
-    you can get by requesting the [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
-    attribute with [Gio.File.query_info]. This is guaranteed to be in UTF-8 and
-    can be used in a user interface. But always store the real basename or the
-    [GFile] to use to actually access the file, because there is no way to go
-    from a display name to the actual name.
+    All [GFile]s have a basename (get with
+    {{!Ocgio.File.class-type-file_t.method-get_basename}[Gio.File.get_basename]}).
+    These names are byte strings that are used to identify the file on the
+    filesystem (relative to its parent directory) and there is no guarantees
+    that they have any particular charset encoding or even make any sense at
+    all. If you want to use filenames in a user interface you should use the
+    display name that you can get by requesting the
+    [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME] attribute with
+    {{!Ocgio.File.class-type-file_t.method-query_info}[Gio.File.query_info]}.
+    This is guaranteed to be in UTF-8 and can be used in a user interface. But
+    always store the real basename or the [GFile] to use to actually access the
+    file, because there is no way to go from a display name to the actual name.
 
     Using [GFile] as an identifier has the same weaknesses as using a path in
     that there may be multiple aliases for the same file. For instance, hard or
@@ -1514,13 +1526,15 @@ end
     [GFileEnumerator] allows you to operate on a set of
     {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
-    file enumerated (e.g. [Gio.File.enumerate_children] will return a
-    [GFileEnumerator] for each of the children within a directory).
+    file enumerated (e.g.
+    {{!Ocgio.File.class-type-file_t.method-enumerate_children}[Gio.File.enumerate_children]}
+    will return a [GFileEnumerator] for each of the children within a
+    directory).
 
     To get the next file's information from a [GFileEnumerator], use
-    [Gio.FileEnumerator.next_file] or its asynchronous version,
-    [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-next_file}[Gio.FileEnumerator.next_file]}
+    or its asynchronous version, [Gio.FileEnumerator.next_files_async]. Note
+    that the asynchronous version will return a list of
     {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
     the synchronous will only return the next file in the enumerator.
 
@@ -1533,8 +1547,9 @@ end
     If your application needs a specific ordering, such as by name or
     modification time, you will have to implement that in your application code.
 
-    To close a [GFileEnumerator], use [Gio.FileEnumerator.close], or its
-    asynchronous version, [Gio.FileEnumerator.close_async]. Once a
+    To close a [GFileEnumerator], use
+    {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-close}[Gio.FileEnumerator.close]},
+    or its asynchronous version, [Gio.FileEnumerator.close_async]. Once a
     [GFileEnumerator] is closed, no further actions may be performed on it, and
     it should be freed with [GObject.Object.unref]. *)
 and file_enumerator_t = object
@@ -1618,12 +1633,16 @@ end
 
     Monitors a file or directory for changes.
 
-    To obtain a [GFileMonitor] for a file or directory, use [Gio.File.monitor],
-    [Gio.File.monitor_file], or [Gio.File.monitor_directory].
+    To obtain a [GFileMonitor] for a file or directory, use
+    {{!Ocgio.File.class-type-file_t.method-monitor}[Gio.File.monitor]},
+    {{!Ocgio.File.class-type-file_t.method-monitor_file}[Gio.File.monitor_file]},
+    or
+    {{!Ocgio.File.class-type-file_t.method-monitor_directory}[Gio.File.monitor_directory]}.
 
     To get informed about changes to the file or directory you are monitoring,
-    connect to the [Gio.FileMonitor::changed] signal. The signal will be emitted
-    in the thread-default main context (see
+    connect to the
+    {{!Ocgio.File_monitor.class-type-file_monitor_t.method-on_changed}[Gio.FileMonitor::changed]}
+    signal. The signal will be emitted in the thread-default main context (see
     [GLib.MainContext.push_thread_default]) of the thread that the monitor was
     created in (though if the global default main context is blocked, this may
     cause notifications to be blocked even if the thread-default context is
@@ -1715,11 +1734,13 @@ end
     operation has resolved (either with success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} structure
     will be passed to the callback. That callback should then call
-    [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    with the [GMount] and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If an [error] is present
-    when [Gio.Mount.unmount_with_operation_finish] is called, then it will be
-    filled with any error information.
+    when
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)
@@ -1874,7 +1895,7 @@ end
 
     If a [GVolume] is currently mounted, the corresponding
     {{!Ocgio.Mount.class-type-mount_t}[Gio.Mount]} can be retrieved using
-    [Gio.Volume.get_mount].
+    {{!Ocgio.Volume.class-type-volume_t.method-get_mount}[Gio.Volume.get_mount]}.
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
     information about asynchronous operations, see
@@ -1893,11 +1914,13 @@ end
     success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} instance
     will be passed to the callback. That callback should then call
-    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    with the [GVolume] instance and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If a [GLib.Error] is
-    present when [Gio.Volume.mount_finish] is called, then it will be filled
-    with any error information.
+    present when
+    {{!Ocgio.Volume.class-type-volume_t.method-mount_finish}[Gio.Volume.mount_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
     [GnomeVFSDrive].
@@ -1911,7 +1934,8 @@ end
     filesystem labels, traditional Unix devices (e.g. [/dev/sda2]), UUIDs. GIO
     uses predefined strings as names for the different kinds of identifiers:
     [G_VOLUME_IDENTIFIER_KIND_UUID], [G_VOLUME_IDENTIFIER_KIND_LABEL], etc. Use
-    [Gio.Volume.get_identifier] to obtain an identifier for a volume.
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[Gio.Volume.get_identifier]}
+    to obtain an identifier for a volume.
 
     Note that [G_VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available when the
     GVFS hal volume monitor is in use. Other volume monitors will generally be

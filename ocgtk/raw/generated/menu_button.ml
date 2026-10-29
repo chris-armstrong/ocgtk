@@ -9,16 +9,20 @@
     [GMenuModel].
 
     The [GtkMenuButton] widget can show either an icon (set with the
-    [Gtk.MenuButton:icon-name] property) or a label (set with the
-    [Gtk.MenuButton:label] property). If neither is explicitly set, a
-    {{!Ocgtk.Raw.Image}[Gtk.Image]} is automatically created, using an arrow
-    image oriented according to [Gtk.MenuButton:direction] or the generic
-    “open-menu-symbolic” icon if the direction is not set.
+    {{!Ocgtk.Raw.Menu_button.val-get_icon_name}[Gtk.MenuButton:icon-name]}
+    property) or a label (set with the
+    {{!Ocgtk.Raw.Menu_button.val-get_label}[Gtk.MenuButton:label]} property). If
+    neither is explicitly set, a {{!Ocgtk.Raw.Image}[Gtk.Image]} is
+    automatically created, using an arrow image oriented according to
+    {{!Ocgtk.Raw.Menu_button.val-get_direction}[Gtk.MenuButton:direction]} or
+    the generic “open-menu-symbolic” icon if the direction is not set.
 
-    The positioning of the popup is determined by the [Gtk.MenuButton:direction]
+    The positioning of the popup is determined by the
+    {{!Ocgtk.Raw.Menu_button.val-get_direction}[Gtk.MenuButton:direction]}
     property of the menu button.
 
-    For menus, the [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of the
+    For menus, the {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and
+    {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties of the
     menu are also taken into account. For example, when the direction is
     [GTK_ARROW_DOWN] and the horizontal alignment is [GTK_ALIGN_START], the menu
     will be positioned below the button, with the starting edge (depending on
@@ -55,7 +59,9 @@
 
     {b Accessibility}
 
-    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role.
+    [GtkMenuButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role.
 
     The class built on this module is in {!Ocgtk.Menu_button}. *)
 
@@ -88,8 +94,9 @@ external set_popover : t -> Popover.t option -> unit
 
     If [popover] is [None], the button is disabled.
 
-    If [Gtk.MenuButton:menu-model] is set, the menu model is dissociated from
-    the [menu_button], and the property is set to [None]. *)
+    If {{!Ocgtk.Raw.Menu_button.val-get_menu_model}[Gtk.MenuButton:menu-model]}
+    is set, the menu model is dissociated from the [menu_button], and the
+    property is set to [None]. *)
 
 external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_menu_button_set_menu_model"
@@ -98,30 +105,37 @@ external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
     If [menu_model] is [None], the button is disabled.
 
     A {{!Ocgtk.Raw.Popover}[Gtk.Popover]} will be created from the menu model
-    with [Gtk.PopoverMenu.new_from_model]. Actions will be connected as
-    documented for this function.
+    with
+    {{!Ocgtk.Raw.Popover_menu.val-new_from_model}[Gtk.PopoverMenu.new_from_model]}.
+    Actions will be connected as documented for this function.
 
-    If [Gtk.MenuButton:popover] is already set, it will be dissociated from the
-    [menu_button], and the property is set to [None]. *)
+    If {{!Ocgtk.Raw.Menu_button.val-get_popover}[Gtk.MenuButton:popover]} is
+    already set, it will be dissociated from the [menu_button], and the property
+    is set to [None]. *)
 
 external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
 (** Sets the label to show inside the menu button.
 
-    Setting a label resets [Gtk.MenuButton:icon-name] and
-    [Gtk.MenuButton:child].
+    Setting a label resets
+    {{!Ocgtk.Raw.Menu_button.val-get_icon_name}[Gtk.MenuButton:icon-name]} and
+    {{!Ocgtk.Raw.Menu_button.val-get_child}[Gtk.MenuButton:child]}.
 
-    If [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will
-    be shown next to the label. *)
+    If {{!Ocgtk.Raw.Menu_button.val-get_direction}[Gtk.MenuButton:direction]} is
+    not [GTK_ARROW_NONE], a dropdown arrow will be shown next to the label. *)
 
 external set_icon_name : t -> string -> unit
   = "ml_gtk_menu_button_set_icon_name"
 (** Sets the name of an icon to show inside the menu button.
 
-    Setting icon name resets [Gtk.MenuButton:label] and [Gtk.MenuButton:child].
+    Setting icon name resets
+    {{!Ocgtk.Raw.Menu_button.val-get_label}[Gtk.MenuButton:label]} and
+    {{!Ocgtk.Raw.Menu_button.val-get_child}[Gtk.MenuButton:child]}.
 
-    If [Gtk.MenuButton:always-show-arrow] is set to [true] and
-    [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
-    shown next to the icon. *)
+    If
+    {{!Ocgtk.Raw.Menu_button.val-get_always_show_arrow}[Gtk.MenuButton:always-show-arrow]}
+    is set to [true] and
+    {{!Ocgtk.Raw.Menu_button.val-get_direction}[Gtk.MenuButton:direction]} is
+    not [GTK_ARROW_NONE], a dropdown arrow will be shown next to the icon. *)
 
 external set_has_frame : t -> bool -> unit = "ml_gtk_menu_button_set_has_frame"
 (** Sets the style of the button. *)
@@ -148,12 +162,15 @@ external set_child :
   unit = "ml_gtk_menu_button_set_child"
 (** Sets the child widget of [menu_button].
 
-    Setting a child resets [Gtk.MenuButton:label] and
-    [Gtk.MenuButton:icon-name].
+    Setting a child resets
+    {{!Ocgtk.Raw.Menu_button.val-get_label}[Gtk.MenuButton:label]} and
+    {{!Ocgtk.Raw.Menu_button.val-get_icon_name}[Gtk.MenuButton:icon-name]}.
 
-    If [Gtk.MenuButton:always-show-arrow] is set to [true] and
-    [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
-    shown next to the child. *)
+    If
+    {{!Ocgtk.Raw.Menu_button.val-get_always_show_arrow}[Gtk.MenuButton:always-show-arrow]}
+    is set to [true] and
+    {{!Ocgtk.Raw.Menu_button.val-get_direction}[Gtk.MenuButton:direction]} is
+    not [GTK_ARROW_NONE], a dropdown arrow will be shown next to the child. *)
 
 external set_can_shrink : t -> bool -> unit
   = "ml_gtk_menu_button_set_can_shrink"

@@ -112,11 +112,14 @@ end
      {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Places a label next to an indicator.\n\n\
      Example GtkCheckButtons\n\n\
-     A [GtkCheckButton] is created by calling either [Gtk.CheckButton.new]\n\
-     or [Gtk.CheckButton.new_with_label].\n\n\
+     A [GtkCheckButton] is created by calling either \
+     {{!Ocgtk.Check_button.val-new_}[Gtk.CheckButton.new]}\n\
+     or \
+     {{!Ocgtk.Check_button.val-new_with_label}[Gtk.CheckButton.new_with_label]}.\n\n\
      The state of a [GtkCheckButton] can be set specifically using\n\
-     [Gtk.CheckButton.set_active], and retrieved using\n\
-     [Gtk.CheckButton.get_active].\n\n\
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-set_active}[Gtk.CheckButton.set_active]}, \
+     and retrieved using\n\
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-get_active}[Gtk.CheckButton.get_active]}.\n\n\
      {b Inconsistent state}\n\n\
      In addition to \"on\" and \"off\", check buttons can be an\n\
      \"in between\" state that is neither on nor off. This can be used\n\
@@ -124,7 +127,7 @@ end
      text or spreadsheet cells) that are affected by a check button,\n\
      and the current values in that range are inconsistent.\n\n\
      To set a [GtkCheckButton] to inconsistent state, use\n\
-     [Gtk.CheckButton.set_inconsistent].\n\n\
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-set_inconsistent}[Gtk.CheckButton.set_inconsistent]}.\n\n\
      {b Grouping}\n\n\
      Check buttons can be grouped together, to form mutually exclusive\n\
      groups - only one of the buttons can be toggled at a time, and toggling\n\
@@ -132,7 +135,8 @@ end
      Grouped check buttons use a different indicator, and are commonly referred\n\
      to as {i radio buttons}.\n\n\
      Example GtkRadioButtons\n\n\
-     To add a [GtkCheckButton] to a group, use [Gtk.CheckButton.set_group].\n\n\
+     To add a [GtkCheckButton] to a group, use \
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-set_group}[Gtk.CheckButton.set_group]}.\n\n\
      When the code must keep track of the state of a group of radio buttons, it\n\
      is recommended to keep track of such state through a stateful\n\
      [GAction] with a target for each button. Using the [toggled] signals to \
@@ -148,12 +152,16 @@ end
      ╰── [label]\n\
      ]}\n\n\
      A [GtkCheckButton] has a main node with name checkbutton. If the\n\
-     [Gtk.CheckButton:label] or [Gtk.CheckButton:child]\n\
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-get_label}[Gtk.CheckButton:label]} \
+     or \
+     {{!Ocgtk.Check_button.class-type-check_button_t.method-get_child}[Gtk.CheckButton:child]}\n\
      properties are set, it contains a child widget. The indicator node\n\
      is named check when no group is set, and radio if the checkbutton\n\
      is grouped together with other checkbuttons.\n\n\
      {b Accessibility}\n\n\
-     [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role."]
+     [GtkCheckButton] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-CHECKBOX}[Gtk.AccessibleRole.checkbox]} \
+     role."]
 
 class check_button : Raw.Check_button.t -> check_button_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Check_button.t}. *)
@@ -162,11 +170,14 @@ class check_button : Raw.Check_button.t -> check_button_t
 "{1:description Description}\n\n\
  Places a label next to an indicator.\n\n\
  Example GtkCheckButtons\n\n\
- A [GtkCheckButton] is created by calling either [Gtk.CheckButton.new]\n\
- or [Gtk.CheckButton.new_with_label].\n\n\
+ A [GtkCheckButton] is created by calling either \
+ {{!Ocgtk.Check_button.val-new_}[Gtk.CheckButton.new]}\n\
+ or \
+ {{!Ocgtk.Check_button.val-new_with_label}[Gtk.CheckButton.new_with_label]}.\n\n\
  The state of a [GtkCheckButton] can be set specifically using\n\
- [Gtk.CheckButton.set_active], and retrieved using\n\
- [Gtk.CheckButton.get_active].\n\n\
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-set_active}[Gtk.CheckButton.set_active]}, \
+ and retrieved using\n\
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-get_active}[Gtk.CheckButton.get_active]}.\n\n\
  {b Inconsistent state}\n\n\
  In addition to \"on\" and \"off\", check buttons can be an\n\
  \"in between\" state that is neither on nor off. This can be used\n\
@@ -174,7 +185,7 @@ class check_button : Raw.Check_button.t -> check_button_t
  text or spreadsheet cells) that are affected by a check button,\n\
  and the current values in that range are inconsistent.\n\n\
  To set a [GtkCheckButton] to inconsistent state, use\n\
- [Gtk.CheckButton.set_inconsistent].\n\n\
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-set_inconsistent}[Gtk.CheckButton.set_inconsistent]}.\n\n\
  {b Grouping}\n\n\
  Check buttons can be grouped together, to form mutually exclusive\n\
  groups - only one of the buttons can be toggled at a time, and toggling\n\
@@ -182,7 +193,8 @@ class check_button : Raw.Check_button.t -> check_button_t
  Grouped check buttons use a different indicator, and are commonly referred\n\
  to as {i radio buttons}.\n\n\
  Example GtkRadioButtons\n\n\
- To add a [GtkCheckButton] to a group, use [Gtk.CheckButton.set_group].\n\n\
+ To add a [GtkCheckButton] to a group, use \
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-set_group}[Gtk.CheckButton.set_group]}.\n\n\
  When the code must keep track of the state of a group of radio buttons, it\n\
  is recommended to keep track of such state through a stateful\n\
  [GAction] with a target for each button. Using the [toggled] signals to keep\n\
@@ -197,12 +209,16 @@ class check_button : Raw.Check_button.t -> check_button_t
  ╰── [label]\n\
  ]}\n\n\
  A [GtkCheckButton] has a main node with name checkbutton. If the\n\
- [Gtk.CheckButton:label] or [Gtk.CheckButton:child]\n\
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-get_label}[Gtk.CheckButton:label]} \
+ or \
+ {{!Ocgtk.Check_button.class-type-check_button_t.method-get_child}[Gtk.CheckButton:child]}\n\
  properties are set, it contains a child widget. The indicator node\n\
  is named check when no group is set, and radio if the checkbutton\n\
  is grouped together with other checkbuttons.\n\n\
  {b Accessibility}\n\n\
- [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role."]
+ [GtkCheckButton] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-CHECKBOX}[Gtk.AccessibleRole.checkbox]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

@@ -47,7 +47,8 @@
     Center’s ‘Notifications’ panel.
 
     The [.desktop] file must be named as [org.gnome.TestApplication.desktop],
-    where [org.gnome.TestApplication] is the ID passed to [Gio.Application.new].
+    where [org.gnome.TestApplication] is the ID passed to
+    {{!Ocgio.Application.val-new_}[Gio.Application.new]}.
 
     User interaction with a notification (either the default action, or buttons)
     must be associated with actions on the application (ie: [app.] actions). It
@@ -55,7 +56,9 @@
     because the object will not exist if the application is autostarted as a
     result of a notification being clicked.
 
-    A notification can be sent with [Gio.Application.send_notification]. *)
+    A notification can be sent with
+    {{!Ocgio.Application.class-type-application_t.method-send_notification}[Gio.Application.send_notification]}.
+*)
 class type notification_t = object
   (** {2:methods Methods} *)
 
@@ -173,7 +176,8 @@ class notification : Raw.Notification.t -> notification_t
     Center’s ‘Notifications’ panel.
 
     The [.desktop] file must be named as [org.gnome.TestApplication.desktop],
-    where [org.gnome.TestApplication] is the ID passed to [Gio.Application.new].
+    where [org.gnome.TestApplication] is the ID passed to
+    {{!Ocgio.Application.val-new_}[Gio.Application.new]}.
 
     User interaction with a notification (either the default action, or buttons)
     must be associated with actions on the application (ie: [app.] actions). It
@@ -181,7 +185,9 @@ class notification : Raw.Notification.t -> notification_t
     because the object will not exist if the application is autostarted as a
     result of a notification being clicked.
 
-    A notification can be sent with [Gio.Application.send_notification]. *)
+    A notification can be sent with
+    {{!Ocgio.Application.class-type-application_t.method-send_notification}[Gio.Application.send_notification]}.
+*)
 
 (** {1:constructors Constructors} *)
 

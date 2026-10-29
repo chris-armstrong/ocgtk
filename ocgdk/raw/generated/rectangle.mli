@@ -8,8 +8,9 @@
     sets of pixels.
 
     The intersection of two rectangles can be computed with
-    [Gdk.Rectangle.intersect]; to find the union of two rectangles use
-    [Gdk.Rectangle.union].
+    {{!Ocgdk.Raw.Rectangle.val-intersect}[Gdk.Rectangle.intersect]}; to find the
+    union of two rectangles use
+    {{!Ocgdk.Raw.Rectangle.val-union}[Gdk.Rectangle.union]}.
 
     The [cairo_region_t] type provided by Cairo is usually used for managing
     non-rectangular clipping of graphical operations.

@@ -22,7 +22,8 @@
     debug features in this process.
 
     Whether debug output is enabled is exposed as
-    [Gio.DebugController:debug-enabled]. This controls
+    {{!Ocgio.Debug_controller.class-type-debug_controller_t.method-get_debug_enabled}
+     [Gio.DebugController:debug-enabled]}. This controls
     [GLib.log_set_debug_enabled] by default. Application code may connect to the
     [GObject.Object::notify] signal for it to control other parts of its debug
     infrastructure as necessary.
@@ -59,7 +60,8 @@ class debug_controller : Raw.Debug_controller.t -> debug_controller_t
     debug features in this process.
 
     Whether debug output is enabled is exposed as
-    [Gio.DebugController:debug-enabled]. This controls
+    {{!Ocgio.Debug_controller.class-type-debug_controller_t.method-get_debug_enabled}
+     [Gio.DebugController:debug-enabled]}. This controls
     [GLib.log_set_debug_enabled] by default. Application code may connect to the
     [GObject.Object::notify] signal for it to control other parts of its debug
     infrastructure as necessary.

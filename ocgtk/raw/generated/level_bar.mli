@@ -6,8 +6,10 @@
  Typical use cases are displaying the strength of a password, or\n\
  showing the charge level of a battery.\n\n\
  An example GtkLevelBar\n\n\
- Use [Gtk.LevelBar.set_value] to set the current value, and\n\
- [Gtk.LevelBar.add_offset_value] to set the value offsets at which\n\
+ Use {{!Ocgtk.Raw.Level_bar.val-set_value}[Gtk.LevelBar.set_value]} to set the \
+ current value, and\n\
+ {{!Ocgtk.Raw.Level_bar.val-add_offset_value}[Gtk.LevelBar.add_offset_value]} \
+ to set the value offsets at which\n\
  the bar will be considered in a different state. GTK will add a few\n\
  offsets by default on the level bar: [GTK_LEVEL_BAR_OFFSET_LOW],\n\
  [GTK_LEVEL_BAR_OFFSET_HIGH] and [GTK_LEVEL_BAR_OFFSET_FULL], with\n\
@@ -42,8 +44,10 @@
  }\n\
  ]}\n\n\
  The default interval of values is between zero and one, but it’s possible\n\
- to modify the interval using [Gtk.LevelBar.set_min_value] and\n\
- [Gtk.LevelBar.set_max_value]. The value will be always drawn in\n\
+ to modify the interval using \
+ {{!Ocgtk.Raw.Level_bar.val-set_min_value}[Gtk.LevelBar.set_min_value]} and\n\
+ {{!Ocgtk.Raw.Level_bar.val-set_max_value}[Gtk.LevelBar.set_max_value]}. The \
+ value will be always drawn in\n\
  proportion to the admissible interval, i.e. a value of 15 with a specified\n\
  interval between 10 and 20 is equivalent to a value of 0.5 with an interval\n\
  between 0 and 1. When [GTK_LEVEL_BAR_MODE_DISCRETE] is used, the bar level\n\
@@ -77,7 +81,9 @@
  In horizontal orientation, the nodes are always arranged from left to right,\n\
  regardless of text direction.\n\n\
  {b Accessibility}\n\n\
- [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role.\n\n\
+ [GtkLevelBar] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-METER}[Gtk.AccessibleRole.meter]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Level_bar}."]
 
 type t = [ `level_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -120,7 +126,8 @@ external remove_offset_value : t -> string option -> unit
 (** Removes an offset marker from a [GtkLevelBar].
 
     The marker must have been previously added with
-    [Gtk.LevelBar.add_offset_value]. *)
+    {{!Ocgtk.Raw.Level_bar.val-add_offset_value}[Gtk.LevelBar.add_offset_value]}.
+*)
 
 external get_value : t -> float = "ml_gtk_level_bar_get_value"
 (** Returns the [value] of the [GtkLevelBar]. *)
@@ -146,9 +153,9 @@ external add_offset_value : t -> string -> float -> unit
 (** Adds a new offset marker on [self] at the position specified by [value].
 
     When the bar value is in the interval topped by [value] (or between [value]
-    and [Gtk.LevelBar:max-value] in case the offset is the last one on the bar)
-    a style class named [level-][name] will be applied when rendering the level
-    bar fill.
+    and {{!Ocgtk.Raw.Level_bar.val-get_max_value}[Gtk.LevelBar:max-value]} in
+    case the offset is the last one on the bar) a style class named
+    [level-][name] will be applied when rendering the level bar fill.
 
     If another offset marker named [name] exists, its value will be replaced by
     [value]. *)
@@ -162,7 +169,8 @@ val on_offset_changed :
   Gobject.Signal.handler_id
 [@@ocaml.doc
   "Emitted when an offset specified on the bar changes value.\n\n\
-   This typically is the result of a [Gtk.LevelBar.add_offset_value]\n\
+   This typically is the result of a \
+   {{!Ocgtk.Raw.Level_bar.val-add_offset_value}[Gtk.LevelBar.add_offset_value]}\n\
    call.\n\n\
    The signal supports detailed connections; you can connect to the\n\
    detailed signal \"changed::x\" in order to only receive callbacks when\n\

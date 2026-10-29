@@ -19,8 +19,9 @@
     used on such objects, but we need a similar API in order to drive them. The
     [GtkNativeDialog] object is an API that allows you to do this. It allows you
     to set various common properties on the dialog, as well as show and hide it
-    and get a [Gtk.NativeDialog::response] signal when the user finished with
-    the dialog.
+    and get a
+    {{!Ocgtk.Native_dialog.class-type-native_dialog_t.method-on_response}[Gtk.NativeDialog::response]}
+    signal when the user finished with the dialog.
 
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
@@ -125,8 +126,9 @@ class native_dialog : Raw.Native_dialog.t -> native_dialog_t
     used on such objects, but we need a similar API in order to drive them. The
     [GtkNativeDialog] object is an API that allows you to do this. It allows you
     to set various common properties on the dialog, as well as show and hide it
-    and get a [Gtk.NativeDialog::response] signal when the user finished with
-    the dialog.
+    and get a
+    {{!Ocgtk.Native_dialog.class-type-native_dialog_t.method-on_response}[Gtk.NativeDialog::response]}
+    signal when the user finished with the dialog.
 
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep

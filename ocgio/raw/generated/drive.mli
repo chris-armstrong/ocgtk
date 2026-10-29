@@ -23,7 +23,7 @@
     devices. Note that the actual semantics and side-effects of
     starting/stopping a [GDrive] may vary according to implementation. To choose
     the correct verbs in e.g. a file manager, use
-    [Gio.Drive.get_start_stop_type].
+    {{!Ocgio.Raw.Drive.val-get_start_stop_type}[Gio.Drive.get_start_stop_type]}.
 
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API.

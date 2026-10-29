@@ -9,8 +9,9 @@
 
     An example GtkSpinner
 
-    To start the animation, use [Gtk.Spinner.start], to stop it use
-    [Gtk.Spinner.stop].
+    To start the animation, use
+    {{!Ocgtk.Raw.Spinner.val-start}[Gtk.Spinner.start]}, to stop it use
+    {{!Ocgtk.Raw.Spinner.val-stop}[Gtk.Spinner.stop]}.
 
     {b CSS nodes}
 
@@ -19,7 +20,9 @@
 
     {b Accessibility}
 
-    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role.
+    [GtkSpinner] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role.
 
     The class built on this module is in {!Ocgtk.Spinner}. *)
 

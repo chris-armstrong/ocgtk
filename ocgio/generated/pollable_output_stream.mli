@@ -23,9 +23,10 @@
     rather than GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
-    returns false, then the behavior of other [GPollableOutputStream] methods is
-    undefined. *)
+    instances of that class be pollable. If
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t.method-can_poll}
+     [Gio.PollableOutputStream.can_poll]} returns false, then the behavior of
+    other [GPollableOutputStream] methods is undefined. *)
 class type pollable_output_stream_t = object
   (** {2:methods Methods} *)
 
@@ -69,9 +70,10 @@ class pollable_output_stream :
     rather than GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
-    returns false, then the behavior of other [GPollableOutputStream] methods is
-    undefined. *)
+    instances of that class be pollable. If
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t.method-can_poll}
+     [Gio.PollableOutputStream.can_poll]} returns false, then the behavior of
+    other [GPollableOutputStream] methods is undefined. *)
 
 (** {1:constructors Constructors} *)
 

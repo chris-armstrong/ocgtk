@@ -9,10 +9,13 @@
     {{!Ocgtk.Raw.Color_chooser}[Gtk.ColorChooser]} interface and does not
     provide much API of its own.
 
-    To create a [GtkColorChooserDialog], use [Gtk.ColorChooserDialog.new].
+    To create a [GtkColorChooserDialog], use
+    {{!Ocgtk.Raw.Color_chooser_dialog.val-new_}[Gtk.ColorChooserDialog.new]}.
 
-    To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
-    get the selected color use [Gtk.ColorChooser.get_rgba].
+    To change the initially selected color, use
+    {{!Ocgtk.Raw.Color_chooser.val-set_rgba}[Gtk.ColorChooser.set_rgba]}. To get
+    the selected color use
+    {{!Ocgtk.Raw.Color_chooser.val-get_rgba}[Gtk.ColorChooser.get_rgba]}.
 
     [GtkColorChooserDialog] has been deprecated in favor of
     {{!Ocgtk.Raw.Color_dialog}[Gtk.ColorDialog]}.

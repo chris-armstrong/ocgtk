@@ -6,15 +6,20 @@
     This gesture is also known as “Press and Hold”.
 
     When the timeout is exceeded, the gesture is triggering the
-    [Gtk.GestureLongPress::pressed] signal.
+    {{!Ocgtk.Raw.Gesture_long_press.val-on_pressed}[Gtk.GestureLongPress::pressed]}
+    signal.
 
     If the touchpoint is lifted before the timeout passes, or if it drifts too
-    far of the initial press point, the [Gtk.GestureLongPress::cancelled] signal
-    will be emitted.
+    far of the initial press point, the
+    {{!Ocgtk.Raw.Gesture_long_press.val-on_cancelled}[Gtk.GestureLongPress::cancelled]}
+    signal will be emitted.
 
     How long the timeout is before the ::pressed signal gets emitted is
-    determined by the [Gtk.Settings:gtk-long-press-time] setting. It can be
-    modified by the [Gtk.GestureLongPress:delay-factor] property.
+    determined by the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_long_press_time}[Gtk.Settings:gtk-long-press-time]}
+    setting. It can be modified by the
+    {{!Ocgtk.Raw.Gesture_long_press.val-get_delay_factor}[Gtk.GestureLongPress:delay-factor]}
+    property.
 
     The class built on this module is in {!Ocgtk.Gesture_long_press}. *)
 

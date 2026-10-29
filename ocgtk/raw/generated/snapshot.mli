@@ -8,11 +8,11 @@
 
     The node at the top of the stack is the one that [gtk_snapshot_append_…()]
     functions operate on. Use the [gtk_snapshot_push_…()] functions and
-    [Snapshot.pop] to change the current node.
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Snapshot.pop]} to change the current node.
 
     The typical way to obtain a [GtkSnapshot] object is as an argument to the
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
-    use [Gtk.Snapshot.new].
+    use {{!Ocgtk.Raw.Snapshot.val-new_}[Gtk.Snapshot.new]}.
 
     The class built on this module is in {!Ocgtk.Snapshot}. *)
 
@@ -71,18 +71,20 @@ external scale : t -> float -> float -> unit = "ml_gtk_snapshot_scale"
 (** Scales [snapshot]'s coordinate system in 2-dimensional space by the given
     factors.
 
-    Use [Gtk.Snapshot.scale_3d] to scale in all 3 dimensions. *)
+    Use {{!Ocgtk.Raw.Snapshot.val-scale_3d}[Gtk.Snapshot.scale_3d]} to scale in
+    all 3 dimensions. *)
 
 external save : t -> unit = "ml_gtk_snapshot_save"
 (** Makes a copy of the current state of [snapshot] and saves it on an internal
     stack.
 
-    When [Gtk.Snapshot.restore] is called, [snapshot] will be restored to the
-    saved state.
+    When {{!Ocgtk.Raw.Snapshot.val-restore}[Gtk.Snapshot.restore]} is called,
+    [snapshot] will be restored to the saved state.
 
-    Multiple calls to [Gtk.Snapshot.save] and [Gtk.Snapshot.restore] can be
-    nested; each call to [gtk_snapshot_restore()] restores the state from the
-    matching paired [gtk_snapshot_save()].
+    Multiple calls to {{!Ocgtk.Raw.Snapshot.val-save}[Gtk.Snapshot.save]} and
+    {{!Ocgtk.Raw.Snapshot.val-restore}[Gtk.Snapshot.restore]} can be nested;
+    each call to [gtk_snapshot_restore()] restores the state from the matching
+    paired [gtk_snapshot_save()].
 
     It is necessary to clear all saved states with corresponding calls to
     [gtk_snapshot_restore()]. *)
@@ -103,7 +105,8 @@ external rotate : t -> float -> unit = "ml_gtk_snapshot_rotate"
 
 external restore : t -> unit = "ml_gtk_snapshot_restore"
 (** Restores [snapshot] to the state saved by a preceding call to
-    [Snapshot.save] and removes that state from the stack of saved states. *)
+    {{!Ocgtk.Raw.Snapshot.val-save}[Snapshot.save]} and removes that state from
+    the stack of saved states. *)
 
 external render_layout :
   t -> Style_context.t -> float -> float -> Ocpango_raw.Layout.t -> unit
@@ -152,46 +155,52 @@ external push_stroke : t -> Ocgsk_raw.Path.t -> Ocgsk_raw.Stroke.t -> unit
   = "ml_gtk_snapshot_push_stroke"
 (** Strokes the given [path] with the attributes given by [stroke] and an image.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop].
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
     Note that the strokes are subject to the same transformation as everything
     else, so uneven scaling will cause horizontal and vertical strokes to have
     different widths.
 
-    If you want to stroke the path with a color, [Gtk.Snapshot.append_stroke]
-    may be more convenient. *)
+    If you want to stroke the path with a color,
+    {{!Ocgtk.Raw.Snapshot.val-append_stroke}[Gtk.Snapshot.append_stroke]} may be
+    more convenient. *)
 
 external push_shadow : t -> Ocgsk_raw.Shadow.t array -> Gsize.t -> unit
   = "ml_gtk_snapshot_push_shadow"
 (** Applies a shadow to an image.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_rounded_clip : t -> Ocgsk_raw.Rounded_rect.t -> unit
   = "ml_gtk_snapshot_push_rounded_clip"
 (** Clips an image to a rounded rectangle.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_repeat :
   t -> Ocgraphene_raw.Rect.t -> Ocgraphene_raw.Rect.t option -> unit
   = "ml_gtk_snapshot_push_repeat"
 (** Creates a node that repeats the child node.
 
-    The child is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The child is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_opacity : t -> float -> unit = "ml_gtk_snapshot_push_opacity"
 (** Modifies the opacity of an image.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_mask : t -> Ocgsk_enums.maskmode -> unit
   = "ml_gtk_snapshot_push_mask"
-(** Until the first call to [Gtk.Snapshot.pop], the mask image for the mask
-    operation will be recorded.
+(** Until the first call to {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]},
+    the mask image for the mask operation will be recorded.
 
     After that call, the source image will be recorded until the second call to
-    [Gtk.Snapshot.pop].
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
     Calling this function requires 2 subsequent calls to gtk_snapshot_pop(). *)
 
@@ -218,17 +227,20 @@ external push_gl_shader :
     before using it.
 
     If the shader requires textures (see [Gsk.GLShader.get_n_textures]), then it
-    is expected that you call [Gtk.Snapshot.gl_shader_pop_texture] the number of
-    times that are required. Each of these calls will generate a node that is
-    added as a child to the [GskGLShaderNode], which in turn will render these
-    offscreen and pass as a texture to the shader.
+    is expected that you call
+    {{!Ocgtk.Raw.Snapshot.val-gl_shader_pop_texture}[Gtk.Snapshot.gl_shader_pop_texture]}
+    the number of times that are required. Each of these calls will generate a
+    node that is added as a child to the [GskGLShaderNode], which in turn will
+    render these offscreen and pass as a texture to the shader.
 
     Once all textures (if any) are pop:ed, you must call the regular
-    [Gtk.Snapshot.pop].
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
     If you want to use pre-existing textures as input to the shader rather than
-    rendering new ones, use [Gtk.Snapshot.append_texture] to push a texture
-    node. These will be used directly rather than being re-rendered.
+    rendering new ones, use
+    {{!Ocgtk.Raw.Snapshot.val-append_texture}[Gtk.Snapshot.append_texture]} to
+    push a texture node. These will be used directly rather than being
+    re-rendered.
 
     For details on how to write shaders, see
     {{!Ocgsk.Raw.Gl_shader}[Gsk.GLShader]}. *)
@@ -238,23 +250,27 @@ external push_fill : t -> Ocgsk_raw.Path.t -> Ocgsk_enums.fillrule -> unit
 (** Fills the area given by [path] and [fill_rule] with an image and discards
     everything outside of it.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop].
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
-    If you want to fill the path with a color, [Gtk.Snapshot.append_fill] than
-    rendering new ones, use [Gtk.Snapshot.append_fill] may be more convenient.
-*)
+    If you want to fill the path with a color,
+    {{!Ocgtk.Raw.Snapshot.val-append_fill}[Gtk.Snapshot.append_fill]} than
+    rendering new ones, use
+    {{!Ocgtk.Raw.Snapshot.val-append_fill}[Gtk.Snapshot.append_fill]} may be
+    more convenient. *)
 
 external push_cross_fade : t -> float -> unit
   = "ml_gtk_snapshot_push_cross_fade"
 (** Snapshots a cross-fade operation between two images with the given
     [progress].
 
-    Until the first call to [Gtk.Snapshot.pop], the start image will be
-    snapshot. After that call, the end image will be recorded until the second
-    call to [Gtk.Snapshot.pop].
+    Until the first call to {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]},
+    the start image will be snapshot. After that call, the end image will be
+    recorded until the second call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
-    Calling this function requires two subsequent calls to [Gtk.Snapshot.pop].
-*)
+    Calling this function requires two subsequent calls to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_component_transfer :
   t ->
@@ -268,7 +284,8 @@ external push_component_transfer :
 
     The transfer functions operate on unpremultiplied colors.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_color_matrix :
   t -> Ocgraphene_raw.Matrix.t -> Ocgraphene_raw.Vec4.t -> unit
@@ -283,29 +300,33 @@ external push_color_matrix :
     for every pixel. The transformation operates on unpremultiplied colors, with
     color components ordered R, G, B, A.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_clip : t -> Ocgraphene_raw.Rect.t -> unit
   = "ml_gtk_snapshot_push_clip"
 (** Clips an image to a rectangle.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_blur : t -> float -> unit = "ml_gtk_snapshot_push_blur"
 (** Blurs an image.
 
-    The image is recorded until the next call to [Gtk.Snapshot.pop]. *)
+    The image is recorded until the next call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external push_blend : t -> Ocgsk_enums.blendmode -> unit
   = "ml_gtk_snapshot_push_blend"
 (** Blends together two images with the given blend mode.
 
-    Until the first call to [Gtk.Snapshot.pop], the bottom image for the blend
-    operation will be recorded. After that call, the top image to be blended
-    will be recorded until the second call to [Gtk.Snapshot.pop].
+    Until the first call to {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]},
+    the bottom image for the blend operation will be recorded. After that call,
+    the top image to be blended will be recorded until the second call to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
-    Calling this function requires two subsequent calls to [Gtk.Snapshot.pop].
-*)
+    Calling this function requires two subsequent calls to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}. *)
 
 external pop : t -> unit = "ml_gtk_snapshot_pop"
 (** Removes the top element from the stack of render nodes, and appends it to
@@ -322,7 +343,8 @@ external gl_shader_pop_texture : t -> unit
     nearest {{!Ocgsk.Raw.Gl_shader_node}[Gsk.GLShaderNode]} below it.
 
     This must be called the same number of times as the number of textures is
-    needed for the shader in [Gtk.Snapshot.push_gl_shader]. *)
+    needed for the shader in
+    {{!Ocgtk.Raw.Snapshot.val-push_gl_shader}[Gtk.Snapshot.push_gl_shader]}. *)
 
 external append_texture :
   t -> Ocgdk_raw.Texture.t -> Ocgraphene_raw.Rect.t -> unit
@@ -331,16 +353,17 @@ external append_texture :
     appends it to the current render node of [snapshot].
 
     If the texture needs to be scaled to fill [bounds], linear filtering is
-    used. See [Gtk.Snapshot.append_scaled_texture] if you need other filtering,
-    such as nearest-neighbour. *)
+    used. See
+    {{!Ocgtk.Raw.Snapshot.val-append_scaled_texture}[Gtk.Snapshot.append_scaled_texture]}
+    if you need other filtering, such as nearest-neighbour. *)
 
 external append_stroke :
   t -> Ocgsk_raw.Path.t -> Ocgsk_raw.Stroke.t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_snapshot_append_stroke"
 (** A convenience method to stroke a path with a color.
 
-    See [Gtk.Snapshot.push_stroke] if you need to stroke a path with more
-    complex content than a color. *)
+    See {{!Ocgtk.Raw.Snapshot.val-push_stroke}[Gtk.Snapshot.push_stroke]} if you
+    need to stroke a path with more complex content than a color. *)
 
 external append_scaled_texture :
   t ->
@@ -351,8 +374,10 @@ external append_scaled_texture :
 (** Creates a new render node drawing the [texture] into the given [bounds] and
     appends it to the current render node of [snapshot].
 
-    In contrast to [Gtk.Snapshot.append_texture], this function provides control
-    about how the filter that is used when scaling. *)
+    In contrast to
+    {{!Ocgtk.Raw.Snapshot.val-append_texture}[Gtk.Snapshot.append_texture]},
+    this function provides control about how the filter that is used when
+    scaling. *)
 
 external append_repeating_radial_gradient :
   t ->
@@ -436,7 +461,7 @@ external append_layout : t -> Ocpango_raw.Layout.t -> Ocgdk_raw.Rgb_a.t -> unit
 (** Creates render nodes for rendering [layout] in the given foregound [color]
     and appends them to the current node of [snapshot] without changing the
     current node. The current theme's foreground color for a widget can be
-    obtained with [Gtk.Widget.get_color].
+    obtained with {{!Ocgtk.Raw.Widget.val-get_color}[Gtk.Widget.get_color]}.
 
     Note that if the layout does not produce any visible output, then nodes may
     not be added to the [snapshot]. *)
@@ -459,8 +484,8 @@ external append_fill :
   = "ml_gtk_snapshot_append_fill"
 (** A convenience method to fill a path with a color.
 
-    See [Gtk.Snapshot.push_fill] if you need to fill a path with more complex
-    content than a color. *)
+    See {{!Ocgtk.Raw.Snapshot.val-push_fill}[Gtk.Snapshot.push_fill]} if you
+    need to fill a path with more complex content than a color. *)
 
 external append_conic_gradient :
   t ->

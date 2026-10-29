@@ -41,4 +41,6 @@ val new_ : Ocgraphene.Rect.rect_t -> cairo_node_t
 (** Creates a [GskRenderNode] that will render a cairo surface into the area
     given by [bounds].
 
-    You can draw to the cairo surface using [Gsk.CairoNode.get_draw_context]. *)
+    You can draw to the cairo surface using
+    {{!Ocgsk.Cairo_node.class-type-cairo_node_t.method-get_draw_context}[Gsk.CairoNode.get_draw_context]}.
+*)

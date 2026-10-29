@@ -58,7 +58,8 @@ end
      In detail, the size requested for each widget in a [GtkSizeGroup] is\n\
      the maximum of the sizes that would have been requested for each\n\
      widget in the size group if they were not in the size group. The\n\
-     \\[mode\\][Gtk.SizeGroup.set_mode] of the size group determines\n\
+     \\[mode\\]{{!Ocgtk.Size_group.class-type-size_group_t.method-set_mode}[Gtk.SizeGroup.set_mode]} \
+     of the size group determines\n\
      whether this applies to the horizontal size, the vertical size, or\n\
      both sizes.\n\n\
      Note that size groups only affect the amount of space requested, not\n\
@@ -66,7 +67,9 @@ end
      a [GtkSizeGroup] to actually be the same size, you need to pack them in\n\
      such a way that they get the size they request and not more. In\n\
      particular it doesn't make a lot of sense to set\n\
-     \\[the expand flags\\][Gtk.Widget.set_hexpand] on the widgets that\n\
+     \\[the expand \
+     flags\\]{{!Ocgtk.Widget.class-type-widget_t.method-set_hexpand}[Gtk.Widget.set_hexpand]} \
+     on the widgets that\n\
      are members of a size group.\n\n\
      [GtkSizeGroup] objects are referenced by each widget in the size group,\n\
      so once you have added all widgets to a [GtkSizeGroup], you can drop\n\
@@ -78,22 +81,32 @@ end
      Widgets can be part of multiple size groups; GTK will compute the\n\
      horizontal size of a widget from the horizontal requisition of all widgets\n\
      that can be reached from the widget by a chain of size groups with mode\n\
-     [Gtk.SizeGroupMode.HORIZONTAL] or [Gtk.SizeGroupMode.BOTH], and\n\
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-HORIZONTAL}[Gtk.SizeGroupMode.HORIZONTAL]} \
+     or \
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}, \
+     and\n\
      the vertical size from the vertical requisition of all widgets that can be\n\
      reached from the widget by a chain of size groups with mode\n\
-     [Gtk.SizeGroupMode.VERTICAL] or [Gtk.SizeGroupMode.BOTH].\n\n\
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-VERTICAL}[Gtk.SizeGroupMode.VERTICAL]} \
+     or \
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}.\n\n\
      {b Size groups and trading height-for-width}\n\n\
      Generally, size groups don't interact well with widgets that\n\
      trade height for width (or width for height), such as wrappable\n\
      labels. Avoid using size groups with such widgets.\n\n\
-     A size group with mode [Gtk.SizeGroupMode.HORIZONTAL] or\n\
-     [Gtk.SizeGroupMode.VERTICAL] only consults non-contextual sizes\n\
+     A size group with mode \
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-HORIZONTAL}[Gtk.SizeGroupMode.HORIZONTAL]} \
+     or\n\
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-VERTICAL}[Gtk.SizeGroupMode.VERTICAL]} \
+     only consults non-contextual sizes\n\
      of widgets other than the one being measured, since it has no\n\
      knowledge of what size a widget will get allocated in the other\n\
      orientation. This can lead to widgets in a group actually requesting\n\
      different contextual sizes, contrary to the purpose of\n\
      [GtkSizeGroup].\n\n\
-     In contrast, a size group with mode [Gtk.SizeGroupMode.BOTH] can\n\
+     In contrast, a size group with mode \
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]} \
+     can\n\
      properly propagate the available size in the opposite orientation\n\
      when measuring widgets in the group, which results in consistent and\n\
      accurate measurements.\n\n\
@@ -103,7 +116,8 @@ end
      the same width to all its children), and the size group is only\n\
      really needed to also make the widgets request the same size in the\n\
      other orientation, it is beneficial to still set the group's mode to\n\
-     [Gtk.SizeGroupMode.BOTH]. This lets the group assume and count\n\
+     {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}. \
+     This lets the group assume and count\n\
      on sizes of the widgets in the former orientation being the same,\n\
      which enables it to propagate the available size as described above.\n\n\
      {b Alternatives to size groups}\n\n\
@@ -113,7 +127,9 @@ end
      that the widgets get the same size.\n\n\
      Various container widgets and layout managers support a homogeneous\n\
      layout mode, where they will explicitly give the same size to their\n\
-     children (see [Gtk.Box:homogeneous]). Using homogeneous mode\n\
+     children (see \
+     {{!Ocgtk.Box.class-type-box_t.method-get_homogeneous}[Gtk.Box:homogeneous]}). \
+     Using homogeneous mode\n\
      can also have large performance benefits compared to either the same\n\
      container in non-homogeneous mode, or to size groups.\n\n\
      {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} can be used to position \
@@ -121,8 +137,10 @@ end
      columns. Members of each column will have the same width among them;\n\
      likewise, members of each row will have the same height. On top of\n\
      that, the heights can be made equal between all rows with\n\
-     [Gtk.Grid:row-homogeneous], and the widths can be made equal\n\
-     between all columns with [Gtk.Grid:column-homogeneous].\n\n\
+     {{!Ocgtk.Grid.class-type-grid_t.method-get_row_homogeneous}[Gtk.Grid:row-homogeneous]}, \
+     and the widths can be made equal\n\
+     between all columns with \
+     {{!Ocgtk.Grid.class-type-grid_t.method-get_column_homogeneous}[Gtk.Grid:column-homogeneous]}.\n\n\
      {b GtkSizeGroup as GtkBuildable}\n\n\
      Size groups can be specified in a UI definition by placing an [<object>]\n\
      element with [class=\"GtkSizeGroup\"] somewhere in the UI definition. The\n\
@@ -154,7 +172,8 @@ class size_group : Raw.Size_group.t -> size_group_t
  In detail, the size requested for each widget in a [GtkSizeGroup] is\n\
  the maximum of the sizes that would have been requested for each\n\
  widget in the size group if they were not in the size group. The\n\
- \\[mode\\][Gtk.SizeGroup.set_mode] of the size group determines\n\
+ \\[mode\\]{{!Ocgtk.Size_group.class-type-size_group_t.method-set_mode}[Gtk.SizeGroup.set_mode]} \
+ of the size group determines\n\
  whether this applies to the horizontal size, the vertical size, or\n\
  both sizes.\n\n\
  Note that size groups only affect the amount of space requested, not\n\
@@ -162,7 +181,9 @@ class size_group : Raw.Size_group.t -> size_group_t
  a [GtkSizeGroup] to actually be the same size, you need to pack them in\n\
  such a way that they get the size they request and not more. In\n\
  particular it doesn't make a lot of sense to set\n\
- \\[the expand flags\\][Gtk.Widget.set_hexpand] on the widgets that\n\
+ \\[the expand \
+ flags\\]{{!Ocgtk.Widget.class-type-widget_t.method-set_hexpand}[Gtk.Widget.set_hexpand]} \
+ on the widgets that\n\
  are members of a size group.\n\n\
  [GtkSizeGroup] objects are referenced by each widget in the size group,\n\
  so once you have added all widgets to a [GtkSizeGroup], you can drop\n\
@@ -174,22 +195,32 @@ class size_group : Raw.Size_group.t -> size_group_t
  Widgets can be part of multiple size groups; GTK will compute the\n\
  horizontal size of a widget from the horizontal requisition of all widgets\n\
  that can be reached from the widget by a chain of size groups with mode\n\
- [Gtk.SizeGroupMode.HORIZONTAL] or [Gtk.SizeGroupMode.BOTH], and\n\
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-HORIZONTAL}[Gtk.SizeGroupMode.HORIZONTAL]} \
+ or \
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}, \
+ and\n\
  the vertical size from the vertical requisition of all widgets that can be\n\
  reached from the widget by a chain of size groups with mode\n\
- [Gtk.SizeGroupMode.VERTICAL] or [Gtk.SizeGroupMode.BOTH].\n\n\
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-VERTICAL}[Gtk.SizeGroupMode.VERTICAL]} \
+ or \
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}.\n\n\
  {b Size groups and trading height-for-width}\n\n\
  Generally, size groups don't interact well with widgets that\n\
  trade height for width (or width for height), such as wrappable\n\
  labels. Avoid using size groups with such widgets.\n\n\
- A size group with mode [Gtk.SizeGroupMode.HORIZONTAL] or\n\
- [Gtk.SizeGroupMode.VERTICAL] only consults non-contextual sizes\n\
+ A size group with mode \
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-HORIZONTAL}[Gtk.SizeGroupMode.HORIZONTAL]} \
+ or\n\
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-VERTICAL}[Gtk.SizeGroupMode.VERTICAL]} \
+ only consults non-contextual sizes\n\
  of widgets other than the one being measured, since it has no\n\
  knowledge of what size a widget will get allocated in the other\n\
  orientation. This can lead to widgets in a group actually requesting\n\
  different contextual sizes, contrary to the purpose of\n\
  [GtkSizeGroup].\n\n\
- In contrast, a size group with mode [Gtk.SizeGroupMode.BOTH] can\n\
+ In contrast, a size group with mode \
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]} \
+ can\n\
  properly propagate the available size in the opposite orientation\n\
  when measuring widgets in the group, which results in consistent and\n\
  accurate measurements.\n\n\
@@ -199,7 +230,8 @@ class size_group : Raw.Size_group.t -> size_group_t
  the same width to all its children), and the size group is only\n\
  really needed to also make the widgets request the same size in the\n\
  other orientation, it is beneficial to still set the group's mode to\n\
- [Gtk.SizeGroupMode.BOTH]. This lets the group assume and count\n\
+ {{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[Gtk.SizeGroupMode.BOTH]}. \
+ This lets the group assume and count\n\
  on sizes of the widgets in the former orientation being the same,\n\
  which enables it to propagate the available size as described above.\n\n\
  {b Alternatives to size groups}\n\n\
@@ -209,7 +241,9 @@ class size_group : Raw.Size_group.t -> size_group_t
  that the widgets get the same size.\n\n\
  Various container widgets and layout managers support a homogeneous\n\
  layout mode, where they will explicitly give the same size to their\n\
- children (see [Gtk.Box:homogeneous]). Using homogeneous mode\n\
+ children (see \
+ {{!Ocgtk.Box.class-type-box_t.method-get_homogeneous}[Gtk.Box:homogeneous]}). \
+ Using homogeneous mode\n\
  can also have large performance benefits compared to either the same\n\
  container in non-homogeneous mode, or to size groups.\n\n\
  {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} can be used to position widgets \
@@ -217,8 +251,10 @@ class size_group : Raw.Size_group.t -> size_group_t
  columns. Members of each column will have the same width among them;\n\
  likewise, members of each row will have the same height. On top of\n\
  that, the heights can be made equal between all rows with\n\
- [Gtk.Grid:row-homogeneous], and the widths can be made equal\n\
- between all columns with [Gtk.Grid:column-homogeneous].\n\n\
+ {{!Ocgtk.Grid.class-type-grid_t.method-get_row_homogeneous}[Gtk.Grid:row-homogeneous]}, \
+ and the widths can be made equal\n\
+ between all columns with \
+ {{!Ocgtk.Grid.class-type-grid_t.method-get_column_homogeneous}[Gtk.Grid:column-homogeneous]}.\n\n\
  {b GtkSizeGroup as GtkBuildable}\n\n\
  Size groups can be specified in a UI definition by placing an [<object>]\n\
  element with [class=\"GtkSizeGroup\"] somewhere in the UI definition. The\n\

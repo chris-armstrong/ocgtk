@@ -44,8 +44,9 @@
 
     [GSubprocess] will quickly reap all child processes as they exit, avoiding
     ‘zombie processes’ remaining around for long periods of time.
-    [Gio.Subprocess.wait] can be used to wait for this to happen, but it will
-    happen even without the call being explicitly made.
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-wait}[Gio.Subprocess.wait]}
+    can be used to wait for this to happen, but it will happen even without the
+    call being explicitly made.
 
     As a matter of principle, [GSubprocess] has no API that accepts shell-style
     space-separated strings. It will, however, match the typical shell behaviour
@@ -63,10 +64,11 @@
     functions, etc).
 
     A typical use of [GSubprocess] will involve calling [Gio.Subprocess.new],
-    followed by [Gio.Subprocess.wait_async] or [Gio.Subprocess.wait]. After the
-    process exits, the status can be checked using functions such as
-    [Gio.Subprocess.get_if_exited] (which are similar to the familiar
-    [WIFEXITED]-style POSIX macros).
+    followed by [Gio.Subprocess.wait_async] or
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-wait}[Gio.Subprocess.wait]}.
+    After the process exits, the status can be checked using functions such as
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-get_if_exited}[Gio.Subprocess.get_if_exited]}
+    (which are similar to the familiar [WIFEXITED]-style POSIX macros).
 
     Note that as of GLib 2.82, creating a [GSubprocess] causes the signal
     [SIGPIPE] to be ignored for the remainder of the program. If you are writing
@@ -246,8 +248,9 @@ class subprocess : Raw.Subprocess.t -> subprocess_t
 
     [GSubprocess] will quickly reap all child processes as they exit, avoiding
     ‘zombie processes’ remaining around for long periods of time.
-    [Gio.Subprocess.wait] can be used to wait for this to happen, but it will
-    happen even without the call being explicitly made.
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-wait}[Gio.Subprocess.wait]}
+    can be used to wait for this to happen, but it will happen even without the
+    call being explicitly made.
 
     As a matter of principle, [GSubprocess] has no API that accepts shell-style
     space-separated strings. It will, however, match the typical shell behaviour
@@ -265,10 +268,11 @@ class subprocess : Raw.Subprocess.t -> subprocess_t
     functions, etc).
 
     A typical use of [GSubprocess] will involve calling [Gio.Subprocess.new],
-    followed by [Gio.Subprocess.wait_async] or [Gio.Subprocess.wait]. After the
-    process exits, the status can be checked using functions such as
-    [Gio.Subprocess.get_if_exited] (which are similar to the familiar
-    [WIFEXITED]-style POSIX macros).
+    followed by [Gio.Subprocess.wait_async] or
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-wait}[Gio.Subprocess.wait]}.
+    After the process exits, the status can be checked using functions such as
+    {{!Ocgio.Subprocess.class-type-subprocess_t.method-get_if_exited}[Gio.Subprocess.get_if_exited]}
+    (which are similar to the familiar [WIFEXITED]-style POSIX macros).
 
     Note that as of GLib 2.82, creating a [GSubprocess] causes the signal
     [SIGPIPE] to be ignored for the remainder of the program. If you are writing

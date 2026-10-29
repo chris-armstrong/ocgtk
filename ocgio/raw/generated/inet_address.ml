@@ -2,8 +2,10 @@
 (* InetAddress: InetAddress *)
 
 (** [GInetAddress] represents an IPv4 or IPv6 internet address. Use
-    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
-    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    {{!Ocgio.Raw.Resolver.val-lookup_by_name}[Gio.Resolver.lookup_by_name]} or
+    [Gio.Resolver.lookup_by_name_async] to look up the [GInetAddress] for a
+    hostname. Use
+    {{!Ocgio.Raw.Resolver.val-lookup_by_address}[Gio.Resolver.lookup_by_address]}
     or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
     [GInetAddress].
 
@@ -39,7 +41,8 @@ external to_string : t -> string = "ml_g_inet_address_to_string"
 (** Converts [address] to string form. *)
 
 external get_scope_id : t -> UInt32.t = "ml_g_inet_address_get_scope_id"
-(** Gets the value of [Gio.InetAddress:scope-id]. *)
+(** Gets the value of
+    {{!Ocgio.Raw.Inet_address.val-get_scope_id}[Gio.InetAddress:scope-id]}. *)
 
 external get_native_size : t -> Gsize.t = "ml_g_inet_address_get_native_size"
 (** Gets the size of the native raw binary address for [address]. This is the
@@ -84,7 +87,8 @@ external get_is_any : t -> bool = "ml_g_inet_address_get_is_any"
 [@@ocaml.doc "Tests whether [address] is the \"any\" address for its family."]
 
 external get_flowinfo : t -> UInt32.t = "ml_g_inet_address_get_flowinfo"
-(** Gets the value of [Gio.InetAddress:flowinfo]. *)
+(** Gets the value of
+    {{!Ocgio.Raw.Inet_address.val-get_flowinfo}[Gio.InetAddress:flowinfo]}. *)
 
 external get_family : t -> Ocgio_enums.socketfamily
   = "ml_g_inet_address_get_family"

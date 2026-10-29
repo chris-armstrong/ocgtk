@@ -11,7 +11,8 @@
     record for ‘example.com’, and then connect to whatever host was pointed to
     by that record.
 
-    You can use [Gio.Resolver.lookup_service] or
+    You can use
+    {{!Ocgio.Raw.Resolver.val-lookup_service}[Gio.Resolver.lookup_service]} or
     [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
     service, you can use {{!Ocgio.Raw.Network_service}[Gio.NetworkService]}’s

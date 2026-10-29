@@ -465,12 +465,32 @@ type doc_type_kind =
   | Dk_enum
   | Dk_bitfield
 
+type doc_member_names = {
+  dm_methods : string StringMap.t;
+  dm_constructors : string StringMap.t;
+  dm_signals : string StringMap.t;
+  dm_properties : string StringMap.t;
+      (** The accessor a property reference links to. *)
+}
+(** The members a type emits at one layer: GIR name to OCaml name. Signal and
+    property names are in GIR form, with hyphens. *)
+
+type doc_type_members = { dm_l1 : doc_member_names; dm_l2 : doc_member_names }
+(** The members a type emits at each layer (see [Emitted_members]). *)
+
 type doc_index_namespace = {
   di_types : doc_type_kind StringMap.t;
   di_constants : string StringMap.t;  (** GIR name to OCaml value name. *)
+  di_members : doc_type_members StringMap.t;
+      (** By GIR type name; the current namespace only. *)
+  di_enum_members : string StringMap.t StringMap.t;
+      (** By enumeration or bitfield GIR name, then by member name in upper case
+          with underscores: the polymorphic variant tag. The current namespace
+          only. *)
 }
-(** What a doc reference into one namespace can link to: its generated types and
-    constants, keyed by GIR name (see [Doc_index]). *)
+(** What a doc reference into one namespace can link to: its generated types,
+    constants and, for the current namespace, members, keyed by GIR name (see
+    [Doc_index]). *)
 
 type doc_index = doc_index_namespace StringMap.t
 (** The namespaces a doc reference can link into, keyed by GIR namespace name:

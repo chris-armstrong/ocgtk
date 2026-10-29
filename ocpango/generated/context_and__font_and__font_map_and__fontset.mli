@@ -12,7 +12,9 @@
     up fonts, and default values such as the default language, default gravity,
     or default font.
 
-    To obtain a [PangoContext], use [Pango.FontMap.create_context]. *)
+    To obtain a [PangoContext], use
+    {{!Ocpango.Font_map.class-type-font_map_t.method-create_context}[Pango.FontMap.create_context]}.
+*)
 class type context_t = object
   (** {2:methods Methods} *)
 
@@ -361,9 +363,11 @@ val new_ : unit -> context_t
 (** Creates a new [PangoContext] initialized to default values.
 
     This function is not particularly useful as it should always be followed by
-    a [Pango.Context.set_font_map] call, and the function
-    [Pango.FontMap.create_context] does these two steps together and hence users
-    are recommended to use that.
+    a
+    {{!Ocpango.Context.class-type-context_t.method-set_font_map}[Pango.Context.set_font_map]}
+    call, and the function
+    {{!Ocpango.Font_map.class-type-font_map_t.method-create_context}[Pango.FontMap.create_context]}
+    does these two steps together and hence users are recommended to use that.
 
     If you are using Pango as part of a higher-level system, that system may
     have it's own way of create a [PangoContext]. For instance, the GTK toolkit

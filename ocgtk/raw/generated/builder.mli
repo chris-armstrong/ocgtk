@@ -5,26 +5,32 @@
 "Reads XML descriptions of a user interface and instantiates the described \
  objects.\n\n\
  To create a [GtkBuilder] from a user interface description, call\n\
- [Gtk.Builder.new_from_file], [Gtk.Builder.new_from_resource]\n\
- or [Gtk.Builder.new_from_string].\n\n\
+ {{!Ocgtk.Raw.Builder.val-new_from_file}[Gtk.Builder.new_from_file]}, \
+ {{!Ocgtk.Raw.Builder.val-new_from_resource}[Gtk.Builder.new_from_resource]}\n\
+ or {{!Ocgtk.Raw.Builder.val-new_from_string}[Gtk.Builder.new_from_string]}.\n\n\
  In the (unusual) case that you want to add user interface\n\
  descriptions from multiple sources to the same [GtkBuilder] you can\n\
- call [Gtk.Builder.new] to get an empty builder and populate it by\n\
- (multiple) calls to [Gtk.Builder.add_from_file],\n\
- [Gtk.Builder.add_from_resource] or\n\
- [Gtk.Builder.add_from_string].\n\n\
+ call {{!Ocgtk.Raw.Builder.val-new_}[Gtk.Builder.new]} to get an empty builder \
+ and populate it by\n\
+ (multiple) calls to \
+ {{!Ocgtk.Raw.Builder.val-add_from_file}[Gtk.Builder.add_from_file]},\n\
+ {{!Ocgtk.Raw.Builder.val-add_from_resource}[Gtk.Builder.add_from_resource]} or\n\
+ {{!Ocgtk.Raw.Builder.val-add_from_string}[Gtk.Builder.add_from_string]}.\n\n\
  A [GtkBuilder] holds a reference to all objects that it has constructed\n\
  and drops these references when it is finalized. This finalization can\n\
  cause the destruction of non-widget objects or widgets which are not\n\
  contained in a toplevel window. For toplevel windows constructed by a\n\
  builder, it is the responsibility of the user to call\n\
- [Gtk.Window.destroy] to get rid of them and all the widgets\n\
+ {{!Ocgtk.Raw.Window.val-destroy}[Gtk.Window.destroy]} to get rid of them and \
+ all the widgets\n\
  they contain.\n\n\
- The functions [Gtk.Builder.get_object] and\n\
- [Gtk.Builder.get_objects] can be used to access the widgets in\n\
+ The functions {{!Ocgtk.Raw.Builder.val-get_object}[Gtk.Builder.get_object]} and\n\
+ {{!Ocgtk.Raw.Builder.val-get_objects}[Gtk.Builder.get_objects]} can be used \
+ to access the widgets in\n\
  the interface by the names assigned to them inside the UI description.\n\
  Toplevel windows returned by these functions will stay around until the\n\
- user explicitly destroys them with [Gtk.Window.destroy]. Other\n\
+ user explicitly destroys them with \
+ {{!Ocgtk.Raw.Window.val-destroy}[Gtk.Window.destroy]}. Other\n\
  widgets will either be part of a larger hierarchy constructed by the\n\
  builder (in which case you should not have to worry about their lifecycle),\n\
  or without a parent, in which case they have to be added to some container\n\
@@ -39,7 +45,9 @@
  The toplevel element is [<interface>]. It optionally takes a “domain”\n\
  attribute, which will make the builder look for translated strings\n\
  using [dgettext()] in the domain specified. This can also be done by\n\
- calling [Gtk.Builder.set_translation_domain] on the builder.\n\
+ calling \
+ {{!Ocgtk.Raw.Builder.val-set_translation_domain}[Gtk.Builder.set_translation_domain]} \
+ on the builder.\n\
  For example:\n\n\
  {[\n\
  <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
@@ -75,7 +83,8 @@
  [g_type_ensure()] for each object type before parsing the UI definition.\n\n\
  Objects may be given a name with the “id” attribute, which allows the\n\
  application to retrieve them from the builder with\n\
- [Gtk.Builder.get_object]. An id is also necessary to use the\n\
+ {{!Ocgtk.Raw.Builder.val-get_object}[Gtk.Builder.get_object]}. An id is also \
+ necessary to use the\n\
  object as property value in other parts of the UI definition. GTK\n\
  reserves ids starting and ending with [___] (three consecutive\n\
  underscores) for its own purposes.\n\n\
@@ -131,20 +140,24 @@
  - [GVariant] (in the format understood by [GLib.Variant.parse])\n\
  - textures (can be specified as an object id, a resource path or a filename \
  of an image file to load relative to the Builder file or the CWD if \
- [Gtk.Builder.add_from_string] was used)\n\
+ {{!Ocgtk.Raw.Builder.val-add_from_string}[Gtk.Builder.add_from_string]} was \
+ used)\n\
  - GFile (like textures, can be specified as an object id, a URI or a filename \
  of a file to load relative to the Builder file or the CWD if \
- [Gtk.Builder.add_from_string] was used)\n\n\
+ {{!Ocgtk.Raw.Builder.val-add_from_string}[Gtk.Builder.add_from_string]} was \
+ used)\n\n\
  Objects can be referred to by their name and by default refer to\n\
  objects declared in the local XML fragment and objects exposed via\n\
- [Gtk.Builder.expose_object]. In general, [GtkBuilder] allows\n\
+ {{!Ocgtk.Raw.Builder.val-expose_object}[Gtk.Builder.expose_object]}. In \
+ general, [GtkBuilder] allows\n\
  forward references to objects declared in the local XML; an object\n\
  doesn’t have to be constructed before it can be referred to. The\n\
  exception to this rule is that an object has to be constructed before\n\
  it can be used as the value of a construct-only property.\n\n\
  {b Child objects}\n\n\
  Many widgets have properties for child widgets, such as\n\
- [Gtk.Expander:child]. In this case, the preferred way to\n\
+ {{!Ocgtk.Raw.Expander.val-get_child}[Gtk.Expander:child]}. In this case, the \
+ preferred way to\n\
  specify the child widget in a ui file is to simply set the property:\n\n\
  {[\n\
  <object class=\"GtkExpander\">\n\
@@ -322,9 +335,10 @@ external new_ : unit -> t = "ml_gtk_builder_new"
 (** Creates a new empty builder object.
 
     This function is only useful if you intend to make multiple calls to
-    [Gtk.Builder.add_from_file], [Gtk.Builder.add_from_resource] or
-    [Gtk.Builder.add_from_string] in order to merge multiple UI descriptions
-    into a single builder. *)
+    {{!Ocgtk.Raw.Builder.val-add_from_file}[Gtk.Builder.add_from_file]},
+    {{!Ocgtk.Raw.Builder.val-add_from_resource}[Gtk.Builder.add_from_resource]}
+    or {{!Ocgtk.Raw.Builder.val-add_from_string}[Gtk.Builder.add_from_string]}
+    in order to merge multiple UI descriptions into a single builder. *)
 
 external new_from_file : string -> t = "ml_gtk_builder_new_from_file"
 (** Parses the UI definition in the file [filename].
@@ -384,9 +398,11 @@ external set_current_object : t -> [ `object_ ] Gobject.obj option -> unit
     is working for and will often be used as the default object when an object
     is optional.
 
-    [Gtk.Widget.init_template] for example will set the current object to the
-    widget the template is inited for. For functions like
-    [Gtk.Builder.new_from_resource], the current object will be [None]. *)
+    {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]} for
+    example will set the current object to the widget the template is inited
+    for. For functions like
+    {{!Ocgtk.Raw.Builder.val-new_from_resource}[Gtk.Builder.new_from_resource]},
+    the current object will be [None]. *)
 
 external get_type_from_name : t -> string -> Gobject.Type.t
   = "ml_gtk_builder_get_type_from_name"
@@ -487,9 +503,12 @@ external add_from_string : t -> string -> int -> (bool, GError.t) result
 (** Parses a string containing a UI definition and merges it with the current
     contents of [builder].
 
-    This function is useful if you need to call [Gtk.Builder.set_current_object]
+    This function is useful if you need to call
+    {{!Ocgtk.Raw.Builder.val-set_current_object}[Gtk.Builder.set_current_object]}
     to add user data to callbacks before loading [GtkBuilder] UI. Otherwise, you
-    probably want [Gtk.Builder.new_from_string] instead.
+    probably want
+    {{!Ocgtk.Raw.Builder.val-new_from_string}[Gtk.Builder.new_from_string]}
+    instead.
 
     Upon errors [false] will be returned and [error] will be assigned a [GError]
     from the [GTK_BUILDER_ERROR], [G_MARKUP_ERROR] or [G_VARIANT_PARSE_ERROR]
@@ -504,9 +523,12 @@ external add_from_resource : t -> string -> (bool, GError.t) result
 (** Parses a resource file containing a UI definition and merges it with the
     current contents of [builder].
 
-    This function is useful if you need to call [Gtk.Builder.set_current_object]
+    This function is useful if you need to call
+    {{!Ocgtk.Raw.Builder.val-set_current_object}[Gtk.Builder.set_current_object]}
     to add user data to callbacks before loading GtkBuilder UI. Otherwise, you
-    probably want [Gtk.Builder.new_from_resource] instead.
+    probably want
+    {{!Ocgtk.Raw.Builder.val-new_from_resource}[Gtk.Builder.new_from_resource]}
+    instead.
 
     If an error occurs, 0 will be returned and [error] will be assigned a
     [GError] from the [GTK_BUILDER_ERROR], [G_MARKUP_ERROR] or
@@ -522,9 +544,10 @@ external add_from_file : t -> string -> (bool, GError.t) result
     contents of [builder].
 
     This function is useful if you need to call
-    [Gtk.Builder.set_current_object]) to add user data to callbacks before
-    loading GtkBuilder UI. Otherwise, you probably want
-    [Gtk.Builder.new_from_file] instead.
+    {{!Ocgtk.Raw.Builder.val-set_current_object}[Gtk.Builder.set_current_object]})
+    to add user data to callbacks before loading GtkBuilder UI. Otherwise, you
+    probably want
+    {{!Ocgtk.Raw.Builder.val-new_from_file}[Gtk.Builder.new_from_file]} instead.
 
     If an error occurs, 0 will be returned and [error] will be assigned a
     [GError] from the [GTK_BUILDER_ERROR], [G_MARKUP_ERROR] or [G_FILE_ERROR]

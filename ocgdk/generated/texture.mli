@@ -32,13 +32,15 @@
     and consequently, it is a threadsafe object.
 
     GDK provides a number of threadsafe texture loading functions:
-    [Gdk.Texture.new_from_resource], [Gdk.Texture.new_from_bytes],
-    [Gdk.Texture.new_from_file], [Gdk.Texture.new_from_filename],
-    [Gdk.Texture.new_for_pixbuf]. Note that these are meant for loading icons
-    and resources that are shipped with the toolkit or application. It is
-    recommended that you use a dedicated image loading framework such as
-    {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
-    data. *)
+    {{!Ocgdk.Texture.val-new_from_resource}[Gdk.Texture.new_from_resource]},
+    {{!Ocgdk.Texture.val-new_from_bytes}[Gdk.Texture.new_from_bytes]},
+    {{!Ocgdk.Texture.val-new_from_file}[Gdk.Texture.new_from_file]},
+    {{!Ocgdk.Texture.val-new_from_filename}[Gdk.Texture.new_from_filename]},
+    {{!Ocgdk.Texture.val-new_for_pixbuf}[Gdk.Texture.new_for_pixbuf]}. Note that
+    these are meant for loading icons and resources that are shipped with the
+    toolkit or application. It is recommended that you use a dedicated image
+    loading framework such as {{:https://lib.rs/crates/glycin}glycin}, if you
+    need to load untrusted image data. *)
 class type texture_t = object
   inherit Paintable.paintable_t
   inherit Ocgio.Icon.icon_t
@@ -135,13 +137,15 @@ class texture : Raw.Texture.t -> texture_t
     and consequently, it is a threadsafe object.
 
     GDK provides a number of threadsafe texture loading functions:
-    [Gdk.Texture.new_from_resource], [Gdk.Texture.new_from_bytes],
-    [Gdk.Texture.new_from_file], [Gdk.Texture.new_from_filename],
-    [Gdk.Texture.new_for_pixbuf]. Note that these are meant for loading icons
-    and resources that are shipped with the toolkit or application. It is
-    recommended that you use a dedicated image loading framework such as
-    {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
-    data. *)
+    {{!Ocgdk.Texture.val-new_from_resource}[Gdk.Texture.new_from_resource]},
+    {{!Ocgdk.Texture.val-new_from_bytes}[Gdk.Texture.new_from_bytes]},
+    {{!Ocgdk.Texture.val-new_from_file}[Gdk.Texture.new_from_file]},
+    {{!Ocgdk.Texture.val-new_from_filename}[Gdk.Texture.new_from_filename]},
+    {{!Ocgdk.Texture.val-new_for_pixbuf}[Gdk.Texture.new_for_pixbuf]}. Note that
+    these are meant for loading icons and resources that are shipped with the
+    toolkit or application. It is recommended that you use a dedicated image
+    loading framework such as {{:https://lib.rs/crates/glycin}glycin}, if you
+    need to load untrusted image data. *)
 
 (** {1:constructors Constructors} *)
 
@@ -208,7 +212,8 @@ val new_from_resource : string -> texture_t
 
     It is a fatal error if [resource_path] does not specify a valid image
     resource and the program will abort if that happens. If you are unsure about
-    the validity of a resource, use [Gdk.Texture.new_from_file] to load it.
+    the validity of a resource, use
+    {{!Ocgdk.Texture.val-new_from_file}[Gdk.Texture.new_from_file]} to load it.
 
     This function is threadsafe, so that you can e.g. use GTask and
     [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a

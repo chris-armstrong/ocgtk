@@ -28,31 +28,34 @@
     flushed when the name owner vanishes and reloaded when a name owner appears.
 
     The unique name owner of the proxy’s name is tracked and can be read from
-    [Gio.DBusProxy:g-name-owner]. Connect to the [GObject.Object::notify] signal
-    to get notified of changes. Additionally, only signals and property changes
-    emitted from the current name owner are considered and calls are always sent
-    to the current name owner. This avoids a number of race conditions when the
-    name is lost by one owner and claimed by another. However, if no name owner
-    currently exists, then calls will be sent to the well-known name which may
-    result in the message bus launching an owner (unless
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-g_name_owner}[Gio.DBusProxy:g-name-owner]}.
+    Connect to the [GObject.Object::notify] signal to get notified of changes.
+    Additionally, only signals and property changes emitted from the current
+    name owner are considered and calls are always sent to the current name
+    owner. This avoids a number of race conditions when the name is lost by one
+    owner and claimed by another. However, if no name owner currently exists,
+    then calls will be sent to the well-known name which may result in the
+    message bus launching an owner (unless
     [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] is set).
 
     If the proxy is for a stateless D-Bus service, where the name owner may be
-    started and stopped between calls, the [Gio.DBusProxy:g-name-owner] tracking
-    of [GDBusProxy] will cause the proxy to drop signal and property changes
-    from the service after it has restarted for the first time. When interacting
-    with a stateless D-Bus service, do not use [GDBusProxy] — use direct D-Bus
-    method calls and signal connections.
+    started and stopped between calls, the
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-g_name_owner}[Gio.DBusProxy:g-name-owner]}
+    tracking of [GDBusProxy] will cause the proxy to drop signal and property
+    changes from the service after it has restarted for the first time. When
+    interacting with a stateless D-Bus service, do not use [GDBusProxy] — use
+    direct D-Bus method calls and signal connections.
 
     The generic [Gio.DBusProxy::g-properties-changed] and
-    [Gio.DBusProxy::g-signal] signals are not very convenient to work with.
-    Therefore, the recommended way of working with proxies is to subclass
-    [GDBusProxy], and have more natural properties and signals in your derived
-    class. This example shows how this can easily be done using the
-    [gdbus-codegen] tool.
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]}
+    signals are not very convenient to work with. Therefore, the recommended way
+    of working with proxies is to subclass [GDBusProxy], and have more natural
+    properties and signals in your derived class. This example shows how this
+    can easily be done using the [gdbus-codegen] tool.
 
     A [GDBusProxy] instance can be used from multiple threads but note that all
-    signals (e.g. [Gio.DBusProxy::g-signal],
+    signals (e.g.
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]},
     [Gio.DBusProxy::g-properties-changed] and [GObject.Object::notify]) are
     emitted in the thread-default main context (see
     [GLib.MainContext.push_thread_default]) of the thread where the instance was
@@ -329,31 +332,34 @@ class d_bus_proxy : Raw.D_bus_proxy.t -> d_bus_proxy_t
     flushed when the name owner vanishes and reloaded when a name owner appears.
 
     The unique name owner of the proxy’s name is tracked and can be read from
-    [Gio.DBusProxy:g-name-owner]. Connect to the [GObject.Object::notify] signal
-    to get notified of changes. Additionally, only signals and property changes
-    emitted from the current name owner are considered and calls are always sent
-    to the current name owner. This avoids a number of race conditions when the
-    name is lost by one owner and claimed by another. However, if no name owner
-    currently exists, then calls will be sent to the well-known name which may
-    result in the message bus launching an owner (unless
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-g_name_owner}[Gio.DBusProxy:g-name-owner]}.
+    Connect to the [GObject.Object::notify] signal to get notified of changes.
+    Additionally, only signals and property changes emitted from the current
+    name owner are considered and calls are always sent to the current name
+    owner. This avoids a number of race conditions when the name is lost by one
+    owner and claimed by another. However, if no name owner currently exists,
+    then calls will be sent to the well-known name which may result in the
+    message bus launching an owner (unless
     [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] is set).
 
     If the proxy is for a stateless D-Bus service, where the name owner may be
-    started and stopped between calls, the [Gio.DBusProxy:g-name-owner] tracking
-    of [GDBusProxy] will cause the proxy to drop signal and property changes
-    from the service after it has restarted for the first time. When interacting
-    with a stateless D-Bus service, do not use [GDBusProxy] — use direct D-Bus
-    method calls and signal connections.
+    started and stopped between calls, the
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-g_name_owner}[Gio.DBusProxy:g-name-owner]}
+    tracking of [GDBusProxy] will cause the proxy to drop signal and property
+    changes from the service after it has restarted for the first time. When
+    interacting with a stateless D-Bus service, do not use [GDBusProxy] — use
+    direct D-Bus method calls and signal connections.
 
     The generic [Gio.DBusProxy::g-properties-changed] and
-    [Gio.DBusProxy::g-signal] signals are not very convenient to work with.
-    Therefore, the recommended way of working with proxies is to subclass
-    [GDBusProxy], and have more natural properties and signals in your derived
-    class. This example shows how this can easily be done using the
-    [gdbus-codegen] tool.
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]}
+    signals are not very convenient to work with. Therefore, the recommended way
+    of working with proxies is to subclass [GDBusProxy], and have more natural
+    properties and signals in your derived class. This example shows how this
+    can easily be done using the [gdbus-codegen] tool.
 
     A [GDBusProxy] instance can be used from multiple threads but note that all
-    signals (e.g. [Gio.DBusProxy::g-signal],
+    signals (e.g.
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t.method-on_g_signal}[Gio.DBusProxy::g-signal]},
     [Gio.DBusProxy::g-properties-changed] and [GObject.Object::notify]) are
     emitted in the thread-default main context (see
     [GLib.MainContext.push_thread_default]) of the thread where the instance was

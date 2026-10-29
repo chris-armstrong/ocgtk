@@ -8,7 +8,8 @@
  pointer-based gestures (using the special [None] [GdkEventSequence]\n\
  value for these).\n\n\
  The number of touches that a [GtkGesture] need to be recognized is\n\
- controlled by the [Gtk.Gesture:n-points] property, if a\n\
+ controlled by the \
+ {{!Ocgtk.Raw.Gesture.val-get_n_points}[Gtk.Gesture:n-points]} property, if a\n\
  gesture is keeping track of less or more than that number of sequences,\n\
  it won't check whether the gesture is recognized.\n\n\
  As soon as the gesture has the expected number of touches, it will check\n\
@@ -20,7 +21,8 @@
  - [Gtk.Gesture::end] when the gesture is no longer recognized.\n\n\
  {b Event propagation}\n\n\
  In order to receive events, a gesture needs to set a propagation phase\n\
- through [Gtk.EventController.set_propagation_phase].\n\n\
+ through \
+ {{!Ocgtk.Raw.Event_controller.val-set_propagation_phase}[Gtk.EventController.set_propagation_phase]}.\n\n\
  In the capture phase, events are propagated from the toplevel down\n\
  to the target widget, and gestures that are attached to containers\n\
  above the widget get a chance to interact with the event before it\n\
@@ -36,9 +38,11 @@
  of the widgets using those gestures to set the state of touch sequences\n\
  accordingly in order to enable cooperation of gestures around the\n\
  [GdkEventSequence]s triggering those.\n\n\
- Within a widget, gestures can be grouped through [Gtk.Gesture.group].\n\
+ Within a widget, gestures can be grouped through \
+ {{!Ocgtk.Raw.Gesture.val-group}[Gtk.Gesture.group]}.\n\
  Grouped gestures synchronize the state of sequences, so calling\n\
- [Gtk.Gesture.set_state] on one will effectively propagate\n\
+ {{!Ocgtk.Raw.Gesture.val-set_state}[Gtk.Gesture.set_state]} on one will \
+ effectively propagate\n\
  the state throughout the group.\n\n\
  By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,\n\
  sequences in this state trigger the gesture event handler, but event\n\
@@ -62,7 +66,8 @@
  This way event coherence is preserved before event propagation is unstopped\n\
  again.\n\n\
  Sequence states can't be changed freely.\n\
- See [Gtk.Gesture.set_state] to know about the possible\n\
+ See {{!Ocgtk.Raw.Gesture.val-set_state}[Gtk.Gesture.set_state]} to know about \
+ the possible\n\
  lifetimes of a [GdkEventSequence].\n\n\
  {b Touchpad gestures}\n\n\
  On the platforms that support it, [GtkGesture] will handle transparently\n\
@@ -198,7 +203,8 @@ external group : t -> t -> unit = "ml_gtk_gesture_group"
    they can be grouped.\n\n\
    When gestures are grouped, the state of [GdkEventSequences]\n\
    is kept in sync for all of those, so calling\n\
-   [Gtk.Gesture.set_sequence_state], on one will transfer\n\
+   {{!Ocgtk.Raw.Gesture.val-set_sequence_state}[Gtk.Gesture.set_sequence_state]}, \
+   on one will transfer\n\
    the same value to the others.\n\n\
    Groups also perform an \"implicit grabbing\" of sequences, if a\n\
    [GdkEventSequence] state is set to [GTK_EVENT_SEQUENCE_CLAIMED]\n\

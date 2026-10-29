@@ -2,7 +2,8 @@
     server. It is implemented by the [gio-proxy] extension point. The extensions
     are named after their proxy protocol name. As an example, a SOCKS5 proxy
     implementation can be retrieved with the name [socks5] using the function
-    [Gio.IOExtensionPoint.get_extension_by_name].
+    {{!Ocgio.Io_extension_point.class-type-io_extension_point_t.method-get_extension_by_name}
+     [Gio.IOExtensionPoint.get_extension_by_name]}.
 
     Its methods, signals and properties are on {!class-type-proxy_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -16,7 +17,8 @@
     server. It is implemented by the [gio-proxy] extension point. The extensions
     are named after their proxy protocol name. As an example, a SOCKS5 proxy
     implementation can be retrieved with the name [socks5] using the function
-    [Gio.IOExtensionPoint.get_extension_by_name]. *)
+    {{!Ocgio.Io_extension_point.class-type-io_extension_point_t.method-get_extension_by_name}
+     [Gio.IOExtensionPoint.get_extension_by_name]}. *)
 class type proxy_t = object
   (** {2:methods Methods} *)
 

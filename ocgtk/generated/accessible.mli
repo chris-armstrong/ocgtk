@@ -30,7 +30,9 @@ class type accessible_t = At_context_and__accessible.accessible_t
     The attributes are updated every time a UI element's state changes in a way
     that should be reflected by assistive technologies. For instance, if a
     [GtkWidget] visibility changes, the [GTK_ACCESSIBLE_STATE_HIDDEN] state will
-    also change to reflect the [Gtk.Widget:visible] property.
+    also change to reflect the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_visible}[Gtk.Widget:visible]}
+    property.
 
     Every accessible implementation is part of a tree of accessible objects.
     Normally, this tree corresponds to the widget tree, but can be customized by
@@ -44,8 +46,10 @@ class type accessible_t = At_context_and__accessible.accessible_t
     Also note that when an accessible object does not correspond to a widget,
     and it has children, whose implementation you don't control, it is necessary
     to ensure the correct shape of the a11y tree by calling
-    [Gtk.Accessible.set_accessible_parent] and updating the sibling by
-    [Gtk.Accessible.update_next_accessible_sibling]. *)
+    {{!Ocgtk.Accessible.class-type-accessible_t.method-set_accessible_parent}[Gtk.Accessible.set_accessible_parent]}
+    and updating the sibling by
+    {{!Ocgtk.Accessible.class-type-accessible_t.method-update_next_accessible_sibling}
+     [Gtk.Accessible.update_next_accessible_sibling]}. *)
 
 class accessible : Raw.Accessible.t -> accessible_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Accessible.t}. *)
@@ -69,7 +73,9 @@ class accessible : Raw.Accessible.t -> accessible_t
     The attributes are updated every time a UI element's state changes in a way
     that should be reflected by assistive technologies. For instance, if a
     [GtkWidget] visibility changes, the [GTK_ACCESSIBLE_STATE_HIDDEN] state will
-    also change to reflect the [Gtk.Widget:visible] property.
+    also change to reflect the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_visible}[Gtk.Widget:visible]}
+    property.
 
     Every accessible implementation is part of a tree of accessible objects.
     Normally, this tree corresponds to the widget tree, but can be customized by
@@ -83,8 +89,10 @@ class accessible : Raw.Accessible.t -> accessible_t
     Also note that when an accessible object does not correspond to a widget,
     and it has children, whose implementation you don't control, it is necessary
     to ensure the correct shape of the a11y tree by calling
-    [Gtk.Accessible.set_accessible_parent] and updating the sibling by
-    [Gtk.Accessible.update_next_accessible_sibling]. *)
+    {{!Ocgtk.Accessible.class-type-accessible_t.method-set_accessible_parent}[Gtk.Accessible.set_accessible_parent]}
+    and updating the sibling by
+    {{!Ocgtk.Accessible.class-type-accessible_t.method-update_next_accessible_sibling}
+     [Gtk.Accessible.update_next_accessible_sibling]}. *)
 
 (** {1:constructors Constructors} *)
 

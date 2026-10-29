@@ -20,7 +20,9 @@
     interface.
 
     [GDBusActionGroup] can be used as a proxy for an action group that is
-    exported over D-Bus with [Gio.DBusConnection.export_action_group]. *)
+    exported over D-Bus with
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t.method-export_action_group}
+     [Gio.DBusConnection.export_action_group]}. *)
 class type d_bus_action_group_t = object
   inherit Action_group.action_group_t
   inherit Remote_action_group.remote_action_group_t
@@ -40,7 +42,9 @@ class d_bus_action_group : Raw.D_bus_action_group.t -> d_bus_action_group_t
     interface.
 
     [GDBusActionGroup] can be used as a proxy for an action group that is
-    exported over D-Bus with [Gio.DBusConnection.export_action_group]. *)
+    exported over D-Bus with
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t.method-export_action_group}
+     [Gio.DBusConnection.export_action_group]}. *)
 
 (** {1:constructors Constructors} *)
 

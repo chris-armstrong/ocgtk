@@ -7,7 +7,7 @@
 
     If a [GVolume] is currently mounted, the corresponding
     {{!Ocgio.Raw.Mount}[Gio.Mount]} can be retrieved using
-    [Gio.Volume.get_mount].
+    {{!Ocgio.Raw.Volume.val-get_mount}[Gio.Volume.get_mount]}.
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
     information about asynchronous operations, see
@@ -25,11 +25,11 @@
     The callback will be fired when the operation has resolved (either with
     success or failure), and a {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}
     instance will be passed to the callback. That callback should then call
-    [Gio.Volume.mount_finish] with the [GVolume] instance and the
-    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data to see if the operation
-    was completed successfully. If a [GLib.Error] is present when
-    [Gio.Volume.mount_finish] is called, then it will be filled with any error
-    information.
+    {{!Ocgio.Raw.Volume.val-mount_finish}[Gio.Volume.mount_finish]} with the
+    [GVolume] instance and the {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data
+    to see if the operation was completed successfully. If a [GLib.Error] is
+    present when {{!Ocgio.Raw.Volume.val-mount_finish}[Gio.Volume.mount_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
     [GnomeVFSDrive].
@@ -43,7 +43,8 @@
     filesystem labels, traditional Unix devices (e.g. [/dev/sda2]), UUIDs. GIO
     uses predefined strings as names for the different kinds of identifiers:
     [G_VOLUME_IDENTIFIER_KIND_UUID], [G_VOLUME_IDENTIFIER_KIND_LABEL], etc. Use
-    [Gio.Volume.get_identifier] to obtain an identifier for a volume.
+    {{!Ocgio.Raw.Volume.val-get_identifier}[Gio.Volume.get_identifier]} to
+    obtain an identifier for a volume.
 
     Note that [G_VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available when the
     GVFS hal volume monitor is in use. Other volume monitors will generally be

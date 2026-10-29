@@ -10,17 +10,21 @@
     user, e.g. in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
-    them with [Gio.ActionGroup.activate_action]. Activating an action may
-    require a [GLib.Variant] parameter. The required type of the parameter can
-    be inquired with [Gio.ActionGroup.get_action_parameter_type]. Actions may be
-    disabled, see [Gio.ActionGroup.get_action_enabled]. Activating a disabled
-    action has no effect.
+    them with
+    {{!Ocgio.Raw.Action_group.val-activate_action}[Gio.ActionGroup.activate_action]}.
+    Activating an action may require a [GLib.Variant] parameter. The required
+    type of the parameter can be inquired with
+    {{!Ocgio.Raw.Action_group.val-get_action_parameter_type}[Gio.ActionGroup.get_action_parameter_type]}.
+    Actions may be disabled, see
+    {{!Ocgio.Raw.Action_group.val-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}.
+    Activating a disabled action has no effect.
 
     Actions may optionally have a state in the form of a [GLib.Variant]. The
     current state of an action can be inquired with
-    [Gio.ActionGroup.get_action_state]. Activating a stateful action may change
-    its state, but it is also possible to set the state by calling
-    [Gio.ActionGroup.change_action_state].
+    {{!Ocgio.Raw.Action_group.val-get_action_state}[Gio.ActionGroup.get_action_state]}.
+    Activating a stateful action may change its state, but it is also possible
+    to set the state by calling
+    {{!Ocgio.Raw.Action_group.val-change_action_state}[Gio.ActionGroup.change_action_state]}.
 
     As typical example, consider a text editing application which has an option
     to change the current font to ‘bold’. A good way to represent this would be
@@ -28,24 +32,26 @@
     the state.
 
     Each action in the group has a unique name (which is a string). All method
-    calls, except [Gio.ActionGroup.list_actions] take the name of an action as
-    an argument.
+    calls, except
+    {{!Ocgio.Raw.Action_group.val-list_actions}[Gio.ActionGroup.list_actions]}
+    take the name of an action as an argument.
 
     The [GActionGroup] API is meant to be the ‘public’ API to the action group.
     The calls here are exactly the interaction that ‘external forces’ (eg: UI,
     incoming D-Bus messages, etc.) are supposed to have with actions. ‘Internal’
     APIs (ie: ones meant only to be accessed by the action group implementation)
     are found on subclasses. This is why you will find – for example –
-    [Gio.ActionGroup.get_action_enabled] but not an equivalent
-    [set_action_enabled()] method.
+    {{!Ocgio.Raw.Action_group.val-get_action_enabled}[Gio.ActionGroup.get_action_enabled]}
+    but not an equivalent [set_action_enabled()] method.
 
     Signals are emitted on the action group in response to state changes on
     individual actions.
 
     Implementations of [GActionGroup] should provide implementations for the
-    virtual functions [Gio.ActionGroup.list_actions] and
-    [Gio.ActionGroup.query_action]. The other virtual functions should not be
-    implemented — their ‘wrappers’ are actually implemented with calls to
+    virtual functions
+    {{!Ocgio.Raw.Action_group.val-list_actions}[Gio.ActionGroup.list_actions]}
+    and [Gio.ActionGroup.query_action]. The other virtual functions should not
+    be implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action].
 
     The class built on this module is in {!Ocgio.Action_group}. *)
@@ -71,13 +77,17 @@ external get_action_state_type : t -> string -> Gvariant_type.t option
 (** Queries the type of the state of the named action within [action_group].
 
     If the action is stateful then this function returns the [GLib.VariantType]
-    of the state. All calls to [Gio.ActionGroup.change_action_state] must give a
-    [GLib.Variant] of this type and [Gio.ActionGroup.get_action_state] will
-    return a [GLib.Variant] of the same type.
+    of the state. All calls to
+    {{!Ocgio.Raw.Action_group.val-change_action_state}[Gio.ActionGroup.change_action_state]}
+    must give a [GLib.Variant] of this type and
+    {{!Ocgio.Raw.Action_group.val-get_action_state}[Gio.ActionGroup.get_action_state]}
+    will return a [GLib.Variant] of the same type.
 
     If the action is not stateful then this function will return [None]. In that
-    case, [Gio.ActionGroup.get_action_state] will return [None] and you must not
-    call [Gio.ActionGroup.change_action_state].
+    case,
+    {{!Ocgio.Raw.Action_group.val-get_action_state}[Gio.ActionGroup.get_action_state]}
+    will return [None] and you must not call
+    {{!Ocgio.Raw.Action_group.val-change_action_state}[Gio.ActionGroup.change_action_state]}.
 
     The state type of a particular action will never change but it is possible
     for an action to be removed and for a new action to be added with the same
@@ -110,7 +120,7 @@ external get_action_state : t -> string -> Gvariant.t option
 
     If the action is not stateful then [None] will be returned. If the action is
     stateful then the type of the return value is the type given by
-    [Gio.ActionGroup.get_action_state_type].
+    {{!Ocgio.Raw.Action_group.val-get_action_state_type}[Gio.ActionGroup.get_action_state_type]}.
 
     The return value (if non-[None]) should be freed with [GLib.Variant.unref]
     when it is no longer required. *)
@@ -120,9 +130,10 @@ external get_action_parameter_type : t -> string -> Gvariant_type.t option
 (** Queries the type of the parameter that must be given when activating the
     named action within [action_group].
 
-    When activating the action using [Gio.ActionGroup.activate_action], the
-    [GLib.Variant] given to that function must be of the type returned by this
-    function.
+    When activating the action using
+    {{!Ocgio.Raw.Action_group.val-activate_action}[Gio.ActionGroup.activate_action]},
+    the [GLib.Variant] given to that function must be of the type returned by
+    this function.
 
     In the case that this function returns [None], you must not give any
     [GLib.Variant], but [None] instead.
@@ -144,11 +155,11 @@ external change_action_state : t -> string -> Gvariant.t -> unit
     changed to [value].
 
     The action must be stateful and [value] must be of the correct type. See
-    [Gio.ActionGroup.get_action_state_type].
+    {{!Ocgio.Raw.Action_group.val-get_action_state_type}[Gio.ActionGroup.get_action_state_type]}.
 
     This call merely requests a change. The action may refuse to change its
     state or may change its state to something other than [value]. See
-    [Gio.ActionGroup.get_action_state_hint].
+    {{!Ocgio.Raw.Action_group.val-get_action_state_hint}[Gio.ActionGroup.get_action_state_hint]}.
 
     If the [value] GVariant is floating, it is consumed. *)
 
@@ -159,7 +170,7 @@ external activate_action : t -> string -> Gvariant.t option -> unit
    If the action is expecting a parameter, then the correct type of\n\
    parameter must be given as [parameter].  If the action is expecting no\n\
    parameters then [parameter] must be [None].  See\n\
-   [Gio.ActionGroup.get_action_parameter_type].\n\n\
+   {{!Ocgio.Raw.Action_group.val-get_action_parameter_type}[Gio.ActionGroup.get_action_parameter_type]}.\n\n\
    If the {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementation supports \
    asynchronous remote\n\
    activation over D-Bus, this call may return before the relevant\n\
@@ -185,28 +196,35 @@ external activate_action : t -> string -> Gvariant.t option -> unit
 
 external action_state_changed : t -> string -> Gvariant.t -> unit
   = "ml_g_action_group_action_state_changed"
-(** Emits the [Gio.ActionGroup::action-state-changed] signal on [action_group].
+(** Emits the
+    {{!Ocgio.Raw.Action_group.val-on_action_state_changed}[Gio.ActionGroup::action-state-changed]}
+    signal on [action_group].
 
     This function should only be called by
     {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_removed : t -> string -> unit
   = "ml_g_action_group_action_removed"
-(** Emits the [Gio.ActionGroup::action-removed] signal on [action_group].
+(** Emits the
+    {{!Ocgio.Raw.Action_group.val-on_action_removed}[Gio.ActionGroup::action-removed]}
+    signal on [action_group].
 
     This function should only be called by
     {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_enabled_changed : t -> string -> bool -> unit
   = "ml_g_action_group_action_enabled_changed"
-(** Emits the [Gio.ActionGroup::action-enabled-changed] signal on
-    [action_group].
+(** Emits the
+    {{!Ocgio.Raw.Action_group.val-on_action_enabled_changed}[Gio.ActionGroup::action-enabled-changed]}
+    signal on [action_group].
 
     This function should only be called by
     {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_added : t -> string -> unit = "ml_g_action_group_action_added"
-(** Emits the [Gio.ActionGroup::action-added] signal on [action_group].
+(** Emits the
+    {{!Ocgio.Raw.Action_group.val-on_action_added}[Gio.ActionGroup::action-added]}
+    signal on [action_group].
 
     This function should only be called by
     {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)

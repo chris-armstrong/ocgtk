@@ -13,19 +13,22 @@
 
     A [GtkSelectionModel] supports a single boolean per item indicating if an
     item is selected or not. This can be queried via
-    [Gtk.SelectionModel.is_selected]. When the selected state of one or more
-    items changes, the model will emit the
-    [Gtk.SelectionModel::selection-changed] signal by calling the
-    [Gtk.SelectionModel.selection_changed] function. The positions given in that
-    signal may have their selection state changed, though that is not a
-    requirement. If new items added to the model via the
-    [Gio.ListModel::items-changed] signal are selected or not is up to the
-    implementation.
+    {{!Ocgtk.Raw.Selection_model.val-is_selected}[Gtk.SelectionModel.is_selected]}.
+    When the selected state of one or more items changes, the model will emit
+    the
+    {{!Ocgtk.Raw.Selection_model.val-on_selection_changed}[Gtk.SelectionModel::selection-changed]}
+    signal by calling the
+    {{!Ocgtk.Raw.Selection_model.val-selection_changed}[Gtk.SelectionModel.selection_changed]}
+    function. The positions given in that signal may have their selection state
+    changed, though that is not a requirement. If new items added to the model
+    via the [Gio.ListModel::items-changed] signal are selected or not is up to
+    the implementation.
 
     Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no [Gtk.SelectionModel::selection-changed] will be emitted for
-    them. So to track which items are selected, it is necessary to listen to
-    both signals.
+    selected and no
+    {{!Ocgtk.Raw.Selection_model.val-on_selection_changed}[Gtk.SelectionModel::selection-changed]}
+    will be emitted for them. So to track which items are selected, it is
+    necessary to listen to both signals.
 
     Additionally, the interface can expose functionality to select and unselect
     items. If these functions are implemented, GTK's list widgets will allow
@@ -104,7 +107,8 @@ external selection_changed : t -> int -> int -> unit
 (** Helper function for implementations of [GtkSelectionModel].
 
     Call this when the selection changes to emit the
-    [Gtk.SelectionModel::selection-changed] signal. *)
+    {{!Ocgtk.Raw.Selection_model.val-on_selection_changed}[Gtk.SelectionModel::selection-changed]}
+    signal. *)
 
 external select_range : t -> int -> int -> bool -> bool
   = "ml_gtk_selection_model_select_range"
@@ -124,17 +128,21 @@ external get_selection_in_range : t -> int -> int -> Bitset.t
   = "ml_gtk_selection_model_get_selection_in_range"
 (** Gets the set of selected items in a range.
 
-    This function is an optimization for [Gtk.SelectionModel.get_selection] when
-    you are only interested in part of the model's selected state. A common use
-    case is in response to the [Gtk.SelectionModel::selection-changed] signal.
-*)
+    This function is an optimization for
+    {{!Ocgtk.Raw.Selection_model.val-get_selection}[Gtk.SelectionModel.get_selection]}
+    when you are only interested in part of the model's selected state. A common
+    use case is in response to the
+    {{!Ocgtk.Raw.Selection_model.val-on_selection_changed}[Gtk.SelectionModel::selection-changed]}
+    signal. *)
 
 external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
 (** Gets the set containing all currently selected items in the model.
 
     This function may be slow, so if you are only interested in single item,
-    consider using [Gtk.SelectionModel.is_selected] or if you are only
-    interested in a few, consider [Gtk.SelectionModel.get_selection_in_range].
+    consider using
+    {{!Ocgtk.Raw.Selection_model.val-is_selected}[Gtk.SelectionModel.is_selected]}
+    or if you are only interested in a few, consider
+    {{!Ocgtk.Raw.Selection_model.val-get_selection_in_range}[Gtk.SelectionModel.get_selection_in_range]}.
 *)
 
 val on_selection_changed :

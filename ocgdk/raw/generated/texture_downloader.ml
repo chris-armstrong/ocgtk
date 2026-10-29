@@ -74,4 +74,5 @@ external download_bytes : t -> Glib_bytes.t * Gsize.t
     allocation succeeded.
 
     This function cannot be used with a multiplanar format. Use
-    [Gdk.TextureDownloader.download_bytes_with_planes] for that purpose. *)
+    {{!Ocgdk.Raw.Texture_downloader.val-download_bytes_with_planes}[Gdk.TextureDownloader.download_bytes_with_planes]}
+    for that purpose. *)

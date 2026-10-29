@@ -491,7 +491,8 @@ end
      only ever modify [GSettings] keys in response to explicit user action.\n\
      Particular care should be paid to ensure that modifications are not\n\
      made during startup — for example, when setting the initial value\n\
-     of preferences widgets.  The built-in [Gio.Settings.bind]\n\
+     of preferences widgets.  The built-in \
+     {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}\n\
      functionality is careful not to write settings in response to notify \
      signals\n\
      as a result of modifications that it makes to widgets.\n\n\
@@ -565,9 +566,12 @@ end
      enumerated types. These can be described by a [<choice>],\n\
      [<enum>] or [<flags>] element, as seen in the\n\
      second example below. The underlying type of such a key\n\
-     is string, but you can use [Gio.Settings.get_enum],\n\
-     [Gio.Settings.set_enum], [Gio.Settings.get_flags],\n\
-     [Gio.Settings.set_flags] access the numeric values corresponding to\n\
+     is string, but you can use \
+     {{!Ocgio.Settings.class-type-settings_t.method-get_enum}[Gio.Settings.get_enum]},\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-set_enum}[Gio.Settings.set_enum]}, \
+     {{!Ocgio.Settings.class-type-settings_t.method-get_flags}[Gio.Settings.get_flags]},\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-set_flags}[Gio.Settings.set_flags]} \
+     access the numeric values corresponding to\n\
      the string value of enum and flags keys.\n\n\
      An example for default value:\n\n\
      {[\n\
@@ -656,7 +660,8 @@ end
      atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
      updated values are kept locally in the \
      {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance until\n\
-     they are explicitly applied by calling [Gio.Settings.apply].\n\n\
+     they are explicitly applied by calling \
+     {{!Ocgio.Settings.class-type-settings_t.method-apply}[Gio.Settings.apply]}.\n\n\
      For example, this could be useful for a preferences dialog where the\n\
      preferences all need to be applied simultaneously when the user clicks \
      ‘Save’.\n\n\
@@ -666,15 +671,19 @@ end
      that\n\
      {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} have to be \
      explicitly applied by calling\n\
-     [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-apply}[Gio.Settings.apply]}. \
+     The ‘delay-apply’ mode is also propagated to any\n\
      child settings objects subsequently created using\n\
-     [Gio.Settings.get_child].\n\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-get_child}[Gio.Settings.get_child]}.\n\n\
      At any point, the set of unapplied changes can be queried using\n\
-     [Gio.Settings:has-unapplied], and discarded by calling\n\
-     [Gio.Settings.revert].\n\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-get_has_unapplied}[Gio.Settings:has-unapplied]}, \
+     and discarded by calling\n\
+     {{!Ocgio.Settings.class-type-settings_t.method-revert}[Gio.Settings.revert]}.\n\n\
      {b Binding}\n\n\
      A very convenient feature of GSettings lets you bind [GObject.Object]\n\
-     properties directly to settings, using [Gio.Settings.bind]. Once a\n\
+     properties directly to settings, using \
+     {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}. \
+     Once a\n\
      [GObject.Object] property has been bound to a setting, changes on\n\
      either side are automatically propagated to the other side. GSettings \
      handles\n\
@@ -688,10 +697,14 @@ end
      [G_SETTINGS_BIND_NO_SENSITIVITY] flag.\n\n\
      {b Relocatable schemas}\n\n\
      A relocatable schema is one with no [path] attribute specified on its\n\
-     [<schema>] element. By using [Gio.Settings.new_with_path], a [GSettings]\n\
+     [<schema>] element. By using \
+     {{!Ocgio.Settings.val-new_with_path}[Gio.Settings.new_with_path]}, a \
+     [GSettings]\n\
      object can be instantiated for a relocatable schema, assigning a path to \
      the\n\
-     instance. Paths passed to [Gio.Settings.new_with_path] will typically be\n\
+     instance. Paths passed to \
+     {{!Ocgio.Settings.val-new_with_path}[Gio.Settings.new_with_path]} will \
+     typically be\n\
      constructed dynamically from a constant prefix plus some form of instance\n\
      identifier; but they must still be valid GSettings paths. Paths could also\n\
      be constant and used with a globally installed schema originating from a\n\
@@ -833,7 +846,8 @@ class settings : Raw.Settings.t -> settings_t
  only ever modify [GSettings] keys in response to explicit user action.\n\
  Particular care should be paid to ensure that modifications are not\n\
  made during startup — for example, when setting the initial value\n\
- of preferences widgets.  The built-in [Gio.Settings.bind]\n\
+ of preferences widgets.  The built-in \
+ {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}\n\
  functionality is careful not to write settings in response to notify signals\n\
  as a result of modifications that it makes to widgets.\n\n\
  When creating a [GSettings] instance, you have to specify a schema\n\
@@ -904,9 +918,12 @@ class settings : Raw.Settings.t -> settings_t
  enumerated types. These can be described by a [<choice>],\n\
  [<enum>] or [<flags>] element, as seen in the\n\
  second example below. The underlying type of such a key\n\
- is string, but you can use [Gio.Settings.get_enum],\n\
- [Gio.Settings.set_enum], [Gio.Settings.get_flags],\n\
- [Gio.Settings.set_flags] access the numeric values corresponding to\n\
+ is string, but you can use \
+ {{!Ocgio.Settings.class-type-settings_t.method-get_enum}[Gio.Settings.get_enum]},\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-set_enum}[Gio.Settings.set_enum]}, \
+ {{!Ocgio.Settings.class-type-settings_t.method-get_flags}[Gio.Settings.get_flags]},\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-set_flags}[Gio.Settings.set_flags]} \
+ access the numeric values corresponding to\n\
  the string value of enum and flags keys.\n\n\
  An example for default value:\n\n\
  {[\n\
@@ -995,7 +1012,8 @@ class settings : Raw.Settings.t -> settings_t
  atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
  updated values are kept locally in the \
  {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance until\n\
- they are explicitly applied by calling [Gio.Settings.apply].\n\n\
+ they are explicitly applied by calling \
+ {{!Ocgio.Settings.class-type-settings_t.method-apply}[Gio.Settings.apply]}.\n\n\
  For example, this could be useful for a preferences dialog where the\n\
  preferences all need to be applied simultaneously when the user clicks \
  ‘Save’.\n\n\
@@ -1004,15 +1022,19 @@ class settings : Raw.Settings.t -> settings_t
  irreversible operation: from that point onwards, {i all} changes made to that\n\
  {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} have to be explicitly \
  applied by calling\n\
- [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-apply}[Gio.Settings.apply]}. \
+ The ‘delay-apply’ mode is also propagated to any\n\
  child settings objects subsequently created using\n\
- [Gio.Settings.get_child].\n\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-get_child}[Gio.Settings.get_child]}.\n\n\
  At any point, the set of unapplied changes can be queried using\n\
- [Gio.Settings:has-unapplied], and discarded by calling\n\
- [Gio.Settings.revert].\n\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-get_has_unapplied}[Gio.Settings:has-unapplied]}, \
+ and discarded by calling\n\
+ {{!Ocgio.Settings.class-type-settings_t.method-revert}[Gio.Settings.revert]}.\n\n\
  {b Binding}\n\n\
  A very convenient feature of GSettings lets you bind [GObject.Object]\n\
- properties directly to settings, using [Gio.Settings.bind]. Once a\n\
+ properties directly to settings, using \
+ {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}. \
+ Once a\n\
  [GObject.Object] property has been bound to a setting, changes on\n\
  either side are automatically propagated to the other side. GSettings handles\n\
  details like mapping between [GObject.Object] and [GLib.Variant]\n\
@@ -1025,9 +1047,13 @@ class settings : Raw.Settings.t -> settings_t
  [G_SETTINGS_BIND_NO_SENSITIVITY] flag.\n\n\
  {b Relocatable schemas}\n\n\
  A relocatable schema is one with no [path] attribute specified on its\n\
- [<schema>] element. By using [Gio.Settings.new_with_path], a [GSettings]\n\
+ [<schema>] element. By using \
+ {{!Ocgio.Settings.val-new_with_path}[Gio.Settings.new_with_path]}, a \
+ [GSettings]\n\
  object can be instantiated for a relocatable schema, assigning a path to the\n\
- instance. Paths passed to [Gio.Settings.new_with_path] will typically be\n\
+ instance. Paths passed to \
+ {{!Ocgio.Settings.val-new_with_path}[Gio.Settings.new_with_path]} will \
+ typically be\n\
  constructed dynamically from a constant prefix plus some form of instance\n\
  identifier; but they must still be valid GSettings paths. Paths could also\n\
  be constant and used with a globally installed schema originating from a\n\
@@ -1151,13 +1177,14 @@ val new_ : string -> settings_t
     It is an error for the schema to not exist: schemas are an essential part of
     a program, as they provide type information. If schemas need to be
     dynamically loaded (for example, from an optional runtime dependency),
-    [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
+    {{!Ocgio.Settings_schema_source.class-type-settings_schema_source_t.method-lookup}
+     [Gio.SettingsSchemaSource.lookup]} can be used to test for their existence
     before loading them.
 
     Signals on the newly created
     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object will be
     dispatched via the thread-default [GLib.MainContext] in effect at the time
-    of the call to [Gio.Settings.new]. The new
+    of the call to {{!Ocgio.Settings.val-new_}[Gio.Settings.new]}. The new
     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} will hold a
     reference on the context. See [GLib.MainContext.push_thread_default]. *)
 

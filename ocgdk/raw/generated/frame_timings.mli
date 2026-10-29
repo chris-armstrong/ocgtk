@@ -3,11 +3,12 @@
 
 (** Holds timing information for a single frame of the application’s displays.
 
-    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
-    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
-    is useful for precise synchronization of video with the event or audio
-    streams, and for measuring quality metrics for the application’s display,
-    such as latency and jitter.
+    To retrieve [GdkFrameTimings] objects, use
+    {{!Ocgdk.Raw.Frame_clock.val-get_timings}[Gdk.FrameClock.get_timings]} or
+    {{!Ocgdk.Raw.Frame_clock.val-get_current_timings}[Gdk.FrameClock.get_current_timings]}.
+    The information in [GdkFrameTimings] is useful for precise synchronization
+    of video with the event or audio streams, and for measuring quality metrics
+    for the application’s display, such as latency and jitter.
 
     The class built on this module is in {!Ocgdk.Frame_timings}. *)
 
@@ -40,20 +41,22 @@ external get_predicted_presentation_time : t -> int64
 
     Although no predicted time may be available, if one is available, it will be
     available while the frame is being generated, in contrast to
-    [Gdk.FrameTimings.get_presentation_time], which is only available after the
-    frame has been presented.
+    {{!Ocgdk.Raw.Frame_timings.val-get_presentation_time}[Gdk.FrameTimings.get_presentation_time]},
+    which is only available after the frame has been presented.
 
     In general, if you are simply animating, you should use
-    [Gdk.FrameClock.get_frame_time] rather than this function, but this function
-    is useful for applications that want exact control over latency. For
-    example, a movie player may want this information for Audio/Video
-    synchronization. *)
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+    rather than this function, but this function is useful for applications that
+    want exact control over latency. For example, a movie player may want this
+    information for Audio/Video synchronization. *)
 
 external get_frame_time : t -> int64 = "ml_gdk_frame_timings_get_frame_time"
 (** Returns the frame time for the frame.
 
     This is the time value that is typically used to time animations for the
-    frame. See [Gdk.FrameClock.get_frame_time]. *)
+    frame. See
+    {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}.
+*)
 
 external get_frame_counter : t -> int64
   = "ml_gdk_frame_timings_get_frame_counter"

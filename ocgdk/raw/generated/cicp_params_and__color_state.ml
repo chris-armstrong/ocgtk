@@ -127,7 +127,8 @@ and Color_state : sig
   (** Compares two [GdkColorStates] for equivalence.
 
       Two objects that represent the same color state should be equivalent, even
-      though they may not be equal in the sense of [Gdk.ColorState.equal]. *)
+      though they may not be equal in the sense of
+      {{!Ocgdk.Raw.Color_state.val-equal}[Gdk.ColorState.equal]}. *)
 
   external equal : t -> t -> bool = "ml_gdk_color_state_equal"
   (** Compares two [GdkColorStates] for equality.
@@ -157,7 +158,8 @@ end = struct
   (** Compares two [GdkColorStates] for equivalence.
 
       Two objects that represent the same color state should be equivalent, even
-      though they may not be equal in the sense of [Gdk.ColorState.equal]. *)
+      though they may not be equal in the sense of
+      {{!Ocgdk.Raw.Color_state.val-equal}[Gdk.ColorState.equal]}. *)
 
   external equal : t -> t -> bool = "ml_gdk_color_state_equal"
   (** Compares two [GdkColorStates] for equality.

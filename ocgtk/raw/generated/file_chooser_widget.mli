@@ -14,18 +14,18 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.FileChooserWidget::desktop-folder]
-    - [Gtk.FileChooserWidget::down-folder]
-    - [Gtk.FileChooserWidget::home-folder]
-    - [Gtk.FileChooserWidget::location-popup]
-    - [Gtk.FileChooserWidget::location-popup-on-paste]
-    - [Gtk.FileChooserWidget::location-toggle-popup]
-    - [Gtk.FileChooserWidget::places-shortcut]
-    - [Gtk.FileChooserWidget::quick-bookmark]
-    - [Gtk.FileChooserWidget::recent-shortcut]
-    - [Gtk.FileChooserWidget::search-shortcut]
-    - [Gtk.FileChooserWidget::show-hidden]
-    - [Gtk.FileChooserWidget::up-folder]
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_desktop_folder}[Gtk.FileChooserWidget::desktop-folder]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_down_folder}[Gtk.FileChooserWidget::down-folder]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_home_folder}[Gtk.FileChooserWidget::home-folder]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_location_popup}[Gtk.FileChooserWidget::location-popup]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_location_popup_on_paste}[Gtk.FileChooserWidget::location-popup-on-paste]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_location_toggle_popup}[Gtk.FileChooserWidget::location-toggle-popup]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_places_shortcut}[Gtk.FileChooserWidget::places-shortcut]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_quick_bookmark}[Gtk.FileChooserWidget::quick-bookmark]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_recent_shortcut}[Gtk.FileChooserWidget::recent-shortcut]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_search_shortcut}[Gtk.FileChooserWidget::search-shortcut]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_show_hidden}[Gtk.FileChooserWidget::show-hidden]}
+    - {{!Ocgtk.Raw.File_chooser_widget.val-on_up_folder}[Gtk.FileChooserWidget::up-folder]}
 
     {b CSS nodes}
 

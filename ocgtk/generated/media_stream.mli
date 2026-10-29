@@ -20,9 +20,12 @@
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be
     used in applications: [Gtk.MediaStream.prepared],
-    [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
-    [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
-    [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
+    [Gtk.MediaStream.unprepared],
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-update}[Gtk.MediaStream.update]},
+    [Gtk.MediaStream.ended],
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-seek_success}[Gtk.MediaStream.seek_success]},
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-seek_failed}[Gtk.MediaStream.seek_failed]},
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-gerror}[Gtk.MediaStream.gerror]},
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
 class type media_stream_t = object
   inherit Ocgdk.Paintable.paintable_t
@@ -258,9 +261,12 @@ class media_stream : Raw.Media_stream.t -> media_stream_t
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be
     used in applications: [Gtk.MediaStream.prepared],
-    [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
-    [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
-    [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
+    [Gtk.MediaStream.unprepared],
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-update}[Gtk.MediaStream.update]},
+    [Gtk.MediaStream.ended],
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-seek_success}[Gtk.MediaStream.seek_success]},
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-seek_failed}[Gtk.MediaStream.seek_failed]},
+    {{!Ocgtk.Media_stream.class-type-media_stream_t.method-gerror}[Gtk.MediaStream.gerror]},
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
 
 (** {1:constructors Constructors} *)

@@ -9,21 +9,12 @@ open Types
 (* Use Common.StringSet for type compatibility across all modules *)
 module StringSet = Common.StringSet
 
-(** Generate a class section (methods or properties) by applying generator to
-    each item *)
-let generate_section ~(buf : Buffer.t) ~(items_seen : StringSet.t)
-    ~(items : 'a list)
-    ~(generator_fn : StringSet.t -> 'a -> string * StringSet.t)
-    ~(add_newline : bool) : StringSet.t =
-  let items_seen, () =
-    List.fold_left items ~init:(items_seen, ()) ~f:(fun (items_seen, ()) item ->
-        let chunk, items_seen = generator_fn items_seen item in
-        Buffer.add_string buf chunk;
-        if add_newline && not (CCString.is_empty chunk) then
-          Buffer.add_char buf '\n';
-        (items_seen, ()))
-  in
-  items_seen
+(** Add each chunk of a class section (methods or properties), each followed by
+    a blank line *)
+let add_chunks buf chunks =
+  List.iter chunks ~f:(fun chunk ->
+      Buffer.add_string buf chunk;
+      Buffer.add_char buf '\n')
 
 (** Generate the body of a class module (implementation) *)
 let generate_class_module_body ~(ctx : Types.generation_context)
@@ -34,14 +25,9 @@ let generate_class_module_body ~(ctx : Types.generation_context)
     ~(properties : Types.gir_property list) ~(signals : Types.gir_signal list)
     ~(same_cluster_classes : string list) ~(parent_name : string option) () :
     unit =
-  let property_filters =
-    Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
-  in
-
-  (* Detect method conflicts with parent classes *)
-  let conflicting_methods =
-    Class_gen_conflict_detection.detect_method_conflicts ~ctx ~class_name
-      ~c_type ~methods
+  let members =
+    Emitted_members.l2 ~ctx ~class_name ~c_type ~entity_kind ~methods
+      ~properties
   in
 
   (* Parent class inheritance — skip if parent is in the same cyclic cluster *)
@@ -162,45 +148,27 @@ let generate_class_module_body ~(ctx : Types.generation_context)
 
   (* L2 signal forwarder methods — one per supported signal.
      Error branch silently skips: the skip was already logged at L1 emission. *)
-  List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
-      | Error _ -> ()
-      | Ok emission ->
-          Buffer.add_string buf
-            (Signal_gen.emit_l2_method ~current_layer2_module
-               ~layer1_module_name ~class_snake emission));
+  List.iter (Emitted_members.signals ~ctx signals) ~f:(fun emission ->
+      Buffer.add_string buf
+        (Signal_gen.emit_l2_method ~current_layer2_module ~layer1_module_name
+           ~class_snake emission));
 
   bprintf buf "\n";
 
-  (* Pre-populate seen with inherited method names to suppress conflicts *)
-  let inherited_names =
-    Class_gen_conflict_detection.collect_inherited_method_names ~ctx ~class_name
-  in
-  let seen = inherited_names in
   (* Methods *)
-  let seen =
-    let generate seen m =
-      Class_gen_method.generate_method_wrappers ~ctx
-        ~property_method_names:property_filters.method_names
-        ~property_base_names:property_filters.base_names
-        ~module_name:layer1_module_name ~class_name ~c_type ~seen
-        ~current_layer2_module ~same_cluster_classes ~conflicting_methods
-        ~entity_kind m
-    in
-    generate_section ~buf ~items_seen:seen ~items:methods ~generator_fn:generate
-      ~add_newline:true
-  in
+  add_chunks buf
+    (List.map members.l2_methods
+       ~f:
+         (Class_gen_method.generate_method_wrappers ~ctx
+            ~module_name:layer1_module_name ~class_name ~c_type
+            ~current_layer2_module ~same_cluster_classes));
   (* Properties *)
-  let seen =
-    let generate seen prop =
-      Class_gen_property.generate_property_methods ~ctx ~class_name ~methods
-        ~module_name:layer1_module_name ~current_layer2_module ~seen
-        ~same_cluster_classes prop
-    in
-    generate_section ~buf ~items_seen:seen ~items:properties
-      ~generator_fn:generate ~add_newline:true
-  in
-  ignore seen;
+  add_chunks buf
+    (List.map members.l2_properties
+       ~f:
+         (Class_gen_property.generate_property_methods ~ctx
+            ~module_name:layer1_module_name ~current_layer2_module
+            ~same_cluster_classes));
 
   (* Converter methods — skip if parent already provides the same accessor *)
   let self_accessor = Utils.ocaml_class_name class_name in
@@ -237,14 +205,9 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
     ~(properties : Types.gir_property list) ~(signals : Types.gir_signal list)
     ~(same_cluster_classes : string list) ~(parent_name : string option) () :
     unit =
-  let property_filters =
-    Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
-  in
-
-  (* Detect method conflicts with parent classes *)
-  let conflicting_methods =
-    Class_gen_conflict_detection.detect_method_conflicts ~ctx ~class_name
-      ~c_type ~methods
+  let members =
+    Emitted_members.l2 ~ctx ~class_name ~c_type ~entity_kind ~methods
+      ~properties
   in
 
   (* Parent class inheritance — skip if parent is in the same cyclic cluster *)
@@ -318,67 +281,30 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
   (* L2 signal method type signatures — one per supported signal.
      Error branch silently skips: already logged at L1 emission. *)
   let section = Buffer.create 1024 in
-  List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
-      | Error _ -> ()
-      | Ok emission ->
-          Buffer.add_string section
-            (Signal_gen.emit_l2_method_sig
-               ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
-               ~current_layer2_module emission));
+  List.iter (Emitted_members.signals ~ctx signals) ~f:(fun emission ->
+      Buffer.add_string section
+        (Signal_gen.emit_l2_method_sig
+           ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
+           ~current_layer2_module emission));
+
   add_class_type_section buf ~label:"signals" ~title:"Signals"
     (Buffer.contents section);
 
-  (* Pre-populate seen with inherited method names to suppress conflicts *)
-  let inherited_names =
-    Class_gen_conflict_detection.collect_inherited_method_names ~ctx ~class_name
-  in
-  let seen = inherited_names in
   (* Methods *)
-  let _seen =
-    let generate seen meth =
-      if Filtering.should_skip_method_binding ~ctx ~entity_kind meth then
-        ("", seen)
-      else
-        let chunk, seen =
-          Class_gen_method.generate_method_signatures ~ctx
-            ~property_method_names:property_filters.method_names
-            ~property_base_names:property_filters.base_names ~class_name ~c_type
-            ~seen ~current_layer2_module ~same_cluster_classes
-            ~conflicting_methods ~entity_kind meth
-        in
-        (chunk, seen)
-    in
-    let section = Buffer.create 4096 in
-    let seen =
-      generate_section ~buf:section ~items_seen:seen ~items:methods
-        ~generator_fn:generate ~add_newline:false
-    in
-    add_class_type_section buf ~label:"methods" ~title:"Methods"
-      (Buffer.contents section);
-    seen
-  in
+  add_class_type_section buf ~label:"methods" ~title:"Methods"
+    (String.concat ~sep:""
+       (List.map members.l2_methods
+          ~f:
+            (Class_gen_method.generate_method_signatures ~ctx
+               ~current_layer2_module ~same_cluster_classes)));
 
   (* Properties *)
-  let _ =
-    let generate seen prop =
-      if Filtering.should_generate_property ~ctx ~class_name ~methods prop then
-        let chunk, seen =
-          Class_gen_property.generate_property_signatures ~ctx ~methods
-            ~class_name ~seen ~current_layer2_module ~same_cluster_classes prop
-        in
-        (chunk, seen)
-      else ("", seen)
-    in
-    let section = Buffer.create 1024 in
-    let seen =
-      generate_section ~buf:section ~items_seen:seen ~items:properties
-        ~generator_fn:generate ~add_newline:false
-    in
-    add_class_type_section buf ~label:"properties" ~title:"Properties"
-      (Buffer.contents section);
-    seen
-  in
+  add_class_type_section buf ~label:"properties" ~title:"Properties"
+    (String.concat ~sep:""
+       (List.map members.l2_properties
+          ~f:
+            (Class_gen_property.generate_property_signatures ~ctx
+               ~current_layer2_module ~same_cluster_classes)));
 
   (* Converter methods — skip if parent already provides the same accessor *)
   let self_accessor = Utils.ocaml_class_name class_name in

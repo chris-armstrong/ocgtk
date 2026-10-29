@@ -69,8 +69,9 @@
     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}. If you want a
     {{!Ocgio.Action.class-type-action_t}[Gio.Action]} to control a setting
     stored in {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}, see
-    [Gio.Settings.create_action] instead, and possibly combine its use with
-    [Gio.Settings.bind]. *)
+    {{!Ocgio.Settings.class-type-settings_t.method-create_action}[Gio.Settings.create_action]}
+    instead, and possibly combine its use with
+    {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}. *)
 class type property_action_t = object
   inherit Action.action_t
 
@@ -166,8 +167,9 @@ class property_action : Raw.Property_action.t -> property_action_t
     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}. If you want a
     {{!Ocgio.Action.class-type-action_t}[Gio.Action]} to control a setting
     stored in {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}, see
-    [Gio.Settings.create_action] instead, and possibly combine its use with
-    [Gio.Settings.bind]. *)
+    {{!Ocgio.Settings.class-type-settings_t.method-create_action}[Gio.Settings.create_action]}
+    instead, and possibly combine its use with
+    {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]}. *)
 
 (** {1:constructors Constructors} *)
 

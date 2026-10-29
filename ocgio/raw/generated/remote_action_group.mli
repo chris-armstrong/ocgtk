@@ -8,7 +8,9 @@
 
     The interface has [_full] variants of the two methods on
     {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} used to activate actions:
-    [Gio.ActionGroup.activate_action] and [Gio.ActionGroup.change_action_state].
+    {{!Ocgio.Raw.Action_group.val-activate_action}[Gio.ActionGroup.activate_action]}
+    and
+    {{!Ocgio.Raw.Action_group.val-change_action_state}[Gio.ActionGroup.change_action_state]}.
     These variants allow a ‘platform data’ [GLib.Variant] to be specified: a
     dictionary providing context for the action invocation (for example:
     timestamps, startup notification IDs, etc).
@@ -17,11 +19,12 @@
     [GRemoteActionGroup]. This provides a mechanism to send platform data for
     action invocations over D-Bus.
 
-    Additionally, [Gio.DBusConnection.export_action_group] will check if the
-    exported {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implements
-    [GRemoteActionGroup] and use the [_full] variants of the calls if available.
-    This provides a mechanism by which to receive platform data for action
-    invocations that arrive by way of D-Bus.
+    Additionally,
+    {{!Ocgio.Raw.D_bus_connection.val-export_action_group}[Gio.DBusConnection.export_action_group]}
+    will check if the exported {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]}
+    implements [GRemoteActionGroup] and use the [_full] variants of the calls if
+    available. This provides a mechanism by which to receive platform data for
+    action invocations that arrive by way of D-Bus.
 
     The class built on this module is in {!Ocgio.Remote_action_group}. *)
 
