@@ -2,7 +2,8 @@
 
 **Status: Phases 0–10 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
-cross-reference resolution (PRD §7), added 2026-10-28; not started.** Phase 0 and 1: PRs #188 and #190, merged into
+cross-reference resolution (PRD §7), added 2026-10-28; not started. Phase 14,
+property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
@@ -1335,6 +1336,70 @@ warnings; the resolution summary per origin; in the PR's preview, a
 `%GDK_KEY_*` sigil in a Gtk doc links into `Ocgdk.Constants`, and a
 `gtk_widget_*()` call in a Gtk doc links to the method.
 
+### Phase 14 — Property doc fallbacks: accessor method docs and a fuller canned line
+
+*Goal:* fewer properties fall back to the bare `Get/Set property: <name>`
+text, and the ones that still do tell the reader the type, the default and
+where the upstream docs are. Added 2026-10-29.
+
+*Corpus anchors* (bundled GIR): Gtk has 1,289 properties, and 89 of them have
+no `<doc>`. Of those 89, 34 name a `getter=` or `setter=` method and 79 have
+a `default-value=`. Gio and GdkPixbuf have one undocumented property each;
+the other namespaces have none. The committed Gtk L2 `.mli` files have 50
+`Get property:` fallbacks. Example: `Gtk.TreeView:enable-grid-lines` has no
+doc and no `getter=`/`setter=`, so it is covered by change 2 but not by
+change 1.
+
+*Changes:*
+1. **Accessor method docs.** The parser records the property's `getter=`,
+   `setter=` and `default-value=` attributes on `Types.gir_property`
+   (`prop_getter`, `prop_setter`, `prop_default`; all `string option`). When
+   `prop_doc` is absent, `Entity_doc.property` uses the doc of the class's
+   method named by `getter=` for the getter, and of the method named by
+   `setter=` for the setter. If the property names only one of them, both
+   accessors use that method's doc. The lookup goes through the class's (or
+   interface's) own method list. A method that is not found, or has no
+   doc, falls through to change 2. Method docs are translated in the
+   `Member` context as now. Check in the regeneration diff whether `@param`
+   names in setter docs (`@enabled`) read badly on a property setter. If
+   they do, strip the parameter sigil to plain code for docs borrowed this
+   way.
+   No heuristic name matching (`enable-grid-lines` → `get_grid_lines`):
+   only the GIR attributes are used.
+2. **A fuller canned line.** The fallback becomes, for example,
+   ``Get property: [enable-grid-lines] ([TreeViewGridLines], default
+   [GTK_TREE_VIEW_GRID_LINES_NONE]). See {{:…/property.TreeView.enable-grid-lines.html}upstream docs}.``
+   - The type is the GIR type name as code. It is not an OCaml link until
+     Phase 11's resolver can produce one, so this phase does not depend on it.
+   - The default is `default-value=` as code, left out when absent.
+     The attribute is a bare C value, not a `%` sigil, so it does not go
+     through the translator: `TRUE`, `FALSE` and `NULL` are mapped with
+     `Doc_c_idiom`'s literal names (`true`, `false`, `None`); any other
+     value (an enum member's C name, a number, a string) is shown as is.
+   - The link uses `upstream_base_url`, as the constructor fallback does:
+     `property.<Class>.<prop-name>.html`. Namespaces without a gi-docgen site
+     get no link. gi-docgen writes a page for every property, documented or
+     not, so the link never points at a missing page. Check this for one
+     undocumented property before wiring.
+   - The setter line also says "Construct-only." when `construct_only` is set.
+   `Entity_doc.property` takes `~namespace` and `~class_name` for the link.
+   Both call sites (`layer1_property.ml`, `class_gen_property.ml`) already
+   have them in scope.
+
+*Tests:* `entity_doc` tests for each case: a property with a doc
+(unchanged); no doc with `getter=` and `setter=` (each accessor takes its
+own method's doc); no doc with only `getter=` (both use it); `getter=` naming
+a method with no doc (canned line); no attributes, with and without a
+default; a namespace without an upstream site (no link); a construct-only
+setter. A parser test for the three new attributes.
+
+*Acceptance:* the standing invariant; `dune build @doc` with 0 odoc
+warnings; the count of `Get property:` lines in the committed Gtk L2 `.mli`
+files falls from 50, and every one left has a type and a link; `doc_diff`
+against the phase's base shows only property accessor docs changing; in the
+PR's preview, `Ocgtk.Tree_view`'s `enable_grid_lines` shows the fuller line
+with a working upstream link at L1 and L2.
+
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
@@ -1359,6 +1424,10 @@ warnings; the resolution summary per origin; in the PR's preview, a
 - 12 (members) needs 11.
 - 13 (sigils) needs 12 (member tables) and 8 (`%TRUE`, `%NULL` and `#gint`
   are no longer `Sym_ref`, so they are never looked up).
+- 14 (property fallbacks) needs 6 (property doc wiring) and 8 (C literal
+  rewrites for defaults). It is independent of 11–13 and can land before
+  them. Once 11 lands, the type in the canned line could become a link; that
+  is a follow-up, not part of 14.
 
 ## Verification for the whole leg (after all phases)
 
