@@ -1,0 +1,11 @@
+; Classifies the odoc warnings in a `dune build @doc` log. See README.md.
+
+(library
+ (name odoc_warnings)
+ (modules odoc_warnings)
+ (libraries re))
+
+(executable
+ (name doc_warnings)
+ (modules doc_warnings)
+ (libraries odoc_warnings cmdliner))

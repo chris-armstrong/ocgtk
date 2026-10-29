@@ -15,7 +15,8 @@
 #   DOC_PREVIEW_REF       What was built, e.g. "PR #193 (m3-p4)" or "main"
 #   DOC_PREVIEW_SHA       Commit SHA that was built
 #   DOC_PREVIEW_SHA_URL   Link target for the SHA (e.g. the GitHub commit page)
-#   DOC_PREVIEW_WARNINGS  Count of odoc warnings from the build
+#   DOC_PREVIEW_WARNINGS  odoc warnings from the build: the total and its
+#                         buckets, e.g. "5 (own-line 2, unpaired 3)"
 
 set -euo pipefail
 

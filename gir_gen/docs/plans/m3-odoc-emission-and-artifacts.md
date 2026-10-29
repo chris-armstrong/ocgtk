@@ -1,13 +1,13 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–9 implemented; Phase 10 not yet done (per-phase status below). The C code-block
+**Status: Phases 0–10 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
 cross-reference resolution (PRD §7), added 2026-10-28; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
 `m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
-(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: branch `m3-phase9`. Phase 7 onwards: one branch and PR per phase (see the rules below).
+(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: PR #215 (branch `m3-phase9`). Phase 10: branch `m3-phase10`. Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -562,9 +562,11 @@ Behaviour, and where it differs from the sketch:
   Regeneration drift is a separate check, not part of the preview.
 - **The PR head commit is built**, not the merge commit, so a preview
   matches the commit a local HTML diff builds.
-- **Warnings are counted, not fatal:** the count of odoc `Warning:` lines
-  (compiler warnings excluded) goes into the landing page and the job
-  summary, and the full log is uploaded as a workflow artifact
+- **Warnings are counted, not fatal:** odoc's warnings (compiler warnings
+  and dune's messages excluded) are classified into buckets by
+  `gir_gen/tools/doc_warnings/` (Phase 10). The landing page shows the
+  total and the non-empty buckets, the job summary a table of every
+  bucket, and the full log is uploaded as a workflow artifact
   (decision 7). The doc build runs with `--cache=disabled`: dune does not
   replay the warnings of rules restored from its cache, so a cached build
   under-counts.
@@ -1128,6 +1130,25 @@ opam exec -- dune build @doc --cache=disabled
 The diagrams render in the PR's preview.
 
 ### Phase 10 — Warning classification
+
+**Status: done** (branch `m3-phase10`). `gir_gen/tools/doc_warnings/` (a
+library, `Odoc_warnings`, and a CLI; usage in its README) parses a
+`dune build @doc` log, keeps the `Warning:` lines that follow a location
+in a `.ml`, `.mli` or `.mld` file, and sorts them into eight buckets by
+odoc's wording: `own-line` and `misplaced-tag` (the paragraph-on-own-line
+and nested-tag classes, fixed at emission), `not-allowed`, `empty-markup`,
+`unpaired`, `bad-markup`, `unresolved-reference` and `other`. The preview
+workflow runs it in place of `grep -c`. Departures from the plan below:
+
+- **Nothing to fix at emission.** A clean `@doc` build has 0 odoc
+  warnings (as at the end of every phase since Phase 2), so every bucket,
+  the fixable ones included, is zero.
+- **The buckets were derived from odoc 3.2 output** for deliberately broken
+  comments in a scratch project, not from this tree's (empty) warnings. The
+  tests use those messages verbatim.
+- **No landing-page table:** the landing page shows the one-line form
+  ("5 (own-line 2, unpaired 3)") where it showed the count; the table is in
+  the job summary.
 
 *Goal:* odoc warnings are classified, not just counted.
 
