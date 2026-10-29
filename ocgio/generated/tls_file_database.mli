@@ -26,13 +26,13 @@ class type tls_file_database_t = object
   (** The path to a file containing PEM encoded certificate authority root
       anchors. The certificates in this file will be treated as root authorities
       for the purpose of verifying other certificates via the
-      g_tls_database_verify_chain() operation. *)
+      [g_tls_database_verify_chain ()] operation. *)
 
   method set_anchors : string -> unit
   (** The path to a file containing PEM encoded certificate authority root
       anchors. The certificates in this file will be treated as root authorities
       for the purpose of verifying other certificates via the
-      g_tls_database_verify_chain() operation. *)
+      [g_tls_database_verify_chain ()] operation. *)
 
   (** {2:conversions Conversions} *)
 

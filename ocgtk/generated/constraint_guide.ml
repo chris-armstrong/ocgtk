@@ -4,10 +4,11 @@ class type constraint_guide_t = object
   (** {2:methods Methods} *)
 
   method get_name : unit -> string option
-  (** Retrieves the name set using gtk_constraint_guide_set_name(). *)
+  (** Retrieves the name set using [gtk_constraint_guide_set_name ()]. *)
 
   method get_strength : unit -> Enums.constraintstrength
-  (** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
+  (** Retrieves the strength set using [gtk_constraint_guide_set_strength ()].
+  *)
 
   method set_max_size : int -> int -> unit
   (** Sets the maximum size of [guide].

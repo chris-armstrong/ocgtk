@@ -405,5 +405,6 @@ val new_from_data : Glib_bytes.t -> (resource_t, GError.t) result
     Otherwise this function will internally create a copy of the memory since
     GLib 2.56, or in older versions fail and exit the process.
 
-    If [data] is empty or corrupt, [G_RESOURCE_ERROR_INTERNAL] will be returned.
-*)
+    If [data] is empty or corrupt,
+    {{!Ocgio.Enums.type-resourceerror.constructor-INTERNAL}[G_RESOURCE_ERROR_INTERNAL]}
+    will be returned. *)

@@ -14,8 +14,10 @@
     cells on the screen. To this extent, it isn’t expected that a CellRenderer
     keep any permanent state around. Instead, any state is set just prior to use
     using [GObject]s property system. Then, the cell is measured using
-    gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
-    correct location using gtk_cell_renderer_snapshot().
+    {{!Ocgtk.Raw.Cell_renderer.val-get_preferred_size}[gtk_cell_renderer_get_preferred_size
+                                                       ()]}. Finally, the cell
+    is rendered in the correct location using
+    {{!Ocgtk.Raw.Cell_renderer.val-snapshot}[gtk_cell_renderer_snapshot ()]}.
 
     There are a number of rules that must be followed when writing a new
     [GtkCellRenderer]. First and foremost, it’s important that a certain set of

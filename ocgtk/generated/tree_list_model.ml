@@ -47,7 +47,7 @@ class type tree_list_model_t = object
       removed.
 
       If [self] is set to not be passthrough, this function is equivalent to
-      calling g_list_model_get_item().
+      calling [g_list_model_get_item ()].
 
       Do not confuse this function with [Gtk.TreeListModel.get_child_row]. *)
 

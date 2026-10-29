@@ -1,5 +1,5 @@
-(** [GMenuItem] is an opaque structure type. You must access it using the
-    functions below.
+(** {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]} is an opaque
+    structure type. You must access it using the functions below.
 
     Its methods, signals and properties are on {!class-type-menu_item_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -9,8 +9,8 @@
 
 (** {b The methods, signals and properties of a [MenuItem].}
 
-    [GMenuItem] is an opaque structure type. You must access it using the
-    functions below. *)
+    {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]} is an opaque
+    structure type. You must access it using the functions below. *)
 class type menu_item_t = object
   (** {2:methods Methods} *)
 
@@ -53,8 +53,8 @@ class type menu_item_t = object
      as a radio menu item (ie: with a radio bullet or equivalent\n\
      indication).  The item should be marked as 'selected' when the string\n\
      state is equal to the value of the [target] property.\n\n\
-     See g_menu_item_set_action_and_target() or\n\
-     g_menu_item_set_detailed_action() for two equivalent calls that are\n\
+     See [g_menu_item_set_action_and_target ()] or\n\
+     [g_menu_item_set_detailed_action ()] for two equivalent calls that are\n\
      probably more convenient for most uses."]
 
   method set_attribute_value : string -> Gvariant.t option -> unit
@@ -74,25 +74,25 @@ class type menu_item_t = object
       attribute. If [value] is [None] then the attribute is unset. If the
       [value] [GVariant] is floating, it is consumed.
 
-      See also g_menu_item_set_attribute() for a more convenient way to do the
-      same. *)
+      See also [g_menu_item_set_attribute ()] for a more convenient way to do
+      the same. *)
 
   method set_detailed_action : string -> unit
   [@@ocaml.doc
     "Sets the \"action\" and possibly the \"target\" attribute of [menu_item].\n\n\
      The format of [detailed_action] is the same format parsed by\n\
-     g_action_parse_detailed_name().\n\n\
-     See g_menu_item_set_action_and_target() or\n\
-     g_menu_item_set_action_and_target_value() for more flexible (but\n\
+     [g_action_parse_detailed_name ()].\n\n\
+     See [g_menu_item_set_action_and_target ()] or\n\
+     [g_menu_item_set_action_and_target_value ()] for more flexible (but\n\
      slightly less convenient) alternatives.\n\n\
-     See also g_menu_item_set_action_and_target_value() for a description of\n\
+     See also [g_menu_item_set_action_and_target_value ()] for a description of\n\
      the semantics of the action and target attributes."]
 
   method set_icon : Icon.icon_t -> unit
   [@@ocaml.doc
     "Sets (or unsets) the icon on [menu_item].\n\n\
-     This call is the same as calling g_icon_serialize() and using the\n\
-     result as the value to g_menu_item_set_attribute_value() for\n\
+     This call is the same as calling [g_icon_serialize ()] and using the\n\
+     result as the value to [g_menu_item_set_attribute_value ()] for\n\
      [G_MENU_ATTRIBUTE_ICON].\n\n\
      This API is only intended for use with \"noun\" menu items; things like\n\
      bookmarks or applications in an \"Open With\" menu.  Don't use it on\n\
@@ -123,7 +123,7 @@ class type menu_item_t = object
     "Sets or unsets the \"section\" link of [menu_item] to [section].\n\n\
      The effect of having one menu appear as a section of another is\n\
      exactly as it sounds: the items from [section] become a direct part of\n\
-     the menu that [menu_item] is added to.  See g_menu_item_new_section()\n\
+     the menu that [menu_item] is added to.  See [g_menu_item_new_section ()]\n\
      for more information about what it means for a menu item to be a\n\
      section."]
 
@@ -147,25 +147,32 @@ class menu_item : Raw.Menu_item.t -> menu_item_t
 
 val new_ : string option -> string option -> menu_item_t
 [@@ocaml.doc
-  "Creates a new [GMenuItem].\n\n\
+  "Creates a new {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]}.\n\n\
    If [label] is non-[None] it is used to set the \"label\" attribute of the\n\
    new item.\n\n\
    If [detailed_action] is non-[None] it is used to set the \"action\" and\n\
    possibly the \"target\" attribute of the new item.  See\n\
-   g_menu_item_set_detailed_action() for more information."]
+   {{!Ocgio.Menu_item.class-type-menu_item_t.method-set_detailed_action}[g_menu_item_set_detailed_action \
+   ()]} for more information."]
 
 val new_from_model : Menu_model.menu_model_t -> int -> menu_item_t
-(** Creates a [GMenuItem] as an exact copy of an existing menu item in a
-    [GMenuModel].
+(** Creates a {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]} as an exact
+    copy of an existing menu item in a
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[GMenuModel]}.
 
-    [item_index] must be valid (ie: be sure to call g_menu_model_get_n_items()
-    first). *)
+    [item_index] must be valid (ie: be sure to call
+    {{!Ocgio.Menu_model.class-type-menu_model_t.method-get_n_items}[g_menu_model_get_n_items
+                                                                    ()]} first).
+*)
 
 val new_section : string option -> Menu_model.menu_model_t -> menu_item_t
 [@@ocaml.doc
-  "Creates a new [GMenuItem] representing a section.\n\n\
-   This is a convenience API around g_menu_item_new() and\n\
-   g_menu_item_set_section().\n\n\
+  "Creates a new {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]} \
+   representing a section.\n\n\
+   This is a convenience API around \
+   {{!Ocgio.Menu_item.val-new_}[g_menu_item_new ()]} and\n\
+   {{!Ocgio.Menu_item.class-type-menu_item_t.method-set_section}[g_menu_item_set_section \
+   ()]}.\n\n\
    The effect of having one menu appear as a section of another is\n\
    exactly as it sounds: the items from [section] become a direct part of\n\
    the menu that [menu_item] is added to.\n\n\
@@ -176,7 +183,8 @@ val new_section : string option -> Menu_model.menu_model_t -> menu_item_t
    As a simple example, consider a typical \"Edit\" menu from a simple\n\
    program.  It probably contains an \"Undo\" and \"Redo\" item, followed by\n\
    a separator, followed by \"Cut\", \"Copy\" and \"Paste\".\n\n\
-   This would be accomplished by creating three [GMenu] instances.  The\n\
+   This would be accomplished by creating three \
+   {{!Ocgio.Menu.class-type-menu_t}[GMenu]} instances.  The\n\
    first would be populated with the \"Undo\" and \"Redo\" items, and the\n\
    second with the \"Cut\", \"Copy\" and \"Paste\" items.  The first and\n\
    second menus would then be added as submenus of the third.  In XML\n\
@@ -219,7 +227,10 @@ val new_section : string option -> Menu_model.menu_model_t -> menu_item_t
    ]}"]
 
 val new_submenu : string option -> Menu_model.menu_model_t -> menu_item_t
-(** Creates a new [GMenuItem] representing a submenu.
+(** Creates a new {{!Ocgio.Menu_item.class-type-menu_item_t}[GMenuItem]}
+    representing a submenu.
 
-    This is a convenience API around g_menu_item_new() and
-    g_menu_item_set_submenu(). *)
+    This is a convenience API around
+    {{!Ocgio.Menu_item.val-new_}[g_menu_item_new ()]} and
+    {{!Ocgio.Menu_item.class-type-menu_item_t.method-set_submenu}[g_menu_item_set_submenu
+                                                                  ()]}. *)

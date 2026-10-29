@@ -203,7 +203,7 @@ external get_storage_type : t -> Ocgtk_enums.imagetype
     data.
 
     If the [GtkImage] has no image data, the return value will be
-    [GTK_IMAGE_EMPTY]. *)
+    {{!Ocgtk.Enums.type-imagetype.constructor-EMPTY}[GTK_IMAGE_EMPTY]}. *)
 
 external get_pixel_size : t -> int = "ml_gtk_image_get_pixel_size"
 (** Gets the pixel size used for named icons. *)
@@ -212,11 +212,12 @@ external get_paintable : t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_image_get_paintable"
 (** Gets the image [GdkPaintable] being displayed by the [GtkImage].
 
-    The storage type of the image must be [GTK_IMAGE_EMPTY] or
-    [GTK_IMAGE_PAINTABLE] (see
-    {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}). The
-    caller of this function does not own a reference to the returned paintable.
-*)
+    The storage type of the image must be
+    {{!Ocgtk.Enums.type-imagetype.constructor-EMPTY}[GTK_IMAGE_EMPTY]} or
+    {{!Ocgtk.Enums.type-imagetype.constructor-PAINTABLE}[GTK_IMAGE_PAINTABLE]}
+    (see {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}).
+    The caller of this function does not own a reference to the returned
+    paintable. *)
 
 external get_icon_size : t -> Ocgtk_enums.iconsize
   = "ml_gtk_image_get_icon_size"
@@ -225,18 +226,20 @@ external get_icon_size : t -> Ocgtk_enums.iconsize
 external get_icon_name : t -> string option = "ml_gtk_image_get_icon_name"
 (** Gets the icon name and size being displayed by the [GtkImage].
 
-    The storage type of the image must be [GTK_IMAGE_EMPTY] or
-    [GTK_IMAGE_ICON_NAME] (see
-    {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}). The
-    returned string is owned by the [GtkImage] and should not be freed. *)
+    The storage type of the image must be
+    {{!Ocgtk.Enums.type-imagetype.constructor-EMPTY}[GTK_IMAGE_EMPTY]} or
+    {{!Ocgtk.Enums.type-imagetype.constructor-ICON_NAME}[GTK_IMAGE_ICON_NAME]}
+    (see {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}).
+    The returned string is owned by the [GtkImage] and should not be freed. *)
 
 external get_gicon : t -> Ocgio_raw.Icon.t option = "ml_gtk_image_get_gicon"
 (** Gets the [GIcon] being displayed by the [GtkImage].
 
-    The storage type of the image must be [GTK_IMAGE_EMPTY] or [GTK_IMAGE_GICON]
-    (see {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}).
-    The caller of this function does not own a reference to the returned
-    [GIcon]. *)
+    The storage type of the image must be
+    {{!Ocgtk.Enums.type-imagetype.constructor-EMPTY}[GTK_IMAGE_EMPTY]} or
+    {{!Ocgtk.Enums.type-imagetype.constructor-GICON}[GTK_IMAGE_GICON]} (see
+    {{!Ocgtk.Raw.Image.val-get_storage_type}[Gtk.Image.get_storage_type]}). The
+    caller of this function does not own a reference to the returned [GIcon]. *)
 
 external clear : t -> unit = "ml_gtk_image_clear"
 (** Resets the image to be empty. *)
@@ -248,11 +251,13 @@ external get_use_fallback : t -> bool = "ml_gtk_image_get_use_fallback"
     fallback.
 
     The value of this property is only relevant for images of type
-    [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+    {{!Ocgtk.Enums.type-imagetype.constructor-ICON_NAME}[GTK_IMAGE_ICON_NAME]}
+    and {{!Ocgtk.Enums.type-imagetype.constructor-GICON}[GTK_IMAGE_GICON]}. *)
 
 external set_use_fallback : t -> bool -> unit = "ml_gtk_image_set_use_fallback"
 (** Whether the icon displayed in the [GtkImage] will use standard icon names
     fallback.
 
     The value of this property is only relevant for images of type
-    [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
+    {{!Ocgtk.Enums.type-imagetype.constructor-ICON_NAME}[GTK_IMAGE_ICON_NAME]}
+    and {{!Ocgtk.Enums.type-imagetype.constructor-GICON}[GTK_IMAGE_GICON]}. *)

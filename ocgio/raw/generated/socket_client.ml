@@ -23,69 +23,90 @@ type t = [ `socket_client | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_client_get_type"
 
 external new_ : unit -> t = "ml_g_socket_client_new"
-(** Creates a new [GSocketClient] with the default options. *)
+(** Creates a new {{!Ocgio.Raw.Socket_client}[GSocketClient]} with the default
+    options. *)
 
 (* Methods *)
 
 external set_tls_validation_flags : t -> Ocgio_enums.tlscertificateflags -> unit
   = "ml_g_socket_client_set_tls_validation_flags"
 (** Sets the TLS validation flags used when creating TLS connections via
-    [client]. The default value is [G_TLS_CERTIFICATE_VALIDATE_ALL].
+    [client]. The default value is
+    {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-VALIDATE_ALL}[G_TLS_CERTIFICATE_VALIDATE_ALL]}.
 
     This function does not work as originally designed and is impossible to use
-    correctly. See [GSocketClient:tls]-validation-flags for more information. *)
+    correctly. See
+    {{!Ocgio.Raw.Socket_client.val-get_tls_validation_flags}[GSocketClient:tls-validation-flags]}
+    for more information. *)
 
 external set_tls : t -> bool -> unit = "ml_g_socket_client_set_tls"
 (** Sets whether [client] creates TLS (aka SSL) connections. If [tls] is [true],
-    [client] will wrap its connections in a [GTlsClientConnection] and perform a
-    TLS handshake when connecting.
+    [client] will wrap its connections in a
+    {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]} and perform a TLS
+    handshake when connecting.
 
-    Note that since [GSocketClient] must return a [GSocketConnection], but
-    [GTlsClientConnection] is not a [GSocketConnection], this actually wraps the
-    resulting [GTlsClientConnection] in a [GTcpWrapperConnection] when returning
-    it. You can use g_tcp_wrapper_connection_get_base_io_stream() on the return
-    value to extract the [GTlsClientConnection].
+    Note that since {{!Ocgio.Raw.Socket_client}[GSocketClient]} must return a
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}, but
+    {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]} is not a
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}, this actually wraps the
+    resulting {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]} in a
+    {{!Ocgio.Raw.Tcp_wrapper_connection}[GTcpWrapperConnection]} when returning
+    it. You can use
+    {{!Ocgio.Raw.Tcp_wrapper_connection.val-get_base_io_stream}[g_tcp_wrapper_connection_get_base_io_stream
+                                                                ()]} on the
+    return value to extract the
+    {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]}.
 
     If you need to modify the behavior of the TLS handshake (eg, by setting a
     client-side certificate to use, or connecting to the
-    [GTlsConnection::accept]-certificate signal), you can connect to [client]'s
-    [GSocketClient::event] signal and wait for it to be emitted with
-    [G_SOCKET_CLIENT_TLS_HANDSHAKING], which will give you a chance to see the
-    [GTlsClientConnection] before the handshake starts. *)
+    {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}
+    signal), you can connect to [client]'s
+    {{!Ocgio.Raw.Socket_client.val-on_event}[GSocketClient::event]} signal and
+    wait for it to be emitted with
+    {{!Ocgio.Enums.type-socketclientevent.constructor-TLS_HANDSHAKING}[G_SOCKET_CLIENT_TLS_HANDSHAKING]},
+    which will give you a chance to see the
+    {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]} before the
+    handshake starts. *)
 
 external set_timeout : t -> int -> unit = "ml_g_socket_client_set_timeout"
 (** Sets the I/O timeout for sockets created by [client]. [timeout] is a time in
     seconds, or 0 for no timeout (the default).
 
     The timeout value affects the initial connection attempt as well, so setting
-    this may cause calls to g_socket_client_connect(), etc, to fail with
-    [G_IO_ERROR_TIMED_OUT]. *)
+    this may cause calls to
+    {{!Ocgio.Raw.Socket_client.val-connect}[g_socket_client_connect ()]}, etc,
+    to fail with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-TIMED_OUT}[G_IO_ERROR_TIMED_OUT]}.
+*)
 
 external set_socket_type : t -> Ocgio_enums.sockettype -> unit
   = "ml_g_socket_client_set_socket_type"
 (** Sets the socket type of the socket client. The sockets created by this
     object will be of the specified type.
 
-    It doesn't make sense to specify a type of [G_SOCKET_TYPE_DATAGRAM], as
-    GSocketClient is used for connection oriented services. *)
+    It doesn't make sense to specify a type of
+    {{!Ocgio.Enums.type-sockettype.constructor-DATAGRAM}[G_SOCKET_TYPE_DATAGRAM]},
+    as GSocketClient is used for connection oriented services. *)
 
 external set_proxy_resolver : t -> Proxy_resolver.t option -> unit
   = "ml_g_socket_client_set_proxy_resolver"
-(** Overrides the [GProxyResolver] used by [client]. You can call this if you
-    want to use specific proxies, rather than using the system default proxy
-    settings.
+(** Overrides the {{!Ocgio.Raw.Proxy_resolver}[GProxyResolver]} used by
+    [client]. You can call this if you want to use specific proxies, rather than
+    using the system default proxy settings.
 
     Note that whether or not the proxy resolver is actually used depends on the
-    setting of [GSocketClient:enable]-proxy, which is not changed by this
-    function (but which is [true] by default) *)
+    setting of
+    {{!Ocgio.Raw.Socket_client.val-get_enable_proxy}[GSocketClient:enable-proxy]},
+    which is not changed by this function (but which is [true] by default) *)
 
 external set_protocol : t -> Ocgio_enums.socketprotocol -> unit
   = "ml_g_socket_client_set_protocol"
 (** Sets the protocol of the socket client. The sockets created by this object
     will use of the specified protocol.
 
-    If [protocol] is [G_SOCKET_PROTOCOL_DEFAULT] that means to use the default
-    protocol for the socket family and type. *)
+    If [protocol] is
+    {{!Ocgio.Enums.type-socketprotocol.constructor-DEFAULT}[G_SOCKET_PROTOCOL_DEFAULT]}
+    that means to use the default protocol for the socket family and type. *)
 
 external set_local_address :
   t ->
@@ -104,8 +125,9 @@ external set_local_address :
 external set_family : t -> Ocgio_enums.socketfamily -> unit
   = "ml_g_socket_client_set_family"
 (** Sets the socket family of the socket client. If this is set to something
-    other than [G_SOCKET_FAMILY_INVALID] then the sockets created by this object
-    will be of the specified family.
+    other than
+    {{!Ocgio.Enums.type-socketfamily.constructor-INVALID}[G_SOCKET_FAMILY_INVALID]}
+    then the sockets created by this object will be of the specified family.
 
     This might be useful for instance if you want to force the local connection
     to be an ipv4 socket, even though the address might be an ipv6 mapped to
@@ -114,45 +136,60 @@ external set_family : t -> Ocgio_enums.socketfamily -> unit
 external set_enable_proxy : t -> bool -> unit
   = "ml_g_socket_client_set_enable_proxy"
 (** Sets whether or not [client] attempts to make connections via a proxy
-    server. When enabled (the default), [GSocketClient] will use a
-    [GProxyResolver] to determine if a proxy protocol such as SOCKS is needed,
-    and automatically do the necessary proxy negotiation.
+    server. When enabled (the default),
+    {{!Ocgio.Raw.Socket_client}[GSocketClient]} will use a
+    {{!Ocgio.Raw.Proxy_resolver}[GProxyResolver]} to determine if a proxy
+    protocol such as SOCKS is needed, and automatically do the necessary proxy
+    negotiation.
 
-    See also g_socket_client_set_proxy_resolver(). *)
+    See also
+    {{!Ocgio.Raw.Socket_client.val-set_proxy_resolver}[g_socket_client_set_proxy_resolver
+                                                       ()]}. *)
 
 external get_tls_validation_flags : t -> Ocgio_enums.tlscertificateflags
   = "ml_g_socket_client_get_tls_validation_flags"
 (** Gets the TLS validation flags used creating TLS connections via [client].
 
     This function does not work as originally designed and is impossible to use
-    correctly. See [GSocketClient:tls]-validation-flags for more information. *)
+    correctly. See
+    {{!Ocgio.Raw.Socket_client.val-get_tls_validation_flags}[GSocketClient:tls-validation-flags]}
+    for more information. *)
 
 external get_tls : t -> bool = "ml_g_socket_client_get_tls"
-(** Gets whether [client] creates TLS connections. See g_socket_client_set_tls()
-    for details. *)
+(** Gets whether [client] creates TLS connections. See
+    {{!Ocgio.Raw.Socket_client.val-set_tls}[g_socket_client_set_tls ()]} for
+    details. *)
 
 external get_timeout : t -> int = "ml_g_socket_client_get_timeout"
 (** Gets the I/O timeout time for sockets created by [client].
 
-    See g_socket_client_set_timeout() for details. *)
+    See
+    {{!Ocgio.Raw.Socket_client.val-set_timeout}[g_socket_client_set_timeout ()]}
+    for details. *)
 
 external get_socket_type : t -> Ocgio_enums.sockettype
   = "ml_g_socket_client_get_socket_type"
 (** Gets the socket type of the socket client.
 
-    See g_socket_client_set_socket_type() for details. *)
+    See
+    {{!Ocgio.Raw.Socket_client.val-set_socket_type}[g_socket_client_set_socket_type
+                                                    ()]} for details. *)
 
 external get_proxy_resolver : t -> Proxy_resolver.t
   = "ml_g_socket_client_get_proxy_resolver"
-(** Gets the [GProxyResolver] being used by [client]. Normally, this will be the
-    resolver returned by g_proxy_resolver_get_default(), but you can override it
-    with g_socket_client_set_proxy_resolver(). *)
+(** Gets the {{!Ocgio.Raw.Proxy_resolver}[GProxyResolver]} being used by
+    [client]. Normally, this will be the resolver returned by
+    [g_proxy_resolver_get_default ()], but you can override it with
+    {{!Ocgio.Raw.Socket_client.val-set_proxy_resolver}[g_socket_client_set_proxy_resolver
+                                                       ()]}. *)
 
 external get_protocol : t -> Ocgio_enums.socketprotocol
   = "ml_g_socket_client_get_protocol"
 (** Gets the protocol name type of the socket client.
 
-    See g_socket_client_set_protocol() for details. *)
+    See
+    {{!Ocgio.Raw.Socket_client.val-set_protocol}[g_socket_client_set_protocol
+                                                 ()]} for details. *)
 
 external get_local_address :
   t ->
@@ -162,16 +199,22 @@ external get_local_address :
   option = "ml_g_socket_client_get_local_address"
 (** Gets the local address of the socket client.
 
-    See g_socket_client_set_local_address() for details. *)
+    See
+    {{!Ocgio.Raw.Socket_client.val-set_local_address}[g_socket_client_set_local_address
+                                                      ()]} for details. *)
 
 external get_family : t -> Ocgio_enums.socketfamily
   = "ml_g_socket_client_get_family"
 (** Gets the socket family of the socket client.
 
-    See g_socket_client_set_family() for details. *)
+    See
+    {{!Ocgio.Raw.Socket_client.val-set_family}[g_socket_client_set_family ()]}
+    for details. *)
 
 external get_enable_proxy : t -> bool = "ml_g_socket_client_get_enable_proxy"
-(** Gets the proxy enable state; see g_socket_client_set_enable_proxy() *)
+(** Gets the proxy enable state; see
+    {{!Ocgio.Raw.Socket_client.val-set_enable_proxy}[g_socket_client_set_enable_proxy
+                                                     ()]} *)
 
 external connect_to_uri_finish :
   t ->
@@ -179,7 +222,7 @@ external connect_to_uri_finish :
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_uri_finish"
 (** Finishes an async connect operation. See
-    g_socket_client_connect_to_uri_async() *)
+    [g_socket_client_connect_to_uri_async ()] *)
 
 external connect_to_uri :
   t ->
@@ -189,17 +232,23 @@ external connect_to_uri :
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_uri"
 [@@ocaml.doc
-  "This is a helper function for g_socket_client_connect().\n\n\
+  "This is a helper function for \
+   {{!Ocgio.Raw.Socket_client.val-connect}[g_socket_client_connect ()]}.\n\n\
    Attempts to create a TCP connection with a network URI.\n\n\
    [uri] may be any valid URI containing an \"authority\" (hostname/port)\n\
    component. If a port is not specified in the URI, [default_port]\n\
-   will be used. TLS will be negotiated if [GSocketClient:tls] is [true].\n\
-   ([GSocketClient] does not know to automatically assume TLS for\n\
+   will be used. TLS will be negotiated if \
+   {{!Ocgio.Raw.Socket_client.val-get_tls}[GSocketClient:tls]} is [true].\n\
+   ({{!Ocgio.Raw.Socket_client}[GSocketClient]} does not know to automatically \
+   assume TLS for\n\
    certain URI schemes.)\n\n\
-   Using this rather than g_socket_client_connect() or\n\
-   g_socket_client_connect_to_host() allows [GSocketClient] to\n\
+   Using this rather than \
+   {{!Ocgio.Raw.Socket_client.val-connect}[g_socket_client_connect ()]} or\n\
+   {{!Ocgio.Raw.Socket_client.val-connect_to_host}[g_socket_client_connect_to_host \
+   ()]} allows {{!Ocgio.Raw.Socket_client}[GSocketClient]} to\n\
    determine when to use application-specific proxy protocols.\n\n\
-   Upon a successful connection, a new [GSocketConnection] is constructed\n\
+   Upon a successful connection, a new \
+   {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} is constructed\n\
    and returned.  The caller owns this new object and must drop their\n\
    reference to it when finished with it.\n\n\
    In the event of any failure (DNS error, service not found, no hosts\n\
@@ -212,7 +261,7 @@ external connect_to_service_finish :
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_service_finish"
 (** Finishes an async connect operation. See
-    g_socket_client_connect_to_service_async() *)
+    [g_socket_client_connect_to_service_async ()] *)
 
 external connect_to_service :
   t ->
@@ -227,7 +276,8 @@ external connect_to_service :
    \"tcp\" protocol.  It then attempts to connect, in turn, to each of\n\
    the hosts providing the service until either a connection succeeds\n\
    or there are no hosts remaining.\n\n\
-   Upon a successful connection, a new [GSocketConnection] is constructed\n\
+   Upon a successful connection, a new \
+   {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} is constructed\n\
    and returned.  The caller owns this new object and must drop their\n\
    reference to it when finished with it.\n\n\
    In the event of any failure (DNS error, service not found, no hosts\n\
@@ -240,7 +290,7 @@ external connect_to_host_finish :
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_host_finish"
 (** Finishes an async connect operation. See
-    g_socket_client_connect_to_host_async() *)
+    [g_socket_client_connect_to_host_async ()] *)
 
 external connect_to_host :
   t ->
@@ -249,7 +299,8 @@ external connect_to_host :
   Cancellable.t option ->
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_to_host"
-(** This is a helper function for g_socket_client_connect().
+(** This is a helper function for
+    {{!Ocgio.Raw.Socket_client.val-connect}[g_socket_client_connect ()]}.
 
     Attempts to create a TCP connection to the named host.
 
@@ -272,7 +323,8 @@ external connect_to_host :
     made, in turn and according to the number of address records in DNS, until a
     connection succeeds.
 
-    Upon a successful connection, a new [GSocketConnection] is constructed and
+    Upon a successful connection, a new
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} is constructed and
     returned. The caller owns this new object and must drop their reference to
     it when finished with it.
 
@@ -285,7 +337,8 @@ external connect_finish :
   Async_result.t ->
   (Socket_and__socket_connection.Socket_connection.t, GError.t) result
   = "ml_g_socket_client_connect_finish"
-(** Finishes an async connect operation. See g_socket_client_connect_async() *)
+(** Finishes an async connect operation. See [g_socket_client_connect_async ()]
+*)
 
 external connect :
   t ->
@@ -297,34 +350,46 @@ external connect :
   = "ml_g_socket_client_connect"
 (** Tries to resolve the [connectable] and make a network connection to it.
 
-    Upon a successful connection, a new [GSocketConnection] is constructed and
+    Upon a successful connection, a new
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} is constructed and
     returned. The caller owns this new object and must drop their reference to
     it when finished with it.
 
-    The type of the [GSocketConnection] object returned depends on the type of
-    the underlying socket that is used. For instance, for a TCP/IP connection it
-    will be a [GTcpConnection].
+    The type of the {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} object
+    returned depends on the type of the underlying socket that is used. For
+    instance, for a TCP/IP connection it will be a
+    {{!Ocgio.Raw.Tcp_connection}[GTcpConnection]}.
 
     The socket created will be the same family as the address that the
     [connectable] resolves to, unless family is set with
-    g_socket_client_set_family() or indirectly via
-    g_socket_client_set_local_address(). The socket type defaults to
-    [G_SOCKET_TYPE_STREAM] but can be set with
-    g_socket_client_set_socket_type().
+    {{!Ocgio.Raw.Socket_client.val-set_family}[g_socket_client_set_family ()]}
+    or indirectly via
+    {{!Ocgio.Raw.Socket_client.val-set_local_address}[g_socket_client_set_local_address
+                                                      ()]}. The socket type
+    defaults to
+    {{!Ocgio.Enums.type-sockettype.constructor-STREAM}[G_SOCKET_TYPE_STREAM]}
+    but can be set with
+    {{!Ocgio.Raw.Socket_client.val-set_socket_type}[g_socket_client_set_socket_type
+                                                    ()]}.
 
-    If a local address is specified with g_socket_client_set_local_address() the
-    socket will be bound to this address before connecting. *)
+    If a local address is specified with
+    {{!Ocgio.Raw.Socket_client.val-set_local_address}[g_socket_client_set_local_address
+                                                      ()]} the socket will be
+    bound to this address before connecting. *)
 
 external add_application_proxy : t -> string -> unit
   = "ml_g_socket_client_add_application_proxy"
 (** Enable proxy protocols to be handled by the application. When the indicated
-    proxy protocol is returned by the [GProxyResolver], [GSocketClient] will
-    consider this protocol as supported but will not try to find a [GProxy]
-    instance to handle handshaking. The application must check for this case by
-    calling g_socket_connection_get_remote_address() on the returned
-    [GSocketConnection], and seeing if it's a [GProxyAddress] of the appropriate
-    type, to determine whether or not it needs to handle the proxy handshaking
-    itself.
+    proxy protocol is returned by the
+    {{!Ocgio.Raw.Proxy_resolver}[GProxyResolver]},
+    {{!Ocgio.Raw.Socket_client}[GSocketClient]} will consider this protocol as
+    supported but will not try to find a {{!Ocgio.Raw.Proxy}[GProxy]} instance
+    to handle handshaking. The application must check for this case by calling
+    {{!Ocgio.Raw.Socket_connection.val-get_remote_address}[g_socket_connection_get_remote_address
+                                                           ()]} on the returned
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}, and seeing if it's a
+    {{!Ocgio.Raw.Proxy_address}[GProxyAddress]} of the appropriate type, to
+    determine whether or not it needs to handle the proxy handshaking itself.
 
     This should be used for proxy protocols that are dialects of another
     protocol such as HTTP proxy. It also allows cohabitation of proxy protocols

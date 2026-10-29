@@ -64,6 +64,7 @@ type sym_kind = Doc_ast.sym_kind =
   | Id
   | Type_kind
 
+type sym_origin = Doc_ast.sym_origin = Fragment | Hash | Percent | C_call
 type c_lit = Doc_ast.c_lit = True | False | Null | Null_on_error of string
 
 type inline = Doc_ast.inline =
@@ -74,6 +75,7 @@ type inline = Doc_ast.inline =
   | Link of { text : inline list; url : string }
   | Page_ref of { text : inline list; path : string; anchor : string option }
   | Sym_ref of {
+      origin : sym_origin;
       kind : sym_kind option;
       endpoint : string;
       anchor : string option;

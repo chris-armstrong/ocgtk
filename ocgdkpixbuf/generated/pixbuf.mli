@@ -76,7 +76,7 @@ class type pixbuf_t = object
       fast path is used which omits the alpha blending and just performs the
       scaling.
 
-      See gdk_pixbuf_composite_color_simple() for a simpler variant of this
+      See [gdk_pixbuf_composite_color_simple ()] for a simpler variant of this
       function suitable for many tasks. *)
 
   method composite_color_simple :
@@ -97,7 +97,7 @@ class type pixbuf_t = object
       [pixbuf].
 
       Note that this does not copy the options set on the original [GdkPixbuf],
-      use gdk_pixbuf_copy_options() for this. *)
+      use [gdk_pixbuf_copy_options ()] for this. *)
 
   method copy_area : int -> int -> int -> int -> pixbuf_t -> int -> int -> unit
   (** Copies a rectangular area from [src_pixbuf] to [dest_pixbuf].
@@ -149,7 +149,7 @@ class type pixbuf_t = object
   [@@ocaml.doc
     "Looks up [key] in the list of options that may have been attached to the\n\
      [pixbuf] when it was loaded, or that may have been attached by another\n\
-     function using gdk_pixbuf_set_option().\n\n\
+     function using [gdk_pixbuf_set_option ()].\n\n\
      For instance, the ANI loader provides \"Title\" and \"Artist\" options.\n\
      The ICO, XBM, and XPM loaders provide \"x_hot\" and \"y_hot\" hot-spot\n\
      options for cursor definitions. The PNG loader provides the tEXt ancillary\n\
@@ -185,7 +185,7 @@ class type pixbuf_t = object
       not be modified.
 
       This function allows skipping the implicit copy that must be made if
-      gdk_pixbuf_get_pixels() is called on a read-only pixbuf. *)
+      [gdk_pixbuf_get_pixels ()] is called on a read-only pixbuf. *)
 
   method remove_option : string -> bool
   (** Removes the key/value pair option attached to a [GdkPixbuf]. *)
@@ -257,9 +257,9 @@ class type pixbuf_t = object
       resulting image onto the destination image replacing the previous
       contents.
 
-      Try to use gdk_pixbuf_scale_simple() first; this function is the
+      Try to use [gdk_pixbuf_scale_simple ()] first; this function is the
       industrial-strength power tool you can fall back to, if
-      gdk_pixbuf_scale_simple() isn't powerful enough.
+      [gdk_pixbuf_scale_simple ()] isn't powerful enough.
 
       If the source rectangle overlaps the destination rectangle on the same
       pixbuf, it will be overwritten during the scaling which results in
@@ -544,11 +544,12 @@ val new_from_bytes :
   int ->
   int ->
   pixbuf_t
-(** Creates a new [GdkPixbuf] out of in-memory readonly image data.
+(** Creates a new {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[GdkPixbuf]} out of
+    in-memory readonly image data.
 
     Currently only RGB images with 8 bits per sample are supported.
 
-    This is the [GBytes] variant of gdk_pixbuf_new_from_data(), useful for
+    This is the [GBytes] variant of [gdk_pixbuf_new_from_data ()], useful for
     language bindings. *)
 
 val new_from_file : string -> (pixbuf_t, GError.t) result
@@ -682,7 +683,7 @@ val new_from_stream_at_scale :
 val new_from_stream_finish :
   Ocgio.Async_result.async_result_t -> (pixbuf_t, GError.t) result
 (** Finishes an asynchronous pixbuf creation operation started with
-    gdk_pixbuf_new_from_stream_async(). *)
+    [gdk_pixbuf_new_from_stream_async ()]. *)
 
 val new_from_xpm_data : string array -> pixbuf_t
 (** Creates a new pixbuf by parsing XPM data in memory.

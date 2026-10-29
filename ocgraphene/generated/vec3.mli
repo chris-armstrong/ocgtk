@@ -35,4 +35,6 @@ val alloc : unit -> vec3_t
 
     The contents of the returned structure are undefined.
 
-    Use graphene_vec3_init() to initialize the vector. *)
+    Use
+    {{!Ocgraphene.Vec3.class-type-vec3_t.method-init}[graphene_vec3_init ()]} to
+    initialize the vector. *)

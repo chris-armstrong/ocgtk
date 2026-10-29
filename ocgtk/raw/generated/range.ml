@@ -84,7 +84,8 @@ external set_flippable : t -> bool -> unit = "ml_gtk_range_set_flippable"
 (** Sets whether the [GtkRange] respects text direction.
 
     If a range is flippable, it will switch its direction if it is horizontal
-    and its direction is [GTK_TEXT_DIR_RTL].
+    and its direction is
+    {{!Ocgtk.Enums.type-textdirection.constructor-RTL}[GTK_TEXT_DIR_RTL]}.
 
     See {{!Ocgtk.Raw.Widget.val-get_direction}[Gtk.Widget.get_direction]}. *)
 

@@ -242,7 +242,9 @@ external get_activate_on_single_click : t -> bool
 external drag_unhighlight_row : t -> unit
   = "ml_gtk_list_box_drag_unhighlight_row"
 (** If a row has previously been highlighted via
-    gtk_list_box_drag_highlight_row(), it will have the highlight removed. *)
+    {{!Ocgtk.Raw.List_box.val-drag_highlight_row}[gtk_list_box_drag_highlight_row
+                                                  ()]}, it will have the
+    highlight removed. *)
 
 external drag_highlight_row : t -> List_box_row.t -> unit
   = "ml_gtk_list_box_drag_highlight_row"
@@ -250,8 +252,8 @@ external drag_highlight_row : t -> List_box_row.t -> unit
 
     This is a helper function for implementing DnD onto a [GtkListBox]. The
     passed in [row] will be highlighted by setting the
-    [GTK_STATE_FLAG_DROP_ACTIVE] state and any previously highlighted row will
-    be unhighlighted.
+    {{!Ocgtk.Enums.type-stateflags_flag.constructor-DROP_ACTIVE}[GTK_STATE_FLAG_DROP_ACTIVE]}
+    state and any previously highlighted row will be unhighlighted.
 
     The row will also be unhighlighted when the widget gets a drag leave event.
 *)

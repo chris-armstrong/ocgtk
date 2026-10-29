@@ -41,10 +41,12 @@
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-hscrollbar_policy}
      [Gtk.ScrolledWindow:hscrollbar-policy]} and
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-vscrollbar_policy}
-     [Gtk.ScrolledWindow:vscrollbar-policy]} are [GTK_POLICY_NEVER] or
-    [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds internal [GtkScrollbar]
-    widgets around its child. The scroll position of the child, and if
-    applicable the scrollbars, is controlled by the
+     [Gtk.ScrolledWindow:vscrollbar-policy]} are
+    {{!Ocgtk.Enums.type-policytype.constructor-NEVER}[GTK_POLICY_NEVER]} or
+    {{!Ocgtk.Enums.type-policytype.constructor-EXTERNAL}[GTK_POLICY_EXTERNAL]},
+    [GtkScrolledWindow] adds internal [GtkScrollbar] widgets around its child.
+    The scroll position of the child, and if applicable the scrollbars, is
+    controlled by the
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_hadjustment}
      [Gtk.ScrolledWindow:hadjustment]} and
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_vadjustment}
@@ -385,10 +387,12 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-hscrollbar_policy}
      [Gtk.ScrolledWindow:hscrollbar-policy]} and
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-vscrollbar_policy}
-     [Gtk.ScrolledWindow:vscrollbar-policy]} are [GTK_POLICY_NEVER] or
-    [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds internal [GtkScrollbar]
-    widgets around its child. The scroll position of the child, and if
-    applicable the scrollbars, is controlled by the
+     [Gtk.ScrolledWindow:vscrollbar-policy]} are
+    {{!Ocgtk.Enums.type-policytype.constructor-NEVER}[GTK_POLICY_NEVER]} or
+    {{!Ocgtk.Enums.type-policytype.constructor-EXTERNAL}[GTK_POLICY_EXTERNAL]},
+    [GtkScrolledWindow] adds internal [GtkScrollbar] widgets around its child.
+    The scroll position of the child, and if applicable the scrollbars, is
+    controlled by the
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_hadjustment}
      [Gtk.ScrolledWindow:hadjustment]} and
     {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_vadjustment}

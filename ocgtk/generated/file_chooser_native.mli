@@ -139,9 +139,14 @@ end
      {b Response Codes}\n\n\
      [GtkFileChooserNative] inherits from \
      {{!Ocgtk.Native_dialog.class-type-native_dialog_t}[Gtk.NativeDialog]},\n\
-     which means it will return [GTK_RESPONSE_ACCEPT] if the user accepted,\n\
-     and [GTK_RESPONSE_CANCEL] if he pressed cancel. It can also return\n\
-     [GTK_RESPONSE_DELETE_EVENT] if the window was unexpectedly closed.\n\n\
+     which means it will return \
+     {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]} \
+     if the user accepted,\n\
+     and \
+     {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]} \
+     if he pressed cancel. It can also return\n\
+     {{!Ocgtk.Enums.type-responsetype.constructor-DELETE_EVENT}[GTK_RESPONSE_DELETE_EVENT]} \
+     if the window was unexpectedly closed.\n\n\
      {b Differences from [GtkFileChooserDialog]}\n\n\
      There are a few things in the \
      {{!Ocgtk.File_chooser.class-type-file_chooser_t}[Gtk.FileChooser]} \
@@ -262,9 +267,14 @@ class file_chooser_native : Raw.File_chooser_native.t -> file_chooser_native_t
  {b Response Codes}\n\n\
  [GtkFileChooserNative] inherits from \
  {{!Ocgtk.Native_dialog.class-type-native_dialog_t}[Gtk.NativeDialog]},\n\
- which means it will return [GTK_RESPONSE_ACCEPT] if the user accepted,\n\
- and [GTK_RESPONSE_CANCEL] if he pressed cancel. It can also return\n\
- [GTK_RESPONSE_DELETE_EVENT] if the window was unexpectedly closed.\n\n\
+ which means it will return \
+ {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]} if \
+ the user accepted,\n\
+ and \
+ {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]} if \
+ he pressed cancel. It can also return\n\
+ {{!Ocgtk.Enums.type-responsetype.constructor-DELETE_EVENT}[GTK_RESPONSE_DELETE_EVENT]} \
+ if the window was unexpectedly closed.\n\n\
  {b Differences from [GtkFileChooserDialog]}\n\n\
  There are a few things in the \
  {{!Ocgtk.File_chooser.class-type-file_chooser_t}[Gtk.FileChooser]} interface \

@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchemaKey: SettingsSchemaKey *)
 
-(** [GSettingsSchemaKey] is an opaque data structure and can only be accessed
-    using the following functions.
+(** {{!Ocgio.Raw.Settings_schema_key}[GSettingsSchemaKey]} is an opaque data
+    structure and can only be accessed using the following functions.
 
     The class built on this module is in {!Ocgio.Settings_schema_key}. *)
 

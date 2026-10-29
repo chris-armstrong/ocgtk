@@ -35,7 +35,7 @@
  builder (in which case you should not have to worry about their lifecycle),\n\
  or without a parent, in which case they have to be added to some container\n\
  to make use of them. Non-widget objects need to be reffed with\n\
- g_object_ref() to keep them beyond the lifespan of the builder.\n\n\
+ [g_object_ref ()] to keep them beyond the lifespan of the builder.\n\n\
  {b GtkBuilder UI Definitions}\n\n\
  [GtkBuilder] parses textual descriptions of user interfaces which are\n\
  specified in XML format. We refer to these descriptions as “GtkBuilder\n\
@@ -373,8 +373,8 @@ external value_from_string_type :
     Unlike [Gtk.Builder.value_from_string], this function takes a [GType]
     instead of [GParamSpec].
 
-    Calls g_value_init() on the [value] argument, so it need not be initialised
-    beforehand.
+    Calls [g_value_init ()] on the [value] argument, so it need not be
+    initialised beforehand.
 
     Upon errors [false] will be returned and [error] will be assigned a [GError]
     from the [GTK_BUILDER_ERROR] domain. *)
@@ -417,7 +417,8 @@ external get_translation_domain : t -> string option
 (** Gets the translation domain of [builder]. *)
 
 external get_scope : t -> Builder_scope.t = "ml_gtk_builder_get_scope"
-(** Gets the scope in use that was set via gtk_builder_set_scope(). *)
+(** Gets the scope in use that was set via
+    {{!Ocgtk.Raw.Builder.val-set_scope}[gtk_builder_set_scope ()]}. *)
 
 external get_objects : t -> [ `object_ ] Gobject.obj list
   = "ml_gtk_builder_get_objects"
@@ -435,7 +436,9 @@ external get_object : t -> string -> [ `object_ ] Gobject.obj option
 
 external get_current_object : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_builder_get_current_object"
-(** Gets the current object set via gtk_builder_set_current_object(). *)
+(** Gets the current object set via
+    {{!Ocgtk.Raw.Builder.val-set_current_object}[gtk_builder_set_current_object
+                                                 ()]}. *)
 
 external extend_with_template :
   t ->
@@ -515,8 +518,8 @@ external add_from_string : t -> string -> int -> (bool, GError.t) result
     domain.
 
     It’s not really reasonable to attempt to handle failures of this call. The
-    only reasonable thing to do when an error is detected is to call g_error().
-*)
+    only reasonable thing to do when an error is detected is to call
+    [g_error ()]. *)
 
 external add_from_resource : t -> string -> (bool, GError.t) result
   = "ml_gtk_builder_add_from_resource"
@@ -535,8 +538,8 @@ external add_from_resource : t -> string -> (bool, GError.t) result
     [G_RESOURCE_ERROR] domain.
 
     It’s not really reasonable to attempt to handle failures of this call. The
-    only reasonable thing to do when an error is detected is to call g_error().
-*)
+    only reasonable thing to do when an error is detected is to call
+    [g_error ()]. *)
 
 external add_from_file : t -> string -> (bool, GError.t) result
   = "ml_gtk_builder_add_from_file"

@@ -48,8 +48,9 @@ val new_from_directory :
 (** Attempts to create a new schema source corresponding to the contents of the
     given directory.
 
-    This function is not required for normal uses of [GSettings] but it may be
-    useful to authors of plugin management systems.
+    This function is not required for normal uses of
+    {{!Ocgio.Settings.class-type-settings_t}[GSettings]} but it may be useful to
+    authors of plugin management systems.
 
     The directory should contain a file called [gschemas.compiled] as produced
     by the \[glib-compile-schemas\]\[glib-compile-schemas\] tool.
@@ -65,13 +66,15 @@ val new_from_directory :
 
     If [parent] is non-[None] then there are two effects.
 
-    First, if g_settings_schema_source_lookup() is called with the [recursive]
-    flag set to [true] and the schema can not be found in the source, the lookup
-    will recurse to the parent.
+    First, if
+    {{!Ocgio.Settings_schema_source.class-type-settings_schema_source_t.method-lookup}
+     [g_settings_schema_source_lookup ()]} is called with the [recursive] flag
+    set to [true] and the schema can not be found in the source, the lookup will
+    recurse to the parent.
 
     Second, any references to other schemas specified within this source (ie:
     [child] or [extends]) references may be resolved from the [parent].
 
     For this second reason, except in very unusual situations, the [parent]
     should probably be given as the default schema source, as returned by
-    g_settings_schema_source_get_default(). *)
+    [g_settings_schema_source_get_default ()]. *)

@@ -21,8 +21,15 @@
    ([Ocgtk.Button.val-new_]) and the others to the class type's method
    ([Ocgtk.Button.class-type-button_t.method-on_clicked]). A property links
    to its accessor (see [Emitted_members.names]). An enumeration or bitfield
-   member links to its polymorphic variant tag in [Enums]. Legacy sigils and
-   C symbols are not linked. *)
+   member links to its polymorphic variant tag in [Enums].
+
+   Legacy sigils and C calls name C symbols and follow the same rules: a
+   [#CType] sigil links like a type, and [#CType:prop] and [#CType::sig] like
+   a member; a [%CONSTANT] sigil links to the constant, in any namespace, and
+   otherwise to the enumeration or bitfield member of the current namespace
+   with that C identifier; a C call ([gtk_widget_show()]) and an
+   [[id@symbol]] fragment link to the method or constructor of the current
+   namespace with that C identifier. A resolved C call keeps its [" ()"]. *)
 
 type env = {
   namespace : string;  (** The namespace the doc belongs to. *)
@@ -60,15 +67,15 @@ type miss_reason =
   | Kind_not_generated
       (** Functions, callbacks, virtual functions, aliases and error domains:
           never generated. *)
-  | Not_resolved_yet  (** Legacy sigils and C symbols. *)
 [@@deriving eq]
 
 val miss_reason_name : miss_reason -> string
 (** Name in the summary: ["unknown-target"], ... *)
 
 type outcome = {
+  origin : Doc_ast.sym_origin;
   kind : Doc_ast.sym_kind option;
-      (** The fragment keyword; [None] for a legacy sigil. *)
+      (** The fragment keyword; [None] for a sigil or a C call. *)
   endpoint : string;
   result : (unit, miss_reason) result;  (** [Ok ()] when linked. *)
 }
@@ -78,5 +85,6 @@ val resolve : env -> Doc_ast.t -> Doc_ast.t * outcome list
     returns one outcome per [Sym_ref], in document order. *)
 
 val pp_summary : outcome list Fmt.t
-(** Counts of linked references and of each miss reason per fragment kind, then
-    every distinct endpoint that missed with [Unknown_target]. *)
+(** Counts of linked references and of each miss reason per fragment kind and
+    per sigil or C call, then every distinct reference that missed with
+    [Unknown_target]. *)

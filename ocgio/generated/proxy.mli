@@ -34,7 +34,7 @@ class type proxy_t = object
 
   method connect_finish :
     Async_result.async_result_t -> (Io_stream.io_stream_t, GError.t) result
-  (** See g_proxy_connect(). *)
+  (** See [g_proxy_connect ()]. *)
 
   method supports_hostname : unit -> bool
   (** Some proxy protocols expect to be passed a hostname, which they will
@@ -42,7 +42,8 @@ class type proxy_t = object
       this. This function will return [false] if [proxy] is implementing such a
       protocol. When [false] is returned, the caller should resolve the
       destination hostname first, and then pass a [GProxyAddress] containing the
-      stringified IP address to g_proxy_connect() or g_proxy_connect_async(). *)
+      stringified IP address to [g_proxy_connect ()] or
+      [g_proxy_connect_async ()]. *)
 
   (** {2:conversions Conversions} *)
 

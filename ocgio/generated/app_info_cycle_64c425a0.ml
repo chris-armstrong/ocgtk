@@ -325,7 +325,7 @@ and drive_t = object
 
   method enumerate_identifiers : unit -> string array
   (** Gets the kinds of identifiers that [drive] has. Use
-      g_drive_get_identifier() to obtain the identifiers themselves. *)
+      [g_drive_get_identifier ()] to obtain the identifiers themselves. *)
 
   method get_icon : unit -> Icon.icon_t
   (** Gets the icon for [drive]. *)
@@ -351,8 +351,8 @@ and drive_t = object
 
   method has_media : unit -> bool
   (** Checks if the [drive] has media. Note that the OS may not be polling the
-      drive for media changes; see g_drive_is_media_check_automatic() for more
-      details. *)
+      drive for media changes; see [g_drive_is_media_check_automatic ()] for
+      more details. *)
 
   method has_volumes : unit -> bool
   (** Check if [drive] has any mountable volumes. *)
@@ -365,11 +365,12 @@ and drive_t = object
 
   method is_removable : unit -> bool
   (** Checks if the [GDrive] and/or its media is considered removable by the
-      user. See g_drive_is_media_removable(). *)
+      user. See [g_drive_is_media_removable ()]. *)
 
   method poll_for_media_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes an operation started with g_drive_poll_for_media() on a drive. *)
+  (** Finishes an operation started with [g_drive_poll_for_media ()] on a drive.
+  *)
 
   method start_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes starting a drive. *)
@@ -410,7 +411,7 @@ and file_t = object
     Async_result.async_result_t ->
     (File_output_stream.file_output_stream_t, GError.t) result
   (** Finishes an asynchronous file append operation started with
-      g_file_append_to_async(). *)
+      [g_file_append_to_async ()]. *)
 
   method build_attribute_list_for_copy :
     Enums.filecopyflags ->
@@ -419,11 +420,11 @@ and file_t = object
   (** Prepares the file attribute query string for copying to [file].
 
       This function prepares an attribute query string to be passed to
-      g_file_query_info() to get a list of attributes normally copied with the
-      file (see g_file_copy_attributes() for the detailed description). This
-      function is used by the implementation of g_file_copy_attributes() and is
-      useful when one needs to query and set the attributes in two stages (e.g.,
-      for recursive move of a directory). *)
+      [g_file_query_info ()] to get a list of attributes normally copied with
+      the file (see [g_file_copy_attributes ()] for the detailed description).
+      This function is used by the implementation of [g_file_copy_attributes ()]
+      and is useful when one needs to query and set the attributes in two stages
+      (e.g., for recursive move of a directory). *)
 
   method copy_attributes :
     file_t ->
@@ -439,7 +440,7 @@ and file_t = object
       useful when implementing move by copy + delete source. *)
 
   method copy_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes copying the file started with g_file_copy_async(). *)
+  (** Finishes copying the file started with [g_file_copy_async ()]. *)
 
   method create :
     Enums.filecreateflags ->
@@ -468,7 +469,7 @@ and file_t = object
     Async_result.async_result_t ->
     (File_output_stream.file_output_stream_t, GError.t) result
   (** Finishes an asynchronous file create operation started with
-      g_file_create_async(). *)
+      [g_file_create_async ()]. *)
 
   method create_readwrite :
     Enums.filecreateflags ->
@@ -501,12 +502,12 @@ and file_t = object
     Async_result.async_result_t ->
     (File_io_stream.file_io_stream_t, GError.t) result
   (** Finishes an asynchronous file create operation started with
-      g_file_create_readwrite_async(). *)
+      [g_file_create_readwrite_async ()]. *)
 
   method delete : Cancellable.cancellable_t option -> (bool, GError.t) result
   [@@ocaml.doc
     "Deletes a file. If the [file] is a directory, it will only be\n\
-     deleted if it is empty. This has the same semantics as g_unlink().\n\n\
+     deleted if it is empty. This has the same semantics as [g_unlink ()].\n\n\
      If [file] doesn’t exist, [G_IO_ERROR_NOT_FOUND] will be returned. This \
      allows\n\
      for deletion to be implemented avoiding\n\
@@ -528,16 +529,16 @@ and file_t = object
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   method delete_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes deleting a file started with g_file_delete_async(). *)
+  (** Finishes deleting a file started with [g_file_delete_async ()]. *)
 
   method dup : unit -> file_t
   (** Duplicates a [GFile] handle. This operation does not duplicate the actual
-      file or directory represented by the [GFile]; see g_file_copy() if
+      file or directory represented by the [GFile]; see [g_file_copy ()] if
       attempting to copy a file.
 
-      g_file_dup() is useful when a second handle is needed to the same
+      [g_file_dup ()] is useful when a second handle is needed to the same
       underlying file, for use in a separate thread ([GFile] is not
-      thread-safe). For use within the same thread, use g_object_ref() to
+      thread-safe). For use within the same thread, use [g_object_ref ()] to
       increment the existing object’s reference count.
 
       This call does no blocking I/O. *)
@@ -545,12 +546,12 @@ and file_t = object
   method eject_mountable_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous eject operation started by
-      g_file_eject_mountable(). *)
+      [g_file_eject_mountable ()]. *)
 
   method eject_mountable_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous eject operation started by
-      g_file_eject_mountable_with_operation(). *)
+      [g_file_eject_mountable_with_operation ()]. *)
 
   method enumerate_children :
     string ->
@@ -571,8 +572,8 @@ and file_t = object
      An example attribute query be \"standard::*,owner::user\".\n\
      The standard attributes are available as defines, like\n\
      [G_FILE_ATTRIBUTE_STANDARD_NAME]. [G_FILE_ATTRIBUTE_STANDARD_NAME] should\n\
-     always be specified if you plan to call g_file_enumerator_get_child() or\n\
-     g_file_enumerator_iterate() on the returned enumerator.\n\n\
+     always be specified if you plan to call [g_file_enumerator_get_child ()] or\n\
+     [g_file_enumerator_iterate ()] on the returned enumerator.\n\n\
      If [cancellable] is not [None], then the operation can be cancelled\n\
      by triggering the cancellable object from another thread. If the\n\
      operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be\n\
@@ -584,7 +585,7 @@ and file_t = object
   method enumerate_children_finish :
     Async_result.async_result_t -> (file_enumerator_t, GError.t) result
   (** Finishes an async enumerate children operation. See
-      g_file_enumerate_children_async(). *)
+      [g_file_enumerate_children_async ()]. *)
 
   method equal : file_t -> bool
   (** Checks if the two given [GFiles] refer to the same file.
@@ -610,7 +611,7 @@ and file_t = object
   method find_enclosing_mount_finish :
     Async_result.async_result_t -> (mount_t, GError.t) result
   (** Finishes an asynchronous find mount request. See
-      g_file_find_enclosing_mount_async(). *)
+      [g_file_find_enclosing_mount_async ()]. *)
 
   method get_basename : unit -> string option
   (** Gets the base name (the last component of the path) for a given [GFile].
@@ -623,7 +624,7 @@ and file_t = object
       rules other than it may not contain zero bytes. If you want to use
       filenames in a user interface you should use the display name that you can
       get by requesting the [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME] attribute
-      with g_file_query_info().
+      with [g_file_query_info ()].
 
       This call does no blocking I/O. *)
 
@@ -654,7 +655,7 @@ and file_t = object
   method get_parse_name : unit -> string
   (** Gets the parse name of the [file]. A parse name is a UTF-8 string that
       describes the file such that one can get the [GFile] back using
-      g_file_parse_name().
+      [g_file_parse_name ()].
 
       This is generally used to show the [GFile] as a nice full-pathname kind of
       string in a user interface, like in a location entry.
@@ -709,7 +710,7 @@ and file_t = object
       /foo is not considered a prefix of /foobar, only of /foo/bar.
 
       A [GFile] is not a prefix of itself. If you want to check for equality,
-      use g_file_equal().
+      use [g_file_equal ()].
 
       This call does no I/O, as it works purely on names. As such it can
       sometimes return [false] even if [file] is inside a [prefix] (from a
@@ -735,7 +736,7 @@ and file_t = object
      as it might be on a locally mounted remote filesystem.\n\n\
      On some systems non-native files may be available using the native\n\
      filesystem via a userspace filesystem (FUSE), in these cases this call\n\
-     will return [false], but g_file_get_path() will still return a native \
+     will return [false], but [g_file_get_path ()] will still return a native \
      path.\n\n\
      This call does no blocking I/O."]
 
@@ -745,7 +746,7 @@ and file_t = object
 
       Note that this will only create a child directory of the immediate parent
       directory of the path or URI given by the [GFile]. To recursively create
-      directories, see g_file_make_directory_with_parents().
+      directories, see [g_file_make_directory_with_parents ()].
 
       This function will fail if the parent directory does not exist, setting
       [error] to [G_IO_ERROR_NOT_FOUND]. If the file system doesn't support
@@ -763,7 +764,7 @@ and file_t = object
   method make_directory_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous directory creation, started with
-      g_file_make_directory_async(). *)
+      [g_file_make_directory_async ()]. *)
 
   method make_directory_with_parents :
     Cancellable.cancellable_t option -> (bool, GError.t) result
@@ -771,7 +772,8 @@ and file_t = object
       to 'mkdir -p'. If the file system does not support creating directories,
       this function will fail, setting [error] to [G_IO_ERROR_NOT_SUPPORTED]. If
       the directory itself already exists, this function will fail setting
-      [error] to [G_IO_ERROR_EXISTS], unlike the similar g_mkdir_with_parents().
+      [error] to [G_IO_ERROR_EXISTS], unlike the similar
+      [g_mkdir_with_parents ()].
 
       For a local [GFile] the newly created directories will have the default
       (current) ownership and permissions of the current process.
@@ -792,7 +794,7 @@ and file_t = object
   method make_symbolic_link_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous symbolic link creation, started with
-      g_file_make_symbolic_link_async(). *)
+      [g_file_make_symbolic_link_async ()]. *)
 
   method monitor :
     Enums.filemonitorflags ->
@@ -820,7 +822,7 @@ and file_t = object
       [G_FILE_MONITOR_WATCH_HARD_LINKS], since hard links can not be made to
       directories. It is not possible to monitor all the files in a directory
       for changes made via hard links; if you want to do this then you must
-      register individual watches with g_file_monitor(). *)
+      register individual watches with [g_file_monitor ()]. *)
 
   method monitor_file :
     Enums.filemonitorflags ->
@@ -842,18 +844,19 @@ and file_t = object
 
   method mount_enclosing_volume_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes a mount operation started by g_file_mount_enclosing_volume(). *)
+  (** Finishes a mount operation started by [g_file_mount_enclosing_volume ()].
+  *)
 
   method mount_mountable_finish :
     Async_result.async_result_t -> (file_t, GError.t) result
-  (** Finishes a mount operation. See g_file_mount_mountable() for details.
+  (** Finishes a mount operation. See [g_file_mount_mountable ()] for details.
 
       Finish an asynchronous mount operation that was started with
-      g_file_mount_mountable(). *)
+      [g_file_mount_mountable ()]. *)
 
   method move_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes an asynchronous file movement, started with g_file_move_async().
-  *)
+  (** Finishes an asynchronous file movement, started with
+      [g_file_move_async ()]. *)
 
   method open_readwrite :
     Cancellable.cancellable_t option ->
@@ -878,11 +881,11 @@ and file_t = object
     Async_result.async_result_t ->
     (File_io_stream.file_io_stream_t, GError.t) result
   (** Finishes an asynchronous file read operation started with
-      g_file_open_readwrite_async(). *)
+      [g_file_open_readwrite_async ()]. *)
 
   method peek_path : unit -> string option
-  (** Exactly like g_file_get_path(), but caches the result via
-      g_object_set_qdata_full(). This is useful for example in C applications
+  (** Exactly like [g_file_get_path ()], but caches the result via
+      [g_object_set_qdata_full ()]. This is useful for example in C applications
       which mix [g_file_*] APIs with native ones. It also avoids an extra
       duplicated string when possible, so will be generally more efficient.
 
@@ -890,10 +893,10 @@ and file_t = object
 
   method poll_mountable_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes a poll operation. See g_file_poll_mountable() for details.
+  (** Finishes a poll operation. See [g_file_poll_mountable ()] for details.
 
       Finish an asynchronous poll operation that was polled with
-      g_file_poll_mountable(). *)
+      [g_file_poll_mountable ()]. *)
 
   method query_default_handler :
     Cancellable.cancellable_t option -> (app_info_t, GError.t) result
@@ -906,7 +909,7 @@ and file_t = object
 
   method query_default_handler_finish :
     Async_result.async_result_t -> (app_info_t, GError.t) result
-  (** Finishes a g_file_query_default_handler_async() operation. *)
+  (** Finishes a [g_file_query_default_handler_async ()] operation. *)
 
   method query_exists : Cancellable.cancellable_t option -> bool
   (** Utility function to check if a particular file exists.
@@ -927,8 +930,8 @@ and file_t = object
       and on error create it; and: check if it exists, if not create it. These
       can both result in two processes creating the file (with perhaps a
       partially written file as the result). The correct approach is to always
-      try to create the file with g_file_create() which will either atomically
-      create the file or fail with a [G_IO_ERROR_EXISTS] error.
+      try to create the file with [g_file_create ()] which will either
+      atomically create the file or fail with a [G_IO_ERROR_EXISTS] error.
 
       However, in many cases an existence check is useful in a user interface,
       for instance to make a menu item sensitive/insensitive, so that you don't
@@ -941,7 +944,7 @@ and file_t = object
     Cancellable.cancellable_t option ->
     Enums.filetype
   (** Utility function to inspect the [GFileType] of a file. This is implemented
-      using g_file_query_info() and as such does blocking I/O.
+      using [g_file_query_info ()] and as such does blocking I/O.
 
       The primary use case of this method is to check if a file is a regular
       file, directory, or symlink. *)
@@ -951,7 +954,7 @@ and file_t = object
     Cancellable.cancellable_t option ->
     (File_info.file_info_t, GError.t) result
   [@@ocaml.doc
-    "Similar to g_file_query_info(), but obtains information\n\
+    "Similar to [g_file_query_info ()], but obtains information\n\
      about the filesystem the [file] is on, rather than the file itself.\n\
      For instance the amount of space available and the type of\n\
      the filesystem.\n\n\
@@ -977,7 +980,7 @@ and file_t = object
   method query_filesystem_info_finish :
     Async_result.async_result_t -> (File_info.file_info_t, GError.t) result
   (** Finishes an asynchronous filesystem info query. See
-      g_file_query_filesystem_info_async(). *)
+      [g_file_query_filesystem_info_async ()]. *)
 
   method query_info :
     string ->
@@ -1024,8 +1027,8 @@ and file_t = object
 
   method query_info_finish :
     Async_result.async_result_t -> (File_info.file_info_t, GError.t) result
-  (** Finishes an asynchronous file info query. See g_file_query_info_async().
-  *)
+  (** Finishes an asynchronous file info query. See
+      [g_file_query_info_async ()]. *)
 
   method query_settable_attributes :
     Cancellable.cancellable_t option ->
@@ -1071,7 +1074,7 @@ and file_t = object
     Async_result.async_result_t ->
     (File_input_stream.file_input_stream_t, GError.t) result
   (** Finishes an asynchronous file read operation started with
-      g_file_read_async(). *)
+      [g_file_read_async ()]. *)
 
   method replace :
     string option ->
@@ -1101,9 +1104,9 @@ and file_t = object
       this value is compared to the current entity tag of the file, and if they
       differ an [G_IO_ERROR_WRONG_ETAG] error is returned. This generally means
       that the file has been changed since you last read it. You can get the new
-      etag from g_file_output_stream_get_etag() after you've finished writing
+      etag from [g_file_output_stream_get_etag ()] after you've finished writing
       and closed the [GFileOutputStream]. When you load a new file you can use
-      g_file_input_stream_query_info() to get the etag of the file.
+      [g_file_input_stream_query_info ()] to get the etag of the file.
 
       If [make_backup] is [true], this function will attempt to make a backup of
       the current file before overwriting it. If this fails a
@@ -1122,7 +1125,7 @@ and file_t = object
     Async_result.async_result_t ->
     (File_output_stream.file_output_stream_t, GError.t) result
   (** Finishes an asynchronous file replace operation started with
-      g_file_replace_async(). *)
+      [g_file_replace_async ()]. *)
 
   method replace_readwrite :
     string option ->
@@ -1134,8 +1137,8 @@ and file_t = object
       possibly creating a backup copy of the file first. If the file doesn't
       exist, it will be created.
 
-      For details about the behaviour, see g_file_replace() which does the same
-      thing but returns an output stream only.
+      For details about the behaviour, see [g_file_replace ()] which does the
+      same thing but returns an output stream only.
 
       Note that in many non-local file cases read and write streams are not
       supported, so make sure you really need to do read and write streaming,
@@ -1145,7 +1148,7 @@ and file_t = object
     Async_result.async_result_t ->
     (File_io_stream.file_io_stream_t, GError.t) result
   (** Finishes an asynchronous file replace operation started with
-      g_file_replace_readwrite_async(). *)
+      [g_file_replace_readwrite_async ()]. *)
 
   method resolve_relative_path : string -> file_t
   (** Resolves a relative path for [file] to an absolute path.
@@ -1261,7 +1264,7 @@ and file_t = object
       If you want to implement a rename operation in the user interface the edit
       name ([G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME]) should be used as the initial
       value in the rename widget, and then the result after editing should be
-      passed to g_file_set_display_name().
+      passed to [g_file_set_display_name ()].
 
       On success the resulting converted filename is returned.
 
@@ -1272,21 +1275,21 @@ and file_t = object
   method set_display_name_finish :
     Async_result.async_result_t -> (file_t, GError.t) result
   (** Finishes setting a display name started with
-      g_file_set_display_name_async(). *)
+      [g_file_set_display_name_async ()]. *)
 
   method start_mountable_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes a start operation. See g_file_start_mountable() for details.
+  (** Finishes a start operation. See [g_file_start_mountable ()] for details.
 
       Finish an asynchronous start operation that was started with
-      g_file_start_mountable(). *)
+      [g_file_start_mountable ()]. *)
 
   method stop_mountable_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes a stop operation, see g_file_stop_mountable() for details.
+  (** Finishes a stop operation, see [g_file_stop_mountable ()] for details.
 
       Finish an asynchronous stop operation that was started with
-      g_file_stop_mountable(). *)
+      [g_file_stop_mountable ()]. *)
 
   method supports_thread_contexts : unit -> bool
   (** Checks if [file] supports thread-default main contexts (see
@@ -1299,35 +1302,37 @@ and file_t = object
     "Sends [file] to the \"Trashcan\", if possible. This is similar to\n\
      deleting it, but the user can recover it before emptying the trashcan.\n\
      Trashing is disabled for system mounts by default (see\n\
-     g_unix_mount_entry_is_system_internal()), so this call can return the\n\
+     [g_unix_mount_entry_is_system_internal ()]), so this call can return the\n\
      [G_IO_ERROR_NOT_SUPPORTED] error. Since GLib 2.66, the [x-gvfs-notrash] \
      unix\n\
-     mount option can be used to disable g_file_trash() support for particular\n\
+     mount option can be used to disable [g_file_trash ()] support for \
+     particular\n\
      mounts, the [G_IO_ERROR_NOT_SUPPORTED] error will be returned in that case.\n\
      Since 2.82, the [x-gvfs-trash] unix mount option can be used to enable\n\
-     g_file_trash() support for particular system mounts.\n\n\
+     [g_file_trash ()] support for particular system mounts.\n\n\
      If [cancellable] is not [None], then the operation can be cancelled by\n\
      triggering the cancellable object from another thread. If the operation\n\
      was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned."]
 
   method trash_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous file trashing operation, started with
-      g_file_trash_async(). *)
+      [g_file_trash_async ()]. *)
 
   method unmount_mountable_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes an unmount operation, see g_file_unmount_mountable() for details.
+  (** Finishes an unmount operation, see [g_file_unmount_mountable ()] for
+      details.
 
       Finish an asynchronous unmount operation that was started with
-      g_file_unmount_mountable(). *)
+      [g_file_unmount_mountable ()]. *)
 
   method unmount_mountable_with_operation_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an unmount operation, see
-      g_file_unmount_mountable_with_operation() for details.
+      [g_file_unmount_mountable_with_operation ()] for details.
 
       Finish an asynchronous unmount operation that was started with
-      g_file_unmount_mountable_with_operation(). *)
+      [g_file_unmount_mountable_with_operation ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -1347,22 +1352,22 @@ and file_enumerator_t = object
 
   method close_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes closing a file enumerator, started from
-      g_file_enumerator_close_async().
+      [g_file_enumerator_close_async ()].
 
       If the file enumerator was already closed when
-      g_file_enumerator_close_async() was called, then this function will report
-      [G_IO_ERROR_CLOSED] in [error], and return [false]. If the file enumerator
-      had pending operation when the close operation was started, then this
-      function will report [G_IO_ERROR_PENDING], and return [false]. If
-      [cancellable] was not [None], then the operation may have been cancelled
-      by triggering the cancellable object from another thread. If the operation
-      was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and [false]
-      will be returned. *)
+      [g_file_enumerator_close_async ()] was called, then this function will
+      report [G_IO_ERROR_CLOSED] in [error], and return [false]. If the file
+      enumerator had pending operation when the close operation was started,
+      then this function will report [G_IO_ERROR_PENDING], and return [false].
+      If [cancellable] was not [None], then the operation may have been
+      cancelled by triggering the cancellable object from another thread. If the
+      operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be set, and
+      [false] will be returned. *)
 
   method get_child : File_info.file_info_t -> file_t
   (** Return a new [GFile] which refers to the file named by [info] in the
       source directory of [enumerator]. This function is primarily intended to
-      be used inside loops with g_file_enumerator_next_file().
+      be used inside loops with [g_file_enumerator_next_file ()].
 
       To use this, [G_FILE_ATTRIBUTE_STANDARD_NAME] must have been listed in the
       attributes list used when creating the [GFileEnumerator].
@@ -1401,7 +1406,7 @@ and file_enumerator_t = object
   method next_files_finish :
     Async_result.async_result_t -> (File_info.file_info_t list, GError.t) result
   (** Finishes the asynchronous operation started with
-      g_file_enumerator_next_files_async(). *)
+      [g_file_enumerator_next_files_async ()]. *)
 
   method set_pending : bool -> unit
   (** Sets the file enumerator as having pending operations. *)
@@ -1564,7 +1569,7 @@ and mount_t = object
      shared-mime-info\n\
      specification for more on x-content types.\n\n\
      This is a synchronous operation and as such may block doing IO;\n\
-     see g_mount_guess_content_type() for the asynchronous version."]
+     see [g_mount_guess_content_type ()] for the asynchronous version."]
 
   method is_shadowed : unit -> bool
   (** Determines if [mount] is shadowed. Applications or libraries should avoid
@@ -1596,8 +1601,8 @@ and mount_t = object
   method shadow : unit -> unit
   (** Increments the shadow count on [mount]. Usually used by [GVolumeMonitor]
       implementations when creating a shadow mount for [mount], see
-      g_mount_is_shadowed() for more information. The caller will need to emit
-      the [GMount::changed] signal on [mount] manually. *)
+      [g_mount_is_shadowed ()] for more information. The caller will need to
+      emit the [GMount::changed] signal on [mount] manually. *)
 
   method unmount_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes unmounting a mount. If any errors occurred during the operation,
@@ -1611,8 +1616,8 @@ and mount_t = object
   method unshadow : unit -> unit
   (** Decrements the shadow count on [mount]. Usually used by [GVolumeMonitor]
       implementations when destroying a shadow mount for [mount], see
-      g_mount_is_shadowed() for more information. The caller will need to emit
-      the [GMount::changed] signal on [mount] manually. *)
+      [g_mount_is_shadowed ()] for more information. The caller will need to
+      emit the [GMount::changed] signal on [mount] manually. *)
 
   (** {2:conversions Conversions} *)
 
@@ -1651,14 +1656,14 @@ and volume_t = object
 
   method enumerate_identifiers : unit -> string array
   (** Gets the kinds of identifiers that [volume] has. Use
-      g_volume_get_identifier() to obtain the identifiers themselves. *)
+      [g_volume_get_identifier ()] to obtain the identifiers themselves. *)
 
   method get_activation_root : unit -> file_t option
   (** Gets the activation root for a [GVolume] if it is known ahead of mount
       time. Returns [None] otherwise. If not [None] and if [volume] is mounted,
-      then the result of g_mount_get_root() on the [GMount] object obtained from
-      g_volume_get_mount() will always either be equal or a prefix of what this
-      function returns. In other words, in code
+      then the result of [g_mount_get_root ()] on the [GMount] object obtained
+      from [g_volume_get_mount ()] will always either be equal or a prefix of
+      what this function returns. In other words, in code
 
       {[
         GMount *mount;
@@ -1680,7 +1685,7 @@ and volume_t = object
       will always be [true].
 
       Activation roots are typically used in [GVolumeMonitor] implementations to
-      find the underlying mount to shadow, see g_mount_is_shadowed() for more
+      find the underlying mount to shadow, see [g_mount_is_shadowed ()] for more
       details. *)
 
   method get_drive : unit -> drive_t option
@@ -1714,7 +1719,7 @@ and volume_t = object
   (** Finishes mounting a volume. If any errors occurred during the operation,
       [error] will be set to contain the errors and [false] will be returned.
 
-      If the mount operation succeeded, g_volume_get_mount() on [volume] is
+      If the mount operation succeeded, [g_volume_get_mount ()] on [volume] is
       guaranteed to return the mount right after calling this function; there's
       no need to listen for the 'mount-added' signal on [GVolumeMonitor]. *)
 

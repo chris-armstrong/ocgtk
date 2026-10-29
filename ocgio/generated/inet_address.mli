@@ -75,7 +75,7 @@ class type inet_address_t = object
 
   method get_native_size : unit -> Gsize.t
   (** Gets the size of the native raw binary address for [address]. This is the
-      size of the data that you get from g_inet_address_to_bytes(). *)
+      size of the data that you get from [g_inet_address_to_bytes ()]. *)
 
   method get_scope_id : unit -> UInt32.t
   (** Gets the value of [Gio.InetAddress:scope-id]. *)
@@ -109,15 +109,18 @@ class inet_address : Raw.Inet_address.t -> inet_address_t
 
 val new_any : Enums.socketfamily -> inet_address_t
 [@@ocaml.doc
-  "Creates a [GInetAddress] for the \"any\" address (unassigned/\"don't\n\
+  "Creates a {{!Ocgio.Inet_address.class-type-inet_address_t}[GInetAddress]} \
+   for the \"any\" address (unassigned/\"don't\n\
    care\") for [family]."]
 
 val new_from_string : string -> inet_address_t
-(** Parses [string] as an IP address and creates a new [GInetAddress].
+(** Parses [string] as an IP address and creates a new
+    {{!Ocgio.Inet_address.class-type-inet_address_t}[GInetAddress]}.
 
     If [address] is an IPv6 address, it can also contain a scope ID (separated
     from the address by a [%]). Note that currently this behavior is platform
     specific. This may change in a future release. *)
 
 val new_loopback : Enums.socketfamily -> inet_address_t
-(** Creates a [GInetAddress] for the loopback address for [family]. *)
+(** Creates a {{!Ocgio.Inet_address.class-type-inet_address_t}[GInetAddress]}
+    for the loopback address for [family]. *)

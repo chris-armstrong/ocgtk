@@ -25,7 +25,7 @@ class type socket_client_t = object
         a remote host; either a proxy server or the destination server itself.
         [connection] is the [GSocketConnection], which is not yet connected.
         Since GLib 2.40, you can access the remote address via
-        g_socket_connection_get_remote_address().
+        [g_socket_connection_get_remote_address ()].
 
       - [G_SOCKET_CLIENT_CONNECTED]: [client] has successfully connected to a
         remote host. [connection] is the connected [GSocketConnection].
@@ -36,7 +36,7 @@ class type socket_client_t = object
 
       - [G_SOCKET_CLIENT_PROXY_NEGOTIATED]: [client] has negotiated a connection
         to [connectable] through a proxy server. [connection] is the stream
-        returned from g_proxy_connect(), which may or may not be a
+        returned from [g_proxy_connect ()], which may or may not be a
         [GSocketConnection].
 
       - [G_SOCKET_CLIENT_TLS_HANDSHAKING]: [client] is about to begin a TLS
@@ -67,10 +67,10 @@ class type socket_client_t = object
       indicated proxy protocol is returned by the [GProxyResolver],
       [GSocketClient] will consider this protocol as supported but will not try
       to find a [GProxy] instance to handle handshaking. The application must
-      check for this case by calling g_socket_connection_get_remote_address() on
-      the returned [GSocketConnection], and seeing if it's a [GProxyAddress] of
-      the appropriate type, to determine whether or not it needs to handle the
-      proxy handshaking itself.
+      check for this case by calling [g_socket_connection_get_remote_address ()]
+      on the returned [GSocketConnection], and seeing if it's a [GProxyAddress]
+      of the appropriate type, to determine whether or not it needs to handle
+      the proxy handshaking itself.
 
       This should be used for proxy protocols that are dialects of another
       protocol such as HTTP proxy. It also allows cohabitation of proxy
@@ -98,26 +98,27 @@ class type socket_client_t = object
 
       The socket created will be the same family as the address that the
       [connectable] resolves to, unless family is set with
-      g_socket_client_set_family() or indirectly via
-      g_socket_client_set_local_address(). The socket type defaults to
+      [g_socket_client_set_family ()] or indirectly via
+      [g_socket_client_set_local_address ()]. The socket type defaults to
       [G_SOCKET_TYPE_STREAM] but can be set with
-      g_socket_client_set_socket_type().
+      [g_socket_client_set_socket_type ()].
 
-      If a local address is specified with g_socket_client_set_local_address()
-      the socket will be bound to this address before connecting. *)
+      If a local address is specified with
+      [g_socket_client_set_local_address ()] the socket will be bound to this
+      address before connecting. *)
 
   method connect_finish :
     Async_result.async_result_t ->
     (Socket_connection.socket_connection_t, GError.t) result
-  (** Finishes an async connect operation. See g_socket_client_connect_async()
-  *)
+  (** Finishes an async connect operation. See
+      [g_socket_client_connect_async ()] *)
 
   method connect_to_host :
     string ->
     UInt16.t ->
     Cancellable.cancellable_t option ->
     (Socket_connection.socket_connection_t, GError.t) result
-  (** This is a helper function for g_socket_client_connect().
+  (** This is a helper function for [g_socket_client_connect ()].
 
       Attempts to create a TCP connection to the named host.
 
@@ -152,7 +153,7 @@ class type socket_client_t = object
     Async_result.async_result_t ->
     (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
-      g_socket_client_connect_to_host_async() *)
+      [g_socket_client_connect_to_host_async ()] *)
 
   method connect_to_service :
     string ->
@@ -176,7 +177,7 @@ class type socket_client_t = object
     Async_result.async_result_t ->
     (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
-      g_socket_client_connect_to_service_async() *)
+      [g_socket_client_connect_to_service_async ()] *)
 
   method connect_to_uri :
     string ->
@@ -184,15 +185,15 @@ class type socket_client_t = object
     Cancellable.cancellable_t option ->
     (Socket_connection.socket_connection_t, GError.t) result
   [@@ocaml.doc
-    "This is a helper function for g_socket_client_connect().\n\n\
+    "This is a helper function for [g_socket_client_connect ()].\n\n\
      Attempts to create a TCP connection with a network URI.\n\n\
      [uri] may be any valid URI containing an \"authority\" (hostname/port)\n\
      component. If a port is not specified in the URI, [default_port]\n\
      will be used. TLS will be negotiated if [GSocketClient:tls] is [true].\n\
      ([GSocketClient] does not know to automatically assume TLS for\n\
      certain URI schemes.)\n\n\
-     Using this rather than g_socket_client_connect() or\n\
-     g_socket_client_connect_to_host() allows [GSocketClient] to\n\
+     Using this rather than [g_socket_client_connect ()] or\n\
+     [g_socket_client_connect_to_host ()] allows [GSocketClient] to\n\
      determine when to use application-specific proxy protocols.\n\n\
      Upon a successful connection, a new [GSocketConnection] is constructed\n\
      and returned.  The caller owns this new object and must drop their\n\
@@ -205,50 +206,50 @@ class type socket_client_t = object
     Async_result.async_result_t ->
     (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
-      g_socket_client_connect_to_uri_async() *)
+      [g_socket_client_connect_to_uri_async ()] *)
 
   method get_enable_proxy : unit -> bool
-  (** Gets the proxy enable state; see g_socket_client_set_enable_proxy() *)
+  (** Gets the proxy enable state; see [g_socket_client_set_enable_proxy ()] *)
 
   method get_family : unit -> Enums.socketfamily
   (** Gets the socket family of the socket client.
 
-      See g_socket_client_set_family() for details. *)
+      See [g_socket_client_set_family ()] for details. *)
 
   method get_local_address : unit -> Socket_address.socket_address_t option
   (** Gets the local address of the socket client.
 
-      See g_socket_client_set_local_address() for details. *)
+      See [g_socket_client_set_local_address ()] for details. *)
 
   method get_protocol : unit -> Enums.socketprotocol
   (** Gets the protocol name type of the socket client.
 
-      See g_socket_client_set_protocol() for details. *)
+      See [g_socket_client_set_protocol ()] for details. *)
 
   method get_proxy_resolver : unit -> Proxy_resolver.proxy_resolver_t
   (** Gets the [GProxyResolver] being used by [client]. Normally, this will be
-      the resolver returned by g_proxy_resolver_get_default(), but you can
-      override it with g_socket_client_set_proxy_resolver(). *)
+      the resolver returned by [g_proxy_resolver_get_default ()], but you can
+      override it with [g_socket_client_set_proxy_resolver ()]. *)
 
   method get_socket_type : unit -> Enums.sockettype
   (** Gets the socket type of the socket client.
 
-      See g_socket_client_set_socket_type() for details. *)
+      See [g_socket_client_set_socket_type ()] for details. *)
 
   method get_timeout : unit -> int
   (** Gets the I/O timeout time for sockets created by [client].
 
-      See g_socket_client_set_timeout() for details. *)
+      See [g_socket_client_set_timeout ()] for details. *)
 
   method get_tls : unit -> bool
   (** Gets whether [client] creates TLS connections. See
-      g_socket_client_set_tls() for details. *)
+      [g_socket_client_set_tls ()] for details. *)
 
   method get_tls_validation_flags : unit -> Enums.tlscertificateflags
   (** Gets the TLS validation flags used creating TLS connections via [client].
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GSocketClient:tls]-validation-flags for more
+      use correctly. See [GSocketClient:tls-validation-flags] for more
       information. *)
 
   method set_enable_proxy : bool -> unit
@@ -257,7 +258,7 @@ class type socket_client_t = object
       [GProxyResolver] to determine if a proxy protocol such as SOCKS is needed,
       and automatically do the necessary proxy negotiation.
 
-      See also g_socket_client_set_proxy_resolver(). *)
+      See also [g_socket_client_set_proxy_resolver ()]. *)
 
   method set_family : Enums.socketfamily -> unit
   (** Sets the socket family of the socket client. If this is set to something
@@ -289,7 +290,7 @@ class type socket_client_t = object
       settings.
 
       Note that whether or not the proxy resolver is actually used depends on
-      the setting of [GSocketClient:enable]-proxy, which is not changed by this
+      the setting of [GSocketClient:enable-proxy], which is not changed by this
       function (but which is [true] by default) *)
 
   method set_socket_type : Enums.sockettype -> unit
@@ -304,7 +305,7 @@ class type socket_client_t = object
       in seconds, or 0 for no timeout (the default).
 
       The timeout value affects the initial connection attempt as well, so
-      setting this may cause calls to g_socket_client_connect(), etc, to fail
+      setting this may cause calls to [g_socket_client_connect ()], etc, to fail
       with [G_IO_ERROR_TIMED_OUT]. *)
 
   method set_tls : bool -> unit
@@ -315,12 +316,12 @@ class type socket_client_t = object
       Note that since [GSocketClient] must return a [GSocketConnection], but
       [GTlsClientConnection] is not a [GSocketConnection], this actually wraps
       the resulting [GTlsClientConnection] in a [GTcpWrapperConnection] when
-      returning it. You can use g_tcp_wrapper_connection_get_base_io_stream() on
-      the return value to extract the [GTlsClientConnection].
+      returning it. You can use [g_tcp_wrapper_connection_get_base_io_stream ()]
+      on the return value to extract the [GTlsClientConnection].
 
       If you need to modify the behavior of the TLS handshake (eg, by setting a
       client-side certificate to use, or connecting to the
-      [GTlsConnection::accept]-certificate signal), you can connect to
+      [GTlsConnection::accept-certificate] signal), you can connect to
       [client]'s [GSocketClient::event] signal and wait for it to be emitted
       with [G_SOCKET_CLIENT_TLS_HANDSHAKING], which will give you a chance to
       see the [GTlsClientConnection] before the handshake starts. *)
@@ -330,7 +331,7 @@ class type socket_client_t = object
       [client]. The default value is [G_TLS_CERTIFICATE_VALIDATE_ALL].
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GSocketClient:tls]-validation-flags for more
+      use correctly. See [GSocketClient:tls-validation-flags] for more
       information. *)
 
   (** {2:properties Properties} *)

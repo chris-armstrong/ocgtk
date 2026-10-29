@@ -59,8 +59,8 @@ class type renderer_t = object
 
       Note that this method does not handle attributes in [glyph_item]. If you
       want colors, shapes and lines handled automatically according to those
-      attributes, you need to use pango_renderer_draw_layout_line() or
-      pango_renderer_draw_layout().
+      attributes, you need to use [pango_renderer_draw_layout_line ()] or
+      [pango_renderer_draw_layout ()].
 
       Note that [text] is the start of the text for layout, which is then
       indexed by [glyph_item->item->offset].

@@ -321,10 +321,13 @@ val new_ :
   D_bus_connection.d_bus_connection_t ->
   Cancellable.cancellable_t option ->
   (debug_controller_d_bus_t, GError.t) result
-(** Create a new [GDebugControllerDBus] and synchronously initialize it.
+(** Create a new
+    {{!Ocgio.Debug_controller_d_bus.class-type-debug_controller_d_bus_t}[GDebugControllerDBus]}
+    and synchronously initialize it.
 
     Initializing the object will export the debug object on [connection]. The
     object will remain registered until the last reference to the
-    [GDebugControllerDBus] is dropped.
+    {{!Ocgio.Debug_controller_d_bus.class-type-debug_controller_d_bus_t}[GDebugControllerDBus]}
+    is dropped.
 
     Initialization may fail if registering the object on [connection] fails. *)

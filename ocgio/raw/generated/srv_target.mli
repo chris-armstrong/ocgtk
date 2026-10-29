@@ -27,26 +27,29 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_srv_target_get_type"
 
 external new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> t
   = "ml_g_srv_target_new"
-(** Creates a new [GSrvTarget] with the given parameters.
+(** Creates a new {{!Ocgio.Raw.Srv_target}[GSrvTarget]} with the given
+    parameters.
 
     You should not need to use this; normally [GSrvTargets] are created by
-    [GResolver]. *)
+    {{!Ocgio.Raw.Resolver}[GResolver]}. *)
 
 (* Methods *)
 
 external get_weight : t -> UInt16.t = "ml_g_srv_target_get_weight"
-(** Gets [target]'s weight. You should not need to look at this; [GResolver]
-    already sorts the targets according to the algorithm in RFC 2782. *)
+(** Gets [target]'s weight. You should not need to look at this;
+    {{!Ocgio.Raw.Resolver}[GResolver]} already sorts the targets according to
+    the algorithm in RFC 2782. *)
 
 external get_priority : t -> UInt16.t = "ml_g_srv_target_get_priority"
-(** Gets [target]'s priority. You should not need to look at this; [GResolver]
-    already sorts the targets according to the algorithm in RFC 2782. *)
+(** Gets [target]'s priority. You should not need to look at this;
+    {{!Ocgio.Raw.Resolver}[GResolver]} already sorts the targets according to
+    the algorithm in RFC 2782. *)
 
 external get_port : t -> UInt16.t = "ml_g_srv_target_get_port"
 (** Gets [target]'s port *)
 
 external get_hostname : t -> string = "ml_g_srv_target_get_hostname"
 (** Gets [target]'s hostname (in ASCII form; if you are going to present this to
-    the user, you should use g_hostname_is_ascii_encoded() to check if it
-    contains encoded Unicode segments, and use g_hostname_to_unicode() to
+    the user, you should use [g_hostname_is_ascii_encoded ()] to check if it
+    contains encoded Unicode segments, and use [g_hostname_to_unicode ()] to
     convert it if it does.) *)

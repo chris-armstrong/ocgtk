@@ -80,8 +80,8 @@ class type property_action_t = object
   method enabled : bool
   (** If [action] is currently enabled.
 
-      If the action is disabled then calls to g_action_activate() and
-      g_action_change_state() have no effect. *)
+      If the action is disabled then calls to [g_action_activate ()] and
+      [g_action_change_state ()] have no effect. *)
 
   method invert_boolean : bool
   (** If [true], the state of the action will be the negation of the property
@@ -174,8 +174,8 @@ class property_action : Raw.Property_action.t -> property_action_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> [ `object_ ] Gobject.obj -> string -> property_action_t
-(** Creates a [GAction] corresponding to the value of property [property_name]
-    on [object].
+(** Creates a {{!Ocgio.Action.class-type-action_t}[GAction]} corresponding to
+    the value of property [property_name] on [object].
 
     The property must be existent and readable and writable (and not
     construct-only).

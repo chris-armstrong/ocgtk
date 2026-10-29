@@ -15,8 +15,8 @@ type t = [ `memory_output_stream | `output_stream | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_memory_output_stream_get_type"
 
 external new_resizable : unit -> t = "ml_g_memory_output_stream_new_resizable"
-(** Creates a new [GMemoryOutputStream], using g_realloc() and g_free() for
-    memory allocation. *)
+(** Creates a new {{!Ocgio.Raw.Memory_output_stream}[GMemoryOutputStream]},
+    using [g_realloc ()] and [g_free ()] for memory allocation. *)
 
 (* Methods *)
 
@@ -27,19 +27,24 @@ external steal_as_bytes : t -> Glib_bytes.t
 
 external get_size : t -> Gsize.t = "ml_g_memory_output_stream_get_size"
 (** Gets the size of the currently allocated data area (available from
-    g_memory_output_stream_get_data()).
+    [g_memory_output_stream_get_data ()]).
 
     You probably don't want to use this function on resizable streams. See
-    g_memory_output_stream_get_data_size() instead. For resizable streams the
-    size returned by this function is an implementation detail and may be change
-    at any time in response to operations on the stream.
+    {{!Ocgio.Raw.Memory_output_stream.val-get_data_size}[g_memory_output_stream_get_data_size
+                                                         ()]} instead. For
+    resizable streams the size returned by this function is an implementation
+    detail and may be change at any time in response to operations on the
+    stream.
 
     If the stream is fixed-sized (ie: no realloc was passed to
-    g_memory_output_stream_new()) then this is the maximum size of the stream
-    and further writes will return [G_IO_ERROR_NO_SPACE].
+    [g_memory_output_stream_new ()]) then this is the maximum size of the stream
+    and further writes will return
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-NO_SPACE}[G_IO_ERROR_NO_SPACE]}.
 
     In any case, if you want the number of bytes currently written to the
-    stream, use g_memory_output_stream_get_data_size(). *)
+    stream, use
+    {{!Ocgio.Raw.Memory_output_stream.val-get_data_size}[g_memory_output_stream_get_data_size
+                                                         ()]}. *)
 
 external get_data_size : t -> Gsize.t
   = "ml_g_memory_output_stream_get_data_size"

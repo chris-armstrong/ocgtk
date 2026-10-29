@@ -44,7 +44,7 @@ external set_transient_for :
     manager to do things like center [surface] on [parent] and keep [surface]
     above [parent].
 
-    See gtk_window_set_transient_for() if you’re using GtkWindow. *)
+    See [gtk_window_set_transient_for ()] if you’re using GtkWindow. *)
 
 external set_title : t -> string -> unit = "ml_gdk_toplevel_set_title"
 (** Sets the title of a toplevel surface.
@@ -54,8 +54,8 @@ external set_title : t -> string -> unit = "ml_gdk_toplevel_set_title"
 external set_startup_id : t -> string -> unit = "ml_gdk_toplevel_set_startup_id"
 (** Sets the startup notification ID.
 
-    When using GTK, typically you should use gtk_window_set_startup_id() instead
-    of this low-level function. *)
+    When using GTK, typically you should use [gtk_window_set_startup_id ()]
+    instead of this low-level function. *)
 
 external set_modal : t -> bool -> unit = "ml_gdk_toplevel_set_modal"
 (** Sets the toplevel to be modal.
@@ -170,8 +170,8 @@ external get_capabilities : t -> Ocgdk_enums.toplevelcapabilities
 external focus : t -> UInt32.t -> unit = "ml_gdk_toplevel_focus"
 (** Sets keyboard focus to [surface].
 
-    In most cases, gtk_window_present_with_time() should be used on a GtkWindow,
-    rather than calling this function. *)
+    In most cases, [gtk_window_present_with_time ()] should be used on a
+    GtkWindow, rather than calling this function. *)
 
 external begin_resize :
   t ->

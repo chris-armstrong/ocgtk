@@ -63,7 +63,9 @@ external get_selected : t -> bool = "ml_gtk_column_view_cell_get_selected"
 external get_position : t -> int = "ml_gtk_column_view_cell_get_position"
 (** Gets the position in the model that [self] currently displays.
 
-    If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
+    If [self] is unbound,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
 
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_column_view_cell_get_item"
@@ -73,7 +75,8 @@ external get_item : t -> [ `object_ ] Gobject.obj option
 
 external get_focusable : t -> bool = "ml_gtk_column_view_cell_get_focusable"
 (** Checks if a list item has been set to be focusable via
-    gtk_column_view_cell_set_focusable(). *)
+    {{!Ocgtk.Raw.Column_view_cell.val-set_focusable}[gtk_column_view_cell_set_focusable
+                                                     ()]}. *)
 
 external get_child :
   t ->
@@ -81,7 +84,9 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_column_view_cell_get_child"
-(** Gets the child previously set via gtk_column_view_cell_set_child() or [None]
-    if none was set. *)
+(** Gets the child previously set via
+    {{!Ocgtk.Raw.Column_view_cell.val-set_child}[gtk_column_view_cell_set_child
+                                                 ()]} or [None] if none was set.
+*)
 
 (* Properties *)

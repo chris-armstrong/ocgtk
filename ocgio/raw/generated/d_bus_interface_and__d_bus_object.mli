@@ -26,7 +26,8 @@ module rec D_bus_interface : sig
 
   external set_object : t -> D_bus_object.t option -> unit
     = "ml_g_dbus_interface_set_object"
-  (** Sets the [GDBusObject] for [interface_] to [object].
+  (** Sets the {{!Ocgio.Raw.D_bus_object}[GDBusObject]} for [interface_] to
+      [object].
 
       Note that [interface_] will hold a weak reference to [object]. *)
 
@@ -37,7 +38,8 @@ module rec D_bus_interface : sig
 
   external dup_object : t -> D_bus_object.t option
     = "ml_g_dbus_interface_dup_object"
-  (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
+  (** Gets the {{!Ocgio.Raw.D_bus_object}[GDBusObject]} that [interface_]
+      belongs to, if any. *)
 end
 
 (** The [GDBusObject] type is the base type for D-Bus objects on both the

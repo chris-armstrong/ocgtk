@@ -93,9 +93,12 @@ class unix_credentials_message :
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> unix_credentials_message_t
-(** Creates a new [GUnixCredentialsMessage] with credentials matching the
-    current processes. *)
+(** Creates a new
+    {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[GUnixCredentialsMessage]}
+    with credentials matching the current processes. *)
 
 val new_with_credentials :
   Credentials.credentials_t -> unix_credentials_message_t
-(** Creates a new [GUnixCredentialsMessage] holding [credentials]. *)
+(** Creates a new
+    {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[GUnixCredentialsMessage]}
+    holding [credentials]. *)

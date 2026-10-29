@@ -60,62 +60,81 @@ external new_ : unit -> t = "ml_g_file_info_new"
 
 external unset_attribute_mask : t -> unit
   = "ml_g_file_info_unset_attribute_mask"
-(** Unsets a mask set by g_file_info_set_attribute_mask(), if one is set. *)
+(** Unsets a mask set by
+    {{!Ocgio.Raw.File_info.val-set_attribute_mask}[g_file_info_set_attribute_mask
+                                                   ()]}, if one is set. *)
 
 external set_symlink_target : t -> string -> unit
   = "ml_g_file_info_set_symlink_target"
-(** Sets the [G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET] attribute in the file
-    info to the given symlink target. *)
+(** Sets the
+    {{!Ocgio.Constants.file_attribute_standard_symlink_target}[G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET]}
+    attribute in the file info to the given symlink target. *)
 
 external set_symbolic_icon : t -> Icon.t -> unit
   = "ml_g_file_info_set_symbolic_icon"
-(** Sets the symbolic icon for a given [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON]. *)
+(** Sets the symbolic icon for a given {{!Ocgio.Raw.File_info}[GFileInfo]}. See
+    {{!Ocgio.Constants.file_attribute_standard_symbolic_icon}[G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON]}.
+*)
 
 external set_sort_order : t -> Int32.t -> unit = "ml_g_file_info_set_sort_order"
 (** Sets the sort order attribute in the file info structure. See
-    [G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER]. *)
+    {{!Ocgio.Constants.file_attribute_standard_sort_order}[G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER]}.
+*)
 
 external set_size : t -> int64 -> unit = "ml_g_file_info_set_size"
-(** Sets the [G_FILE_ATTRIBUTE_STANDARD_SIZE] attribute in the file info to the
-    given size. *)
+(** Sets the
+    {{!Ocgio.Constants.file_attribute_standard_size}[G_FILE_ATTRIBUTE_STANDARD_SIZE]}
+    attribute in the file info to the given size. *)
 
 external set_name : t -> string -> unit = "ml_g_file_info_set_name"
-(** Sets the name attribute for the current [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_STANDARD_NAME]. *)
+(** Sets the name attribute for the current {{!Ocgio.Raw.File_info}[GFileInfo]}.
+    See
+    {{!Ocgio.Constants.file_attribute_standard_name}[G_FILE_ATTRIBUTE_STANDARD_NAME]}.
+*)
 
 external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
 [@@ocaml.doc
-  "Sets the \"is_symlink\" attribute in a [GFileInfo] according to [is_symlink].\n\
-   See [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]."]
+  "Sets the \"is_symlink\" attribute in a {{!Ocgio.Raw.File_info}[GFileInfo]} \
+   according to [is_symlink].\n\
+   See \
+   {{!Ocgio.Constants.file_attribute_standard_is_symlink}[G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]}."]
 
 external set_is_hidden : t -> bool -> unit = "ml_g_file_info_set_is_hidden"
 [@@ocaml.doc
-  "Sets the \"is_hidden\" attribute in a [GFileInfo] according to [is_hidden].\n\
-   See [G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]."]
+  "Sets the \"is_hidden\" attribute in a {{!Ocgio.Raw.File_info}[GFileInfo]} \
+   according to [is_hidden].\n\
+   See \
+   {{!Ocgio.Constants.file_attribute_standard_is_hidden}[G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]}."]
 
 external set_icon : t -> Icon.t -> unit = "ml_g_file_info_set_icon"
-(** Sets the icon for a given [GFileInfo]. See [G_FILE_ATTRIBUTE_STANDARD_ICON].
+(** Sets the icon for a given {{!Ocgio.Raw.File_info}[GFileInfo]}. See
+    {{!Ocgio.Constants.file_attribute_standard_icon}[G_FILE_ATTRIBUTE_STANDARD_ICON]}.
 *)
 
 external set_file_type : t -> Ocgio_enums.filetype -> unit
   = "ml_g_file_info_set_file_type"
-(** Sets the file type in a [GFileInfo] to [type]. See
-    [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
+(** Sets the file type in a {{!Ocgio.Raw.File_info}[GFileInfo]} to [type]. See
+    {{!Ocgio.Constants.file_attribute_standard_type}[G_FILE_ATTRIBUTE_STANDARD_TYPE]}.
+*)
 
 external set_edit_name : t -> string -> unit = "ml_g_file_info_set_edit_name"
 (** Sets the edit name for the current file. See
-    [G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME]. *)
+    {{!Ocgio.Constants.file_attribute_standard_edit_name}[G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME]}.
+*)
 
 external set_display_name : t -> string -> unit
   = "ml_g_file_info_set_display_name"
-(** Sets the display name for the current [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]. *)
+(** Sets the display name for the current {{!Ocgio.Raw.File_info}[GFileInfo]}.
+    See
+    {{!Ocgio.Constants.file_attribute_standard_display_name}[G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]}.
+*)
 
 external set_content_type : t -> string -> unit
   = "ml_g_file_info_set_content_type"
-(** Sets the content type attribute for a given [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE]. *)
+(** Sets the content type attribute for a given
+    {{!Ocgio.Raw.File_info}[GFileInfo]}. See
+    {{!Ocgio.Constants.file_attribute_standard_content_type}[G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE]}.
+*)
 
 external set_attribute_uint64 : t -> string -> UInt64.t -> unit
   = "ml_g_file_info_set_attribute_uint64"
@@ -139,8 +158,9 @@ external set_attribute_status :
   t -> string -> Ocgio_enums.fileattributestatus -> bool
   = "ml_g_file_info_set_attribute_status"
 (** Sets the attribute status for an attribute key. This is only needed by
-    external code that implement g_file_set_attributes_from_info() or similar
-    functions.
+    external code that implement
+    {{!Ocgio.Raw.File.val-set_attributes_from_info}[g_file_set_attributes_from_info
+                                                    ()]} or similar functions.
 
     The attribute must exist in [info] for this to work. Otherwise [false] is
     returned and [info] is unchanged. *)
@@ -193,96 +213,130 @@ external has_attribute : t -> string -> bool = "ml_g_file_info_has_attribute"
 
 external get_symlink_target : t -> string option
   = "ml_g_file_info_get_symlink_target"
-(** Gets the symlink target for a given [GFileInfo].
+(** Gets the symlink target for a given {{!Ocgio.Raw.File_info}[GFileInfo]}.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_symlink_target}[G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET]}.
+*)
 
 external get_symbolic_icon : t -> Icon.t option
   = "ml_g_file_info_get_symbolic_icon"
 (** Gets the symbolic icon for a file.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_symbolic_icon}[G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON]}.
+*)
 
 external get_sort_order : t -> Int32.t = "ml_g_file_info_get_sort_order"
-(** Gets the value of the sort_order attribute from the [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER].
+(** Gets the value of the sort_order attribute from the
+    {{!Ocgio.Raw.File_info}[GFileInfo]}. See
+    {{!Ocgio.Constants.file_attribute_standard_sort_order}[G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER]}.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_sort_order}[G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER]}.
+*)
 
 external get_size : t -> int64 = "ml_g_file_info_get_size"
 (** Gets the file's size (in bytes). The size is retrieved through the value of
-    the [G_FILE_ATTRIBUTE_STANDARD_SIZE] attribute and is converted from
-    [UInt64.t] to #goffset before returning the result.
+    the
+    {{!Ocgio.Constants.file_attribute_standard_size}[G_FILE_ATTRIBUTE_STANDARD_SIZE]}
+    attribute and is converted from [UInt64.t] to #goffset before returning the
+    result.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_SIZE]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_size}[G_FILE_ATTRIBUTE_STANDARD_SIZE]}.
+*)
 
 external get_name : t -> string = "ml_g_file_info_get_name"
 (** Gets the name for a file. This is guaranteed to always be set.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_NAME]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_name}[G_FILE_ATTRIBUTE_STANDARD_NAME]}.
+*)
 
 external get_is_symlink : t -> bool = "ml_g_file_info_get_is_symlink"
 (** Checks if a file is a symlink.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_is_symlink}[G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]}.
+*)
 
 external get_is_hidden : t -> bool = "ml_g_file_info_get_is_hidden"
 (** Checks if a file is hidden.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_is_hidden}[G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]}.
+*)
 
 external get_is_backup : t -> bool = "ml_g_file_info_get_is_backup"
 (** Checks if a file is a backup file.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_is_backup}[G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP]}.
+*)
 
 external get_icon : t -> Icon.t option = "ml_g_file_info_get_icon"
 (** Gets the icon for a file.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_ICON]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_icon}[G_FILE_ATTRIBUTE_STANDARD_ICON]}.
+*)
 
 external get_file_type : t -> Ocgio_enums.filetype
   = "ml_g_file_info_get_file_type"
 (** Gets a file's type (whether it is a regular file, symlink, etc). This is
-    different from the file's content type, see g_file_info_get_content_type().
+    different from the file's content type, see
+    {{!Ocgio.Raw.File_info.val-get_content_type}[g_file_info_get_content_type
+                                                 ()]}.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_type}[G_FILE_ATTRIBUTE_STANDARD_TYPE]}.
+*)
 
 external get_etag : t -> string option = "ml_g_file_info_get_etag"
 (** Gets the \[entity tag\]{{!Ocgio.Raw.File}[Gio.File]} for a given
-    [GFileInfo]. See [G_FILE_ATTRIBUTE_ETAG_VALUE].
+    {{!Ocgio.Raw.File_info}[GFileInfo]}. See
+    {{!Ocgio.Constants.file_attribute_etag_value}[G_FILE_ATTRIBUTE_ETAG_VALUE]}.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_ETAG_VALUE]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_etag_value}[G_FILE_ATTRIBUTE_ETAG_VALUE]}.
+*)
 
 external get_edit_name : t -> string = "ml_g_file_info_get_edit_name"
 (** Gets the edit name for a file.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_edit_name}[G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME]}.
+*)
 
 external get_display_name : t -> string = "ml_g_file_info_get_display_name"
 (** Gets a display name for a file. This is guaranteed to always be set.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_display_name}[G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]}.
+*)
 
 external get_content_type : t -> string option
   = "ml_g_file_info_get_content_type"
 (** Gets the file's content type.
 
-    It is an error to call this if the [GFileInfo] does not contain
-    [G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE]. *)
+    It is an error to call this if the {{!Ocgio.Raw.File_info}[GFileInfo]} does
+    not contain
+    {{!Ocgio.Constants.file_attribute_standard_content_type}[G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE]}.
+*)
 
 external get_attribute_uint64 : t -> string -> UInt64.t
   = "ml_g_file_info_get_attribute_uint64"

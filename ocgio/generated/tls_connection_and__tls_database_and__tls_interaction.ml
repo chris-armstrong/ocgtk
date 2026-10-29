@@ -16,7 +16,7 @@ class type tls_connection_t = object
     Gobject.Signal.handler_id
   (** Emitted during the TLS handshake after the peer certificate has been
       received. You can examine [peer_cert]'s certification path by calling
-      g_tls_certificate_get_issuer() on it.
+      [g_tls_certificate_get_issuer ()] on it.
 
       For a client-side connection, [peer_cert] is the server's certificate, and
       the signal will only be emitted if the certificate was not acceptable
@@ -58,11 +58,11 @@ class type tls_connection_t = object
   method emit_accept_certificate :
     Tls_certificate.tls_certificate_t -> Enums.tlscertificateflags -> bool
   (** Used by [GTlsConnection] implementations to emit the
-      [GTlsConnection::accept]-certificate signal. *)
+      [GTlsConnection::accept-certificate] signal. *)
 
   method get_certificate : unit -> Tls_certificate.tls_certificate_t option
-  (** Gets [conn]'s certificate, as set by g_tls_connection_set_certificate().
-  *)
+  (** Gets [conn]'s certificate, as set by
+      [g_tls_connection_set_certificate ()]. *)
 
   method get_ciphersuite_name : unit -> string option
   (** Returns the name of the current TLS ciphersuite, or [None] if the
@@ -76,7 +76,7 @@ class type tls_connection_t = object
 
   method get_database : unit -> tls_database_t option
   (** Gets the certificate database that [conn] uses to verify peer
-      certificates. See g_tls_connection_set_database(). *)
+      certificates. See [g_tls_connection_set_database ()]. *)
 
   method get_interaction : unit -> tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
@@ -90,19 +90,19 @@ class type tls_connection_t = object
       If the peer did not use the ALPN extension, or did not advertise a
       protocol that matched one of [conn]'s protocols, or the TLS backend does
       not support ALPN, then this will be [None]. See
-      g_tls_connection_set_advertised_protocols(). *)
+      [g_tls_connection_set_advertised_protocols ()]. *)
 
   method get_peer_certificate : unit -> Tls_certificate.tls_certificate_t option
   (** Gets [conn]'s peer's certificate after the handshake has completed or
       failed. (It is not set during the emission of
-      [GTlsConnection::accept]-certificate.) *)
+      [GTlsConnection::accept-certificate].) *)
 
   method get_peer_certificate_errors : unit -> Enums.tlscertificateflags
   (** Gets the errors associated with validating [conn]'s peer's certificate,
       after the handshake has completed or failed. (It is not set during the
-      emission of [GTlsConnection::accept]-certificate.)
+      emission of [GTlsConnection::accept-certificate].)
 
-      See [GTlsConnection:peer]-certificate-errors for more information. *)
+      See [GTlsConnection:peer-certificate-errors] for more information. *)
 
   method get_protocol_version : unit -> Enums.tlsprotocolversion
   (** Returns the current TLS protocol version, which may be
@@ -112,16 +112,16 @@ class type tls_connection_t = object
 
   method get_rehandshake_mode : unit -> Enums.tlsrehandshakemode
   (** Gets [conn] rehandshaking mode. See
-      g_tls_connection_set_rehandshake_mode() for details. *)
+      [g_tls_connection_set_rehandshake_mode ()] for details. *)
 
   method get_require_close_notify : unit -> bool
   (** Tests whether or not [conn] expects a proper TLS close notification when
-      the connection is closed. See g_tls_connection_set_require_close_notify()
-      for details. *)
+      the connection is closed. See
+      [g_tls_connection_set_require_close_notify ()] for details. *)
 
   method get_use_system_certdb : unit -> bool
   (** Gets whether [conn] uses the system certificate database to verify peer
-      certificates. See g_tls_connection_set_use_system_certdb(). *)
+      certificates. See [g_tls_connection_set_use_system_certdb ()]. *)
 
   method handshake : Cancellable.cancellable_t option -> (bool, GError.t) result
   [@@ocaml.doc
@@ -131,7 +131,7 @@ class type tls_connection_t = object
      connecting (or after sending a \"STARTTLS\"-type command),\n\
      [GTlsConnection] will handle this for you automatically when you try\n\
      to send or receive data on the connection. You can call\n\
-     g_tls_connection_handshake() manually if you want to know whether\n\
+     [g_tls_connection_handshake ()] manually if you want to know whether\n\
      the initial handshake succeeded or failed (as opposed to just\n\
      immediately trying to use [conn] to read or write, in which case,\n\
      if it fails, it may not be possible to tell if it failed before or\n\
@@ -141,7 +141,7 @@ class type tls_connection_t = object
      Likewise, on the server side, although a handshake is necessary at\n\
      the beginning of the communication, you do not need to call this\n\
      function explicitly unless you want clearer error reporting.\n\n\
-     Previously, calling g_tls_connection_handshake() after the initial\n\
+     Previously, calling [g_tls_connection_handshake ()] after the initial\n\
      handshake would trigger a rehandshake; however, this usage was\n\
      deprecated in GLib 2.60 because rehandshaking was removed from the\n\
      TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after\n\
@@ -155,14 +155,14 @@ class type tls_connection_t = object
   method handshake_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finish an asynchronous TLS handshake operation. See
-      g_tls_connection_handshake() for more information. *)
+      [g_tls_connection_handshake ()] for more information. *)
 
   method set_advertised_protocols : string array option -> unit
   (** Sets the list of application-layer protocols to advertise that the caller
       is willing to speak on this connection. The Application-Layer Protocol
       Negotiation (ALPN) extension will be used to negotiate a compatible
-      protocol with the peer; use g_tls_connection_get_negotiated_protocol() to
-      find the negotiated protocol after the handshake. Specifying [None] for
+      protocol with the peer; use [g_tls_connection_get_negotiated_protocol ()]
+      to find the negotiated protocol after the handshake. Specifying [None] for
       the the value of [protocols] will disable ALPN negotiation.
 
       See
@@ -177,23 +177,23 @@ class type tls_connection_t = object
       For a [GTlsClientConnection], this is optional. If a handshake fails with
       [G_TLS_ERROR_CERTIFICATE_REQUIRED], that means that the server requires a
       certificate, and if you try connecting again, you should call this method
-      first. You can call g_tls_client_connection_get_accepted_cas() on the
+      first. You can call [g_tls_client_connection_get_accepted_cas ()] on the
       failed connection to get a list of Certificate Authorities that the server
       will accept certificates from.
 
       (It is also possible that a server will allow the connection with or
       without a certificate; in that case, if you don't provide a certificate,
       you can tell that the server requested one by the fact that
-      g_tls_client_connection_get_accepted_cas() will return non-[None].) *)
+      [g_tls_client_connection_get_accepted_cas ()] will return non-[None].) *)
 
   method set_database : tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to [None], then peer
+      [g_tls_backend_get_default_database ()]. If set to [None], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      error (meaning [GTlsConnection::accept]-certificate will always be emitted
+      error (meaning [GTlsConnection::accept-certificate] will always be emitted
       on client-side connections, unless that bit is not set in
-      [GTlsClientConnection:validation]-flags).
+      [GTlsClientConnection:validation-flags]).
 
       There are nonintuitive security implications when using a non-default
       database. See [GTlsConnection:database] for details. *)
@@ -227,16 +227,16 @@ class type tls_connection_t = object
      somehow self-delimiting); in this case, the close notify is\n\
      redundant and sometimes omitted. (TLS 1.1 explicitly allows this;\n\
      in TLS 1.0 it is technically an error, but often done anyway.) You\n\
-     can use g_tls_connection_set_require_close_notify() to tell [conn]\n\
+     can use [g_tls_connection_set_require_close_notify ()] to tell [conn]\n\
      to allow an \"unannounced\" connection close, in which case the close\n\
      will show up as a 0-length read, as in a non-TLS\n\
      [GSocketConnection], and it is up to the application to check that\n\
      the data has been fully received.\n\n\
      Note that this only affects the behavior when the peer closes the\n\
-     connection; when the application calls g_io_stream_close() itself\n\
+     connection; when the application calls [g_io_stream_close ()] itself\n\
      on [conn], this will send a close notification regardless of the\n\
      setting of this property. If you explicitly want to do an unclean\n\
-     close, you can close [conn]'s [GTlsConnection:base]-io-stream rather\n\
+     close, you can close [conn]'s [GTlsConnection:base-io-stream] rather\n\
      than closing [conn] itself, but note that this may only be done when no \
      other\n\
      operations are pending on [conn] or the base I/O stream."]
@@ -245,9 +245,9 @@ class type tls_connection_t = object
   (** Sets whether [conn] uses the system certificate database to verify peer
       certificates. This is [true] by default. If set to [false], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      error (meaning [GTlsConnection::accept]-certificate will always be emitted
+      error (meaning [GTlsConnection::accept-certificate] will always be emitted
       on client-side connections, unless that bit is not set in
-      [GTlsClientConnection:validation]-flags). *)
+      [GTlsClientConnection:validation-flags]). *)
 
   (** {2:properties Properties} *)
 
@@ -287,22 +287,22 @@ and tls_database_t = object
   (** Look up a certificate by its handle.
 
       The handle should have been created by calling
-      g_tls_database_create_certificate_handle() on a [GTlsDatabase] object of
-      the same TLS backend. The handle is designed to remain valid across
+      [g_tls_database_create_certificate_handle ()] on a [GTlsDatabase] object
+      of the same TLS backend. The handle is designed to remain valid across
       instantiations of the database.
 
       If the handle is no longer valid, or does not point to a certificate in
       this database, then [None] will be returned.
 
       This function can block, use
-      g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
-      operation asynchronously. *)
+      [g_tls_database_lookup_certificate_for_handle_async ()] to perform the
+      lookup operation asynchronously. *)
 
   method lookup_certificate_for_handle_finish :
     Async_result.async_result_t ->
     (Tls_certificate.tls_certificate_t, GError.t) result
   (** Finish an asynchronous lookup of a certificate by its handle. See
-      g_tls_database_lookup_certificate_for_handle() for more information.
+      [g_tls_database_lookup_certificate_for_handle ()] for more information.
 
       If the handle is no longer valid, or does not point to a certificate in
       this database, then [None] will be returned. *)
@@ -318,7 +318,7 @@ and tls_database_t = object
       the two certificates are not hooked into a chain.
 
       This function can block. Use
-      g_tls_database_lookup_certificate_issuer_async() to perform the lookup
+      [g_tls_database_lookup_certificate_issuer_async ()] to perform the lookup
       operation asynchronously.
 
       Beware this function cannot be used to build certification paths. The
@@ -339,13 +339,13 @@ and tls_database_t = object
     Async_result.async_result_t ->
     (Tls_certificate.tls_certificate_t, GError.t) result
   (** Finish an asynchronous lookup issuer operation. See
-      g_tls_database_lookup_certificate_issuer() for more information. *)
+      [g_tls_database_lookup_certificate_issuer ()] for more information. *)
 
   method lookup_certificates_issued_by_finish :
     Async_result.async_result_t ->
     (Tls_certificate.tls_certificate_t list, GError.t) result
   (** Finish an asynchronous lookup of certificates. See
-      g_tls_database_lookup_certificates_issued_by() for more information. *)
+      [g_tls_database_lookup_certificates_issued_by ()] for more information. *)
 
   method verify_chain :
     Tls_certificate.tls_certificate_t ->
@@ -411,13 +411,13 @@ and tls_database_t = object
       The TLS backend may attempt to look up and add missing certificates to the
       chain. This may involve HTTP requests to download missing certificates.
 
-      This function can block. Use g_tls_database_verify_chain_async() to
+      This function can block. Use [g_tls_database_verify_chain_async ()] to
       perform the verification operation asynchronously. *)
 
   method verify_chain_finish :
     Async_result.async_result_t -> (Enums.tlscertificateflags, GError.t) result
   (** Finish an asynchronous verify chain operation. See
-      g_tls_database_verify_chain() for more information.
+      [g_tls_database_verify_chain ()] for more information.
 
       If [chain] is found to be valid, then the return value will be 0. If
       [chain] is found to be invalid, then the return value will indicate the
@@ -440,7 +440,7 @@ and tls_interaction_t = object
     Cancellable.cancellable_t option ->
     (Enums.tlsinteractionresult, GError.t) result
   (** Run synchronous interaction to ask the user for a password. In general,
-      g_tls_interaction_invoke_ask_password() should be used instead of this
+      [g_tls_interaction_invoke_ask_password ()] should be used instead of this
       function.
 
       Derived subclasses usually implement a password prompt, although they may
@@ -457,10 +457,10 @@ and tls_interaction_t = object
   method ask_password_finish :
     Async_result.async_result_t -> (Enums.tlsinteractionresult, GError.t) result
   (** Complete an ask password user interaction request. This should be once the
-      g_tls_interaction_ask_password_async() completion callback is called.
+      [g_tls_interaction_ask_password_async ()] completion callback is called.
 
       If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsPassword] passed
-      to g_tls_interaction_ask_password() will have its password filled in.
+      to [g_tls_interaction_ask_password ()] will have its password filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
       then [G_TLS_INTERACTION_FAILED] will be returned with an error that
@@ -472,9 +472,9 @@ and tls_interaction_t = object
     (Enums.tlsinteractionresult, GError.t) result
   (** Invoke the interaction to ask the user for a password. It invokes this
       interaction in the main loop, specifically the [GMainContext] returned by
-      g_main_context_get_thread_default() when the interaction is created. This
-      is called by called by [GTlsConnection] or [GTlsDatabase] to ask the user
-      for a password.
+      [g_main_context_get_thread_default ()] when the interaction is created.
+      This is called by called by [GTlsConnection] or [GTlsDatabase] to ask the
+      user for a password.
 
       Derived subclasses usually implement a password prompt, although they may
       also choose to provide a password from elsewhere. The [password] value
@@ -498,7 +498,7 @@ and tls_interaction_t = object
     (Enums.tlsinteractionresult, GError.t) result
   (** Invoke the interaction to ask the user to choose a certificate to use with
       the connection. It invokes this interaction in the main loop, specifically
-      the [GMainContext] returned by g_main_context_get_thread_default() when
+      the [GMainContext] returned by [g_main_context_get_thread_default ()] when
       the interaction is created. This is called by called by [GTlsConnection]
       when the peer requests a certificate during the handshake.
 
@@ -523,8 +523,8 @@ and tls_interaction_t = object
     (Enums.tlsinteractionresult, GError.t) result
   (** Run synchronous interaction to ask the user to choose a certificate to use
       with the connection. In general,
-      g_tls_interaction_invoke_request_certificate() should be used instead of
-      this function.
+      [g_tls_interaction_invoke_request_certificate ()] should be used instead
+      of this function.
 
       Derived subclasses usually implement a certificate selector, although they
       may also choose to provide a certificate from elsewhere. Alternatively the
@@ -532,7 +532,7 @@ and tls_interaction_t = object
       connection.
 
       If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsConnection]
-      passed to g_tls_interaction_request_certificate() will have had its
+      passed to [g_tls_interaction_request_certificate ()] will have had its
       [GTlsConnection:certificate] filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
@@ -543,12 +543,12 @@ and tls_interaction_t = object
   method request_certificate_finish :
     Async_result.async_result_t -> (Enums.tlsinteractionresult, GError.t) result
   (** Complete a request certificate user interaction request. This should be
-      once the g_tls_interaction_request_certificate_async() completion callback
-      is called.
+      once the [g_tls_interaction_request_certificate_async ()] completion
+      callback is called.
 
       If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsConnection]
-      passed to g_tls_interaction_request_certificate_async() will have had its
-      [GTlsConnection:certificate] filled in.
+      passed to [g_tls_interaction_request_certificate_async ()] will have had
+      its [GTlsConnection:certificate] filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
       then [G_TLS_INTERACTION_FAILED] will be returned with an error that

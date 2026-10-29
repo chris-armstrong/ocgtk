@@ -103,16 +103,16 @@ class type datagram_based_t = object
 
       To be notified when messages are available, wait for the [G_IO_IN]
       condition. Note though that you may still receive [G_IO_ERROR_WOULD_BLOCK]
-      from g_datagram_based_receive_messages() even if you were previously
+      from [g_datagram_based_receive_messages ()] even if you were previously
       notified of a [G_IO_IN] condition.
 
       If the remote peer closes the connection, any messages queued in the
       underlying receive buffer will be returned, and subsequent calls to
-      g_datagram_based_receive_messages() will return 0 (with no error set).
+      [g_datagram_based_receive_messages ()] will return 0 (with no error set).
 
-      If the connection is shut down or closed (by calling g_socket_close() or
-      g_socket_shutdown() with [shutdown_read] set, if it’s a [GSocket], for
-      example), all calls to this function will return [G_IO_ERROR_CLOSED].
+      If the connection is shut down or closed (by calling [g_socket_close ()]
+      or [g_socket_shutdown ()] with [shutdown_read] set, if it’s a [GSocket],
+      for example), all calls to this function will return [G_IO_ERROR_CLOSED].
 
       On error -1 is returned and [error] is set accordingly. An error will only
       be returned if zero messages could be received; otherwise the number of
@@ -157,13 +157,13 @@ class type datagram_based_t = object
 
       To be notified when messages can be sent, wait for the [G_IO_OUT]
       condition. Note though that you may still receive [G_IO_ERROR_WOULD_BLOCK]
-      from g_datagram_based_send_messages() even if you were previously notified
-      of a [G_IO_OUT] condition. (On Windows in particular, this is very common
-      due to the way the underlying APIs work.)
+      from [g_datagram_based_send_messages ()] even if you were previously
+      notified of a [G_IO_OUT] condition. (On Windows in particular, this is
+      very common due to the way the underlying APIs work.)
 
-      If the connection is shut down or closed (by calling g_socket_close() or
-      g_socket_shutdown() with [shutdown_write] set, if it’s a [GSocket], for
-      example), all calls to this function will return [G_IO_ERROR_CLOSED].
+      If the connection is shut down or closed (by calling [g_socket_close ()]
+      or [g_socket_shutdown ()] with [shutdown_write] set, if it’s a [GSocket],
+      for example), all calls to this function will return [G_IO_ERROR_CLOSED].
 
       On error -1 is returned and [error] is set accordingly. An error will only
       be returned if zero messages could be sent; otherwise the number of

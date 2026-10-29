@@ -23,7 +23,7 @@ class type expander_t = object
       This is including any embedded underlines indicating mnemonics and Pango
       markup, as set by [Gtk.Expander.set_label]. If the label text has not been
       set the return value will be [None]. This will be the case if you create
-      an empty button with gtk_button_new() to use as a container. *)
+      an empty button with [gtk_button_new ()] to use as a container. *)
 
   method get_label_widget : unit -> Widget.widget_t option
   (** Retrieves the label widget for the frame. *)

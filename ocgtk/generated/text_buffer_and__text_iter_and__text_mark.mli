@@ -133,21 +133,22 @@ class type text_buffer_t = object
       [Gtk.TextBuffer.end_irreversible_action] after the irreversible action has
       completed.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to [gtk_text_buffer_begin_irreversible_action ()] and
+      [gtk_text_buffer_end_irreversible_action ()] pairs. *)
 
   method begin_user_action : unit -> unit
   (** Called to indicate that the buffer operations between here and a call to
-      gtk_text_buffer_end_user_action() are part of a single user-visible
+      [gtk_text_buffer_end_user_action ()] are part of a single user-visible
       operation.
 
-      The operations between gtk_text_buffer_begin_user_action() and
-      gtk_text_buffer_end_user_action() can then be grouped when creating an
+      The operations between [gtk_text_buffer_begin_user_action ()] and
+      [gtk_text_buffer_end_user_action ()] can then be grouped when creating an
       undo stack. [GtkTextBuffer] maintains a count of calls to
-      gtk_text_buffer_begin_user_action() that have not been closed with a call
-      to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
-      and “end-user-action” signals only for the outermost pair of calls. This
-      allows you to build user actions from other user actions.
+      [gtk_text_buffer_begin_user_action ()] that have not been closed with a
+      call to [gtk_text_buffer_end_user_action ()], and emits the
+      “begin-user-action” and “end-user-action” signals only for the outermost
+      pair of calls. This allows you to build user actions from other user
+      actions.
 
       The “interactive” buffer mutation functions, such as
       [Gtk.TextBuffer.insert_interactive], automatically call begin/end user
@@ -196,7 +197,7 @@ class type text_buffer_t = object
   (** Deletes text between [start] and [end].
 
       The order of [start] and [end] is not actually relevant;
-      gtk_text_buffer_delete() will reorder them.
+      [gtk_text_buffer_delete ()] will reorder them.
 
       This function actually emits the “delete-range” signal, and the default
       handler of that signal deletes the text. Because the buffer is modified,
@@ -216,7 +217,7 @@ class type text_buffer_t = object
   (** Deletes [mark], so that it’s no longer located anywhere in the buffer.
 
       Removes the reference the buffer holds to the mark, so if you haven’t
-      called g_object_ref() on the mark, it will be freed. Even if the mark
+      called [g_object_ref ()] on the mark, it will be freed. Even if the mark
       isn’t freed, most operations on [mark] become invalid, until it gets added
       to a buffer again with [Gtk.TextBuffer.add_mark]. Use
       [Gtk.TextMark.get_deleted] to find out if a mark has been removed from its
@@ -246,8 +247,8 @@ class type text_buffer_t = object
       This should be called after completing modifications to the text buffer
       after [Gtk.TextBuffer.begin_irreversible_action] was called.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to [gtk_text_buffer_begin_irreversible_action ()] and
+      [gtk_text_buffer_end_irreversible_action ()] pairs. *)
 
   method end_user_action : unit -> unit
   (** Ends a user-visible operation.
@@ -1212,8 +1213,8 @@ and text_iter_t = object
   method toggles_tag : Text_tag.text_tag_t option -> bool
   (** Gets whether a range with [tag] applied to it begins or ends at [iter].
 
-      This is equivalent to (gtk_text_iter_starts_tag() ||
-      gtk_text_iter_ends_tag()) *)
+      This is equivalent to ([gtk_text_iter_starts_tag ()] ||
+      [gtk_text_iter_ends_tag ()]) *)
 
   (** {2:conversions Conversions} *)
 

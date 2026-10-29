@@ -29,6 +29,7 @@ external set_graceful_disconnect : t -> bool -> unit
 external get_graceful_disconnect : t -> bool
   = "ml_g_tcp_connection_get_graceful_disconnect"
 (** Checks if graceful disconnects are used. See
-    g_tcp_connection_set_graceful_disconnect(). *)
+    {{!Ocgio.Raw.Tcp_connection.val-set_graceful_disconnect}[g_tcp_connection_set_graceful_disconnect
+                                                             ()]}. *)
 
 (* Properties *)

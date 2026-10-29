@@ -13,15 +13,16 @@
     Represents a scope for loading IO modules. A scope can be used for blocking
     duplicate modules, or blocking a module you don't want to load.
 
-    The scope can be used with g_io_modules_load_all_in_directory_with_scope()
-    or g_io_modules_scan_all_in_directory_with_scope(). *)
+    The scope can be used with
+    [g_io_modules_load_all_in_directory_with_scope ()] or
+    [g_io_modules_scan_all_in_directory_with_scope ()]. *)
 class type io_module_scope_t = object
   (** {2:methods Methods} *)
 
   method block : string -> unit
   (** Block modules with the given [basename] from being loaded when this scope
-      is used with g_io_modules_scan_all_in_directory_with_scope() or
-      g_io_modules_load_all_in_directory_with_scope(). *)
+      is used with [g_io_modules_scan_all_in_directory_with_scope ()] or
+      [g_io_modules_load_all_in_directory_with_scope ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -36,8 +37,9 @@ class io_module_scope : Raw.Io_module_scope.t -> io_module_scope_t
     Represents a scope for loading IO modules. A scope can be used for blocking
     duplicate modules, or blocking a module you don't want to load.
 
-    The scope can be used with g_io_modules_load_all_in_directory_with_scope()
-    or g_io_modules_scan_all_in_directory_with_scope(). *)
+    The scope can be used with
+    [g_io_modules_load_all_in_directory_with_scope ()] or
+    [g_io_modules_scan_all_in_directory_with_scope ()]. *)
 
 (** {1:constructors Constructors} *)
 

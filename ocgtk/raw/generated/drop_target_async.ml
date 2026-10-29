@@ -37,8 +37,9 @@
     data transfer and finish the operation by calling [Gdk.Drop.finish].
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
-    drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
-    can be used by themes to style the widget as a drop target.
+    drop target, and will receive the
+    {{!Ocgtk.Enums.type-stateflags_flag.constructor-DROP_ACTIVE}[GTK_STATE_FLAG_DROP_ACTIVE]}
+    state, which can be used by themes to style the widget as a drop target.
 
     The class built on this module is in {!Ocgtk.Drop_target_async}. *)
 

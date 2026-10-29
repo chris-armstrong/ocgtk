@@ -23,7 +23,7 @@
     property to [true] and increment the [GtkCellRendererSpinner:pulse] property
     at regular intervals. The usual way to set the cell renderer properties for
     each cell is to bind them to columns in your tree model using e.g.
-    gtk_tree_view_column_add_attribute(). *)
+    [gtk_tree_view_column_add_attribute ()]. *)
 class type cell_renderer_spinner_t = object
   inherit Cell_renderer.cell_renderer_t
 
@@ -80,7 +80,7 @@ class cell_renderer_spinner :
     property to [true] and increment the [GtkCellRendererSpinner:pulse] property
     at regular intervals. The usual way to set the cell renderer properties for
     each cell is to bind them to columns in your tree model using e.g.
-    gtk_tree_view_column_add_attribute(). *)
+    [gtk_tree_view_column_add_attribute ()]. *)
 
 (** {1:constructors Constructors} *)
 

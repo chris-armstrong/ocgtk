@@ -164,19 +164,24 @@ external set_color_state :
     are, this is probably the right thing. *)
 
 external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
-(** Gets the width previously set via gdk_dmabuf_texture_builder_set_width() or
-    0 if the width wasn't set. *)
+(** Gets the width previously set via
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_width}[gdk_dmabuf_texture_builder_set_width
+                                                       ()]} or 0 if the width
+    wasn't set. *)
 
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_dmabuf_texture_builder_set_update_texture() or [None] if none was set.
-*)
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_update_texture}[gdk_dmabuf_texture_builder_set_update_texture
+                                                                ()]} or [None]
+    if none was set. *)
 
 external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_dmabuf_texture_builder_set_update_region() or [None] if none was set. *)
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_update_region}[gdk_dmabuf_texture_builder_set_update_region
+                                                               ()]} or [None] if
+    none was set. *)
 
 external get_stride : t -> int -> int
   = "ml_gdk_dmabuf_texture_builder_get_stride"
@@ -198,12 +203,16 @@ external get_modifier : t -> UInt64.t
 (** Gets the modifier value. *)
 
 external get_height : t -> int = "ml_gdk_dmabuf_texture_builder_get_height"
-(** Gets the height previously set via gdk_dmabuf_texture_builder_set_height()
-    or 0 if the height wasn't set. *)
+(** Gets the height previously set via
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_height}[gdk_dmabuf_texture_builder_set_height
+                                                        ()]} or 0 if the height
+    wasn't set. *)
 
 external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
-(** Gets the format previously set via gdk_dmabuf_texture_builder_set_fourcc()
-    or 0 if the format wasn't set.
+(** Gets the format previously set via
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_fourcc}[gdk_dmabuf_texture_builder_set_fourcc
+                                                        ()]} or 0 if the format
+    wasn't set.
 
     The format is specified as a fourcc code. *)
 
@@ -218,6 +227,7 @@ external get_color_state :
   t -> Cicp_params_and__color_state.Color_state.t option
   = "ml_gdk_dmabuf_texture_builder_get_color_state"
 (** Gets the color state previously set via
-    gdk_dmabuf_texture_builder_set_color_state(). *)
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_color_state}[gdk_dmabuf_texture_builder_set_color_state
+                                                             ()]}. *)
 
 (* Properties *)

@@ -17,13 +17,15 @@ external unexport_from_connection : t -> D_bus_connection.t -> unit
 (** Stops exporting [interface_] on [connection].
 
     To stop exporting on all connections the interface is exported on, use
-    g_dbus_interface_skeleton_unexport(). *)
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport}[g_dbus_interface_skeleton_unexport
+                                                        ()]}. *)
 
 external unexport : t -> unit = "ml_g_dbus_interface_skeleton_unexport"
 (** Stops exporting [interface_] on all connections it is exported on.
 
     To unexport [interface_] from only a single connection, use
-    g_dbus_interface_skeleton_unexport_from_connection() *)
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport_from_connection}[g_dbus_interface_skeleton_unexport_from_connection
+                                                                        ()]} *)
 
 external set_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_dbus_interface_skeleton_set_flags"
@@ -54,8 +56,9 @@ external get_info : t -> D_bus_interface_info.t
 
 external get_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags
   = "ml_g_dbus_interface_skeleton_get_flags"
-(** Gets the [GDBusInterfaceSkeletonFlags] that describes what the behavior of
-    [interface_] *)
+(** Gets the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    that describes what the behavior of [interface_] *)
 
 external get_connections : t -> D_bus_connection.t list
   = "ml_g_dbus_interface_skeleton_get_connections"
@@ -82,17 +85,24 @@ external export : t -> D_bus_connection.t -> string -> (bool, GError.t) result
     multiple connections however the [object_path] provided must be the same for
     all connections.
 
-    Use g_dbus_interface_skeleton_unexport() to unexport the object. *)
+    Use
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport}[g_dbus_interface_skeleton_unexport
+                                                        ()]} to unexport the
+    object. *)
 
 (* Properties *)
 
 external get_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags
   = "ml_g_d_bus_interface_skeleton_get_g_flags"
-(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+(** Flags from the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    enumeration. *)
 
 external set_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_d_bus_interface_skeleton_set_g_flags"
-(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+(** Flags from the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    enumeration. *)
 
 let on_g_authorize_method ?after obj ~callback =
   let closure =

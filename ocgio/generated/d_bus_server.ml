@@ -9,14 +9,15 @@ class type d_bus_server_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when a new authenticated connection has been made. Use
-      g_dbus_connection_get_peer_credentials() to figure out what identity (if
-      any), was authenticated.
+      [g_dbus_connection_get_peer_credentials ()] to figure out what identity
+      (if any), was authenticated.
 
       If you want to accept the connection, take a reference to the [connection]
       object and return [true]. When you are done with the connection call
-      g_dbus_connection_close() and give up your reference. Note that the other
-      peer may disconnect at any time - a typical thing to do when accepting a
-      connection is to listen to the [GDBusConnection::closed] signal.
+      [g_dbus_connection_close ()] and give up your reference. Note that the
+      other peer may disconnect at any time - a typical thing to do when
+      accepting a connection is to listen to the [GDBusConnection::closed]
+      signal.
 
       If [GDBusServer:flags] contains [G_DBUS_SERVER_FLAGS_RUN_IN_THREAD] then
       the signal is emitted in a new thread dedicated to the connection.
@@ -26,8 +27,8 @@ class type d_bus_server_t = object
 
       You are guaranteed that signal handlers for this signal runs before
       incoming messages on [connection] are processed. This means that it's
-      suitable to call g_dbus_connection_register_object() or similar from the
-      signal handler. *)
+      suitable to call [g_dbus_connection_register_object ()] or similar from
+      the signal handler. *)
 
   (** {2:methods Methods} *)
 
@@ -43,7 +44,7 @@ class type d_bus_server_t = object
   (** Gets the flags for [server]. *)
 
   method get_guid : unit -> string
-  (** Gets the GUID for [server], as provided to g_dbus_server_new_sync(). *)
+  (** Gets the GUID for [server], as provided to [g_dbus_server_new_sync ()]. *)
 
   method is_active : unit -> bool
   (** Gets whether [server] is active. *)

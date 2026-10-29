@@ -37,8 +37,9 @@
     which will emit the
     {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
     signal. If a paintable is known to never change its contents, it will set
-    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
-    changing contents, it may call
+    the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-CONTENTS}[GDK_PAINTABLE_STATIC_CONTENTS]}
+    flag. If a consumer cannot deal with changing contents, it may call
     {{!Ocgdk.Paintable.class-type-paintable_t.method-get_current_image}[Gdk.Paintable.get_current_image]}
     which will return a static paintable and use that.
 
@@ -51,7 +52,9 @@
     which will emit the
     {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
     signal. And just like for contents, if a paintable is known to never change
-    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
+    its size, it will set the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-SIZE}[GDK_PAINTABLE_STATIC_SIZE]}
+    flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
@@ -208,8 +211,9 @@ class paintable : Raw.Paintable.t -> paintable_t
     which will emit the
     {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
     signal. If a paintable is known to never change its contents, it will set
-    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
-    changing contents, it may call
+    the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-CONTENTS}[GDK_PAINTABLE_STATIC_CONTENTS]}
+    flag. If a consumer cannot deal with changing contents, it may call
     {{!Ocgdk.Paintable.class-type-paintable_t.method-get_current_image}[Gdk.Paintable.get_current_image]}
     which will return a static paintable and use that.
 
@@ -222,7 +226,9 @@ class paintable : Raw.Paintable.t -> paintable_t
     which will emit the
     {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
     signal. And just like for contents, if a paintable is known to never change
-    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
+    its size, it will set the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-SIZE}[GDK_PAINTABLE_STATIC_SIZE]}
+    flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:

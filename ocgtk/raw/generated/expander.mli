@@ -165,8 +165,8 @@ external get_label : t -> string option = "ml_gtk_expander_get_label"
     markup, as set by
     {{!Ocgtk.Raw.Expander.val-set_label}[Gtk.Expander.set_label]}. If the label
     text has not been set the return value will be [None]. This will be the case
-    if you create an empty button with gtk_button_new() to use as a container.
-*)
+    if you create an empty button with
+    {{!Ocgtk.Raw.Button.val-new_}[gtk_button_new ()]} to use as a container. *)
 
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 (** Queries a [GtkExpander] and returns its current state.

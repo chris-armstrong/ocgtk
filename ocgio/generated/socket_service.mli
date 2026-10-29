@@ -53,7 +53,7 @@ class type socket_service_t = object
   method start : unit -> unit
   (** Restarts the service, i.e. start accepting connections from the added
       sockets when the mainloop runs. This only needs to be called after the
-      service has been stopped from g_socket_service_stop().
+      service has been stopped from [g_socket_service_stop ()].
 
       This call is thread-safe, so it may be called from a thread handling an
       incoming client request. *)
@@ -66,14 +66,14 @@ class type socket_service_t = object
       incoming client request.
 
       Note that this only stops accepting new connections; it does not close the
-      listening sockets, and you can call g_socket_service_start() again later
-      to begin listening again. To close the listening sockets, call
-      g_socket_listener_close(). (This will happen automatically when the
+      listening sockets, and you can call [g_socket_service_start ()] again
+      later to begin listening again. To close the listening sockets, call
+      [g_socket_listener_close ()]. (This will happen automatically when the
       [GSocketService] is finalized.)
 
-      This must be called before calling g_socket_listener_close() as the socket
-      service will start accepting connections immediately when a new socket is
-      added. *)
+      This must be called before calling [g_socket_listener_close ()] as the
+      socket service will start accepting connections immediately when a new
+      socket is added. *)
 
   (** {2:conversions Conversions} *)
 
@@ -115,10 +115,17 @@ class socket_service : Raw.Socket_service.t -> socket_service_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> socket_service_t
-(** Creates a new [GSocketService] with no sockets to listen for. New listeners
-    can be added with e.g. g_socket_listener_add_address() or
-    g_socket_listener_add_inet_port().
+(** Creates a new
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[GSocketService]} with
+    no sockets to listen for. New listeners can be added with e.g.
+    [g_socket_listener_add_address ()] or
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-add_inet_port}[g_socket_listener_add_inet_port
+                                                                                ()]}.
 
     New services are created active, there is no need to call
-    g_socket_service_start(), unless g_socket_service_stop() has been called
-    before. *)
+    {{!Ocgio.Socket_service.class-type-socket_service_t.method-start}[g_socket_service_start
+                                                                      ()]},
+    unless
+    {{!Ocgio.Socket_service.class-type-socket_service_t.method-stop}[g_socket_service_stop
+                                                                     ()]} has
+    been called before. *)

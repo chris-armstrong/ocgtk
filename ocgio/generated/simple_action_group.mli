@@ -55,4 +55,6 @@ class simple_action_group : Raw.Simple_action_group.t -> simple_action_group_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> simple_action_group_t
-(** Creates a new, empty, [GSimpleActionGroup]. *)
+(** Creates a new, empty,
+    {{!Ocgio.Simple_action_group.class-type-simple_action_group_t}[GSimpleActionGroup]}.
+*)

@@ -74,7 +74,8 @@ module rec Context : sig
       The gravity hint is used in laying vertical text out, and is only relevant
       if gravity of the context as returned by
       {{!Ocpango.Raw.Context.val-get_gravity}[Pango.Context.get_gravity]} is set
-      to [PANGO_GRAVITY_EAST] or [PANGO_GRAVITY_WEST]. *)
+      to {{!Ocpango.Enums.type-gravity.constructor-EAST}[PANGO_GRAVITY_EAST]} or
+      {{!Ocpango.Enums.type-gravity.constructor-WEST}[PANGO_GRAVITY_WEST]}. *)
 
   external set_font_map : t -> Font_map.t option -> unit
     = "ml_pango_context_set_font_map"
@@ -99,11 +100,16 @@ module rec Context : sig
   (** Sets the base direction for the context.
 
       The base direction is used in applying the Unicode bidirectional
-      algorithm; if the [direction] is [PANGO_DIRECTION_LTR] or
-      [PANGO_DIRECTION_RTL], then the value will be used as the paragraph
-      direction in the Unicode bidirectional algorithm. A value of
-      [PANGO_DIRECTION_WEAK_LTR] or [PANGO_DIRECTION_WEAK_RTL] is used only for
-      paragraphs that do not contain any strong characters themselves. *)
+      algorithm; if the [direction] is
+      {{!Ocpango.Enums.type-direction.constructor-LTR}[PANGO_DIRECTION_LTR]} or
+      {{!Ocpango.Enums.type-direction.constructor-RTL}[PANGO_DIRECTION_RTL]},
+      then the value will be used as the paragraph direction in the Unicode
+      bidirectional algorithm. A value of
+      {{!Ocpango.Enums.type-direction.constructor-WEAK_LTR}[PANGO_DIRECTION_WEAK_LTR]}
+      or
+      {{!Ocpango.Enums.type-direction.constructor-WEAK_RTL}[PANGO_DIRECTION_WEAK_RTL]}
+      is used only for paragraphs that do not contain any strong characters
+      themselves. *)
 
   external load_fontset :
     t -> Font_description.t -> Language.t -> Fontset.t option
@@ -177,9 +183,10 @@ module rec Context : sig
 
       This is similar to
       {{!Ocpango.Raw.Context.val-get_base_gravity}[Pango.Context.get_base_gravity]},
-      except for when the base gravity is [PANGO_GRAVITY_AUTO] for which
-      [Pango.Gravity.get_for_matrix] is used to return the gravity from the
-      current context matrix. *)
+      except for when the base gravity is
+      {{!Ocpango.Enums.type-gravity.constructor-AUTO}[PANGO_GRAVITY_AUTO]} for
+      which [Pango.Gravity.get_for_matrix] is used to return the gravity from
+      the current context matrix. *)
 
   external get_font_map : t -> Font_map.t option
     = "ml_pango_context_get_font_map"
@@ -256,10 +263,11 @@ and Font : sig
 
       The coordinate system for each rectangle has its origin at the base line
       and horizontal origin of the character with increasing coordinates
-      extending to the right and down. The macros PANGO_ASCENT(),
-      PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
-      convert from the extents rectangle to more traditional font metrics. The
-      units of the rectangles are in 1/PANGO_SCALE of a device unit.
+      extending to the right and down. The macros [PANGO_ASCENT ()],
+      [PANGO_DESCENT ()], [PANGO_LBEARING ()], and [PANGO_RBEARING ()] can be
+      used to convert from the extents rectangle to more traditional font
+      metrics. The units of the rectangles are in 1/PANGO_SCALE of a device
+      unit.
 
       If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
@@ -376,7 +384,7 @@ and Font_map : sig
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK
-      toolkit has, among others, gtk_widget_get_pango_context(). Use those
+      toolkit has, among others, [gtk_widget_get_pango_context ()]. Use those
       instead. *)
 
   external changed : t -> unit = "ml_pango_font_map_changed"

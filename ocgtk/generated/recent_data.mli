@@ -1,5 +1,7 @@
-(** Meta-data to be passed to gtk_recent_manager_add_full() when registering a
-    recently used resource.
+(** Meta-data to be passed to
+    {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-add_full}[gtk_recent_manager_add_full
+                                                                         ()]}
+    when registering a recently used resource.
 
     Its methods, signals and properties are on {!class-type-recent_data_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -9,8 +11,10 @@
 
 (** {b The methods, signals and properties of a [RecentData].}
 
-    Meta-data to be passed to gtk_recent_manager_add_full() when registering a
-    recently used resource. *)
+    Meta-data to be passed to
+    {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-add_full}[gtk_recent_manager_add_full
+                                                                         ()]}
+    when registering a recently used resource. *)
 class type recent_data_t = object
   (** {2:conversions Conversions} *)
 

@@ -69,4 +69,5 @@ external get_extensions : t -> Io_extension.t list
 
 external get_extension_by_name : t -> string -> Io_extension.t
   = "ml_g_io_extension_point_get_extension_by_name"
-(** Finds a [GIOExtension] for an extension point by name. *)
+(** Finds a {{!Ocgio.Raw.Io_extension}[GIOExtension]} for an extension point by
+    name. *)

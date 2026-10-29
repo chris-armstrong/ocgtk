@@ -21,11 +21,13 @@ external set_validation_flags : t -> Ocgio_enums.tlscertificateflags -> unit
   = "ml_g_tls_client_connection_set_validation_flags"
 (** Sets [conn]'s validation flags, to override the default set of checks
     performed when validating a server certificate. By default,
-    [G_TLS_CERTIFICATE_VALIDATE_ALL] is used.
+    {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-VALIDATE_ALL}[G_TLS_CERTIFICATE_VALIDATE_ALL]}
+    is used.
 
     This function does not work as originally designed and is impossible to use
-    correctly. See [GTlsClientConnection:validation]-flags for more information.
-*)
+    correctly. See
+    {{!Ocgio.Raw.Tls_client_connection.val-get_validation_flags}[GTlsClientConnection:validation-flags]}
+    for more information. *)
 
 external set_use_ssl3 : t -> bool -> unit
   = "ml_g_tls_client_connection_set_use_ssl3"
@@ -48,19 +50,22 @@ external set_server_identity :
 (** Sets [conn]'s expected server identity, which is used both to tell servers
     on virtual hosts which certificate to present, and also to let [conn] know
     what name to look for in the certificate when performing
-    [G_TLS_CERTIFICATE_BAD_IDENTITY] validation, if enabled. *)
+    {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-BAD_IDENTITY}[G_TLS_CERTIFICATE_BAD_IDENTITY]}
+    validation, if enabled. *)
 
 external get_validation_flags : t -> Ocgio_enums.tlscertificateflags
   = "ml_g_tls_client_connection_get_validation_flags"
 (** Gets [conn]'s validation flags
 
     This function does not work as originally designed and is impossible to use
-    correctly. See [GTlsClientConnection:validation]-flags for more information.
-*)
+    correctly. See
+    {{!Ocgio.Raw.Tls_client_connection.val-get_validation_flags}[GTlsClientConnection:validation-flags]}
+    for more information. *)
 
 external get_use_ssl3 : t -> bool = "ml_g_tls_client_connection_get_use_ssl3"
-(** SSL 3.0 is no longer supported. See g_tls_client_connection_set_use_ssl3()
-    for details. *)
+(** SSL 3.0 is no longer supported. See
+    {{!Ocgio.Raw.Tls_client_connection.val-set_use_ssl3}[g_tls_client_connection_set_use_ssl3
+                                                         ()]} for details. *)
 
 external get_server_identity :
   t ->
@@ -93,10 +98,10 @@ external copy_session_state : t -> t -> unit
     automatically if it is possible to do so without weakening the privacy
     guarantees normally provided by TLS, without need to call this function. For
     example, with TLS 1.3, a session ticket will be automatically copied from
-    any [GTlsClientConnection] that has previously received session tickets from
-    the server, provided a ticket is available that has not previously been used
-    for session resumption, since session ticket reuse would be a privacy
-    weakness. Using this function causes the ticket to be copied without regard
-    for privacy considerations. *)
+    any {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]} that has
+    previously received session tickets from the server, provided a ticket is
+    available that has not previously been used for session resumption, since
+    session ticket reuse would be a privacy weakness. Using this function causes
+    the ticket to be copied without regard for privacy considerations. *)
 
 (* Properties *)

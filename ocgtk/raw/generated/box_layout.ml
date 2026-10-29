@@ -60,9 +60,13 @@ external get_homogeneous : t -> bool = "ml_gtk_box_layout_get_homogeneous"
 
 external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_box_layout_get_baseline_position"
-(** Gets the value set by gtk_box_layout_set_baseline_position(). *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Box_layout.val-set_baseline_position}[gtk_box_layout_set_baseline_position
+                                                       ()]}. *)
 
 external get_baseline_child : t -> int = "ml_gtk_box_layout_get_baseline_child"
-(** Gets the value set by gtk_box_layout_set_baseline_child(). *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Box_layout.val-set_baseline_child}[gtk_box_layout_set_baseline_child
+                                                    ()]}. *)
 
 (* Properties *)

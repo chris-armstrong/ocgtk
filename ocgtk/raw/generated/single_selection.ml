@@ -25,8 +25,8 @@ external set_selected : t -> int -> unit
 (** Selects the item at the given position.
 
     If the list does not have an item at [position] or
-    [GTK_INVALID_LIST_POSITION] is given, the behavior depends on the value of
-    the
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    given, the behavior depends on the value of the
     {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
     property: If it is set, no change will occur and the old item will stay
     selected. If it is unset, the selection will be unset and no item will be
@@ -43,7 +43,8 @@ external set_model : t -> Ocgio_raw.List_model.t option -> unit
 external set_can_unselect : t -> bool -> unit
   = "ml_gtk_single_selection_set_can_unselect"
 (** If [true], unselecting the current item via
-    gtk_selection_model_unselect_item() is supported.
+    {{!Ocgtk.Raw.Selection_model.val-unselect_item}[gtk_selection_model_unselect_item
+                                                    ()]} is supported.
 
     Note that setting
     {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
@@ -67,7 +68,9 @@ external get_selected_item : t -> [ `object_ ] Gobject.obj option
 external get_selected : t -> int = "ml_gtk_single_selection_get_selected"
 (** Gets the position of the selected item.
 
-    If no item is selected, [GTK_INVALID_LIST_POSITION] is returned. *)
+    If no item is selected,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_single_selection_get_model"
@@ -75,12 +78,15 @@ external get_model : t -> Ocgio_raw.List_model.t option
 
 external get_can_unselect : t -> bool
   = "ml_gtk_single_selection_get_can_unselect"
-(** If [true], gtk_selection_model_unselect_item() is supported and allows
+(** If [true],
+    {{!Ocgtk.Raw.Selection_model.val-unselect_item}[gtk_selection_model_unselect_item
+                                                    ()]} is supported and allows
     unselecting the selected item. *)
 
 external get_autoselect : t -> bool = "ml_gtk_single_selection_get_autoselect"
 (** Checks if autoselect has been enabled or disabled via
-    gtk_single_selection_set_autoselect(). *)
+    {{!Ocgtk.Raw.Single_selection.val-set_autoselect}[gtk_single_selection_set_autoselect
+                                                      ()]}. *)
 
 (* Properties *)
 

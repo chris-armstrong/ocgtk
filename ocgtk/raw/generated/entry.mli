@@ -113,9 +113,10 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 
     Note that you probably want to set
     {{!Ocgtk.Raw.Entry.val-get_input_purpose}[Gtk.Entry:input-purpose]} to
-    [GTK_INPUT_PURPOSE_PASSWORD] or [GTK_INPUT_PURPOSE_PIN] to inform input
-    methods about the purpose of this entry, in addition to setting visibility
-    to [false]. *)
+    {{!Ocgtk.Enums.type-inputpurpose.constructor-PASSWORD}[GTK_INPUT_PURPOSE_PASSWORD]}
+    or {{!Ocgtk.Enums.type-inputpurpose.constructor-PIN}[GTK_INPUT_PURPOSE_PIN]}
+    to inform input methods about the purpose of this entry, in addition to
+    setting visibility to [false]. *)
 
 external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_entry_set_tabs"
@@ -332,7 +333,8 @@ external progress_pulse : t -> unit = "ml_gtk_entry_progress_pulse"
 (** Indicates that some progress is made, but you don’t know how much.
 
     Causes the entry’s progress indicator to enter “activity mode”, where a
-    block bounces back and forth. Each call to gtk_entry_progress_pulse() causes
+    block bounces back and forth. Each call to
+    {{!Ocgtk.Raw.Entry.val-progress_pulse}[gtk_entry_progress_pulse ()]} causes
     the block to move by a little bit (the amount of movement per pulse is
     determined by
     {{!Ocgtk.Raw.Entry.val-set_progress_pulse_step}[Gtk.Entry.set_progress_pulse_step]}).
@@ -367,7 +369,9 @@ external get_tabs : t -> Ocpango_raw.Tab_array.t option
 
 external get_progress_pulse_step : t -> float
   = "ml_gtk_entry_get_progress_pulse_step"
-(** Retrieves the pulse step set with gtk_entry_set_progress_pulse_step(). *)
+(** Retrieves the pulse step set with
+    {{!Ocgtk.Raw.Entry.val-set_progress_pulse_step}[gtk_entry_set_progress_pulse_step
+                                                    ()]}. *)
 
 external get_progress_fraction : t -> float
   = "ml_gtk_entry_get_progress_fraction"
@@ -429,8 +433,8 @@ external get_icon_storage_type :
   = "ml_gtk_entry_get_icon_storage_type"
 (** Gets the type of representation being used by the icon to store image data.
 
-    If the icon has no image data, the return value will be [GTK_IMAGE_EMPTY].
-*)
+    If the icon has no image data, the return value will be
+    {{!Ocgtk.Enums.type-imagetype.constructor-EMPTY}[GTK_IMAGE_EMPTY]}. *)
 
 external get_icon_sensitive : t -> Ocgtk_enums.entryiconposition -> bool
   = "ml_gtk_entry_get_icon_sensitive"
@@ -485,11 +489,13 @@ external get_icon_activatable : t -> Ocgtk_enums.entryiconposition -> bool
 (** Returns whether the icon is activatable. *)
 
 external get_has_frame : t -> bool = "ml_gtk_entry_get_has_frame"
-(** Gets the value set by gtk_entry_set_has_frame(). *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Entry.val-set_has_frame}[gtk_entry_set_has_frame ()]}. *)
 
 external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_entry_get_extra_menu"
-(** Gets the menu model set with gtk_entry_set_extra_menu(). *)
+(** Gets the menu model set with
+    {{!Ocgtk.Raw.Entry.val-set_extra_menu}[gtk_entry_set_extra_menu ()]}. *)
 
 external get_current_icon_drag_source : t -> int
   = "ml_gtk_entry_get_current_icon_drag_source"
@@ -510,13 +516,16 @@ external get_attributes : t -> Ocpango_raw.Attr_list.t option
     See {{!Ocgtk.Raw.Entry.val-set_attributes}[Gtk.Entry.set_attributes]}. *)
 
 external get_alignment : t -> float = "ml_gtk_entry_get_alignment"
-(** Gets the value set by gtk_entry_set_alignment().
+(** Gets the value set by
+    {{!Ocgtk.Raw.Entry.val-set_alignment}[gtk_entry_set_alignment ()]}.
 
     See also: {{!Ocgtk.Raw.Editable.val-get_alignment}[Gtk.Editable:xalign]} *)
 
 external get_activates_default : t -> bool
   = "ml_gtk_entry_get_activates_default"
-(** Retrieves the value set by gtk_entry_set_activates_default(). *)
+(** Retrieves the value set by
+    {{!Ocgtk.Raw.Entry.val-set_activates_default}[gtk_entry_set_activates_default
+                                                  ()]}. *)
 
 (* Properties *)
 

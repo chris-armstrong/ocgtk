@@ -180,7 +180,7 @@ class type text_view_t = object
       instead.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control the cursor
+      [g_signal_emit_by_name ()] if they need to control the cursor
       programmatically.
 
       The default bindings for this signal come in two variants, the variant

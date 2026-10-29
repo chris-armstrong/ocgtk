@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuItem: MenuItem *)
 
-(** [GMenuItem] is an opaque structure type. You must access it using the
-    functions below.
+(** {{!Ocgio.Raw.Menu_item}[GMenuItem]} is an opaque structure type. You must
+    access it using the functions below.
 
     The class built on this module is in {!Ocgio.Menu_item}. *)
 
@@ -12,29 +12,32 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_menu_item_get_type"
 
 external new_ : string option -> string option -> t = "ml_g_menu_item_new"
 [@@ocaml.doc
-  "Creates a new [GMenuItem].\n\n\
+  "Creates a new {{!Ocgio.Raw.Menu_item}[GMenuItem]}.\n\n\
    If [label] is non-[None] it is used to set the \"label\" attribute of the\n\
    new item.\n\n\
    If [detailed_action] is non-[None] it is used to set the \"action\" and\n\
    possibly the \"target\" attribute of the new item.  See\n\
-   g_menu_item_set_detailed_action() for more information."]
+   {{!Ocgio.Raw.Menu_item.val-set_detailed_action}[g_menu_item_set_detailed_action \
+   ()]} for more information."]
 
 external new_from_model :
   Menu_link_iter_and__menu_model.Menu_model.t -> int -> t
   = "ml_g_menu_item_new_from_model"
-(** Creates a [GMenuItem] as an exact copy of an existing menu item in a
-    [GMenuModel].
+(** Creates a {{!Ocgio.Raw.Menu_item}[GMenuItem]} as an exact copy of an
+    existing menu item in a {{!Ocgio.Raw.Menu_model}[GMenuModel]}.
 
-    [item_index] must be valid (ie: be sure to call g_menu_model_get_n_items()
+    [item_index] must be valid (ie: be sure to call
+    {{!Ocgio.Raw.Menu_model.val-get_n_items}[g_menu_model_get_n_items ()]}
     first). *)
 
 external new_section :
   string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t
   = "ml_g_menu_item_new_section"
 [@@ocaml.doc
-  "Creates a new [GMenuItem] representing a section.\n\n\
-   This is a convenience API around g_menu_item_new() and\n\
-   g_menu_item_set_section().\n\n\
+  "Creates a new {{!Ocgio.Raw.Menu_item}[GMenuItem]} representing a section.\n\n\
+   This is a convenience API around \
+   {{!Ocgio.Raw.Menu_item.val-new_}[g_menu_item_new ()]} and\n\
+   {{!Ocgio.Raw.Menu_item.val-set_section}[g_menu_item_set_section ()]}.\n\n\
    The effect of having one menu appear as a section of another is\n\
    exactly as it sounds: the items from [section] become a direct part of\n\
    the menu that [menu_item] is added to.\n\n\
@@ -45,7 +48,8 @@ external new_section :
    As a simple example, consider a typical \"Edit\" menu from a simple\n\
    program.  It probably contains an \"Undo\" and \"Redo\" item, followed by\n\
    a separator, followed by \"Cut\", \"Copy\" and \"Paste\".\n\n\
-   This would be accomplished by creating three [GMenu] instances.  The\n\
+   This would be accomplished by creating three {{!Ocgio.Raw.Menu}[GMenu]} \
+   instances.  The\n\
    first would be populated with the \"Undo\" and \"Redo\" items, and the\n\
    second with the \"Cut\", \"Copy\" and \"Paste\" items.  The first and\n\
    second menus would then be added as submenus of the third.  In XML\n\
@@ -90,10 +94,11 @@ external new_section :
 external new_submenu :
   string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t
   = "ml_g_menu_item_new_submenu"
-(** Creates a new [GMenuItem] representing a submenu.
+(** Creates a new {{!Ocgio.Raw.Menu_item}[GMenuItem]} representing a submenu.
 
-    This is a convenience API around g_menu_item_new() and
-    g_menu_item_set_submenu(). *)
+    This is a convenience API around
+    {{!Ocgio.Raw.Menu_item.val-new_}[g_menu_item_new ()]} and
+    {{!Ocgio.Raw.Menu_item.val-set_submenu}[g_menu_item_set_submenu ()]}. *)
 
 (* Methods *)
 external set_submenu :
@@ -113,7 +118,8 @@ external set_section :
   "Sets or unsets the \"section\" link of [menu_item] to [section].\n\n\
    The effect of having one menu appear as a section of another is\n\
    exactly as it sounds: the items from [section] become a direct part of\n\
-   the menu that [menu_item] is added to.  See g_menu_item_new_section()\n\
+   the menu that [menu_item] is added to.  See \
+   {{!Ocgio.Raw.Menu_item.val-new_section}[g_menu_item_new_section ()]}\n\
    for more information about what it means for a menu item to be a\n\
    section."]
 
@@ -123,8 +129,10 @@ external set_link :
 (** Creates a link from [menu_item] to [model] if non-[None], or unsets it.
 
     Links are used to establish a relationship between a particular menu item
-    and another menu. For example, [G_MENU_LINK_SUBMENU] is used to associate a
-    submenu with a particular menu item, and [G_MENU_LINK_SECTION] is used to
+    and another menu. For example,
+    {{!Ocgio.Constants.menu_link_submenu}[G_MENU_LINK_SUBMENU]} is used to
+    associate a submenu with a particular menu item, and
+    {{!Ocgio.Constants.menu_link_section}[G_MENU_LINK_SECTION]} is used to
     create a section. Other types of link can be used, but there is no guarantee
     that clients will be able to make sense of them. Link types are restricted
     to lowercase characters, numbers and '-'. Furthermore, the names must begin
@@ -140,9 +148,12 @@ external set_label : t -> string option -> unit = "ml_g_menu_item_set_label"
 external set_icon : t -> Icon.t -> unit = "ml_g_menu_item_set_icon"
 [@@ocaml.doc
   "Sets (or unsets) the icon on [menu_item].\n\n\
-   This call is the same as calling g_icon_serialize() and using the\n\
-   result as the value to g_menu_item_set_attribute_value() for\n\
-   [G_MENU_ATTRIBUTE_ICON].\n\n\
+   This call is the same as calling \
+   {{!Ocgio.Raw.Icon.val-serialize}[g_icon_serialize ()]} and using the\n\
+   result as the value to \
+   {{!Ocgio.Raw.Menu_item.val-set_attribute_value}[g_menu_item_set_attribute_value \
+   ()]} for\n\
+   {{!Ocgio.Constants.menu_attribute_icon}[G_MENU_ATTRIBUTE_ICON]}.\n\n\
    This API is only intended for use with \"noun\" menu items; things like\n\
    bookmarks or applications in an \"Open With\" menu.  Don't use it on\n\
    menu items corresponding to verbs (eg: stock icons for 'Save' or\n\
@@ -154,11 +165,14 @@ external set_detailed_action : t -> string -> unit
 [@@ocaml.doc
   "Sets the \"action\" and possibly the \"target\" attribute of [menu_item].\n\n\
    The format of [detailed_action] is the same format parsed by\n\
-   g_action_parse_detailed_name().\n\n\
-   See g_menu_item_set_action_and_target() or\n\
-   g_menu_item_set_action_and_target_value() for more flexible (but\n\
+   [g_action_parse_detailed_name ()].\n\n\
+   See [g_menu_item_set_action_and_target ()] or\n\
+   {{!Ocgio.Raw.Menu_item.val-set_action_and_target_value}[g_menu_item_set_action_and_target_value \
+   ()]} for more flexible (but\n\
    slightly less convenient) alternatives.\n\n\
-   See also g_menu_item_set_action_and_target_value() for a description of\n\
+   See also \
+   {{!Ocgio.Raw.Menu_item.val-set_action_and_target_value}[g_menu_item_set_action_and_target_value \
+   ()]} for a description of\n\
    the semantics of the action and target attributes."]
 
 external set_attribute_value : t -> string -> Gvariant.t option -> unit
@@ -166,11 +180,14 @@ external set_attribute_value : t -> string -> Gvariant.t option -> unit
 (** Sets or unsets an attribute on [menu_item].
 
     The attribute to set or unset is specified by [attribute]. This can be one
-    of the standard attribute names [G_MENU_ATTRIBUTE_LABEL],
-    [G_MENU_ATTRIBUTE_ACTION], [G_MENU_ATTRIBUTE_TARGET], or a custom attribute
-    name. Attribute names are restricted to lowercase characters, numbers and
-    '-'. Furthermore, the names must begin with a lowercase character, must not
-    end with a '-', and must not contain consecutive dashes.
+    of the standard attribute names
+    {{!Ocgio.Constants.menu_attribute_label}[G_MENU_ATTRIBUTE_LABEL]},
+    {{!Ocgio.Constants.menu_attribute_action}[G_MENU_ATTRIBUTE_ACTION]},
+    {{!Ocgio.Constants.menu_attribute_target}[G_MENU_ATTRIBUTE_TARGET]}, or a
+    custom attribute name. Attribute names are restricted to lowercase
+    characters, numbers and '-'. Furthermore, the names must begin with a
+    lowercase character, must not end with a '-', and must not contain
+    consecutive dashes.
 
     must consist only of lowercase ASCII characters, digits and '-'.
 
@@ -178,7 +195,7 @@ external set_attribute_value : t -> string -> Gvariant.t option -> unit
     If [value] is [None] then the attribute is unset. If the [value] [GVariant]
     is floating, it is consumed.
 
-    See also g_menu_item_set_attribute() for a more convenient way to do the
+    See also [g_menu_item_set_attribute ()] for a more convenient way to do the
     same. *)
 
 external set_action_and_target_value :
@@ -195,7 +212,8 @@ external set_action_and_target_value :
    types) are expected to have the \"action\" attribute set to identify\n\
    the action that they are associated with.  The state type of the\n\
    action help to determine the disposition of the menu item.  See\n\
-   [GAction] and [GActionGroup] for an overview of actions.\n\n\
+   {{!Ocgio.Raw.Action}[GAction]} and \
+   {{!Ocgio.Raw.Action_group}[GActionGroup]} for an overview of actions.\n\n\
    In general, clicking on the menu item will result in activation of\n\
    the named action with the \"target\" attribute given as the parameter\n\
    to the action invocation.  If the \"target\" attribute is not set then\n\
@@ -210,8 +228,9 @@ external set_action_and_target_value :
    as a radio menu item (ie: with a radio bullet or equivalent\n\
    indication).  The item should be marked as 'selected' when the string\n\
    state is equal to the value of the [target] property.\n\n\
-   See g_menu_item_set_action_and_target() or\n\
-   g_menu_item_set_detailed_action() for two equivalent calls that are\n\
+   See [g_menu_item_set_action_and_target ()] or\n\
+   {{!Ocgio.Raw.Menu_item.val-set_detailed_action}[g_menu_item_set_detailed_action \
+   ()]} for two equivalent calls that are\n\
    probably more convenient for most uses."]
 
 external get_link :

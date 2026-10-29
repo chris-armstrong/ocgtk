@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IOExtension: IOExtension *)
 
-(** [GIOExtension] is an opaque data structure and can only be accessed using
-    the following functions.
+(** {{!Ocgio.Raw.Io_extension}[GIOExtension]} is an opaque data structure and
+    can only be accessed using the following functions.
 
     The class built on this module is in {!Ocgio.Io_extension}. *)
 

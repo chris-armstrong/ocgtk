@@ -64,8 +64,8 @@ type pixbufalphamode =
         do full alpha compositing. *) ]
 (** Control the alpha channel for drawables.
 
-    These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
-    gdk-pixbuf-xlib to control how the alpha channel of an image should be
+    These values can be passed to [gdk_pixbuf_xlib_render_to_drawable_alpha ()]
+    in gdk-pixbuf-xlib to control how the alpha channel of an image should be
     handled.
 
     This function can create a bilevel clipping mask (black and white) and use
@@ -105,7 +105,9 @@ type pixbufrotation =
   | `COUNTERCLOCKWISE  (** Rotate by 90 degrees. *)
   | `UPSIDEDOWN  (** Rotate by 180 degrees. *)
   | `CLOCKWISE  (** Rotate by 270 degrees. *) ]
-(** The possible rotations which can be passed to gdk_pixbuf_rotate_simple().
+(** The possible rotations which can be passed to
+    {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t.method-rotate_simple}[gdk_pixbuf_rotate_simple
+                                                                    ()]}.
 
     To make them easier to use, their numerical values are the actual degrees.
 *)

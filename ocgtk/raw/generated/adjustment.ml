@@ -86,10 +86,10 @@ external set_lower : t -> float -> unit = "ml_gtk_adjustment_set_lower"
     tied to the emission of the ::notify signals of the changed properties, it’s
     possible to compress the
     {{!Ocgtk.Raw.Adjustment.val-on_changed}[Gtk.Adjustment::changed]} signals
-    into one by calling g_object_freeze_notify() and g_object_thaw_notify()
-    around the calls to the individual setters.
+    into one by calling [g_object_freeze_notify ()] and
+    [g_object_thaw_notify ()] around the calls to the individual setters.
 
-    Alternatively, using a single g_object_set() for all the properties to
+    Alternatively, using a single [g_object_set ()] for all the properties to
     change, or using
     {{!Ocgtk.Raw.Adjustment.val-configure}[Gtk.Adjustment.configure]} has the
     same effect. *)

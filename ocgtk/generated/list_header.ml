@@ -2,8 +2,8 @@ class type list_header_t = object
   (** {2:methods Methods} *)
 
   method get_child : unit -> Widget.widget_t option
-  (** Gets the child previously set via gtk_list_header_set_child() or [None] if
-      none was set. *)
+  (** Gets the child previously set via [gtk_list_header_set_child ()] or [None]
+      if none was set. *)
 
   method get_end : unit -> int
   (** Gets the end position in the model of the section that [self] is currently

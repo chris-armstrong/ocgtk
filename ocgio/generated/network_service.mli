@@ -76,6 +76,9 @@ class network_service : Raw.Network_service.t -> network_service_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> string -> string -> network_service_t
-(** Creates a new [GNetworkService] representing the given [service],
-    [protocol], and [domain]. This will initially be unresolved; use the
-    [GSocketConnectable] interface to resolve it. *)
+(** Creates a new
+    {{!Ocgio.Network_service.class-type-network_service_t}[GNetworkService]}
+    representing the given [service], [protocol], and [domain]. This will
+    initially be unresolved; use the
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[GSocketConnectable]}
+    interface to resolve it. *)

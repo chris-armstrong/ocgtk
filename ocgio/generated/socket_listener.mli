@@ -66,9 +66,9 @@ class type socket_listener_t = object
 
   method add_inet_port :
     UInt16.t -> [ `object_ ] Gobject.obj option -> (bool, GError.t) result
-  (** Helper function for g_socket_listener_add_address() that creates a TCP/IP
-      socket listening on IPv4 and IPv6 (if supported) on the specified port on
-      all interfaces.
+  (** Helper function for [g_socket_listener_add_address ()] that creates a
+      TCP/IP socket listening on IPv4 and IPv6 (if supported) on the specified
+      port on all interfaces.
 
       If possible, the [Gio.SocketListener] will listen on both IPv4 and IPv6
       (listening on the same port on both). If listening on one of the socket
@@ -83,9 +83,9 @@ class type socket_listener_t = object
       multiple addresses and do different things depending on what address is
       connected to.
 
-      Call g_socket_listener_close() to stop listening on [port]; this will not
-      be done automatically when you drop your final reference to [listener], as
-      references may be held internally. *)
+      Call [g_socket_listener_close ()] to stop listening on [port]; this will
+      not be done automatically when you drop your final reference to
+      [listener], as references may be held internally. *)
 
   method add_socket :
     Socket.socket_t ->
@@ -114,9 +114,9 @@ class type socket_listener_t = object
   (** Sets the listen backlog on the sockets in the listener. This must be
       called before adding any sockets, addresses or ports to the
       [GSocketListener] (for example, by calling
-      g_socket_listener_add_inet_port()) to be effective.
+      [g_socket_listener_add_inet_port ()]) to be effective.
 
-      See g_socket_set_listen_backlog() for details *)
+      See [g_socket_set_listen_backlog ()] for details *)
 
   (** {2:properties Properties} *)
 
@@ -158,6 +158,10 @@ class socket_listener : Raw.Socket_listener.t -> socket_listener_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> socket_listener_t
-(** Creates a new [GSocketListener] with no sockets to listen for. New listeners
-    can be added with e.g. g_socket_listener_add_address() or
-    g_socket_listener_add_inet_port(). *)
+(** Creates a new
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[GSocketListener]}
+    with no sockets to listen for. New listeners can be added with e.g.
+    [g_socket_listener_add_address ()] or
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-add_inet_port}[g_socket_listener_add_inet_port
+                                                                                ()]}.
+*)

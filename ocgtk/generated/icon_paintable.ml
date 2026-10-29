@@ -14,7 +14,7 @@ class type icon_paintable_t = object
     "Get the icon name being used for this icon.\n\n\
      When an icon looked up in the icon theme was not available, the\n\
      icon theme may use fallback icons - either those specified to\n\
-     gtk_icon_theme_lookup_icon() or the always-available\n\
+     [gtk_icon_theme_lookup_icon ()] or the always-available\n\
      \"image-missing\". The icon chosen is returned by this function.\n\n\
      If the icon was created without an icon theme, this function\n\
      returns [None]."]

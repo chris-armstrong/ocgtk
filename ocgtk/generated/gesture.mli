@@ -222,27 +222,38 @@ end
      {{!Ocgtk.Gesture.class-type-gesture_t.method-set_state}[Gtk.Gesture.set_state]} \
      on one will effectively propagate\n\
      the state throughout the group.\n\n\
-     By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,\n\
+     By default, all sequences start out in the \
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-NONE}[GTK_EVENT_SEQUENCE_NONE]} \
+     state,\n\
      sequences in this state trigger the gesture event handler, but event\n\
      propagation will continue unstopped by gestures.\n\n\
-     If a sequence enters into the [GTK_EVENT_SEQUENCE_DENIED] state, the \
-     gesture\n\
+     If a sequence enters into the \
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+     state, the gesture\n\
      group will effectively ignore the sequence, letting events go unstopped\n\
      through the gesture, but the \"slot\" will still remain occupied while\n\
      the touch is active.\n\n\
-     If a sequence enters in the [GTK_EVENT_SEQUENCE_CLAIMED] state, the gesture\n\
+     If a sequence enters in the \
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+     state, the gesture\n\
      group will grab all interaction on the sequence, by:\n\n\
-     - Setting the same sequence to [GTK_EVENT_SEQUENCE_DENIED] on every other\n\
+     - Setting the same sequence to \
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+     on every other\n\
      gesture group within the widget, and every gesture on parent widgets\n\
      in the propagation chain.\n\
      - Emitting [Gtk.Gesture::cancel] on every gesture in widgets\n\
      underneath in the propagation chain.\n\
      - Stopping event propagation after the gesture group handles the event.\n\n\
-     Note: if a sequence is set early to [GTK_EVENT_SEQUENCE_CLAIMED] on\n\
+     Note: if a sequence is set early to \
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+     on\n\
      [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
-     reaching the event widget, this implies [GTK_PHASE_CAPTURE]), one similar\n\
+     reaching the event widget, this implies \
+     {{!Ocgtk.Enums.type-propagationphase.constructor-CAPTURE}[GTK_PHASE_CAPTURE]}), \
+     one similar\n\
      event will be emulated if the sequence changes to \
-     [GTK_EVENT_SEQUENCE_DENIED].\n\
+     {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}.\n\
      This way event coherence is preserved before event propagation is unstopped\n\
      again.\n\n\
      Sequence states can't be changed freely.\n\
@@ -254,7 +265,9 @@ end
      On the platforms that support it, [GtkGesture] will handle transparently\n\
      touchpad gesture events. The only precautions users of [GtkGesture] should\n\
      do to enable this support are:\n\n\
-     - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
+     - If the gesture has \
+     {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]}, \
+     ensuring events of type\n\
      [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the \
      [GtkGesture]"]
 
@@ -306,25 +319,38 @@ class gesture : Raw.Gesture.t -> gesture_t
  {{!Ocgtk.Gesture.class-type-gesture_t.method-set_state}[Gtk.Gesture.set_state]} \
  on one will effectively propagate\n\
  the state throughout the group.\n\n\
- By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,\n\
+ By default, all sequences start out in the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-NONE}[GTK_EVENT_SEQUENCE_NONE]} \
+ state,\n\
  sequences in this state trigger the gesture event handler, but event\n\
  propagation will continue unstopped by gestures.\n\n\
- If a sequence enters into the [GTK_EVENT_SEQUENCE_DENIED] state, the gesture\n\
+ If a sequence enters into the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+ state, the gesture\n\
  group will effectively ignore the sequence, letting events go unstopped\n\
  through the gesture, but the \"slot\" will still remain occupied while\n\
  the touch is active.\n\n\
- If a sequence enters in the [GTK_EVENT_SEQUENCE_CLAIMED] state, the gesture\n\
+ If a sequence enters in the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+ state, the gesture\n\
  group will grab all interaction on the sequence, by:\n\n\
- - Setting the same sequence to [GTK_EVENT_SEQUENCE_DENIED] on every other\n\
+ - Setting the same sequence to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+ on every other\n\
  gesture group within the widget, and every gesture on parent widgets\n\
  in the propagation chain.\n\
  - Emitting [Gtk.Gesture::cancel] on every gesture in widgets\n\
  underneath in the propagation chain.\n\
  - Stopping event propagation after the gesture group handles the event.\n\n\
- Note: if a sequence is set early to [GTK_EVENT_SEQUENCE_CLAIMED] on\n\
+ Note: if a sequence is set early to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+ on\n\
  [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
- reaching the event widget, this implies [GTK_PHASE_CAPTURE]), one similar\n\
- event will be emulated if the sequence changes to [GTK_EVENT_SEQUENCE_DENIED].\n\
+ reaching the event widget, this implies \
+ {{!Ocgtk.Enums.type-propagationphase.constructor-CAPTURE}[GTK_PHASE_CAPTURE]}), \
+ one similar\n\
+ event will be emulated if the sequence changes to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}.\n\
  This way event coherence is preserved before event propagation is unstopped\n\
  again.\n\n\
  Sequence states can't be changed freely.\n\
@@ -336,7 +362,9 @@ class gesture : Raw.Gesture.t -> gesture_t
  On the platforms that support it, [GtkGesture] will handle transparently\n\
  touchpad gesture events. The only precautions users of [GtkGesture] should\n\
  do to enable this support are:\n\n\
- - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
+ - If the gesture has \
+ {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]}, \
+ ensuring events of type\n\
  [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
 
 (** {1:constructors Constructors} *)

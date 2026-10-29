@@ -22,7 +22,6 @@ type miss_reason =
   | Unknown_target
   | Member_in_other_namespace
   | Kind_not_generated
-  | Not_resolved_yet
 [@@deriving eq]
 
 let miss_reason_name = function
@@ -30,9 +29,9 @@ let miss_reason_name = function
   | Unknown_target -> "unknown-target"
   | Member_in_other_namespace -> "member-in-other-namespace"
   | Kind_not_generated -> "kind-not-generated"
-  | Not_resolved_yet -> "not-resolved-yet"
 
 type outcome = {
+  origin : Doc_ast.sym_origin;
   kind : Doc_ast.sym_kind option;
   endpoint : string;
   result : (unit, miss_reason) result;
@@ -45,14 +44,15 @@ type target_class =
   | Enum_target
   | Constant_target
   | Member_target
+  | C_symbol_target
 
 let target_class : Doc_ast.sym_kind -> _ = function
   | Class | Iface | Struct | Type_kind -> Ok Type_target
   | Enum | Flags -> Ok Enum_target
   | Const -> Ok Constant_target
   | Ctor | Method | Property | Signal -> Ok Member_target
+  | Id -> Ok C_symbol_target
   | Alias | Callback | Func | Vfunc | Doc_ast.Error -> Error Kind_not_generated
-  | Id -> Error Not_resolved_yet
 
 let split_at_first ~chars s =
   let rec go i =
@@ -224,31 +224,96 @@ let resolve_enum_member ~env ~namespace rest =
        (String.lowercase_ascii type_name)
        suffix variant)
 
-let path_of ~env kind endpoint =
-  let* kind = Option.to_result ~none:Not_resolved_yet kind in
+(* The namespace whose [table] has [key], trying the current namespace first,
+   and the value found there. *)
+let find_by_c_name ~env ~table key =
+  let in_namespace namespace =
+    StringMap.find_opt namespace env.index
+    |> Fun.flip Option.bind (fun ns -> StringMap.find_opt key (table ns))
+    |> Option.map (fun value -> (namespace, value))
+  in
+  match in_namespace env.namespace with
+  | Some found -> Ok found
+  | None ->
+      StringMap.to_seq env.index
+      |> Seq.find_map (fun (namespace, _) -> in_namespace namespace)
+      |> Option.to_result ~none:Unknown_target
+
+(* A C identifier of the current namespace that names one of [kinds]. *)
+let resolve_c_symbol ~env ~kinds c_identifier =
+  let namespace = env.namespace in
+  let* { dc_kind; dc_type; dc_member } =
+    lookup ~env ~namespace ~table:(fun ns -> ns.di_c_symbols) c_identifier
+  in
+  let rest = dc_type ^ "." ^ dc_member in
+  if not (List.mem dc_kind ~set:kinds) then Error Unknown_target
+  else
+    match dc_kind with
+    | Dc_method -> resolve_member ~env ~namespace Method rest
+    | Dc_constructor -> resolve_member ~env ~namespace Ctor rest
+    | Dc_enum_member -> resolve_enum_member ~env ~namespace rest
+
+(* [#CType], [#CType:prop] or [#CType::sig]. *)
+let resolve_hash ~env endpoint =
+  let c_type, member = split_at_first ~chars:[ ':' ] endpoint in
+  let* namespace, name =
+    find_by_c_name ~env ~table:(fun ns -> ns.di_c_types) c_type
+  in
+  if String.equal member "" then resolve_type ~env ~namespace name
+  else
+    let kind : Doc_ast.sym_kind =
+      if String.starts_with ~prefix:"::" member then Signal else Property
+    in
+    resolve_member ~env ~namespace kind (name ^ member)
+
+(* [%CONSTANT], in any namespace, or [%ENUM_MEMBER] of the current one. *)
+let resolve_percent ~env endpoint =
+  match find_by_c_name ~env ~table:(fun ns -> ns.di_c_constants) endpoint with
+  | Ok (namespace, name) -> resolve_constant ~env ~namespace name
+  | Error _ -> resolve_c_symbol ~env ~kinds:[ Dc_enum_member ] endpoint
+
+let callable = [ Dc_method; Dc_constructor ]
+
+let resolve_enum ~env ~namespace rest =
+  match split_at_first ~chars:[ '.' ] rest with
+  | _, "" -> resolve_type ~env ~namespace rest
+  | _, _member -> resolve_enum_member ~env ~namespace rest
+
+let resolve_fragment ~env kind endpoint =
+  let* kind = Option.to_result ~none:Unknown_target kind in
   let* target = target_class kind in
-  let* namespace, rest = split_namespace ~env endpoint in
+  let in_namespace resolve =
+    let* namespace, rest = split_namespace ~env endpoint in
+    resolve ~namespace rest
+  in
   match target with
-  | Type_target -> resolve_type ~env ~namespace rest
-  | Enum_target -> (
-      match split_at_first ~chars:[ '.' ] rest with
-      | _, "" -> resolve_type ~env ~namespace rest
-      | _, _member -> resolve_enum_member ~env ~namespace rest)
-  | Constant_target -> resolve_constant ~env ~namespace rest
-  | Member_target -> resolve_member ~env ~namespace kind rest
+  | Type_target -> in_namespace (resolve_type ~env)
+  | Enum_target -> in_namespace (resolve_enum ~env)
+  | Constant_target -> in_namespace (resolve_constant ~env)
+  | Member_target -> in_namespace (resolve_member ~env kind)
+  | C_symbol_target -> resolve_c_symbol ~env ~kinds:callable endpoint
+
+let path_of ~env ~(origin : Doc_ast.sym_origin) kind endpoint =
+  match origin with
+  | Fragment -> resolve_fragment ~env kind endpoint
+  | Hash -> resolve_hash ~env endpoint
+  | Percent -> resolve_percent ~env endpoint
+  | C_call -> resolve_c_symbol ~env ~kinds:callable endpoint
 
 let rec resolve_inlines ~env inlines outcomes =
   List.fold_left_map inlines ~init:outcomes
     ~f:(fun outcomes (inline : Doc_ast.inline) ->
       match inline with
-      | Doc_ast.Sym_ref { kind; endpoint; anchor = _ } -> (
-          let path = path_of ~env kind endpoint in
+      | Doc_ast.Sym_ref { origin; kind; endpoint; anchor = _ } -> (
+          let path = path_of ~env ~origin kind endpoint in
           let outcome =
-            { kind; endpoint; result = Result.map (fun _ -> ()) path }
+            { origin; kind; endpoint; result = Result.map (fun _ -> ()) path }
           in
           match path with
           | Ok path ->
-              (outcome :: outcomes, Doc_ast.Ref { path; text = endpoint })
+              ( outcome :: outcomes,
+                Doc_ast.Ref
+                  { path; text = Doc_ast.sym_ref_text origin endpoint } )
           | Error _ -> (outcome :: outcomes, inline))
       | Bold inner ->
           let outcomes, inner = resolve_inlines ~env inner outcomes in
@@ -288,27 +353,43 @@ let resolve env ({ blocks } : Doc_ast.t) : Doc_ast.t * _ =
 
 (* Summary *)
 
-let kind_name : Doc_ast.sym_kind option -> string = function
-  | None -> "sigil"
-  | Some kind -> (
-      match kind with
-      | Class -> "class"
-      | Iface -> "iface"
-      | Enum -> "enum"
-      | Flags -> "flags"
-      | Struct -> "struct"
-      | Alias -> "alias"
-      | Callback -> "callback"
-      | Const -> "const"
-      | Ctor -> "ctor"
-      | Func -> "func"
-      | Method -> "method"
-      | Property -> "property"
-      | Signal -> "signal"
-      | Vfunc -> "vfunc"
-      | Doc_ast.Error -> "error"
-      | Id -> "id"
-      | Type_kind -> "type")
+let kind_name : Doc_ast.sym_kind -> string = function
+  | Class -> "class"
+  | Iface -> "iface"
+  | Enum -> "enum"
+  | Flags -> "flags"
+  | Struct -> "struct"
+  | Alias -> "alias"
+  | Callback -> "callback"
+  | Const -> "const"
+  | Ctor -> "ctor"
+  | Func -> "func"
+  | Method -> "method"
+  | Property -> "property"
+  | Signal -> "signal"
+  | Vfunc -> "vfunc"
+  | Doc_ast.Error -> "error"
+  | Id -> "id"
+  | Type_kind -> "type"
+
+(* The summary line a reference is counted under: its fragment keyword, or its
+   origin. *)
+let reference_name o =
+  match (o.origin, o.kind) with
+  | Fragment, Some kind -> kind_name kind
+  | Fragment, None -> "fragment"
+  | Hash, _ -> "#sigil"
+  | Percent, _ -> "%sigil"
+  | C_call, _ -> "c-call"
+
+(* The reference as the source wrote it. *)
+let shown o =
+  match (o.origin, o.kind) with
+  | Fragment, Some kind -> kind_name kind ^ "@" ^ o.endpoint
+  | Fragment, None -> o.endpoint
+  | Hash, _ -> "#" ^ o.endpoint
+  | Percent, _ -> "%" ^ o.endpoint
+  | C_call, _ -> o.endpoint ^ "()"
 
 let result_name = function
   | Ok () -> "linked"
@@ -327,10 +408,10 @@ let pp_summary ppf outcomes =
     List.length (List.filter outcomes ~f:(fun o -> Result.is_ok o.result))
   in
   Fmt.pf ppf "Doc references: %d, %d linked@." (List.length outcomes) linked;
-  counts (List.map outcomes ~f:(fun o -> kind_name o.kind))
+  counts (List.map outcomes ~f:reference_name)
   |> List.iter ~f:(fun (kind, total) ->
       let results =
-        List.filter outcomes ~f:(fun o -> String.equal (kind_name o.kind) kind)
+        List.filter outcomes ~f:(fun o -> String.equal (reference_name o) kind)
         |> List.map ~f:(fun o -> result_name o.result)
         |> counts
         |> List.map ~f:(fun (r, n) -> Fmt.str "%s %d" r n)
@@ -339,7 +420,7 @@ let pp_summary ppf outcomes =
   let unknown =
     List.filter_map outcomes ~f:(fun o ->
         match o.result with
-        | Error Unknown_target -> Some (kind_name o.kind ^ "@" ^ o.endpoint)
+        | Error Unknown_target -> Some (shown o)
         | Ok () | Error _ -> None)
     |> List.sort_uniq ~cmp:String.compare
   in

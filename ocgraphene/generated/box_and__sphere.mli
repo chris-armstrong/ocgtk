@@ -39,7 +39,7 @@ class type box_t = object
   (** Initializes the given #graphene_box_t with the given array of vertices.
 
       If [n_points] is 0, the returned box is initialized with
-      graphene_box_empty(). *)
+      [graphene_box_empty ()]. *)
 
   method init_from_vec3 : Raw.Vec3.t option -> Raw.Vec3.t option -> Raw.Box.t
   (** Initializes the given #graphene_box_t with two vertices stored inside
@@ -49,7 +49,7 @@ class type box_t = object
   (** Initializes the given #graphene_box_t with the given array of vertices.
 
       If [n_vectors] is 0, the returned box is initialized with
-      graphene_box_empty(). *)
+      [graphene_box_empty ()]. *)
 
   (** {2:conversions Conversions} *)
 

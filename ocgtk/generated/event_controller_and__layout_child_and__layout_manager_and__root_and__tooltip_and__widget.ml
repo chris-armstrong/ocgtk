@@ -150,8 +150,8 @@ and tooltip_t = object
   (** Replaces the widget packed into the tooltip with [custom_widget].
       [custom_widget] does not get destroyed when the tooltip goes away. By
       default a box with a [GtkImage] and [GtkLabel] is embedded in the tooltip,
-      which can be configured using gtk_tooltip_set_markup() and
-      gtk_tooltip_set_icon(). *)
+      which can be configured using [gtk_tooltip_set_markup ()] and
+      [gtk_tooltip_set_icon ()]. *)
 
   method set_icon : Ocgdk.Paintable.paintable_t option -> unit
   (** Sets the icon of the tooltip (which is in front of the text) to be
@@ -185,8 +185,8 @@ and tooltip_t = object
       setting tooltips on [GtkTreeView] rows and cells, [GtkIconViews], etc.
 
       For setting tooltips on [GtkTreeView], please refer to the convenience
-      functions for this: gtk_tree_view_set_tooltip_row() and
-      gtk_tree_view_set_tooltip_cell(). *)
+      functions for this: [gtk_tree_view_set_tooltip_row ()] and
+      [gtk_tree_view_set_tooltip_cell ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -1172,9 +1172,9 @@ and widget_t = object
       request. For example, when you change the text in a [Gtk.Label], the label
       queues a resize to ensure there’s enough space for the new text.
 
-      Note that you cannot call gtk_widget_queue_resize() on a widget from
+      Note that you cannot call [gtk_widget_queue_resize ()] on a widget from
       inside its implementation of the [Gtk.Widget.size_allocate] virtual
-      method. Calls to gtk_widget_queue_resize() from inside
+      method. Calls to [gtk_widget_queue_resize ()] from inside
       [Gtk.Widget.size_allocate] will be silently ignored.
 
       This function is only for use in widget implementations. *)
@@ -1576,8 +1576,9 @@ and widget_t = object
       When a widget receives a call to the snapshot function, it must send
       synthetic [Gtk.Widget.snapshot] calls to all children. This function
       provides a convenient way of doing this. A widget, when it receives a call
-      to its [Gtk.Widget.snapshot] function, calls gtk_widget_snapshot_child()
-      once for each child, passing in the [snapshot] the widget received.
+      to its [Gtk.Widget.snapshot] function, calls
+      [gtk_widget_snapshot_child ()] once for each child, passing in the
+      [snapshot] the widget received.
 
       This function takes care of translating the origin of [snapshot], and
       deciding whether the child needs to be snapshot.

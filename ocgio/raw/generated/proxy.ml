@@ -21,12 +21,14 @@ external supports_hostname : t -> bool = "ml_g_proxy_supports_hostname"
     to an IP address themselves. Others, like SOCKS4, do not allow this. This
     function will return [false] if [proxy] is implementing such a protocol.
     When [false] is returned, the caller should resolve the destination hostname
-    first, and then pass a [GProxyAddress] containing the stringified IP address
-    to g_proxy_connect() or g_proxy_connect_async(). *)
+    first, and then pass a {{!Ocgio.Raw.Proxy_address}[GProxyAddress]}
+    containing the stringified IP address to
+    {{!Ocgio.Raw.Proxy.val-connect}[g_proxy_connect ()]} or
+    [g_proxy_connect_async ()]. *)
 
 external connect_finish : t -> Async_result.t -> (Io_stream.t, GError.t) result
   = "ml_g_proxy_connect_finish"
-(** See g_proxy_connect(). *)
+(** See {{!Ocgio.Raw.Proxy.val-connect}[g_proxy_connect ()]}. *)
 
 external connect :
   t ->
@@ -34,7 +36,8 @@ external connect :
   Proxy_address.t ->
   Cancellable.t option ->
   (Io_stream.t, GError.t) result = "ml_g_proxy_connect"
-(** Given [connection] to communicate with a proxy (eg, a [GSocketConnection]
-    that is connected to the proxy server), this does the necessary handshake to
-    connect to [proxy_address], and if required, wraps the [GIOStream] to handle
-    proxy payload. *)
+(** Given [connection] to communicate with a proxy (eg, a
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} that is connected to the
+    proxy server), this does the necessary handshake to connect to
+    [proxy_address], and if required, wraps the
+    {{!Ocgio.Raw.Io_stream}[GIOStream]} to handle proxy payload. *)

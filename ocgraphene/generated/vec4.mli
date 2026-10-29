@@ -38,4 +38,6 @@ val alloc : unit -> vec4_t
 
     The contents of the returned structure are undefined.
 
-    Use graphene_vec4_init() to initialize the vector. *)
+    Use
+    {{!Ocgraphene.Vec4.class-type-vec4_t.method-init}[graphene_vec4_init ()]} to
+    initialize the vector. *)

@@ -11,34 +11,40 @@ type t = [ `d_bus_message | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_message_get_type"
 
 external new_ : unit -> t = "ml_g_dbus_message_new"
-(** Creates a new empty [GDBusMessage]. *)
+(** Creates a new empty {{!Ocgio.Raw.D_bus_message}[GDBusMessage]}. *)
 
 external new_method_call :
   string option -> string -> string option -> string -> t
   = "ml_g_dbus_message_new_method_call"
-(** Creates a new [GDBusMessage] for a method call. *)
+(** Creates a new {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} for a method call.
+*)
 
 external new_signal : string -> string -> string -> t
   = "ml_g_dbus_message_new_signal"
-(** Creates a new [GDBusMessage] for a signal emission. *)
+(** Creates a new {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} for a signal
+    emission. *)
 
 (* Methods *)
 
 external to_gerror : t -> (bool, GError.t) result
   = "ml_g_dbus_message_to_gerror"
-(** If [message] is not of type [G_DBUS_MESSAGE_TYPE_ERROR] does nothing and
-    returns [false].
+(** If [message] is not of type
+    {{!Ocgio.Enums.type-dbusmessagetype.constructor-ERROR}[G_DBUS_MESSAGE_TYPE_ERROR]}
+    does nothing and returns [false].
 
     Otherwise this method encodes the error in [message] as a [GError] using
-    g_dbus_error_set_dbus_error() using the information in the
-    [G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME] header field of [message] as well
-    as the first string item in [message]'s body. *)
+    [g_dbus_error_set_dbus_error ()] using the information in the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-ERROR_NAME}[G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME]}
+    header field of [message] as well as the first string item in [message]'s
+    body. *)
 
 external set_unix_fd_list : t -> Unix_fd_list.t option -> unit
   = "ml_g_dbus_message_set_unix_fd_list"
 (** Sets the UNIX file descriptors associated with [message]. As a side-effect
-    the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header field is set to the
-    number of fds in [fd_list] (or cleared if [fd_list] is [None]).
+    the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-NUM_UNIX_FDS}[G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS]}
+    header field is set to the number of fds in [fd_list] (or cleared if
+    [fd_list] is [None]).
 
     This method is only available on UNIX.
 
@@ -49,8 +55,9 @@ external set_unix_fd_list : t -> Unix_fd_list.t option -> unit
 
 external set_signature : t -> string option -> unit
   = "ml_g_dbus_message_set_signature"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-SIGNATURE}[G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE]}
+    header field. *)
 
 external set_serial : t -> UInt32.t -> unit = "ml_g_dbus_message_set_serial"
 (** Sets the serial for [message].
@@ -61,22 +68,26 @@ external set_serial : t -> UInt32.t -> unit = "ml_g_dbus_message_set_serial"
 
 external set_sender : t -> string option -> unit
   = "ml_g_dbus_message_set_sender"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_SENDER] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-SENDER}[G_DBUS_MESSAGE_HEADER_FIELD_SENDER]}
+    header field. *)
 
 external set_reply_serial : t -> UInt32.t -> unit
   = "ml_g_dbus_message_set_reply_serial"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-REPLY_SERIAL}[G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL]}
+    header field. *)
 
 external set_path : t -> string option -> unit = "ml_g_dbus_message_set_path"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_PATH] header field.
-*)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-PATH}[G_DBUS_MESSAGE_HEADER_FIELD_PATH]}
+    header field. *)
 
 external set_num_unix_fds : t -> UInt32.t -> unit
   = "ml_g_dbus_message_set_num_unix_fds"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-NUM_UNIX_FDS}[G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS]}
+    header field. *)
 
 external set_message_type : t -> Ocgio_enums.dbusmessagetype -> unit
   = "ml_g_dbus_message_set_message_type"
@@ -84,13 +95,15 @@ external set_message_type : t -> Ocgio_enums.dbusmessagetype -> unit
 
 external set_member : t -> string option -> unit
   = "ml_g_dbus_message_set_member"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_MEMBER] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-MEMBER}[G_DBUS_MESSAGE_HEADER_FIELD_MEMBER]}
+    header field. *)
 
 external set_interface : t -> string option -> unit
   = "ml_g_dbus_message_set_interface"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-INTERFACE}[G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE]}
+    header field. *)
 
 external set_header :
   t -> Ocgio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit
@@ -105,13 +118,15 @@ external set_flags : t -> Ocgio_enums.dbusmessageflags -> unit
 
 external set_error_name : t -> string -> unit
   = "ml_g_dbus_message_set_error_name"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-ERROR_NAME}[G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME]}
+    header field. *)
 
 external set_destination : t -> string option -> unit
   = "ml_g_dbus_message_set_destination"
-(** Convenience setter for the [G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION] header
-    field. *)
+(** Convenience setter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-DESTINATION}[G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION]}
+    header field. *)
 
 external set_byte_order : t -> Ocgio_enums.dbusmessagebyteorder -> unit
   = "ml_g_dbus_message_set_byte_order"
@@ -119,8 +134,9 @@ external set_byte_order : t -> Ocgio_enums.dbusmessagebyteorder -> unit
 
 external set_body : t -> Gvariant.t -> unit = "ml_g_dbus_message_set_body"
 (** Sets the body [message]. As a side-effect the
-    [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header field is set to the type
-    string of [body] (or cleared if [body] is [None]).
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-SIGNATURE}[G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE]}
+    header field is set to the type string of [body] (or cleared if [body] is
+    [None]).
 
     If [body] is floating, [message] assumes ownership of [body]. *)
 
@@ -162,12 +178,13 @@ external print : t -> int -> string = "ml_g_dbus_message_print"
     ]} *)
 
 external new_method_reply : t -> t = "ml_g_dbus_message_new_method_reply"
-(** Creates a new [GDBusMessage] that is a reply to [method_call_message]. *)
+(** Creates a new {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} that is a reply to
+    [method_call_message]. *)
 
 external new_method_error_literal : t -> string -> string -> t
   = "ml_g_dbus_message_new_method_error_literal"
-(** Creates a new [GDBusMessage] that is an error reply to
-    [method_call_message]. *)
+(** Creates a new {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} that is an error
+    reply to [method_call_message]. *)
 
 external lock : t -> unit = "ml_g_dbus_message_lock"
 (** If [message] is locked, does nothing. Otherwise locks the message. *)
@@ -179,13 +196,14 @@ external get_unix_fd_list : t -> Unix_fd_list.t option
     This method is only available on UNIX.
 
     The file descriptors normally correspond to [G_VARIANT_TYPE_HANDLE] values
-    in the body of the message. For example, if g_variant_get_handle() returns
-    5, that is intended to be a reference to the file descriptor that can be
-    accessed by [g_unix_fd_list_get (list, 5, ...)]. *)
+    in the body of the message. For example, if [g_variant_get_handle ()]
+    returns 5, that is intended to be a reference to the file descriptor that
+    can be accessed by [g_unix_fd_list_get (list, 5, ...)]. *)
 
 external get_signature : t -> string = "ml_g_dbus_message_get_signature"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header
-    field.
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-SIGNATURE}[G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE]}
+    header field.
 
     This will always be non-[None], but may be an empty string. *)
 
@@ -193,37 +211,44 @@ external get_serial : t -> UInt32.t = "ml_g_dbus_message_get_serial"
 (** Gets the serial for [message]. *)
 
 external get_sender : t -> string option = "ml_g_dbus_message_get_sender"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_SENDER] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-SENDER}[G_DBUS_MESSAGE_HEADER_FIELD_SENDER]}
+    header field. *)
 
 external get_reply_serial : t -> UInt32.t = "ml_g_dbus_message_get_reply_serial"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-REPLY_SERIAL}[G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL]}
+    header field. *)
 
 external get_path : t -> string option = "ml_g_dbus_message_get_path"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_PATH] header field.
-*)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-PATH}[G_DBUS_MESSAGE_HEADER_FIELD_PATH]}
+    header field. *)
 
 external get_num_unix_fds : t -> UInt32.t = "ml_g_dbus_message_get_num_unix_fds"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-NUM_UNIX_FDS}[G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS]}
+    header field. *)
 
 external get_message_type : t -> Ocgio_enums.dbusmessagetype
   = "ml_g_dbus_message_get_message_type"
 (** Gets the type of [message]. *)
 
 external get_member : t -> string option = "ml_g_dbus_message_get_member"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_MEMBER] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-MEMBER}[G_DBUS_MESSAGE_HEADER_FIELD_MEMBER]}
+    header field. *)
 
 external get_locked : t -> bool = "ml_g_dbus_message_get_locked"
 (** Checks whether [message] is locked. To monitor changes to this value,
     connect to the [GObject::notify] signal to listen for changes on the
-    [GDBusMessage:locked] property. *)
+    {{!Ocgio.Raw.D_bus_message.val-get_locked}[GDBusMessage:locked]} property.
+*)
 
 external get_interface : t -> string option = "ml_g_dbus_message_get_interface"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-INTERFACE}[G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE]}
+    header field. *)
 
 external get_header :
   t -> Ocgio_enums.dbusmessageheaderfield -> Gvariant.t option
@@ -239,13 +264,15 @@ external get_flags : t -> Ocgio_enums.dbusmessageflags
 
 external get_error_name : t -> string option
   = "ml_g_dbus_message_get_error_name"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-ERROR_NAME}[G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME]}
+    header field. *)
 
 external get_destination : t -> string option
   = "ml_g_dbus_message_get_destination"
-(** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION] header
-    field. *)
+(** Convenience getter for the
+    {{!Ocgio.Enums.type-dbusmessageheaderfield.constructor-DESTINATION}[G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION]}
+    header field. *)
 
 external get_byte_order : t -> Ocgio_enums.dbusmessagebyteorder
   = "ml_g_dbus_message_get_byte_order"
@@ -268,8 +295,9 @@ external get_arg0 : t -> string option = "ml_g_dbus_message_get_arg0"
     for returning object-path-typed arg0 values. *)
 
 external copy : t -> (t, GError.t) result = "ml_g_dbus_message_copy"
-(** Copies [message]. The copy is a deep copy and the returned [GDBusMessage] is
-    completely identical except that it is guaranteed to not be locked.
+(** Copies [message]. The copy is a deep copy and the returned
+    {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} is completely identical except
+    that it is guaranteed to not be locked.
 
     This operation can fail if e.g. [message] contains file descriptors and the
     per-process or system-wide open files limit is reached. *)

@@ -29,6 +29,8 @@ external query_info :
   = "ml_g_file_input_stream_query_info"
 (** Queries a file input stream the given [attributes]. This function blocks
     while querying the stream. For the asynchronous (non-blocking) version of
-    this function, see g_file_input_stream_query_info_async(). While the stream
-    is blocked, the stream will set the pending flag internally, and any other
-    operations on the stream will fail with [G_IO_ERROR_PENDING]. *)
+    this function, see [g_file_input_stream_query_info_async ()]. While the
+    stream is blocked, the stream will set the pending flag internally, and any
+    other operations on the stream will fail with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-PENDING}[G_IO_ERROR_PENDING]}.
+*)

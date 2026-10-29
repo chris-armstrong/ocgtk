@@ -22,7 +22,7 @@ class type socket_address_t = object
 
   method get_native_size : unit -> int
   (** Gets the size of [address]'s native struct sockaddr. You can use this to
-      allocate memory to pass to g_socket_address_to_native(). *)
+      allocate memory to pass to [g_socket_address_to_native ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -60,20 +60,20 @@ and socket_address_enumerator_t = object
   (** Retrieves the next [GSocketAddress] from [enumerator]. Note that this may
       block for some amount of time. (Eg, a [GNetworkAddress] may need to do a
       DNS lookup before it can return an address.) Use
-      g_socket_address_enumerator_next_async() if you need to avoid blocking.
+      [g_socket_address_enumerator_next_async ()] if you need to avoid blocking.
 
       If [enumerator] is expected to yield addresses, but for some reason is
       unable to (eg, because of a DNS error), then the first call to
-      g_socket_address_enumerator_next() will return an appropriate error in
-      [*error]. However, if the first call to g_socket_address_enumerator_next()
-      succeeds, then any further internal errors (other than [cancellable] being
-      triggered) will be ignored. *)
+      [g_socket_address_enumerator_next ()] will return an appropriate error in
+      [*error]. However, if the first call to
+      [g_socket_address_enumerator_next ()] succeeds, then any further internal
+      errors (other than [cancellable] being triggered) will be ignored. *)
 
   method next_finish :
     Async_result.async_result_t -> (socket_address_t option, GError.t) result
   (** Retrieves the result of a completed call to
-      g_socket_address_enumerator_next_async(). See
-      g_socket_address_enumerator_next() for more information about error
+      [g_socket_address_enumerator_next_async ()]. See
+      [g_socket_address_enumerator_next ()] for more information about error
       handling. *)
 
   (** {2:conversions Conversions} *)
@@ -154,8 +154,8 @@ and socket_connectable_t = object
       proxy.
 
       If [connectable] does not implement
-      g_socket_connectable_proxy_enumerate(), this will fall back to calling
-      g_socket_connectable_enumerate(). *)
+      [g_socket_connectable_proxy_enumerate ()], this will fall back to calling
+      [g_socket_connectable_enumerate ()]. *)
 
   method to_string : unit -> string
   (** Format a [GSocketConnectable] as a string. This is a human-readable format

@@ -22,13 +22,15 @@ type t = [ `unix_fd_list | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_unix_fd_list_get_type"
 
 external new_ : unit -> t = "ml_g_unix_fd_list_new"
-(** Creates a new [GUnixFDList] containing no file descriptors. *)
+(** Creates a new {{!Ocgio.Raw.Unix_fd_list}[GUnixFDList]} containing no file
+    descriptors. *)
 
 external new_from_array : int array -> int -> t
   = "ml_g_unix_fd_list_new_from_array"
-(** Creates a new [GUnixFDList] containing the file descriptors given in [fds].
-    The file descriptors become the property of the new list and may no longer
-    be used by the caller. The array itself is owned by the caller.
+(** Creates a new {{!Ocgio.Raw.Unix_fd_list}[GUnixFDList]} containing the file
+    descriptors given in [fds]. The file descriptors become the property of the
+    new list and may no longer be used by the caller. The array itself is owned
+    by the caller.
 
     Each file descriptor in the array should be set to close-on-exec.
 
@@ -73,7 +75,7 @@ external get : t -> int -> (int, GError.t) result = "ml_g_unix_fd_list_get"
 
     [index_] specifies the index of the file descriptor to get. It is a
     programmer error for [index_] to be out of range; see
-    g_unix_fd_list_get_length().
+    {{!Ocgio.Raw.Unix_fd_list.val-get_length}[g_unix_fd_list_get_length ()]}.
 
     The file descriptor is duplicated using dup() and set as close-on-exec
     before being returned. You must call close() on it when you are done.
@@ -93,5 +95,5 @@ external append : t -> int -> (int, GError.t) result
     descriptor limit.
 
     The index of the file descriptor in the list is returned. If you use this
-    index with g_unix_fd_list_get() then you will receive back a duplicated copy
-    of the same file descriptor. *)
+    index with {{!Ocgio.Raw.Unix_fd_list.val-get}[g_unix_fd_list_get ()]} then
+    you will receive back a duplicated copy of the same file descriptor. *)

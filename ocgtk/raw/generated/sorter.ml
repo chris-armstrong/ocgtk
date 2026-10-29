@@ -14,7 +14,7 @@
     case, they will emit the
     {{!Ocgtk.Raw.Sorter.val-on_changed}[Gtk.Sorter::changed]} signal to notify
     that the sort order is no longer valid and should be updated by calling
-    gtk_sorter_compare() again.
+    {{!Ocgtk.Raw.Sorter.val-compare}[gtk_sorter_compare ()]} again.
 
     GTK provides various pre-made sorter implementations for common sorting
     operations. {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]} has built-in support

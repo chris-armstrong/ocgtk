@@ -65,7 +65,8 @@
  this ability.\n\n\
  While a pointer is dragged over the drop target's widget and the drop\n\
  has not been rejected, that widget will receive the\n\
- [GTK_STATE_FLAG_DROP_ACTIVE] state, which can be used to style the widget.\n\n\
+ {{!Ocgtk.Enums.type-stateflags_flag.constructor-DROP_ACTIVE}[GTK_STATE_FLAG_DROP_ACTIVE]} \
+ state, which can be used to style the widget.\n\n\
  If you are not interested in receiving the drop, but just want to update\n\
  UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
  use {{!Ocgtk.Raw.Drop_controller_motion}[Gtk.DropControllerMotion]}.\n\n\

@@ -25,9 +25,11 @@
     {{!Ocgtk.Raw.Scrolled_window.val-get_hscrollbar_policy}[Gtk.ScrolledWindow:hscrollbar-policy]}
     and
     {{!Ocgtk.Raw.Scrolled_window.val-get_vscrollbar_policy}[Gtk.ScrolledWindow:vscrollbar-policy]}
-    are [GTK_POLICY_NEVER] or [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds
-    internal [GtkScrollbar] widgets around its child. The scroll position of the
-    child, and if applicable the scrollbars, is controlled by the
+    are {{!Ocgtk.Enums.type-policytype.constructor-NEVER}[GTK_POLICY_NEVER]} or
+    {{!Ocgtk.Enums.type-policytype.constructor-EXTERNAL}[GTK_POLICY_EXTERNAL]},
+    [GtkScrolledWindow] adds internal [GtkScrollbar] widgets around its child.
+    The scroll position of the child, and if applicable the scrollbars, is
+    controlled by the
     {{!Ocgtk.Raw.Scrolled_window.val-get_hadjustment}[Gtk.ScrolledWindow:hadjustment]}
     and
     {{!Ocgtk.Raw.Scrolled_window.val-get_vadjustment}[Gtk.ScrolledWindow:vadjustment]}
@@ -111,7 +113,8 @@ external unset_placement : t -> unit = "ml_gtk_scrolled_window_unset_placement"
 (** Unsets the placement of the contents with respect to the scrollbars.
 
     If no window placement is set for a scrolled window, it defaults to
-    [GTK_CORNER_TOP_LEFT]. *)
+    {{!Ocgtk.Enums.type-cornertype.constructor-TOP_LEFT}[GTK_CORNER_TOP_LEFT]}.
+*)
 
 external set_vadjustment : t -> Adjustment.t option -> unit
   = "ml_gtk_scrolled_window_set_vadjustment"
@@ -134,20 +137,29 @@ external set_policy :
 
     The policy determines when the scrollbar should appear; it is a value from
     the {{!Ocgtk.Enums.type-policytype}[Gtk.PolicyType]} enumeration. If
-    [GTK_POLICY_ALWAYS], the scrollbar is always present; if [GTK_POLICY_NEVER],
-    the scrollbar is never present; if [GTK_POLICY_AUTOMATIC], the scrollbar is
-    present only if needed (that is, if the slider part of the bar would be
-    smaller than the trough — the display is larger than the page size). *)
+    {{!Ocgtk.Enums.type-policytype.constructor-ALWAYS}[GTK_POLICY_ALWAYS]}, the
+    scrollbar is always present; if
+    {{!Ocgtk.Enums.type-policytype.constructor-NEVER}[GTK_POLICY_NEVER]}, the
+    scrollbar is never present; if
+    {{!Ocgtk.Enums.type-policytype.constructor-AUTOMATIC}[GTK_POLICY_AUTOMATIC]},
+    the scrollbar is present only if needed (that is, if the slider part of the
+    bar would be smaller than the trough — the display is larger than the page
+    size). *)
 
 external set_placement : t -> Ocgtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_placement"
 (** Sets the placement of the contents with respect to the scrollbars for the
     scrolled window.
 
-    The default is [GTK_CORNER_TOP_LEFT], meaning the child is in the top left,
-    with the scrollbars underneath and to the right. Other values in
-    {{!Ocgtk.Enums.type-cornertype}[Gtk.CornerType]} are [GTK_CORNER_TOP_RIGHT],
-    [GTK_CORNER_BOTTOM_LEFT], and [GTK_CORNER_BOTTOM_RIGHT].
+    The default is
+    {{!Ocgtk.Enums.type-cornertype.constructor-TOP_LEFT}[GTK_CORNER_TOP_LEFT]},
+    meaning the child is in the top left, with the scrollbars underneath and to
+    the right. Other values in {{!Ocgtk.Enums.type-cornertype}[Gtk.CornerType]}
+    are
+    {{!Ocgtk.Enums.type-cornertype.constructor-TOP_RIGHT}[GTK_CORNER_TOP_RIGHT]},
+    {{!Ocgtk.Enums.type-cornertype.constructor-BOTTOM_LEFT}[GTK_CORNER_BOTTOM_LEFT]},
+    and
+    {{!Ocgtk.Enums.type-cornertype.constructor-BOTTOM_RIGHT}[GTK_CORNER_BOTTOM_RIGHT]}.
 
     See also
     {{!Ocgtk.Raw.Scrolled_window.val-get_placement}[Gtk.ScrolledWindow.get_placement]}

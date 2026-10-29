@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuAttributeIter: MenuAttributeIter *)
 
-(** [GMenuAttributeIter] is an opaque structure type. You must access it using
-    the functions below.
+(** {{!Ocgio.Raw.Menu_attribute_iter}[GMenuAttributeIter]} is an opaque
+    structure type. You must access it using the functions below.
 
     The class built on this module is in {!Ocgio.Menu_attribute_iter}. *)
 

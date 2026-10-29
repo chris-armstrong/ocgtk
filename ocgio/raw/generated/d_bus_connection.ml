@@ -62,11 +62,12 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_connection_get_type"
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_connection_new_finish"
-(** Finishes an operation started with g_dbus_connection_new(). *)
+(** Finishes an operation started with [g_dbus_connection_new ()]. *)
 
 external new_for_address_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_connection_new_for_address_finish"
-(** Finishes an operation started with g_dbus_connection_new_for_address(). *)
+(** Finishes an operation started with [g_dbus_connection_new_for_address ()].
+*)
 
 external new_for_address_sync :
   string ->
@@ -80,14 +81,17 @@ external new_for_address_sync :
      address format}.
 
     This constructor can only be used to initiate client-side connections - use
-    g_dbus_connection_new_sync() if you need to act as the server. In
-    particular, [flags] cannot contain the
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER],
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS] or
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flags.
+    {{!Ocgio.Raw.D_bus_connection.val-new_sync}[g_dbus_connection_new_sync ()]}
+    if you need to act as the server. In particular, [flags] cannot contain the
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_SERVER}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER]},
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_ALLOW_ANONYMOUS}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS]} or
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_REQUIRE_SAME_USER}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER]} flags.
 
     This is a synchronous failable constructor. See
-    g_dbus_connection_new_for_address() for the asynchronous version.
+    [g_dbus_connection_new_for_address ()] for the asynchronous version.
 
     If [observer] is not [None] it may be used to control the authentication
     process. *)
@@ -102,18 +106,19 @@ external new_sync :
 (** Synchronously sets up a D-Bus connection for exchanging D-Bus messages with
     the end represented by [stream].
 
-    If [stream] is a [GSocketConnection], then the corresponding [GSocket] will
-    be put into non-blocking mode.
+    If [stream] is a {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}, then
+    the corresponding {{!Ocgio.Raw.Socket}[GSocket]} will be put into
+    non-blocking mode.
 
     The D-Bus connection will interact with [stream] from a worker thread. As a
     result, the caller should not interact with [stream] after this method has
-    been called, except by calling g_object_unref() on it.
+    been called, except by calling [g_object_unref ()] on it.
 
     If [observer] is not [None] it may be used to control the authentication
     process.
 
-    This is a synchronous failable constructor. See g_dbus_connection_new() for
-    the asynchronous version. *)
+    This is a synchronous failable constructor. See [g_dbus_connection_new ()]
+    for the asynchronous version. *)
 
 (* Methods *)
 
@@ -128,11 +133,13 @@ external unregister_object : t -> int -> bool
 external unexport_menu_model : t -> int -> unit
   = "ml_g_dbus_connection_unexport_menu_model"
 (** Reverses the effect of a previous call to
-    g_dbus_connection_export_menu_model().
+    {{!Ocgio.Raw.D_bus_connection.val-export_menu_model}[g_dbus_connection_export_menu_model
+                                                         ()]}.
 
     It is an error to call this function with an ID that wasn't returned from
-    g_dbus_connection_export_menu_model() or to call it with the same ID more
-    than once. *)
+    {{!Ocgio.Raw.D_bus_connection.val-export_menu_model}[g_dbus_connection_export_menu_model
+                                                         ()]} or to call it with
+    the same ID more than once. *)
 
 external unexport_action_group : t -> int -> unit
   = "ml_g_dbus_connection_unexport_action_group"
@@ -146,7 +153,8 @@ external unexport_action_group : t -> int -> unit
 external start_message_processing : t -> unit
   = "ml_g_dbus_connection_start_message_processing"
 (** If [connection] was created with
-    [G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING], this method starts
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-DELAY_MESSAGE_PROCESSING}
+     [G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING]}, this method starts
     processing messages. Does nothing on if [connection] wasn't created with
     this flag or if the method has already been called. *)
 
@@ -158,7 +166,7 @@ external signal_unsubscribe : t -> int -> unit
     signal subscription) in the current thread-default [GMainContext] after this
     function has returned. You should continue to iterate the [GMainContext]
     until the [GDestroyNotify] function passed to
-    g_dbus_connection_signal_subscribe() is called, in order to avoid memory
+    [g_dbus_connection_signal_subscribe ()] is called, in order to avoid memory
     leaks through callbacks queued on the [GMainContext] after it’s stopped
     being iterated. Alternatively, any idle source with a priority lower than
     [G_PRIORITY_DEFAULT] that was scheduled after unsubscription, also indicates
@@ -167,7 +175,9 @@ external signal_unsubscribe : t -> int -> unit
 external set_exit_on_close : t -> bool -> unit
   = "ml_g_dbus_connection_set_exit_on_close"
 (** Sets whether the process should be terminated when [connection] is closed by
-    the remote peer. See [GDBusConnection:exit]-on-close for more details.
+    the remote peer. See
+    {{!Ocgio.Raw.D_bus_connection.val-get_exit_on_close}[GDBusConnection:exit-on-close]}
+    for more details.
 
     Note that this function should be used with care. Most modern UNIX desktops
     tie the notion of a user session with the session bus, and expect all of a
@@ -186,43 +196,53 @@ external send_message_with_reply_sync :
   = "ml_g_dbus_connection_send_message_with_reply_sync"
 (** Synchronously sends [message] to the peer represented by [connection] and
     blocks the calling thread until a reply is received or the timeout is
-    reached. See g_dbus_connection_send_message_with_reply() for the
+    reached. See [g_dbus_connection_send_message_with_reply ()] for the
     asynchronous version of this method.
 
-    Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
-    the serial number will be assigned by [connection] and set on [message] via
-    g_dbus_message_set_serial(). If [out_serial] is not [None], then the serial
-    number used will be written to this location prior to submitting the message
-    to the underlying transport. While it has a [volatile] qualifier, this is a
-    historical artifact and the argument passed to it should not be [volatile].
+    Unless [flags] contain the
+    {{!Ocgio.Enums.type-dbussendmessageflags_flag.constructor-PRESERVE_SERIAL}[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL]}
+    flag, the serial number will be assigned by [connection] and set on
+    [message] via
+    {{!Ocgio.Raw.D_bus_message.val-set_serial}[g_dbus_message_set_serial ()]}.
+    If [out_serial] is not [None], then the serial number used will be written
+    to this location prior to submitting the message to the underlying
+    transport. While it has a [volatile] qualifier, this is a historical
+    artifact and the argument passed to it should not be [volatile].
 
     If [connection] is closed then the operation will fail with
-    [G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the operation will fail
-    with [G_IO_ERROR_CANCELLED]. If [message] is not well-formed, the operation
-    fails with [G_IO_ERROR_INVALID_ARGUMENT].
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}. If
+    [cancellable] is canceled, the operation will fail with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}.
+    If [message] is not well-formed, the operation fails with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.
 
     Note that [error] is only set if a local in-process error occurred. That is
-    to say that the returned [GDBusMessage] object may be of type
-    [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
-    this to a [GError].
+    to say that the returned {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} object
+    may be of type
+    {{!Ocgio.Enums.type-dbusmessagetype.constructor-ERROR}[G_DBUS_MESSAGE_TYPE_ERROR]}.
+    Use {{!Ocgio.Raw.D_bus_message.val-to_gerror}[g_dbus_message_to_gerror ()]}
+    to transcode this to a [GError].
 
     See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
     \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
     of how to use this low-level API to send and receive UNIX file descriptors.
 
     Note that [message] must be unlocked, unless [flags] contain the
-    [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
+    {{!Ocgio.Enums.type-dbussendmessageflags_flag.constructor-PRESERVE_SERIAL}[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL]}
+    flag. *)
 
 external send_message_with_reply_finish :
   t -> Async_result.t -> (D_bus_message.t, GError.t) result
   = "ml_g_dbus_connection_send_message_with_reply_finish"
 (** Finishes an operation started with
-    g_dbus_connection_send_message_with_reply().
+    [g_dbus_connection_send_message_with_reply ()].
 
     Note that [error] is only set if a local in-process error occurred. That is
-    to say that the returned [GDBusMessage] object may be of type
-    [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
-    this to a [GError].
+    to say that the returned {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} object
+    may be of type
+    {{!Ocgio.Enums.type-dbusmessagetype.constructor-ERROR}[G_DBUS_MESSAGE_TYPE_ERROR]}.
+    Use {{!Ocgio.Raw.D_bus_message.val-to_gerror}[g_dbus_message_to_gerror ()]}
+    to transcode this to a [GError].
 
     See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
     \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
@@ -236,33 +256,39 @@ external send_message :
   (bool * UInt32.t, GError.t) result = "ml_g_dbus_connection_send_message"
 (** Asynchronously sends [message] to the peer represented by [connection].
 
-    Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
-    the serial number will be assigned by [connection] and set on [message] via
-    g_dbus_message_set_serial(). If [out_serial] is not [None], then the serial
-    number used will be written to this location prior to submitting the message
-    to the underlying transport. While it has a [volatile] qualifier, this is a
-    historical artifact and the argument passed to it should not be [volatile].
+    Unless [flags] contain the
+    {{!Ocgio.Enums.type-dbussendmessageflags_flag.constructor-PRESERVE_SERIAL}[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL]}
+    flag, the serial number will be assigned by [connection] and set on
+    [message] via
+    {{!Ocgio.Raw.D_bus_message.val-set_serial}[g_dbus_message_set_serial ()]}.
+    If [out_serial] is not [None], then the serial number used will be written
+    to this location prior to submitting the message to the underlying
+    transport. While it has a [volatile] qualifier, this is a historical
+    artifact and the argument passed to it should not be [volatile].
 
     If [connection] is closed then the operation will fail with
-    [G_IO_ERROR_CLOSED]. If [message] is not well-formed, the operation fails
-    with [G_IO_ERROR_INVALID_ARGUMENT].
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}. If
+    [message] is not well-formed, the operation fails with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.
 
     See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
     \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
     of how to use this low-level API to send and receive UNIX file descriptors.
 
     Note that [message] must be unlocked, unless [flags] contain the
-    [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
+    {{!Ocgio.Enums.type-dbussendmessageflags_flag.constructor-PRESERVE_SERIAL}[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL]}
+    flag. *)
 
 external remove_filter : t -> int -> unit = "ml_g_dbus_connection_remove_filter"
 (** Removes a filter.
 
     Note that since filters run in a different thread, there is a race condition
     where it is possible that the filter will be running even after calling
-    g_dbus_connection_remove_filter(), so you cannot just free data that the
-    filter might be using. Instead, you should pass a [GDestroyNotify] to
-    g_dbus_connection_add_filter(), which will be called when it is guaranteed
-    that the data is no longer needed. *)
+    {{!Ocgio.Raw.D_bus_connection.val-remove_filter}[g_dbus_connection_remove_filter
+                                                     ()]}, so you cannot just
+    free data that the filter might be using. Instead, you should pass a
+    [GDestroyNotify] to [g_dbus_connection_add_filter ()], which will be called
+    when it is guaranteed that the data is no longer needed. *)
 
 external is_closed : t -> bool = "ml_g_dbus_connection_is_closed"
 (** Gets whether [connection] is closed. *)
@@ -276,16 +302,17 @@ external get_unique_name : t -> string option
 external get_stream : t -> Io_stream.t = "ml_g_dbus_connection_get_stream"
 (** Gets the underlying stream used for IO.
 
-    While the [GDBusConnection] is active, it will interact with this stream
-    from a worker thread, so it is not safe to interact with the stream
-    directly. *)
+    While the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} is active, it
+    will interact with this stream from a worker thread, so it is not safe to
+    interact with the stream directly. *)
 
 external get_peer_credentials : t -> Credentials.t option
   = "ml_g_dbus_connection_get_peer_credentials"
 (** Gets the credentials of the authenticated peer. This will always return
     [None] unless [connection] acted as a server (e.g.
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER] was passed) when set up and
-    the client passed credentials as part of the authentication process.
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_SERVER}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER]} was passed) when set up
+    and the client passed credentials as part of the authentication process.
 
     In a message bus setup, the message bus is always the server and each
     application is a client. So this method will always return [None] for
@@ -293,15 +320,20 @@ external get_peer_credentials : t -> Credentials.t option
 
 external get_last_serial : t -> UInt32.t
   = "ml_g_dbus_connection_get_last_serial"
-(** Retrieves the last serial number assigned to a [GDBusMessage] on the current
-    thread. This includes messages sent via both low-level API such as
-    g_dbus_connection_send_message() as well as high-level API such as
-    g_dbus_connection_emit_signal(), g_dbus_connection_call() or
-    g_dbus_proxy_call(). *)
+(** Retrieves the last serial number assigned to a
+    {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} on the current thread. This
+    includes messages sent via both low-level API such as
+    {{!Ocgio.Raw.D_bus_connection.val-send_message}[g_dbus_connection_send_message
+                                                    ()]} as well as high-level
+    API such as
+    {{!Ocgio.Raw.D_bus_connection.val-emit_signal}[g_dbus_connection_emit_signal
+                                                   ()]},
+    [g_dbus_connection_call ()] or [g_dbus_proxy_call ()]. *)
 
 external get_guid : t -> string = "ml_g_dbus_connection_get_guid"
 (** The GUID of the peer performing the role of server when authenticating. See
-    [GDBusConnection:guid] for more details. *)
+    {{!Ocgio.Raw.D_bus_connection.val-get_guid}[GDBusConnection:guid]} for more
+    details. *)
 
 external get_flags : t -> Ocgio_enums.dbusconnectionflags
   = "ml_g_dbus_connection_get_flags"
@@ -310,7 +342,9 @@ external get_flags : t -> Ocgio_enums.dbusconnectionflags
 external get_exit_on_close : t -> bool
   = "ml_g_dbus_connection_get_exit_on_close"
 (** Gets whether the process is terminated when [connection] is closed by the
-    remote peer. See [GDBusConnection:exit]-on-close for more details. *)
+    remote peer. See
+    {{!Ocgio.Raw.D_bus_connection.val-get_exit_on_close}[GDBusConnection:exit-on-close]}
+    for more details. *)
 
 external get_capabilities : t -> Ocgio_enums.dbuscapabilityflags
   = "ml_g_dbus_connection_get_capabilities"
@@ -319,12 +353,12 @@ external get_capabilities : t -> Ocgio_enums.dbuscapabilityflags
 external flush_sync : t -> Cancellable.t option -> (bool, GError.t) result
   = "ml_g_dbus_connection_flush_sync"
 (** Synchronously flushes [connection]. The calling thread is blocked until this
-    is done. See g_dbus_connection_flush() for the asynchronous version of this
-    method and more details about what it does. *)
+    is done. See [g_dbus_connection_flush ()] for the asynchronous version of
+    this method and more details about what it does. *)
 
 external flush_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_dbus_connection_flush_finish"
-(** Finishes an operation started with g_dbus_connection_flush(). *)
+(** Finishes an operation started with [g_dbus_connection_flush ()]. *)
 
 external export_menu_model :
   t ->
@@ -341,12 +375,13 @@ external export_menu_model :
     [error] set accordingly).
 
     Exporting menus with sections containing more than
-    [G_MENU_EXPORTER_MAX_SECTION_SIZE] items is not supported and results in
-    undefined behavior.
+    {{!Ocgio.Constants.menu_exporter_max_section_size}[G_MENU_EXPORTER_MAX_SECTION_SIZE]}
+    items is not supported and results in undefined behavior.
 
     You can unexport the menu model using
-    g_dbus_connection_unexport_menu_model() with the return value of this
-    function. *)
+    {{!Ocgio.Raw.D_bus_connection.val-unexport_menu_model}[g_dbus_connection_unexport_menu_model
+                                                           ()]} with the return
+    value of this function. *)
 
 external export_action_group :
   t -> string -> Action_group.t -> (int, GError.t) result
@@ -387,18 +422,20 @@ external emit_signal :
     If the parameters GVariant is floating, it is consumed.
 
     This can only fail if [parameters] is not compatible with the D-Bus protocol
-    ([G_IO_ERROR_INVALID_ARGUMENT]), or if [connection] has been closed
-    ([G_IO_ERROR_CLOSED]). *)
+    ({{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}),
+    or if [connection] has been closed
+    ({{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}).
+*)
 
 external close_sync : t -> Cancellable.t option -> (bool, GError.t) result
   = "ml_g_dbus_connection_close_sync"
 (** Synchronously closes [connection]. The calling thread is blocked until this
-    is done. See g_dbus_connection_close() for the asynchronous version of this
-    method and more details about what it does. *)
+    is done. See [g_dbus_connection_close ()] for the asynchronous version of
+    this method and more details about what it does. *)
 
 external close_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_dbus_connection_close_finish"
-(** Finishes an operation started with g_dbus_connection_close(). *)
+(** Finishes an operation started with [g_dbus_connection_close ()]. *)
 
 external call_sync :
   t ->
@@ -419,16 +456,20 @@ external call_sync :
    [interface_name] D-Bus interface on the remote object at\n\
    [object_path] owned by [bus_name].\n\n\
    If [connection] is closed then the operation will fail with\n\
-   [G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the\n\
-   operation will fail with [G_IO_ERROR_CANCELLED]. If [parameters]\n\
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}. If \
+   [cancellable] is canceled, the\n\
+   operation will fail with \
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}. \
+   If [parameters]\n\
    contains a value not compatible with the D-Bus protocol, the operation\n\
-   fails with [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   fails with \
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.\n\n\
    If [reply_type] is non-[None] then the reply will be checked for having\n\
    this type and an error will be raised if it does not match.  Said\n\
    another way, if you give a [reply_type] then any non-[None] return\n\
    value will be of this type.\n\n\
    If the [parameters] [GVariant] is floating, it is consumed.\n\
-   This allows convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+   This allows convenient 'inline' use of [g_variant_new ()], e.g.:\n\n\
    {[\n\
   \ g_dbus_connection_call_sync (connection,\n\
   \                              \"org.freedesktop.StringThings\",\n\
@@ -445,11 +486,11 @@ external call_sync :
   \                              &error);\n\
    ]}\n\n\
    The calling thread is blocked until a reply is received. See\n\
-   g_dbus_connection_call() for the asynchronous version of\n\
+   [g_dbus_connection_call ()] for the asynchronous version of\n\
    this method."]
 
 external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
   = "ml_g_dbus_connection_call_finish"
-(** Finishes an operation started with g_dbus_connection_call(). *)
+(** Finishes an operation started with [g_dbus_connection_call ()]. *)
 
 (* Properties *)

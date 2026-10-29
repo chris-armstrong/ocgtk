@@ -30,8 +30,11 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : int -> t = "ml_g_threaded_socket_service_new"
 [@@ocaml.doc
-  "Creates a new [GThreadedSocketService] with no listeners. Listeners\n\
-   must be added with one of the [GSocketListener] \"add\" methods."]
+  "Creates a new \
+   {{!Ocgio.Raw.Threaded_socket_service}[GThreadedSocketService]} with no \
+   listeners. Listeners\n\
+   must be added with one of the \
+   {{!Ocgio.Raw.Socket_listener}[GSocketListener]} \"add\" methods."]
 
 (* Methods *)
 (* Properties *)

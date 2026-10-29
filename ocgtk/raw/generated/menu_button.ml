@@ -24,7 +24,9 @@
     For menus, the {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and
     {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties of the
     menu are also taken into account. For example, when the direction is
-    [GTK_ARROW_DOWN] and the horizontal alignment is [GTK_ALIGN_START], the menu
+    {{!Ocgtk.Enums.type-arrowtype.constructor-DOWN}[GTK_ARROW_DOWN]} and the
+    horizontal alignment is
+    {{!Ocgtk.Enums.type-align.constructor-START}[GTK_ALIGN_START]}, the menu
     will be positioned below the button, with the starting edge (depending on
     the text direction) of the menu aligned with the starting edge of the
     button. If there is not enough space below the button, the menu is popped up
@@ -150,8 +152,10 @@ external set_direction : t -> Ocgtk_enums.arrowtype -> unit
     If the does not fit in the available space in the given direction, GTK will
     its best to keep it inside the screen and fully visible.
 
-    If you pass [GTK_ARROW_NONE] for a [direction], the popup will behave as if
-    you passed [GTK_ARROW_DOWN] (although you won’t see any arrows). *)
+    If you pass {{!Ocgtk.Enums.type-arrowtype.constructor-NONE}[GTK_ARROW_NONE]}
+    for a [direction], the popup will behave as if you passed
+    {{!Ocgtk.Enums.type-arrowtype.constructor-DOWN}[GTK_ARROW_DOWN]} (although
+    you won’t see any arrows). *)
 
 external set_child :
   t ->

@@ -328,4 +328,4 @@ external add_cairo_path : t -> Occairo_raw.Path.t -> unit
   = "ml_gsk_path_builder_add_cairo_path"
 (** Adds a Cairo path to the builder.
 
-    You can use cairo_copy_path() to access the path from a Cairo context. *)
+    You can use [cairo_copy_path ()] to access the path from a Cairo context. *)

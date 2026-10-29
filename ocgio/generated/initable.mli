@@ -48,10 +48,11 @@ class type initable_t = object
   (** Initializes the object implementing the interface.
 
       This method is intended for language bindings. If writing in C,
-      g_initable_new() should typically be used instead.
+      [g_initable_new ()] should typically be used instead.
 
       The object must be initialized before any real use after initial
-      construction, either with this function or g_async_initable_init_async().
+      construction, either with this function or
+      [g_async_initable_init_async ()].
 
       Implementations may also support cancellation. If [cancellable] is not
       [None], then initialization can be cancelled by triggering the cancellable
@@ -61,8 +62,8 @@ class type initable_t = object
       [G_IO_ERROR_NOT_SUPPORTED] will be returned.
 
       If the object is not initialized, or initialization returns with an error,
-      then all operations on the object except g_object_ref() and
-      g_object_unref() are considered to be invalid, and have undefined
+      then all operations on the object except [g_object_ref ()] and
+      [g_object_unref ()] are considered to be invalid, and have undefined
       behaviour. See the \[description\][Gio.Initable] for more details.
 
       Callers should not assume that a class which implements [GInitable] can be
@@ -80,9 +81,9 @@ class type initable_t = object
       One reason why a class might need to support idempotent initialization is
       if it is designed to be used via the singleton pattern, with a
       [GObjectClass].constructor that sometimes returns an existing instance. In
-      this pattern, a caller would expect to be able to call g_initable_init()
-      on the result of g_object_new(), regardless of whether it is in fact a new
-      instance. *)
+      this pattern, a caller would expect to be able to call
+      [g_initable_init ()] on the result of [g_object_new ()], regardless of
+      whether it is in fact a new instance. *)
 
   (** {2:conversions Conversions} *)
 

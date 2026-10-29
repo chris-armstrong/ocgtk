@@ -24,13 +24,13 @@ class type pixbuf_format_t = object
   method is_disabled : unit -> bool
   (** Returns whether this image format is disabled.
 
-      See gdk_pixbuf_format_set_disabled(). *)
+      See [gdk_pixbuf_format_set_disabled ()]. *)
 
   method is_save_option_supported : string -> bool
   (** Returns [true] if the save option specified by [option_key] is supported
       when saving a pixbuf using the module implementing [format].
 
-      See gdk_pixbuf_save() for more information about option keys. *)
+      See [gdk_pixbuf_save ()] for more information about option keys. *)
 
   method is_scalable : unit -> bool
   (** Returns whether this image format is scalable.
@@ -49,7 +49,7 @@ class type pixbuf_format_t = object
       format to load images.
 
       Applications can use this to avoid using image loaders with an
-      inappropriate license, see gdk_pixbuf_format_get_license(). *)
+      inappropriate license, see [gdk_pixbuf_format_get_license ()]. *)
 
   (** {2:conversions Conversions} *)
 

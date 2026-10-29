@@ -4,8 +4,8 @@
 
 (** {b The methods, signals and properties of a [MenuLinkIter].}
 
-    [GMenuLinkIter] is an opaque structure type. You must access it using the
-    functions below. *)
+    {{!Ocgio.Menu_link_iter.class-type-menu_link_iter_t}[GMenuLinkIter]} is an
+    opaque structure type. You must access it using the functions below. *)
 class type menu_link_iter_t = object
   (** {2:methods Methods} *)
 
@@ -208,11 +208,11 @@ and menu_model_t = object
   method is_mutable : unit -> bool
   (** Queries if [model] is mutable.
 
-      An immutable [GMenuModel] will never emit the [GMenuModel::items]-changed
+      An immutable [GMenuModel] will never emit the [GMenuModel::items-changed]
       signal. Consumers of the model may make optimisations accordingly. *)
 
   method items_changed : int -> int -> int -> unit
-  (** Requests emission of the [GMenuModel::items]-changed signal on [model].
+  (** Requests emission of the [GMenuModel::items-changed] signal on [model].
 
       This function should never be called except by [GMenuModel] subclasses.
       Any other calls to this function will very likely lead to a violation of

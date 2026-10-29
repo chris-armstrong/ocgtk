@@ -78,8 +78,10 @@ external get_approximate_digit_width : t -> int
     This is merely a representative value useful, for example, for determining
     the initial size for a window. Actual digits in text can be wider or
     narrower than this, though this value is generally somewhat more accurate
-    than the result of pango_font_metrics_get_approximate_char_width() for
-    digits. *)
+    than the result of
+    {{!Ocpango.Raw.Font_metrics.val-get_approximate_char_width}[pango_font_metrics_get_approximate_char_width
+                                                                ()]} for digits.
+*)
 
 external get_approximate_char_width : t -> int
   = "ml_pango_font_metrics_get_approximate_char_width"

@@ -16,7 +16,9 @@
     the operation will use all the buffers as if they were one buffer.
 
     If [address] is [None] then the message is sent to the default receiver (as
-    previously set by g_socket_connect()). *)
+    previously set by
+    {{!Ocgio.Socket.class-type-socket_t.method-connect}[g_socket_connect ()]}).
+*)
 class type output_message_t = object
   (** {2:conversions Conversions} *)
 
@@ -33,7 +35,9 @@ class output_message : Raw.Output_message.t -> output_message_t
     the operation will use all the buffers as if they were one buffer.
 
     If [address] is [None] then the message is sent to the default receiver (as
-    previously set by g_socket_connect()). *)
+    previously set by
+    {{!Ocgio.Socket.class-type-socket_t.method-connect}[g_socket_connect ()]}).
+*)
 
 (** {1:constructors Constructors} *)
 

@@ -56,7 +56,7 @@ class type list_store_t = object
 
   method set_valuesv :
     Raw.Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
-  (** A variant of gtk_list_store_set_valist() which takes the columns and
+  (** A variant of [gtk_list_store_set_valist ()] which takes the columns and
       values as two arrays, instead of varargs. This function is mainly intended
       for language-bindings and in case the number of columns to change is not
       known until run-time. *)
@@ -160,14 +160,14 @@ end
      keeping the iter around.\n\n\
      {b Atomic Operations}\n\n\
      It is important to note that only the methods\n\
-     gtk_list_store_insert_with_values() and \
-     gtk_list_store_insert_with_valuesv()\n\
+     [gtk_list_store_insert_with_values ()] and \
+     [gtk_list_store_insert_with_valuesv ()]\n\
      are atomic, in the sense that the row is being appended to the store and \
      the\n\
      values filled in in a single operation with regard to [GtkTreeModel] \
      signaling.\n\
-     In contrast, using e.g. gtk_list_store_append() and then \
-     gtk_list_store_set()\n\
+     In contrast, using e.g. [gtk_list_store_append ()] and then \
+     [gtk_list_store_set ()]\n\
      will first create a row, which triggers the [GtkTreeModel::row-inserted] \
      signal\n\
      on [GtkListStore]. The row, however, is still empty, and any signal handler\n\
@@ -303,10 +303,12 @@ class list_store : Raw.List_store.t -> list_store_t
  keeping the iter around.\n\n\
  {b Atomic Operations}\n\n\
  It is important to note that only the methods\n\
- gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()\n\
+ [gtk_list_store_insert_with_values ()] and \
+ [gtk_list_store_insert_with_valuesv ()]\n\
  are atomic, in the sense that the row is being appended to the store and the\n\
  values filled in in a single operation with regard to [GtkTreeModel] signaling.\n\
- In contrast, using e.g. gtk_list_store_append() and then gtk_list_store_set()\n\
+ In contrast, using e.g. [gtk_list_store_append ()] and then \
+ [gtk_list_store_set ()]\n\
  will first create a row, which triggers the [GtkTreeModel::row-inserted] signal\n\
  on [GtkListStore]. The row, however, is still empty, and any signal handler\n\
  connecting to [GtkTreeModel::row-inserted] on this particular store should be \

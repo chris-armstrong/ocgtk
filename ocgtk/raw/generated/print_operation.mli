@@ -203,8 +203,9 @@ external set_current_page : t -> int -> unit
 
 external set_allow_async : t -> bool -> unit
   = "ml_gtk_print_operation_set_allow_async"
-(** Sets whether gtk_print_operation_run() may return before the print operation
-    is completed.
+(** Sets whether
+    {{!Ocgtk.Raw.Print_operation.val-run}[gtk_print_operation_run ()]} may
+    return before the print operation is completed.
 
     Note that some platforms may not allow asynchronous operation. *)
 
@@ -261,14 +262,17 @@ external run :
   \   settings = g_object_ref (gtk_print_operation_get_print_settings (print));\n\
   \ }\n\
    ]}\n\n\
-   Note that gtk_print_operation_run() can only be called once on a\n\
+   Note that {{!Ocgtk.Raw.Print_operation.val-run}[gtk_print_operation_run \
+   ()]} can only be called once on a\n\
    given [GtkPrintOperation]."]
 
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
 (** A convenience function to find out if the print operation is finished.
 
     a print operation is finished if its status is either
-    [GTK_PRINT_STATUS_FINISHED] or [GTK_PRINT_STATUS_FINISHED_ABORTED].
+    {{!Ocgtk.Enums.type-printstatus.constructor-FINISHED}[GTK_PRINT_STATUS_FINISHED]}
+    or
+    {{!Ocgtk.Enums.type-printstatus.constructor-FINISHED_ABORTED}[GTK_PRINT_STATUS_FINISHED_ABORTED]}.
 
     Note: when you enable print status tracking the print operation can be in a
     non-finished state even after done has been called, as the operation status
@@ -311,12 +315,16 @@ external get_n_pages_to_print : t -> int
 (** Returns the number of pages that will be printed.
 
     Note that this value is set during print preparation phase
-    ([GTK_PRINT_STATUS_PREPARING]), so this function should never be called
-    before the data generation phase ([GTK_PRINT_STATUS_GENERATING_DATA]). You
-    can connect to the
+    ({{!Ocgtk.Enums.type-printstatus.constructor-PREPARING}[GTK_PRINT_STATUS_PREPARING]}),
+    so this function should never be called before the data generation phase
+    ({{!Ocgtk.Enums.type-printstatus.constructor-GENERATING_DATA}[GTK_PRINT_STATUS_GENERATING_DATA]}).
+    You can connect to the
     {{!Ocgtk.Raw.Print_operation.val-on_status_changed}[Gtk.PrintOperation::status-changed]}
-    signal and call gtk_print_operation_get_n_pages_to_print() when print status
-    is [GTK_PRINT_STATUS_GENERATING_DATA].
+    signal and call
+    {{!Ocgtk.Raw.Print_operation.val-get_n_pages_to_print}[gtk_print_operation_get_n_pages_to_print
+                                                           ()]} when print
+    status is
+    {{!Ocgtk.Enums.type-printstatus.constructor-GENERATING_DATA}[GTK_PRINT_STATUS_GENERATING_DATA]}.
 
     This is typically used to track the progress of print operation. *)
 
@@ -327,7 +335,7 @@ external get_has_selection : t -> bool
 external get_error : t -> (unit, GError.t) result
   = "ml_gtk_print_operation_get_error"
 (** Call this when the result of a print operation is
-    [GTK_PRINT_OPERATION_RESULT_ERROR].
+    {{!Ocgtk.Enums.type-printoperationresult.constructor-ERROR}[GTK_PRINT_OPERATION_RESULT_ERROR]}.
 
     It can be called either after
     {{!Ocgtk.Raw.Print_operation.val-run}[Gtk.PrintOperation.run]} returns, or
@@ -405,7 +413,9 @@ val on_done_ :
     for printing.
 
     [result] gives you information about what happened during the run. If
-    [result] is [GTK_PRINT_OPERATION_RESULT_ERROR] then you can call
+    [result] is
+    {{!Ocgtk.Enums.type-printoperationresult.constructor-ERROR}[GTK_PRINT_OPERATION_RESULT_ERROR]}
+    then you can call
     {{!Ocgtk.Raw.Print_operation.val-get_error}[Gtk.PrintOperation.get_error]}
     for more information.
 

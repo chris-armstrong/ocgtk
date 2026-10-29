@@ -77,8 +77,8 @@ class type file_chooser_t = object
       may or may not affect the returned model. *)
 
   method remove_choice : string -> unit
-  (** Removes a 'choice' that has been added with gtk_file_chooser_add_choice().
-  *)
+  (** Removes a 'choice' that has been added with
+      [gtk_file_chooser_add_choice ()]. *)
 
   method remove_filter : File_filter.file_filter_t -> unit
   (** Removes [filter] from the list of filters that the user can select
@@ -99,7 +99,7 @@ class type file_chooser_t = object
   method set_choice : string -> string -> unit
   [@@ocaml.doc
     "Selects an option in a 'choice' that has been added with\n\
-     gtk_file_chooser_add_choice().\n\n\
+     [gtk_file_chooser_add_choice ()].\n\n\
      For a boolean choice, the possible options are \"true\" and \"false\"."]
 
   method set_create_folders : bool -> unit

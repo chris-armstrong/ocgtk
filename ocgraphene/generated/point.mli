@@ -16,7 +16,7 @@ class type point_t = object
   (** Checks if the two points [a] and [b] point to the same coordinates.
 
       This function accounts for floating point fluctuations; if you want to
-      control the fuzziness of the match, you can use graphene_point_near()
+      control the fuzziness of the match, you can use [graphene_point_near ()]
       instead. *)
 
   method init : float -> float -> Raw.Point.t
@@ -49,8 +49,11 @@ val alloc : unit -> point_t
 
     The coordinates of the returned point are (0, 0).
 
-    It's possible to chain this function with graphene_point_init() or
-    graphene_point_init_from_point(), e.g.:
+    It's possible to chain this function with
+    {{!Ocgraphene.Point.class-type-point_t.method-init}[graphene_point_init ()]}
+    or
+    {{!Ocgraphene.Point.class-type-point_t.method-init_from_point}[graphene_point_init_from_point
+                                                                   ()]}, e.g.:
 
     {[
       graphene_point_t *

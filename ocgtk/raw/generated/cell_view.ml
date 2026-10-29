@@ -112,8 +112,9 @@ external get_cell_area :
 (** The [GtkCellArea] rendering cells
 
     If no area is specified when creating the cell view with
-    gtk_cell_view_new_with_context() a horizontally oriented [GtkCellArea]Box
-    will be used.
+    {{!Ocgtk.Raw.Cell_view.val-new_with_context}[gtk_cell_view_new_with_context
+                                                 ()]} a horizontally oriented
+    [GtkCellArea]Box will be used.
 
     since 3.0 *)
 

@@ -3,7 +3,7 @@ class type dmabuf_texture_builder_t = object
 
   method get_color_state : unit -> Raw.Color_state.t option
   (** Gets the color state previously set via
-      gdk_dmabuf_texture_builder_set_color_state(). *)
+      [gdk_dmabuf_texture_builder_set_color_state ()]. *)
 
   method get_display : unit -> Display.display_t
   (** Returns the display that this texture builder is associated with. *)
@@ -12,14 +12,15 @@ class type dmabuf_texture_builder_t = object
   (** Gets the file descriptor for a plane. *)
 
   method get_fourcc : unit -> UInt32.t
-  (** Gets the format previously set via gdk_dmabuf_texture_builder_set_fourcc()
-      or 0 if the format wasn't set.
+  (** Gets the format previously set via
+      [gdk_dmabuf_texture_builder_set_fourcc ()] or 0 if the format wasn't set.
 
       The format is specified as a fourcc code. *)
 
   method get_height : unit -> int
-  (** Gets the height previously set via gdk_dmabuf_texture_builder_set_height()
-      or 0 if the height wasn't set. *)
+  (** Gets the height previously set via
+      [gdk_dmabuf_texture_builder_set_height ()] or 0 if the height wasn't set.
+  *)
 
   method get_modifier : unit -> UInt64.t
   (** Gets the modifier value. *)
@@ -38,17 +39,17 @@ class type dmabuf_texture_builder_t = object
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_dmabuf_texture_builder_set_update_region() or [None] if none was set.
-  *)
+      [gdk_dmabuf_texture_builder_set_update_region ()] or [None] if none was
+      set. *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_dmabuf_texture_builder_set_update_texture() or [None] if none was set.
-  *)
+      [gdk_dmabuf_texture_builder_set_update_texture ()] or [None] if none was
+      set. *)
 
   method get_width : unit -> int
-  (** Gets the width previously set via gdk_dmabuf_texture_builder_set_width()
-      or 0 if the width wasn't set. *)
+  (** Gets the width previously set via
+      [gdk_dmabuf_texture_builder_set_width ()] or 0 if the width wasn't set. *)
 
   method set_color_state : Raw.Color_state.t option -> unit
   (** Sets the color state for the texture.

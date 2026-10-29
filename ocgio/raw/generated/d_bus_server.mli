@@ -38,20 +38,24 @@ external new_sync :
 (** Creates a new D-Bus server that listens on the first address in [address]
     that works.
 
-    Once constructed, you can use g_dbus_server_get_client_address() to get a
-    D-Bus address string that clients can use to connect.
+    Once constructed, you can use
+    {{!Ocgio.Raw.D_bus_server.val-get_client_address}[g_dbus_server_get_client_address
+                                                      ()]} to get a D-Bus
+    address string that clients can use to connect.
 
     To have control over the available authentication mechanisms and the users
     that are authorized to connect, it is strongly recommended to provide a
-    non-[None] [GDBusAuthObserver].
+    non-[None] {{!Ocgio.Raw.D_bus_auth_observer}[GDBusAuthObserver]}.
 
-    Connect to the [GDBusServer::new]-connection signal to handle incoming
-    connections.
+    Connect to the
+    {{!Ocgio.Raw.D_bus_server.val-on_new_connection}[GDBusServer::new-connection]}
+    signal to handle incoming connections.
 
-    The returned [GDBusServer] isn't active - you have to start it with
-    g_dbus_server_start().
+    The returned {{!Ocgio.Raw.D_bus_server}[GDBusServer]} isn't active - you
+    have to start it with
+    {{!Ocgio.Raw.D_bus_server.val-start}[g_dbus_server_start ()]}.
 
-    [GDBusServer] is used in this
+    {{!Ocgio.Raw.D_bus_server}[GDBusServer]} is used in this
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}example}.
 
     This is a synchronous failable constructor. There is currently no
@@ -69,7 +73,8 @@ external is_active : t -> bool = "ml_g_dbus_server_is_active"
 (** Gets whether [server] is active. *)
 
 external get_guid : t -> string = "ml_g_dbus_server_get_guid"
-(** Gets the GUID for [server], as provided to g_dbus_server_new_sync(). *)
+(** Gets the GUID for [server], as provided to
+    {{!Ocgio.Raw.D_bus_server.val-new_sync}[g_dbus_server_new_sync ()]}. *)
 
 external get_flags : t -> Ocgio_enums.dbusserverflags
   = "ml_g_dbus_server_get_flags"
@@ -81,7 +86,8 @@ external get_client_address : t -> string
     {{:https://dbus.freedesktop.org/doc/dbus-specification.html#addresses}D-Bus
      address} string that can be used by clients to connect to [server].
 
-    This is valid and non-empty if initializing the [GDBusServer] succeeded. *)
+    This is valid and non-empty if initializing the
+    {{!Ocgio.Raw.D_bus_server}[GDBusServer]} succeeded. *)
 
 (* Properties *)
 
@@ -90,8 +96,8 @@ external get_address : t -> string = "ml_g_d_bus_server_get_address"
 
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
-(** A [GDBusAuthObserver] object to assist in the authentication process or
-    [None]. *)
+(** A {{!Ocgio.Raw.D_bus_auth_observer}[GDBusAuthObserver]} object to assist in
+    the authentication process or [None]. *)
 
 val on_new_connection :
   ?after:bool ->
@@ -99,22 +105,24 @@ val on_new_connection :
   callback:(connection:D_bus_connection.t -> bool) ->
   Gobject.Signal.handler_id
 (** Emitted when a new authenticated connection has been made. Use
-    g_dbus_connection_get_peer_credentials() to figure out what identity (if
-    any), was authenticated.
+    {{!Ocgio.Raw.D_bus_connection.val-get_peer_credentials}[g_dbus_connection_get_peer_credentials
+                                                            ()]} to figure out
+    what identity (if any), was authenticated.
 
     If you want to accept the connection, take a reference to the [connection]
     object and return [true]. When you are done with the connection call
-    g_dbus_connection_close() and give up your reference. Note that the other
+    [g_dbus_connection_close ()] and give up your reference. Note that the other
     peer may disconnect at any time - a typical thing to do when accepting a
     connection is to listen to the [GDBusConnection::closed] signal.
 
-    If [GDBusServer:flags] contains [G_DBUS_SERVER_FLAGS_RUN_IN_THREAD] then the
-    signal is emitted in a new thread dedicated to the connection. Otherwise the
-    signal is emitted in the thread-default main context (see
+    If {{!Ocgio.Raw.D_bus_server.val-get_flags}[GDBusServer:flags]} contains
+    {{!Ocgio.Enums.type-dbusserverflags_flag.constructor-RUN_IN_THREAD}[G_DBUS_SERVER_FLAGS_RUN_IN_THREAD]}
+    then the signal is emitted in a new thread dedicated to the connection.
+    Otherwise the signal is emitted in the thread-default main context (see
     [GLib.MainContext.push_thread_default]) of the thread that [server] was
     constructed in.
 
     You are guaranteed that signal handlers for this signal runs before incoming
     messages on [connection] are processed. This means that it's suitable to
-    call g_dbus_connection_register_object() or similar from the signal handler.
-*)
+    call [g_dbus_connection_register_object ()] or similar from the signal
+    handler. *)

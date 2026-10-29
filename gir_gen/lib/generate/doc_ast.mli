@@ -41,6 +41,10 @@ type sym_kind =
   | Type_kind
 [@@deriving eq]
 
+(** Where a [Sym_ref] came from: a gi-docgen [[kind@endpoint]] fragment, a
+    legacy [#Type] or [%CONSTANT] sigil, or a C call ([gtk_widget_show()]). *)
+type sym_origin = Fragment | Hash | Percent | C_call [@@deriving eq]
+
 type c_lit =
   | True
   | False
@@ -60,6 +64,7 @@ type inline =
   | Link of { text : inline list; url : string }
   | Page_ref of { text : inline list; path : string; anchor : string option }
   | Sym_ref of {
+      origin : sym_origin;
       kind : sym_kind option;
       endpoint : string;
       anchor : string option;
@@ -129,3 +134,7 @@ val equal_t : t -> t -> bool
 (** Structural equality on the AST (required for the round-trip invariants in
     plans: string idempotence of [Doc_translate.translate] is false by design).
 *)
+
+val sym_ref_text : sym_origin -> string -> string
+(** The code span a reference shows, resolved or not: its endpoint, followed by
+    [" ()"] for a C call, as gi-docgen renders one. *)

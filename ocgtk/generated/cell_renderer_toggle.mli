@@ -38,11 +38,11 @@ class type cell_renderer_toggle_t = object
 
   method get_activatable : unit -> bool
   (** Returns whether the cell renderer is activatable. See
-      gtk_cell_renderer_toggle_set_activatable(). *)
+      [gtk_cell_renderer_toggle_set_activatable ()]. *)
 
   method get_active : unit -> bool
   (** Returns whether the cell renderer is active. See
-      gtk_cell_renderer_toggle_set_active(). *)
+      [gtk_cell_renderer_toggle_set_active ()]. *)
 
   method get_radio : unit -> bool
   (** Returns whether we’re rendering radio toggles rather than checkboxes. *)
@@ -93,7 +93,7 @@ class cell_renderer_toggle :
 val new_ : unit -> cell_renderer_toggle_t
 (** Creates a new [GtkCellRendererToggle]. Adjust rendering parameters using
     object properties. Object properties can be set globally (with
-    g_object_set()). Also, with [GtkTreeViewColumn], you can bind a property to
-    a value in a [GtkTreeModel]. For example, you can bind the “active” property
-    on the cell renderer to a boolean value in the model, thus causing the check
-    button to reflect the state of the model. *)
+    [g_object_set ()]). Also, with [GtkTreeViewColumn], you can bind a property
+    to a value in a [GtkTreeModel]. For example, you can bind the “active”
+    property on the cell renderer to a boolean value in the model, thus causing
+    the check button to reflect the state of the model. *)

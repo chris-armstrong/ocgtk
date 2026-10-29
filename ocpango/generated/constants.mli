@@ -38,7 +38,7 @@ val glyph_invalid_input : int
     a glyph is rendered as a crossed box.
 
     Note that this value is defined such that it has the
-    [PANGO_GLYPH_UNKNOWN_FLAG] set.
+    {{!Ocpango.Constants.glyph_unknown_flag}[PANGO_GLYPH_UNKNOWN_FLAG]} set.
     @since 1.20 *)
 
 val glyph_unknown_flag : int
@@ -51,7 +51,8 @@ val scale : int
 [@@ocaml.doc
   "The scale between dimensions used for Pango distances and device units.\n\n\
    The definition of device units is dependent on the output device; it will\n\
-   typically be pixels for a screen, and points for a printer. [PANGO_SCALE] is\n\
+   typically be pixels for a screen, and points for a printer. \
+   {{!Ocpango.Constants.scale}[PANGO_SCALE]} is\n\
    currently 1024, but this may be changed in the future.\n\n\
    When setting font sizes, device units are always considered to be\n\
    points (as in \"12 point font\"), rather than pixels."]

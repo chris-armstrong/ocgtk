@@ -59,82 +59,124 @@ external to_file : t -> string -> (bool, GError.t) result
 
 external set_use_color : t -> bool -> unit
   = "ml_gtk_print_settings_set_use_color"
-(** Sets the value of [GTK_PRINT_SETTINGS_USE_COLOR]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_use_color}[GTK_PRINT_SETTINGS_USE_COLOR]}.
+*)
 
 external set_scale : t -> float -> unit = "ml_gtk_print_settings_set_scale"
-(** Sets the value of [GTK_PRINT_SETTINGS_SCALE]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_scale}[GTK_PRINT_SETTINGS_SCALE]}. *)
 
 external set_reverse : t -> bool -> unit = "ml_gtk_print_settings_set_reverse"
-(** Sets the value of [GTK_PRINT_SETTINGS_REVERSE]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_reverse}[GTK_PRINT_SETTINGS_REVERSE]}. *)
 
 external set_resolution_xy : t -> int -> int -> unit
   = "ml_gtk_print_settings_set_resolution_xy"
-(** Sets the values of [GTK_PRINT_SETTINGS_RESOLUTION],
-    [GTK_PRINT_SETTINGS_RESOLUTION_X] and [GTK_PRINT_SETTINGS_RESOLUTION_Y]. *)
+(** Sets the values of
+    {{!Ocgtk.Constants.print_settings_resolution}[GTK_PRINT_SETTINGS_RESOLUTION]},
+    {{!Ocgtk.Constants.print_settings_resolution_x}[GTK_PRINT_SETTINGS_RESOLUTION_X]}
+    and
+    {{!Ocgtk.Constants.print_settings_resolution_y}[GTK_PRINT_SETTINGS_RESOLUTION_Y]}.
+*)
 
 external set_resolution : t -> int -> unit
   = "ml_gtk_print_settings_set_resolution"
-(** Sets the values of [GTK_PRINT_SETTINGS_RESOLUTION],
-    [GTK_PRINT_SETTINGS_RESOLUTION_X] and [GTK_PRINT_SETTINGS_RESOLUTION_Y]. *)
+(** Sets the values of
+    {{!Ocgtk.Constants.print_settings_resolution}[GTK_PRINT_SETTINGS_RESOLUTION]},
+    {{!Ocgtk.Constants.print_settings_resolution_x}[GTK_PRINT_SETTINGS_RESOLUTION_X]}
+    and
+    {{!Ocgtk.Constants.print_settings_resolution_y}[GTK_PRINT_SETTINGS_RESOLUTION_Y]}.
+*)
 
 external set_quality : t -> Ocgtk_enums.printquality -> unit
   = "ml_gtk_print_settings_set_quality"
-(** Sets the value of [GTK_PRINT_SETTINGS_QUALITY]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_quality}[GTK_PRINT_SETTINGS_QUALITY]}. *)
 
 external set_printer_lpi : t -> float -> unit
   = "ml_gtk_print_settings_set_printer_lpi"
-(** Sets the value of [GTK_PRINT_SETTINGS_PRINTER_LPI]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_printer_lpi}[GTK_PRINT_SETTINGS_PRINTER_LPI]}.
+*)
 
 external set_printer : t -> string -> unit = "ml_gtk_print_settings_set_printer"
-(** Convenience function to set [GTK_PRINT_SETTINGS_PRINTER] to [printer]. *)
+(** Convenience function to set
+    {{!Ocgtk.Constants.print_settings_printer}[GTK_PRINT_SETTINGS_PRINTER]} to
+    [printer]. *)
 
 external set_print_pages : t -> Ocgtk_enums.printpages -> unit
   = "ml_gtk_print_settings_set_print_pages"
-(** Sets the value of [GTK_PRINT_SETTINGS_PRINT_PAGES]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_print_pages}[GTK_PRINT_SETTINGS_PRINT_PAGES]}.
+*)
 
 external set_paper_width : t -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_settings_set_paper_width"
-(** Sets the value of [GTK_PRINT_SETTINGS_PAPER_WIDTH]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_paper_width}[GTK_PRINT_SETTINGS_PAPER_WIDTH]}.
+*)
 
 external set_paper_size : t -> Paper_size.t -> unit
   = "ml_gtk_print_settings_set_paper_size"
-(** Sets the value of [GTK_PRINT_SETTINGS_PAPER_FORMAT],
-    [GTK_PRINT_SETTINGS_PAPER_WIDTH] and [GTK_PRINT_SETTINGS_PAPER_HEIGHT]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_paper_format}[GTK_PRINT_SETTINGS_PAPER_FORMAT]},
+    {{!Ocgtk.Constants.print_settings_paper_width}[GTK_PRINT_SETTINGS_PAPER_WIDTH]}
+    and
+    {{!Ocgtk.Constants.print_settings_paper_height}[GTK_PRINT_SETTINGS_PAPER_HEIGHT]}.
+*)
 
 external set_paper_height : t -> float -> Ocgtk_enums.unit -> unit
   = "ml_gtk_print_settings_set_paper_height"
-(** Sets the value of [GTK_PRINT_SETTINGS_PAPER_HEIGHT]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_paper_height}[GTK_PRINT_SETTINGS_PAPER_HEIGHT]}.
+*)
 
 external set_page_set : t -> Ocgtk_enums.pageset -> unit
   = "ml_gtk_print_settings_set_page_set"
-(** Sets the value of [GTK_PRINT_SETTINGS_PAGE_SET]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_page_set}[GTK_PRINT_SETTINGS_PAGE_SET]}.
+*)
 
 external set_page_ranges : t -> Page_range.t array -> int -> unit
   = "ml_gtk_print_settings_set_page_ranges"
-(** Sets the value of [GTK_PRINT_SETTINGS_PAGE_RANGES]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_page_ranges}[GTK_PRINT_SETTINGS_PAGE_RANGES]}.
+*)
 
 external set_output_bin : t -> string -> unit
   = "ml_gtk_print_settings_set_output_bin"
-(** Sets the value of [GTK_PRINT_SETTINGS_OUTPUT_BIN]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_output_bin}[GTK_PRINT_SETTINGS_OUTPUT_BIN]}.
+*)
 
 external set_orientation : t -> Ocgtk_enums.pageorientation -> unit
   = "ml_gtk_print_settings_set_orientation"
-(** Sets the value of [GTK_PRINT_SETTINGS_ORIENTATION]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_orientation}[GTK_PRINT_SETTINGS_ORIENTATION]}.
+*)
 
 external set_number_up_layout : t -> Ocgtk_enums.numberuplayout -> unit
   = "ml_gtk_print_settings_set_number_up_layout"
-(** Sets the value of [GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_number_up_layout}[GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]}.
+*)
 
 external set_number_up : t -> int -> unit
   = "ml_gtk_print_settings_set_number_up"
-(** Sets the value of [GTK_PRINT_SETTINGS_NUMBER_UP]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_number_up}[GTK_PRINT_SETTINGS_NUMBER_UP]}.
+*)
 
 external set_n_copies : t -> int -> unit = "ml_gtk_print_settings_set_n_copies"
-(** Sets the value of [GTK_PRINT_SETTINGS_N_COPIES]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_n_copies}[GTK_PRINT_SETTINGS_N_COPIES]}.
+*)
 
 external set_media_type : t -> string -> unit
   = "ml_gtk_print_settings_set_media_type"
-(** Sets the value of [GTK_PRINT_SETTINGS_MEDIA_TYPE].
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_media_type}[GTK_PRINT_SETTINGS_MEDIA_TYPE]}.
 
     The set of media types is defined in PWG 5101.1-2002 PWG. *)
 
@@ -147,25 +189,32 @@ external set_int : t -> string -> int -> unit = "ml_gtk_print_settings_set_int"
 
 external set_finishings : t -> string -> unit
   = "ml_gtk_print_settings_set_finishings"
-(** Sets the value of [GTK_PRINT_SETTINGS_FINISHINGS]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_finishings}[GTK_PRINT_SETTINGS_FINISHINGS]}.
+*)
 
 external set_duplex : t -> Ocgtk_enums.printduplex -> unit
   = "ml_gtk_print_settings_set_duplex"
-(** Sets the value of [GTK_PRINT_SETTINGS_DUPLEX]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_duplex}[GTK_PRINT_SETTINGS_DUPLEX]}. *)
 
 external set_double : t -> string -> float -> unit
   = "ml_gtk_print_settings_set_double"
 (** Sets [key] to a double value. *)
 
 external set_dither : t -> string -> unit = "ml_gtk_print_settings_set_dither"
-(** Sets the value of [GTK_PRINT_SETTINGS_DITHER]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_dither}[GTK_PRINT_SETTINGS_DITHER]}. *)
 
 external set_default_source : t -> string -> unit
   = "ml_gtk_print_settings_set_default_source"
-(** Sets the value of [GTK_PRINT_SETTINGS_DEFAULT_SOURCE]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_default_source}[GTK_PRINT_SETTINGS_DEFAULT_SOURCE]}.
+*)
 
 external set_collate : t -> bool -> unit = "ml_gtk_print_settings_set_collate"
-(** Sets the value of [GTK_PRINT_SETTINGS_COLLATE]. *)
+(** Sets the value of
+    {{!Ocgtk.Constants.print_settings_collate}[GTK_PRINT_SETTINGS_COLLATE]}. *)
 
 external set_bool : t -> string -> bool -> unit
   = "ml_gtk_print_settings_set_bool"
@@ -188,80 +237,115 @@ external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"
 (** Returns [true], if a value is associated with [key]. *)
 
 external get_use_color : t -> bool = "ml_gtk_print_settings_get_use_color"
-(** Gets the value of [GTK_PRINT_SETTINGS_USE_COLOR]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_use_color}[GTK_PRINT_SETTINGS_USE_COLOR]}.
+*)
 
 external get_scale : t -> float = "ml_gtk_print_settings_get_scale"
-(** Gets the value of [GTK_PRINT_SETTINGS_SCALE]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_scale}[GTK_PRINT_SETTINGS_SCALE]}. *)
 
 external get_reverse : t -> bool = "ml_gtk_print_settings_get_reverse"
-(** Gets the value of [GTK_PRINT_SETTINGS_REVERSE]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_reverse}[GTK_PRINT_SETTINGS_REVERSE]}. *)
 
 external get_resolution_y : t -> int = "ml_gtk_print_settings_get_resolution_y"
-(** Gets the value of [GTK_PRINT_SETTINGS_RESOLUTION_Y]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_resolution_y}[GTK_PRINT_SETTINGS_RESOLUTION_Y]}.
+*)
 
 external get_resolution_x : t -> int = "ml_gtk_print_settings_get_resolution_x"
-(** Gets the value of [GTK_PRINT_SETTINGS_RESOLUTION_X]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_resolution_x}[GTK_PRINT_SETTINGS_RESOLUTION_X]}.
+*)
 
 external get_resolution : t -> int = "ml_gtk_print_settings_get_resolution"
-(** Gets the value of [GTK_PRINT_SETTINGS_RESOLUTION]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_resolution}[GTK_PRINT_SETTINGS_RESOLUTION]}.
+*)
 
 external get_quality : t -> Ocgtk_enums.printquality
   = "ml_gtk_print_settings_get_quality"
-(** Gets the value of [GTK_PRINT_SETTINGS_QUALITY]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_quality}[GTK_PRINT_SETTINGS_QUALITY]}. *)
 
 external get_printer_lpi : t -> float = "ml_gtk_print_settings_get_printer_lpi"
-(** Gets the value of [GTK_PRINT_SETTINGS_PRINTER_LPI]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_printer_lpi}[GTK_PRINT_SETTINGS_PRINTER_LPI]}.
+*)
 
 external get_printer : t -> string option = "ml_gtk_print_settings_get_printer"
-(** Convenience function to obtain the value of [GTK_PRINT_SETTINGS_PRINTER]. *)
+(** Convenience function to obtain the value of
+    {{!Ocgtk.Constants.print_settings_printer}[GTK_PRINT_SETTINGS_PRINTER]}. *)
 
 external get_print_pages : t -> Ocgtk_enums.printpages
   = "ml_gtk_print_settings_get_print_pages"
-(** Gets the value of [GTK_PRINT_SETTINGS_PRINT_PAGES]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_print_pages}[GTK_PRINT_SETTINGS_PRINT_PAGES]}.
+*)
 
 external get_paper_width : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_print_settings_get_paper_width"
-(** Gets the value of [GTK_PRINT_SETTINGS_PAPER_WIDTH], converted to [unit]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_paper_width}[GTK_PRINT_SETTINGS_PAPER_WIDTH]},
+    converted to [unit]. *)
 
 external get_paper_size : t -> Paper_size.t option
   = "ml_gtk_print_settings_get_paper_size"
-(** Gets the value of [GTK_PRINT_SETTINGS_PAPER_FORMAT], converted to a
-    [GtkPaperSize]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_paper_format}[GTK_PRINT_SETTINGS_PAPER_FORMAT]},
+    converted to a [GtkPaperSize]. *)
 
 external get_paper_height : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_print_settings_get_paper_height"
-(** Gets the value of [GTK_PRINT_SETTINGS_PAPER_HEIGHT], converted to [unit]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_paper_height}[GTK_PRINT_SETTINGS_PAPER_HEIGHT]},
+    converted to [unit]. *)
 
 external get_page_set : t -> Ocgtk_enums.pageset
   = "ml_gtk_print_settings_get_page_set"
-(** Gets the value of [GTK_PRINT_SETTINGS_PAGE_SET]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_page_set}[GTK_PRINT_SETTINGS_PAGE_SET]}.
+*)
 
 external get_page_ranges : t -> Page_range.t array * int
   = "ml_gtk_print_settings_get_page_ranges"
-(** Gets the value of [GTK_PRINT_SETTINGS_PAGE_RANGES]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_page_ranges}[GTK_PRINT_SETTINGS_PAGE_RANGES]}.
+*)
 
 external get_output_bin : t -> string option
   = "ml_gtk_print_settings_get_output_bin"
-(** Gets the value of [GTK_PRINT_SETTINGS_OUTPUT_BIN]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_output_bin}[GTK_PRINT_SETTINGS_OUTPUT_BIN]}.
+*)
 
 external get_orientation : t -> Ocgtk_enums.pageorientation
   = "ml_gtk_print_settings_get_orientation"
-(** Get the value of [GTK_PRINT_SETTINGS_ORIENTATION], converted to a
-    [GtkPageOrientation]. *)
+(** Get the value of
+    {{!Ocgtk.Constants.print_settings_orientation}[GTK_PRINT_SETTINGS_ORIENTATION]},
+    converted to a [GtkPageOrientation]. *)
 
 external get_number_up_layout : t -> Ocgtk_enums.numberuplayout
   = "ml_gtk_print_settings_get_number_up_layout"
-(** Gets the value of [GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_number_up_layout}[GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT]}.
+*)
 
 external get_number_up : t -> int = "ml_gtk_print_settings_get_number_up"
-(** Gets the value of [GTK_PRINT_SETTINGS_NUMBER_UP]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_number_up}[GTK_PRINT_SETTINGS_NUMBER_UP]}.
+*)
 
 external get_n_copies : t -> int = "ml_gtk_print_settings_get_n_copies"
-(** Gets the value of [GTK_PRINT_SETTINGS_N_COPIES]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_n_copies}[GTK_PRINT_SETTINGS_N_COPIES]}.
+*)
 
 external get_media_type : t -> string option
   = "ml_gtk_print_settings_get_media_type"
-(** Gets the value of [GTK_PRINT_SETTINGS_MEDIA_TYPE].
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_media_type}[GTK_PRINT_SETTINGS_MEDIA_TYPE]}.
 
     The set of media types is defined in PWG 5101.1-2002 PWG. *)
 
@@ -281,11 +365,14 @@ external get_int : t -> string -> int = "ml_gtk_print_settings_get_int"
 
 external get_finishings : t -> string option
   = "ml_gtk_print_settings_get_finishings"
-(** Gets the value of [GTK_PRINT_SETTINGS_FINISHINGS]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_finishings}[GTK_PRINT_SETTINGS_FINISHINGS]}.
+*)
 
 external get_duplex : t -> Ocgtk_enums.printduplex
   = "ml_gtk_print_settings_get_duplex"
-(** Gets the value of [GTK_PRINT_SETTINGS_DUPLEX]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_duplex}[GTK_PRINT_SETTINGS_DUPLEX]}. *)
 
 external get_double_with_default : t -> string -> float -> float
   = "ml_gtk_print_settings_get_double_with_default"
@@ -293,20 +380,24 @@ external get_double_with_default : t -> string -> float -> float
     associated with [key], or [default_val] if the value does not represent a
     floating point number.
 
-    Floating point numbers are parsed with g_ascii_strtod(). *)
+    Floating point numbers are parsed with [g_ascii_strtod ()]. *)
 
 external get_double : t -> string -> float = "ml_gtk_print_settings_get_double"
 (** Returns the double value associated with [key], or 0. *)
 
 external get_dither : t -> string option = "ml_gtk_print_settings_get_dither"
-(** Gets the value of [GTK_PRINT_SETTINGS_DITHER]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_dither}[GTK_PRINT_SETTINGS_DITHER]}. *)
 
 external get_default_source : t -> string option
   = "ml_gtk_print_settings_get_default_source"
-(** Gets the value of [GTK_PRINT_SETTINGS_DEFAULT_SOURCE]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_default_source}[GTK_PRINT_SETTINGS_DEFAULT_SOURCE]}.
+*)
 
 external get_collate : t -> bool = "ml_gtk_print_settings_get_collate"
-(** Gets the value of [GTK_PRINT_SETTINGS_COLLATE]. *)
+(** Gets the value of
+    {{!Ocgtk.Constants.print_settings_collate}[GTK_PRINT_SETTINGS_COLLATE]}. *)
 
 external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 (** Returns the boolean represented by the value that is associated with [key].

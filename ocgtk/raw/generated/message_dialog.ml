@@ -7,7 +7,8 @@
  It’s simply a convenience widget; you could construct the equivalent of\n\
  [GtkMessageDialog] from [GtkDialog] without too much effort, but\n\
  [GtkMessageDialog] saves typing.\n\n\
- The easiest way to do a modal message dialog is to use the [GTK_DIALOG_MODAL]\n\
+ The easiest way to do a modal message dialog is to use the \
+ {{!Ocgtk.Enums.type-dialogflags_flag.constructor-MODAL}[GTK_DIALOG_MODAL]}\n\
  flag, which will call \
  {{!Ocgtk.Raw.Window.val-set_modal}[Gtk.Window.set_modal]} internally. The \
  dialog will\n\
@@ -32,7 +33,8 @@
 \                  NULL);\n\
  ]}\n\n\
  You might do a non-modal [GtkMessageDialog] simply by omitting the\n\
- [GTK_DIALOG_MODAL] flag:\n\n\
+ {{!Ocgtk.Enums.type-dialogflags_flag.constructor-MODAL}[GTK_DIALOG_MODAL]} \
+ flag:\n\n\
  {[\n\
  GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;\n\
  dialog = gtk_message_dialog_new (parent_window,\n\

@@ -16,12 +16,13 @@
     [GtkTreeView] widget instead of a separate function.
 
     The [GtkTreeSelection] object is gotten from a [GtkTreeView] by calling
-    gtk_tree_view_get_selection(). It can be manipulated to check the selection
-    status of the tree, as well as select and deselect individual rows.
-    Selection is done completely view side. As a result, multiple views of the
-    same model can have completely different selections. Additionally, you
-    cannot change the selection of a row on the model that is not currently
-    displayed by the view without expanding its parents first.
+    {{!Ocgtk.Raw.Tree_view.val-get_selection}[gtk_tree_view_get_selection ()]}.
+    It can be manipulated to check the selection status of the tree, as well as
+    select and deselect individual rows. Selection is done completely view side.
+    As a result, multiple views of the same model can have completely different
+    selections. Additionally, you cannot change the selection of a row on the
+    model that is not currently displayed by the view without expanding its
+    parents first.
 
     One of the important things to remember when monitoring the selection of a
     view is that the [GtkTreeSelection]::changed signal is mostly a hint. That
@@ -57,13 +58,15 @@ module rec Tree_selection : sig
   external set_mode : t -> Ocgtk_enums.selectionmode -> unit
     = "ml_gtk_tree_selection_set_mode"
   (** Sets the selection mode of the [selection]. If the previous type was
-      [GTK_SELECTION_MULTIPLE], then the anchor is kept selected, if it was
-      previously selected. *)
+      {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]},
+      then the anchor is kept selected, if it was previously selected. *)
 
   external select_range : t -> Tree_path.t -> Tree_path.t -> unit
     = "ml_gtk_tree_selection_select_range"
   (** Selects a range of nodes, determined by [start_path] and [end_path]
-      inclusive. [selection] must be set to [GTK_SELECTION_MULTIPLE] mode. *)
+      inclusive. [selection] must be set to
+      {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]}
+      mode. *)
 
   external select_path : t -> Tree_path.t -> unit
     = "ml_gtk_tree_selection_select_path"
@@ -74,7 +77,8 @@ module rec Tree_selection : sig
   (** Selects the specified iterator. *)
 
   external select_all : t -> unit = "ml_gtk_tree_selection_select_all"
-  (** Selects all the nodes. [selection] must be set to [GTK_SELECTION_MULTIPLE]
+  (** Selects all the nodes. [selection] must be set to
+      {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]}
       mode. *)
 
   external path_is_selected : t -> Tree_path.t -> bool
@@ -93,7 +97,8 @@ module rec Tree_selection : sig
   external get_mode : t -> Ocgtk_enums.selectionmode
     = "ml_gtk_tree_selection_get_mode"
   (** Gets the selection mode for [selection]. See
-      gtk_tree_selection_set_mode(). *)
+      {{!Ocgtk.Raw.Tree_selection.val-set_mode}[gtk_tree_selection_set_mode ()]}.
+  *)
 
   external count_selected_rows : t -> int
     = "ml_gtk_tree_selection_count_selected_rows"
@@ -126,12 +131,16 @@ and Tree_view : sig
 
   external unset_rows_drag_source : t -> unit
     = "ml_gtk_tree_view_unset_rows_drag_source"
-  (** Undoes the effect of gtk_tree_view_enable_model_drag_source(). Calling
-      this method sets [GtkTreeView]:reorderable to [false]. *)
+  (** Undoes the effect of
+      {{!Ocgtk.Raw.Tree_view.val-enable_model_drag_source}[gtk_tree_view_enable_model_drag_source
+                                                           ()]}. Calling this
+      method sets [GtkTreeView]:reorderable to [false]. *)
 
   external unset_rows_drag_dest : t -> unit
     = "ml_gtk_tree_view_unset_rows_drag_dest"
-  (** Undoes the effect of gtk_tree_view_enable_model_drag_dest(). Calling this
+  (** Undoes the effect of
+      {{!Ocgtk.Raw.Tree_view.val-enable_model_drag_dest}[gtk_tree_view_enable_model_drag_dest
+                                                         ()]}. Calling this
       method sets [GtkTreeView]:reorderable to [false]. *)
 
   external set_tooltip_row :
@@ -142,8 +151,11 @@ and Tree_view : sig
     Tree_path.t ->
     unit = "ml_gtk_tree_view_set_tooltip_row"
   (** Sets the tip area of [tooltip] to be the area covered by the row at
-      [path]. See also gtk_tree_view_set_tooltip_column() for a simpler
-      alternative. See also gtk_tooltip_set_tip_area(). *)
+      [path]. See also
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_column}[gtk_tree_view_set_tooltip_column
+                                                     ()]} for a simpler
+      alternative. See also
+      {{!Ocgtk.Raw.Tooltip.val-set_tip_area}[gtk_tooltip_set_tip_area ()]}. *)
 
   external set_tooltip_column : t -> int -> unit
     = "ml_gtk_tree_view_set_tooltip_column"
@@ -155,8 +167,9 @@ and Tree_view : sig
       When enabled, [GtkWidget:has-tooltip] will be set to [true] and
       [tree_view] will connect a [GtkWidget::query-tooltip] signal handler.
 
-      Note that the signal handler sets the text with gtk_tooltip_set_markup(),
-      so &, <, etc have to be escaped in the text. *)
+      Note that the signal handler sets the text with
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[gtk_tooltip_set_markup ()]}, so &, <,
+      etc have to be escaped in the text. *)
 
   external set_tooltip_cell :
     t ->
@@ -170,14 +183,17 @@ and Tree_view : sig
   (** Sets the tip area of [tooltip] to the area [path], [column] and [cell]
       have in common. For example if [path] is [None] and [column] is set, the
       tip area will be set to the full area covered by [column]. See also
-      gtk_tooltip_set_tip_area().
+      {{!Ocgtk.Raw.Tooltip.val-set_tip_area}[gtk_tooltip_set_tip_area ()]}.
 
       Note that if [path] is not specified and [cell] is set and part of a
       column containing the expander, the tooltip might not show and hide at the
       correct position. In such cases [path] must be set to the current node
       under the mouse cursor for this function to operate correctly.
 
-      See also gtk_tree_view_set_tooltip_column() for a simpler alternative. *)
+      See also
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_column}[gtk_tree_view_set_tooltip_column
+                                                     ()]} for a simpler
+      alternative. *)
 
   external set_show_expanders : t -> bool -> unit
     = "ml_gtk_tree_view_set_show_expanders"
@@ -186,8 +202,9 @@ and Tree_view : sig
       there will be no way to expand and collapse rows by default. Also note
       that hiding the expanders will disable the default indentation. You can
       set a custom indentation in this case using
-      gtk_tree_view_set_level_indentation(). This does not have any visible
-      effects for lists. *)
+      {{!Ocgtk.Raw.Tree_view.val-set_level_indentation}[gtk_tree_view_set_level_indentation
+                                                        ()]}. This does not have
+      any visible effects for lists. *)
 
   external set_search_entry : t -> Editable.t option -> unit
     = "ml_gtk_tree_view_set_search_entry"
@@ -211,8 +228,10 @@ and Tree_view : sig
   external set_rubber_banding : t -> bool -> unit
     = "ml_gtk_tree_view_set_rubber_banding"
   (** Enables or disables rubber banding in [tree_view]. If the selection mode
-      is [GTK_SELECTION_MULTIPLE], rubber banding will allow the user to select
-      multiple rows by dragging the mouse. *)
+      is
+      {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]},
+      rubber banding will allow the user to select multiple rows by dragging the
+      mouse. *)
 
   external set_reorderable : t -> bool -> unit
     = "ml_gtk_tree_view_set_reorderable"
@@ -248,8 +267,11 @@ and Tree_view : sig
     = "ml_gtk_tree_view_set_hover_selection"
   (** Enables or disables the hover selection mode of [tree_view]. Hover
       selection makes the selected row follow the pointer. Currently, this works
-      only for the selection modes [GTK_SELECTION_SINGLE] and
-      [GTK_SELECTION_BROWSE]. *)
+      only for the selection modes
+      {{!Ocgtk.Enums.type-selectionmode.constructor-SINGLE}[GTK_SELECTION_SINGLE]}
+      and
+      {{!Ocgtk.Enums.type-selectionmode.constructor-BROWSE}[GTK_SELECTION_BROWSE]}.
+  *)
 
   external set_hover_expand : t -> bool -> unit
     = "ml_gtk_tree_view_set_hover_expand"
@@ -273,7 +295,9 @@ and Tree_view : sig
   (** Enables or disables the fixed height mode of [tree_view]. Fixed height
       mode speeds up [GtkTreeView] by assuming that all rows have the same
       height. Only enable this option if all rows are the same height and all
-      columns are of type [GTK_TREE_VIEW_COLUMN_FIXED]. *)
+      columns are of type
+      {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-FIXED}[GTK_TREE_VIEW_COLUMN_FIXED]}.
+  *)
 
   external set_expander_column : t -> Tree_view_column.t option -> unit
     = "ml_gtk_tree_view_set_expander_column"
@@ -351,7 +375,8 @@ and Tree_view : sig
       [tree_x], [tree_y], where [tree_x] and [tree_y] are specified in tree
       coordinates. The [tree_view] must be realized before this function is
       called. If it isn't, you probably want to be using
-      gtk_tree_view_scroll_to_cell().
+      {{!Ocgtk.Raw.Tree_view.val-scroll_to_cell}[gtk_tree_view_scroll_to_cell
+                                                 ()]}.
 
       If either [tree_x] or [tree_y] are -1, then that direction isn’t scrolled.
   *)
@@ -419,9 +444,10 @@ and Tree_view : sig
     = "ml_gtk_tree_view_get_visible_rect"
   (** Fills [visible_rect] with the currently-visible region of the buffer, in
       tree coordinates. Convert to bin_window coordinates with
-      gtk_tree_view_convert_tree_to_bin_window_coords(). Tree coordinates start
-      at 0,0 for row 0 of the tree, and cover the entire scrollable area of the
-      tree. *)
+      {{!Ocgtk.Raw.Tree_view.val-convert_tree_to_bin_window_coords}[gtk_tree_view_convert_tree_to_bin_window_coords
+                                                                    ()]}. Tree
+      coordinates start at 0,0 for row 0 of the tree, and cover the entire
+      scrollable area of the tree. *)
 
   external get_tooltip_column : t -> int = "ml_gtk_tree_view_get_tooltip_column"
   (** Returns the column of [tree_view]’s model which is being used for
@@ -447,12 +473,15 @@ and Tree_view : sig
   external get_rubber_banding : t -> bool
     = "ml_gtk_tree_view_get_rubber_banding"
   (** Returns whether rubber banding is turned on for [tree_view]. If the
-      selection mode is [GTK_SELECTION_MULTIPLE], rubber banding will allow the
-      user to select multiple rows by dragging the mouse. *)
+      selection mode is
+      {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]},
+      rubber banding will allow the user to select multiple rows by dragging the
+      mouse. *)
 
   external get_reorderable : t -> bool = "ml_gtk_tree_view_get_reorderable"
   (** Retrieves whether the user can reorder the tree via drag-and-drop. See
-      gtk_tree_view_set_reorderable(). *)
+      {{!Ocgtk.Raw.Tree_view.val-set_reorderable}[gtk_tree_view_set_reorderable
+                                                  ()]}. *)
 
   external get_n_columns : t -> int = "ml_gtk_tree_view_get_n_columns"
   (** Queries the number of columns in the given [tree_view]. *)
@@ -523,7 +552,7 @@ and Tree_view : sig
       [x] and [width] fields will be filled with 0. The sum of all cell rects
       does not cover the entire tree; there are extra pixels in between rows,
       for example. The returned rectangle is equivalent to the [cell_area]
-      passed to gtk_cell_renderer_render(). This function is only valid if
+      passed to [gtk_cell_renderer_render ()]. This function is only valid if
       [tree_view] is realized. *)
 
   external get_background_area :
@@ -536,15 +565,18 @@ and Tree_view : sig
       [None], or points to a node not found in the tree, the [y] and [height]
       fields of the rectangle will be filled with 0. If [column] is [None], the
       [x] and [width] fields will be filled with 0. The returned rectangle is
-      equivalent to the [background_area] passed to gtk_cell_renderer_render().
-      These background areas tile to cover the entire bin window. Contrast with
-      the [cell_area], returned by gtk_tree_view_get_cell_area(), which returns
-      only the cell itself, excluding surrounding borders and the tree expander
-      area. *)
+      equivalent to the [background_area] passed to
+      [gtk_cell_renderer_render ()]. These background areas tile to cover the
+      entire bin window. Contrast with the [cell_area], returned by
+      {{!Ocgtk.Raw.Tree_view.val-get_cell_area}[gtk_tree_view_get_cell_area ()]},
+      which returns only the cell itself, excluding surrounding borders and the
+      tree expander area. *)
 
   external get_activate_on_single_click : t -> bool
     = "ml_gtk_tree_view_get_activate_on_single_click"
-  (** Gets the setting set by gtk_tree_view_set_activate_on_single_click(). *)
+  (** Gets the setting set by
+      {{!Ocgtk.Raw.Tree_view.val-set_activate_on_single_click}[gtk_tree_view_set_activate_on_single_click
+                                                               ()]}. *)
 
   external expand_to_path : t -> Tree_path.t -> unit
     = "ml_gtk_tree_view_expand_to_path"
@@ -663,10 +695,13 @@ and Tree_view : sig
       when the user presses one of the cursor keys.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control the cursor
-      programmatically. In contrast to gtk_tree_view_set_cursor() and
-      gtk_tree_view_set_cursor_on_cell() when moving horizontally
-      [GtkTreeView]::move-cursor does not reset the current selection. *)
+      [g_signal_emit_by_name ()] if they need to control the cursor
+      programmatically. In contrast to
+      {{!Ocgtk.Raw.Tree_view.val-set_cursor}[gtk_tree_view_set_cursor ()]} and
+      {{!Ocgtk.Raw.Tree_view.val-set_cursor_on_cell}[gtk_tree_view_set_cursor_on_cell
+                                                     ()]} when moving
+      horizontally [GtkTreeView]::move-cursor does not reset the current
+      selection. *)
 
   val on_select_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

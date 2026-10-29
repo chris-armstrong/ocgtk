@@ -60,7 +60,7 @@ class type input_stream_t = object
 
   method close_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes closing a stream asynchronously, started from
-      g_input_stream_close_async(). *)
+      [g_input_stream_close_async ()]. *)
 
   method has_pending : unit -> bool
   (** Checks if an input stream has pending actions. *)
@@ -72,7 +72,7 @@ class type input_stream_t = object
     Gsize.t ->
     Cancellable.cancellable_t option ->
     (Glib_bytes.t, GError.t) result
-  (** Like g_input_stream_read(), this tries to read [count] bytes from the
+  (** Like [g_input_stream_read ()], this tries to read [count] bytes from the
       stream in a blocking fashion. However, rather than reading into a
       user-supplied buffer, this will create a new [GBytes] containing the data
       that was read. This may be easier to use from language bindings.
@@ -110,9 +110,10 @@ class type input_stream_t = object
   (** Tries to skip [count] bytes from the stream. Will block during the
       operation.
 
-      This is identical to g_input_stream_read(), from a behaviour standpoint,
-      but the bytes that are skipped are not returned to the user. Some streams
-      have an implementation that is more efficient than reading the data.
+      This is identical to [g_input_stream_read ()], from a behaviour
+      standpoint, but the bytes that are skipped are not returned to the user.
+      Some streams have an implementation that is more efficient than reading
+      the data.
 
       This function is optional for inherited classes, as the default
       implementation emulates it using read.

@@ -8,22 +8,34 @@ type eulerorder =
         enumeration values *)
   | `XYZ
     (** Rotate in the X, Y, and Z order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SXYZ] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SXYZ}[GRAPHENE_EULER_ORDER_SXYZ]}
+    *)
   | `YZX
     (** Rotate in the Y, Z, and X order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SYZX] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SYZX}[GRAPHENE_EULER_ORDER_SYZX]}
+    *)
   | `ZXY
     (** Rotate in the Z, X, and Y order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SZXY] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SZXY}[GRAPHENE_EULER_ORDER_SZXY]}
+    *)
   | `XZY
     (** Rotate in the X, Z, and Y order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SXZY] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SXZY}[GRAPHENE_EULER_ORDER_SXZY]}
+    *)
   | `YXZ
     (** Rotate in the Y, X, and Z order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SYXZ] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SYXZ}[GRAPHENE_EULER_ORDER_SYXZ]}
+    *)
   | `ZYX
     (** Rotate in the Z, Y, and X order. Deprecated in Graphene 1.10, it's an
-        alias for [GRAPHENE_EULER_ORDER_SZYX] *)
+        alias for
+        {{!Ocgraphene.Enums.type-eulerorder.constructor-SZYX}[GRAPHENE_EULER_ORDER_SZYX]}
+    *)
   | `SXYZ
     (** Defines a static rotation along the X, Y, and Z axes (Since: 1.10) *)
   | `SXYX
@@ -75,8 +87,9 @@ type eulerorder =
   ]
 (** Specify the order of the rotations on each axis.
 
-    The [GRAPHENE_EULER_ORDER_DEFAULT] value is special, and is used as an alias
-    for one of the other orders.
+    The
+    {{!Ocgraphene.Enums.type-eulerorder.constructor-DEFAULT}[GRAPHENE_EULER_ORDER_DEFAULT]}
+    value is special, and is used as an alias for one of the other orders.
     @since 1.2 *)
 
 val eulerorder_of_int : int -> eulerorder

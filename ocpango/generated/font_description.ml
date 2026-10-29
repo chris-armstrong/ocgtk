@@ -97,7 +97,7 @@ class type font_description_t = object
   (** Computes a hash of a [PangoFontDescription] structure.
 
       This is suitable to be used, for example, as an argument to
-      g_hash_table_new(). The hash value is independent of [desc]->mask. *)
+      [g_hash_table_new ()]. The hash value is independent of [desc]->mask. *)
 
   method merge : Raw.Font_description.t option -> bool -> unit
   (** Merges the fields that are set in [desc_to_merge] into the fields in

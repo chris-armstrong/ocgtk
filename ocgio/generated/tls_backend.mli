@@ -40,13 +40,13 @@ class type tls_backend_t = object
   method set_default_database : Tls_database.tls_database_t option -> unit
   (** Set the default [GTlsDatabase] used to verify TLS connections
 
-      Any subsequent call to g_tls_backend_get_default_database() will return
+      Any subsequent call to [g_tls_backend_get_default_database ()] will return
       the database set in this call. Existing databases and connections are not
       modified.
 
       Setting a [None] default database will reset to using the system default
-      database as if g_tls_backend_set_default_database() had never been called.
-  *)
+      database as if [g_tls_backend_set_default_database ()] had never been
+      called. *)
 
   method supports_dtls : unit -> bool
   (** Checks if DTLS is supported. DTLS support may not be available even if TLS

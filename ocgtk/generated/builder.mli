@@ -46,7 +46,7 @@ class type builder_t = object
 
       It’s not really reasonable to attempt to handle failures of this call. The
       only reasonable thing to do when an error is detected is to call
-      g_error(). *)
+      [g_error ()]. *)
 
   method add_from_string : string -> int -> (bool, GError.t) result
   (** Parses a string containing a UI definition and merges it with the current
@@ -63,7 +63,7 @@ class type builder_t = object
 
       It’s not really reasonable to attempt to handle failures of this call. The
       only reasonable thing to do when an error is detected is to call
-      g_error(). *)
+      [g_error ()]. *)
 
   method add_objects_from_file :
     string -> string array -> (bool, GError.t) result
@@ -124,7 +124,7 @@ class type builder_t = object
       templates are handled by [GtkWidget]. *)
 
   method get_current_object : unit -> [ `object_ ] Gobject.obj option
-  (** Gets the current object set via gtk_builder_set_current_object(). *)
+  (** Gets the current object set via [gtk_builder_set_current_object ()]. *)
 
   method get_object : string -> [ `object_ ] Gobject.obj option
   (** Gets the object named [name].
@@ -139,7 +139,7 @@ class type builder_t = object
       returned objects. *)
 
   method get_scope : unit -> Builder_scope.builder_scope_t
-  (** Gets the scope in use that was set via gtk_builder_set_scope(). *)
+  (** Gets the scope in use that was set via [gtk_builder_set_scope ()]. *)
 
   method get_translation_domain : unit -> string option
   (** Gets the translation domain of [builder]. *)
@@ -213,7 +213,7 @@ end
      builder (in which case you should not have to worry about their lifecycle),\n\
      or without a parent, in which case they have to be added to some container\n\
      to make use of them. Non-widget objects need to be reffed with\n\
-     g_object_ref() to keep them beyond the lifespan of the builder.\n\n\
+     [g_object_ref ()] to keep them beyond the lifespan of the builder.\n\n\
      {b GtkBuilder UI Definitions}\n\n\
      [GtkBuilder] parses textual descriptions of user interfaces which are\n\
      specified in XML format. We refer to these descriptions as “GtkBuilder\n\
@@ -557,7 +557,7 @@ class builder : Raw.Builder.t -> builder_t
  builder (in which case you should not have to worry about their lifecycle),\n\
  or without a parent, in which case they have to be added to some container\n\
  to make use of them. Non-widget objects need to be reffed with\n\
- g_object_ref() to keep them beyond the lifespan of the builder.\n\n\
+ [g_object_ref ()] to keep them beyond the lifespan of the builder.\n\n\
  {b GtkBuilder UI Definitions}\n\n\
  [GtkBuilder] parses textual descriptions of user interfaces which are\n\
  specified in XML format. We refer to these descriptions as “GtkBuilder\n\

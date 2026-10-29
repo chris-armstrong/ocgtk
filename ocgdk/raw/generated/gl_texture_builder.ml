@@ -111,43 +111,58 @@ external set_color_state :
     are, this is probably the right thing. *)
 
 external get_width : t -> int = "ml_gdk_gl_texture_builder_get_width"
-(** Gets the width previously set via gdk_gl_texture_builder_set_width() or 0 if
-    the width wasn't set. *)
+(** Gets the width previously set via
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_width}[gdk_gl_texture_builder_set_width
+                                                   ()]} or 0 if the width wasn't
+    set. *)
 
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_gl_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_gl_texture_builder_set_update_texture() or [None] if none was set. *)
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_update_texture}[gdk_gl_texture_builder_set_update_texture
+                                                            ()]} or [None] if
+    none was set. *)
 
 external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_gl_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_gl_texture_builder_set_update_region() or [None] if none was set. *)
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_update_region}[gdk_gl_texture_builder_set_update_region
+                                                           ()]} or [None] if
+    none was set. *)
 
 external get_id : t -> int = "ml_gdk_gl_texture_builder_get_id"
-(** Gets the texture id previously set via gdk_gl_texture_builder_set_id() or 0
-    if the id wasn't set. *)
+(** Gets the texture id previously set via
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_id}[gdk_gl_texture_builder_set_id
+                                                ()]} or 0 if the id wasn't set.
+*)
 
 external get_height : t -> int = "ml_gdk_gl_texture_builder_get_height"
-(** Gets the height previously set via gdk_gl_texture_builder_set_height() or 0
-    if the height wasn't set. *)
+(** Gets the height previously set via
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_height}[gdk_gl_texture_builder_set_height
+                                                    ()]} or 0 if the height
+    wasn't set. *)
 
 external get_has_mipmap : t -> bool = "ml_gdk_gl_texture_builder_get_has_mipmap"
 (** Gets whether the texture has a mipmap. *)
 
 external get_format : t -> Ocgdk_enums.memoryformat
   = "ml_gdk_gl_texture_builder_get_format"
-(** Gets the format previously set via gdk_gl_texture_builder_set_format(). *)
+(** Gets the format previously set via
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_format}[gdk_gl_texture_builder_set_format
+                                                    ()]}. *)
 
 external get_context :
   t -> App_launch_context_cycle_de440b34.Gl_context.t option
   = "ml_gdk_gl_texture_builder_get_context"
-(** Gets the context previously set via gdk_gl_texture_builder_set_context() or
-    [None] if none was set. *)
+(** Gets the context previously set via
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_context}[gdk_gl_texture_builder_set_context
+                                                     ()]} or [None] if none was
+    set. *)
 
 external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
   = "ml_gdk_gl_texture_builder_get_color_state"
 (** Gets the color state previously set via
-    gdk_gl_texture_builder_set_color_state(). *)
+    {{!Ocgdk.Raw.Gl_texture_builder.val-set_color_state}[gdk_gl_texture_builder_set_color_state
+                                                         ()]}. *)
 
 (* Properties *)

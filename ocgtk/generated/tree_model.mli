@@ -29,7 +29,7 @@ class type tree_model_t = object
   method get_path : Raw.Tree_iter.t -> Raw.Tree_path.t
   (** Returns a newly-created [GtkTreePath] referenced by [iter].
 
-      This path should be freed with gtk_tree_path_free(). *)
+      This path should be freed with [gtk_tree_path_free ()]. *)
 
   method get_string_from_iter : Raw.Tree_iter.t -> string option
   (** Generates a string representation of the iter.
@@ -120,7 +120,7 @@ class type tree_model_t = object
       This is an optional method for models to implement. To be more specific,
       models may ignore this call as it exists primarily for performance
       reasons. For more information on what this means, see
-      gtk_tree_model_ref_node().
+      [gtk_tree_model_ref_node ()].
 
       Please note that nodes that are deleted are not unreffed. *)
 
@@ -176,7 +176,7 @@ end
      a specific model. It is a generic struct with an integer and three\n\
      generic pointers. These are filled in by the model in a model-specific\n\
      way. One can convert a path to an iterator by calling\n\
-     gtk_tree_model_get_iter(). These iterators are the primary way\n\
+     [gtk_tree_model_get_iter ()]. These iterators are the primary way\n\
      of accessing a model and are similar to the iterators used by\n\
      [GtkTextBuffer]. They are generally statically allocated on the\n\
      stack and only used for a short time. The model interface defines\n\
@@ -198,7 +198,9 @@ end
      Although generally uninteresting, as one always has to allow for\n\
      the case where iterators do not persist beyond a signal, some very\n\
      important performance enhancements were made in the sort model.\n\
-     As a result, the [GTK_TREE_MODEL_ITERS_PERSIST] flag was added to\n\
+     As a result, the \
+     {{!Ocgtk.Enums.type-treemodelflags_flag.constructor-ITERS_PERSIST}[GTK_TREE_MODEL_ITERS_PERSIST]} \
+     flag was added to\n\
      indicate this behavior.\n\n\
      To help show some common operation of a model, some examples are\n\
      provided. The first example shows three ways of getting the iter at\n\
@@ -231,7 +233,7 @@ end
      ]}\n\n\
      This second example shows a quick way of iterating through a list\n\
      and getting a string and an integer from each row. The\n\
-     populate_model() function used below is not\n\
+     [populate_model ()] function used below is not\n\
      shown, as it is specific to the [GtkListStore]. For information on\n\
      how to write such a function, see the [GtkListStore] documentation.\n\n\
      {b Reading data from a [GtkTreeModel]}\n\n\
@@ -277,7 +279,11 @@ end
     \ }\n\
      ]}\n\n\
      The [GtkTreeModel] interface contains two methods for reference\n\
-     counting: gtk_tree_model_ref_node() and gtk_tree_model_unref_node().\n\
+     counting: \
+     {{!Ocgtk.Tree_model.class-type-tree_model_t.method-ref_node}[gtk_tree_model_ref_node \
+     ()]} and \
+     {{!Ocgtk.Tree_model.class-type-tree_model_t.method-unref_node}[gtk_tree_model_unref_node \
+     ()]}.\n\
      These two methods are optional to implement. The reference counting\n\
      is meant as a way for views to let models know when nodes are being\n\
      displayed. [GtkTreeView] will take a reference on a node when it is\n\
@@ -354,7 +360,7 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  a specific model. It is a generic struct with an integer and three\n\
  generic pointers. These are filled in by the model in a model-specific\n\
  way. One can convert a path to an iterator by calling\n\
- gtk_tree_model_get_iter(). These iterators are the primary way\n\
+ [gtk_tree_model_get_iter ()]. These iterators are the primary way\n\
  of accessing a model and are similar to the iterators used by\n\
  [GtkTextBuffer]. They are generally statically allocated on the\n\
  stack and only used for a short time. The model interface defines\n\
@@ -376,7 +382,9 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  Although generally uninteresting, as one always has to allow for\n\
  the case where iterators do not persist beyond a signal, some very\n\
  important performance enhancements were made in the sort model.\n\
- As a result, the [GTK_TREE_MODEL_ITERS_PERSIST] flag was added to\n\
+ As a result, the \
+ {{!Ocgtk.Enums.type-treemodelflags_flag.constructor-ITERS_PERSIST}[GTK_TREE_MODEL_ITERS_PERSIST]} \
+ flag was added to\n\
  indicate this behavior.\n\n\
  To help show some common operation of a model, some examples are\n\
  provided. The first example shows three ways of getting the iter at\n\
@@ -409,7 +417,7 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  ]}\n\n\
  This second example shows a quick way of iterating through a list\n\
  and getting a string and an integer from each row. The\n\
- populate_model() function used below is not\n\
+ [populate_model ()] function used below is not\n\
  shown, as it is specific to the [GtkListStore]. For information on\n\
  how to write such a function, see the [GtkListStore] documentation.\n\n\
  {b Reading data from a [GtkTreeModel]}\n\n\
@@ -454,7 +462,11 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
 \ }\n\
  ]}\n\n\
  The [GtkTreeModel] interface contains two methods for reference\n\
- counting: gtk_tree_model_ref_node() and gtk_tree_model_unref_node().\n\
+ counting: \
+ {{!Ocgtk.Tree_model.class-type-tree_model_t.method-ref_node}[gtk_tree_model_ref_node \
+ ()]} and \
+ {{!Ocgtk.Tree_model.class-type-tree_model_t.method-unref_node}[gtk_tree_model_unref_node \
+ ()]}.\n\
  These two methods are optional to implement. The reference counting\n\
  is meant as a way for views to let models know when nodes are being\n\
  displayed. [GtkTreeView] will take a reference on a node when it is\n\

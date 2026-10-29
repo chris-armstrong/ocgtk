@@ -26,8 +26,11 @@
 
     You can use a [GtkWidgetPaintable] everywhere a [GdkPaintable] is allowed,
     including using it on a [GtkPicture] (or one of its parents) that it was set
-    on itself via gtk_picture_set_paintable(). The paintable will take care of
-    recursion when this happens. If you do this however, ensure that the
+    on itself via
+    {{!Ocgtk.Picture.class-type-picture_t.method-set_paintable}[gtk_picture_set_paintable
+                                                                ()]}. The
+    paintable will take care of recursion when this happens. If you do this
+    however, ensure that the
     {{!Ocgtk.Picture.class-type-picture_t.method-get_can_shrink}[Gtk.Picture:can-shrink]}
     property is set to [true] or you might end up with an infinitely growing
     widget. *)
@@ -66,8 +69,11 @@ class widget_paintable : Raw.Widget_paintable.t -> widget_paintable_t
 
     You can use a [GtkWidgetPaintable] everywhere a [GdkPaintable] is allowed,
     including using it on a [GtkPicture] (or one of its parents) that it was set
-    on itself via gtk_picture_set_paintable(). The paintable will take care of
-    recursion when this happens. If you do this however, ensure that the
+    on itself via
+    {{!Ocgtk.Picture.class-type-picture_t.method-set_paintable}[gtk_picture_set_paintable
+                                                                ()]}. The
+    paintable will take care of recursion when this happens. If you do this
+    however, ensure that the
     {{!Ocgtk.Picture.class-type-picture_t.method-get_can_shrink}[Gtk.Picture:can-shrink]}
     property is set to [true] or you might end up with an infinitely growing
     widget. *)

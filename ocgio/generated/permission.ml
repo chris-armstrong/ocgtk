@@ -8,14 +8,14 @@ class type permission_t = object
       underlying authentication mechanism. A simple example is that a dialog may
       appear asking the user to enter their password.
 
-      You should check with g_permission_get_can_acquire() before calling this
-      function.
+      You should check with [g_permission_get_can_acquire ()] before calling
+      this function.
 
       If the permission is acquired then [true] is returned. Otherwise, [false]
       is returned and [error] is set appropriately.
 
       This call is blocking, likely for a very long time (in the case that user
-      interaction is required). See g_permission_acquire_async() for the
+      interaction is required). See [g_permission_acquire_async ()] for the
       non-blocking version. *)
 
   method acquire_finish : Async_result.async_result_t -> (bool, GError.t) result
@@ -23,7 +23,7 @@ class type permission_t = object
       [permission].
 
       This is the second half of the asynchronous version of
-      g_permission_acquire(). *)
+      [g_permission_acquire ()]. *)
 
   method get_allowed : unit -> bool
   (** Gets the value of the 'allowed' property. This property is [true] if the
@@ -33,12 +33,12 @@ class type permission_t = object
   method get_can_acquire : unit -> bool
   (** Gets the value of the 'can-acquire' property. This property is [true] if
       it is generally possible to acquire the permission by calling
-      g_permission_acquire(). *)
+      [g_permission_acquire ()]. *)
 
   method get_can_release : unit -> bool
   (** Gets the value of the 'can-release' property. This property is [true] if
       it is generally possible to release the permission by calling
-      g_permission_release(). *)
+      [g_permission_release ()]. *)
 
   method impl_update : bool -> bool -> bool -> unit
   (** This function is called by the [GPermission] implementation to update the
@@ -54,14 +54,14 @@ class type permission_t = object
       underlying authentication mechanism. In most cases the permission will be
       dropped immediately without further action.
 
-      You should check with g_permission_get_can_release() before calling this
-      function.
+      You should check with [g_permission_get_can_release ()] before calling
+      this function.
 
       If the permission is released then [true] is returned. Otherwise, [false]
       is returned and [error] is set appropriately.
 
       This call is blocking, likely for a very long time (in the case that user
-      interaction is required). See g_permission_release_async() for the
+      interaction is required). See [g_permission_release_async ()] for the
       non-blocking version. *)
 
   method release_finish : Async_result.async_result_t -> (bool, GError.t) result
@@ -69,7 +69,7 @@ class type permission_t = object
       [permission].
 
       This is the second half of the asynchronous version of
-      g_permission_release(). *)
+      [g_permission_release ()]. *)
 
   (** {2:conversions Conversions} *)
 

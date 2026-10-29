@@ -11,27 +11,33 @@ open Type_factory
 let gdk_refs =
   Helpers.make_ncr "Gdk"
     (List.fold_left
-       (fun acc (cr_name, cr_type) ->
+       (fun acc (cr_name, cr_c_type, cr_type) ->
          Types.StringMap.add cr_name
-           (make_cross_reference_entity ~cr_name ~cr_type ())
+           (make_cross_reference_entity ~cr_name ~cr_c_type ~cr_type ())
            acc)
        Types.StringMap.empty
        [
-         ("Texture", make_cross_reference_type `Class);
-         ("PaintableFlags", make_cross_reference_type `Bitfield);
-         ("KEY_a", make_cross_reference_type `Constant);
+         ("Texture", "GdkTexture", make_cross_reference_type `Class);
+         ( "PaintableFlags",
+           "GdkPaintableFlags",
+           make_cross_reference_type `Bitfield );
+         ("KEY_a", "GDK_KEY_a", make_cross_reference_type `Constant);
        ])
 
 let index =
   Member_fixture.index
     ~classes:
       (Member_fixture.classes
-      @ [ make_gir_class ~class_name:"ToggleButton" ~parent:"Button" () ])
+      @ [
+          make_gir_class ~class_name:"ToggleButton" ~c_type:"GtkToggleButton"
+            ~parent:"Button" ();
+        ])
     ~interfaces:[ make_gir_interface ~interface_name:"Actionable" () ]
     ~records:[ make_gir_record ~record_name:"TextIter" () ]
     ~constants:
       [
-        make_gir_constant ~constant_name:"ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE" ();
+        make_gir_constant ~constant_name:"ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE"
+          ~constant_c_type:"GTK_ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE" ();
       ]
     ~cross_references:(make_cross_reference_map [ gdk_refs ])
     ()
@@ -243,10 +249,6 @@ let test_unknown_target () =
   check_miss "a class fragment naming a member" "[class@Gtk.Button.label]"
     Unknown_target
 
-let test_not_resolved_yet () =
-  check_miss "C symbol" "[id@gtk_button_new]" Not_resolved_yet;
-  check_miss "legacy sigil" "Use #GtkButton here." Not_resolved_yet
-
 let test_member_in_other_namespace () =
   check_miss "method" "[method@Gdk.Texture.get_width]" Member_in_other_namespace;
   check_miss "enum member" "[flags@Gdk.PaintableFlags.SIZE]"
@@ -272,6 +274,81 @@ let test_class_member_links_nothing () =
   check_links
     ~refs:(Doc_resolve.class_member l2)
     "class type member docs keep code" "[class@Gtk.Button]" "[Gtk.Button]"
+
+(* ---------- sigils and C calls ----------------------------------- *)
+
+let test_hash_type () =
+  check_links ~refs:l2 "layer 2: the class type" "#GtkToggleButton"
+    "{{!Ocgtk.Toggle_button.class-type-toggle_button_t}[GtkToggleButton]}";
+  check_links ~refs:l1 "layer 1: the module" "#GtkToggleButton"
+    "{{!Ocgtk.Raw.Toggle_button}[GtkToggleButton]}";
+  check_links ~refs:l2 "an enumeration" "#GtkOrientation"
+    "{{!Ocgtk.Enums.type-orientation}[GtkOrientation]}";
+  check_links ~refs:l2 "another namespace" "#GdkTexture"
+    "{{!Ocgdk.Texture.class-type-texture_t}[GdkTexture]}"
+
+let test_hash_member () =
+  check_links ~refs:l2 "a signal, layer 2" "#GtkButton::clicked"
+    "{{!Ocgtk.Button.class-type-button_t.method-on_clicked}[GtkButton::clicked]}";
+  check_links ~refs:l1 "a signal, layer 1" "#GtkButton::clicked"
+    "{{!Ocgtk.Raw.Button.val-on_clicked}[GtkButton::clicked]}";
+  check_links ~refs:l2 "a property, layer 2" "#GtkButton:label"
+    "{{!Ocgtk.Button.class-type-button_t.method-get_label}[GtkButton:label]}";
+  check_links ~refs:l1 "a property, layer 1" "#GtkButton:label"
+    "{{!Ocgtk.Raw.Button.val-get_label}[GtkButton:label]}";
+  check_links ~refs:l2 "a hyphenated signal" "#GtkButton::activate-link"
+    "{{!Ocgtk.Button.class-type-button_t.method-on_activate_link}[GtkButton::activate-link]}"
+
+let test_percent_constant () =
+  List.iter
+    (fun refs ->
+      check_links ~refs "the current namespace"
+        "%GTK_ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE"
+        "{{!Ocgtk.Constants.accessible_attribute_overline_none}[GTK_ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]}";
+      check_links ~refs "another namespace" "%GDK_KEY_a"
+        "{{!Ocgdk.Constants.key_a}[GDK_KEY_a]}")
+    [ l1; l2 ]
+
+let test_percent_enum_member () =
+  List.iter
+    (fun refs ->
+      check_links ~refs "an enumeration member" "%GTK_DIR_TAB_FORWARD"
+        "{{!Ocgtk.Enums.type-directiontype.constructor-TAB_FORWARD}[GTK_DIR_TAB_FORWARD]}";
+      check_links ~refs "a bitfield member" "%GTK_STATE_FLAG_DIR_LTR"
+        "{{!Ocgtk.Enums.type-stateflags_flag.constructor-DIR_LTR}[GTK_STATE_FLAG_DIR_LTR]}")
+    [ l1; l2 ]
+
+let test_c_call () =
+  check_links ~refs:l2 "a method, layer 2" "gtk_button_set_label()"
+    "{{!Ocgtk.Button.class-type-button_t.method-set_label}[gtk_button_set_label \
+     ()]}";
+  check_links ~refs:l1 "a method, layer 1" "gtk_button_set_label()"
+    "{{!Ocgtk.Raw.Button.val-set_label}[gtk_button_set_label ()]}";
+  check_links ~refs:l2 "a constructor, layer 2" "gtk_button_new()"
+    "{{!Ocgtk.Button.val-new_}[gtk_button_new ()]}";
+  check_links ~refs:l1 "a constructor, layer 1" "gtk_button_new()"
+    "{{!Ocgtk.Raw.Button.val-new_}[gtk_button_new ()]}";
+  check_links ~refs:l1 "layer 1 only" "gtk_button_get_size()"
+    "{{!Ocgtk.Raw.Button.val-get_size}[gtk_button_get_size ()]}";
+  check_links ~refs:l2 "a method layer 2 drops stays code"
+    "gtk_button_get_size()" "[gtk_button_get_size ()]"
+
+let test_id_fragment () =
+  check_links ~refs:l2 "a constructor" "[id@gtk_button_new]"
+    "{{!Ocgtk.Button.val-new_}[gtk_button_new]}";
+  check_links ~refs:l1 "a method" "[id@gtk_button_set_label]"
+    "{{!Ocgtk.Raw.Button.val-set_label}[gtk_button_set_label]}"
+
+let test_sigil_misses () =
+  check_miss "a C type that is not generated" "#GObject" Unknown_target;
+  check_miss "a member of another namespace" "#GdkTexture::changed"
+    Member_in_other_namespace;
+  check_miss "an unknown constant" "%GDK_KEY_b" Unknown_target;
+  check_miss "a C call of another namespace" "gdk_texture_get_width()"
+    Unknown_target;
+  check_miss "a filtered method" "gtk_button_get_private()" Unknown_target;
+  check_miss "a C call naming an enumeration member" "[id@GTK_DIR_TAB_FORWARD]"
+    Unknown_target
 
 (* ---------- nesting and summary --------------------------------- *)
 
@@ -338,7 +415,13 @@ let tests =
     ("enum member", `Quick, test_enum_member);
     ("flags member", `Quick, test_flags_member);
     ("member misses", `Quick, test_member_misses);
-    ("not resolved yet", `Quick, test_not_resolved_yet);
+    ("#Type", `Quick, test_hash_type);
+    ("#Type:prop and #Type::sig", `Quick, test_hash_member);
+    ("%CONSTANT", `Quick, test_percent_constant);
+    ("%ENUM_MEMBER", `Quick, test_percent_enum_member);
+    ("C call", `Quick, test_c_call);
+    ("id fragment", `Quick, test_id_fragment);
+    ("sigil misses", `Quick, test_sigil_misses);
     ("member in other namespace", `Quick, test_member_in_other_namespace);
     ("kind not generated", `Quick, test_kind_not_generated);
     ("empty index links nothing", `Quick, test_no_links);

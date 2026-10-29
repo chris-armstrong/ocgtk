@@ -1,5 +1,7 @@
-(** [GThreadedResolver] is an implementation of [GResolver] which calls the libc
-    lookup functions in threads to allow them to run asynchronously.
+(** {{!Ocgio.Threaded_resolver.class-type-threaded_resolver_t}[GThreadedResolver]}
+    is an implementation of {{!Ocgio.Resolver.class-type-resolver_t}[GResolver]}
+    which calls the libc lookup functions in threads to allow them to run
+    asynchronously.
 
     Its methods, signals and properties are on
     {!class-type-threaded_resolver_t}. Its constructors are under
@@ -12,8 +14,10 @@
 
     Inherits from: {{!Ocgio.Resolver.class-type-resolver_t}Ocgio.Resolver}
 
-    [GThreadedResolver] is an implementation of [GResolver] which calls the libc
-    lookup functions in threads to allow them to run asynchronously. *)
+    {{!Ocgio.Threaded_resolver.class-type-threaded_resolver_t}[GThreadedResolver]}
+    is an implementation of {{!Ocgio.Resolver.class-type-resolver_t}[GResolver]}
+    which calls the libc lookup functions in threads to allow them to run
+    asynchronously. *)
 class type threaded_resolver_t = object
   inherit Resolver.resolver_t
 

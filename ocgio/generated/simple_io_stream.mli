@@ -64,5 +64,7 @@ val new_ :
   Input_stream.input_stream_t ->
   Output_stream.output_stream_t ->
   simple_io_stream_t
-(** Creates a new [GSimpleIOStream] wrapping [input_stream] and [output_stream].
-    See also [GIOStream]. *)
+(** Creates a new
+    {{!Ocgio.Simple_io_stream.class-type-simple_io_stream_t}[GSimpleIOStream]}
+    wrapping [input_stream] and [output_stream]. See also
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[GIOStream]}. *)

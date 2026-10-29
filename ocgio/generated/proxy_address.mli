@@ -69,9 +69,14 @@ val new_ :
   string option ->
   string option ->
   proxy_address_t
-(** Creates a new [GProxyAddress] for [inetaddr] with [protocol] that should
-    tunnel through [dest_hostname] and [dest_port].
+(** Creates a new
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t}[GProxyAddress]} for
+    [inetaddr] with [protocol] that should tunnel through [dest_hostname] and
+    [dest_port].
 
-    (Note that this method doesn't set the [GProxyAddress:uri] or
-    [GProxyAddress:destination]-protocol fields; use g_object_new() directly if
-    you want to set those.) *)
+    (Note that this method doesn't set the
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t.method-get_uri}[GProxyAddress:uri]}
+    or
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t.method-get_destination_protocol}
+     [GProxyAddress:destination-protocol]} fields; use [g_object_new ()]
+    directly if you want to set those.) *)

@@ -75,7 +75,9 @@ external set_anonymous : t -> bool -> unit
 
 external reply : t -> Ocgio_enums.mountoperationresult -> unit
   = "ml_g_mount_operation_reply"
-(** Emits the [GMountOperation::reply] signal. *)
+(** Emits the
+    {{!Ocgio.Raw.Mount_operation.val-on_reply}[GMountOperation::reply]} signal.
+*)
 
 external get_username : t -> string option = "ml_g_mount_operation_get_username"
 (** Get the user name from the mount operation. *)

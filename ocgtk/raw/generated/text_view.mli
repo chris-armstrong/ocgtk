@@ -217,8 +217,13 @@ external set_gutter :
   unit = "ml_gtk_text_view_set_gutter"
 (** Places [widget] into the gutter specified by [win].
 
-    [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
-    [GTK_TEXT_WINDOW_TOP], or [GTK_TEXT_WINDOW_BOTTOM]. *)
+    [win] must be one of
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-LEFT}[GTK_TEXT_WINDOW_LEFT]},
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-RIGHT}[GTK_TEXT_WINDOW_RIGHT]},
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-TOP}[GTK_TEXT_WINDOW_TOP]},
+    or
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-BOTTOM}[GTK_TEXT_WINDOW_BOTTOM]}.
+*)
 
 external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_text_view_set_extra_menu"
@@ -599,8 +604,13 @@ external get_gutter :
 
     See {{!Ocgtk.Raw.Text_view.val-set_gutter}[Gtk.TextView.set_gutter]}.
 
-    [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
-    [GTK_TEXT_WINDOW_TOP], or [GTK_TEXT_WINDOW_BOTTOM]. *)
+    [win] must be one of
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-LEFT}[GTK_TEXT_WINDOW_LEFT]},
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-RIGHT}[GTK_TEXT_WINDOW_RIGHT]},
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-TOP}[GTK_TEXT_WINDOW_TOP]},
+    or
+    {{!Ocgtk.Enums.type-textwindowtype.constructor-BOTTOM}[GTK_TEXT_WINDOW_BOTTOM]}.
+*)
 
 external get_extra_menu : t -> Ocgio_raw.Menu_model.t
   = "ml_gtk_text_view_get_extra_menu"
@@ -798,8 +808,10 @@ val on_delete_from_cursor :
 
     The ::delete-from-cursor signal is a keybinding signal.
 
-    If the [type] is [GTK_DELETE_CHARS], GTK deletes the selection if there is
-    one, otherwise it deletes the requested number of characters.
+    If the [type] is
+    {{!Ocgtk.Enums.type-deletetype.constructor-CHARS}[GTK_DELETE_CHARS]}, GTK
+    deletes the selection if there is one, otherwise it deletes the requested
+    number of characters.
 
     The default bindings for this signal are <kbd>Delete</kbd> for deleting a
     character, <kbd>Ctrl</kbd>+<kbd>Delete</kbd> for deleting a word and
@@ -841,7 +853,8 @@ val on_move_cursor :
     visible in [text_view], this signal causes the viewport to be moved instead.
 
     Applications should not connect to it, but may emit it with
-    g_signal_emit_by_name() if they need to control the cursor programmatically.
+    [g_signal_emit_by_name ()] if they need to control the cursor
+    programmatically.
 
     The default bindings for this signal come in two variants, the variant with
     the <kbd>Shift</kbd> modifier extends the selection, the variant without it

@@ -84,11 +84,11 @@ and menu_model_t = object
   method is_mutable : unit -> bool
   (** Queries if [model] is mutable.
 
-      An immutable [GMenuModel] will never emit the [GMenuModel::items]-changed
+      An immutable [GMenuModel] will never emit the [GMenuModel::items-changed]
       signal. Consumers of the model may make optimisations accordingly. *)
 
   method items_changed : int -> int -> int -> unit
-  (** Requests emission of the [GMenuModel::items]-changed signal on [model].
+  (** Requests emission of the [GMenuModel::items-changed] signal on [model].
 
       This function should never be called except by [GMenuModel] subclasses.
       Any other calls to this function will very likely lead to a violation of

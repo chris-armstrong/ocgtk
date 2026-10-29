@@ -54,12 +54,15 @@ class inet_address_mask : Raw.Inet_address_mask.t -> inet_address_mask_t
 
 val new_ :
   Inet_address.inet_address_t -> int -> (inet_address_mask_t, GError.t) result
-(** Creates a new [GInetAddressMask] representing all addresses whose first
-    [length] bits match [addr]. *)
+(** Creates a new
+    {{!Ocgio.Inet_address_mask.class-type-inet_address_mask_t}[GInetAddressMask]}
+    representing all addresses whose first [length] bits match [addr]. *)
 
 val new_from_string : string -> (inet_address_mask_t, GError.t) result
 [@@ocaml.doc
   "Parses [mask_string] as an IP address and (optional) length, and\n\
-   creates a new [GInetAddressMask]. The length, if present, is\n\
+   creates a new \
+   {{!Ocgio.Inet_address_mask.class-type-inet_address_mask_t}[GInetAddressMask]}. \
+   The length, if present, is\n\
    delimited by a \"/\". If it is not present, then the length is\n\
    assumed to be the full length of the address."]

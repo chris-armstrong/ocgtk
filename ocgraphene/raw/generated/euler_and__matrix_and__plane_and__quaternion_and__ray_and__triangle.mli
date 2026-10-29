@@ -38,7 +38,8 @@ module rec Euler : sig
 
       The rotations are applied over the reference frame axes in the order
       associated with the #graphene_euler_t; for instance, if the order used to
-      initialize [e] is [GRAPHENE_EULER_ORDER_XYZ]:
+      initialize [e] is
+      {{!Ocgraphene.Enums.type-eulerorder.constructor-XYZ}[GRAPHENE_EULER_ORDER_XYZ]}:
 
       - the first rotation moves the body around the X axis with an angle φ
       - the second rotation moves the body around the Y axis with an angle of ϑ
@@ -97,12 +98,15 @@ module rec Euler : sig
       #graphene_euler_t.
 
       If the #graphene_euler_t [src] is [None], this function is equivalent to
-      calling graphene_euler_init() with all angles set to 0. *)
+      calling {{!Ocgraphene.Raw.Euler.val-init}[graphene_euler_init ()]} with
+      all angles set to 0. *)
 
   external init : t -> float -> float -> float -> t = "ml_graphene_euler_init"
   (** Initializes a #graphene_euler_t using the given angles.
 
-      The order of the rotations is [GRAPHENE_EULER_ORDER_DEFAULT]. *)
+      The order of the rotations is
+      {{!Ocgraphene.Enums.type-eulerorder.constructor-DEFAULT}[GRAPHENE_EULER_ORDER_DEFAULT]}.
+  *)
 
   external get_z : t -> float = "ml_graphene_euler_get_z"
   (** Retrieves the rotation angle on the Z axis, in degrees. *)
@@ -119,7 +123,8 @@ module rec Euler : sig
       #graphene_euler_t structure, when converting to and from other structures,
       like #graphene_quaternion_t and #graphene_matrix_t.
 
-      This function does not return the [GRAPHENE_EULER_ORDER_DEFAULT]
+      This function does not return the
+      {{!Ocgraphene.Enums.type-eulerorder.constructor-DEFAULT}[GRAPHENE_EULER_ORDER_DEFAULT]}
       enumeration value; it will return the effective order of rotation instead.
   *)
 
@@ -127,19 +132,19 @@ module rec Euler : sig
   (** Retrieves the third component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_z() *)
+      See also: {{!Ocgraphene.Raw.Euler.val-get_z}[graphene_euler_get_z ()]} *)
 
   external get_beta : t -> float = "ml_graphene_euler_get_beta"
   (** Retrieves the second component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_y() *)
+      See also: {{!Ocgraphene.Raw.Euler.val-get_y}[graphene_euler_get_y ()]} *)
 
   external get_alpha : t -> float = "ml_graphene_euler_get_alpha"
   (** Retrieves the first component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_x() *)
+      See also: {{!Ocgraphene.Raw.Euler.val-get_x}[graphene_euler_get_x ()]} *)
 
   external equal : t -> t -> bool = "ml_graphene_euler_equal"
   (** Checks if two #graphene_euler_t are equal. *)
@@ -183,14 +188,16 @@ and Matrix : sig
   (** Adds a translation transformation to [m] using the coordinates of the
       given #graphene_point3d_t.
 
-      This is the equivalent of calling graphene_matrix_init_translate() and
-      then multiplying [m] with the translation matrix. *)
+      This is the equivalent of calling
+      {{!Ocgraphene.Raw.Matrix.val-init_translate}[graphene_matrix_init_translate
+                                                   ()]} and then multiplying [m]
+      with the translation matrix. *)
 
   external transform_vec4 : t -> Vec3_and__vec4.Vec4.t -> Vec3_and__vec4.Vec4.t
     = "ml_graphene_matrix_transform_vec4"
   (** Transforms the given #graphene_vec4_t using the matrix [m].
 
-      See also: graphene_simd4x4f_vec4_mul() *)
+      See also: [graphene_simd4x4f_vec4_mul ()] *)
 
   external transform_vec3 : t -> Vec3_and__vec4.Vec3.t -> Vec3_and__vec4.Vec3.t
     = "ml_graphene_matrix_transform_vec3"
@@ -200,7 +207,7 @@ and Matrix : sig
       with the corresponding components of the vector [v]. The W row vector will
       be ignored.
 
-      See also: graphene_simd4x4f_vec3_mul() *)
+      See also: [graphene_simd4x4f_vec3_mul ()] *)
 
   external transform_sphere :
     t -> Box_and__sphere.Sphere.t -> Box_and__sphere.Sphere.t
@@ -214,7 +221,9 @@ and Matrix : sig
 
       The result is a coplanar quadrilateral.
 
-      See also: graphene_matrix_transform_point() *)
+      See also:
+      {{!Ocgraphene.Raw.Matrix.val-transform_point}[graphene_matrix_transform_point
+                                                    ()]} *)
 
   external transform_ray : t -> Ray.t -> Ray.t
     = "ml_graphene_matrix_transform_ray"
@@ -224,21 +233,25 @@ and Matrix : sig
     = "ml_graphene_matrix_transform_point3d"
   (** Transforms the given #graphene_point3d_t using the matrix [m].
 
-      Unlike graphene_matrix_transform_vec3(), this function will take into
-      account the fourth row vector of the #graphene_matrix_t when computing the
-      dot product of each row vector of the matrix.
+      Unlike
+      {{!Ocgraphene.Raw.Matrix.val-transform_vec3}[graphene_matrix_transform_vec3
+                                                   ()]}, this function will take
+      into account the fourth row vector of the #graphene_matrix_t when
+      computing the dot product of each row vector of the matrix.
 
-      See also: graphene_simd4x4f_point3_mul() *)
+      See also: [graphene_simd4x4f_point3_mul ()] *)
 
   external transform_point : t -> Point.t -> Point.t
     = "ml_graphene_matrix_transform_point"
   (** Transforms the given #graphene_point_t using the matrix [m].
 
-      Unlike graphene_matrix_transform_vec3(), this function will take into
-      account the fourth row vector of the #graphene_matrix_t when computing the
-      dot product of each row vector of the matrix.
+      Unlike
+      {{!Ocgraphene.Raw.Matrix.val-transform_vec3}[graphene_matrix_transform_vec3
+                                                   ()]}, this function will take
+      into account the fourth row vector of the #graphene_matrix_t when
+      computing the dot product of each row vector of the matrix.
 
-      See also: graphene_simd4x4f_point3_mul() *)
+      See also: [graphene_simd4x4f_point3_mul ()] *)
 
   external transform_box : t -> Box_and__sphere.Box.t -> Box_and__sphere.Box.t
     = "ml_graphene_matrix_transform_box"
@@ -254,7 +267,9 @@ and Matrix : sig
       The result is the axis aligned bounding rectangle containing the coplanar
       quadrilateral.
 
-      See also: graphene_matrix_transform_point() *)
+      See also:
+      {{!Ocgraphene.Raw.Matrix.val-transform_point}[graphene_matrix_transform_point
+                                                    ()]} *)
 
   external to_float : t -> float array = "ml_graphene_matrix_to_float"
   (** Converts a #graphene_matrix_t to an array of floating point values. *)
@@ -288,34 +303,40 @@ and Matrix : sig
     = "ml_graphene_matrix_scale"
   (** Adds a scaling transformation to [m], using the three given factors.
 
-      This is the equivalent of calling graphene_matrix_init_scale() and then
-      multiplying the matrix [m] with the scale matrix. *)
+      This is the equivalent of calling
+      {{!Ocgraphene.Raw.Matrix.val-init_scale}[graphene_matrix_init_scale ()]}
+      and then multiplying the matrix [m] with the scale matrix. *)
 
   external rotate_z : t -> float -> unit = "ml_graphene_matrix_rotate_z"
   (** Adds a rotation transformation around the Z axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: {{!Ocgraphene.Raw.Matrix.val-rotate}[graphene_matrix_rotate ()]}
+  *)
 
   external rotate_y : t -> float -> unit = "ml_graphene_matrix_rotate_y"
   (** Adds a rotation transformation around the Y axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: {{!Ocgraphene.Raw.Matrix.val-rotate}[graphene_matrix_rotate ()]}
+  *)
 
   external rotate_x : t -> float -> unit = "ml_graphene_matrix_rotate_x"
   (** Adds a rotation transformation around the X axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: {{!Ocgraphene.Raw.Matrix.val-rotate}[graphene_matrix_rotate ()]}
+  *)
 
   external rotate_quaternion : t -> Quaternion.t -> unit
     = "ml_graphene_matrix_rotate_quaternion"
   (** Adds a rotation transformation to [m], using the given
       #graphene_quaternion_t.
 
-      This is the equivalent of calling graphene_quaternion_to_matrix() and then
-      multiplying [m] with the rotation matrix. *)
+      This is the equivalent of calling
+      {{!Ocgraphene.Raw.Quaternion.val-to_matrix}[graphene_quaternion_to_matrix
+                                                  ()]} and then multiplying [m]
+      with the rotation matrix. *)
 
   external rotate_euler : t -> Euler.t -> unit
     = "ml_graphene_matrix_rotate_euler"
@@ -327,8 +348,9 @@ and Matrix : sig
   (** Adds a rotation transformation to [m], using the given [angle] and [axis]
       vector.
 
-      This is the equivalent of calling graphene_matrix_init_rotate() and then
-      multiplying the matrix [m] with the rotation matrix. *)
+      This is the equivalent of calling
+      {{!Ocgraphene.Raw.Matrix.val-init_rotate}[graphene_matrix_init_rotate ()]}
+      and then multiplying the matrix [m] with the rotation matrix. *)
 
   external project_rect_bounds : t -> Rect.t -> Rect.t
     = "ml_graphene_matrix_project_rect_bounds"
@@ -341,7 +363,9 @@ and Matrix : sig
     = "ml_graphene_matrix_project_rect"
   (** Projects all corners of a #graphene_rect_t using the given matrix.
 
-      See also: graphene_matrix_project_point() *)
+      See also:
+      {{!Ocgraphene.Raw.Matrix.val-project_point}[graphene_matrix_project_point
+                                                  ()]} *)
 
   external project_point : t -> Point.t -> Point.t
     = "ml_graphene_matrix_project_point"
@@ -453,7 +477,9 @@ and Matrix : sig
       "ml_graphene_matrix_init_frustum_native"
   (** Initializes a #graphene_matrix_t compatible with #graphene_frustum_t.
 
-      See also: graphene_frustum_init_from_matrix() *)
+      See also:
+      {{!Ocgraphene.Raw.Frustum.val-init_from_matrix}[graphene_frustum_init_from_matrix
+                                                      ()]} *)
 
   external init_from_vec4 :
     t ->
@@ -523,9 +549,12 @@ and Matrix : sig
   (** Checks whether the two given #graphene_matrix_t matrices are byte-by-byte
       equal.
 
-      While this function is faster than graphene_matrix_equal(), it can also
-      return false negatives, so it should be used in conjuction with either
-      graphene_matrix_equal() or graphene_matrix_near(). For instance:
+      While this function is faster than
+      {{!Ocgraphene.Raw.Matrix.val-equal}[graphene_matrix_equal ()]}, it can
+      also return false negatives, so it should be used in conjuction with
+      either {{!Ocgraphene.Raw.Matrix.val-equal}[graphene_matrix_equal ()]} or
+      {{!Ocgraphene.Raw.Matrix.val-near}[graphene_matrix_near ()]}. For
+      instance:
 
       {[
         if (graphene_matrix_equal_fast (a, b))
@@ -716,7 +745,9 @@ and Quaternion : sig
   (** Initializes a #graphene_quaternion_t using the values of the Euler angles
       on each axis.
 
-      See also: graphene_quaternion_init_from_euler() *)
+      See also:
+      {{!Ocgraphene.Raw.Quaternion.val-init_from_euler}[graphene_quaternion_init_from_euler
+                                                        ()]} *)
 
   external init_from_quaternion : t -> t -> t
     = "ml_graphene_quaternion_init_from_quaternion"
@@ -736,7 +767,9 @@ and Quaternion : sig
   (** Initializes a #graphene_quaternion_t using the values of the Euler angles
       on each axis.
 
-      See also: graphene_quaternion_init_from_euler() *)
+      See also:
+      {{!Ocgraphene.Raw.Quaternion.val-init_from_euler}[graphene_quaternion_init_from_euler
+                                                        ()]} *)
 
   external init_from_angle_vec3 : t -> float -> Vec3_and__vec4.Vec3.t -> t
     = "ml_graphene_quaternion_init_from_angle_vec3"
@@ -780,21 +813,27 @@ and Ray : sig
   (** Checks whether the given #graphene_ray_t [r] intersects the given
       #graphene_triangle_t [b].
 
-      See also: graphene_ray_intersect_triangle() *)
+      See also:
+      {{!Ocgraphene.Raw.Ray.val-intersect_triangle}[graphene_ray_intersect_triangle
+                                                    ()]} *)
 
   external intersects_sphere : t -> Box_and__sphere.Sphere.t -> bool
     = "ml_graphene_ray_intersects_sphere"
   (** Checks if the given #graphene_ray_t [r] intersects the given
       #graphene_sphere_t [s].
 
-      See also: graphene_ray_intersect_sphere() *)
+      See also:
+      {{!Ocgraphene.Raw.Ray.val-intersect_sphere}[graphene_ray_intersect_sphere
+                                                  ()]} *)
 
   external intersects_box : t -> Box_and__sphere.Box.t -> bool
     = "ml_graphene_ray_intersects_box"
   (** Checks whether the given #graphene_ray_t [r] intersects the given
       #graphene_box_t [b].
 
-      See also: graphene_ray_intersect_box() *)
+      See also:
+      {{!Ocgraphene.Raw.Ray.val-intersect_box}[graphene_ray_intersect_box ()]}
+  *)
 
   external intersect_triangle :
     t -> Triangle.t -> Ocgraphene_enums.rayintersectionkind * float
@@ -920,7 +959,9 @@ and Triangle : sig
       - [res.x = u]
       - [res.y = v]
 
-      See also: graphene_triangle_get_barycoords() *)
+      See also:
+      {{!Ocgraphene.Raw.Triangle.val-get_barycoords}[graphene_triangle_get_barycoords
+                                                     ()]} *)
 
   external get_points : t -> Point3_d.t * Point3_d.t * Point3_d.t
     = "ml_graphene_triangle_get_points"

@@ -12,10 +12,15 @@
     is greater than [end_glyph].
 
     An iterator should be initialized using either
-    pango_glyph_item_iter_init_start() or pango_glyph_item_iter_init_end(), for
-    forward and backward iteration respectively, and walked over using any
-    desired mixture of pango_glyph_item_iter_next_cluster() and
-    pango_glyph_item_iter_prev_cluster().
+    {{!Ocpango.Raw.Glyph_item_iter.val-init_start}[pango_glyph_item_iter_init_start
+                                                   ()]} or
+    {{!Ocpango.Raw.Glyph_item_iter.val-init_end}[pango_glyph_item_iter_init_end
+                                                 ()]}, for forward and backward
+    iteration respectively, and walked over using any desired mixture of
+    {{!Ocpango.Raw.Glyph_item_iter.val-next_cluster}[pango_glyph_item_iter_next_cluster
+                                                     ()]} and
+    {{!Ocpango.Raw.Glyph_item_iter.val-prev_cluster}[pango_glyph_item_iter_prev_cluster
+                                                     ()]}.
 
     A common idiom for doing a forward iteration over the clusters is:
 

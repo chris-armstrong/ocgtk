@@ -51,7 +51,7 @@ class type frame_clock_t = object
 
       Animations should be updated using [Gdk.FrameClock.get_frame_time].
       Applications can connect directly to this signal, or use
-      gtk_widget_add_tick_callback() as a more convenient interface. *)
+      [gtk_widget_add_tick_callback ()] as a more convenient interface. *)
 
   (** {2:methods Methods} *)
 
@@ -61,8 +61,8 @@ class type frame_clock_t = object
       Until a matching call to [Gdk.FrameClock.end_updating] is made, the frame
       clock will continually request a new frame with the
       [GDK_FRAME_CLOCK_PHASE_UPDATE] phase. This function may be called multiple
-      times and frames will be requested until gdk_frame_clock_end_updating() is
-      called the same number of times. *)
+      times and frames will be requested until [gdk_frame_clock_end_updating ()]
+      is called the same number of times. *)
 
   method end_updating : unit -> unit
   (** Stops updates for an animation.
@@ -109,7 +109,7 @@ class type frame_clock_t = object
 
       The signal corresponding the requested phase will be emitted the next time
       the frame clock processes. Multiple calls to
-      gdk_frame_clock_request_phase() will be combined together and only one
+      [gdk_frame_clock_request_phase ()] will be combined together and only one
       frame processed. If you are displaying animated content and want to
       continually request the [GDK_FRAME_CLOCK_PHASE_UPDATE] phase for a period
       of time, you should use [Gdk.FrameClock.begin_updating] instead, since

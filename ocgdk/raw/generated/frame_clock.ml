@@ -19,15 +19,16 @@
     At some later point that makes sense for the synchronization being
     implemented, the clock will process a frame and emit signals for each phase
     that has been requested. (See the signals of the [GdkFrameClock] class for
-    documentation of the phases. [GDK_FRAME_CLOCK_PHASE_UPDATE] and the
-    {{!Ocgdk.Raw.Frame_clock.val-on_update}[Gdk.FrameClock::update]} signal are
-    most interesting for application writers, and are used to update the
-    animations, using the frame time given by
+    documentation of the phases.
+    {{!Ocgdk.Enums.type-frameclockphase_flag.constructor-UPDATE}[GDK_FRAME_CLOCK_PHASE_UPDATE]}
+    and the {{!Ocgdk.Raw.Frame_clock.val-on_update}[Gdk.FrameClock::update]}
+    signal are most interesting for application writers, and are used to update
+    the animations, using the frame time given by
     {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}.
 
     The frame time is reported in microseconds and generally in the same
-    timescale as g_get_monotonic_time(), however, it is not the same as
-    g_get_monotonic_time(). The frame time does not advance during the time a
+    timescale as [g_get_monotonic_time ()], however, it is not the same as
+    [g_get_monotonic_time ()]. The frame time does not advance during the time a
     frame is being painted, and outside of a frame, an attempt is made so that
     all calls to
     {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
@@ -52,10 +53,13 @@ external request_phase : t -> Ocgdk_enums.frameclockphase -> unit
 (** Asks the frame clock to run a particular phase.
 
     The signal corresponding the requested phase will be emitted the next time
-    the frame clock processes. Multiple calls to gdk_frame_clock_request_phase()
-    will be combined together and only one frame processed. If you are
-    displaying animated content and want to continually request the
-    [GDK_FRAME_CLOCK_PHASE_UPDATE] phase for a period of time, you should use
+    the frame clock processes. Multiple calls to
+    {{!Ocgdk.Raw.Frame_clock.val-request_phase}[gdk_frame_clock_request_phase
+                                                ()]} will be combined together
+    and only one frame processed. If you are displaying animated content and
+    want to continually request the
+    {{!Ocgdk.Enums.type-frameclockphase_flag.constructor-UPDATE}[GDK_FRAME_CLOCK_PHASE_UPDATE]}
+    phase for a period of time, you should use
     {{!Ocgdk.Raw.Frame_clock.val-begin_updating}[Gdk.FrameClock.begin_updating]}
     instead, since this allows GTK to adjust system parameters to get maximally
     smooth animations. *)
@@ -126,9 +130,11 @@ external begin_updating : t -> unit = "ml_gdk_frame_clock_begin_updating"
     Until a matching call to
     {{!Ocgdk.Raw.Frame_clock.val-end_updating}[Gdk.FrameClock.end_updating]} is
     made, the frame clock will continually request a new frame with the
-    [GDK_FRAME_CLOCK_PHASE_UPDATE] phase. This function may be called multiple
-    times and frames will be requested until gdk_frame_clock_end_updating() is
-    called the same number of times. *)
+    {{!Ocgdk.Enums.type-frameclockphase_flag.constructor-UPDATE}[GDK_FRAME_CLOCK_PHASE_UPDATE]}
+    phase. This function may be called multiple times and frames will be
+    requested until
+    {{!Ocgdk.Raw.Frame_clock.val-end_updating}[gdk_frame_clock_end_updating ()]}
+    is called the same number of times. *)
 
 let on_after_paint ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"after-paint" ~callback

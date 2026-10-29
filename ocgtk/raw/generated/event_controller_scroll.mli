@@ -23,20 +23,25 @@
     (e.g. because the scrolling conditions of the widget changed).
 
     The controller can be set up to emit motion for either/both vertical and
-    horizontal scroll events through [GTK_EVENT_CONTROLLER_SCROLL_VERTICAL],
-    [GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL] and
-    [GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]. If any axis is disabled, the
-    respective
+    horizontal scroll events through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-VERTICAL}[GTK_EVENT_CONTROLLER_SCROLL_VERTICAL]},
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-HORIZONTAL}[GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL]}
+    and
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-BOTH_AXES}[GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]}.
+    If any axis is disabled, the respective
     {{!Ocgtk.Raw.Event_controller_scroll.val-on_scroll}[Gtk.EventControllerScroll::scroll]}
     delta will be 0. Vertical scroll events will be translated to horizontal
     motion for the devices incapable of horizontal scrolling.
 
     The event controller can also be forced to emit discrete events on all
-    devices through [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]. This can be used to
-    implement discrete actions triggered through scroll events (e.g. switching
-    across combobox options).
+    devices through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-DISCRETE}[GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]}.
+    This can be used to implement discrete actions triggered through scroll
+    events (e.g. switching across combobox options).
 
-    The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
+    The
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-KINETIC}[GTK_EVENT_CONTROLLER_SCROLL_KINETIC]}
+    flag toggles the emission of the
     {{!Ocgtk.Raw.Event_controller_scroll.val-on_decelerate}[Gtk.EventControllerScroll::decelerate]}
     signal, emitted at the end of scrolling with two X/Y velocity arguments that
     are consistent with the motion that was received.
@@ -65,7 +70,8 @@ external get_unit : t -> Ocgdk_enums.scrollunit
     signal received.
 
     Always returns [GDK_SCROLL_UNIT_WHEEL] if the
-    [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE] flag is set. *)
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-DISCRETE}[GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]}
+    flag is set. *)
 
 external get_flags : t -> Ocgtk_enums.eventcontrollerscrollflags
   = "ml_gtk_event_controller_scroll_get_flags"
@@ -79,7 +85,8 @@ val on_decelerate :
   callback:(vel_x:float -> vel_y:float -> unit) ->
   Gobject.Signal.handler_id
 (** Emitted after scroll is finished if the
-    [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag is set.
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-KINETIC}[GTK_EVENT_CONTROLLER_SCROLL_KINETIC]}
+    flag is set.
 
     [vel_x] and [vel_y] express the initial velocity that was imprinted by the
     scroll events. [vel_x] and [vel_y] are expressed in pixels/ms. *)

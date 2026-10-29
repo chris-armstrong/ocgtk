@@ -86,7 +86,9 @@ external set_variant : t -> Ocpango_enums.variant -> unit
 (** Sets the variant field of a font description.
 
     The {{!Ocpango.Enums.type-variant}[Pango.Variant]} can either be
-    [PANGO_VARIANT_NORMAL] or [PANGO_VARIANT_SMALL_CAPS]. *)
+    {{!Ocpango.Enums.type-variant.constructor-NORMAL}[PANGO_VARIANT_NORMAL]} or
+    {{!Ocpango.Enums.type-variant.constructor-SMALL_CAPS}[PANGO_VARIANT_SMALL_CAPS]}.
+*)
 
 external set_style : t -> Ocpango_enums.style -> unit
   = "ml_pango_font_description_set_style"
@@ -94,7 +96,9 @@ external set_style : t -> Ocpango_enums.style -> unit
 
     The {{!Ocpango.Enums.type-style}[Pango.Style]} enumeration describes whether
     the font is slanted and the manner in which it is slanted; it can be either
-    [PANGO_STYLE_NORMAL], [PANGO_STYLE_ITALIC], or [PANGO_STYLE_OBLIQUE].
+    {{!Ocpango.Enums.type-style.constructor-NORMAL}[PANGO_STYLE_NORMAL]},
+    {{!Ocpango.Enums.type-style.constructor-ITALIC}[PANGO_STYLE_ITALIC]}, or
+    {{!Ocpango.Enums.type-style.constructor-OBLIQUE}[PANGO_STYLE_OBLIQUE]}.
 
     Most fonts will either have a italic style or an oblique style, but not
     both, and font matching in Pango will match italic specifications with
@@ -119,8 +123,8 @@ external set_gravity : t -> Ocpango_enums.gravity -> unit
 (** Sets the gravity field of a font description.
 
     The gravity field specifies how the glyphs should be rotated. If [gravity]
-    is [PANGO_GRAVITY_AUTO], this actually unsets the gravity mask on the font
-    description.
+    is {{!Ocpango.Enums.type-gravity.constructor-AUTO}[PANGO_GRAVITY_AUTO]},
+    this actually unsets the gravity mask on the font description.
 
     This function is seldom useful to the user. Gravity should normally be set
     on a [PangoContext]. *)
@@ -225,7 +229,7 @@ external hash : t -> int = "ml_pango_font_description_hash"
 (** Computes a hash of a [PangoFontDescription] structure.
 
     This is suitable to be used, for example, as an argument to
-    g_hash_table_new(). The hash value is independent of [desc]->mask. *)
+    [g_hash_table_new ()]. The hash value is independent of [desc]->mask. *)
 
 external get_weight : t -> Ocpango_enums.weight
   = "ml_pango_font_description_get_weight"
@@ -346,7 +350,8 @@ external better_match : t -> t option -> t -> bool
     Approximate matching is done for weight and style; other style attributes
     must match exactly. Style attributes are all attributes other than family
     and size-related attributes. Approximate matching for style considers
-    [PANGO_STYLE_OBLIQUE] and [PANGO_STYLE_ITALIC] as matches, but not as good a
-    match as when the styles are equal.
+    {{!Ocpango.Enums.type-style.constructor-OBLIQUE}[PANGO_STYLE_OBLIQUE]} and
+    {{!Ocpango.Enums.type-style.constructor-ITALIC}[PANGO_STYLE_ITALIC]} as
+    matches, but not as good a match as when the styles are equal.
 
     Note that [old_match] must match [desc]. *)

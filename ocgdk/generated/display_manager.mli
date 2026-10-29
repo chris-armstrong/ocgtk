@@ -56,7 +56,7 @@ end
      [GDK_WINDOWING_WIN32]\n\
      macros, etc. to find out which backends are present in the GDK library\n\
      you are building your application against. At runtime, use type-check\n\
-     macros like GDK_IS_X11_DISPLAY() to find out which backend is in use:\n\n\
+     macros like [GDK_IS_X11_DISPLAY ()] to find out which backend is in use:\n\n\
      {[\n\
      #ifdef GDK_WINDOWING_X11\n\
     \  if (GDK_IS_X11_DISPLAY (display))\n\
@@ -98,7 +98,7 @@ class display_manager : Raw.Display_manager.t -> display_manager_t
  runtime. At compile time, use the [GDK_WINDOWING_X11], [GDK_WINDOWING_WIN32]\n\
  macros, etc. to find out which backends are present in the GDK library\n\
  you are building your application against. At runtime, use type-check\n\
- macros like GDK_IS_X11_DISPLAY() to find out which backend is in use:\n\n\
+ macros like [GDK_IS_X11_DISPLAY ()] to find out which backend is in use:\n\n\
  {[\n\
  #ifdef GDK_WINDOWING_X11\n\
 \  if (GDK_IS_X11_DISPLAY (display))\n\

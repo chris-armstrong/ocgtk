@@ -16,7 +16,7 @@ class type application_command_line_t = object
   (** Creates a [GFile] corresponding to a filename that was given as part of
       the invocation of [cmdline].
 
-      This differs from g_file_new_for_commandline_arg() in that it resolves
+      This differs from [g_file_new_for_commandline_arg ()] in that it resolves
       relative pathnames using the current working directory of the invoking
       process rather than the local process. *)
 
@@ -30,7 +30,7 @@ class type application_command_line_t = object
       This method should be called in the [Gio.Application::command-line]
       handler, after the exit status is set and all messages are printed.
 
-      After this call, g_application_command_line_set_exit_status() has no
+      After this call, [g_application_command_line_set_exit_status ()] has no
       effect. Subsequent calls to this method are no-ops.
 
       This method is automatically called when the [GApplicationCommandLine]
@@ -49,7 +49,7 @@ class type application_command_line_t = object
 
   method get_environ : unit -> string array
   (** Gets the contents of the 'environ' variable of the command line
-      invocation, as would be returned by g_get_environ(), ie as a
+      invocation, as would be returned by [g_get_environ ()], ie as a
       null-terminated list of strings in the form 'NAME=VALUE'. The strings may
       contain non-utf8 data.
 
@@ -61,12 +61,12 @@ class type application_command_line_t = object
       The return value should not be modified or freed and is valid for as long
       as [cmdline] exists.
 
-      See g_application_command_line_getenv() if you are only interested in the
-      value of a single environment variable. *)
+      See [g_application_command_line_getenv ()] if you are only interested in
+      the value of a single environment variable. *)
 
   method get_exit_status : unit -> int
   (** Gets the exit status of [cmdline]. See
-      g_application_command_line_set_exit_status() for more information. *)
+      [g_application_command_line_set_exit_status ()] for more information. *)
 
   method get_is_remote : unit -> bool
   (** Determines if [cmdline] represents a remote invocation. *)
@@ -96,7 +96,7 @@ class type application_command_line_t = object
 
   method getenv : string -> string option
   (** Gets the value of a particular environment variable of the command line
-      invocation, as would be returned by g_getenv(). The strings may contain
+      invocation, as would be returned by [g_getenv ()]. The strings may contain
       non-utf8 data.
 
       The remote application usually does not send an environment. Use
@@ -110,7 +110,7 @@ class type application_command_line_t = object
   method print_literal : string -> unit
   (** Prints a message using the stdout print handler in the invoking process.
 
-      Unlike g_application_command_line_print(), [message] is not a
+      Unlike [g_application_command_line_print ()], [message] is not a
       [printf()]-style format string. Use this function if [message] contains
       text you don't have control over, that could include [printf()] escape
       sequences. *)
@@ -118,7 +118,7 @@ class type application_command_line_t = object
   method printerr_literal : string -> unit
   (** Prints a message using the stderr print handler in the invoking process.
 
-      Unlike g_application_command_line_printerr(), [message] is not a
+      Unlike [g_application_command_line_printerr ()], [message] is not a
       [printf()]-style format string. Use this function if [message] contains
       text you don't have control over, that could include [printf()] escape
       sequences. *)
@@ -126,7 +126,7 @@ class type application_command_line_t = object
   method set_exit_status : int -> unit
   (** Sets the exit status that will be used when the invoking process exits.
 
-      The return value of the [GApplication::command]-line signal is passed to
+      The return value of the [GApplication::command-line] signal is passed to
       this function when the handler returns. This is the usual way of setting
       the exit status.
 
@@ -145,7 +145,7 @@ class type application_command_line_t = object
       the application use count is zero, though, the exit status of the local
       [GApplicationCommandLine] is used.
 
-      This method is a no-op if g_application_command_line_done() has been
+      This method is a no-op if [g_application_command_line_done ()] has been
       called. *)
 
   (** {2:conversions Conversions} *)

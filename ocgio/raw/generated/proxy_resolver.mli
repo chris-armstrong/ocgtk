@@ -25,8 +25,9 @@ external from_gobject : 'a Gobject.obj -> t
 external lookup_finish : t -> Async_result.t -> (string array, GError.t) result
   = "ml_g_proxy_resolver_lookup_finish"
 (** Call this function to obtain the array of proxy URIs when
-    g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
-    for more details. *)
+    [g_proxy_resolver_lookup_async ()] is complete. See
+    {{!Ocgio.Raw.Proxy_resolver.val-lookup}[g_proxy_resolver_lookup ()]} for
+    more details. *)
 
 external lookup :
   t -> string -> Cancellable.t option -> (string array, GError.t) result
@@ -46,5 +47,5 @@ external lookup :
 
 external is_supported : t -> bool = "ml_g_proxy_resolver_is_supported"
 (** Checks if [resolver] can be used on this system. (This is used internally;
-    g_proxy_resolver_get_default() will only return a proxy resolver that
+    [g_proxy_resolver_get_default ()] will only return a proxy resolver that
     returns [true] for this method.) *)

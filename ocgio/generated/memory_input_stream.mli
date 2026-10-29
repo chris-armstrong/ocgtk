@@ -53,7 +53,11 @@ class memory_input_stream : Raw.Memory_input_stream.t -> memory_input_stream_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> memory_input_stream_t
-(** Creates a new empty [GMemoryInputStream]. *)
+(** Creates a new empty
+    {{!Ocgio.Memory_input_stream.class-type-memory_input_stream_t}[GMemoryInputStream]}.
+*)
 
 val new_from_bytes : Glib_bytes.t -> memory_input_stream_t
-(** Creates a new [GMemoryInputStream] with data from the given [bytes]. *)
+(** Creates a new
+    {{!Ocgio.Memory_input_stream.class-type-memory_input_stream_t}[GMemoryInputStream]}
+    with data from the given [bytes]. *)

@@ -29,8 +29,9 @@
     which will emit the
     {{!Ocgdk.Raw.Paintable.val-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
     signal. If a paintable is known to never change its contents, it will set
-    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
-    changing contents, it may call
+    the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-CONTENTS}[GDK_PAINTABLE_STATIC_CONTENTS]}
+    flag. If a consumer cannot deal with changing contents, it may call
     {{!Ocgdk.Raw.Paintable.val-get_current_image}[Gdk.Paintable.get_current_image]}
     which will return a static paintable and use that.
 
@@ -43,7 +44,9 @@
     which will emit the
     {{!Ocgdk.Raw.Paintable.val-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
     signal. And just like for contents, if a paintable is known to never change
-    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
+    its size, it will set the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-SIZE}[GDK_PAINTABLE_STATIC_SIZE]}
+    flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
@@ -78,8 +81,9 @@ external invalidate_size : t -> unit = "ml_gdk_paintable_invalidate_size"
     {{!Ocgdk.Raw.Paintable.val-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
     signal.
 
-    If a [paintable] reports the [GDK_PAINTABLE_STATIC_SIZE] flag, it must not
-    call this function. *)
+    If a [paintable] reports the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-SIZE}[GDK_PAINTABLE_STATIC_SIZE]}
+    flag, it must not call this function. *)
 
 external invalidate_contents : t -> unit
   = "ml_gdk_paintable_invalidate_contents"
@@ -94,8 +98,9 @@ external invalidate_contents : t -> unit
     {{!Ocgdk.Raw.Paintable.val-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
     signal.
 
-    If a [paintable] reports the [GDK_PAINTABLE_STATIC_CONTENTS] flag, it must
-    not call this function. *)
+    If a [paintable] reports the
+    {{!Ocgdk.Enums.type-paintableflags_flag.constructor-CONTENTS}[GDK_PAINTABLE_STATIC_CONTENTS]}
+    flag, it must not call this function. *)
 
 external get_intrinsic_width : t -> int = "ml_gdk_paintable_get_intrinsic_width"
 (** Gets the preferred width the [paintable] would like to be displayed at.

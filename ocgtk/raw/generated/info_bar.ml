@@ -81,7 +81,8 @@ external set_show_close_button : t -> bool -> unit
   = "ml_gtk_info_bar_set_show_close_button"
 (** If true, a standard close button is shown.
 
-    When clicked it emits the response [GTK_RESPONSE_CLOSE]. *)
+    When clicked it emits the response
+    {{!Ocgtk.Enums.type-responsetype.constructor-CLOSE}[GTK_RESPONSE_CLOSE]}. *)
 
 external set_revealed : t -> bool -> unit = "ml_gtk_info_bar_set_revealed"
 (** Sets whether the [GtkInfoBar] is revealed.

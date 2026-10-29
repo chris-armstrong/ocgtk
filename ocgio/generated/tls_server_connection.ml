@@ -3,12 +3,12 @@ class type tls_server_connection_t = object
 
   method authentication_mode : Enums.tlsauthenticationmode
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
-      calling g_tls_connection_handshake() if you want to rehandshake with a
+      calling [g_tls_connection_handshake ()] if you want to rehandshake with a
       different mode from the initial handshake. *)
 
   method set_authentication_mode : Enums.tlsauthenticationmode -> unit
   (** The [GTlsAuthenticationMode] for the server. This can be changed before
-      calling g_tls_connection_handshake() if you want to rehandshake with a
+      calling [g_tls_connection_handshake ()] if you want to rehandshake with a
       different mode from the initial handshake. *)
 
   (** {2:conversions Conversions} *)

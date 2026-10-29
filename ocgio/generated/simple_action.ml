@@ -16,9 +16,9 @@ class type simple_action_t = object
 
       Since GLib 2.40, if no handler is connected to this signal then the
       default behaviour for boolean-stated actions with a [None] parameter type
-      is to toggle them via the [GSimpleAction::change]-state signal. For
+      is to toggle them via the [GSimpleAction::change-state] signal. For
       stateful actions where the state type is equal to the parameter type, the
-      default is to forward them directly to [GSimpleAction::change]-state. This
+      default is to forward them directly to [GSimpleAction::change-state]. This
       should allow almost all users of [GSimpleAction] to connect only one
       handler or the other. *)
 
@@ -30,15 +30,15 @@ class type simple_action_t = object
   (** Indicates that the action just received a request to change its state.
 
       [value] will always be of the correct state type, i.e. the type of the
-      initial state passed to g_simple_action_new_stateful(). If an incorrect
+      initial state passed to [g_simple_action_new_stateful ()]. If an incorrect
       type is given when requesting to change the state, this signal is not
       emitted.
 
       If no handler is connected to this signal then the default behaviour is to
-      call g_simple_action_set_state() to set the state to the requested value.
-      If you connect a signal handler then no default action is taken. If the
-      state should change then you must call g_simple_action_set_state() from
-      the handler.
+      call [g_simple_action_set_state ()] to set the state to the requested
+      value. If you connect a signal handler then no default action is taken. If
+      the state should change then you must call [g_simple_action_set_state ()]
+      from the handler.
 
       An example of a 'change-state' handler:
 
@@ -79,14 +79,15 @@ class type simple_action_t = object
 
       This should only be called by the implementor of the action. Users of the
       action should not attempt to directly modify the 'state' property.
-      Instead, they should call g_action_change_state() to request the change.
+      Instead, they should call [g_action_change_state ()] to request the
+      change.
 
       If the [value] GVariant is floating, it is consumed. *)
 
   method set_state_hint : Gvariant.t option -> unit
   (** Sets the state hint for the action.
 
-      See g_action_get_state_hint() for more information about action state
+      See [g_action_get_state_hint ()] for more information about action state
       hints. *)
 
   (** {2:properties Properties} *)

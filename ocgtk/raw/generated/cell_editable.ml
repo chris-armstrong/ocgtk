@@ -24,11 +24,14 @@ external start_editing : t -> Ocgdk_raw.Event.t option -> unit
 (** Begins editing on a [cell_editable].
 
     The [GtkCellRenderer] for the cell creates and returns a [GtkCellEditable]
-    from gtk_cell_renderer_start_editing(), configured for the [GtkCellRenderer]
-    type.
+    from
+    {{!Ocgtk.Raw.Cell_renderer.val-start_editing}[gtk_cell_renderer_start_editing
+                                                  ()]}, configured for the
+    [GtkCellRenderer] type.
 
-    gtk_cell_editable_start_editing() can then set up [cell_editable] suitably
-    for editing a cell, e.g. making the Esc key emit
+    {{!Ocgtk.Raw.Cell_editable.val-start_editing}[gtk_cell_editable_start_editing
+                                                  ()]} can then set up
+    [cell_editable] suitably for editing a cell, e.g. making the Esc key emit
     [GtkCellEditable::editing-done].
 
     Note that the [cell_editable] is created on-demand for the current edit; its

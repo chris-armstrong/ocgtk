@@ -36,7 +36,8 @@ external update : t -> int64 -> unit = "ml_gtk_media_stream_update"
 
 external unrealize : t -> Ocgdk_raw.Surface.t -> unit
   = "ml_gtk_media_stream_unrealize"
-(** Undoes a previous call to gtk_media_stream_realize().
+(** Undoes a previous call to
+    {{!Ocgtk.Raw.Media_stream.val-realize}[gtk_media_stream_realize ()]}.
 
     This causes the stream to release all resources it had allocated from
     [surface]. *)
@@ -133,8 +134,9 @@ external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
     {{!Ocgtk.Raw.Media_stream.val-is_seeking}[Gtk.MediaStream:seeking]} property
     will be set.
 
-    When calling gtk_media_stream_seek() during an ongoing seek operation, the
-    new seek will override any pending seek. *)
+    When calling {{!Ocgtk.Raw.Media_stream.val-seek}[gtk_media_stream_seek ()]}
+    during an ongoing seek operation, the new seek will override any pending
+    seek. *)
 
 external realize : t -> Ocgdk_raw.Surface.t -> unit
   = "ml_gtk_media_stream_realize"

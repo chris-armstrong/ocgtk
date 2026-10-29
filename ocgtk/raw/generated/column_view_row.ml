@@ -46,8 +46,8 @@ external set_activatable : t -> bool -> unit
 (** Sets [self] to be activatable.
 
     If a row is activatable, double-clicking on the row, using the Return key or
-    calling gtk_widget_activate() will activate the row. Activating instructs
-    the containing columnview to emit the
+    calling {{!Ocgtk.Raw.Widget.val-activate}[gtk_widget_activate ()]} will
+    activate the row. Activating instructs the containing columnview to emit the
     {{!Ocgtk.Raw.Column_view.val-on_activate}[Gtk.ColumnView::activate]} signal.
 
     By default, row are activatable. *)
@@ -70,7 +70,8 @@ external get_selected : t -> bool = "ml_gtk_column_view_row_get_selected"
 
 external get_selectable : t -> bool = "ml_gtk_column_view_row_get_selectable"
 (** Checks if the row has been set to be selectable via
-    gtk_column_view_row_set_selectable().
+    {{!Ocgtk.Raw.Column_view_row.val-set_selectable}[gtk_column_view_row_set_selectable
+                                                     ()]}.
 
     Do not confuse this function with
     {{!Ocgtk.Raw.Column_view_row.val-get_selected}[Gtk.ColumnViewRow.get_selected]}.
@@ -79,7 +80,9 @@ external get_selectable : t -> bool = "ml_gtk_column_view_row_get_selectable"
 external get_position : t -> int = "ml_gtk_column_view_row_get_position"
 (** Gets the position in the model that [self] currently displays.
 
-    If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
+    If [self] is unbound,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
 
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_column_view_row_get_item"
@@ -89,11 +92,13 @@ external get_item : t -> [ `object_ ] Gobject.obj option
 
 external get_focusable : t -> bool = "ml_gtk_column_view_row_get_focusable"
 (** Checks if a row item has been set to be focusable via
-    gtk_column_view_row_set_focusable(). *)
+    {{!Ocgtk.Raw.Column_view_row.val-set_focusable}[gtk_column_view_row_set_focusable
+                                                    ()]}. *)
 
 external get_activatable : t -> bool = "ml_gtk_column_view_row_get_activatable"
 (** Checks if the row has been set to be activatable via
-    gtk_column_view_row_set_activatable(). *)
+    {{!Ocgtk.Raw.Column_view_row.val-set_activatable}[gtk_column_view_row_set_activatable
+                                                      ()]}. *)
 
 external get_accessible_label : t -> string
   = "ml_gtk_column_view_row_get_accessible_label"

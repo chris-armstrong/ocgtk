@@ -12,9 +12,9 @@
     Users of objects implementing this are not intended to use the interface
     method directly; instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.AsyncInitable.new_async]
-    directly, or indirectly via a foo_thing_new_async() wrapper. This will call
-    [Gio.AsyncInitable.init_async] under the covers, calling back with [None]
-    and a set [GError] on failure.
+    directly, or indirectly via a [foo_thing_new_async ()] wrapper. This will
+    call [Gio.AsyncInitable.init_async] under the covers, calling back with
+    [None] and a set [GError] on failure.
 
     A typical implementation might look something like this:
 
@@ -123,4 +123,4 @@ external new_finish :
 external init_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_async_initable_init_finish"
 (** Finishes asynchronous initialization and returns the result. See
-    g_async_initable_init_async(). *)
+    [g_async_initable_init_async ()]. *)

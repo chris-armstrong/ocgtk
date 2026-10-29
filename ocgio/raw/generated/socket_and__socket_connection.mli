@@ -92,34 +92,37 @@ module rec Socket : sig
     Ocgio_enums.sockettype ->
     Ocgio_enums.socketprotocol ->
     (t, GError.t) result = "ml_g_socket_new"
-  (** Creates a new [GSocket] with the defined family, type and protocol. If
-      [protocol] is 0 ([G_SOCKET_PROTOCOL_DEFAULT]) the default protocol type
-      for the family and type is used.
+  (** Creates a new {{!Ocgio.Raw.Socket}[GSocket]} with the defined family, type
+      and protocol. If [protocol] is 0
+      ({{!Ocgio.Enums.type-socketprotocol.constructor-DEFAULT}[G_SOCKET_PROTOCOL_DEFAULT]})
+      the default protocol type for the family and type is used.
 
       The [protocol] is a family and type specific int that specifies what kind
-      of protocol to use. [GSocketProtocol] lists several common ones. Many
-      families only support one protocol, and use 0 for this, others support
-      several and using 0 means to use the default protocol for the family and
-      type.
+      of protocol to use. {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]}
+      lists several common ones. Many families only support one protocol, and
+      use 0 for this, others support several and using 0 means to use the
+      default protocol for the family and type.
 
       The protocol id is passed directly to the operating system, so you can use
-      protocols not listed in [GSocketProtocol] if you know the protocol number
-      used for it. *)
+      protocols not listed in
+      {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]} if you know the
+      protocol number used for it. *)
 
   external new_from_fd : int -> (t, GError.t) result = "ml_g_socket_new_from_fd"
-  (** Creates a new [GSocket] from a native file descriptor or winsock SOCKET
-      handle.
+  (** Creates a new {{!Ocgio.Raw.Socket}[GSocket]} from a native file descriptor
+      or winsock SOCKET handle.
 
       This reads all the settings from the file descriptor so that all
       properties should work. Note that the file descriptor will be set to
-      non-blocking mode, independent on the blocking mode of the [GSocket].
+      non-blocking mode, independent on the blocking mode of the
+      {{!Ocgio.Raw.Socket}[GSocket]}.
 
-      On success, the returned [GSocket] takes ownership of [fd]. On failure,
-      the caller must close [fd] themselves.
+      On success, the returned {{!Ocgio.Raw.Socket}[GSocket]} takes ownership of
+      [fd]. On failure, the caller must close [fd] themselves.
 
       Since GLib 2.46, it is no longer a fatal error to call this on a
       non-socket descriptor. Instead, a GError will be set with code
-      [G_IO_ERROR_FAILED] *)
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]} *)
 
   (* Methods *)
 
@@ -158,16 +161,21 @@ module rec Socket : sig
   (** Sets the time in seconds after which I/O operations on [socket] will time
       out if they have not yet completed.
 
-      On a blocking socket, this means that any blocking [GSocket] operation
-      will time out after [timeout] seconds of inactivity, returning
-      [G_IO_ERROR_TIMED_OUT].
+      On a blocking socket, this means that any blocking
+      {{!Ocgio.Raw.Socket}[GSocket]} operation will time out after [timeout]
+      seconds of inactivity, returning
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-TIMED_OUT}[G_IO_ERROR_TIMED_OUT]}.
 
-      On a non-blocking socket, calls to g_socket_condition_wait() will also
-      fail with [G_IO_ERROR_TIMED_OUT] after the given time. Sources created
-      with g_socket_create_source() will trigger after [timeout] seconds of
-      inactivity, with the requested condition set, at which point calling
-      g_socket_receive(), g_socket_send(), g_socket_check_connect_result(), etc,
-      will fail with [G_IO_ERROR_TIMED_OUT].
+      On a non-blocking socket, calls to [g_socket_condition_wait ()] will also
+      fail with
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-TIMED_OUT}[G_IO_ERROR_TIMED_OUT]}
+      after the given time. Sources created with [g_socket_create_source ()]
+      will trigger after [timeout] seconds of inactivity, with the requested
+      condition set, at which point calling [g_socket_receive ()],
+      [g_socket_send ()],
+      {{!Ocgio.Raw.Socket.val-check_connect_result}[g_socket_check_connect_result
+                                                    ()]}, etc, will fail with
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-TIMED_OUT}[G_IO_ERROR_TIMED_OUT]}.
 
       If [timeout] is 0 (the default), operations will never time out on their
       own.
@@ -205,8 +213,9 @@ module rec Socket : sig
       the application is not handling them on time then the new connections will
       be refused.
 
-      Note that this must be called before g_socket_listen() and has no effect
-      if called after that. *)
+      Note that this must be called before
+      {{!Ocgio.Raw.Socket.val-listen}[g_socket_listen ()]} and has no effect if
+      called after that. *)
 
   external set_keepalive : t -> bool -> unit = "ml_g_socket_set_keepalive"
   (** Sets or unsets the [SO_KEEPALIVE] flag on the underlying socket. When this
@@ -217,7 +226,8 @@ module rec Socket : sig
       connection.
 
       This option is only functional on certain kinds of sockets. (Notably,
-      [G_SOCKET_PROTOCOL_TCP] sockets.)
+      {{!Ocgio.Enums.type-socketprotocol.constructor-TCP}[G_SOCKET_PROTOCOL_TCP]}
+      sockets.)
 
       The exact time between pings is system- and protocol-dependent, but will
       normally be at least two hours. Most commonly, you would set this flag on
@@ -233,7 +243,9 @@ module rec Socket : sig
   (** Sets the blocking mode of the socket. In blocking mode all operations
       (which don’t take an explicit blocking parameter) block until they succeed
       or there is an error. In non-blocking mode all functions return results
-      immediately or with a [G_IO_ERROR_WOULD_BLOCK] error.
+      immediately or with a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      error.
 
       All sockets are created in blocking mode. However, note that the platform
       level socket is always non-blocking, and blocking mode is a GSocket level
@@ -248,34 +260,41 @@ module rec Socket : sig
     (int, GError.t) result = "ml_g_socket_send_messages"
   (** Send multiple data messages from [socket] in one go. This is the most
       complicated and fully-featured version of this call. For easier use, see
-      g_socket_send(), g_socket_send_to(), and g_socket_send_message().
+      [g_socket_send ()], [g_socket_send_to ()], and
+      {{!Ocgio.Raw.Socket.val-send_message}[g_socket_send_message ()]}.
 
-      [messages] must point to an array of [GOutputMessage] structs and
-      [num_messages] must be the length of this array. Each [GOutputMessage]
-      contains an address to send the data to, and a pointer to an array of
-      [GOutputVector] structs to describe the buffers that the data to be sent
-      for each message will be gathered from. Using multiple [GOutputVectors] is
-      more memory-efficient than manually copying data from multiple sources
-      into a single buffer, and more network-efficient than making multiple
-      calls to g_socket_send(). Sending multiple messages in one go avoids the
-      overhead of making a lot of syscalls in scenarios where a lot of data
-      packets need to be sent (e.g. high-bandwidth video streaming over
-      RTP/UDP), or where the same data needs to be sent to multiple recipients.
+      [messages] must point to an array of
+      {{!Ocgio.Raw.Output_message}[GOutputMessage]} structs and [num_messages]
+      must be the length of this array. Each
+      {{!Ocgio.Raw.Output_message}[GOutputMessage]} contains an address to send
+      the data to, and a pointer to an array of
+      {{!Ocgio.Raw.Output_vector}[GOutputVector]} structs to describe the
+      buffers that the data to be sent for each message will be gathered from.
+      Using multiple [GOutputVectors] is more memory-efficient than manually
+      copying data from multiple sources into a single buffer, and more
+      network-efficient than making multiple calls to [g_socket_send ()].
+      Sending multiple messages in one go avoids the overhead of making a lot of
+      syscalls in scenarios where a lot of data packets need to be sent (e.g.
+      high-bandwidth video streaming over RTP/UDP), or where the same data needs
+      to be sent to multiple recipients.
 
       [flags] modify how the message is sent. The commonly available arguments
-      for this are available in the [GSocketMsgFlags] enum, but the values there
-      are the same as the system values, and the flags are passed in as-is, so
-      you can pass in system-specific flags too.
+      for this are available in the
+      {{!Ocgio.Enums.type-socketmsgflags}[GSocketMsgFlags]} enum, but the values
+      there are the same as the system values, and the flags are passed in
+      as-is, so you can pass in system-specific flags too.
 
       If the socket is in blocking mode the call will block until there is space
       for all the data in the socket queue. If there is no space available and
-      the socket is in non-blocking mode a [G_IO_ERROR_WOULD_BLOCK] error will
-      be returned if no data was written at all, otherwise the number of
-      messages sent will be returned. To be notified when space is available,
+      the socket is in non-blocking mode a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      error will be returned if no data was written at all, otherwise the number
+      of messages sent will be returned. To be notified when space is available,
       wait for the [G_IO_OUT] condition. Note though that you may still receive
-      [G_IO_ERROR_WOULD_BLOCK] from g_socket_send() even if you were previously
-      notified of a [G_IO_OUT] condition. (On Windows in particular, this is
-      very common due to the way the underlying APIs work.)
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      from [g_socket_send ()] even if you were previously notified of a
+      [G_IO_OUT] condition. (On Windows in particular, this is very common due
+      to the way the underlying APIs work.)
 
       On error -1 is returned and [error] is set accordingly. An error will only
       be returned if zero messages could be sent; otherwise the number of
@@ -297,14 +316,17 @@ module rec Socket : sig
     (Ocgio_enums.pollablereturn * Gsize.t, GError.t) result
     = "ml_g_socket_send_message_with_timeout_bytecode"
       "ml_g_socket_send_message_with_timeout_native"
-  (** This behaves exactly the same as g_socket_send_message(), except that the
-      choice of timeout behavior is determined by the [timeout_us] argument
-      rather than by [socket]'s properties.
+  (** This behaves exactly the same as
+      {{!Ocgio.Raw.Socket.val-send_message}[g_socket_send_message ()]}, except
+      that the choice of timeout behavior is determined by the [timeout_us]
+      argument rather than by [socket]'s properties.
 
-      On error [G_POLLABLE_RETURN_FAILED] is returned and [error] is set
-      accordingly, or if the socket is currently not writable
-      [G_POLLABLE_RETURN_WOULD_BLOCK] is returned. [bytes_written] will contain
-      0 in both cases. *)
+      On error
+      {{!Ocgio.Enums.type-pollablereturn.constructor-FAILED}[G_POLLABLE_RETURN_FAILED]}
+      is returned and [error] is set accordingly, or if the socket is currently
+      not writable
+      {{!Ocgio.Enums.type-pollablereturn.constructor-WOULD_BLOCK}[G_POLLABLE_RETURN_WOULD_BLOCK]}
+      is returned. [bytes_written] will contain 0 in both cases. *)
 
   external send_message :
     t ->
@@ -321,43 +343,51 @@ module rec Socket : sig
     (int, GError.t) result
     = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
   (** Send data to [address] on [socket]. For sending multiple messages see
-      g_socket_send_messages(); for easier use, see g_socket_send() and
-      g_socket_send_to().
+      {{!Ocgio.Raw.Socket.val-send_messages}[g_socket_send_messages ()]}; for
+      easier use, see [g_socket_send ()] and [g_socket_send_to ()].
 
       If [address] is [None] then the message is sent to the default receiver
-      (set by g_socket_connect()).
+      (set by {{!Ocgio.Raw.Socket.val-connect}[g_socket_connect ()]}).
 
-      [vectors] must point to an array of [GOutputVector] structs and
-      [num_vectors] must be the length of this array. (If [num_vectors] is -1,
-      then [vectors] is assumed to be terminated by a [GOutputVector] with a
-      [None] buffer pointer.) The [GOutputVector] structs describe the buffers
+      [vectors] must point to an array of
+      {{!Ocgio.Raw.Output_vector}[GOutputVector]} structs and [num_vectors] must
+      be the length of this array. (If [num_vectors] is -1, then [vectors] is
+      assumed to be terminated by a {{!Ocgio.Raw.Output_vector}[GOutputVector]}
+      with a [None] buffer pointer.) The
+      {{!Ocgio.Raw.Output_vector}[GOutputVector]} structs describe the buffers
       that the sent data will be gathered from. Using multiple [GOutputVectors]
       is more memory-efficient than manually copying data from multiple sources
       into a single buffer, and more network-efficient than making multiple
-      calls to g_socket_send().
+      calls to [g_socket_send ()].
 
       [messages], if non-[None], is taken to point to an array of [num_messages]
-      [GSocketControlMessage] instances. These correspond to the control
-      messages to be sent on the socket. If [num_messages] is -1 then [messages]
-      is treated as a null-terminated array.
+      {{!Ocgio.Raw.Socket_control_message}[GSocketControlMessage]} instances.
+      These correspond to the control messages to be sent on the socket. If
+      [num_messages] is -1 then [messages] is treated as a null-terminated
+      array.
 
       [flags] modify how the message is sent. The commonly available arguments
-      for this are available in the [GSocketMsgFlags] enum, but the values there
-      are the same as the system values, and the flags are passed in as-is, so
-      you can pass in system-specific flags too.
+      for this are available in the
+      {{!Ocgio.Enums.type-socketmsgflags}[GSocketMsgFlags]} enum, but the values
+      there are the same as the system values, and the flags are passed in
+      as-is, so you can pass in system-specific flags too.
 
       If the socket is in blocking mode the call will block until there is space
       for the data in the socket queue. If there is no space available and the
-      socket is in non-blocking mode a [G_IO_ERROR_WOULD_BLOCK] error will be
-      returned. To be notified when space is available, wait for the [G_IO_OUT]
-      condition. Note though that you may still receive [G_IO_ERROR_WOULD_BLOCK]
-      from g_socket_send() even if you were previously notified of a [G_IO_OUT]
-      condition. (On Windows in particular, this is very common due to the way
-      the underlying APIs work.)
+      socket is in non-blocking mode a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      error will be returned. To be notified when space is available, wait for
+      the [G_IO_OUT] condition. Note though that you may still receive
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      from [g_socket_send ()] even if you were previously notified of a
+      [G_IO_OUT] condition. (On Windows in particular, this is very common due
+      to the way the underlying APIs work.)
 
-      The sum of the sizes of each [GOutputVector] in vectors must not be
-      greater than [G_MAXSSIZE]. If the message can be larger than this, then it
-      is mandatory to use the g_socket_send_message_with_timeout() function.
+      The sum of the sizes of each {{!Ocgio.Raw.Output_vector}[GOutputVector]}
+      in vectors must not be greater than [G_MAXSSIZE]. If the message can be
+      larger than this, then it is mandatory to use the
+      {{!Ocgio.Raw.Socket.val-send_message_with_timeout}[g_socket_send_message_with_timeout
+                                                         ()]} function.
 
       On error -1 is returned and [error] is set accordingly. *)
 
@@ -370,49 +400,59 @@ module rec Socket : sig
     (int, GError.t) result = "ml_g_socket_receive_messages"
   (** Receive multiple data messages from [socket] in one go. This is the most
       complicated and fully-featured version of this call. For easier use, see
-      g_socket_receive(), g_socket_receive_from(), and
-      g_socket_receive_message().
+      [g_socket_receive ()], [g_socket_receive_from ()], and
+      [g_socket_receive_message ()].
 
-      [messages] must point to an array of [GInputMessage] structs and
-      [num_messages] must be the length of this array. Each [GInputMessage]
-      contains a pointer to an array of [GInputVector] structs describing the
+      [messages] must point to an array of
+      {{!Ocgio.Raw.Input_message}[GInputMessage]} structs and [num_messages]
+      must be the length of this array. Each
+      {{!Ocgio.Raw.Input_message}[GInputMessage]} contains a pointer to an array
+      of {{!Ocgio.Raw.Input_vector}[GInputVector]} structs describing the
       buffers that the data received in each message will be written to. Using
       multiple [GInputVectors] is more memory-efficient than manually copying
       data out of a single buffer to multiple sources, and more
-      system-call-efficient than making multiple calls to g_socket_receive(),
+      system-call-efficient than making multiple calls to [g_socket_receive ()],
       such as in scenarios where a lot of data packets need to be received (e.g.
       high-bandwidth video streaming over RTP/UDP).
 
       [flags] modify how all messages are received. The commonly available
-      arguments for this are available in the [GSocketMsgFlags] enum, but the
-      values there are the same as the system values, and the flags are passed
-      in as-is, so you can pass in system-specific flags too. These flags affect
+      arguments for this are available in the
+      {{!Ocgio.Enums.type-socketmsgflags}[GSocketMsgFlags]} enum, but the values
+      there are the same as the system values, and the flags are passed in
+      as-is, so you can pass in system-specific flags too. These flags affect
       the overall receive operation. Flags affecting individual messages are
-      returned in [GInputMessage].flags.
+      returned in {{!Ocgio.Raw.Input_message}[GInputMessage]}.flags.
 
-      The other members of [GInputMessage] are treated as described in its
-      documentation.
+      The other members of {{!Ocgio.Raw.Input_message}[GInputMessage]} are
+      treated as described in its documentation.
 
-      If [GSocket:blocking] is [true] the call will block until [num_messages]
-      have been received, or the end of the stream is reached.
+      If {{!Ocgio.Raw.Socket.val-get_blocking}[GSocket:blocking]} is [true] the
+      call will block until [num_messages] have been received, or the end of the
+      stream is reached.
 
-      If [GSocket:blocking] is [false] the call will return up to [num_messages]
-      without blocking, or [G_IO_ERROR_WOULD_BLOCK] if no messages are queued in
-      the operating system to be received.
+      If {{!Ocgio.Raw.Socket.val-get_blocking}[GSocket:blocking]} is [false] the
+      call will return up to [num_messages] without blocking, or
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      if no messages are queued in the operating system to be received.
 
-      In blocking mode, if [GSocket:timeout] is positive and is reached before
-      any messages are received, [G_IO_ERROR_TIMED_OUT] is returned, otherwise
-      up to [num_messages] are returned. (Note: This is effectively the
-      behaviour of [MSG_WAITFORONE] with recvmmsg().)
+      In blocking mode, if
+      {{!Ocgio.Raw.Socket.val-get_timeout}[GSocket:timeout]} is positive and is
+      reached before any messages are received,
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-TIMED_OUT}[G_IO_ERROR_TIMED_OUT]}
+      is returned, otherwise up to [num_messages] are returned. (Note: This is
+      effectively the behaviour of [MSG_WAITFORONE] with recvmmsg().)
 
       To be notified when messages are available, wait for the [G_IO_IN]
-      condition. Note though that you may still receive [G_IO_ERROR_WOULD_BLOCK]
-      from g_socket_receive_messages() even if you were previously notified of a
-      [G_IO_IN] condition.
+      condition. Note though that you may still receive
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      from
+      {{!Ocgio.Raw.Socket.val-receive_messages}[g_socket_receive_messages ()]}
+      even if you were previously notified of a [G_IO_IN] condition.
 
       If the remote peer closes the connection, any messages queued in the
       operating system will be returned, and subsequent calls to
-      g_socket_receive_messages() will return 0 (with no error set).
+      {{!Ocgio.Raw.Socket.val-receive_messages}[g_socket_receive_messages ()]}
+      will return 0 (with no error set).
 
       On error -1 is returned and [error] is set accordingly. An error will only
       be returned if zero messages could be received; otherwise the number of
@@ -438,13 +478,15 @@ module rec Socket : sig
 
   external listen : t -> (bool, GError.t) result = "ml_g_socket_listen"
   (** Marks the socket as a server socket, i.e. a socket that is used to accept
-      incoming requests using g_socket_accept().
+      incoming requests using
+      {{!Ocgio.Raw.Socket.val-accept}[g_socket_accept ()]}.
 
       Before calling this the socket must be bound to a local address using
-      g_socket_bind().
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]}.
 
       To set the maximum amount of outstanding clients, use
-      g_socket_set_listen_backlog(). *)
+      {{!Ocgio.Raw.Socket.val-set_listen_backlog}[g_socket_set_listen_backlog
+                                                  ()]}. *)
 
   external leave_multicast_group_ssm :
     t ->
@@ -470,7 +512,8 @@ module rec Socket : sig
       unicast messages after calling this.
 
       To unbind to a given source-specific multicast address, use
-      g_socket_leave_multicast_group_ssm() instead. *)
+      {{!Ocgio.Raw.Socket.val-leave_multicast_group_ssm}[g_socket_leave_multicast_group_ssm
+                                                         ()]} instead. *)
 
   external join_multicast_group_ssm :
     t ->
@@ -479,15 +522,18 @@ module rec Socket : sig
     string option ->
     (bool, GError.t) result = "ml_g_socket_join_multicast_group_ssm"
   (** Registers [socket] to receive multicast messages sent to [group]. [socket]
-      must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
-      appropriate interface and port with g_socket_bind().
+      must be a
+      {{!Ocgio.Enums.type-sockettype.constructor-DATAGRAM}[G_SOCKET_TYPE_DATAGRAM]}
+      socket, and must have been bound to an appropriate interface and port with
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]}.
 
       If [iface] is [None], the system will automatically pick an interface to
       bind to based on [group].
 
       If [source_specific] is not [None], use source-specific multicast as
       defined in RFC 4604. Note that on older platforms this may fail with a
-      [G_IO_ERROR_NOT_SUPPORTED] error.
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-NOT_SUPPORTED}[G_IO_ERROR_NOT_SUPPORTED]}
+      error.
 
       Note that this function can be called multiple times for the same [group]
       with different [source_specific] in order to receive multicast packets
@@ -497,38 +543,45 @@ module rec Socket : sig
     t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result
     = "ml_g_socket_join_multicast_group"
   (** Registers [socket] to receive multicast messages sent to [group]. [socket]
-      must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
-      appropriate interface and port with g_socket_bind().
+      must be a
+      {{!Ocgio.Enums.type-sockettype.constructor-DATAGRAM}[G_SOCKET_TYPE_DATAGRAM]}
+      socket, and must have been bound to an appropriate interface and port with
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]}.
 
       If [iface] is [None], the system will automatically pick an interface to
       bind to based on [group].
 
       If [source_specific] is [true], source-specific multicast as defined in
       RFC 4604 is used. Note that on older platforms this may fail with a
-      [G_IO_ERROR_NOT_SUPPORTED] error.
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-NOT_SUPPORTED}[G_IO_ERROR_NOT_SUPPORTED]}
+      error.
 
       To bind to a given source-specific multicast address, use
-      g_socket_join_multicast_group_ssm() instead. *)
+      {{!Ocgio.Raw.Socket.val-join_multicast_group_ssm}[g_socket_join_multicast_group_ssm
+                                                        ()]} instead. *)
 
   external is_connected : t -> bool = "ml_g_socket_is_connected"
   (** Check whether the socket is connected. This is only useful for
       connection-oriented sockets.
 
-      If using g_socket_shutdown(), this function will return [true] until the
-      socket has been shut down for reading and writing. If you do a
-      non-blocking connect, this function will not return [true] until after you
-      call g_socket_check_connect_result(). *)
+      If using {{!Ocgio.Raw.Socket.val-shutdown}[g_socket_shutdown ()]}, this
+      function will return [true] until the socket has been shut down for
+      reading and writing. If you do a non-blocking connect, this function will
+      not return [true] until after you call
+      {{!Ocgio.Raw.Socket.val-check_connect_result}[g_socket_check_connect_result
+                                                    ()]}. *)
 
   external is_closed : t -> bool = "ml_g_socket_is_closed"
   (** Checks whether a socket is closed. *)
 
   external get_ttl : t -> int = "ml_g_socket_get_ttl"
-  (** Gets the unicast time-to-live setting on [socket]; see g_socket_set_ttl()
-      for more details. *)
+  (** Gets the unicast time-to-live setting on [socket]; see
+      {{!Ocgio.Raw.Socket.val-set_ttl}[g_socket_set_ttl ()]} for more details.
+  *)
 
   external get_timeout : t -> int = "ml_g_socket_get_timeout"
   (** Gets the timeout setting of the socket. For details on this, see
-      g_socket_set_timeout(). *)
+      {{!Ocgio.Raw.Socket.val-set_timeout}[g_socket_set_timeout ()]}. *)
 
   external get_socket_type : t -> Ocgio_enums.sockettype
     = "ml_g_socket_get_socket_type"
@@ -561,11 +614,13 @@ module rec Socket : sig
 
       Note that even for socket options that are a single byte in size, [value]
       is still a pointer to a [int] variable, not a #guchar;
-      g_socket_get_option() will handle the conversion internally. *)
+      {{!Ocgio.Raw.Socket.val-get_option}[g_socket_get_option ()]} will handle
+      the conversion internally. *)
 
   external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
   (** Gets the multicast time-to-live setting on [socket]; see
-      g_socket_set_multicast_ttl() for more details. *)
+      {{!Ocgio.Raw.Socket.val-set_multicast_ttl}[g_socket_set_multicast_ttl ()]}
+      for more details. *)
 
   external get_multicast_loopback : t -> bool
     = "ml_g_socket_get_multicast_loopback"
@@ -586,11 +641,12 @@ module rec Socket : sig
 
   external get_listen_backlog : t -> int = "ml_g_socket_get_listen_backlog"
   (** Gets the listen backlog setting of the socket. For details on this, see
-      g_socket_set_listen_backlog(). *)
+      {{!Ocgio.Raw.Socket.val-set_listen_backlog}[g_socket_set_listen_backlog
+                                                  ()]}. *)
 
   external get_keepalive : t -> bool = "ml_g_socket_get_keepalive"
   (** Gets the keepalive mode of the socket. For details on this, see
-      g_socket_set_keepalive(). *)
+      {{!Ocgio.Raw.Socket.val-set_keepalive}[g_socket_set_keepalive ()]}. *)
 
   external get_fd : t -> int = "ml_g_socket_get_fd"
   (** Returns the underlying OS socket object. On unix this is a socket file
@@ -604,11 +660,14 @@ module rec Socket : sig
   external get_credentials : t -> (Credentials.t, GError.t) result
     = "ml_g_socket_get_credentials"
   (** Returns the credentials of the foreign process connected to this socket,
-      if any (e.g. it is only supported for [G_SOCKET_FAMILY_UNIX] sockets).
+      if any (e.g. it is only supported for
+      {{!Ocgio.Enums.type-socketfamily.constructor-UNIX}[G_SOCKET_FAMILY_UNIX]}
+      sockets).
 
       If this operation isn't supported on the OS, the method fails with the
-      [G_IO_ERROR_NOT_SUPPORTED] error. On Linux this is implemented by reading
-      the [SO_PEERCRED] option on the underlying socket.
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-NOT_SUPPORTED}[G_IO_ERROR_NOT_SUPPORTED]}
+      error. On Linux this is implemented by reading the [SO_PEERCRED] option on
+      the underlying socket.
 
       This method can be expected to be available on the following platforms:
 
@@ -619,8 +678,11 @@ module rec Socket : sig
       - macOS, tvOS, iOS since GLib 2.66
 
       Other ways to obtain credentials from a foreign peer includes the
-      [GUnixCredentialsMessage] type and g_unix_connection_send_credentials() /
-      g_unix_connection_receive_credentials() functions. *)
+      {{!Ocgio.Raw.Unix_credentials_message}[GUnixCredentialsMessage]} type and
+      {{!Ocgio.Raw.Unix_connection.val-send_credentials}[g_unix_connection_send_credentials
+                                                         ()]} /
+      {{!Ocgio.Raw.Unix_connection.val-receive_credentials}[g_unix_connection_receive_credentials
+                                                            ()]} functions. *)
 
   external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
   (** Gets the broadcast setting on [socket]; if [true], it is possible to send
@@ -628,7 +690,7 @@ module rec Socket : sig
 
   external get_blocking : t -> bool = "ml_g_socket_get_blocking"
   (** Gets the blocking mode of the socket. For details on blocking I/O, see
-      g_socket_set_blocking(). *)
+      {{!Ocgio.Raw.Socket.val-set_blocking}[g_socket_set_blocking ()]}. *)
 
   external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
   (** Get the amount of data pending in the OS input buffer, without blocking.
@@ -638,13 +700,16 @@ module rec Socket : sig
 
       Note that on Windows, this function is rather inefficient in the UDP case,
       and so if you know any plausible upper bound on the size of the incoming
-      packet, it is better to just do a g_socket_receive() with a buffer of that
-      size, rather than calling g_socket_get_available_bytes() first and then
-      doing a receive of exactly the right size. *)
+      packet, it is better to just do a [g_socket_receive ()] with a buffer of
+      that size, rather than calling
+      {{!Ocgio.Raw.Socket.val-get_available_bytes}[g_socket_get_available_bytes
+                                                   ()]} first and then doing a
+      receive of exactly the right size. *)
 
   external connection_factory_create_connection : t -> Socket_connection.t
     = "ml_g_socket_connection_factory_create_connection"
-  (** Creates a [GSocketConnection] subclass of the right type for [socket]. *)
+  (** Creates a {{!Ocgio.Raw.Socket_connection}[GSocketConnection]} subclass of
+      the right type for [socket]. *)
 
   external connect :
     t ->
@@ -657,7 +722,7 @@ module rec Socket : sig
 
       For connection oriented socket this generally means we attempt to make a
       connection to the [address]. For a connection-less socket it sets the
-      default address for g_socket_send() and discards all incoming datagrams
+      default address for [g_socket_send ()] and discards all incoming datagrams
       from other sources.
 
       Generally connection oriented sockets can only connect once, but
@@ -665,10 +730,13 @@ module rec Socket : sig
       address.
 
       If the connect call needs to do network I/O it will block, unless
-      non-blocking I/O is enabled. Then [G_IO_ERROR_PENDING] is returned and the
-      user can be notified of the connection finishing by waiting for the
-      G_IO_OUT condition. The result of the connection must then be checked with
-      g_socket_check_connect_result(). *)
+      non-blocking I/O is enabled. Then
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-PENDING}[G_IO_ERROR_PENDING]}
+      is returned and the user can be notified of the connection finishing by
+      waiting for the G_IO_OUT condition. The result of the connection must then
+      be checked with
+      {{!Ocgio.Raw.Socket.val-check_connect_result}[g_socket_check_connect_result
+                                                    ()]}. *)
 
   external close : t -> (bool, GError.t) result = "ml_g_socket_close"
   [@@ocaml.doc
@@ -677,7 +745,9 @@ module rec Socket : sig
     \  to finish, so the caller should not rely on them to be guaranteed\n\
     \  to complete even if the close returns with no error.\n\n\
     \  Once the socket is closed, all other operations will return\n\
-    \  [G_IO_ERROR_CLOSED]. Closing a socket multiple times will not\n\
+    \  \
+     {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}. \
+     Closing a socket multiple times will not\n\
     \  return an error.\n\n\
     \  Sockets will be automatically closed when the last reference\n\
     \  is dropped, but you might want to call this function to make sure\n\
@@ -690,19 +760,25 @@ module rec Socket : sig
     \  way to avoid this problem; the easiest fix is to design the network\n\
     \  protocol such that the client will never send data \"out of turn\".\n\
     \  Another solution is for the server to half-close the connection by\n\
-    \  calling g_socket_shutdown() with only the [shutdown_write] flag set,\n\
+    \  calling {{!Ocgio.Raw.Socket.val-shutdown}[g_socket_shutdown ()]} with \
+     only the [shutdown_write] flag set,\n\
     \  and then wait for the client to notice this and close its side of the\n\
-    \  connection, after which the server can safely call g_socket_close().\n\
-    \  (This is what [GTcpConnection] does if you call\n\
-    \  g_tcp_connection_set_graceful_disconnect(). But of course, this\n\
+    \  connection, after which the server can safely call \
+     {{!Ocgio.Raw.Socket.val-close}[g_socket_close ()]}.\n\
+    \  (This is what {{!Ocgio.Raw.Tcp_connection}[GTcpConnection]} does if you \
+     call\n\
+    \  \
+     {{!Ocgio.Raw.Tcp_connection.val-set_graceful_disconnect}[g_tcp_connection_set_graceful_disconnect \
+     ()]}. But of course, this\n\
     \  only works if the client will close its connection after the server\n\
     \  does.)"]
 
   external check_connect_result : t -> (bool, GError.t) result
     = "ml_g_socket_check_connect_result"
   (** Checks and resets the pending connect error for the socket. This is used
-      to check for errors when g_socket_connect() is used in non-blocking mode.
-  *)
+      to check for errors when
+      {{!Ocgio.Raw.Socket.val-connect}[g_socket_connect ()]} is used in
+      non-blocking mode. *)
 
   external bind :
     t ->
@@ -712,20 +788,24 @@ module rec Socket : sig
     bool ->
     (bool, GError.t) result = "ml_g_socket_bind"
   (** When a socket is created it is attached to an address family, but it
-      doesn't have an address in this family. g_socket_bind() assigns the
-      address (sometimes called name) of the socket.
+      doesn't have an address in this family.
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]} assigns the address
+      (sometimes called name) of the socket.
 
       It is generally required to bind to a local address before you can receive
-      connections. (See g_socket_listen() and g_socket_accept() ). In certain
+      connections. (See {{!Ocgio.Raw.Socket.val-listen}[g_socket_listen ()]} and
+      {{!Ocgio.Raw.Socket.val-accept}[g_socket_accept ()]} ). In certain
       situations, you may also want to bind a socket that will be used to
       initiate connections, though this is not normally required.
 
       If [socket] is a TCP socket, then [allow_reuse] controls the setting of
       the [SO_REUSEADDR] socket option; normally it should be [true] for server
-      sockets (sockets that you will eventually call g_socket_accept() on), and
-      [false] for client sockets. (Failing to set this flag on a server socket
-      may cause g_socket_bind() to return [G_IO_ERROR_ADDRESS_IN_USE] if the
-      server program is stopped and then immediately restarted.)
+      sockets (sockets that you will eventually call
+      {{!Ocgio.Raw.Socket.val-accept}[g_socket_accept ()]} on), and [false] for
+      client sockets. (Failing to set this flag on a server socket may cause
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]} to return
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-ADDRESS_IN_USE}[G_IO_ERROR_ADDRESS_IN_USE]}
+      if the server program is stopped and then immediately restarted.)
 
       If [socket] is a UDP socket, then [allow_reuse] determines whether or not
       other UDP sockets can be bound to the same address at the same time. In
@@ -738,14 +818,18 @@ module rec Socket : sig
     = "ml_g_socket_accept"
   (** Accept incoming connections on a connection-based socket. This removes the
       first outstanding connection request from the listening socket and creates
-      a [GSocket] object for it.
+      a {{!Ocgio.Raw.Socket}[GSocket]} object for it.
 
-      The [socket] must be bound to a local address with g_socket_bind() and
-      must be listening for incoming connections (g_socket_listen()).
+      The [socket] must be bound to a local address with
+      {{!Ocgio.Raw.Socket.val-bind}[g_socket_bind ()]} and must be listening for
+      incoming connections
+      ({{!Ocgio.Raw.Socket.val-listen}[g_socket_listen ()]}).
 
       If there are no outstanding connections then the operation will block or
-      return [G_IO_ERROR_WOULD_BLOCK] if non-blocking I/O is enabled. To be
-      notified of an incoming connection, wait for the [G_IO_IN] condition. *)
+      return
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+      if non-blocking I/O is enabled. To be notified of an incoming connection,
+      wait for the [G_IO_IN] condition. *)
 
   (* Properties *)
 
@@ -784,12 +868,14 @@ and Socket_connection : sig
 
   external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
   (** Checks if [connection] is connected. This is equivalent to calling
-      g_socket_is_connected() on [connection]'s underlying [GSocket]. *)
+      {{!Ocgio.Raw.Socket.val-is_connected}[g_socket_is_connected ()]} on
+      [connection]'s underlying {{!Ocgio.Raw.Socket}[GSocket]}. *)
 
   external get_socket : t -> Socket.t = "ml_g_socket_connection_get_socket"
-  (** Gets the underlying [GSocket] object of the connection. This can be useful
-      if you want to do something unusual on it not supported by the
-      [GSocketConnection] APIs. *)
+  (** Gets the underlying {{!Ocgio.Raw.Socket}[GSocket]} object of the
+      connection. This can be useful if you want to do something unusual on it
+      not supported by the {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}
+      APIs. *)
 
   external get_remote_address :
     t ->
@@ -800,9 +886,12 @@ and Socket_connection : sig
     result = "ml_g_socket_connection_get_remote_address"
   [@@ocaml.doc
     "Try to get the remote address of a socket connection.\n\n\
-    \  Since GLib 2.40, when used with g_socket_client_connect() or\n\
-    \  g_socket_client_connect_async(), during emission of\n\
-    \  [G_SOCKET_CLIENT_CONNECTING], this function will return the remote\n\
+    \  Since GLib 2.40, when used with \
+     {{!Ocgio.Raw.Socket_client.val-connect}[g_socket_client_connect ()]} or\n\
+    \  [g_socket_client_connect_async ()], during emission of\n\
+    \  \
+     {{!Ocgio.Enums.type-socketclientevent.constructor-CONNECTING}[G_SOCKET_CLIENT_CONNECTING]}, \
+     this function will return the remote\n\
     \  address that will be used for the connection.  This allows\n\
     \  applications to print e.g. \"Connecting to example.com\n\
     \  (10.42.77.3)...\"."]
@@ -818,7 +907,7 @@ and Socket_connection : sig
 
   external connect_finish : t -> Async_result.t -> (bool, GError.t) result
     = "ml_g_socket_connection_connect_finish"
-  (** Gets the result of a g_socket_connection_connect_async() call. *)
+  (** Gets the result of a [g_socket_connection_connect_async ()] call. *)
 
   external connect :
     t ->

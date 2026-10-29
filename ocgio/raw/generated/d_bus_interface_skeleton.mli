@@ -17,13 +17,15 @@ external unexport_from_connection : t -> D_bus_connection.t -> unit
 (** Stops exporting [interface_] on [connection].
 
     To stop exporting on all connections the interface is exported on, use
-    g_dbus_interface_skeleton_unexport(). *)
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport}[g_dbus_interface_skeleton_unexport
+                                                        ()]}. *)
 
 external unexport : t -> unit = "ml_g_dbus_interface_skeleton_unexport"
 (** Stops exporting [interface_] on all connections it is exported on.
 
     To unexport [interface_] from only a single connection, use
-    g_dbus_interface_skeleton_unexport_from_connection() *)
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport_from_connection}[g_dbus_interface_skeleton_unexport_from_connection
+                                                                        ()]} *)
 
 external set_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_dbus_interface_skeleton_set_flags"
@@ -54,8 +56,9 @@ external get_info : t -> D_bus_interface_info.t
 
 external get_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags
   = "ml_g_dbus_interface_skeleton_get_flags"
-(** Gets the [GDBusInterfaceSkeletonFlags] that describes what the behavior of
-    [interface_] *)
+(** Gets the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    that describes what the behavior of [interface_] *)
 
 external get_connections : t -> D_bus_connection.t list
   = "ml_g_dbus_interface_skeleton_get_connections"
@@ -82,17 +85,24 @@ external export : t -> D_bus_connection.t -> string -> (bool, GError.t) result
     multiple connections however the [object_path] provided must be the same for
     all connections.
 
-    Use g_dbus_interface_skeleton_unexport() to unexport the object. *)
+    Use
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-unexport}[g_dbus_interface_skeleton_unexport
+                                                        ()]} to unexport the
+    object. *)
 
 (* Properties *)
 
 external get_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags
   = "ml_g_d_bus_interface_skeleton_get_g_flags"
-(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+(** Flags from the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    enumeration. *)
 
 external set_g_flags : t -> Ocgio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_d_bus_interface_skeleton_set_g_flags"
-(** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+(** Flags from the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags}[GDBusInterfaceSkeletonFlags]}
+    enumeration. *)
 
 val on_g_authorize_method :
   ?after:bool ->
@@ -104,25 +114,31 @@ val on_g_authorize_method :
 
     Note that this signal is emitted in a thread dedicated to handling the
     method call so handlers are allowed to perform blocking IO. This means that
-    it is appropriate to call e.g. polkit_authority_check_authorization_sync()
-    with the POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION flag set.
+    it is appropriate to call e.g.
+    [polkit_authority_check_authorization_sync ()] with the
+    POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION flag set.
 
     If [false] is returned then no further handlers are run and the signal
     handler must take a reference to [invocation] and finish handling the call
-    (e.g. return an error via g_dbus_method_invocation_return_error()).
+    (e.g. return an error via [g_dbus_method_invocation_return_error ()]).
 
     Otherwise, if [true] is returned, signal emission continues. If no handlers
     return [false], then the method is dispatched. If [interface] has an
-    enclosing [GDBusObjectSkeleton], then the
-    [GDBusObjectSkeleton::authorize]-method signal handlers run before the
-    handlers for this signal.
+    enclosing {{!Ocgio.Raw.D_bus_object_skeleton}[GDBusObjectSkeleton]}, then
+    the
+    {{!Ocgio.Raw.D_bus_object_skeleton.val-on_authorize_method}[GDBusObjectSkeleton::authorize-method]}
+    signal handlers run before the handlers for this signal.
 
     The default class handler just returns [true].
 
     Please note that the common case is optimized: if no signals handlers are
     connected and the default class handler isn't overridden (for both
-    [interface] and the enclosing [GDBusObjectSkeleton], if any) and
-    [GDBusInterfaceSkeleton:g]-flags does not have the
-    [G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD] flags
-    set, no dedicated thread is ever used and the call will be handled in the
-    same thread as the object that [interface] belongs to was exported in. *)
+    [interface] and the enclosing
+    {{!Ocgio.Raw.D_bus_object_skeleton}[GDBusObjectSkeleton]}, if any) and
+    {{!Ocgio.Raw.D_bus_interface_skeleton.val-get_g_flags}[GDBusInterfaceSkeleton:g-flags]}
+    does not have the
+    {{!Ocgio.Enums.type-dbusinterfaceskeletonflags_flag.constructor-HANDLE_METHOD_INVOCATIONS_IN_THREAD}
+     [G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD]}
+    flags set, no dedicated thread is ever used and the call will be handled in
+    the same thread as the object that [interface] belongs to was exported in.
+*)

@@ -45,7 +45,7 @@ class type path_t = object
       not support all features of [GskPath].
 
       This function does not clear the existing Cairo path. Call
-      cairo_new_path() if you want this. *)
+      [cairo_new_path ()] if you want this. *)
 
   method to_string : unit -> string
   (** Converts the path into a human-readable string.
@@ -131,7 +131,7 @@ and path_point_t = object
 
       This is a convenience variant of [Gsk.PathPoint.get_tangent] that returns
       the angle between the tangent and the X axis. The angle can e.g. be used
-      in gtk_snapshot_rotate(). *)
+      in [gtk_snapshot_rotate ()]. *)
 
   (** {2:conversions Conversions} *)
 

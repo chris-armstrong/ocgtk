@@ -122,5 +122,5 @@ class credentials : Raw.Credentials.t -> credentials_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> credentials_t
-(** Creates a new [GCredentials] object with credentials matching the the
-    current process. *)
+(** Creates a new {{!Ocgio.Credentials.class-type-credentials_t}[GCredentials]}
+    object with credentials matching the the current process. *)

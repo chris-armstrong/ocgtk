@@ -45,7 +45,7 @@ type attrtype =
     (** font stretch
         ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
   | `SIZE
-    (** font size in points scaled by [PANGO_SCALE]
+    (** font size in points scaled by {{!Ocpango.Constants.scale}[PANGO_SCALE]}
         ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
   | `FONT_DESC
     (** font description
@@ -83,7 +83,7 @@ type attrtype =
     (** strikethrough color
         ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}) *)
   | `ABSOLUTE_SIZE
-    (** font size in pixels scaled by [PANGO_SCALE]
+    (** font size in pixels scaled by {{!Ocpango.Constants.scale}[PANGO_SCALE]}
         ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
   | `GRAVITY
     (** base text gravity
@@ -227,8 +227,11 @@ type coveragelevel =
 (** [PangoCoverageLevel] is used to indicate how well a font can represent a
     particular Unicode character for a particular script.
 
-    Since 1.44, only [PANGO_COVERAGE_NONE] and [PANGO_COVERAGE_EXACT] will be
-    returned. *)
+    Since 1.44, only
+    {{!Ocpango.Enums.type-coveragelevel.constructor-NONE}[PANGO_COVERAGE_NONE]}
+    and
+    {{!Ocpango.Enums.type-coveragelevel.constructor-EXACT}[PANGO_COVERAGE_EXACT]}
+    will be returned. *)
 
 val coveragelevel_of_int : int -> coveragelevel
 val coveragelevel_to_int : coveragelevel -> int
@@ -324,7 +327,9 @@ type gravity =
     orientation is controlled using [PangoGravity].
 
     Not every value in this enumeration makes sense for every usage of
-    [PangoGravity]; for example, [PANGO_GRAVITY_AUTO] only can be passed to
+    [PangoGravity]; for example,
+    {{!Ocpango.Enums.type-gravity.constructor-AUTO}[PANGO_GRAVITY_AUTO]} only
+    can be passed to
     {{!Ocpango.Context.class-type-context_t.method-set_base_gravity}[Pango.Context.set_base_gravity]}
     and can only be returned by
     {{!Ocpango.Context.class-type-context_t.method-get_base_gravity}[Pango.Context.get_base_gravity]}.
@@ -402,7 +407,8 @@ val renderpart_to_int : renderpart -> int
 (* Script - enumeration *)
 
 type script =
-  [ `INVALID_CODE  (** a value never returned from pango_script_for_unichar() *)
+  [ `INVALID_CODE
+    (** a value never returned from [pango_script_for_unichar ()] *)
   | `COMMON  (** a character used by multiple different scripts *)
   | `INHERITED
     (** a mark glyph that takes its script from the base glyph to which it is
@@ -607,8 +613,8 @@ type underline =
     (** a single underline should be drawn at a position beneath the ink extents
         of the text being underlined. This should be used only for underlining
         single characters, such as for keyboard accelerators.
-        [PANGO_UNDERLINE_SINGLE] should be used for extended portions of text.
-    *)
+        {{!Ocpango.Enums.type-underline.constructor-SINGLE}[PANGO_UNDERLINE_SINGLE]}
+        should be used for extended portions of text. *)
   | `ERROR
     (** an underline indicating an error should be drawn below. The exact style
         of rendering is up to the [PangoRenderer] in use, but typical styles

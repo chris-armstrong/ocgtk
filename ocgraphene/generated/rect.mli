@@ -16,11 +16,13 @@
     equivalent to a #graphene_rect_t with an origin of \[ 10, 10 \] and a size
     of \[ -10, -10 \].
 
-    Application code can normalize rectangles using graphene_rect_normalize();
-    this function will ensure that the width and height of a rectangle are
-    positive values. All functions taking a #graphene_rect_t as an argument will
-    internally operate on a normalized copy; all functions returning a
-    #graphene_rect_t will always return a normalized rectangle. *)
+    Application code can normalize rectangles using
+    {{!Ocgraphene.Rect.class-type-rect_t.method-normalize}[graphene_rect_normalize
+                                                           ()]}; this function
+    will ensure that the width and height of a rectangle are positive values.
+    All functions taking a #graphene_rect_t as an argument will internally
+    operate on a normalized copy; all functions returning a #graphene_rect_t
+    will always return a normalized rectangle. *)
 class type rect_t = object
   (** {2:methods Methods} *)
 
@@ -111,11 +113,13 @@ class rect : Raw.Rect.t -> rect_t
     equivalent to a #graphene_rect_t with an origin of \[ 10, 10 \] and a size
     of \[ -10, -10 \].
 
-    Application code can normalize rectangles using graphene_rect_normalize();
-    this function will ensure that the width and height of a rectangle are
-    positive values. All functions taking a #graphene_rect_t as an argument will
-    internally operate on a normalized copy; all functions returning a
-    #graphene_rect_t will always return a normalized rectangle. *)
+    Application code can normalize rectangles using
+    {{!Ocgraphene.Rect.class-type-rect_t.method-normalize}[graphene_rect_normalize
+                                                           ()]}; this function
+    will ensure that the width and height of a rectangle are positive values.
+    All functions taking a #graphene_rect_t as an argument will internally
+    operate on a normalized copy; all functions returning a #graphene_rect_t
+    will always return a normalized rectangle. *)
 
 (** {1:constructors Constructors} *)
 

@@ -298,7 +298,8 @@ val on_change_value :
     This is a keybinding signal.
 
     Applications should not connect to it, but may emit it with
-    g_signal_emit_by_name() if they need to control the cursor programmatically.
+    [g_signal_emit_by_name ()] if they need to control the cursor
+    programmatically.
 
     The default bindings for this signal are Up/Down and PageUp/PageDown. *)
 

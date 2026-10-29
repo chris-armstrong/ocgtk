@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RecentData: RecentData *)
 
-(** Meta-data to be passed to gtk_recent_manager_add_full() when registering a
-    recently used resource.
+(** Meta-data to be passed to
+    {{!Ocgtk.Raw.Recent_manager.val-add_full}[gtk_recent_manager_add_full ()]}
+    when registering a recently used resource.
 
     The class built on this module is in {!Ocgtk.Recent_data}. *)
 

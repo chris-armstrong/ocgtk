@@ -120,16 +120,18 @@ end
      {b Setting up a file chooser dialog}\n\n\
      There are various cases in which you may need to use a \
      [GtkFileChooserDialog]:\n\n\
-     - To select a file for opening, use [GTK_FILE_CHOOSER_ACTION_OPEN].\n\n\
-     - To save a file for the first time, use [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
+     - To select a file for opening, use \
+     {{!Ocgtk.Enums.type-filechooseraction.constructor-OPEN}[GTK_FILE_CHOOSER_ACTION_OPEN]}.\n\n\
+     - To save a file for the first time, use \
+     {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]},\n\
      and suggest a name such as “Untitled” with\n\
      {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_current_name}[Gtk.FileChooser.set_current_name]}.\n\n\
      - To save a file under a different name, use \
-     [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
+     {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]},\n\
      and set the existing file with \
      {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_file}[Gtk.FileChooser.set_file]}.\n\n\
      - To choose a folder instead of a file, use \
-     [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].\n\n\
+     {{!Ocgtk.Enums.type-filechooseraction.constructor-SELECT_FOLDER}[GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER]}.\n\n\
      In general, you should only cause the file chooser to show a specific\n\
      folder when it is appropriate to use \
      {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_file}[Gtk.FileChooser.set_file]},\n\
@@ -138,8 +140,11 @@ end
      {b Response Codes}\n\n\
      [GtkFileChooserDialog] inherits from \
      {{!Ocgtk.Dialog.class-type-dialog_t}[Gtk.Dialog]}, so buttons that\n\
-     go in its action area have response codes such as [GTK_RESPONSE_ACCEPT] and\n\
-     [GTK_RESPONSE_CANCEL]. For example, you could call\n\
+     go in its action area have response codes such as \
+     {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]} \
+     and\n\
+     {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]}. \
+     For example, you could call\n\
      [Gtk.FileChooserDialog.new] as follows:\n\n\
      {[\n\
      GtkWidget *dialog;\n\
@@ -161,10 +166,12 @@ end
      [GtkFileChooserDialog] assumes that\n\
      its “accept”-type action, e.g. an “Open” or “Save” button,\n\
      will have one of the following response codes:\n\n\
-     - [GTK_RESPONSE_ACCEPT]\n\
-     - [GTK_RESPONSE_OK]\n\
-     - [GTK_RESPONSE_YES]\n\
-     - [GTK_RESPONSE_APPLY]\n\n\
+     - \
+     {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]}\n\
+     - {{!Ocgtk.Enums.type-responsetype.constructor-OK}[GTK_RESPONSE_OK]}\n\
+     - {{!Ocgtk.Enums.type-responsetype.constructor-YES}[GTK_RESPONSE_YES]}\n\
+     - \
+     {{!Ocgtk.Enums.type-responsetype.constructor-APPLY}[GTK_RESPONSE_APPLY]}\n\n\
      This is because [GtkFileChooserDialog] must intercept responses and switch\n\
      to folders if appropriate, rather than letting the dialog terminate — the\n\
      implementation uses these known response codes to know which responses can\n\
@@ -271,15 +278,18 @@ class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
  {b Setting up a file chooser dialog}\n\n\
  There are various cases in which you may need to use a \
  [GtkFileChooserDialog]:\n\n\
- - To select a file for opening, use [GTK_FILE_CHOOSER_ACTION_OPEN].\n\n\
- - To save a file for the first time, use [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
+ - To select a file for opening, use \
+ {{!Ocgtk.Enums.type-filechooseraction.constructor-OPEN}[GTK_FILE_CHOOSER_ACTION_OPEN]}.\n\n\
+ - To save a file for the first time, use \
+ {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]},\n\
  and suggest a name such as “Untitled” with\n\
  {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_current_name}[Gtk.FileChooser.set_current_name]}.\n\n\
- - To save a file under a different name, use [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
+ - To save a file under a different name, use \
+ {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]},\n\
  and set the existing file with \
  {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_file}[Gtk.FileChooser.set_file]}.\n\n\
  - To choose a folder instead of a file, use \
- [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].\n\n\
+ {{!Ocgtk.Enums.type-filechooseraction.constructor-SELECT_FOLDER}[GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER]}.\n\n\
  In general, you should only cause the file chooser to show a specific\n\
  folder when it is appropriate to use \
  {{!Ocgtk.File_chooser.class-type-file_chooser_t.method-set_file}[Gtk.FileChooser.set_file]},\n\
@@ -288,8 +298,10 @@ class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
  {b Response Codes}\n\n\
  [GtkFileChooserDialog] inherits from \
  {{!Ocgtk.Dialog.class-type-dialog_t}[Gtk.Dialog]}, so buttons that\n\
- go in its action area have response codes such as [GTK_RESPONSE_ACCEPT] and\n\
- [GTK_RESPONSE_CANCEL]. For example, you could call\n\
+ go in its action area have response codes such as \
+ {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]} and\n\
+ {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]}. \
+ For example, you could call\n\
  [Gtk.FileChooserDialog.new] as follows:\n\n\
  {[\n\
  GtkWidget *dialog;\n\
@@ -311,10 +323,10 @@ class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
  [GtkFileChooserDialog] assumes that\n\
  its “accept”-type action, e.g. an “Open” or “Save” button,\n\
  will have one of the following response codes:\n\n\
- - [GTK_RESPONSE_ACCEPT]\n\
- - [GTK_RESPONSE_OK]\n\
- - [GTK_RESPONSE_YES]\n\
- - [GTK_RESPONSE_APPLY]\n\n\
+ - {{!Ocgtk.Enums.type-responsetype.constructor-ACCEPT}[GTK_RESPONSE_ACCEPT]}\n\
+ - {{!Ocgtk.Enums.type-responsetype.constructor-OK}[GTK_RESPONSE_OK]}\n\
+ - {{!Ocgtk.Enums.type-responsetype.constructor-YES}[GTK_RESPONSE_YES]}\n\
+ - {{!Ocgtk.Enums.type-responsetype.constructor-APPLY}[GTK_RESPONSE_APPLY]}\n\n\
  This is because [GtkFileChooserDialog] must intercept responses and switch\n\
  to folders if appropriate, rather than letting the dialog terminate — the\n\
  implementation uses these known response codes to know which responses can\n\

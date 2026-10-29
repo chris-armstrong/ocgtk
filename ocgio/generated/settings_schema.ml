@@ -8,7 +8,7 @@ class type settings_schema_t = object
   (** Gets the key named [name] from [schema].
 
       It is a programmer error to request a key that does not exist. See
-      g_settings_schema_list_keys(). *)
+      [g_settings_schema_list_keys ()]. *)
 
   method get_path : unit -> string option
   (** Gets the path associated with [schema], or [None].

@@ -15,7 +15,7 @@ class type d_bus_object_skeleton_t = object
       if the method call is authorized.
 
       This signal is like [GDBusInterfaceSkeleton]'s
-      [GDBusInterfaceSkeleton::g]-authorize-method signal, except that it is for
+      [GDBusInterfaceSkeleton::g-authorize-method] signal, except that it is for
       the enclosing object.
 
       The default class handler just returns [true]. *)
@@ -33,7 +33,7 @@ class type d_bus_object_skeleton_t = object
       until removed. *)
 
   method flush : unit -> unit
-  (** This method simply calls g_dbus_interface_skeleton_flush() on all
+  (** This method simply calls [g_dbus_interface_skeleton_flush ()] on all
       interfaces belonging to [object]. See that method for when flushing is
       useful. *)
 

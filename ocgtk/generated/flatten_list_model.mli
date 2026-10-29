@@ -25,7 +25,7 @@ class type flatten_list_model_t = object
   (** {2:methods Methods} *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
-  (** Gets the model set via gtk_flatten_list_model_set_model(). *)
+  (** Gets the model set via [gtk_flatten_list_model_set_model ()]. *)
 
   method get_model_for_item : int -> Ocgio.List_model.list_model_t option
   (** Returns the model containing the item at the given position. *)

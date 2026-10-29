@@ -14,8 +14,8 @@ class type tls_certificate_t = object
   (** Check if two [GTlsCertificate] objects represent the same certificate. The
       raw DER byte data of the two certificates are checked for equality. This
       has the effect that two certificates may compare equal even if their
-      [GTlsCertificate:issuer], [GTlsCertificate:private]-key, or
-      [GTlsCertificate:private]-key-pem properties differ. *)
+      [GTlsCertificate:issuer], [GTlsCertificate:private-key], or
+      [GTlsCertificate:private-key-pem] properties differ. *)
 
   method verify :
     Socket_connectable.socket_connectable_t option ->
@@ -78,13 +78,13 @@ class type tls_certificate_t = object
      (\"[BEGIN PRIVATE KEY]\"). PKCS #8 format is supported since 2.32;\n\
      earlier releases only support PKCS #1. You can use the [openssl rsa]\n\
      tool to convert PKCS #8 keys to PKCS #1.\n\n\
-     This property (or the [GTlsCertificate:private]-key property)\n\
+     This property (or the [GTlsCertificate:private-key] property)\n\
      can be set when constructing a key (for example, from a file).\n\
      Since GLib 2.70, it is now also readable; however, be aware that if\n\
      the private key is backed by a PKCS #11 URI - for example, if it\n\
      is stored on a smartcard - then this property will be [None]. If so,\n\
      the private key must be referenced via its PKCS #11 URI,\n\
-     [GTlsCertificate:private]-key-pkcs11-uri. You must check both\n\
+     [GTlsCertificate:private-key-pkcs11-uri]. You must check both\n\
      properties to see if the certificate really has a private key.\n\
      When this property is read, the output format will be unencrypted\n\
      PKCS #8."]

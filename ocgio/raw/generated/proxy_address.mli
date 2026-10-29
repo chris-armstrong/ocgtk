@@ -21,12 +21,13 @@ external new_ :
   string option ->
   string option ->
   t = "ml_g_proxy_address_new_bytecode" "ml_g_proxy_address_new_native"
-(** Creates a new [GProxyAddress] for [inetaddr] with [protocol] that should
-    tunnel through [dest_hostname] and [dest_port].
+(** Creates a new {{!Ocgio.Raw.Proxy_address}[GProxyAddress]} for [inetaddr]
+    with [protocol] that should tunnel through [dest_hostname] and [dest_port].
 
-    (Note that this method doesn't set the [GProxyAddress:uri] or
-    [GProxyAddress:destination]-protocol fields; use g_object_new() directly if
-    you want to set those.) *)
+    (Note that this method doesn't set the
+    {{!Ocgio.Raw.Proxy_address.val-get_uri}[GProxyAddress:uri]} or
+    {{!Ocgio.Raw.Proxy_address.val-get_destination_protocol}[GProxyAddress:destination-protocol]}
+    fields; use [g_object_new ()] directly if you want to set those.) *)
 
 (* Methods *)
 

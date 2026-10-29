@@ -12,14 +12,14 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_tls_password_get_type"
 
 external new_ : Ocgio_enums.tlspasswordflags -> string -> t
   = "ml_g_tls_password_new"
-(** Create a new [GTlsPassword] object. *)
+(** Create a new {{!Ocgio.Raw.Tls_password}[GTlsPassword]} object. *)
 
 (* Methods *)
 
 external set_warning : t -> string -> unit = "ml_g_tls_password_set_warning"
 (** Set a user readable translated warning. Usually this warning is a
     representation of the password flags returned from
-    g_tls_password_get_flags(). *)
+    {{!Ocgio.Raw.Tls_password.val-get_flags}[g_tls_password_get_flags ()]}. *)
 
 external set_flags : t -> Ocgio_enums.tlspasswordflags -> unit
   = "ml_g_tls_password_set_flags"
@@ -32,7 +32,7 @@ external set_description : t -> string -> unit
 external get_warning : t -> string = "ml_g_tls_password_get_warning"
 (** Get a user readable translated warning. Usually this warning is a
     representation of the password flags returned from
-    g_tls_password_get_flags(). *)
+    {{!Ocgio.Raw.Tls_password.val-get_flags}[g_tls_password_get_flags ()]}. *)
 
 external get_flags : t -> Ocgio_enums.tlspasswordflags
   = "ml_g_tls_password_get_flags"

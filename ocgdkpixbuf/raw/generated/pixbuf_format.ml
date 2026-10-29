@@ -22,7 +22,9 @@ external set_disabled : t -> bool -> unit = "ml_gdk_pixbuf_format_set_disabled"
     format to load images.
 
     Applications can use this to avoid using image loaders with an inappropriate
-    license, see gdk_pixbuf_format_get_license(). *)
+    license, see
+    {{!Ocgdkpixbuf.Raw.Pixbuf_format.val-get_license}[gdk_pixbuf_format_get_license
+                                                      ()]}. *)
 
 external is_writable : t -> bool = "ml_gdk_pixbuf_format_is_writable"
 (** Returns whether pixbufs can be saved in the given format. *)
@@ -39,12 +41,14 @@ external is_save_option_supported : t -> string -> bool
 (** Returns [true] if the save option specified by [option_key] is supported
     when saving a pixbuf using the module implementing [format].
 
-    See gdk_pixbuf_save() for more information about option keys. *)
+    See [gdk_pixbuf_save ()] for more information about option keys. *)
 
 external is_disabled : t -> bool = "ml_gdk_pixbuf_format_is_disabled"
 (** Returns whether this image format is disabled.
 
-    See gdk_pixbuf_format_set_disabled(). *)
+    See
+    {{!Ocgdkpixbuf.Raw.Pixbuf_format.val-set_disabled}[gdk_pixbuf_format_set_disabled
+                                                       ()]}. *)
 
 external get_name : t -> string option = "ml_gdk_pixbuf_format_get_name"
 (** Returns the name of the format. *)

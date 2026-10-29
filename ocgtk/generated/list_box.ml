@@ -98,7 +98,8 @@ class type list_box_t = object
 
   method drag_unhighlight_row : unit -> unit
   (** If a row has previously been highlighted via
-      gtk_list_box_drag_highlight_row(), it will have the highlight removed. *)
+      [gtk_list_box_drag_highlight_row ()], it will have the highlight removed.
+  *)
 
   method get_activate_on_single_click : unit -> bool
   (** Returns whether rows activate on single clicks. *)

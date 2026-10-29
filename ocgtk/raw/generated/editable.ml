@@ -299,8 +299,9 @@ external delegate_get_accessible_platform_state :
     result, will not work properly.
 
     So, if you can't ensure the direct child condition, you should give the
-    delegate the [GTK_ACCESSIBLE_ROLE_TEXT_BOX] role, or you can change your
-    tree to allow this function to work. *)
+    delegate the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[GTK_ACCESSIBLE_ROLE_TEXT_BOX]}
+    role, or you can change your tree to allow this function to work. *)
 
 (* Properties *)
 

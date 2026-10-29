@@ -21,9 +21,9 @@
     Users of objects implementing this are not intended to use the interface
     method directly; instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.AsyncInitable.new_async]
-    directly, or indirectly via a foo_thing_new_async() wrapper. This will call
-    [Gio.AsyncInitable.init_async] under the covers, calling back with [None]
-    and a set [GError] on failure.
+    directly, or indirectly via a [foo_thing_new_async ()] wrapper. This will
+    call [Gio.AsyncInitable.init_async] under the covers, calling back with
+    [None] and a set [GError] on failure.
 
     A typical implementation might look something like this:
 
@@ -116,7 +116,7 @@ class type async_initable_t = object
 
   method init_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes asynchronous initialization and returns the result. See
-      g_async_initable_init_async(). *)
+      [g_async_initable_init_async ()]. *)
 
   method new_finish :
     Async_result.async_result_t -> ([ `object_ ] Gobject.obj, GError.t) result
@@ -145,9 +145,9 @@ class async_initable : Raw.Async_initable.t -> async_initable_t
     Users of objects implementing this are not intended to use the interface
     method directly; instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.AsyncInitable.new_async]
-    directly, or indirectly via a foo_thing_new_async() wrapper. This will call
-    [Gio.AsyncInitable.init_async] under the covers, calling back with [None]
-    and a set [GError] on failure.
+    directly, or indirectly via a [foo_thing_new_async ()] wrapper. This will
+    call [Gio.AsyncInitable.init_async] under the covers, calling back with
+    [None] and a set [GError] on failure.
 
     A typical implementation might look something like this:
 

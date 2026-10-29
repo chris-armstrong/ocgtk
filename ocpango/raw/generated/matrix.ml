@@ -38,11 +38,11 @@ external transform_rectangle : t -> Rectangle.t -> unit
 
     If you have the rectangle in Pango units and want to convert to transformed
     pixel bounding box, it is more accurate to transform it first (using this
-    function) and pass the result to pango_extents_to_pixels(), first argument,
-    for an inclusive rounded rectangle. However, there are valid reasons that
-    you may want to convert to pixels first and then transform, for example when
-    the transformed coordinates may overflow in Pango units (large matrix
-    translation for example). *)
+    function) and pass the result to [pango_extents_to_pixels ()], first
+    argument, for an inclusive rounded rectangle. However, there are valid
+    reasons that you may want to convert to pixels first and then transform, for
+    example when the transformed coordinates may overflow in Pango units (large
+    matrix translation for example). *)
 
 external transform_point : t -> float -> float -> unit
   = "ml_pango_matrix_transform_point"

@@ -34,8 +34,8 @@ class type tls_certificate_t = object
   (** Check if two [GTlsCertificate] objects represent the same certificate. The
       raw DER byte data of the two certificates are checked for equality. This
       has the effect that two certificates may compare equal even if their
-      [GTlsCertificate:issuer], [GTlsCertificate:private]-key, or
-      [GTlsCertificate:private]-key-pem properties differ. *)
+      [GTlsCertificate:issuer], [GTlsCertificate:private-key], or
+      [GTlsCertificate:private-key-pem] properties differ. *)
 
   method verify :
     Socket_connectable.socket_connectable_t option ->
@@ -98,13 +98,13 @@ class type tls_certificate_t = object
      (\"[BEGIN PRIVATE KEY]\"). PKCS #8 format is supported since 2.32;\n\
      earlier releases only support PKCS #1. You can use the [openssl rsa]\n\
      tool to convert PKCS #8 keys to PKCS #1.\n\n\
-     This property (or the [GTlsCertificate:private]-key property)\n\
+     This property (or the [GTlsCertificate:private-key] property)\n\
      can be set when constructing a key (for example, from a file).\n\
      Since GLib 2.70, it is now also readable; however, be aware that if\n\
      the private key is backed by a PKCS #11 URI - for example, if it\n\
      is stored on a smartcard - then this property will be [None]. If so,\n\
      the private key must be referenced via its PKCS #11 URI,\n\
-     [GTlsCertificate:private]-key-pkcs11-uri. You must check both\n\
+     [GTlsCertificate:private-key-pkcs11-uri]. You must check both\n\
      properties to see if the certificate really has a private key.\n\
      When this property is read, the output format will be unencrypted\n\
      PKCS #8."]
@@ -125,60 +125,75 @@ class tls_certificate : Raw.Tls_certificate.t -> tls_certificate_t
 (** {1:constructors Constructors} *)
 
 val new_from_file : string -> (tls_certificate_t, GError.t) result
-(** Creates a [GTlsCertificate] from the data in [file].
+(** Creates a
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t}[GTlsCertificate]}
+    from the data in [file].
 
     As of 2.72, if the filename ends in [.p12] or [.pfx] the data is loaded by
-    g_tls_certificate_new_from_pkcs12() otherwise it is loaded by
-    g_tls_certificate_new_from_pem(). See those functions for exact details.
+    [g_tls_certificate_new_from_pkcs12 ()] otherwise it is loaded by
+    {{!Ocgio.Tls_certificate.val-new_from_pem}[g_tls_certificate_new_from_pem
+                                               ()]}. See those functions for
+    exact details.
 
     If [file] cannot be read or parsed, the function will return [None] and set
     [error]. *)
 
 val new_from_file_with_password :
   string -> string -> (tls_certificate_t, GError.t) result
-(** Creates a [GTlsCertificate] from the data in [file].
+(** Creates a
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t}[GTlsCertificate]}
+    from the data in [file].
 
     If [file] cannot be read or parsed, the function will return [None] and set
     [error].
 
-    Any unknown file types will error with [G_IO_ERROR_NOT_SUPPORTED]. Currently
-    only [.p12] and [.pfx] files are supported. See
-    g_tls_certificate_new_from_pkcs12() for more details. *)
+    Any unknown file types will error with
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-NOT_SUPPORTED}[G_IO_ERROR_NOT_SUPPORTED]}.
+    Currently only [.p12] and [.pfx] files are supported. See
+    [g_tls_certificate_new_from_pkcs12 ()] for more details. *)
 
 val new_from_files : string -> string -> (tls_certificate_t, GError.t) result
-(** Creates a [GTlsCertificate] from the PEM-encoded data in [cert_file] and
-    [key_file]. The returned certificate will be the first certificate found in
-    [cert_file]. As of GLib 2.44, if [cert_file] contains more certificates it
-    will try to load a certificate chain. All certificates will be verified in
-    the order found (top-level certificate should be the last one in the file)
-    and the [GTlsCertificate:issuer] property of each certificate will be set
-    accordingly if the verification succeeds. If any certificate in the chain
-    cannot be verified, the first certificate in the file will still be
-    returned.
+(** Creates a
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t}[GTlsCertificate]}
+    from the PEM-encoded data in [cert_file] and [key_file]. The returned
+    certificate will be the first certificate found in [cert_file]. As of GLib
+    2.44, if [cert_file] contains more certificates it will try to load a
+    certificate chain. All certificates will be verified in the order found
+    (top-level certificate should be the last one in the file) and the
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t.method-get_issuer}[GTlsCertificate:issuer]}
+    property of each certificate will be set accordingly if the verification
+    succeeds. If any certificate in the chain cannot be verified, the first
+    certificate in the file will still be returned.
 
     If either file cannot be read or parsed, the function will return [None] and
-    set [error]. Otherwise, this behaves like g_tls_certificate_new_from_pem().
-*)
+    set [error]. Otherwise, this behaves like
+    {{!Ocgio.Tls_certificate.val-new_from_pem}[g_tls_certificate_new_from_pem
+                                               ()]}. *)
 
 val new_from_pem : string -> int -> (tls_certificate_t, GError.t) result
-(** Creates a [GTlsCertificate] from the PEM-encoded data in [data]. If [data]
-    includes both a certificate and a private key, then the returned certificate
-    will include the private key data as well. (See the
-    [GTlsCertificate:private]-key-pem property for information about supported
+(** Creates a
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t}[GTlsCertificate]}
+    from the PEM-encoded data in [data]. If [data] includes both a certificate
+    and a private key, then the returned certificate will include the private
+    key data as well. (See the
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t.method-private_key_pem}
+     [GTlsCertificate:private-key-pem]} property for information about supported
     formats.)
 
     The returned certificate will be the first certificate found in [data]. As
     of GLib 2.44, if [data] contains more certificates it will try to load a
     certificate chain. All certificates will be verified in the order found
     (top-level certificate should be the last one in the file) and the
-    [GTlsCertificate:issuer] property of each certificate will be set
-    accordingly if the verification succeeds. If any certificate in the chain
-    cannot be verified, the first certificate in the file will still be
-    returned. *)
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t.method-get_issuer}[GTlsCertificate:issuer]}
+    property of each certificate will be set accordingly if the verification
+    succeeds. If any certificate in the chain cannot be verified, the first
+    certificate in the file will still be returned. *)
 
 val new_from_pkcs11_uris :
   string -> string option -> (tls_certificate_t, GError.t) result
-(** Creates a [GTlsCertificate] from a
+(** Creates a
+    {{!Ocgio.Tls_certificate.class-type-tls_certificate_t}[GTlsCertificate]}
+    from a
     {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
      #11} URI.
 

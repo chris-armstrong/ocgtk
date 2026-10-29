@@ -20,8 +20,8 @@
     [settings.ini] file next to their [gtk.css] file.
 
     Applications can override system-wide settings by setting the property of
-    the [GtkSettings] object with g_object_set(). This should be restricted to
-    special cases though; [GtkSettings] are not meant as an application
+    the [GtkSettings] object with [g_object_set ()]. This should be restricted
+    to special cases though; [GtkSettings] are not meant as an application
     configuration facility.
 
     There is one [GtkSettings] instance per display. It can be obtained with
@@ -37,7 +37,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_settings_get_type"
 (* Methods *)
 
 external reset_property : t -> string -> unit = "ml_gtk_settings_reset_property"
-(** Undoes the effect of calling g_object_set() to install an
+(** Undoes the effect of calling [g_object_set ()] to install an
     application-specific value for a setting.
 
     After this call, the setting will again follow the session-wide value for
@@ -357,18 +357,18 @@ external get_gtk_error_bell : t -> bool = "ml_gtk_settings_get_gtk_error_bell"
 (** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
-    Since the error bell is implemented using gdk_surface_beep(), the windowing
-    system may offer ways to configure the error bell in many ways, such as
-    flashing the window or similar visual effects. *)
+    Since the error bell is implemented using [gdk_surface_beep ()], the
+    windowing system may offer ways to configure the error bell in many ways,
+    such as flashing the window or similar visual effects. *)
 
 external set_gtk_error_bell : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_error_bell"
 (** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
-    Since the error bell is implemented using gdk_surface_beep(), the windowing
-    system may offer ways to configure the error bell in many ways, such as
-    flashing the window or similar visual effects. *)
+    Since the error bell is implemented using [gdk_surface_beep ()], the
+    windowing system may offer ways to configure the error bell in many ways,
+    such as flashing the window or similar visual effects. *)
 
 external get_gtk_font_name : t -> string = "ml_gtk_settings_get_gtk_font_name"
 (** The default font to use.

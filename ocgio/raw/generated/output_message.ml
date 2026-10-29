@@ -6,7 +6,7 @@
     the operation will use all the buffers as if they were one buffer.
 
     If [address] is [None] then the message is sent to the default receiver (as
-    previously set by g_socket_connect()).
+    previously set by {{!Ocgio.Raw.Socket.val-connect}[g_socket_connect ()]}).
 
     The class built on this module is in {!Ocgio.Output_message}. *)
 

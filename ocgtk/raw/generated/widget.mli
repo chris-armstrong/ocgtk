@@ -22,7 +22,9 @@
  or its child widgets, the [Gtk.Widget.get_request_mode] virtual\n\
  function must be implemented as well and return the widget's preferred\n\
  request mode. The default implementation of this virtual function\n\
- returns [GTK_SIZE_REQUEST_CONSTANT_SIZE], which means that the widget will\n\
+ returns \
+ {{!Ocgtk.Enums.type-sizerequestmode.constructor-CONSTANT_SIZE}[GTK_SIZE_REQUEST_CONSTANT_SIZE]}, \
+ which means that the widget will\n\
  only ever get -1 passed as the for_size value to its\n\
  [Gtk.Widget.measure] implementation.\n\n\
  The geometry management system will query a widget hierarchy in\n\
@@ -30,19 +32,24 @@
  for their minimum sizes it is generally done in two initial passes\n\
  in the {{!Ocgtk.Enums.type-sizerequestmode}[Gtk.SizeRequestMode]} chosen by \
  the toplevel.\n\n\
- For example, when queried in the normal [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] \
+ For example, when queried in the normal \
+ {{!Ocgtk.Enums.type-sizerequestmode.constructor-HEIGHT_FOR_WIDTH}[GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH]} \
  mode:\n\n\
  First, the default minimum and natural width for each widget\n\
  in the interface will be computed using \
  {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
- orientation of [GTK_ORIENTATION_HORIZONTAL] and a for_size of -1.\n\
+ orientation of \
+ {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]} \
+ and a for_size of -1.\n\
  Because the preferred widths for each widget depend on the preferred\n\
  widths of their children, this information propagates up the hierarchy,\n\
  and finally a minimum and natural width is determined for the entire\n\
  toplevel. Next, the toplevel will use the minimum width to query for the\n\
  minimum height contextual to that width using \
  {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
- orientation of [GTK_ORIENTATION_VERTICAL] and a for_size of the just computed\n\
+ orientation of \
+ {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]} \
+ and a for_size of the just computed\n\
  width. This will also be a highly recursive operation. The minimum height\n\
  for the minimum width is normally used to set the minimum size constraint\n\
  on the toplevel.\n\n\
@@ -68,12 +75,15 @@
  For instance, a {{!Ocgtk.Raw.Label}[Gtk.Label]} that does height-for-width \
  word wrapping\n\
  will not expect to have [Gtk.Widget.measure] with an orientation of\n\
- [GTK_ORIENTATION_VERTICAL] called because that call is specific to a\n\
+ {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]} \
+ called because that call is specific to a\n\
  width-for-height request. In this case the label must return the height\n\
  required for its own minimum possible width. By following this rule any\n\
  widget that handles height-for-width or width-for-height requests will\n\
  always be allocated at least enough space to fit its own content.\n\n\
- Here are some examples of how a [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] widget\n\
+ Here are some examples of how a \
+ {{!Ocgtk.Enums.type-sizerequestmode.constructor-HEIGHT_FOR_WIDTH}[GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH]} \
+ widget\n\
  generally deals with width-for-height requests:\n\n\
  {[\n\
  static void\n\
@@ -146,7 +156,9 @@
  [Gtk.Widget.measure] virtual function. It allows you to report\n\
  both a minimum and natural size.\n\n\
  If a widget ends up baseline aligned it will be allocated all the space in\n\
- the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
+ the parent as if it was \
+ {{!Ocgtk.Enums.type-align.constructor-FILL}[GTK_ALIGN_FILL]}, but the \
+ selected baseline can be\n\
  found via {{!Ocgtk.Raw.Widget.val-get_baseline}[Gtk.Widget.get_baseline]}. If \
  the baseline has a\n\
  value other than -1 you need to align the widget such that the baseline\n\

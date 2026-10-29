@@ -21,11 +21,13 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_inet_address_get_type"
 
 external new_any : Ocgio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
 [@@ocaml.doc
-  "Creates a [GInetAddress] for the \"any\" address (unassigned/\"don't\n\
+  "Creates a {{!Ocgio.Raw.Inet_address}[GInetAddress]} for the \"any\" address \
+   (unassigned/\"don't\n\
    care\") for [family]."]
 
 external new_from_string : string -> t = "ml_g_inet_address_new_from_string"
-(** Parses [string] as an IP address and creates a new [GInetAddress].
+(** Parses [string] as an IP address and creates a new
+    {{!Ocgio.Raw.Inet_address}[GInetAddress]}.
 
     If [address] is an IPv6 address, it can also contain a scope ID (separated
     from the address by a [%]). Note that currently this behavior is platform
@@ -33,7 +35,8 @@ external new_from_string : string -> t = "ml_g_inet_address_new_from_string"
 
 external new_loopback : Ocgio_enums.socketfamily -> t
   = "ml_g_inet_address_new_loopback"
-(** Creates a [GInetAddress] for the loopback address for [family]. *)
+(** Creates a {{!Ocgio.Raw.Inet_address}[GInetAddress]} for the loopback address
+    for [family]. *)
 
 (* Methods *)
 
@@ -46,7 +49,7 @@ external get_scope_id : t -> UInt32.t = "ml_g_inet_address_get_scope_id"
 
 external get_native_size : t -> Gsize.t = "ml_g_inet_address_get_native_size"
 (** Gets the size of the native raw binary address for [address]. This is the
-    size of the data that you get from g_inet_address_to_bytes(). *)
+    size of the data that you get from [g_inet_address_to_bytes ()]. *)
 
 external get_is_site_local : t -> bool = "ml_g_inet_address_get_is_site_local"
 (** Tests whether [address] is a site-local address such as 10.0.0.1 (that is,
@@ -95,6 +98,7 @@ external get_family : t -> Ocgio_enums.socketfamily
 (** Gets [address]'s family *)
 
 external equal : t -> t -> bool = "ml_g_inet_address_equal"
-(** Checks if two [GInetAddress] instances are equal, e.g. the same address. *)
+(** Checks if two {{!Ocgio.Raw.Inet_address}[GInetAddress]} instances are equal,
+    e.g. the same address. *)
 
 (* Properties *)

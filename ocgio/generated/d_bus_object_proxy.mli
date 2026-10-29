@@ -48,5 +48,6 @@ class d_bus_object_proxy : Raw.D_bus_object_proxy.t -> d_bus_object_proxy_t
 (** {1:constructors Constructors} *)
 
 val new_ : D_bus_connection.d_bus_connection_t -> string -> d_bus_object_proxy_t
-(** Creates a new [GDBusObjectProxy] for the given connection and object path.
-*)
+(** Creates a new
+    {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[GDBusObjectProxy]}
+    for the given connection and object path. *)

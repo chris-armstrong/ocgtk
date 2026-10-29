@@ -47,10 +47,10 @@ class type pixbuf_animation_t = object
   method is_static_image : unit -> bool
   (** Checks whether the animation is a static image.
 
-      If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-      out to be a plain, unanimated image, then this function will return
-      [true]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
-  *)
+      If you load a file with [gdk_pixbuf_animation_new_from_file ()] and it
+      turns out to be a plain, unanimated image, then this function will return
+      [true]. Use [gdk_pixbuf_animation_get_static_image ()] to retrieve the
+      image. *)
 
   (** {2:conversions Conversions} *)
 

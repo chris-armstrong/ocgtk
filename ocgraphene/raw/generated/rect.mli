@@ -8,9 +8,10 @@
     equivalent to a #graphene_rect_t with an origin of \[ 10, 10 \] and a size
     of \[ -10, -10 \].
 
-    Application code can normalize rectangles using graphene_rect_normalize();
-    this function will ensure that the width and height of a rectangle are
-    positive values. All functions taking a #graphene_rect_t as an argument will
+    Application code can normalize rectangles using
+    {{!Ocgraphene.Raw.Rect.val-normalize}[graphene_rect_normalize ()]}; this
+    function will ensure that the width and height of a rectangle are positive
+    values. All functions taking a #graphene_rect_t as an argument will
     internally operate on a normalized copy; all functions returning a
     #graphene_rect_t will always return a normalized rectangle.
 
@@ -59,8 +60,9 @@ external round : t -> t = "ml_graphene_rect_round"
 (** Rounds the origin and size of the given rectangle to their nearest integer
     values; the rounding is guaranteed to be large enough to have an area bigger
     or equal to the original rectangle, but might not fully contain its extents.
-    Use graphene_rect_round_extents() in case you need to round to a rectangle
-    that covers fully the original one.
+    Use
+    {{!Ocgraphene.Raw.Rect.val-round_extents}[graphene_rect_round_extents ()]}
+    in case you need to round to a rectangle that covers fully the original one.
 
     This function is the equivalent of calling [floor] on the coordinates of the
     origin, and [ceil] on the size. *)

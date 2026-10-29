@@ -1,5 +1,6 @@
-(** [GSettingsSchemaKey] is an opaque data structure and can only be accessed
-    using the following functions.
+(** {{!Ocgio.Settings_schema_key.class-type-settings_schema_key_t}[GSettingsSchemaKey]}
+    is an opaque data structure and can only be accessed using the following
+    functions.
 
     Its methods, signals and properties are on
     {!class-type-settings_schema_key_t}. Its constructors are under
@@ -10,8 +11,9 @@
 
 (** {b The methods, signals and properties of a [SettingsSchemaKey].}
 
-    [GSettingsSchemaKey] is an opaque data structure and can only be accessed
-    using the following functions. *)
+    {{!Ocgio.Settings_schema_key.class-type-settings_schema_key_t}[GSettingsSchemaKey]}
+    is an opaque data structure and can only be accessed using the following
+    functions. *)
 class type settings_schema_key_t = object
   (** {2:methods Methods} *)
 

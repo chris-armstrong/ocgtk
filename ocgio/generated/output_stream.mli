@@ -112,15 +112,15 @@ class type output_stream_t = object
 
   method write_bytes :
     Glib_bytes.t -> Cancellable.cancellable_t option -> (int, GError.t) result
-  (** A wrapper function for g_output_stream_write() which takes a [GBytes] as
-      input. This can be more convenient for use by language bindings or in
+  (** A wrapper function for [g_output_stream_write ()] which takes a [GBytes]
+      as input. This can be more convenient for use by language bindings or in
       other cases where the refcounted nature of [GBytes] is helpful over a bare
       pointer interface.
 
       However, note that this function may still perform partial writes, just
-      like g_output_stream_write(). If that occurs, to continue writing, you
+      like [g_output_stream_write ()]. If that occurs, to continue writing, you
       will need to create a new [GBytes] containing just the remaining bytes,
-      using g_bytes_new_from_bytes(). Passing the same [GBytes] instance
+      using [g_bytes_new_from_bytes ()]. Passing the same [GBytes] instance
       multiple times potentially can result in duplicated data in the output
       stream. *)
 

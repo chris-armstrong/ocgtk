@@ -134,11 +134,12 @@ external new_from_bytes :
   t
   = "ml_gdk_pixbuf_new_from_bytes_bytecode"
     "ml_gdk_pixbuf_new_from_bytes_native"
-(** Creates a new [GdkPixbuf] out of in-memory readonly image data.
+(** Creates a new {{!Ocgdkpixbuf.Raw.Pixbuf}[GdkPixbuf]} out of in-memory
+    readonly image data.
 
     Currently only RGB images with 8 bits per sample are supported.
 
-    This is the [GBytes] variant of gdk_pixbuf_new_from_data(), useful for
+    This is the [GBytes] variant of [gdk_pixbuf_new_from_data ()], useful for
     language bindings. *)
 
 external new_from_file : string -> (t, GError.t) result
@@ -278,7 +279,7 @@ external new_from_stream_finish :
   Ocgio_raw.Async_result.t -> (t, GError.t) result
   = "ml_gdk_pixbuf_new_from_stream_finish"
 (** Finishes an asynchronous pixbuf creation operation started with
-    gdk_pixbuf_new_from_stream_async(). *)
+    [gdk_pixbuf_new_from_stream_async ()]. *)
 
 external new_from_xpm_data : string array -> t
   = "ml_gdk_pixbuf_new_from_xpm_data"
@@ -337,9 +338,12 @@ external scale :
     the rectangle ([dest_x], [dest_y], [dest_width], [dest_height]) of the
     resulting image onto the destination image replacing the previous contents.
 
-    Try to use gdk_pixbuf_scale_simple() first; this function is the
-    industrial-strength power tool you can fall back to, if
-    gdk_pixbuf_scale_simple() isn't powerful enough.
+    Try to use
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-scale_simple}[gdk_pixbuf_scale_simple ()]}
+    first; this function is the industrial-strength power tool you can fall back
+    to, if
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-scale_simple}[gdk_pixbuf_scale_simple ()]}
+    isn't powerful enough.
 
     If the source rectangle overlaps the destination rectangle on the same
     pixbuf, it will be overwritten during the scaling which results in rendering
@@ -407,7 +411,7 @@ external read_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_read_pixel_bytes"
     be modified.
 
     This function allows skipping the implicit copy that must be made if
-    gdk_pixbuf_get_pixels() is called on a read-only pixbuf. *)
+    [gdk_pixbuf_get_pixels ()] is called on a read-only pixbuf. *)
 
 external new_subpixbuf : t -> int -> int -> int -> int -> t
   = "ml_gdk_pixbuf_new_subpixbuf"
@@ -431,7 +435,8 @@ external get_option : t -> string -> string option = "ml_gdk_pixbuf_get_option"
 [@@ocaml.doc
   "Looks up [key] in the list of options that may have been attached to the\n\
    [pixbuf] when it was loaded, or that may have been attached by another\n\
-   function using gdk_pixbuf_set_option().\n\n\
+   function using \
+   {{!Ocgdkpixbuf.Raw.Pixbuf.val-set_option}[gdk_pixbuf_set_option ()]}.\n\n\
    For instance, the ANI loader provides \"Title\" and \"Artist\" options.\n\
    The ICO, XBM, and XPM loaders provide \"x_hot\" and \"y_hot\" hot-spot\n\
    options for cursor definitions. The PNG loader provides the tEXt ancillary\n\
@@ -497,7 +502,8 @@ external copy : t -> t option = "ml_gdk_pixbuf_copy"
     [pixbuf].
 
     Note that this does not copy the options set on the original [GdkPixbuf],
-    use gdk_pixbuf_copy_options() for this. *)
+    use {{!Ocgdkpixbuf.Raw.Pixbuf.val-copy_options}[gdk_pixbuf_copy_options ()]}
+    for this. *)
 
 external composite_color_simple :
   t ->
@@ -545,8 +551,10 @@ external composite_color :
     If the source image has no alpha channel, and [overall_alpha] is 255, a fast
     path is used which omits the alpha blending and just performs the scaling.
 
-    See gdk_pixbuf_composite_color_simple() for a simpler variant of this
-    function suitable for many tasks. *)
+    See
+    {{!Ocgdkpixbuf.Raw.Pixbuf.val-composite_color_simple}[gdk_pixbuf_composite_color_simple
+                                                          ()]} for a simpler
+    variant of this function suitable for many tasks. *)
 
 external composite :
   t ->

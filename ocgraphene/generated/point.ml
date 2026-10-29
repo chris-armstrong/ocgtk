@@ -5,7 +5,7 @@ class type point_t = object
   (** Checks if the two points [a] and [b] point to the same coordinates.
 
       This function accounts for floating point fluctuations; if you want to
-      control the fuzziness of the match, you can use graphene_point_near()
+      control the fuzziness of the match, you can use [graphene_point_near ()]
       instead. *)
 
   method init : float -> float -> Raw.Point.t

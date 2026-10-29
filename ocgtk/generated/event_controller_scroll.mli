@@ -36,21 +36,26 @@
     conditions of the widget changed).
 
     The controller can be set up to emit motion for either/both vertical and
-    horizontal scroll events through [GTK_EVENT_CONTROLLER_SCROLL_VERTICAL],
-    [GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL] and
-    [GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]. If any axis is disabled, the
-    respective
+    horizontal scroll events through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-VERTICAL}[GTK_EVENT_CONTROLLER_SCROLL_VERTICAL]},
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-HORIZONTAL}[GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL]}
+    and
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-BOTH_AXES}[GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]}.
+    If any axis is disabled, the respective
     {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
      [Gtk.EventControllerScroll::scroll]} delta will be 0. Vertical scroll
     events will be translated to horizontal motion for the devices incapable of
     horizontal scrolling.
 
     The event controller can also be forced to emit discrete events on all
-    devices through [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]. This can be used to
-    implement discrete actions triggered through scroll events (e.g. switching
-    across combobox options).
+    devices through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-DISCRETE}[GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]}.
+    This can be used to implement discrete actions triggered through scroll
+    events (e.g. switching across combobox options).
 
-    The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
+    The
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-KINETIC}[GTK_EVENT_CONTROLLER_SCROLL_KINETIC]}
+    flag toggles the emission of the
     {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_decelerate}
      [Gtk.EventControllerScroll::decelerate]} signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
@@ -145,21 +150,26 @@ class event_controller_scroll :
     conditions of the widget changed).
 
     The controller can be set up to emit motion for either/both vertical and
-    horizontal scroll events through [GTK_EVENT_CONTROLLER_SCROLL_VERTICAL],
-    [GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL] and
-    [GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]. If any axis is disabled, the
-    respective
+    horizontal scroll events through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-VERTICAL}[GTK_EVENT_CONTROLLER_SCROLL_VERTICAL]},
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-HORIZONTAL}[GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL]}
+    and
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-BOTH_AXES}[GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]}.
+    If any axis is disabled, the respective
     {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
      [Gtk.EventControllerScroll::scroll]} delta will be 0. Vertical scroll
     events will be translated to horizontal motion for the devices incapable of
     horizontal scrolling.
 
     The event controller can also be forced to emit discrete events on all
-    devices through [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]. This can be used to
-    implement discrete actions triggered through scroll events (e.g. switching
-    across combobox options).
+    devices through
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-DISCRETE}[GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]}.
+    This can be used to implement discrete actions triggered through scroll
+    events (e.g. switching across combobox options).
 
-    The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
+    The
+    {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-KINETIC}[GTK_EVENT_CONTROLLER_SCROLL_KINETIC]}
+    flag toggles the emission of the
     {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_decelerate}
      [Gtk.EventControllerScroll::decelerate]} signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the

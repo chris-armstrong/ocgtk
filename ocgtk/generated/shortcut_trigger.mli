@@ -103,8 +103,8 @@ val parse_string : string -> shortcut_trigger_t
     The accepted strings are:
 
     - [never], for [GtkNeverTrigger]
-    - a string parsed by gtk_accelerator_parse(), for a [GtkKeyvalTrigger], e.g.
-      [<Control>C]
+    - a string parsed by [gtk_accelerator_parse ()], for a [GtkKeyvalTrigger],
+      e.g. [<Control>C]
     - underscore, followed by a single character, for [GtkMnemonicTrigger], e.g.
       [_l]
     - two valid trigger strings, separated by a [|] character, for a

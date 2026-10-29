@@ -15,12 +15,14 @@
     [GtkTreeView] widget instead of a separate function.
 
     The [GtkTreeSelection] object is gotten from a [GtkTreeView] by calling
-    gtk_tree_view_get_selection(). It can be manipulated to check the selection
-    status of the tree, as well as select and deselect individual rows.
-    Selection is done completely view side. As a result, multiple views of the
-    same model can have completely different selections. Additionally, you
-    cannot change the selection of a row on the model that is not currently
-    displayed by the view without expanding its parents first.
+    {{!Ocgtk.Tree_view.class-type-tree_view_t.method-get_selection}[gtk_tree_view_get_selection
+                                                                    ()]}. It can
+    be manipulated to check the selection status of the tree, as well as select
+    and deselect individual rows. Selection is done completely view side. As a
+    result, multiple views of the same model can have completely different
+    selections. Additionally, you cannot change the selection of a row on the
+    model that is not currently displayed by the view without expanding its
+    parents first.
 
     One of the important things to remember when monitoring the selection of a
     view is that the [GtkTreeSelection]::changed signal is mostly a hint. That
@@ -45,7 +47,7 @@ class type tree_selection_t = object
 
   method get_mode : unit -> Enums.selectionmode
   (** Gets the selection mode for [selection]. See
-      gtk_tree_selection_set_mode(). *)
+      [gtk_tree_selection_set_mode ()]. *)
 
   method get_tree_view : unit -> tree_view_t
   (** Returns the tree view associated with [selection]. *)
@@ -129,9 +131,9 @@ and tree_view_t = object
       the cursor keys.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control the cursor
-      programmatically. In contrast to gtk_tree_view_set_cursor() and
-      gtk_tree_view_set_cursor_on_cell() when moving horizontally
+      [g_signal_emit_by_name ()] if they need to control the cursor
+      programmatically. In contrast to [gtk_tree_view_set_cursor ()] and
+      [gtk_tree_view_set_cursor_on_cell ()] when moving horizontally
       [GtkTreeView]::move-cursor does not reset the current selection. *)
 
   method on_select_all :
@@ -201,7 +203,8 @@ and tree_view_t = object
       as necessary. *)
 
   method get_activate_on_single_click : unit -> bool
-  (** Gets the setting set by gtk_tree_view_set_activate_on_single_click(). *)
+  (** Gets the setting set by [gtk_tree_view_set_activate_on_single_click ()].
+  *)
 
   method get_column : int -> Tree_view_column.tree_view_column_t option
   (** Gets the [GtkTreeViewColumn] at the given position in the #tree_view. *)
@@ -253,7 +256,7 @@ and tree_view_t = object
 
   method get_reorderable : unit -> bool
   (** Retrieves whether the user can reorder the tree via drag-and-drop. See
-      gtk_tree_view_set_reorderable(). *)
+      [gtk_tree_view_set_reorderable ()]. *)
 
   method get_rubber_banding : unit -> bool
   (** Returns whether rubber banding is turned on for [tree_view]. If the
@@ -336,7 +339,7 @@ and tree_view_t = object
       [tree_x], [tree_y], where [tree_x] and [tree_y] are specified in tree
       coordinates. The [tree_view] must be realized before this function is
       called. If it isn't, you probably want to be using
-      gtk_tree_view_scroll_to_cell().
+      [gtk_tree_view_scroll_to_cell ()].
 
       If either [tree_x] or [tree_y] are -1, then that direction isn’t scrolled.
   *)
@@ -471,7 +474,7 @@ and tree_view_t = object
       there will be no way to expand and collapse rows by default. Also note
       that hiding the expanders will disable the default indentation. You can
       set a custom indentation in this case using
-      gtk_tree_view_set_level_indentation(). This does not have any visible
+      [gtk_tree_view_set_level_indentation ()]. This does not have any visible
       effects for lists. *)
 
   method set_tooltip_cell :
@@ -483,14 +486,15 @@ and tree_view_t = object
   (** Sets the tip area of [tooltip] to the area [path], [column] and [cell]
       have in common. For example if [path] is [None] and [column] is set, the
       tip area will be set to the full area covered by [column]. See also
-      gtk_tooltip_set_tip_area().
+      [gtk_tooltip_set_tip_area ()].
 
       Note that if [path] is not specified and [cell] is set and part of a
       column containing the expander, the tooltip might not show and hide at the
       correct position. In such cases [path] must be set to the current node
       under the mouse cursor for this function to operate correctly.
 
-      See also gtk_tree_view_set_tooltip_column() for a simpler alternative. *)
+      See also [gtk_tree_view_set_tooltip_column ()] for a simpler alternative.
+  *)
 
   method set_tooltip_column : int -> unit
   (** If you only plan to have simple (text-only) tooltips on full rows, you can
@@ -501,20 +505,21 @@ and tree_view_t = object
       When enabled, [GtkWidget:has-tooltip] will be set to [true] and
       [tree_view] will connect a [GtkWidget::query-tooltip] signal handler.
 
-      Note that the signal handler sets the text with gtk_tooltip_set_markup(),
-      so &, <, etc have to be escaped in the text. *)
+      Note that the signal handler sets the text with
+      [gtk_tooltip_set_markup ()], so &, <, etc have to be escaped in the text.
+  *)
 
   method set_tooltip_row : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the row at
-      [path]. See also gtk_tree_view_set_tooltip_column() for a simpler
-      alternative. See also gtk_tooltip_set_tip_area(). *)
+      [path]. See also [gtk_tree_view_set_tooltip_column ()] for a simpler
+      alternative. See also [gtk_tooltip_set_tip_area ()]. *)
 
   method unset_rows_drag_dest : unit -> unit
-  (** Undoes the effect of gtk_tree_view_enable_model_drag_dest(). Calling this
-      method sets [GtkTreeView]:reorderable to [false]. *)
+  (** Undoes the effect of [gtk_tree_view_enable_model_drag_dest ()]. Calling
+      this method sets [GtkTreeView]:reorderable to [false]. *)
 
   method unset_rows_drag_source : unit -> unit
-  (** Undoes the effect of gtk_tree_view_enable_model_drag_source(). Calling
+  (** Undoes the effect of [gtk_tree_view_enable_model_drag_source ()]. Calling
       this method sets [GtkTreeView]:reorderable to [false]. *)
 
   (** {2:properties Properties} *)

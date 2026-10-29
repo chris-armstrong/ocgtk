@@ -76,8 +76,9 @@ external set_scope : t -> Ocgtk_enums.shortcutscope -> unit
     propagation. In particular, it allows installing global keyboard shortcuts
     that can be activated even when a widget does not have focus.
 
-    With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
-    widget has focus. *)
+    With
+    {{!Ocgtk.Enums.type-shortcutscope.constructor-LOCAL}[GTK_SHORTCUT_SCOPE_LOCAL]},
+    shortcuts will only be activated when the widget has focus. *)
 
 external set_mnemonics_modifiers : t -> Ocgdk_enums.modifiertype -> unit
   = "ml_gtk_shortcut_controller_set_mnemonics_modifiers"

@@ -202,7 +202,8 @@ external push_mask : t -> Ocgsk_enums.maskmode -> unit
     After that call, the source image will be recorded until the second call to
     {{!Ocgtk.Raw.Snapshot.val-pop}[Gtk.Snapshot.pop]}.
 
-    Calling this function requires 2 subsequent calls to gtk_snapshot_pop(). *)
+    Calling this function requires 2 subsequent calls to
+    {{!Ocgtk.Raw.Snapshot.val-pop}[gtk_snapshot_pop ()]}. *)
 
 external push_gl_shader :
   t -> Ocgsk_raw.Gl_shader.t -> Ocgraphene_raw.Rect.t -> Glib_bytes.t -> unit

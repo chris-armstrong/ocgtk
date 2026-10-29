@@ -1,9 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–11 implemented (per-phase status below). The C code-block
+**Status: Phases 0–13 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
-cross-reference resolution (PRD §7), added 2026-10-28; Phase 11 done, 12 and
-13 not started. Phase 14,
+cross-reference resolution (PRD §7), added 2026-10-28; all done. Phase 14,
 property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
@@ -1438,6 +1437,47 @@ after change 2; `dune build @doc` with 0 odoc warnings (a warning means
 code in L2 docs.
 
 ### Phase 13 — Cross-references III: legacy sigils and C symbols
+
+**Status: done** (branch `m3-phase13`). `Sym_ref` records its `origin`, and
+`parse` turns a C call in prose into a `Sym_ref { origin = C_call }` that
+renders as `[gtk_widget_show ()]`, linked or not. `Doc_index` lists types by C
+type and constants by C identifier in every indexed namespace, and, for the
+current namespace, methods, constructors and enumeration and bitfield members
+by C identifier. `Doc_resolve` resolves each origin along the rows above;
+`Not_resolved_yet` is gone. A clean `@doc` build has 0 odoc warnings and no
+unresolved doc reference. The resolution summary (as L2 docs, all namespaces)
+goes from 3,755 to 6,795 linked references of 8,974; the 1,763 new
+references are the C calls. Linked of total, per origin: `#` sigil 958 of
+1,212, `%` sigil 1,098 of 1,258, C call 984 of 1,763. Outside `gir_gen`, every
+changed binding file differs from `m3-phase12` only by references becoming
+links, unresolved C calls becoming code spans, and the hyphen fix below
+(checked by normalising both sides). Acceptance: no Gtk doc has a
+`%GDK_KEY_*` sigil; `%GDK_BUTTON_PRIMARY` in `Gtk.GestureSingle`'s doc links
+to `Ocgdk.Constants.button_primary`, and `gtk_widget_activate()` in Gtk docs
+links to `Ocgtk.Raw.Widget.val-activate`. Notes and departures:
+
+- **C calls.** An identifier with an underscore, followed by `()` or ` ()`.
+  It must not continue a word, a path or a member access (`obj.do_it()`,
+  `/path_to()`), nor follow `[`: a rendered call starts with one, and
+  without that guard a second parse wraps it again (the corpus convergence
+  check caught this). C calls in code spans stay code. ocamlformat may break
+  a long linked call between the name and `()`; odoc renders it on one line.
+- **`[id@symbol]` resolves like a C call**: methods and constructors of the
+  current namespace only. A `%` sigil tries constants first (the current
+  namespace, then the others), then enumeration and bitfield members of the
+  current namespace.
+- **Hyphens in `#Type:prop` and `#Type::sig`.** The sigil used to end at the
+  first hyphen, so `#GApplication::command-line` degraded to
+  `[GApplication::command]-line`. A hyphen between identifier characters is
+  now part of the name, which links 100 more `#` sigils.
+- **The summary** counts sigils and C calls on their own lines (`#sigil`,
+  `%sigil`, `c-call`) and lists missed ones as the source wrote them
+  (`#GtkFoo`, `%FOO`, `foo()`).
+- Remaining misses are mostly symbols of namespaces that are not generated
+  (`g_*()`, `%G_*`, `#GObject`, `#GBytes`), free functions
+  (`gtk_accelerator_parse()`), callback types and class structs, methods a
+  layer does not emit (varargs, out parameters at L2, async), and members of
+  other namespaces.
 
 *Goal:* the gtk-doc sigils and C-symbol references that PRD §3.5 and §7.4–7.5
 say are resolvable link, under the same rule as the fragments (decision 11).

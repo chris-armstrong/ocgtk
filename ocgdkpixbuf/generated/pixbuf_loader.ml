@@ -7,7 +7,7 @@ class type pixbuf_loader_t = object
       the desired size.
 
       After this signal is emitted, applications can call
-      gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded pixbuf. *)
+      [gdk_pixbuf_loader_get_pixbuf ()] to fetch the partially-loaded pixbuf. *)
 
   method on_area_updated :
     ?after:bool ->
@@ -25,7 +25,7 @@ class type pixbuf_loader_t = object
 
   method on_closed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-  (** This signal is emitted when gdk_pixbuf_loader_close() is called.
+  (** This signal is emitted when [gdk_pixbuf_loader_close ()] is called.
 
       It can be used by different parts of an application to receive
       notification when an image loader is closed by the code that drives it. *)
@@ -39,14 +39,14 @@ class type pixbuf_loader_t = object
       amount of data that is required to figure out the size of the image that
       it will create.
 
-      Applications can call gdk_pixbuf_loader_set_size() in response to this
+      Applications can call [gdk_pixbuf_loader_set_size ()] in response to this
       signal to set the desired size to which the image should be scaled. *)
 
   (** {2:methods Methods} *)
 
   method close : unit -> (bool, GError.t) result
   (** Informs a pixbuf loader that no further writes with
-      gdk_pixbuf_loader_write() will occur, so that it can free its internal
+      [gdk_pixbuf_loader_write ()] will occur, so that it can free its internal
       loading structures.
 
       This function also tries to parse any data that hasn't yet been parsed; if
@@ -83,18 +83,19 @@ class type pixbuf_loader_t = object
      [GdkPixbuf.PixbufLoader::area-prepared] signal has been\n\
      emitted by the loader; this means that enough data has been read\n\
      to know the size of the image that will be allocated.\n\n\
-     If the loader has not received enough data via gdk_pixbuf_loader_write(),\n\
+     If the loader has not received enough data via [gdk_pixbuf_loader_write \
+     ()],\n\
      then this function returns [None].\n\n\
      The returned pixbuf will be the same in all future calls to the loader,\n\
      so if you want to keep using it, you should acquire a reference to it.\n\n\
      Additionally, if the loader is an animation, it will return the \"static\n\
-     image\" of the animation (see gdk_pixbuf_animation_get_static_image())."]
+     image\" of the animation (see [gdk_pixbuf_animation_get_static_image ()])."]
 
   method set_size : int -> int -> unit
   (** Causes the image to be scaled while it is loaded.
 
       The desired image size can be determined relative to the original size of
-      the image by calling gdk_pixbuf_loader_set_size() from a signal handler
+      the image by calling [gdk_pixbuf_loader_set_size ()] from a signal handler
       for the ::size-prepared signal.
 
       Attempts to set the desired image size are ignored after the emission of

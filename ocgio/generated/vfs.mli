@@ -35,7 +35,7 @@ class type vfs_t = object
 
   method unregister_uri_scheme : string -> bool
   (** Unregisters the URI handler for [scheme] previously registered with
-      g_vfs_register_uri_scheme(). *)
+      [g_vfs_register_uri_scheme ()]. *)
 
   (** {2:conversions Conversions} *)
 

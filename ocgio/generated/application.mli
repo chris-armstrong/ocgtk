@@ -16,7 +16,7 @@ class type application_t = object
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::activate signal is emitted on the primary instance when an
-      activation occurs. See g_application_activate(). *)
+      activation occurs. See [g_application_activate ()]. *)
 
   method on_command_line :
     ?after:bool ->
@@ -25,7 +25,7 @@ class type application_t = object
     unit ->
     Gobject.Signal.handler_id
   (** The ::command-line signal is emitted on the primary instance when a
-      commandline is not handled locally. See g_application_run() and the
+      commandline is not handled locally. See [g_application_run ()] and the
       [GApplicationCommandLine] documentation for more information. *)
 
   method on_name_lost :
@@ -34,7 +34,7 @@ class type application_t = object
       when a new instance has taken over. This can only happen if the
       application is using the [G_APPLICATION_ALLOW_REPLACEMENT] flag.
 
-      The default handler for this signal calls g_application_quit(). *)
+      The default handler for this signal calls [g_application_quit ()]. *)
 
   method on_shutdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -44,7 +44,7 @@ class type application_t = object
   method on_startup :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::startup signal is emitted on the primary instance immediately after
-      registration. See g_application_register(). *)
+      registration. See [g_application_register ()]. *)
 
   (** {2:methods Methods} *)
 
@@ -57,7 +57,7 @@ class type application_t = object
       The application must be registered before calling this function. *)
 
   method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
-  (** Marks [application] as busy (see g_application_mark_busy()) while
+  (** Marks [application] as busy (see [g_application_mark_busy ()]) while
       [property] on [object] is [true].
 
       The binding holds a reference to [application] while it is active, but not
@@ -80,7 +80,7 @@ class type application_t = object
       be in use but we were unable to connect to the bus.
 
       This function must not be called before the application has been
-      registered. See g_application_get_is_registered(). *)
+      registered. See [g_application_get_is_registered ()]. *)
 
   method get_dbus_object_path : unit -> string option
   (** Gets the D-Bus object path being used by the application, or [None].
@@ -96,7 +96,7 @@ class type application_t = object
       be in use but we were unable to connect to the bus.
 
       This function must not be called before the application has been
-      registered. See g_application_get_is_registered(). *)
+      registered. See [g_application_get_is_registered ()]. *)
 
   method get_flags : unit -> Enums.applicationflags
   (** Gets the flags for [application].
@@ -107,16 +107,16 @@ class type application_t = object
   (** Gets the current inactivity timeout for the application.
 
       This is the amount of time (in milliseconds) after the last call to
-      g_application_release() before the application stops running. *)
+      [g_application_release ()] before the application stops running. *)
 
   method get_is_busy : unit -> bool
   (** Gets the application's current busy state, as set through
-      g_application_mark_busy() or g_application_bind_busy_property(). *)
+      [g_application_mark_busy ()] or [g_application_bind_busy_property ()]. *)
 
   method get_is_registered : unit -> bool
   (** Checks if [application] is registered.
 
-      An application is registered if g_application_register() has been
+      An application is registered if [g_application_register ()] has been
       successfully called. *)
 
   method get_is_remote : unit -> bool
@@ -128,13 +128,13 @@ class type application_t = object
       primary instance.
 
       The value of this property cannot be accessed before
-      g_application_register() has been called. See
-      g_application_get_is_registered(). *)
+      [g_application_register ()] has been called. See
+      [g_application_get_is_registered ()]. *)
 
   method get_resource_base_path : unit -> string option
   (** Gets the resource base path of [application].
 
-      See g_application_set_resource_base_path() for more information. *)
+      See [g_application_set_resource_base_path ()] for more information. *)
 
   method get_version : unit -> string option
   (** Gets the version of [application]. *)
@@ -143,10 +143,10 @@ class type application_t = object
   (** Increases the use count of [application].
 
       Use this function to indicate that the application has a reason to
-      continue to run. For example, g_application_hold() is called by GTK when a
-      toplevel window is on the screen.
+      continue to run. For example, [g_application_hold ()] is called by GTK
+      when a toplevel window is on the screen.
 
-      To cancel the hold, call g_application_release(). *)
+      To cancel the hold, call [g_application_release ()]. *)
 
   method mark_busy : unit -> unit
   (** Increases the busy count of [application].
@@ -158,7 +158,7 @@ class type application_t = object
       use that information to indicate the state to the user (e.g. with a
       spinner).
 
-      To cancel the busy indication, use g_application_unmark_busy().
+      To cancel the busy indication, use [g_application_unmark_busy ()].
 
       The application must be registered before calling this function. *)
 
@@ -178,15 +178,16 @@ class type application_t = object
   method quit : unit -> unit
   (** Immediately quits the application.
 
-      Upon return to the mainloop, g_application_run() will return, calling only
-      the 'shutdown' function before doing so.
+      Upon return to the mainloop, [g_application_run ()] will return, calling
+      only the 'shutdown' function before doing so.
 
       The hold count is ignored. Take care if your code has called
-      g_application_hold() on the application and is therefore still expecting
-      it to exist. (Note that you may have called g_application_hold()
-      indirectly, for example through gtk_application_add_window().)
+      [g_application_hold ()] on the application and is therefore still
+      expecting it to exist. (Note that you may have called
+      [g_application_hold ()] indirectly, for example through
+      [gtk_application_add_window ()].)
 
-      The result of calling g_application_run() again after it returns is
+      The result of calling [g_application_run ()] again after it returns is
       unspecified. *)
 
   method register : Cancellable.cancellable_t option -> (bool, GError.t) result
@@ -217,7 +218,7 @@ class type application_t = object
 
       Note: the return value of this function is not an indicator that this
       instance is or is not the primary instance of the application. See
-      g_application_get_is_remote() for that. *)
+      [g_application_get_is_remote ()] for that. *)
 
   method release : unit -> unit
   (** Decrease the use count of [application].
@@ -225,7 +226,7 @@ class type application_t = object
       When the use count reaches zero, the application will stop running.
 
       Never call this function except to cancel the effect of a previous call to
-      g_application_hold(). *)
+      [g_application_hold ()]. *)
 
   method run : int -> string array option -> int
   [@@ocaml.doc
@@ -235,23 +236,23 @@ class type application_t = object
      the [argc], [argv] parameters from main() to this function, it is possible\n\
      to pass [None] if [argv] is not available or commandline handling is not\n\
      required.  Note that on Windows, [argc] and [argv] are ignored, and\n\
-     g_win32_get_command_line() is called internally (for proper support\n\
+     [g_win32_get_command_line ()] is called internally (for proper support\n\
      of Unicode commandline arguments).\n\n\
      [GApplication] will attempt to parse the commandline arguments.  You\n\
      can add commandline flags to the list of recognised options by way of\n\
-     g_application_add_main_option_entries().  After this, the\n\
-     [GApplication::handle]-local-options signal is emitted, from which the\n\
+     [g_application_add_main_option_entries ()].  After this, the\n\
+     [GApplication::handle-local-options] signal is emitted, from which the\n\
      application can inspect the values of its [GOptionEntrys].\n\n\
-     [GApplication::handle]-local-options is a good place to handle options\n\
+     [GApplication::handle-local-options] is a good place to handle options\n\
      such as [--version], where an immediate reply from the local process is\n\
      desired (instead of communicating with an already-running instance).\n\
-     A [GApplication::handle]-local-options handler can stop further processing\n\
+     A [GApplication::handle-local-options] handler can stop further processing\n\
      by returning a non-negative value, which then becomes the exit status of\n\
      the process.\n\n\
      What happens next depends on the flags: if\n\
      [G_APPLICATION_HANDLES_COMMAND_LINE] was specified then the remaining\n\
      commandline arguments are sent to the primary instance, where a\n\
-     [GApplication::command]-line signal is emitted.  Otherwise, the\n\
+     [GApplication::command-line] signal is emitted.  Otherwise, the\n\
      remaining commandline arguments are assumed to be a list of files.\n\
      If there are no files listed, the application is activated via the\n\
      [GApplication::activate] signal.  If there are one or more files, and\n\
@@ -259,8 +260,8 @@ class type application_t = object
      via the [GApplication::open] signal.\n\n\
      If you are interested in doing more complicated local handling of the\n\
      commandline then you should implement your own [GApplication] subclass\n\
-     and override local_command_line(). In this case, you most likely want\n\
-     to return [true] from your local_command_line() implementation to\n\
+     and override [local_command_line ()]. In this case, you most likely want\n\
+     to return [true] from your [local_command_line ()] implementation to\n\
      suppress the default handling. See\n\
      \\[gapplication-example-cmdline2.c\\]\\[https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c\\]\n\
      for an example.\n\n\
@@ -272,11 +273,11 @@ class type application_t = object
      run for as much as 10 seconds with a use count of zero while waiting\n\
      for the message that caused the activation to arrive.  After that,\n\
      if the use count falls to zero the application will exit immediately,\n\
-     except in the case that g_application_set_inactivity_timeout() is in\n\
+     except in the case that [g_application_set_inactivity_timeout ()] is in\n\
      use.\n\n\
-     This function sets the prgname (g_set_prgname()), if not already set,\n\
+     This function sets the prgname ([g_set_prgname ()]), if not already set,\n\
      to the basename of argv\\[0\\].\n\n\
-     Much like g_main_loop_run(), this function will acquire the main context\n\
+     Much like [g_main_loop_run ()], this function will acquire the main context\n\
      for the duration that the application is running.\n\n\
      Since 2.40, applications that are not explicitly flagged as services\n\
      or launchers (ie: neither [G_APPLICATION_IS_SERVICE] or\n\
@@ -332,11 +333,11 @@ class type application_t = object
       registered.
 
       If non-[None], the application id must be valid. See
-      g_application_id_is_valid(). *)
+      [g_application_id_is_valid ()]. *)
 
   method set_default : unit -> unit
   (** Sets or unsets the default application for the process, as returned by
-      g_application_get_default().
+      [g_application_get_default ()].
 
       This function does not take its own reference on [application]. If
       [application] is destroyed then the default application will revert back
@@ -354,32 +355,32 @@ class type application_t = object
   (** Sets the current inactivity timeout for the application.
 
       This is the amount of time (in milliseconds) after the last call to
-      g_application_release() before the application stops running.
+      [g_application_release ()] before the application stops running.
 
       This call has no side effects of its own. The value set here is only used
-      for next time g_application_release() drops the use count to zero. Any
+      for next time [g_application_release ()] drops the use count to zero. Any
       timeouts currently in progress are not impacted. *)
 
   method set_option_context_description : string option -> unit
   (** Adds a description to the [application] option context.
 
-      See g_option_context_set_description() for more information. *)
+      See [g_option_context_set_description ()] for more information. *)
 
   method set_option_context_parameter_string : string option -> unit
   (** Sets the parameter string to be used by the commandline handling of
       [application].
 
       This function registers the argument to be passed to
-      g_option_context_new() when the internal [GOptionContext] of [application]
-      is created.
+      [g_option_context_new ()] when the internal [GOptionContext] of
+      [application] is created.
 
-      See g_option_context_new() for more information about [parameter_string].
-  *)
+      See [g_option_context_new ()] for more information about
+      [parameter_string]. *)
 
   method set_option_context_summary : string option -> unit
   (** Adds a summary to the [application] option context.
 
-      See g_option_context_set_summary() for more information. *)
+      See [g_option_context_set_summary ()] for more information. *)
 
   method set_resource_base_path : string option -> unit
   [@@ocaml.doc
@@ -406,7 +407,7 @@ class type application_t = object
      not recommended.  The point at which the resource path is consulted\n\
      for forming paths for various purposes is unspecified.  When writing\n\
      a sub-class of [GApplication] you should either set the\n\
-     [GApplication:resource]-base-path property at construction time, or call\n\
+     [GApplication:resource-base-path] property at construction time, or call\n\
      this function during the instance initialization. Alternatively, you\n\
      can call this function in the [GApplicationClass].startup virtual function,\n\
      before chaining up to the parent implementation."]
@@ -420,7 +421,7 @@ class type application_t = object
 
   method unbind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   (** Destroys a binding between [property] and the busy state of [application]
-      that was previously created with g_application_bind_busy_property(). *)
+      that was previously created with [g_application_bind_busy_property ()]. *)
 
   method unmark_busy : unit -> unit
   (** Decreases the busy count of [application].
@@ -429,11 +430,11 @@ class type application_t = object
       other processes.
 
       This function must only be called to cancel the effect of a previous call
-      to g_application_mark_busy(). *)
+      to [g_application_mark_busy ()]. *)
 
   method withdraw_notification : string -> unit
   (** Withdraws a notification that was sent with
-      g_application_send_notification().
+      [g_application_send_notification ()].
 
       This call does nothing if a notification with [id] doesn't exist or the
       notification was never sent.
@@ -516,7 +517,7 @@ end
      internal architecture of GDBus, method calls can be dispatched at any time\n\
      (even if a main loop is not running). For this reason, you must ensure that\n\
      any object paths that you wish to register are registered before \
-     [GApplication]\n\
+     {{!Ocgio.Application.class-type-application_t}[GApplication]}\n\
      attempts to acquire the bus name of your application (which happens in\n\
      {{!Ocgio.Application.class-type-application_t.method-register}[Gio.Application.register]}). \
      Unfortunately, this means that you cannot\n\
@@ -652,7 +653,8 @@ class application : Raw.Application.t -> application_t
  should be done with the shared GDBus session bus. Note that due to the\n\
  internal architecture of GDBus, method calls can be dispatched at any time\n\
  (even if a main loop is not running). For this reason, you must ensure that\n\
- any object paths that you wish to register are registered before [GApplication]\n\
+ any object paths that you wish to register are registered before \
+ {{!Ocgio.Application.class-type-application_t}[GApplication]}\n\
  attempts to acquire the bus name of your application (which happens in\n\
  {{!Ocgio.Application.class-type-application_t.method-register}[Gio.Application.register]}). \
  Unfortunately, this means that you cannot\n\
@@ -727,10 +729,12 @@ class application : Raw.Application.t -> application_t
 (** {1:constructors Constructors} *)
 
 val new_ : string option -> Enums.applicationflags -> application_t
-(** Creates a new [GApplication] instance.
+(** Creates a new {{!Ocgio.Application.class-type-application_t}[GApplication]}
+    instance.
 
     If non-[None], the application id must be valid. See
-    g_application_id_is_valid().
+    [g_application_id_is_valid ()].
 
-    If no application ID is given then some features of [GApplication] (most
-    notably application uniqueness) will be disabled. *)
+    If no application ID is given then some features of
+    {{!Ocgio.Application.class-type-application_t}[GApplication]} (most notably
+    application uniqueness) will be disabled. *)

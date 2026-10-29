@@ -478,6 +478,16 @@ type doc_member_names = {
 type doc_type_members = { dm_l1 : doc_member_names; dm_l2 : doc_member_names }
 (** The members a type emits at each layer (see [Emitted_members]). *)
 
+type doc_c_member_kind = Dc_method | Dc_constructor | Dc_enum_member
+
+type doc_c_symbol = {
+  dc_kind : doc_c_member_kind;
+  dc_type : string;  (** The GIR name of the type that declares it. *)
+  dc_member : string;  (** Its GIR name. *)
+}
+(** A method, constructor, or enumeration or bitfield member, found by its C
+    identifier. *)
+
 type doc_index_namespace = {
   di_types : doc_type_kind StringMap.t;
   di_constants : string StringMap.t;  (** GIR name to OCaml value name. *)
@@ -487,10 +497,15 @@ type doc_index_namespace = {
       (** By enumeration or bitfield GIR name, then by member name in upper case
           with underscores: the polymorphic variant tag. The current namespace
           only. *)
+  di_c_types : string StringMap.t;  (** C type name to GIR type name. *)
+  di_c_constants : string StringMap.t;
+      (** C identifier to GIR constant name. *)
+  di_c_symbols : doc_c_symbol StringMap.t;
+      (** By C identifier; the current namespace only. *)
 }
 (** What a doc reference into one namespace can link to: its generated types,
-    constants and, for the current namespace, members, keyed by GIR name (see
-    [Doc_index]). *)
+    constants and, for the current namespace, members, keyed by GIR name and by
+    C name (see [Doc_index]). *)
 
 type doc_index = doc_index_namespace StringMap.t
 (** The namespaces a doc reference can link into, keyed by GIR namespace name:

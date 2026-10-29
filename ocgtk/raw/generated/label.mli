@@ -614,8 +614,8 @@ val on_activate_current_link :
 
     The [::activate-current-link] is a keybinding signal.
 
-    Applications may also emit the signal with g_signal_emit_by_name() if they
-    need to control activation of URIs programmatically.
+    Applications may also emit the signal with [g_signal_emit_by_name ()] if
+    they need to control activation of URIs programmatically.
 
     The default bindings for this signal are all forms of the <kbd>Enter</kbd>
     key. *)

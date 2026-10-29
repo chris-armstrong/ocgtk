@@ -29,10 +29,10 @@ class type single_selection_t = object
 
   method get_autoselect : unit -> bool
   (** Checks if autoselect has been enabled or disabled via
-      gtk_single_selection_set_autoselect(). *)
+      [gtk_single_selection_set_autoselect ()]. *)
 
   method get_can_unselect : unit -> bool
-  (** If [true], gtk_selection_model_unselect_item() is supported and allows
+  (** If [true], [gtk_selection_model_unselect_item ()] is supported and allows
       unselecting the selected item. *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
@@ -57,7 +57,7 @@ class type single_selection_t = object
 
   method set_can_unselect : bool -> unit
   (** If [true], unselecting the current item via
-      gtk_selection_model_unselect_item() is supported.
+      [gtk_selection_model_unselect_item ()] is supported.
 
       Note that setting [Gtk.SingleSelection:autoselect] will cause unselecting
       to not work, so it practically makes no sense to set both at the same

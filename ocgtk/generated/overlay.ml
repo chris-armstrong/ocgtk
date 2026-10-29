@@ -23,7 +23,7 @@ class type overlay_t = object
   *)
 
   method remove_overlay : Widget.widget_t -> unit
-  (** Removes an overlay that was added with gtk_overlay_add_overlay(). *)
+  (** Removes an overlay that was added with [gtk_overlay_add_overlay ()]. *)
 
   method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [overlay]. *)

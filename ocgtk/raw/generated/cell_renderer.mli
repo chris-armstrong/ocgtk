@@ -14,8 +14,10 @@
     cells on the screen. To this extent, it isn’t expected that a CellRenderer
     keep any permanent state around. Instead, any state is set just prior to use
     using [GObject]s property system. Then, the cell is measured using
-    gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
-    correct location using gtk_cell_renderer_snapshot().
+    {{!Ocgtk.Raw.Cell_renderer.val-get_preferred_size}[gtk_cell_renderer_get_preferred_size
+                                                       ()]}. Finally, the cell
+    is rendered in the correct location using
+    {{!Ocgtk.Raw.Cell_renderer.val-snapshot}[gtk_cell_renderer_snapshot ()]}.
 
     There are a number of rules that must be followed when writing a new
     [GtkCellRenderer]. First and foremost, it’s important that a certain set of
@@ -306,7 +308,9 @@ val on_editing_canceled :
     cell. For example, an editable cell renderer could be written to cancel
     editing when the user presses Escape.
 
-    See also: gtk_cell_renderer_stop_editing(). *)
+    See also:
+    {{!Ocgtk.Raw.Cell_renderer.val-stop_editing}[gtk_cell_renderer_stop_editing
+                                                 ()]}. *)
 
 val on_editing_started :
   ?after:bool ->
@@ -317,8 +321,11 @@ val on_editing_started :
     of this signal is to do special setup on [editable], e.g. adding a
     [GtkEntryCompletion] or setting up additional columns in a [GtkComboBox].
 
-    See gtk_cell_editable_start_editing() for information on the lifecycle of
-    the [editable] and a way to do setup that doesn’t depend on the [renderer].
+    See
+    {{!Ocgtk.Raw.Cell_editable.val-start_editing}[gtk_cell_editable_start_editing
+                                                  ()]} for information on the
+    lifecycle of the [editable] and a way to do setup that doesn’t depend on the
+    [renderer].
 
     Note that GTK doesn't guarantee that cell renderers will continue to use the
     same kind of widget for editing in future releases, therefore you should

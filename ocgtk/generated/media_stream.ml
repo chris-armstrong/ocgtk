@@ -120,8 +120,8 @@ class type media_stream_t = object
       Seek operations may not finish instantly. While a seek operation is in
       process, the [Gtk.MediaStream:seeking] property will be set.
 
-      When calling gtk_media_stream_seek() during an ongoing seek operation, the
-      new seek will override any pending seek. *)
+      When calling [gtk_media_stream_seek ()] during an ongoing seek operation,
+      the new seek will override any pending seek. *)
 
   method seek_failed : unit -> unit
   (** Ends a seek operation started via GtkMediaStream.seek() as a failure.
@@ -200,7 +200,7 @@ class type media_stream_t = object
       This function will also reset any error state the stream was in. *)
 
   method unrealize : Ocgdk.Surface.surface_t -> unit
-  (** Undoes a previous call to gtk_media_stream_realize().
+  (** Undoes a previous call to [gtk_media_stream_realize ()].
 
       This causes the stream to release all resources it had allocated from
       [surface]. *)

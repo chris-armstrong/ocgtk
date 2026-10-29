@@ -99,7 +99,8 @@ external get_child_transform :
   .t ->
   Ocgsk_raw.Transform.t option = "ml_gtk_fixed_get_child_transform"
 (** Retrieves the transformation for [widget] set using
-    gtk_fixed_set_child_transform(). *)
+    {{!Ocgtk.Raw.Fixed.val-set_child_transform}[gtk_fixed_set_child_transform
+                                                ()]}. *)
 
 external get_child_position :
   t ->

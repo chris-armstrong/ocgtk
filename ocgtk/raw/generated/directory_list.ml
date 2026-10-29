@@ -19,7 +19,7 @@
  The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
  attribute set to the [GFile] they refer to. This way you can get at the file\n\
  that is referred to in the same way you would via \
- g_file_enumerator_get_child().\n\
+ [g_file_enumerator_get_child ()].\n\
  This means you do not need access to the [GtkDirectoryList], but can access\n\
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
  or similar.\n\n\
@@ -85,7 +85,9 @@ external get_monitored : t -> bool = "ml_gtk_directory_list_get_monitored"
 *)
 
 external get_io_priority : t -> int = "ml_gtk_directory_list_get_io_priority"
-(** Gets the IO priority set via gtk_directory_list_set_io_priority(). *)
+(** Gets the IO priority set via
+    {{!Ocgtk.Raw.Directory_list.val-set_io_priority}[gtk_directory_list_set_io_priority
+                                                     ()]}. *)
 
 external get_file : t -> Ocgio_raw.File.t option
   = "ml_gtk_directory_list_get_file"

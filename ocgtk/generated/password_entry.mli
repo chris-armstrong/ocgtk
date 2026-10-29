@@ -66,7 +66,7 @@ class type password_entry_t = object
   (** {2:methods Methods} *)
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
-  (** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)
+  (** Gets the menu model set with [gtk_password_entry_set_extra_menu ()]. *)
 
   method get_show_peek_icon : unit -> bool
   (** Returns whether the entry is showing an icon to reveal the contents. *)

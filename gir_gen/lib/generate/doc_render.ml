@@ -80,9 +80,9 @@ let rec render_inline ~ret_shape ins buf fbs =
           (* degraded to bare text *)
           let f = render_inline ~ret_shape text buf fbs' in
           Page_ref_degraded path :: f
-      | Sym_ref { endpoint; kind = _; anchor = _ } ->
+      | Sym_ref { origin; endpoint; kind = _; anchor = _ } ->
           (* degraded to a code span *)
-          emit_code_span buf endpoint;
+          emit_code_span buf (Doc_ast.sym_ref_text origin endpoint);
           Sym_ref_degraded endpoint :: fbs'
       | Param_ref name ->
           (* always a code span: a bare @ would start an odoc tag *)

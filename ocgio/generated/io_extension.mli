@@ -1,5 +1,5 @@
-(** [GIOExtension] is an opaque data structure and can only be accessed using
-    the following functions.
+(** {{!Ocgio.Io_extension.class-type-io_extension_t}[GIOExtension]} is an opaque
+    data structure and can only be accessed using the following functions.
 
     Its methods, signals and properties are on {!class-type-io_extension_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -9,8 +9,8 @@
 
 (** {b The methods, signals and properties of a [IOExtension].}
 
-    [GIOExtension] is an opaque data structure and can only be accessed using
-    the following functions. *)
+    {{!Ocgio.Io_extension.class-type-io_extension_t}[GIOExtension]} is an opaque
+    data structure and can only be accessed using the following functions. *)
 class type io_extension_t = object
   (** {2:methods Methods} *)
 

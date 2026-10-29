@@ -741,7 +741,7 @@ and Display : sig
 
       GTK will call this function automatically for GtkWindow with custom
       startup-notification identifier unless
-      gtk_window_set_auto_startup_notification() is called to disable that
+      [gtk_window_set_auto_startup_notification ()] is called to disable that
       feature. *)
 
   external map_keyval : t -> int -> bool * Keymap_key.t array * int
@@ -1030,7 +1030,7 @@ end = struct
 
       GTK will call this function automatically for GtkWindow with custom
       startup-notification identifier unless
-      gtk_window_set_auto_startup_notification() is called to disable that
+      [gtk_window_set_auto_startup_notification ()] is called to disable that
       feature. *)
 
   external map_keyval : t -> int -> bool * Keymap_key.t array * int
@@ -1287,7 +1287,9 @@ and Draw_context : sig
   (** Retrieves the [GdkDisplay] the [context] is created for *)
 
   external end_frame : t -> unit = "ml_gdk_draw_context_end_frame"
-  (** Ends a drawing operation started with gdk_draw_context_begin_frame().
+  (** Ends a drawing operation started with
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[gdk_draw_context_begin_frame
+                                                 ()]}.
 
       This makes the drawing available on screen. See
       {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
@@ -1322,9 +1324,11 @@ and Draw_context : sig
       to query the region that must be drawn.
 
       When using GTK, the widget system automatically places calls to
-      gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
-      use of GskRenderers, so application code does not need to call these
-      functions explicitly. *)
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[gdk_draw_context_begin_frame
+                                                 ()]} and
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[gdk_draw_context_end_frame ()]}
+      via the use of GskRenderers, so application code does not need to call
+      these functions explicitly. *)
 
   (* Properties *)
 end = struct
@@ -1367,7 +1371,9 @@ end = struct
   (** Retrieves the [GdkDisplay] the [context] is created for *)
 
   external end_frame : t -> unit = "ml_gdk_draw_context_end_frame"
-  (** Ends a drawing operation started with gdk_draw_context_begin_frame().
+  (** Ends a drawing operation started with
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[gdk_draw_context_begin_frame
+                                                 ()]}.
 
       This makes the drawing available on screen. See
       {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
@@ -1402,9 +1408,11 @@ end = struct
       to query the region that must be drawn.
 
       When using GTK, the widget system automatically places calls to
-      gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
-      use of GskRenderers, so application code does not need to call these
-      functions explicitly. *)
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[gdk_draw_context_begin_frame
+                                                 ()]} and
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[gdk_draw_context_end_frame ()]}
+      via the use of GskRenderers, so application code does not need to call
+      these functions explicitly. *)
 
   (* Properties *)
 end
@@ -1442,7 +1450,7 @@ and Event : sig
   (** Returns the timestamp of [event].
 
       Not all events have timestamps. In that case, this function returns
-      [GDK_CURRENT_TIME]. *)
+      {{!Ocgdk.Constants.current_time}[GDK_CURRENT_TIME]}. *)
 
   external get_surface : t -> Surface.t option = "ml_gdk_event_get_surface"
   (** Extracts the surface associated with an event. *)
@@ -1578,7 +1586,7 @@ end = struct
   (** Returns the timestamp of [event].
 
       Not all events have timestamps. In that case, this function returns
-      [GDK_CURRENT_TIME]. *)
+      {{!Ocgdk.Constants.current_time}[GDK_CURRENT_TIME]}. *)
 
   external get_surface : t -> Surface.t option = "ml_gdk_event_get_surface"
   (** Extracts the surface associated with an event. *)
@@ -1743,12 +1751,14 @@ and Gl_context : sig
 
   external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
     = "ml_gdk_gl_context_set_allowed_apis"
-  (** Sets the allowed APIs. When gdk_gl_context_realize() is called, only the
-      allowed APIs will be tried. If you set this to 0, realizing will always
-      fail.
+  (** Sets the allowed APIs. When
+      {{!Ocgdk.Raw.Gl_context.val-realize}[gdk_gl_context_realize ()]} is
+      called, only the allowed APIs will be tried. If you set this to 0,
+      realizing will always fail.
 
       If you set it on a realized context, the property will not have any
-      effect. It is only relevant during gdk_gl_context_realize().
+      effect. It is only relevant during
+      {{!Ocgdk.Raw.Gl_context.val-realize}[gdk_gl_context_realize ()]}.
 
       By default, all APIs are allowed. *)
 
@@ -1849,7 +1859,9 @@ and Gl_context : sig
 
   external get_allowed_apis : t -> Ocgdk_enums.glapi
     = "ml_gdk_gl_context_get_allowed_apis"
-  (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
+  (** Gets the allowed APIs set via
+      {{!Ocgdk.Raw.Gl_context.val-set_allowed_apis}[gdk_gl_context_set_allowed_apis
+                                                    ()]}. *)
 
   (* Properties *)
 end = struct
@@ -1912,12 +1924,14 @@ end = struct
 
   external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
     = "ml_gdk_gl_context_set_allowed_apis"
-  (** Sets the allowed APIs. When gdk_gl_context_realize() is called, only the
-      allowed APIs will be tried. If you set this to 0, realizing will always
-      fail.
+  (** Sets the allowed APIs. When
+      {{!Ocgdk.Raw.Gl_context.val-realize}[gdk_gl_context_realize ()]} is
+      called, only the allowed APIs will be tried. If you set this to 0,
+      realizing will always fail.
 
       If you set it on a realized context, the property will not have any
-      effect. It is only relevant during gdk_gl_context_realize().
+      effect. It is only relevant during
+      {{!Ocgdk.Raw.Gl_context.val-realize}[gdk_gl_context_realize ()]}.
 
       By default, all APIs are allowed. *)
 
@@ -2018,7 +2032,9 @@ end = struct
 
   external get_allowed_apis : t -> Ocgdk_enums.glapi
     = "ml_gdk_gl_context_get_allowed_apis"
-  (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
+  (** Gets the allowed APIs set via
+      {{!Ocgdk.Raw.Gl_context.val-set_allowed_apis}[gdk_gl_context_set_allowed_apis
+                                                    ()]}. *)
 
   (* Properties *)
 end
@@ -2454,7 +2470,7 @@ and Surface : sig
 
       For toplevel surfaces, withdraws them, so they will no longer be known to
       the window manager; for all surfaces, unmaps them, so they won’t be
-      displayed. Normally done automatically as part of gtk_widget_hide(). *)
+      displayed. Normally done automatically as part of [gtk_widget_hide ()]. *)
 
   external get_width : t -> int = "ml_gdk_surface_get_width"
   (** Returns the width of the given [surface].
@@ -2568,7 +2584,7 @@ and Surface : sig
       font options as [surface]. Generally, the new surface will also use the
       same backend as [surface], unless that is not possible for some reason.
       The type of the returned surface may be examined with
-      cairo_surface_get_type().
+      [cairo_surface_get_type ()].
 
       Initially the surface contents are all 0 (transparent if contents have
       transparency, black otherwise.)
@@ -2623,7 +2639,8 @@ and Surface : sig
       performed.
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      gdk_surface_get_scale_factor()). *)
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[gdk_surface_get_scale_factor
+                                                 ()]}). *)
 
   val on_leave_monitor :
     ?after:bool ->
@@ -2735,7 +2752,7 @@ end = struct
 
       For toplevel surfaces, withdraws them, so they will no longer be known to
       the window manager; for all surfaces, unmaps them, so they won’t be
-      displayed. Normally done automatically as part of gtk_widget_hide(). *)
+      displayed. Normally done automatically as part of [gtk_widget_hide ()]. *)
 
   external get_width : t -> int = "ml_gdk_surface_get_width"
   (** Returns the width of the given [surface].
@@ -2849,7 +2866,7 @@ end = struct
       font options as [surface]. Generally, the new surface will also use the
       same backend as [surface], unless that is not possible for some reason.
       The type of the returned surface may be examined with
-      cairo_surface_get_type().
+      [cairo_surface_get_type ()].
 
       Initially the surface contents are all 0 (transparent if contents have
       transparency, black otherwise.)
