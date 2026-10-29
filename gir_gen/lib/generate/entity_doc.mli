@@ -107,9 +107,12 @@ type accessor = Getter | Setter
 
 val property :
   refs:Doc_resolve.env ->
+  class_name:string ->
   accessor:accessor ->
   Types.gir_property ->
   Doc_emit.t option
 (** A property accessor's doc at either layer: the property's translated GIR
-    doc, the same on its getter and setter, else "Get property: <name>" or "Set
-    property: <name>". *)
+    doc, the same on its getter and setter, else a canned line: "Get property:
+    [name] ([Type], default [value])." or "Set property: ...", then
+    "Construct-only." when it is, and a link to the property's gi-docgen page
+    when the namespace has a gi-docgen site. *)

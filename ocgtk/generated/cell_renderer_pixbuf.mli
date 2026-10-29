@@ -58,25 +58,39 @@ class type cell_renderer_pixbuf_t = object
   (** The [GtkIconSize] value that specifies the size of the rendered icon. *)
 
   method set_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
-  (** Set property: pixbuf *)
+  (** Set property: [pixbuf] ([GdkPixbuf.Pixbuf]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf.html}upstream
+       docs}. *)
 
   method pixbuf_expander_closed : Ocgdkpixbuf.Pixbuf.pixbuf_t
-  (** Get property: pixbuf-expander-closed *)
+  (** Get property: [pixbuf-expander-closed] ([GdkPixbuf.Pixbuf]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-closed.html}upstream
+       docs}. *)
 
   method set_pixbuf_expander_closed : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
-  (** Set property: pixbuf-expander-closed *)
+  (** Set property: [pixbuf-expander-closed] ([GdkPixbuf.Pixbuf]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-closed.html}upstream
+       docs}. *)
 
   method pixbuf_expander_open : Ocgdkpixbuf.Pixbuf.pixbuf_t
-  (** Get property: pixbuf-expander-open *)
+  (** Get property: [pixbuf-expander-open] ([GdkPixbuf.Pixbuf]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-open.html}upstream
+       docs}. *)
 
   method set_pixbuf_expander_open : Ocgdkpixbuf.Pixbuf.pixbuf_t -> unit
-  (** Set property: pixbuf-expander-open *)
+  (** Set property: [pixbuf-expander-open] ([GdkPixbuf.Pixbuf]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-open.html}upstream
+       docs}. *)
 
   method texture : Ocgdk.Texture.texture_t
-  (** Get property: texture *)
+  (** Get property: [texture] ([Gdk.Texture]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.texture.html}upstream
+       docs}. *)
 
   method set_texture : Ocgdk.Texture.texture_t -> unit
-  (** Set property: texture *)
+  (** Set property: [texture] ([Gdk.Texture]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.texture.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 

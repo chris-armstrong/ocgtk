@@ -756,6 +756,7 @@ let parse_gir_input input filter_classes =
       writable;
       construct_only;
       prop_doc;
+      prop_default = get_attr ~ctx "default-value" attrs;
       version = get_attr ~ctx "version" attrs;
       version_namespace = None;
       os = None;

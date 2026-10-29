@@ -225,8 +225,51 @@ let constructor ~(refs : Doc_resolve.env) ~class_name
 
 type accessor = Getter | Setter
 
-let property ~refs ~accessor (prop : Types.gir_property) =
+(* A [default-value=] is a bare C value: [TRUE], [FALSE] and [NULL] read as the
+   bindings spell them, anything else as is. *)
+let default_value value : Doc_translate.inline =
+  Doc_c_idiom.c_lit_of_name value
+  |> Option.fold ~none:(Doc_translate.Code value) ~some:(fun lit ->
+      Doc_translate.C_lit lit)
+
+let property_fallback ~(refs : Doc_resolve.env) ~class_name ~accessor
+    (prop : Types.gir_property) : string =
+  let open Doc_translate in
   let verb = match accessor with Getter -> "Get" | Setter -> "Set" in
+  let default =
+    Option.fold prop.prop_default ~none:[] ~some:(fun value ->
+        [ Text ", default "; default_value value ])
+  in
+  let construct_only =
+    if prop.construct_only then [ Text " Construct-only." ] else []
+  in
+  let upstream =
+    upstream_base_url refs.namespace
+    |> Option.fold ~none:[] ~some:(fun base ->
+        [
+          Text " See ";
+          Link
+            {
+              text = [ Text "upstream docs" ];
+              url =
+                Fmt.str "%sproperty.%s.%s.html" base class_name prop.prop_name;
+            };
+          Text ".";
+        ])
+  in
+  let line =
+    List.concat
+      [
+        [ Text (verb ^ " property: "); Code prop.prop_name; Text " (" ];
+        Code prop.prop_type.name :: default;
+        [ Text ")." ];
+        construct_only;
+        upstream;
+      ]
+  in
+  String.trim (render_as Member { blocks = [ Para line ] })
+
+let property ~refs ~class_name ~accessor (prop : Types.gir_property) =
   Doc_emit.item_doc ~indent:""
-    ~fallback:(Fmt.str "%s property: %s" verb prop.prop_name)
+    ~fallback:(property_fallback ~refs ~class_name ~accessor prop)
     ~refs ~context:Doc_translate.Member prop.prop_doc

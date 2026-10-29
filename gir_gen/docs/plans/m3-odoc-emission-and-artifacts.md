@@ -1,9 +1,9 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–13 implemented (per-phase status below). The C code-block
+**Status: Phases 0–14 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
 cross-reference resolution (PRD §7), added 2026-10-28; all done. Phase 14,
-property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
+property doc fallbacks, added 2026-10-29; done (without its change 1).** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
@@ -1519,6 +1519,40 @@ warnings; the resolution summary per origin; in the PR's preview, a
 `gtk_widget_*()` call in a Gtk doc links to the method.
 
 ### Phase 14 — Property doc fallbacks: accessor method docs and a fuller canned line
+
+**Status: done, without change 1** (branch `m3-phase14`). An undocumented
+property accessor's doc is now, for example, `Get property:
+[enable-grid-lines] ([TreeViewGridLines], default
+[GTK_TREE_VIEW_GRID_LINES_NONE]). See {{:…}upstream docs}.`, at both layers.
+The parser records `default-value=` as `prop_default`; `Entity_doc.property`
+takes `~class_name` for the link. A clean `@doc` build has 0 odoc warnings,
+and the upstream link works in L2 class type member docs (odoc's limitation
+there is for `{!…}` references only). All 422 fallback accessor docs
+(28 files) have a type and an upstream link; the HTML of
+`Gtk.TreeView`'s `enable-grid-lines` shows the fuller line at L1 and L2, and
+the upstream page for that undocumented property exists (HTTP 200). Every
+line the regeneration removes is an old fallback. Notes and departures:
+
+- **Change 1 is dropped: it can never apply.** Every property with
+  `getter=` or `setter=` is claimed back by that method's
+  `glib:get-property` or `glib:set-property` (checked in every bundled GIR
+  file), and `Filtering.should_generate_property` drops a claimed property:
+  its accessors are the method, which carries its own doc. The 34
+  undocumented Gtk properties that name an accessor are all of this kind,
+  so borrowing would change no emitted doc. It was built, produced an empty
+  diff, and was removed rather than kept as dead code. So the 50
+  `Get property:` lines in the Gtk L2 `.mli` files stay 50; each now has a
+  type, a default where GIR gives one, and a link.
+- **"Construct-only." goes on either accessor.** A construct-only property
+  never has a setter (`Emitted_members`), so on the setter alone it would
+  never show; on the getter it tells the reader why there is no setter
+  (`GdkPixbuf.Pixbuf:pixel-bytes`).
+- **The line is built as AST and rendered**, so the default reuses the
+  C-literal spellings (`NULL` → `[None]`, `TRUE` → `[true]`), and a default
+  that would break a code span (a `]`) is escaped prose. Free-text defaults
+  (`"Sans 12"`, flag combinations with `|`) are shown as code, as is.
+- The type is the GIR name as code, not a link; linking it with Phase 11's
+  resolver is a follow-up.
 
 *Goal:* fewer properties fall back to the bare `Get/Set property: <name>`
 text, and the ones that still do tell the reader the type, the default and

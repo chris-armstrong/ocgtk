@@ -595,4 +595,6 @@ external apply_embedded_orientation : t -> t option
 (* Properties *)
 
 external get_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_get_pixel_bytes"
-(** Get property: pixel-bytes *)
+(** Get property: [pixel-bytes] ([GLib.Bytes]). Construct-only. See
+    {{:https://docs.gtk.org/gdk-pixbuf/property.Pixbuf.pixel-bytes.html}upstream
+     docs}. *)

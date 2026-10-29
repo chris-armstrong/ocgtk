@@ -60,11 +60,15 @@ external get_activatable : t -> bool
 
 external get_inconsistent : t -> bool
   = "ml_gtk_cell_renderer_toggle_get_inconsistent"
-(** Get property: inconsistent *)
+(** Get property: [inconsistent] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererToggle.inconsistent.html}upstream
+     docs}. *)
 
 external set_inconsistent : t -> bool -> unit
   = "ml_gtk_cell_renderer_toggle_set_inconsistent"
-(** Set property: inconsistent *)
+(** Set property: [inconsistent] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererToggle.inconsistent.html}upstream
+     docs}. *)
 
 val on_toggled :
   ?after:bool ->

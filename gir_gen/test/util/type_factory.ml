@@ -107,7 +107,8 @@ let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
   }
 
 let make_gir_property ~prop_name ~prop_type ?(readable = true)
-    ?(writable = true) ?(construct_only = false) ?prop_doc ?version () =
+    ?(writable = true) ?(construct_only = false) ?prop_doc ?prop_default
+    ?version () =
   {
     prop_name;
     prop_type;
@@ -115,6 +116,7 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
     writable;
     construct_only;
     prop_doc;
+    prop_default;
     version;
     version_namespace = None;
     os = None;

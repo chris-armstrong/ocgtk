@@ -94,6 +94,7 @@ val make_gir_property :
   ?writable:bool ->
   ?construct_only:bool ->
   ?prop_doc:string ->
+  ?prop_default:string ->
   ?version:string ->
   unit ->
   Gir_gen_lib.Types.gir_property
