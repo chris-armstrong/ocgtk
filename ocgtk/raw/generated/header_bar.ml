@@ -12,7 +12,8 @@
  [GtkHeaderBar] can add typical window frame controls, such as minimize,\n\
  maximize and close buttons, or the window icon.\n\n\
  For these reasons, [GtkHeaderBar] is the natural choice for use as the\n\
- custom titlebar widget of a [GtkWindow] (see [Gtk.Window.set_titlebar]),\n\
+ custom titlebar widget of a [GtkWindow] (see \
+ {{!Ocgtk.Raw.Window.val-set_titlebar}[Gtk.Window.set_titlebar]}),\n\
  as it gives features typical of titlebars while allowing the addition of\n\
  child widgets.\n\n\
  {b GtkHeaderBar as GtkBuildable}\n\n\
@@ -59,7 +60,9 @@
  {{!Ocgtk.Raw.Window_controls}[Gtk.WindowControls]} for details, as well as \
  other children.\n\n\
  {b Accessibility}\n\n\
- [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ [GtkHeaderBar] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Header_bar}."]
 
 type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -104,7 +107,9 @@ external set_decoration_layout : t -> string option -> unit
   = "ml_gtk_header_bar_set_decoration_layout"
 (** Sets the decoration layout for this header bar.
 
-    This property overrides the [Gtk.Settings:gtk-decoration-layout] setting.
+    This property overrides the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_decoration_layout}[Gtk.Settings:gtk-decoration-layout]}
+    setting.
 
     There can be valid reasons for overriding the setting, such as a header bar
     design that does not allow for buttons to take room on the right, or only
@@ -127,8 +132,11 @@ external remove :
   unit = "ml_gtk_header_bar_remove"
 (** Removes a child from the header bar.
 
-    The child must have been added with [Gtk.HeaderBar.pack_start],
-    [Gtk.HeaderBar.pack_end] or [Gtk.HeaderBar.set_title_widget]. *)
+    The child must have been added with
+    {{!Ocgtk.Raw.Header_bar.val-pack_start}[Gtk.HeaderBar.pack_start]},
+    {{!Ocgtk.Raw.Header_bar.val-pack_end}[Gtk.HeaderBar.pack_end]} or
+    {{!Ocgtk.Raw.Header_bar.val-set_title_widget}[Gtk.HeaderBar.set_title_widget]}.
+*)
 
 external pack_start :
   t ->
@@ -158,7 +166,9 @@ external get_title_widget :
   option = "ml_gtk_header_bar_get_title_widget"
 (** Retrieves the title widget of the header bar.
 
-    See [Gtk.HeaderBar.set_title_widget]. *)
+    See
+    {{!Ocgtk.Raw.Header_bar.val-set_title_widget}[Gtk.HeaderBar.set_title_widget]}.
+*)
 
 external get_show_title_buttons : t -> bool
   = "ml_gtk_header_bar_get_show_title_buttons"

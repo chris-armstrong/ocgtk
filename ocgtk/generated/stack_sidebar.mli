@@ -22,8 +22,8 @@
 
     In order to use a [GtkStackSidebar], you simply use a [GtkStack] to organize
     your UI flow, and add the sidebar to your sidebar area. You can use
-    [Gtk.StackSidebar.set_stack] to connect the [GtkStackSidebar] to the
-    [GtkStack].
+    {{!Ocgtk.Stack_sidebar.class-type-stack_sidebar_t.method-set_stack}[Gtk.StackSidebar.set_stack]}
+    to connect the [GtkStackSidebar] to the [GtkStack].
 
     {b CSS nodes}
 
@@ -62,8 +62,8 @@ class stack_sidebar : Raw.Stack_sidebar.t -> stack_sidebar_t
 
     In order to use a [GtkStackSidebar], you simply use a [GtkStack] to organize
     your UI flow, and add the sidebar to your sidebar area. You can use
-    [Gtk.StackSidebar.set_stack] to connect the [GtkStackSidebar] to the
-    [GtkStack].
+    {{!Ocgtk.Stack_sidebar.class-type-stack_sidebar_t.method-set_stack}[Gtk.StackSidebar.set_stack]}
+    to connect the [GtkStackSidebar] to the [GtkStack].
 
     {b CSS nodes}
 

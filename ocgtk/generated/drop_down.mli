@@ -110,7 +110,8 @@ end
      {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows the user to choose an item from a list of options.\n\n\
      An example GtkDropDown\n\n\
-     The [GtkDropDown] displays the \\[selected\\][Gtk.DropDown:selected]\n\
+     The [GtkDropDown] displays the \
+     \\[selected\\]{{!Ocgtk.Drop_down.class-type-drop_down_t.method-get_selected}[Gtk.DropDown:selected]}\n\
      choice.\n\n\
      The options are given to [GtkDropDown] in the form of [GListModel]\n\
      and how the individual options are represented is determined by\n\
@@ -118,16 +119,20 @@ end
      {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}[Gtk.ListItemFactory]}. \
      The default factory displays simple strings,\n\
      and adds a checkmark to the selected item in the popup.\n\n\
-     To set your own factory, use [Gtk.DropDown.set_factory]. It is\n\
+     To set your own factory, use \
+     {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_factory}[Gtk.DropDown.set_factory]}. \
+     It is\n\
      possible to use a separate factory for the items in the popup, with\n\
-     [Gtk.DropDown.set_list_factory].\n\n\
+     {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_list_factory}[Gtk.DropDown.set_list_factory]}.\n\n\
      [GtkDropDown] knows how to obtain strings from the items in a\n\
      {{!Ocgtk.String_list.class-type-string_list_t}[Gtk.StringList]}; for \
      other models, you have to provide an expression\n\
-     to find the strings via [Gtk.DropDown.set_expression].\n\n\
+     to find the strings via \
+     {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_expression}[Gtk.DropDown.set_expression]}.\n\n\
      [GtkDropDown] can optionally allow search in the popup, which is\n\
      useful if the list of options is long. To enable the search entry,\n\
-     use [Gtk.DropDown.set_enable_search].\n\n\
+     use \
+     {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_enable_search}[Gtk.DropDown.set_enable_search]}.\n\n\
      Here is a UI definition example for [GtkDropDown] with a simple model:\n\n\
      {[\n\
      <object class=\"GtkDropDown\">\n\
@@ -143,8 +148,10 @@ end
      </object>\n\
      ]}\n\n\
      If a [GtkDropDown] is created in this manner, or with\n\
-     [Gtk.DropDown.new_from_strings], for instance, the object returned from\n\
-     [Gtk.DropDown.get_selected_item] will be a \
+     {{!Ocgtk.Drop_down.val-new_from_strings}[Gtk.DropDown.new_from_strings]}, \
+     for instance, the object returned from\n\
+     {{!Ocgtk.Drop_down.class-type-drop_down_t.method-get_selected_item}[Gtk.DropDown.get_selected_item]} \
+     will be a \
      {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]}.\n\n\
      To learn more about the list widget framework, see the\n\
      overview.\n\n\
@@ -152,7 +159,9 @@ end
      [GtkDropDown] has a single CSS node with name dropdown,\n\
      with the button and popover nodes as children.\n\n\
      {b Accessibility}\n\n\
-     [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role."]
+     [GtkDropDown] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]} \
+     role."]
 
 class drop_down : Raw.Drop_down.t -> drop_down_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Drop_down.t}. *)
@@ -161,7 +170,8 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
 "{1:description Description}\n\n\
  Allows the user to choose an item from a list of options.\n\n\
  An example GtkDropDown\n\n\
- The [GtkDropDown] displays the \\[selected\\][Gtk.DropDown:selected]\n\
+ The [GtkDropDown] displays the \
+ \\[selected\\]{{!Ocgtk.Drop_down.class-type-drop_down_t.method-get_selected}[Gtk.DropDown:selected]}\n\
  choice.\n\n\
  The options are given to [GtkDropDown] in the form of [GListModel]\n\
  and how the individual options are represented is determined by\n\
@@ -169,16 +179,20 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
  {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}[Gtk.ListItemFactory]}. \
  The default factory displays simple strings,\n\
  and adds a checkmark to the selected item in the popup.\n\n\
- To set your own factory, use [Gtk.DropDown.set_factory]. It is\n\
+ To set your own factory, use \
+ {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_factory}[Gtk.DropDown.set_factory]}. \
+ It is\n\
  possible to use a separate factory for the items in the popup, with\n\
- [Gtk.DropDown.set_list_factory].\n\n\
+ {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_list_factory}[Gtk.DropDown.set_list_factory]}.\n\n\
  [GtkDropDown] knows how to obtain strings from the items in a\n\
  {{!Ocgtk.String_list.class-type-string_list_t}[Gtk.StringList]}; for other \
  models, you have to provide an expression\n\
- to find the strings via [Gtk.DropDown.set_expression].\n\n\
+ to find the strings via \
+ {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_expression}[Gtk.DropDown.set_expression]}.\n\n\
  [GtkDropDown] can optionally allow search in the popup, which is\n\
  useful if the list of options is long. To enable the search entry,\n\
- use [Gtk.DropDown.set_enable_search].\n\n\
+ use \
+ {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_enable_search}[Gtk.DropDown.set_enable_search]}.\n\n\
  Here is a UI definition example for [GtkDropDown] with a simple model:\n\n\
  {[\n\
  <object class=\"GtkDropDown\">\n\
@@ -194,8 +208,10 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
  </object>\n\
  ]}\n\n\
  If a [GtkDropDown] is created in this manner, or with\n\
- [Gtk.DropDown.new_from_strings], for instance, the object returned from\n\
- [Gtk.DropDown.get_selected_item] will be a \
+ {{!Ocgtk.Drop_down.val-new_from_strings}[Gtk.DropDown.new_from_strings]}, for \
+ instance, the object returned from\n\
+ {{!Ocgtk.Drop_down.class-type-drop_down_t.method-get_selected_item}[Gtk.DropDown.get_selected_item]} \
+ will be a \
  {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]}.\n\n\
  To learn more about the list widget framework, see the\n\
  overview.\n\n\
@@ -203,7 +219,9 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
  [GtkDropDown] has a single CSS node with name dropdown,\n\
  with the button and popover nodes as children.\n\n\
  {b Accessibility}\n\n\
- [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role."]
+ [GtkDropDown] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 
@@ -213,8 +231,9 @@ val new_ :
   drop_down_t
 (** Creates a new [GtkDropDown].
 
-    You may want to call [Gtk.DropDown.set_factory] to set up a way to map its
-    items to widgets. *)
+    You may want to call
+    {{!Ocgtk.Drop_down.class-type-drop_down_t.method-set_factory}[Gtk.DropDown.set_factory]}
+    to set up a way to map its items to widgets. *)
 
 val new_from_strings : string array -> drop_down_t
 (** Creates a new [GtkDropDown] that is populated with the strings. *)

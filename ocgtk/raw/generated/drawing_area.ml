@@ -8,12 +8,12 @@
     It’s essentially a blank widget; you can draw on it. After creating a
     drawing area, the application may want to connect to:
 
-    - The [Gtk.Widget::realize] signal to take any necessary actions when the
-      widget is instantiated on a particular display. (Create GDK resources in
-      response to this signal.)
+    - The {{!Ocgtk.Raw.Widget.val-on_realize}[Gtk.Widget::realize]} signal to
+      take any necessary actions when the widget is instantiated on a particular
+      display. (Create GDK resources in response to this signal.)
 
-    - The [Gtk.DrawingArea::resize] signal to take any necessary actions when
-      the widget changes size.
+    - The {{!Ocgtk.Raw.Drawing_area.val-on_resize}[Gtk.DrawingArea::resize]}
+      signal to take any necessary actions when the widget changes size.
 
     - Call [Gtk.DrawingArea.set_draw_func] to handle redrawing the contents of
       the widget.
@@ -63,8 +63,8 @@
     The draw function is normally called when a drawing area first comes
     onscreen, or when it’s covered by another window and then uncovered. You can
     also force a redraw by adding to the “damage region” of the drawing area’s
-    window using [Gtk.Widget.queue_draw]. This will cause the drawing area to
-    call the draw function again.
+    window using {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]}.
+    This will cause the drawing area to call the draw function again.
 
     The available routines for drawing are documented in the
     {{:https://www.cairographics.org/manual/}Cairo documentation}; GDK offers
@@ -96,7 +96,8 @@ external set_content_width : t -> int -> unit
 
     Note that because widgets may be allocated larger sizes than they requested,
     it is possible that the actual width passed to your draw function is larger
-    than the width set here. You can use [Gtk.Widget.set_halign] to avoid that.
+    than the width set here. You can use
+    {{!Ocgtk.Raw.Widget.val-set_halign}[Gtk.Widget.set_halign]} to avoid that.
 
     If the width is set to 0 (the default), the drawing area may disappear. *)
 
@@ -106,7 +107,8 @@ external set_content_height : t -> int -> unit
 
     Note that because widgets may be allocated larger sizes than they requested,
     it is possible that the actual height passed to your draw function is larger
-    than the height set here. You can use [Gtk.Widget.set_valign] to avoid that.
+    than the height set here. You can use
+    {{!Ocgtk.Raw.Widget.val-set_valign}[Gtk.Widget.set_valign]} to avoid that.
 
     If the height is set to 0 (the default), the drawing area may disappear. *)
 

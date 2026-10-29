@@ -19,7 +19,8 @@
     replace it with a new one. If you need to pass arguments to an action, these
     are specified by the higher-level [GtkShortcut] object.
 
-    To activate a [GtkShortcutAction] manually, [Gtk.ShortcutAction.activate]
+    To activate a [GtkShortcutAction] manually,
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t.method-activate}[Gtk.ShortcutAction.activate]}
     can be called.
 
     GTK provides various actions:
@@ -75,7 +76,8 @@ class shortcut_action : Raw.Shortcut_action.t -> shortcut_action_t
     replace it with a new one. If you need to pass arguments to an action, these
     are specified by the higher-level [GtkShortcut] object.
 
-    To activate a [GtkShortcutAction] manually, [Gtk.ShortcutAction.activate]
+    To activate a [GtkShortcutAction] manually,
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t.method-activate}[Gtk.ShortcutAction.activate]}
     can be called.
 
     GTK provides various actions:

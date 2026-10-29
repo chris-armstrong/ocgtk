@@ -50,9 +50,14 @@
     If the user has the permission and cannot drop it, the button is hidden.
 
     The text (and tooltips) that are shown in the various cases can be adjusted
-    with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
-    [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
-    [Gtk.LockButton:tooltip-not-authorized] properties. *)
+    with the
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-text_lock}[Gtk.LockButton:text-lock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-text_unlock}[Gtk.LockButton:text-unlock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_lock}[Gtk.LockButton:tooltip-lock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_unlock}[Gtk.LockButton:tooltip-unlock]}
+    and
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_not_authorized}[Gtk.LockButton:tooltip-not-authorized]}
+    properties. *)
 class type lock_button_t = object
   inherit Button.button_t
 
@@ -138,9 +143,14 @@ class lock_button : Raw.Lock_button.t -> lock_button_t
     If the user has the permission and cannot drop it, the button is hidden.
 
     The text (and tooltips) that are shown in the various cases can be adjusted
-    with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
-    [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
-    [Gtk.LockButton:tooltip-not-authorized] properties. *)
+    with the
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-text_lock}[Gtk.LockButton:text-lock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-text_unlock}[Gtk.LockButton:text-unlock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_lock}[Gtk.LockButton:tooltip-lock]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_unlock}[Gtk.LockButton:tooltip-unlock]}
+    and
+    {{!Ocgtk.Lock_button.class-type-lock_button_t.method-tooltip_not_authorized}[Gtk.LockButton:tooltip-not-authorized]}
+    properties. *)
 
 (** {1:constructors Constructors} *)
 

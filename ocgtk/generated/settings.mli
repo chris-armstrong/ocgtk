@@ -38,7 +38,9 @@
 
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
-    use [Gtk.Widget.get_settings]. *)
+    use
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_settings}[Gtk.Widget.get_settings]}.
+*)
 class type settings_t = object
   inherit Style_provider.style_provider_t
 
@@ -767,7 +769,9 @@ class settings : Raw.Settings.t -> settings_t
 
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
-    use [Gtk.Widget.get_settings]. *)
+    use
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_settings}[Gtk.Widget.get_settings]}.
+*)
 
 (** {1:constructors Constructors} *)
 

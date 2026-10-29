@@ -14,10 +14,15 @@
 
     Tracks keyboard focus.
 
-    The event controller offers [Gtk.EventControllerFocus::enter] and
-    [Gtk.EventControllerFocus::leave] signals, as well as
-    [Gtk.EventControllerFocus:is-focus] and
-    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
+    The event controller offers
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-on_enter}
+     [Gtk.EventControllerFocus::enter]} and
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-on_leave}
+     [Gtk.EventControllerFocus::leave]} signals, as well as
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-is_focus}
+     [Gtk.EventControllerFocus:is-focus]} and
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-contains_focus}
+     [Gtk.EventControllerFocus:contains-focus]} properties which are updated to
     reflect focus changes inside the widget hierarchy that is rooted at the
     controllers widget. *)
 class type event_controller_focus_t = object
@@ -69,10 +74,15 @@ class event_controller_focus :
 
     Tracks keyboard focus.
 
-    The event controller offers [Gtk.EventControllerFocus::enter] and
-    [Gtk.EventControllerFocus::leave] signals, as well as
-    [Gtk.EventControllerFocus:is-focus] and
-    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
+    The event controller offers
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-on_enter}
+     [Gtk.EventControllerFocus::enter]} and
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-on_leave}
+     [Gtk.EventControllerFocus::leave]} signals, as well as
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-is_focus}
+     [Gtk.EventControllerFocus:is-focus]} and
+    {{!Ocgtk.Event_controller_focus.class-type-event_controller_focus_t.method-contains_focus}
+     [Gtk.EventControllerFocus:contains-focus]} properties which are updated to
     reflect focus changes inside the widget hierarchy that is rooted at the
     controllers widget. *)
 

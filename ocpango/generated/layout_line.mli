@@ -13,7 +13,8 @@
     A [PangoLayoutLine] represents one of the lines resulting from laying out a
     paragraph via [PangoLayout].
 
-    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
+    [PangoLayoutLine] structures are obtained by calling
+    {{!Ocpango.Layout.class-type-layout_t.method-get_line}[Pango.Layout.get_line]}
     and are only valid until the text, attributes, or settings of the parent
     [PangoLayout] are modified. *)
 class type layout_line_t = object
@@ -48,7 +49,8 @@ class layout_line : Raw.Layout_line.t -> layout_line_t
     A [PangoLayoutLine] represents one of the lines resulting from laying out a
     paragraph via [PangoLayout].
 
-    [PangoLayoutLine] structures are obtained by calling [Pango.Layout.get_line]
+    [PangoLayoutLine] structures are obtained by calling
+    {{!Ocpango.Layout.class-type-layout_t.method-get_line}[Pango.Layout.get_line]}
     and are only valid until the text, attributes, or settings of the parent
     [PangoLayout] are modified. *)
 

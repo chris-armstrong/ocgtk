@@ -21,11 +21,14 @@
     or the path to an icon (see
     {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}).
 
-    To obtain a hash of a [GIcon], see [Gio.Icon.hash].
+    To obtain a hash of a [GIcon], see
+    {{!Ocgio.Icon.class-type-icon_t.method-hash}[Gio.Icon.hash]}.
 
-    To check if two [GIcon]s are equal, see [Gio.Icon.equal].
+    To check if two [GIcon]s are equal, see
+    {{!Ocgio.Icon.class-type-icon_t.method-equal}[Gio.Icon.equal]}.
 
-    For serializing a [GIcon], use [Gio.Icon.serialize] and
+    For serializing a [GIcon], use
+    {{!Ocgio.Icon.class-type-icon_t.method-serialize}[Gio.Icon.serialize]} and
     [Gio.Icon.deserialize].
 
     If you want to consume [GIcon] (for example, in a toolkit) you must be
@@ -42,9 +45,10 @@
     If your application or library provides one or more [GIcon] implementations
     you need to ensure that your new implementation also implements
     {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}.
-    Additionally, you must provide an implementation of [Gio.Icon.serialize]
-    that gives a result that is understood by [Gio.Icon.deserialize], yielding
-    one of the built-in icon types. *)
+    Additionally, you must provide an implementation of
+    {{!Ocgio.Icon.class-type-icon_t.method-serialize}[Gio.Icon.serialize]} that
+    gives a result that is understood by [Gio.Icon.deserialize], yielding one of
+    the built-in icon types. *)
 class type icon_t = object
   (** {2:methods Methods} *)
 
@@ -99,11 +103,14 @@ class icon : Raw.Icon.t -> icon_t
     or the path to an icon (see
     {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}).
 
-    To obtain a hash of a [GIcon], see [Gio.Icon.hash].
+    To obtain a hash of a [GIcon], see
+    {{!Ocgio.Icon.class-type-icon_t.method-hash}[Gio.Icon.hash]}.
 
-    To check if two [GIcon]s are equal, see [Gio.Icon.equal].
+    To check if two [GIcon]s are equal, see
+    {{!Ocgio.Icon.class-type-icon_t.method-equal}[Gio.Icon.equal]}.
 
-    For serializing a [GIcon], use [Gio.Icon.serialize] and
+    For serializing a [GIcon], use
+    {{!Ocgio.Icon.class-type-icon_t.method-serialize}[Gio.Icon.serialize]} and
     [Gio.Icon.deserialize].
 
     If you want to consume [GIcon] (for example, in a toolkit) you must be
@@ -120,9 +127,10 @@ class icon : Raw.Icon.t -> icon_t
     If your application or library provides one or more [GIcon] implementations
     you need to ensure that your new implementation also implements
     {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}.
-    Additionally, you must provide an implementation of [Gio.Icon.serialize]
-    that gives a result that is understood by [Gio.Icon.deserialize], yielding
-    one of the built-in icon types. *)
+    Additionally, you must provide an implementation of
+    {{!Ocgio.Icon.class-type-icon_t.method-serialize}[Gio.Icon.serialize]} that
+    gives a result that is understood by [Gio.Icon.deserialize], yielding one of
+    the built-in icon types. *)
 
 (** {1:constructors Constructors} *)
 

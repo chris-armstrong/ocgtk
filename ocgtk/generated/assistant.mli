@@ -39,7 +39,8 @@
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
-    [GtkAssistantPage] for a child with [Gtk.Assistant.get_page].
+    [GtkAssistantPage] for a child with
+    {{!Ocgtk.Assistant.class-type-assistant_t.method-get_page}[Gtk.Assistant.get_page]}.
 
     {b GtkAssistant as GtkBuildable}
 
@@ -245,7 +246,8 @@ class assistant : Raw.Assistant.t -> assistant_t
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
-    [GtkAssistantPage] for a child with [Gtk.Assistant.get_page].
+    [GtkAssistantPage] for a child with
+    {{!Ocgtk.Assistant.class-type-assistant_t.method-get_page}[Gtk.Assistant.get_page]}.
 
     {b GtkAssistant as GtkBuildable}
 

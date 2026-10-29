@@ -20,11 +20,12 @@
     has resolved (either with success or failure), and a
     {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} structure will be passed to the
     callback. That callback should then call
-    [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
-    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data to see if the operation
-    was completed successfully. If an [error] is present when
-    [Gio.Mount.unmount_with_operation_finish] is called, then it will be filled
-    with any error information.
+    {{!Ocgio.Raw.Mount.val-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    with the [GMount] and the {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data
+    to see if the operation was completed successfully. If an [error] is present
+    when
+    {{!Ocgio.Raw.Mount.val-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume].

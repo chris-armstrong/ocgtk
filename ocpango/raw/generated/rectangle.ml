@@ -5,7 +5,7 @@
 
     [PangoRectangle] is frequently used to represent the logical or ink extents
     of a single glyph or section of text. (See, for instance,
-    [Pango.Font.get_glyph_extents].)
+    {{!Ocpango.Raw.Font.val-get_glyph_extents}[Pango.Font.get_glyph_extents]}.)
 
     The class built on this module is in {!Ocpango.Rectangle}. *)
 

@@ -21,7 +21,8 @@
     The children of a [GtkFlowBox] can be dynamically sorted and filtered.
 
     Although a [GtkFlowBox] must have only [GtkFlowBoxChild] children, you can
-    add any kind of widget to it via [Gtk.FlowBox.insert], and a
+    add any kind of widget to it via
+    {{!Ocgtk.Raw.Flow_box.val-insert}[Gtk.FlowBox.insert]}, and a
     [GtkFlowBoxChild] widget will automatically be inserted between the box and
     the widget.
 
@@ -31,10 +32,10 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.FlowBox::move-cursor]
-    - [Gtk.FlowBox::select-all]
-    - [Gtk.FlowBox::toggle-cursor-child]
-    - [Gtk.FlowBox::unselect-all]
+    - {{!Ocgtk.Raw.Flow_box.val-on_move_cursor}[Gtk.FlowBox::move-cursor]}
+    - {{!Ocgtk.Raw.Flow_box.val-on_select_all}[Gtk.FlowBox::select-all]}
+    - {{!Ocgtk.Raw.Flow_box.val-on_toggle_cursor_child}[Gtk.FlowBox::toggle-cursor-child]}
+    - {{!Ocgtk.Raw.Flow_box.val-on_unselect_all}[Gtk.FlowBox::unselect-all]}
 
     {b CSS nodes}
 
@@ -54,8 +55,11 @@
 
     {b Accessibility}
 
-    [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
-    uses the [Gtk.AccessibleRole.grid_cell] role.
+    [GtkFlowBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and [GtkFlowBoxChild] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role.
 
     The class built on this module is in {!Ocgtk.Flow_box}. *)
 
@@ -80,9 +84,11 @@ external set_vadjustment : t -> Adjustment.t -> unit
 (** Hooks up an adjustment to focus handling in [box].
 
     The adjustment is also used for autoscrolling during rubberband selection.
-    See [Gtk.ScrolledWindow.get_vadjustment] for a typical way of obtaining the
-    adjustment, and [Gtk.FlowBox.set_hadjustment] for setting the horizontal
-    adjustment.
+    See
+    {{!Ocgtk.Raw.Scrolled_window.val-get_vadjustment}[Gtk.ScrolledWindow.get_vadjustment]}
+    for a typical way of obtaining the adjustment, and
+    {{!Ocgtk.Raw.Flow_box.val-set_hadjustment}[Gtk.FlowBox.set_hadjustment]} for
+    setting the horizontal adjustment.
 
     The adjustments have to be in pixel units and in the same coordinate system
     as the allocation for immediate children of the box. *)
@@ -117,9 +123,11 @@ external set_hadjustment : t -> Adjustment.t -> unit
 (** Hooks up an adjustment to focus handling in [box].
 
     The adjustment is also used for autoscrolling during rubberband selection.
-    See [Gtk.ScrolledWindow.get_hadjustment] for a typical way of obtaining the
-    adjustment, and [Gtk.FlowBox.set_vadjustment] for setting the vertical
-    adjustment.
+    See
+    {{!Ocgtk.Raw.Scrolled_window.val-get_hadjustment}[Gtk.ScrolledWindow.get_hadjustment]}
+    for a typical way of obtaining the adjustment, and
+    {{!Ocgtk.Raw.Flow_box.val-set_vadjustment}[Gtk.FlowBox.set_vadjustment]} for
+    setting the vertical adjustment.
 
     The adjustments have to be in pixel units and in the same coordinate system
     as the allocation for immediate children of the box. *)
@@ -164,7 +172,7 @@ external prepend :
     If a sort function is set, the widget will actually be inserted at the
     calculated position.
 
-    See also: [Gtk.FlowBox.insert]. *)
+    See also: {{!Ocgtk.Raw.Flow_box.val-insert}[Gtk.FlowBox.insert]}. *)
 
 external invalidate_sort : t -> unit = "ml_gtk_flow_box_invalidate_sort"
 (** Updates the sorting for all children.
@@ -245,7 +253,7 @@ external append :
     If a sort function is set, the widget will actually be inserted at the
     calculated position.
 
-    See also: [Gtk.FlowBox.insert]. *)
+    See also: {{!Ocgtk.Raw.Flow_box.val-insert}[Gtk.FlowBox.insert]}. *)
 
 (* Properties *)
 
@@ -308,8 +316,9 @@ val on_selected_children_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted when the set of selected children changes.
 
-    Use [Gtk.FlowBox.selected_foreach] or [Gtk.FlowBox.get_selected_children] to
-    obtain the selected children. *)
+    Use [Gtk.FlowBox.selected_foreach] or
+    {{!Ocgtk.Raw.Flow_box.val-get_selected_children}[Gtk.FlowBox.get_selected_children]}
+    to obtain the selected children. *)
 
 val on_toggle_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

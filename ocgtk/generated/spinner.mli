@@ -24,8 +24,10 @@
 
     An example GtkSpinner
 
-    To start the animation, use [Gtk.Spinner.start], to stop it use
-    [Gtk.Spinner.stop].
+    To start the animation, use
+    {{!Ocgtk.Spinner.class-type-spinner_t.method-start}[Gtk.Spinner.start]}, to
+    stop it use
+    {{!Ocgtk.Spinner.class-type-spinner_t.method-stop}[Gtk.Spinner.stop]}.
 
     {b CSS nodes}
 
@@ -34,7 +36,9 @@
 
     {b Accessibility}
 
-    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+    [GtkSpinner] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role. *)
 class type spinner_t = object
   inherit Widget.widget_t
 
@@ -70,8 +74,10 @@ class spinner : Raw.Spinner.t -> spinner_t
 
     An example GtkSpinner
 
-    To start the animation, use [Gtk.Spinner.start], to stop it use
-    [Gtk.Spinner.stop].
+    To start the animation, use
+    {{!Ocgtk.Spinner.class-type-spinner_t.method-start}[Gtk.Spinner.start]}, to
+    stop it use
+    {{!Ocgtk.Spinner.class-type-spinner_t.method-stop}[Gtk.Spinner.stop]}.
 
     {b CSS nodes}
 
@@ -80,7 +86,9 @@ class spinner : Raw.Spinner.t -> spinner_t
 
     {b Accessibility}
 
-    [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+    [GtkSpinner] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

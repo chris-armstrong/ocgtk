@@ -47,9 +47,9 @@ class type window_t = Application_and__window_and__window_group.window_t
 
     The following signals have default keybindings:
 
-    - [Gtk.Window::activate-default]
-    - [Gtk.Window::activate-focus]
-    - [Gtk.Window::enable-debugging]
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_default}[Gtk.Window::activate-default]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_focus}[Gtk.Window::activate-focus]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_enable_debugging}[Gtk.Window::enable-debugging]}
 
     {b Actions}
 
@@ -93,9 +93,13 @@ class type window_t = Application_and__window_and__window_group.window_t
 
     {b Accessibility}
 
-    [GtkWindow] uses the [Gtk.AccessibleRole.window] role.
+    [GtkWindow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-WINDOW}[Gtk.AccessibleRole.window]}
+    role.
 
-    From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role. *)
+    From GTK 4.12 to 4.18, it used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-APPLICATION}[Gtk.AccessibleRole.application]}
+    role. *)
 
 class window : Raw.Window.t -> window_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Window.t}. *)
@@ -126,9 +130,9 @@ class window : Raw.Window.t -> window_t
 
     The following signals have default keybindings:
 
-    - [Gtk.Window::activate-default]
-    - [Gtk.Window::activate-focus]
-    - [Gtk.Window::enable-debugging]
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_default}[Gtk.Window::activate-default]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_activate_focus}[Gtk.Window::activate-focus]}
+    - {{!Ocgtk.Window.class-type-window_t.method-on_enable_debugging}[Gtk.Window::enable-debugging]}
 
     {b Actions}
 
@@ -172,9 +176,13 @@ class window : Raw.Window.t -> window_t
 
     {b Accessibility}
 
-    [GtkWindow] uses the [Gtk.AccessibleRole.window] role.
+    [GtkWindow] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-WINDOW}[Gtk.AccessibleRole.window]}
+    role.
 
-    From GTK 4.12 to 4.18, it used the [Gtk.AccessibleRole.application] role. *)
+    From GTK 4.12 to 4.18, it used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-APPLICATION}[Gtk.AccessibleRole.application]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
@@ -182,11 +190,12 @@ val new_ : unit -> window_t
 (** Creates a new [GtkWindow].
 
     To get an undecorated window (without window borders), use
-    [Gtk.Window.set_decorated].
+    {{!Ocgtk.Window.class-type-window_t.method-set_decorated}[Gtk.Window.set_decorated]}.
 
     All top-level windows created by this function are stored in an internal
     top-level window list. This list can be obtained from
     [Gtk.Window.list_toplevels]. Due to GTK keeping a reference to the window
     internally, this function does not return a reference to the caller.
 
-    To delete a [GtkWindow], call [Gtk.Window.destroy]. *)
+    To delete a [GtkWindow], call
+    {{!Ocgtk.Window.class-type-window_t.method-destroy}[Gtk.Window.destroy]}. *)

@@ -21,16 +21,18 @@ module rec Layout : sig
       If the Y position is not inside the layout, the closest position is chosen
       (the position will be clamped inside the layout). If the X position is not
       within the layout, then the start or the end of the line is chosen as
-      described for [Pango.LayoutLine.x_to_index]. If either the X or Y
-      positions were not inside the layout, then the function returns [false];
-      on an exact hit, it returns [true]. *)
+      described for
+      {{!Ocpango.Raw.Layout_line.val-x_to_index}[Pango.LayoutLine.x_to_index]}.
+      If either the X or Y positions were not inside the layout, then the
+      function returns [false]; on an exact hit, it returns [true]. *)
 
   external write_to_file :
     t -> Ocpango_enums.layoutserializeflags -> string -> (bool, GError.t) result
     = "ml_pango_layout_write_to_file"
   (** A convenience method to serialize a layout to a file.
 
-      It is equivalent to calling [Pango.Layout.serialize] followed by
+      It is equivalent to calling
+      {{!Ocpango.Raw.Layout.val-serialize}[Pango.Layout.serialize]} followed by
       [GLib.file_set_contents].
 
       See those two functions for details on the arguments.
@@ -43,7 +45,8 @@ module rec Layout : sig
   (** Sets the wrap mode.
 
       The wrap mode only has effect if a width is set on the layout with
-      [Pango.Layout.set_width]. To turn off wrapping, set the width to -1.
+      {{!Ocpango.Raw.Layout.val-set_width}[Pango.Layout.set_width]}. To turn off
+      wrapping, set the width to -1.
 
       The default value is [PANGO_WRAP_WORD]. *)
 
@@ -59,10 +62,13 @@ module rec Layout : sig
       This function validates [text] and renders invalid UTF-8 with a
       placeholder glyph.
 
-      Note that if you have used [Pango.Layout.set_markup] or
-      [Pango.Layout.set_markup_with_accel] on [layout] before, you may want to
-      call [Pango.Layout.set_attributes] to clear the attributes set on the
-      layout from the markup as this function does not clear attributes. *)
+      Note that if you have used
+      {{!Ocpango.Raw.Layout.val-set_markup}[Pango.Layout.set_markup]} or
+      {{!Ocpango.Raw.Layout.val-set_markup_with_accel}[Pango.Layout.set_markup_with_accel]}
+      on [layout] before, you may want to call
+      {{!Ocpango.Raw.Layout.val-set_attributes}[Pango.Layout.set_attributes]} to
+      clear the attributes set on the layout from the markup as this function
+      does not clear attributes. *)
 
   external set_tabs : t -> Tab_array.t option -> unit
     = "ml_pango_layout_set_tabs"
@@ -90,8 +96,9 @@ module rec Layout : sig
 
       Note: Since 1.44, Pango is using the line height (as determined by the
       font) for placing lines when the line spacing factor is set to a non-zero
-      value with [Pango.Layout.set_line_spacing]. In that case, the [spacing]
-      set with this function is ignored.
+      value with
+      {{!Ocpango.Raw.Layout.val-set_line_spacing}[Pango.Layout.set_line_spacing]}.
+      In that case, the [spacing] set with this function is ignored.
 
       Note: for semantics that are closer to the CSS line-height property, see
       [Pango.attr_line_height_new]. *)
@@ -130,8 +137,9 @@ module rec Layout : sig
 
       Replaces the current text and attribute list.
 
-      This is the same as [Pango.Layout.set_markup_with_accel], but the markup
-      text isn't scanned for accelerators. *)
+      This is the same as
+      {{!Ocpango.Raw.Layout.val-set_markup_with_accel}[Pango.Layout.set_markup_with_accel]},
+      but the markup text isn't scanned for accelerators. *)
 
   external set_line_spacing : t -> float -> unit
     = "ml_pango_layout_set_line_spacing"
@@ -144,7 +152,8 @@ module rec Layout : sig
       baseline2 = baseline1 + factor * height2
 
       where height2 is the line height of the second line (as determined by the
-      font(s)). In this case, the spacing set with [Pango.Layout.set_spacing] is
+      font(s)). In this case, the spacing set with
+      {{!Ocpango.Raw.Layout.val-set_spacing}[Pango.Layout.set_spacing]} is
       ignored.
 
       If [factor] is zero (the default), spacing is applied as before.
@@ -157,8 +166,9 @@ module rec Layout : sig
   (** Sets whether the last line should be stretched to fill the entire width of
       the layout.
 
-      This only has an effect if [Pango.Layout.set_justify] has been called as
-      well.
+      This only has an effect if
+      {{!Ocpango.Raw.Layout.val-set_justify}[Pango.Layout.set_justify]} has been
+      called as well.
 
       The default value is [false]. *)
 
@@ -178,7 +188,9 @@ module rec Layout : sig
 
       The default value is [false].
 
-      Also see [Pango.Layout.set_justify_last_line]. *)
+      Also see
+      {{!Ocpango.Raw.Layout.val-set_justify_last_line}[Pango.Layout.set_justify_last_line]}.
+  *)
 
   external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
   (** Sets the width in Pango units to indent each paragraph.
@@ -231,7 +243,9 @@ module rec Layout : sig
 
       Depending on the ellipsization mode [ellipsize] text is removed from the
       start, middle, or end of text so they fit within the width and height of
-      layout set with [Pango.Layout.set_width] and [Pango.Layout.set_height].
+      layout set with
+      {{!Ocpango.Raw.Layout.val-set_width}[Pango.Layout.set_width]} and
+      {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]}.
 
       If the layout contains characters such as newlines that force it to be
       layed out in multiple paragraphs, then whether each paragraph is
@@ -240,7 +254,8 @@ module rec Layout : sig
 
       The default value is [PANGO_ELLIPSIZE_NONE].
 
-      See [Pango.Layout.set_height] for details. *)
+      See {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]} for
+      details. *)
 
   external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
   (** Sets whether to calculate the base direction for the layout according to
@@ -254,7 +269,7 @@ module rec Layout : sig
 
       When [false], the choice between left-to-right and right-to-left layout is
       done according to the base direction of the layout's [PangoContext]. (See
-      [Pango.Context.set_base_dir]).
+      {{!Ocpango.Raw.Context.val-set_base_dir}[Pango.Context.set_base_dir]}).
 
       When the auto-computed direction of a paragraph differs from the base
       direction of the context, the interpretation of [PANGO_ALIGN_LEFT] and
@@ -334,8 +349,8 @@ module rec Layout : sig
   external get_wrap : t -> Ocpango_enums.wrapmode = "ml_pango_layout_get_wrap"
   (** Gets the wrap mode for the layout.
 
-      Use [Pango.Layout.is_wrapped] to query whether any paragraphs were
-      actually wrapped. *)
+      Use {{!Ocpango.Raw.Layout.val-is_wrapped}[Pango.Layout.is_wrapped]} to
+      query whether any paragraphs were actually wrapped. *)
 
   external get_width : t -> int = "ml_pango_layout_get_width"
   (** Gets the width to which the lines of the [PangoLayout] should wrap. *)
@@ -368,14 +383,16 @@ module rec Layout : sig
   external get_size : t -> int * int = "ml_pango_layout_get_size"
   (** Determines the logical width and height of a [PangoLayout] in Pango units.
 
-      This is simply a convenience function around [Pango.Layout.get_extents].
-  *)
+      This is simply a convenience function around
+      {{!Ocpango.Raw.Layout.val-get_extents}[Pango.Layout.get_extents]}. *)
 
   external get_single_paragraph_mode : t -> bool
     = "ml_pango_layout_get_single_paragraph_mode"
   (** Obtains whether [layout] is in single paragraph mode.
 
-      See [Pango.Layout.set_single_paragraph_mode]. *)
+      See
+      {{!Ocpango.Raw.Layout.val-set_single_paragraph_mode}[Pango.Layout.set_single_paragraph_mode]}.
+  *)
 
   external get_serial : t -> int = "ml_pango_layout_get_serial"
   [@@ocaml.doc
@@ -389,23 +406,27 @@ module rec Layout : sig
     \  This can be used to automatically detect changes to a [PangoLayout],\n\
     \  and is useful for example to decide whether a layout needs redrawing.\n\
     \  To force the serial to be increased, use\n\
-    \  [Pango.Layout.context_changed]."]
+    \  \
+     {{!Ocpango.Raw.Layout.val-context_changed}[Pango.Layout.context_changed]}."]
 
   external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
   (** Determines the logical width and height of a [PangoLayout] in device
       units.
 
-      [Pango.Layout.get_size] returns the width and height scaled by
-      [PANGO_SCALE]. This is simply a convenience function around
-      [Pango.Layout.get_pixel_extents]. *)
+      {{!Ocpango.Raw.Layout.val-get_size}[Pango.Layout.get_size]} returns the
+      width and height scaled by [PANGO_SCALE]. This is simply a convenience
+      function around
+      {{!Ocpango.Raw.Layout.val-get_pixel_extents}[Pango.Layout.get_pixel_extents]}.
+  *)
 
   external get_pixel_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_get_pixel_extents"
   (** Computes the logical and ink extents of [layout] in device units.
 
-      This function just calls [Pango.Layout.get_extents] followed by two
-      [extents_to_pixels] calls, rounding [ink_rect] and [logical_rect] such
-      that the rounded rectangles fully contain the unrounded one (that is,
+      This function just calls
+      {{!Ocpango.Raw.Layout.val-get_extents}[Pango.Layout.get_extents]} followed
+      by two [extents_to_pixels] calls, rounding [ink_rect] and [logical_rect]
+      such that the rounded rectangles fully contain the unrounded one (that is,
       passes them as first argument to [Pango.extents_to_pixels]). *)
 
   external get_log_attrs_readonly : t -> Log_attr.t array * int
@@ -413,9 +434,10 @@ module rec Layout : sig
   (** Retrieves an array of logical attributes for each character in the
       [layout].
 
-      This is a faster alternative to [Pango.Layout.get_log_attrs]. The returned
-      array is part of [layout] and must not be modified. Modifying the layout
-      will invalidate the returned array.
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_log_attrs}[Pango.Layout.get_log_attrs]}. The
+      returned array is part of [layout] and must not be modified. Modifying the
+      layout will invalidate the returned array.
 
       The number of attributes returned in [n_attrs] will be one more than the
       total number of characters in the layout, since there need to be
@@ -431,27 +453,33 @@ module rec Layout : sig
     = "ml_pango_layout_get_lines_readonly"
   (** Returns the lines of the [layout] as a list.
 
-      This is a faster alternative to [Pango.Layout.get_lines], but the user is
-      not expected to modify the contents of the lines (glyphs, glyph widths,
-      etc.). *)
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_lines}[Pango.Layout.get_lines]}, but the
+      user is not expected to modify the contents of the lines (glyphs, glyph
+      widths, etc.). *)
 
   external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
   (** Returns the lines of the [layout] as a list.
 
-      Use the faster [Pango.Layout.get_lines_readonly] if you do not plan to
-      modify the contents of the lines (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout.val-get_lines_readonly}[Pango.Layout.get_lines_readonly]}
+      if you do not plan to modify the contents of the lines (glyphs, glyph
+      widths, etc.). *)
 
   external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
   (** Gets the line spacing factor of [layout].
 
-      See [Pango.Layout.set_line_spacing]. *)
+      See
+      {{!Ocpango.Raw.Layout.val-set_line_spacing}[Pango.Layout.set_line_spacing]}.
+  *)
 
   external get_line_readonly : t -> int -> Layout_line.t option
     = "ml_pango_layout_get_line_readonly"
   (** Retrieves a particular line from a [PangoLayout].
 
-      This is a faster alternative to [Pango.Layout.get_line], but the user is
-      not expected to modify the contents of the line (glyphs, glyph widths,
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_line}[Pango.Layout.get_line]}, but the user
+      is not expected to modify the contents of the line (glyphs, glyph widths,
       etc.). *)
 
   external get_line_count : t -> int = "ml_pango_layout_get_line_count"
@@ -461,8 +489,10 @@ module rec Layout : sig
     = "ml_pango_layout_get_line"
   (** Retrieves a particular line from a [PangoLayout].
 
-      Use the faster [Pango.Layout.get_line_readonly] if you do not plan to
-      modify the contents of the line (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout.val-get_line_readonly}[Pango.Layout.get_line_readonly]}
+      if you do not plan to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_justify_last_line : t -> bool
     = "ml_pango_layout_get_justify_last_line"
@@ -484,7 +514,8 @@ module rec Layout : sig
   external get_height : t -> int = "ml_pango_layout_get_height"
   (** Gets the height of layout used for ellipsization.
 
-      See [Pango.Layout.set_height] for details. *)
+      See {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]} for
+      details. *)
 
   external get_font_description : t -> Font_description.t option
     = "ml_pango_layout_get_font_description"
@@ -507,10 +538,10 @@ module rec Layout : sig
     = "ml_pango_layout_get_ellipsize"
   (** Gets the type of ellipsization being performed for [layout].
 
-      See [Pango.Layout.set_ellipsize].
+      See {{!Ocpango.Raw.Layout.val-set_ellipsize}[Pango.Layout.set_ellipsize]}.
 
-      Use [Pango.Layout.is_ellipsized] to query whether any paragraphs were
-      actually ellipsized. *)
+      Use {{!Ocpango.Raw.Layout.val-is_ellipsized}[Pango.Layout.is_ellipsized]}
+      to query whether any paragraphs were actually ellipsized. *)
 
   external get_direction : t -> int -> Ocpango_enums.direction
     = "ml_pango_layout_get_direction"
@@ -554,9 +585,10 @@ module rec Layout : sig
   (** Given an index within a layout, determines the positions that of the
       strong and weak cursors if the insertion point is at that index.
 
-      This is a variant of [Pango.Layout.get_cursor_pos] that applies font
-      metric information about caret slope and offset to the positions it
-      returns.
+      This is a variant of
+      {{!Ocpango.Raw.Layout.val-get_cursor_pos}[Pango.Layout.get_cursor_pos]}
+      that applies font metric information about caret slope and offset to the
+      positions it returns.
 
       Caret metrics *)
 
@@ -567,7 +599,8 @@ module rec Layout : sig
   (** Gets whether to calculate the base direction for the layout according to
       its contents.
 
-      See [Pango.Layout.set_auto_dir]. *)
+      See {{!Ocpango.Raw.Layout.val-set_auto_dir}[Pango.Layout.set_auto_dir]}.
+  *)
 
   external get_attributes : t -> Attr_list.t option
     = "ml_pango_layout_get_attributes"
@@ -610,16 +643,18 @@ end = struct
       If the Y position is not inside the layout, the closest position is chosen
       (the position will be clamped inside the layout). If the X position is not
       within the layout, then the start or the end of the line is chosen as
-      described for [Pango.LayoutLine.x_to_index]. If either the X or Y
-      positions were not inside the layout, then the function returns [false];
-      on an exact hit, it returns [true]. *)
+      described for
+      {{!Ocpango.Raw.Layout_line.val-x_to_index}[Pango.LayoutLine.x_to_index]}.
+      If either the X or Y positions were not inside the layout, then the
+      function returns [false]; on an exact hit, it returns [true]. *)
 
   external write_to_file :
     t -> Ocpango_enums.layoutserializeflags -> string -> (bool, GError.t) result
     = "ml_pango_layout_write_to_file"
   (** A convenience method to serialize a layout to a file.
 
-      It is equivalent to calling [Pango.Layout.serialize] followed by
+      It is equivalent to calling
+      {{!Ocpango.Raw.Layout.val-serialize}[Pango.Layout.serialize]} followed by
       [GLib.file_set_contents].
 
       See those two functions for details on the arguments.
@@ -632,7 +667,8 @@ end = struct
   (** Sets the wrap mode.
 
       The wrap mode only has effect if a width is set on the layout with
-      [Pango.Layout.set_width]. To turn off wrapping, set the width to -1.
+      {{!Ocpango.Raw.Layout.val-set_width}[Pango.Layout.set_width]}. To turn off
+      wrapping, set the width to -1.
 
       The default value is [PANGO_WRAP_WORD]. *)
 
@@ -648,10 +684,13 @@ end = struct
       This function validates [text] and renders invalid UTF-8 with a
       placeholder glyph.
 
-      Note that if you have used [Pango.Layout.set_markup] or
-      [Pango.Layout.set_markup_with_accel] on [layout] before, you may want to
-      call [Pango.Layout.set_attributes] to clear the attributes set on the
-      layout from the markup as this function does not clear attributes. *)
+      Note that if you have used
+      {{!Ocpango.Raw.Layout.val-set_markup}[Pango.Layout.set_markup]} or
+      {{!Ocpango.Raw.Layout.val-set_markup_with_accel}[Pango.Layout.set_markup_with_accel]}
+      on [layout] before, you may want to call
+      {{!Ocpango.Raw.Layout.val-set_attributes}[Pango.Layout.set_attributes]} to
+      clear the attributes set on the layout from the markup as this function
+      does not clear attributes. *)
 
   external set_tabs : t -> Tab_array.t option -> unit
     = "ml_pango_layout_set_tabs"
@@ -679,8 +718,9 @@ end = struct
 
       Note: Since 1.44, Pango is using the line height (as determined by the
       font) for placing lines when the line spacing factor is set to a non-zero
-      value with [Pango.Layout.set_line_spacing]. In that case, the [spacing]
-      set with this function is ignored.
+      value with
+      {{!Ocpango.Raw.Layout.val-set_line_spacing}[Pango.Layout.set_line_spacing]}.
+      In that case, the [spacing] set with this function is ignored.
 
       Note: for semantics that are closer to the CSS line-height property, see
       [Pango.attr_line_height_new]. *)
@@ -719,8 +759,9 @@ end = struct
 
       Replaces the current text and attribute list.
 
-      This is the same as [Pango.Layout.set_markup_with_accel], but the markup
-      text isn't scanned for accelerators. *)
+      This is the same as
+      {{!Ocpango.Raw.Layout.val-set_markup_with_accel}[Pango.Layout.set_markup_with_accel]},
+      but the markup text isn't scanned for accelerators. *)
 
   external set_line_spacing : t -> float -> unit
     = "ml_pango_layout_set_line_spacing"
@@ -733,7 +774,8 @@ end = struct
       baseline2 = baseline1 + factor * height2
 
       where height2 is the line height of the second line (as determined by the
-      font(s)). In this case, the spacing set with [Pango.Layout.set_spacing] is
+      font(s)). In this case, the spacing set with
+      {{!Ocpango.Raw.Layout.val-set_spacing}[Pango.Layout.set_spacing]} is
       ignored.
 
       If [factor] is zero (the default), spacing is applied as before.
@@ -746,8 +788,9 @@ end = struct
   (** Sets whether the last line should be stretched to fill the entire width of
       the layout.
 
-      This only has an effect if [Pango.Layout.set_justify] has been called as
-      well.
+      This only has an effect if
+      {{!Ocpango.Raw.Layout.val-set_justify}[Pango.Layout.set_justify]} has been
+      called as well.
 
       The default value is [false]. *)
 
@@ -767,7 +810,9 @@ end = struct
 
       The default value is [false].
 
-      Also see [Pango.Layout.set_justify_last_line]. *)
+      Also see
+      {{!Ocpango.Raw.Layout.val-set_justify_last_line}[Pango.Layout.set_justify_last_line]}.
+  *)
 
   external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
   (** Sets the width in Pango units to indent each paragraph.
@@ -820,7 +865,9 @@ end = struct
 
       Depending on the ellipsization mode [ellipsize] text is removed from the
       start, middle, or end of text so they fit within the width and height of
-      layout set with [Pango.Layout.set_width] and [Pango.Layout.set_height].
+      layout set with
+      {{!Ocpango.Raw.Layout.val-set_width}[Pango.Layout.set_width]} and
+      {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]}.
 
       If the layout contains characters such as newlines that force it to be
       layed out in multiple paragraphs, then whether each paragraph is
@@ -829,7 +876,8 @@ end = struct
 
       The default value is [PANGO_ELLIPSIZE_NONE].
 
-      See [Pango.Layout.set_height] for details. *)
+      See {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]} for
+      details. *)
 
   external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
   (** Sets whether to calculate the base direction for the layout according to
@@ -843,7 +891,7 @@ end = struct
 
       When [false], the choice between left-to-right and right-to-left layout is
       done according to the base direction of the layout's [PangoContext]. (See
-      [Pango.Context.set_base_dir]).
+      {{!Ocpango.Raw.Context.val-set_base_dir}[Pango.Context.set_base_dir]}).
 
       When the auto-computed direction of a paragraph differs from the base
       direction of the context, the interpretation of [PANGO_ALIGN_LEFT] and
@@ -923,8 +971,8 @@ end = struct
   external get_wrap : t -> Ocpango_enums.wrapmode = "ml_pango_layout_get_wrap"
   (** Gets the wrap mode for the layout.
 
-      Use [Pango.Layout.is_wrapped] to query whether any paragraphs were
-      actually wrapped. *)
+      Use {{!Ocpango.Raw.Layout.val-is_wrapped}[Pango.Layout.is_wrapped]} to
+      query whether any paragraphs were actually wrapped. *)
 
   external get_width : t -> int = "ml_pango_layout_get_width"
   (** Gets the width to which the lines of the [PangoLayout] should wrap. *)
@@ -957,14 +1005,16 @@ end = struct
   external get_size : t -> int * int = "ml_pango_layout_get_size"
   (** Determines the logical width and height of a [PangoLayout] in Pango units.
 
-      This is simply a convenience function around [Pango.Layout.get_extents].
-  *)
+      This is simply a convenience function around
+      {{!Ocpango.Raw.Layout.val-get_extents}[Pango.Layout.get_extents]}. *)
 
   external get_single_paragraph_mode : t -> bool
     = "ml_pango_layout_get_single_paragraph_mode"
   (** Obtains whether [layout] is in single paragraph mode.
 
-      See [Pango.Layout.set_single_paragraph_mode]. *)
+      See
+      {{!Ocpango.Raw.Layout.val-set_single_paragraph_mode}[Pango.Layout.set_single_paragraph_mode]}.
+  *)
 
   external get_serial : t -> int = "ml_pango_layout_get_serial"
   [@@ocaml.doc
@@ -978,23 +1028,27 @@ end = struct
     \  This can be used to automatically detect changes to a [PangoLayout],\n\
     \  and is useful for example to decide whether a layout needs redrawing.\n\
     \  To force the serial to be increased, use\n\
-    \  [Pango.Layout.context_changed]."]
+    \  \
+     {{!Ocpango.Raw.Layout.val-context_changed}[Pango.Layout.context_changed]}."]
 
   external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
   (** Determines the logical width and height of a [PangoLayout] in device
       units.
 
-      [Pango.Layout.get_size] returns the width and height scaled by
-      [PANGO_SCALE]. This is simply a convenience function around
-      [Pango.Layout.get_pixel_extents]. *)
+      {{!Ocpango.Raw.Layout.val-get_size}[Pango.Layout.get_size]} returns the
+      width and height scaled by [PANGO_SCALE]. This is simply a convenience
+      function around
+      {{!Ocpango.Raw.Layout.val-get_pixel_extents}[Pango.Layout.get_pixel_extents]}.
+  *)
 
   external get_pixel_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_get_pixel_extents"
   (** Computes the logical and ink extents of [layout] in device units.
 
-      This function just calls [Pango.Layout.get_extents] followed by two
-      [extents_to_pixels] calls, rounding [ink_rect] and [logical_rect] such
-      that the rounded rectangles fully contain the unrounded one (that is,
+      This function just calls
+      {{!Ocpango.Raw.Layout.val-get_extents}[Pango.Layout.get_extents]} followed
+      by two [extents_to_pixels] calls, rounding [ink_rect] and [logical_rect]
+      such that the rounded rectangles fully contain the unrounded one (that is,
       passes them as first argument to [Pango.extents_to_pixels]). *)
 
   external get_log_attrs_readonly : t -> Log_attr.t array * int
@@ -1002,9 +1056,10 @@ end = struct
   (** Retrieves an array of logical attributes for each character in the
       [layout].
 
-      This is a faster alternative to [Pango.Layout.get_log_attrs]. The returned
-      array is part of [layout] and must not be modified. Modifying the layout
-      will invalidate the returned array.
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_log_attrs}[Pango.Layout.get_log_attrs]}. The
+      returned array is part of [layout] and must not be modified. Modifying the
+      layout will invalidate the returned array.
 
       The number of attributes returned in [n_attrs] will be one more than the
       total number of characters in the layout, since there need to be
@@ -1020,27 +1075,33 @@ end = struct
     = "ml_pango_layout_get_lines_readonly"
   (** Returns the lines of the [layout] as a list.
 
-      This is a faster alternative to [Pango.Layout.get_lines], but the user is
-      not expected to modify the contents of the lines (glyphs, glyph widths,
-      etc.). *)
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_lines}[Pango.Layout.get_lines]}, but the
+      user is not expected to modify the contents of the lines (glyphs, glyph
+      widths, etc.). *)
 
   external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
   (** Returns the lines of the [layout] as a list.
 
-      Use the faster [Pango.Layout.get_lines_readonly] if you do not plan to
-      modify the contents of the lines (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout.val-get_lines_readonly}[Pango.Layout.get_lines_readonly]}
+      if you do not plan to modify the contents of the lines (glyphs, glyph
+      widths, etc.). *)
 
   external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
   (** Gets the line spacing factor of [layout].
 
-      See [Pango.Layout.set_line_spacing]. *)
+      See
+      {{!Ocpango.Raw.Layout.val-set_line_spacing}[Pango.Layout.set_line_spacing]}.
+  *)
 
   external get_line_readonly : t -> int -> Layout_line.t option
     = "ml_pango_layout_get_line_readonly"
   (** Retrieves a particular line from a [PangoLayout].
 
-      This is a faster alternative to [Pango.Layout.get_line], but the user is
-      not expected to modify the contents of the line (glyphs, glyph widths,
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout.val-get_line}[Pango.Layout.get_line]}, but the user
+      is not expected to modify the contents of the line (glyphs, glyph widths,
       etc.). *)
 
   external get_line_count : t -> int = "ml_pango_layout_get_line_count"
@@ -1050,8 +1111,10 @@ end = struct
     = "ml_pango_layout_get_line"
   (** Retrieves a particular line from a [PangoLayout].
 
-      Use the faster [Pango.Layout.get_line_readonly] if you do not plan to
-      modify the contents of the line (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout.val-get_line_readonly}[Pango.Layout.get_line_readonly]}
+      if you do not plan to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_justify_last_line : t -> bool
     = "ml_pango_layout_get_justify_last_line"
@@ -1073,7 +1136,8 @@ end = struct
   external get_height : t -> int = "ml_pango_layout_get_height"
   (** Gets the height of layout used for ellipsization.
 
-      See [Pango.Layout.set_height] for details. *)
+      See {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]} for
+      details. *)
 
   external get_font_description : t -> Font_description.t option
     = "ml_pango_layout_get_font_description"
@@ -1096,10 +1160,10 @@ end = struct
     = "ml_pango_layout_get_ellipsize"
   (** Gets the type of ellipsization being performed for [layout].
 
-      See [Pango.Layout.set_ellipsize].
+      See {{!Ocpango.Raw.Layout.val-set_ellipsize}[Pango.Layout.set_ellipsize]}.
 
-      Use [Pango.Layout.is_ellipsized] to query whether any paragraphs were
-      actually ellipsized. *)
+      Use {{!Ocpango.Raw.Layout.val-is_ellipsized}[Pango.Layout.is_ellipsized]}
+      to query whether any paragraphs were actually ellipsized. *)
 
   external get_direction : t -> int -> Ocpango_enums.direction
     = "ml_pango_layout_get_direction"
@@ -1143,9 +1207,10 @@ end = struct
   (** Given an index within a layout, determines the positions that of the
       strong and weak cursors if the insertion point is at that index.
 
-      This is a variant of [Pango.Layout.get_cursor_pos] that applies font
-      metric information about caret slope and offset to the positions it
-      returns.
+      This is a variant of
+      {{!Ocpango.Raw.Layout.val-get_cursor_pos}[Pango.Layout.get_cursor_pos]}
+      that applies font metric information about caret slope and offset to the
+      positions it returns.
 
       Caret metrics *)
 
@@ -1156,7 +1221,8 @@ end = struct
   (** Gets whether to calculate the base direction for the layout according to
       its contents.
 
-      See [Pango.Layout.set_auto_dir]. *)
+      See {{!Ocpango.Raw.Layout.val-set_auto_dir}[Pango.Layout.set_auto_dir]}.
+  *)
 
   external get_attributes : t -> Attr_list.t option
     = "ml_pango_layout_get_attributes"
@@ -1230,7 +1296,8 @@ and Layout_iter : sig
       current line.
 
       A line's range includes the line's logical extents. plus half of the
-      spacing above and below the line, if [Pango.Layout.set_spacing] has been
+      spacing above and below the line, if
+      {{!Ocpango.Raw.Layout.val-set_spacing}[Pango.Layout.set_spacing]} has been
       called to set layout spacing. The Y positions are in layout coordinates
       (origin at top left of the entire layout).
 
@@ -1241,9 +1308,10 @@ and Layout_iter : sig
     = "ml_pango_layout_iter_get_line_readonly"
   (** Gets the current line for read-only access.
 
-      This is a faster alternative to [Pango.LayoutIter.get_line], but the user
-      is not expected to modify the contents of the line (glyphs, glyph widths,
-      etc.). *)
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout_iter.val-get_line}[Pango.LayoutIter.get_line]}, but
+      the user is not expected to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_line_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_iter_get_line_extents"
@@ -1252,14 +1320,17 @@ and Layout_iter : sig
       Extents are in layout coordinates (origin is the top-left corner of the
       entire [PangoLayout]). Thus the extents returned by this function will be
       the same width/height but not at the same x/y as the extents returned from
-      [Pango.LayoutLine.get_extents]. *)
+      {{!Ocpango.Raw.Layout_line.val-get_extents}[Pango.LayoutLine.get_extents]}.
+  *)
 
   external get_line : t -> Layout_line.t option
     = "ml_pango_layout_iter_get_line"
   (** Gets the current line.
 
-      Use the faster [Pango.LayoutIter.get_line_readonly] if you do not plan to
-      modify the contents of the line (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout_iter.val-get_line_readonly}[Pango.LayoutIter.get_line_readonly]}
+      if you do not plan to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_layout_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_iter_get_layout_extents"
@@ -1349,7 +1420,8 @@ end = struct
       current line.
 
       A line's range includes the line's logical extents. plus half of the
-      spacing above and below the line, if [Pango.Layout.set_spacing] has been
+      spacing above and below the line, if
+      {{!Ocpango.Raw.Layout.val-set_spacing}[Pango.Layout.set_spacing]} has been
       called to set layout spacing. The Y positions are in layout coordinates
       (origin at top left of the entire layout).
 
@@ -1360,9 +1432,10 @@ end = struct
     = "ml_pango_layout_iter_get_line_readonly"
   (** Gets the current line for read-only access.
 
-      This is a faster alternative to [Pango.LayoutIter.get_line], but the user
-      is not expected to modify the contents of the line (glyphs, glyph widths,
-      etc.). *)
+      This is a faster alternative to
+      {{!Ocpango.Raw.Layout_iter.val-get_line}[Pango.LayoutIter.get_line]}, but
+      the user is not expected to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_line_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_iter_get_line_extents"
@@ -1371,14 +1444,17 @@ end = struct
       Extents are in layout coordinates (origin is the top-left corner of the
       entire [PangoLayout]). Thus the extents returned by this function will be
       the same width/height but not at the same x/y as the extents returned from
-      [Pango.LayoutLine.get_extents]. *)
+      {{!Ocpango.Raw.Layout_line.val-get_extents}[Pango.LayoutLine.get_extents]}.
+  *)
 
   external get_line : t -> Layout_line.t option
     = "ml_pango_layout_iter_get_line"
   (** Gets the current line.
 
-      Use the faster [Pango.LayoutIter.get_line_readonly] if you do not plan to
-      modify the contents of the line (glyphs, glyph widths, etc.). *)
+      Use the faster
+      {{!Ocpango.Raw.Layout_iter.val-get_line_readonly}[Pango.LayoutIter.get_line_readonly]}
+      if you do not plan to modify the contents of the line (glyphs, glyph
+      widths, etc.). *)
 
   external get_layout_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_iter_get_layout_extents"

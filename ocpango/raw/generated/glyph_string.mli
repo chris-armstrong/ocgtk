@@ -37,9 +37,11 @@ external index_to_x_full :
     "ml_pango_glyph_string_index_to_x_full_native"
 (** Converts from character position to x position.
 
-    This variant of [Pango.GlyphString.index_to_x] additionally accepts a
-    [PangoLogAttr] array. The grapheme boundary information in it can be used to
-    disambiguate positioning inside some complex clusters. *)
+    This variant of
+    {{!Ocpango.Raw.Glyph_string.val-index_to_x}[Pango.GlyphString.index_to_x]}
+    additionally accepts a [PangoLogAttr] array. The grapheme boundary
+    information in it can be used to disambiguate positioning inside some
+    complex clusters. *)
 
 external index_to_x : t -> string -> int -> Analysis.t -> int -> bool -> int
   = "ml_pango_glyph_string_index_to_x_bytecode"
@@ -55,10 +57,11 @@ external index_to_x : t -> string -> int -> Analysis.t -> int -> bool -> int
 external get_width : t -> int = "ml_pango_glyph_string_get_width"
 (** Computes the logical width of the glyph string.
 
-    This can also be computed using [Pango.GlyphString.extents]. However, since
-    this only computes the width, it's much faster. This is in fact only a
-    convenience function that computes the sum of \@geometry.width for each
-    glyph in the [glyphs]. *)
+    This can also be computed using
+    {{!Ocpango.Raw.Glyph_string.val-extents}[Pango.GlyphString.extents]}.
+    However, since this only computes the width, it's much faster. This is in
+    fact only a convenience function that computes the sum of \@geometry.width
+    for each glyph in the [glyphs]. *)
 
 external extents_range :
   t ->
@@ -78,7 +81,8 @@ external extents :
   Rectangle.t * Rectangle.t = "ml_pango_glyph_string_extents"
 (** Compute the logical and ink extents of a glyph string.
 
-    See the documentation for [Pango.Font.get_glyph_extents] for details about
-    the interpretation of the rectangles.
+    See the documentation for
+    {{!Ocpango.Raw.Font.val-get_glyph_extents}[Pango.Font.get_glyph_extents]}
+    for details about the interpretation of the rectangles.
 
     Examples of logical (red) and ink (green) rects: *)

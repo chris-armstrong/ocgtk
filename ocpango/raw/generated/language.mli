@@ -39,7 +39,9 @@ external includes_script : t -> Ocpango_enums.script -> bool
     supplied language tag is relevant to a particular section of text. It
     probably is not useful for applications in most circumstances.
 
-    This function uses [Pango.Language.get_scripts] internally. *)
+    This function uses
+    {{!Ocpango.Raw.Language.val-get_scripts}[Pango.Language.get_scripts]}
+    internally. *)
 
 external get_scripts : t -> Ocpango_enums.script array option * int
   = "ml_pango_language_get_scripts"
@@ -59,7 +61,9 @@ external get_scripts : t -> Ocpango_enums.script array option * int
     of scripts returned though, except that it is positive if the return value
     is not [None], and it is a small number.
 
-    The [Pango.Language.includes_script] function uses this function internally.
+    The
+    {{!Ocpango.Raw.Language.val-includes_script}[Pango.Language.includes_script]}
+    function uses this function internally.
 
     Note: while the return value is declared as [PangoScript], the returned
     values are from the [GUnicodeScript] enumeration, which may have more

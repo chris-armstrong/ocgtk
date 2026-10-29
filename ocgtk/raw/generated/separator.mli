@@ -15,7 +15,9 @@
 
     {b Accessibility}
 
-    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role.
+    [GtkSeparator] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEPARATOR}[Gtk.AccessibleRole.separator]}
+    role.
 
     The class built on this module is in {!Ocgtk.Separator}. *)
 

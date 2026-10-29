@@ -5,13 +5,13 @@
     {{!Ocgsk.Raw.Render_node}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
-    [Gsk.Renderer.render] to update the contents of its associated
-    {{!Ocgdk.Raw.Surface}[Gdk.Surface]}.
+    {{!Ocgsk.Raw.Renderer.val-render}[Gsk.Renderer.render]} to update the
+    contents of its associated {{!Ocgdk.Raw.Surface}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
-    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
-    create the appropriate windowing system resources needed to render the
-    scene.
+    {{!Ocgsk.Raw.Renderer.val-realize}[Gsk.Renderer.realize]} before calling
+    {{!Ocgsk.Raw.Renderer.val-render}[Gsk.Renderer.render]}, in order to create
+    the appropriate windowing system resources needed to render the scene.
 
     The class built on this module is in {!Ocgsk.Renderer}. *)
 
@@ -32,7 +32,8 @@ external new_for_surface : Ocgdk_raw.Surface.t -> t
 (* Methods *)
 
 external unrealize : t -> unit = "ml_gsk_renderer_unrealize"
-(** Releases all the resources created by [Gsk.Renderer.realize]. *)
+(** Releases all the resources created by
+    {{!Ocgsk.Raw.Renderer.val-realize}[Gsk.Renderer.realize]}. *)
 
 external render_texture :
   t -> Render_node.t -> Ocgraphene_raw.Rect.t option -> Ocgdk_raw.Texture.t
@@ -66,8 +67,9 @@ external realize_for_display :
   = "ml_gsk_renderer_realize_for_display"
 (** Creates the resources needed by the renderer.
 
-    Note that it is mandatory to call [Gsk.Renderer.unrealize] before destroying
-    the renderer. *)
+    Note that it is mandatory to call
+    {{!Ocgsk.Raw.Renderer.val-unrealize}[Gsk.Renderer.unrealize]} before
+    destroying the renderer. *)
 
 external realize : t -> Ocgdk_raw.Surface.t option -> (bool, GError.t) result
   = "ml_gsk_renderer_realize"
@@ -75,10 +77,12 @@ external realize : t -> Ocgdk_raw.Surface.t option -> (bool, GError.t) result
 
     Since GTK 4.6, the surface may be [None], which allows using renderers
     without having to create a surface. Since GTK 4.14, it is recommended to use
-    [Gsk.Renderer.realize_for_display] for this case.
+    {{!Ocgsk.Raw.Renderer.val-realize_for_display}[Gsk.Renderer.realize_for_display]}
+    for this case.
 
-    Note that it is mandatory to call [Gsk.Renderer.unrealize] before destroying
-    the renderer. *)
+    Note that it is mandatory to call
+    {{!Ocgsk.Raw.Renderer.val-unrealize}[Gsk.Renderer.unrealize]} before
+    destroying the renderer. *)
 
 external is_realized : t -> bool = "ml_gsk_renderer_is_realized"
 (** Checks whether the renderer is realized or not. *)

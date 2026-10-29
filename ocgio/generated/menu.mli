@@ -21,9 +21,13 @@
 
     There are some convenience functions to allow you to directly add items
     (avoiding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}) for the
-    common cases. To add a regular item, use [Gio.Menu.insert]. To add a
-    section, use [Gio.Menu.insert_section]. To add a submenu, use
-    [Gio.Menu.insert_submenu]. *)
+    common cases. To add a regular item, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert}[Gio.Menu.insert]}. To add a
+    section, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert_section}[Gio.Menu.insert_section]}.
+    To add a submenu, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert_submenu}[Gio.Menu.insert_submenu]}.
+*)
 class type menu_t = object
   inherit Menu_model.menu_model_t
 
@@ -143,9 +147,13 @@ class menu : Raw.Menu.t -> menu_t
 
     There are some convenience functions to allow you to directly add items
     (avoiding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}) for the
-    common cases. To add a regular item, use [Gio.Menu.insert]. To add a
-    section, use [Gio.Menu.insert_section]. To add a submenu, use
-    [Gio.Menu.insert_submenu]. *)
+    common cases. To add a regular item, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert}[Gio.Menu.insert]}. To add a
+    section, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert_section}[Gio.Menu.insert_section]}.
+    To add a submenu, use
+    {{!Ocgio.Menu.class-type-menu_t.method-insert_submenu}[Gio.Menu.insert_submenu]}.
+*)
 
 (** {1:constructors Constructors} *)
 

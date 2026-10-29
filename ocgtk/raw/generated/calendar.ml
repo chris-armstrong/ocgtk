@@ -5,14 +5,17 @@
 
     An example GtkCalendar
 
-    A [GtkCalendar] can be created with [Gtk.Calendar.new].
+    A [GtkCalendar] can be created with
+    {{!Ocgtk.Raw.Calendar.val-new_}[Gtk.Calendar.new]}.
 
     The selected date can be retrieved from a [GtkCalendar] using
     [Gtk.Calendar.get_date]. It can be altered with [Gtk.Calendar.set_date].
 
-    To place a visual marker on a particular day, use [Gtk.Calendar.mark_day]
-    and to remove the marker, [Gtk.Calendar.unmark_day]. Alternative, all marks
-    can be cleared with [Gtk.Calendar.clear_marks].
+    To place a visual marker on a particular day, use
+    {{!Ocgtk.Raw.Calendar.val-mark_day}[Gtk.Calendar.mark_day]} and to remove
+    the marker, {{!Ocgtk.Raw.Calendar.val-unmark_day}[Gtk.Calendar.unmark_day]}.
+    Alternative, all marks can be cleared with
+    {{!Ocgtk.Raw.Calendar.val-clear_marks}[Gtk.Calendar.clear_marks]}.
 
     Users should be aware that, although the Gregorian calendar is the legal
     calendar in most countries, it was adopted progressively between 1582 and
@@ -109,17 +112,23 @@ external get_show_week_numbers : t -> bool
   = "ml_gtk_calendar_get_show_week_numbers"
 (** Returns whether [self] is showing week numbers right now.
 
-    This is the value of the [Gtk.Calendar:show-week-numbers] property. *)
+    This is the value of the
+    {{!Ocgtk.Raw.Calendar.val-get_show_week_numbers}[Gtk.Calendar:show-week-numbers]}
+    property. *)
 
 external get_show_heading : t -> bool = "ml_gtk_calendar_get_show_heading"
 (** Returns whether [self] is currently showing the heading.
 
-    This is the value of the [Gtk.Calendar:show-heading] property. *)
+    This is the value of the
+    {{!Ocgtk.Raw.Calendar.val-get_show_heading}[Gtk.Calendar:show-heading]}
+    property. *)
 
 external get_show_day_names : t -> bool = "ml_gtk_calendar_get_show_day_names"
 (** Returns whether [self] is currently showing the names of the week days.
 
-    This is the value of the [Gtk.Calendar:show-day-names] property. *)
+    This is the value of the
+    {{!Ocgtk.Raw.Calendar.val-get_show_day_names}[Gtk.Calendar:show-day-names]}
+    property. *)
 
 external get_month : t -> int = "ml_gtk_calendar_get_month"
 (** Gets the month of the selected date. *)

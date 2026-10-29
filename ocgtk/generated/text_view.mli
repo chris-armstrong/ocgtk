@@ -41,16 +41,16 @@
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.TextView::backspace]
-    - [Gtk.TextView::copy-clipboard]
-    - [Gtk.TextView::cut-clipboard]
-    - [Gtk.TextView::delete-from-cursor]
-    - [Gtk.TextView::insert-emoji]
-    - [Gtk.TextView::move-cursor]
-    - [Gtk.TextView::paste-clipboard]
-    - [Gtk.TextView::select-all]
-    - [Gtk.TextView::toggle-cursor-visible]
-    - [Gtk.TextView::toggle-overwrite]
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_backspace}[Gtk.TextView::backspace]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_copy_clipboard}[Gtk.TextView::copy-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_cut_clipboard}[Gtk.TextView::cut-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_delete_from_cursor}[Gtk.TextView::delete-from-cursor]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_insert_emoji}[Gtk.TextView::insert-emoji]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_move_cursor}[Gtk.TextView::move-cursor]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_paste_clipboard}[Gtk.TextView::paste-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_select_all}[Gtk.TextView::select-all]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_toggle_cursor_visible}[Gtk.TextView::toggle-cursor-visible]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_toggle_overwrite}[Gtk.TextView::toggle-overwrite]}
 
     {b Actions}
 
@@ -93,7 +93,9 @@
 
     {b Accessibility}
 
-    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkTextView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role. *)
 class type text_view_t = object
   inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
@@ -730,16 +732,16 @@ class text_view : Raw.Text_view.t -> text_view_t
 
     Additionally, the following signals have default keybindings:
 
-    - [Gtk.TextView::backspace]
-    - [Gtk.TextView::copy-clipboard]
-    - [Gtk.TextView::cut-clipboard]
-    - [Gtk.TextView::delete-from-cursor]
-    - [Gtk.TextView::insert-emoji]
-    - [Gtk.TextView::move-cursor]
-    - [Gtk.TextView::paste-clipboard]
-    - [Gtk.TextView::select-all]
-    - [Gtk.TextView::toggle-cursor-visible]
-    - [Gtk.TextView::toggle-overwrite]
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_backspace}[Gtk.TextView::backspace]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_copy_clipboard}[Gtk.TextView::copy-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_cut_clipboard}[Gtk.TextView::cut-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_delete_from_cursor}[Gtk.TextView::delete-from-cursor]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_insert_emoji}[Gtk.TextView::insert-emoji]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_move_cursor}[Gtk.TextView::move-cursor]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_paste_clipboard}[Gtk.TextView::paste-clipboard]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_select_all}[Gtk.TextView::select-all]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_toggle_cursor_visible}[Gtk.TextView::toggle-cursor-visible]}
+    - {{!Ocgtk.Text_view.class-type-text_view_t.method-on_toggle_overwrite}[Gtk.TextView::toggle-overwrite]}
 
     {b Actions}
 
@@ -782,22 +784,28 @@ class text_view : Raw.Text_view.t -> text_view_t
 
     {b Accessibility}
 
-    [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
+    [GtkTextView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> text_view_t
 (** Creates a new [GtkTextView].
 
-    If you don’t call [Gtk.TextView.set_buffer] before using the text view, an
-    empty default buffer will be created for you. Get the buffer with
-    [Gtk.TextView.get_buffer]. If you want to specify your own buffer, consider
-    [Gtk.TextView.new_with_buffer]. *)
+    If you don’t call
+    {{!Ocgtk.Text_view.class-type-text_view_t.method-set_buffer}[Gtk.TextView.set_buffer]}
+    before using the text view, an empty default buffer will be created for you.
+    Get the buffer with
+    {{!Ocgtk.Text_view.class-type-text_view_t.method-get_buffer}[Gtk.TextView.get_buffer]}.
+    If you want to specify your own buffer, consider
+    {{!Ocgtk.Text_view.val-new_with_buffer}[Gtk.TextView.new_with_buffer]}. *)
 
 val new_with_buffer : Text_buffer.text_buffer_t -> text_view_t
 (** Creates a new [GtkTextView] widget displaying the buffer [buffer].
 
     One buffer can be shared among many widgets. [buffer] may be [None] to
     create a default buffer, in which case this function is equivalent to
-    [Gtk.TextView.new]. The text view adds its own reference count to the
-    buffer; it does not take over an existing reference. *)
+    {{!Ocgtk.Text_view.val-new_}[Gtk.TextView.new]}. The text view adds its own
+    reference count to the buffer; it does not take over an existing reference.
+*)

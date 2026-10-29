@@ -1598,14 +1598,17 @@ type settingsbindflags_flag =
     (** Do not try to bind a ‘sensitivity’ property to the writability of the
         setting *)
   | `GET_NO_CHANGES
-    (** When set in addition to [Gio.SettingsBindFlags.GET], set the
-        [GObject.Object] property value initially from the setting, but do not
-        listen for changes of the setting *)
+    (** When set in addition to
+        {{!Ocgio.Enums.type-settingsbindflags_flag.constructor-GET}[Gio.SettingsBindFlags.GET]},
+        set the [GObject.Object] property value initially from the setting, but
+        do not listen for changes of the setting *)
   | `INVERT_BOOLEAN
-    (** When passed to [Gio.Settings.bind], uses a pair of mapping functions
-        that invert the boolean value when mapping between the setting and the
-        property. The setting and property must both be booleans. You cannot
-        pass this flag to [Gio.Settings.bind_with_mapping]. *) ]
+    (** When passed to
+        {{!Ocgio.Settings.class-type-settings_t.method-bind}[Gio.Settings.bind]},
+        uses a pair of mapping functions that invert the boolean value when
+        mapping between the setting and the property. The setting and property
+        must both be booleans. You cannot pass this flag to
+        [Gio.Settings.bind_with_mapping]. *) ]
 (** Flags used when creating a binding.
 
     These flags determine in which direction the binding works. The default is

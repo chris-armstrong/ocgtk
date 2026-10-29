@@ -29,14 +29,16 @@ external translate_3d : t -> Ocgraphene_raw.Point3_d.t -> t option
   = "ml_gsk_transform_translate_3d"
 (** Translates [next] by [point].
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external translate : t -> Ocgraphene_raw.Point.t -> t option
   = "ml_gsk_transform_translate"
 (** Translates [next] in 2-dimensional space by [point].
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external transform_point : t -> Ocgraphene_raw.Point.t -> Ocgraphene_raw.Point.t
@@ -52,7 +54,8 @@ external transform_bounds : t -> Ocgraphene_raw.Rect.t -> Ocgraphene_raw.Rect.t
 external transform : t -> t option -> t option = "ml_gsk_transform_transform"
 (** Applies all the operations from [other] to [next].
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external to_translate : t -> float * float = "ml_gsk_transform_to_translate"
@@ -121,7 +124,8 @@ external to_2d : t -> float * float * float * float * float * float
     to check.
 
     The returned values are a subset of the full 4x4 matrix that is computed by
-    [Gsk.Transform.to_matrix] and have the following layout:
+    {{!Ocgsk.Raw.Transform.val-to_matrix}[Gsk.Transform.to_matrix]} and have the
+    following layout:
 
     {[
       | xx yx |   |  a  b  0 |
@@ -135,31 +139,37 @@ external to_2d : t -> float * float * float * float * float * float
 external skew : t -> float -> float -> t option = "ml_gsk_transform_skew"
 (** Applies a skew transform.
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external scale_3d : t -> float -> float -> float -> t option
   = "ml_gsk_transform_scale_3d"
 (** Scales [next] by the given factors.
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external scale : t -> float -> float -> t option = "ml_gsk_transform_scale"
 (** Scales [next] in 2-dimensional space by the given factors.
 
-    Use [Gsk.Transform.scale_3d] to scale in all 3 dimensions.
+    Use {{!Ocgsk.Raw.Transform.val-scale_3d}[Gsk.Transform.scale_3d]} to scale
+    in all 3 dimensions.
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external rotate_3d : t -> float -> Ocgraphene_raw.Vec3.t -> t option
   = "ml_gsk_transform_rotate_3d"
 (** Rotates [next] [angle] degrees around [axis].
 
-    For a rotation in 2D space, use [Gsk.Transform.rotate]
+    For a rotation in 2D space, use
+    {{!Ocgsk.Raw.Transform.val-rotate}[Gsk.Transform.rotate]}
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external rotate : t -> float -> t option = "ml_gsk_transform_rotate"
@@ -167,7 +177,8 @@ external rotate : t -> float -> t option = "ml_gsk_transform_rotate"
 
     The rotation happens around the origin point of (0, 0).
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external ref : t -> t option = "ml_gsk_transform_ref"
@@ -180,7 +191,8 @@ external perspective : t -> float -> t = "ml_gsk_transform_perspective"
     points with positive Z values away from the origin, and those with negative
     Z values towards the origin. Points on the z=0 plane are unchanged.
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external matrix_2d :
@@ -188,17 +200,20 @@ external matrix_2d :
   = "ml_gsk_transform_matrix_2d_bytecode" "ml_gsk_transform_matrix_2d_native"
 (** Multiplies [next] with the matrix \[ xx yx x0; xy yy y0; 0 0 1 \].
 
-    The result of calling [Gsk.Transform.to_2d] on the returned
+    The result of calling
+    {{!Ocgsk.Raw.Transform.val-to_2d}[Gsk.Transform.to_2d]} on the returned
     {{!Ocgsk.Raw.Transform}[Gsk.Transform]} should match the input passed to
     this function.
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external matrix : t -> Ocgraphene_raw.Matrix.t -> t = "ml_gsk_transform_matrix"
 (** Multiplies [next] with the given [matrix].
 
-    This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [next]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external invert : t -> t option = "ml_gsk_transform_invert"
@@ -209,7 +224,8 @@ external invert : t -> t option = "ml_gsk_transform_invert"
     differentiate between those cases, you should check [self] is not [None]
     before calling this function.
 
-    This function consumes [self]. Use [Gsk.Transform.ref] first if you want to
+    This function consumes [self]. Use
+    {{!Ocgsk.Raw.Transform.val-ref}[Gsk.Transform.ref]} first if you want to
     keep it around. *)
 
 external get_category : t -> Ocgsk_enums.transformcategory

@@ -45,7 +45,8 @@
 \  return m;\n\
  }\n\
  ]}\n\n\
- Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
+ Don’t forget to disconnect the \
+ {{!Ocgio.Raw.Memory_monitor.val-on_low_memory_warning}[Gio.MemoryMonitor::low-memory-warning]}\n\
  signal, and unref the [GMemoryMonitor] itself when exiting.\n\n\
  The class built on this module is in {!Ocgio.Memory_monitor}."]
 

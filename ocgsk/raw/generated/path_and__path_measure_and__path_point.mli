@@ -161,9 +161,11 @@ end
     It can be queried for properties of the path at that point, such as its
     tangent or its curvature.
 
-    To obtain a [GskPathPoint], use [Gsk.Path.get_closest_point],
-    [Gsk.Path.get_start_point], [Gsk.Path.get_end_point] or
-    [Gsk.PathMeasure.get_point].
+    To obtain a [GskPathPoint], use
+    {{!Ocgsk.Raw.Path.val-get_closest_point}[Gsk.Path.get_closest_point]},
+    {{!Ocgsk.Raw.Path.val-get_start_point}[Gsk.Path.get_start_point]},
+    {{!Ocgsk.Raw.Path.val-get_end_point}[Gsk.Path.get_end_point]} or
+    {{!Ocgsk.Raw.Path_measure.val-get_point}[Gsk.PathMeasure.get_point]}.
 
     Note that [GskPathPoint] structs are meant to be stack-allocated, and don't
     hold a reference to the path object they are obtained from. It is the
@@ -192,15 +194,17 @@ and Path_point : sig
       the tangent is set to [0, 0].
 
       If you want to orient something in the direction of the path,
-      [Gsk.PathPoint.get_rotation] may be more convenient to use. *)
+      {{!Ocgsk.Raw.Path_point.val-get_rotation}[Gsk.PathPoint.get_rotation]} may
+      be more convenient to use. *)
 
   external get_rotation : t -> Path.t -> Ocgsk_enums.pathdirection -> float
     = "ml_gsk_path_point_get_rotation"
   (** Gets the direction of the tangent at a given point.
 
-      This is a convenience variant of [Gsk.PathPoint.get_tangent] that returns
-      the angle between the tangent and the X axis. The angle can e.g. be used
-      in gtk_snapshot_rotate(). *)
+      This is a convenience variant of
+      {{!Ocgsk.Raw.Path_point.val-get_tangent}[Gsk.PathPoint.get_tangent]} that
+      returns the angle between the tangent and the X axis. The angle can e.g.
+      be used in gtk_snapshot_rotate(). *)
 
   external get_position : t -> Path.t -> Ocgraphene_raw.Point.t
     = "ml_gsk_path_point_get_position"
@@ -238,9 +242,9 @@ and Path_point : sig
       paths.
 
       Note that the start- and endpoint of a closed contour will compare
-      nonequal according to this definition. Use [Gsk.Path.is_closed] to find
-      out if the start- and endpoint of a concrete path refer to the same
-      location. *)
+      nonequal according to this definition. Use
+      {{!Ocgsk.Raw.Path.val-is_closed}[Gsk.Path.is_closed]} to find out if the
+      start- and endpoint of a concrete path refer to the same location. *)
 
   external compare : t -> t -> int = "ml_gsk_path_point_compare"
   (** Returns whether [point1] is before or after [point2]. *)

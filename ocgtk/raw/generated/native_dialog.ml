@@ -11,8 +11,9 @@
     objects, but we need a similar API in order to drive them. The
     [GtkNativeDialog] object is an API that allows you to do this. It allows you
     to set various common properties on the dialog, as well as show and hide it
-    and get a [Gtk.NativeDialog::response] signal when the user finished with
-    the dialog.
+    and get a
+    {{!Ocgtk.Raw.Native_dialog.val-on_response}[Gtk.NativeDialog::response]}
+    signal when the user finished with the dialog.
 
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
@@ -30,8 +31,9 @@ external show : t -> unit = "ml_gtk_native_dialog_show"
 (** Shows the dialog on the display.
 
     When the user accepts the state of the dialog the dialog will be
-    automatically hidden and the [Gtk.NativeDialog::response] signal will be
-    emitted.
+    automatically hidden and the
+    {{!Ocgtk.Raw.Native_dialog.val-on_response}[Gtk.NativeDialog::response]}
+    signal will be emitted.
 
     Multiple calls while the dialog is visible will be ignored. *)
 
@@ -54,15 +56,17 @@ external set_modal : t -> bool -> unit = "ml_gtk_native_dialog_set_modal"
 
     Modal dialogs prevent interaction with other windows in the same
     application. To keep modal dialogs on top of main application windows, use
-    [Gtk.NativeDialog.set_transient_for] to make the dialog transient for the
-    parent; most window managers will then disallow lowering the dialog below
-    the parent. *)
+    {{!Ocgtk.Raw.Native_dialog.val-set_transient_for}[Gtk.NativeDialog.set_transient_for]}
+    to make the dialog transient for the parent; most window managers will then
+    disallow lowering the dialog below the parent. *)
 
 external hide : t -> unit = "ml_gtk_native_dialog_hide"
 (** Hides the dialog if it is visible, aborting any interaction.
 
-    Once this is called the [Gtk.NativeDialog::response] signal will {i not} be
-    emitted until after the next call to [Gtk.NativeDialog.show].
+    Once this is called the
+    {{!Ocgtk.Raw.Native_dialog.val-on_response}[Gtk.NativeDialog::response]}
+    signal will {i not} be emitted until after the next call to
+    {{!Ocgtk.Raw.Native_dialog.val-show}[Gtk.NativeDialog.show]}.
 
     If the dialog is not visible this does nothing. *)
 

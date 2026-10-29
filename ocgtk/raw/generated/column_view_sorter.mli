@@ -3,7 +3,8 @@
 
 (** Sorts {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]} columns.
 
-    The sorter returned by [Gtk.ColumnView.get_sorter] is a
+    The sorter returned by
+    {{!Ocgtk.Raw.Column_view.val-get_sorter}[Gtk.ColumnView.get_sorter]} is a
     [GtkColumnViewSorter].
 
     In column views, sorting can be configured by associating sorters with
@@ -13,13 +14,15 @@
 
     If you are only interested in the primary sort column (i.e. the column where
     a sort indicator is shown in the header), then you can just look at
-    [Gtk.ColumnViewSorter:primary-sort-column] and
-    [Gtk.ColumnViewSorter:primary-sort-order].
+    {{!Ocgtk.Raw.Column_view_sorter.val-get_primary_sort_column}[Gtk.ColumnViewSorter:primary-sort-column]}
+    and
+    {{!Ocgtk.Raw.Column_view_sorter.val-get_primary_sort_order}[Gtk.ColumnViewSorter:primary-sort-order]}.
 
     If you want to store the full sort configuration, including secondary sort
     columns that are used for tie breaking, then you can use
-    [Gtk.ColumnViewSorter.get_nth_sort_column]. To get notified about changes,
-    use [Gtk.Sorter::changed].
+    {{!Ocgtk.Raw.Column_view_sorter.val-get_nth_sort_column}[Gtk.ColumnViewSorter.get_nth_sort_column]}.
+    To get notified about changes, use
+    {{!Ocgtk.Raw.Sorter.val-on_changed}[Gtk.Sorter::changed]}.
 
     To restore a saved sort configuration on a [GtkColumnView], use code like:
 
@@ -65,8 +68,8 @@ external get_nth_sort_column :
   * Ocgtk_enums.sorttype = "ml_gtk_column_view_sorter_get_nth_sort_column"
 (** Gets the [position]'th sort column and its associated sort order.
 
-    Use the [Gtk.Sorter::changed] signal to get notified when sort columns
-    change. *)
+    Use the {{!Ocgtk.Raw.Sorter.val-on_changed}[Gtk.Sorter::changed]} signal to
+    get notified when sort columns change. *)
 
 external get_n_sort_columns : t -> int
   = "ml_gtk_column_view_sorter_get_n_sort_columns"
@@ -75,7 +78,7 @@ external get_n_sort_columns : t -> int
     If the sorter of the primary sort column does not determine a total order,
     then the secondary sorters are consulted to break the ties.
 
-    Use the [Gtk.Sorter::changed] signal to get notified when the number of sort
-    columns changes. *)
+    Use the {{!Ocgtk.Raw.Sorter.val-on_changed}[Gtk.Sorter::changed]} signal to
+    get notified when the number of sort columns changes. *)
 
 (* Properties *)

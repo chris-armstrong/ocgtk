@@ -36,7 +36,8 @@
     {b Adding options}
 
     You can add extra widgets to a file chooser to provide options that are not
-    present in the default design, by using [Gtk.FileChooser.add_choice]. Each
+    present in the default design, by using
+    {{!Ocgtk.Raw.File_chooser.val-add_choice}[Gtk.FileChooser.add_choice]}. Each
     choice has an identifier and a user visible label; additionally, each choice
     can have multiple options. If a choice has no option, it will be rendered as
     a check button with the given label; if a choice has options, it will be
@@ -121,10 +122,11 @@ external set_current_name : t -> string -> unit
     the [name].
 
     If you want to preselect a particular existing file, you should use
-    [Gtk.FileChooser.set_file] instead.
+    {{!Ocgtk.Raw.File_chooser.val-set_file}[Gtk.FileChooser.set_file]} instead.
 
     Please see the documentation for those functions for an example of using
-    [Gtk.FileChooser.set_current_name] as well. *)
+    {{!Ocgtk.Raw.File_chooser.val-set_current_name}[Gtk.FileChooser.set_current_name]}
+    as well. *)
 
 external set_current_folder :
   t -> Ocgio_raw.File.t option -> (bool, GError.t) result
@@ -185,8 +187,10 @@ external get_filters : t -> Ocgio_raw.List_model.t
   = "ml_gtk_file_chooser_get_filters"
 (** Gets the current set of user-selectable filters, as a list model.
 
-    See [Gtk.FileChooser.add_filter] and [Gtk.FileChooser.remove_filter] for
-    changing individual filters.
+    See {{!Ocgtk.Raw.File_chooser.val-add_filter}[Gtk.FileChooser.add_filter]}
+    and
+    {{!Ocgtk.Raw.File_chooser.val-remove_filter}[Gtk.FileChooser.remove_filter]}
+    for changing individual filters.
 
     You should not modify the returned list model. Future changes to [chooser]
     may or may not affect the returned model. *)
@@ -253,9 +257,11 @@ external add_choice :
 (** Adds a 'choice' to the file chooser.
 
     This is typically implemented as a combobox or, for boolean choices, as a
-    checkbutton. You can select a value using [Gtk.FileChooser.set_choice]
+    checkbutton. You can select a value using
+    {{!Ocgtk.Raw.File_chooser.val-set_choice}[Gtk.FileChooser.set_choice]}
     before the dialog is shown, and you can obtain the user-selected value in
-    the [Gtk.Dialog::response] signal handler using
-    [Gtk.FileChooser.get_choice]. *)
+    the {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal
+    handler using
+    {{!Ocgtk.Raw.File_chooser.val-get_choice}[Gtk.FileChooser.get_choice]}. *)
 
 (* Properties *)

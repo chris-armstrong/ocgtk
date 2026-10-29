@@ -34,11 +34,13 @@ class type mount_t = App_info_cycle_64c425a0.mount_t
     operation has resolved (either with success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} structure
     will be passed to the callback. That callback should then call
-    [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    with the [GMount] and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If an [error] is present
-    when [Gio.Mount.unmount_with_operation_finish] is called, then it will be
-    filled with any error information.
+    when
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)
@@ -68,11 +70,13 @@ class mount : Raw.Mount.t -> mount_t
     operation has resolved (either with success or failure), and a
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} structure
     will be passed to the callback. That callback should then call
-    [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    with the [GMount] and the
     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
     see if the operation was completed successfully. If an [error] is present
-    when [Gio.Mount.unmount_with_operation_finish] is called, then it will be
-    filled with any error information.
+    when
+    {{!Ocgio.Mount.class-type-mount_t.method-unmount_with_operation_finish}[Gio.Mount.unmount_with_operation_finish]}
+    is called, then it will be filled with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)

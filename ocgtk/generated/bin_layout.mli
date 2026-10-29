@@ -15,9 +15,13 @@
     A layout manager for widgets with a single child.
 
     [GtkBinLayout] will stack each child of a widget on top of each other, using
-    the [Gtk.Widget:hexpand], [Gtk.Widget:vexpand], [Gtk.Widget:halign], and
-    [Gtk.Widget:valign] properties of each child to determine where they should
-    be positioned. *)
+    the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_hexpand}[Gtk.Widget:hexpand]},
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_vexpand}[Gtk.Widget:vexpand]},
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]},
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of each child to determine where they should be positioned. *)
 class type bin_layout_t = object
   inherit Layout_manager.layout_manager_t
 
@@ -34,9 +38,13 @@ class bin_layout : Raw.Bin_layout.t -> bin_layout_t
     A layout manager for widgets with a single child.
 
     [GtkBinLayout] will stack each child of a widget on top of each other, using
-    the [Gtk.Widget:hexpand], [Gtk.Widget:vexpand], [Gtk.Widget:halign], and
-    [Gtk.Widget:valign] properties of each child to determine where they should
-    be positioned. *)
+    the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_hexpand}[Gtk.Widget:hexpand]},
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_vexpand}[Gtk.Widget:vexpand]},
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]},
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of each child to determine where they should be positioned. *)
 
 (** {1:constructors Constructors} *)
 

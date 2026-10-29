@@ -11,11 +11,13 @@
 
     A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
-    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
-    iterator is created, it can be advanced through the style changes in the
-    text using [Pango.AttrIterator.next]. At each style change, the range of the
-    current style segment and the attributes currently in effect can be queried.
-*)
+    A new iterator is created with
+    {{!Ocpango.Attr_list.class-type-attr_list_t.method-get_iterator}[Pango.AttrList.get_iterator]}.
+    Once the iterator is created, it can be advanced through the style changes
+    in the text using
+    {{!Ocpango.Attr_iterator.class-type-attr_iterator_t.method-next}[Pango.AttrIterator.next]}.
+    At each style change, the range of the current style segment and the
+    attributes currently in effect can be queried. *)
 class type attr_iterator_t = object
   (** {2:methods Methods} *)
 
@@ -46,11 +48,13 @@ class attr_iterator : Raw.Attr_iterator.t -> attr_iterator_t
 
     A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
-    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
-    iterator is created, it can be advanced through the style changes in the
-    text using [Pango.AttrIterator.next]. At each style change, the range of the
-    current style segment and the attributes currently in effect can be queried.
-*)
+    A new iterator is created with
+    {{!Ocpango.Attr_list.class-type-attr_list_t.method-get_iterator}[Pango.AttrList.get_iterator]}.
+    Once the iterator is created, it can be advanced through the style changes
+    in the text using
+    {{!Ocpango.Attr_iterator.class-type-attr_iterator_t.method-next}[Pango.AttrIterator.next]}.
+    At each style change, the range of the current style segment and the
+    attributes currently in effect can be queried. *)
 
 (** {1:constructors Constructors} *)
 

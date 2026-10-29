@@ -31,7 +31,9 @@
 
     {b Accessibility}
 
-    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role. *)
+    [GtkSeparator] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEPARATOR}[Gtk.AccessibleRole.separator]}
+    role. *)
 class type separator_t = object
   inherit Widget.widget_t
   inherit Orientable.orientable_t
@@ -60,7 +62,9 @@ class separator : Raw.Separator.t -> separator_t
 
     {b Accessibility}
 
-    [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role. *)
+    [GtkSeparator] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEPARATOR}[Gtk.AccessibleRole.separator]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

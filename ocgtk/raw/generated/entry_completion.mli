@@ -12,8 +12,9 @@
     entry, [GtkEntryCompletion] checks which rows in the model match the current
     content of the entry, and displays a list of matches. By default, the
     matching is done by comparing the entry text case-insensitively against the
-    text column of the model (see [Gtk.EntryCompletion.set_text_column]), but
-    this can be overridden with a custom match function (see
+    text column of the model (see
+    {{!Ocgtk.Raw.Entry_completion.val-set_text_column}[Gtk.EntryCompletion.set_text_column]}),
+    but this can be overridden with a custom match function (see
     [Gtk.EntryCompletion.set_match_func]).
 
     When the user selects a completion, the content of the entry is updated. By
@@ -23,7 +24,8 @@
     signal handler. Note that you should return [true] from the signal handler
     to suppress the default behaviour.
 
-    To add completion functionality to an entry, use [Gtk.Entry.set_completion].
+    To add completion functionality to an entry, use
+    {{!Ocgtk.Raw.Entry.val-set_completion}[Gtk.Entry.set_completion]}.
 
     [GtkEntryCompletion] uses a
     {{!Ocgtk.Raw.Tree_model_filter}[Gtk.TreeModelFilter]} model to represent the
@@ -34,9 +36,11 @@
     [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally
     take the filter model as argument. As long as you are only calling
     [Gtk.TreeModel.get], this will make no difference to you. If for some
-    reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
-    Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
-    obtain a matching iter.
+    reason, you need the original model, use
+    {{!Ocgtk.Raw.Tree_model_filter.val-get_model}[Gtk.TreeModelFilter.get_model]}.
+    Don’t forget to use
+    {{!Ocgtk.Raw.Tree_model_filter.val-convert_iter_to_child_iter}[Gtk.TreeModelFilter.convert_iter_to_child_iter]}
+    to obtain a matching iter.
 
     The class built on this module is in {!Ocgtk.Entry_completion}. *)
 
@@ -68,7 +72,8 @@ external set_text_column : t -> int -> unit
 
     This functions creates and adds a [GtkCellRendererText] for the selected
     column. If you need to set the text column, but don't want the cell
-    renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
+    renderer, use g_object_set() to set the
+    {{!Ocgtk.Raw.Entry_completion.val-get_text_column}[Gtk.EntryCompletion:text-column]}
     property directly. *)
 
 external set_popup_single_match : t -> bool -> unit
@@ -77,7 +82,8 @@ external set_popup_single_match : t -> bool -> unit
     single match.
 
     You may want to set this to [false] if you are using
-    [Gtk.EntryCompletion:inline-completion]. *)
+    {{!Ocgtk.Raw.Entry_completion.val-get_inline_completion}[Gtk.EntryCompletion:inline-completion]}.
+*)
 
 external set_popup_set_width : t -> bool -> unit
   = "ml_gtk_entry_completion_set_popup_set_width"
@@ -172,7 +178,8 @@ external compute_prefix : t -> string -> string option
 
     If no row matches [key], [None] will be returned. Note that a text column
     must have been set for this function to work, see
-    [Gtk.EntryCompletion.set_text_column] for details. *)
+    {{!Ocgtk.Raw.Entry_completion.val-set_text_column}[Gtk.EntryCompletion.set_text_column]}
+    for details. *)
 
 external complete : t -> unit = "ml_gtk_entry_completion_complete"
 (** Requests a completion operation, or in other words a refiltering of the
@@ -188,8 +195,9 @@ external get_cell_area :
 (** The [GtkCellArea] used to layout cell renderers in the treeview column.
 
     If no area is specified when creating the entry completion with
-    [Gtk.EntryCompletion.new_with_area], a horizontally oriented
-    {{!Ocgtk.Raw.Cell_area_box}[Gtk.CellAreaBox]} will be used. *)
+    {{!Ocgtk.Raw.Entry_completion.val-new_with_area}[Gtk.EntryCompletion.new_with_area]},
+    a horizontally oriented {{!Ocgtk.Raw.Cell_area_box}[Gtk.CellAreaBox]} will
+    be used. *)
 
 val on_insert_prefix :
   ?after:bool ->

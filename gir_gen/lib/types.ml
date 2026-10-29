@@ -547,8 +547,9 @@ type doc_index_namespace = {
   di_members : doc_type_members StringMap.t;
       (** By GIR type name; the current namespace only. *)
   di_enum_members : string StringMap.t StringMap.t;
-      (** By enumeration or bitfield GIR name, then by member name in upper
-          case: the polymorphic variant tag. The current namespace only. *)
+      (** By enumeration or bitfield GIR name, then by member name in upper case
+          with underscores: the polymorphic variant tag. The current namespace
+          only. *)
 }
 (** What a doc reference into one namespace can link to: its generated types,
     constants and, for the current namespace, members, keyed by GIR name (see

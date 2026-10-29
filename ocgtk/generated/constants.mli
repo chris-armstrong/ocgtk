@@ -479,10 +479,14 @@ val tree_sortable_default_sort_column_id : int
 (** Uses the default sort function in a
     {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]}.
 
-    See also: [Gtk.TreeSortable.set_sort_column_id] *)
+    See also:
+    {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t.method-set_sort_column_id}[Gtk.TreeSortable.set_sort_column_id]}
+*)
 
 val tree_sortable_unsorted_sort_column_id : int
 (** Disables sorting in a
     {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]}.
 
-    See also: [Gtk.TreeSortable.set_sort_column_id] *)
+    See also:
+    {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t.method-set_sort_column_id}[Gtk.TreeSortable.set_sort_column_id]}
+*)

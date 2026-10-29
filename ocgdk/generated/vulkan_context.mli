@@ -19,8 +19,8 @@ class type vulkan_context_t = App_launch_context_cycle_de440b34.vulkan_context_t
     Represents the platform-specific Vulkan draw context.
 
     [GdkVulkanContext]s are created for a surface using
-    [Gdk.Surface.create_vulkan_context], and the context will match the
-    characteristics of the surface.
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_vulkan_context}[Gdk.Surface.create_vulkan_context]},
+    and the context will match the characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
     fail, returning [None] context. *)
@@ -33,8 +33,8 @@ class vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
     Represents the platform-specific Vulkan draw context.
 
     [GdkVulkanContext]s are created for a surface using
-    [Gdk.Surface.create_vulkan_context], and the context will match the
-    characteristics of the surface.
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_vulkan_context}[Gdk.Surface.create_vulkan_context]},
+    and the context will match the characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
     fail, returning [None] context. *)

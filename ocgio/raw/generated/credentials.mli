@@ -8,13 +8,16 @@
     authenticating and authorizing other processes.
 
     Some operating systems supports looking up the credentials of the remote
-    peer of a communication endpoint - see e.g. [Gio.Socket.get_credentials].
+    peer of a communication endpoint - see e.g.
+    {{!Ocgio.Raw.Socket.val-get_credentials}[Gio.Socket.get_credentials]}.
 
     Some operating systems supports securely sending and receiving credentials
     over a Unix Domain Socket, see
     {{!Ocgio.Raw.Unix_credentials_message}[Gio.UnixCredentialsMessage]},
-    [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials] for details.
+    {{!Ocgio.Raw.Unix_connection.val-send_credentials}[Gio.UnixConnection.send_credentials]}
+    and
+    {{!Ocgio.Raw.Unix_connection.val-receive_credentials}[Gio.UnixConnection.receive_credentials]}
+    for details.
 
     On Linux, the native credential type is a [struct ucred] - see the man
     page[unix(7)]) for details. This corresponds to

@@ -34,9 +34,10 @@ external set_priority : t -> int -> unit = "ml_gtk_text_tag_set_priority"
 (** Sets the priority of a [GtkTextTag].
 
     Valid priorities start at 0 and go to one less than
-    [Gtk.TextTagTable.get_size]. Each tag in a table has a unique priority;
-    setting the priority of one tag shifts the priorities of all the other tags
-    in the table to maintain a unique priority for each tag.
+    {{!Ocgtk.Raw.Text_tag_table.val-get_size}[Gtk.TextTagTable.get_size]}. Each
+    tag in a table has a unique priority; setting the priority of one tag shifts
+    the priorities of all the other tags in the table to maintain a unique
+    priority for each tag.
 
     Higher priority tags “win” if two tags both set the same text attribute.
     When adding a tag to a tag table, it will be assigned the highest priority
@@ -49,8 +50,9 @@ external get_priority : t -> int = "ml_gtk_text_tag_get_priority"
 (** Get the tag priority. *)
 
 external changed : t -> bool -> unit = "ml_gtk_text_tag_changed"
-(** Emits the [Gtk.TextTagTable::tag-changed] signal on the [GtkTextTagTable]
-    where the tag is included.
+(** Emits the
+    {{!Ocgtk.Raw.Text_tag_table.val-on_tag_changed}[Gtk.TextTagTable::tag-changed]}
+    signal on the [GtkTextTagTable] where the tag is included.
 
     The signal is already emitted when setting a [GtkTextTag] property. This
     function is useful for a [GtkTextTag] subclass. *)
@@ -681,9 +683,9 @@ external get_underline_rgba : t -> Ocgdk_raw.Rgb_a.t
 
     If not set, underlines will use the foreground color.
 
-    If [Gtk.TextTag:underline] is set to [PANGO_UNDERLINE_ERROR], an alternate
-    color may be applied instead of the foreground. Setting this property will
-    always override those defaults. *)
+    If {{!Ocgtk.Raw.Text_tag.val-get_underline}[Gtk.TextTag:underline]} is set
+    to [PANGO_UNDERLINE_ERROR], an alternate color may be applied instead of the
+    foreground. Setting this property will always override those defaults. *)
 
 external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_underline_rgba"
@@ -691,9 +693,9 @@ external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
 
     If not set, underlines will use the foreground color.
 
-    If [Gtk.TextTag:underline] is set to [PANGO_UNDERLINE_ERROR], an alternate
-    color may be applied instead of the foreground. Setting this property will
-    always override those defaults. *)
+    If {{!Ocgtk.Raw.Text_tag.val-get_underline}[Gtk.TextTag:underline]} is set
+    to [PANGO_UNDERLINE_ERROR], an alternate color may be applied instead of the
+    foreground. Setting this property will always override those defaults. *)
 
 external get_underline_rgba_set : t -> bool
   = "ml_gtk_text_tag_get_underline_rgba_set"

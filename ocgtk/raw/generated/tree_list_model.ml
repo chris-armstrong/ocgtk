@@ -17,7 +17,9 @@ external set_autoexpand : t -> bool -> unit
 
     If set to [true], the model will recursively expand all rows that get added
     to the model. This can be either rows added by changes to the underlying
-    models or via [Gtk.TreeListRow.set_expanded]. *)
+    models or via
+    {{!Ocgtk.Raw.Tree_list_row.val-set_expanded}[Gtk.TreeListRow.set_expanded]}.
+*)
 
 external get_row : t -> int -> Tree_list_row.t option
   = "ml_gtk_tree_list_model_get_row"
@@ -36,18 +38,22 @@ external get_row : t -> int -> Tree_list_row.t option
     If [self] is set to not be passthrough, this function is equivalent to
     calling g_list_model_get_item().
 
-    Do not confuse this function with [Gtk.TreeListModel.get_child_row]. *)
+    Do not confuse this function with
+    {{!Ocgtk.Raw.Tree_list_model.val-get_child_row}[Gtk.TreeListModel.get_child_row]}.
+*)
 
 external get_passthrough : t -> bool = "ml_gtk_tree_list_model_get_passthrough"
 (** Gets whether the model is passing through original row items.
 
     If this function returns [false], the [GListModel] functions for [self]
     return custom [GtkTreeListRow] objects. You need to call
-    [Gtk.TreeListRow.get_item] on these objects to get the original item.
+    {{!Ocgtk.Raw.Tree_list_row.val-get_item}[Gtk.TreeListRow.get_item]} on these
+    objects to get the original item.
 
     If [true], the values of the child models are passed through in their
-    original state. You then need to call [Gtk.TreeListModel.get_row] to get the
-    custom [GtkTreeListRow]s. *)
+    original state. You then need to call
+    {{!Ocgtk.Raw.Tree_list_model.val-get_row}[Gtk.TreeListModel.get_row]} to get
+    the custom [GtkTreeListRow]s. *)
 
 external get_model : t -> Ocgio_raw.List_model.t
   = "ml_gtk_tree_list_model_get_model"
@@ -61,14 +67,16 @@ external get_child_row : t -> int -> Tree_list_row.t option
     If [position] is greater than the number of children in the root model,
     [None] is returned.
 
-    Do not confuse this function with [Gtk.TreeListModel.get_row]. *)
+    Do not confuse this function with
+    {{!Ocgtk.Raw.Tree_list_model.val-get_row}[Gtk.TreeListModel.get_row]}. *)
 
 external get_autoexpand : t -> bool = "ml_gtk_tree_list_model_get_autoexpand"
 (** Gets whether the model is set to automatically expand new rows that get
     added.
 
     This can be either rows added by changes to the underlying models or via
-    [Gtk.TreeListRow.set_expanded]. *)
+    {{!Ocgtk.Raw.Tree_list_row.val-set_expanded}[Gtk.TreeListRow.set_expanded]}.
+*)
 
 (* Properties *)
 

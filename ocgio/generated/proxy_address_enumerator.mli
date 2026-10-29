@@ -6,7 +6,9 @@
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     and wraps them in
     {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
-    instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
+    instances, using the given
+    {{!Ocgio.Proxy_address_enumerator.class-type-proxy_address_enumerator_t.method-proxy_resolver}
+     [Gio.ProxyAddressEnumerator:proxy-resolver]}.
 
     Its methods, signals and properties are on
     {!class-type-proxy_address_enumerator_t}. Its full description is under
@@ -29,10 +31,13 @@
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     and wraps them in
     {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
-    instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
+    instances, using the given
+    {{!Ocgio.Proxy_address_enumerator.class-type-proxy_address_enumerator_t.method-proxy_resolver}
+     [Gio.ProxyAddressEnumerator:proxy-resolver]}.
 
     This enumerator will be returned (for example, by
-    [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]}) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     instance with one. *)
@@ -77,10 +82,13 @@ class proxy_address_enumerator :
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     and wraps them in
     {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
-    instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
+    instances, using the given
+    {{!Ocgio.Proxy_address_enumerator.class-type-proxy_address_enumerator_t.method-proxy_resolver}
+     [Gio.ProxyAddressEnumerator:proxy-resolver]}.
 
     This enumerator will be returned (for example, by
-    [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]}) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     instance with one. *)

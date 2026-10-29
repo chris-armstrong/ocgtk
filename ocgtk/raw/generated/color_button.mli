@@ -78,8 +78,9 @@ val on_color_set :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted when the user selects a color.
 
-    When handling this signal, use [Gtk.ColorChooser.get_rgba] to find out which
-    color was just selected.
+    When handling this signal, use
+    {{!Ocgtk.Raw.Color_chooser.val-get_rgba}[Gtk.ColorChooser.get_rgba]} to find
+    out which color was just selected.
 
     Note that this signal is only emitted when the user changes the color. If
     you need to react to programmatic color changes as well, use the

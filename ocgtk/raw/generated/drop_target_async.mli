@@ -11,20 +11,25 @@
     To use a [GtkDropTargetAsync] to receive drops on a widget, you create a
     [GtkDropTargetAsync] object, configure which data formats and actions you
     support, connect to its signals, and then attach it to the widget with
-    [Gtk.Widget.add_controller].
+    {{!Ocgtk.Raw.Widget.val-add_controller}[Gtk.Widget.add_controller]}.
 
     During a drag operation, the first signal that a [GtkDropTargetAsync] emits
-    is [Gtk.DropTargetAsync::accept], which is meant to determine whether the
-    target is a possible drop site for the ongoing drop. The default handler for
-    the ::accept signal accepts the drop if it finds a compatible data format
-    and an action that is supported on both sides.
+    is
+    {{!Ocgtk.Raw.Drop_target_async.val-on_accept}[Gtk.DropTargetAsync::accept]},
+    which is meant to determine whether the target is a possible drop site for
+    the ongoing drop. The default handler for the ::accept signal accepts the
+    drop if it finds a compatible data format and an action that is supported on
+    both sides.
 
     If it is, and the widget becomes a target, you will receive a
-    [Gtk.DropTargetAsync::drag-enter] signal, followed by
-    [Gtk.DropTargetAsync::drag-motion] signals as the pointer moves, optionally
-    a [Gtk.DropTargetAsync::drop] signal when a drop happens, and finally a
-    [Gtk.DropTargetAsync::drag-leave] signal when the pointer moves off the
-    widget.
+    {{!Ocgtk.Raw.Drop_target_async.val-on_drag_enter}[Gtk.DropTargetAsync::drag-enter]}
+    signal, followed by
+    {{!Ocgtk.Raw.Drop_target_async.val-on_drag_motion}[Gtk.DropTargetAsync::drag-motion]}
+    signals as the pointer moves, optionally a
+    {{!Ocgtk.Raw.Drop_target_async.val-on_drop}[Gtk.DropTargetAsync::drop]}
+    signal when a drop happens, and finally a
+    {{!Ocgtk.Raw.Drop_target_async.val-on_drag_leave}[Gtk.DropTargetAsync::drag-leave]}
+    signal when the pointer moves off the widget.
 
     The ::drag-enter and ::drag-motion handler return a [GdkDragAction] to
     update the status of the ongoing operation. The ::drop handler should decide
@@ -84,8 +89,11 @@ val on_accept :
 
     If the drop is not accepted, [false] will be returned and the drop target
     will ignore the drop. If [true] is returned, the drop is accepted for now
-    but may be rejected later via a call to [Gtk.DropTargetAsync.reject_drop] or
-    ultimately by returning [false] from a [Gtk.DropTargetAsync::drop] handler.
+    but may be rejected later via a call to
+    {{!Ocgtk.Raw.Drop_target_async.val-reject_drop}[Gtk.DropTargetAsync.reject_drop]}
+    or ultimately by returning [false] from a
+    {{!Ocgtk.Raw.Drop_target_async.val-on_drop}[Gtk.DropTargetAsync::drop]}
+    handler.
 
     The default handler for this signal decides whether to accept the drop based
     on the formats provided by the [drop].
@@ -93,7 +101,9 @@ val on_accept :
     If the decision whether the drop will be accepted or rejected needs further
     processing, such as inspecting the data, this function should return [true]
     and proceed as is [drop] was accepted and if it decides to reject the drop
-    later, it should call [Gtk.DropTargetAsync.reject_drop]. *)
+    later, it should call
+    {{!Ocgtk.Raw.Drop_target_async.val-reject_drop}[Gtk.DropTargetAsync.reject_drop]}.
+*)
 
 val on_drag_enter :
   ?after:bool ->

@@ -11,11 +11,13 @@
 
     Holds timing information for a single frame of the application’s displays.
 
-    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
-    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
-    is useful for precise synchronization of video with the event or audio
-    streams, and for measuring quality metrics for the application’s display,
-    such as latency and jitter. *)
+    To retrieve [GdkFrameTimings] objects, use
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_timings}[Gdk.FrameClock.get_timings]}
+    or
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_current_timings}[Gdk.FrameClock.get_current_timings]}.
+    The information in [GdkFrameTimings] is useful for precise synchronization
+    of video with the event or audio streams, and for measuring quality metrics
+    for the application’s display, such as latency and jitter. *)
 class type frame_timings_t = object
   (** {2:methods Methods} *)
 
@@ -84,11 +86,13 @@ class frame_timings : Raw.Frame_timings.t -> frame_timings_t
 
     Holds timing information for a single frame of the application’s displays.
 
-    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
-    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
-    is useful for precise synchronization of video with the event or audio
-    streams, and for measuring quality metrics for the application’s display,
-    such as latency and jitter. *)
+    To retrieve [GdkFrameTimings] objects, use
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_timings}[Gdk.FrameClock.get_timings]}
+    or
+    {{!Ocgdk.Frame_clock.class-type-frame_clock_t.method-get_current_timings}[Gdk.FrameClock.get_current_timings]}.
+    The information in [GdkFrameTimings] is useful for precise synchronization
+    of video with the event or audio streams, and for measuring quality metrics
+    for the application’s display, such as latency and jitter. *)
 
 (** {1:constructors Constructors} *)
 

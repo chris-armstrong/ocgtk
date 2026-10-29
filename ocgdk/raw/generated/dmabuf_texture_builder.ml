@@ -87,13 +87,14 @@ external set_width : t -> int -> unit
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture. See
-    [Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-set_update_region}[Gdk.DmabufTextureBuilder.set_update_region]}
+    for an explanation. *)
 
 external set_update_region : t -> Occairo_raw.Region.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
-    [Gdk.DmabufTextureBuilder:update-texture] this describes an update of a
-    previous texture.
+    {{!Ocgdk.Raw.Dmabuf_texture_builder.val-get_update_texture}[Gdk.DmabufTextureBuilder:update-texture]}
+    this describes an update of a previous texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then

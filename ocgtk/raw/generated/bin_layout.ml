@@ -4,9 +4,11 @@
 (** A layout manager for widgets with a single child.
 
     [GtkBinLayout] will stack each child of a widget on top of each other, using
-    the [Gtk.Widget:hexpand], [Gtk.Widget:vexpand], [Gtk.Widget:halign], and
-    [Gtk.Widget:valign] properties of each child to determine where they should
-    be positioned.
+    the {{!Ocgtk.Raw.Widget.val-get_hexpand}[Gtk.Widget:hexpand]},
+    {{!Ocgtk.Raw.Widget.val-get_vexpand}[Gtk.Widget:vexpand]},
+    {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]}, and
+    {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties of each
+    child to determine where they should be positioned.
 
     The class built on this module is in {!Ocgtk.Bin_layout}. *)
 

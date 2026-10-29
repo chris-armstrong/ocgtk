@@ -10,11 +10,14 @@
     icon (see {{!Ocgio.Raw.Themed_icon}[Gio.ThemedIcon]}), or the path to an
     icon (see {{!Ocgio.Raw.Loadable_icon}[Gio.LoadableIcon]}).
 
-    To obtain a hash of a [GIcon], see [Gio.Icon.hash].
+    To obtain a hash of a [GIcon], see
+    {{!Ocgio.Raw.Icon.val-hash}[Gio.Icon.hash]}.
 
-    To check if two [GIcon]s are equal, see [Gio.Icon.equal].
+    To check if two [GIcon]s are equal, see
+    {{!Ocgio.Raw.Icon.val-equal}[Gio.Icon.equal]}.
 
-    For serializing a [GIcon], use [Gio.Icon.serialize] and
+    For serializing a [GIcon], use
+    {{!Ocgio.Raw.Icon.val-serialize}[Gio.Icon.serialize]} and
     [Gio.Icon.deserialize].
 
     If you want to consume [GIcon] (for example, in a toolkit) you must be
@@ -30,9 +33,10 @@
     If your application or library provides one or more [GIcon] implementations
     you need to ensure that your new implementation also implements
     {{!Ocgio.Raw.Loadable_icon}[Gio.LoadableIcon]}. Additionally, you must
-    provide an implementation of [Gio.Icon.serialize] that gives a result that
-    is understood by [Gio.Icon.deserialize], yielding one of the built-in icon
-    types.
+    provide an implementation of
+    {{!Ocgio.Raw.Icon.val-serialize}[Gio.Icon.serialize]} that gives a result
+    that is understood by [Gio.Icon.deserialize], yielding one of the built-in
+    icon types.
 
     The class built on this module is in {!Ocgio.Icon}. *)
 

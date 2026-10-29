@@ -66,10 +66,12 @@ end
      {{!Ocpango.Context.class-type-context_t}[Pango.Context]} objects that \
      match the font metrics of the cairo surface.\n\n\
      [GtkPrintContext] objects get passed to the\n\
-     [Gtk.PrintOperation::begin-print],\n\
-     [Gtk.PrintOperation::end-print],\n\
-     [Gtk.PrintOperation::request-page-setup] and\n\
-     [Gtk.PrintOperation::draw-page] signals on the\n\
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_begin_print}[Gtk.PrintOperation::begin-print]},\n\
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_end_print}[Gtk.PrintOperation::end-print]},\n\
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_request_page_setup}[Gtk.PrintOperation::request-page-setup]} \
+     and\n\
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_draw_page}[Gtk.PrintOperation::draw-page]} \
+     signals on the\n\
      {{!Ocgtk.Print_operation.class-type-print_operation_t}[Gtk.PrintOperation]} \
      object.\n\n\
      {b Using GtkPrintContext in a ::draw-page callback}\n\n\
@@ -129,10 +131,12 @@ class print_context : Raw.Print_context.t -> print_context_t
  {{!Ocpango.Context.class-type-context_t}[Pango.Context]} objects that match \
  the font metrics of the cairo surface.\n\n\
  [GtkPrintContext] objects get passed to the\n\
- [Gtk.PrintOperation::begin-print],\n\
- [Gtk.PrintOperation::end-print],\n\
- [Gtk.PrintOperation::request-page-setup] and\n\
- [Gtk.PrintOperation::draw-page] signals on the\n\
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_begin_print}[Gtk.PrintOperation::begin-print]},\n\
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_end_print}[Gtk.PrintOperation::end-print]},\n\
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_request_page_setup}[Gtk.PrintOperation::request-page-setup]} \
+ and\n\
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_draw_page}[Gtk.PrintOperation::draw-page]} \
+ signals on the\n\
  {{!Ocgtk.Print_operation.class-type-print_operation_t}[Gtk.PrintOperation]} \
  object.\n\n\
  {b Using GtkPrintContext in a ::draw-page callback}\n\n\

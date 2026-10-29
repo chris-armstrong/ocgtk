@@ -11,13 +11,14 @@
 
     For keyboard presses to start a search, the search bar must be told of a
     widget to capture key events from through
-    [Gtk.SearchBar.set_key_capture_widget]. This widget will typically be the
-    top-level window, or a parent container of the search bar. Common shortcuts
-    such as Ctrl+F should be handled as an application action, or through the
-    menu items.
+    {{!Ocgtk.Raw.Search_bar.val-set_key_capture_widget}[Gtk.SearchBar.set_key_capture_widget]}.
+    This widget will typically be the top-level window, or a parent container of
+    the search bar. Common shortcuts such as Ctrl+F should be handled as an
+    application action, or through the menu items.
 
     You will also need to tell the search bar about which entry you are using as
-    your search entry using [Gtk.SearchBar.connect_entry].
+    your search entry using
+    {{!Ocgtk.Raw.Search_bar.val-connect_entry}[Gtk.SearchBar.connect_entry]}.
 
     {b Creating a search bar}
 
@@ -49,7 +50,9 @@
 
     {b Accessibility}
 
-    [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role.
+    [GtkSearchBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH}[Gtk.AccessibleRole.search]}
+    role.
 
     The class built on this module is in {!Ocgtk.Search_bar}. *)
 
@@ -61,7 +64,8 @@ external new_ : unit -> t = "ml_gtk_search_bar_new"
 (** Creates a [GtkSearchBar].
 
     You will need to tell it about which widget is going to be your text entry
-    using [Gtk.SearchBar.connect_entry]. *)
+    using
+    {{!Ocgtk.Raw.Search_bar.val-connect_entry}[Gtk.SearchBar.connect_entry]}. *)
 
 (* Methods *)
 
@@ -93,7 +97,8 @@ external set_key_capture_widget :
     in the bubble phase, which means that editable child widgets of [widget]
     will receive text input before it gets captured. If that is not desired, you
     can capture and forward the events yourself with
-    [Gtk.EventControllerKey.forward]. *)
+    {{!Ocgtk.Raw.Event_controller_key.val-forward}[Gtk.EventControllerKey.forward]}.
+*)
 
 external set_child :
   t ->

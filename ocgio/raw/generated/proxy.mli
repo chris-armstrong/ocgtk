@@ -5,7 +5,7 @@
     server. It is implemented by the [gio-proxy] extension point. The extensions
     are named after their proxy protocol name. As an example, a SOCKS5 proxy
     implementation can be retrieved with the name [socks5] using the function
-    [Gio.IOExtensionPoint.get_extension_by_name].
+    {{!Ocgio.Raw.Io_extension_point.val-get_extension_by_name}[Gio.IOExtensionPoint.get_extension_by_name]}.
 
     The class built on this module is in {!Ocgio.Proxy}. *)
 

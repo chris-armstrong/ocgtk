@@ -67,7 +67,7 @@
  work by forwarding to the delegate that the GtkEditableInterface.get_delegate()\n\
  vfunc returns.\n\n\
  In your instance_init function, create your text widget, and then call\n\
- [Gtk.Editable.init_delegate]:\n\n\
+ {{!Ocgtk.Raw.Editable.val-init_delegate}[Gtk.Editable.init_delegate]}:\n\n\
  {[\n\
  static void\n\
  my_widget_init (MyWidget *self)\n\
@@ -78,7 +78,9 @@
 \  ...\n\
  }\n\
  ]}\n\n\
- In your dispose function, call [Gtk.Editable.finish_delegate] before\n\
+ In your dispose function, call \
+ {{!Ocgtk.Raw.Editable.val-finish_delegate}[Gtk.Editable.finish_delegate]} \
+ before\n\
  destroying your text widget:\n\n\
  {[\n\
  static void\n\
@@ -101,12 +103,15 @@
  ]}\n\n\
  It is important to note that if you create a [GtkEditable] that uses\n\
  a delegate, the low level [Gtk.Editable::insert-text] and\n\
- [Gtk.Editable::delete-text] signals will be propagated from the\n\
+ {{!Ocgtk.Raw.Editable.val-on_delete_text}[Gtk.Editable::delete-text]} signals \
+ will be propagated from the\n\
  \"wrapper\" editable to the delegate, but they will not be propagated from\n\
  the delegate to the \"wrapper\" editable, as they would cause an infinite\n\
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
- and [Gtk.Editable::delete-text] signals, you will need to connect\n\
- to them on the delegate obtained via [Gtk.Editable.get_delegate].\n\n\
+ and {{!Ocgtk.Raw.Editable.val-on_delete_text}[Gtk.Editable::delete-text]} \
+ signals, you will need to connect\n\
+ to them on the delegate obtained via \
+ {{!Ocgtk.Raw.Editable.val-get_delegate}[Gtk.Editable.get_delegate]}.\n\n\
  The class built on this module is in {!Ocgtk.Editable}."]
 
 type t = [ `editable ] Gobject.obj
@@ -147,7 +152,8 @@ external set_enable_undo : t -> bool -> unit = "ml_gtk_editable_set_enable_undo"
 
     This results in an additional copy of text changes and are not stored in
     secure memory. As such, undo is forcefully disabled when
-    [Gtk.Text:visibility] is set to [false]. *)
+    {{!Ocgtk.Raw.Text.val-get_visibility}[Gtk.Text:visibility]} is set to
+    [false]. *)
 
 external set_editable : t -> bool -> unit = "ml_gtk_editable_set_editable"
 (** Determines if the user can edit the text in the editable widget. *)
@@ -239,7 +245,8 @@ external get_alignment : t -> float = "ml_gtk_editable_get_alignment"
 (** Gets the alignment of the editable. *)
 
 external finish_delegate : t -> unit = "ml_gtk_editable_finish_delegate"
-(** Undoes the setup done by [Gtk.Editable.init_delegate].
+(** Undoes the setup done by
+    {{!Ocgtk.Raw.Editable.val-init_delegate}[Gtk.Editable.init_delegate]}.
 
     This is a helper function that should be called from dispose, before
     removing the delegate object. *)

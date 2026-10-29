@@ -33,9 +33,10 @@
     {{!Ocgio.Datagram_based.class-type-datagram_based_t}[Gio.DatagramBased]},
     presenting a datagram-socket-like API for the encrypted connection. This
     operates over a base datagram connection, which is also a [GDatagramBased]
-    ([Gio.DtlsConnection:base-socket]).
+    ({{!Ocgio.Dtls_connection.class-type-dtls_connection_t.method-base_socket}[Gio.DtlsConnection:base-socket]}).
 
-    To close a DTLS connection, use [Gio.DtlsConnection.close].
+    To close a DTLS connection, use
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t.method-close}[Gio.DtlsConnection.close]}.
 
     Neither
     {{!Ocgio.Dtls_server_connection.class-type-dtls_server_connection_t}[Gio.DtlsServerConnection]}
@@ -44,7 +45,8 @@
     set the peer address on their base
     {{!Ocgio.Datagram_based.class-type-datagram_based_t}[Gio.DatagramBased]} if
     it is a {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]} — it is up to the
-    caller to do that if they wish. If they do not, and [Gio.Socket.close] is
+    caller to do that if they wish. If they do not, and
+    {{!Ocgio.Socket.class-type-socket_t.method-close}[Gio.Socket.close]} is
     called on the base socket, the [GDtlsConnection] will not raise a
     [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 class type dtls_connection_t = object
@@ -358,9 +360,10 @@ class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
     {{!Ocgio.Datagram_based.class-type-datagram_based_t}[Gio.DatagramBased]},
     presenting a datagram-socket-like API for the encrypted connection. This
     operates over a base datagram connection, which is also a [GDatagramBased]
-    ([Gio.DtlsConnection:base-socket]).
+    ({{!Ocgio.Dtls_connection.class-type-dtls_connection_t.method-base_socket}[Gio.DtlsConnection:base-socket]}).
 
-    To close a DTLS connection, use [Gio.DtlsConnection.close].
+    To close a DTLS connection, use
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t.method-close}[Gio.DtlsConnection.close]}.
 
     Neither
     {{!Ocgio.Dtls_server_connection.class-type-dtls_server_connection_t}[Gio.DtlsServerConnection]}
@@ -369,7 +372,8 @@ class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
     set the peer address on their base
     {{!Ocgio.Datagram_based.class-type-datagram_based_t}[Gio.DatagramBased]} if
     it is a {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]} — it is up to the
-    caller to do that if they wish. If they do not, and [Gio.Socket.close] is
+    caller to do that if they wish. If they do not, and
+    {{!Ocgio.Socket.class-type-socket_t.method-close}[Gio.Socket.close]} is
     called on the base socket, the [GDtlsConnection] will not raise a
     [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 

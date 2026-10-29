@@ -1,9 +1,10 @@
 (** This
     {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
     contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
-    instance. It may be sent using [Gio.Socket.send_message] and received using
-    [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
-    [G_SOCKET_FAMILY_UNIX] family).
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
 
     Its methods, signals and properties are on
     {!class-type-unix_credentials_message_t}. Its full description is under
@@ -21,14 +22,19 @@
     This
     {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
     contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
-    instance. It may be sent using [Gio.Socket.send_message] and received using
-    [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
-    [G_SOCKET_FAMILY_UNIX] family).
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
 
     For an easier way to send and receive credentials over stream-oriented UNIX
-    sockets, see [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials]. To receive credentials of a
-    foreign process connected to a socket, use [Gio.Socket.get_credentials].
+    sockets, see
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]}. To receive credentials of a
+    foreign process connected to a socket, use
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
 
     Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
     requires underlying system support (such as Windows 10 with [AF_UNIX]) at
@@ -61,14 +67,19 @@ class unix_credentials_message :
     This
     {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
     contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
-    instance. It may be sent using [Gio.Socket.send_message] and received using
-    [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
-    [G_SOCKET_FAMILY_UNIX] family).
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
 
     For an easier way to send and receive credentials over stream-oriented UNIX
-    sockets, see [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials]. To receive credentials of a
-    foreign process connected to a socket, use [Gio.Socket.get_credentials].
+    sockets, see
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]}. To receive credentials of a
+    foreign process connected to a socket, use
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
 
     Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
     requires underlying system support (such as Windows 10 with [AF_UNIX]) at

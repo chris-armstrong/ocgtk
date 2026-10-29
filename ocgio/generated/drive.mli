@@ -38,7 +38,7 @@ class type drive_t = App_info_cycle_64c425a0.drive_t
     devices. Note that the actual semantics and side-effects of
     starting/stopping a [GDrive] may vary according to implementation. To choose
     the correct verbs in e.g. a file manager, use
-    [Gio.Drive.get_start_stop_type].
+    {{!Ocgio.Drive.class-type-drive_t.method-get_start_stop_type}[Gio.Drive.get_start_stop_type]}.
 
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API. *)
@@ -71,7 +71,7 @@ class drive : Raw.Drive.t -> drive_t
     devices. Note that the actual semantics and side-effects of
     starting/stopping a [GDrive] may vary according to implementation. To choose
     the correct verbs in e.g. a file manager, use
-    [Gio.Drive.get_start_stop_type].
+    {{!Ocgio.Drive.class-type-drive_t.method-get_start_stop_type}[Gio.Drive.get_start_stop_type]}.
 
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API. *)

@@ -36,17 +36,22 @@ external forward :
 (** Forwards the current event of this [controller] to a [widget].
 
     This function can only be used in handlers for the
-    [Gtk.EventControllerKey::key-pressed],
-    [Gtk.EventControllerKey::key-released] or
-    [Gtk.EventControllerKey::modifiers] signals. *)
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_pressed}[Gtk.EventControllerKey::key-pressed]},
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_released}[Gtk.EventControllerKey::key-released]}
+    or
+    {{!Ocgtk.Raw.Event_controller_key.val-on_modifiers}[Gtk.EventControllerKey::modifiers]}
+    signals. *)
 
 val on_im_update :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted whenever the input method context filters away a keypress and
     prevents the [controller] receiving it.
 
-    See [Gtk.EventControllerKey.set_im_context] and
-    [Gtk.IMContext.filter_keypress]. *)
+    See
+    {{!Ocgtk.Raw.Event_controller_key.val-set_im_context}[Gtk.EventControllerKey.set_im_context]}
+    and
+    {{!Ocgtk.Raw.Im_context.val-filter_keypress}[Gtk.IMContext.filter_keypress]}.
+*)
 
 val on_key_pressed :
   ?after:bool ->

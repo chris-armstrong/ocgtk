@@ -23,8 +23,8 @@
     [intel_gpu_time] to profile GPU usage.
 
     Don’t forget to disconnect the [GObject.Object::notify] signal for
-    [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
-    [GPowerProfileMonitor] itself when exiting.
+    {{!Ocgio.Raw.Power_profile_monitor.val-get_power_saver_enabled}[Gio.PowerProfileMonitor:power-saver-enabled]},
+    and unref the [GPowerProfileMonitor] itself when exiting.
 
     The class built on this module is in {!Ocgio.Power_profile_monitor}. *)
 

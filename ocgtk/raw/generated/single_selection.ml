@@ -26,10 +26,13 @@ external set_selected : t -> int -> unit
 
     If the list does not have an item at [position] or
     [GTK_INVALID_LIST_POSITION] is given, the behavior depends on the value of
-    the [Gtk.SingleSelection:autoselect] property: If it is set, no change will
-    occur and the old item will stay selected. If it is unset, the selection
-    will be unset and no item will be selected. This also applies if
-    [Gtk.SingleSelection:can-unselect] is set to [false]. *)
+    the
+    {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
+    property: If it is set, no change will occur and the old item will stay
+    selected. If it is unset, the selection will be unset and no item will be
+    selected. This also applies if
+    {{!Ocgtk.Raw.Single_selection.val-get_can_unselect}[Gtk.SingleSelection:can-unselect]}
+    is set to [false]. *)
 
 external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_single_selection_set_model"
@@ -42,8 +45,10 @@ external set_can_unselect : t -> bool -> unit
 (** If [true], unselecting the current item via
     gtk_selection_model_unselect_item() is supported.
 
-    Note that setting [Gtk.SingleSelection:autoselect] will cause unselecting to
-    not work, so it practically makes no sense to set both at the same time. *)
+    Note that setting
+    {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
+    will cause unselecting to not work, so it practically makes no sense to set
+    both at the same time. *)
 
 external set_autoselect : t -> bool -> unit
   = "ml_gtk_single_selection_set_autoselect"

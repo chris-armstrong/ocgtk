@@ -127,16 +127,20 @@ end
      has an action area at the\n\
      bottom, [GtkInfoBar] has an action area at the side.\n\n\
      The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
-     to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
+     to add buttons to the action area with \
+     {{!Ocgtk.Info_bar.class-type-info_bar_t.method-add_button}[Gtk.InfoBar.add_button]}\n\
      or [Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets\n\
-     can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
+     can be controlled with \
+     {{!Ocgtk.Info_bar.class-type-info_bar_t.method-set_response_sensitive}[Gtk.InfoBar.set_response_sensitive]}.\n\n\
      To add widgets to the main content area of a [GtkInfoBar], use\n\
-     [Gtk.InfoBar.add_child].\n\n\
+     {{!Ocgtk.Info_bar.class-type-info_bar_t.method-add_child}[Gtk.InfoBar.add_child]}.\n\n\
      Similar to \
      {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}, \
      the contents of a [GtkInfoBar]\n\
      can by classified as error message, warning, informational message, etc,\n\
-     by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
+     by using \
+     {{!Ocgtk.Info_bar.class-type-info_bar_t.method-set_message_type}[Gtk.InfoBar.set_message_type]}. \
+     GTK may use the message\n\
      type to determine how the message is displayed.\n\n\
      A simple example for using a [GtkInfoBar]:\n\n\
      {[\n\
@@ -195,16 +199,20 @@ class info_bar : Raw.Info_bar.t -> info_bar_t
  an action area at the\n\
  bottom, [GtkInfoBar] has an action area at the side.\n\n\
  The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
- to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
+ to add buttons to the action area with \
+ {{!Ocgtk.Info_bar.class-type-info_bar_t.method-add_button}[Gtk.InfoBar.add_button]}\n\
  or [Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets\n\
- can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
+ can be controlled with \
+ {{!Ocgtk.Info_bar.class-type-info_bar_t.method-set_response_sensitive}[Gtk.InfoBar.set_response_sensitive]}.\n\n\
  To add widgets to the main content area of a [GtkInfoBar], use\n\
- [Gtk.InfoBar.add_child].\n\n\
+ {{!Ocgtk.Info_bar.class-type-info_bar_t.method-add_child}[Gtk.InfoBar.add_child]}.\n\n\
  Similar to \
  {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}, the \
  contents of a [GtkInfoBar]\n\
  can by classified as error message, warning, informational message, etc,\n\
- by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
+ by using \
+ {{!Ocgtk.Info_bar.class-type-info_bar_t.method-set_message_type}[Gtk.InfoBar.set_message_type]}. \
+ GTK may use the message\n\
  type to determine how the message is displayed.\n\n\
  A simple example for using a [GtkInfoBar]:\n\n\
  {[\n\

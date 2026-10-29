@@ -23,12 +23,14 @@
     It’s essentially a blank widget; you can draw on it. After creating a
     drawing area, the application may want to connect to:
 
-    - The [Gtk.Widget::realize] signal to take any necessary actions when the
-      widget is instantiated on a particular display. (Create GDK resources in
-      response to this signal.)
+    - The
+      {{!Ocgtk.Widget.class-type-widget_t.method-on_realize}[Gtk.Widget::realize]}
+      signal to take any necessary actions when the widget is instantiated on a
+      particular display. (Create GDK resources in response to this signal.)
 
-    - The [Gtk.DrawingArea::resize] signal to take any necessary actions when
-      the widget changes size.
+    - The
+      {{!Ocgtk.Drawing_area.class-type-drawing_area_t.method-on_resize}[Gtk.DrawingArea::resize]}
+      signal to take any necessary actions when the widget changes size.
 
     - Call [Gtk.DrawingArea.set_draw_func] to handle redrawing the contents of
       the widget.
@@ -78,8 +80,9 @@
     The draw function is normally called when a drawing area first comes
     onscreen, or when it’s covered by another window and then uncovered. You can
     also force a redraw by adding to the “damage region” of the drawing area’s
-    window using [Gtk.Widget.queue_draw]. This will cause the drawing area to
-    call the draw function again.
+    window using
+    {{!Ocgtk.Widget.class-type-widget_t.method-queue_draw}[Gtk.Widget.queue_draw]}.
+    This will cause the drawing area to call the draw function again.
 
     The available routines for drawing are documented in the
     {{:https://www.cairographics.org/manual/}Cairo documentation}; GDK offers
@@ -155,12 +158,14 @@ class drawing_area : Raw.Drawing_area.t -> drawing_area_t
     It’s essentially a blank widget; you can draw on it. After creating a
     drawing area, the application may want to connect to:
 
-    - The [Gtk.Widget::realize] signal to take any necessary actions when the
-      widget is instantiated on a particular display. (Create GDK resources in
-      response to this signal.)
+    - The
+      {{!Ocgtk.Widget.class-type-widget_t.method-on_realize}[Gtk.Widget::realize]}
+      signal to take any necessary actions when the widget is instantiated on a
+      particular display. (Create GDK resources in response to this signal.)
 
-    - The [Gtk.DrawingArea::resize] signal to take any necessary actions when
-      the widget changes size.
+    - The
+      {{!Ocgtk.Drawing_area.class-type-drawing_area_t.method-on_resize}[Gtk.DrawingArea::resize]}
+      signal to take any necessary actions when the widget changes size.
 
     - Call [Gtk.DrawingArea.set_draw_func] to handle redrawing the contents of
       the widget.
@@ -210,8 +215,9 @@ class drawing_area : Raw.Drawing_area.t -> drawing_area_t
     The draw function is normally called when a drawing area first comes
     onscreen, or when it’s covered by another window and then uncovered. You can
     also force a redraw by adding to the “damage region” of the drawing area’s
-    window using [Gtk.Widget.queue_draw]. This will cause the drawing area to
-    call the draw function again.
+    window using
+    {{!Ocgtk.Widget.class-type-widget_t.method-queue_draw}[Gtk.Widget.queue_draw]}.
+    This will cause the drawing area to call the draw function again.
 
     The available routines for drawing are documented in the
     {{:https://www.cairographics.org/manual/}Cairo documentation}; GDK offers

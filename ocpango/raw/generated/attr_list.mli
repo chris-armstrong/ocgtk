@@ -6,8 +6,8 @@
 
     The attributes in a [PangoAttrList] are, in general, allowed to overlap in
     an arbitrary fashion. However, if the attributes are manipulated only
-    through [Pango.AttrList.change], the overlap between properties will meet
-    stricter criteria.
+    through {{!Ocpango.Raw.Attr_list.val-change}[Pango.AttrList.change]}, the
+    overlap between properties will meet stricter criteria.
 
     Since the [PangoAttrList] structure is stored as a linear list, it is not
     suitable for storing attributes for large amounts of text. In general, you
@@ -57,9 +57,11 @@ external to_string : t -> string = "ml_pango_attr_list_to_string"
    - strings as string, optionally quoted\n\
    - font features as quoted string\n\
    - PangoLanguage as string\n\
-   - PangoFontDescription as serialized by [Pango.FontDescription.to_string], \
+   - PangoFontDescription as serialized by \
+   {{!Ocpango.Raw.Font_description.val-to_string}[Pango.FontDescription.to_string]}, \
    quoted\n\
-   - PangoColor as serialized by [Pango.Color.to_string]\n\n\
+   - PangoColor as serialized by \
+   {{!Ocpango.Raw.Color.val-to_string}[Pango.Color.to_string]}\n\n\
    Examples:\n\n\
    0 10 foreground red, 5 15 weight bold, 0 200 font-desc \"Sans 10\"\n\n\
    0 -1 weight 700\n\
@@ -74,8 +76,9 @@ external splice : t -> t -> int -> int -> unit = "ml_pango_attr_list_splice"
 
     This operation is equivalent to stretching every attribute that applies at
     position [pos] in [list] by an amount [len], and then calling
-    [Pango.AttrList.change] with a copy of each attribute in [other] in sequence
-    (offset in position by [pos], and limited in length to [len]).
+    {{!Ocpango.Raw.Attr_list.val-change}[Pango.AttrList.change]} with a copy of
+    each attribute in [other] in sequence (offset in position by [pos], and
+    limited in length to [len]).
 
     This operation proves useful for, for instance, inserting a pre-edit string
     in the middle of an edit buffer.
@@ -124,7 +127,9 @@ external change : t -> Attribute.t -> unit = "ml_pango_attr_list_change"
     It will replace any attributes of the same type on that segment and be
     merged with any adjoining attributes that are identical.
 
-    This function is slower than [Pango.AttrList.insert] for creating an
+    This function is slower than
+    {{!Ocpango.Raw.Attr_list.val-insert}[Pango.AttrList.insert]} for creating an
     attribute list in order (potentially much slower for large lists). However,
-    [Pango.AttrList.insert] is not suitable for continually changing a set of
-    attributes since it never removes or combines existing attributes. *)
+    {{!Ocpango.Raw.Attr_list.val-insert}[Pango.AttrList.insert]} is not suitable
+    for continually changing a set of attributes since it never removes or
+    combines existing attributes. *)

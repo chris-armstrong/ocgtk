@@ -17,7 +17,7 @@
     {{!Ocgtk.Raw.Shortcuts_shortcut}[Gtk.ShortcutsShortcut]} instances.
 
     If you need to add a shortcut programmatically, use
-    [Gtk.ShortcutsGroup.add_shortcut].
+    {{!Ocgtk.Raw.Shortcuts_group.val-add_shortcut}[Gtk.ShortcutsGroup.add_shortcut]}.
 
     The class built on this module is in {!Ocgtk.Shortcuts_group}. *)
 
@@ -66,15 +66,17 @@ external set_title_size_group : t -> Size_group.t -> unit
 external get_view : t -> string = "ml_gtk_shortcuts_group_get_view"
 (** An optional view that the shortcuts in this group are relevant for.
 
-    The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
-    does not match the view of this group.
+    The group will be hidden if the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_view_name}[Gtk.ShortcutsWindow:view-name]}
+    property does not match the view of this group.
 
     Set this to [None] to make the group always visible. *)
 
 external set_view : t -> string -> unit = "ml_gtk_shortcuts_group_set_view"
 (** An optional view that the shortcuts in this group are relevant for.
 
-    The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
-    does not match the view of this group.
+    The group will be hidden if the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_view_name}[Gtk.ShortcutsWindow:view-name]}
+    property does not match the view of this group.
 
     Set this to [None] to make the group always visible. *)

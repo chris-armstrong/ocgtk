@@ -101,7 +101,8 @@ end
      [GtkHeaderBar] can add typical window frame controls, such as minimize,\n\
      maximize and close buttons, or the window icon.\n\n\
      For these reasons, [GtkHeaderBar] is the natural choice for use as the\n\
-     custom titlebar widget of a [GtkWindow] (see [Gtk.Window.set_titlebar]),\n\
+     custom titlebar widget of a [GtkWindow] (see \
+     {{!Ocgtk.Window.class-type-window_t.method-set_titlebar}[Gtk.Window.set_titlebar]}),\n\
      as it gives features typical of titlebars while allowing the addition of\n\
      child widgets.\n\n\
      {b GtkHeaderBar as GtkBuildable}\n\n\
@@ -151,7 +152,9 @@ end
      {{!Ocgtk.Window_controls.class-type-window_controls_t}[Gtk.WindowControls]} \
      for details, as well as other children.\n\n\
      {b Accessibility}\n\n\
-     [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role."]
+     [GtkHeaderBar] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+     role."]
 
 class header_bar : Raw.Header_bar.t -> header_bar_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Header_bar.t}. *)
@@ -168,7 +171,8 @@ class header_bar : Raw.Header_bar.t -> header_bar_t
  [GtkHeaderBar] can add typical window frame controls, such as minimize,\n\
  maximize and close buttons, or the window icon.\n\n\
  For these reasons, [GtkHeaderBar] is the natural choice for use as the\n\
- custom titlebar widget of a [GtkWindow] (see [Gtk.Window.set_titlebar]),\n\
+ custom titlebar widget of a [GtkWindow] (see \
+ {{!Ocgtk.Window.class-type-window_t.method-set_titlebar}[Gtk.Window.set_titlebar]}),\n\
  as it gives features typical of titlebars while allowing the addition of\n\
  child widgets.\n\n\
  {b GtkHeaderBar as GtkBuildable}\n\n\
@@ -215,7 +219,9 @@ class header_bar : Raw.Header_bar.t -> header_bar_t
  {{!Ocgtk.Window_controls.class-type-window_controls_t}[Gtk.WindowControls]} \
  for details, as well as other children.\n\n\
  {b Accessibility}\n\n\
- [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role."]
+ [GtkHeaderBar] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

@@ -6,16 +6,19 @@
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by
-    application code. This is done by calling [Gtk.ListItem.set_child].
+    application code. This is done by calling
+    {{!Ocgtk.Raw.List_item.val-set_child}[Gtk.ListItem.set_child]}.
 
     [GtkListItem] objects exist in 2 stages:
 
     + The unbound stage where the listitem is not currently connected to an item
-      in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [None].
+      in the list. In that case, the
+      {{!Ocgtk.Raw.List_item.val-get_item}[Gtk.ListItem:item]} property is set
+      to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [None].
+      {{!Ocgtk.Raw.List_item.val-get_item}[Gtk.ListItem:item]} property is not
+      [None].
 
     The class built on this module is in {!Ocgtk.List_item}. *)
 
@@ -42,7 +45,8 @@ external set_focusable : t -> bool -> unit = "ml_gtk_list_item_set_focusable"
 (** Sets [self] to be focusable.
 
     If an item is focusable, it can be focused using the keyboard. This works
-    similar to [Gtk.Widget.set_focusable].
+    similar to
+    {{!Ocgtk.Raw.Widget.val-set_focusable}[Gtk.Widget.set_focusable]}.
 
     Note that if items are not focusable, the keyboard cannot be used to
     activate them and selecting only works if one of the listitem's children is
@@ -67,9 +71,10 @@ external set_activatable : t -> bool -> unit
 (** Sets [self] to be activatable.
 
     If an item is activatable, double-clicking on the item, using the Return key
-    or calling [Gtk.Widget.activate] will activate the item. Activating
-    instructs the containing view to handle activation. [GtkListView] for
-    example will be emitting the [Gtk.ListView::activate] signal.
+    or calling {{!Ocgtk.Raw.Widget.val-activate}[Gtk.Widget.activate]} will
+    activate the item. Activating instructs the containing view to handle
+    activation. [GtkListView] for example will be emitting the
+    {{!Ocgtk.Raw.List_view.val-on_activate}[Gtk.ListView::activate]} signal.
 
     By default, listitems are activatable. *)
 
@@ -93,9 +98,10 @@ external get_selected : t -> bool = "ml_gtk_list_item_get_selected"
 
 external get_selectable : t -> bool = "ml_gtk_list_item_get_selectable"
 (** Checks if a listitem has been set to be selectable via
-    [Gtk.ListItem.set_selectable].
+    {{!Ocgtk.Raw.List_item.val-set_selectable}[Gtk.ListItem.set_selectable]}.
 
-    Do not confuse this function with [Gtk.ListItem.get_selected]. *)
+    Do not confuse this function with
+    {{!Ocgtk.Raw.List_item.val-get_selected}[Gtk.ListItem.get_selected]}. *)
 
 external get_position : t -> int = "ml_gtk_list_item_get_position"
 (** Gets the position in the model that [self] currently displays.
@@ -110,7 +116,7 @@ external get_item : t -> [ `object_ ] Gobject.obj option
 
 external get_focusable : t -> bool = "ml_gtk_list_item_get_focusable"
 (** Checks if a listitem has been set to be focusable via
-    [Gtk.ListItem.set_focusable]. *)
+    {{!Ocgtk.Raw.List_item.val-set_focusable}[Gtk.ListItem.set_focusable]}. *)
 
 external get_child :
   t ->
@@ -118,12 +124,14 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_list_item_get_child"
-(** Gets the child previously set via [Gtk.ListItem.set_child] or [None] if none
-    was set. *)
+(** Gets the child previously set via
+    {{!Ocgtk.Raw.List_item.val-set_child}[Gtk.ListItem.set_child]} or [None] if
+    none was set. *)
 
 external get_activatable : t -> bool = "ml_gtk_list_item_get_activatable"
 (** Checks if a listitem has been set to be activatable via
-    [Gtk.ListItem.set_activatable]. *)
+    {{!Ocgtk.Raw.List_item.val-set_activatable}[Gtk.ListItem.set_activatable]}.
+*)
 
 external get_accessible_label : t -> string
   = "ml_gtk_list_item_get_accessible_label"

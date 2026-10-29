@@ -12,7 +12,8 @@
     The interface that is used to implement print preview.
 
     A [GtkPrintOperationPreview] object is passed to the
-    [Gtk.PrintOperation::preview] signal by
+    {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_preview}[Gtk.PrintOperation::preview]}
+    signal by
     {{!Ocgtk.Print_operation.class-type-print_operation_t}[Gtk.PrintOperation]}.
 *)
 class type print_operation_preview_t = object
@@ -80,7 +81,8 @@ class print_operation_preview :
     The interface that is used to implement print preview.
 
     A [GtkPrintOperationPreview] object is passed to the
-    [Gtk.PrintOperation::preview] signal by
+    {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_preview}[Gtk.PrintOperation::preview]}
+    signal by
     {{!Ocgtk.Print_operation.class-type-print_operation_t}[Gtk.PrintOperation]}.
 *)
 

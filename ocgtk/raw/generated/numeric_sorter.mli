@@ -16,7 +16,8 @@ external new_ : Expression.t option -> t = "ml_gtk_numeric_sorter_new"
 (** Creates a new numeric sorter using the given [expression].
 
     Smaller numbers will be sorted first. You can call
-    [Gtk.NumericSorter.set_sort_order] to change this. *)
+    {{!Ocgtk.Raw.Numeric_sorter.val-set_sort_order}[Gtk.NumericSorter.set_sort_order]}
+    to change this. *)
 
 (* Methods *)
 

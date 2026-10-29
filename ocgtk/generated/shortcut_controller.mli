@@ -22,7 +22,7 @@
     mnemonic underline to a {{!Ocgtk.Label.class-type-label_t}[Gtk.Label]}, or
     by installing a key binding using [Gtk.WidgetClass.add_binding], or by
     adding accelerators to global actions using
-    [Gtk.Application.set_accels_for_action].
+    {{!Ocgtk.Application.class-type-application_t.method-set_accels_for_action}[Gtk.Application.set_accels_for_action]}.
 
     But it is possible to create your own shortcut controller, and add shortcuts
     to it.
@@ -59,10 +59,12 @@
     {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}
     for triggering the [activate] signal of the
     {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}. See
-    [Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
+    {{!Ocgtk.Shortcut_action.val-parse_string}[Gtk.ShortcutAction.parse_string]}
+    for the syntax for other kinds of
     {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
-    See [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
-    triggers. *)
+    See
+    {{!Ocgtk.Shortcut_trigger.val-parse_string}[Gtk.ShortcutTrigger.parse_string]}
+    to learn more about the syntax for triggers. *)
 class type shortcut_controller_t = object
   inherit Event_controller.event_controller_t
   inherit Ocgio.List_model.list_model_t
@@ -140,7 +142,7 @@ class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
     mnemonic underline to a {{!Ocgtk.Label.class-type-label_t}[Gtk.Label]}, or
     by installing a key binding using [Gtk.WidgetClass.add_binding], or by
     adding accelerators to global actions using
-    [Gtk.Application.set_accels_for_action].
+    {{!Ocgtk.Application.class-type-application_t.method-set_accels_for_action}[Gtk.Application.set_accels_for_action]}.
 
     But it is possible to create your own shortcut controller, and add shortcuts
     to it.
@@ -177,10 +179,12 @@ class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
     {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}
     for triggering the [activate] signal of the
     {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}. See
-    [Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
+    {{!Ocgtk.Shortcut_action.val-parse_string}[Gtk.ShortcutAction.parse_string]}
+    for the syntax for other kinds of
     {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
-    See [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
-    triggers. *)
+    See
+    {{!Ocgtk.Shortcut_trigger.val-parse_string}[Gtk.ShortcutTrigger.parse_string]}
+    to learn more about the syntax for triggers. *)
 
 (** {1:constructors Constructors} *)
 

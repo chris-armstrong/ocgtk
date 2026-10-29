@@ -18,7 +18,9 @@
 
     Matches an item when each of its filters matches.
 
-    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append]. *)
+    To add filters to a [GtkEveryFilter], use
+    {{!Ocgtk.Multi_filter.class-type-multi_filter_t.method-append}[Gtk.MultiFilter.append]}.
+*)
 class type every_filter_t = object
   inherit Multi_filter.multi_filter_t
 
@@ -34,14 +36,18 @@ class every_filter : Raw.Every_filter.t -> every_filter_t
 
     Matches an item when each of its filters matches.
 
-    To add filters to a [GtkEveryFilter], use [Gtk.MultiFilter.append]. *)
+    To add filters to a [GtkEveryFilter], use
+    {{!Ocgtk.Multi_filter.class-type-multi_filter_t.method-append}[Gtk.MultiFilter.append]}.
+*)
 
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> every_filter_t
 [@@ocaml.doc
   "Creates a new empty \"every\" filter.\n\n\
-   Use [Gtk.MultiFilter.append] to add filters to it.\n\n\
+   Use \
+   {{!Ocgtk.Multi_filter.class-type-multi_filter_t.method-append}[Gtk.MultiFilter.append]} \
+   to add filters to it.\n\n\
    This filter matches an item if each of the filters added to it\n\
    matches the item. In particular, this means that if no filter\n\
    has been added to it, the filter matches every item."]

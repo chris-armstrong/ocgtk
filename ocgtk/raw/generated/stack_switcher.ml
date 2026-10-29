@@ -25,8 +25,11 @@
 
     {b Accessibility}
 
-    [GtkStackSwitcher] uses the [Gtk.AccessibleRole.tab_list] role and uses the
-    [Gtk.AccessibleRole.tab] role for its buttons.
+    [GtkStackSwitcher] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_LIST}[Gtk.AccessibleRole.tab_list]}
+    role and uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB}[Gtk.AccessibleRole.tab]}
+    role for its buttons.
 
     {b Orientable}
 

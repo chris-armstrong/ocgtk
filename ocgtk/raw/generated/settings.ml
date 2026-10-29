@@ -26,7 +26,7 @@
 
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
-    use [Gtk.Widget.get_settings].
+    use {{!Ocgtk.Raw.Widget.val-get_settings}[Gtk.Widget.get_settings]}.
 
     The class built on this module is in {!Ocgtk.Settings}. *)
 
@@ -111,15 +111,17 @@ external get_gtk_cursor_blink : t -> bool
   = "ml_gtk_settings_get_gtk_cursor_blink"
 (** Whether the cursor should blink.
 
-    Also see the [Gtk.Settings:gtk-cursor-blink-timeout] setting, which allows
-    more flexible control over cursor blinking. *)
+    Also see the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_cursor_blink_timeout}[Gtk.Settings:gtk-cursor-blink-timeout]}
+    setting, which allows more flexible control over cursor blinking. *)
 
 external set_gtk_cursor_blink : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink"
 (** Whether the cursor should blink.
 
-    Also see the [Gtk.Settings:gtk-cursor-blink-timeout] setting, which allows
-    more flexible control over cursor blinking. *)
+    Also see the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_cursor_blink_timeout}[Gtk.Settings:gtk-cursor-blink-timeout]}
+    setting, which allows more flexible control over cursor blinking. *)
 
 external get_gtk_cursor_blink_time : t -> int
   = "ml_gtk_settings_get_gtk_cursor_blink_time"
@@ -136,7 +138,8 @@ external get_gtk_cursor_blink_timeout : t -> int
     The timer is reset after each user interaction.
 
     Setting this to zero has the same effect as setting
-    [Gtk.Settings:gtk-cursor-blink] to [false]. *)
+    {{!Ocgtk.Raw.Settings.val-get_gtk_cursor_blink}[Gtk.Settings:gtk-cursor-blink]}
+    to [false]. *)
 
 external set_gtk_cursor_blink_timeout : t -> int -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink_timeout"
@@ -145,7 +148,8 @@ external set_gtk_cursor_blink_timeout : t -> int -> unit
     The timer is reset after each user interaction.
 
     Setting this to zero has the same effect as setting
-    [Gtk.Settings:gtk-cursor-blink] to [false]. *)
+    {{!Ocgtk.Raw.Settings.val-get_gtk_cursor_blink}[Gtk.Settings:gtk-cursor-blink]}
+    to [false]. *)
 
 external get_gtk_cursor_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_cursor_theme_name"
@@ -189,7 +193,8 @@ external get_gtk_decoration_layout : t -> string
    show the app menu, and a close button only appears on a window\n\
    that can be closed.\n\n\
    Also note that the setting can be overridden with the\n\
-   [Gtk.HeaderBar:decoration-layout] property."]
+   {{!Ocgtk.Raw.Header_bar.val-get_decoration_layout}[Gtk.HeaderBar:decoration-layout]} \
+   property."]
 
 external set_gtk_decoration_layout : t -> string -> unit
   = "ml_gtk_settings_set_gtk_decoration_layout"
@@ -209,7 +214,8 @@ external set_gtk_decoration_layout : t -> string -> unit
    show the app menu, and a close button only appears on a window\n\
    that can be closed.\n\n\
    Also note that the setting can be overridden with the\n\
-   [Gtk.HeaderBar:decoration-layout] property."]
+   {{!Ocgtk.Raw.Header_bar.val-get_decoration_layout}[Gtk.HeaderBar:decoration-layout]} \
+   property."]
 
 external get_gtk_dialogs_use_header : t -> bool
   = "ml_gtk_settings_get_gtk_dialogs_use_header"
@@ -379,27 +385,39 @@ external get_gtk_font_rendering : t -> Ocgtk_enums.fontrendering
   = "ml_gtk_settings_get_gtk_font_rendering"
 (** How GTK font rendering is set up.
 
-    When set to [Gtk.FontRendering.MANUAL], GTK respects the low-level
-    font-related settings ([Gtk.Settings:gtk-hint-font-metrics],
-    [Gtk.Settings:gtk-xft-antialias], [Gtk.Settings:gtk-xft-hinting],
-    [Gtk.Settings:gtk-xft-hintstyle] and [Gtk.Settings:gtk-xft-rgba]) as much as
-    practical.
+    When set to
+    {{!Ocgtk.Enums.type-fontrendering.constructor-MANUAL}[Gtk.FontRendering.MANUAL]},
+    GTK respects the low-level font-related settings
+    ({{!Ocgtk.Raw.Settings.val-get_gtk_hint_font_metrics}[Gtk.Settings:gtk-hint-font-metrics]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_antialias}[Gtk.Settings:gtk-xft-antialias]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_hinting}[Gtk.Settings:gtk-xft-hinting]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_hintstyle}[Gtk.Settings:gtk-xft-hintstyle]}
+    and {{!Ocgtk.Raw.Settings.val-get_gtk_xft_rgba}[Gtk.Settings:gtk-xft-rgba]})
+    as much as practical.
 
-    When set to [Gtk.FontRendering.AUTOMATIC], GTK will consider factors such as
-    screen resolution and scale in deciding how to render fonts. *)
+    When set to
+    {{!Ocgtk.Enums.type-fontrendering.constructor-AUTOMATIC}[Gtk.FontRendering.AUTOMATIC]},
+    GTK will consider factors such as screen resolution and scale in deciding
+    how to render fonts. *)
 
 external set_gtk_font_rendering : t -> Ocgtk_enums.fontrendering -> unit
   = "ml_gtk_settings_set_gtk_font_rendering"
 (** How GTK font rendering is set up.
 
-    When set to [Gtk.FontRendering.MANUAL], GTK respects the low-level
-    font-related settings ([Gtk.Settings:gtk-hint-font-metrics],
-    [Gtk.Settings:gtk-xft-antialias], [Gtk.Settings:gtk-xft-hinting],
-    [Gtk.Settings:gtk-xft-hintstyle] and [Gtk.Settings:gtk-xft-rgba]) as much as
-    practical.
+    When set to
+    {{!Ocgtk.Enums.type-fontrendering.constructor-MANUAL}[Gtk.FontRendering.MANUAL]},
+    GTK respects the low-level font-related settings
+    ({{!Ocgtk.Raw.Settings.val-get_gtk_hint_font_metrics}[Gtk.Settings:gtk-hint-font-metrics]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_antialias}[Gtk.Settings:gtk-xft-antialias]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_hinting}[Gtk.Settings:gtk-xft-hinting]},
+    {{!Ocgtk.Raw.Settings.val-get_gtk_xft_hintstyle}[Gtk.Settings:gtk-xft-hintstyle]}
+    and {{!Ocgtk.Raw.Settings.val-get_gtk_xft_rgba}[Gtk.Settings:gtk-xft-rgba]})
+    as much as practical.
 
-    When set to [Gtk.FontRendering.AUTOMATIC], GTK will consider factors such as
-    screen resolution and scale in deciding how to render fonts. *)
+    When set to
+    {{!Ocgtk.Enums.type-fontrendering.constructor-AUTOMATIC}[Gtk.FontRendering.AUTOMATIC]},
+    GTK will consider factors such as screen resolution and scale in deciding
+    how to render fonts. *)
 
 external get_gtk_fontconfig_timestamp : t -> int
   = "ml_gtk_settings_get_gtk_fontconfig_timestamp"
@@ -464,7 +482,8 @@ external get_gtk_interface_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
 
     This setting communicates the system-wide preference. The color scheme that
     is actually used when applying CSS styles can be set with the
-    [Gtk.CssProvider:prefers-color-scheme] property. *)
+    {{!Ocgtk.Raw.Css_provider.val-get_prefers_color_scheme}[Gtk.CssProvider:prefers-color-scheme]}
+    property. *)
 
 external set_gtk_interface_color_scheme :
   t -> Ocgtk_enums.interfacecolorscheme -> unit
@@ -473,7 +492,8 @@ external set_gtk_interface_color_scheme :
 
     This setting communicates the system-wide preference. The color scheme that
     is actually used when applying CSS styles can be set with the
-    [Gtk.CssProvider:prefers-color-scheme] property. *)
+    {{!Ocgtk.Raw.Css_provider.val-get_prefers_color_scheme}[Gtk.CssProvider:prefers-color-scheme]}
+    property. *)
 
 external get_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_settings_get_gtk_interface_contrast"
@@ -481,7 +501,8 @@ external get_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast
 
     This setting communicates the system-wide preference. The contrast level
     that is actually used when applying CSS styles can be set with the
-    [Gtk.CssProvider:prefers-contrast] property. *)
+    {{!Ocgtk.Raw.Css_provider.val-get_prefers_contrast}[Gtk.CssProvider:prefers-contrast]}
+    property. *)
 
 external set_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_settings_set_gtk_interface_contrast"
@@ -489,7 +510,8 @@ external set_gtk_interface_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
 
     This setting communicates the system-wide preference. The contrast level
     that is actually used when applying CSS styles can be set with the
-    [Gtk.CssProvider:prefers-contrast] property. *)
+    {{!Ocgtk.Raw.Css_provider.val-get_prefers_contrast}[Gtk.CssProvider:prefers-contrast]}
+    property. *)
 
 external get_gtk_keynav_use_caret : t -> bool
   = "ml_gtk_settings_get_gtk_keynav_use_caret"
@@ -588,7 +610,8 @@ external get_gtk_print_preview_command : t -> string
     The command should contain a [%f] placeholder, which will get replaced by
     the path to the pdf file. The command may also contain a [%s] placeholder,
     which will get replaced by the path to a file containing the print settings
-    in the format produced by [Gtk.PrintSettings.to_file].
+    in the format produced by
+    {{!Ocgtk.Raw.Print_settings.val-to_file}[Gtk.PrintSettings.to_file]}.
 
     The preview application is responsible for removing the pdf file and the
     print settings file when it is done. *)
@@ -600,7 +623,8 @@ external set_gtk_print_preview_command : t -> string -> unit
     The command should contain a [%f] placeholder, which will get replaced by
     the path to the pdf file. The command may also contain a [%s] placeholder,
     which will get replaced by the path to a file containing the print settings
-    in the format produced by [Gtk.PrintSettings.to_file].
+    in the format produced by
+    {{!Ocgtk.Raw.Print_settings.val-to_file}[Gtk.PrintSettings.to_file]}.
 
     The preview application is responsible for removing the pdf file and the
     print settings file when it is done. *)

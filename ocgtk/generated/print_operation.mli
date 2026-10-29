@@ -462,17 +462,20 @@ end
      On platforms which do not provide a native print dialog, GTK\n\
      uses its own, see [Gtk.PrintUnixDialog].\n\n\
      The typical way to use the high-level printing API is to create\n\
-     a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
+     a [GtkPrintOperation] object with \
+     {{!Ocgtk.Print_operation.val-new_}[Gtk.PrintOperation.new]}\n\
      when the user selects to print. Then you set some properties on it,\n\
      e.g. the page size, any \
      {{!Ocgtk.Print_settings.class-type-print_settings_t}[Gtk.PrintSettings]} \
      from previous print\n\
      operations, the number of pages, the current page, etc.\n\n\
-     Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
+     Then you start the print operation by calling \
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-run}[Gtk.PrintOperation.run]}.\n\
      It will then show a dialog, let the user select a printer and options.\n\
      When the user finished the dialog, various signals will be emitted on\n\
      the [GtkPrintOperation], the main one being\n\
-     [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
+     {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_draw_page}[Gtk.PrintOperation::draw-page]}, \
+     which you are supposed to handle\n\
      and render the page on the provided \
      {{!Ocgtk.Print_context.class-type-print_context_t}[Gtk.PrintContext]} \
      using Cairo.\n\n\
@@ -506,9 +509,10 @@ end
      By default [GtkPrintOperation] uses an external application to do\n\
      print preview. To implement a custom print preview, an application\n\
      must connect to the preview signal. The functions\n\
-     [Gtk.PrintOperationPreview.render_page],\n\
-     [Gtk.PrintOperationPreview.end_preview] and\n\
-     [Gtk.PrintOperationPreview.is_selected]\n\
+     {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-render_page}[Gtk.PrintOperationPreview.render_page]},\n\
+     {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-end_preview}[Gtk.PrintOperationPreview.end_preview]} \
+     and\n\
+     {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-is_selected}[Gtk.PrintOperationPreview.is_selected]}\n\
      are useful when implementing a print preview."]
 
 class print_operation : Raw.Print_operation.t -> print_operation_t
@@ -524,17 +528,20 @@ class print_operation : Raw.Print_operation.t -> print_operation_t
  On platforms which do not provide a native print dialog, GTK\n\
  uses its own, see [Gtk.PrintUnixDialog].\n\n\
  The typical way to use the high-level printing API is to create\n\
- a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
+ a [GtkPrintOperation] object with \
+ {{!Ocgtk.Print_operation.val-new_}[Gtk.PrintOperation.new]}\n\
  when the user selects to print. Then you set some properties on it,\n\
  e.g. the page size, any \
  {{!Ocgtk.Print_settings.class-type-print_settings_t}[Gtk.PrintSettings]} from \
  previous print\n\
  operations, the number of pages, the current page, etc.\n\n\
- Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
+ Then you start the print operation by calling \
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-run}[Gtk.PrintOperation.run]}.\n\
  It will then show a dialog, let the user select a printer and options.\n\
  When the user finished the dialog, various signals will be emitted on\n\
  the [GtkPrintOperation], the main one being\n\
- [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
+ {{!Ocgtk.Print_operation.class-type-print_operation_t.method-on_draw_page}[Gtk.PrintOperation::draw-page]}, \
+ which you are supposed to handle\n\
  and render the page on the provided \
  {{!Ocgtk.Print_context.class-type-print_context_t}[Gtk.PrintContext]} using \
  Cairo.\n\n\
@@ -566,9 +573,10 @@ class print_operation : Raw.Print_operation.t -> print_operation_t
  By default [GtkPrintOperation] uses an external application to do\n\
  print preview. To implement a custom print preview, an application\n\
  must connect to the preview signal. The functions\n\
- [Gtk.PrintOperationPreview.render_page],\n\
- [Gtk.PrintOperationPreview.end_preview] and\n\
- [Gtk.PrintOperationPreview.is_selected]\n\
+ {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-render_page}[Gtk.PrintOperationPreview.render_page]},\n\
+ {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-end_preview}[Gtk.PrintOperationPreview.end_preview]} \
+ and\n\
+ {{!Ocgtk.Print_operation_preview.class-type-print_operation_preview_t.method-is_selected}[Gtk.PrintOperationPreview.is_selected]}\n\
  are useful when implementing a print preview."]
 
 (** {1:constructors Constructors} *)

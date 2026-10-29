@@ -14,7 +14,8 @@
     Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
-    [Gtk.GestureRotate::angle-changed] signal is emitted. *)
+    {{!Ocgtk.Gesture_rotate.class-type-gesture_rotate_t.method-on_angle_changed}[Gtk.GestureRotate::angle-changed]}
+    signal is emitted. *)
 class type gesture_rotate_t = object
   inherit Gesture.gesture_t
 
@@ -49,7 +50,8 @@ class gesture_rotate : Raw.Gesture_rotate.t -> gesture_rotate_t
     Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
-    [Gtk.GestureRotate::angle-changed] signal is emitted. *)
+    {{!Ocgtk.Gesture_rotate.class-type-gesture_rotate_t.method-on_angle_changed}[Gtk.GestureRotate::angle-changed]}
+    signal is emitted. *)
 
 (** {1:constructors Constructors} *)
 

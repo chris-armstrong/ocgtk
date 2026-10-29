@@ -14,7 +14,8 @@
     The message is shown with the [Gtk.AlertDialog.choose] function.
 
     If you don't need to wait for a button to be clicked, you can use
-    [Gtk.AlertDialog.show]. *)
+    {{!Ocgtk.Alert_dialog.class-type-alert_dialog_t.method-show}[Gtk.AlertDialog.show]}.
+*)
 class type alert_dialog_t = object
   (** {2:methods Methods} *)
 
@@ -91,7 +92,8 @@ class alert_dialog : Raw.Alert_dialog.t -> alert_dialog_t
     The message is shown with the [Gtk.AlertDialog.choose] function.
 
     If you don't need to wait for a button to be clicked, you can use
-    [Gtk.AlertDialog.show]. *)
+    {{!Ocgtk.Alert_dialog.class-type-alert_dialog_t.method-show}[Gtk.AlertDialog.show]}.
+*)
 
 (** {1:constructors Constructors} *)
 

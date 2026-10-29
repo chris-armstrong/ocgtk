@@ -36,8 +36,11 @@ external get_device_tool : t -> Ocgdk_raw.Device_tool.t option
 (** Returns the [GdkDeviceTool] currently driving input through this gesture.
 
     This function must be called from the handler of one of the
-    [Gtk.GestureStylus::down], [Gtk.GestureStylus::motion],
-    [Gtk.GestureStylus::up] or [Gtk.GestureStylus::proximity] signals. *)
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_down}[Gtk.GestureStylus::down]},
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_motion}[Gtk.GestureStylus::motion]},
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_up}[Gtk.GestureStylus::up]} or
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_proximity}[Gtk.GestureStylus::proximity]}
+    signals. *)
 
 external get_backlog : t -> bool * Ocgdk_raw.Time_coord.t array * int
   = "ml_gtk_gesture_stylus_get_backlog"
@@ -48,10 +51,11 @@ external get_backlog : t -> bool * Ocgdk_raw.Time_coord.t array * int
     coordinate/timing state before the emission of the current
     \[Gtk.GestureStylus::motion\] signal.
 
-    This function may only be called within a [Gtk.GestureStylus::motion] signal
-    handler, the state given in this signal and obtainable through
-    [Gtk.GestureStylus.get_axis] express the latest (most up-to-date) state in
-    motion history.
+    This function may only be called within a
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_motion}[Gtk.GestureStylus::motion]}
+    signal handler, the state given in this signal and obtainable through
+    {{!Ocgtk.Raw.Gesture_stylus.val-get_axis}[Gtk.GestureStylus.get_axis]}
+    express the latest (most up-to-date) state in motion history.
 
     The [backlog] is provided in chronological order. *)
 
@@ -60,8 +64,11 @@ external get_axis : t -> Ocgdk_enums.axisuse -> bool * float
 (** Returns the current value for the requested [axis].
 
     This function must be called from the handler of one of the
-    [Gtk.GestureStylus::down], [Gtk.GestureStylus::motion],
-    [Gtk.GestureStylus::up] or [Gtk.GestureStylus::proximity] signals. *)
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_down}[Gtk.GestureStylus::down]},
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_motion}[Gtk.GestureStylus::motion]},
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_up}[Gtk.GestureStylus::up]} or
+    {{!Ocgtk.Raw.Gesture_stylus.val-on_proximity}[Gtk.GestureStylus::proximity]}
+    signals. *)
 
 (* Properties *)
 

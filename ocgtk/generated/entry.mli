@@ -656,25 +656,33 @@ end
      entered text is longer than the allocation of the widget, the widget\n\
      will scroll so that the cursor position is visible.\n\n\
      When using an entry for passwords and other sensitive information, it\n\
-     can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+     can be put into “password mode” using \
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_visibility}[Gtk.Entry.set_visibility]}.\n\
      In this mode, entered text is displayed using a “invisible” character.\n\
      By default, GTK picks the best invisible character that is available\n\
      in the current font, but it can be changed with\n\
-     [Gtk.Entry.set_invisible_char].\n\n\
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_invisible_char}[Gtk.Entry.set_invisible_char]}.\n\n\
      [GtkEntry] has the ability to display progress or activity\n\
      information behind the text. To make an entry display such information,\n\
-     use [Gtk.Entry.set_progress_fraction] or\n\
-     [Gtk.Entry.set_progress_pulse_step].\n\n\
+     use \
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_progress_fraction}[Gtk.Entry.set_progress_fraction]} \
+     or\n\
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_progress_pulse_step}[Gtk.Entry.set_progress_pulse_step]}.\n\n\
      Additionally, [GtkEntry] can show icons at either side of the entry.\n\
      These icons can be activatable by clicking, can be set up as drag source\n\
      and can have tooltips. To add an icon, use\n\
-     [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_from_gicon}[Gtk.Entry.set_icon_from_gicon]} \
+     or one of the various other functions\n\
      that set an icon from an icon name or a paintable. To trigger an action \
      when\n\
-     the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+     the user clicks an icon, connect to the \
+     {{!Ocgtk.Entry.class-type-entry_t.method-on_icon_press}[Gtk.Entry::icon-press]} \
+     signal.\n\
      To allow DND operations from an icon, use\n\
-     [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
-     [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_drag_source}[Gtk.Entry.set_icon_drag_source]}. \
+     To set a tooltip on an icon, use\n\
+     {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]} \
+     or the corresponding function\n\
      for markup.\n\n\
      Note that functionality or information that is only available by clicking\n\
      on an icon in an entry may not be accessible at all to users which are not\n\
@@ -720,7 +728,9 @@ end
      sense with translatable attributes. Use markup embedded in the translatable\n\
      content instead.\n\n\
      {b Accessibility}\n\n\
-     [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+     [GtkEntry] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]} \
+     role."]
 
 class entry : Raw.Entry.t -> entry_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Entry.t}. *)
@@ -733,24 +743,32 @@ class entry : Raw.Entry.t -> entry_t
  entered text is longer than the allocation of the widget, the widget\n\
  will scroll so that the cursor position is visible.\n\n\
  When using an entry for passwords and other sensitive information, it\n\
- can be put into “password mode” using [Gtk.Entry.set_visibility].\n\
+ can be put into “password mode” using \
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_visibility}[Gtk.Entry.set_visibility]}.\n\
  In this mode, entered text is displayed using a “invisible” character.\n\
  By default, GTK picks the best invisible character that is available\n\
  in the current font, but it can be changed with\n\
- [Gtk.Entry.set_invisible_char].\n\n\
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_invisible_char}[Gtk.Entry.set_invisible_char]}.\n\n\
  [GtkEntry] has the ability to display progress or activity\n\
  information behind the text. To make an entry display such information,\n\
- use [Gtk.Entry.set_progress_fraction] or\n\
- [Gtk.Entry.set_progress_pulse_step].\n\n\
+ use \
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_progress_fraction}[Gtk.Entry.set_progress_fraction]} \
+ or\n\
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_progress_pulse_step}[Gtk.Entry.set_progress_pulse_step]}.\n\n\
  Additionally, [GtkEntry] can show icons at either side of the entry.\n\
  These icons can be activatable by clicking, can be set up as drag source\n\
  and can have tooltips. To add an icon, use\n\
- [Gtk.Entry.set_icon_from_gicon] or one of the various other functions\n\
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_from_gicon}[Gtk.Entry.set_icon_from_gicon]} \
+ or one of the various other functions\n\
  that set an icon from an icon name or a paintable. To trigger an action when\n\
- the user clicks an icon, connect to the [Gtk.Entry::icon-press] signal.\n\
+ the user clicks an icon, connect to the \
+ {{!Ocgtk.Entry.class-type-entry_t.method-on_icon_press}[Gtk.Entry::icon-press]} \
+ signal.\n\
  To allow DND operations from an icon, use\n\
- [Gtk.Entry.set_icon_drag_source]. To set a tooltip on an icon, use\n\
- [Gtk.Entry.set_icon_tooltip_text] or the corresponding function\n\
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_drag_source}[Gtk.Entry.set_icon_drag_source]}. \
+ To set a tooltip on an icon, use\n\
+ {{!Ocgtk.Entry.class-type-entry_t.method-set_icon_tooltip_text}[Gtk.Entry.set_icon_tooltip_text]} \
+ or the corresponding function\n\
  for markup.\n\n\
  Note that functionality or information that is only available by clicking\n\
  on an icon in an entry may not be accessible at all to users which are not\n\
@@ -795,7 +813,9 @@ class entry : Raw.Entry.t -> entry_t
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role."]
+ [GtkEntry] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

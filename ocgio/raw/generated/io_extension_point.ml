@@ -8,7 +8,9 @@
  An extension point is identified by a name, and it may optionally\n\
  require that any implementation must be of a certain type (or derived\n\
  thereof). Use [Gio.IOExtensionPoint.register] to register an\n\
- extension point, and [Gio.IOExtensionPoint.set_required_type] to\n\
+ extension point, and \
+ {{!Ocgio.Raw.Io_extension_point.val-set_required_type}[Gio.IOExtensionPoint.set_required_type]} \
+ to\n\
  set a required type.\n\n\
  A module can implement an extension point by specifying the\n\
  [GObject.Type] that implements the functionality. Additionally, each\n\

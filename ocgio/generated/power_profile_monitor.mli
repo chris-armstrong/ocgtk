@@ -37,7 +37,8 @@
     [intel_gpu_time] to profile GPU usage.
 
     Don’t forget to disconnect the [GObject.Object::notify] signal for
-    [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
+    {{!Ocgio.Power_profile_monitor.class-type-power_profile_monitor_t.method-get_power_saver_enabled}
+     [Gio.PowerProfileMonitor:power-saver-enabled]}, and unref the
     [GPowerProfileMonitor] itself when exiting. *)
 class type power_profile_monitor_t = object
   (** {2:methods Methods} *)
@@ -83,7 +84,8 @@ class power_profile_monitor :
     [intel_gpu_time] to profile GPU usage.
 
     Don’t forget to disconnect the [GObject.Object::notify] signal for
-    [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
+    {{!Ocgio.Power_profile_monitor.class-type-power_profile_monitor_t.method-get_power_saver_enabled}
+     [Gio.PowerProfileMonitor:power-saver-enabled]}, and unref the
     [GPowerProfileMonitor] itself when exiting. *)
 
 (** {1:constructors Constructors} *)

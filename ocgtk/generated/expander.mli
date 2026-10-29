@@ -93,7 +93,9 @@ end
      An example GtkExpander\n\n\
      This is similar to the triangles used in a [GtkTreeView].\n\n\
      Normally you use an expander as you would use a frame; you create\n\
-     the child widget and use [Gtk.Expander.set_child] to add it\n\
+     the child widget and use \
+     {{!Ocgtk.Expander.class-type-expander_t.method-set_child}[Gtk.Expander.set_child]} \
+     to add it\n\
      to the expander. When the expander is toggled, it will take care of\n\
      showing and hiding the child automatically.\n\n\
      {b Special Usage}\n\n\
@@ -101,7 +103,8 @@ end
      expanded widget yourself, such as when you want to actually create\n\
      the widget at expansion time. In this case, create a [GtkExpander]\n\
      but do not add a child to it. The expander widget has an\n\
-     [Gtk.Expander:expanded] property which can be used to\n\
+     {{!Ocgtk.Expander.class-type-expander_t.method-get_expanded}[Gtk.Expander:expanded]} \
+     property which can be used to\n\
      monitor its expansion state. You should watch this property with\n\
      a signal connection as follows:\n\n\
      {[\n\
@@ -160,7 +163,9 @@ end
      expander that is showing its child gets the [:checked] pseudoclass set on \
      it.\n\n\
      {b Accessibility}\n\n\
-     [GtkExpander] uses the [Gtk.AccessibleRole.button] role."]
+     [GtkExpander] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]} \
+     role."]
 
 class expander : Raw.Expander.t -> expander_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Expander.t}. *)
@@ -171,7 +176,9 @@ class expander : Raw.Expander.t -> expander_t
  An example GtkExpander\n\n\
  This is similar to the triangles used in a [GtkTreeView].\n\n\
  Normally you use an expander as you would use a frame; you create\n\
- the child widget and use [Gtk.Expander.set_child] to add it\n\
+ the child widget and use \
+ {{!Ocgtk.Expander.class-type-expander_t.method-set_child}[Gtk.Expander.set_child]} \
+ to add it\n\
  to the expander. When the expander is toggled, it will take care of\n\
  showing and hiding the child automatically.\n\n\
  {b Special Usage}\n\n\
@@ -179,7 +186,8 @@ class expander : Raw.Expander.t -> expander_t
  expanded widget yourself, such as when you want to actually create\n\
  the widget at expansion time. In this case, create a [GtkExpander]\n\
  but do not add a child to it. The expander widget has an\n\
- [Gtk.Expander:expanded] property which can be used to\n\
+ {{!Ocgtk.Expander.class-type-expander_t.method-get_expanded}[Gtk.Expander:expanded]} \
+ property which can be used to\n\
  monitor its expansion state. You should watch this property with\n\
  a signal connection as follows:\n\n\
  {[\n\
@@ -234,7 +242,9 @@ class expander : Raw.Expander.t -> expander_t
  i.e. the expand/collapse arrow; then the label widget if any. The arrow of an\n\
  expander that is showing its child gets the [:checked] pseudoclass set on it.\n\n\
  {b Accessibility}\n\n\
- [GtkExpander] uses the [Gtk.AccessibleRole.button] role."]
+ [GtkExpander] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

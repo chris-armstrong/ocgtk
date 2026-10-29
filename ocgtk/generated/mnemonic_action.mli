@@ -14,7 +14,9 @@
 
     Activates a widget with a mnemonic.
 
-    This means that [Gtk.Widget.mnemonic_activate] is called. *)
+    This means that
+    {{!Ocgtk.Widget.class-type-widget_t.method-mnemonic_activate}[Gtk.Widget.mnemonic_activate]}
+    is called. *)
 class type mnemonic_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
@@ -30,7 +32,9 @@ class mnemonic_action : Raw.Mnemonic_action.t -> mnemonic_action_t
 
     Activates a widget with a mnemonic.
 
-    This means that [Gtk.Widget.mnemonic_activate] is called. *)
+    This means that
+    {{!Ocgtk.Widget.class-type-widget_t.method-mnemonic_activate}[Gtk.Widget.mnemonic_activate]}
+    is called. *)
 
 (** {1:constructors Constructors} *)
 

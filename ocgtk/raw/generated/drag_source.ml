@@ -10,7 +10,7 @@
  action, and the icon to\n\
  use during the drag operation. After setting it up, the drag\n\
  source must be added to a widget as an event controller, using\n\
- [Gtk.Widget.add_controller].\n\n\
+ {{!Ocgtk.Raw.Widget.val-add_controller}[Gtk.Widget.add_controller]}.\n\n\
  {[\n\
  static void\n\
  my_widget_init (MyWidget *self)\n\
@@ -27,7 +27,8 @@
  Setting up the content provider and icon ahead of time only makes\n\
  sense when the data does not change. More commonly, you will want\n\
  to set them up just in time. To do so, [GtkDragSource] has\n\
- [Gtk.DragSource::prepare] and [Gtk.DragSource::drag-begin]\n\
+ {{!Ocgtk.Raw.Drag_source.val-on_prepare}[Gtk.DragSource::prepare]} and \
+ {{!Ocgtk.Raw.Drag_source.val-on_drag_begin}[Gtk.DragSource::drag-begin]}\n\
  signals.\n\n\
  The ::prepare signal is emitted before a drag is started, and\n\
  can be used to set the content provider and actions that the\n\
@@ -69,7 +70,8 @@
  but it is not normally necessary to connect to any signals,\n\
  except for one case: when the supported actions include\n\
  [GDK_ACTION_MOVE], you need to listen for the\n\
- [Gtk.DragSource::drag-end] signal and delete the\n\
+ {{!Ocgtk.Raw.Drag_source.val-on_drag_end}[Gtk.DragSource::drag-end]} signal \
+ and delete the\n\
  data after it has been transferred.\n\n\
  The class built on this module is in {!Ocgtk.Drag_source}."]
 
@@ -94,7 +96,9 @@ external set_icon : t -> Ocgdk_raw.Paintable.t option -> int -> int -> unit
     If [paintable] is [None], a default icon is used.
 
     This function can be called before a drag is started, or in a
-    [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler. *)
+    {{!Ocgtk.Raw.Drag_source.val-on_prepare}[Gtk.DragSource::prepare]} or
+    {{!Ocgtk.Raw.Drag_source.val-on_drag_begin}[Gtk.DragSource::drag-begin]}
+    signal handler. *)
 
 external set_content : t -> Ocgdk_raw.Content_provider.t option -> unit
   = "ml_gtk_drag_source_set_content"
@@ -104,10 +108,12 @@ external set_content : t -> Ocgdk_raw.Content_provider.t option -> unit
     obtained from the content provider.
 
     This function can be called before a drag is started, or in a handler for
-    the [Gtk.DragSource::prepare] signal.
+    the {{!Ocgtk.Raw.Drag_source.val-on_prepare}[Gtk.DragSource::prepare]}
+    signal.
 
     You may consider setting the content provider back to [None] in a
-    [Gtk.DragSource::drag-end] signal handler. *)
+    {{!Ocgtk.Raw.Drag_source.val-on_drag_end}[Gtk.DragSource::drag-end]} signal
+    handler. *)
 
 external set_actions : t -> Ocgdk_enums.dragaction -> unit
   = "ml_gtk_drag_source_set_actions"
@@ -115,10 +121,12 @@ external set_actions : t -> Ocgdk_enums.dragaction -> unit
 
     During a DND operation, the actions are offered to potential drop targets.
     If [actions] include [GDK_ACTION_MOVE], you need to listen to the
-    [Gtk.DragSource::drag-end] signal and handle [delete_data] being [true].
+    {{!Ocgtk.Raw.Drag_source.val-on_drag_end}[Gtk.DragSource::drag-end]} signal
+    and handle [delete_data] being [true].
 
     This function can be called before a drag is started, or in a handler for
-    the [Gtk.DragSource::prepare] signal. *)
+    the {{!Ocgtk.Raw.Drag_source.val-on_prepare}[Gtk.DragSource::prepare]}
+    signal. *)
 
 external get_drag : t -> Ocgdk_raw.Drag.t option = "ml_gtk_drag_source_get_drag"
 (** Returns the underlying [GdkDrag] object for an ongoing drag. *)

@@ -143,10 +143,15 @@ end
      Arranges its child widgets in rows and columns.\n\n\
      An example GtkGrid\n\n\
      It supports arbitrary positions and horizontal/vertical spans.\n\n\
-     Children are added using [Gtk.Grid.attach]. They can span multiple\n\
+     Children are added using \
+     {{!Ocgtk.Grid.class-type-grid_t.method-attach}[Gtk.Grid.attach]}. They \
+     can span multiple\n\
      rows or columns. It is also possible to add a child next to an existing\n\
-     child, using [Gtk.Grid.attach_next_to]. To remove a child from the\n\
-     grid, use [Gtk.Grid.remove].\n\n\
+     child, using \
+     {{!Ocgtk.Grid.class-type-grid_t.method-attach_next_to}[Gtk.Grid.attach_next_to]}. \
+     To remove a child from the\n\
+     grid, use \
+     {{!Ocgtk.Grid.class-type-grid_t.method-remove}[Gtk.Grid.remove]}.\n\n\
      The behaviour of [GtkGrid] when several children occupy the same grid\n\
      cell is undefined.\n\n\
      {b GtkGrid as GtkBuildable}\n\n\
@@ -210,8 +215,11 @@ end
      {b CSS nodes}\n\n\
      [GtkGrid] uses a single CSS node with name [grid].\n\n\
      {b Accessibility}\n\n\
-     Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
-     Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] \
+     Until GTK 4.10, [GtkGrid] used the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+     role.\n\n\
+     Starting from GTK 4.12, [GtkGrid] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]} \
      role."]
 
 class grid : Raw.Grid.t -> grid_t
@@ -222,10 +230,14 @@ class grid : Raw.Grid.t -> grid_t
  Arranges its child widgets in rows and columns.\n\n\
  An example GtkGrid\n\n\
  It supports arbitrary positions and horizontal/vertical spans.\n\n\
- Children are added using [Gtk.Grid.attach]. They can span multiple\n\
+ Children are added using \
+ {{!Ocgtk.Grid.class-type-grid_t.method-attach}[Gtk.Grid.attach]}. They can \
+ span multiple\n\
  rows or columns. It is also possible to add a child next to an existing\n\
- child, using [Gtk.Grid.attach_next_to]. To remove a child from the\n\
- grid, use [Gtk.Grid.remove].\n\n\
+ child, using \
+ {{!Ocgtk.Grid.class-type-grid_t.method-attach_next_to}[Gtk.Grid.attach_next_to]}. \
+ To remove a child from the\n\
+ grid, use {{!Ocgtk.Grid.class-type-grid_t.method-remove}[Gtk.Grid.remove]}.\n\n\
  The behaviour of [GtkGrid] when several children occupy the same grid\n\
  cell is undefined.\n\n\
  {b GtkGrid as GtkBuildable}\n\n\
@@ -288,8 +300,12 @@ class grid : Raw.Grid.t -> grid_t
  {b CSS nodes}\n\n\
  [GtkGrid] uses a single CSS node with name [grid].\n\n\
  {b Accessibility}\n\n\
- Until GTK 4.10, [GtkGrid] used the [Gtk.AccessibleRole.group] role.\n\n\
- Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic] role."]
+ Until GTK 4.10, [GtkGrid] used the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
+ Starting from GTK 4.12, [GtkGrid] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

@@ -22,13 +22,17 @@
     a major application mode.
 
     If your application needs multiple sections, you should give each section a
-    unique [Gtk.ShortcutsSection:section-name] and a
-    [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the
+    unique
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-section_name}
+     [Gtk.ShortcutsSection:section-name]} and a
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-title}[Gtk.ShortcutsSection:title]}
+    that can be shown in the section selector of the
     {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
-    The [Gtk.ShortcutsSection:max-height] property can be used to influence how
-    the groups in the section are distributed over pages and columns.
+    The
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-max_height}[Gtk.ShortcutsSection:max-height]}
+    property can be used to influence how the groups in the section are
+    distributed over pages and columns.
 
     This widget is only meant to be used with
     {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
@@ -42,7 +46,7 @@
     objects.
 
     If you need to add a group programmatically, use
-    [Gtk.ShortcutsSection.add_group].
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-add_group}[Gtk.ShortcutsSection.add_group]}.
 
     {b Shortcuts and Gestures}
 
@@ -50,7 +54,8 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page] *)
+    - {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-on_change_current_page}
+       [Gtk.ShortcutsSection::change-current-page]} *)
 class type shortcuts_section_t = object
   inherit Box.box_t
 
@@ -151,13 +156,17 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
     a major application mode.
 
     If your application needs multiple sections, you should give each section a
-    unique [Gtk.ShortcutsSection:section-name] and a
-    [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the
+    unique
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-section_name}
+     [Gtk.ShortcutsSection:section-name]} and a
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-title}[Gtk.ShortcutsSection:title]}
+    that can be shown in the section selector of the
     {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
-    The [Gtk.ShortcutsSection:max-height] property can be used to influence how
-    the groups in the section are distributed over pages and columns.
+    The
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-max_height}[Gtk.ShortcutsSection:max-height]}
+    property can be used to influence how the groups in the section are
+    distributed over pages and columns.
 
     This widget is only meant to be used with
     {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
@@ -171,7 +180,7 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
     objects.
 
     If you need to add a group programmatically, use
-    [Gtk.ShortcutsSection.add_group].
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-add_group}[Gtk.ShortcutsSection.add_group]}.
 
     {b Shortcuts and Gestures}
 
@@ -179,7 +188,8 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page] *)
+    - {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t.method-on_change_current_page}
+       [Gtk.ShortcutsSection::change-current-page]} *)
 
 (** {1:constructors Constructors} *)
 

@@ -5,15 +5,18 @@
 "Filters files by name or mime type.\n\n\
  [GtkFileFilter] can be used to restrict the files being shown in a\n\
  file chooser. Files can be filtered based on their name (with\n\
- [Gtk.FileFilter.add_pattern] or [Gtk.FileFilter.add_suffix])\n\
- or on their mime type (with [Gtk.FileFilter.add_mime_type]).\n\n\
+ {{!Ocgtk.Raw.File_filter.val-add_pattern}[Gtk.FileFilter.add_pattern]} or \
+ {{!Ocgtk.Raw.File_filter.val-add_suffix}[Gtk.FileFilter.add_suffix]})\n\
+ or on their mime type (with \
+ {{!Ocgtk.Raw.File_filter.val-add_mime_type}[Gtk.FileFilter.add_mime_type]}).\n\n\
  Filtering by mime types handles aliasing and subclassing of mime\n\
  types; e.g. a filter for text/plain also matches a file with mime\n\
  type application/rtf, since application/rtf is a subclass of\n\
  text/plain. Note that [GtkFileFilter] allows wildcards for the\n\
  subtype of a mime type, so you can e.g. filter for image/*.\n\n\
  Normally, file filters are used by adding them to a file chooser\n\
- (see [Gtk.FileDialog.set_filters]), but it is also possible to\n\
+ (see {{!Ocgtk.Raw.File_dialog.val-set_filters}[Gtk.FileDialog.set_filters]}), \
+ but it is also possible to\n\
  manually use a file filter on any \
  {{!Ocgtk.Raw.Filter_list_model}[Gtk.FilterListModel]} containing\n\
  [GFileInfo] objects.\n\n\
@@ -23,9 +26,9 @@
  [<suffixes>] elements and listing the rules within. Specifying a\n\
  [<mime-type>] or [<pattern>] or [<suffix>] has the same effect as\n\
  as calling\n\
- [Gtk.FileFilter.add_mime_type] or\n\
- [Gtk.FileFilter.add_pattern] or\n\
- [Gtk.FileFilter.add_suffix].\n\n\
+ {{!Ocgtk.Raw.File_filter.val-add_mime_type}[Gtk.FileFilter.add_mime_type]} or\n\
+ {{!Ocgtk.Raw.File_filter.val-add_pattern}[Gtk.FileFilter.add_pattern]} or\n\
+ {{!Ocgtk.Raw.File_filter.val-add_suffix}[Gtk.FileFilter.add_suffix]}.\n\n\
  An example of a UI definition fragment specifying [GtkFileFilter]\n\
  rules:\n\n\
  {[\n\
@@ -54,10 +57,10 @@ external new_ : unit -> t = "ml_gtk_file_filter_new"
   "Creates a new [GtkFileFilter] with no rules added to it.\n\n\
    Such a filter doesn’t accept any files, so is not\n\
    particularly useful until you add rules with\n\
-   [Gtk.FileFilter.add_mime_type],\n\
-   [Gtk.FileFilter.add_pattern],\n\
-   [Gtk.FileFilter.add_suffix] or\n\
-   [Gtk.FileFilter.add_pixbuf_formats].\n\n\
+   {{!Ocgtk.Raw.File_filter.val-add_mime_type}[Gtk.FileFilter.add_mime_type]},\n\
+   {{!Ocgtk.Raw.File_filter.val-add_pattern}[Gtk.FileFilter.add_pattern]},\n\
+   {{!Ocgtk.Raw.File_filter.val-add_suffix}[Gtk.FileFilter.add_suffix]} or\n\
+   {{!Ocgtk.Raw.File_filter.val-add_pixbuf_formats}[Gtk.FileFilter.add_pixbuf_formats]}.\n\n\
    To create a filter that accepts any file, use:\n\n\
    {[\n\
    GtkFileFilter *filter = gtk_file_filter_new ();\n\
@@ -68,8 +71,8 @@ external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_file_filter_new_from_gvariant"
 (** Deserialize a file filter from a [GVariant].
 
-    The variant must be in the format produced by [Gtk.FileFilter.to_gvariant].
-*)
+    The variant must be in the format produced by
+    {{!Ocgtk.Raw.File_filter.val-to_gvariant}[Gtk.FileFilter.to_gvariant]}. *)
 
 (* Methods *)
 
@@ -85,7 +88,7 @@ external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 external get_name : t -> string option = "ml_gtk_file_filter_get_name"
 (** Gets the human-readable name for the filter.
 
-    See [Gtk.FileFilter.set_name]. *)
+    See {{!Ocgtk.Raw.File_filter.val-set_name}[Gtk.FileFilter.set_name]}. *)
 
 external get_attributes : t -> string array
   = "ml_gtk_file_filter_get_attributes"
@@ -111,8 +114,9 @@ external add_pixbuf_formats : t -> unit
   = "ml_gtk_file_filter_add_pixbuf_formats"
 (** Adds a rule allowing image files in the formats supported by [GdkPixbuf].
 
-    This is equivalent to calling [Gtk.FileFilter.add_mime_type] for all the
-    supported mime types. *)
+    This is equivalent to calling
+    {{!Ocgtk.Raw.File_filter.val-add_mime_type}[Gtk.FileFilter.add_mime_type]}
+    for all the supported mime types. *)
 
 external add_pattern : t -> string -> unit = "ml_gtk_file_filter_add_pattern"
 (** Adds a rule allowing a shell style glob pattern.

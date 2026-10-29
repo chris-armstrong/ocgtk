@@ -6,7 +6,7 @@
     The message is shown with the [Gtk.AlertDialog.choose] function.
 
     If you don't need to wait for a button to be clicked, you can use
-    [Gtk.AlertDialog.show].
+    {{!Ocgtk.Raw.Alert_dialog.val-show}[Gtk.AlertDialog.show]}.
 
     The class built on this module is in {!Ocgtk.Alert_dialog}. *)
 
@@ -42,15 +42,17 @@ external set_default_button : t -> int -> unit
   = "ml_gtk_alert_dialog_set_default_button"
 (** Sets the index of the default button.
 
-    See [Gtk.AlertDialog:default-button] for details of how this value is used.
-*)
+    See
+    {{!Ocgtk.Raw.Alert_dialog.val-get_default_button}[Gtk.AlertDialog:default-button]}
+    for details of how this value is used. *)
 
 external set_cancel_button : t -> int -> unit
   = "ml_gtk_alert_dialog_set_cancel_button"
 (** Sets the index of the cancel button.
 
-    See [Gtk.AlertDialog:cancel-button] for details of how this value is used.
-*)
+    See
+    {{!Ocgtk.Raw.Alert_dialog.val-get_cancel_button}[Gtk.AlertDialog:cancel-button]}
+    for details of how this value is used. *)
 
 external set_buttons : t -> string array -> unit
   = "ml_gtk_alert_dialog_set_buttons"

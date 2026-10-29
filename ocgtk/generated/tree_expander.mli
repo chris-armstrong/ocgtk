@@ -76,23 +76,30 @@ end
      \"listitem.toggle-expand\" actions are provided to allow adding custom\n\
      UI for managing expanded state.\n\n\
      It is important to mention that you want to set the\n\
-     [Gtk.ListItem:focusable] property to FALSE when using this\n\
+     {{!Ocgtk.List_item.class-type-list_item_t.method-get_focusable}[Gtk.ListItem:focusable]} \
+     property to FALSE when using this\n\
      widget, as you want the keyboard focus to be in the treexpander, and not\n\
      inside the list to make use of the keybindings.\n\n\
      The [GtkTreeListModel] must be set to not be passthrough. Then it\n\
      will provide \
      {{!Ocgtk.Tree_list_row.class-type-tree_list_row_t}[Gtk.TreeListRow]} \
      items which can be set via\n\
-     [Gtk.TreeExpander.set_list_row] on the expander.\n\
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-set_list_row}[Gtk.TreeExpander.set_list_row]} \
+     on the expander.\n\
      The expander will then watch that row item automatically.\n\
-     [Gtk.TreeExpander.set_child] sets the widget that displays\n\
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-set_child}[Gtk.TreeExpander.set_child]} \
+     sets the widget that displays\n\
      the actual row contents.\n\n\
      [GtkTreeExpander] can be modified with properties such as\n\
-     [Gtk.TreeExpander:indent-for-icon],\n\
-     [Gtk.TreeExpander:indent-for-depth], and\n\
-     [Gtk.TreeExpander:hide-expander] to achieve a different appearance.\n\
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_indent_for_icon}[Gtk.TreeExpander:indent-for-icon]},\n\
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_indent_for_depth}[Gtk.TreeExpander:indent-for-depth]}, \
+     and\n\
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_hide_expander}[Gtk.TreeExpander:hide-expander]} \
+     to achieve a different appearance.\n\
      This can even be done to influence individual rows, for example by binding\n\
-     the [Gtk.TreeExpander:hide-expander] property to the item count of\n\
+     the \
+     {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_hide_expander}[Gtk.TreeExpander:hide-expander]} \
+     property to the item count of\n\
      the model of the treelistrow, to hide the expander for rows without \
      children,\n\
      even if the row is expandable.\n\n\
@@ -124,9 +131,11 @@ end
      displayed instead.\n\n\
      For every level of depth, another \"indent\" node is prepended.\n\n\
      {b Accessibility}\n\n\
-     Until GTK 4.10, [GtkTreeExpander] used the [Gtk.AccessibleRole.group] \
+     Until GTK 4.10, [GtkTreeExpander] used the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
      role.\n\n\
-     Since GTK 4.12, [GtkTreeExpander] uses the [Gtk.AccessibleRole.button] \
+     Since GTK 4.12, [GtkTreeExpander] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]} \
      role.\n\
      Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state."]
 
@@ -145,23 +154,30 @@ class tree_expander : Raw.Tree_expander.t -> tree_expander_t
  \"listitem.toggle-expand\" actions are provided to allow adding custom\n\
  UI for managing expanded state.\n\n\
  It is important to mention that you want to set the\n\
- [Gtk.ListItem:focusable] property to FALSE when using this\n\
+ {{!Ocgtk.List_item.class-type-list_item_t.method-get_focusable}[Gtk.ListItem:focusable]} \
+ property to FALSE when using this\n\
  widget, as you want the keyboard focus to be in the treexpander, and not\n\
  inside the list to make use of the keybindings.\n\n\
  The [GtkTreeListModel] must be set to not be passthrough. Then it\n\
  will provide \
  {{!Ocgtk.Tree_list_row.class-type-tree_list_row_t}[Gtk.TreeListRow]} items \
  which can be set via\n\
- [Gtk.TreeExpander.set_list_row] on the expander.\n\
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-set_list_row}[Gtk.TreeExpander.set_list_row]} \
+ on the expander.\n\
  The expander will then watch that row item automatically.\n\
- [Gtk.TreeExpander.set_child] sets the widget that displays\n\
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-set_child}[Gtk.TreeExpander.set_child]} \
+ sets the widget that displays\n\
  the actual row contents.\n\n\
  [GtkTreeExpander] can be modified with properties such as\n\
- [Gtk.TreeExpander:indent-for-icon],\n\
- [Gtk.TreeExpander:indent-for-depth], and\n\
- [Gtk.TreeExpander:hide-expander] to achieve a different appearance.\n\
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_indent_for_icon}[Gtk.TreeExpander:indent-for-icon]},\n\
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_indent_for_depth}[Gtk.TreeExpander:indent-for-depth]}, \
+ and\n\
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_hide_expander}[Gtk.TreeExpander:hide-expander]} \
+ to achieve a different appearance.\n\
  This can even be done to influence individual rows, for example by binding\n\
- the [Gtk.TreeExpander:hide-expander] property to the item count of\n\
+ the \
+ {{!Ocgtk.Tree_expander.class-type-tree_expander_t.method-get_hide_expander}[Gtk.TreeExpander:hide-expander]} \
+ property to the item count of\n\
  the model of the treelistrow, to hide the expander for rows without children,\n\
  even if the row is expandable.\n\n\
  {b Shortcuts and Gestures}\n\n\
@@ -192,8 +208,12 @@ class tree_expander : Raw.Tree_expander.t -> tree_expander_t
  displayed instead.\n\n\
  For every level of depth, another \"indent\" node is prepended.\n\n\
  {b Accessibility}\n\n\
- Until GTK 4.10, [GtkTreeExpander] used the [Gtk.AccessibleRole.group] role.\n\n\
- Since GTK 4.12, [GtkTreeExpander] uses the [Gtk.AccessibleRole.button] role.\n\
+ Until GTK 4.10, [GtkTreeExpander] used the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
+ Since GTK 4.12, [GtkTreeExpander] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]} \
+ role.\n\
  Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state."]
 
 (** {1:constructors Constructors} *)

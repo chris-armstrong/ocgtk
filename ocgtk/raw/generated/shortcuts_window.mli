@@ -19,7 +19,8 @@
     {{!Ocgtk.Raw.Shortcuts_shortcut}[Gtk.ShortcutsShortcut]} instances.
 
     If you need to add a section programmatically, use
-    [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the
+    {{!Ocgtk.Raw.Shortcuts_window.val-add_section}[Gtk.ShortcutsWindow.add_section]}
+    instead of {{!Ocgtk.Raw.Window.val-set_child}[Gtk.Window.set_child]}, as the
     shortcuts window manages its children directly.
 
     {b A simple example:}
@@ -57,8 +58,8 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsWindow::close]
-    - [Gtk.ShortcutsWindow::search]
+    - {{!Ocgtk.Raw.Shortcuts_window.val-on_close}[Gtk.ShortcutsWindow::close]}
+    - {{!Ocgtk.Raw.Shortcuts_window.val-on_search}[Gtk.ShortcutsWindow::search]}
 
     {b CSS nodes}
 
@@ -82,8 +83,8 @@ external add_section : t -> Shortcuts_section.t -> unit
     This is the programmatic equivalent to using
     {{!Ocgtk.Raw.Builder}[Gtk.Builder]} and a [<child>] tag to add the child.
 
-    Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
-    manages its children internally. *)
+    Using {{!Ocgtk.Raw.Window.val-set_child}[Gtk.Window.set_child]} is not
+    appropriate as the shortcuts window manages its children internally. *)
 
 (* Properties *)
 
@@ -104,9 +105,10 @@ external set_section_name : t -> string -> unit
 external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
 (** The view name by which to filter the contents.
 
-    This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
-    the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]} objects that are
-    inside this shortcuts window.
+    This should correspond to the
+    {{!Ocgtk.Raw.Shortcuts_group.val-get_view}[Gtk.ShortcutsGroup:view]}
+    property of some of the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]}
+    objects that are inside this shortcuts window.
 
     Set this to [None] to show all groups. *)
 
@@ -114,9 +116,10 @@ external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_view_name"
 (** The view name by which to filter the contents.
 
-    This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
-    the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]} objects that are
-    inside this shortcuts window.
+    This should correspond to the
+    {{!Ocgtk.Raw.Shortcuts_group.val-get_view}[Gtk.ShortcutsGroup:view]}
+    property of some of the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]}
+    objects that are inside this shortcuts window.
 
     Set this to [None] to show all groups. *)
 

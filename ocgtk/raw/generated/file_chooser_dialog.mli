@@ -95,13 +95,15 @@
  - To select a file for opening, use [GTK_FILE_CHOOSER_ACTION_OPEN].\n\n\
  - To save a file for the first time, use [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
  and suggest a name such as “Untitled” with\n\
- [Gtk.FileChooser.set_current_name].\n\n\
+ {{!Ocgtk.Raw.File_chooser.val-set_current_name}[Gtk.FileChooser.set_current_name]}.\n\n\
  - To save a file under a different name, use [GTK_FILE_CHOOSER_ACTION_SAVE],\n\
- and set the existing file with [Gtk.FileChooser.set_file].\n\n\
+ and set the existing file with \
+ {{!Ocgtk.Raw.File_chooser.val-set_file}[Gtk.FileChooser.set_file]}.\n\n\
  - To choose a folder instead of a file, use \
  [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].\n\n\
  In general, you should only cause the file chooser to show a specific\n\
- folder when it is appropriate to use [Gtk.FileChooser.set_file],\n\
+ folder when it is appropriate to use \
+ {{!Ocgtk.Raw.File_chooser.val-set_file}[Gtk.FileChooser.set_file]},\n\
  i.e. when you are doing a “Save As” command and you already have a file\n\
  saved somewhere.\n\n\
  {b Response Codes}\n\n\

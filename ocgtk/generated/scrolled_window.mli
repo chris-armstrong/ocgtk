@@ -27,21 +27,29 @@
     the {{!Ocgtk.Scrollable.class-type-scrollable_t}[Gtk.Scrollable]} interface,
     are added directly. For other types of widget, the class
     {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]} acts as an adaptor,
-    giving scrollability to other widgets. [Gtk.ScrolledWindow.set_child]
+    giving scrollability to other widgets.
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-set_child}[Gtk.ScrolledWindow.set_child]}
     intelligently accounts for whether or not the added child is a
     [GtkScrollable]. If it isn’t, then it wraps the child in a [GtkViewport].
     Therefore, you can just add any child widget and not worry about the
     details.
 
-    If [Gtk.ScrolledWindow.set_child] has added a [GtkViewport] for you, it will
-    be automatically removed when you unset the child. Unless
-    [Gtk.ScrolledWindow:hscrollbar-policy] and
-    [Gtk.ScrolledWindow:vscrollbar-policy] are [GTK_POLICY_NEVER] or
+    If
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-set_child}[Gtk.ScrolledWindow.set_child]}
+    has added a [GtkViewport] for you, it will be automatically removed when you
+    unset the child. Unless
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-hscrollbar_policy}
+     [Gtk.ScrolledWindow:hscrollbar-policy]} and
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-vscrollbar_policy}
+     [Gtk.ScrolledWindow:vscrollbar-policy]} are [GTK_POLICY_NEVER] or
     [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds internal [GtkScrollbar]
     widgets around its child. The scroll position of the child, and if
     applicable the scrollbars, is controlled by the
-    [Gtk.ScrolledWindow:hadjustment] and [Gtk.ScrolledWindow:vadjustment] that
-    are associated with the [GtkScrolledWindow]. See the docs on
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_hadjustment}
+     [Gtk.ScrolledWindow:hadjustment]} and
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_vadjustment}
+     [Gtk.ScrolledWindow:vadjustment]} that are associated with the
+    [GtkScrolledWindow]. See the docs on
     {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} for the details,
     but note that the “step_increment” and “page_increment” fields are only
     effective if the policy causes scrollbars to be present.
@@ -55,27 +63,35 @@
     [GtkScrolledWindow] has built-in support for touch devices. When a
     touchscreen is used, swiping will move the scrolled window, and will expose
     'kinetic' behavior. This can be turned off with the
-    [Gtk.ScrolledWindow:kinetic-scrolling] property if it is undesired.
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_kinetic_scrolling}
+     [Gtk.ScrolledWindow:kinetic-scrolling]} property if it is undesired.
 
     [GtkScrolledWindow] also displays visual 'overshoot' indication when the
     content is pulled beyond the end, and this situation can be captured with
-    the [Gtk.ScrolledWindow::edge-overshot] signal.
+    the
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-on_edge_overshot}
+     [Gtk.ScrolledWindow::edge-overshot]} signal.
 
     If no mouse device is present, the scrollbars will overlaid as narrow,
     auto-hiding indicators over the content. If traditional scrollbars are
     desired although no mouse is present, this behaviour can be turned off with
-    the [Gtk.ScrolledWindow:overlay-scrolling] property.
+    the
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_overlay_scrolling}
+     [Gtk.ScrolledWindow:overlay-scrolling]} property.
 
     {b Shortcuts and Gestures}
 
     The following signals have default keybindings:
 
-    - [Gtk.ScrolledWindow::scroll-child]
+    - {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-on_scroll_child}
+       [Gtk.ScrolledWindow::scroll-child]}
 
     {b CSS nodes}
 
     [GtkScrolledWindow] has a main CSS node with name scrolledwindow. It gets a
-    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [true].
+    .frame style class added when
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_has_frame}[Gtk.ScrolledWindow:has-frame]}
+    is [true].
 
     It uses subnodes with names overshoot and undershoot to draw the overflow
     and underflow indications. These nodes get the .left, .right, .top or
@@ -90,11 +106,13 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkScrolledWindow] used the [Gtk.AccessibleRole.group]
+    Until GTK 4.10, [GtkScrolledWindow] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
     role.
 
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role. *)
 class type scrolled_window_t = object
   inherit Widget.widget_t
 
@@ -353,21 +371,29 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     the {{!Ocgtk.Scrollable.class-type-scrollable_t}[Gtk.Scrollable]} interface,
     are added directly. For other types of widget, the class
     {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]} acts as an adaptor,
-    giving scrollability to other widgets. [Gtk.ScrolledWindow.set_child]
+    giving scrollability to other widgets.
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-set_child}[Gtk.ScrolledWindow.set_child]}
     intelligently accounts for whether or not the added child is a
     [GtkScrollable]. If it isn’t, then it wraps the child in a [GtkViewport].
     Therefore, you can just add any child widget and not worry about the
     details.
 
-    If [Gtk.ScrolledWindow.set_child] has added a [GtkViewport] for you, it will
-    be automatically removed when you unset the child. Unless
-    [Gtk.ScrolledWindow:hscrollbar-policy] and
-    [Gtk.ScrolledWindow:vscrollbar-policy] are [GTK_POLICY_NEVER] or
+    If
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-set_child}[Gtk.ScrolledWindow.set_child]}
+    has added a [GtkViewport] for you, it will be automatically removed when you
+    unset the child. Unless
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-hscrollbar_policy}
+     [Gtk.ScrolledWindow:hscrollbar-policy]} and
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-vscrollbar_policy}
+     [Gtk.ScrolledWindow:vscrollbar-policy]} are [GTK_POLICY_NEVER] or
     [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds internal [GtkScrollbar]
     widgets around its child. The scroll position of the child, and if
     applicable the scrollbars, is controlled by the
-    [Gtk.ScrolledWindow:hadjustment] and [Gtk.ScrolledWindow:vadjustment] that
-    are associated with the [GtkScrolledWindow]. See the docs on
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_hadjustment}
+     [Gtk.ScrolledWindow:hadjustment]} and
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_vadjustment}
+     [Gtk.ScrolledWindow:vadjustment]} that are associated with the
+    [GtkScrolledWindow]. See the docs on
     {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} for the details,
     but note that the “step_increment” and “page_increment” fields are only
     effective if the policy causes scrollbars to be present.
@@ -381,27 +407,35 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     [GtkScrolledWindow] has built-in support for touch devices. When a
     touchscreen is used, swiping will move the scrolled window, and will expose
     'kinetic' behavior. This can be turned off with the
-    [Gtk.ScrolledWindow:kinetic-scrolling] property if it is undesired.
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_kinetic_scrolling}
+     [Gtk.ScrolledWindow:kinetic-scrolling]} property if it is undesired.
 
     [GtkScrolledWindow] also displays visual 'overshoot' indication when the
     content is pulled beyond the end, and this situation can be captured with
-    the [Gtk.ScrolledWindow::edge-overshot] signal.
+    the
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-on_edge_overshot}
+     [Gtk.ScrolledWindow::edge-overshot]} signal.
 
     If no mouse device is present, the scrollbars will overlaid as narrow,
     auto-hiding indicators over the content. If traditional scrollbars are
     desired although no mouse is present, this behaviour can be turned off with
-    the [Gtk.ScrolledWindow:overlay-scrolling] property.
+    the
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_overlay_scrolling}
+     [Gtk.ScrolledWindow:overlay-scrolling]} property.
 
     {b Shortcuts and Gestures}
 
     The following signals have default keybindings:
 
-    - [Gtk.ScrolledWindow::scroll-child]
+    - {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-on_scroll_child}
+       [Gtk.ScrolledWindow::scroll-child]}
 
     {b CSS nodes}
 
     [GtkScrolledWindow] has a main CSS node with name scrolledwindow. It gets a
-    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [true].
+    .frame style class added when
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t.method-get_has_frame}[Gtk.ScrolledWindow:has-frame]}
+    is [true].
 
     It uses subnodes with names overshoot and undershoot to draw the overflow
     and underflow indications. These nodes get the .left, .right, .top or
@@ -416,11 +450,13 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkScrolledWindow] used the [Gtk.AccessibleRole.group]
+    Until GTK 4.10, [GtkScrolledWindow] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
     role.
 
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
-    [Gtk.AccessibleRole.generic] role. *)
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

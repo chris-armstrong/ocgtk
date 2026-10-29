@@ -10,8 +10,9 @@ module rec Column_view : sig
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
   (** Creates a new [GtkColumnView].
 
-      You most likely want to call [Gtk.ColumnView.append_column] to add columns
-      next. *)
+      You most likely want to call
+      {{!Ocgtk.Raw.Column_view.val-append_column}[Gtk.ColumnView.append_column]}
+      to add columns next. *)
 
   (* Methods *)
 
@@ -25,9 +26,10 @@ module rec Column_view : sig
       headers.
 
       This call only has an effect if the sorter returned by
-      [Gtk.ColumnView.get_sorter] is set on a sort model, and
-      [Gtk.ColumnViewColumn.set_sorter] has been called on [column] to associate
-      a sorter with the column.
+      {{!Ocgtk.Raw.Column_view.val-get_sorter}[Gtk.ColumnView.get_sorter]} is
+      set on a sort model, and
+      {{!Ocgtk.Raw.Column_view_column.val-set_sorter}[Gtk.ColumnViewColumn.set_sorter]}
+      has been called on [column] to associate a sorter with the column.
 
       If [column] is unset, the view will be unsorted. *)
 
@@ -123,7 +125,9 @@ module rec Column_view : sig
       sorter needs to be set on the sort model underneath the model that is
       displayed by the view.
 
-      See [Gtk.ColumnViewColumn.set_sorter] for setting up per-column sorting.
+      See
+      {{!Ocgtk.Raw.Column_view_column.val-set_sorter}[Gtk.ColumnViewColumn.set_sorter]}
+      for setting up per-column sorting.
 
       Here is an example:
 
@@ -151,7 +155,9 @@ module rec Column_view : sig
 
   external get_row_factory : t -> List_item_factory.t option
     = "ml_gtk_column_view_get_row_factory"
-  (** Gets the factory set via [Gtk.ColumnView.set_row_factory]. *)
+  (** Gets the factory set via
+      {{!Ocgtk.Raw.Column_view.val-set_row_factory}[Gtk.ColumnView.set_row_factory]}.
+  *)
 
   external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
   (** Returns whether columns are reorderable. *)
@@ -191,7 +197,8 @@ module rec Column_view : sig
       the GtkListBase|list.activate-item action.
 
       This allows for a convenient way to handle activation in a columnview. See
-      [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
+      {{!Ocgtk.Raw.List_item.val-set_activatable}[Gtk.ListItem.set_activatable]}
+      for details on how to use this signal. *)
 end = struct
   type t =
     [ `column_view | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -201,8 +208,9 @@ end = struct
   external new_ : Selection_model.t option -> t = "ml_gtk_column_view_new"
   (** Creates a new [GtkColumnView].
 
-      You most likely want to call [Gtk.ColumnView.append_column] to add columns
-      next. *)
+      You most likely want to call
+      {{!Ocgtk.Raw.Column_view.val-append_column}[Gtk.ColumnView.append_column]}
+      to add columns next. *)
 
   (* Methods *)
 
@@ -216,9 +224,10 @@ end = struct
       headers.
 
       This call only has an effect if the sorter returned by
-      [Gtk.ColumnView.get_sorter] is set on a sort model, and
-      [Gtk.ColumnViewColumn.set_sorter] has been called on [column] to associate
-      a sorter with the column.
+      {{!Ocgtk.Raw.Column_view.val-get_sorter}[Gtk.ColumnView.get_sorter]} is
+      set on a sort model, and
+      {{!Ocgtk.Raw.Column_view_column.val-set_sorter}[Gtk.ColumnViewColumn.set_sorter]}
+      has been called on [column] to associate a sorter with the column.
 
       If [column] is unset, the view will be unsorted. *)
 
@@ -314,7 +323,9 @@ end = struct
       sorter needs to be set on the sort model underneath the model that is
       displayed by the view.
 
-      See [Gtk.ColumnViewColumn.set_sorter] for setting up per-column sorting.
+      See
+      {{!Ocgtk.Raw.Column_view_column.val-set_sorter}[Gtk.ColumnViewColumn.set_sorter]}
+      for setting up per-column sorting.
 
       Here is an example:
 
@@ -342,7 +353,9 @@ end = struct
 
   external get_row_factory : t -> List_item_factory.t option
     = "ml_gtk_column_view_get_row_factory"
-  (** Gets the factory set via [Gtk.ColumnView.set_row_factory]. *)
+  (** Gets the factory set via
+      {{!Ocgtk.Raw.Column_view.val-set_row_factory}[Gtk.ColumnView.set_row_factory]}.
+  *)
 
   external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
   (** Returns whether columns are reorderable. *)
@@ -396,7 +409,9 @@ and Column_view_column : sig
   [@@ocaml.doc
     "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
     \  mapping items to widgets.\n\n\
-    \  You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+    \  You most likely want to call \
+     {{!Ocgtk.Raw.Column_view.val-append_column}[Gtk.ColumnView.append_column]} \
+     next.\n\n\
     \  The function takes ownership of the argument, so you can write code \
      like:\n\n\
     \  {[\n\
@@ -425,10 +440,12 @@ and Column_view_column : sig
       clicking on its header.
 
       This sorter can be made active by clicking on the column header, or by
-      calling [Gtk.ColumnView.sort_by_column].
+      calling
+      {{!Ocgtk.Raw.Column_view.val-sort_by_column}[Gtk.ColumnView.sort_by_column]}.
 
-      See [Gtk.ColumnView.get_sorter] for the necessary steps for setting up
-      customizable sorting for {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
+      See {{!Ocgtk.Raw.Column_view.val-get_sorter}[Gtk.ColumnView.get_sorter]}
+      for the necessary steps for setting up customizable sorting for
+      {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
 
   external set_resizable : t -> bool -> unit
     = "ml_gtk_column_view_column_set_resizable"
@@ -474,7 +491,9 @@ and Column_view_column : sig
 
   external get_title : t -> string option
     = "ml_gtk_column_view_column_get_title"
-  (** Returns the title set with [Gtk.ColumnViewColumn.set_title]. *)
+  (** Returns the title set with
+      {{!Ocgtk.Raw.Column_view_column.val-set_title}[Gtk.ColumnViewColumn.set_title]}.
+  *)
 
   external get_sorter : t -> Sorter.t option
     = "ml_gtk_column_view_column_get_sorter"
@@ -484,7 +503,9 @@ and Column_view_column : sig
   (** Returns whether this column is resizable. *)
 
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
-  (** Returns the ID set with [Gtk.ColumnViewColumn.set_id]. *)
+  (** Returns the ID set with
+      {{!Ocgtk.Raw.Column_view_column.val-set_id}[Gtk.ColumnViewColumn.set_id]}.
+  *)
 
   external get_header_menu : t -> Ocgio_raw.Menu_model.t option
     = "ml_gtk_column_view_column_get_header_menu"
@@ -520,7 +541,9 @@ end = struct
   [@@ocaml.doc
     "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
     \  mapping items to widgets.\n\n\
-    \  You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+    \  You most likely want to call \
+     {{!Ocgtk.Raw.Column_view.val-append_column}[Gtk.ColumnView.append_column]} \
+     next.\n\n\
     \  The function takes ownership of the argument, so you can write code \
      like:\n\n\
     \  {[\n\
@@ -549,10 +572,12 @@ end = struct
       clicking on its header.
 
       This sorter can be made active by clicking on the column header, or by
-      calling [Gtk.ColumnView.sort_by_column].
+      calling
+      {{!Ocgtk.Raw.Column_view.val-sort_by_column}[Gtk.ColumnView.sort_by_column]}.
 
-      See [Gtk.ColumnView.get_sorter] for the necessary steps for setting up
-      customizable sorting for {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
+      See {{!Ocgtk.Raw.Column_view.val-get_sorter}[Gtk.ColumnView.get_sorter]}
+      for the necessary steps for setting up customizable sorting for
+      {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
 
   external set_resizable : t -> bool -> unit
     = "ml_gtk_column_view_column_set_resizable"
@@ -598,7 +623,9 @@ end = struct
 
   external get_title : t -> string option
     = "ml_gtk_column_view_column_get_title"
-  (** Returns the title set with [Gtk.ColumnViewColumn.set_title]. *)
+  (** Returns the title set with
+      {{!Ocgtk.Raw.Column_view_column.val-set_title}[Gtk.ColumnViewColumn.set_title]}.
+  *)
 
   external get_sorter : t -> Sorter.t option
     = "ml_gtk_column_view_column_get_sorter"
@@ -608,7 +635,9 @@ end = struct
   (** Returns whether this column is resizable. *)
 
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
-  (** Returns the ID set with [Gtk.ColumnViewColumn.set_id]. *)
+  (** Returns the ID set with
+      {{!Ocgtk.Raw.Column_view_column.val-set_id}[Gtk.ColumnViewColumn.set_id]}.
+  *)
 
   external get_header_menu : t -> Ocgio_raw.Menu_model.t option
     = "ml_gtk_column_view_column_get_header_menu"

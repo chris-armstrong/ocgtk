@@ -54,7 +54,8 @@ external is_required : t -> bool = "ml_gtk_constraint_is_required"
 
 external is_constant : t -> bool = "ml_gtk_constraint_is_constant"
 (** Checks whether the constraint describes a relation between an attribute on
-    the [Gtk.Constraint:target] and a constant value. *)
+    the {{!Ocgtk.Raw.Constraint.val-get_target}[Gtk.Constraint:target]} and a
+    constant value. *)
 
 external is_attached : t -> bool = "ml_gtk_constraint_is_attached"
 (** Checks whether the constraint is attached to a

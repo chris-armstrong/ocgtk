@@ -15,10 +15,14 @@
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
-    [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
-    [Gdk.GLTextureBuilder:width], and [Gdk.GLTextureBuilder:height] are
-    mandatory - and then call [Gdk.GLTextureBuilder.build] to create the new
-    texture.
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_context}
+     [Gdk.GLTextureBuilder:context]},
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_id}[Gdk.GLTextureBuilder:id]},
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_width}
+     [Gdk.GLTextureBuilder:width]}, and
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_height}
+     [Gdk.GLTextureBuilder:height]} are mandatory - and then call
+    [Gdk.GLTextureBuilder.build] to create the new texture.
 
     [GdkGLTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
@@ -149,10 +153,14 @@ class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
-    [Gdk.GLTextureBuilder:context], [Gdk.GLTextureBuilder:id],
-    [Gdk.GLTextureBuilder:width], and [Gdk.GLTextureBuilder:height] are
-    mandatory - and then call [Gdk.GLTextureBuilder.build] to create the new
-    texture.
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_context}
+     [Gdk.GLTextureBuilder:context]},
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_id}[Gdk.GLTextureBuilder:id]},
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_width}
+     [Gdk.GLTextureBuilder:width]}, and
+    {{!Ocgdk.Gl_texture_builder.class-type-gl_texture_builder_t.method-get_height}
+     [Gdk.GLTextureBuilder:height]} are mandatory - and then call
+    [Gdk.GLTextureBuilder.build] to create the new texture.
 
     [GdkGLTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.

@@ -33,20 +33,24 @@
  For example, when queried in the normal [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] \
  mode:\n\n\
  First, the default minimum and natural width for each widget\n\
- in the interface will be computed using [Gtk.Widget.measure] with an\n\
+ in the interface will be computed using \
+ {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
  orientation of [GTK_ORIENTATION_HORIZONTAL] and a for_size of -1.\n\
  Because the preferred widths for each widget depend on the preferred\n\
  widths of their children, this information propagates up the hierarchy,\n\
  and finally a minimum and natural width is determined for the entire\n\
  toplevel. Next, the toplevel will use the minimum width to query for the\n\
- minimum height contextual to that width using [Gtk.Widget.measure] with an\n\
+ minimum height contextual to that width using \
+ {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
  orientation of [GTK_ORIENTATION_VERTICAL] and a for_size of the just computed\n\
  width. This will also be a highly recursive operation. The minimum height\n\
  for the minimum width is normally used to set the minimum size constraint\n\
  on the toplevel.\n\n\
  After the toplevel window has initially requested its size in both\n\
  dimensions it can go on to allocate itself a reasonable size (or a size\n\
- previously specified with [Gtk.Window.set_default_size]). During the\n\
+ previously specified with \
+ {{!Ocgtk.Raw.Window.val-set_default_size}[Gtk.Window.set_default_size]}). \
+ During the\n\
  recursive allocation process it’s important to note that request cycles\n\
  will be recursively executed while widgets allocate their children.\n\
  Each widget, once allocated a size, will go on to first share the\n\
@@ -116,7 +120,8 @@
  may need to know its natural size. In these cases, the widget should\n\
  be careful to call its virtual methods directly, like in the code\n\
  example above.\n\n\
- It will not work to use the wrapper function [Gtk.Widget.measure]\n\
+ It will not work to use the wrapper function \
+ {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]}\n\
  inside your own [Gtk.Widget.size_allocate] implementation.\n\
  These return a request adjusted by {{!Ocgtk.Raw.Size_group}[Gtk.SizeGroup]}, \
  the widget's\n\
@@ -126,7 +131,8 @@
  twice. GTK therefore does not allow this and will warn if you try\n\
  to do it.\n\n\
  Of course if you are getting the size request for another widget, such\n\
- as a child widget, you must use [Gtk.Widget.measure]; otherwise, you\n\
+ as a child widget, you must use \
+ {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]}; otherwise, you\n\
  would not properly consider widget margins, \
  {{!Ocgtk.Raw.Size_group}[Gtk.SizeGroup]}, and\n\
  so forth.\n\n\
@@ -141,7 +147,8 @@
  both a minimum and natural size.\n\n\
  If a widget ends up baseline aligned it will be allocated all the space in\n\
  the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
- found via [Gtk.Widget.get_baseline]. If the baseline has a\n\
+ found via {{!Ocgtk.Raw.Widget.val-get_baseline}[Gtk.Widget.get_baseline]}. If \
+ the baseline has a\n\
  value other than -1 you need to align the widget such that the baseline\n\
  appears at the position.\n\n\
  {b GtkWidget as GtkBuildable}\n\n\
@@ -261,7 +268,8 @@
  \"/com/example/ui/foowidget.ui\");\n\
  }\n\
  ]}\n\n\
- You will also need to call [Gtk.Widget.init_template] from the\n\
+ You will also need to call \
+ {{!Ocgtk.Raw.Widget.val-init_template}[Gtk.Widget.init_template]} from the\n\
  instance initialization function:\n\n\
  {[\n\
  static void\n\
@@ -271,7 +279,9 @@
 \  // Initialize the rest of the widget...\n\
  }\n\
  ]}\n\n\
- as well as calling [Gtk.Widget.dispose_template] from the dispose\n\
+ as well as calling \
+ {{!Ocgtk.Raw.Widget.val-dispose_template}[Gtk.Widget.dispose_template]} from \
+ the dispose\n\
  function:\n\n\
  {[\n\
  static void\n\
@@ -285,7 +295,8 @@
  }\n\
  ]}\n\n\
  You can access widgets defined in the template using the\n\
- [Gtk.Widget.get_template_child] function, but you will typically declare\n\
+ {{!Ocgtk.Raw.Widget.val-get_template_child}[Gtk.Widget.get_template_child]} \
+ function, but you will typically declare\n\
  a pointer in the instance private data structure of your type using the same\n\
  name as the widget in the template definition, and call\n\
  [Gtk.WidgetClass.bind_template_child_full] (or one of its wrapper macros\n\

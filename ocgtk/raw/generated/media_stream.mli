@@ -9,9 +9,12 @@
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be
     used in applications: [Gtk.MediaStream.prepared],
-    [Gtk.MediaStream.unprepared], [Gtk.MediaStream.update],
-    [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
-    [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
+    [Gtk.MediaStream.unprepared],
+    {{!Ocgtk.Raw.Media_stream.val-update}[Gtk.MediaStream.update]},
+    [Gtk.MediaStream.ended],
+    {{!Ocgtk.Raw.Media_stream.val-seek_success}[Gtk.MediaStream.seek_success]},
+    {{!Ocgtk.Raw.Media_stream.val-seek_failed}[Gtk.MediaStream.seek_failed]},
+    {{!Ocgtk.Raw.Media_stream.val-gerror}[Gtk.MediaStream.gerror]},
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist].
 
     The class built on this module is in {!Ocgtk.Media_stream}. *)
@@ -41,7 +44,8 @@ external unrealize : t -> Ocgdk_raw.Surface.t -> unit
 external stream_unprepared : t -> unit = "ml_gtk_media_stream_stream_unprepared"
 (** Resets a given media stream implementation.
 
-    [Gtk.MediaStream.stream_prepared] can then be called again.
+    {{!Ocgtk.Raw.Media_stream.val-stream_prepared}[Gtk.MediaStream.stream_prepared]}
+    can then be called again.
 
     This function will also reset any error state the stream was in. *)
 
@@ -56,12 +60,14 @@ external stream_prepared : t -> bool -> bool -> bool -> int64 -> unit
     controls to show.
 
     This function may not be called again until the stream has been reset via
-    [Gtk.MediaStream.stream_unprepared]. *)
+    {{!Ocgtk.Raw.Media_stream.val-stream_unprepared}[Gtk.MediaStream.stream_unprepared]}.
+*)
 
 external stream_ended : t -> unit = "ml_gtk_media_stream_stream_ended"
 (** Pauses the media stream and marks it as ended.
 
-    This is a hint only, calls to [Gtk.MediaStream.play] may still happen.
+    This is a hint only, calls to
+    {{!Ocgtk.Raw.Media_stream.val-play}[Gtk.MediaStream.play]} may still happen.
 
     The media stream must be prepared when this function is called. *)
 
@@ -104,7 +110,8 @@ external seek_success : t -> unit = "ml_gtk_media_stream_seek_success"
 
     This function will unset the GtkMediaStream:ended property if it was set.
 
-    See [Gtk.MediaStream.seek_failed] for the other way of ending a seek. *)
+    See {{!Ocgtk.Raw.Media_stream.val-seek_failed}[Gtk.MediaStream.seek_failed]}
+    for the other way of ending a seek. *)
 
 external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
 (** Ends a seek operation started via GtkMediaStream.seek() as a failure.
@@ -112,7 +119,9 @@ external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
     This will not cause an error on the stream and will assume that playback
     continues as if no seek had happened.
 
-    See [Gtk.MediaStream.seek_success] for the other way of ending a seek. *)
+    See
+    {{!Ocgtk.Raw.Media_stream.val-seek_success}[Gtk.MediaStream.seek_success]}
+    for the other way of ending a seek. *)
 
 external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
 (** Start a seek operation on [self] to [timestamp].
@@ -120,7 +129,9 @@ external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
     If [timestamp] is out of range, it will be clamped.
 
     Seek operations may not finish instantly. While a seek operation is in
-    process, the [Gtk.MediaStream:seeking] property will be set.
+    process, the
+    {{!Ocgtk.Raw.Media_stream.val-is_seeking}[Gtk.MediaStream:seeking]} property
+    will be set.
 
     When calling gtk_media_stream_seek() during an ongoing seek operation, the
     new seek will override any pending seek. *)
@@ -134,12 +145,13 @@ external realize : t -> Ocgdk_raw.Surface.t -> unit
     or sync to the [GdkFrameClock].
 
     Whoever calls this function is responsible for calling
-    [Gtk.MediaStream.unrealize] before either the stream or [surface] get
-    destroyed.
+    {{!Ocgtk.Raw.Media_stream.val-unrealize}[Gtk.MediaStream.unrealize]} before
+    either the stream or [surface] get destroyed.
 
     Multiple calls to this function may happen from different users of the
     video, even with the same [surface]. Each of these calls must be followed by
-    its own call to [Gtk.MediaStream.unrealize].
+    its own call to
+    {{!Ocgtk.Raw.Media_stream.val-unrealize}[Gtk.MediaStream.unrealize]}.
 
     It is not required to call this function to make a media stream work. *)
 
@@ -164,8 +176,9 @@ external is_seekable : t -> bool = "ml_gtk_media_stream_is_seekable"
     are guaranteed to not be seekable and user interfaces may hide controls that
     allow seeking.
 
-    It is allowed to call [Gtk.MediaStream.seek] on a non-seekable stream,
-    though it will not do anything. *)
+    It is allowed to call
+    {{!Ocgtk.Raw.Media_stream.val-seek}[Gtk.MediaStream.seek]} on a non-seekable
+    stream, though it will not do anything. *)
 
 external is_prepared : t -> bool = "ml_gtk_media_stream_is_prepared"
 (** Returns whether the stream has finished initializing.
@@ -181,7 +194,8 @@ external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
 external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
 (** Returns the volume of the audio for the stream.
 
-    See [Gtk.MediaStream.set_volume] for details. *)
+    See {{!Ocgtk.Raw.Media_stream.val-set_volume}[Gtk.MediaStream.set_volume]}
+    for details. *)
 
 external get_timestamp : t -> int64 = "ml_gtk_media_stream_get_timestamp"
 (** Returns the current presentation timestamp in microseconds. *)
@@ -192,12 +206,14 @@ external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
 external get_muted : t -> bool = "ml_gtk_media_stream_get_muted"
 (** Returns whether the audio for the stream is muted.
 
-    See [Gtk.MediaStream.set_muted] for details. *)
+    See {{!Ocgtk.Raw.Media_stream.val-set_muted}[Gtk.MediaStream.set_muted]} for
+    details. *)
 
 external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 (** Returns whether the stream is set to loop.
 
-    See [Gtk.MediaStream.set_loop] for details. *)
+    See {{!Ocgtk.Raw.Media_stream.val-set_loop}[Gtk.MediaStream.set_loop]} for
+    details. *)
 
 external get_error : t -> GError.t option = "ml_gtk_media_stream_get_error"
 (** If the stream is in an error state, returns the [GError] explaining that
@@ -207,12 +223,15 @@ external get_error : t -> GError.t option = "ml_gtk_media_stream_get_error"
     the media stream.
 
     A media stream in an error cannot be operated on, calls like
-    [Gtk.MediaStream.play] or [Gtk.MediaStream.seek] will not have any effect.
+    {{!Ocgtk.Raw.Media_stream.val-play}[Gtk.MediaStream.play]} or
+    {{!Ocgtk.Raw.Media_stream.val-seek}[Gtk.MediaStream.seek]} will not have any
+    effect.
 
     [GtkMediaStream] itself does not provide a way to unset an error, but
     implementations may provide options. For example, a
     {{!Ocgtk.Raw.Media_file}[Gtk.MediaFile]} will unset errors when a new source
-    is set, e.g. with [Gtk.MediaFile.set_file]. *)
+    is set, e.g. with
+    {{!Ocgtk.Raw.Media_file.val-set_file}[Gtk.MediaFile.set_file]}. *)
 
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
 (** Returns whether the streams playback is finished. *)
@@ -226,8 +245,9 @@ external gerror : t -> GError.t -> unit = "ml_gtk_media_stream_gerror"
 (** Sets [self] into an error state.
 
     This will pause the stream (you can check for an error via
-    [Gtk.MediaStream.get_error] in your GtkMediaStream.pause() implementation),
-    abort pending seeks and mark the stream as prepared.
+    {{!Ocgtk.Raw.Media_stream.val-get_error}[Gtk.MediaStream.get_error]} in your
+    GtkMediaStream.pause() implementation), abort pending seeks and mark the
+    stream as prepared.
 
     if the stream is already in an error state, this call will be ignored and
     the existing error will be retained.

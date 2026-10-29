@@ -15,10 +15,16 @@
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
-    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
-    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
-    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
-    texture.
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_bytes}
+     [Gdk.MemoryTextureBuilder:bytes]},
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_stride}
+     [Gdk.MemoryTextureBuilder:stride]},
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_width}
+     [Gdk.MemoryTextureBuilder:width]}, and
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_height}
+     [Gdk.MemoryTextureBuilder:height]} are mandatory - and then call
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-build}
+     [Gdk.MemoryTextureBuilder.build]} to create the new texture.
 
     [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
@@ -153,10 +159,16 @@ class memory_texture_builder :
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
-    [Gdk.MemoryTextureBuilder:bytes], [Gdk.MemoryTextureBuilder:stride],
-    [Gdk.MemoryTextureBuilder:width], and [Gdk.MemoryTextureBuilder:height] are
-    mandatory - and then call [Gdk.MemoryTextureBuilder.build] to create the new
-    texture.
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_bytes}
+     [Gdk.MemoryTextureBuilder:bytes]},
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_stride}
+     [Gdk.MemoryTextureBuilder:stride]},
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_width}
+     [Gdk.MemoryTextureBuilder:width]}, and
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-get_height}
+     [Gdk.MemoryTextureBuilder:height]} are mandatory - and then call
+    {{!Ocgdk.Memory_texture_builder.class-type-memory_texture_builder_t.method-build}
+     [Gdk.MemoryTextureBuilder.build]} to create the new texture.
 
     [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.

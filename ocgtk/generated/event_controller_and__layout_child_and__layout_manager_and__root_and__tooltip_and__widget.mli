@@ -10,9 +10,10 @@
     These are ancillary objects associated to widgets, which react to
     [GdkEvents], and possibly trigger actions as a consequence.
 
-    Event controllers are added to a widget with [Gtk.Widget.add_controller]. It
-    is rarely necessary to explicitly remove a controller with
-    [Gtk.Widget.remove_controller].
+    Event controllers are added to a widget with
+    {{!Ocgtk.Widget.class-type-widget_t.method-add_controller}[Gtk.Widget.add_controller]}.
+    It is rarely necessary to explicitly remove a controller with
+    {{!Ocgtk.Widget.class-type-widget_t.method-remove_controller}[Gtk.Widget.remove_controller]}.
 
     See the chapter on input handling for an overview of the basic concepts,
     such as the capture and bubble phases of event propagation. *)
@@ -149,14 +150,16 @@ end
      the size of a widget depending on its contents.\n\n\
      Each [GtkWidget] can only have a [GtkLayoutManager] instance associated\n\
      to it at any given time; it is possible, though, to replace the layout\n\
-     manager instance using [Gtk.Widget.set_layout_manager].\n\n\
+     manager instance using \
+     {{!Ocgtk.Widget.class-type-widget_t.method-set_layout_manager}[Gtk.Widget.set_layout_manager]}.\n\n\
      {b Layout properties}\n\n\
      A layout manager can expose properties for controlling the layout of\n\
      each child, by creating an object type derived from \
      {{!Ocgtk.Layout_child.class-type-layout_child_t}[Gtk.LayoutChild]}\n\
      and installing the properties on it as normal [GObject] properties.\n\n\
      Each [GtkLayoutChild] instance storing the layout properties for a\n\
-     specific child is created through the [Gtk.LayoutManager.get_layout_child]\n\
+     specific child is created through the \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t.method-get_layout_child}[Gtk.LayoutManager.get_layout_child]}\n\
      method; a [GtkLayoutManager] controls the creation of its [GtkLayoutChild]\n\
      instances by overriding the GtkLayoutManagerClass.create_layout_child()\n\
      virtual function. The typical implementation should look like:\n\n\
@@ -172,16 +175,21 @@ end
     \                       NULL);\n\
      }\n\
      ]}\n\n\
-     The [Gtk.LayoutChild:layout-manager] and\n\
-     [Gtk.LayoutChild:child-widget] properties\n\
+     The \
+     {{!Ocgtk.Layout_child.class-type-layout_child_t.method-get_layout_manager}[Gtk.LayoutChild:layout-manager]} \
+     and\n\
+     {{!Ocgtk.Layout_child.class-type-layout_child_t.method-get_child_widget}[Gtk.LayoutChild:child-widget]} \
+     properties\n\
      on the newly created [GtkLayoutChild] instance are mandatory. The\n\
      [GtkLayoutManager] will cache the newly created [GtkLayoutChild] instance\n\
      until the widget is removed from its parent, or the parent removes the\n\
      layout manager.\n\n\
      Each [GtkLayoutManager] instance creating a [GtkLayoutChild] should use\n\
-     [Gtk.LayoutManager.get_layout_child] every time it needs to query\n\
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t.method-get_layout_child}[Gtk.LayoutManager.get_layout_child]} \
+     every time it needs to query\n\
      the layout properties; each [GtkLayoutChild] instance should call\n\
-     [Gtk.LayoutManager.layout_changed] every time a property is\n\
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t.method-layout_changed}[Gtk.LayoutManager.layout_changed]} \
+     every time a property is\n\
      updated, in order to queue a new size measuring and allocation."]
 
 (** {b The methods, signals and properties of a [Root].}
@@ -198,10 +206,13 @@ end
 
     The obvious example of a [GtkRoot] is [GtkWindow].
 
-    To get the display to which a [GtkRoot] belongs, use [Gtk.Root.get_display].
+    To get the display to which a [GtkRoot] belongs, use
+    {{!Ocgtk.Root.class-type-root_t.method-get_display}[Gtk.Root.get_display]}.
 
     [GtkRoot] also maintains the location of keyboard focus inside its widget
-    hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus]. *)
+    hierarchy, with
+    {{!Ocgtk.Root.class-type-root_t.method-set_focus}[Gtk.Root.set_focus]} and
+    {{!Ocgtk.Root.class-type-root_t.method-get_focus}[Gtk.Root.get_focus]}. *)
 and root_t = object
   (** {2:methods Methods} *)
 
@@ -233,24 +244,31 @@ end
 
     Represents a widget tooltip.
 
-    Basic tooltips can be realized simply by using [Gtk.Widget.set_tooltip_text]
-    or [Gtk.Widget.set_tooltip_markup] without any explicit tooltip object.
+    Basic tooltips can be realized simply by using
+    {{!Ocgtk.Widget.class-type-widget_t.method-set_tooltip_text}[Gtk.Widget.set_tooltip_text]}
+    or
+    {{!Ocgtk.Widget.class-type-widget_t.method-set_tooltip_markup}[Gtk.Widget.set_tooltip_markup]}
+    without any explicit tooltip object.
 
     When you need a tooltip with a little more fancy contents, like adding an
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
-      monitor the widget for motion and related events which are needed to
-      determine when and where to show a tooltip.
+    - Set the
+      {{!Ocgtk.Widget.class-type-widget_t.method-get_has_tooltip}[Gtk.Widget:has-tooltip]}
+      property to [true]. This will make GTK monitor the widget for motion and
+      related events which are needed to determine when and where to show a
+      tooltip.
 
-    - Connect to the [Gtk.Widget::query-tooltip] signal. This signal will be
-      emitted when a tooltip is supposed to be shown. One of the arguments
-      passed to the signal handler is a [GtkTooltip] object. This is the object
-      that we are about to display as a tooltip, and can be manipulated in your
-      callback using functions like [Gtk.Tooltip.set_icon]. There are functions
-      for setting the tooltip’s markup, setting an image from a named icon, or
-      even putting in a custom widget.
+    - Connect to the
+      {{!Ocgtk.Widget.class-type-widget_t.method-on_query_tooltip}[Gtk.Widget::query-tooltip]}
+      signal. This signal will be emitted when a tooltip is supposed to be
+      shown. One of the arguments passed to the signal handler is a [GtkTooltip]
+      object. This is the object that we are about to display as a tooltip, and
+      can be manipulated in your callback using functions like
+      {{!Ocgtk.Tooltip.class-type-tooltip_t.method-set_icon}[Gtk.Tooltip.set_icon]}.
+      There are functions for setting the tooltip’s markup, setting an image
+      from a named icon, or even putting in a custom widget.
 
     - Return [true] from your ::query-tooltip handler. This causes the tooltip
       to be show. If you return [false], it will not be shown. *)
@@ -1802,7 +1820,9 @@ end
      on the toplevel.\n\n\
      After the toplevel window has initially requested its size in both\n\
      dimensions it can go on to allocate itself a reasonable size (or a size\n\
-     previously specified with [Gtk.Window.set_default_size]). During the\n\
+     previously specified with \
+     {{!Ocgtk.Window.class-type-window_t.method-set_default_size}[Gtk.Window.set_default_size]}). \
+     During the\n\
      recursive allocation process it’s important to note that request cycles\n\
      will be recursively executed while widgets allocate their children.\n\
      Each widget, once allocated a size, will go on to first share the\n\
@@ -1897,7 +1917,9 @@ end
      both a minimum and natural size.\n\n\
      If a widget ends up baseline aligned it will be allocated all the space in\n\
      the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
-     found via [Gtk.Widget.get_baseline]. If the baseline has a\n\
+     found via \
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_baseline}[Gtk.Widget.get_baseline]}. \
+     If the baseline has a\n\
      value other than -1 you need to align the widget such that the baseline\n\
      appears at the position.\n\n\
      {b GtkWidget as GtkBuildable}\n\n\
@@ -2027,7 +2049,9 @@ end
      \"/com/example/ui/foowidget.ui\");\n\
      }\n\
      ]}\n\n\
-     You will also need to call [Gtk.Widget.init_template] from the\n\
+     You will also need to call \
+     {{!Ocgtk.Widget.class-type-widget_t.method-init_template}[Gtk.Widget.init_template]} \
+     from the\n\
      instance initialization function:\n\n\
      {[\n\
      static void\n\
@@ -2037,7 +2061,9 @@ end
     \  // Initialize the rest of the widget...\n\
      }\n\
      ]}\n\n\
-     as well as calling [Gtk.Widget.dispose_template] from the dispose\n\
+     as well as calling \
+     {{!Ocgtk.Widget.class-type-widget_t.method-dispose_template}[Gtk.Widget.dispose_template]} \
+     from the dispose\n\
      function:\n\n\
      {[\n\
      static void\n\
@@ -2051,7 +2077,8 @@ end
      }\n\
      ]}\n\n\
      You can access widgets defined in the template using the\n\
-     [Gtk.Widget.get_template_child] function, but you will typically declare\n\
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_template_child}[Gtk.Widget.get_template_child]} \
+     function, but you will typically declare\n\
      a pointer in the instance private data structure of your type using the \
      same\n\
      name as the widget in the template definition, and call\n\

@@ -32,8 +32,8 @@ external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_paper_size_new_from_gvariant"
 (** Deserialize a paper size from a [GVariant].
 
-    The `GVariant must be in the format produced by [Gtk.PaperSize.to_gvariant].
-*)
+    The `GVariant must be in the format produced by
+    {{!Ocgtk.Raw.Paper_size.val-to_gvariant}[Gtk.PaperSize.to_gvariant]}. *)
 
 external new_from_ipp : string -> float -> float -> t
   = "ml_gtk_paper_size_new_from_ipp"

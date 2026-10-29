@@ -32,7 +32,8 @@
     or fallback applications.
 
     To obtain the application that has been selected in a [GtkAppChooser], use
-    [Gtk.AppChooser.get_app_info]. *)
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t.method-get_app_info}[Gtk.AppChooser.get_app_info]}.
+*)
 class type app_chooser_t = object
   (** {2:methods Methods} *)
 
@@ -75,7 +76,8 @@ class app_chooser : Raw.App_chooser.t -> app_chooser_t
     or fallback applications.
 
     To obtain the application that has been selected in a [GtkAppChooser], use
-    [Gtk.AppChooser.get_app_info]. *)
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t.method-get_app_info}[Gtk.AppChooser.get_app_info]}.
+*)
 
 (** {1:constructors Constructors} *)
 

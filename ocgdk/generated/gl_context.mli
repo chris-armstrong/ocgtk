@@ -17,7 +17,8 @@ class type gl_context_t = App_launch_context_cycle_de440b34.gl_context_t
      {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}\n\n\
      Represents a platform-specific OpenGL draw context.\n\n\
      [GdkGLContext]s are created for a surface using\n\
-     [Gdk.Surface.create_gl_context], and the context will match\n\
+     {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]}, \
+     and the context will match\n\
      the characteristics of the surface.\n\n\
      A [GdkGLContext] is not tied to any particular normal framebuffer.\n\
      For instance, it cannot draw to the surface back buffer. The GDK\n\
@@ -32,11 +33,16 @@ class type gl_context_t = App_launch_context_cycle_de440b34.gl_context_t
      {b Creating a new OpenGL context}\n\n\
      In order to create a new [GdkGLContext] instance you need a [GdkSurface],\n\
      which you typically get during the realize call of a widget.\n\n\
-     A [GdkGLContext] is not realized until either [Gdk.GLContext.make_current]\n\
-     or [Gdk.GLContext.realize] is called. It is possible to specify\n\
+     A [GdkGLContext] is not realized until either \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-make_current}[Gdk.GLContext.make_current]}\n\
+     or \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]} \
+     is called. It is possible to specify\n\
      details of the GL context like the OpenGL version to be used, or whether\n\
      the GL context should have extra state validation enabled after calling\n\
-     [Gdk.Surface.create_gl_context] by calling [Gdk.GLContext.realize].\n\
+     {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]} \
+     by calling \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]}.\n\
      If the realization fails you have the option to change the settings of\n\
      the [GdkGLContext] and try again.\n\n\
      {b Using a GdkGLContext}\n\n\
@@ -61,7 +67,8 @@ class gl_context : Raw.Gl_context.t -> gl_context_t
 "{1:description Description}\n\n\
  Represents a platform-specific OpenGL draw context.\n\n\
  [GdkGLContext]s are created for a surface using\n\
- [Gdk.Surface.create_gl_context], and the context will match\n\
+ {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]}, \
+ and the context will match\n\
  the characteristics of the surface.\n\n\
  A [GdkGLContext] is not tied to any particular normal framebuffer.\n\
  For instance, it cannot draw to the surface back buffer. The GDK\n\
@@ -76,11 +83,16 @@ class gl_context : Raw.Gl_context.t -> gl_context_t
  {b Creating a new OpenGL context}\n\n\
  In order to create a new [GdkGLContext] instance you need a [GdkSurface],\n\
  which you typically get during the realize call of a widget.\n\n\
- A [GdkGLContext] is not realized until either [Gdk.GLContext.make_current]\n\
- or [Gdk.GLContext.realize] is called. It is possible to specify\n\
+ A [GdkGLContext] is not realized until either \
+ {{!Ocgdk.Gl_context.class-type-gl_context_t.method-make_current}[Gdk.GLContext.make_current]}\n\
+ or \
+ {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]} \
+ is called. It is possible to specify\n\
  details of the GL context like the OpenGL version to be used, or whether\n\
  the GL context should have extra state validation enabled after calling\n\
- [Gdk.Surface.create_gl_context] by calling [Gdk.GLContext.realize].\n\
+ {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]} \
+ by calling \
+ {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]}.\n\
  If the realization fails you have the option to change the settings of\n\
  the [GdkGLContext] and try again.\n\n\
  {b Using a GdkGLContext}\n\n\

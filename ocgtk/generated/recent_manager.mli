@@ -110,7 +110,8 @@ end
      The [GtkRecentManager] will try to gather all the needed information\n\
      from the file itself through GIO.\n\n\
      Looking up the meta-data associated with a recently used file\n\
-     given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
+     given its URI requires calling \
+     {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-lookup_item}[Gtk.RecentManager.lookup_item]}:\n\n\
      {[\n\
      GtkRecentManager *manager;\n\
      GtkRecentInfo *info;\n\
@@ -129,10 +130,12 @@ end
     \ }\n\
      ]}\n\n\
      In order to retrieve the list of recently used files, you can use\n\
-     [Gtk.RecentManager.get_items], which returns a list of\n\
+     {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-get_items}[Gtk.RecentManager.get_items]}, \
+     which returns a list of\n\
      {{!Ocgtk.Recent_info.class-type-recent_info_t}[Gtk.RecentInfo]}.\n\n\
      Note that the maximum age of the recently used files list is\n\
-     controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
+     controllable through the \
+     {{!Ocgtk.Settings.class-type-settings_t.method-gtk_recent_files_max_age}[Gtk.Settings:gtk-recent-files-max-age]}\n\
      property."]
 
 class recent_manager : Raw.Recent_manager.t -> recent_manager_t
@@ -160,7 +163,8 @@ class recent_manager : Raw.Recent_manager.t -> recent_manager_t
  The [GtkRecentManager] will try to gather all the needed information\n\
  from the file itself through GIO.\n\n\
  Looking up the meta-data associated with a recently used file\n\
- given its URI requires calling [Gtk.RecentManager.lookup_item]:\n\n\
+ given its URI requires calling \
+ {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-lookup_item}[Gtk.RecentManager.lookup_item]}:\n\n\
  {[\n\
  GtkRecentManager *manager;\n\
  GtkRecentInfo *info;\n\
@@ -179,10 +183,12 @@ class recent_manager : Raw.Recent_manager.t -> recent_manager_t
 \ }\n\
  ]}\n\n\
  In order to retrieve the list of recently used files, you can use\n\
- [Gtk.RecentManager.get_items], which returns a list of\n\
+ {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-get_items}[Gtk.RecentManager.get_items]}, \
+ which returns a list of\n\
  {{!Ocgtk.Recent_info.class-type-recent_info_t}[Gtk.RecentInfo]}.\n\n\
  Note that the maximum age of the recently used files list is\n\
- controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
+ controllable through the \
+ {{!Ocgtk.Settings.class-type-settings_t.method-gtk_recent_files_max_age}[Gtk.Settings:gtk-recent-files-max-age]}\n\
  property."]
 
 (** {1:constructors Constructors} *)
@@ -192,8 +198,9 @@ val new_ : unit -> recent_manager_t
 
     Recent manager objects are used to handle the list of recently used
     resources. A [GtkRecentManager] object monitors the recently used resources
-    list, and emits the [Gtk.RecentManager::changed] signal each time something
-    inside the list changes.
+    list, and emits the
+    {{!Ocgtk.Recent_manager.class-type-recent_manager_t.method-on_changed}[Gtk.RecentManager::changed]}
+    signal each time something inside the list changes.
 
     [GtkRecentManager] objects are expensive: be sure to create them only when
     needed. You should use [Gtk.RecentManager.get_default] instead. *)

@@ -32,18 +32,30 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.FileChooserWidget::desktop-folder]
-    - [Gtk.FileChooserWidget::down-folder]
-    - [Gtk.FileChooserWidget::home-folder]
-    - [Gtk.FileChooserWidget::location-popup]
-    - [Gtk.FileChooserWidget::location-popup-on-paste]
-    - [Gtk.FileChooserWidget::location-toggle-popup]
-    - [Gtk.FileChooserWidget::places-shortcut]
-    - [Gtk.FileChooserWidget::quick-bookmark]
-    - [Gtk.FileChooserWidget::recent-shortcut]
-    - [Gtk.FileChooserWidget::search-shortcut]
-    - [Gtk.FileChooserWidget::show-hidden]
-    - [Gtk.FileChooserWidget::up-folder]
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_desktop_folder}
+       [Gtk.FileChooserWidget::desktop-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_down_folder}
+       [Gtk.FileChooserWidget::down-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_home_folder}
+       [Gtk.FileChooserWidget::home-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_popup}
+       [Gtk.FileChooserWidget::location-popup]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_popup_on_paste}
+       [Gtk.FileChooserWidget::location-popup-on-paste]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_toggle_popup}
+       [Gtk.FileChooserWidget::location-toggle-popup]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_places_shortcut}
+       [Gtk.FileChooserWidget::places-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_quick_bookmark}
+       [Gtk.FileChooserWidget::quick-bookmark]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_recent_shortcut}
+       [Gtk.FileChooserWidget::recent-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_search_shortcut}
+       [Gtk.FileChooserWidget::search-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_show_hidden}
+       [Gtk.FileChooserWidget::show-hidden]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_up_folder}
+       [Gtk.FileChooserWidget::up-folder]}
 
     {b CSS nodes}
 
@@ -235,18 +247,30 @@ class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
 
     The following signals have default keybindings:
 
-    - [Gtk.FileChooserWidget::desktop-folder]
-    - [Gtk.FileChooserWidget::down-folder]
-    - [Gtk.FileChooserWidget::home-folder]
-    - [Gtk.FileChooserWidget::location-popup]
-    - [Gtk.FileChooserWidget::location-popup-on-paste]
-    - [Gtk.FileChooserWidget::location-toggle-popup]
-    - [Gtk.FileChooserWidget::places-shortcut]
-    - [Gtk.FileChooserWidget::quick-bookmark]
-    - [Gtk.FileChooserWidget::recent-shortcut]
-    - [Gtk.FileChooserWidget::search-shortcut]
-    - [Gtk.FileChooserWidget::show-hidden]
-    - [Gtk.FileChooserWidget::up-folder]
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_desktop_folder}
+       [Gtk.FileChooserWidget::desktop-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_down_folder}
+       [Gtk.FileChooserWidget::down-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_home_folder}
+       [Gtk.FileChooserWidget::home-folder]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_popup}
+       [Gtk.FileChooserWidget::location-popup]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_popup_on_paste}
+       [Gtk.FileChooserWidget::location-popup-on-paste]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_location_toggle_popup}
+       [Gtk.FileChooserWidget::location-toggle-popup]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_places_shortcut}
+       [Gtk.FileChooserWidget::places-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_quick_bookmark}
+       [Gtk.FileChooserWidget::quick-bookmark]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_recent_shortcut}
+       [Gtk.FileChooserWidget::recent-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_search_shortcut}
+       [Gtk.FileChooserWidget::search-shortcut]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_show_hidden}
+       [Gtk.FileChooserWidget::show-hidden]}
+    - {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t.method-on_up_folder}
+       [Gtk.FileChooserWidget::up-folder]}
 
     {b CSS nodes}
 

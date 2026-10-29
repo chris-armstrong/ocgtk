@@ -33,9 +33,12 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkViewport] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkViewport] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
-    Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
+    Starting from GTK 4.12, [GtkViewport] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
     role. *)
 class type viewport_t = object
   inherit Widget.widget_t
@@ -88,9 +91,12 @@ class viewport : Raw.Viewport.t -> viewport_t
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkViewport] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkViewport] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
-    Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
+    Starting from GTK 4.12, [GtkViewport] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
     role. *)
 
 (** {1:constructors Constructors} *)

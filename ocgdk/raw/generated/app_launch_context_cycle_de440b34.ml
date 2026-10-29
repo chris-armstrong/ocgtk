@@ -24,7 +24,8 @@ module rec App_launch_context : sig
   (** Sets the icon for applications that are launched with this context.
 
       The [icon_name] will be interpreted in the same way as the Icon field in
-      desktop files. See also [Gdk.AppLaunchContext.set_icon].
+      desktop files. See also
+      {{!Ocgdk.Raw.App_launch_context.val-set_icon}[Gdk.AppLaunchContext.set_icon]}.
 
       If both [icon] and [icon_name] are set, the [icon_name] takes priority. If
       neither [icon] or [icon_name] is set, the icon is taken from either the
@@ -38,7 +39,9 @@ module rec App_launch_context : sig
       Window Managers can use this information when displaying startup
       notification.
 
-      See also [Gdk.AppLaunchContext.set_icon_name]. *)
+      See also
+      {{!Ocgdk.Raw.App_launch_context.val-set_icon_name}[Gdk.AppLaunchContext.set_icon_name]}.
+  *)
 
   external set_desktop : t -> int -> unit
     = "ml_gdk_app_launch_context_set_desktop"
@@ -83,7 +86,8 @@ end = struct
   (** Sets the icon for applications that are launched with this context.
 
       The [icon_name] will be interpreted in the same way as the Icon field in
-      desktop files. See also [Gdk.AppLaunchContext.set_icon].
+      desktop files. See also
+      {{!Ocgdk.Raw.App_launch_context.val-set_icon}[Gdk.AppLaunchContext.set_icon]}.
 
       If both [icon] and [icon_name] are set, the [icon_name] takes priority. If
       neither [icon] or [icon_name] is set, the icon is taken from either the
@@ -97,7 +101,9 @@ end = struct
       Window Managers can use this information when displaying startup
       notification.
 
-      See also [Gdk.AppLaunchContext.set_icon_name]. *)
+      See also
+      {{!Ocgdk.Raw.App_launch_context.val-set_icon_name}[Gdk.AppLaunchContext.set_icon_name]}.
+  *)
 
   external set_desktop : t -> int -> unit
     = "ml_gdk_app_launch_context_set_desktop"
@@ -133,11 +139,14 @@ and Cairo_context : sig
   (** Retrieves a Cairo context to be used to draw on the [GdkSurface] of
       [context].
 
-      A call to [Gdk.DrawContext.begin_frame] with this [context] must have been
-      done or this function will return [None].
+      A call to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      with this [context] must have been done or this function will return
+      [None].
 
       The returned context is guaranteed to be valid until
-      [Gdk.DrawContext.end_frame] is called. *)
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]} is
+      called. *)
 end = struct
   type t = [ `cairo_context | `draw_context | `object_ ] Gobject.obj
 
@@ -150,11 +159,14 @@ end = struct
   (** Retrieves a Cairo context to be used to draw on the [GdkSurface] of
       [context].
 
-      A call to [Gdk.DrawContext.begin_frame] with this [context] must have been
-      done or this function will return [None].
+      A call to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      with this [context] must have been done or this function will return
+      [None].
 
       The returned context is guaranteed to be valid until
-      [Gdk.DrawContext.end_frame] is called. *)
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]} is
+      called. *)
 end
 
 and Clipboard : sig
@@ -217,8 +229,10 @@ and Clipboard : sig
       A clipboard is considered local if it was last claimed by the running
       application.
 
-      Note that [Gdk.Clipboard.get_content] may return [None] even on a local
-      clipboard. In this case the clipboard is empty. *)
+      Note that
+      {{!Ocgdk.Raw.Clipboard.val-get_content}[Gdk.Clipboard.get_content]} may
+      return [None] even on a local clipboard. In this case the clipboard is
+      empty. *)
 
   external get_formats : t -> Content_formats.t = "ml_gdk_clipboard_get_formats"
   (** Gets the formats that the clipboard can provide its current contents in.
@@ -299,8 +313,10 @@ end = struct
       A clipboard is considered local if it was last claimed by the running
       application.
 
-      Note that [Gdk.Clipboard.get_content] may return [None] even on a local
-      clipboard. In this case the clipboard is empty. *)
+      Note that
+      {{!Ocgdk.Raw.Clipboard.val-get_content}[Gdk.Clipboard.get_content]} may
+      return [None] even on a local clipboard. In this case the clipboard is
+      empty. *)
 
   external get_formats : t -> Content_formats.t = "ml_gdk_clipboard_get_formats"
   (** Gets the formats that the clipboard can provide its current contents in.
@@ -340,7 +356,8 @@ and Device : sig
   [@@ocaml.doc
     "Returns the vendor ID of this device.\n\n\
     \  This ID is retrieved from the device, and does not change.\n\n\
-    \  This function, together with [Gdk.Device.get_product_id],\n\
+    \  This function, together with \
+     {{!Ocgdk.Raw.Device.val-get_product_id}[Gdk.Device.get_product_id]},\n\
     \  can be used to eg. compose [GSettings] paths to store settings\n\
     \  for this device.\n\n\
     \  {[\n\
@@ -394,7 +411,8 @@ and Device : sig
   (** Returns the product ID of this device.
 
       This ID is retrieved from the device, and does not change. See
-      [Gdk.Device.get_vendor_id] for more information. *)
+      {{!Ocgdk.Raw.Device.val-get_vendor_id}[Gdk.Device.get_vendor_id]} for more
+      information. *)
 
   external get_num_touches : t -> int = "ml_gdk_device_get_num_touches"
   (** Retrieves the number of touch points associated to [device]. *)
@@ -492,7 +510,8 @@ end = struct
   [@@ocaml.doc
     "Returns the vendor ID of this device.\n\n\
     \  This ID is retrieved from the device, and does not change.\n\n\
-    \  This function, together with [Gdk.Device.get_product_id],\n\
+    \  This function, together with \
+     {{!Ocgdk.Raw.Device.val-get_product_id}[Gdk.Device.get_product_id]},\n\
     \  can be used to eg. compose [GSettings] paths to store settings\n\
     \  for this device.\n\n\
     \  {[\n\
@@ -546,7 +565,8 @@ end = struct
   (** Returns the product ID of this device.
 
       This ID is retrieved from the device, and does not change. See
-      [Gdk.Device.get_vendor_id] for more information. *)
+      {{!Ocgdk.Raw.Device.val-get_vendor_id}[Gdk.Device.get_vendor_id]} for more
+      information. *)
 
   external get_num_touches : t -> int = "ml_gdk_device_get_num_touches"
   (** Retrieves the number of touch points associated to [device]. *)
@@ -668,7 +688,8 @@ and Display : sig
       requests have been handled.
 
       This is often used for making sure that the display is synchronized with
-      the current state of the program. Calling [Gdk.Display.sync] before
+      the current state of the program. Calling
+      {{!Ocgdk.Raw.Display.val-sync}[Gdk.Display.sync]} before
       [GdkX11.Display.error_trap_pop] makes sure that any errors generated from
       earlier requests are handled before the error trap is removed.
 
@@ -688,8 +709,9 @@ and Display : sig
     = "ml_gdk_display_supports_input_shapes"
   (** Returns [true] if the display supports input shapes.
 
-      This means that [Gdk.Surface.set_input_region] can be used to modify the
-      input shape of surfaces on [display].
+      This means that
+      {{!Ocgdk.Raw.Surface.val-set_input_region}[Gdk.Surface.set_input_region]}
+      can be used to modify the input shape of surfaces on [display].
 
       On modern displays, this value is always [true]. *)
 
@@ -759,7 +781,8 @@ and Display : sig
       channel won’t be honored when displaying the surface on the screen: in
       particular, for X an appropriate windowing manager and compositing manager
       must be running to provide appropriate display. Use
-      [Gdk.Display.is_composited] to check if that is the case.
+      {{!Ocgdk.Raw.Display.val-is_composited}[Gdk.Display.is_composited]} to
+      check if that is the case.
 
       On modern displays, this value is always [true]. *)
 
@@ -767,8 +790,8 @@ and Display : sig
   (** Returns whether surfaces can reasonably be expected to have their alpha
       channel drawn correctly on the screen.
 
-      Check [Gdk.Display.is_rgba] for whether the display supports an alpha
-      channel.
+      Check {{!Ocgdk.Raw.Display.val-is_rgba}[Gdk.Display.is_rgba]} for whether
+      the display supports an alpha channel.
 
       On X11 this function returns whether a compositing manager is compositing
       on [display].
@@ -869,7 +892,8 @@ and Display : sig
 
       If the creation of the [GdkGLContext] failed, [error] will be set. Before
       using the returned [GdkGLContext], you will need to call
-      [Gdk.GLContext.make_current] or [Gdk.GLContext.realize]. *)
+      {{!Ocgdk.Raw.Gl_context.val-make_current}[Gdk.GLContext.make_current]} or
+      {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]}. *)
 
   external close : t -> unit = "ml_gdk_display_close"
   (** Closes the connection to the windowing system for the given display.
@@ -953,7 +977,8 @@ end = struct
       requests have been handled.
 
       This is often used for making sure that the display is synchronized with
-      the current state of the program. Calling [Gdk.Display.sync] before
+      the current state of the program. Calling
+      {{!Ocgdk.Raw.Display.val-sync}[Gdk.Display.sync]} before
       [GdkX11.Display.error_trap_pop] makes sure that any errors generated from
       earlier requests are handled before the error trap is removed.
 
@@ -973,8 +998,9 @@ end = struct
     = "ml_gdk_display_supports_input_shapes"
   (** Returns [true] if the display supports input shapes.
 
-      This means that [Gdk.Surface.set_input_region] can be used to modify the
-      input shape of surfaces on [display].
+      This means that
+      {{!Ocgdk.Raw.Surface.val-set_input_region}[Gdk.Surface.set_input_region]}
+      can be used to modify the input shape of surfaces on [display].
 
       On modern displays, this value is always [true]. *)
 
@@ -1044,7 +1070,8 @@ end = struct
       channel won’t be honored when displaying the surface on the screen: in
       particular, for X an appropriate windowing manager and compositing manager
       must be running to provide appropriate display. Use
-      [Gdk.Display.is_composited] to check if that is the case.
+      {{!Ocgdk.Raw.Display.val-is_composited}[Gdk.Display.is_composited]} to
+      check if that is the case.
 
       On modern displays, this value is always [true]. *)
 
@@ -1052,8 +1079,8 @@ end = struct
   (** Returns whether surfaces can reasonably be expected to have their alpha
       channel drawn correctly on the screen.
 
-      Check [Gdk.Display.is_rgba] for whether the display supports an alpha
-      channel.
+      Check {{!Ocgdk.Raw.Display.val-is_rgba}[Gdk.Display.is_rgba]} for whether
+      the display supports an alpha channel.
 
       On X11 this function returns whether a compositing manager is compositing
       on [display].
@@ -1154,7 +1181,8 @@ end = struct
 
       If the creation of the [GdkGLContext] failed, [error] will be set. Before
       using the returned [GdkGLContext], you will need to call
-      [Gdk.GLContext.make_current] or [Gdk.GLContext.realize]. *)
+      {{!Ocgdk.Raw.Gl_context.val-make_current}[Gdk.GLContext.make_current]} or
+      {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]}. *)
 
   external close : t -> unit = "ml_gdk_display_close"
   (** Closes the connection to the windowing system for the given display.
@@ -1229,9 +1257,11 @@ and Draw_context : sig
   external is_in_frame : t -> bool = "ml_gdk_draw_context_is_in_frame"
   (** Returns [true] if [context] is in the process of drawing to its surface.
 
-      This is the case between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame]. In this situation, drawing commands may be
-      effecting the contents of the [context]'s surface. *)
+      This is the case between calls to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      and {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]}.
+      In this situation, drawing commands may be effecting the contents of the
+      [context]'s surface. *)
 
   external get_surface : t -> Surface.t option
     = "ml_gdk_draw_context_get_surface"
@@ -1241,12 +1271,16 @@ and Draw_context : sig
     = "ml_gdk_draw_context_get_frame_region"
   (** Retrieves the region that is currently being repainted.
 
-      After a call to [Gdk.DrawContext.begin_frame] this function will return a
-      union of the region passed to that function and the area of the surface
-      that the [context] determined needs to be repainted.
+      After a call to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      this function will return a union of the region passed to that function
+      and the area of the surface that the [context] determined needs to be
+      repainted.
 
-      If [context] is not in between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame], [None] will be returned. *)
+      If [context] is not in between calls to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      and {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]},
+      [None] will be returned. *)
 
   external get_display : t -> Display.t option
     = "ml_gdk_draw_context_get_display"
@@ -1256,7 +1290,8 @@ and Draw_context : sig
   (** Ends a drawing operation started with gdk_draw_context_begin_frame().
 
       This makes the drawing available on screen. See
-      [Gdk.DrawContext.begin_frame] for more details about drawing.
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      for more details about drawing.
 
       When using a {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, this function may
       call [glFlush()] implicitly before returning; it is not recommended to
@@ -1274,14 +1309,17 @@ and Draw_context : sig
       {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]} need to be treated differently.
 
       A call to this function is a requirement for drawing and must be followed
-      by a call to [Gdk.DrawContext.end_frame], which will complete the drawing
-      operation and ensure the contents become visible on screen.
+      by a call to
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]},
+      which will complete the drawing operation and ensure the contents become
+      visible on screen.
 
       Note that the [region] passed to this function is the minimum region that
       needs to be drawn and depending on implementation, windowing system and
       hardware in use, it might be necessary to draw a larger region. Drawing
-      implementation must use [Gdk.DrawContext.get_frame_region] to query the
-      region that must be drawn.
+      implementation must use
+      {{!Ocgdk.Raw.Draw_context.val-get_frame_region}[Gdk.DrawContext.get_frame_region]}
+      to query the region that must be drawn.
 
       When using GTK, the widget system automatically places calls to
       gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
@@ -1299,9 +1337,11 @@ end = struct
   external is_in_frame : t -> bool = "ml_gdk_draw_context_is_in_frame"
   (** Returns [true] if [context] is in the process of drawing to its surface.
 
-      This is the case between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame]. In this situation, drawing commands may be
-      effecting the contents of the [context]'s surface. *)
+      This is the case between calls to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      and {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]}.
+      In this situation, drawing commands may be effecting the contents of the
+      [context]'s surface. *)
 
   external get_surface : t -> Surface.t option
     = "ml_gdk_draw_context_get_surface"
@@ -1311,12 +1351,16 @@ end = struct
     = "ml_gdk_draw_context_get_frame_region"
   (** Retrieves the region that is currently being repainted.
 
-      After a call to [Gdk.DrawContext.begin_frame] this function will return a
-      union of the region passed to that function and the area of the surface
-      that the [context] determined needs to be repainted.
+      After a call to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      this function will return a union of the region passed to that function
+      and the area of the surface that the [context] determined needs to be
+      repainted.
 
-      If [context] is not in between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame], [None] will be returned. *)
+      If [context] is not in between calls to
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      and {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]},
+      [None] will be returned. *)
 
   external get_display : t -> Display.t option
     = "ml_gdk_draw_context_get_display"
@@ -1326,7 +1370,8 @@ end = struct
   (** Ends a drawing operation started with gdk_draw_context_begin_frame().
 
       This makes the drawing available on screen. See
-      [Gdk.DrawContext.begin_frame] for more details about drawing.
+      {{!Ocgdk.Raw.Draw_context.val-begin_frame}[Gdk.DrawContext.begin_frame]}
+      for more details about drawing.
 
       When using a {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, this function may
       call [glFlush()] implicitly before returning; it is not recommended to
@@ -1344,14 +1389,17 @@ end = struct
       {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]} need to be treated differently.
 
       A call to this function is a requirement for drawing and must be followed
-      by a call to [Gdk.DrawContext.end_frame], which will complete the drawing
-      operation and ensure the contents become visible on screen.
+      by a call to
+      {{!Ocgdk.Raw.Draw_context.val-end_frame}[Gdk.DrawContext.end_frame]},
+      which will complete the drawing operation and ensure the contents become
+      visible on screen.
 
       Note that the [region] passed to this function is the minimum region that
       needs to be drawn and depending on implementation, windowing system and
       hardware in use, it might be necessary to draw a larger region. Drawing
-      implementation must use [Gdk.DrawContext.get_frame_region] to query the
-      region that must be drawn.
+      implementation must use
+      {{!Ocgdk.Raw.Draw_context.val-get_frame_region}[Gdk.DrawContext.get_frame_region]}
+      to query the region that must be drawn.
 
       When using GTK, the widget system automatically places calls to
       gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
@@ -1453,7 +1501,7 @@ and Event : sig
 
       Note: the [GdkDeviceTool] will be constant during the application
       lifetime, if settings must be stored persistently across runs, see
-      [Gdk.DeviceTool.get_serial]. *)
+      {{!Ocgdk.Raw.Device_tool.val-get_serial}[Gdk.DeviceTool.get_serial]}. *)
 
   external get_device : t -> Device.t option = "ml_gdk_event_get_device"
   (** Returns the device of an event. *)
@@ -1462,14 +1510,18 @@ and Event : sig
     = "ml_gdk_event_get_axis"
   (** Extract the axis value for a particular axis use from an event structure.
 
-      To find out which axes are used, use [Gdk.DeviceTool.get_axes] on the
-      device tool returned by [Gdk.Event.get_device_tool]. *)
+      To find out which axes are used, use
+      {{!Ocgdk.Raw.Device_tool.val-get_axes}[Gdk.DeviceTool.get_axes]} on the
+      device tool returned by
+      {{!Ocgdk.Raw.Event.val-get_device_tool}[Gdk.Event.get_device_tool]}. *)
 
   external get_axes : t -> bool * float array * int = "ml_gdk_event_get_axes"
   (** Extracts all axis values from an event.
 
-      To find out which axes are used, use [Gdk.DeviceTool.get_axes] on the
-      device tool returned by [Gdk.Event.get_device_tool]. *)
+      To find out which axes are used, use
+      {{!Ocgdk.Raw.Device_tool.val-get_axes}[Gdk.DeviceTool.get_axes]} on the
+      device tool returned by
+      {{!Ocgdk.Raw.Event.val-get_device_tool}[Gdk.Event.get_device_tool]}. *)
 
   external _get_distance : t -> t -> bool * float = "ml_gdk_events_get_distance"
   (** Returns the distance between the event locations.
@@ -1585,7 +1637,7 @@ end = struct
 
       Note: the [GdkDeviceTool] will be constant during the application
       lifetime, if settings must be stored persistently across runs, see
-      [Gdk.DeviceTool.get_serial]. *)
+      {{!Ocgdk.Raw.Device_tool.val-get_serial}[Gdk.DeviceTool.get_serial]}. *)
 
   external get_device : t -> Device.t option = "ml_gdk_event_get_device"
   (** Returns the device of an event. *)
@@ -1594,14 +1646,18 @@ end = struct
     = "ml_gdk_event_get_axis"
   (** Extract the axis value for a particular axis use from an event structure.
 
-      To find out which axes are used, use [Gdk.DeviceTool.get_axes] on the
-      device tool returned by [Gdk.Event.get_device_tool]. *)
+      To find out which axes are used, use
+      {{!Ocgdk.Raw.Device_tool.val-get_axes}[Gdk.DeviceTool.get_axes]} on the
+      device tool returned by
+      {{!Ocgdk.Raw.Event.val-get_device_tool}[Gdk.Event.get_device_tool]}. *)
 
   external get_axes : t -> bool * float array * int = "ml_gdk_event_get_axes"
   (** Extracts all axis values from an event.
 
-      To find out which axes are used, use [Gdk.DeviceTool.get_axes] on the
-      device tool returned by [Gdk.Event.get_device_tool]. *)
+      To find out which axes are used, use
+      {{!Ocgdk.Raw.Device_tool.val-get_axes}[Gdk.DeviceTool.get_axes]} on the
+      device tool returned by
+      {{!Ocgdk.Raw.Event.val-get_device_tool}[Gdk.Event.get_device_tool]}. *)
 
   external _get_distance : t -> t -> bool * float = "ml_gdk_events_get_distance"
   (** Returns the distance between the event locations.
@@ -1645,9 +1701,11 @@ and Gl_context : sig
       underlying GL implementation is OpenGL or OpenGL ES once the [context] is
       realized.
 
-      You should check the return value of [Gdk.GLContext.get_use_es] after
-      calling [Gdk.GLContext.realize] to decide whether to use the OpenGL or
-      OpenGL ES API, extensions, or shaders. *)
+      You should check the return value of
+      {{!Ocgdk.Raw.Gl_context.val-get_use_es}[Gdk.GLContext.get_use_es]} after
+      calling {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]} to
+      decide whether to use the OpenGL or OpenGL ES API, extensions, or shaders.
+  *)
 
   external set_required_version : t -> int -> int -> unit
     = "ml_gdk_gl_context_set_required_version"
@@ -1758,15 +1816,20 @@ and Gl_context : sig
   (** Retrieves required OpenGL version set as a requirement for the [context]
       realization. It will not change even if a greater OpenGL version is
       supported and used after the [context] is realized. See
-      [Gdk.GLContext.get_version] for the real version in use.
+      {{!Ocgdk.Raw.Gl_context.val-get_version}[Gdk.GLContext.get_version]} for
+      the real version in use.
 
-      See [Gdk.GLContext.set_required_version]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_required_version}[Gdk.GLContext.set_required_version]}.
+  *)
 
   external get_forward_compatible : t -> bool
     = "ml_gdk_gl_context_get_forward_compatible"
   (** Retrieves whether the context is forward-compatible.
 
-      See [Gdk.GLContext.set_forward_compatible]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_forward_compatible}[Gdk.GLContext.set_forward_compatible]}.
+  *)
 
   external get_display : t -> Display.t option = "ml_gdk_gl_context_get_display"
   (** Retrieves the display the [context] is created for *)
@@ -1775,7 +1838,9 @@ and Gl_context : sig
   (** Retrieves whether the context is doing extra validations and runtime
       checking.
 
-      See [Gdk.GLContext.set_debug_enabled]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_debug_enabled}[Gdk.GLContext.set_debug_enabled]}.
+  *)
 
   external get_api : t -> Ocgdk_enums.glapi = "ml_gdk_gl_context_get_api"
   (** Gets the API currently in use.
@@ -1805,9 +1870,11 @@ end = struct
       underlying GL implementation is OpenGL or OpenGL ES once the [context] is
       realized.
 
-      You should check the return value of [Gdk.GLContext.get_use_es] after
-      calling [Gdk.GLContext.realize] to decide whether to use the OpenGL or
-      OpenGL ES API, extensions, or shaders. *)
+      You should check the return value of
+      {{!Ocgdk.Raw.Gl_context.val-get_use_es}[Gdk.GLContext.get_use_es]} after
+      calling {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]} to
+      decide whether to use the OpenGL or OpenGL ES API, extensions, or shaders.
+  *)
 
   external set_required_version : t -> int -> int -> unit
     = "ml_gdk_gl_context_set_required_version"
@@ -1918,15 +1985,20 @@ end = struct
   (** Retrieves required OpenGL version set as a requirement for the [context]
       realization. It will not change even if a greater OpenGL version is
       supported and used after the [context] is realized. See
-      [Gdk.GLContext.get_version] for the real version in use.
+      {{!Ocgdk.Raw.Gl_context.val-get_version}[Gdk.GLContext.get_version]} for
+      the real version in use.
 
-      See [Gdk.GLContext.set_required_version]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_required_version}[Gdk.GLContext.set_required_version]}.
+  *)
 
   external get_forward_compatible : t -> bool
     = "ml_gdk_gl_context_get_forward_compatible"
   (** Retrieves whether the context is forward-compatible.
 
-      See [Gdk.GLContext.set_forward_compatible]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_forward_compatible}[Gdk.GLContext.set_forward_compatible]}.
+  *)
 
   external get_display : t -> Display.t option = "ml_gdk_gl_context_get_display"
   (** Retrieves the display the [context] is created for *)
@@ -1935,7 +2007,9 @@ end = struct
   (** Retrieves whether the context is doing extra validations and runtime
       checking.
 
-      See [Gdk.GLContext.set_debug_enabled]. *)
+      See
+      {{!Ocgdk.Raw.Gl_context.val-set_debug_enabled}[Gdk.GLContext.set_debug_enabled]}.
+  *)
 
   external get_api : t -> Ocgdk_enums.glapi = "ml_gdk_gl_context_get_api"
   (** Gets the API currently in use.
@@ -1979,7 +2053,9 @@ and Monitor : sig
 
       This can be used if you want to create pixel based data for a particular
       monitor, but most of the time you’re drawing to a surface where it is
-      better to use [Gdk.Surface.get_scale_factor] instead. *)
+      better to use
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}
+      instead. *)
 
   external get_scale : t -> float = "ml_gdk_monitor_get_scale"
   (** Gets the internal scale factor that maps from monitor coordinates to
@@ -1987,7 +2063,8 @@ and Monitor : sig
 
       This can be used if you want to create pixel based data for a particular
       monitor, but most of the time you’re drawing to a surface where it is
-      better to use [Gdk.Surface.get_scale] instead. *)
+      better to use {{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]}
+      instead. *)
 
   external get_refresh_rate : t -> int = "ml_gdk_monitor_get_refresh_rate"
   (** Gets the refresh rate of the monitor, if available.
@@ -2015,7 +2092,7 @@ and Monitor : sig
       coordinate space.
 
       The returned geometry is in ”application pixels”, not in ”device pixels”
-      (see [Gdk.Monitor.get_scale]). *)
+      (see {{!Ocgdk.Raw.Monitor.val-get_scale}[Gdk.Monitor.get_scale]}). *)
 
   external get_display : t -> Display.t = "ml_gdk_monitor_get_display"
   (** Gets the display that this monitor belongs to. *)
@@ -2068,7 +2145,9 @@ end = struct
 
       This can be used if you want to create pixel based data for a particular
       monitor, but most of the time you’re drawing to a surface where it is
-      better to use [Gdk.Surface.get_scale_factor] instead. *)
+      better to use
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}
+      instead. *)
 
   external get_scale : t -> float = "ml_gdk_monitor_get_scale"
   (** Gets the internal scale factor that maps from monitor coordinates to
@@ -2076,7 +2155,8 @@ end = struct
 
       This can be used if you want to create pixel based data for a particular
       monitor, but most of the time you’re drawing to a surface where it is
-      better to use [Gdk.Surface.get_scale] instead. *)
+      better to use {{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]}
+      instead. *)
 
   external get_refresh_rate : t -> int = "ml_gdk_monitor_get_refresh_rate"
   (** Gets the refresh rate of the monitor, if available.
@@ -2104,7 +2184,7 @@ end = struct
       coordinate space.
 
       The returned geometry is in ”application pixels”, not in ”device pixels”
-      (see [Gdk.Monitor.get_scale]). *)
+      (see {{!Ocgdk.Raw.Monitor.val-get_scale}[Gdk.Monitor.get_scale]}). *)
 
   external get_display : t -> Display.t = "ml_gdk_monitor_get_display"
   (** Gets the display that this monitor belongs to. *)
@@ -2180,7 +2260,8 @@ and Seat : sig
   (** Emitted whenever a new tool is made known to the seat.
 
       The tool may later be assigned to a device (i.e. on proximity with a
-      tablet). The device will emit the [Gdk.Device::tool-changed] signal
+      tablet). The device will emit the
+      {{!Ocgdk.Raw.Device.val-on_tool_changed}[Gdk.Device::tool-changed]} signal
       accordingly.
 
       A same tool may be used by several devices. *)
@@ -2278,7 +2359,7 @@ and Surface : sig
   (** Create a new popup surface.
 
       The surface will be attached to [parent] and can be positioned relative to
-      it using [Gdk.Popup.present]. *)
+      it using {{!Ocgdk.Raw.Popup.val-present}[Gdk.Popup.present]}. *)
 
   external new_toplevel : Display.t -> t = "ml_gdk_surface_new_toplevel"
   (** Creates a new toplevel surface. *)
@@ -2321,8 +2402,9 @@ and Surface : sig
       antialiased borders, and the input region controls where the surface is
       “clickable”.
 
-      Use [Gdk.Display.supports_input_shapes] to find out if a particular
-      backend supports input regions. *)
+      Use
+      {{!Ocgdk.Raw.Display.val-supports_input_shapes}[Gdk.Display.supports_input_shapes]}
+      to find out if a particular backend supports input regions. *)
 
   external set_device_cursor : t -> Device.t -> Cursor.t -> unit
     = "ml_gdk_surface_set_device_cursor"
@@ -2332,8 +2414,10 @@ and Surface : sig
       Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default.
 
-      Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
-      the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR]. *)
+      Use {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} or
+      {{!Ocgdk.Raw.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} to
+      create the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR].
+  *)
 
   external set_cursor : t -> Cursor.t option -> unit
     = "ml_gdk_surface_set_cursor"
@@ -2343,13 +2427,17 @@ and Surface : sig
       cursor of its parent surface. Most surfaces should use this default. Note
       that [cursor] must be for the same display as [surface].
 
-      Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
-      the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR]. *)
+      Use {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} or
+      {{!Ocgdk.Raw.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} to
+      create the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR].
+  *)
 
   external request_layout : t -> unit = "ml_gdk_surface_request_layout"
   (** Request a layout phase from the surface's frame clock.
 
-      See [Gdk.FrameClock.request_phase]. *)
+      See
+      {{!Ocgdk.Raw.Frame_clock.val-request_phase}[Gdk.FrameClock.request_phase]}.
+  *)
 
   external queue_render : t -> unit = "ml_gdk_surface_queue_render"
   (** Forces a [Gdk.Surface::render] signal emission for [surface] to be
@@ -2372,7 +2460,8 @@ and Surface : sig
   (** Returns the width of the given [surface].
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      [Gdk.Surface.get_scale_factor]). *)
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}).
+  *)
 
   external get_scale_factor : t -> int = "ml_gdk_surface_get_scale_factor"
   (** Returns the internal scale factor that maps from surface coordinates to
@@ -2395,21 +2484,25 @@ and Surface : sig
       buffers with a resolution that is bigger than the surface size (e.g. to
       show the surface on a high-resolution display, or in a magnifier).
 
-      Compare with [Gdk.Surface.get_scale_factor], which returns the next larger
-      integer.
+      Compare with
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]},
+      which returns the next larger integer.
 
       The scale may change during the lifetime of the surface. *)
 
   external get_mapped : t -> bool = "ml_gdk_surface_get_mapped"
   (** Checks whether the surface has been mapped.
 
-      A surface is mapped with [Gdk.Toplevel.present] or [Gdk.Popup.present]. *)
+      A surface is mapped with
+      {{!Ocgdk.Raw.Toplevel.val-present}[Gdk.Toplevel.present]} or
+      {{!Ocgdk.Raw.Popup.val-present}[Gdk.Popup.present]}. *)
 
   external get_height : t -> int = "ml_gdk_surface_get_height"
   (** Returns the height of the given [surface].
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      [Gdk.Surface.get_scale_factor]). *)
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}).
+  *)
 
   external get_frame_clock : t -> Frame_clock.t
     = "ml_gdk_surface_get_frame_clock"
@@ -2437,7 +2530,8 @@ and Surface : sig
       If the return value is [None] then there is no custom cursor set on the
       specified surface, and it is using the cursor for its parent surface.
 
-      Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
+      Use {{!Ocgdk.Raw.Surface.val-set_cursor}[Gdk.Surface.set_cursor]} to unset
+      the cursor of the surface. *)
 
   external get_cursor : t -> Cursor.t option = "ml_gdk_surface_get_cursor"
   (** Retrieves a [GdkCursor] pointer for the cursor currently set on the
@@ -2446,7 +2540,8 @@ and Surface : sig
       If the return value is [None] then there is no custom cursor set on the
       surface, and it is using the cursor for its parent surface.
 
-      Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
+      Use {{!Ocgdk.Raw.Surface.val-set_cursor}[Gdk.Surface.set_cursor]} to unset
+      the cursor of the surface. *)
 
   external destroy : t -> unit = "ml_gdk_surface_destroy"
   (** Destroys the window system resources associated with [surface] and
@@ -2489,7 +2584,8 @@ and Surface : sig
       The context is disconnected from any particular surface or surface. If the
       creation of the [GdkGLContext] failed, [error] will be set. Before using
       the returned [GdkGLContext], you will need to call
-      [Gdk.GLContext.make_current] or [Gdk.GLContext.realize]. *)
+      {{!Ocgdk.Raw.Gl_context.val-make_current}[Gdk.GLContext.make_current]} or
+      {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]}. *)
 
   external create_cairo_context : t -> Cairo_context.t
     = "ml_gdk_surface_create_cairo_context"
@@ -2499,7 +2595,8 @@ and Surface : sig
   (** Emits a short beep associated to [surface].
 
       If the display of [surface] does not support per-surface beeps, emits a
-      short beep on the display just as [Gdk.Display.beep]. *)
+      short beep on the display just as
+      {{!Ocgdk.Raw.Display.val-beep}[Gdk.Display.beep]}. *)
 
   (* Properties *)
 
@@ -2543,7 +2640,7 @@ end = struct
   (** Create a new popup surface.
 
       The surface will be attached to [parent] and can be positioned relative to
-      it using [Gdk.Popup.present]. *)
+      it using {{!Ocgdk.Raw.Popup.val-present}[Gdk.Popup.present]}. *)
 
   external new_toplevel : Display.t -> t = "ml_gdk_surface_new_toplevel"
   (** Creates a new toplevel surface. *)
@@ -2586,8 +2683,9 @@ end = struct
       antialiased borders, and the input region controls where the surface is
       “clickable”.
 
-      Use [Gdk.Display.supports_input_shapes] to find out if a particular
-      backend supports input regions. *)
+      Use
+      {{!Ocgdk.Raw.Display.val-supports_input_shapes}[Gdk.Display.supports_input_shapes]}
+      to find out if a particular backend supports input regions. *)
 
   external set_device_cursor : t -> Device.t -> Cursor.t -> unit
     = "ml_gdk_surface_set_device_cursor"
@@ -2597,8 +2695,10 @@ end = struct
       Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default.
 
-      Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
-      the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR]. *)
+      Use {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} or
+      {{!Ocgdk.Raw.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} to
+      create the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR].
+  *)
 
   external set_cursor : t -> Cursor.t option -> unit
     = "ml_gdk_surface_set_cursor"
@@ -2608,13 +2708,17 @@ end = struct
       cursor of its parent surface. Most surfaces should use this default. Note
       that [cursor] must be for the same display as [surface].
 
-      Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
-      the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR]. *)
+      Use {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} or
+      {{!Ocgdk.Raw.Cursor.val-new_from_texture}[Gdk.Cursor.new_from_texture]} to
+      create the cursor. To make the cursor invisible, use [GDK_BLANK_CURSOR].
+  *)
 
   external request_layout : t -> unit = "ml_gdk_surface_request_layout"
   (** Request a layout phase from the surface's frame clock.
 
-      See [Gdk.FrameClock.request_phase]. *)
+      See
+      {{!Ocgdk.Raw.Frame_clock.val-request_phase}[Gdk.FrameClock.request_phase]}.
+  *)
 
   external queue_render : t -> unit = "ml_gdk_surface_queue_render"
   (** Forces a [Gdk.Surface::render] signal emission for [surface] to be
@@ -2637,7 +2741,8 @@ end = struct
   (** Returns the width of the given [surface].
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      [Gdk.Surface.get_scale_factor]). *)
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}).
+  *)
 
   external get_scale_factor : t -> int = "ml_gdk_surface_get_scale_factor"
   (** Returns the internal scale factor that maps from surface coordinates to
@@ -2660,21 +2765,25 @@ end = struct
       buffers with a resolution that is bigger than the surface size (e.g. to
       show the surface on a high-resolution display, or in a magnifier).
 
-      Compare with [Gdk.Surface.get_scale_factor], which returns the next larger
-      integer.
+      Compare with
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]},
+      which returns the next larger integer.
 
       The scale may change during the lifetime of the surface. *)
 
   external get_mapped : t -> bool = "ml_gdk_surface_get_mapped"
   (** Checks whether the surface has been mapped.
 
-      A surface is mapped with [Gdk.Toplevel.present] or [Gdk.Popup.present]. *)
+      A surface is mapped with
+      {{!Ocgdk.Raw.Toplevel.val-present}[Gdk.Toplevel.present]} or
+      {{!Ocgdk.Raw.Popup.val-present}[Gdk.Popup.present]}. *)
 
   external get_height : t -> int = "ml_gdk_surface_get_height"
   (** Returns the height of the given [surface].
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      [Gdk.Surface.get_scale_factor]). *)
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}).
+  *)
 
   external get_frame_clock : t -> Frame_clock.t
     = "ml_gdk_surface_get_frame_clock"
@@ -2702,7 +2811,8 @@ end = struct
       If the return value is [None] then there is no custom cursor set on the
       specified surface, and it is using the cursor for its parent surface.
 
-      Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
+      Use {{!Ocgdk.Raw.Surface.val-set_cursor}[Gdk.Surface.set_cursor]} to unset
+      the cursor of the surface. *)
 
   external get_cursor : t -> Cursor.t option = "ml_gdk_surface_get_cursor"
   (** Retrieves a [GdkCursor] pointer for the cursor currently set on the
@@ -2711,7 +2821,8 @@ end = struct
       If the return value is [None] then there is no custom cursor set on the
       surface, and it is using the cursor for its parent surface.
 
-      Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
+      Use {{!Ocgdk.Raw.Surface.val-set_cursor}[Gdk.Surface.set_cursor]} to unset
+      the cursor of the surface. *)
 
   external destroy : t -> unit = "ml_gdk_surface_destroy"
   (** Destroys the window system resources associated with [surface] and
@@ -2754,7 +2865,8 @@ end = struct
       The context is disconnected from any particular surface or surface. If the
       creation of the [GdkGLContext] failed, [error] will be set. Before using
       the returned [GdkGLContext], you will need to call
-      [Gdk.GLContext.make_current] or [Gdk.GLContext.realize]. *)
+      {{!Ocgdk.Raw.Gl_context.val-make_current}[Gdk.GLContext.make_current]} or
+      {{!Ocgdk.Raw.Gl_context.val-realize}[Gdk.GLContext.realize]}. *)
 
   external create_cairo_context : t -> Cairo_context.t
     = "ml_gdk_surface_create_cairo_context"
@@ -2764,7 +2876,8 @@ end = struct
   (** Emits a short beep associated to [surface].
 
       If the display of [surface] does not support per-surface beeps, emits a
-      short beep on the display just as [Gdk.Display.beep]. *)
+      short beep on the display just as
+      {{!Ocgdk.Raw.Display.val-beep}[Gdk.Display.beep]}. *)
 
   (* Properties *)
 

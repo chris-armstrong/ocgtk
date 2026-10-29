@@ -23,19 +23,26 @@
     To use a [GtkDropTargetAsync] to receive drops on a widget, you create a
     [GtkDropTargetAsync] object, configure which data formats and actions you
     support, connect to its signals, and then attach it to the widget with
-    [Gtk.Widget.add_controller].
+    {{!Ocgtk.Widget.class-type-widget_t.method-add_controller}[Gtk.Widget.add_controller]}.
 
     During a drag operation, the first signal that a [GtkDropTargetAsync] emits
-    is [Gtk.DropTargetAsync::accept], which is meant to determine whether the
-    target is a possible drop site for the ongoing drop. The default handler for
-    the ::accept signal accepts the drop if it finds a compatible data format
-    and an action that is supported on both sides.
+    is
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_accept}[Gtk.DropTargetAsync::accept]},
+    which is meant to determine whether the target is a possible drop site for
+    the ongoing drop. The default handler for the ::accept signal accepts the
+    drop if it finds a compatible data format and an action that is supported on
+    both sides.
 
     If it is, and the widget becomes a target, you will receive a
-    [Gtk.DropTargetAsync::drag-enter] signal, followed by
-    [Gtk.DropTargetAsync::drag-motion] signals as the pointer moves, optionally
-    a [Gtk.DropTargetAsync::drop] signal when a drop happens, and finally a
-    [Gtk.DropTargetAsync::drag-leave] signal when the pointer moves off the
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_enter}
+     [Gtk.DropTargetAsync::drag-enter]} signal, followed by
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_motion}
+     [Gtk.DropTargetAsync::drag-motion]} signals as the pointer moves,
+    optionally a
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drop}[Gtk.DropTargetAsync::drop]}
+    signal when a drop happens, and finally a
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_leave}
+     [Gtk.DropTargetAsync::drag-leave]} signal when the pointer moves off the
     widget.
 
     The ::drag-enter and ::drag-motion handler return a [GdkDragAction] to
@@ -163,19 +170,26 @@ class drop_target_async : Raw.Drop_target_async.t -> drop_target_async_t
     To use a [GtkDropTargetAsync] to receive drops on a widget, you create a
     [GtkDropTargetAsync] object, configure which data formats and actions you
     support, connect to its signals, and then attach it to the widget with
-    [Gtk.Widget.add_controller].
+    {{!Ocgtk.Widget.class-type-widget_t.method-add_controller}[Gtk.Widget.add_controller]}.
 
     During a drag operation, the first signal that a [GtkDropTargetAsync] emits
-    is [Gtk.DropTargetAsync::accept], which is meant to determine whether the
-    target is a possible drop site for the ongoing drop. The default handler for
-    the ::accept signal accepts the drop if it finds a compatible data format
-    and an action that is supported on both sides.
+    is
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_accept}[Gtk.DropTargetAsync::accept]},
+    which is meant to determine whether the target is a possible drop site for
+    the ongoing drop. The default handler for the ::accept signal accepts the
+    drop if it finds a compatible data format and an action that is supported on
+    both sides.
 
     If it is, and the widget becomes a target, you will receive a
-    [Gtk.DropTargetAsync::drag-enter] signal, followed by
-    [Gtk.DropTargetAsync::drag-motion] signals as the pointer moves, optionally
-    a [Gtk.DropTargetAsync::drop] signal when a drop happens, and finally a
-    [Gtk.DropTargetAsync::drag-leave] signal when the pointer moves off the
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_enter}
+     [Gtk.DropTargetAsync::drag-enter]} signal, followed by
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_motion}
+     [Gtk.DropTargetAsync::drag-motion]} signals as the pointer moves,
+    optionally a
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drop}[Gtk.DropTargetAsync::drop]}
+    signal when a drop happens, and finally a
+    {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t.method-on_drag_leave}
+     [Gtk.DropTargetAsync::drag-leave]} signal when the pointer moves off the
     widget.
 
     The ::drag-enter and ::drag-motion handler return a [GdkDragAction] to

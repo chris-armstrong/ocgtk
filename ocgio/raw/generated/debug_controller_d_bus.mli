@@ -8,16 +8,19 @@
  It is a {{!Ocgio.Raw.Initable}[Gio.Initable]} object, and will register an \
  object at\n\
  [/org/gtk/Debugging] on the bus given as\n\
- [Gio.DebugControllerDBus:connection] once it’s initialized. The\n\
+ {{!Ocgio.Raw.Debug_controller_d_bus.val-get_connection}[Gio.DebugControllerDBus:connection]} \
+ once it’s initialized. The\n\
  object will be unregistered when the last reference to the\n\
  [GDebugControllerDBus] is dropped.\n\n\
  This D-Bus object can be used by remote processes to enable or disable debug\n\
  output in this process. Remote processes calling\n\
  [org.gtk.Debugging.SetDebugEnabled()] will affect the value of\n\
- [Gio.DebugController:debug-enabled] and, by default,\n\
+ {{!Ocgio.Raw.Debug_controller.val-get_debug_enabled}[Gio.DebugController:debug-enabled]} \
+ and, by default,\n\
  [GLib.log_get_debug_enabled].\n\n\
  By default, no processes are allowed to call [SetDebugEnabled()] unless a\n\
- [Gio.DebugControllerDBus::authorize] signal handler is installed. This\n\
+ {{!Ocgio.Raw.Debug_controller_d_bus.val-on_authorize}[Gio.DebugControllerDBus::authorize]} \
+ signal handler is installed. This\n\
  is because the process may be privileged, or might expose sensitive\n\
  information in its debug output. You may want to restrict the ability to\n\
  enable debug output to privileged users or processes.\n\n\
@@ -45,7 +48,9 @@
  as it’s accessed through the [org.freedesktop.DBus.Properties] interface.\n\n\
  Another option is to use polkit to allow or deny requests on a case-by-case\n\
  basis, allowing for the possibility of dynamic authorisation. To do this,\n\
- connect to the [Gio.DebugControllerDBus::authorize] signal and query\n\
+ connect to the \
+ {{!Ocgio.Raw.Debug_controller_d_bus.val-on_authorize}[Gio.DebugControllerDBus::authorize]} \
+ signal and query\n\
  polkit in it:\n\n\
  {[\n\
 \  g_autoptr(GError) child_error = NULL;\n\

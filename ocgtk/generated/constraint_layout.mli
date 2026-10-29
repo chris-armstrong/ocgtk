@@ -108,7 +108,8 @@ end
      that is: have more than one solution. The behavior of an unstable layout\n\
      is undefined.\n\n\
      A constraint-based layout with conflicting constraints may be unsolvable,\n\
-     and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
+     and lead to an unstable layout. You can use the \
+     {{!Ocgtk.Constraint.class-type-constraint__t.method-get_strength}[Gtk.Constraint:strength]}\n\
      property of \
      {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} to \
      \"nudge\" the layout towards a solution.\n\n\
@@ -245,7 +246,8 @@ class constraint_layout : Raw.Constraint_layout.t -> constraint_layout_t
  that is: have more than one solution. The behavior of an unstable layout\n\
  is undefined.\n\n\
  A constraint-based layout with conflicting constraints may be unsolvable,\n\
- and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
+ and lead to an unstable layout. You can use the \
+ {{!Ocgtk.Constraint.class-type-constraint__t.method-get_strength}[Gtk.Constraint:strength]}\n\
  property of {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} to \
  \"nudge\" the layout towards a solution.\n\n\
  {b GtkConstraintLayout as GtkBuildable}\n\n\

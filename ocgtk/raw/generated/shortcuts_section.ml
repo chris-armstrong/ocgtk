@@ -5,12 +5,17 @@
     a major application mode.
 
     If your application needs multiple sections, you should give each section a
-    unique [Gtk.ShortcutsSection:section-name] and a
-    [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
+    unique
+    {{!Ocgtk.Raw.Shortcuts_section.val-get_section_name}[Gtk.ShortcutsSection:section-name]}
+    and a
+    {{!Ocgtk.Raw.Shortcuts_section.val-get_title}[Gtk.ShortcutsSection:title]}
+    that can be shown in the section selector of the
+    {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
 
-    The [Gtk.ShortcutsSection:max-height] property can be used to influence how
-    the groups in the section are distributed over pages and columns.
+    The
+    {{!Ocgtk.Raw.Shortcuts_section.val-get_max_height}[Gtk.ShortcutsSection:max-height]}
+    property can be used to influence how the groups in the section are
+    distributed over pages and columns.
 
     This widget is only meant to be used with
     {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
@@ -23,7 +28,7 @@
     objects.
 
     If you need to add a group programmatically, use
-    [Gtk.ShortcutsSection.add_group].
+    {{!Ocgtk.Raw.Shortcuts_section.val-add_group}[Gtk.ShortcutsSection.add_group]}.
 
     {b Shortcuts and Gestures}
 
@@ -31,7 +36,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsSection::change-current-page]
+    - {{!Ocgtk.Raw.Shortcuts_section.val-on_change_current_page}[Gtk.ShortcutsSection::change-current-page]}
 
     The class built on this module is in {!Ocgtk.Shortcuts_section}. *)
 
@@ -75,16 +80,20 @@ external get_section_name : t -> string
 (** A unique name to identify this section among the sections added to the
     [GtkShortcutsWindow].
 
-    Setting the [Gtk.ShortcutsWindow:section-name] property to this string will
-    make this section shown in the [GtkShortcutsWindow]. *)
+    Setting the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_section_name}[Gtk.ShortcutsWindow:section-name]}
+    property to this string will make this section shown in the
+    [GtkShortcutsWindow]. *)
 
 external set_section_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_section_name"
 (** A unique name to identify this section among the sections added to the
     [GtkShortcutsWindow].
 
-    Setting the [Gtk.ShortcutsWindow:section-name] property to this string will
-    make this section shown in the [GtkShortcutsWindow]. *)
+    Setting the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_section_name}[Gtk.ShortcutsWindow:section-name]}
+    property to this string will make this section shown in the
+    [GtkShortcutsWindow]. *)
 
 external get_title : t -> string = "ml_gtk_shortcuts_section_get_title"
 (** The string to show in the section selector of the [GtkShortcutsWindow] for
@@ -103,18 +112,20 @@ external set_title : t -> string -> unit = "ml_gtk_shortcuts_section_set_title"
 external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
 (** A view name to filter the groups in this section by.
 
-    See [Gtk.ShortcutsGroup:view].
+    See {{!Ocgtk.Raw.Shortcuts_group.val-get_view}[Gtk.ShortcutsGroup:view]}.
 
-    Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+    Applications are expected to use the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_view_name}[Gtk.ShortcutsWindow:view-name]}
     property for this purpose. *)
 
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_view_name"
 (** A view name to filter the groups in this section by.
 
-    See [Gtk.ShortcutsGroup:view].
+    See {{!Ocgtk.Raw.Shortcuts_group.val-get_view}[Gtk.ShortcutsGroup:view]}.
 
-    Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
+    Applications are expected to use the
+    {{!Ocgtk.Raw.Shortcuts_window.val-get_view_name}[Gtk.ShortcutsWindow:view-name]}
     property for this purpose. *)
 
 let on_change_current_page ?after obj ~callback =

@@ -9,11 +9,14 @@ type alignment =
 (** [PangoAlignment] describes how to align the lines of a [PangoLayout] within
     the available space.
 
-    If the [PangoLayout] is set to justify using [Pango.Layout.set_justify],
+    If the [PangoLayout] is set to justify using
+    {{!Ocpango.Layout.class-type-layout_t.method-set_justify}[Pango.Layout.set_justify]},
     this only affects partial lines.
 
-    See [Pango.Layout.set_auto_dir] for how text direction affects the
-    interpretation of [PangoAlignment] values. *)
+    See
+    {{!Ocpango.Layout.class-type-layout_t.method-set_auto_dir}[Pango.Layout.set_auto_dir]}
+    for how text direction affects the interpretation of [PangoAlignment]
+    values. *)
 
 val alignment_of_int : int -> alignment
 val alignment_to_int : alignment -> int
@@ -322,8 +325,9 @@ type gravity =
 
     Not every value in this enumeration makes sense for every usage of
     [PangoGravity]; for example, [PANGO_GRAVITY_AUTO] only can be passed to
-    [Pango.Context.set_base_gravity] and can only be returned by
-    [Pango.Context.get_base_gravity].
+    {{!Ocpango.Context.class-type-context_t.method-set_base_gravity}[Pango.Context.set_base_gravity]}
+    and can only be returned by
+    {{!Ocpango.Context.class-type-context_t.method-get_base_gravity}[Pango.Context.get_base_gravity]}.
 
     See also: {{!Ocpango.Enums.type-gravityhint}[Pango.GravityHint]}
     @since 1.16 *)
@@ -743,7 +747,8 @@ type layoutserializeflags_flag =
   [ `DEFAULT  (** Default behavior *)
   | `CONTEXT  (** Include context information *)
   | `OUTPUT  (** Include information about the formatted output *) ]
-(** Flags that influence the behavior of [Pango.Layout.serialize].
+(** Flags that influence the behavior of
+    {{!Ocpango.Layout.class-type-layout_t.method-serialize}[Pango.Layout.serialize]}.
 
     New members may be added to this enumeration over time.
     @since 1.50 *)

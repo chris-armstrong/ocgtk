@@ -21,14 +21,16 @@
     exchanged in. It is assumed that this set is ordered. [GTypes] are more
     important than mime types. Order between different [GTypes] or mime types is
     the order they were added in, most important first. Functions that care
-    about order, such as [Gdk.ContentFormats.union], will describe in their
-    documentation how they interpret that order, though in general the order of
-    the first argument is considered the primary order of the result, followed
-    by the order of further arguments.
+    about order, such as
+    {{!Ocgdk.Raw.Content_formats.val-union}[Gdk.ContentFormats.union]}, will
+    describe in their documentation how they interpret that order, though in
+    general the order of the first argument is considered the primary order of
+    the result, followed by the order of further arguments.
 
-    For debugging purposes, the function [Gdk.ContentFormats.to_string] exists.
-    It will print a comma-separated list of formats from most important to least
-    important.
+    For debugging purposes, the function
+    {{!Ocgdk.Raw.Content_formats.val-to_string}[Gdk.ContentFormats.to_string]}
+    exists. It will print a comma-separated list of formats from most important
+    to least important.
 
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be

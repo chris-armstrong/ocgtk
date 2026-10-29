@@ -14,17 +14,24 @@
 
     To make filtering appear more reactive, it is a good idea to not react to
     every change in the entry text immediately, but only after a short delay. To
-    support this, [GtkSearchEntry] emits the [Gtk.SearchEntry::search-changed]
-    signal which can be used instead of the [Gtk.Editable::changed] signal.
+    support this, [GtkSearchEntry] emits the
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal which can be used instead of the
+    {{!Ocgtk.Raw.Editable.val-on_changed}[Gtk.Editable::changed]} signal.
 
-    The [Gtk.SearchEntry::previous-match], [Gtk.SearchEntry::next-match] and
-    [Gtk.SearchEntry::stop-search] signals can be used to implement moving
-    between search results and ending the search.
+    The
+    {{!Ocgtk.Raw.Search_entry.val-on_previous_match}[Gtk.SearchEntry::previous-match]},
+    {{!Ocgtk.Raw.Search_entry.val-on_next_match}[Gtk.SearchEntry::next-match]}
+    and
+    {{!Ocgtk.Raw.Search_entry.val-on_stop_search}[Gtk.SearchEntry::stop-search]}
+    signals can be used to implement moving between search results and ending
+    the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
     {{!Ocgtk.Raw.Search_bar}[Gtk.SearchBar]}. If that is not the case, you can
-    use [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input
-    from another widget.
+    use
+    {{!Ocgtk.Raw.Search_entry.val-set_key_capture_widget}[Gtk.SearchEntry.set_key_capture_widget]}
+    to let it capture key input from another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
     {{!Ocgtk.Raw.Editable}[Gtk.Editable]} API.
@@ -33,10 +40,10 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.SearchEntry::activate]
-    - [Gtk.SearchEntry::next-match]
-    - [Gtk.SearchEntry::previous-match]
-    - [Gtk.SearchEntry::stop-search]
+    - {{!Ocgtk.Raw.Search_entry.val-on_activate}[Gtk.SearchEntry::activate]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_next_match}[Gtk.SearchEntry::next-match]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_previous_match}[Gtk.SearchEntry::previous-match]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_stop_search}[Gtk.SearchEntry::stop-search]}
 
     {b CSS Nodes}
 
@@ -50,7 +57,9 @@
 
     {b Accessibility}
 
-    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role.
+    [GtkSearchEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH_BOX}[Gtk.AccessibleRole.search_box]}
+    role.
 
     The class built on this module is in {!Ocgtk.Search_entry}. *)
 
@@ -66,7 +75,8 @@ external new_ : unit -> t = "ml_gtk_search_entry_new"
 external set_search_delay : t -> int -> unit
   = "ml_gtk_search_entry_set_search_delay"
 (** Set the delay to be used between the last keypress and the
-    [Gtk.SearchEntry::search-changed] signal being emitted. *)
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal being emitted. *)
 
 external set_placeholder_text : t -> string option -> unit
   = "ml_gtk_search_entry_set_placeholder_text"
@@ -84,14 +94,16 @@ external set_key_capture_widget :
     Key events are consumed by the search entry to start or continue a search.
 
     If the entry is part of a [GtkSearchBar], it is preferable to call
-    [Gtk.SearchBar.set_key_capture_widget] instead, which will reveal the entry
-    in addition to triggering the search entry.
+    {{!Ocgtk.Raw.Search_bar.val-set_key_capture_widget}[Gtk.SearchBar.set_key_capture_widget]}
+    instead, which will reveal the entry in addition to triggering the search
+    entry.
 
     Note that despite the name of this function, the events are only 'captured'
     in the bubble phase, which means that editable child widgets of [widget]
     will receive text input before it gets captured. If that is not desired, you
     can capture and forward the events yourself with
-    [Gtk.EventControllerKey.forward]. *)
+    {{!Ocgtk.Raw.Event_controller_key.val-forward}[Gtk.EventControllerKey.forward]}.
+*)
 
 external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
   = "ml_gtk_search_entry_set_input_purpose"
@@ -103,7 +115,8 @@ external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
 
 external get_search_delay : t -> int = "ml_gtk_search_entry_get_search_delay"
 (** Get the delay to be used between the last keypress and the
-    [Gtk.SearchEntry::search-changed] signal being emitted. *)
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal being emitted. *)
 
 external get_placeholder_text : t -> string option
   = "ml_gtk_search_entry_get_placeholder_text"

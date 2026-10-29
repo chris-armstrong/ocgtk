@@ -9,8 +9,10 @@
  outputting the composed result. This is called {i preediting}, and an input\n\
  method may provide feedback about this process by displaying the intermediate\n\
  composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
- [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
- and [Gtk.IMContext::preedit-end] signals.\n\n\
+ {{!Ocgtk.Raw.Im_context.val-on_preedit_start}[Gtk.IMContext::preedit-start]}, \
+ {{!Ocgtk.Raw.Im_context.val-on_preedit_changed}[Gtk.IMContext::preedit-changed]}\n\
+ and {{!Ocgtk.Raw.Im_context.val-on_preedit_end}[Gtk.IMContext::preedit-end]} \
+ signals.\n\n\
  For instance, the built-in GTK input method \
  {{!Ocgtk.Raw.Im_context_simple}[Gtk.IMContextSimple]}\n\
  implements the input of arbitrary Unicode code points by holding down the\n\
@@ -47,16 +49,16 @@ external set_surrounding_with_selection :
   = "ml_gtk_im_context_set_surrounding_with_selection"
 (** Sets surrounding context around the insertion point and preedit string. This
     function is expected to be called in response to the
-    [Gtk.IMContext::retrieve_surrounding] signal, and will likely have no effect
-    if called at other times. *)
+    {{!Ocgtk.Raw.Im_context.val-on_retrieve_surrounding}[Gtk.IMContext::retrieve_surrounding]}
+    signal, and will likely have no effect if called at other times. *)
 
 external set_surrounding : t -> string -> int -> int -> unit
   = "ml_gtk_im_context_set_surrounding"
 (** Sets surrounding context around the insertion point and preedit string.
 
     This function is expected to be called in response to the
-    [Gtk.IMContext::retrieve-surrounding] signal, and will likely have no effect
-    if called at other times. *)
+    {{!Ocgtk.Raw.Im_context.val-on_retrieve_surrounding}[Gtk.IMContext::retrieve-surrounding]}
+    signal, and will likely have no effect if called at other times. *)
 
 external set_cursor_location : t -> Ocgdk_raw.Rectangle.t -> unit
   = "ml_gtk_im_context_set_cursor_location"
@@ -213,4 +215,5 @@ val on_retrieve_surrounding :
     the context surrounding the cursor.
 
     The callback should set the input method surrounding context by calling the
-    [Gtk.IMContext.set_surrounding] method. *)
+    {{!Ocgtk.Raw.Im_context.val-set_surrounding}[Gtk.IMContext.set_surrounding]}
+    method. *)

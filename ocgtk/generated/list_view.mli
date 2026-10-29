@@ -108,13 +108,15 @@ end
      [GtkListView] uses its factory to generate one row widget for each visible\n\
      item and shows them in a linear display, either vertically or \
      horizontally.\n\n\
-     The [Gtk.ListView:show-separators] property offers a simple way to\n\
+     The \
+     {{!Ocgtk.List_view.class-type-list_view_t.method-get_show_separators}[Gtk.ListView:show-separators]} \
+     property offers a simple way to\n\
      display separators between the rows.\n\n\
      [GtkListView] allows the user to select items according to the selection\n\
      characteristics of the model. For models that allow multiple selected \
      items,\n\
      it is possible to turn on _rubberband selection_, using\n\
-     [Gtk.ListView:enable-rubberband].\n\n\
+     {{!Ocgtk.List_view.class-type-list_view_t.method-get_enable_rubberband}[Gtk.ListView:enable-rubberband]}.\n\n\
      If you need multiple columns with headers, see \
      {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.\n\n\
      To learn more about the list widget framework, see the\n\
@@ -167,7 +169,9 @@ end
      {b Actions}\n\n\
      [GtkListView] defines a set of built-in actions:\n\n\
      - [list.activate-item] activates the item at given position by emitting\n\
-     the [Gtk.ListView::activate] signal.\n\n\
+     the \
+     {{!Ocgtk.List_view.class-type-list_view_t.method-on_activate}[Gtk.ListView::activate]} \
+     signal.\n\n\
      {b CSS nodes}\n\n\
      {[\n\
      listview[.separators][.rich-list][.navigation-sidebar][.data-table]\n\
@@ -179,17 +183,24 @@ end
      ╰── [rubberband]\n\
      ]}\n\n\
      [GtkListView] uses a single CSS node named [listview]. It may carry the\n\
-     [.separators] style class, when [Gtk.ListView:show-separators]\n\
+     [.separators] style class, when \
+     {{!Ocgtk.List_view.class-type-list_view_t.method-get_show_separators}[Gtk.ListView:show-separators]}\n\
      property is set. Each child widget uses a single CSS node named [row].\n\
-     If the [Gtk.ListItem:activatable] property is set, the\n\
+     If the \
+     {{!Ocgtk.List_item.class-type-list_item_t.method-get_activatable}[Gtk.ListItem:activatable]} \
+     property is set, the\n\
      corresponding row will have the [.activatable] style class. For\n\
      rubberband selection, a node with name [rubberband] is used.\n\n\
      The main listview node may also carry style classes to select\n\
      the style of list presentation:\n\
      .rich-list, .navigation-sidebar or .data-table.\n\n\
      {b Accessibility}\n\n\
-     [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list\n\
-     items use the [Gtk.AccessibleRole.list_item] role."]
+     [GtkListView] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST}[Gtk.AccessibleRole.list]} \
+     role, and the list\n\
+     items use the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST_ITEM}[Gtk.AccessibleRole.list_item]} \
+     role."]
 
 class list_view : Raw.List_view.t -> list_view_t
 (** Wraps a raw handle of {!Ocgtk.Raw.List_view.t}. *)
@@ -199,12 +210,14 @@ class list_view : Raw.List_view.t -> list_view_t
  Presents a large dynamic list of items.\n\n\
  [GtkListView] uses its factory to generate one row widget for each visible\n\
  item and shows them in a linear display, either vertically or horizontally.\n\n\
- The [Gtk.ListView:show-separators] property offers a simple way to\n\
+ The \
+ {{!Ocgtk.List_view.class-type-list_view_t.method-get_show_separators}[Gtk.ListView:show-separators]} \
+ property offers a simple way to\n\
  display separators between the rows.\n\n\
  [GtkListView] allows the user to select items according to the selection\n\
  characteristics of the model. For models that allow multiple selected items,\n\
  it is possible to turn on _rubberband selection_, using\n\
- [Gtk.ListView:enable-rubberband].\n\n\
+ {{!Ocgtk.List_view.class-type-list_view_t.method-get_enable_rubberband}[Gtk.ListView:enable-rubberband]}.\n\n\
  If you need multiple columns with headers, see \
  {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.\n\n\
  To learn more about the list widget framework, see the\n\
@@ -254,7 +267,9 @@ class list_view : Raw.List_view.t -> list_view_t
  {b Actions}\n\n\
  [GtkListView] defines a set of built-in actions:\n\n\
  - [list.activate-item] activates the item at given position by emitting\n\
- the [Gtk.ListView::activate] signal.\n\n\
+ the \
+ {{!Ocgtk.List_view.class-type-list_view_t.method-on_activate}[Gtk.ListView::activate]} \
+ signal.\n\n\
  {b CSS nodes}\n\n\
  {[\n\
  listview[.separators][.rich-list][.navigation-sidebar][.data-table]\n\
@@ -266,17 +281,24 @@ class list_view : Raw.List_view.t -> list_view_t
  ╰── [rubberband]\n\
  ]}\n\n\
  [GtkListView] uses a single CSS node named [listview]. It may carry the\n\
- [.separators] style class, when [Gtk.ListView:show-separators]\n\
+ [.separators] style class, when \
+ {{!Ocgtk.List_view.class-type-list_view_t.method-get_show_separators}[Gtk.ListView:show-separators]}\n\
  property is set. Each child widget uses a single CSS node named [row].\n\
- If the [Gtk.ListItem:activatable] property is set, the\n\
+ If the \
+ {{!Ocgtk.List_item.class-type-list_item_t.method-get_activatable}[Gtk.ListItem:activatable]} \
+ property is set, the\n\
  corresponding row will have the [.activatable] style class. For\n\
  rubberband selection, a node with name [rubberband] is used.\n\n\
  The main listview node may also carry style classes to select\n\
  the style of list presentation:\n\
  .rich-list, .navigation-sidebar or .data-table.\n\n\
  {b Accessibility}\n\n\
- [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list\n\
- items use the [Gtk.AccessibleRole.list_item] role."]
+ [GtkListView] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST}[Gtk.AccessibleRole.list]} \
+ role, and the list\n\
+ items use the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-LIST_ITEM}[Gtk.AccessibleRole.list_item]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

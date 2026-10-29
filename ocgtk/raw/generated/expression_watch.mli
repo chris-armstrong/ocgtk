@@ -27,5 +27,6 @@ external evaluate : t -> Gobject.Value.t -> bool
 (** Evaluates the watched expression and on success stores the result in
     [value].
 
-    This is equivalent to calling [Gtk.Expression.evaluate] with the expression
-    and this pointer originally used to create [watch]. *)
+    This is equivalent to calling
+    {{!Ocgtk.Raw.Expression.val-evaluate}[Gtk.Expression.evaluate]} with the
+    expression and this pointer originally used to create [watch]. *)

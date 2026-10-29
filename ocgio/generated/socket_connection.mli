@@ -40,10 +40,12 @@ class type socket_connection_t =
     connection types for specific combination of socket family/type/protocol
     using [Gio.SocketConnection.factory_register_type].
 
-    To close a [GSocketConnection], use [Gio.IOStream.close]. Closing both
-    substreams of the {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]}
-    separately will not close the underlying
-    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}. *)
+    To close a [GSocketConnection], use
+    {{!Ocgio.Io_stream.class-type-io_stream_t.method-close}[Gio.IOStream.close]}.
+    Closing both substreams of the
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} separately will
+    not close the underlying {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}.
+*)
 
 class socket_connection : Raw.Socket_connection.t -> socket_connection_t
 (** Wraps a raw handle of {!Ocgio.Raw.Socket_connection.t}. *)
@@ -68,10 +70,12 @@ class socket_connection : Raw.Socket_connection.t -> socket_connection_t
     connection types for specific combination of socket family/type/protocol
     using [Gio.SocketConnection.factory_register_type].
 
-    To close a [GSocketConnection], use [Gio.IOStream.close]. Closing both
-    substreams of the {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]}
-    separately will not close the underlying
-    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}. *)
+    To close a [GSocketConnection], use
+    {{!Ocgio.Io_stream.class-type-io_stream_t.method-close}[Gio.IOStream.close]}.
+    Closing both substreams of the
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} separately will
+    not close the underlying {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}.
+*)
 
 (** {1:constructors Constructors} *)
 

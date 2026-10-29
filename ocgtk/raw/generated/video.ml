@@ -33,7 +33,8 @@ external new_for_file : Ocgio_raw.File.t option -> t
 external new_for_filename : string option -> t = "ml_gtk_video_new_for_filename"
 (** Creates a [GtkVideo] to play back the given [filename].
 
-    This is a utility function that calls [Gtk.Video.new_for_file], See that
+    This is a utility function that calls
+    {{!Ocgtk.Raw.Video.val-new_for_file}[Gtk.Video.new_for_file]}, See that
     function for details. *)
 
 external new_for_media_stream : Media_stream.t option -> t
@@ -43,14 +44,16 @@ external new_for_media_stream : Media_stream.t option -> t
 external new_for_resource : string option -> t = "ml_gtk_video_new_for_resource"
 (** Creates a [GtkVideo] to play back the resource at the given [resource_path].
 
-    This is a utility function that calls [Gtk.Video.new_for_file]. *)
+    This is a utility function that calls
+    {{!Ocgtk.Raw.Video.val-new_for_file}[Gtk.Video.new_for_file]}. *)
 
 (* Methods *)
 
 external set_resource : t -> string option -> unit = "ml_gtk_video_set_resource"
 (** Makes [self] play the resource at the given [resource_path].
 
-    This is a utility function that calls [Gtk.Video.set_file]. *)
+    This is a utility function that calls
+    {{!Ocgtk.Raw.Video.val-set_file}[Gtk.Video.set_file]}. *)
 
 external set_media_stream : t -> Media_stream.t option -> unit
   = "ml_gtk_video_set_media_stream"
@@ -60,8 +63,8 @@ external set_media_stream : t -> Media_stream.t option -> unit
     manage a media stream yourself, consider using a
     {{!Ocgtk.Raw.Picture}[Gtk.Picture]} for display.
 
-    If you want to display a file, consider using [Gtk.Video.set_file] instead.
-*)
+    If you want to display a file, consider using
+    {{!Ocgtk.Raw.Video.val-set_file}[Gtk.Video.set_file]} instead. *)
 
 external set_loop : t -> bool -> unit = "ml_gtk_video_set_loop"
 (** Sets whether new files loaded by [self] should be set to loop. *)

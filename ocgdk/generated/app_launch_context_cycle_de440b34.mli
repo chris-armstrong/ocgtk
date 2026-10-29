@@ -84,8 +84,8 @@ end
     Represents the platform-specific draw context.
 
     [GdkCairoContext]s are created for a surface using
-    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
-    on that surface. *)
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_cairo_context}[Gdk.Surface.create_cairo_context]},
+    and the context can then be used to draw on that surface. *)
 and cairo_context_t = object
   (** {2:methods Methods} *)
 
@@ -108,13 +108,19 @@ end
 
     Represents data shared between applications or inside an application.
 
-    To get a [GdkClipboard] object, use [Gdk.Display.get_clipboard] or
-    [Gdk.Display.get_primary_clipboard]. You can find out about the data that is
-    currently available in a clipboard using [Gdk.Clipboard.get_formats].
+    To get a [GdkClipboard] object, use
+    {{!Ocgdk.Display.class-type-display_t.method-get_clipboard}[Gdk.Display.get_clipboard]}
+    or
+    {{!Ocgdk.Display.class-type-display_t.method-get_primary_clipboard}[Gdk.Display.get_primary_clipboard]}.
+    You can find out about the data that is currently available in a clipboard
+    using
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-get_formats}[Gdk.Clipboard.get_formats]}.
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a
+    can use
+    {{!Ocgdk.Clipboard.class-type-clipboard_t.method-set_content}[Gdk.Clipboard.set_content]},
+    which takes a
     {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 
@@ -360,12 +366,16 @@ end
 
     Most of the input device handling has been factored out into separate
     {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
-    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
-    [Gdk.Display.list_seats].
+    or more seats, which can be accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_default_seat}[Gdk.Display.get_default_seat]}
+    and
+    {{!Ocgdk.Display.class-type-display_t.method-list_seats}[Gdk.Display.list_seats]}.
 
     Output devices are represented by
     {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
-    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
+    accessed with
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
+    and similar APIs. *)
 and display_t = object
   (** {2:signals Signals} *)
 
@@ -885,7 +895,8 @@ end
      {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}\n\n\
      Represents a platform-specific OpenGL draw context.\n\n\
      [GdkGLContext]s are created for a surface using\n\
-     [Gdk.Surface.create_gl_context], and the context will match\n\
+     {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]}, \
+     and the context will match\n\
      the characteristics of the surface.\n\n\
      A [GdkGLContext] is not tied to any particular normal framebuffer.\n\
      For instance, it cannot draw to the surface back buffer. The GDK\n\
@@ -900,11 +911,16 @@ end
      {b Creating a new OpenGL context}\n\n\
      In order to create a new [GdkGLContext] instance you need a [GdkSurface],\n\
      which you typically get during the realize call of a widget.\n\n\
-     A [GdkGLContext] is not realized until either [Gdk.GLContext.make_current]\n\
-     or [Gdk.GLContext.realize] is called. It is possible to specify\n\
+     A [GdkGLContext] is not realized until either \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-make_current}[Gdk.GLContext.make_current]}\n\
+     or \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]} \
+     is called. It is possible to specify\n\
      details of the GL context like the OpenGL version to be used, or whether\n\
      the GL context should have extra state validation enabled after calling\n\
-     [Gdk.Surface.create_gl_context] by calling [Gdk.GLContext.realize].\n\
+     {{!Ocgdk.Surface.class-type-surface_t.method-create_gl_context}[Gdk.Surface.create_gl_context]} \
+     by calling \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t.method-realize}[Gdk.GLContext.realize]}.\n\
      If the realization fails you have the option to change the settings of\n\
      the [GdkGLContext] and try again.\n\n\
      {b Using a GdkGLContext}\n\n\
@@ -927,7 +943,9 @@ end
     Represents the individual outputs that are associated with a [GdkDisplay].
 
     [GdkDisplay] keeps a [GListModel] to enumerate and monitor monitors with
-    [Gdk.Display.get_monitors]. You can use [Gdk.Display.get_monitor_at_surface]
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitors}[Gdk.Display.get_monitors]}.
+    You can use
+    {{!Ocgdk.Display.class-type-display_t.method-get_monitor_at_surface}[Gdk.Display.get_monitor_at_surface]}
     to find a particular monitor. *)
 and monitor_t = object
   (** {2:signals Signals} *)
@@ -1329,8 +1347,8 @@ end
     Represents the platform-specific Vulkan draw context.
 
     [GdkVulkanContext]s are created for a surface using
-    [Gdk.Surface.create_vulkan_context], and the context will match the
-    characteristics of the surface.
+    {{!Ocgdk.Surface.class-type-surface_t.method-create_vulkan_context}[Gdk.Surface.create_vulkan_context]},
+    and the context will match the characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
     fail, returning [None] context. *)
@@ -1389,7 +1407,8 @@ val new_popup : surface_t -> bool -> surface_t
 (** Create a new popup surface.
 
     The surface will be attached to [parent] and can be positioned relative to
-    it using [Gdk.Popup.present]. *)
+    it using
+    {{!Ocgdk.Popup.class-type-popup_t.method-present}[Gdk.Popup.present]}. *)
 
 val new_toplevel : display_t -> surface_t
 (** Creates a new toplevel surface. *)

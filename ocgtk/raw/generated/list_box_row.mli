@@ -95,8 +95,8 @@ external changed : t -> unit = "ml_gtk_list_box_row_changed"
     This generally means that if you don’t fully control the data model you have
     to duplicate the data that affects the listbox row functions into the row
     widgets themselves. Another alternative is to call
-    [Gtk.ListBox.invalidate_sort] on any model change, but that is more
-    expensive. *)
+    {{!Ocgtk.Raw.List_box.val-invalidate_sort}[Gtk.ListBox.invalidate_sort]} on
+    any model change, but that is more expensive. *)
 
 (* Properties *)
 
@@ -105,5 +105,6 @@ val on_activate :
 (** This is a keybinding signal, which will cause this row to be activated.
 
     If you want to be notified when the user activates a row (by key or not),
-    use the [Gtk.ListBox::row-activated] signal on the row’s parent
-    [GtkListBox]. *)
+    use the
+    {{!Ocgtk.Raw.List_box.val-on_row_activated}[Gtk.ListBox::row-activated]}
+    signal on the row’s parent [GtkListBox]. *)

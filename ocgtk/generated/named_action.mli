@@ -14,7 +14,8 @@
 
     Activates a named action.
 
-    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
+    See [Gtk.WidgetClass.install_action] and
+    {{!Ocgtk.Widget.class-type-widget_t.method-insert_action_group}[Gtk.Widget.insert_action_group]}
     for ways to associate named actions with widgets. *)
 class type named_action_t = object
   inherit Shortcut_action.shortcut_action_t
@@ -36,7 +37,8 @@ class named_action : Raw.Named_action.t -> named_action_t
 
     Activates a named action.
 
-    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
+    See [Gtk.WidgetClass.install_action] and
+    {{!Ocgtk.Widget.class-type-widget_t.method-insert_action_group}[Gtk.Widget.insert_action_group]}
     for ways to associate named actions with widgets. *)
 
 (** {1:constructors Constructors} *)
@@ -47,4 +49,6 @@ val new_ : string -> named_action_t
 
     It also passes the given arguments to it.
 
-    See [Gtk.Widget.insert_action_group] for how to add actions to widgets. *)
+    See
+    {{!Ocgtk.Widget.class-type-widget_t.method-insert_action_group}[Gtk.Widget.insert_action_group]}
+    for how to add actions to widgets. *)

@@ -7,13 +7,15 @@
     database for changes (newly installed or removed applications).
 
     Call [Gio.AppInfoMonitor.get] to get a [GAppInfoMonitor] and connect to the
-    [Gio.AppInfoMonitor::changed] signal. The signal will be emitted once when
-    the app info database changes, and will not be emitted again until after the
-    next call to [Gio.AppInfo.get_all] or another [g_app_info_*()] function.
-    This is because monitoring the app info database for changes is expensive.
+    {{!Ocgio.Raw.App_info_monitor.val-on_changed}[Gio.AppInfoMonitor::changed]}
+    signal. The signal will be emitted once when the app info database changes,
+    and will not be emitted again until after the next call to
+    [Gio.AppInfo.get_all] or another [g_app_info_*()] function. This is because
+    monitoring the app info database for changes is expensive.
 
-    The following functions will re-arm the [Gio.AppInfoMonitor::changed] signal
-    so it can be emitted again:
+    The following functions will re-arm the
+    {{!Ocgio.Raw.App_info_monitor.val-on_changed}[Gio.AppInfoMonitor::changed]}
+    signal so it can be emitted again:
 
     - [Gio.AppInfo.get_all]
     - [Gio.AppInfo.get_all_for_type]

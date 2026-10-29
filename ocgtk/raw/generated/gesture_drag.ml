@@ -4,10 +4,12 @@
 (** Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the
-    [Gtk.GestureDrag::drag-begin], [Gtk.GestureDrag::drag-update] and
-    [Gtk.GestureDrag::drag-end] signals, and the relevant coordinates can be
-    extracted through [Gtk.GestureDrag.get_offset] and
-    [Gtk.GestureDrag.get_start_point].
+    {{!Ocgtk.Raw.Gesture_drag.val-on_drag_begin}[Gtk.GestureDrag::drag-begin]},
+    {{!Ocgtk.Raw.Gesture_drag.val-on_drag_update}[Gtk.GestureDrag::drag-update]}
+    and {{!Ocgtk.Raw.Gesture_drag.val-on_drag_end}[Gtk.GestureDrag::drag-end]}
+    signals, and the relevant coordinates can be extracted through
+    {{!Ocgtk.Raw.Gesture_drag.val-get_offset}[Gtk.GestureDrag.get_offset]} and
+    {{!Ocgtk.Raw.Gesture_drag.val-get_start_point}[Gtk.GestureDrag.get_start_point]}.
 
     The class built on this module is in {!Ocgtk.Gesture_drag}. *)
 

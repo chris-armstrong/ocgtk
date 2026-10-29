@@ -6,25 +6,29 @@
     An example GtkBox
 
     Whether it is a row or column depends on the value of its
-    [Gtk.Orientable:orientation] property. Within the other dimension, all
-    children are allocated the same size. The [Gtk.Widget:halign] and
-    [Gtk.Widget:valign] properties can be used on the children to influence
-    their allocation.
+    {{!Ocgtk.Raw.Orientable.val-get_orientation}[Gtk.Orientable:orientation]}
+    property. Within the other dimension, all children are allocated the same
+    size. The {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and
+    {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties can be
+    used on the children to influence their allocation.
 
-    Use repeated calls to [Gtk.Box.append] to pack widgets into a [GtkBox] from
-    start to end. Use [Gtk.Box.remove] to remove widgets from the [GtkBox].
-    [Gtk.Box.insert_child_after] can be used to add a child at a particular
-    position.
+    Use repeated calls to {{!Ocgtk.Raw.Box.val-append}[Gtk.Box.append]} to pack
+    widgets into a [GtkBox] from start to end. Use
+    {{!Ocgtk.Raw.Box.val-remove}[Gtk.Box.remove]} to remove widgets from the
+    [GtkBox].
+    {{!Ocgtk.Raw.Box.val-insert_child_after}[Gtk.Box.insert_child_after]} can be
+    used to add a child at a particular position.
 
-    Use [Gtk.Box.set_homogeneous] to specify whether or not all children of the
-    [GtkBox] are forced to get the same amount of space.
+    Use {{!Ocgtk.Raw.Box.val-set_homogeneous}[Gtk.Box.set_homogeneous]} to
+    specify whether or not all children of the [GtkBox] are forced to get the
+    same amount of space.
 
-    Use [Gtk.Box.set_spacing] to determine how much space will be minimally
-    placed between all children in the [GtkBox]. Note that spacing is added
-    {i between} the children.
+    Use {{!Ocgtk.Raw.Box.val-set_spacing}[Gtk.Box.set_spacing]} to determine how
+    much space will be minimally placed between all children in the [GtkBox].
+    Note that spacing is added {i between} the children.
 
-    Use [Gtk.Box.reorder_child_after] to move a child to a different place in
-    the box.
+    Use {{!Ocgtk.Raw.Box.val-reorder_child_after}[Gtk.Box.reorder_child_after]}
+    to move a child to a different place in the box.
 
     {b CSS nodes}
 
@@ -32,9 +36,13 @@
 
     {b Accessibility}
 
-    Until GTK 4.10, [GtkBox] used the [Gtk.AccessibleRole.group] role.
+    Until GTK 4.10, [GtkBox] used the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
-    Starting from GTK 4.12, [GtkBox] uses the [Gtk.AccessibleRole.generic] role.
+    Starting from GTK 4.12, [GtkBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GENERIC}[Gtk.AccessibleRole.generic]}
+    role.
 
     The class built on this module is in {!Ocgtk.Box}. *)
 
@@ -92,8 +100,10 @@ external remove :
   unit = "ml_gtk_box_remove"
 (** Removes a child widget from the box.
 
-    The child must have been added before with [Gtk.Box.append],
-    [Gtk.Box.prepend], or [Gtk.Box.insert_child_after]. *)
+    The child must have been added before with
+    {{!Ocgtk.Raw.Box.val-append}[Gtk.Box.append]},
+    {{!Ocgtk.Raw.Box.val-prepend}[Gtk.Box.prepend]}, or
+    {{!Ocgtk.Raw.Box.val-insert_child_after}[Gtk.Box.insert_child_after]}. *)
 
 external prepend :
   t ->
@@ -120,7 +130,8 @@ external insert_child_after :
     If [sibling] is [None], the [child] is placed at the beginning. *)
 
 external get_spacing : t -> int = "ml_gtk_box_get_spacing"
-(** Gets the value set by [Gtk.Box.set_spacing]. *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Box.val-set_spacing}[Gtk.Box.set_spacing]}. *)
 
 external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
 (** Returns whether the box is homogeneous.
@@ -129,10 +140,13 @@ external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
 
 external get_baseline_position : t -> Ocgtk_enums.baselineposition
   = "ml_gtk_box_get_baseline_position"
-(** Gets the value set by [Gtk.Box.set_baseline_position]. *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Box.val-set_baseline_position}[Gtk.Box.set_baseline_position]}.
+*)
 
 external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
-(** Gets the value set by [Gtk.Box.set_baseline_child]. *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Box.val-set_baseline_child}[Gtk.Box.set_baseline_child]}. *)
 
 external append :
   t ->

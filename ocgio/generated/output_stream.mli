@@ -12,11 +12,14 @@
     [GOutputStream] is a base class for implementing streaming output.
 
     It has functions to write to a stream ([Gio.OutputStream.write]), to close a
-    stream ([Gio.OutputStream.close]) and to flush pending writes
-    ([Gio.OutputStream.flush]).
+    stream
+    ({{!Ocgio.Output_stream.class-type-output_stream_t.method-close}[Gio.OutputStream.close]})
+    and to flush pending writes
+    ({{!Ocgio.Output_stream.class-type-output_stream_t.method-flush}[Gio.OutputStream.flush]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Output_stream.class-type-output_stream_t.method-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for
     {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of
@@ -141,11 +144,14 @@ class output_stream : Raw.Output_stream.t -> output_stream_t
     [GOutputStream] is a base class for implementing streaming output.
 
     It has functions to write to a stream ([Gio.OutputStream.write]), to close a
-    stream ([Gio.OutputStream.close]) and to flush pending writes
-    ([Gio.OutputStream.flush]).
+    stream
+    ({{!Ocgio.Output_stream.class-type-output_stream_t.method-close}[Gio.OutputStream.close]})
+    and to flush pending writes
+    ({{!Ocgio.Output_stream.class-type-output_stream_t.method-flush}[Gio.OutputStream.flush]}).
 
     To copy the content of an input stream to an output stream without manually
-    handling the reads and writes, use [Gio.OutputStream.splice].
+    handling the reads and writes, use
+    {{!Ocgio.Output_stream.class-type-output_stream_t.method-splice}[Gio.OutputStream.splice]}.
 
     See the documentation for
     {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of

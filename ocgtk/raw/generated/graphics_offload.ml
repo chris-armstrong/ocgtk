@@ -105,6 +105,8 @@ external get_black_background : t -> bool
   = "ml_gtk_graphics_offload_get_black_background"
 (** Returns whether the widget draws a black background.
 
-    See [Gtk.GraphicsOffload.set_black_background]. *)
+    See
+    {{!Ocgtk.Raw.Graphics_offload.val-set_black_background}[Gtk.GraphicsOffload.set_black_background]}.
+*)
 
 (* Properties *)

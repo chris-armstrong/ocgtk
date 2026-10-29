@@ -6,9 +6,11 @@
     It can be queried for properties of the path at that point, such as its
     tangent or its curvature.
 
-    To obtain a [GskPathPoint], use [Gsk.Path.get_closest_point],
-    [Gsk.Path.get_start_point], [Gsk.Path.get_end_point] or
-    [Gsk.PathMeasure.get_point].
+    To obtain a [GskPathPoint], use
+    {{!Ocgsk.Raw.Path.val-get_closest_point}[Gsk.Path.get_closest_point]},
+    {{!Ocgsk.Raw.Path.val-get_start_point}[Gsk.Path.get_start_point]},
+    {{!Ocgsk.Raw.Path.val-get_end_point}[Gsk.Path.get_end_point]} or
+    {{!Ocgsk.Raw.Path_measure.val-get_point}[Gsk.PathMeasure.get_point]}.
 
     Note that [GskPathPoint] structs are meant to be stack-allocated, and don't
     hold a reference to the path object they are obtained from. It is the

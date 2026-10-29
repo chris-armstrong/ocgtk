@@ -70,8 +70,10 @@ external new_ : Ocgio_raw.Action_group.t -> Ocgdk_raw.Device.t option -> t
     order is not guaranteed.
 
     The [GtkPadController] is created with no mapped actions. In order to map
-    pad events to actions, use [Gtk.PadController.set_action_entries] or
-    [Gtk.PadController.set_action].
+    pad events to actions, use
+    {{!Ocgtk.Raw.Pad_controller.val-set_action_entries}[Gtk.PadController.set_action_entries]}
+    or
+    {{!Ocgtk.Raw.Pad_controller.val-set_action}[Gtk.PadController.set_action]}.
 
     Be aware that pad events will only be delivered to [GtkWindow]s, so adding a
     pad controller to any other type of widget will not have an effect. *)
@@ -83,7 +85,8 @@ external set_action_entries : t -> Pad_action_entry.t array -> int -> unit
 (** A convenience function to add a group of action entries on [controller].
 
     See {{!Ocgtk.Raw.Pad_action_entry}[Gtk.PadActionEntry]} and
-    [Gtk.PadController.set_action]. *)
+    {{!Ocgtk.Raw.Pad_controller.val-set_action}[Gtk.PadController.set_action]}.
+*)
 
 external set_action :
   t -> Ocgtk_enums.padactiontype -> int -> int -> string -> string -> unit

@@ -136,30 +136,41 @@ end
      If you want to handle errors in loading the file yourself,\n\
      for example by displaying an error message, then load the image with\n\
      and image loading framework such as libglycin, then create the [GtkPicture]\n\
-     with [Gtk.Picture.new_for_paintable].\n\n\
+     with \
+     {{!Ocgtk.Picture.val-new_for_paintable}[Gtk.Picture.new_for_paintable]}.\n\n\
      Sometimes an application will want to avoid depending on external data\n\
      files, such as image files. See the documentation of [GResource] for \
      details.\n\
-     In this case, [Gtk.Picture.new_for_resource] and\n\
-     [Gtk.Picture.set_resource] should be used.\n\n\
+     In this case, \
+     {{!Ocgtk.Picture.val-new_for_resource}[Gtk.Picture.new_for_resource]} and\n\
+     {{!Ocgtk.Picture.class-type-picture_t.method-set_resource}[Gtk.Picture.set_resource]} \
+     should be used.\n\n\
      [GtkPicture] displays an image at its natural size. See \
      {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]}\n\
      if you want to display a fixed-size image, such as an icon.\n\n\
      {b Sizing the paintable}\n\n\
      You can influence how the paintable is displayed inside the [GtkPicture]\n\
-     by changing [Gtk.Picture:content-fit]. See \
-     {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]}\n\
-     for details. [Gtk.Picture:can-shrink] can be unset to make sure\n\
+     by changing \
+     {{!Ocgtk.Picture.class-type-picture_t.method-get_content_fit}[Gtk.Picture:content-fit]}. \
+     See {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]}\n\
+     for details. \
+     {{!Ocgtk.Picture.class-type-picture_t.method-get_can_shrink}[Gtk.Picture:can-shrink]} \
+     can be unset to make sure\n\
      that paintables are never made smaller than their ideal size - but\n\
      be careful if you do not know the size of the paintable in use (like\n\
      when displaying user-loaded images). This can easily cause the picture to\n\
-     grow larger than the screen. And [Gtk.Widget:halign] and\n\
-     [Gtk.Widget:valign] can be used to make sure the paintable doesn't\n\
+     grow larger than the screen. And \
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]} \
+     and\n\
+     {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]} \
+     can be used to make sure the paintable doesn't\n\
      fill all available space but is instead displayed at its original size.\n\n\
      {b CSS nodes}\n\n\
      [GtkPicture] has a single CSS node with the name [picture].\n\n\
      {b Accessibility}\n\n\
-     [GtkPicture] uses the [Gtk.AccessibleRole.img] role."]
+     [GtkPicture] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-IMG}[Gtk.AccessibleRole.img]} \
+     role."]
 
 class picture : Raw.Picture.t -> picture_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Picture.t}. *)
@@ -179,29 +190,38 @@ class picture : Raw.Picture.t -> picture_t
  If you want to handle errors in loading the file yourself,\n\
  for example by displaying an error message, then load the image with\n\
  and image loading framework such as libglycin, then create the [GtkPicture]\n\
- with [Gtk.Picture.new_for_paintable].\n\n\
+ with {{!Ocgtk.Picture.val-new_for_paintable}[Gtk.Picture.new_for_paintable]}.\n\n\
  Sometimes an application will want to avoid depending on external data\n\
  files, such as image files. See the documentation of [GResource] for details.\n\
- In this case, [Gtk.Picture.new_for_resource] and\n\
- [Gtk.Picture.set_resource] should be used.\n\n\
+ In this case, \
+ {{!Ocgtk.Picture.val-new_for_resource}[Gtk.Picture.new_for_resource]} and\n\
+ {{!Ocgtk.Picture.class-type-picture_t.method-set_resource}[Gtk.Picture.set_resource]} \
+ should be used.\n\n\
  [GtkPicture] displays an image at its natural size. See \
  {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]}\n\
  if you want to display a fixed-size image, such as an icon.\n\n\
  {b Sizing the paintable}\n\n\
  You can influence how the paintable is displayed inside the [GtkPicture]\n\
- by changing [Gtk.Picture:content-fit]. See \
- {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]}\n\
- for details. [Gtk.Picture:can-shrink] can be unset to make sure\n\
+ by changing \
+ {{!Ocgtk.Picture.class-type-picture_t.method-get_content_fit}[Gtk.Picture:content-fit]}. \
+ See {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]}\n\
+ for details. \
+ {{!Ocgtk.Picture.class-type-picture_t.method-get_can_shrink}[Gtk.Picture:can-shrink]} \
+ can be unset to make sure\n\
  that paintables are never made smaller than their ideal size - but\n\
  be careful if you do not know the size of the paintable in use (like\n\
  when displaying user-loaded images). This can easily cause the picture to\n\
- grow larger than the screen. And [Gtk.Widget:halign] and\n\
- [Gtk.Widget:valign] can be used to make sure the paintable doesn't\n\
+ grow larger than the screen. And \
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]} and\n\
+ {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]} \
+ can be used to make sure the paintable doesn't\n\
  fill all available space but is instead displayed at its original size.\n\n\
  {b CSS nodes}\n\n\
  [GtkPicture] has a single CSS node with the name [picture].\n\n\
  {b Accessibility}\n\n\
- [GtkPicture] uses the [Gtk.AccessibleRole.img] role."]
+ [GtkPicture] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-IMG}[Gtk.AccessibleRole.img]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 
@@ -221,7 +241,8 @@ val new_for_file : Ocgio.File.file_t option -> picture_t
 val new_for_filename : string option -> picture_t
 (** Creates a new [GtkPicture] displaying the file [filename].
 
-    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    This is a utility function that calls
+    {{!Ocgtk.Picture.val-new_for_file}[Gtk.Picture.new_for_file]}. See that
     function for details. *)
 
 val new_for_paintable : Ocgdk.Paintable.paintable_t option -> picture_t
@@ -233,7 +254,8 @@ val new_for_paintable : Ocgdk.Paintable.paintable_t option -> picture_t
 val new_for_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> picture_t
 (** Creates a new [GtkPicture] displaying [pixbuf].
 
-    This is a utility function that calls [Gtk.Picture.new_for_paintable], See
+    This is a utility function that calls
+    {{!Ocgtk.Picture.val-new_for_paintable}[Gtk.Picture.new_for_paintable]}, See
     that function for details.
 
     The pixbuf must not be modified after passing it to this function. *)
@@ -241,5 +263,6 @@ val new_for_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> picture_t
 val new_for_resource : string option -> picture_t
 (** Creates a new [GtkPicture] displaying the resource at [resource_path].
 
-    This is a utility function that calls [Gtk.Picture.new_for_file]. See that
+    This is a utility function that calls
+    {{!Ocgtk.Picture.val-new_for_file}[Gtk.Picture.new_for_file]}. See that
     function for details. *)

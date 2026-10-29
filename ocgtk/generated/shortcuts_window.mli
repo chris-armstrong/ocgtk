@@ -40,8 +40,10 @@
     instances.
 
     If you need to add a section programmatically, use
-    [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the
-    shortcuts window manages its children directly.
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-add_section}[Gtk.ShortcutsWindow.add_section]}
+    instead of
+    {{!Ocgtk.Window.class-type-window_t.method-set_child}[Gtk.Window.set_child]},
+    as the shortcuts window manages its children directly.
 
     {b A simple example:}
 
@@ -78,8 +80,8 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsWindow::close]
-    - [Gtk.ShortcutsWindow::search]
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_close}[Gtk.ShortcutsWindow::close]}
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_search}[Gtk.ShortcutsWindow::search]}
 
     {b CSS nodes}
 
@@ -177,8 +179,10 @@ class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
     instances.
 
     If you need to add a section programmatically, use
-    [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the
-    shortcuts window manages its children directly.
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-add_section}[Gtk.ShortcutsWindow.add_section]}
+    instead of
+    {{!Ocgtk.Window.class-type-window_t.method-set_child}[Gtk.Window.set_child]},
+    as the shortcuts window manages its children directly.
 
     {b A simple example:}
 
@@ -215,8 +219,8 @@ class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
 
     The following signals have default keybindings:
 
-    - [Gtk.ShortcutsWindow::close]
-    - [Gtk.ShortcutsWindow::search]
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_close}[Gtk.ShortcutsWindow::close]}
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_search}[Gtk.ShortcutsWindow::search]}
 
     {b CSS nodes}
 

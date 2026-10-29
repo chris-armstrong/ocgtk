@@ -26,7 +26,8 @@ external new_for_filename : string -> t = "ml_gtk_media_file_new_for_filename"
 (** Creates a new media file for the given filename.
 
     This is a utility function that converts the given [filename] to a [GFile]
-    and calls [Gtk.MediaFile.new_for_file]. *)
+    and calls
+    {{!Ocgtk.Raw.Media_file.val-new_for_file}[Gtk.MediaFile.new_for_file]}. *)
 
 external new_for_input_stream : Ocgio_raw.Input_stream.t -> t
   = "ml_gtk_media_file_new_for_input_stream"
@@ -39,7 +40,8 @@ external new_for_resource : string -> t = "ml_gtk_media_file_new_for_resource"
 (** Creates a new new media file for the given resource.
 
     This is a utility function that converts the given [resource] to a [GFile]
-    and calls [Gtk.MediaFile.new_for_file]. *)
+    and calls
+    {{!Ocgtk.Raw.Media_file.val-new_for_file}[Gtk.MediaFile.new_for_file]}. *)
 
 (* Methods *)
 
@@ -48,7 +50,8 @@ external set_resource : t -> string option -> unit
 (** Sets the [GtkMediaFile] to play the given resource.
 
     This is a utility function that converts the given [resource_path] to a
-    [GFile] and calls [Gtk.MediaFile.set_file]. *)
+    [GFile] and calls
+    {{!Ocgtk.Raw.Media_file.val-set_file}[Gtk.MediaFile.set_file]}. *)
 
 external set_input_stream : t -> Ocgio_raw.Input_stream.t option -> unit
   = "ml_gtk_media_file_set_input_stream"
@@ -64,7 +67,7 @@ external set_filename : t -> string option -> unit
 (** Sets the [GtkMediaFile] to play the given file.
 
     This is a utility function that converts the given [filename] to a [GFile]
-    and calls [Gtk.MediaFile.set_file]. *)
+    and calls {{!Ocgtk.Raw.Media_file.val-set_file}[Gtk.MediaFile.set_file]}. *)
 
 external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_media_file_set_file"

@@ -7,7 +7,8 @@
     expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 
     Some classes may implement [GPollableInputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
+    instances of that class be pollable. If
+    {{!Ocgio.Raw.Pollable_input_stream.val-can_poll}[Gio.PollableInputStream.can_poll]}
     returns false, then the behavior of other [GPollableInputStream] methods is
     undefined.
 

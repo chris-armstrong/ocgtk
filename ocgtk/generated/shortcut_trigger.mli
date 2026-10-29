@@ -12,7 +12,8 @@
     Tracks how a [GtkShortcut] can be activated.
 
     To find out if a [GtkShortcutTrigger] triggers, you can call
-    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t.method-trigger}[Gtk.ShortcutTrigger.trigger]}
+    on a [GdkEvent].
 
     [GtkShortcutTriggers] contain functions that allow easy presentation to end
     users as well as being printed for debugging.
@@ -81,7 +82,8 @@ class shortcut_trigger : Raw.Shortcut_trigger.t -> shortcut_trigger_t
     Tracks how a [GtkShortcut] can be activated.
 
     To find out if a [GtkShortcutTrigger] triggers, you can call
-    [Gtk.ShortcutTrigger.trigger] on a [GdkEvent].
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t.method-trigger}[Gtk.ShortcutTrigger.trigger]}
+    on a [GdkEvent].
 
     [GtkShortcutTriggers] contain functions that allow easy presentation to end
     users as well as being printed for debugging.

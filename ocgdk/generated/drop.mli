@@ -83,7 +83,7 @@ end
      [GDK_DRAG_MOTION] and [GDK_DROP_START]. The [GdkDrop] object can be \
      obtained\n\
      from these {{!Ocgdk.Event.class-type-event_t}[Gdk.Event]} types using \
-     [Gdk.DNDEvent.get_drop].\n\n\
+     {{!Ocgdk.Dnd_event.class-type-dnd_event_t.method-get_drop}[Gdk.DNDEvent.get_drop]}.\n\n\
      The actual data transfer is initiated from the target side via an async\n\
      read, using one of the [GdkDrop] methods for this purpose:\n\
      [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].\n\n\
@@ -101,7 +101,7 @@ class drop : Raw.Drop.t -> drop_t
  operation with events of type [GDK_DRAG_ENTER], [GDK_DRAG_LEAVE],\n\
  [GDK_DRAG_MOTION] and [GDK_DROP_START]. The [GdkDrop] object can be obtained\n\
  from these {{!Ocgdk.Event.class-type-event_t}[Gdk.Event]} types using \
- [Gdk.DNDEvent.get_drop].\n\n\
+ {{!Ocgdk.Dnd_event.class-type-dnd_event_t.method-get_drop}[Gdk.DNDEvent.get_drop]}.\n\n\
  The actual data transfer is initiated from the target side via an async\n\
  read, using one of the [GdkDrop] methods for this purpose:\n\
  [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].\n\n\

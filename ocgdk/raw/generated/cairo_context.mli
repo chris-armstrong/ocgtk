@@ -4,8 +4,8 @@
 (** Represents the platform-specific draw context.
 
     [GdkCairoContext]s are created for a surface using
-    [Gdk.Surface.create_cairo_context], and the context can then be used to draw
-    on that surface.
+    {{!Ocgdk.Raw.Surface.val-create_cairo_context}[Gdk.Surface.create_cairo_context]},
+    and the context can then be used to draw on that surface.
 
     The class built on this module is in {!Ocgdk.Cairo_context}. *)
 

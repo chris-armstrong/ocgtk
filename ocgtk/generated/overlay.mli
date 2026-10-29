@@ -20,13 +20,16 @@
 
     An example GtkOverlay
 
-    The position of each overlay widget is determined by its [Gtk.Widget:halign]
-    and [Gtk.Widget:valign] properties. E.g. a widget with both alignments set
-    to [GTK_ALIGN_START] will be placed at the top left corner of the
-    [GtkOverlay] container, whereas an overlay with halign set to
-    [GTK_ALIGN_CENTER] and valign set to [GTK_ALIGN_END] will be placed a the
-    bottom edge of the [GtkOverlay], horizontally centered. The position can be
-    adjusted by setting the margin properties of the child to non-zero values.
+    The position of each overlay widget is determined by its
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties. E.g. a widget with both alignments set to [GTK_ALIGN_START] will
+    be placed at the top left corner of the [GtkOverlay] container, whereas an
+    overlay with halign set to [GTK_ALIGN_CENTER] and valign set to
+    [GTK_ALIGN_END] will be placed a the bottom edge of the [GtkOverlay],
+    horizontally centered. The position can be adjusted by setting the margin
+    properties of the child to non-zero values.
 
     More complicated placement of overlays is possible by connecting to the
     [Gtk.Overlay::get-child-position] signal.
@@ -101,13 +104,16 @@ class overlay : Raw.Overlay.t -> overlay_t
 
     An example GtkOverlay
 
-    The position of each overlay widget is determined by its [Gtk.Widget:halign]
-    and [Gtk.Widget:valign] properties. E.g. a widget with both alignments set
-    to [GTK_ALIGN_START] will be placed at the top left corner of the
-    [GtkOverlay] container, whereas an overlay with halign set to
-    [GTK_ALIGN_CENTER] and valign set to [GTK_ALIGN_END] will be placed a the
-    bottom edge of the [GtkOverlay], horizontally centered. The position can be
-    adjusted by setting the margin properties of the child to non-zero values.
+    The position of each overlay widget is determined by its
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties. E.g. a widget with both alignments set to [GTK_ALIGN_START] will
+    be placed at the top left corner of the [GtkOverlay] container, whereas an
+    overlay with halign set to [GTK_ALIGN_CENTER] and valign set to
+    [GTK_ALIGN_END] will be placed a the bottom edge of the [GtkOverlay],
+    horizontally centered. The position can be adjusted by setting the margin
+    properties of the child to non-zero values.
 
     More complicated placement of overlays is possible by connecting to the
     [Gtk.Overlay::get-child-position] signal.

@@ -7,8 +7,8 @@
 
     In order to use a [GtkStackSidebar], you simply use a [GtkStack] to organize
     your UI flow, and add the sidebar to your sidebar area. You can use
-    [Gtk.StackSidebar.set_stack] to connect the [GtkStackSidebar] to the
-    [GtkStack].
+    {{!Ocgtk.Raw.Stack_sidebar.val-set_stack}[Gtk.StackSidebar.set_stack]} to
+    connect the [GtkStackSidebar] to the [GtkStack].
 
     {b CSS nodes}
 

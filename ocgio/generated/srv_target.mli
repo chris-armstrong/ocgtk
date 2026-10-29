@@ -19,8 +19,9 @@
     record for ‘example.com’, and then connect to whatever host was pointed to
     by that record.
 
-    You can use [Gio.Resolver.lookup_service] or
-    [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
+    You can use
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_service}[Gio.Resolver.lookup_service]}
+    or [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
     service, you can use
     {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}’s
@@ -66,8 +67,9 @@ class srv_target : Raw.Srv_target.t -> srv_target_t
     record for ‘example.com’, and then connect to whatever host was pointed to
     by that record.
 
-    You can use [Gio.Resolver.lookup_service] or
-    [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
+    You can use
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_service}[Gio.Resolver.lookup_service]}
+    or [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
     service, you can use
     {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}’s

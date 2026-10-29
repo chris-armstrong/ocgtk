@@ -48,7 +48,8 @@ val new_popup : App_launch_context_cycle_de440b34.surface_t -> bool -> surface_t
 (** Create a new popup surface.
 
     The surface will be attached to [parent] and can be positioned relative to
-    it using [Gdk.Popup.present]. *)
+    it using
+    {{!Ocgdk.Popup.class-type-popup_t.method-present}[Gdk.Popup.present]}. *)
 
 val new_toplevel : App_launch_context_cycle_de440b34.display_t -> surface_t
 (** Creates a new toplevel surface. *)

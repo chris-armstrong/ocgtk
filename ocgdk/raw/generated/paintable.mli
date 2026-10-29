@@ -11,11 +11,11 @@
     or {{:https://www.w3.org/TR/SVG2/pservers.html}SVG Paint Servers}.
 
     A [GdkPaintable] can be snapshot at any time and size using
-    [Gdk.Paintable.snapshot]. How the paintable interprets that size and if it
-    scales or centers itself into the given rectangle is implementation defined,
-    though if you are implementing a [GdkPaintable] and don't know what to do,
-    it is suggested that you scale your paintable ignoring any potential aspect
-    ratio.
+    {{!Ocgdk.Raw.Paintable.val-snapshot}[Gdk.Paintable.snapshot]}. How the
+    paintable interprets that size and if it scales or centers itself into the
+    given rectangle is implementation defined, though if you are implementing a
+    [GdkPaintable] and don't know what to do, it is suggested that you scale
+    your paintable ignoring any potential aspect ratio.
 
     The contents that a [GdkPaintable] produces may depend on the
     {{!Ocgdk.Raw.Snapshot}[Gdk.Snapshot]} passed to it. For example, paintables
@@ -25,25 +25,30 @@
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call
-    [Gdk.Paintable.invalidate_contents] which will emit the
-    [Gdk.Paintable::invalidate-contents] signal. If a paintable is known to
-    never change its contents, it will set the [GDK_PAINTABLE_STATIC_CONTENTS]
-    flag. If a consumer cannot deal with changing contents, it may call
-    [Gdk.Paintable.get_current_image] which will return a static paintable and
-    use that.
+    {{!Ocgdk.Raw.Paintable.val-invalidate_contents}[Gdk.Paintable.invalidate_contents]}
+    which will emit the
+    {{!Ocgdk.Raw.Paintable.val-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal. If a paintable is known to never change its contents, it will set
+    the [GDK_PAINTABLE_STATIC_CONTENTS] flag. If a consumer cannot deal with
+    changing contents, it may call
+    {{!Ocgdk.Raw.Paintable.val-get_current_image}[Gdk.Paintable.get_current_image]}
+    which will return a static paintable and use that.
 
     A paintable can report an intrinsic (or preferred) size or aspect ratio it
     wishes to be rendered at, though it doesn't have to. Consumers of the
     interface can use this information to layout thepaintable appropriately.
     Just like the contents, the size of a paintable can change. A paintable will
-    indicate this by calling [Gdk.Paintable.invalidate_size] which will emit the
-    [Gdk.Paintable::invalidate-size] signal. And just like for contents, if a
-    paintable is known to never change its size, it will set the
-    [GDK_PAINTABLE_STATIC_SIZE] flag.
+    indicate this by calling
+    {{!Ocgdk.Raw.Paintable.val-invalidate_size}[Gdk.Paintable.invalidate_size]}
+    which will emit the
+    {{!Ocgdk.Raw.Paintable.val-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal. And just like for contents, if a paintable is known to never change
+    its size, it will set the [GDK_PAINTABLE_STATIC_SIZE] flag.
 
     Besides API for applications, there are some functions that are only useful
     for implementing subclasses and should not be used by applications:
-    [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
+    {{!Ocgdk.Raw.Paintable.val-invalidate_contents}[Gdk.Paintable.invalidate_contents]},
+    {{!Ocgdk.Raw.Paintable.val-invalidate_size}[Gdk.Paintable.invalidate_size]},
     [Gdk.Paintable.new_empty].
 
     The class built on this module is in {!Ocgdk.Paintable}. *)
@@ -69,7 +74,9 @@ external invalidate_size : t -> unit = "ml_gdk_paintable_invalidate_size"
     As long as the size is not invalidated, [paintable] must return the same
     values for its intrinsic width, height and aspect ratio.
 
-    This function will emit the [Gdk.Paintable::invalidate-size] signal.
+    This function will emit the
+    {{!Ocgdk.Raw.Paintable.val-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal.
 
     If a [paintable] reports the [GDK_PAINTABLE_STATIC_SIZE] flag, it must not
     call this function. *)
@@ -79,9 +86,13 @@ external invalidate_contents : t -> unit
 (** Called by implementations of [GdkPaintable] to invalidate their contents.
 
     Unless the contents are invalidated, implementations must guarantee that
-    multiple calls of [Gdk.Paintable.snapshot] produce the same output.
+    multiple calls of
+    {{!Ocgdk.Raw.Paintable.val-snapshot}[Gdk.Paintable.snapshot]} produce the
+    same output.
 
-    This function will emit the [Gdk.Paintable::invalidate-contents] signal.
+    This function will emit the
+    {{!Ocgdk.Raw.Paintable.val-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal.
 
     If a [paintable] reports the [GDK_PAINTABLE_STATIC_CONTENTS] flag, it must
     not call this function. *)
@@ -93,7 +104,8 @@ external get_intrinsic_width : t -> int = "ml_gdk_paintable_get_intrinsic_width"
     paintable.
 
     This is a purely informational value and does not in any way limit the
-    values that may be passed to [Gdk.Paintable.snapshot].
+    values that may be passed to
+    {{!Ocgdk.Raw.Paintable.val-snapshot}[Gdk.Paintable.snapshot]}.
 
     If the [paintable] does not have a preferred width, it returns 0. Negative
     values are never returned. *)
@@ -106,7 +118,8 @@ external get_intrinsic_height : t -> int
     paintable.
 
     This is a purely informational value and does not in any way limit the
-    values that may be passed to [Gdk.Paintable.snapshot].
+    values that may be passed to
+    {{!Ocgdk.Raw.Paintable.val-snapshot}[Gdk.Paintable.snapshot]}.
 
     If the [paintable] does not have a preferred height, it returns 0. Negative
     values are never returned. *)
@@ -122,10 +135,13 @@ external get_intrinsic_aspect_ratio : t -> float
     displaying the paintable.
 
     This is a purely informational value and does not in any way limit the
-    values that may be passed to [Gdk.Paintable.snapshot].
+    values that may be passed to
+    {{!Ocgdk.Raw.Paintable.val-snapshot}[Gdk.Paintable.snapshot]}.
 
     Usually when a [paintable] returns nonzero values from
-    [Gdk.Paintable.get_intrinsic_width] and [Gdk.Paintable.get_intrinsic_height]
+    {{!Ocgdk.Raw.Paintable.val-get_intrinsic_width}[Gdk.Paintable.get_intrinsic_width]}
+    and
+    {{!Ocgdk.Raw.Paintable.val-get_intrinsic_height}[Gdk.Paintable.get_intrinsic_height]}
     the aspect ratio should conform to those values, though that is not
     required.
 
@@ -176,8 +192,11 @@ val on_invalidate_size :
 (** Emitted when the intrinsic size of the [paintable] changes.
 
     This means the values reported by at least one of
-    [Gdk.Paintable.get_intrinsic_width], [Gdk.Paintable.get_intrinsic_height] or
-    [Gdk.Paintable.get_intrinsic_aspect_ratio] has changed.
+    {{!Ocgdk.Raw.Paintable.val-get_intrinsic_width}[Gdk.Paintable.get_intrinsic_width]},
+    {{!Ocgdk.Raw.Paintable.val-get_intrinsic_height}[Gdk.Paintable.get_intrinsic_height]}
+    or
+    {{!Ocgdk.Raw.Paintable.val-get_intrinsic_aspect_ratio}[Gdk.Paintable.get_intrinsic_aspect_ratio]}
+    has changed.
 
     Examples for such an event would be a paintable displaying the contents of a
     toplevel surface being resized. *)

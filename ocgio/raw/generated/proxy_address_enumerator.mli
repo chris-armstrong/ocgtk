@@ -7,11 +7,13 @@
     returned by the
     {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]} and
     wraps them in {{!Ocgio.Raw.Proxy_address}[Gio.ProxyAddress]} instances,
-    using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
+    using the given
+    {{!Ocgio.Raw.Proxy_address_enumerator.val-get_proxy_resolver}[Gio.ProxyAddressEnumerator:proxy-resolver]}.
 
     This enumerator will be returned (for example, by
-    [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
-    configured; there should be no need to manually wrap a
+    {{!Ocgio.Raw.Socket_connectable.val-enumerate}[Gio.SocketConnectable.enumerate]})
+    as appropriate when a proxy is configured; there should be no need to
+    manually wrap a
     {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]}
     instance with one.
 

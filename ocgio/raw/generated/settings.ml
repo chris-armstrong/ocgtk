@@ -17,7 +17,8 @@
  only ever modify [GSettings] keys in response to explicit user action.\n\
  Particular care should be paid to ensure that modifications are not\n\
  made during startup — for example, when setting the initial value\n\
- of preferences widgets.  The built-in [Gio.Settings.bind]\n\
+ of preferences widgets.  The built-in \
+ {{!Ocgio.Raw.Settings.val-bind}[Gio.Settings.bind]}\n\
  functionality is careful not to write settings in response to notify signals\n\
  as a result of modifications that it makes to widgets.\n\n\
  When creating a [GSettings] instance, you have to specify a schema\n\
@@ -88,9 +89,12 @@
  enumerated types. These can be described by a [<choice>],\n\
  [<enum>] or [<flags>] element, as seen in the\n\
  second example below. The underlying type of such a key\n\
- is string, but you can use [Gio.Settings.get_enum],\n\
- [Gio.Settings.set_enum], [Gio.Settings.get_flags],\n\
- [Gio.Settings.set_flags] access the numeric values corresponding to\n\
+ is string, but you can use \
+ {{!Ocgio.Raw.Settings.val-get_enum}[Gio.Settings.get_enum]},\n\
+ {{!Ocgio.Raw.Settings.val-set_enum}[Gio.Settings.set_enum]}, \
+ {{!Ocgio.Raw.Settings.val-get_flags}[Gio.Settings.get_flags]},\n\
+ {{!Ocgio.Raw.Settings.val-set_flags}[Gio.Settings.set_flags]} access the \
+ numeric values corresponding to\n\
  the string value of enum and flags keys.\n\n\
  An example for default value:\n\n\
  {[\n\
@@ -178,7 +182,8 @@
  atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
  updated values are kept locally in the {{!Ocgio.Raw.Settings}[Gio.Settings]} \
  instance until\n\
- they are explicitly applied by calling [Gio.Settings.apply].\n\n\
+ they are explicitly applied by calling \
+ {{!Ocgio.Raw.Settings.val-apply}[Gio.Settings.apply]}.\n\n\
  For example, this could be useful for a preferences dialog where the\n\
  preferences all need to be applied simultaneously when the user clicks \
  ‘Save’.\n\n\
@@ -186,15 +191,18 @@
  mode is a one-time\n\
  irreversible operation: from that point onwards, {i all} changes made to that\n\
  {{!Ocgio.Raw.Settings}[Gio.Settings]} have to be explicitly applied by calling\n\
- [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
+ {{!Ocgio.Raw.Settings.val-apply}[Gio.Settings.apply]}. The ‘delay-apply’ mode \
+ is also propagated to any\n\
  child settings objects subsequently created using\n\
- [Gio.Settings.get_child].\n\n\
+ {{!Ocgio.Raw.Settings.val-get_child}[Gio.Settings.get_child]}.\n\n\
  At any point, the set of unapplied changes can be queried using\n\
- [Gio.Settings:has-unapplied], and discarded by calling\n\
- [Gio.Settings.revert].\n\n\
+ {{!Ocgio.Raw.Settings.val-get_has_unapplied}[Gio.Settings:has-unapplied]}, \
+ and discarded by calling\n\
+ {{!Ocgio.Raw.Settings.val-revert}[Gio.Settings.revert]}.\n\n\
  {b Binding}\n\n\
  A very convenient feature of GSettings lets you bind [GObject.Object]\n\
- properties directly to settings, using [Gio.Settings.bind]. Once a\n\
+ properties directly to settings, using \
+ {{!Ocgio.Raw.Settings.val-bind}[Gio.Settings.bind]}. Once a\n\
  [GObject.Object] property has been bound to a setting, changes on\n\
  either side are automatically propagated to the other side. GSettings handles\n\
  details like mapping between [GObject.Object] and [GLib.Variant]\n\
@@ -207,9 +215,13 @@
  [G_SETTINGS_BIND_NO_SENSITIVITY] flag.\n\n\
  {b Relocatable schemas}\n\n\
  A relocatable schema is one with no [path] attribute specified on its\n\
- [<schema>] element. By using [Gio.Settings.new_with_path], a [GSettings]\n\
+ [<schema>] element. By using \
+ {{!Ocgio.Raw.Settings.val-new_with_path}[Gio.Settings.new_with_path]}, a \
+ [GSettings]\n\
  object can be instantiated for a relocatable schema, assigning a path to the\n\
- instance. Paths passed to [Gio.Settings.new_with_path] will typically be\n\
+ instance. Paths passed to \
+ {{!Ocgio.Raw.Settings.val-new_with_path}[Gio.Settings.new_with_path]} will \
+ typically be\n\
  constructed dynamically from a constant prefix plus some form of instance\n\
  identifier; but they must still be valid GSettings paths. Paths could also\n\
  be constant and used with a globally installed schema originating from a\n\
@@ -336,14 +348,14 @@ external new_ : string -> t = "ml_g_settings_new"
     It is an error for the schema to not exist: schemas are an essential part of
     a program, as they provide type information. If schemas need to be
     dynamically loaded (for example, from an optional runtime dependency),
-    [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
-    before loading them.
+    {{!Ocgio.Raw.Settings_schema_source.val-lookup}[Gio.SettingsSchemaSource.lookup]}
+    can be used to test for their existence before loading them.
 
     Signals on the newly created {{!Ocgio.Raw.Settings}[Gio.Settings]} object
     will be dispatched via the thread-default [GLib.MainContext] in effect at
-    the time of the call to [Gio.Settings.new]. The new
-    {{!Ocgio.Raw.Settings}[Gio.Settings]} will hold a reference on the context.
-    See [GLib.MainContext.push_thread_default]. *)
+    the time of the call to {{!Ocgio.Raw.Settings.val-new_}[Gio.Settings.new]}.
+    The new {{!Ocgio.Raw.Settings}[Gio.Settings]} will hold a reference on the
+    context. See [GLib.MainContext.push_thread_default]. *)
 
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
 (** Creates a new {{!Ocgio.Raw.Settings}[Gio.Settings]} object with the
@@ -430,8 +442,8 @@ external set_flags : t -> string -> int -> bool = "ml_g_settings_set_flags"
     any bits that are not value for the named type.
 
     After performing the write, accessing [key] directly with
-    [Gio.Settings.get_strv] will return an array of ‘nicks’; one for each bit in
-    [value]. *)
+    {{!Ocgio.Raw.Settings.val-get_strv}[Gio.Settings.get_strv]} will return an
+    array of ‘nicks’; one for each bit in [value]. *)
 
 external set_enum : t -> string -> int -> bool = "ml_g_settings_set_enum"
 (** Looks up the enumerated type nick for [value] and writes it to [key], within
@@ -442,7 +454,8 @@ external set_enum : t -> string -> int -> bool = "ml_g_settings_set_enum"
     be a valid value for the named type.
 
     After performing the write, accessing [key] directly with
-    [Gio.Settings.get_string] will return the ‘nick’ associated with [value]. *)
+    {{!Ocgio.Raw.Settings.val-get_string}[Gio.Settings.get_string]} will return
+    the ‘nick’ associated with [value]. *)
 
 external set_double : t -> string -> float -> bool = "ml_g_settings_set_double"
 (** Sets [key] in [settings] to [value].
@@ -494,7 +507,7 @@ external list_children : t -> string array = "ml_g_settings_list_children"
 (** Gets the list of children on [settings].
 
     The list is exactly the list of strings for which it is not an error to call
-    [Gio.Settings.get_child].
+    {{!Ocgio.Raw.Settings.val-get_child}[Gio.Settings.get_child]}.
 
     There is little reason to call this function from ‘normal’ code, since you
     should already know what children are in your schema. This function may
@@ -518,13 +531,15 @@ external get_user_value : t -> string -> Gvariant.t option
 
     The user value of a key is the last value that was set by the user.
 
-    After calling [Gio.Settings.reset] this function should always return [None]
-    (assuming something is not wrong with the system configuration).
+    After calling {{!Ocgio.Raw.Settings.val-reset}[Gio.Settings.reset]} this
+    function should always return [None] (assuming something is not wrong with
+    the system configuration).
 
-    It is possible that [Gio.Settings.get_value] will return a different value
-    than this function. This can happen in the case that the user set a value
-    for a key that was subsequently locked down by the system administrator —
-    this function will return the user’s old value.
+    It is possible that
+    {{!Ocgio.Raw.Settings.val-get_value}[Gio.Settings.get_value]} will return a
+    different value than this function. This can happen in the case that the
+    user set a value for a key that was subsequently locked down by the system
+    administrator — this function will return the user’s old value.
 
     This function may be useful for adding a ‘reset’ option to a UI or for
     providing indication that a particular value has been changed.
@@ -625,18 +640,21 @@ external get_default_value : t -> string -> Gvariant.t option
   = "ml_g_settings_get_default_value"
 (** Gets the ‘default value’ of a key.
 
-    This is the value that would be read if [Gio.Settings.reset] were to be
-    called on the key.
+    This is the value that would be read if
+    {{!Ocgio.Raw.Settings.val-reset}[Gio.Settings.reset]} were to be called on
+    the key.
 
     Note that this may be a different value than returned by
-    [Gio.SettingsSchemaKey.get_default_value] if the system administrator has
-    provided a default value.
+    {{!Ocgio.Raw.Settings_schema_key.val-get_default_value}[Gio.SettingsSchemaKey.get_default_value]}
+    if the system administrator has provided a default value.
 
-    Comparing the return values of [Gio.Settings.get_default_value] and
-    [Gio.Settings.get_value] is not sufficient for determining if a value has
-    been set because the user may have explicitly set the value to something
-    that happens to be equal to the default. The difference here is that if the
-    default changes in the future, the user’s key will still be set.
+    Comparing the return values of
+    {{!Ocgio.Raw.Settings.val-get_default_value}[Gio.Settings.get_default_value]}
+    and {{!Ocgio.Raw.Settings.val-get_value}[Gio.Settings.get_value]} is not
+    sufficient for determining if a value has been set because the user may have
+    explicitly set the value to something that happens to be equal to the
+    default. The difference here is that if the default changes in the future,
+    the user’s key will still be set.
 
     This function may be useful for adding an indication to a UI of what the
     default value was before the user set it.
@@ -653,7 +671,8 @@ external get_child : t -> string -> t = "ml_g_settings_get_child"
     schema of [settings] using a [<child>] element.
 
     The created child settings object will inherit the
-    [Gio.Settings:delay-apply] mode from [settings]. *)
+    {{!Ocgio.Raw.Settings.val-get_delay_apply}[Gio.Settings:delay-apply]} mode
+    from [settings]. *)
 
 external get_boolean : t -> string -> bool = "ml_g_settings_get_boolean"
 (** Gets the value that is stored at [key] in [settings].
@@ -668,7 +687,8 @@ external delay : t -> unit = "ml_g_settings_delay"
     mode.
 
     In this mode, changes to [settings] are not immediately propagated to the
-    backend, but kept locally until [Gio.Settings.apply] is called. *)
+    backend, but kept locally until
+    {{!Ocgio.Raw.Settings.val-apply}[Gio.Settings.apply]} is called. *)
 
 external create_action : t -> string -> Action.t = "ml_g_settings_create_action"
 (** Creates a {{!Ocgio.Raw.Action}[Gio.Action]} corresponding to a given
@@ -721,11 +741,13 @@ external bind :
     [Gio.Settings.bind_with_mapping] if you need a custom mapping, or map
     between types that are not supported by the default mapping functions.
 
-    Unless the [flags] include [Gio.SettingsBindFlags.NO_SENSITIVITY], this
-    function also establishes a binding between the writability of [key] and the
-    [sensitive] property of [object] (if [object] has a boolean property by that
-    name). See [Gio.Settings.bind_writable] for more details about writable
-    bindings.
+    Unless the [flags] include
+    {{!Ocgio.Enums.type-settingsbindflags_flag.constructor-NO_SENSITIVITY}[Gio.SettingsBindFlags.NO_SENSITIVITY]},
+    this function also establishes a binding between the writability of [key]
+    and the [sensitive] property of [object] (if [object] has a boolean property
+    by that name). See
+    {{!Ocgio.Raw.Settings.val-bind_writable}[Gio.Settings.bind_writable]} for
+    more details about writable bindings.
 
     Note that the lifecycle of the binding is tied to [object], and that you can
     have only one binding per object property. If you bind the same property
@@ -755,7 +777,8 @@ external get_schema : t -> string = "ml_g_settings_get_schema"
     {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} has only existed since
     version 2.32 and unfortunately this name was used in previous versions to
     refer to the schema ID rather than the schema itself. Take care to use the
-    [Gio.Settings:settings-schema] property if you wish to pass in a
+    {{!Ocgio.Raw.Settings.val-get_settings_schema}[Gio.Settings:settings-schema]}
+    property if you wish to pass in a
     {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]}. *)
 
 external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
@@ -767,11 +790,13 @@ external get_settings_schema : t -> Settings_schema.t
 (** The {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} describing the types
     of keys for this {{!Ocgio.Raw.Settings}[Gio.Settings]} object.
 
-    Ideally, this property would be called [Gio.Settings:schema].
+    Ideally, this property would be called
+    {{!Ocgio.Raw.Settings.val-get_schema}[Gio.Settings:schema]}.
     {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} has only existed since
-    version 2.32, however, and before then the [Gio.Settings:schema] property
-    was used to refer to the ID of the schema rather than the schema itself.
-    Take care. *)
+    version 2.32, however, and before then the
+    {{!Ocgio.Raw.Settings.val-get_schema}[Gio.Settings:schema]} property was
+    used to refer to the ID of the schema rather than the schema itself. Take
+    care. *)
 
 let on_changed ?after obj ~callback =
   let closure =

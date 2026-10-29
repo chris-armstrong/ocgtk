@@ -10,7 +10,9 @@
 
     [GtkWidget] types implementing the [GtkOrientable] interface will
     automatically acquire the [horizontal] or [vertical] CSS class depending on
-    the value of the [Gtk.Orientable:orientation] property.
+    the value of the
+    {{!Ocgtk.Raw.Orientable.val-get_orientation}[Gtk.Orientable:orientation]}
+    property.
 
     The class built on this module is in {!Ocgtk.Orientable}. *)
 

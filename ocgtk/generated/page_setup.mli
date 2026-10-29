@@ -23,7 +23,8 @@
     layout margins that a word processor uses; they are typically used to
     determine the minimal size for the layout margins.
 
-    To obtain a [GtkPageSetup] use [Gtk.PageSetup.new] to get the defaults, or
+    To obtain a [GtkPageSetup] use
+    {{!Ocgtk.Page_setup.val-new_}[Gtk.PageSetup.new]} to get the defaults, or
     use [Gtk.print_run_page_setup_dialog] to show the page setup dialog and
     receive the resulting page setup.
 
@@ -157,7 +158,8 @@ class page_setup : Raw.Page_setup.t -> page_setup_t
     layout margins that a word processor uses; they are typically used to
     determine the minimal size for the layout margins.
 
-    To obtain a [GtkPageSetup] use [Gtk.PageSetup.new] to get the defaults, or
+    To obtain a [GtkPageSetup] use
+    {{!Ocgtk.Page_setup.val-new_}[Gtk.PageSetup.new]} to get the defaults, or
     use [Gtk.print_run_page_setup_dialog] to show the page setup dialog and
     receive the resulting page setup.
 
@@ -194,10 +196,13 @@ val new_from_file : string -> (page_setup_t, GError.t) result
 (** Reads the page setup from the file [file_name].
 
     Returns a new [GtkPageSetup] object with the restored page setup, or an
-    [Error] result. See [Gtk.PageSetup.to_file]. *)
+    [Error] result. See
+    {{!Ocgtk.Page_setup.class-type-page_setup_t.method-to_file}[Gtk.PageSetup.to_file]}.
+*)
 
 val new_from_gvariant : Gvariant.t -> page_setup_t
 (** Desrialize a page setup from an a\{sv\} variant.
 
-    The variant must be in the format produced by [Gtk.PageSetup.to_gvariant].
+    The variant must be in the format produced by
+    {{!Ocgtk.Page_setup.class-type-page_setup_t.method-to_gvariant}[Gtk.PageSetup.to_gvariant]}.
 *)

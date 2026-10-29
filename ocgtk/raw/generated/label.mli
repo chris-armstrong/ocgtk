@@ -15,9 +15,10 @@
  - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or\n\
  <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all.\n\n\
  Additionally, the following signals have default keybindings:\n\n\
- - [Gtk.Label::activate-current-link]\n\
- - [Gtk.Label::copy-clipboard]\n\
- - [Gtk.Label::move-cursor]\n\n\
+ - \
+ {{!Ocgtk.Raw.Label.val-on_activate_current_link}[Gtk.Label::activate-current-link]}\n\
+ - {{!Ocgtk.Raw.Label.val-on_copy_clipboard}[Gtk.Label::copy-clipboard]}\n\
+ - {{!Ocgtk.Raw.Label.val-on_move_cursor}[Gtk.Label::move-cursor]}\n\n\
  {b Actions}\n\n\
  [GtkLabel] defines a set of built-in actions:\n\n\
  - [clipboard.copy] copies the text to the clipboard.\n\
@@ -70,18 +71,22 @@
  sense with translatable attributes. Use markup embedded in the translatable\n\
  content instead.\n\n\
  {b Accessibility}\n\n\
- [GtkLabel] uses the [Gtk.AccessibleRole.label] role.\n\n\
+ [GtkLabel] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-LABEL}[Gtk.AccessibleRole.label]} \
+ role.\n\n\
  {b Mnemonics}\n\n\
  Labels may contain “mnemonics”. Mnemonics are underlined characters in the\n\
  label, used for keyboard navigation. Mnemonics are created by providing a\n\
  string with an underscore before the mnemonic character, such as [\"_File\"],\n\
- to the functions [Gtk.Label.new_with_mnemonic] or\n\
- [Gtk.Label.set_text_with_mnemonic].\n\n\
+ to the functions \
+ {{!Ocgtk.Raw.Label.val-new_with_mnemonic}[Gtk.Label.new_with_mnemonic]} or\n\
+ {{!Ocgtk.Raw.Label.val-set_text_with_mnemonic}[Gtk.Label.set_text_with_mnemonic]}.\n\n\
  Mnemonics automatically activate any activatable widget the label is\n\
  inside, such as a {{!Ocgtk.Raw.Button}[Gtk.Button]}; if the label is not \
  inside the\n\
  mnemonic’s target widget, you have to tell the label about the target\n\
- using [Gtk.Label.set_mnemonic_widget].\n\n\
+ using \
+ {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.\n\n\
  Here’s a simple example where the label is inside a button:\n\n\
  {[\n\
  // Pressing Alt+H will activate this button\n\
@@ -97,7 +102,7 @@
  ]}\n\n\
  To create a mnemonic for a widget alongside the label, such as a\n\
  {{!Ocgtk.Raw.Entry}[Gtk.Entry]}, you have to point the label at the entry with\n\
- [Gtk.Label.set_mnemonic_widget]:\n\n\
+ {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}:\n\n\
  {[\n\
  // Pressing Alt+H will focus the entry\n\
  GtkWidget *entry = gtk_entry_new ();\n\
@@ -114,15 +119,19 @@
  ]}\n\n\
  (See the Pango manual for complete documentation\\] of available\n\
  tags, [Pango.parse_markup])\n\n\
- The markup passed to [Gtk.Label.set_markup] must be valid XML; for example,\n\
+ The markup passed to \
+ {{!Ocgtk.Raw.Label.val-set_markup}[Gtk.Label.set_markup]} must be valid XML; \
+ for example,\n\
  literal [<], [>] and [&] characters must be escaped as [&lt;], [&gt;], and \
  [&amp;].\n\
  If you pass text obtained from the user, file, or a network to\n\
- [Gtk.Label.set_markup], you’ll want to escape it with\n\
+ {{!Ocgtk.Raw.Label.val-set_markup}[Gtk.Label.set_markup]}, you’ll want to \
+ escape it with\n\
  [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
  Markup strings are just a convenient way to set the \
  {{!Ocpango.Raw.Attr_list}[Pango.AttrList]}\n\
- on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
+ on a label; {{!Ocgtk.Raw.Label.val-set_attributes}[Gtk.Label.set_attributes]} \
+ may be a simpler way to set\n\
  attributes in some cases. Be careful though; \
  {{!Ocpango.Raw.Attr_list}[Pango.AttrList]} tends\n\
  to cause internationalization problems, unless you’re applying attributes\n\
@@ -132,7 +141,8 @@
  knowledge of the exact\n\
  string being displayed, so translations will cause problems.\n\n\
  {b Selectable labels}\n\n\
- Labels can be made selectable with [Gtk.Label.set_selectable].\n\
+ Labels can be made selectable with \
+ {{!Ocgtk.Raw.Label.val-set_selectable}[Gtk.Label.set_selectable]}.\n\
  Selectable labels allow the user to copy the label contents to the\n\
  clipboard. Only labels that contain useful-to-copy information — such\n\
  as error messages — should be made selectable.\n\n\
@@ -141,12 +151,16 @@
  performance problems if it contains more than a small number.\n\
  Paragraphs are separated by newlines or other paragraph separators\n\
  understood by Pango.\n\n\
- Labels can automatically wrap text if you call [Gtk.Label.set_wrap].\n\n\
- [Gtk.Label.set_justify] sets how the lines in a label align\n\
+ Labels can automatically wrap text if you call \
+ {{!Ocgtk.Raw.Label.val-set_wrap}[Gtk.Label.set_wrap]}.\n\n\
+ {{!Ocgtk.Raw.Label.val-set_justify}[Gtk.Label.set_justify]} sets how the \
+ lines in a label align\n\
  with one another. If you want to set how the label as a whole aligns\n\
- in its available space, see the [Gtk.Widget:halign] and\n\
- [Gtk.Widget:valign] properties.\n\n\
- The [Gtk.Label:width-chars] and [Gtk.Label:max-width-chars]\n\
+ in its available space, see the \
+ {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and\n\
+ {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties.\n\n\
+ The {{!Ocgtk.Raw.Label.val-get_width_chars}[Gtk.Label:width-chars]} and \
+ {{!Ocgtk.Raw.Label.val-get_max_width_chars}[Gtk.Label:max-width-chars]}\n\
  properties can be used to control the size allocation of ellipsized or\n\
  wrapped labels. For ellipsizing labels, if either is specified (and less\n\
  than the actual text size), it is used as the minimum width, and the actual\n\
@@ -172,8 +186,9 @@
  gtk_label_set_markup (GTK_LABEL (label), text);\n\
  ]}\n\n\
  It is possible to implement custom handling for links and their tooltips\n\
- with the [Gtk.Label::activate-link] signal and the\n\
- [Gtk.Label.get_current_uri] function.\n\n\
+ with the {{!Ocgtk.Raw.Label.val-on_activate_link}[Gtk.Label::activate-link]} \
+ signal and the\n\
+ {{!Ocgtk.Raw.Label.val-get_current_uri}[Gtk.Label.get_current_uri]} function.\n\n\
  The class built on this module is in {!Ocgtk.Label}."]
 
 type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -194,36 +209,38 @@ external new_with_mnemonic : string option -> t
     underscores). The first underlined character represents a keyboard
     accelerator called a mnemonic. The mnemonic key can be used to activate
     another widget, chosen automatically, or explicitly using
-    [Gtk.Label.set_mnemonic_widget].
+    {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
 
-    If [Gtk.Label.set_mnemonic_widget] is not called, then the first activatable
-    ancestor of the label will be chosen as the mnemonic widget. For instance,
-    if the label is inside a button or menu item, the button or menu item will
-    automatically become the mnemonic widget and be activated by the mnemonic.
-*)
+    If
+    {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}
+    is not called, then the first activatable ancestor of the label will be
+    chosen as the mnemonic widget. For instance, if the label is inside a button
+    or menu item, the button or menu item will automatically become the mnemonic
+    widget and be activated by the mnemonic. *)
 
 (* Methods *)
 
 external set_yalign : t -> float -> unit = "ml_gtk_label_set_yalign"
 (** Sets the [yalign] of the label.
 
-    See the [Gtk.Label:yalign] property. *)
+    See the {{!Ocgtk.Raw.Label.val-get_yalign}[Gtk.Label:yalign]} property. *)
 
 external set_xalign : t -> float -> unit = "ml_gtk_label_set_xalign"
 (** Sets the [xalign] of the label.
 
-    See the [Gtk.Label:xalign] property. *)
+    See the {{!Ocgtk.Raw.Label.val-get_xalign}[Gtk.Label:xalign]} property. *)
 
 external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
   = "ml_gtk_label_set_wrap_mode"
 (** Controls how line wrapping is done.
 
     This only affects the label if line wrapping is on. (See
-    [Gtk.Label.set_wrap])
+    {{!Ocgtk.Raw.Label.val-set_wrap}[Gtk.Label.set_wrap]})
 
     The default is [Pango.WrapMode.word], which means wrap on word boundaries.
 
-    For sizing behavior, also consider the [Gtk.Label:natural-wrap-mode]
+    For sizing behavior, also consider the
+    {{!Ocgtk.Raw.Label.val-get_natural_wrap_mode}[Gtk.Label:natural-wrap-mode]}
     property. *)
 
 external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
@@ -236,7 +253,7 @@ external set_wrap : t -> bool -> unit = "ml_gtk_label_set_wrap"
     parent widget’s width, because GTK widgets conceptually can’t make their
     requisition depend on the parent widget’s size. For a label that wraps at a
     specific position, set the label’s width using
-    [Gtk.Widget.set_size_request]. *)
+    {{!Ocgtk.Raw.Widget.val-set_size_request}[Gtk.Widget.set_size_request]}. *)
 
 external set_width_chars : t -> int -> unit = "ml_gtk_label_set_width_chars"
 (** Sets the desired width in characters of the label. *)
@@ -248,7 +265,7 @@ external set_use_underline : t -> bool -> unit
 external set_use_markup : t -> bool -> unit = "ml_gtk_label_set_use_markup"
 (** Sets whether the text of the label contains markup.
 
-    See [Gtk.Label.set_markup]. *)
+    See {{!Ocgtk.Raw.Label.val-set_markup}[Gtk.Label.set_markup]}. *)
 
 external set_text_with_mnemonic : t -> string -> unit
   = "ml_gtk_label_set_text_with_mnemonic"
@@ -257,16 +274,20 @@ external set_text_with_mnemonic : t -> string -> unit
     If characters in [str] are preceded by an underscore, they are underlined
     indicating that they represent a keyboard accelerator called a mnemonic. The
     mnemonic key can be used to activate another widget, chosen automatically,
-    or explicitly using [Gtk.Label.set_mnemonic_widget]. *)
+    or explicitly using
+    {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
+*)
 
 external set_text : t -> string -> unit = "ml_gtk_label_set_text"
 (** Sets the text for the label.
 
     It overwrites any text that was there before and clears any previously set
-    mnemonic accelerators, and sets the [Gtk.Label:use-underline] and
-    [Gtk.Label:use-markup] properties to false.
+    mnemonic accelerators, and sets the
+    {{!Ocgtk.Raw.Label.val-get_use_underline}[Gtk.Label:use-underline]} and
+    {{!Ocgtk.Raw.Label.val-get_use_markup}[Gtk.Label:use-markup]} properties to
+    false.
 
-    Also see [Gtk.Label.set_markup]. *)
+    Also see {{!Ocgtk.Raw.Label.val-set_markup}[Gtk.Label.set_markup]}. *)
 
 external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_label_set_tabs"
@@ -287,7 +308,8 @@ external set_natural_wrap_mode : t -> Ocgtk_enums.naturalwrapmode -> unit
 (** Selects the line wrapping for the natural size request.
 
     This only affects the natural size requested, for the actual wrapping used,
-    see the [Gtk.Label:wrap-mode] property. *)
+    see the {{!Ocgtk.Raw.Label.val-get_wrap_mode}[Gtk.Label:wrap-mode]}
+    property. *)
 
 external set_mnemonic_widget :
   t ->
@@ -299,19 +321,22 @@ external set_mnemonic_widget :
 (** Associate the label with its mnemonic target.
 
     If the label has been set so that it has a mnemonic key (using i.e.
-    [Gtk.Label.set_markup_with_mnemonic], [Gtk.Label.set_text_with_mnemonic],
-    [Gtk.Label.new_with_mnemonic] or the [Gtk.Label:use_underline] property) the
-    label can be associated with a widget that is the target of the mnemonic.
-    When the label is inside a widget (like a {{!Ocgtk.Raw.Button}[Gtk.Button]}
-    or a {{!Ocgtk.Raw.Notebook}[Gtk.Notebook]} tab) it is automatically
-    associated with the correct widget, but sometimes (i.e. when the target is a
-    {{!Ocgtk.Raw.Entry}[Gtk.Entry]} next to the label) you need to set it
-    explicitly using this function.
+    {{!Ocgtk.Raw.Label.val-set_markup_with_mnemonic}[Gtk.Label.set_markup_with_mnemonic]},
+    {{!Ocgtk.Raw.Label.val-set_text_with_mnemonic}[Gtk.Label.set_text_with_mnemonic]},
+    {{!Ocgtk.Raw.Label.val-new_with_mnemonic}[Gtk.Label.new_with_mnemonic]} or
+    the {{!Ocgtk.Raw.Label.val-get_use_underline}[Gtk.Label:use_underline]}
+    property) the label can be associated with a widget that is the target of
+    the mnemonic. When the label is inside a widget (like a
+    {{!Ocgtk.Raw.Button}[Gtk.Button]} or a {{!Ocgtk.Raw.Notebook}[Gtk.Notebook]}
+    tab) it is automatically associated with the correct widget, but sometimes
+    (i.e. when the target is a {{!Ocgtk.Raw.Entry}[Gtk.Entry]} next to the
+    label) you need to set it explicitly using this function.
 
     The target widget will be accelerated by emitting the
-    [Gtk.Widget::mnemonic-activate] signal on it. The default handler for this
-    signal will activate the widget if there are no mnemonic collisions and
-    toggle focus between the colliding widgets otherwise. *)
+    {{!Ocgtk.Raw.Widget.val-on_mnemonic_activate}[Gtk.Widget::mnemonic-activate]}
+    signal on it. The default handler for this signal will activate the widget
+    if there are no mnemonic collisions and toggle focus between the colliding
+    widgets otherwise. *)
 
 external set_max_width_chars : t -> int -> unit
   = "ml_gtk_label_set_max_width_chars"
@@ -328,7 +353,9 @@ external set_markup_with_mnemonic : t -> string -> unit
     called a mnemonic.
 
     The mnemonic key can be used to activate another widget, chosen
-    automatically, or explicitly using [Gtk.Label.set_mnemonic_widget]. *)
+    automatically, or explicitly using
+    {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
+*)
 
 external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
 [@@ocaml.doc
@@ -346,9 +373,10 @@ external set_markup : t -> string -> unit = "ml_gtk_label_set_markup"
    gtk_label_set_markup (GTK_LABEL (self), markup);\n\
    g_free (markup);\n\
    ]}\n\n\
-   This function sets the [Gtk.Label:use-markup] property\n\
+   This function sets the \
+   {{!Ocgtk.Raw.Label.val-get_use_markup}[Gtk.Label:use-markup]} property\n\
    to true.\n\n\
-   Also see [Gtk.Label.set_text]."]
+   Also see {{!Ocgtk.Raw.Label.val-set_text}[Gtk.Label.set_text]}."]
 
 external set_lines : t -> int -> unit = "ml_gtk_label_set_lines"
 (** Sets the number of lines to which an ellipsized, wrapping label should be
@@ -361,8 +389,9 @@ external set_label : t -> string -> unit = "ml_gtk_label_set_label"
 (** Sets the text of the label.
 
     The label is interpreted as including embedded underlines and/or Pango
-    markup depending on the values of the [Gtk.Label:use-underline] and
-    [Gtk.Label:use-markup] properties. *)
+    markup depending on the values of the
+    {{!Ocgtk.Raw.Label.val-get_use_underline}[Gtk.Label:use-underline]} and
+    {{!Ocgtk.Raw.Label.val-get_use_markup}[Gtk.Label:use-markup]} properties. *)
 
 external set_justify : t -> Ocgtk_enums.justification -> unit
   = "ml_gtk_label_set_justify"
@@ -370,11 +399,12 @@ external set_justify : t -> Ocgtk_enums.justification -> unit
 
     This function has no effect on labels containing only a single line.
 
-    [Gtk.Justification.left] is the default value when the widget is first
-    created with [Gtk.Label.new].
+    {{!Ocgtk.Enums.type-justification.constructor-LEFT}[Gtk.Justification.left]}
+    is the default value when the widget is first created with
+    {{!Ocgtk.Raw.Label.val-new_}[Gtk.Label.new]}.
 
     If you instead want to set the alignment of the label as a whole, use
-    [Gtk.Widget.set_halign] instead. *)
+    {{!Ocgtk.Raw.Widget.val-set_halign}[Gtk.Widget.set_halign]} instead. *)
 
 external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_label_set_extra_menu"
@@ -392,8 +422,9 @@ external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
 (** Apply attributes to the label text.
 
     The attributes set with this function will be applied and merged with any
-    other attributes previously effected by way of the [Gtk.Label:use-underline]
-    or [Gtk.Label:use-markup] properties
+    other attributes previously effected by way of the
+    {{!Ocgtk.Raw.Label.val-get_use_underline}[Gtk.Label:use-underline]} or
+    {{!Ocgtk.Raw.Label.val-get_use_markup}[Gtk.Label:use-markup]} properties
 
     While it is not recommended to mix markup strings with manually set
     attributes, if you must; know that the attributes will be applied to the
@@ -402,52 +433,53 @@ external set_attributes : t -> Ocpango_raw.Attr_list.t option -> unit
 external select_region : t -> int -> int -> unit = "ml_gtk_label_select_region"
 (** Selects a range of characters in the label, if the label is selectable.
 
-    See [Gtk.Label.set_selectable]. If the label is not selectable, this
-    function has no effect. If [start_offset] or [end_offset] are -1, then the
-    end of the label will be substituted. *)
+    See {{!Ocgtk.Raw.Label.val-set_selectable}[Gtk.Label.set_selectable]}. If
+    the label is not selectable, this function has no effect. If [start_offset]
+    or [end_offset] are -1, then the end of the label will be substituted. *)
 
 external get_yalign : t -> float = "ml_gtk_label_get_yalign"
 (** Gets the [yalign] of the label.
 
-    See the [Gtk.Label:yalign] property. *)
+    See the {{!Ocgtk.Raw.Label.val-get_yalign}[Gtk.Label:yalign]} property. *)
 
 external get_xalign : t -> float = "ml_gtk_label_get_xalign"
 (** Gets the [xalign] of the label.
 
-    See the [Gtk.Label:xalign] property. *)
+    See the {{!Ocgtk.Raw.Label.val-get_xalign}[Gtk.Label:xalign]} property. *)
 
 external get_wrap_mode : t -> Ocpango_enums.wrapmode
   = "ml_gtk_label_get_wrap_mode"
 (** Returns line wrap mode used by the label.
 
-    See [Gtk.Label.set_wrap_mode]. *)
+    See {{!Ocgtk.Raw.Label.val-set_wrap_mode}[Gtk.Label.set_wrap_mode]}. *)
 
 external get_wrap : t -> bool = "ml_gtk_label_get_wrap"
 (** Returns whether lines in the label are automatically wrapped.
 
-    See [Gtk.Label.set_wrap]. *)
+    See {{!Ocgtk.Raw.Label.val-set_wrap}[Gtk.Label.set_wrap]}. *)
 
 external get_width_chars : t -> int = "ml_gtk_label_get_width_chars"
 (** Retrieves the desired width of the label in characters.
 
-    See [Gtk.Label.set_width_chars]. *)
+    See {{!Ocgtk.Raw.Label.val-set_width_chars}[Gtk.Label.set_width_chars]}. *)
 
 external get_use_underline : t -> bool = "ml_gtk_label_get_use_underline"
 (** Returns whether underlines in the label indicate mnemonics.
 
-    See [Gtk.Label.set_use_underline]. *)
+    See {{!Ocgtk.Raw.Label.val-set_use_underline}[Gtk.Label.set_use_underline]}.
+*)
 
 external get_use_markup : t -> bool = "ml_gtk_label_get_use_markup"
 (** Returns whether the label’s text is interpreted as Pango markup.
 
-    See [Gtk.Label.set_use_markup]. *)
+    See {{!Ocgtk.Raw.Label.val-set_use_markup}[Gtk.Label.set_use_markup]}. *)
 
 external get_text : t -> string = "ml_gtk_label_get_text"
 (** Gets the text of the label.
 
     The returned text is as it appears on screen. This does not include any
     embedded underlines indicating mnemonics or Pango markup. (See
-    [Gtk.Label.get_label]) *)
+    {{!Ocgtk.Raw.Label.val-get_label}[Gtk.Label.get_label]}) *)
 
 external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_label_get_tabs"
@@ -471,7 +503,9 @@ external get_natural_wrap_mode : t -> Ocgtk_enums.naturalwrapmode
   = "ml_gtk_label_get_natural_wrap_mode"
 (** Returns natural line wrap mode used by the label.
 
-    See [Gtk.Label.set_natural_wrap_mode]. *)
+    See
+    {{!Ocgtk.Raw.Label.val-set_natural_wrap_mode}[Gtk.Label.set_natural_wrap_mode]}.
+*)
 
 external get_mnemonic_widget :
   t ->
@@ -481,7 +515,9 @@ external get_mnemonic_widget :
   option = "ml_gtk_label_get_mnemonic_widget"
 (** Retrieves the mnemonic target of this label.
 
-    See [Gtk.Label.set_mnemonic_widget]. *)
+    See
+    {{!Ocgtk.Raw.Label.val-set_mnemonic_widget}[Gtk.Label.set_mnemonic_widget]}.
+*)
 
 external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
 (** Return the mnemonic accelerator.
@@ -493,13 +529,13 @@ external get_mnemonic_keyval : t -> int = "ml_gtk_label_get_mnemonic_keyval"
 external get_max_width_chars : t -> int = "ml_gtk_label_get_max_width_chars"
 (** Retrieves the maximum width of the label in characters.
 
-    See [Gtk.Label.set_width_chars]. *)
+    See {{!Ocgtk.Raw.Label.val-set_width_chars}[Gtk.Label.set_width_chars]}. *)
 
 external get_lines : t -> int = "ml_gtk_label_get_lines"
 (** Gets the number of lines to which an ellipsized, wrapping label should be
     limited.
 
-    See [Gtk.Label.set_lines]. *)
+    See {{!Ocgtk.Raw.Label.val-set_lines}[Gtk.Label.set_lines]}. *)
 
 external get_layout_offsets : t -> int * int = "ml_gtk_label_get_layout_offsets"
 (** Obtains the coordinates where the label will draw its Pango layout.
@@ -515,33 +551,36 @@ external get_layout : t -> Ocpango_raw.Layout.t = "ml_gtk_label_get_layout"
 (** Gets the Pango layout used to display the label.
 
     The layout is useful to e.g. convert text positions to pixel positions, in
-    combination with [Gtk.Label.get_layout_offsets]. The returned layout is
-    owned by the [label] so need not be freed by the caller. The [label] is free
-    to recreate its layout at any time, so it should be considered read-only. *)
+    combination with
+    {{!Ocgtk.Raw.Label.val-get_layout_offsets}[Gtk.Label.get_layout_offsets]}.
+    The returned layout is owned by the [label] so need not be freed by the
+    caller. The [label] is free to recreate its layout at any time, so it should
+    be considered read-only. *)
 
 external get_label : t -> string = "ml_gtk_label_get_label"
 (** Fetches the text from a label.
 
     The returned text includes any embedded underlines indicating mnemonics and
-    Pango markup. (See [Gtk.Label.get_text]). *)
+    Pango markup. (See {{!Ocgtk.Raw.Label.val-get_text}[Gtk.Label.get_text]}).
+*)
 
 external get_justify : t -> Ocgtk_enums.justification
   = "ml_gtk_label_get_justify"
 (** Returns the justification of the label.
 
-    See [Gtk.Label.set_justify]. *)
+    See {{!Ocgtk.Raw.Label.val-set_justify}[Gtk.Label.set_justify]}. *)
 
 external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_label_get_extra_menu"
 (** Gets the extra menu model of the label.
 
-    See [Gtk.Label.set_extra_menu]. *)
+    See {{!Ocgtk.Raw.Label.val-set_extra_menu}[Gtk.Label.set_extra_menu]}. *)
 
 external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_label_get_ellipsize"
 (** Returns the ellipsization mode of the label.
 
-    See [Gtk.Label.set_ellipsize]. *)
+    See {{!Ocgtk.Raw.Label.val-set_ellipsize}[Gtk.Label.set_ellipsize]}. *)
 
 external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
 (** Returns the URI for the active link in the label.
@@ -549,18 +588,23 @@ external get_current_uri : t -> string option = "ml_gtk_label_get_current_uri"
     The active link is the one under the mouse pointer or, in a selectable
     label, the link in which the text cursor is currently positioned.
 
-    This function is intended for use in a [Gtk.Label::activate-link] handler or
-    for use in a [Gtk.Widget::query-tooltip] handler. *)
+    This function is intended for use in a
+    {{!Ocgtk.Raw.Label.val-on_activate_link}[Gtk.Label::activate-link]} handler
+    or for use in a
+    {{!Ocgtk.Raw.Widget.val-on_query_tooltip}[Gtk.Widget::query-tooltip]}
+    handler. *)
 
 external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_label_get_attributes"
 (** Gets the label's attribute list.
 
     This is the {{!Ocpango.Raw.Attr_list}[Pango.AttrList]} that was set on the
-    label using [Gtk.Label.set_attributes], if any. This function does not
-    reflect attributes that come from the label's markup (see
-    [Gtk.Label.set_markup]). If you want to get the effective attributes for the
-    label, use [pango_layout_get_attributes (gtk_label_get_layout (self))]. *)
+    label using
+    {{!Ocgtk.Raw.Label.val-set_attributes}[Gtk.Label.set_attributes]}, if any.
+    This function does not reflect attributes that come from the label's markup
+    (see {{!Ocgtk.Raw.Label.val-set_markup}[Gtk.Label.set_markup]}). If you want
+    to get the effective attributes for the label, use
+    [pango_layout_get_attributes (gtk_label_get_layout (self))]. *)
 
 (* Properties *)
 

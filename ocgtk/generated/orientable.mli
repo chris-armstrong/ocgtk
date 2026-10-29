@@ -18,7 +18,9 @@
 
     [GtkWidget] types implementing the [GtkOrientable] interface will
     automatically acquire the [horizontal] or [vertical] CSS class depending on
-    the value of the [Gtk.Orientable:orientation] property. *)
+    the value of the
+    {{!Ocgtk.Orientable.class-type-orientable_t.method-get_orientation}[Gtk.Orientable:orientation]}
+    property. *)
 class type orientable_t = object
   (** {2:methods Methods} *)
 
@@ -47,7 +49,9 @@ class orientable : Raw.Orientable.t -> orientable_t
 
     [GtkWidget] types implementing the [GtkOrientable] interface will
     automatically acquire the [horizontal] or [vertical] CSS class depending on
-    the value of the [Gtk.Orientable:orientation] property. *)
+    the value of the
+    {{!Ocgtk.Orientable.class-type-orientable_t.method-get_orientation}[Gtk.Orientable:orientation]}
+    property. *)
 
 (** {1:constructors Constructors} *)
 

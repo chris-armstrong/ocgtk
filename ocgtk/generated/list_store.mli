@@ -93,7 +93,9 @@ end
      accept [GObject]s are handled a little differently.  The\n\
      [GtkListStore] will keep a reference to the object instead of copying the\n\
      value.  As a result, if the object is modified, it is up to the\n\
-     application writer to call [Gtk.TreeModel.row_changed] to emit the\n\
+     application writer to call \
+     {{!Ocgtk.Tree_model.class-type-tree_model_t.method-row_changed}[Gtk.TreeModel.row_changed]} \
+     to emit the\n\
      [Gtk.TreeModel::row_changed] signal. This most commonly affects lists\n\
      with {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]}s stored.\n\n\
      An example for creating a simple list store:\n\n\
@@ -238,7 +240,9 @@ class list_store : Raw.List_store.t -> list_store_t
  accept [GObject]s are handled a little differently.  The\n\
  [GtkListStore] will keep a reference to the object instead of copying the\n\
  value.  As a result, if the object is modified, it is up to the\n\
- application writer to call [Gtk.TreeModel.row_changed] to emit the\n\
+ application writer to call \
+ {{!Ocgtk.Tree_model.class-type-tree_model_t.method-row_changed}[Gtk.TreeModel.row_changed]} \
+ to emit the\n\
  [Gtk.TreeModel::row_changed] signal. This most commonly affects lists\n\
  with {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]}s stored.\n\n\
  An example for creating a simple list store:\n\n\

@@ -34,7 +34,8 @@ end
     [GSocketAddressEnumerator] is an enumerator type for
     {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     instances. It is returned by enumeration functions such as
-    [Gio.SocketConnectable.enumerate], which returns a
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]}, which returns a
     [GSocketAddressEnumerator] to list each
     {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     which could be used to connect to that
@@ -42,12 +43,14 @@ end
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and
-    [Gio.SocketAddressEnumerator.next_finish] should be used where possible.
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t.method-next_finish}
+     [Gio.SocketAddressEnumerator.next_finish]} should be used where possible.
 
     Each [GSocketAddressEnumerator] can only be enumerated once. Once
-    [Gio.SocketAddressEnumerator.next] has returned [None], further enumeration
-    with that [GSocketAddressEnumerator] is not possible, and it can be
-    unreffed. *)
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t.method-next}
+     [Gio.SocketAddressEnumerator.next]} has returned [None], further
+    enumeration with that [GSocketAddressEnumerator] is not possible, and it can
+    be unreffed. *)
 and socket_address_enumerator_t = object
   (** {2:methods Methods} *)
 
@@ -81,8 +84,9 @@ end
 (** {b The methods, signals and properties of a [SocketConnectable].}
 
     Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t.method-enumerate}
+     [Gio.SocketConnectable.enumerate]} to get a
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
     to try out each socket address in turn until one succeeds, as shown in the
     sample code below.

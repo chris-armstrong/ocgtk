@@ -2,7 +2,8 @@
 (* SocketConnectable, a member of the cyclic module Socket_address_and__socket_address_enumerator_and__socket_connectable *)
 
 (** Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Raw.Socket_connectable.val-enumerate}[Gio.SocketConnectable.enumerate]}
     to get a
     {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]} to try
     out each socket address in turn until one succeeds, as shown in the sample

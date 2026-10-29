@@ -15,26 +15,31 @@
  be presented in the header bar at the top of the window, or at the bottom\n\
  of the window. To add action widgets, create your [GtkDialog] using\n\
  [Gtk.Dialog.new_with_buttons], or use\n\
- [Gtk.Dialog.add_button], [Gtk.Dialog.add_buttons],\n\
- or [Gtk.Dialog.add_action_widget].\n\n\
+ {{!Ocgtk.Raw.Dialog.val-add_button}[Gtk.Dialog.add_button]}, \
+ [Gtk.Dialog.add_buttons],\n\
+ or {{!Ocgtk.Raw.Dialog.val-add_action_widget}[Gtk.Dialog.add_action_widget]}.\n\n\
  [GtkDialogs] uses some heuristics to decide whether to add a close\n\
  button to the window decorations. If any of the action buttons use\n\
  the response ID [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the\n\
  close button is omitted.\n\n\
  Clicking a button that was added as an action widget will emit the\n\
- [Gtk.Dialog::response] signal with a response ID that you specified.\n\
+ {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal with a \
+ response ID that you specified.\n\
  GTK will never assign a meaning to positive response IDs; these are\n\
  entirely user-defined. But for convenience, you can use the response\n\
  IDs in the {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]} enumeration \
  (these all have values\n\
  less than zero). If a dialog receives a delete event, the\n\
- [Gtk.Dialog::response] signal will be emitted with the\n\
+ {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal will be \
+ emitted with the\n\
  [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
- Dialogs are created with a call to [Gtk.Dialog.new] or\n\
+ Dialogs are created with a call to \
+ {{!Ocgtk.Raw.Dialog.val-new_}[Gtk.Dialog.new]} or\n\
  [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows\n\
  you to set the dialog title, some convenient flags, and add buttons.\n\n\
  A “modal” dialog (that is, one which freezes the rest of the application\n\
- from user input), can be created by calling [Gtk.Window.set_modal]\n\
+ from user input), can be created by calling \
+ {{!Ocgtk.Raw.Window.val-set_modal}[Gtk.Window.set_modal]}\n\
  on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
  pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
  For the simple dialog in the following example, a \
@@ -156,7 +161,8 @@ external get_header_bar : t -> Header_bar.t = "ml_gtk_dialog_get_header_bar"
 (** Returns the header bar of [dialog].
 
     Note that the headerbar is only used by the dialog if the
-    [Gtk.Dialog:use-header-bar] property is [true]. *)
+    {{!Ocgtk.Raw.Dialog.val-get_use_header_bar}[Gtk.Dialog:use-header-bar]}
+    property is [true]. *)
 
 external get_content_area : t -> Box.t = "ml_gtk_dialog_get_content_area"
 (** Returns the content area of [dialog]. *)
@@ -171,9 +177,10 @@ external add_button :
 (** Adds a button with the given text.
 
     GTK arranges things so that clicking the button will emit the
-    [Gtk.Dialog::response] signal with the given [response_id]. The button is
-    appended to the end of the dialog’s action area. The button widget is
-    returned, but usually you don’t need it. *)
+    {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal with the
+    given [response_id]. The button is appended to the end of the dialog’s
+    action area. The button widget is returned, but usually you don’t need it.
+*)
 
 external add_action_widget :
   t ->
@@ -184,9 +191,10 @@ external add_action_widget :
   unit = "ml_gtk_dialog_add_action_widget"
 (** Adds an activatable widget to the action area of a [GtkDialog].
 
-    GTK connects a signal handler that will emit the [Gtk.Dialog::response]
-    signal on the dialog when the widget is activated. The widget is appended to
-    the end of the dialog’s action area.
+    GTK connects a signal handler that will emit the
+    {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal on the
+    dialog when the widget is activated. The widget is appended to the end of
+    the dialog’s action area.
 
     If you want to add a non-activatable widget, simply pack it into the
     [action_area] field of the [GtkDialog] struct. *)
@@ -203,7 +211,8 @@ external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
    Builtin [GtkDialog] subclasses such as \
    {{!Ocgtk.Raw.Color_chooser_dialog}[Gtk.ColorChooserDialog]}\n\
    set this property according to platform conventions (using the\n\
-   [Gtk.Settings:gtk-dialogs-use-header] setting).\n\n\
+   {{!Ocgtk.Raw.Settings.val-get_gtk_dialogs_use_header}[Gtk.Settings:gtk-dialogs-use-header]} \
+   setting).\n\n\
    Here is how you can achieve the same:\n\n\
    {[\n\
    g_object_get (settings, \"gtk-dialogs-use-header\", &header, NULL);\n\

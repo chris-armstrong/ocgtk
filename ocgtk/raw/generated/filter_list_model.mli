@@ -7,8 +7,9 @@
     by a [GtkFilter].
 
     The model can be set up to do incremental filtering, so that filtering long
-    lists doesn't block the UI. See [Gtk.FilterListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Raw.Filter_list_model.val-set_incremental}[Gtk.FilterListModel.set_incremental]}
+    for details.
 
     [GtkFilterListModel] passes through sections from the underlying model.
 
@@ -59,8 +60,10 @@ external set_incremental : t -> bool -> unit
 
     By default, incremental filtering is disabled.
 
-    See [Gtk.FilterListModel.get_pending] for progress information about an
-    ongoing incremental filtering operation. *)
+    See
+    {{!Ocgtk.Raw.Filter_list_model.val-get_pending}[Gtk.FilterListModel.get_pending]}
+    for progress information about an ongoing incremental filtering operation.
+*)
 
 external set_filter : t -> Filter.t option -> unit
   = "ml_gtk_filter_list_model_set_filter"
@@ -70,7 +73,9 @@ external get_watch_items : t -> bool
   = "ml_gtk_filter_list_model_get_watch_items"
 (** Returns whether watching items is enabled.
 
-    See [Gtk.FilterListModel.set_watch_items]. *)
+    See
+    {{!Ocgtk.Raw.Filter_list_model.val-set_watch_items}[Gtk.FilterListModel.set_watch_items]}.
+*)
 
 external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
 (** Returns the number of items that have not been filtered yet.
@@ -87,7 +92,8 @@ external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
     ]}
 
     If no filter operation is ongoing - in particular when
-    [Gtk.FilterListModel:incremental] is [false] - this function returns 0. *)
+    {{!Ocgtk.Raw.Filter_list_model.val-get_incremental}[Gtk.FilterListModel:incremental]}
+    is [false] - this function returns 0. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_filter_list_model_get_model"
@@ -97,7 +103,9 @@ external get_incremental : t -> bool
   = "ml_gtk_filter_list_model_get_incremental"
 (** Returns whether incremental filtering is enabled.
 
-    See [Gtk.FilterListModel.set_incremental]. *)
+    See
+    {{!Ocgtk.Raw.Filter_list_model.val-set_incremental}[Gtk.FilterListModel.set_incremental]}.
+*)
 
 external get_filter : t -> Filter.t option
   = "ml_gtk_filter_list_model_get_filter"

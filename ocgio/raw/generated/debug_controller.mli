@@ -10,10 +10,10 @@
     features in this process.
 
     Whether debug output is enabled is exposed as
-    [Gio.DebugController:debug-enabled]. This controls
-    [GLib.log_set_debug_enabled] by default. Application code may connect to the
-    [GObject.Object::notify] signal for it to control other parts of its debug
-    infrastructure as necessary.
+    {{!Ocgio.Raw.Debug_controller.val-get_debug_enabled}[Gio.DebugController:debug-enabled]}.
+    This controls [GLib.log_set_debug_enabled] by default. Application code may
+    connect to the [GObject.Object::notify] signal for it to control other parts
+    of its debug infrastructure as necessary.
 
     If your application or service is using the default GLib log writer
     function, creating one of the built-in implementations of [GDebugController]

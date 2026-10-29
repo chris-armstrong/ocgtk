@@ -3,12 +3,16 @@
 
 (** Tracks keyboard focus.
 
-    The event controller offers [Gtk.EventControllerFocus::enter] and
-    [Gtk.EventControllerFocus::leave] signals, as well as
-    [Gtk.EventControllerFocus:is-focus] and
-    [Gtk.EventControllerFocus:contains-focus] properties which are updated to
-    reflect focus changes inside the widget hierarchy that is rooted at the
-    controllers widget.
+    The event controller offers
+    {{!Ocgtk.Raw.Event_controller_focus.val-on_enter}[Gtk.EventControllerFocus::enter]}
+    and
+    {{!Ocgtk.Raw.Event_controller_focus.val-on_leave}[Gtk.EventControllerFocus::leave]}
+    signals, as well as
+    {{!Ocgtk.Raw.Event_controller_focus.val-is_focus}[Gtk.EventControllerFocus:is-focus]}
+    and
+    {{!Ocgtk.Raw.Event_controller_focus.val-contains_focus}[Gtk.EventControllerFocus:contains-focus]}
+    properties which are updated to reflect focus changes inside the widget
+    hierarchy that is rooted at the controllers widget.
 
     The class built on this module is in {!Ocgtk.Event_controller_focus}. *)
 

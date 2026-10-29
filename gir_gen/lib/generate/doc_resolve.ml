@@ -116,11 +116,113 @@ let resolve_constant ~env ~namespace rest =
         (Module_paths.main_module namespace)
         Module_paths.constants_module value)
 
-let resolve_member ~env ~namespace =
-  if String.equal namespace env.namespace then Error Not_resolved_yet
+let ( let* ) = Result.bind
+
+let in_current_namespace ~env ~namespace =
+  if String.equal namespace env.namespace then Ok ()
   else Error Member_in_other_namespace
 
-let ( let* ) = Result.bind
+let drop_prefix ~prefix s =
+  if String.starts_with ~prefix s then
+    Some
+      (String.sub s ~pos:(String.length prefix)
+         ~len:(String.length s - String.length prefix))
+  else None
+
+(* The type and member of a member endpoint: [Type.m] for a method or
+   constructor, [Type::s] for a signal, [Type:p] for a property. *)
+let split_member (kind : Doc_ast.sym_kind) rest =
+  let type_name, tail = split_at_first ~chars:[ '.'; ':' ] rest in
+  let prefix =
+    match kind with
+    | Signal -> "::"
+    | Property -> ":"
+    | Method | Ctor | Class | Iface | Struct | Type_kind | Enum | Flags | Const
+    | Alias | Callback | Func | Vfunc | Doc_ast.Error | Id ->
+        "."
+  in
+  match drop_prefix ~prefix tail with
+  | Some member when not (String.equal member "") -> Ok (type_name, member)
+  | Some _ | None -> Error Unknown_target
+
+(* Signal and property names are indexed in GIR form, with hyphens, and
+   enumeration members in upper case, with underscores. Upstream docs write
+   either separator. *)
+let member_key (kind : Doc_ast.sym_kind) member =
+  match kind with
+  | Signal | Property -> String.map member ~f:(function '_' -> '-' | c -> c)
+  | Enum | Flags ->
+      String.uppercase_ascii
+        (String.map member ~f:(function '-' -> '_' | c -> c))
+  | Method | Ctor | Class | Iface | Struct | Type_kind | Const | Alias
+  | Callback | Func | Vfunc | Doc_ast.Error | Id ->
+      member
+
+let member_table (kind : Doc_ast.sym_kind) (names : doc_member_names) =
+  match kind with
+  | Method -> names.dm_methods
+  | Ctor -> names.dm_constructors
+  | Signal -> names.dm_signals
+  | Property -> names.dm_properties
+  | Class | Iface | Struct | Type_kind | Enum | Flags | Const | Alias | Callback
+  | Func | Vfunc | Doc_ast.Error | Id ->
+      StringMap.empty
+
+let member_path ~env ~namespace (kind : Doc_ast.sym_kind) type_name name =
+  match (kind, env.layer) with
+  | Ctor, Main_library ->
+      Fmt.str "%s.val-%s"
+        (Module_paths.cross_ns_layer2_module ~namespace type_name)
+        name
+  | _, Main_library ->
+      Fmt.str "%s.class-type-%s.method-%s"
+        (Module_paths.cross_ns_layer2_module ~namespace type_name)
+        (Utils.class_type_name type_name)
+        name
+  | _, Raw_library ->
+      Fmt.str "%s.%s.%s.val-%s"
+        (Module_paths.main_module namespace)
+        Module_paths.raw_alias_module
+        (Utils.module_name_of_class type_name)
+        name
+
+let resolve_member ~env ~namespace kind rest =
+  let* () = in_current_namespace ~env ~namespace in
+  let* type_name, member = split_member kind rest in
+  let* members =
+    lookup ~env ~namespace ~table:(fun ns -> ns.di_members) type_name
+  in
+  let names =
+    match env.layer with
+    | Main_library -> members.dm_l2
+    | Raw_library -> members.dm_l1
+  in
+  StringMap.find_opt (member_key kind member) (member_table kind names)
+  |> Option.to_result ~none:Unknown_target
+  |> Result.map (member_path ~env ~namespace kind type_name)
+
+let resolve_enum_member ~env ~namespace rest =
+  let* () = in_current_namespace ~env ~namespace in
+  let* type_name, member = split_member Enum rest in
+  let* kind = lookup ~env ~namespace ~table:(fun ns -> ns.di_types) type_name in
+  let* variants =
+    lookup ~env ~namespace ~table:(fun ns -> ns.di_enum_members) type_name
+  in
+  let* variant =
+    StringMap.find_opt (member_key Enum member) variants
+    |> Option.to_result ~none:Unknown_target
+  in
+  let suffix =
+    match kind with
+    | Dk_bitfield -> "_flag"
+    | Dk_enum | Dk_class | Dk_interface | Dk_record -> ""
+  in
+  Ok
+    (Fmt.str "%s.%s.type-%s%s.constructor-%s"
+       (Module_paths.main_module namespace)
+       Module_paths.enums_alias_module
+       (String.lowercase_ascii type_name)
+       suffix variant)
 
 let path_of ~env kind endpoint =
   let* kind = Option.to_result ~none:Not_resolved_yet kind in
@@ -131,9 +233,9 @@ let path_of ~env kind endpoint =
   | Enum_target -> (
       match split_at_first ~chars:[ '.' ] rest with
       | _, "" -> resolve_type ~env ~namespace rest
-      | _, _member -> resolve_member ~env ~namespace)
+      | _, _member -> resolve_enum_member ~env ~namespace rest)
   | Constant_target -> resolve_constant ~env ~namespace rest
-  | Member_target -> resolve_member ~env ~namespace
+  | Member_target -> resolve_member ~env ~namespace kind rest
 
 let rec resolve_inlines ~env inlines outcomes =
   List.fold_left_map inlines ~init:outcomes

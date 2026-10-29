@@ -18,13 +18,15 @@
     and consequently, it is a threadsafe object.
 
     GDK provides a number of threadsafe texture loading functions:
-    [Gdk.Texture.new_from_resource], [Gdk.Texture.new_from_bytes],
-    [Gdk.Texture.new_from_file], [Gdk.Texture.new_from_filename],
-    [Gdk.Texture.new_for_pixbuf]. Note that these are meant for loading icons
-    and resources that are shipped with the toolkit or application. It is
-    recommended that you use a dedicated image loading framework such as
-    {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
-    data.
+    {{!Ocgdk.Raw.Texture.val-new_from_resource}[Gdk.Texture.new_from_resource]},
+    {{!Ocgdk.Raw.Texture.val-new_from_bytes}[Gdk.Texture.new_from_bytes]},
+    {{!Ocgdk.Raw.Texture.val-new_from_file}[Gdk.Texture.new_from_file]},
+    {{!Ocgdk.Raw.Texture.val-new_from_filename}[Gdk.Texture.new_from_filename]},
+    {{!Ocgdk.Raw.Texture.val-new_for_pixbuf}[Gdk.Texture.new_for_pixbuf]}. Note
+    that these are meant for loading icons and resources that are shipped with
+    the toolkit or application. It is recommended that you use a dedicated image
+    loading framework such as {{:https://lib.rs/crates/glycin}glycin}, if you
+    need to load untrusted image data.
 
     The class built on this module is in {!Ocgdk.Texture}. *)
 
@@ -99,7 +101,9 @@ external new_from_resource : string -> t = "ml_gdk_texture_new_from_resource"
 
     It is a fatal error if [resource_path] does not specify a valid image
     resource and the program will abort if that happens. If you are unsure about
-    the validity of a resource, use [Gdk.Texture.new_from_file] to load it.
+    the validity of a resource, use
+    {{!Ocgdk.Raw.Texture.val-new_from_file}[Gdk.Texture.new_from_file]} to load
+    it.
 
     This function is threadsafe, so that you can e.g. use GTask and
     [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
@@ -111,14 +115,16 @@ external save_to_tiff_bytes : t -> Glib_bytes.t
   = "ml_gdk_texture_save_to_tiff_bytes"
 (** Store the given [texture] in memory as a TIFF file.
 
-    Use [Gdk.Texture.new_from_bytes] to read it back.
+    Use {{!Ocgdk.Raw.Texture.val-new_from_bytes}[Gdk.Texture.new_from_bytes]} to
+    read it back.
 
     This function is intended to store a representation of the texture's data
     that is as accurate as possible. This is particularly relevant when working
     with high dynamic range images and floating-point texture data.
 
     If that is not your concern and you are interested in a smaller size and a
-    more portable format, you might want to use [Gdk.Texture.save_to_png_bytes].
+    more portable format, you might want to use
+    {{!Ocgdk.Raw.Texture.val-save_to_png_bytes}[Gdk.Texture.save_to_png_bytes]}.
 *)
 
 external save_to_tiff : t -> string -> bool = "ml_gdk_texture_save_to_tiff"
@@ -130,7 +136,8 @@ external save_to_png_bytes : t -> Glib_bytes.t
   = "ml_gdk_texture_save_to_png_bytes"
 (** Store the given [texture] in memory as a PNG file.
 
-    Use [Gdk.Texture.new_from_bytes] to read it back.
+    Use {{!Ocgdk.Raw.Texture.val-new_from_bytes}[Gdk.Texture.new_from_bytes]} to
+    read it back.
 
     If you want to serialize a texture, this is a convenient and portable way to
     do that.
@@ -140,7 +147,9 @@ external save_to_png_bytes : t -> Glib_bytes.t
     libglycin library.
 
     If you are dealing with high dynamic range float data, you might also want
-    to consider [Gdk.Texture.save_to_tiff_bytes] instead. *)
+    to consider
+    {{!Ocgdk.Raw.Texture.val-save_to_tiff_bytes}[Gdk.Texture.save_to_tiff_bytes]}
+    instead. *)
 
 external save_to_png : t -> string -> bool = "ml_gdk_texture_save_to_png"
 (** Store the given [texture] to the [filename] as a PNG file.
@@ -148,7 +157,8 @@ external save_to_png : t -> string -> bool = "ml_gdk_texture_save_to_png"
     This is a utility function intended for debugging and testing. If you want
     more control over formats, proper error handling or want to store to a
     {{!Ocgio.Raw.File}[Gio.File]} or other location, you might want to use
-    [Gdk.Texture.save_to_png_bytes] or look into the libglycin library. *)
+    {{!Ocgdk.Raw.Texture.val-save_to_png_bytes}[Gdk.Texture.save_to_png_bytes]}
+    or look into the libglycin library. *)
 
 external get_width : t -> int = "ml_gdk_texture_get_width"
 (** Returns the width of [texture], in pixels. *)

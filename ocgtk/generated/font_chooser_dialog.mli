@@ -28,7 +28,8 @@
     {{!Ocgtk.Font_chooser.class-type-font_chooser_t}[Gtk.FontChooser]} interface
     and does not provide much API of its own.
 
-    To create a [GtkFontChooserDialog], use [Gtk.FontChooserDialog.new].
+    To create a [GtkFontChooserDialog], use
+    {{!Ocgtk.Font_chooser_dialog.val-new_}[Gtk.FontChooserDialog.new]}.
 
     {b GtkFontChooserDialog as GtkBuildable}
 
@@ -61,7 +62,8 @@ class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
     {{!Ocgtk.Font_chooser.class-type-font_chooser_t}[Gtk.FontChooser]} interface
     and does not provide much API of its own.
 
-    To create a [GtkFontChooserDialog], use [Gtk.FontChooserDialog.new].
+    To create a [GtkFontChooserDialog], use
+    {{!Ocgtk.Font_chooser_dialog.val-new_}[Gtk.FontChooserDialog.new]}.
 
     {b GtkFontChooserDialog as GtkBuildable}
 

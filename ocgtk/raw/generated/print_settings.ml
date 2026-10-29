@@ -30,14 +30,15 @@ external new_from_file : string -> (t, GError.t) result
     [Error] result. If the file could not be loaded then error is set to either
     a [GFileError] or [GKeyFileError].
 
-    See [Gtk.PrintSettings.to_file]. *)
+    See {{!Ocgtk.Raw.Print_settings.val-to_file}[Gtk.PrintSettings.to_file]}. *)
 
 external new_from_gvariant : Gvariant.t -> t
   = "ml_gtk_print_settings_new_from_gvariant"
 (** Deserialize print settings from an a\{sv\} variant.
 
     The variant must be in the format produced by
-    [Gtk.PrintSettings.to_gvariant]. *)
+    {{!Ocgtk.Raw.Print_settings.val-to_gvariant}[Gtk.PrintSettings.to_gvariant]}.
+*)
 
 (* Methods *)
 
@@ -181,7 +182,7 @@ external load_file : t -> string -> (bool, GError.t) result
     If the file could not be loaded then error is set to either a [GFileError]
     or [GKeyFileError].
 
-    See [Gtk.PrintSettings.to_file]. *)
+    See {{!Ocgtk.Raw.Print_settings.val-to_file}[Gtk.PrintSettings.to_file]}. *)
 
 external has_key : t -> string -> bool = "ml_gtk_print_settings_has_key"
 (** Returns [true], if a value is associated with [key]. *)

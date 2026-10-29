@@ -41,9 +41,11 @@ external reset : t -> unit = "ml_g_cancellable_reset"
     operations. You should create a fresh cancellable for further async
     operations.
 
-    In the event that a [Gio.Cancellable::cancelled] signal handler is currently
-    running, this call will block until the handler has finished. Calling this
-    function from a signal handler will therefore result in a deadlock. *)
+    In the event that a
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[Gio.Cancellable::cancelled]}
+    signal handler is currently running, this call will block until the handler
+    has finished. Calling this function from a signal handler will therefore
+    result in a deadlock. *)
 
 external release_fd : t -> unit = "ml_g_cancellable_release_fd"
 (** Releases a resources previously allocated by g_cancellable_get_fd() or
@@ -56,10 +58,11 @@ external release_fd : t -> unit = "ml_g_cancellable_release_fd"
     can cause the application to run out of file descriptors when many
     [GCancellables] are used at the same time.
 
-    Note that in the event that a [Gio.Cancellable::cancelled] signal handler is
-    currently running, this call will block until the handler has finished.
-    Calling this function from a signal handler will therefore result in a
-    deadlock. *)
+    Note that in the event that a
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[Gio.Cancellable::cancelled]}
+    signal handler is currently running, this call will block until the handler
+    has finished. Calling this function from a signal handler will therefore
+    result in a deadlock. *)
 
 external push_current : t -> unit = "ml_g_cancellable_push_current"
 (** Pushes [cancellable] onto the cancellable stack. The current cancellable can
@@ -127,7 +130,9 @@ external cancel : t -> unit = "ml_g_cancellable_cancel"
     the main loop.
 
     It is safe (although useless, since it will be a no-op) to call this
-    function from a [Gio.Cancellable::cancelled] signal handler. *)
+    function from a
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[Gio.Cancellable::cancelled]}
+    signal handler. *)
 
 val on_cancelled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -295,10 +295,13 @@ val new_from_file : string -> (print_settings_t, GError.t) result
     [Error] result. If the file could not be loaded then error is set to either
     a [GFileError] or [GKeyFileError].
 
-    See [Gtk.PrintSettings.to_file]. *)
+    See
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-to_file}[Gtk.PrintSettings.to_file]}.
+*)
 
 val new_from_gvariant : Gvariant.t -> print_settings_t
 (** Deserialize print settings from an a\{sv\} variant.
 
     The variant must be in the format produced by
-    [Gtk.PrintSettings.to_gvariant]. *)
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-to_gvariant}[Gtk.PrintSettings.to_gvariant]}.
+*)

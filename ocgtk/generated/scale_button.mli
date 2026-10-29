@@ -29,7 +29,7 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.ScaleButton::popup]
+    - {{!Ocgtk.Scale_button.class-type-scale_button_t.method-on_popup}[Gtk.ScaleButton::popup]}
 
     {b CSS nodes}
 
@@ -142,7 +142,7 @@ class scale_button : Raw.Scale_button.t -> scale_button_t
 
     The following signals have default keybindings:
 
-    - [Gtk.ScaleButton::popup]
+    - {{!Ocgtk.Scale_button.class-type-scale_button_t.method-on_popup}[Gtk.ScaleButton::popup]}
 
     {b CSS nodes}
 

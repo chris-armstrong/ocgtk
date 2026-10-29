@@ -7,11 +7,15 @@
  [GtkPopoverMenu] treats its children like menus and allows switching\n\
  between them. It can open submenus as traditional, nested submenus,\n\
  or in a more touch-friendly sliding fashion.\n\
- The property [Gtk.PopoverMenu:flags] controls this appearance.\n\n\
+ The property {{!Ocgtk.Raw.Popover_menu.val-get_flags}[Gtk.PopoverMenu:flags]} \
+ controls this appearance.\n\n\
  [GtkPopoverMenu] is meant to be used primarily with menu models,\n\
- using [Gtk.PopoverMenu.new_from_model]. If you need to put\n\
+ using \
+ {{!Ocgtk.Raw.Popover_menu.val-new_from_model}[Gtk.PopoverMenu.new_from_model]}. \
+ If you need to put\n\
  other widgets such as a [GtkSpinButton] or a [GtkSwitch] into a popover,\n\
- you can use [Gtk.PopoverMenu.add_child].\n\n\
+ you can use \
+ {{!Ocgtk.Raw.Popover_menu.val-add_child}[Gtk.PopoverMenu.add_child]}.\n\n\
  For more dialog-like behavior, use a plain [GtkPopover].\n\n\
  {b Menu models}\n\n\
  The XML format understood by [GtkBuilder] for [GMenuModel] consists\n\
@@ -57,10 +61,12 @@
  - \"hidden-when\": a string used to determine when the item will be hidden.\n\
  Possible values include \"action-disabled\", \"action-missing\", \
  \"macos-menubar\".\n\
- This is mainly useful for exported menus, see [Gtk.Application.set_menubar].\n\
+ This is mainly useful for exported menus, see \
+ {{!Ocgtk.Raw.Application.val-set_menubar}[Gtk.Application.set_menubar]}.\n\
  - \"custom\": a string used to match against the ID of a custom child added \
  with\n\
- [Gtk.PopoverMenu.add_child], [Gtk.PopoverMenuBar.add_child],\n\
+ {{!Ocgtk.Raw.Popover_menu.val-add_child}[Gtk.PopoverMenu.add_child]}, \
+ {{!Ocgtk.Raw.Popover_menu_bar.val-add_child}[Gtk.PopoverMenuBar.add_child]},\n\
  or in the ui file with [<child type=\"ID\">].\n\n\
  The following attributes are used when constructing sections:\n\n\
  - \"label\": a user-visible string to use as section heading\n\
@@ -79,9 +85,10 @@
  to a menu\n\
  in the macOS menu bar. See Using GTK on Apple macOS.\n\n\
  Menu items will also show accelerators, which are usually associated\n\
- with actions via [Gtk.Application.set_accels_for_action],\n\
+ with actions via \
+ {{!Ocgtk.Raw.Application.val-set_accels_for_action}[Gtk.Application.set_accels_for_action]},\n\
  [WidgetClass.add_binding_action] or\n\
- [Gtk.ShortcutController.add_shortcut].\n\n\
+ {{!Ocgtk.Raw.Shortcut_controller.val-add_shortcut}[Gtk.ShortcutController.add_shortcut]}.\n\n\
  {b Shortcuts and Gestures}\n\n\
  [GtkPopoverMenu] supports the following keyboard shortcuts:\n\n\
  - <kbd>Space</kbd> activates the default widget.\n\n\
@@ -96,9 +103,14 @@
  items in an [inline-buttons] section, select [.inline-buttons button.model].\n\
  Other things that may be of interest to style in menus include [label] nodes.\n\n\
  {b Accessibility}\n\n\
- [GtkPopoverMenu] uses the [Gtk.AccessibleRole.menu] role, and its\n\
- items use the [Gtk.AccessibleRole.menu_item],\n\
- [Gtk.AccessibleRole.checkbox] or [Gtk.AccessibleRole.menu_item_radio]\n\
+ [GtkPopoverMenu] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU}[Gtk.AccessibleRole.menu]} \
+ role, and its\n\
+ items use the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU_ITEM}[Gtk.AccessibleRole.menu_item]},\n\
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-CHECKBOX}[Gtk.AccessibleRole.checkbox]} \
+ or \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU_ITEM_RADIO}[Gtk.AccessibleRole.menu_item_radio]}\n\
  roles, depending on the action they are connected to.\n\n\
  The class built on this module is in {!Ocgtk.Popover_menu}."]
 
@@ -117,11 +129,13 @@ external new_from_model : Ocgio_raw.Menu_model.t option -> t
     being attached to a widget that is contained within the
     [GtkApplicationWindow]s widget hierarchy.
 
-    Actions can also be added using [Gtk.Widget.insert_action_group] on the
-    menus attach widget or on any of its parent widgets.
+    Actions can also be added using
+    {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]}
+    on the menus attach widget or on any of its parent widgets.
 
     This function creates menus with sliding submenus. See
-    [Gtk.PopoverMenu.new_from_model_full] for a way to control this. *)
+    {{!Ocgtk.Raw.Popover_menu.val-new_from_model_full}[Gtk.PopoverMenu.new_from_model_full]}
+    for a way to control this. *)
 
 external new_from_model_full :
   Ocgio_raw.Menu_model.t -> Ocgtk_enums.popovermenuflags -> t
@@ -131,8 +145,9 @@ external new_from_model_full :
     The created buttons are connected to actions found in the action groups that
     are accessible from the parent widget. This includes the
     [GtkApplicationWindow] to which the popover belongs. Actions can also be
-    added using [Gtk.Widget.insert_action_group] on the parent widget or on any
-    of its parent widgets. *)
+    added using
+    {{!Ocgtk.Raw.Widget.val-insert_action_group}[Gtk.Widget.insert_action_group]}
+    on the parent widget or on any of its parent widgets. *)
 
 (* Methods *)
 
@@ -158,7 +173,7 @@ external remove_child :
   .t ->
   bool = "ml_gtk_popover_menu_remove_child"
 (** Removes a widget that has previously been added with
-    [Gtk.PopoverMenu.add_child] *)
+    {{!Ocgtk.Raw.Popover_menu.val-add_child}[Gtk.PopoverMenu.add_child]} *)
 
 external get_menu_model : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_popover_menu_get_menu_model"

@@ -14,7 +14,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gdk_toplevel_size_get_type"
 external set_size : t -> int -> int -> unit = "ml_gdk_toplevel_size_set_size"
 (** Sets the size the toplevel prefers to be resized to.
 
-    The size should be within the bounds (see [Gdk.ToplevelSize.get_bounds]).
+    The size should be within the bounds (see
+    {{!Ocgdk.Raw.Toplevel_size.val-get_bounds}[Gdk.ToplevelSize.get_bounds]}).
     The set size should be considered as a hint, and should not be assumed to be
     respected by the windowing system, or backend. *)
 
@@ -39,7 +40,8 @@ external set_min_size : t -> int -> int -> unit
     retrieved from the [GdkToplevelSize] object.
 
     The minimum size should be within the bounds (see
-    [Gdk.ToplevelSize.get_bounds]). *)
+    {{!Ocgdk.Raw.Toplevel_size.val-get_bounds}[Gdk.ToplevelSize.get_bounds]}).
+*)
 
 external get_bounds : t -> int * int = "ml_gdk_toplevel_size_get_bounds"
 (** Retrieves the bounds the toplevel is placed within.

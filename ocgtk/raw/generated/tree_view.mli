@@ -22,9 +22,10 @@
  Several functions are available for converting between the different\n\
  coordinate systems.  The most common translations are between widget and bin\n\
  window coordinates and between bin window and tree coordinates. For the\n\
- former you can use [Gtk.TreeView.convert_widget_to_bin_window_coords]\n\
+ former you can use \
+ {{!Ocgtk.Raw.Tree_view.val-convert_widget_to_bin_window_coords}[Gtk.TreeView.convert_widget_to_bin_window_coords]}\n\
  (and vice versa), for the latter \
- [Gtk.TreeView.convert_bin_window_to_tree_coords]\n\
+ {{!Ocgtk.Raw.Tree_view.val-convert_bin_window_to_tree_coords}[Gtk.TreeView.convert_bin_window_to_tree_coords]}\n\
  (and vice versa).\n\n\
  {b [GtkTreeView] as [GtkBuildable]}\n\n\
  The [GtkTreeView] implementation of the [GtkBuildable] interface accepts\n\

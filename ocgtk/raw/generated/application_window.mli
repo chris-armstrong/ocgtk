@@ -16,22 +16,27 @@
  Note that widgets that are placed inside a [GtkApplicationWindow]\n\
  can also activate these actions, if they implement the\n\
  {{!Ocgtk.Raw.Actionable}[Gtk.Actionable]} interface.\n\n\
- The settings [Gtk.Settings:gtk-shell-shows-app-menu] and\n\
- [Gtk.Settings:gtk-shell-shows-menubar] tell GTK whether the\n\
+ The settings \
+ {{!Ocgtk.Raw.Settings.val-get_gtk_shell_shows_app_menu}[Gtk.Settings:gtk-shell-shows-app-menu]} \
+ and\n\
+ {{!Ocgtk.Raw.Settings.val-get_gtk_shell_shows_menubar}[Gtk.Settings:gtk-shell-shows-menubar]} \
+ tell GTK whether the\n\
  desktop environment is showing the application menu and menubar\n\
  models outside the application as part of the desktop shell.\n\
  For instance, on OS X, both menus will be displayed remotely;\n\
  on Windows neither will be.\n\n\
  If the desktop environment does not display the menubar, it can be shown in\n\
  the [GtkApplicationWindow] by setting the\n\
- [Gtk.ApplicationWindow:show-menubar] property to true. If the\n\
+ {{!Ocgtk.Raw.Application_window.val-get_show_menubar}[Gtk.ApplicationWindow:show-menubar]} \
+ property to true. If the\n\
  desktop environment does not display the application menu, then it will\n\
  automatically be included in the menubar or in the window’s client-side\n\
  decorations.\n\n\
  See {{!Ocgtk.Raw.Popover_menu}[Gtk.PopoverMenu]} for information about the \
  XML language\n\
  used by [GtkBuilder] for menu models.\n\n\
- See also: [Gtk.Application.set_menubar].\n\n\
+ See also: \
+ {{!Ocgtk.Raw.Application.val-set_menubar}[Gtk.Application.set_menubar]}.\n\n\
  {b A GtkApplicationWindow with a menubar}\n\n\
  The code sample below shows how to set up a [GtkApplicationWindow]\n\
  with a menu bar defined on the {{!Ocgtk.Raw.Application}[Gtk.Application]}:\n\n\
@@ -103,6 +108,8 @@ external get_help_overlay : t -> Shortcuts_window.t option
   = "ml_gtk_application_window_get_help_overlay"
 (** Gets the [GtkShortcutsWindow] that is associated with [window].
 
-    See [Gtk.ApplicationWindow.set_help_overlay]. *)
+    See
+    {{!Ocgtk.Raw.Application_window.val-set_help_overlay}[Gtk.ApplicationWindow.set_help_overlay]}.
+*)
 
 (* Properties *)

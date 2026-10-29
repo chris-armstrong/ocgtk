@@ -7,22 +7,27 @@
 
     Initially, a [GtkAppChooserButton] selects the first application in its
     list, which will either be the most-recently used application or, if
-    [Gtk.AppChooserButton:show-default-item] is [true], the default application.
+    {{!Ocgtk.Raw.App_chooser_button.val-get_show_default_item}[Gtk.AppChooserButton:show-default-item]}
+    is [true], the default application.
 
     The list of applications shown in a [GtkAppChooserButton] includes the
     recommended applications for the given content type. When
-    [Gtk.AppChooserButton:show-default-item] is set, the default application is
-    also included. To let the user chooser other applications, you can set the
-    [Gtk.AppChooserButton:show-dialog-item] property, which allows to open a
-    full {{!Ocgtk.Raw.App_chooser_dialog}[Gtk.AppChooserDialog]}.
+    {{!Ocgtk.Raw.App_chooser_button.val-get_show_default_item}[Gtk.AppChooserButton:show-default-item]}
+    is set, the default application is also included. To let the user chooser
+    other applications, you can set the
+    {{!Ocgtk.Raw.App_chooser_button.val-get_show_dialog_item}[Gtk.AppChooserButton:show-dialog-item]}
+    property, which allows to open a full
+    {{!Ocgtk.Raw.App_chooser_dialog}[Gtk.AppChooserDialog]}.
 
     It is possible to add custom items to the list, using
-    [Gtk.AppChooserButton.append_custom_item]. These items cause the
-    [Gtk.AppChooserButton::custom-item-activated] signal to be emitted when they
-    are selected.
+    {{!Ocgtk.Raw.App_chooser_button.val-append_custom_item}[Gtk.AppChooserButton.append_custom_item]}.
+    These items cause the
+    {{!Ocgtk.Raw.App_chooser_button.val-on_custom_item_activated}[Gtk.AppChooserButton::custom-item-activated]}
+    signal to be emitted when they are selected.
 
     To track changes in the selected application, use the
-    [Gtk.AppChooserButton::changed] signal.
+    {{!Ocgtk.Raw.App_chooser_button.val-on_changed}[Gtk.AppChooserButton::changed]}
+    signal.
 
     {b CSS nodes}
 
@@ -65,9 +70,11 @@ external set_active_custom_item : t -> string -> unit
   = "ml_gtk_app_chooser_button_set_active_custom_item"
 (** Selects a custom item.
 
-    See [Gtk.AppChooserButton.append_custom_item].
+    See
+    {{!Ocgtk.Raw.App_chooser_button.val-append_custom_item}[Gtk.AppChooserButton.append_custom_item]}.
 
-    Use [Gtk.AppChooser.refresh] to bring the selection to its initial state. *)
+    Use {{!Ocgtk.Raw.App_chooser.val-refresh}[Gtk.AppChooser.refresh]} to bring
+    the selection to its initial state. *)
 
 external get_show_dialog_item : t -> bool
   = "ml_gtk_app_chooser_button_get_show_dialog_item"
@@ -97,10 +104,14 @@ external append_custom_item : t -> string -> string -> Ocgio_raw.Icon.t -> unit
     popup.
 
     The item name must be unique per-widget. Clients can use the provided name
-    as a detail for the [Gtk.AppChooserButton::custom-item-activated] signal, to
-    add a callback for the activation of a particular custom item in the list.
+    as a detail for the
+    {{!Ocgtk.Raw.App_chooser_button.val-on_custom_item_activated}[Gtk.AppChooserButton::custom-item-activated]}
+    signal, to add a callback for the activation of a particular custom item in
+    the list.
 
-    See also [Gtk.AppChooserButton.append_separator]. *)
+    See also
+    {{!Ocgtk.Raw.App_chooser_button.val-append_separator}[Gtk.AppChooserButton.append_separator]}.
+*)
 
 (* Properties *)
 
@@ -122,4 +133,6 @@ val on_custom_item_activated :
   Gobject.Signal.handler_id
 (** Emitted when a custom item is activated.
 
-    Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)
+    Use
+    {{!Ocgtk.Raw.App_chooser_button.val-append_custom_item}[Gtk.AppChooserButton.append_custom_item]},
+    to add custom items. *)

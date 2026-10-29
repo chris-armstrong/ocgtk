@@ -15,10 +15,13 @@
  refers to. An evaluation always happens in the context of a current object\n\
  called [this] (it mirrors the behavior of object-oriented languages),\n\
  which may or may not influence the result of the evaluation. Use\n\
- [Gtk.Expression.evaluate] for evaluating an expression.\n\n\
+ {{!Ocgtk.Raw.Expression.val-evaluate}[Gtk.Expression.evaluate]} for \
+ evaluating an expression.\n\n\
  Various methods for defining expressions exist, from simple constants via\n\
  [Gtk.ConstantExpression.new] to looking up properties in a [GObject]\n\
- (even recursively) via [Gtk.PropertyExpression.new] or providing\n\
+ (even recursively) via \
+ {{!Ocgtk.Raw.Property_expression.val-new_}[Gtk.PropertyExpression.new]} or \
+ providing\n\
  custom functions to transform and combine expressions via\n\
  [Gtk.ClosureExpression.new].\n\n\
  Here is an example of a complex expression:\n\n\
@@ -47,9 +50,11 @@
  which will cause a callback to be called whenever the value of the expression \
  may\n\
  have changed; [Gtk.Expression.watch] starts watching an expression, and\n\
- [Gtk.ExpressionWatch.unwatch] stops.\n\n\
+ {{!Ocgtk.Raw.Expression_watch.val-unwatch}[Gtk.ExpressionWatch.unwatch]} \
+ stops.\n\n\
  Watches can be created for automatically updating the property of an object,\n\
- similar to GObject's [GBinding] mechanism, by using [Gtk.Expression.bind].\n\n\
+ similar to GObject's [GBinding] mechanism, by using \
+ {{!Ocgtk.Raw.Expression.val-bind}[Gtk.Expression.bind]}.\n\n\
  {b GtkExpression in GObject properties}\n\n\
  In order to use a [GtkExpression] as a [GObject] property, you must use the\n\
  [Gtk.param_spec_expression] when creating a [GParamSpec] to install in the\n\
@@ -114,7 +119,8 @@
  ]}\n\n\
  String ([type='gchararray']) constants can be marked for translation with the\n\
  [translatable=] attribute, and will then be looked up in the\n\
- [Gtk.Builder:translation-domain] when the expression is constructed.\n\n\
+ {{!Ocgtk.Raw.Builder.val-get_translation_domain}[Gtk.Builder:translation-domain]} \
+ when the expression is constructed.\n\n\
  {[\n\
 \  <constant type='gchararray' translatable='yes'>I'm translatable!</constant>\n\
  ]}\n\n\
@@ -177,7 +183,8 @@ external is_static : t -> bool = "ml_gtk_expression_is_static"
 (** Checks if the expression is static.
 
     A static expression will never change its result when
-    [Gtk.Expression.evaluate] is called on it with the same arguments.
+    {{!Ocgtk.Raw.Expression.val-evaluate}[Gtk.Expression.evaluate]} is called on
+    it with the same arguments.
 
     That means a call to [Gtk.Expression.watch] is not necessary because it will
     never trigger a notify. *)
@@ -195,7 +202,7 @@ external evaluate :
 (** Evaluates the given expression and on success stores the result in [value].
 
     The [GType] of [value] will be the type given by
-    [Gtk.Expression.get_value_type].
+    {{!Ocgtk.Raw.Expression.val-get_value_type}[Gtk.Expression.get_value_type]}.
 
     It is possible that expressions cannot be evaluated - for example when the
     expression references objects that have been destroyed or set to [None]. In
@@ -217,4 +224,5 @@ external bind :
     ensure that this doesn't happen by using a fallback expression.
 
     Note that this function takes ownership of [self]. If you want to keep it
-    around, you should [Gtk.Expression.ref] it beforehand. *)
+    around, you should {{!Ocgtk.Raw.Expression.val-ref}[Gtk.Expression.ref]} it
+    beforehand. *)

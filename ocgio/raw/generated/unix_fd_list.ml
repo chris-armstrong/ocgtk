@@ -6,8 +6,8 @@
 
     It may be wrapped in a [GUnixFDMessage] and sent over a
     {{!Ocgio.Raw.Socket}[Gio.Socket]} in the [G_SOCKET_FAMILY_UNIX] family by
-    using [Gio.Socket.send_message] and received using
-    [Gio.Socket.receive_message].
+    using {{!Ocgio.Raw.Socket.val-send_message}[Gio.Socket.send_message]} and
+    received using [Gio.Socket.receive_message].
 
     Before 2.74, [<gio/gunixfdlist.h>] belonged to the UNIX-specific GIO
     interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file when

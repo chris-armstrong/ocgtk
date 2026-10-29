@@ -21,7 +21,9 @@ let add_all ~f items map =
 let variants member_names =
   add_all
     ~f:(fun name ->
-      (String.uppercase_ascii name, Enum_code.variant_name_of_member name))
+      ( String.uppercase_ascii
+          (String.map name ~f:(function '-' -> '_' | c -> c)),
+        Enum_code.variant_name_of_member name ))
     member_names StringMap.empty
 
 let current_namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants

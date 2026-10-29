@@ -257,13 +257,15 @@ external get_body : t -> Gvariant.t option = "ml_g_dbus_message_get_body"
 external get_arg0_path : t -> string option = "ml_g_dbus_message_get_arg0_path"
 (** Convenience to get the first item in the body of [message].
 
-    See [Gio.DBusMessage.get_arg0] for returning string-typed arg0 values. *)
+    See {{!Ocgio.Raw.D_bus_message.val-get_arg0}[Gio.DBusMessage.get_arg0]} for
+    returning string-typed arg0 values. *)
 
 external get_arg0 : t -> string option = "ml_g_dbus_message_get_arg0"
 (** Convenience to get the first item in the body of [message].
 
-    See [Gio.DBusMessage.get_arg0_path] for returning object-path-typed arg0
-    values. *)
+    See
+    {{!Ocgio.Raw.D_bus_message.val-get_arg0_path}[Gio.DBusMessage.get_arg0_path]}
+    for returning object-path-typed arg0 values. *)
 
 external copy : t -> (t, GError.t) result = "ml_g_dbus_message_copy"
 (** Copies [message]. The copy is a deep copy and the returned [GDBusMessage] is

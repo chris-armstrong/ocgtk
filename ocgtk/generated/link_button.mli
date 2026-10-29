@@ -23,17 +23,19 @@
 
     It is useful to show quick links to resources.
 
-    A link button is created by calling either [Gtk.LinkButton.new] or
-    [Gtk.LinkButton.new_with_label]. If using the former, the URI you pass to
-    the constructor is used as a label for the widget.
+    A link button is created by calling either
+    {{!Ocgtk.Link_button.val-new_}[Gtk.LinkButton.new]} or
+    {{!Ocgtk.Link_button.val-new_with_label}[Gtk.LinkButton.new_with_label]}. If
+    using the former, the URI you pass to the constructor is used as a label for
+    the widget.
 
     The URI bound to a [GtkLinkButton] can be set specifically using
-    [Gtk.LinkButton.set_uri].
+    {{!Ocgtk.Link_button.class-type-link_button_t.method-set_uri}[Gtk.LinkButton.set_uri]}.
 
     By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
     is clicked. This behaviour can be overridden by connecting to the
-    [Gtk.LinkButton::activate-link] signal and returning [true] from the signal
-    handler.
+    {{!Ocgtk.Link_button.class-type-link_button_t.method-on_activate_link}[Gtk.LinkButton::activate-link]}
+    signal and returning [true] from the signal handler.
 
     {b Shortcuts and Gestures}
 
@@ -55,7 +57,9 @@
 
     {b Accessibility}
 
-    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+    [GtkLinkButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LINK}[Gtk.AccessibleRole.link]}
+    role. *)
 class type link_button_t = object
   inherit Button.button_t
 
@@ -111,17 +115,19 @@ class link_button : Raw.Link_button.t -> link_button_t
 
     It is useful to show quick links to resources.
 
-    A link button is created by calling either [Gtk.LinkButton.new] or
-    [Gtk.LinkButton.new_with_label]. If using the former, the URI you pass to
-    the constructor is used as a label for the widget.
+    A link button is created by calling either
+    {{!Ocgtk.Link_button.val-new_}[Gtk.LinkButton.new]} or
+    {{!Ocgtk.Link_button.val-new_with_label}[Gtk.LinkButton.new_with_label]}. If
+    using the former, the URI you pass to the constructor is used as a label for
+    the widget.
 
     The URI bound to a [GtkLinkButton] can be set specifically using
-    [Gtk.LinkButton.set_uri].
+    {{!Ocgtk.Link_button.class-type-link_button_t.method-set_uri}[Gtk.LinkButton.set_uri]}.
 
     By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
     is clicked. This behaviour can be overridden by connecting to the
-    [Gtk.LinkButton::activate-link] signal and returning [true] from the signal
-    handler.
+    {{!Ocgtk.Link_button.class-type-link_button_t.method-on_activate_link}[Gtk.LinkButton::activate-link]}
+    signal and returning [true] from the signal handler.
 
     {b Shortcuts and Gestures}
 
@@ -143,7 +149,9 @@ class link_button : Raw.Link_button.t -> link_button_t
 
     {b Accessibility}
 
-    [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+    [GtkLinkButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-LINK}[Gtk.AccessibleRole.link]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

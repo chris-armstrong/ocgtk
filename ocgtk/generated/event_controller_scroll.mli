@@ -16,26 +16,34 @@
 
     It is capable of handling both discrete and continuous scroll events from
     mice or touchpads, abstracting them both with the
-    [Gtk.EventControllerScroll::scroll] signal. Deltas in the discrete case are
-    multiples of 1.
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} signal. Deltas in the discrete case
+    are multiples of 1.
 
     In the case of continuous scroll events, [GtkEventControllerScroll] encloses
-    all [Gtk.EventControllerScroll::scroll] emissions between two
-    [Gtk.EventControllerScroll::scroll-begin] and
-    [Gtk.EventControllerScroll::scroll-end] signals.
+    all
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} emissions between two
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll_begin}
+     [Gtk.EventControllerScroll::scroll-begin]} and
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll_end}
+     [Gtk.EventControllerScroll::scroll-end]} signals.
 
     The behavior of the event controller can be modified by the flags given at
     creation time, or modified at a later point through
-    [Gtk.EventControllerScroll.set_flags] (e.g. because the scrolling conditions
-    of the widget changed).
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-set_flags}
+     [Gtk.EventControllerScroll.set_flags]} (e.g. because the scrolling
+    conditions of the widget changed).
 
     The controller can be set up to emit motion for either/both vertical and
     horizontal scroll events through [GTK_EVENT_CONTROLLER_SCROLL_VERTICAL],
     [GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL] and
     [GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]. If any axis is disabled, the
-    respective [Gtk.EventControllerScroll::scroll] delta will be 0. Vertical
-    scroll events will be translated to horizontal motion for the devices
-    incapable of horizontal scrolling.
+    respective
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} delta will be 0. Vertical scroll
+    events will be translated to horizontal motion for the devices incapable of
+    horizontal scrolling.
 
     The event controller can also be forced to emit discrete events on all
     devices through [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]. This can be used to
@@ -43,7 +51,8 @@
     across combobox options).
 
     The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
-    [Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_decelerate}
+     [Gtk.EventControllerScroll::decelerate]} signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
     motion that was received. *)
 class type event_controller_scroll_t = object
@@ -116,26 +125,34 @@ class event_controller_scroll :
 
     It is capable of handling both discrete and continuous scroll events from
     mice or touchpads, abstracting them both with the
-    [Gtk.EventControllerScroll::scroll] signal. Deltas in the discrete case are
-    multiples of 1.
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} signal. Deltas in the discrete case
+    are multiples of 1.
 
     In the case of continuous scroll events, [GtkEventControllerScroll] encloses
-    all [Gtk.EventControllerScroll::scroll] emissions between two
-    [Gtk.EventControllerScroll::scroll-begin] and
-    [Gtk.EventControllerScroll::scroll-end] signals.
+    all
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} emissions between two
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll_begin}
+     [Gtk.EventControllerScroll::scroll-begin]} and
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll_end}
+     [Gtk.EventControllerScroll::scroll-end]} signals.
 
     The behavior of the event controller can be modified by the flags given at
     creation time, or modified at a later point through
-    [Gtk.EventControllerScroll.set_flags] (e.g. because the scrolling conditions
-    of the widget changed).
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-set_flags}
+     [Gtk.EventControllerScroll.set_flags]} (e.g. because the scrolling
+    conditions of the widget changed).
 
     The controller can be set up to emit motion for either/both vertical and
     horizontal scroll events through [GTK_EVENT_CONTROLLER_SCROLL_VERTICAL],
     [GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL] and
     [GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES]. If any axis is disabled, the
-    respective [Gtk.EventControllerScroll::scroll] delta will be 0. Vertical
-    scroll events will be translated to horizontal motion for the devices
-    incapable of horizontal scrolling.
+    respective
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_scroll}
+     [Gtk.EventControllerScroll::scroll]} delta will be 0. Vertical scroll
+    events will be translated to horizontal motion for the devices incapable of
+    horizontal scrolling.
 
     The event controller can also be forced to emit discrete events on all
     devices through [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]. This can be used to
@@ -143,7 +160,8 @@ class event_controller_scroll :
     across combobox options).
 
     The [GTK_EVENT_CONTROLLER_SCROLL_KINETIC] flag toggles the emission of the
-    [Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
+    {{!Ocgtk.Event_controller_scroll.class-type-event_controller_scroll_t.method-on_decelerate}
+     [Gtk.EventControllerScroll::decelerate]} signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
     motion that was received. *)
 

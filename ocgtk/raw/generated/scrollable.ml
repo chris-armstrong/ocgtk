@@ -4,17 +4,21 @@
 (** An interface for widgets with native scrolling ability.
 
     To implement this interface you should override the
-    [Gtk.Scrollable:hadjustment] and [Gtk.Scrollable:vadjustment] properties.
+    {{!Ocgtk.Raw.Scrollable.val-get_hadjustment}[Gtk.Scrollable:hadjustment]}
+    and
+    {{!Ocgtk.Raw.Scrollable.val-get_vadjustment}[Gtk.Scrollable:vadjustment]}
+    properties.
 
     {b Creating a scrollable widget}
 
     All scrollable widgets should do the following.
 
     - When a parent widget sets the scrollable child widget’s adjustments, the
-      widget should connect to the [Gtk.Adjustment::value-changed] signal. The
-      child widget should then populate the adjustments’ properties as soon as
-      possible, which usually means queueing an allocation right away and
-      populating the properties in the [Gtk.Widget.size_allocate]
+      widget should connect to the
+      {{!Ocgtk.Raw.Adjustment.val-on_value_changed}[Gtk.Adjustment::value-changed]}
+      signal. The child widget should then populate the adjustments’ properties
+      as soon as possible, which usually means queueing an allocation right away
+      and populating the properties in the [Gtk.Widget.size_allocate]
       implementation.
 
     - Because its preferred size is the size for a fully expanded widget, the
@@ -24,9 +28,11 @@
 
     - When the parent allocates space to the scrollable child widget, the widget
       must ensure the adjustments’ property values are correct and up to date,
-      for example using [Gtk.Adjustment.configure].
+      for example using
+      {{!Ocgtk.Raw.Adjustment.val-configure}[Gtk.Adjustment.configure]}.
 
-    - When any of the adjustments emits the [Gtk.Adjustment::value-changed]
+    - When any of the adjustments emits the
+      {{!Ocgtk.Raw.Adjustment.val-on_value_changed}[Gtk.Adjustment::value-changed]}
       signal, the scrollable widget should scroll its contents.
 
     The class built on this module is in {!Ocgtk.Scrollable}. *)

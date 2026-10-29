@@ -33,7 +33,8 @@ external set_focusable : t -> bool -> unit
 (** Sets [self] to be focusable.
 
     If a row is focusable, it can be focused using the keyboard. This works
-    similar to [Gtk.Widget.set_focusable].
+    similar to
+    {{!Ocgtk.Raw.Widget.val-set_focusable}[Gtk.Widget.set_focusable]}.
 
     Note that if row are not focusable, the contents of cells can still be
     focused if they are focusable.
@@ -46,7 +47,8 @@ external set_activatable : t -> bool -> unit
 
     If a row is activatable, double-clicking on the row, using the Return key or
     calling gtk_widget_activate() will activate the row. Activating instructs
-    the containing columnview to emit the [Gtk.ColumnView::activate] signal.
+    the containing columnview to emit the
+    {{!Ocgtk.Raw.Column_view.val-on_activate}[Gtk.ColumnView::activate]} signal.
 
     By default, row are activatable. *)
 
@@ -70,7 +72,9 @@ external get_selectable : t -> bool = "ml_gtk_column_view_row_get_selectable"
 (** Checks if the row has been set to be selectable via
     gtk_column_view_row_set_selectable().
 
-    Do not confuse this function with [Gtk.ColumnViewRow.get_selected]. *)
+    Do not confuse this function with
+    {{!Ocgtk.Raw.Column_view_row.val-get_selected}[Gtk.ColumnViewRow.get_selected]}.
+*)
 
 external get_position : t -> int = "ml_gtk_column_view_row_get_position"
 (** Gets the position in the model that [self] currently displays.

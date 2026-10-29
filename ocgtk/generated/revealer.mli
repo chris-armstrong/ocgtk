@@ -19,20 +19,26 @@
     Animates the transition of its child from invisible to visible.
 
     The style of transition can be controlled with
-    [Gtk.Revealer.set_transition_type].
+    {{!Ocgtk.Revealer.class-type-revealer_t.method-set_transition_type}[Gtk.Revealer.set_transition_type]}.
 
-    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
+    These animations respect the
+    {{!Ocgtk.Settings.class-type-settings_t.method-gtk_enable_animations}[Gtk.Settings:gtk-enable-animations]}
+    setting.
 
     {b CSS nodes}
 
     [GtkRevealer] has a single CSS node with name revealer. When styling
     [GtkRevealer] using CSS, remember that it only hides its contents, not
     itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [false].
+    when the
+    {{!Ocgtk.Revealer.class-type-revealer_t.method-get_reveal_child}[Gtk.Revealer:reveal-child]}
+    property is set to [false].
 
     {b Accessibility}
 
-    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
+    [GtkRevealer] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget. *)
@@ -96,20 +102,26 @@ class revealer : Raw.Revealer.t -> revealer_t
     Animates the transition of its child from invisible to visible.
 
     The style of transition can be controlled with
-    [Gtk.Revealer.set_transition_type].
+    {{!Ocgtk.Revealer.class-type-revealer_t.method-set_transition_type}[Gtk.Revealer.set_transition_type]}.
 
-    These animations respect the [Gtk.Settings:gtk-enable-animations] setting.
+    These animations respect the
+    {{!Ocgtk.Settings.class-type-settings_t.method-gtk_enable_animations}[Gtk.Settings:gtk-enable-animations]}
+    setting.
 
     {b CSS nodes}
 
     [GtkRevealer] has a single CSS node with name revealer. When styling
     [GtkRevealer] using CSS, remember that it only hides its contents, not
     itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [false].
+    when the
+    {{!Ocgtk.Revealer.class-type-revealer_t.method-get_reveal_child}[Gtk.Revealer:reveal-child]}
+    property is set to [false].
 
     {b Accessibility}
 
-    [GtkRevealer] uses the [Gtk.AccessibleRole.group] role.
+    [GtkRevealer] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]}
+    role.
 
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget. *)

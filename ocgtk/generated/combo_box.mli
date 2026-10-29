@@ -36,9 +36,12 @@
     it can be a real tree, and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
-    [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
+    {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_has_entry}[Gtk.ComboBox:has-entry]}
+    property allows the [GtkComboBox] to contain a
     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. This entry can be accessed
-    by calling [Gtk.ComboBox.get_child] on the combo box.
+    by calling
+    {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_child}[Gtk.ComboBox.get_child]}
+    on the combo box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
     can be a bit overwhelming. In this case,
@@ -78,7 +81,9 @@
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+    [GtkComboBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]}
+    role. *)
 class type combo_box_t = object
   inherit Widget.widget_t
   inherit Cell_editable.cell_editable_t
@@ -335,9 +340,12 @@ class combo_box : Raw.Combo_box.t -> combo_box_t
     it can be a real tree, and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
-    [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
+    {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_has_entry}[Gtk.ComboBox:has-entry]}
+    property allows the [GtkComboBox] to contain a
     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. This entry can be accessed
-    by calling [Gtk.ComboBox.get_child] on the combo box.
+    by calling
+    {{!Ocgtk.Combo_box.class-type-combo_box_t.method-get_child}[Gtk.ComboBox.get_child]}
+    on the combo box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
     can be a bit overwhelming. In this case,
@@ -377,7 +385,9 @@ class combo_box : Raw.Combo_box.t -> combo_box_t
 
     {b Accessibility}
 
-    [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+    [GtkComboBox] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 
@@ -389,7 +399,8 @@ val new_with_entry : unit -> combo_box_t
 
     In order to use a combo box with entry, you need to tell it which column of
     the model contains the text for the entry by calling
-    [Gtk.ComboBox.set_entry_text_column]. *)
+    {{!Ocgtk.Combo_box.class-type-combo_box_t.method-set_entry_text_column}[Gtk.ComboBox.set_entry_text_column]}.
+*)
 
 val new_with_model : Tree_model.tree_model_t -> combo_box_t
 (** Creates a new [GtkComboBox] with a model. *)
@@ -397,4 +408,5 @@ val new_with_model : Tree_model.tree_model_t -> combo_box_t
 val new_with_model_and_entry : Tree_model.tree_model_t -> combo_box_t
 (** Creates a new empty [GtkComboBox] with an entry and a model.
 
-    See also [Gtk.ComboBox.new_with_entry]. *)
+    See also
+    {{!Ocgtk.Combo_box.val-new_with_entry}[Gtk.ComboBox.new_with_entry]}. *)

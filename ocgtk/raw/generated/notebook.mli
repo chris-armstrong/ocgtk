@@ -6,11 +6,14 @@
  An example GtkNotebook\n\n\
  There are many configuration options for [GtkNotebook]. Among\n\
  other things, you can choose on which edge the tabs appear\n\
- (see [Gtk.Notebook.set_tab_pos]), whether, if there are\n\
+ (see {{!Ocgtk.Raw.Notebook.val-set_tab_pos}[Gtk.Notebook.set_tab_pos]}), \
+ whether, if there are\n\
  too many tabs to fit the notebook should be made bigger or scrolling\n\
- arrows added (see [Gtk.Notebook.set_scrollable]), and whether\n\
+ arrows added (see \
+ {{!Ocgtk.Raw.Notebook.val-set_scrollable}[Gtk.Notebook.set_scrollable]}), and \
+ whether\n\
  there will be a popup menu allowing the users to switch pages.\n\
- (see [Gtk.Notebook.popup_enable]).\n\n\
+ (see {{!Ocgtk.Raw.Notebook.val-popup_enable}[Gtk.Notebook.popup_enable]}).\n\n\
  {b GtkNotebook as GtkBuildable}\n\n\
  The [GtkNotebook] implementation of the [GtkBuildable] interface\n\
  supports placing children into tabs by specifying “tab” as the\n\
@@ -42,11 +45,12 @@
  - <kbd>Home</kbd> moves the focus to the first tab.\n\
  - <kbd>End</kbd> moves the focus to the last tab.\n\n\
  Additionally, the following signals have default keybindings:\n\n\
- - [Gtk.Notebook::change-current-page]\n\
- - [Gtk.Notebook::focus-tab]\n\
- - [Gtk.Notebook::move-focus-out]\n\
- - [Gtk.Notebook::reorder-tab]\n\
- - [Gtk.Notebook::select-page]\n\n\
+ - \
+ {{!Ocgtk.Raw.Notebook.val-on_change_current_page}[Gtk.Notebook::change-current-page]}\n\
+ - {{!Ocgtk.Raw.Notebook.val-on_focus_tab}[Gtk.Notebook::focus-tab]}\n\
+ - {{!Ocgtk.Raw.Notebook.val-on_move_focus_out}[Gtk.Notebook::move-focus-out]}\n\
+ - {{!Ocgtk.Raw.Notebook.val-on_reorder_tab}[Gtk.Notebook::reorder-tab]}\n\
+ - {{!Ocgtk.Raw.Notebook.val-on_select_page}[Gtk.Notebook::select-page]}\n\n\
  Tabs support drag-and-drop between notebooks sharing the same [group-name],\n\
  or to new windows by handling the [::create-window] signal.\n\n\
  {b Actions}\n\n\
@@ -79,7 +83,8 @@
  to the [tabs] node. If the notebook is scrollable, CSS nodes with\n\
  name [arrow] are placed as first and last child of the [tabs] node.\n\n\
  The main node gets the [.frame] style class when the notebook\n\
- has a border (see [Gtk.Notebook.set_show_border]).\n\n\
+ has a border (see \
+ {{!Ocgtk.Raw.Notebook.val-set_show_border}[Gtk.Notebook.set_show_border]}).\n\n\
  The header node gets one of the style class [.top], [.bottom],\n\
  [.left] or [.right], depending on where the tabs are placed. For\n\
  reorderable pages, the tab node gets the [.reorderable-page] class.\n\n\
@@ -89,10 +94,18 @@
  direction.\n\n\
  {b Accessibility}\n\n\
  [GtkNotebook] uses the following roles:\n\n\
- - [Gtk.AccessibleRole.group] for the notebook widget\n\
- - [Gtk.AccessibleRole.tab_list] for the list of tabs\n\
- - [Gtk.AccessibleRole.tab] role for each tab\n\
- - [Gtk.AccessibleRole.tab_panel] for each page\n\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ for the notebook widget\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_LIST}[Gtk.AccessibleRole.tab_list]} \
+ for the list of tabs\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB}[Gtk.AccessibleRole.tab]} \
+ role for each tab\n\
+ - \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-TAB_PANEL}[Gtk.AccessibleRole.tab_panel]} \
+ for each page\n\n\
  The class built on this module is in {!Ocgtk.Notebook}."]
 
 type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -153,7 +166,9 @@ external set_tab_detachable :
   "Sets whether the tab can be detached from [notebook] to another\n\
    notebook or widget.\n\n\
    Note that two notebooks must share a common group identifier\n\
-   (see [Gtk.Notebook.set_group_name]) to allow automatic tabs\n\
+   (see \
+   {{!Ocgtk.Raw.Notebook.val-set_group_name}[Gtk.Notebook.set_group_name]}) to \
+   allow automatic tabs\n\
    interchange between them.\n\n\
    If you want a widget to interact with a notebook through DnD\n\
    (i.e.: accept dragged tabs from it) it must be set as a drop\n\
@@ -164,8 +179,10 @@ external set_tab_detachable :
    corresponds to the\n\
    dropped tab, so you can process the value via [::accept] or [::drop] \
    signals.\n\n\
-   Note that you should use [Gtk.Notebook.detach_tab] instead\n\
-   of [Gtk.Notebook.remove_page] if you want to remove the tab\n\
+   Note that you should use \
+   {{!Ocgtk.Raw.Notebook.val-detach_tab}[Gtk.Notebook.detach_tab]} instead\n\
+   of {{!Ocgtk.Raw.Notebook.val-remove_page}[Gtk.Notebook.remove_page]} if you \
+   want to remove the tab\n\
    from the source notebook as part of accepting a drop. Otherwise,\n\
    the source notebook will think that the dragged tab was removed\n\
    from underneath the ongoing drag operation, and will initiate a\n\
@@ -468,7 +485,9 @@ external get_action_widget :
   option = "ml_gtk_notebook_get_action_widget"
 (** Gets one of the action widgets.
 
-    See [Gtk.Notebook.set_action_widget]. *)
+    See
+    {{!Ocgtk.Raw.Notebook.val-set_action_widget}[Gtk.Notebook.set_action_widget]}.
+*)
 
 external detach_tab :
   t ->
@@ -478,7 +497,8 @@ external detach_tab :
   unit = "ml_gtk_notebook_detach_tab"
 (** Removes the child from the notebook.
 
-    This function is very similar to [Gtk.Notebook.remove_page], but
+    This function is very similar to
+    {{!Ocgtk.Raw.Notebook.val-remove_page}[Gtk.Notebook.remove_page]}, but
     additionally informs the notebook that the removal is happening as part of a
     tab DND operation, which should not be cancelled. *)
 

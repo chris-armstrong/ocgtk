@@ -6,7 +6,8 @@
  An example GtkExpander\n\n\
  This is similar to the triangles used in a [GtkTreeView].\n\n\
  Normally you use an expander as you would use a frame; you create\n\
- the child widget and use [Gtk.Expander.set_child] to add it\n\
+ the child widget and use \
+ {{!Ocgtk.Raw.Expander.val-set_child}[Gtk.Expander.set_child]} to add it\n\
  to the expander. When the expander is toggled, it will take care of\n\
  showing and hiding the child automatically.\n\n\
  {b Special Usage}\n\n\
@@ -14,7 +15,8 @@
  expanded widget yourself, such as when you want to actually create\n\
  the widget at expansion time. In this case, create a [GtkExpander]\n\
  but do not add a child to it. The expander widget has an\n\
- [Gtk.Expander:expanded] property which can be used to\n\
+ {{!Ocgtk.Raw.Expander.val-get_expanded}[Gtk.Expander:expanded]} property \
+ which can be used to\n\
  monitor its expansion state. You should watch this property with\n\
  a signal connection as follows:\n\n\
  {[\n\
@@ -69,7 +71,9 @@
  i.e. the expand/collapse arrow; then the label widget if any. The arrow of an\n\
  expander that is showing its child gets the [:checked] pseudoclass set on it.\n\n\
  {b Accessibility}\n\n\
- [GtkExpander] uses the [Gtk.AccessibleRole.button] role.\n\n\
+ [GtkExpander] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Expander}."]
 
 type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -158,9 +162,11 @@ external get_label : t -> string option = "ml_gtk_expander_get_label"
 (** Fetches the text from a label widget.
 
     This is including any embedded underlines indicating mnemonics and Pango
-    markup, as set by [Gtk.Expander.set_label]. If the label text has not been
-    set the return value will be [None]. This will be the case if you create an
-    empty button with gtk_button_new() to use as a container. *)
+    markup, as set by
+    {{!Ocgtk.Raw.Expander.val-set_label}[Gtk.Expander.set_label]}. If the label
+    text has not been set the return value will be [None]. This will be the case
+    if you create an empty button with gtk_button_new() to use as a container.
+*)
 
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 (** Queries a [GtkExpander] and returns its current state.

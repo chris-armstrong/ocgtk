@@ -9,15 +9,19 @@
  the\n\
  bottom, [GtkInfoBar] has an action area at the side.\n\n\
  The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
- to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
+ to add buttons to the action area with \
+ {{!Ocgtk.Raw.Info_bar.val-add_button}[Gtk.InfoBar.add_button]}\n\
  or [Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets\n\
- can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
+ can be controlled with \
+ {{!Ocgtk.Raw.Info_bar.val-set_response_sensitive}[Gtk.InfoBar.set_response_sensitive]}.\n\n\
  To add widgets to the main content area of a [GtkInfoBar], use\n\
- [Gtk.InfoBar.add_child].\n\n\
+ {{!Ocgtk.Raw.Info_bar.val-add_child}[Gtk.InfoBar.add_child]}.\n\n\
  Similar to {{!Ocgtk.Raw.Message_dialog}[Gtk.MessageDialog]}, the contents of \
  a [GtkInfoBar]\n\
  can by classified as error message, warning, informational message, etc,\n\
- by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
+ by using \
+ {{!Ocgtk.Raw.Info_bar.val-set_message_type}[Gtk.InfoBar.set_message_type]}. \
+ GTK may use the message\n\
  type to determine how the message is displayed.\n\n\
  A simple example for using a [GtkInfoBar]:\n\n\
  {[\n\
@@ -85,8 +89,10 @@ external set_revealed : t -> bool -> unit = "ml_gtk_info_bar_set_revealed"
     Changing this will make [info_bar] reveal or conceal itself via a sliding
     transition.
 
-    Note: this does not show or hide [info_bar] in the [Gtk.Widget:visible]
-    sense, so revealing has no effect if [Gtk.Widget:visible] is [false]. *)
+    Note: this does not show or hide [info_bar] in the
+    {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget:visible]} sense, so
+    revealing has no effect if
+    {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget:visible]} is [false]. *)
 
 external set_response_sensitive : t -> int -> bool -> unit
   = "ml_gtk_info_bar_set_response_sensitive"
@@ -132,7 +138,8 @@ external remove_action_widget :
 (** Removes a widget from the action area of [info_bar].
 
     The widget must have been put there by a call to
-    [Gtk.InfoBar.add_action_widget] or [Gtk.InfoBar.add_button]. *)
+    {{!Ocgtk.Raw.Info_bar.val-add_action_widget}[Gtk.InfoBar.add_action_widget]}
+    or {{!Ocgtk.Raw.Info_bar.val-add_button}[Gtk.InfoBar.add_button]}. *)
 
 external get_show_close_button : t -> bool
   = "ml_gtk_info_bar_get_show_close_button"
@@ -157,8 +164,9 @@ external add_button : t -> string -> int -> Button.t
   = "ml_gtk_info_bar_add_button"
 (** Adds a button with the given text.
 
-    Clicking the button will emit the [Gtk.InfoBar::response] signal with the
-    given response_id. The button is appended to the end of the info bar's
+    Clicking the button will emit the
+    {{!Ocgtk.Raw.Info_bar.val-on_response}[Gtk.InfoBar::response]} signal with
+    the given response_id. The button is appended to the end of the info bar's
     action area. The button widget is returned, but usually you don't need it.
 *)
 
@@ -172,9 +180,9 @@ external add_action_widget :
 (** Add an activatable widget to the action area of a [GtkInfoBar].
 
     This also connects a signal handler that will emit the
-    [Gtk.InfoBar::response] signal on the message area when the widget is
-    activated. The widget is appended to the end of the message areas action
-    area. *)
+    {{!Ocgtk.Raw.Info_bar.val-on_response}[Gtk.InfoBar::response]} signal on the
+    message area when the widget is activated. The widget is appended to the end
+    of the message areas action area. *)
 
 (* Properties *)
 

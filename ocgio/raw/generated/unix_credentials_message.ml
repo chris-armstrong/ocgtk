@@ -3,14 +3,17 @@
 
 (** This {{!Ocgio.Raw.Socket_control_message}[Gio.SocketControlMessage]}
     contains a {{!Ocgio.Raw.Credentials}[Gio.Credentials]} instance. It may be
-    sent using [Gio.Socket.send_message] and received using
-    [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
-    [G_SOCKET_FAMILY_UNIX] family).
+    sent using {{!Ocgio.Raw.Socket.val-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
 
     For an easier way to send and receive credentials over stream-oriented UNIX
-    sockets, see [Gio.UnixConnection.send_credentials] and
-    [Gio.UnixConnection.receive_credentials]. To receive credentials of a
-    foreign process connected to a socket, use [Gio.Socket.get_credentials].
+    sockets, see
+    {{!Ocgio.Raw.Unix_connection.val-send_credentials}[Gio.UnixConnection.send_credentials]}
+    and
+    {{!Ocgio.Raw.Unix_connection.val-receive_credentials}[Gio.UnixConnection.receive_credentials]}.
+    To receive credentials of a foreign process connected to a socket, use
+    {{!Ocgio.Raw.Socket.val-get_credentials}[Gio.Socket.get_credentials]}.
 
     Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
     requires underlying system support (such as Windows 10 with [AF_UNIX]) at

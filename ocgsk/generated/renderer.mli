@@ -14,13 +14,16 @@
     {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
-    [Gsk.Renderer.render] to update the contents of its associated
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-render}[Gsk.Renderer.render]}
+    to update the contents of its associated
     {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
-    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
-    create the appropriate windowing system resources needed to render the
-    scene. *)
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-realize}[Gsk.Renderer.realize]}
+    before calling
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-render}[Gsk.Renderer.render]},
+    in order to create the appropriate windowing system resources needed to
+    render the scene. *)
 class type renderer_t = object
   (** {2:methods Methods} *)
 
@@ -94,13 +97,16 @@ class renderer : Raw.Renderer.t -> renderer_t
     {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
-    [Gsk.Renderer.render] to update the contents of its associated
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-render}[Gsk.Renderer.render]}
+    to update the contents of its associated
     {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
-    [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
-    create the appropriate windowing system resources needed to render the
-    scene. *)
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-realize}[Gsk.Renderer.realize]}
+    before calling
+    {{!Ocgsk.Renderer.class-type-renderer_t.method-render}[Gsk.Renderer.render]},
+    in order to create the appropriate windowing system resources needed to
+    render the scene. *)
 
 (** {1:constructors Constructors} *)
 

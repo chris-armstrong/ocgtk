@@ -38,7 +38,8 @@
     the connection.
 
     If you construct an uninitialized [GDBusConnection], such as via
-    [GObject.Object.new], you must initialize it via [Gio.Initable.init] or
+    [GObject.Object.new], you must initialize it via
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} or
     [Gio.AsyncInitable.init_async] before using its methods or properties.
     Calling methods or accessing properties on a [GDBusConnection] that has not
     completed initialization successfully is considered to be invalid, and leads
@@ -353,7 +354,8 @@ class d_bus_connection : Raw.D_bus_connection.t -> d_bus_connection_t
     the connection.
 
     If you construct an uninitialized [GDBusConnection], such as via
-    [GObject.Object.new], you must initialize it via [Gio.Initable.init] or
+    [GObject.Object.new], you must initialize it via
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} or
     [Gio.AsyncInitable.init_async] before using its methods or properties.
     Calling methods or accessing properties on a [GDBusConnection] that has not
     completed initialization successfully is considered to be invalid, and leads

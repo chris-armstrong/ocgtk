@@ -121,10 +121,10 @@ external get_font_desc : t -> Ocpango_raw.Font_description.t option
 (** Gets the currently-selected font.
 
     Note that this can be a different string than what you set with
-    [Gtk.FontChooser.set_font], as the font chooser widget may normalize font
-    names and thus return a string with a different structure. For example,
-    “Helvetica Italic Bold 12” could be normalized to “Helvetica Bold Italic
-    12”.
+    {{!Ocgtk.Raw.Font_chooser.val-set_font}[Gtk.FontChooser.set_font]}, as the
+    font chooser widget may normalize font names and thus return a string with a
+    different structure. For example, “Helvetica Italic Bold 12” could be
+    normalized to “Helvetica Bold Italic 12”.
 
     Use [Pango.FontDescription.equal] if you want to compare two font
     descriptions. *)
@@ -133,10 +133,10 @@ external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
 (** Gets the currently-selected font name.
 
     Note that this can be a different string than what you set with
-    [Gtk.FontChooser.set_font], as the font chooser widget may normalize font
-    names and thus return a string with a different structure. For example,
-    “Helvetica Italic Bold 12” could be normalized to “Helvetica Bold Italic
-    12”.
+    {{!Ocgtk.Raw.Font_chooser.val-set_font}[Gtk.FontChooser.set_font]}, as the
+    font chooser widget may normalize font names and thus return a string with a
+    different structure. For example, “Helvetica Italic Bold 12” could be
+    normalized to “Helvetica Bold Italic 12”.
 
     Use [Pango.FontDescription.equal] if you want to compare two font
     descriptions. *)

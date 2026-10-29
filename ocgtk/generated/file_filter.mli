@@ -73,15 +73,20 @@ end
      Filters files by name or mime type.\n\n\
      [GtkFileFilter] can be used to restrict the files being shown in a\n\
      file chooser. Files can be filtered based on their name (with\n\
-     [Gtk.FileFilter.add_pattern] or [Gtk.FileFilter.add_suffix])\n\
-     or on their mime type (with [Gtk.FileFilter.add_mime_type]).\n\n\
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pattern}[Gtk.FileFilter.add_pattern]} \
+     or \
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_suffix}[Gtk.FileFilter.add_suffix]})\n\
+     or on their mime type (with \
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_mime_type}[Gtk.FileFilter.add_mime_type]}).\n\n\
      Filtering by mime types handles aliasing and subclassing of mime\n\
      types; e.g. a filter for text/plain also matches a file with mime\n\
      type application/rtf, since application/rtf is a subclass of\n\
      text/plain. Note that [GtkFileFilter] allows wildcards for the\n\
      subtype of a mime type, so you can e.g. filter for image/*.\n\n\
      Normally, file filters are used by adding them to a file chooser\n\
-     (see [Gtk.FileDialog.set_filters]), but it is also possible to\n\
+     (see \
+     {{!Ocgtk.File_dialog.class-type-file_dialog_t.method-set_filters}[Gtk.FileDialog.set_filters]}), \
+     but it is also possible to\n\
      manually use a file filter on any \
      {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]} \
      containing\n\
@@ -92,9 +97,11 @@ end
      [<suffixes>] elements and listing the rules within. Specifying a\n\
      [<mime-type>] or [<pattern>] or [<suffix>] has the same effect as\n\
      as calling\n\
-     [Gtk.FileFilter.add_mime_type] or\n\
-     [Gtk.FileFilter.add_pattern] or\n\
-     [Gtk.FileFilter.add_suffix].\n\n\
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_mime_type}[Gtk.FileFilter.add_mime_type]} \
+     or\n\
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pattern}[Gtk.FileFilter.add_pattern]} \
+     or\n\
+     {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_suffix}[Gtk.FileFilter.add_suffix]}.\n\n\
      An example of a UI definition fragment specifying [GtkFileFilter]\n\
      rules:\n\n\
      {[\n\
@@ -121,15 +128,20 @@ class file_filter : Raw.File_filter.t -> file_filter_t
  Filters files by name or mime type.\n\n\
  [GtkFileFilter] can be used to restrict the files being shown in a\n\
  file chooser. Files can be filtered based on their name (with\n\
- [Gtk.FileFilter.add_pattern] or [Gtk.FileFilter.add_suffix])\n\
- or on their mime type (with [Gtk.FileFilter.add_mime_type]).\n\n\
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pattern}[Gtk.FileFilter.add_pattern]} \
+ or \
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_suffix}[Gtk.FileFilter.add_suffix]})\n\
+ or on their mime type (with \
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_mime_type}[Gtk.FileFilter.add_mime_type]}).\n\n\
  Filtering by mime types handles aliasing and subclassing of mime\n\
  types; e.g. a filter for text/plain also matches a file with mime\n\
  type application/rtf, since application/rtf is a subclass of\n\
  text/plain. Note that [GtkFileFilter] allows wildcards for the\n\
  subtype of a mime type, so you can e.g. filter for image/*.\n\n\
  Normally, file filters are used by adding them to a file chooser\n\
- (see [Gtk.FileDialog.set_filters]), but it is also possible to\n\
+ (see \
+ {{!Ocgtk.File_dialog.class-type-file_dialog_t.method-set_filters}[Gtk.FileDialog.set_filters]}), \
+ but it is also possible to\n\
  manually use a file filter on any \
  {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]} \
  containing\n\
@@ -140,9 +152,11 @@ class file_filter : Raw.File_filter.t -> file_filter_t
  [<suffixes>] elements and listing the rules within. Specifying a\n\
  [<mime-type>] or [<pattern>] or [<suffix>] has the same effect as\n\
  as calling\n\
- [Gtk.FileFilter.add_mime_type] or\n\
- [Gtk.FileFilter.add_pattern] or\n\
- [Gtk.FileFilter.add_suffix].\n\n\
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_mime_type}[Gtk.FileFilter.add_mime_type]} \
+ or\n\
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pattern}[Gtk.FileFilter.add_pattern]} \
+ or\n\
+ {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_suffix}[Gtk.FileFilter.add_suffix]}.\n\n\
  An example of a UI definition fragment specifying [GtkFileFilter]\n\
  rules:\n\n\
  {[\n\
@@ -168,10 +182,11 @@ val new_ : unit -> file_filter_t
   "Creates a new [GtkFileFilter] with no rules added to it.\n\n\
    Such a filter doesn’t accept any files, so is not\n\
    particularly useful until you add rules with\n\
-   [Gtk.FileFilter.add_mime_type],\n\
-   [Gtk.FileFilter.add_pattern],\n\
-   [Gtk.FileFilter.add_suffix] or\n\
-   [Gtk.FileFilter.add_pixbuf_formats].\n\n\
+   {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_mime_type}[Gtk.FileFilter.add_mime_type]},\n\
+   {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pattern}[Gtk.FileFilter.add_pattern]},\n\
+   {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_suffix}[Gtk.FileFilter.add_suffix]} \
+   or\n\
+   {{!Ocgtk.File_filter.class-type-file_filter_t.method-add_pixbuf_formats}[Gtk.FileFilter.add_pixbuf_formats]}.\n\n\
    To create a filter that accepts any file, use:\n\n\
    {[\n\
    GtkFileFilter *filter = gtk_file_filter_new ();\n\
@@ -181,5 +196,6 @@ val new_ : unit -> file_filter_t
 val new_from_gvariant : Gvariant.t -> file_filter_t
 (** Deserialize a file filter from a [GVariant].
 
-    The variant must be in the format produced by [Gtk.FileFilter.to_gvariant].
+    The variant must be in the format produced by
+    {{!Ocgtk.File_filter.class-type-file_filter_t.method-to_gvariant}[Gtk.FileFilter.to_gvariant]}.
 *)

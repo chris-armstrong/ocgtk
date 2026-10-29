@@ -6,14 +6,16 @@
     It is used in the [GtkFontChooserDialog] widget to provide a dialog for
     selecting fonts.
 
-    To set the font which is initially selected, use [Gtk.FontChooser.set_font]
-    or [Gtk.FontChooser.set_font_desc].
+    To set the font which is initially selected, use
+    {{!Ocgtk.Raw.Font_chooser.val-set_font}[Gtk.FontChooser.set_font]} or
+    {{!Ocgtk.Raw.Font_chooser.val-set_font_desc}[Gtk.FontChooser.set_font_desc]}.
 
-    To get the selected font use [Gtk.FontChooser.get_font] or
-    [Gtk.FontChooser.get_font_desc].
+    To get the selected font use
+    {{!Ocgtk.Raw.Font_chooser.val-get_font}[Gtk.FontChooser.get_font]} or
+    {{!Ocgtk.Raw.Font_chooser.val-get_font_desc}[Gtk.FontChooser.get_font_desc]}.
 
     To change the text which is shown in the preview area, use
-    [Gtk.FontChooser.set_preview_text].
+    {{!Ocgtk.Raw.Font_chooser.val-set_preview_text}[Gtk.FontChooser.set_preview_text]}.
 
     {b CSS nodes}
 

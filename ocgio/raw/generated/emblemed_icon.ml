@@ -3,7 +3,8 @@
 
 (** [GEmblemedIcon] is an implementation of {{!Ocgio.Raw.Icon}[Gio.Icon]} that
     supports adding an emblem to an icon. Adding multiple emblems to an icon is
-    ensured via [Gio.EmblemedIcon.add_emblem].
+    ensured via
+    {{!Ocgio.Raw.Emblemed_icon.val-add_emblem}[Gio.EmblemedIcon.add_emblem]}.
 
     Note that [GEmblemedIcon] allows no control over the position of the
     emblems. See also {{!Ocgio.Raw.Emblem}[Gio.Emblem]} for more information.

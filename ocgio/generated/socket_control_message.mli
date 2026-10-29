@@ -21,8 +21,9 @@
     from the socket or can represent a special kind of transfer to the peer (for
     example, sending a file descriptor over a UNIX socket).
 
-    These messages are sent with [Gio.Socket.send_message] and received with
-    [Gio.Socket.receive_message].
+    These messages are sent with
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received with [Gio.Socket.receive_message].
 
     To extend the set of control message that can be sent, subclass this class
     and override the [get_size], [get_level], [get_type] and [serialize]
@@ -70,8 +71,9 @@ class socket_control_message :
     from the socket or can represent a special kind of transfer to the peer (for
     example, sending a file descriptor over a UNIX socket).
 
-    These messages are sent with [Gio.Socket.send_message] and received with
-    [Gio.Socket.receive_message].
+    These messages are sent with
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received with [Gio.Socket.receive_message].
 
     To extend the set of control message that can be sent, subclass this class
     and override the [get_size], [get_level], [get_type] and [serialize]

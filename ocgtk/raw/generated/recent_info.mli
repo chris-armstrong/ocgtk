@@ -39,7 +39,8 @@ external get_uri_display : t -> string option
 (** Gets a displayable version of the resource’s URI.
 
     If the resource is local, it returns a local path; if the resource is not
-    local, it returns the UTF-8 encoded content of [Gtk.RecentInfo.get_uri]. *)
+    local, it returns the UTF-8 encoded content of
+    {{!Ocgtk.Raw.Recent_info.val-get_uri}[Gtk.RecentInfo.get_uri]}. *)
 
 external get_uri : t -> string = "ml_gtk_recent_info_get_uri"
 (** Gets the URI of the resource. *)

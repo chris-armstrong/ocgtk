@@ -19,7 +19,9 @@ external new_ : Ocgio_enums.zlibcompressorformat -> t
 
 external get_file_info : t -> File_info.t option
   = "ml_g_zlib_decompressor_get_file_info"
-(** Gets the [Gio.ZlibDecompressor:file-info] property. *)
+(** Gets the
+    {{!Ocgio.Raw.Zlib_decompressor.val-get_file_info}[Gio.ZlibDecompressor:file-info]}
+    property. *)
 
 (* Properties *)
 

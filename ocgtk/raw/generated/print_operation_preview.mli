@@ -4,8 +4,8 @@
 (** The interface that is used to implement print preview.
 
     A [GtkPrintOperationPreview] object is passed to the
-    [Gtk.PrintOperation::preview] signal by
-    {{!Ocgtk.Raw.Print_operation}[Gtk.PrintOperation]}.
+    {{!Ocgtk.Raw.Print_operation.val-on_preview}[Gtk.PrintOperation::preview]}
+    signal by {{!Ocgtk.Raw.Print_operation}[Gtk.PrintOperation]}.
 
     The class built on this module is in {!Ocgtk.Print_operation_preview}. *)
 
@@ -24,7 +24,8 @@ external render_page : t -> int -> unit
 (** Renders a page to the preview.
 
     This is using the print context that was passed to the
-    [Gtk.PrintOperation::preview] handler together with [preview].
+    {{!Ocgtk.Raw.Print_operation.val-on_preview}[Gtk.PrintOperation::preview]}
+    handler together with [preview].
 
     A custom print preview should use this function to render the currently
     selected page.
@@ -51,7 +52,8 @@ val on_got_page_size :
 
     A handler for this signal should update the [context] according to
     [page_setup] and set up a suitable cairo context, using
-    [Gtk.PrintContext.set_cairo_context]. *)
+    {{!Ocgtk.Raw.Print_context.val-set_cairo_context}[Gtk.PrintContext.set_cairo_context]}.
+*)
 
 val on_ready :
   ?after:bool ->

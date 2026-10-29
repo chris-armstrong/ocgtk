@@ -90,9 +90,13 @@ end
      [GtkMessageDialog] saves typing.\n\n\
      The easiest way to do a modal message dialog is to use the \
      [GTK_DIALOG_MODAL]\n\
-     flag, which will call [Gtk.Window.set_modal] internally. The dialog will\n\
+     flag, which will call \
+     {{!Ocgtk.Window.class-type-window_t.method-set_modal}[Gtk.Window.set_modal]} \
+     internally. The dialog will\n\
      prevent interaction with the parent window until it's hidden or destroyed.\n\
-     You can use the [Gtk.Dialog::response] signal to know when the user\n\
+     You can use the \
+     {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
+     signal to know when the user\n\
      dismissed the dialog.\n\n\
      An example for using a modal dialog:\n\n\
      {[\n\
@@ -143,9 +147,13 @@ class message_dialog : Raw.Message_dialog.t -> message_dialog_t
  [GtkMessageDialog] from [GtkDialog] without too much effort, but\n\
  [GtkMessageDialog] saves typing.\n\n\
  The easiest way to do a modal message dialog is to use the [GTK_DIALOG_MODAL]\n\
- flag, which will call [Gtk.Window.set_modal] internally. The dialog will\n\
+ flag, which will call \
+ {{!Ocgtk.Window.class-type-window_t.method-set_modal}[Gtk.Window.set_modal]} \
+ internally. The dialog will\n\
  prevent interaction with the parent window until it's hidden or destroyed.\n\
- You can use the [Gtk.Dialog::response] signal to know when the user\n\
+ You can use the \
+ {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
+ signal to know when the user\n\
  dismissed the dialog.\n\n\
  An example for using a modal dialog:\n\n\
  {[\n\

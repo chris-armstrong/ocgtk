@@ -99,7 +99,8 @@ val new_for_filename : string -> media_file_t
 (** Creates a new media file for the given filename.
 
     This is a utility function that converts the given [filename] to a [GFile]
-    and calls [Gtk.MediaFile.new_for_file]. *)
+    and calls
+    {{!Ocgtk.Media_file.val-new_for_file}[Gtk.MediaFile.new_for_file]}. *)
 
 val new_for_input_stream : Ocgio.Input_stream.input_stream_t -> media_file_t
 (** Creates a new media file to play [stream].
@@ -111,4 +112,5 @@ val new_for_resource : string -> media_file_t
 (** Creates a new new media file for the given resource.
 
     This is a utility function that converts the given [resource] to a [GFile]
-    and calls [Gtk.MediaFile.new_for_file]. *)
+    and calls
+    {{!Ocgtk.Media_file.val-new_for_file}[Gtk.MediaFile.new_for_file]}. *)

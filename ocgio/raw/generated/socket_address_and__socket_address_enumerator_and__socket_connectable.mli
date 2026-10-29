@@ -33,19 +33,21 @@ end
 
 (** [GSocketAddressEnumerator] is an enumerator type for
     {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} instances. It is returned
-    by enumeration functions such as [Gio.SocketConnectable.enumerate], which
-    returns a [GSocketAddressEnumerator] to list each
+    by enumeration functions such as
+    {{!Ocgio.Raw.Socket_connectable.val-enumerate}[Gio.SocketConnectable.enumerate]},
+    which returns a [GSocketAddressEnumerator] to list each
     {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} which could be used to
     connect to that {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and
-    [Gio.SocketAddressEnumerator.next_finish] should be used where possible.
+    {{!Ocgio.Raw.Socket_address_enumerator.val-next_finish}[Gio.SocketAddressEnumerator.next_finish]}
+    should be used where possible.
 
     Each [GSocketAddressEnumerator] can only be enumerated once. Once
-    [Gio.SocketAddressEnumerator.next] has returned [None], further enumeration
-    with that [GSocketAddressEnumerator] is not possible, and it can be
-    unreffed.
+    {{!Ocgio.Raw.Socket_address_enumerator.val-next}[Gio.SocketAddressEnumerator.next]}
+    has returned [None], further enumeration with that
+    [GSocketAddressEnumerator] is not possible, and it can be unreffed.
 
     The class built on this module is in {!Ocgio.Socket_address_enumerator}. *)
 and Socket_address_enumerator : sig
@@ -81,7 +83,8 @@ and Socket_address_enumerator : sig
 end
 
 (** Objects that describe one or more potential socket endpoints implement
-    [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
+    [GSocketConnectable]. Callers can then use
+    {{!Ocgio.Raw.Socket_connectable.val-enumerate}[Gio.SocketConnectable.enumerate]}
     to get a
     {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]} to try
     out each socket address in turn until one succeeds, as shown in the sample

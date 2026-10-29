@@ -12,7 +12,8 @@
  additional data associated with the task, and then pass the\n\
  task object around through your asynchronous operation.\n\
  Eventually, you will call a method such as\n\
- [Gio.Task.return_pointer] or [Gio.Task.return_error], which\n\
+ [Gio.Task.return_pointer] or \
+ {{!Ocgio.Raw.Task.val-return_error}[Gio.Task.return_error]}, which\n\
  will save the value you give it and then invoke the task’s callback\n\
  function in the thread-default main context (see\n\
  [GLib.MainContext.push_thread_default])\n\
@@ -115,8 +116,11 @@
  {b Chained asynchronous operations}\n\n\
  [GTask] also tries to simplify asynchronous operations that\n\
  internally chain together several smaller asynchronous\n\
- operations. [Gio.Task.get_cancellable], [Gio.Task.get_context],\n\
- and [Gio.Task.get_priority] allow you to get back the task’s\n\
+ operations. \
+ {{!Ocgio.Raw.Task.val-get_cancellable}[Gio.Task.get_cancellable]}, \
+ [Gio.Task.get_context],\n\
+ and {{!Ocgio.Raw.Task.val-get_priority}[Gio.Task.get_priority]} allow you to \
+ get back the task’s\n\
  {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]}, [GLib.MainContext], and\n\
  I/O priority\n\
  when starting a new subtask, so you don’t have to keep track\n\
@@ -303,7 +307,8 @@
  Finally, [Gio.Task.run_in_thread] and\n\
  [Gio.Task.run_in_thread_sync] can be used to turn an uncancellable\n\
  operation into a cancellable one. If you call\n\
- [Gio.Task.set_return_on_cancel], passing [true], then if the task’s\n\
+ {{!Ocgio.Raw.Task.val-set_return_on_cancel}[Gio.Task.set_return_on_cancel]}, \
+ passing [true], then if the task’s\n\
  {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]} is cancelled, it will return \
  control back to the\n\
  caller immediately, while allowing the task thread to continue running in the\n\
@@ -405,18 +410,24 @@
  and [GLib.MainContext] associated with the task, so tasks that\n\
  consist of a chain of simpler asynchronous operations will have easy access\n\
  to those values when starting each sub-task.\n\
- - [Gio.Task.return_error_if_cancelled] provides simplified\n\
+ - \
+ {{!Ocgio.Raw.Task.val-return_error_if_cancelled}[Gio.Task.return_error_if_cancelled]} \
+ provides simplified\n\
  handling for cancellation. In addition, cancellation\n\
  overrides any other [GTask] return value by default, like\n\
  {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} does when\n\
- [Gio.SimpleAsyncResult.set_check_cancellable] is called.\n\
- (You can use [Gio.Task.set_check_cancellable] to turn off that\n\
+ {{!Ocgio.Raw.Simple_async_result.val-set_check_cancellable}[Gio.SimpleAsyncResult.set_check_cancellable]} \
+ is called.\n\
+ (You can use \
+ {{!Ocgio.Raw.Task.val-set_check_cancellable}[Gio.Task.set_check_cancellable]} \
+ to turn off that\n\
  behavior.) On the other hand, [Gio.Task.run_in_thread]\n\
  guarantees that it will always run your\n\
  [task_func], even if the task’s {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]}\n\
  is already cancelled before the task gets a chance to run;\n\
  you can start your [task_func] with a\n\
- [Gio.Task.return_error_if_cancelled] check if you need the\n\
+ {{!Ocgio.Raw.Task.val-return_error_if_cancelled}[Gio.Task.return_error_if_cancelled]} \
+ check if you need the\n\
  old behavior.\n\
  - The ‘return’ methods (eg, [Gio.Task.return_pointer])\n\
  automatically cause the task to be ‘completed’ as well, and\n\
@@ -434,7 +445,8 @@
  prevent it from being freed twice.\n\
  - With {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]}, it was \
  common to call\n\
- [Gio.SimpleAsyncResult.propagate_error] from the\n\
+ {{!Ocgio.Raw.Simple_async_result.val-propagate_error}[Gio.SimpleAsyncResult.propagate_error]} \
+ from the\n\
  [_finish()] wrapper function, and have\n\
  virtual method implementations only deal with successful\n\
  returns. This behavior is deprecated, because it makes it\n\
@@ -443,7 +455,8 @@
  simple wrapper, and the virtual method should call an\n\
  appropriate [g_task_propagate_] function.\n\
  Note that wrapper methods can now use\n\
- [Gio.AsyncResult.legacy_propagate_error] to do old-style\n\
+ {{!Ocgio.Raw.Async_result.val-legacy_propagate_error}[Gio.AsyncResult.legacy_propagate_error]} \
+ to do old-style\n\
  {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} error-returning \
  behavior, and\n\
  [Gio.AsyncResult.is_tagged] to check if a result is tagged as\n\

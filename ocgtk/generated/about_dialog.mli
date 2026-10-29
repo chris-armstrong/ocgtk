@@ -184,7 +184,8 @@ end
      displays these as clickable links. By default, it calls \
      [Gtk.FileLauncher.launch]\n\
      when a user clicks one. The behaviour can be overridden with the\n\
-     [Gtk.AboutDialog::activate-link] signal.\n\n\
+     {{!Ocgtk.About_dialog.class-type-about_dialog_t.method-on_activate_link}[Gtk.AboutDialog::activate-link]} \
+     signal.\n\n\
      To specify a person with an email address, use a string like\n\
      [Edgar Allan Poe <edgar@poe.com>]. To specify a website with a title,\n\
      use a string like [GTK team https://www.gtk.org].\n\n\
@@ -229,7 +230,8 @@ class about_dialog : Raw.About_dialog.t -> about_dialog_t
  displays these as clickable links. By default, it calls \
  [Gtk.FileLauncher.launch]\n\
  when a user clicks one. The behaviour can be overridden with the\n\
- [Gtk.AboutDialog::activate-link] signal.\n\n\
+ {{!Ocgtk.About_dialog.class-type-about_dialog_t.method-on_activate_link}[Gtk.AboutDialog::activate-link]} \
+ signal.\n\n\
  To specify a person with an email address, use a string like\n\
  [Edgar Allan Poe <edgar@poe.com>]. To specify a website with a title,\n\
  use a string like [GTK team https://www.gtk.org].\n\n\

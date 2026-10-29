@@ -7,15 +7,18 @@
 
     By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
 
-    To create a buffered input stream, use [Gio.BufferedInputStream.new], or
-    [Gio.BufferedInputStream.new_sized] to specify the buffer's size at
-    construction.
+    To create a buffered input stream, use
+    {{!Ocgio.Raw.Buffered_input_stream.val-new_}[Gio.BufferedInputStream.new]},
+    or
+    {{!Ocgio.Raw.Buffered_input_stream.val-new_sized}[Gio.BufferedInputStream.new_sized]}
+    to specify the buffer's size at construction.
 
     To get the size of a buffer within a buffered input stream, use
-    [Gio.BufferedInputStream.get_buffer_size]. To change the size of a buffered
-    input stream's buffer, use [Gio.BufferedInputStream.set_buffer_size]. Note
-    that the buffer's size cannot be reduced below the size of the data within
-    the buffer.
+    {{!Ocgio.Raw.Buffered_input_stream.val-get_buffer_size}[Gio.BufferedInputStream.get_buffer_size]}.
+    To change the size of a buffered input stream's buffer, use
+    {{!Ocgio.Raw.Buffered_input_stream.val-set_buffer_size}[Gio.BufferedInputStream.set_buffer_size]}.
+    Note that the buffer's size cannot be reduced below the size of the data
+    within the buffer.
 
     The class built on this module is in {!Ocgio.Buffered_input_stream}. *)
 

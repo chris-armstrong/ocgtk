@@ -4,9 +4,11 @@
 [@@@ocaml.text
 "An event controller to receive Drag-and-Drop operations.\n\n\
  The most basic way to use a [GtkDropTarget] to receive drops on a\n\
- widget is to create it via [Gtk.DropTarget.new], passing in the\n\
+ widget is to create it via \
+ {{!Ocgtk.Raw.Drop_target.val-new_}[Gtk.DropTarget.new]}, passing in the\n\
  [GType] of the data you want to receive and connect to the\n\
- [Gtk.DropTarget::drop] signal to receive the data:\n\n\
+ {{!Ocgtk.Raw.Drop_target.val-on_drop}[Gtk.DropTarget::drop]} signal to \
+ receive the data:\n\n\
  {[\n\
  static gboolean\n\
  on_drop (GtkDropTarget *target,\n\
@@ -42,15 +44,20 @@
  }\n\
  ]}\n\n\
  [GtkDropTarget] supports more options, such as:\n\n\
- - rejecting potential drops via the [Gtk.DropTarget::accept] signal\n\
- and the [Gtk.DropTarget.reject] function to let other drop\n\
+ - rejecting potential drops via the \
+ {{!Ocgtk.Raw.Drop_target.val-on_accept}[Gtk.DropTarget::accept]} signal\n\
+ and the {{!Ocgtk.Raw.Drop_target.val-reject}[Gtk.DropTarget.reject]} function \
+ to let other drop\n\
  targets handle the drop\n\
  - tracking an ongoing drag operation before the drop via the\n\
- [Gtk.DropTarget::enter], [Gtk.DropTarget::motion] and\n\
- [Gtk.DropTarget::leave] signals\n\
+ {{!Ocgtk.Raw.Drop_target.val-on_enter}[Gtk.DropTarget::enter]}, \
+ {{!Ocgtk.Raw.Drop_target.val-on_motion}[Gtk.DropTarget::motion]} and\n\
+ {{!Ocgtk.Raw.Drop_target.val-on_leave}[Gtk.DropTarget::leave]} signals\n\
  - configuring how to receive data by setting the\n\
- [Gtk.DropTarget:preload] property and listening for its\n\
- availability via the [Gtk.DropTarget:value] property\n\n\
+ {{!Ocgtk.Raw.Drop_target.val-get_preload}[Gtk.DropTarget:preload]} property \
+ and listening for its\n\
+ availability via the \
+ {{!Ocgtk.Raw.Drop_target.val-get_value}[Gtk.DropTarget:value]} property\n\n\
  However, [GtkDropTarget] is ultimately modeled in a synchronous way\n\
  and only supports data transferred via [GType]. If you want full control\n\
  over an ongoing drop, the \
@@ -73,7 +80,8 @@ external new_ : Gobject.Type.t -> Ocgdk_enums.dragaction -> t
 (** Creates a new [GtkDropTarget] object.
 
     If the drop target should support more than 1 type, pass [G_TYPE_INVALID]
-    for [type] and then call [Gtk.DropTarget.set_gtypes]. *)
+    for [type] and then call
+    {{!Ocgtk.Raw.Drop_target.val-set_gtypes}[Gtk.DropTarget.set_gtypes]}. *)
 
 (* Methods *)
 
@@ -91,8 +99,9 @@ external set_actions : t -> Ocgdk_enums.dragaction -> unit
 external reject : t -> unit = "ml_gtk_drop_target_reject"
 (** Rejects the ongoing drop operation.
 
-    If no drop operation is ongoing, i.e when [Gtk.DropTarget:current-drop] is
-    [None], this function does nothing.
+    If no drop operation is ongoing, i.e when
+    {{!Ocgtk.Raw.Drop_target.val-get_current_drop}[Gtk.DropTarget:current-drop]}
+    is [None], this function does nothing.
 
     This function should be used when delaying the decision on whether to accept
     a drag or not until after reading the data. *)
@@ -142,16 +151,20 @@ val on_accept :
 
     If the drop is not accepted, [false] will be returned and the drop target
     will ignore the drop. If [true] is returned, the drop is accepted for now
-    but may be rejected later via a call to [Gtk.DropTarget.reject] or
-    ultimately by returning [false] from a [Gtk.DropTarget::drop] handler.
+    but may be rejected later via a call to
+    {{!Ocgtk.Raw.Drop_target.val-reject}[Gtk.DropTarget.reject]} or ultimately
+    by returning [false] from a
+    {{!Ocgtk.Raw.Drop_target.val-on_drop}[Gtk.DropTarget::drop]} handler.
 
     The default handler for this signal decides whether to accept the drop based
     on the formats provided by the [drop].
 
     If the decision whether the drop will be accepted or rejected depends on the
-    data, this function should return [true], the [Gtk.DropTarget:preload]
-    property should be set and the value should be inspected via the
-    ::notify:value signal, calling [Gtk.DropTarget.reject] if required. *)
+    data, this function should return [true], the
+    {{!Ocgtk.Raw.Drop_target.val-get_preload}[Gtk.DropTarget:preload]} property
+    should be set and the value should be inspected via the ::notify:value
+    signal, calling {{!Ocgtk.Raw.Drop_target.val-reject}[Gtk.DropTarget.reject]}
+    if required. *)
 
 val on_drop :
   ?after:bool ->
@@ -181,7 +194,8 @@ val on_leave :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted on the drop site when the pointer leaves the widget.
 
-    Its main purpose it to undo things done in [Gtk.DropTarget::enter]. *)
+    Its main purpose it to undo things done in
+    {{!Ocgtk.Raw.Drop_target.val-on_enter}[Gtk.DropTarget::enter]}. *)
 
 val on_motion :
   ?after:bool ->

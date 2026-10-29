@@ -26,12 +26,14 @@ external get_hardware_id : t -> UInt64.t = "ml_gdk_device_tool_get_hardware_id"
 
     When non-zero, the identifier is unique for the given tool model, meaning
     that two identical tools will share the same [hardware_id], but will have
-    different serial numbers (see [Gdk.DeviceTool.get_serial]).
+    different serial numbers (see
+    {{!Ocgdk.Raw.Device_tool.val-get_serial}[Gdk.DeviceTool.get_serial]}).
 
     This is a more concrete (and device specific) method to identify a
-    [GdkDeviceTool] than [Gdk.DeviceTool.get_tool_type], as a tablet may support
-    multiple devices with the same [GdkDeviceToolType], but different hardware
-    identifiers. *)
+    [GdkDeviceTool] than
+    {{!Ocgdk.Raw.Device_tool.val-get_tool_type}[Gdk.DeviceTool.get_tool_type]},
+    as a tablet may support multiple devices with the same [GdkDeviceToolType],
+    but different hardware identifiers. *)
 
 external get_axes : t -> Ocgdk_enums.axisflags = "ml_gdk_device_tool_get_axes"
 (** Gets the axes of the tool. *)

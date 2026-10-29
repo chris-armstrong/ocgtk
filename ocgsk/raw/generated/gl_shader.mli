@@ -73,7 +73,8 @@
  This samples a texture (e.g. u_texture1) at the specified\n\
  coordinates, and contains some helper ifdefs to ensure that\n\
  it works on all OpenGL versions.\n\n\
- You can compile the shader yourself using [Gsk.GLShader.compile],\n\
+ You can compile the shader yourself using \
+ {{!Ocgsk.Raw.Gl_shader.val-compile}[Gsk.GLShader.compile]},\n\
  otherwise the GSK renderer will do it when it handling the glshader\n\
  node. If errors occurs, the returned [error] will include the glsl\n\
  sources, so you can see what GSK was passing to the compiler. You\n\

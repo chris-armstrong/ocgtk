@@ -9,16 +9,21 @@
     widget if you have special needs.
 
     [GtkAppChooserWidget] offers detailed control over what applications are
-    shown, using the [Gtk.AppChooserWidget:show-default],
-    [Gtk.AppChooserWidget:show-recommended],
-    [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
-    [Gtk.AppChooserWidget:show-all] properties. See the
-    {{!Ocgtk.Raw.App_chooser}[Gtk.AppChooser]} documentation for more
-    information about these groups of applications.
+    shown, using the
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_default}[Gtk.AppChooserWidget:show-default]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_recommended}[Gtk.AppChooserWidget:show-recommended]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_fallback}[Gtk.AppChooserWidget:show-fallback]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_other}[Gtk.AppChooserWidget:show-other]}
+    and
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_all}[Gtk.AppChooserWidget:show-all]}
+    properties. See the {{!Ocgtk.Raw.App_chooser}[Gtk.AppChooser]} documentation
+    for more information about these groups of applications.
 
     To keep track of the selected application, use the
-    [Gtk.AppChooserWidget::application-selected] and
-    [Gtk.AppChooserWidget::application-activated] signals.
+    {{!Ocgtk.Raw.App_chooser_widget.val-on_application_selected}[Gtk.AppChooserWidget::application-selected]}
+    and
+    {{!Ocgtk.Raw.App_chooser_widget.val-on_application_activated}[Gtk.AppChooserWidget::application-activated]}
+    signals.
 
     {b CSS nodes}
 

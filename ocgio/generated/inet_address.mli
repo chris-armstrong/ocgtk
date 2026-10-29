@@ -1,6 +1,8 @@
 (** [GInetAddress] represents an IPv4 or IPv6 internet address. Use
-    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
-    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[Gio.Resolver.lookup_by_name]}
+    or [Gio.Resolver.lookup_by_name_async] to look up the [GInetAddress] for a
+    hostname. Use
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_address}[Gio.Resolver.lookup_by_address]}
     or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
     [GInetAddress].
 
@@ -14,8 +16,10 @@
 (** {b The methods, signals and properties of a [InetAddress].}
 
     [GInetAddress] represents an IPv4 or IPv6 internet address. Use
-    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
-    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[Gio.Resolver.lookup_by_name]}
+    or [Gio.Resolver.lookup_by_name_async] to look up the [GInetAddress] for a
+    hostname. Use
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_address}[Gio.Resolver.lookup_by_address]}
     or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
     [GInetAddress].
 
@@ -90,8 +94,10 @@ class inet_address : Raw.Inet_address.t -> inet_address_t
 (** {1:description Description}
 
     [GInetAddress] represents an IPv4 or IPv6 internet address. Use
-    [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
-    up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[Gio.Resolver.lookup_by_name]}
+    or [Gio.Resolver.lookup_by_name_async] to look up the [GInetAddress] for a
+    hostname. Use
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_address}[Gio.Resolver.lookup_by_address]}
     or [Gio.Resolver.lookup_by_address_async] to look up the hostname for a
     [GInetAddress].
 

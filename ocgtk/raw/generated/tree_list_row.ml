@@ -6,7 +6,8 @@
     It allows navigating the model as a tree and modify the state of rows.
 
     [GtkTreeListRow] instances are created by a [GtkTreeListModel] only when the
-    [Gtk.TreeListModel:passthrough] property is not set.
+    {{!Ocgtk.Raw.Tree_list_model.val-get_passthrough}[Gtk.TreeListModel:passthrough]}
+    property is not set.
 
     There are various support objects that can make use of [GtkTreeListRow]
     objects, such as the {{!Ocgtk.Raw.Tree_expander}[Gtk.TreeExpander]} widget
@@ -35,7 +36,8 @@ external is_expandable : t -> bool = "ml_gtk_tree_list_row_is_expandable"
 (** Checks if a row can be expanded.
 
     This does not mean that the row is actually expanded, this can be checked
-    with [Gtk.TreeListRow.get_expanded].
+    with
+    {{!Ocgtk.Raw.Tree_list_row.val-get_expanded}[Gtk.TreeListRow.get_expanded]}.
 
     If a row is expandable never changes until the row is removed from its model
     at which point it will forever return [false]. *)
@@ -77,7 +79,8 @@ external get_children : t -> Ocgio_raw.List_model.t option
 
     This model is the model created by the [Gtk.TreeListModelCreateModelFunc]
     and contains the original items, no matter what value
-    [Gtk.TreeListModel:passthrough] is set to. *)
+    {{!Ocgtk.Raw.Tree_list_model.val-get_passthrough}[Gtk.TreeListModel:passthrough]}
+    is set to. *)
 
 external get_child_row : t -> int -> t option
   = "ml_gtk_tree_list_row_get_child_row"

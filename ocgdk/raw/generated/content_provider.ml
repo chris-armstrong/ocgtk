@@ -4,8 +4,10 @@
 (** Provides content for the clipboard or for drag-and-drop operations in a
     number of formats.
 
-    To create a [GdkContentProvider], use [Gdk.ContentProvider.new_for_value] or
-    [Gdk.ContentProvider.new_for_bytes].
+    To create a [GdkContentProvider], use
+    {{!Ocgdk.Raw.Content_provider.val-new_for_value}[Gdk.ContentProvider.new_for_value]}
+    or
+    {{!Ocgdk.Raw.Content_provider.val-new_for_bytes}[Gdk.ContentProvider.new_for_bytes]}.
 
     GDK knows how to handle common text and image formats out-of-the-box. See
     {{!Ocgdk.Raw.Content_serializer}[Gdk.ContentSerializer]} and
@@ -62,7 +64,9 @@ external ref_storable_formats : t -> Content_formats.t
 
     An example of such an application would be a clipboard manager.
 
-    This can be assumed to be a subset of [Gdk.ContentProvider.ref_formats]. *)
+    This can be assumed to be a subset of
+    {{!Ocgdk.Raw.Content_provider.val-ref_formats}[Gdk.ContentProvider.ref_formats]}.
+*)
 
 external ref_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_ref_formats"
@@ -74,9 +78,10 @@ external get_value : t -> (bool * Gobject.Value.t, GError.t) result
 
     The [value] will have been initialized to the [GType] the value should be
     provided in. This given [GType] does not need to be listed in the formats
-    returned by [Gdk.ContentProvider.ref_formats]. However, if the given [GType]
-    is not supported, this operation can fail and [G_IO_ERROR_NOT_SUPPORTED]
-    will be reported. *)
+    returned by
+    {{!Ocgdk.Raw.Content_provider.val-ref_formats}[Gdk.ContentProvider.ref_formats]}.
+    However, if the given [GType] is not supported, this operation can fail and
+    [G_IO_ERROR_NOT_SUPPORTED] will be reported. *)
 
 external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
 (** Emits the ::content-changed signal. *)

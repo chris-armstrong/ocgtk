@@ -25,9 +25,13 @@
 
     {b Accessibility}
 
-    [GtkPopoverMenuBar] uses the [Gtk.AccessibleRole.menu_bar] role, the menu
-    items use the [Gtk.AccessibleRole.menu_item] role and the menus use the
-    [Gtk.AccessibleRole.menu] role.
+    [GtkPopoverMenuBar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU_BAR}[Gtk.AccessibleRole.menu_bar]}
+    role, the menu items use the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU_ITEM}[Gtk.AccessibleRole.menu_item]}
+    role and the menus use the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-MENU}[Gtk.AccessibleRole.menu]}
+    role.
 
     The class built on this module is in {!Ocgtk.Popover_menu_bar}. *)
 

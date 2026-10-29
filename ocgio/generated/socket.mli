@@ -34,9 +34,11 @@ class type socket_t = Socket_and__socket_connection.socket_t
     [GSocket] implements the
     {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} interface, so if it
     is manually constructed by e.g. [GObject.Object.new] you must call
-    [Gio.Initable.init] and check the results before using the object. This is
-    done automatically in [Gio.Socket.new] and [Gio.Socket.new_from_fd], so
-    these functions can return [None].
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} and
+    check the results before using the object. This is done automatically in
+    {{!Ocgio.Socket.val-new_}[Gio.Socket.new]} and
+    {{!Ocgio.Socket.val-new_from_fd}[Gio.Socket.new_from_fd]}, so these
+    functions can return [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking
@@ -82,7 +84,8 @@ class type socket_t = Socket_and__socket_connection.socket_t
     it typically does more harm than good on modern networks.
 
     If your application needs Nagle’s algorithm enabled, call
-    [Gio.Socket.set_option] after constructing a [GSocket] to enable it:
+    {{!Ocgio.Socket.class-type-socket_t.method-set_option}[Gio.Socket.set_option]}
+    after constructing a [GSocket] to enable it:
 
     {[
     socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);
@@ -113,9 +116,11 @@ class socket : Raw.Socket.t -> socket_t
     [GSocket] implements the
     {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} interface, so if it
     is manually constructed by e.g. [GObject.Object.new] you must call
-    [Gio.Initable.init] and check the results before using the object. This is
-    done automatically in [Gio.Socket.new] and [Gio.Socket.new_from_fd], so
-    these functions can return [None].
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} and
+    check the results before using the object. This is done automatically in
+    {{!Ocgio.Socket.val-new_}[Gio.Socket.new]} and
+    {{!Ocgio.Socket.val-new_from_fd}[Gio.Socket.new_from_fd]}, so these
+    functions can return [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking
@@ -161,7 +166,8 @@ class socket : Raw.Socket.t -> socket_t
     it typically does more harm than good on modern networks.
 
     If your application needs Nagle’s algorithm enabled, call
-    [Gio.Socket.set_option] after constructing a [GSocket] to enable it:
+    {{!Ocgio.Socket.class-type-socket_t.method-set_option}[Gio.Socket.set_option]}
+    after constructing a [GSocket] to enable it:
 
     {[
     socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);

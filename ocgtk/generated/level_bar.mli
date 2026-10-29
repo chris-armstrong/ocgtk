@@ -101,8 +101,11 @@ end
      Typical use cases are displaying the strength of a password, or\n\
      showing the charge level of a battery.\n\n\
      An example GtkLevelBar\n\n\
-     Use [Gtk.LevelBar.set_value] to set the current value, and\n\
-     [Gtk.LevelBar.add_offset_value] to set the value offsets at which\n\
+     Use \
+     {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_value}[Gtk.LevelBar.set_value]} \
+     to set the current value, and\n\
+     {{!Ocgtk.Level_bar.class-type-level_bar_t.method-add_offset_value}[Gtk.LevelBar.add_offset_value]} \
+     to set the value offsets at which\n\
      the bar will be considered in a different state. GTK will add a few\n\
      offsets by default on the level bar: [GTK_LEVEL_BAR_OFFSET_LOW],\n\
      [GTK_LEVEL_BAR_OFFSET_HIGH] and [GTK_LEVEL_BAR_OFFSET_FULL], with\n\
@@ -137,8 +140,11 @@ end
      }\n\
      ]}\n\n\
      The default interval of values is between zero and one, but it’s possible\n\
-     to modify the interval using [Gtk.LevelBar.set_min_value] and\n\
-     [Gtk.LevelBar.set_max_value]. The value will be always drawn in\n\
+     to modify the interval using \
+     {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_min_value}[Gtk.LevelBar.set_min_value]} \
+     and\n\
+     {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_max_value}[Gtk.LevelBar.set_max_value]}. \
+     The value will be always drawn in\n\
      proportion to the admissible interval, i.e. a value of 15 with a specified\n\
      interval between 10 and 20 is equivalent to a value of 0.5 with an interval\n\
      between 0 and 1. When [GTK_LEVEL_BAR_MODE_DISCRETE] is used, the bar level\n\
@@ -176,7 +182,9 @@ end
      right,\n\
      regardless of text direction.\n\n\
      {b Accessibility}\n\n\
-     [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role."]
+     [GtkLevelBar] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-METER}[Gtk.AccessibleRole.meter]} \
+     role."]
 
 class level_bar : Raw.Level_bar.t -> level_bar_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Level_bar.t}. *)
@@ -187,8 +195,11 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
  Typical use cases are displaying the strength of a password, or\n\
  showing the charge level of a battery.\n\n\
  An example GtkLevelBar\n\n\
- Use [Gtk.LevelBar.set_value] to set the current value, and\n\
- [Gtk.LevelBar.add_offset_value] to set the value offsets at which\n\
+ Use \
+ {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_value}[Gtk.LevelBar.set_value]} \
+ to set the current value, and\n\
+ {{!Ocgtk.Level_bar.class-type-level_bar_t.method-add_offset_value}[Gtk.LevelBar.add_offset_value]} \
+ to set the value offsets at which\n\
  the bar will be considered in a different state. GTK will add a few\n\
  offsets by default on the level bar: [GTK_LEVEL_BAR_OFFSET_LOW],\n\
  [GTK_LEVEL_BAR_OFFSET_HIGH] and [GTK_LEVEL_BAR_OFFSET_FULL], with\n\
@@ -223,8 +234,11 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
  }\n\
  ]}\n\n\
  The default interval of values is between zero and one, but it’s possible\n\
- to modify the interval using [Gtk.LevelBar.set_min_value] and\n\
- [Gtk.LevelBar.set_max_value]. The value will be always drawn in\n\
+ to modify the interval using \
+ {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_min_value}[Gtk.LevelBar.set_min_value]} \
+ and\n\
+ {{!Ocgtk.Level_bar.class-type-level_bar_t.method-set_max_value}[Gtk.LevelBar.set_max_value]}. \
+ The value will be always drawn in\n\
  proportion to the admissible interval, i.e. a value of 15 with a specified\n\
  interval between 10 and 20 is equivalent to a value of 0.5 with an interval\n\
  between 0 and 1. When [GTK_LEVEL_BAR_MODE_DISCRETE] is used, the bar level\n\
@@ -258,7 +272,9 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
  In horizontal orientation, the nodes are always arranged from left to right,\n\
  regardless of text direction.\n\n\
  {b Accessibility}\n\n\
- [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role."]
+ [GtkLevelBar] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-METER}[Gtk.AccessibleRole.meter]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

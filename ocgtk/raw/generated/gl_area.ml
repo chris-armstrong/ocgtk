@@ -10,7 +10,8 @@
  that this framebuffer is the default GL rendering target when rendering.\n\
  The completed rendering is integrated into the larger GTK scene graph as\n\
  a texture.\n\n\
- In order to draw, you have to connect to the [Gtk.GLArea::render]\n\
+ In order to draw, you have to connect to the \
+ {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]}\n\
  signal, or subclass [GtkGLArea] and override the GtkGLAreaClass.render\n\
  virtual function.\n\n\
  The [GtkGLArea] widget ensures that the [GdkGLContext] is associated with\n\
@@ -18,7 +19,8 @@
  position of the drawing area changes.\n\n\
  {b Drawing with GtkGLArea}\n\n\
  The simplest way to draw using OpenGL commands in a [GtkGLArea] is to\n\
- create a widget instance and connect to the [Gtk.GLArea::render] signal:\n\n\
+ create a widget instance and connect to the \
+ {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} signal:\n\n\
  The [render()] function will be called when the [GtkGLArea] is ready\n\
  for you to draw its content:\n\n\
  The initial contents of the framebuffer are transparent.\n\n\
@@ -55,10 +57,13 @@
  }\n\
  ]}\n\n\
  If you need to initialize OpenGL state, e.g. buffer objects or\n\
- shaders, you should use the [Gtk.Widget::realize] signal;\n\
- you can use the [Gtk.Widget::unrealize] signal to clean up.\n\
+ shaders, you should use the \
+ {{!Ocgtk.Raw.Widget.val-on_realize}[Gtk.Widget::realize]} signal;\n\
+ you can use the {{!Ocgtk.Raw.Widget.val-on_unrealize}[Gtk.Widget::unrealize]} \
+ signal to clean up.\n\
  Since the [GdkGLContext] creation and initialization may fail, you\n\
- will need to check for errors, using [Gtk.GLArea.get_error].\n\n\
+ will need to check for errors, using \
+ {{!Ocgtk.Raw.Gl_area.val-get_error}[Gtk.GLArea.get_error]}.\n\n\
  An example of how to safely initialize the GL state is:\n\n\
  {[\n\
  static void\n\
@@ -93,7 +98,9 @@
  }\n\
  ]}\n\n\
  If you need to change the options for creating the [GdkGLContext]\n\
- you should use the [Gtk.GLArea::create-context] signal.\n\n\
+ you should use the \
+ {{!Ocgtk.Raw.Gl_area.val-on_create_context}[Gtk.GLArea::create-context]} \
+ signal.\n\n\
  The class built on this module is in {!Ocgtk.Gl_area}."]
 
 type t = [ `gl_area | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -135,19 +142,22 @@ external set_has_depth_buffer : t -> bool -> unit
 external set_error : t -> GError.t option -> unit = "ml_gtk_gl_area_set_error"
 (** Sets an error on the area which will be shown instead of the GL rendering.
 
-    This is useful in the [Gtk.GLArea::create-context] signal if GL context
-    creation fails. *)
+    This is useful in the
+    {{!Ocgtk.Raw.Gl_area.val-on_create_context}[Gtk.GLArea::create-context]}
+    signal if GL context creation fails. *)
 
 external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 (** Sets whether the [GtkGLArea] is in auto render mode.
 
-    If [auto_render] is [true] the [Gtk.GLArea::render] signal will be emitted
-    every time the widget draws. This is the default and is useful if drawing
-    the widget is faster.
+    If [auto_render] is [true] the
+    {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} signal will be
+    emitted every time the widget draws. This is the default and is useful if
+    drawing the widget is faster.
 
     If [auto_render] is [false] the data from previous rendering is kept around
     and will be used for drawing the widget the next time, unless the window is
-    resized. In order to force a rendering [Gtk.GLArea.queue_render] must be
+    resized. In order to force a rendering
+    {{!Ocgtk.Raw.Gl_area.val-queue_render}[Gtk.GLArea.queue_render]} must be
     called. This mode is useful when the scene changes seldom, but takes a long
     time to redraw. *)
 
@@ -155,7 +165,8 @@ external set_allowed_apis : t -> Ocgdk_enums.glapi -> unit
   = "ml_gtk_gl_area_set_allowed_apis"
 (** Sets the allowed APIs to create a context with.
 
-    You should check [Gtk.GLArea:api] before drawing with either API.
+    You should check {{!Ocgtk.Raw.Gl_area.val-get_api}[Gtk.GLArea:api]} before
+    drawing with either API.
 
     By default, all APIs are allowed. *)
 
@@ -163,31 +174,35 @@ external queue_render : t -> unit = "ml_gtk_gl_area_queue_render"
 (** Marks the currently rendered data (if any) as invalid, and queues a redraw
     of the widget.
 
-    This ensures that the [Gtk.GLArea::render] signal is emitted during the
-    draw.
+    This ensures that the
+    {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} signal is emitted
+    during the draw.
 
-    This is only needed when [Gtk.GLArea.set_auto_render] has been called with a
-    [false] value. The default behaviour is to emit [Gtk.GLArea::render] on each
-    draw. *)
+    This is only needed when
+    {{!Ocgtk.Raw.Gl_area.val-set_auto_render}[Gtk.GLArea.set_auto_render]} has
+    been called with a [false] value. The default behaviour is to emit
+    {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} on each draw. *)
 
 external make_current : t -> unit = "ml_gtk_gl_area_make_current"
 (** Ensures that the [GdkGLContext] used by [area] is associated with the
     [GtkGLArea].
 
     This function is automatically called before emitting the
-    [Gtk.GLArea::render] signal, and doesn't normally need to be called by
-    application code. *)
+    {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} signal, and doesn't
+    normally need to be called by application code. *)
 
 external get_use_es : t -> bool = "ml_gtk_gl_area_get_use_es"
 (** Returns whether the [GtkGLArea] should use OpenGL ES.
 
-    See [Gtk.GLArea.set_use_es]. *)
+    See {{!Ocgtk.Raw.Gl_area.val-set_use_es}[Gtk.GLArea.set_use_es]}. *)
 
 external get_required_version : t -> int * int
   = "ml_gtk_gl_area_get_required_version"
 (** Retrieves the required version of OpenGL.
 
-    See [Gtk.GLArea.set_required_version]. *)
+    See
+    {{!Ocgtk.Raw.Gl_area.val-set_required_version}[Gtk.GLArea.set_required_version]}.
+*)
 
 external get_has_stencil_buffer : t -> bool
   = "ml_gtk_gl_area_get_has_stencil_buffer"
@@ -216,7 +231,8 @@ external get_allowed_apis : t -> Ocgdk_enums.glapi
   = "ml_gtk_gl_area_get_allowed_apis"
 (** Gets the allowed APIs.
 
-    See [Gtk.GLArea.set_allowed_apis]. *)
+    See
+    {{!Ocgtk.Raw.Gl_area.val-set_allowed_apis}[Gtk.GLArea.set_allowed_apis]}. *)
 
 external attach_buffers : t -> unit = "ml_gtk_gl_area_attach_buffers"
 (** Binds buffers to the framebuffer.
@@ -226,8 +242,8 @@ external attach_buffers : t -> unit = "ml_gtk_gl_area_attach_buffers"
     bound to the framebuffer.
 
     This function is automatically called before emitting the
-    [Gtk.GLArea::render] signal, and doesn't normally need to be called by
-    application code. *)
+    {{!Ocgtk.Raw.Gl_area.val-on_render}[Gtk.GLArea::render]} signal, and doesn't
+    normally need to be called by application code. *)
 
 (* Properties *)
 

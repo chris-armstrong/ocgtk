@@ -5,15 +5,17 @@
 
     These are drags that are locked to happen along one axis. The axis that a
     [GtkGesturePan] handles is defined at construct time, and can be changed
-    through [Gtk.GesturePan.set_orientation].
+    through
+    {{!Ocgtk.Raw.Gesture_pan.val-set_orientation}[Gtk.GesturePan.set_orientation]}.
 
     When the gesture starts to be recognized, [GtkGesturePan] will attempt to
     determine as early as possible whether the sequence is moving in the
     expected direction, and denying the sequence if this does not happen.
 
     Once a panning gesture along the expected axis is recognized, the
-    [Gtk.GesturePan::pan] signal will be emitted as input events are received,
-    containing the offset in the given axis.
+    {{!Ocgtk.Raw.Gesture_pan.val-on_pan}[Gtk.GesturePan::pan]} signal will be
+    emitted as input events are received, containing the offset in the given
+    axis.
 
     The class built on this module is in {!Ocgtk.Gesture_pan}. *)
 

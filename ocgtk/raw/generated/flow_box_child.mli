@@ -61,8 +61,9 @@ external changed : t -> unit = "ml_gtk_flow_box_child_changed"
     have to duplicate the data that affects the sorting and filtering functions
     into the widgets themselves.
 
-    Another alternative is to call [Gtk.FlowBox.invalidate_sort] on any model
-    change, but that is more expensive. *)
+    Another alternative is to call
+    {{!Ocgtk.Raw.Flow_box.val-invalidate_sort}[Gtk.FlowBox.invalidate_sort]} on
+    any model change, but that is more expensive. *)
 
 (* Properties *)
 

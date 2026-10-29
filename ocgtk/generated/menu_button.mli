@@ -24,8 +24,10 @@
     [GMenuModel].
 
     The [GtkMenuButton] widget can show either an icon (set with the
-    [Gtk.MenuButton:icon-name] property) or a label (set with the
-    [Gtk.MenuButton:label] property). If neither is explicitly set, a
+    {{!Ocgtk.Menu_button.class-type-menu_button_t.method-get_icon_name}[Gtk.MenuButton:icon-name]}
+    property) or a label (set with the
+    {{!Ocgtk.Menu_button.class-type-menu_button_t.method-get_label}[Gtk.MenuButton:label]}
+    property). If neither is explicitly set, a
     {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]} is automatically created,
     using an arrow image oriented according to [Gtk.MenuButton:direction] or the
     generic “open-menu-symbolic” icon if the direction is not set.
@@ -33,14 +35,17 @@
     The positioning of the popup is determined by the [Gtk.MenuButton:direction]
     property of the menu button.
 
-    For menus, the [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of the
-    menu are also taken into account. For example, when the direction is
-    [GTK_ARROW_DOWN] and the horizontal alignment is [GTK_ALIGN_START], the menu
-    will be positioned below the button, with the starting edge (depending on
-    the text direction) of the menu aligned with the starting edge of the
-    button. If there is not enough space below the button, the menu is popped up
-    above the button instead. If the alignment would move part of the menu
-    offscreen, it is “pushed in”.
+    For menus, the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of the menu are also taken into account. For example, when the
+    direction is [GTK_ARROW_DOWN] and the horizontal alignment is
+    [GTK_ALIGN_START], the menu will be positioned below the button, with the
+    starting edge (depending on the text direction) of the menu aligned with the
+    starting edge of the button. If there is not enough space below the button,
+    the menu is popped up above the button instead. If the alignment would move
+    part of the menu offscreen, it is “pushed in”.
 
     {b CSS nodes}
 
@@ -70,7 +75,9 @@
 
     {b Accessibility}
 
-    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkMenuButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role. *)
 class type menu_button_t = object
   inherit Widget.widget_t
 
@@ -223,8 +230,10 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
     [GMenuModel].
 
     The [GtkMenuButton] widget can show either an icon (set with the
-    [Gtk.MenuButton:icon-name] property) or a label (set with the
-    [Gtk.MenuButton:label] property). If neither is explicitly set, a
+    {{!Ocgtk.Menu_button.class-type-menu_button_t.method-get_icon_name}[Gtk.MenuButton:icon-name]}
+    property) or a label (set with the
+    {{!Ocgtk.Menu_button.class-type-menu_button_t.method-get_label}[Gtk.MenuButton:label]}
+    property). If neither is explicitly set, a
     {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]} is automatically created,
     using an arrow image oriented according to [Gtk.MenuButton:direction] or the
     generic “open-menu-symbolic” icon if the direction is not set.
@@ -232,14 +241,17 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
     The positioning of the popup is determined by the [Gtk.MenuButton:direction]
     property of the menu button.
 
-    For menus, the [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of the
-    menu are also taken into account. For example, when the direction is
-    [GTK_ARROW_DOWN] and the horizontal alignment is [GTK_ALIGN_START], the menu
-    will be positioned below the button, with the starting edge (depending on
-    the text direction) of the menu aligned with the starting edge of the
-    button. If there is not enough space below the button, the menu is popped up
-    above the button instead. If the alignment would move part of the menu
-    offscreen, it is “pushed in”.
+    For menus, the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of the menu are also taken into account. For example, when the
+    direction is [GTK_ARROW_DOWN] and the horizontal alignment is
+    [GTK_ALIGN_START], the menu will be positioned below the button, with the
+    starting edge (depending on the text direction) of the menu aligned with the
+    starting edge of the button. If there is not enough space below the button,
+    the menu is popped up above the button instead. If the alignment would move
+    part of the menu offscreen, it is “pushed in”.
 
     {b CSS nodes}
 
@@ -269,7 +281,9 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
 
     {b Accessibility}
 
-    [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role. *)
+    [GtkMenuButton] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-BUTTON}[Gtk.AccessibleRole.button]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

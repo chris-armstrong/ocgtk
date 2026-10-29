@@ -21,10 +21,12 @@ class type column_view_column_t =
     the model.
 
     Columns have a title, and can optionally have a header menu set with
-    [Gtk.ColumnViewColumn.set_header_menu].
+    {{!Ocgtk.Column_view_column.class-type-column_view_column_t.method-set_header_menu}
+     [Gtk.ColumnViewColumn.set_header_menu]}.
 
     A sorter can be associated with a column using
-    [Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
+    {{!Ocgtk.Column_view_column.class-type-column_view_column_t.method-set_sorter}
+     [Gtk.ColumnViewColumn.set_sorter]}, to let users influence sorting by
     clicking on the column header. *)
 
 class column_view_column : Raw.Column_view_column.t -> column_view_column_t
@@ -39,10 +41,12 @@ class column_view_column : Raw.Column_view_column.t -> column_view_column_t
     the model.
 
     Columns have a title, and can optionally have a header menu set with
-    [Gtk.ColumnViewColumn.set_header_menu].
+    {{!Ocgtk.Column_view_column.class-type-column_view_column_t.method-set_header_menu}
+     [Gtk.ColumnViewColumn.set_header_menu]}.
 
     A sorter can be associated with a column using
-    [Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
+    {{!Ocgtk.Column_view_column.class-type-column_view_column_t.method-set_sorter}
+     [Gtk.ColumnViewColumn.set_sorter]}, to let users influence sorting by
     clicking on the column header. *)
 
 (** {1:constructors Constructors} *)
@@ -54,7 +58,9 @@ val new_ :
 [@@ocaml.doc
   "Creates a new [GtkColumnViewColumn] that uses the given [factory] for\n\
    mapping items to widgets.\n\n\
-   You most likely want to call [Gtk.ColumnView.append_column] next.\n\n\
+   You most likely want to call \
+   {{!Ocgtk.Column_view.class-type-column_view_t.method-append_column}[Gtk.ColumnView.append_column]} \
+   next.\n\n\
    The function takes ownership of the argument, so you can write code like:\n\n\
    {[\n\
    column = gtk_column_view_column_new (_(\"Name\"),\n\

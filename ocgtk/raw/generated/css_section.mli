@@ -4,7 +4,8 @@
 (** Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [CssSection.get_parent] to get the containing region.
+    {{!Ocgtk.Raw.Css_section.val-get_parent}[CssSection.get_parent]} to get the
+    containing region.
 
     The class built on this module is in {!Ocgtk.Css_section}. *)
 
@@ -45,15 +46,16 @@ external get_parent : t -> t option = "ml_gtk_css_section_get_parent"
     The parent section is the section that contains this [section]. A special
     case are sections of type [GTK_CSS_SECTION_DOCUMENT]. Their parent will
     either be [None] if they are the original CSS document that was loaded by
-    [Gtk.CssProvider.load_from_file] or a section of type
-    [GTK_CSS_SECTION_IMPORT] if it was loaded with an [@import] rule from a
-    different file. *)
+    {{!Ocgtk.Raw.Css_provider.val-load_from_file}[Gtk.CssProvider.load_from_file]}
+    or a section of type [GTK_CSS_SECTION_IMPORT] if it was loaded with an
+    [@import] rule from a different file. *)
 
 external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_css_section_get_file"
 (** Gets the file that [section] was parsed from.
 
     If no such file exists, for example because the CSS was loaded via
-    [Gtk.CssProvider.load_from_data], then [None] is returned. *)
+    {{!Ocgtk.Raw.Css_provider.val-load_from_data}[Gtk.CssProvider.load_from_data]},
+    then [None] is returned. *)
 
 external get_end_location : t -> Css_location.t
   = "ml_gtk_css_section_get_end_location"

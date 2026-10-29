@@ -68,9 +68,10 @@ external drop_done : t -> bool -> unit = "ml_gdk_drag_drop_done"
     This function is called by the drag source, and should be the last call
     before dropping the reference to the [drag].
 
-    The [GdkDrag] will only take the first [Gdk.Drag.drop_done] call as
-    effective, if this function is called multiple times, all subsequent calls
-    will be ignored. *)
+    The [GdkDrag] will only take the first
+    {{!Ocgdk.Raw.Drag.val-drop_done}[Gdk.Drag.drop_done]} call as effective, if
+    this function is called multiple times, all subsequent calls will be
+    ignored. *)
 
 (* Properties *)
 

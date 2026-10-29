@@ -12,9 +12,10 @@
     A rectangular region with rounded corners.
 
     Application code should normalize rectangles using
-    [Gsk.RoundedRect.normalize]; this function will ensure that the bounds of
-    the rectangle are normalized and ensure that the corner values are positive
-    and the corners do not overlap.
+    {{!Ocgsk.Rounded_rect.class-type-rounded_rect_t.method-normalize}[Gsk.RoundedRect.normalize]};
+    this function will ensure that the bounds of the rectangle are normalized
+    and ensure that the corner values are positive and the corners do not
+    overlap.
 
     All functions taking a [GskRoundedRect] as an argument will internally
     operate on a normalized copy; all functions returning a [GskRoundedRect]
@@ -94,9 +95,10 @@ class rounded_rect : Raw.Rounded_rect.t -> rounded_rect_t
     A rectangular region with rounded corners.
 
     Application code should normalize rectangles using
-    [Gsk.RoundedRect.normalize]; this function will ensure that the bounds of
-    the rectangle are normalized and ensure that the corner values are positive
-    and the corners do not overlap.
+    {{!Ocgsk.Rounded_rect.class-type-rounded_rect_t.method-normalize}[Gsk.RoundedRect.normalize]};
+    this function will ensure that the bounds of the rectangle are normalized
+    and ensure that the corner values are positive and the corners do not
+    overlap.
 
     All functions taking a [GskRoundedRect] as an argument will internally
     operate on a normalized copy; all functions returning a [GskRoundedRect]

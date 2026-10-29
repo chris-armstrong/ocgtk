@@ -34,7 +34,7 @@ external transform_rectangle : t -> Rectangle.t -> unit
     should be and how much you should shift the layout when rendering.
 
     If you have a rectangle in device units (pixels), use
-    [Pango.Matrix.transform_pixel_rectangle].
+    {{!Ocpango.Raw.Matrix.val-transform_pixel_rectangle}[Pango.Matrix.transform_pixel_rectangle]}.
 
     If you have the rectangle in Pango units and want to convert to transformed
     pixel bounding box, it is more accurate to transform it first (using this
@@ -57,17 +57,19 @@ external transform_pixel_rectangle : t -> Rectangle.t -> unit
     \@PangoLayout to an image buffer, and want to know how large the image
     should be and how much you should shift the layout when rendering.
 
-    For better accuracy, you should use [Pango.Matrix.transform_rectangle] on
-    original rectangle in Pango units and convert to pixels afterward using
+    For better accuracy, you should use
+    {{!Ocpango.Raw.Matrix.val-transform_rectangle}[Pango.Matrix.transform_rectangle]}
+    on original rectangle in Pango units and convert to pixels afterward using
     [extents_to_pixels]'s first argument. *)
 
 external transform_distance : t -> float -> float -> unit
   = "ml_pango_matrix_transform_distance"
 (** Transforms the distance vector ([dx],[dy]) by [matrix].
 
-    This is similar to [Pango.Matrix.transform_point], except that the
-    translation components of the transformation are ignored. The calculation of
-    the returned vector is as follows:
+    This is similar to
+    {{!Ocpango.Raw.Matrix.val-transform_point}[Pango.Matrix.transform_point]},
+    except that the translation components of the transformation are ignored.
+    The calculation of the returned vector is as follows:
 
     {[
     dx2 = (dx1 * xx) + (dy1 * xy);
@@ -114,7 +116,9 @@ external get_font_scale_factor : t -> float
 
     That is, the scale factor in the direction perpendicular to the vector that
     the X coordinate is mapped to. If the scale in the X coordinate is needed as
-    well, use [Pango.Matrix.get_font_scale_factors]. *)
+    well, use
+    {{!Ocpango.Raw.Matrix.val-get_font_scale_factors}[Pango.Matrix.get_font_scale_factors]}.
+*)
 
 external concat : t -> t -> unit = "ml_pango_matrix_concat"
 (** Changes the transformation represented by [matrix] to be the transformation

@@ -22,14 +22,18 @@
     It is used in the [GtkFontChooserDialog] widget to provide a dialog for
     selecting fonts.
 
-    To set the font which is initially selected, use [Gtk.FontChooser.set_font]
-    or [Gtk.FontChooser.set_font_desc].
+    To set the font which is initially selected, use
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_font}[Gtk.FontChooser.set_font]}
+    or
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_font_desc}[Gtk.FontChooser.set_font_desc]}.
 
-    To get the selected font use [Gtk.FontChooser.get_font] or
-    [Gtk.FontChooser.get_font_desc].
+    To get the selected font use
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-get_font}[Gtk.FontChooser.get_font]}
+    or
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-get_font_desc}[Gtk.FontChooser.get_font_desc]}.
 
     To change the text which is shown in the preview area, use
-    [Gtk.FontChooser.set_preview_text].
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_preview_text}[Gtk.FontChooser.set_preview_text]}.
 
     {b CSS nodes}
 
@@ -63,14 +67,18 @@ class font_chooser_widget : Raw.Font_chooser_widget.t -> font_chooser_widget_t
     It is used in the [GtkFontChooserDialog] widget to provide a dialog for
     selecting fonts.
 
-    To set the font which is initially selected, use [Gtk.FontChooser.set_font]
-    or [Gtk.FontChooser.set_font_desc].
+    To set the font which is initially selected, use
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_font}[Gtk.FontChooser.set_font]}
+    or
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_font_desc}[Gtk.FontChooser.set_font_desc]}.
 
-    To get the selected font use [Gtk.FontChooser.get_font] or
-    [Gtk.FontChooser.get_font_desc].
+    To get the selected font use
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-get_font}[Gtk.FontChooser.get_font]}
+    or
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-get_font_desc}[Gtk.FontChooser.get_font_desc]}.
 
     To change the text which is shown in the preview area, use
-    [Gtk.FontChooser.set_preview_text].
+    {{!Ocgtk.Font_chooser.class-type-font_chooser_t.method-set_preview_text}[Gtk.FontChooser.set_preview_text]}.
 
     {b CSS nodes}
 

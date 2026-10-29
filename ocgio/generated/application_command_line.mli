@@ -159,7 +159,9 @@ end
      It is created by \
      {{!Ocgio.Application.class-type-application_t}[Gio.Application]} and \
      emitted\n\
-     in the [Gio.Application::command-line] signal and virtual function.\n\n\
+     in the \
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     signal and virtual function.\n\n\
      The class contains the list of arguments that the program was invoked\n\
      with. It is also possible to query if the commandline invocation was\n\
      local (ie: the current process is running in direct response to the\n\
@@ -173,10 +175,12 @@ end
      The exit status of the originally-invoked process may be set and\n\
      messages can be printed to stdout or stderr of that process.\n\n\
      For remote invocation, the originally-invoked process exits when\n\
-     [Gio.ApplicationCommandLine.done] method is called. This method is\n\
+     {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-done_}[Gio.ApplicationCommandLine.done]} \
+     method is called. This method is\n\
      also automatically called when the object is disposed.\n\n\
      The main use for [GApplicationCommandLine] (and the\n\
-     [Gio.Application::command-line] signal) is 'Emacs server' like use cases:\n\
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     signal) is 'Emacs server' like use cases:\n\
      You can set the [EDITOR] environment variable to have e.g. git use\n\
      your favourite editor to edit commit messages, and if you already\n\
      have an instance of the editor running, the editing will happen\n\
@@ -184,7 +188,8 @@ end
      aspect of this use case is that the process that gets started by git\n\
      does not return until the editing is done.\n\n\
      Normally, the commandline is completely handled in the\n\
-     [Gio.Application::command-line] handler. The launching instance exits\n\
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     handler. The launching instance exits\n\
      once the signal handler in the primary instance has returned, and\n\
      the return value of the signal handler becomes the exit status\n\
      of the launching instance.\n\n\
@@ -252,7 +257,9 @@ end
      ]}\n\n\
      In this example of split commandline handling, options that start\n\
      with [--local-] are handled locally, all other options are passed\n\
-     to the [Gio.Application::command-line] handler which runs in the primary\n\
+     to the \
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     handler which runs in the primary\n\
      instance.\n\n\
      The complete example can be found here:\n\
      {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c}gapplication-example-cmdline2.c}\n\n\
@@ -283,7 +290,9 @@ end
      }\n\
      ]}\n\n\
      In this example the commandline is not completely handled before\n\
-     the [Gio.Application::command-line] handler returns. Instead, we keep\n\
+     the \
+     {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+     handler returns. Instead, we keep\n\
      a reference to the [GApplicationCommandLine] object and handle it\n\
      later (in this example, in an idle). Note that it is necessary to\n\
      hold the application until you are done with the commandline.\n\n\
@@ -301,7 +310,9 @@ class application_command_line :
  an application.\n\n\
  It is created by \
  {{!Ocgio.Application.class-type-application_t}[Gio.Application]} and emitted\n\
- in the [Gio.Application::command-line] signal and virtual function.\n\n\
+ in the \
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ signal and virtual function.\n\n\
  The class contains the list of arguments that the program was invoked\n\
  with. It is also possible to query if the commandline invocation was\n\
  local (ie: the current process is running in direct response to the\n\
@@ -315,10 +326,12 @@ class application_command_line :
  The exit status of the originally-invoked process may be set and\n\
  messages can be printed to stdout or stderr of that process.\n\n\
  For remote invocation, the originally-invoked process exits when\n\
- [Gio.ApplicationCommandLine.done] method is called. This method is\n\
+ {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-done_}[Gio.ApplicationCommandLine.done]} \
+ method is called. This method is\n\
  also automatically called when the object is disposed.\n\n\
  The main use for [GApplicationCommandLine] (and the\n\
- [Gio.Application::command-line] signal) is 'Emacs server' like use cases:\n\
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ signal) is 'Emacs server' like use cases:\n\
  You can set the [EDITOR] environment variable to have e.g. git use\n\
  your favourite editor to edit commit messages, and if you already\n\
  have an instance of the editor running, the editing will happen\n\
@@ -326,7 +339,8 @@ class application_command_line :
  aspect of this use case is that the process that gets started by git\n\
  does not return until the editing is done.\n\n\
  Normally, the commandline is completely handled in the\n\
- [Gio.Application::command-line] handler. The launching instance exits\n\
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ handler. The launching instance exits\n\
  once the signal handler in the primary instance has returned, and\n\
  the return value of the signal handler becomes the exit status\n\
  of the launching instance.\n\n\
@@ -394,7 +408,9 @@ class application_command_line :
  ]}\n\n\
  In this example of split commandline handling, options that start\n\
  with [--local-] are handled locally, all other options are passed\n\
- to the [Gio.Application::command-line] handler which runs in the primary\n\
+ to the \
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ handler which runs in the primary\n\
  instance.\n\n\
  The complete example can be found here:\n\
  {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c}gapplication-example-cmdline2.c}\n\n\
@@ -425,7 +441,9 @@ class application_command_line :
  }\n\
  ]}\n\n\
  In this example the commandline is not completely handled before\n\
- the [Gio.Application::command-line] handler returns. Instead, we keep\n\
+ the \
+ {{!Ocgio.Application.class-type-application_t.method-on_command_line}[Gio.Application::command-line]} \
+ handler returns. Instead, we keep\n\
  a reference to the [GApplicationCommandLine] object and handle it\n\
  later (in this example, in an idle). Note that it is necessary to\n\
  hold the application until you are done with the commandline.\n\n\

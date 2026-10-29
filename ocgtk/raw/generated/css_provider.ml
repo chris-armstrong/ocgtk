@@ -6,9 +6,12 @@
     It is able to parse CSS-like input in order to style widgets.
 
     An application can make GTK parse a specific CSS style sheet by calling
-    [Gtk.CssProvider.load_from_file] or [Gtk.CssProvider.load_from_resource] and
-    adding the provider with [Gtk.StyleContext.add_provider] or
-    [Gtk.StyleContext.add_provider_for_display].
+    {{!Ocgtk.Raw.Css_provider.val-load_from_file}[Gtk.CssProvider.load_from_file]}
+    or
+    {{!Ocgtk.Raw.Css_provider.val-load_from_resource}[Gtk.CssProvider.load_from_resource]}
+    and adding the provider with
+    {{!Ocgtk.Raw.Style_context.val-add_provider}[Gtk.StyleContext.add_provider]}
+    or [Gtk.StyleContext.add_provider_for_display].
 
     In addition, certain files will be read when GTK is initialized. First, the
     file [$XDG_CONFIG_HOME/gtk-4.0/gtk.css] is loaded if it exists. Then, GTK
@@ -17,13 +20,14 @@
     [$HOME/.themes/THEME/gtk-VERSION/gtk-VARIANT.css],
     [$XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk-VARIANT.css] and
     [DATADIR/share/themes/THEME/gtk-VERSION/gtk-VARIANT.css], where [THEME] is
-    the name of the current theme (see the [Gtk.Settings:gtk-theme-name]
+    the name of the current theme (see the
+    {{!Ocgtk.Raw.Settings.val-get_gtk_theme_name}[Gtk.Settings:gtk-theme-name]}
     setting), [VARIANT] is the variant to load (see the
-    [Gtk.Settings:gtk-application-prefer-dark-theme] setting), [DATADIR] is the
-    prefix configured when GTK was compiled (unless overridden by the
-    [GTK_DATA_PREFIX] environment variable), and [VERSION] is the GTK version
-    number. If no file is found for the current version, GTK tries older
-    versions all the way back to 4.0.
+    {{!Ocgtk.Raw.Settings.val-get_gtk_application_prefer_dark_theme}[Gtk.Settings:gtk-application-prefer-dark-theme]}
+    setting), [DATADIR] is the prefix configured when GTK was compiled (unless
+    overridden by the [GTK_DATA_PREFIX] environment variable), and [VERSION] is
+    the GTK version number. If no file is found for the current version, GTK
+    tries older versions all the way back to 4.0.
 
     To track errors while loading CSS, connect to the
     [Gtk.CssProvider::parsing-error] signal.
@@ -42,8 +46,10 @@ external new_ : unit -> t = "ml_gtk_css_provider_new"
 external to_string : t -> string = "ml_gtk_css_provider_to_string"
 (** Converts the [provider] into a string representation in CSS format.
 
-    Using [Gtk.CssProvider.load_from_string] with the return value from this
-    function on a new provider created with [Gtk.CssProvider.new] will basically
+    Using
+    {{!Ocgtk.Raw.Css_provider.val-load_from_string}[Gtk.CssProvider.load_from_string]}
+    with the return value from this function on a new provider created with
+    {{!Ocgtk.Raw.Css_provider.val-new_}[Gtk.CssProvider.new]} will basically
     create a duplicate of this [provider]. *)
 
 external load_named : t -> string -> string option -> unit
@@ -97,9 +103,12 @@ external get_prefers_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_css_provider_get_prefers_color_scheme"
 (** Define the color scheme used for rendering the user interface.
 
-    The UI can be set to either [Gtk.InterfaceColorScheme.LIGHT], or
-    [Gtk.InterfaceColorScheme.DARK] mode. Other values will be interpreted the
-    same as [Gtk.InterfaceColorScheme.LIGHT].
+    The UI can be set to either
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-LIGHT}[Gtk.InterfaceColorScheme.LIGHT]},
+    or
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-DARK}[Gtk.InterfaceColorScheme.DARK]}
+    mode. Other values will be interpreted the same as
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-LIGHT}[Gtk.InterfaceColorScheme.LIGHT]}.
 
     This setting is be available for media queries in CSS:
 
@@ -116,9 +125,12 @@ external set_prefers_color_scheme :
   = "ml_gtk_css_provider_set_prefers_color_scheme"
 (** Define the color scheme used for rendering the user interface.
 
-    The UI can be set to either [Gtk.InterfaceColorScheme.LIGHT], or
-    [Gtk.InterfaceColorScheme.DARK] mode. Other values will be interpreted the
-    same as [Gtk.InterfaceColorScheme.LIGHT].
+    The UI can be set to either
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-LIGHT}[Gtk.InterfaceColorScheme.LIGHT]},
+    or
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-DARK}[Gtk.InterfaceColorScheme.DARK]}
+    mode. Other values will be interpreted the same as
+    {{!Ocgtk.Enums.type-interfacecolorscheme.constructor-LIGHT}[Gtk.InterfaceColorScheme.LIGHT]}.
 
     This setting is be available for media queries in CSS:
 
@@ -134,11 +146,15 @@ external get_prefers_contrast : t -> Ocgtk_enums.interfacecontrast
   = "ml_gtk_css_provider_get_prefers_contrast"
 (** Define the contrast mode to use for the user interface.
 
-    When set to [Gtk.InterfaceContrast.MORE] or [Gtk.InterfaceContrast.LESS],
+    When set to
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-MORE}[Gtk.InterfaceContrast.MORE]}
+    or
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-LESS}[Gtk.InterfaceContrast.LESS]},
     the UI is rendered in high or low contrast.
 
-    When set to [Gtk.InterfaceContrast.NO_PREFERENCE] (the default), the user
-    interface will be rendered in default mode.
+    When set to
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-NO_PREFERENCE}[Gtk.InterfaceContrast.NO_PREFERENCE]}
+    (the default), the user interface will be rendered in default mode.
 
     This setting is be available for media queries in CSS:
 
@@ -154,11 +170,15 @@ external set_prefers_contrast : t -> Ocgtk_enums.interfacecontrast -> unit
   = "ml_gtk_css_provider_set_prefers_contrast"
 (** Define the contrast mode to use for the user interface.
 
-    When set to [Gtk.InterfaceContrast.MORE] or [Gtk.InterfaceContrast.LESS],
+    When set to
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-MORE}[Gtk.InterfaceContrast.MORE]}
+    or
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-LESS}[Gtk.InterfaceContrast.LESS]},
     the UI is rendered in high or low contrast.
 
-    When set to [Gtk.InterfaceContrast.NO_PREFERENCE] (the default), the user
-    interface will be rendered in default mode.
+    When set to
+    {{!Ocgtk.Enums.type-interfacecontrast.constructor-NO_PREFERENCE}[Gtk.InterfaceContrast.NO_PREFERENCE]}
+    (the default), the user interface will be rendered in default mode.
 
     This setting is be available for media queries in CSS:
 

@@ -105,7 +105,8 @@ external lookup_icon :
    provided, they will be tried in order.\n\n\
    If no matching icon is found, then a paintable that renders the\n\
    \"missing icon\" icon is returned. If you need to do something else\n\
-   for missing icons you need to use [Gtk.IconTheme.has_icon].\n\n\
+   for missing icons you need to use \
+   {{!Ocgtk.Raw.Icon_theme.val-has_icon}[Gtk.IconTheme.has_icon]}.\n\n\
    Note that you probably want to listen for icon theme changes and\n\
    update the icon. This is usually done by overriding the\n\
    GtkWidgetClass.css-changed() function."]
@@ -139,13 +140,17 @@ external get_search_path : t -> string array option
   = "ml_gtk_icon_theme_get_search_path"
 (** Gets the current search path.
 
-    See [Gtk.IconTheme.set_search_path]. *)
+    See
+    {{!Ocgtk.Raw.Icon_theme.val-set_search_path}[Gtk.IconTheme.set_search_path]}.
+*)
 
 external get_resource_path : t -> string array option
   = "ml_gtk_icon_theme_get_resource_path"
 (** Gets the current resource path.
 
-    See [Gtk.IconTheme.set_resource_path]. *)
+    See
+    {{!Ocgtk.Raw.Icon_theme.val-set_resource_path}[Gtk.IconTheme.set_resource_path]}.
+*)
 
 external get_icon_names : t -> string array = "ml_gtk_icon_theme_get_icon_names"
 (** Lists the names of icons in the current icon theme. *)
@@ -158,14 +163,17 @@ external add_search_path : t -> string -> unit
   = "ml_gtk_icon_theme_add_search_path"
 (** Appends a directory to the search path.
 
-    See [Gtk.IconTheme.set_search_path]. *)
+    See
+    {{!Ocgtk.Raw.Icon_theme.val-set_search_path}[Gtk.IconTheme.set_search_path]}.
+*)
 
 external add_resource_path : t -> string -> unit
   = "ml_gtk_icon_theme_add_resource_path"
 (** Adds a resource path that will be looked at when looking for icons, similar
     to search paths.
 
-    See [Gtk.IconTheme.set_resource_path].
+    See
+    {{!Ocgtk.Raw.Icon_theme.val-set_resource_path}[Gtk.IconTheme.set_resource_path]}.
 
     This function should be used to make application-specific icons available as
     part of the icon theme. *)

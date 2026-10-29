@@ -15,8 +15,9 @@
     Recognizes swipe gestures.
 
     After a press/move/.../move/release sequence happens, the
-    [Gtk.GestureSwipe::swipe] signal will be emitted, providing the velocity and
-    directionality of the sequence at the time it was lifted.
+    {{!Ocgtk.Gesture_swipe.class-type-gesture_swipe_t.method-on_swipe}[Gtk.GestureSwipe::swipe]}
+    signal will be emitted, providing the velocity and directionality of the
+    sequence at the time it was lifted.
 
     If the velocity is desired in intermediate points,
     [Gtk.GestureSwipe.get_velocity] can be called in a [Gtk.Gesture::update]
@@ -50,8 +51,9 @@ class gesture_swipe : Raw.Gesture_swipe.t -> gesture_swipe_t
     Recognizes swipe gestures.
 
     After a press/move/.../move/release sequence happens, the
-    [Gtk.GestureSwipe::swipe] signal will be emitted, providing the velocity and
-    directionality of the sequence at the time it was lifted.
+    {{!Ocgtk.Gesture_swipe.class-type-gesture_swipe_t.method-on_swipe}[Gtk.GestureSwipe::swipe]}
+    signal will be emitted, providing the velocity and directionality of the
+    sequence at the time it was lifted.
 
     If the velocity is desired in intermediate points,
     [Gtk.GestureSwipe.get_velocity] can be called in a [Gtk.Gesture::update]

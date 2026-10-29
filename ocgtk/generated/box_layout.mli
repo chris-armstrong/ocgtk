@@ -18,15 +18,22 @@
     Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its
-    [Gtk.Orientable:orientation] property. Within the other dimension all
-    children all allocated the same size. The [GtkBoxLayout] will respect the
-    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+    {{!Ocgtk.Orientable.class-type-orientable_t.method-get_orientation}[Gtk.Orientable:orientation]}
+    property. Within the other dimension all children all allocated the same
+    size. The [GtkBoxLayout] will respect the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of each child widget.
 
     If you want all children to be assigned the same size, you can use the
-    [Gtk.BoxLayout:homogeneous] property.
+    {{!Ocgtk.Box_layout.class-type-box_layout_t.method-get_homogeneous}[Gtk.BoxLayout:homogeneous]}
+    property.
 
     If you want to specify the amount of space placed between each child, you
-    can use the [Gtk.BoxLayout:spacing] property. *)
+    can use the
+    {{!Ocgtk.Box_layout.class-type-box_layout_t.method-get_spacing}[Gtk.BoxLayout:spacing]}
+    property. *)
 class type box_layout_t = object
   inherit Layout_manager.layout_manager_t
   inherit Orientable.orientable_t
@@ -78,15 +85,22 @@ class box_layout : Raw.Box_layout.t -> box_layout_t
     Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its
-    [Gtk.Orientable:orientation] property. Within the other dimension all
-    children all allocated the same size. The [GtkBoxLayout] will respect the
-    [Gtk.Widget:halign] and [Gtk.Widget:valign] properties of each child widget.
+    {{!Ocgtk.Orientable.class-type-orientable_t.method-get_orientation}[Gtk.Orientable:orientation]}
+    property. Within the other dimension all children all allocated the same
+    size. The [GtkBoxLayout] will respect the
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_halign}[Gtk.Widget:halign]}
+    and
+    {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
+    properties of each child widget.
 
     If you want all children to be assigned the same size, you can use the
-    [Gtk.BoxLayout:homogeneous] property.
+    {{!Ocgtk.Box_layout.class-type-box_layout_t.method-get_homogeneous}[Gtk.BoxLayout:homogeneous]}
+    property.
 
     If you want to specify the amount of space placed between each child, you
-    can use the [Gtk.BoxLayout:spacing] property. *)
+    can use the
+    {{!Ocgtk.Box_layout.class-type-box_layout_t.method-get_spacing}[Gtk.BoxLayout:spacing]}
+    property. *)
 
 (** {1:constructors Constructors} *)
 

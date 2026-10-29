@@ -64,7 +64,8 @@ external get_row_baseline_position : t -> int -> Ocgtk_enums.baselineposition
   = "ml_gtk_grid_layout_get_row_baseline_position"
 (** Returns the baseline position of [row].
 
-    If no value has been set with [Gtk.GridLayout.set_row_baseline_position],
+    If no value has been set with
+    {{!Ocgtk.Raw.Grid_layout.val-set_row_baseline_position}[Gtk.GridLayout.set_row_baseline_position]},
     the default value of [GTK_BASELINE_POSITION_CENTER] is returned. *)
 
 external get_column_spacing : t -> int = "ml_gtk_grid_layout_get_column_spacing"

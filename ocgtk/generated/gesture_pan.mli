@@ -16,15 +16,17 @@
 
     These are drags that are locked to happen along one axis. The axis that a
     [GtkGesturePan] handles is defined at construct time, and can be changed
-    through [Gtk.GesturePan.set_orientation].
+    through
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t.method-set_orientation}[Gtk.GesturePan.set_orientation]}.
 
     When the gesture starts to be recognized, [GtkGesturePan] will attempt to
     determine as early as possible whether the sequence is moving in the
     expected direction, and denying the sequence if this does not happen.
 
     Once a panning gesture along the expected axis is recognized, the
-    [Gtk.GesturePan::pan] signal will be emitted as input events are received,
-    containing the offset in the given axis. *)
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t.method-on_pan}[Gtk.GesturePan::pan]}
+    signal will be emitted as input events are received, containing the offset
+    in the given axis. *)
 class type gesture_pan_t = object
   inherit Gesture_drag.gesture_drag_t
 
@@ -60,15 +62,17 @@ class gesture_pan : Raw.Gesture_pan.t -> gesture_pan_t
 
     These are drags that are locked to happen along one axis. The axis that a
     [GtkGesturePan] handles is defined at construct time, and can be changed
-    through [Gtk.GesturePan.set_orientation].
+    through
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t.method-set_orientation}[Gtk.GesturePan.set_orientation]}.
 
     When the gesture starts to be recognized, [GtkGesturePan] will attempt to
     determine as early as possible whether the sequence is moving in the
     expected direction, and denying the sequence if this does not happen.
 
     Once a panning gesture along the expected axis is recognized, the
-    [Gtk.GesturePan::pan] signal will be emitted as input events are received,
-    containing the offset in the given axis. *)
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t.method-on_pan}[Gtk.GesturePan::pan]}
+    signal will be emitted as input events are received, containing the offset
+    in the given axis. *)
 
 (** {1:constructors Constructors} *)
 

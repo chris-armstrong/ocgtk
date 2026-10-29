@@ -4,9 +4,11 @@
 (** Recognizes click gestures.
 
     It is able to recognize multiple clicks on a nearby zone, which can be
-    listened for through the [Gtk.GestureClick::pressed] signal. Whenever time
-    or distance between clicks exceed the GTK defaults,
-    [Gtk.GestureClick::stopped] is emitted, and the click counter is reset.
+    listened for through the
+    {{!Ocgtk.Raw.Gesture_click.val-on_pressed}[Gtk.GestureClick::pressed]}
+    signal. Whenever time or distance between clicks exceed the GTK defaults,
+    {{!Ocgtk.Raw.Gesture_click.val-on_stopped}[Gtk.GestureClick::stopped]} is
+    emitted, and the click counter is reset.
 
     The class built on this module is in {!Ocgtk.Gesture_click}. *)
 
@@ -37,8 +39,9 @@ val on_released :
 (** Emitted when a button or touch is released.
 
     [n_press] will report the number of press that is paired to this event, note
-    that [Gtk.GestureClick::stopped] may have been emitted between the press and
-    its release, [n_press] will only start over at the next press. *)
+    that {{!Ocgtk.Raw.Gesture_click.val-on_stopped}[Gtk.GestureClick::stopped]}
+    may have been emitted between the press and its release, [n_press] will only
+    start over at the next press. *)
 
 val on_stopped :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

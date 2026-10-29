@@ -14,8 +14,9 @@
     [GtkMultiSorter] and appending the previous sorter to it.
 
     The model can be set up to do incremental sorting, so that sorting long
-    lists doesn't block the UI. See [Gtk.SortListModel.set_incremental] for
-    details.
+    lists doesn't block the UI. See
+    {{!Ocgtk.Raw.Sort_list_model.val-set_incremental}[Gtk.SortListModel.set_incremental]}
+    for details.
 
     [GtkSortListModel] is a generic model and because of that it cannot take
     advantage of any external knowledge when sorting. If you run into
@@ -23,10 +24,12 @@
     you write your own sorting list model.
 
     [GtkSortListModel] allows sorting the items into sections. It implements
-    [GtkSectionModel] and when [Gtk.SortListModel:section-sorter] is set, it
-    will sort all items with that sorter and items comparing equal with it will
-    be put into the same section. The [Gtk.SortListModel:sorter] will then be
-    used to sort items inside their sections.
+    [GtkSectionModel] and when
+    {{!Ocgtk.Raw.Sort_list_model.val-get_section_sorter}[Gtk.SortListModel:section-sorter]}
+    is set, it will sort all items with that sorter and items comparing equal
+    with it will be put into the same section. The
+    {{!Ocgtk.Raw.Sort_list_model.val-get_sorter}[Gtk.SortListModel:sorter]} will
+    then be used to sort items inside their sections.
 
     The class built on this module is in {!Ocgtk.Sort_list_model}. *)
 
@@ -70,8 +73,9 @@ external set_incremental : t -> bool -> unit
 
     By default, incremental sorting is disabled.
 
-    See [Gtk.SortListModel.get_pending] for progress information about an
-    ongoing incremental sorting operation. *)
+    See
+    {{!Ocgtk.Raw.Sort_list_model.val-get_pending}[Gtk.SortListModel.get_pending]}
+    for progress information about an ongoing incremental sorting operation. *)
 
 external get_sorter : t -> Sorter.t option = "ml_gtk_sort_list_model_get_sorter"
 (** Gets the sorter that is used to sort [self]. *)
@@ -97,7 +101,8 @@ external get_pending : t -> int = "ml_gtk_sort_list_model_get_pending"
     ]}
 
     If no sort operation is ongoing - in particular when
-    [Gtk.SortListModel:incremental] is [false] - this function returns 0. *)
+    {{!Ocgtk.Raw.Sort_list_model.val-get_incremental}[Gtk.SortListModel:incremental]}
+    is [false] - this function returns 0. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_sort_list_model_get_model"
@@ -106,7 +111,9 @@ external get_model : t -> Ocgio_raw.List_model.t option
 external get_incremental : t -> bool = "ml_gtk_sort_list_model_get_incremental"
 (** Returns whether incremental sorting is enabled.
 
-    See [Gtk.SortListModel.set_incremental]. *)
+    See
+    {{!Ocgtk.Raw.Sort_list_model.val-set_incremental}[Gtk.SortListModel.set_incremental]}.
+*)
 
 (* Properties *)
 

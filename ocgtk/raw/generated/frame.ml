@@ -6,7 +6,7 @@
  An example GtkFrame\n\n\
  If present, the label is drawn inside the top edge of the frame.\n\
  The horizontal position of the label can be controlled with\n\
- [Gtk.Frame.set_label_align].\n\n\
+ {{!Ocgtk.Raw.Frame.val-set_label_align}[Gtk.Frame.set_label_align]}.\n\n\
  [GtkFrame] clips its child. You can use this to add rounded corners\n\
  to widgets, but be aware that it also cuts off shadows.\n\n\
  {b GtkFrame as GtkBuildable}\n\n\
@@ -31,7 +31,9 @@
  visible border. You can set the appearance of the border using CSS properties\n\
  like “border-style” on this node.\n\n\
  {b Accessibility}\n\n\
- [GtkFrame] uses the [Gtk.AccessibleRole.group] role.\n\n\
+ [GtkFrame] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-GROUP}[Gtk.AccessibleRole.group]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Frame}."]
 
 type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj

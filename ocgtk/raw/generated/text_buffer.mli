@@ -8,7 +8,7 @@
     widget and how they work together.
 
     GtkTextBuffer can support undoing changes to the buffer content, see
-    [Gtk.TextBuffer.set_enable_undo].
+    {{!Ocgtk.Raw.Text_buffer.val-set_enable_undo}[Gtk.TextBuffer.set_enable_undo]}.
 
     The class built on this module is in {!Ocgtk.Text_buffer}. *)
 

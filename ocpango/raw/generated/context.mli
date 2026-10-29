@@ -8,7 +8,8 @@
     up fonts, and default values such as the default language, default gravity,
     or default font.
 
-    To obtain a [PangoContext], use [Pango.FontMap.create_context].
+    To obtain a [PangoContext], use
+    {{!Ocpango.Raw.Font_map.val-create_context}[Pango.FontMap.create_context]}.
 
     The class built on this module is in {!Ocpango.Context}. *)
 

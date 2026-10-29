@@ -26,9 +26,9 @@
 
     There are two options for implementing a network service based on
     [GSocketService]. The first is to create the service using
-    [Gio.SocketService.new] and to connect to the [Gio.SocketService::incoming]
-    signal. The second is to subclass [GSocketService] and override the default
-    signal handler implementation.
+    {{!Ocgio.Socket_service.val-new_}[Gio.SocketService.new]} and to connect to
+    the [Gio.SocketService::incoming] signal. The second is to subclass
+    [GSocketService] and override the default signal handler implementation.
 
     In either case, the handler must immediately return, or else it will block
     additional incoming connections from being serviced. If you are interested
@@ -97,9 +97,9 @@ class socket_service : Raw.Socket_service.t -> socket_service_t
 
     There are two options for implementing a network service based on
     [GSocketService]. The first is to create the service using
-    [Gio.SocketService.new] and to connect to the [Gio.SocketService::incoming]
-    signal. The second is to subclass [GSocketService] and override the default
-    signal handler implementation.
+    {{!Ocgio.Socket_service.val-new_}[Gio.SocketService.new]} and to connect to
+    the [Gio.SocketService::incoming] signal. The second is to subclass
+    [GSocketService] and override the default signal handler implementation.
 
     In either case, the handler must immediately return, or else it will block
     additional incoming connections from being serviced. If you are interested

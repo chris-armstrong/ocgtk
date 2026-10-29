@@ -54,8 +54,9 @@ external new_ : unit -> t = "ml_gtk_action_bar_new"
 external set_revealed : t -> bool -> unit = "ml_gtk_action_bar_set_revealed"
 (** Reveals or conceals the content of the action bar.
 
-    Note: this does not show or hide the action bar in the [Gtk.Widget:visible]
-    sense, so revealing has no effect if the action bar is hidden. *)
+    Note: this does not show or hide the action bar in the
+    {{!Ocgtk.Raw.Widget.val-get_visible}[Gtk.Widget:visible]} sense, so
+    revealing has no effect if the action bar is hidden. *)
 
 external set_center_widget :
   t ->

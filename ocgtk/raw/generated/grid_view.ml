@@ -10,7 +10,7 @@
     [GtkGridView] allows the user to select items according to the selection
     characteristics of the model. For models that allow multiple selected items,
     it is possible to turn on _rubberband selection_, using
-    [Gtk.GridView:enable-rubberband].
+    {{!Ocgtk.Raw.Grid_view.val-get_enable_rubberband}[Gtk.GridView:enable-rubberband]}.
 
     To learn more about the list widget framework, see the overview.
 
@@ -19,7 +19,8 @@
     [GtkGridView] defines a set of built-in actions:
 
     - [list.activate-item] activates the item at given position by emitting the
-      the [Gtk.GridView::activate] signal.
+      the {{!Ocgtk.Raw.Grid_view.val-on_activate}[Gtk.GridView::activate]}
+      signal.
 
     {b CSS nodes}
 
@@ -34,14 +35,18 @@
     ]}
 
     [GtkGridView] uses a single CSS node with name [gridview]. Each child uses a
-    single CSS node with name [child]. If the [Gtk.ListItem:activatable]
+    single CSS node with name [child]. If the
+    {{!Ocgtk.Raw.List_item.val-get_activatable}[Gtk.ListItem:activatable]}
     property is set, the corresponding row will have the [.activatable] style
     class. For rubberband selection, a subnode with name [rubberband] is used.
 
     {b Accessibility}
 
-    [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
-    [Gtk.AccessibleRole.grid_cell] role.
+    [GtkGridView] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID}[Gtk.AccessibleRole.grid]}
+    role, and the items use the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-GRID_CELL}[Gtk.AccessibleRole.grid_cell]}
+    role.
 
     The class built on this module is in {!Ocgtk.Grid_view}. *)
 
@@ -87,7 +92,8 @@ external set_min_columns : t -> int -> unit = "ml_gtk_grid_view_set_min_columns"
     This number must be at least 1.
 
     If [min_columns] is smaller than the minimum set via
-    [Gtk.GridView.set_max_columns], that value is ignored. *)
+    {{!Ocgtk.Raw.Grid_view.val-set_max_columns}[Gtk.GridView.set_max_columns]},
+    that value is ignored. *)
 
 external set_max_columns : t -> int -> unit = "ml_gtk_grid_view_set_max_columns"
 (** Sets the maximum number of columns to use.
@@ -95,7 +101,8 @@ external set_max_columns : t -> int -> unit = "ml_gtk_grid_view_set_max_columns"
     This number must be at least 1.
 
     If [max_columns] is smaller than the minimum set via
-    [Gtk.GridView.set_min_columns], that value is used instead. *)
+    {{!Ocgtk.Raw.Grid_view.val-set_min_columns}[Gtk.GridView.set_min_columns]},
+    that value is used instead. *)
 
 external set_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_grid_view_set_factory"

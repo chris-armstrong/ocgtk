@@ -30,17 +30,26 @@
 
     To make filtering appear more reactive, it is a good idea to not react to
     every change in the entry text immediately, but only after a short delay. To
-    support this, [GtkSearchEntry] emits the [Gtk.SearchEntry::search-changed]
-    signal which can be used instead of the [Gtk.Editable::changed] signal.
+    support this, [GtkSearchEntry] emits the
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal which can be used instead of the
+    {{!Ocgtk.Editable.class-type-editable_t.method-on_changed}[Gtk.Editable::changed]}
+    signal.
 
-    The [Gtk.SearchEntry::previous-match], [Gtk.SearchEntry::next-match] and
-    [Gtk.SearchEntry::stop-search] signals can be used to implement moving
-    between search results and ending the search.
+    The
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_previous_match}[Gtk.SearchEntry::previous-match]},
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_next_match}[Gtk.SearchEntry::next-match]}
+    and
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_stop_search}[Gtk.SearchEntry::stop-search]}
+    signals can be used to implement moving between search results and ending
+    the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
     {{!Ocgtk.Search_bar.class-type-search_bar_t}[Gtk.SearchBar]}. If that is not
-    the case, you can use [Gtk.SearchEntry.set_key_capture_widget] to let it
-    capture key input from another widget.
+    the case, you can use
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-set_key_capture_widget}
+     [Gtk.SearchEntry.set_key_capture_widget]} to let it capture key input from
+    another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
     {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
@@ -49,10 +58,10 @@
 
     The following signals have default keybindings:
 
-    - [Gtk.SearchEntry::activate]
-    - [Gtk.SearchEntry::next-match]
-    - [Gtk.SearchEntry::previous-match]
-    - [Gtk.SearchEntry::stop-search]
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_activate}[Gtk.SearchEntry::activate]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_next_match}[Gtk.SearchEntry::next-match]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_previous_match}[Gtk.SearchEntry::previous-match]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_stop_search}[Gtk.SearchEntry::stop-search]}
 
     {b CSS Nodes}
 
@@ -66,7 +75,9 @@
 
     {b Accessibility}
 
-    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
+    [GtkSearchEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH_BOX}[Gtk.AccessibleRole.search_box]}
+    role. *)
 class type search_entry_t = object
   inherit Widget.widget_t
   inherit Editable.editable_t
@@ -200,17 +211,26 @@ class search_entry : Raw.Search_entry.t -> search_entry_t
 
     To make filtering appear more reactive, it is a good idea to not react to
     every change in the entry text immediately, but only after a short delay. To
-    support this, [GtkSearchEntry] emits the [Gtk.SearchEntry::search-changed]
-    signal which can be used instead of the [Gtk.Editable::changed] signal.
+    support this, [GtkSearchEntry] emits the
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal which can be used instead of the
+    {{!Ocgtk.Editable.class-type-editable_t.method-on_changed}[Gtk.Editable::changed]}
+    signal.
 
-    The [Gtk.SearchEntry::previous-match], [Gtk.SearchEntry::next-match] and
-    [Gtk.SearchEntry::stop-search] signals can be used to implement moving
-    between search results and ending the search.
+    The
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_previous_match}[Gtk.SearchEntry::previous-match]},
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_next_match}[Gtk.SearchEntry::next-match]}
+    and
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_stop_search}[Gtk.SearchEntry::stop-search]}
+    signals can be used to implement moving between search results and ending
+    the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
     {{!Ocgtk.Search_bar.class-type-search_bar_t}[Gtk.SearchBar]}. If that is not
-    the case, you can use [Gtk.SearchEntry.set_key_capture_widget] to let it
-    capture key input from another widget.
+    the case, you can use
+    {{!Ocgtk.Search_entry.class-type-search_entry_t.method-set_key_capture_widget}
+     [Gtk.SearchEntry.set_key_capture_widget]} to let it capture key input from
+    another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
     {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
@@ -219,10 +239,10 @@ class search_entry : Raw.Search_entry.t -> search_entry_t
 
     The following signals have default keybindings:
 
-    - [Gtk.SearchEntry::activate]
-    - [Gtk.SearchEntry::next-match]
-    - [Gtk.SearchEntry::previous-match]
-    - [Gtk.SearchEntry::stop-search]
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_activate}[Gtk.SearchEntry::activate]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_next_match}[Gtk.SearchEntry::next-match]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_previous_match}[Gtk.SearchEntry::previous-match]}
+    - {{!Ocgtk.Search_entry.class-type-search_entry_t.method-on_stop_search}[Gtk.SearchEntry::stop-search]}
 
     {b CSS Nodes}
 
@@ -236,7 +256,9 @@ class search_entry : Raw.Search_entry.t -> search_entry_t
 
     {b Accessibility}
 
-    [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
+    [GtkSearchEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH_BOX}[Gtk.AccessibleRole.search_box]}
+    role. *)
 
 (** {1:constructors Constructors} *)
 

@@ -23,9 +23,10 @@
     than GIO-style.
 
     Some classes may implement [GPollableInputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
-    returns false, then the behavior of other [GPollableInputStream] methods is
-    undefined. *)
+    instances of that class be pollable. If
+    {{!Ocgio.Pollable_input_stream.class-type-pollable_input_stream_t.method-can_poll}
+     [Gio.PollableInputStream.can_poll]} returns false, then the behavior of
+    other [GPollableInputStream] methods is undefined. *)
 class type pollable_input_stream_t = object
   (** {2:methods Methods} *)
 
@@ -69,9 +70,10 @@ class pollable_input_stream :
     than GIO-style.
 
     Some classes may implement [GPollableInputStream] but have only certain
-    instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
-    returns false, then the behavior of other [GPollableInputStream] methods is
-    undefined. *)
+    instances of that class be pollable. If
+    {{!Ocgio.Pollable_input_stream.class-type-pollable_input_stream_t.method-can_poll}
+     [Gio.PollableInputStream.can_poll]} returns false, then the behavior of
+    other [GPollableInputStream] methods is undefined. *)
 
 (** {1:constructors Constructors} *)
 

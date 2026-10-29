@@ -14,9 +14,11 @@
     get the default resolver.
 
     [GResolver] provides cancellable synchronous and asynchronous DNS
-    resolution, for hostnames ([Gio.Resolver.lookup_by_address],
-    [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
-    records ([Gio.Resolver.lookup_service]).
+    resolution, for hostnames
+    ({{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_address}[Gio.Resolver.lookup_by_address]},
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[Gio.Resolver.lookup_by_name]}
+    and their async variants) and SRV (service) records
+    ({{!Ocgio.Resolver.class-type-resolver_t.method-lookup_service}[Gio.Resolver.lookup_service]}).
 
     {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
     and
@@ -214,9 +216,11 @@ class resolver : Raw.Resolver.t -> resolver_t
     get the default resolver.
 
     [GResolver] provides cancellable synchronous and asynchronous DNS
-    resolution, for hostnames ([Gio.Resolver.lookup_by_address],
-    [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
-    records ([Gio.Resolver.lookup_service]).
+    resolution, for hostnames
+    ({{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_address}[Gio.Resolver.lookup_by_address]},
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[Gio.Resolver.lookup_by_name]}
+    and their async variants) and SRV (service) records
+    ({{!Ocgio.Resolver.class-type-resolver_t.method-lookup_service}[Gio.Resolver.lookup_service]}).
 
     {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
     and

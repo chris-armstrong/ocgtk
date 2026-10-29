@@ -33,7 +33,8 @@ external set_initial_name : t -> string option -> unit
     For save dialogs, [name] will usually be pre-entered into the name field.
 
     If a file with this name already exists in the directory set via
-    [Gtk.FileDialog:initial-folder], the dialog will preselect it. *)
+    {{!Ocgtk.Raw.File_dialog.val-get_initial_folder}[Gtk.FileDialog:initial-folder]},
+    the dialog will preselect it. *)
 
 external set_initial_folder : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_file_dialog_set_initial_folder"
@@ -45,7 +46,9 @@ external set_initial_file : t -> Ocgio_raw.File.t option -> unit
 (** Sets the file that will be initially selected in the file chooser dialog.
 
     This function is a shortcut for calling both
-    [Gtk.FileDialog.set_initial_folder] and [Gtk.FileDialog.set_initial_name]
+    {{!Ocgtk.Raw.File_dialog.val-set_initial_folder}[Gtk.FileDialog.set_initial_folder]}
+    and
+    {{!Ocgtk.Raw.File_dialog.val-set_initial_name}[Gtk.FileDialog.set_initial_name]}
     with the directory and name of [file], respectively. *)
 
 external set_filters : t -> Ocgio_raw.List_model.t option -> unit
@@ -57,8 +60,10 @@ external set_default_filter : t -> File_filter.t option -> unit
   = "ml_gtk_file_dialog_set_default_filter"
 (** Sets the filter that will be selected by default in the file chooser dialog.
 
-    If set to [None], the first item in [Gtk.FileDialog:filters] will be used as
-    the default filter. If that list is empty, the dialog will be unfiltered. *)
+    If set to [None], the first item in
+    {{!Ocgtk.Raw.File_dialog.val-get_filters}[Gtk.FileDialog:filters]} will be
+    used as the default filter. If that list is empty, the dialog will be
+    unfiltered. *)
 
 external set_accept_label : t -> string option -> unit
   = "ml_gtk_file_dialog_set_accept_label"

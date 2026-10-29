@@ -4,8 +4,8 @@
 (** Represents the platform-specific Vulkan draw context.
 
     [GdkVulkanContext]s are created for a surface using
-    [Gdk.Surface.create_vulkan_context], and the context will match the
-    characteristics of the surface.
+    {{!Ocgdk.Raw.Surface.val-create_vulkan_context}[Gdk.Surface.create_vulkan_context]},
+    and the context will match the characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
     fail, returning [None] context.

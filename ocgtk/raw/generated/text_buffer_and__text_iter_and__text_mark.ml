@@ -18,7 +18,8 @@ module rec Text_buffer : sig
   (** Deletes current contents of [buffer], and inserts [text] instead. This is
       automatically marked as an irreversible action in the undo stack. If you
       wish to mark this action as part of a larger undo operation, call
-      [TextBuffer.delete] and [TextBuffer.insert] directly instead.
+      {{!Ocgtk.Raw.Text_buffer.val-delete}[TextBuffer.delete]} and
+      {{!Ocgtk.Raw.Text_buffer.val-insert}[TextBuffer.insert]} directly instead.
 
       If [len] is -1, [text] must be nul-terminated. [text] must be valid UTF-8.
   *)
@@ -31,7 +32,8 @@ module rec Text_buffer : sig
       [gtk_text_buffer_set_modified (@buffer, FALSE)]. When the buffer is
       modified, it will automatically toggle on the modified bit again. When the
       modified bit flips, the buffer emits the
-      [Gtk.TextBuffer::modified-changed] signal. *)
+      {{!Ocgtk.Raw.Text_buffer.val-on_modified_changed}[Gtk.TextBuffer::modified-changed]}
+      signal. *)
 
   external set_max_undo_levels : t -> int -> unit
     = "ml_gtk_text_buffer_set_max_undo_levels"
@@ -49,30 +51,34 @@ module rec Text_buffer : sig
       buffer. Changes to tags and marks are not tracked.
 
       If enabled, the user will be able to undo the last number of actions up to
-      [Gtk.TextBuffer.get_max_undo_levels].
+      {{!Ocgtk.Raw.Text_buffer.val-get_max_undo_levels}[Gtk.TextBuffer.get_max_undo_levels]}.
 
-      See [Gtk.TextBuffer.begin_irreversible_action] and
-      [Gtk.TextBuffer.end_irreversible_action] to create changes to the buffer
-      that cannot be undone. *)
+      See
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      to create changes to the buffer that cannot be undone. *)
 
   external select_range : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_select_range"
   (** This function moves the “insert” and “selection_bound” marks
       simultaneously.
 
-      If you move them in two steps with [Gtk.TextBuffer.move_mark], you will
-      temporarily select a region in between their old and new locations, which
-      can be pretty inefficient since the temporarily-selected region will force
-      stuff to be recalculated. This function moves them as a unit, which can be
-      optimized. *)
+      If you move them in two steps with
+      {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]}, you
+      will temporarily select a region in between their old and new locations,
+      which can be pretty inefficient since the temporarily-selected region will
+      force stuff to be recalculated. This function moves them as a unit, which
+      can be optimized. *)
 
   external remove_tag_by_name :
     t -> string -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_tag_by_name"
   (** Emits the “remove-tag” signal.
 
-      Calls [Gtk.TextTagTable.lookup] on the buffer’s tag table to get a
-      [GtkTextTag], then calls [Gtk.TextBuffer.remove_tag]. *)
+      Calls {{!Ocgtk.Raw.Text_tag_table.val-lookup}[Gtk.TextTagTable.lookup]} on
+      the buffer’s tag table to get a [GtkTextTag], then calls
+      {{!Ocgtk.Raw.Text_buffer.val-remove_tag}[Gtk.TextBuffer.remove_tag]}. *)
 
   external remove_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_tag"
@@ -84,7 +90,8 @@ module rec Text_buffer : sig
   external remove_selection_clipboard : t -> Ocgdk_raw.Clipboard.t -> unit
     = "ml_gtk_text_buffer_remove_selection_clipboard"
   (** Removes a [GdkClipboard] added with
-      [Gtk.TextBuffer.add_selection_clipboard] *)
+      {{!Ocgtk.Raw.Text_buffer.val-add_selection_clipboard}[Gtk.TextBuffer.add_selection_clipboard]}
+  *)
 
   external remove_commit_notify : t -> int -> unit
     = "ml_gtk_text_buffer_remove_commit_notify"
@@ -112,10 +119,11 @@ module rec Text_buffer : sig
       simultaneously.
 
       If you move them to the same place in two steps with
-      [Gtk.TextBuffer.move_mark], you will temporarily select a region in
-      between their old and new locations, which can be pretty inefficient since
-      the temporarily-selected region will force stuff to be recalculated. This
-      function moves them as a unit, which can be optimized. *)
+      {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]}, you
+      will temporarily select a region in between their old and new locations,
+      which can be pretty inefficient since the temporarily-selected region will
+      force stuff to be recalculated. This function moves them as a unit, which
+      can be optimized. *)
 
   external paste_clipboard :
     t -> Ocgdk_raw.Clipboard.t -> Text_iter.t option -> bool -> unit
@@ -134,7 +142,8 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_move_mark_by_name"
   (** Moves the mark named [name] (which must exist) to location [where].
 
-      See [Gtk.TextBuffer.move_mark] for details. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]} for
+      details. *)
 
   external move_mark : t -> Text_mark.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_move_mark"
@@ -149,10 +158,13 @@ module rec Text_buffer : sig
   (** Copies text, tags, and paintables between [start] and [end] and inserts
       the copy at [iter].
 
-      Same as [Gtk.TextBuffer.insert_range], but does nothing if the insertion
-      point isn’t editable. The [default_editable] parameter indicates whether
-      the text is editable at [iter] if no tags enclosing [iter] affect
-      editability. Typically the result of [Gtk.TextView.get_editable] is
+      Same as
+      {{!Ocgtk.Raw.Text_buffer.val-insert_range}[Gtk.TextBuffer.insert_range]},
+      but does nothing if the insertion point isn’t editable. The
+      [default_editable] parameter indicates whether the text is editable at
+      [iter] if no tags enclosing [iter] affect editability. Typically the
+      result of
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
       appropriate here. *)
 
   external insert_range : t -> Text_iter.t -> Text_iter.t -> Text_iter.t -> unit
@@ -178,7 +190,8 @@ module rec Text_buffer : sig
       Unicode “object replacement character” 0xFFFC. Note that the “slice”
       variants for obtaining portions of the buffer as a string include this
       character for paintable, but the “text” variants do not. e.g. see
-      [Gtk.TextBuffer.get_slice] and [Gtk.TextBuffer.get_text]. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]} and
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}. *)
 
   external insert_markup : t -> Text_iter.t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert_markup"
@@ -193,25 +206,29 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_insert_interactive_at_cursor"
   (** Inserts [text] in [buffer].
 
-      Calls [Gtk.TextBuffer.insert_interactive] at the cursor position.
+      Calls
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]}
+      at the cursor position.
 
       [default_editable] indicates the editability of text that doesn't have a
       tag affecting editability applied to it. Typically the result of
-      [Gtk.TextView.get_editable] is appropriate here. *)
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
+      appropriate here. *)
 
   external insert_interactive :
     t -> Text_iter.t -> string -> int -> bool -> bool
     = "ml_gtk_text_buffer_insert_interactive"
   (** Inserts [text] in [buffer].
 
-      Like [Gtk.TextBuffer.insert], but the insertion will not occur if [iter]
-      is at a non-editable location in the buffer. Usually you want to prevent
-      insertions at ineditable locations if the insertion results from a user
-      action (is interactive).
+      Like {{!Ocgtk.Raw.Text_buffer.val-insert}[Gtk.TextBuffer.insert]}, but the
+      insertion will not occur if [iter] is at a non-editable location in the
+      buffer. Usually you want to prevent insertions at ineditable locations if
+      the insertion results from a user action (is interactive).
 
       [default_editable] indicates the editability of text that doesn't have a
       tag affecting editability applied to it. Typically the result of
-      [Gtk.TextView.get_editable] is appropriate here. *)
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
+      appropriate here. *)
 
   external insert_child_anchor : t -> Text_iter.t -> Text_child_anchor.t -> unit
     = "ml_gtk_text_buffer_insert_child_anchor"
@@ -222,18 +239,20 @@ module rec Text_buffer : sig
       Unicode “object replacement character” 0xFFFC. Note that the “slice”
       variants for obtaining portions of the buffer as a string include this
       character for child anchors, but the “text” variants do not. E.g. see
-      [Gtk.TextBuffer.get_slice] and [Gtk.TextBuffer.get_text].
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]} and
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}.
 
-      Consider [Gtk.TextBuffer.create_child_anchor] as a more convenient
-      alternative to this function. The buffer will add a reference to the
-      anchor, so you can unref it after insertion. *)
+      Consider
+      {{!Ocgtk.Raw.Text_buffer.val-create_child_anchor}[Gtk.TextBuffer.create_child_anchor]}
+      as a more convenient alternative to this function. The buffer will add a
+      reference to the anchor, so you can unref it after insertion. *)
 
   external insert_at_cursor : t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert_at_cursor"
   (** Inserts [text] in [buffer].
 
-      Simply calls [Gtk.TextBuffer.insert], using the current cursor position as
-      the insertion point. *)
+      Simply calls {{!Ocgtk.Raw.Text_buffer.val-insert}[Gtk.TextBuffer.insert]},
+      using the current cursor position as the insertion point. *)
 
   external insert : t -> Text_iter.t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert"
@@ -253,7 +272,8 @@ module rec Text_buffer : sig
       attribute) if [include_hidden_chars] is [false]. Does not include
       characters representing embedded images, so byte and character indexes
       into the returned string do not correspond to byte and character indexes
-      into the buffer. Contrast with [Gtk.TextBuffer.get_slice]. *)
+      into the buffer. Contrast with
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]}. *)
 
   external get_tag_table : t -> Text_tag_table.t
     = "ml_gtk_text_buffer_get_tag_table"
@@ -263,8 +283,9 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_get_start_iter"
   (** Initialized [iter] with the first position in the text buffer.
 
-      This is the same as using [Gtk.TextBuffer.get_iter_at_offset] to get the
-      iter at character offset 0. *)
+      This is the same as using
+      {{!Ocgtk.Raw.Text_buffer.val-get_iter_at_offset}[Gtk.TextBuffer.get_iter_at_offset]}
+      to get the iter at character offset 0. *)
 
   external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string
     = "ml_gtk_text_buffer_get_slice"
@@ -275,9 +296,9 @@ module rec Text_buffer : sig
       includes a 0xFFFC character whenever the buffer contains embedded images,
       so byte and character indexes into the returned string do correspond to
       byte and character indexes into the buffer. Contrast with
-      [Gtk.TextBuffer.get_text]. Note that 0xFFFC can occur in normal text as
-      well, so it is not a reliable indicator that a paintable or widget is in
-      the buffer. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}. Note
+      that 0xFFFC can occur in normal text as well, so it is not a reliable
+      indicator that a paintable or widget is in the buffer. *)
 
   external get_selection_content : t -> Ocgdk_raw.Content_provider.t
     = "ml_gtk_text_buffer_get_selection_content"
@@ -300,20 +321,22 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_get_selection_bound"
   (** Returns the mark that represents the selection bound.
 
-      Equivalent to calling [Gtk.TextBuffer.get_mark] to get the mark named
-      “selection_bound”, but very slightly more efficient, and involves less
-      typing.
+      Equivalent to calling
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]} to get
+      the mark named “selection_bound”, but very slightly more efficient, and
+      involves less typing.
 
       The currently-selected text in [buffer] is the region between the
       “selection_bound” and “insert” marks. If “selection_bound” and “insert”
       are in the same place, then there is no current selection.
-      [Gtk.TextBuffer.get_selection_bounds] is another convenient function for
-      handling the selection, if you just want to know whether there’s a
-      selection and what its bounds are. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_selection_bounds}[Gtk.TextBuffer.get_selection_bounds]}
+      is another convenient function for handling the selection, if you just
+      want to know whether there’s a selection and what its bounds are. *)
 
   external get_modified : t -> bool = "ml_gtk_text_buffer_get_modified"
   (** Indicates whether the buffer has been modified since the last call to
-      [Gtk.TextBuffer.set_modified] set the modification flag to [false].
+      {{!Ocgtk.Raw.Text_buffer.val-set_modified}[Gtk.TextBuffer.set_modified]}
+      set the modification flag to [false].
 
       Used for example to enable a “save” function in a text editor. *)
 
@@ -384,8 +407,10 @@ module rec Text_buffer : sig
   external get_insert : t -> Text_mark.t = "ml_gtk_text_buffer_get_insert"
   (** Returns the mark that represents the cursor (insertion point).
 
-      Equivalent to calling [Gtk.TextBuffer.get_mark] to get the mark named
-      “insert”, but very slightly more efficient, and involves less typing. *)
+      Equivalent to calling
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]} to get
+      the mark named “insert”, but very slightly more efficient, and involves
+      less typing. *)
 
   external get_has_selection : t -> bool
     = "ml_gtk_text_buffer_get_has_selection"
@@ -395,18 +420,22 @@ module rec Text_buffer : sig
   (** Initializes [iter] with the “end iterator,” one past the last valid
       character in the text buffer.
 
-      If dereferenced with [Gtk.TextIter.get_char], the end iterator has a
-      character value of 0. The entire buffer lies in the range from the first
-      position in the buffer (call [Gtk.TextBuffer.get_start_iter] to get
-      character position 0) to the end iterator. *)
+      If dereferenced with
+      {{!Ocgtk.Raw.Text_iter.val-get_char}[Gtk.TextIter.get_char]}, the end
+      iterator has a character value of 0. The entire buffer lies in the range
+      from the first position in the buffer (call
+      {{!Ocgtk.Raw.Text_buffer.val-get_start_iter}[Gtk.TextBuffer.get_start_iter]}
+      to get character position 0) to the end iterator. *)
 
   external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
   (** Gets whether the buffer is saving modifications to the buffer to allow for
       undo and redo actions.
 
-      See [Gtk.TextBuffer.begin_irreversible_action] and
-      [Gtk.TextBuffer.end_irreversible_action] to create changes to the buffer
-      that cannot be undone. *)
+      See
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      to create changes to the buffer that cannot be undone. *)
 
   external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
   (** Gets the number of characters in the buffer.
@@ -430,8 +459,9 @@ module rec Text_buffer : sig
   external end_user_action : t -> unit = "ml_gtk_text_buffer_end_user_action"
   (** Ends a user-visible operation.
 
-      Should be paired with a call to [Gtk.TextBuffer.begin_user_action]. See
-      that function for a full explanation. *)
+      Should be paired with a call to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[Gtk.TextBuffer.begin_user_action]}.
+      See that function for a full explanation. *)
 
   external end_irreversible_action : t -> unit
     = "ml_gtk_text_buffer_end_irreversible_action"
@@ -441,7 +471,9 @@ module rec Text_buffer : sig
       cleared.
 
       This should be called after completing modifications to the text buffer
-      after [Gtk.TextBuffer.begin_irreversible_action] was called.
+      after
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      was called.
 
       You may nest calls to gtk_text_buffer_begin_irreversible_action() and
       gtk_text_buffer_end_irreversible_action() pairs. *)
@@ -458,7 +490,8 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_delete_mark_by_name"
   (** Deletes the mark named [name]; the mark must exist.
 
-      See [Gtk.TextBuffer.delete_mark] for details. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-delete_mark}[Gtk.TextBuffer.delete_mark]}
+      for details. *)
 
   external delete_mark : t -> Text_mark.t -> unit
     = "ml_gtk_text_buffer_delete_mark"
@@ -467,21 +500,23 @@ module rec Text_buffer : sig
       Removes the reference the buffer holds to the mark, so if you haven’t
       called g_object_ref() on the mark, it will be freed. Even if the mark
       isn’t freed, most operations on [mark] become invalid, until it gets added
-      to a buffer again with [Gtk.TextBuffer.add_mark]. Use
-      [Gtk.TextMark.get_deleted] to find out if a mark has been removed from its
-      buffer.
+      to a buffer again with
+      {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. Use
+      {{!Ocgtk.Raw.Text_mark.val-get_deleted}[Gtk.TextMark.get_deleted]} to find
+      out if a mark has been removed from its buffer.
 
-      The [Gtk.TextBuffer::mark-deleted] signal will be emitted as notification
-      after the mark is deleted. *)
+      The
+      {{!Ocgtk.Raw.Text_buffer.val-on_mark_deleted}[Gtk.TextBuffer::mark-deleted]}
+      signal will be emitted as notification after the mark is deleted. *)
 
   external delete_interactive : t -> Text_iter.t -> Text_iter.t -> bool -> bool
     = "ml_gtk_text_buffer_delete_interactive"
   (** Deletes all editable text in the given range.
 
-      Calls [Gtk.TextBuffer.delete] for each editable sub-range of
-      \[[start],[end]). [start] and [end] are revalidated to point to the
-      location of the last deleted range, or left untouched if no text was
-      deleted. *)
+      Calls {{!Ocgtk.Raw.Text_buffer.val-delete}[Gtk.TextBuffer.delete]} for
+      each editable sub-range of \[[start],[end]). [start] and [end] are
+      revalidated to point to the location of the last deleted range, or left
+      untouched if no text was deleted. *)
 
   external delete : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_delete"
@@ -507,13 +542,14 @@ module rec Text_buffer : sig
   (** Creates a mark at position [where].
 
       If [mark_name] is [None], the mark is anonymous; otherwise, the mark can
-      be retrieved by name using [Gtk.TextBuffer.get_mark]. If a mark has left
-      gravity, and text is inserted at the mark’s current location, the mark
-      will be moved to the left of the newly-inserted text. If the mark has
-      right gravity ([left_gravity] = [false]), the mark will end up on the
-      right of newly-inserted text. The standard left-to-right cursor is a mark
-      with right gravity (when you type, the cursor stays on the right side of
-      the text you’re typing).
+      be retrieved by name using
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]}. If a
+      mark has left gravity, and text is inserted at the mark’s current
+      location, the mark will be moved to the left of the newly-inserted text.
+      If the mark has right gravity ([left_gravity] = [false]), the mark will
+      end up on the right of newly-inserted text. The standard left-to-right
+      cursor is a mark with right gravity (when you type, the cursor stays on
+      the right side of the text you’re typing).
 
       The caller of this function does not own a reference to the returned
       [GtkTextMark], so you can ignore the return value if you like. Marks are
@@ -527,8 +563,9 @@ module rec Text_buffer : sig
   (** Creates and inserts a child anchor.
 
       This is a convenience function which simply creates a child anchor with
-      [Gtk.TextChildAnchor.new] and inserts it into the buffer with
-      [Gtk.TextBuffer.insert_child_anchor].
+      {{!Ocgtk.Raw.Text_child_anchor.val-new_}[Gtk.TextChildAnchor.new]} and
+      inserts it into the buffer with
+      {{!Ocgtk.Raw.Text_buffer.val-insert_child_anchor}[Gtk.TextBuffer.insert_child_anchor]}.
 
       The new anchor is owned by the buffer; no reference count is returned to
       the caller of this function. *)
@@ -552,10 +589,10 @@ module rec Text_buffer : sig
       allows you to build user actions from other user actions.
 
       The “interactive” buffer mutation functions, such as
-      [Gtk.TextBuffer.insert_interactive], automatically call begin/end user
-      action around the buffer operations they perform, so there's no need to
-      add extra calls if you user action consists solely of a single call to one
-      of those functions. *)
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
+      automatically call begin/end user action around the buffer operations they
+      perform, so there's no need to add extra calls if you user action consists
+      solely of a single call to one of those functions. *)
 
   external begin_irreversible_action : t -> unit
     = "ml_gtk_text_buffer_begin_irreversible_action"
@@ -565,8 +602,8 @@ module rec Text_buffer : sig
       cleared.
 
       This should be paired with a call to
-      [Gtk.TextBuffer.end_irreversible_action] after the irreversible action has
-      completed.
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      after the irreversible action has completed.
 
       You may nest calls to gtk_text_buffer_begin_irreversible_action() and
       gtk_text_buffer_end_irreversible_action() pairs. *)
@@ -589,8 +626,9 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_apply_tag_by_name"
   (** Emits the “apply-tag” signal on [buffer].
 
-      Calls [Gtk.TextTagTable.lookup] on the buffer’s tag table to get a
-      [GtkTextTag], then calls [Gtk.TextBuffer.apply_tag]. *)
+      Calls {{!Ocgtk.Raw.Text_tag_table.val-lookup}[Gtk.TextTagTable.lookup]} on
+      the buffer’s tag table to get a [GtkTextTag], then calls
+      {{!Ocgtk.Raw.Text_buffer.val-apply_tag}[Gtk.TextBuffer.apply_tag]}. *)
 
   external apply_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_apply_tag"
@@ -605,7 +643,8 @@ module rec Text_buffer : sig
       of [buffer] are available.
 
       In most cases, [clipboard] will be the [GdkClipboard] returned by
-      [Gtk.Widget.get_primary_clipboard] for a view of [buffer]. *)
+      {{!Ocgtk.Raw.Widget.val-get_primary_clipboard}[Gtk.Widget.get_primary_clipboard]}
+      for a view of [buffer]. *)
 
   external add_mark : t -> Text_mark.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_add_mark"
@@ -632,11 +671,14 @@ module rec Text_buffer : sig
   (** Emitted at the beginning of a single user-visible operation on a
       [GtkTextBuffer].
 
-      See also: [Gtk.TextBuffer.begin_user_action],
-      [Gtk.TextBuffer.insert_interactive],
-      [Gtk.TextBuffer.insert_range_interactive],
-      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
-      [Gtk.TextBuffer.delete_selection]. *)
+      See also:
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[Gtk.TextBuffer.begin_user_action]},
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-insert_range_interactive}[Gtk.TextBuffer.insert_range_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-delete_interactive}[Gtk.TextBuffer.delete_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-backspace}[Gtk.TextBuffer.backspace]},
+      {{!Ocgtk.Raw.Text_buffer.val-delete_selection}[Gtk.TextBuffer.delete_selection]}.
+  *)
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -647,11 +689,14 @@ module rec Text_buffer : sig
   (** Emitted at the end of a single user-visible operation on the
       [GtkTextBuffer].
 
-      See also: [Gtk.TextBuffer.end_user_action],
-      [Gtk.TextBuffer.insert_interactive],
-      [Gtk.TextBuffer.insert_range_interactive],
-      [Gtk.TextBuffer.delete_interactive], [Gtk.TextBuffer.backspace],
-      [Gtk.TextBuffer.delete_selection], [Gtk.TextBuffer.backspace]. *)
+      See also:
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[Gtk.TextBuffer.end_user_action]},
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-insert_range_interactive}[Gtk.TextBuffer.insert_range_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-delete_interactive}[Gtk.TextBuffer.delete_interactive]},
+      {{!Ocgtk.Raw.Text_buffer.val-backspace}[Gtk.TextBuffer.backspace]},
+      {{!Ocgtk.Raw.Text_buffer.val-delete_selection}[Gtk.TextBuffer.delete_selection]},
+      {{!Ocgtk.Raw.Text_buffer.val-backspace}[Gtk.TextBuffer.backspace]}. *)
 
   val on_mark_deleted :
     ?after:bool ->
@@ -660,13 +705,16 @@ module rec Text_buffer : sig
     Gobject.Signal.handler_id
   (** Emitted as notification after a [GtkTextMark] is deleted.
 
-      See also: [Gtk.TextBuffer.delete_mark]. *)
+      See also:
+      {{!Ocgtk.Raw.Text_buffer.val-delete_mark}[Gtk.TextBuffer.delete_mark]}. *)
 
   val on_modified_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
   (** Emitted when the modified bit of a [GtkTextBuffer] flips.
 
-      See also: [Gtk.TextBuffer.set_modified]. *)
+      See also:
+      {{!Ocgtk.Raw.Text_buffer.val-set_modified}[Gtk.TextBuffer.set_modified]}.
+  *)
 
   val on_paste_done :
     ?after:bool ->
@@ -676,7 +724,9 @@ module rec Text_buffer : sig
   (** Emitted after paste operation has been completed.
 
       This is useful to properly scroll the view to the end of the pasted text.
-      See [Gtk.TextBuffer.paste_clipboard] for more details. *)
+      See
+      {{!Ocgtk.Raw.Text_buffer.val-paste_clipboard}[Gtk.TextBuffer.paste_clipboard]}
+      for more details. *)
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -704,7 +754,8 @@ end = struct
   (** Deletes current contents of [buffer], and inserts [text] instead. This is
       automatically marked as an irreversible action in the undo stack. If you
       wish to mark this action as part of a larger undo operation, call
-      [TextBuffer.delete] and [TextBuffer.insert] directly instead.
+      {{!Ocgtk.Raw.Text_buffer.val-delete}[TextBuffer.delete]} and
+      {{!Ocgtk.Raw.Text_buffer.val-insert}[TextBuffer.insert]} directly instead.
 
       If [len] is -1, [text] must be nul-terminated. [text] must be valid UTF-8.
   *)
@@ -717,7 +768,8 @@ end = struct
       [gtk_text_buffer_set_modified (@buffer, FALSE)]. When the buffer is
       modified, it will automatically toggle on the modified bit again. When the
       modified bit flips, the buffer emits the
-      [Gtk.TextBuffer::modified-changed] signal. *)
+      {{!Ocgtk.Raw.Text_buffer.val-on_modified_changed}[Gtk.TextBuffer::modified-changed]}
+      signal. *)
 
   external set_max_undo_levels : t -> int -> unit
     = "ml_gtk_text_buffer_set_max_undo_levels"
@@ -735,30 +787,34 @@ end = struct
       buffer. Changes to tags and marks are not tracked.
 
       If enabled, the user will be able to undo the last number of actions up to
-      [Gtk.TextBuffer.get_max_undo_levels].
+      {{!Ocgtk.Raw.Text_buffer.val-get_max_undo_levels}[Gtk.TextBuffer.get_max_undo_levels]}.
 
-      See [Gtk.TextBuffer.begin_irreversible_action] and
-      [Gtk.TextBuffer.end_irreversible_action] to create changes to the buffer
-      that cannot be undone. *)
+      See
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      to create changes to the buffer that cannot be undone. *)
 
   external select_range : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_select_range"
   (** This function moves the “insert” and “selection_bound” marks
       simultaneously.
 
-      If you move them in two steps with [Gtk.TextBuffer.move_mark], you will
-      temporarily select a region in between their old and new locations, which
-      can be pretty inefficient since the temporarily-selected region will force
-      stuff to be recalculated. This function moves them as a unit, which can be
-      optimized. *)
+      If you move them in two steps with
+      {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]}, you
+      will temporarily select a region in between their old and new locations,
+      which can be pretty inefficient since the temporarily-selected region will
+      force stuff to be recalculated. This function moves them as a unit, which
+      can be optimized. *)
 
   external remove_tag_by_name :
     t -> string -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_tag_by_name"
   (** Emits the “remove-tag” signal.
 
-      Calls [Gtk.TextTagTable.lookup] on the buffer’s tag table to get a
-      [GtkTextTag], then calls [Gtk.TextBuffer.remove_tag]. *)
+      Calls {{!Ocgtk.Raw.Text_tag_table.val-lookup}[Gtk.TextTagTable.lookup]} on
+      the buffer’s tag table to get a [GtkTextTag], then calls
+      {{!Ocgtk.Raw.Text_buffer.val-remove_tag}[Gtk.TextBuffer.remove_tag]}. *)
 
   external remove_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_tag"
@@ -770,7 +826,8 @@ end = struct
   external remove_selection_clipboard : t -> Ocgdk_raw.Clipboard.t -> unit
     = "ml_gtk_text_buffer_remove_selection_clipboard"
   (** Removes a [GdkClipboard] added with
-      [Gtk.TextBuffer.add_selection_clipboard] *)
+      {{!Ocgtk.Raw.Text_buffer.val-add_selection_clipboard}[Gtk.TextBuffer.add_selection_clipboard]}
+  *)
 
   external remove_commit_notify : t -> int -> unit
     = "ml_gtk_text_buffer_remove_commit_notify"
@@ -798,10 +855,11 @@ end = struct
       simultaneously.
 
       If you move them to the same place in two steps with
-      [Gtk.TextBuffer.move_mark], you will temporarily select a region in
-      between their old and new locations, which can be pretty inefficient since
-      the temporarily-selected region will force stuff to be recalculated. This
-      function moves them as a unit, which can be optimized. *)
+      {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]}, you
+      will temporarily select a region in between their old and new locations,
+      which can be pretty inefficient since the temporarily-selected region will
+      force stuff to be recalculated. This function moves them as a unit, which
+      can be optimized. *)
 
   external paste_clipboard :
     t -> Ocgdk_raw.Clipboard.t -> Text_iter.t option -> bool -> unit
@@ -820,7 +878,8 @@ end = struct
     = "ml_gtk_text_buffer_move_mark_by_name"
   (** Moves the mark named [name] (which must exist) to location [where].
 
-      See [Gtk.TextBuffer.move_mark] for details. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-move_mark}[Gtk.TextBuffer.move_mark]} for
+      details. *)
 
   external move_mark : t -> Text_mark.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_move_mark"
@@ -835,10 +894,13 @@ end = struct
   (** Copies text, tags, and paintables between [start] and [end] and inserts
       the copy at [iter].
 
-      Same as [Gtk.TextBuffer.insert_range], but does nothing if the insertion
-      point isn’t editable. The [default_editable] parameter indicates whether
-      the text is editable at [iter] if no tags enclosing [iter] affect
-      editability. Typically the result of [Gtk.TextView.get_editable] is
+      Same as
+      {{!Ocgtk.Raw.Text_buffer.val-insert_range}[Gtk.TextBuffer.insert_range]},
+      but does nothing if the insertion point isn’t editable. The
+      [default_editable] parameter indicates whether the text is editable at
+      [iter] if no tags enclosing [iter] affect editability. Typically the
+      result of
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
       appropriate here. *)
 
   external insert_range : t -> Text_iter.t -> Text_iter.t -> Text_iter.t -> unit
@@ -864,7 +926,8 @@ end = struct
       Unicode “object replacement character” 0xFFFC. Note that the “slice”
       variants for obtaining portions of the buffer as a string include this
       character for paintable, but the “text” variants do not. e.g. see
-      [Gtk.TextBuffer.get_slice] and [Gtk.TextBuffer.get_text]. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]} and
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}. *)
 
   external insert_markup : t -> Text_iter.t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert_markup"
@@ -879,25 +942,29 @@ end = struct
     = "ml_gtk_text_buffer_insert_interactive_at_cursor"
   (** Inserts [text] in [buffer].
 
-      Calls [Gtk.TextBuffer.insert_interactive] at the cursor position.
+      Calls
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]}
+      at the cursor position.
 
       [default_editable] indicates the editability of text that doesn't have a
       tag affecting editability applied to it. Typically the result of
-      [Gtk.TextView.get_editable] is appropriate here. *)
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
+      appropriate here. *)
 
   external insert_interactive :
     t -> Text_iter.t -> string -> int -> bool -> bool
     = "ml_gtk_text_buffer_insert_interactive"
   (** Inserts [text] in [buffer].
 
-      Like [Gtk.TextBuffer.insert], but the insertion will not occur if [iter]
-      is at a non-editable location in the buffer. Usually you want to prevent
-      insertions at ineditable locations if the insertion results from a user
-      action (is interactive).
+      Like {{!Ocgtk.Raw.Text_buffer.val-insert}[Gtk.TextBuffer.insert]}, but the
+      insertion will not occur if [iter] is at a non-editable location in the
+      buffer. Usually you want to prevent insertions at ineditable locations if
+      the insertion results from a user action (is interactive).
 
       [default_editable] indicates the editability of text that doesn't have a
       tag affecting editability applied to it. Typically the result of
-      [Gtk.TextView.get_editable] is appropriate here. *)
+      {{!Ocgtk.Raw.Text_view.val-get_editable}[Gtk.TextView.get_editable]} is
+      appropriate here. *)
 
   external insert_child_anchor : t -> Text_iter.t -> Text_child_anchor.t -> unit
     = "ml_gtk_text_buffer_insert_child_anchor"
@@ -908,18 +975,20 @@ end = struct
       Unicode “object replacement character” 0xFFFC. Note that the “slice”
       variants for obtaining portions of the buffer as a string include this
       character for child anchors, but the “text” variants do not. E.g. see
-      [Gtk.TextBuffer.get_slice] and [Gtk.TextBuffer.get_text].
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]} and
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}.
 
-      Consider [Gtk.TextBuffer.create_child_anchor] as a more convenient
-      alternative to this function. The buffer will add a reference to the
-      anchor, so you can unref it after insertion. *)
+      Consider
+      {{!Ocgtk.Raw.Text_buffer.val-create_child_anchor}[Gtk.TextBuffer.create_child_anchor]}
+      as a more convenient alternative to this function. The buffer will add a
+      reference to the anchor, so you can unref it after insertion. *)
 
   external insert_at_cursor : t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert_at_cursor"
   (** Inserts [text] in [buffer].
 
-      Simply calls [Gtk.TextBuffer.insert], using the current cursor position as
-      the insertion point. *)
+      Simply calls {{!Ocgtk.Raw.Text_buffer.val-insert}[Gtk.TextBuffer.insert]},
+      using the current cursor position as the insertion point. *)
 
   external insert : t -> Text_iter.t -> string -> int -> unit
     = "ml_gtk_text_buffer_insert"
@@ -939,7 +1008,8 @@ end = struct
       attribute) if [include_hidden_chars] is [false]. Does not include
       characters representing embedded images, so byte and character indexes
       into the returned string do not correspond to byte and character indexes
-      into the buffer. Contrast with [Gtk.TextBuffer.get_slice]. *)
+      into the buffer. Contrast with
+      {{!Ocgtk.Raw.Text_buffer.val-get_slice}[Gtk.TextBuffer.get_slice]}. *)
 
   external get_tag_table : t -> Text_tag_table.t
     = "ml_gtk_text_buffer_get_tag_table"
@@ -949,8 +1019,9 @@ end = struct
     = "ml_gtk_text_buffer_get_start_iter"
   (** Initialized [iter] with the first position in the text buffer.
 
-      This is the same as using [Gtk.TextBuffer.get_iter_at_offset] to get the
-      iter at character offset 0. *)
+      This is the same as using
+      {{!Ocgtk.Raw.Text_buffer.val-get_iter_at_offset}[Gtk.TextBuffer.get_iter_at_offset]}
+      to get the iter at character offset 0. *)
 
   external get_slice : t -> Text_iter.t -> Text_iter.t -> bool -> string
     = "ml_gtk_text_buffer_get_slice"
@@ -961,9 +1032,9 @@ end = struct
       includes a 0xFFFC character whenever the buffer contains embedded images,
       so byte and character indexes into the returned string do correspond to
       byte and character indexes into the buffer. Contrast with
-      [Gtk.TextBuffer.get_text]. Note that 0xFFFC can occur in normal text as
-      well, so it is not a reliable indicator that a paintable or widget is in
-      the buffer. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_text}[Gtk.TextBuffer.get_text]}. Note
+      that 0xFFFC can occur in normal text as well, so it is not a reliable
+      indicator that a paintable or widget is in the buffer. *)
 
   external get_selection_content : t -> Ocgdk_raw.Content_provider.t
     = "ml_gtk_text_buffer_get_selection_content"
@@ -986,20 +1057,22 @@ end = struct
     = "ml_gtk_text_buffer_get_selection_bound"
   (** Returns the mark that represents the selection bound.
 
-      Equivalent to calling [Gtk.TextBuffer.get_mark] to get the mark named
-      “selection_bound”, but very slightly more efficient, and involves less
-      typing.
+      Equivalent to calling
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]} to get
+      the mark named “selection_bound”, but very slightly more efficient, and
+      involves less typing.
 
       The currently-selected text in [buffer] is the region between the
       “selection_bound” and “insert” marks. If “selection_bound” and “insert”
       are in the same place, then there is no current selection.
-      [Gtk.TextBuffer.get_selection_bounds] is another convenient function for
-      handling the selection, if you just want to know whether there’s a
-      selection and what its bounds are. *)
+      {{!Ocgtk.Raw.Text_buffer.val-get_selection_bounds}[Gtk.TextBuffer.get_selection_bounds]}
+      is another convenient function for handling the selection, if you just
+      want to know whether there’s a selection and what its bounds are. *)
 
   external get_modified : t -> bool = "ml_gtk_text_buffer_get_modified"
   (** Indicates whether the buffer has been modified since the last call to
-      [Gtk.TextBuffer.set_modified] set the modification flag to [false].
+      {{!Ocgtk.Raw.Text_buffer.val-set_modified}[Gtk.TextBuffer.set_modified]}
+      set the modification flag to [false].
 
       Used for example to enable a “save” function in a text editor. *)
 
@@ -1070,8 +1143,10 @@ end = struct
   external get_insert : t -> Text_mark.t = "ml_gtk_text_buffer_get_insert"
   (** Returns the mark that represents the cursor (insertion point).
 
-      Equivalent to calling [Gtk.TextBuffer.get_mark] to get the mark named
-      “insert”, but very slightly more efficient, and involves less typing. *)
+      Equivalent to calling
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]} to get
+      the mark named “insert”, but very slightly more efficient, and involves
+      less typing. *)
 
   external get_has_selection : t -> bool
     = "ml_gtk_text_buffer_get_has_selection"
@@ -1081,18 +1156,22 @@ end = struct
   (** Initializes [iter] with the “end iterator,” one past the last valid
       character in the text buffer.
 
-      If dereferenced with [Gtk.TextIter.get_char], the end iterator has a
-      character value of 0. The entire buffer lies in the range from the first
-      position in the buffer (call [Gtk.TextBuffer.get_start_iter] to get
-      character position 0) to the end iterator. *)
+      If dereferenced with
+      {{!Ocgtk.Raw.Text_iter.val-get_char}[Gtk.TextIter.get_char]}, the end
+      iterator has a character value of 0. The entire buffer lies in the range
+      from the first position in the buffer (call
+      {{!Ocgtk.Raw.Text_buffer.val-get_start_iter}[Gtk.TextBuffer.get_start_iter]}
+      to get character position 0) to the end iterator. *)
 
   external get_enable_undo : t -> bool = "ml_gtk_text_buffer_get_enable_undo"
   (** Gets whether the buffer is saving modifications to the buffer to allow for
       undo and redo actions.
 
-      See [Gtk.TextBuffer.begin_irreversible_action] and
-      [Gtk.TextBuffer.end_irreversible_action] to create changes to the buffer
-      that cannot be undone. *)
+      See
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      to create changes to the buffer that cannot be undone. *)
 
   external get_char_count : t -> int = "ml_gtk_text_buffer_get_char_count"
   (** Gets the number of characters in the buffer.
@@ -1116,8 +1195,9 @@ end = struct
   external end_user_action : t -> unit = "ml_gtk_text_buffer_end_user_action"
   (** Ends a user-visible operation.
 
-      Should be paired with a call to [Gtk.TextBuffer.begin_user_action]. See
-      that function for a full explanation. *)
+      Should be paired with a call to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[Gtk.TextBuffer.begin_user_action]}.
+      See that function for a full explanation. *)
 
   external end_irreversible_action : t -> unit
     = "ml_gtk_text_buffer_end_irreversible_action"
@@ -1127,7 +1207,9 @@ end = struct
       cleared.
 
       This should be called after completing modifications to the text buffer
-      after [Gtk.TextBuffer.begin_irreversible_action] was called.
+      after
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
+      was called.
 
       You may nest calls to gtk_text_buffer_begin_irreversible_action() and
       gtk_text_buffer_end_irreversible_action() pairs. *)
@@ -1144,7 +1226,8 @@ end = struct
     = "ml_gtk_text_buffer_delete_mark_by_name"
   (** Deletes the mark named [name]; the mark must exist.
 
-      See [Gtk.TextBuffer.delete_mark] for details. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-delete_mark}[Gtk.TextBuffer.delete_mark]}
+      for details. *)
 
   external delete_mark : t -> Text_mark.t -> unit
     = "ml_gtk_text_buffer_delete_mark"
@@ -1153,21 +1236,23 @@ end = struct
       Removes the reference the buffer holds to the mark, so if you haven’t
       called g_object_ref() on the mark, it will be freed. Even if the mark
       isn’t freed, most operations on [mark] become invalid, until it gets added
-      to a buffer again with [Gtk.TextBuffer.add_mark]. Use
-      [Gtk.TextMark.get_deleted] to find out if a mark has been removed from its
-      buffer.
+      to a buffer again with
+      {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. Use
+      {{!Ocgtk.Raw.Text_mark.val-get_deleted}[Gtk.TextMark.get_deleted]} to find
+      out if a mark has been removed from its buffer.
 
-      The [Gtk.TextBuffer::mark-deleted] signal will be emitted as notification
-      after the mark is deleted. *)
+      The
+      {{!Ocgtk.Raw.Text_buffer.val-on_mark_deleted}[Gtk.TextBuffer::mark-deleted]}
+      signal will be emitted as notification after the mark is deleted. *)
 
   external delete_interactive : t -> Text_iter.t -> Text_iter.t -> bool -> bool
     = "ml_gtk_text_buffer_delete_interactive"
   (** Deletes all editable text in the given range.
 
-      Calls [Gtk.TextBuffer.delete] for each editable sub-range of
-      \[[start],[end]). [start] and [end] are revalidated to point to the
-      location of the last deleted range, or left untouched if no text was
-      deleted. *)
+      Calls {{!Ocgtk.Raw.Text_buffer.val-delete}[Gtk.TextBuffer.delete]} for
+      each editable sub-range of \[[start],[end]). [start] and [end] are
+      revalidated to point to the location of the last deleted range, or left
+      untouched if no text was deleted. *)
 
   external delete : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_delete"
@@ -1193,13 +1278,14 @@ end = struct
   (** Creates a mark at position [where].
 
       If [mark_name] is [None], the mark is anonymous; otherwise, the mark can
-      be retrieved by name using [Gtk.TextBuffer.get_mark]. If a mark has left
-      gravity, and text is inserted at the mark’s current location, the mark
-      will be moved to the left of the newly-inserted text. If the mark has
-      right gravity ([left_gravity] = [false]), the mark will end up on the
-      right of newly-inserted text. The standard left-to-right cursor is a mark
-      with right gravity (when you type, the cursor stays on the right side of
-      the text you’re typing).
+      be retrieved by name using
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]}. If a
+      mark has left gravity, and text is inserted at the mark’s current
+      location, the mark will be moved to the left of the newly-inserted text.
+      If the mark has right gravity ([left_gravity] = [false]), the mark will
+      end up on the right of newly-inserted text. The standard left-to-right
+      cursor is a mark with right gravity (when you type, the cursor stays on
+      the right side of the text you’re typing).
 
       The caller of this function does not own a reference to the returned
       [GtkTextMark], so you can ignore the return value if you like. Marks are
@@ -1213,8 +1299,9 @@ end = struct
   (** Creates and inserts a child anchor.
 
       This is a convenience function which simply creates a child anchor with
-      [Gtk.TextChildAnchor.new] and inserts it into the buffer with
-      [Gtk.TextBuffer.insert_child_anchor].
+      {{!Ocgtk.Raw.Text_child_anchor.val-new_}[Gtk.TextChildAnchor.new]} and
+      inserts it into the buffer with
+      {{!Ocgtk.Raw.Text_buffer.val-insert_child_anchor}[Gtk.TextBuffer.insert_child_anchor]}.
 
       The new anchor is owned by the buffer; no reference count is returned to
       the caller of this function. *)
@@ -1238,10 +1325,10 @@ end = struct
       allows you to build user actions from other user actions.
 
       The “interactive” buffer mutation functions, such as
-      [Gtk.TextBuffer.insert_interactive], automatically call begin/end user
-      action around the buffer operations they perform, so there's no need to
-      add extra calls if you user action consists solely of a single call to one
-      of those functions. *)
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
+      automatically call begin/end user action around the buffer operations they
+      perform, so there's no need to add extra calls if you user action consists
+      solely of a single call to one of those functions. *)
 
   external begin_irreversible_action : t -> unit
     = "ml_gtk_text_buffer_begin_irreversible_action"
@@ -1251,8 +1338,8 @@ end = struct
       cleared.
 
       This should be paired with a call to
-      [Gtk.TextBuffer.end_irreversible_action] after the irreversible action has
-      completed.
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
+      after the irreversible action has completed.
 
       You may nest calls to gtk_text_buffer_begin_irreversible_action() and
       gtk_text_buffer_end_irreversible_action() pairs. *)
@@ -1275,8 +1362,9 @@ end = struct
     = "ml_gtk_text_buffer_apply_tag_by_name"
   (** Emits the “apply-tag” signal on [buffer].
 
-      Calls [Gtk.TextTagTable.lookup] on the buffer’s tag table to get a
-      [GtkTextTag], then calls [Gtk.TextBuffer.apply_tag]. *)
+      Calls {{!Ocgtk.Raw.Text_tag_table.val-lookup}[Gtk.TextTagTable.lookup]} on
+      the buffer’s tag table to get a [GtkTextTag], then calls
+      {{!Ocgtk.Raw.Text_buffer.val-apply_tag}[Gtk.TextBuffer.apply_tag]}. *)
 
   external apply_tag : t -> Text_tag.t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_apply_tag"
@@ -1291,7 +1379,8 @@ end = struct
       of [buffer] are available.
 
       In most cases, [clipboard] will be the [GdkClipboard] returned by
-      [Gtk.Widget.get_primary_clipboard] for a view of [buffer]. *)
+      {{!Ocgtk.Raw.Widget.val-get_primary_clipboard}[Gtk.Widget.get_primary_clipboard]}
+      for a view of [buffer]. *)
 
   external add_mark : t -> Text_mark.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_add_mark"
@@ -1390,9 +1479,11 @@ and Text_iter : sig
 
       Note that if this function returns [true], it means that [iter] is at the
       beginning of the tagged range, and that the character at [iter] is inside
-      the tagged range. In other words, unlike [Gtk.TextIter.ends_tag], if this
-      function returns [true], [Gtk.TextIter.has_tag] will also return [true]
-      for the same parameters. *)
+      the tagged range. In other words, unlike
+      {{!Ocgtk.Raw.Text_iter.val-ends_tag}[Gtk.TextIter.ends_tag]}, if this
+      function returns [true],
+      {{!Ocgtk.Raw.Text_iter.val-has_tag}[Gtk.TextIter.has_tag]} will also
+      return [true] for the same parameters. *)
 
   external starts_sentence : t -> bool = "ml_gtk_text_iter_starts_sentence"
   (** Determines whether [iter] begins a sentence.
@@ -1403,21 +1494,26 @@ and Text_iter : sig
   external starts_line : t -> bool = "ml_gtk_text_iter_starts_line"
   (** Returns [true] if [iter] begins a paragraph.
 
-      This is the case if [Gtk.TextIter.get_line_offset] would return 0. However
-      this function is potentially more efficient than
-      [Gtk.TextIter.get_line_offset], because it doesn’t have to compute the
-      offset, it just has to see whether it’s 0. *)
+      This is the case if
+      {{!Ocgtk.Raw.Text_iter.val-get_line_offset}[Gtk.TextIter.get_line_offset]}
+      would return 0. However this function is potentially more efficient than
+      {{!Ocgtk.Raw.Text_iter.val-get_line_offset}[Gtk.TextIter.get_line_offset]},
+      because it doesn’t have to compute the offset, it just has to see whether
+      it’s 0. *)
 
   external set_visible_line_offset : t -> int -> unit
     = "ml_gtk_text_iter_set_visible_line_offset"
-  (** Like [Gtk.TextIter.set_line_offset], but the offset is in visible
-      characters, i.e. text with a tag making it invisible is not counted in the
-      offset. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-set_line_offset}[Gtk.TextIter.set_line_offset]},
+      but the offset is in visible characters, i.e. text with a tag making it
+      invisible is not counted in the offset. *)
 
   external set_visible_line_index : t -> int -> unit
     = "ml_gtk_text_iter_set_visible_line_index"
-  (** Like [Gtk.TextIter.set_line_index], but the index is in visible bytes,
-      i.e. text with a tag making it invisible is not counted in the index. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-set_line_index}[Gtk.TextIter.set_line_index]},
+      but the index is in visible bytes, i.e. text with a tag making it
+      invisible is not counted in the index. *)
 
   external set_offset : t -> int -> unit = "ml_gtk_text_iter_set_offset"
   (** Sets [iter] to point to [char_offset].
@@ -1431,13 +1527,15 @@ and Text_iter : sig
 
       The given character offset must be less than or equal to the number of
       characters in the line; if equal, [iter] moves to the start of the next
-      line. See [Gtk.TextIter.set_line_index] if you have a byte index rather
-      than a character offset. *)
+      line. See
+      {{!Ocgtk.Raw.Text_iter.val-set_line_index}[Gtk.TextIter.set_line_index]}
+      if you have a byte index rather than a character offset. *)
 
   external set_line_index : t -> int -> unit = "ml_gtk_text_iter_set_line_index"
-  (** Same as [Gtk.TextIter.set_line_offset], but works with a byte index. The
-      given byte index must be at the start of a character, it can’t be in the
-      middle of a UTF-8 encoded character. *)
+  (** Same as
+      {{!Ocgtk.Raw.Text_iter.val-set_line_offset}[Gtk.TextIter.set_line_offset]},
+      but works with a byte index. The given byte index must be at the start of
+      a character, it can’t be in the middle of a UTF-8 encoded character. *)
 
   external set_line : t -> int -> unit = "ml_gtk_text_iter_set_line"
   (** Moves iterator [iter] to the start of the line [line_number].
@@ -1453,8 +1551,9 @@ and Text_iter : sig
       That is, ensures that [first] and [second] are in sequence. Most text
       buffer functions that take a range call this automatically on your behalf,
       so there’s no real reason to call it yourself in those cases. There are
-      some exceptions, such as [Gtk.TextIter.in_range], that expect a pre-sorted
-      range. *)
+      some exceptions, such as
+      {{!Ocgtk.Raw.Text_iter.val-in_range}[Gtk.TextIter.in_range]}, that expect
+      a pre-sorted range. *)
 
   external is_start : t -> bool = "ml_gtk_text_iter_is_start"
   (** Returns [true] if [iter] is the first iterator in the buffer. *)
@@ -1463,16 +1562,17 @@ and Text_iter : sig
   (** Returns [true] if [iter] is the end iterator.
 
       This means it is one past the last dereferenceable iterator in the buffer.
-      [Gtk.TextIter.is_end] is the most efficient way to check whether an
-      iterator is the end iterator. *)
+      {{!Ocgtk.Raw.Text_iter.val-is_end}[Gtk.TextIter.is_end]} is the most
+      efficient way to check whether an iterator is the end iterator. *)
 
   external is_cursor_position : t -> bool
     = "ml_gtk_text_iter_is_cursor_position"
   (** Determine if [iter] is at a cursor position.
 
-      See [Gtk.TextIter.forward_cursor_position] or
-      {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} or [Pango.break] for details on
-      what a cursor position is. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      or {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} or [Pango.break] for details
+      on what a cursor position is. *)
 
   external inside_word : t -> bool = "ml_gtk_text_iter_inside_word"
   (** Determines whether the character pointed by [iter] is part of a
@@ -1481,9 +1581,10 @@ and Text_iter : sig
       Word breaks are determined by Pango and should be correct for nearly any
       language.
 
-      Note that if [Gtk.TextIter.starts_word] returns [true], then this function
-      returns [true] too, since [iter] points to the first character of the
-      word. *)
+      Note that if
+      {{!Ocgtk.Raw.Text_iter.val-starts_word}[Gtk.TextIter.starts_word]} returns
+      [true], then this function returns [true] too, since [iter] points to the
+      first character of the word. *)
 
   external inside_sentence : t -> bool = "ml_gtk_text_iter_inside_sentence"
   (** Determines whether [iter] is inside a sentence (as opposed to in between
@@ -1502,23 +1603,26 @@ and Text_iter : sig
   (** Returns [true] if [iter] points to a character that is part of a range
       tagged with [tag].
 
-      See also [Gtk.TextIter.starts_tag] and [Gtk.TextIter.ends_tag]. *)
+      See also {{!Ocgtk.Raw.Text_iter.val-starts_tag}[Gtk.TextIter.starts_tag]}
+      and {{!Ocgtk.Raw.Text_iter.val-ends_tag}[Gtk.TextIter.ends_tag]}. *)
 
   external get_visible_text : t -> t -> string
     = "ml_gtk_text_iter_get_visible_text"
   (** Returns visible text in the given range.
 
-      Like [Gtk.TextIter.get_text], but invisible text is not included.
-      Invisible text is usually invisible because a [GtkTextTag] with the
-      “invisible” attribute turned on has been applied to it. *)
+      Like {{!Ocgtk.Raw.Text_iter.val-get_text}[Gtk.TextIter.get_text]}, but
+      invisible text is not included. Invisible text is usually invisible
+      because a [GtkTextTag] with the “invisible” attribute turned on has been
+      applied to it. *)
 
   external get_visible_slice : t -> t -> string
     = "ml_gtk_text_iter_get_visible_slice"
   (** Returns visible text in the given range.
 
-      Like [Gtk.TextIter.get_slice], but invisible text is not included.
-      Invisible text is usually invisible because a [GtkTextTag] with the
-      “invisible” attribute turned on has been applied to it. *)
+      Like {{!Ocgtk.Raw.Text_iter.val-get_slice}[Gtk.TextIter.get_slice]}, but
+      invisible text is not included. Invisible text is usually invisible
+      because a [GtkTextTag] with the “invisible” attribute turned on has been
+      applied to it. *)
 
   external get_visible_line_offset : t -> int
     = "ml_gtk_text_iter_get_visible_line_offset"
@@ -1548,7 +1652,7 @@ and Text_iter : sig
       If the range contains non-text elements such as images, the character and
       byte offsets in the returned string will not correspond to character and
       byte offsets in the buffer. If you want offsets to correspond, see
-      [Gtk.TextIter.get_slice]. *)
+      {{!Ocgtk.Raw.Text_iter.val-get_slice}[Gtk.TextIter.get_slice]}. *)
 
   external get_tags : t -> Text_tag.t list = "ml_gtk_text_iter_get_tags"
   (** Returns a list of tags that apply to [iter], in ascending order of
@@ -1580,8 +1684,9 @@ and Text_iter : sig
   (** Returns the character offset of an iterator.
 
       Each character in a [GtkTextBuffer] has an offset, starting with 0 for the
-      first character in the buffer. Use [Gtk.TextBuffer.get_iter_at_offset] to
-      convert an offset back into an iterator. *)
+      first character in the buffer. Use
+      {{!Ocgtk.Raw.Text_buffer.val-get_iter_at_offset}[Gtk.TextBuffer.get_iter_at_offset]}
+      to convert an offset back into an iterator. *)
 
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
   [@@ocaml.doc
@@ -1646,7 +1751,9 @@ and Text_iter : sig
 
   external forward_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_word_ends"
-  (** Calls [Gtk.TextIter.forward_word_end] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_word_end}[Gtk.TextIter.forward_word_end]}
+      up to [count] times. *)
 
   external forward_word_end : t -> bool = "ml_gtk_text_iter_forward_word_end"
   (** Moves forward to the next word end.
@@ -1659,7 +1766,9 @@ and Text_iter : sig
 
   external forward_visible_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_visible_word_ends"
-  (** Calls [Gtk.TextIter.forward_visible_word_end] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_visible_word_end}[Gtk.TextIter.forward_visible_word_end]}
+      up to [count] times. *)
 
   external forward_visible_word_end : t -> bool
     = "ml_gtk_text_iter_forward_visible_word_end"
@@ -1696,13 +1805,17 @@ and Text_iter : sig
     = "ml_gtk_text_iter_forward_visible_cursor_positions"
   (** Moves up to [count] visible cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_visible_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_visible_cursor_position"
   (** Moves [iter] forward to the next visible cursor position.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_to_tag_toggle : t -> Text_tag.t option -> bool
     = "ml_gtk_text_iter_forward_to_tag_toggle"
@@ -1731,12 +1844,14 @@ and Text_iter : sig
   (** Moves [iter] forward to the “end iterator”, which points one past the last
       valid character in the buffer.
 
-      [Gtk.TextIter.get_char] called on the end iterator returns 0, which is
-      convenient for writing loops. *)
+      {{!Ocgtk.Raw.Text_iter.val-get_char}[Gtk.TextIter.get_char]} called on the
+      end iterator returns 0, which is convenient for writing loops. *)
 
   external forward_sentence_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_sentence_ends"
-  (** Calls [Gtk.TextIter.forward_sentence_end] [count] times.
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_sentence_end}[Gtk.TextIter.forward_sentence_end]}
+      [count] times.
 
       If [count] is negative, moves backward instead of forward. *)
 
@@ -1787,7 +1902,9 @@ and Text_iter : sig
     = "ml_gtk_text_iter_forward_cursor_positions"
   (** Moves up to [count] cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_cursor_position"
@@ -1832,7 +1949,8 @@ and Text_iter : sig
 
       This function is very fast; you can expect it to perform better than e.g.
       getting the character offset for each iterator and comparing the offsets
-      yourself. Also, it’s a bit faster than [Gtk.TextIter.compare]. *)
+      yourself. Also, it’s a bit faster than
+      {{!Ocgtk.Raw.Text_iter.val-compare}[Gtk.TextIter.compare]}. *)
 
   external ends_word : t -> bool = "ml_gtk_text_iter_ends_word"
   (** Determines whether [iter] ends a natural-language word.
@@ -1849,9 +1967,11 @@ and Text_iter : sig
 
       Note that if this function returns [true], it means that [iter] is at the
       end of the tagged range, but that the character at [iter] is outside the
-      tagged range. In other words, unlike [Gtk.TextIter.starts_tag], if this
-      function returns [true], [Gtk.TextIter.has_tag] will return [false] for
-      the same parameters. *)
+      tagged range. In other words, unlike
+      {{!Ocgtk.Raw.Text_iter.val-starts_tag}[Gtk.TextIter.starts_tag]}, if this
+      function returns [true],
+      {{!Ocgtk.Raw.Text_iter.val-has_tag}[Gtk.TextIter.has_tag]} will return
+      [false] for the same parameters. *)
 
   external ends_sentence : t -> bool = "ml_gtk_text_iter_ends_sentence"
   (** Determines whether [iter] ends a sentence.
@@ -1883,7 +2003,8 @@ and Text_iter : sig
       at [iter], because for insertion you don’t want to know whether the char
       at [iter] is inside an editable range, you want to know whether a new
       character inserted at [iter] would be inside an editable range. Use
-      [Gtk.TextIter.can_insert] to handle this case. *)
+      {{!Ocgtk.Raw.Text_iter.val-can_insert}[Gtk.TextIter.can_insert]} to handle
+      this case. *)
 
   external compare : t -> t -> int = "ml_gtk_text_iter_compare"
   (** A qsort()-style function that returns negative if [lhs] is less than
@@ -1897,13 +2018,16 @@ and Text_iter : sig
       editability, determines whether text inserted at [iter] would be editable.
 
       If text inserted at [iter] would be editable then the user should be
-      allowed to insert text at [iter]. [Gtk.TextBuffer.insert_interactive] uses
-      this function to decide whether insertions are allowed at a given
+      allowed to insert text at [iter].
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]}
+      uses this function to decide whether insertions are allowed at a given
       position. *)
 
   external backward_word_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_word_starts"
-  (** Calls [Gtk.TextIter.backward_word_start] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_word_start}[Gtk.TextIter.backward_word_start]}
+      up to [count] times. *)
 
   external backward_word_start : t -> bool
     = "ml_gtk_text_iter_backward_word_start"
@@ -1917,7 +2041,9 @@ and Text_iter : sig
 
   external backward_visible_word_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_visible_word_starts"
-  (** Calls [Gtk.TextIter.backward_visible_word_start] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_visible_word_start}[Gtk.TextIter.backward_visible_word_start]}
+      up to [count] times. *)
 
   external backward_visible_word_start : t -> bool
     = "ml_gtk_text_iter_backward_visible_word_start"
@@ -1957,13 +2083,17 @@ and Text_iter : sig
     = "ml_gtk_text_iter_backward_visible_cursor_positions"
   (** Moves up to [count] visible cursor positions.
 
-      See [Gtk.TextIter.backward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-backward_cursor_position}[Gtk.TextIter.backward_cursor_position]}
+      for details. *)
 
   external backward_visible_cursor_position : t -> bool
     = "ml_gtk_text_iter_backward_visible_cursor_position"
   (** Moves [iter] backward to the previous visible cursor position.
 
-      See [Gtk.TextIter.backward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-backward_cursor_position}[Gtk.TextIter.backward_cursor_position]}
+      for details. *)
 
   external backward_to_tag_toggle : t -> Text_tag.t option -> bool
     = "ml_gtk_text_iter_backward_to_tag_toggle"
@@ -1977,7 +2107,9 @@ and Text_iter : sig
 
   external backward_sentence_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_sentence_starts"
-  (** Calls [Gtk.TextIter.backward_sentence_start] up to [count] times.
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_sentence_start}[Gtk.TextIter.backward_sentence_start]}
+      up to [count] times.
 
       If [count] is negative, moves forward instead of backward. *)
 
@@ -1994,7 +2126,9 @@ and Text_iter : sig
   external backward_search :
     t -> string -> Ocgtk_enums.textsearchflags -> t option -> bool * t * t
     = "ml_gtk_text_iter_backward_search"
-  (** Same as [Gtk.TextIter.forward_search], but moves backward.
+  (** Same as
+      {{!Ocgtk.Raw.Text_iter.val-forward_search}[Gtk.TextIter.forward_search]},
+      but moves backward.
 
       [match_end] will never be set to a [GtkTextIter] located after [iter],
       even if there is a possible [match_start] before or at [iter]. *)
@@ -2025,11 +2159,15 @@ and Text_iter : sig
     = "ml_gtk_text_iter_backward_cursor_positions"
   (** Moves up to [count] cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external backward_cursor_position : t -> bool
     = "ml_gtk_text_iter_backward_cursor_position"
-  (** Like [Gtk.TextIter.forward_cursor_position], but moves backward. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]},
+      but moves backward. *)
 
   external backward_chars : t -> int -> bool = "ml_gtk_text_iter_backward_chars"
   (** Moves [count] characters backward, if possible.
@@ -2084,9 +2222,11 @@ end = struct
 
       Note that if this function returns [true], it means that [iter] is at the
       beginning of the tagged range, and that the character at [iter] is inside
-      the tagged range. In other words, unlike [Gtk.TextIter.ends_tag], if this
-      function returns [true], [Gtk.TextIter.has_tag] will also return [true]
-      for the same parameters. *)
+      the tagged range. In other words, unlike
+      {{!Ocgtk.Raw.Text_iter.val-ends_tag}[Gtk.TextIter.ends_tag]}, if this
+      function returns [true],
+      {{!Ocgtk.Raw.Text_iter.val-has_tag}[Gtk.TextIter.has_tag]} will also
+      return [true] for the same parameters. *)
 
   external starts_sentence : t -> bool = "ml_gtk_text_iter_starts_sentence"
   (** Determines whether [iter] begins a sentence.
@@ -2097,21 +2237,26 @@ end = struct
   external starts_line : t -> bool = "ml_gtk_text_iter_starts_line"
   (** Returns [true] if [iter] begins a paragraph.
 
-      This is the case if [Gtk.TextIter.get_line_offset] would return 0. However
-      this function is potentially more efficient than
-      [Gtk.TextIter.get_line_offset], because it doesn’t have to compute the
-      offset, it just has to see whether it’s 0. *)
+      This is the case if
+      {{!Ocgtk.Raw.Text_iter.val-get_line_offset}[Gtk.TextIter.get_line_offset]}
+      would return 0. However this function is potentially more efficient than
+      {{!Ocgtk.Raw.Text_iter.val-get_line_offset}[Gtk.TextIter.get_line_offset]},
+      because it doesn’t have to compute the offset, it just has to see whether
+      it’s 0. *)
 
   external set_visible_line_offset : t -> int -> unit
     = "ml_gtk_text_iter_set_visible_line_offset"
-  (** Like [Gtk.TextIter.set_line_offset], but the offset is in visible
-      characters, i.e. text with a tag making it invisible is not counted in the
-      offset. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-set_line_offset}[Gtk.TextIter.set_line_offset]},
+      but the offset is in visible characters, i.e. text with a tag making it
+      invisible is not counted in the offset. *)
 
   external set_visible_line_index : t -> int -> unit
     = "ml_gtk_text_iter_set_visible_line_index"
-  (** Like [Gtk.TextIter.set_line_index], but the index is in visible bytes,
-      i.e. text with a tag making it invisible is not counted in the index. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-set_line_index}[Gtk.TextIter.set_line_index]},
+      but the index is in visible bytes, i.e. text with a tag making it
+      invisible is not counted in the index. *)
 
   external set_offset : t -> int -> unit = "ml_gtk_text_iter_set_offset"
   (** Sets [iter] to point to [char_offset].
@@ -2125,13 +2270,15 @@ end = struct
 
       The given character offset must be less than or equal to the number of
       characters in the line; if equal, [iter] moves to the start of the next
-      line. See [Gtk.TextIter.set_line_index] if you have a byte index rather
-      than a character offset. *)
+      line. See
+      {{!Ocgtk.Raw.Text_iter.val-set_line_index}[Gtk.TextIter.set_line_index]}
+      if you have a byte index rather than a character offset. *)
 
   external set_line_index : t -> int -> unit = "ml_gtk_text_iter_set_line_index"
-  (** Same as [Gtk.TextIter.set_line_offset], but works with a byte index. The
-      given byte index must be at the start of a character, it can’t be in the
-      middle of a UTF-8 encoded character. *)
+  (** Same as
+      {{!Ocgtk.Raw.Text_iter.val-set_line_offset}[Gtk.TextIter.set_line_offset]},
+      but works with a byte index. The given byte index must be at the start of
+      a character, it can’t be in the middle of a UTF-8 encoded character. *)
 
   external set_line : t -> int -> unit = "ml_gtk_text_iter_set_line"
   (** Moves iterator [iter] to the start of the line [line_number].
@@ -2147,8 +2294,9 @@ end = struct
       That is, ensures that [first] and [second] are in sequence. Most text
       buffer functions that take a range call this automatically on your behalf,
       so there’s no real reason to call it yourself in those cases. There are
-      some exceptions, such as [Gtk.TextIter.in_range], that expect a pre-sorted
-      range. *)
+      some exceptions, such as
+      {{!Ocgtk.Raw.Text_iter.val-in_range}[Gtk.TextIter.in_range]}, that expect
+      a pre-sorted range. *)
 
   external is_start : t -> bool = "ml_gtk_text_iter_is_start"
   (** Returns [true] if [iter] is the first iterator in the buffer. *)
@@ -2157,16 +2305,17 @@ end = struct
   (** Returns [true] if [iter] is the end iterator.
 
       This means it is one past the last dereferenceable iterator in the buffer.
-      [Gtk.TextIter.is_end] is the most efficient way to check whether an
-      iterator is the end iterator. *)
+      {{!Ocgtk.Raw.Text_iter.val-is_end}[Gtk.TextIter.is_end]} is the most
+      efficient way to check whether an iterator is the end iterator. *)
 
   external is_cursor_position : t -> bool
     = "ml_gtk_text_iter_is_cursor_position"
   (** Determine if [iter] is at a cursor position.
 
-      See [Gtk.TextIter.forward_cursor_position] or
-      {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} or [Pango.break] for details on
-      what a cursor position is. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      or {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} or [Pango.break] for details
+      on what a cursor position is. *)
 
   external inside_word : t -> bool = "ml_gtk_text_iter_inside_word"
   (** Determines whether the character pointed by [iter] is part of a
@@ -2175,9 +2324,10 @@ end = struct
       Word breaks are determined by Pango and should be correct for nearly any
       language.
 
-      Note that if [Gtk.TextIter.starts_word] returns [true], then this function
-      returns [true] too, since [iter] points to the first character of the
-      word. *)
+      Note that if
+      {{!Ocgtk.Raw.Text_iter.val-starts_word}[Gtk.TextIter.starts_word]} returns
+      [true], then this function returns [true] too, since [iter] points to the
+      first character of the word. *)
 
   external inside_sentence : t -> bool = "ml_gtk_text_iter_inside_sentence"
   (** Determines whether [iter] is inside a sentence (as opposed to in between
@@ -2196,23 +2346,26 @@ end = struct
   (** Returns [true] if [iter] points to a character that is part of a range
       tagged with [tag].
 
-      See also [Gtk.TextIter.starts_tag] and [Gtk.TextIter.ends_tag]. *)
+      See also {{!Ocgtk.Raw.Text_iter.val-starts_tag}[Gtk.TextIter.starts_tag]}
+      and {{!Ocgtk.Raw.Text_iter.val-ends_tag}[Gtk.TextIter.ends_tag]}. *)
 
   external get_visible_text : t -> t -> string
     = "ml_gtk_text_iter_get_visible_text"
   (** Returns visible text in the given range.
 
-      Like [Gtk.TextIter.get_text], but invisible text is not included.
-      Invisible text is usually invisible because a [GtkTextTag] with the
-      “invisible” attribute turned on has been applied to it. *)
+      Like {{!Ocgtk.Raw.Text_iter.val-get_text}[Gtk.TextIter.get_text]}, but
+      invisible text is not included. Invisible text is usually invisible
+      because a [GtkTextTag] with the “invisible” attribute turned on has been
+      applied to it. *)
 
   external get_visible_slice : t -> t -> string
     = "ml_gtk_text_iter_get_visible_slice"
   (** Returns visible text in the given range.
 
-      Like [Gtk.TextIter.get_slice], but invisible text is not included.
-      Invisible text is usually invisible because a [GtkTextTag] with the
-      “invisible” attribute turned on has been applied to it. *)
+      Like {{!Ocgtk.Raw.Text_iter.val-get_slice}[Gtk.TextIter.get_slice]}, but
+      invisible text is not included. Invisible text is usually invisible
+      because a [GtkTextTag] with the “invisible” attribute turned on has been
+      applied to it. *)
 
   external get_visible_line_offset : t -> int
     = "ml_gtk_text_iter_get_visible_line_offset"
@@ -2242,7 +2395,7 @@ end = struct
       If the range contains non-text elements such as images, the character and
       byte offsets in the returned string will not correspond to character and
       byte offsets in the buffer. If you want offsets to correspond, see
-      [Gtk.TextIter.get_slice]. *)
+      {{!Ocgtk.Raw.Text_iter.val-get_slice}[Gtk.TextIter.get_slice]}. *)
 
   external get_tags : t -> Text_tag.t list = "ml_gtk_text_iter_get_tags"
   (** Returns a list of tags that apply to [iter], in ascending order of
@@ -2274,8 +2427,9 @@ end = struct
   (** Returns the character offset of an iterator.
 
       Each character in a [GtkTextBuffer] has an offset, starting with 0 for the
-      first character in the buffer. Use [Gtk.TextBuffer.get_iter_at_offset] to
-      convert an offset back into an iterator. *)
+      first character in the buffer. Use
+      {{!Ocgtk.Raw.Text_buffer.val-get_iter_at_offset}[Gtk.TextBuffer.get_iter_at_offset]}
+      to convert an offset back into an iterator. *)
 
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
   [@@ocaml.doc
@@ -2340,7 +2494,9 @@ end = struct
 
   external forward_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_word_ends"
-  (** Calls [Gtk.TextIter.forward_word_end] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_word_end}[Gtk.TextIter.forward_word_end]}
+      up to [count] times. *)
 
   external forward_word_end : t -> bool = "ml_gtk_text_iter_forward_word_end"
   (** Moves forward to the next word end.
@@ -2353,7 +2509,9 @@ end = struct
 
   external forward_visible_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_visible_word_ends"
-  (** Calls [Gtk.TextIter.forward_visible_word_end] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_visible_word_end}[Gtk.TextIter.forward_visible_word_end]}
+      up to [count] times. *)
 
   external forward_visible_word_end : t -> bool
     = "ml_gtk_text_iter_forward_visible_word_end"
@@ -2390,13 +2548,17 @@ end = struct
     = "ml_gtk_text_iter_forward_visible_cursor_positions"
   (** Moves up to [count] visible cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_visible_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_visible_cursor_position"
   (** Moves [iter] forward to the next visible cursor position.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_to_tag_toggle : t -> Text_tag.t option -> bool
     = "ml_gtk_text_iter_forward_to_tag_toggle"
@@ -2425,12 +2587,14 @@ end = struct
   (** Moves [iter] forward to the “end iterator”, which points one past the last
       valid character in the buffer.
 
-      [Gtk.TextIter.get_char] called on the end iterator returns 0, which is
-      convenient for writing loops. *)
+      {{!Ocgtk.Raw.Text_iter.val-get_char}[Gtk.TextIter.get_char]} called on the
+      end iterator returns 0, which is convenient for writing loops. *)
 
   external forward_sentence_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_sentence_ends"
-  (** Calls [Gtk.TextIter.forward_sentence_end] [count] times.
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-forward_sentence_end}[Gtk.TextIter.forward_sentence_end]}
+      [count] times.
 
       If [count] is negative, moves backward instead of forward. *)
 
@@ -2481,7 +2645,9 @@ end = struct
     = "ml_gtk_text_iter_forward_cursor_positions"
   (** Moves up to [count] cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external forward_cursor_position : t -> bool
     = "ml_gtk_text_iter_forward_cursor_position"
@@ -2526,7 +2692,8 @@ end = struct
 
       This function is very fast; you can expect it to perform better than e.g.
       getting the character offset for each iterator and comparing the offsets
-      yourself. Also, it’s a bit faster than [Gtk.TextIter.compare]. *)
+      yourself. Also, it’s a bit faster than
+      {{!Ocgtk.Raw.Text_iter.val-compare}[Gtk.TextIter.compare]}. *)
 
   external ends_word : t -> bool = "ml_gtk_text_iter_ends_word"
   (** Determines whether [iter] ends a natural-language word.
@@ -2543,9 +2710,11 @@ end = struct
 
       Note that if this function returns [true], it means that [iter] is at the
       end of the tagged range, but that the character at [iter] is outside the
-      tagged range. In other words, unlike [Gtk.TextIter.starts_tag], if this
-      function returns [true], [Gtk.TextIter.has_tag] will return [false] for
-      the same parameters. *)
+      tagged range. In other words, unlike
+      {{!Ocgtk.Raw.Text_iter.val-starts_tag}[Gtk.TextIter.starts_tag]}, if this
+      function returns [true],
+      {{!Ocgtk.Raw.Text_iter.val-has_tag}[Gtk.TextIter.has_tag]} will return
+      [false] for the same parameters. *)
 
   external ends_sentence : t -> bool = "ml_gtk_text_iter_ends_sentence"
   (** Determines whether [iter] ends a sentence.
@@ -2577,7 +2746,8 @@ end = struct
       at [iter], because for insertion you don’t want to know whether the char
       at [iter] is inside an editable range, you want to know whether a new
       character inserted at [iter] would be inside an editable range. Use
-      [Gtk.TextIter.can_insert] to handle this case. *)
+      {{!Ocgtk.Raw.Text_iter.val-can_insert}[Gtk.TextIter.can_insert]} to handle
+      this case. *)
 
   external compare : t -> t -> int = "ml_gtk_text_iter_compare"
   (** A qsort()-style function that returns negative if [lhs] is less than
@@ -2591,13 +2761,16 @@ end = struct
       editability, determines whether text inserted at [iter] would be editable.
 
       If text inserted at [iter] would be editable then the user should be
-      allowed to insert text at [iter]. [Gtk.TextBuffer.insert_interactive] uses
-      this function to decide whether insertions are allowed at a given
+      allowed to insert text at [iter].
+      {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]}
+      uses this function to decide whether insertions are allowed at a given
       position. *)
 
   external backward_word_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_word_starts"
-  (** Calls [Gtk.TextIter.backward_word_start] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_word_start}[Gtk.TextIter.backward_word_start]}
+      up to [count] times. *)
 
   external backward_word_start : t -> bool
     = "ml_gtk_text_iter_backward_word_start"
@@ -2611,7 +2784,9 @@ end = struct
 
   external backward_visible_word_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_visible_word_starts"
-  (** Calls [Gtk.TextIter.backward_visible_word_start] up to [count] times. *)
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_visible_word_start}[Gtk.TextIter.backward_visible_word_start]}
+      up to [count] times. *)
 
   external backward_visible_word_start : t -> bool
     = "ml_gtk_text_iter_backward_visible_word_start"
@@ -2651,13 +2826,17 @@ end = struct
     = "ml_gtk_text_iter_backward_visible_cursor_positions"
   (** Moves up to [count] visible cursor positions.
 
-      See [Gtk.TextIter.backward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-backward_cursor_position}[Gtk.TextIter.backward_cursor_position]}
+      for details. *)
 
   external backward_visible_cursor_position : t -> bool
     = "ml_gtk_text_iter_backward_visible_cursor_position"
   (** Moves [iter] backward to the previous visible cursor position.
 
-      See [Gtk.TextIter.backward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-backward_cursor_position}[Gtk.TextIter.backward_cursor_position]}
+      for details. *)
 
   external backward_to_tag_toggle : t -> Text_tag.t option -> bool
     = "ml_gtk_text_iter_backward_to_tag_toggle"
@@ -2671,7 +2850,9 @@ end = struct
 
   external backward_sentence_starts : t -> int -> bool
     = "ml_gtk_text_iter_backward_sentence_starts"
-  (** Calls [Gtk.TextIter.backward_sentence_start] up to [count] times.
+  (** Calls
+      {{!Ocgtk.Raw.Text_iter.val-backward_sentence_start}[Gtk.TextIter.backward_sentence_start]}
+      up to [count] times.
 
       If [count] is negative, moves forward instead of backward. *)
 
@@ -2688,7 +2869,9 @@ end = struct
   external backward_search :
     t -> string -> Ocgtk_enums.textsearchflags -> t option -> bool * t * t
     = "ml_gtk_text_iter_backward_search"
-  (** Same as [Gtk.TextIter.forward_search], but moves backward.
+  (** Same as
+      {{!Ocgtk.Raw.Text_iter.val-forward_search}[Gtk.TextIter.forward_search]},
+      but moves backward.
 
       [match_end] will never be set to a [GtkTextIter] located after [iter],
       even if there is a possible [match_start] before or at [iter]. *)
@@ -2719,11 +2902,15 @@ end = struct
     = "ml_gtk_text_iter_backward_cursor_positions"
   (** Moves up to [count] cursor positions.
 
-      See [Gtk.TextIter.forward_cursor_position] for details. *)
+      See
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]}
+      for details. *)
 
   external backward_cursor_position : t -> bool
     = "ml_gtk_text_iter_backward_cursor_position"
-  (** Like [Gtk.TextIter.forward_cursor_position], but moves backward. *)
+  (** Like
+      {{!Ocgtk.Raw.Text_iter.val-forward_cursor_position}[Gtk.TextIter.forward_cursor_position]},
+      but moves backward. *)
 
   external backward_chars : t -> int -> bool = "ml_gtk_text_iter_backward_chars"
   (** Moves [count] characters backward, if possible.
@@ -2760,15 +2947,17 @@ and Text_mark : sig
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
   (** Creates a text mark.
 
-      Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [None],
-      the mark is anonymous; otherwise, the mark can be retrieved by name using
-      [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is
-      inserted at the mark’s current location, the mark will be moved to the
-      left of the newly-inserted text. If the mark has right gravity
-      ([left_gravity] = [false]), the mark will end up on the right of
-      newly-inserted text. The standard left-to-right cursor is a mark with
-      right gravity (when you type, the cursor stays on the right side of the
-      text you’re typing). *)
+      Add it to a buffer using
+      {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. If
+      [name] is [None], the mark is anonymous; otherwise, the mark can be
+      retrieved by name using
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]}. If a
+      mark has left gravity, and text is inserted at the mark’s current
+      location, the mark will be moved to the left of the newly-inserted text.
+      If the mark has right gravity ([left_gravity] = [false]), the mark will
+      end up on the right of newly-inserted text. The standard left-to-right
+      cursor is a mark with right gravity (when you type, the cursor stays on
+      the right side of the text you’re typing). *)
 
   (* Methods *)
 
@@ -2798,7 +2987,8 @@ and Text_mark : sig
   external get_deleted : t -> bool = "ml_gtk_text_mark_get_deleted"
   (** Returns [true] if the mark has been removed from its buffer.
 
-      See [Gtk.TextBuffer.add_mark] for a way to add it to a buffer again. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]} for a
+      way to add it to a buffer again. *)
 
   external get_buffer : t -> Text_buffer.t option
     = "ml_gtk_text_mark_get_buffer"
@@ -2815,15 +3005,17 @@ end = struct
   external new_ : string option -> bool -> t = "ml_gtk_text_mark_new"
   (** Creates a text mark.
 
-      Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [None],
-      the mark is anonymous; otherwise, the mark can be retrieved by name using
-      [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is
-      inserted at the mark’s current location, the mark will be moved to the
-      left of the newly-inserted text. If the mark has right gravity
-      ([left_gravity] = [false]), the mark will end up on the right of
-      newly-inserted text. The standard left-to-right cursor is a mark with
-      right gravity (when you type, the cursor stays on the right side of the
-      text you’re typing). *)
+      Add it to a buffer using
+      {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. If
+      [name] is [None], the mark is anonymous; otherwise, the mark can be
+      retrieved by name using
+      {{!Ocgtk.Raw.Text_buffer.val-get_mark}[Gtk.TextBuffer.get_mark]}. If a
+      mark has left gravity, and text is inserted at the mark’s current
+      location, the mark will be moved to the left of the newly-inserted text.
+      If the mark has right gravity ([left_gravity] = [false]), the mark will
+      end up on the right of newly-inserted text. The standard left-to-right
+      cursor is a mark with right gravity (when you type, the cursor stays on
+      the right side of the text you’re typing). *)
 
   (* Methods *)
 
@@ -2853,7 +3045,8 @@ end = struct
   external get_deleted : t -> bool = "ml_gtk_text_mark_get_deleted"
   (** Returns [true] if the mark has been removed from its buffer.
 
-      See [Gtk.TextBuffer.add_mark] for a way to add it to a buffer again. *)
+      See {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]} for a
+      way to add it to a buffer again. *)
 
   external get_buffer : t -> Text_buffer.t option
     = "ml_gtk_text_mark_get_buffer"

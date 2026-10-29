@@ -27,10 +27,13 @@ class type root_t =
 
     The obvious example of a [GtkRoot] is [GtkWindow].
 
-    To get the display to which a [GtkRoot] belongs, use [Gtk.Root.get_display].
+    To get the display to which a [GtkRoot] belongs, use
+    {{!Ocgtk.Root.class-type-root_t.method-get_display}[Gtk.Root.get_display]}.
 
     [GtkRoot] also maintains the location of keyboard focus inside its widget
-    hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus]. *)
+    hierarchy, with
+    {{!Ocgtk.Root.class-type-root_t.method-set_focus}[Gtk.Root.set_focus]} and
+    {{!Ocgtk.Root.class-type-root_t.method-get_focus}[Gtk.Root.get_focus]}. *)
 
 class root : Raw.Root.t -> root_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Root.t}. *)
@@ -45,10 +48,13 @@ class root : Raw.Root.t -> root_t
 
     The obvious example of a [GtkRoot] is [GtkWindow].
 
-    To get the display to which a [GtkRoot] belongs, use [Gtk.Root.get_display].
+    To get the display to which a [GtkRoot] belongs, use
+    {{!Ocgtk.Root.class-type-root_t.method-get_display}[Gtk.Root.get_display]}.
 
     [GtkRoot] also maintains the location of keyboard focus inside its widget
-    hierarchy, with [Gtk.Root.set_focus] and [Gtk.Root.get_focus]. *)
+    hierarchy, with
+    {{!Ocgtk.Root.class-type-root_t.method-set_focus}[Gtk.Root.set_focus]} and
+    {{!Ocgtk.Root.class-type-root_t.method-get_focus}[Gtk.Root.get_focus]}. *)
 
 (** {1:constructors Constructors} *)
 

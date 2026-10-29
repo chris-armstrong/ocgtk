@@ -16,15 +16,18 @@
     term.
 
     The strings are obtained from the items by evaluating an expression set with
-    [Gtk.StringFilter.set_expression], and they are compared against a search
-    term set with [Gtk.StringFilter.set_search].
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_expression}[Gtk.StringFilter.set_expression]},
+    and they are compared against a search term set with
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_search}[Gtk.StringFilter.set_search]}.
 
     [GtkStringFilter] has several different modes of comparison - it can match
     the whole string, just a prefix, or any substring. Use
-    [Gtk.StringFilter.set_match_mode] choose a mode.
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_match_mode}[Gtk.StringFilter.set_match_mode]}
+    choose a mode.
 
     It is also possible to make case-insensitive comparisons, with
-    [Gtk.StringFilter.set_ignore_case]. *)
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_ignore_case}[Gtk.StringFilter.set_ignore_case]}.
+*)
 class type string_filter_t = object
   inherit Filter.filter_t
 
@@ -72,15 +75,18 @@ class string_filter : Raw.String_filter.t -> string_filter_t
     term.
 
     The strings are obtained from the items by evaluating an expression set with
-    [Gtk.StringFilter.set_expression], and they are compared against a search
-    term set with [Gtk.StringFilter.set_search].
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_expression}[Gtk.StringFilter.set_expression]},
+    and they are compared against a search term set with
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_search}[Gtk.StringFilter.set_search]}.
 
     [GtkStringFilter] has several different modes of comparison - it can match
     the whole string, just a prefix, or any substring. Use
-    [Gtk.StringFilter.set_match_mode] choose a mode.
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_match_mode}[Gtk.StringFilter.set_match_mode]}
+    choose a mode.
 
     It is also possible to make case-insensitive comparisons, with
-    [Gtk.StringFilter.set_ignore_case]. *)
+    {{!Ocgtk.String_filter.class-type-string_filter_t.method-set_ignore_case}[Gtk.StringFilter.set_ignore_case]}.
+*)
 
 (** {1:constructors Constructors} *)
 

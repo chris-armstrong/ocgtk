@@ -31,7 +31,8 @@ external get_scope_id : t -> UInt32.t = "ml_g_inet_socket_address_get_scope_id"
     address.
 
     If not overridden this value will be inherited from
-    [Gio.InetSocketAddress:address]. *)
+    {{!Ocgio.Raw.Inet_socket_address.val-get_address}[Gio.InetSocketAddress:address]}.
+*)
 
 external get_port : t -> UInt16.t = "ml_g_inet_socket_address_get_port"
 (** Gets [address]'s port. *)
@@ -41,7 +42,8 @@ external get_flowinfo : t -> UInt32.t = "ml_g_inet_socket_address_get_flowinfo"
     address.
 
     If not overridden this value will be inherited from
-    [Gio.InetSocketAddress:address]. *)
+    {{!Ocgio.Raw.Inet_socket_address.val-get_address}[Gio.InetSocketAddress:address]}.
+*)
 
 external get_address : t -> Inet_address.t
   = "ml_g_inet_socket_address_get_address"

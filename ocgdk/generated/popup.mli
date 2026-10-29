@@ -17,7 +17,9 @@
     The [GdkPopup] is positioned relative to its parent surface.
 
     [GdkPopup]s are typically used to implement menus and similar popups. They
-    can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
+    can be modal, which is indicated by the
+    {{!Ocgdk.Popup.class-type-popup_t.method-get_autohide}[Gdk.Popup:autohide]}
+    property. *)
 class type popup_t = object
   (** {2:methods Methods} *)
 
@@ -77,7 +79,9 @@ class popup : Raw.Popup.t -> popup_t
     The [GdkPopup] is positioned relative to its parent surface.
 
     [GdkPopup]s are typically used to implement menus and similar popups. They
-    can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
+    can be modal, which is indicated by the
+    {{!Ocgdk.Popup.class-type-popup_t.method-get_autohide}[Gdk.Popup:autohide]}
+    property. *)
 
 (** {1:constructors Constructors} *)
 

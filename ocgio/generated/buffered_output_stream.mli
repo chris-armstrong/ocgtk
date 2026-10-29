@@ -23,15 +23,18 @@
 
     By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
 
-    To create a buffered output stream, use [Gio.BufferedOutputStream.new], or
-    [Gio.BufferedOutputStream.new_sized] to specify the buffer's size at
-    construction.
+    To create a buffered output stream, use
+    {{!Ocgio.Buffered_output_stream.val-new_}[Gio.BufferedOutputStream.new]}, or
+    {{!Ocgio.Buffered_output_stream.val-new_sized}[Gio.BufferedOutputStream.new_sized]}
+    to specify the buffer's size at construction.
 
     To get the size of a buffer within a buffered input stream, use
-    [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
-    output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
-    that the buffer's size cannot be reduced below the size of the data within
-    the buffer. *)
+    {{!Ocgio.Buffered_output_stream.class-type-buffered_output_stream_t.method-get_buffer_size}
+     [Gio.BufferedOutputStream.get_buffer_size]}. To change the size of a
+    buffered output stream's buffer, use
+    {{!Ocgio.Buffered_output_stream.class-type-buffered_output_stream_t.method-set_buffer_size}
+     [Gio.BufferedOutputStream.set_buffer_size]}. Note that the buffer's size
+    cannot be reduced below the size of the data within the buffer. *)
 class type buffered_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t
@@ -71,15 +74,18 @@ class buffered_output_stream :
 
     By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
 
-    To create a buffered output stream, use [Gio.BufferedOutputStream.new], or
-    [Gio.BufferedOutputStream.new_sized] to specify the buffer's size at
-    construction.
+    To create a buffered output stream, use
+    {{!Ocgio.Buffered_output_stream.val-new_}[Gio.BufferedOutputStream.new]}, or
+    {{!Ocgio.Buffered_output_stream.val-new_sized}[Gio.BufferedOutputStream.new_sized]}
+    to specify the buffer's size at construction.
 
     To get the size of a buffer within a buffered input stream, use
-    [Gio.BufferedOutputStream.get_buffer_size]. To change the size of a buffered
-    output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
-    that the buffer's size cannot be reduced below the size of the data within
-    the buffer. *)
+    {{!Ocgio.Buffered_output_stream.class-type-buffered_output_stream_t.method-get_buffer_size}
+     [Gio.BufferedOutputStream.get_buffer_size]}. To change the size of a
+    buffered output stream's buffer, use
+    {{!Ocgio.Buffered_output_stream.class-type-buffered_output_stream_t.method-set_buffer_size}
+     [Gio.BufferedOutputStream.set_buffer_size]}. Note that the buffer's size
+    cannot be reduced below the size of the data within the buffer. *)
 
 (** {1:constructors Constructors} *)
 

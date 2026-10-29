@@ -19,17 +19,21 @@
  resource base path (see [Gio.Application.set_resource_base_path]).\n\
  The menu with the ID \"menubar\" is taken as the application's\n\
  menubar. Additional menus (most interesting submenus) can be named\n\
- and accessed via [Gtk.Application.get_menu_by_id] which allows for\n\
+ and accessed via \
+ {{!Ocgtk.Raw.Application.val-get_menu_by_id}[Gtk.Application.get_menu_by_id]} \
+ which allows for\n\
  dynamic population of a part of the menu structure.\n\n\
  Note that automatic resource loading uses the resource base path\n\
  that is set at construction time and will not work if the resource\n\
  base path is changed at a later time.\n\n\
  It is also possible to provide the menubar manually using\n\
- [Gtk.Application.set_menubar].\n\n\
+ {{!Ocgtk.Raw.Application.val-set_menubar}[Gtk.Application.set_menubar]}.\n\n\
  [GtkApplication] will also automatically setup an icon search path for\n\
  the default icon theme by appending \"icons\" to the resource base\n\
  path. This allows your application to easily store its icons as\n\
- resources. See [Gtk.IconTheme.add_resource_path] for more\n\
+ resources. See \
+ {{!Ocgtk.Raw.Icon_theme.val-add_resource_path}[Gtk.IconTheme.add_resource_path]} \
+ for more\n\
  information.\n\n\
  If there is a resource located at [gtk/help-overlay.ui] which\n\
  defines a {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]} with ID \
@@ -42,7 +46,8 @@
  [win.show-help-overlay].\n\n\
  [GtkApplication] will also automatically set the application id as the\n\
  default window icon. Use [Gtk.Window.set_default_icon_name] or\n\
- [Gtk.Window:icon-name] to override that behavior.\n\n\
+ {{!Ocgtk.Raw.Window.val-get_icon_name}[Gtk.Window:icon-name]} to override \
+ that behavior.\n\n\
  {b A simple application}\n\n\
  {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/bp/bloatpad.c}A \
  simple example}\n\
@@ -50,7 +55,8 @@
  [GtkApplication] registers with a session manager if possible and\n\
  offers various functionality related to the session life-cycle.\n\n\
  An application can block various ways to end the session with\n\
- the [Gtk.Application.inhibit] function. Typical use cases for\n\
+ the {{!Ocgtk.Raw.Application.val-inhibit}[Gtk.Application.inhibit]} function. \
+ Typical use cases for\n\
  this kind of inhibiting are long-running, uninterruptible operations,\n\
  such as burning a CD or performing a disk backup. The session\n\
  manager may not honor the inhibitor, but it can be expected to\n\

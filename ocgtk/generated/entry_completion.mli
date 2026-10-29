@@ -26,9 +26,10 @@
     entry, [GtkEntryCompletion] checks which rows in the model match the current
     content of the entry, and displays a list of matches. By default, the
     matching is done by comparing the entry text case-insensitively against the
-    text column of the model (see [Gtk.EntryCompletion.set_text_column]), but
-    this can be overridden with a custom match function (see
-    [Gtk.EntryCompletion.set_match_func]).
+    text column of the model (see
+    {{!Ocgtk.Entry_completion.class-type-entry_completion_t.method-set_text_column}
+     [Gtk.EntryCompletion.set_text_column]}), but this can be overridden with a
+    custom match function (see [Gtk.EntryCompletion.set_match_func]).
 
     When the user selects a completion, the content of the entry is updated. By
     default, the content of the entry is replaced by the text column of the
@@ -37,7 +38,8 @@
     signal handler. Note that you should return [true] from the signal handler
     to suppress the default behaviour.
 
-    To add completion functionality to an entry, use [Gtk.Entry.set_completion].
+    To add completion functionality to an entry, use
+    {{!Ocgtk.Entry.class-type-entry_t.method-set_completion}[Gtk.Entry.set_completion]}.
 
     [GtkEntryCompletion] uses a
     {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t}[Gtk.TreeModelFilter]}
@@ -49,7 +51,8 @@
     [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally
     take the filter model as argument. As long as you are only calling
     [Gtk.TreeModel.get], this will make no difference to you. If for some
-    reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
+    reason, you need the original model, use
+    {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t.method-get_model}[Gtk.TreeModelFilter.get_model]}.
     Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
     obtain a matching iter. *)
 class type entry_completion_t = object
@@ -215,9 +218,10 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
     entry, [GtkEntryCompletion] checks which rows in the model match the current
     content of the entry, and displays a list of matches. By default, the
     matching is done by comparing the entry text case-insensitively against the
-    text column of the model (see [Gtk.EntryCompletion.set_text_column]), but
-    this can be overridden with a custom match function (see
-    [Gtk.EntryCompletion.set_match_func]).
+    text column of the model (see
+    {{!Ocgtk.Entry_completion.class-type-entry_completion_t.method-set_text_column}
+     [Gtk.EntryCompletion.set_text_column]}), but this can be overridden with a
+    custom match function (see [Gtk.EntryCompletion.set_match_func]).
 
     When the user selects a completion, the content of the entry is updated. By
     default, the content of the entry is replaced by the text column of the
@@ -226,7 +230,8 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
     signal handler. Note that you should return [true] from the signal handler
     to suppress the default behaviour.
 
-    To add completion functionality to an entry, use [Gtk.Entry.set_completion].
+    To add completion functionality to an entry, use
+    {{!Ocgtk.Entry.class-type-entry_t.method-set_completion}[Gtk.Entry.set_completion]}.
 
     [GtkEntryCompletion] uses a
     {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t}[Gtk.TreeModelFilter]}
@@ -238,7 +243,8 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
     [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally
     take the filter model as argument. As long as you are only calling
     [Gtk.TreeModel.get], this will make no difference to you. If for some
-    reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
+    reason, you need the original model, use
+    {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t.method-get_model}[Gtk.TreeModelFilter.get_model]}.
     Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
     obtain a matching iter. *)
 

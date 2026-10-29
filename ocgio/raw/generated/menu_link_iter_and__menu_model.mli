@@ -95,9 +95,12 @@ end
     {{!Ocgio.Raw.D_bus_menu_model}[Gio.DBusMenuModel]}.
 
     The API of [GMenuModel] is very generic, with iterators for the attributes
-    and links of an item, see [Gio.MenuModel.iterate_item_attributes] and
-    [Gio.MenuModel.iterate_item_links]. The ‘standard’ attributes and link types
-    have predefined names: [G_MENU_ATTRIBUTE_LABEL], [G_MENU_ATTRIBUTE_ACTION],
+    and links of an item, see
+    {{!Ocgio.Raw.Menu_model.val-iterate_item_attributes}[Gio.MenuModel.iterate_item_attributes]}
+    and
+    {{!Ocgio.Raw.Menu_model.val-iterate_item_links}[Gio.MenuModel.iterate_item_links]}.
+    The ‘standard’ attributes and link types have predefined names:
+    [G_MENU_ATTRIBUTE_LABEL], [G_MENU_ATTRIBUTE_ACTION],
     [G_MENU_ATTRIBUTE_TARGET], [G_MENU_LINK_SECTION] and [G_MENU_LINK_SUBMENU].
 
     Items in a [GMenuModel] represent active controls if they refer to an action

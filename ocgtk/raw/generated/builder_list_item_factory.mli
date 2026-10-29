@@ -4,7 +4,8 @@
 [@@@ocaml.text
 "Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
  The templates must extend the class that the parent widget expects.\n\
- For example, a factory provided to [Gtk.ListView:factory] must have\n\
+ For example, a factory provided to \
+ {{!Ocgtk.Raw.List_view.val-get_factory}[Gtk.ListView:factory]} must have\n\
  a template that extends {{!Ocgtk.Raw.List_item}[Gtk.ListItem]}.\n\n\
  Templates typically use {{!Ocgtk.Raw.Expression}[Gtk.Expression]} to obtain \
  data from the items\n\

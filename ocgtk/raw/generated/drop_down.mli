@@ -4,23 +4,27 @@
 [@@@ocaml.text
 "Allows the user to choose an item from a list of options.\n\n\
  An example GtkDropDown\n\n\
- The [GtkDropDown] displays the \\[selected\\][Gtk.DropDown:selected]\n\
+ The [GtkDropDown] displays the \
+ \\[selected\\]{{!Ocgtk.Raw.Drop_down.val-get_selected}[Gtk.DropDown:selected]}\n\
  choice.\n\n\
  The options are given to [GtkDropDown] in the form of [GListModel]\n\
  and how the individual options are represented is determined by\n\
  a {{!Ocgtk.Raw.List_item_factory}[Gtk.ListItemFactory]}. The default factory \
  displays simple strings,\n\
  and adds a checkmark to the selected item in the popup.\n\n\
- To set your own factory, use [Gtk.DropDown.set_factory]. It is\n\
+ To set your own factory, use \
+ {{!Ocgtk.Raw.Drop_down.val-set_factory}[Gtk.DropDown.set_factory]}. It is\n\
  possible to use a separate factory for the items in the popup, with\n\
- [Gtk.DropDown.set_list_factory].\n\n\
+ {{!Ocgtk.Raw.Drop_down.val-set_list_factory}[Gtk.DropDown.set_list_factory]}.\n\n\
  [GtkDropDown] knows how to obtain strings from the items in a\n\
  {{!Ocgtk.Raw.String_list}[Gtk.StringList]}; for other models, you have to \
  provide an expression\n\
- to find the strings via [Gtk.DropDown.set_expression].\n\n\
+ to find the strings via \
+ {{!Ocgtk.Raw.Drop_down.val-set_expression}[Gtk.DropDown.set_expression]}.\n\n\
  [GtkDropDown] can optionally allow search in the popup, which is\n\
  useful if the list of options is long. To enable the search entry,\n\
- use [Gtk.DropDown.set_enable_search].\n\n\
+ use \
+ {{!Ocgtk.Raw.Drop_down.val-set_enable_search}[Gtk.DropDown.set_enable_search]}.\n\n\
  Here is a UI definition example for [GtkDropDown] with a simple model:\n\n\
  {[\n\
  <object class=\"GtkDropDown\">\n\
@@ -36,16 +40,19 @@
  </object>\n\
  ]}\n\n\
  If a [GtkDropDown] is created in this manner, or with\n\
- [Gtk.DropDown.new_from_strings], for instance, the object returned from\n\
- [Gtk.DropDown.get_selected_item] will be a \
- {{!Ocgtk.Raw.String_object}[Gtk.StringObject]}.\n\n\
+ {{!Ocgtk.Raw.Drop_down.val-new_from_strings}[Gtk.DropDown.new_from_strings]}, \
+ for instance, the object returned from\n\
+ {{!Ocgtk.Raw.Drop_down.val-get_selected_item}[Gtk.DropDown.get_selected_item]} \
+ will be a {{!Ocgtk.Raw.String_object}[Gtk.StringObject]}.\n\n\
  To learn more about the list widget framework, see the\n\
  overview.\n\n\
  {b CSS nodes}\n\n\
  [GtkDropDown] has a single CSS node with name dropdown,\n\
  with the button and popover nodes as children.\n\n\
  {b Accessibility}\n\n\
- [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role.\n\n\
+ [GtkDropDown] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-COMBO_BOX}[Gtk.AccessibleRole.combo_box]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Drop_down}."]
 
 type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
@@ -56,8 +63,9 @@ external new_ : Ocgio_raw.List_model.t option -> Expression.t option -> t
   = "ml_gtk_drop_down_new"
 (** Creates a new [GtkDropDown].
 
-    You may want to call [Gtk.DropDown.set_factory] to set up a way to map its
-    items to widgets. *)
+    You may want to call
+    {{!Ocgtk.Raw.Drop_down.val-set_factory}[Gtk.DropDown.set_factory]} to set up
+    a way to map its items to widgets. *)
 
 external new_from_strings : string array -> t
   = "ml_gtk_drop_down_new_from_strings"
@@ -105,7 +113,9 @@ external set_enable_search : t -> bool -> unit
 (** Sets whether a search entry will be shown in the popup that allows to search
     for items in the list.
 
-    Note that [Gtk.DropDown:expression] must be set for search to work. *)
+    Note that
+    {{!Ocgtk.Raw.Drop_down.val-get_expression}[Gtk.DropDown:expression]} must be
+    set for search to work. *)
 
 external get_show_arrow : t -> bool = "ml_gtk_drop_down_get_show_arrow"
 (** Returns whether to show an arrow within the widget. *)
@@ -141,13 +151,15 @@ external get_factory : t -> List_item_factory.t option
 
     The factory returned by this function is always used for the item in the
     button. It is also used for items in the popup if
-    [Gtk.DropDown:list-factory] is not set. *)
+    {{!Ocgtk.Raw.Drop_down.val-get_list_factory}[Gtk.DropDown:list-factory]} is
+    not set. *)
 
 external get_expression : t -> Expression.t option
   = "ml_gtk_drop_down_get_expression"
 (** Gets the expression set that is used to obtain strings from items.
 
-    See [Gtk.DropDown.set_expression]. *)
+    See
+    {{!Ocgtk.Raw.Drop_down.val-set_expression}[Gtk.DropDown.set_expression]}. *)
 
 external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 (** Returns whether search is enabled. *)

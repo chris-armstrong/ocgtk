@@ -188,7 +188,8 @@ end
      that this framebuffer is the default GL rendering target when rendering.\n\
      The completed rendering is integrated into the larger GTK scene graph as\n\
      a texture.\n\n\
-     In order to draw, you have to connect to the [Gtk.GLArea::render]\n\
+     In order to draw, you have to connect to the \
+     {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_render}[Gtk.GLArea::render]}\n\
      signal, or subclass [GtkGLArea] and override the GtkGLAreaClass.render\n\
      virtual function.\n\n\
      The [GtkGLArea] widget ensures that the [GdkGLContext] is associated with\n\
@@ -196,7 +197,9 @@ end
      position of the drawing area changes.\n\n\
      {b Drawing with GtkGLArea}\n\n\
      The simplest way to draw using OpenGL commands in a [GtkGLArea] is to\n\
-     create a widget instance and connect to the [Gtk.GLArea::render] signal:\n\n\
+     create a widget instance and connect to the \
+     {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_render}[Gtk.GLArea::render]} \
+     signal:\n\n\
      The [render()] function will be called when the [GtkGLArea] is ready\n\
      for you to draw its content:\n\n\
      The initial contents of the framebuffer are transparent.\n\n\
@@ -233,10 +236,15 @@ end
      }\n\
      ]}\n\n\
      If you need to initialize OpenGL state, e.g. buffer objects or\n\
-     shaders, you should use the [Gtk.Widget::realize] signal;\n\
-     you can use the [Gtk.Widget::unrealize] signal to clean up.\n\
+     shaders, you should use the \
+     {{!Ocgtk.Widget.class-type-widget_t.method-on_realize}[Gtk.Widget::realize]} \
+     signal;\n\
+     you can use the \
+     {{!Ocgtk.Widget.class-type-widget_t.method-on_unrealize}[Gtk.Widget::unrealize]} \
+     signal to clean up.\n\
      Since the [GdkGLContext] creation and initialization may fail, you\n\
-     will need to check for errors, using [Gtk.GLArea.get_error].\n\n\
+     will need to check for errors, using \
+     {{!Ocgtk.Gl_area.class-type-gl_area_t.method-get_error}[Gtk.GLArea.get_error]}.\n\n\
      An example of how to safely initialize the GL state is:\n\n\
      {[\n\
      static void\n\
@@ -271,7 +279,9 @@ end
      }\n\
      ]}\n\n\
      If you need to change the options for creating the [GdkGLContext]\n\
-     you should use the [Gtk.GLArea::create-context] signal."]
+     you should use the \
+     {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_create_context}[Gtk.GLArea::create-context]} \
+     signal."]
 
 class gl_area : Raw.Gl_area.t -> gl_area_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gl_area.t}. *)
@@ -287,7 +297,8 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
  that this framebuffer is the default GL rendering target when rendering.\n\
  The completed rendering is integrated into the larger GTK scene graph as\n\
  a texture.\n\n\
- In order to draw, you have to connect to the [Gtk.GLArea::render]\n\
+ In order to draw, you have to connect to the \
+ {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_render}[Gtk.GLArea::render]}\n\
  signal, or subclass [GtkGLArea] and override the GtkGLAreaClass.render\n\
  virtual function.\n\n\
  The [GtkGLArea] widget ensures that the [GdkGLContext] is associated with\n\
@@ -295,7 +306,9 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
  position of the drawing area changes.\n\n\
  {b Drawing with GtkGLArea}\n\n\
  The simplest way to draw using OpenGL commands in a [GtkGLArea] is to\n\
- create a widget instance and connect to the [Gtk.GLArea::render] signal:\n\n\
+ create a widget instance and connect to the \
+ {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_render}[Gtk.GLArea::render]} \
+ signal:\n\n\
  The [render()] function will be called when the [GtkGLArea] is ready\n\
  for you to draw its content:\n\n\
  The initial contents of the framebuffer are transparent.\n\n\
@@ -332,10 +345,15 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
  }\n\
  ]}\n\n\
  If you need to initialize OpenGL state, e.g. buffer objects or\n\
- shaders, you should use the [Gtk.Widget::realize] signal;\n\
- you can use the [Gtk.Widget::unrealize] signal to clean up.\n\
+ shaders, you should use the \
+ {{!Ocgtk.Widget.class-type-widget_t.method-on_realize}[Gtk.Widget::realize]} \
+ signal;\n\
+ you can use the \
+ {{!Ocgtk.Widget.class-type-widget_t.method-on_unrealize}[Gtk.Widget::unrealize]} \
+ signal to clean up.\n\
  Since the [GdkGLContext] creation and initialization may fail, you\n\
- will need to check for errors, using [Gtk.GLArea.get_error].\n\n\
+ will need to check for errors, using \
+ {{!Ocgtk.Gl_area.class-type-gl_area_t.method-get_error}[Gtk.GLArea.get_error]}.\n\n\
  An example of how to safely initialize the GL state is:\n\n\
  {[\n\
  static void\n\
@@ -370,7 +388,9 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
  }\n\
  ]}\n\n\
  If you need to change the options for creating the [GdkGLContext]\n\
- you should use the [Gtk.GLArea::create-context] signal."]
+ you should use the \
+ {{!Ocgtk.Gl_area.class-type-gl_area_t.method-on_create_context}[Gtk.GLArea::create-context]} \
+ signal."]
 
 (** {1:constructors Constructors} *)
 
