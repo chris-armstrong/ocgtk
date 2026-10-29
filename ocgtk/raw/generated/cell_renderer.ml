@@ -237,7 +237,9 @@ external activate :
 
 external set_cell_background : t -> string -> unit
   = "ml_gtk_cell_renderer_set_cell_background"
-(** Set property: cell-background *)
+(** Set property: [cell-background] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background.html}upstream
+     docs}. *)
 
 external get_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_get_cell_background_rgba"
@@ -249,58 +251,94 @@ external set_cell_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
 
 external get_cell_background_set : t -> bool
   = "ml_gtk_cell_renderer_get_cell_background_set"
-(** Get property: cell-background-set *)
+(** Get property: [cell-background-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background-set.html}upstream
+     docs}. *)
 
 external set_cell_background_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_set_cell_background_set"
-(** Set property: cell-background-set *)
+(** Set property: [cell-background-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background-set.html}upstream
+     docs}. *)
 
 external get_editing : t -> bool = "ml_gtk_cell_renderer_get_editing"
-(** Get property: editing *)
+(** Get property: [editing] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.editing.html}upstream
+     docs}. *)
 
 external get_height : t -> int = "ml_gtk_cell_renderer_get_height"
-(** Get property: height *)
+(** Get property: [height] ([gint], default [-1]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.height.html}upstream
+     docs}. *)
 
 external set_height : t -> int -> unit = "ml_gtk_cell_renderer_set_height"
-(** Set property: height *)
+(** Set property: [height] ([gint], default [-1]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.height.html}upstream
+     docs}. *)
 
 external get_mode : t -> Ocgtk_enums.cellrenderermode
   = "ml_gtk_cell_renderer_get_mode"
-(** Get property: mode *)
+(** Get property: [mode] ([CellRendererMode], default
+    [GTK_CELL_RENDERER_MODE_INERT]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.mode.html}upstream docs}.
+*)
 
 external set_mode : t -> Ocgtk_enums.cellrenderermode -> unit
   = "ml_gtk_cell_renderer_set_mode"
-(** Set property: mode *)
+(** Set property: [mode] ([CellRendererMode], default
+    [GTK_CELL_RENDERER_MODE_INERT]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.mode.html}upstream docs}.
+*)
 
 external get_width : t -> int = "ml_gtk_cell_renderer_get_width"
-(** Get property: width *)
+(** Get property: [width] ([gint], default [-1]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.width.html}upstream docs}.
+*)
 
 external set_width : t -> int -> unit = "ml_gtk_cell_renderer_set_width"
-(** Set property: width *)
+(** Set property: [width] ([gint], default [-1]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.width.html}upstream docs}.
+*)
 
 external get_xalign : t -> float = "ml_gtk_cell_renderer_get_xalign"
-(** Get property: xalign *)
+(** Get property: [xalign] ([gfloat], default [0.500000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.xalign.html}upstream
+     docs}. *)
 
 external set_xalign : t -> float -> unit = "ml_gtk_cell_renderer_set_xalign"
-(** Set property: xalign *)
+(** Set property: [xalign] ([gfloat], default [0.500000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.xalign.html}upstream
+     docs}. *)
 
 external get_xpad : t -> int = "ml_gtk_cell_renderer_get_xpad"
-(** Get property: xpad *)
+(** Get property: [xpad] ([guint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.xpad.html}upstream docs}.
+*)
 
 external set_xpad : t -> int -> unit = "ml_gtk_cell_renderer_set_xpad"
-(** Set property: xpad *)
+(** Set property: [xpad] ([guint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.xpad.html}upstream docs}.
+*)
 
 external get_yalign : t -> float = "ml_gtk_cell_renderer_get_yalign"
-(** Get property: yalign *)
+(** Get property: [yalign] ([gfloat], default [0.500000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.yalign.html}upstream
+     docs}. *)
 
 external set_yalign : t -> float -> unit = "ml_gtk_cell_renderer_set_yalign"
-(** Set property: yalign *)
+(** Set property: [yalign] ([gfloat], default [0.500000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.yalign.html}upstream
+     docs}. *)
 
 external get_ypad : t -> int = "ml_gtk_cell_renderer_get_ypad"
-(** Get property: ypad *)
+(** Get property: [ypad] ([guint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.ypad.html}upstream docs}.
+*)
 
 external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
-(** Set property: ypad *)
+(** Set property: [ypad] ([guint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRenderer.ypad.html}upstream docs}.
+*)
 
 let on_editing_canceled ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"editing-canceled" ~callback

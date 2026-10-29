@@ -194,7 +194,9 @@ class type cell_renderer_t = object
   (** {2:properties Properties} *)
 
   method set_cell_background : string -> unit
-  (** Set property: cell-background *)
+  (** Set property: [cell-background] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background.html}upstream
+       docs}. *)
 
   method cell_background_rgba : Ocgdk.Rgb_a.rgb_a_t
   (** Cell background as a [GdkRGBA] *)
@@ -203,55 +205,91 @@ class type cell_renderer_t = object
   (** Cell background as a [GdkRGBA] *)
 
   method cell_background_set : bool
-  (** Get property: cell-background-set *)
+  (** Get property: [cell-background-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background-set.html}upstream
+       docs}. *)
 
   method set_cell_background_set : bool -> unit
-  (** Set property: cell-background-set *)
+  (** Set property: [cell-background-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.cell-background-set.html}upstream
+       docs}. *)
 
   method editing : bool
-  (** Get property: editing *)
+  (** Get property: [editing] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.editing.html}upstream
+       docs}. *)
 
   method height : int
-  (** Get property: height *)
+  (** Get property: [height] ([gint], default [-1]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.height.html}upstream
+       docs}. *)
 
   method set_height : int -> unit
-  (** Set property: height *)
+  (** Set property: [height] ([gint], default [-1]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.height.html}upstream
+       docs}. *)
 
   method mode : Enums.cellrenderermode
-  (** Get property: mode *)
+  (** Get property: [mode] ([CellRendererMode], default
+      [GTK_CELL_RENDERER_MODE_INERT]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.mode.html}upstream
+       docs}. *)
 
   method set_mode : Enums.cellrenderermode -> unit
-  (** Set property: mode *)
+  (** Set property: [mode] ([CellRendererMode], default
+      [GTK_CELL_RENDERER_MODE_INERT]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.mode.html}upstream
+       docs}. *)
 
   method width : int
-  (** Get property: width *)
+  (** Get property: [width] ([gint], default [-1]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.width.html}upstream
+       docs}. *)
 
   method set_width : int -> unit
-  (** Set property: width *)
+  (** Set property: [width] ([gint], default [-1]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.width.html}upstream
+       docs}. *)
 
   method xalign : float
-  (** Get property: xalign *)
+  (** Get property: [xalign] ([gfloat], default [0.500000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.xalign.html}upstream
+       docs}. *)
 
   method set_xalign : float -> unit
-  (** Set property: xalign *)
+  (** Set property: [xalign] ([gfloat], default [0.500000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.xalign.html}upstream
+       docs}. *)
 
   method xpad : int
-  (** Get property: xpad *)
+  (** Get property: [xpad] ([guint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.xpad.html}upstream
+       docs}. *)
 
   method set_xpad : int -> unit
-  (** Set property: xpad *)
+  (** Set property: [xpad] ([guint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.xpad.html}upstream
+       docs}. *)
 
   method yalign : float
-  (** Get property: yalign *)
+  (** Get property: [yalign] ([gfloat], default [0.500000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.yalign.html}upstream
+       docs}. *)
 
   method set_yalign : float -> unit
-  (** Set property: yalign *)
+  (** Set property: [yalign] ([gfloat], default [0.500000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.yalign.html}upstream
+       docs}. *)
 
   method ypad : int
-  (** Get property: ypad *)
+  (** Get property: [ypad] ([guint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.ypad.html}upstream
+       docs}. *)
 
   method set_ypad : int -> unit
-  (** Set property: ypad *)
+  (** Set property: [ypad] ([guint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRenderer.ypad.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 

@@ -162,24 +162,70 @@ let test_constructor_null_on_error_plain () =
     (Entity_doc.constructor ~refs:(no_links "Gtk") ~class_name:"Button"
        (ctor ~ctor_doc:"Returns them, or %NULL on error." ()))
 
-let label_property ?prop_doc () =
+let label_property ?prop_doc ?prop_default ?construct_only () =
   Type_factory.make_gir_property ~prop_name:"label"
     ~prop_type:(Type_factory.make_gir_type ~name:"utf8" ~c_type:"gchar*" ())
-    ~readable:true ~writable:true ?prop_doc ()
+    ~readable:true ~writable:true ?prop_doc ?prop_default ?construct_only ()
+
+let property_doc ?(namespace = "Gtk") accessor prop =
+  text
+    (Entity_doc.property ~refs:(no_links namespace) ~class_name:"Button"
+       ~accessor prop)
+
+let check_accessors msg ~getter ~setter ?namespace prop =
+  Alcotest.(check string)
+    (msg ^ " (getter)") getter
+    (property_doc ?namespace Entity_doc.Getter prop);
+  Alcotest.(check string)
+    (msg ^ " (setter)") setter
+    (property_doc ?namespace Entity_doc.Setter prop)
+
+let upstream =
+  "{{:https://docs.gtk.org/gtk4/property.Button.label.html}upstream docs}"
 
 let test_property_gir_doc_on_both_accessors () =
-  let prop = label_property ~prop_doc:"Text of the label." () in
-  check_text "getter" "(** Text of the label. *)"
-    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Getter prop);
-  check_text "setter" "(** Text of the label. *)"
-    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Setter prop)
+  check_accessors "the property doc" ~getter:"(** Text of the label. *)"
+    ~setter:"(** Text of the label. *)"
+    (label_property ~prop_doc:"Text of the label." ())
 
 let test_property_fallback () =
-  let prop = label_property () in
-  check_text "getter" "(** Get property: label *)"
-    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Getter prop);
-  check_text "setter" "(** Set property: label *)"
-    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Setter prop)
+  check_accessors "type and upstream link"
+    ~getter:("(** Get property: [label] ([utf8]). See " ^ upstream ^ ". *)")
+    ~setter:("(** Set property: [label] ([utf8]). See " ^ upstream ^ ". *)")
+    (label_property ())
+
+let test_property_fallback_default () =
+  check_accessors "a C value default, as is"
+    ~getter:
+      ("(** Get property: [label] ([utf8], default [GTK_LABEL_NONE]). See "
+     ^ upstream ^ ". *)")
+    ~setter:
+      ("(** Set property: [label] ([utf8], default [GTK_LABEL_NONE]). See "
+     ^ upstream ^ ". *)")
+    (label_property ~prop_default:"GTK_LABEL_NONE" ());
+  Alcotest.(check string)
+    "C literals as the bindings spell them"
+    ("(** Get property: [label] ([utf8], default [None]). See " ^ upstream
+   ^ ". *)")
+    (property_doc Entity_doc.Getter (label_property ~prop_default:"NULL" ()));
+  Alcotest.(check string)
+    "a default that does not fit in a code span"
+    ("(** Get property: [label] ([utf8], default a\\]b). See " ^ upstream
+   ^ ". *)")
+    (property_doc Entity_doc.Getter (label_property ~prop_default:"a]b" ()))
+
+let test_property_fallback_without_upstream_site () =
+  check_accessors "no gi-docgen site, no link"
+    ~getter:"(** Get property: [label] ([utf8]). *)"
+    ~setter:"(** Set property: [label] ([utf8]). *)" ~namespace:"cairo"
+    (label_property ())
+
+let test_property_fallback_construct_only () =
+  Alcotest.(check string)
+    "says so"
+    ("(** Set property: [label] ([utf8]). Construct-only. See " ^ upstream
+   ^ ". *)")
+    (property_doc Entity_doc.Setter (label_property ~construct_only:true ()))
 
 let test_l1_module_points_to_layer2 () =
   check_text "class doc, then the layer 2 module"
@@ -420,6 +466,13 @@ let tests =
       `Quick,
       test_property_gir_doc_on_both_accessors );
     ("property fallback", `Quick, test_property_fallback);
+    ("property fallback default", `Quick, test_property_fallback_default);
+    ( "property fallback without upstream site",
+      `Quick,
+      test_property_fallback_without_upstream_site );
+    ( "property fallback construct-only",
+      `Quick,
+      test_property_fallback_construct_only );
     ( "layer 2 signature carries property docs",
       `Quick,
       test_signature_carries_property_docs );

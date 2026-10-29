@@ -43,11 +43,15 @@ external set_fixed_height_from_font : t -> int -> unit
 (* Properties *)
 
 external get_align_set : t -> bool = "ml_gtk_cell_renderer_text_get_align_set"
-(** Get property: align-set *)
+(** Get property: [align-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.align-set.html}upstream
+     docs}. *)
 
 external set_align_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_align_set"
-(** Set property: align-set *)
+(** Set property: [align-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.align-set.html}upstream
+     docs}. *)
 
 external get_alignment : t -> Ocpango_enums.alignment
   = "ml_gtk_cell_renderer_text_get_alignment"
@@ -67,15 +71,21 @@ external set_alignment : t -> Ocpango_enums.alignment -> unit
 
 external get_attributes : t -> Ocpango_raw.Attr_list.t
   = "ml_gtk_cell_renderer_text_get_attributes"
-(** Get property: attributes *)
+(** Get property: [attributes] ([Pango.AttrList]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.attributes.html}upstream
+     docs}. *)
 
 external set_attributes : t -> Ocpango_raw.Attr_list.t -> unit
   = "ml_gtk_cell_renderer_text_set_attributes"
-(** Set property: attributes *)
+(** Set property: [attributes] ([Pango.AttrList]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.attributes.html}upstream
+     docs}. *)
 
 external set_background : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_background"
-(** Set property: background *)
+(** Set property: [background] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.background.html}upstream
+     docs}. *)
 
 external get_background_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_background_rgba"
@@ -87,26 +97,38 @@ external set_background_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
 
 external get_background_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_background_set"
-(** Get property: background-set *)
+(** Get property: [background-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.background-set.html}upstream
+     docs}. *)
 
 external set_background_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_background_set"
-(** Set property: background-set *)
+(** Set property: [background-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.background-set.html}upstream
+     docs}. *)
 
 external get_editable : t -> bool = "ml_gtk_cell_renderer_text_get_editable"
-(** Get property: editable *)
+(** Get property: [editable] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable.html}upstream
+     docs}. *)
 
 external set_editable : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_editable"
-(** Set property: editable *)
+(** Set property: [editable] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable.html}upstream
+     docs}. *)
 
 external get_editable_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_editable_set"
-(** Get property: editable-set *)
+(** Get property: [editable-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable-set.html}upstream
+     docs}. *)
 
 external set_editable_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_editable_set"
-(** Set property: editable-set *)
+(** Set property: [editable-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable-set.html}upstream
+     docs}. *)
 
 external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_cell_renderer_text_get_ellipsize"
@@ -124,43 +146,65 @@ external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
 
 external get_ellipsize_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_ellipsize_set"
-(** Get property: ellipsize-set *)
+(** Get property: [ellipsize-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.ellipsize-set.html}upstream
+     docs}. *)
 
 external set_ellipsize_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_ellipsize_set"
-(** Set property: ellipsize-set *)
+(** Set property: [ellipsize-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.ellipsize-set.html}upstream
+     docs}. *)
 
 external get_family : t -> string = "ml_gtk_cell_renderer_text_get_family"
-(** Get property: family *)
+(** Get property: [family] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.family.html}upstream
+     docs}. *)
 
 external set_family : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_family"
-(** Set property: family *)
+(** Set property: [family] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.family.html}upstream
+     docs}. *)
 
 external get_family_set : t -> bool = "ml_gtk_cell_renderer_text_get_family_set"
-(** Get property: family-set *)
+(** Get property: [family-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.family-set.html}upstream
+     docs}. *)
 
 external set_family_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_family_set"
-(** Set property: family-set *)
+(** Set property: [family-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.family-set.html}upstream
+     docs}. *)
 
 external get_font : t -> string = "ml_gtk_cell_renderer_text_get_font"
-(** Get property: font *)
+(** Get property: [font] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.font.html}upstream
+     docs}. *)
 
 external set_font : t -> string -> unit = "ml_gtk_cell_renderer_text_set_font"
-(** Set property: font *)
+(** Set property: [font] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.font.html}upstream
+     docs}. *)
 
 external get_font_desc : t -> Ocpango_raw.Font_description.t
   = "ml_gtk_cell_renderer_text_get_font_desc"
-(** Get property: font-desc *)
+(** Get property: [font-desc] ([Pango.FontDescription]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.font-desc.html}upstream
+     docs}. *)
 
 external set_font_desc : t -> Ocpango_raw.Font_description.t -> unit
   = "ml_gtk_cell_renderer_text_set_font_desc"
-(** Set property: font-desc *)
+(** Set property: [font-desc] ([Pango.FontDescription]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.font-desc.html}upstream
+     docs}. *)
 
 external set_foreground : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_foreground"
-(** Set property: foreground *)
+(** Set property: [foreground] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground.html}upstream
+     docs}. *)
 
 external get_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t
   = "ml_gtk_cell_renderer_text_get_foreground_rgba"
@@ -172,30 +216,44 @@ external set_foreground_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
 
 external get_foreground_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_foreground_set"
-(** Get property: foreground-set *)
+(** Get property: [foreground-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground-set.html}upstream
+     docs}. *)
 
 external set_foreground_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_foreground_set"
-(** Set property: foreground-set *)
+(** Set property: [foreground-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground-set.html}upstream
+     docs}. *)
 
 external get_language : t -> string = "ml_gtk_cell_renderer_text_get_language"
-(** Get property: language *)
+(** Get property: [language] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.language.html}upstream
+     docs}. *)
 
 external set_language : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_language"
-(** Set property: language *)
+(** Set property: [language] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.language.html}upstream
+     docs}. *)
 
 external get_language_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_language_set"
-(** Get property: language-set *)
+(** Get property: [language-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.language-set.html}upstream
+     docs}. *)
 
 external set_language_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_language_set"
-(** Set property: language-set *)
+(** Set property: [language-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.language-set.html}upstream
+     docs}. *)
 
 external set_markup : t -> string -> unit
   = "ml_gtk_cell_renderer_text_set_markup"
-(** Set property: markup *)
+(** Set property: [markup] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.markup.html}upstream
+     docs}. *)
 
 external get_max_width_chars : t -> int
   = "ml_gtk_cell_renderer_text_get_max_width_chars"
@@ -228,157 +286,247 @@ external set_placeholder_text : t -> string -> unit
     [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
 external get_rise : t -> int = "ml_gtk_cell_renderer_text_get_rise"
-(** Get property: rise *)
+(** Get property: [rise] ([gint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise.html}upstream
+     docs}. *)
 
 external set_rise : t -> int -> unit = "ml_gtk_cell_renderer_text_set_rise"
-(** Set property: rise *)
+(** Set property: [rise] ([gint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise.html}upstream
+     docs}. *)
 
 external get_rise_set : t -> bool = "ml_gtk_cell_renderer_text_get_rise_set"
-(** Get property: rise-set *)
+(** Get property: [rise-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise-set.html}upstream
+     docs}. *)
 
 external set_rise_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_rise_set"
-(** Set property: rise-set *)
+(** Set property: [rise-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise-set.html}upstream
+     docs}. *)
 
 external get_scale : t -> float = "ml_gtk_cell_renderer_text_get_scale"
-(** Get property: scale *)
+(** Get property: [scale] ([gdouble], default [1.000000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale.html}upstream
+     docs}. *)
 
 external set_scale : t -> float -> unit = "ml_gtk_cell_renderer_text_set_scale"
-(** Set property: scale *)
+(** Set property: [scale] ([gdouble], default [1.000000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale.html}upstream
+     docs}. *)
 
 external get_scale_set : t -> bool = "ml_gtk_cell_renderer_text_get_scale_set"
-(** Get property: scale-set *)
+(** Get property: [scale-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale-set.html}upstream
+     docs}. *)
 
 external set_scale_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_scale_set"
-(** Set property: scale-set *)
+(** Set property: [scale-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale-set.html}upstream
+     docs}. *)
 
 external get_single_paragraph_mode : t -> bool
   = "ml_gtk_cell_renderer_text_get_single_paragraph_mode"
-(** Get property: single-paragraph-mode *)
+(** Get property: [single-paragraph-mode] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.single-paragraph-mode.html}upstream
+     docs}. *)
 
 external set_single_paragraph_mode : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_single_paragraph_mode"
-(** Set property: single-paragraph-mode *)
+(** Set property: [single-paragraph-mode] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.single-paragraph-mode.html}upstream
+     docs}. *)
 
 external get_size : t -> int = "ml_gtk_cell_renderer_text_get_size"
-(** Get property: size *)
+(** Get property: [size] ([gint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size.html}upstream
+     docs}. *)
 
 external set_size : t -> int -> unit = "ml_gtk_cell_renderer_text_set_size"
-(** Set property: size *)
+(** Set property: [size] ([gint], default [0]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size.html}upstream
+     docs}. *)
 
 external get_size_points : t -> float
   = "ml_gtk_cell_renderer_text_get_size_points"
-(** Get property: size-points *)
+(** Get property: [size-points] ([gdouble], default [0.000000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-points.html}upstream
+     docs}. *)
 
 external set_size_points : t -> float -> unit
   = "ml_gtk_cell_renderer_text_set_size_points"
-(** Set property: size-points *)
+(** Set property: [size-points] ([gdouble], default [0.000000]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-points.html}upstream
+     docs}. *)
 
 external get_size_set : t -> bool = "ml_gtk_cell_renderer_text_get_size_set"
-(** Get property: size-set *)
+(** Get property: [size-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-set.html}upstream
+     docs}. *)
 
 external set_size_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_size_set"
-(** Set property: size-set *)
+(** Set property: [size-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-set.html}upstream
+     docs}. *)
 
 external get_stretch : t -> Ocpango_enums.stretch
   = "ml_gtk_cell_renderer_text_get_stretch"
-(** Get property: stretch *)
+(** Get property: [stretch] ([Pango.Stretch], default [PANGO_STRETCH_NORMAL]).
+    See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch.html}upstream
+     docs}. *)
 
 external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_gtk_cell_renderer_text_set_stretch"
-(** Set property: stretch *)
+(** Set property: [stretch] ([Pango.Stretch], default [PANGO_STRETCH_NORMAL]).
+    See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch.html}upstream
+     docs}. *)
 
 external get_stretch_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_stretch_set"
-(** Get property: stretch-set *)
+(** Get property: [stretch-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch-set.html}upstream
+     docs}. *)
 
 external set_stretch_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_stretch_set"
-(** Set property: stretch-set *)
+(** Set property: [stretch-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch-set.html}upstream
+     docs}. *)
 
 external get_strikethrough : t -> bool
   = "ml_gtk_cell_renderer_text_get_strikethrough"
-(** Get property: strikethrough *)
+(** Get property: [strikethrough] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough.html}upstream
+     docs}. *)
 
 external set_strikethrough : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_strikethrough"
-(** Set property: strikethrough *)
+(** Set property: [strikethrough] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough.html}upstream
+     docs}. *)
 
 external get_strikethrough_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_strikethrough_set"
-(** Get property: strikethrough-set *)
+(** Get property: [strikethrough-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough-set.html}upstream
+     docs}. *)
 
 external set_strikethrough_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_strikethrough_set"
-(** Set property: strikethrough-set *)
+(** Set property: [strikethrough-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough-set.html}upstream
+     docs}. *)
 
 external get_style : t -> Ocpango_enums.style
   = "ml_gtk_cell_renderer_text_get_style"
-(** Get property: style *)
+(** Get property: [style] ([Pango.Style], default [PANGO_STYLE_NORMAL]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.style.html}upstream
+     docs}. *)
 
 external set_style : t -> Ocpango_enums.style -> unit
   = "ml_gtk_cell_renderer_text_set_style"
-(** Set property: style *)
+(** Set property: [style] ([Pango.Style], default [PANGO_STYLE_NORMAL]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.style.html}upstream
+     docs}. *)
 
 external get_style_set : t -> bool = "ml_gtk_cell_renderer_text_get_style_set"
-(** Get property: style-set *)
+(** Get property: [style-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.style-set.html}upstream
+     docs}. *)
 
 external set_style_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_style_set"
-(** Set property: style-set *)
+(** Set property: [style-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.style-set.html}upstream
+     docs}. *)
 
 external get_text : t -> string = "ml_gtk_cell_renderer_text_get_text"
-(** Get property: text *)
+(** Get property: [text] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.text.html}upstream
+     docs}. *)
 
 external set_text : t -> string -> unit = "ml_gtk_cell_renderer_text_set_text"
-(** Set property: text *)
+(** Set property: [text] ([utf8], default [None]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.text.html}upstream
+     docs}. *)
 
 external get_underline : t -> Ocpango_enums.underline
   = "ml_gtk_cell_renderer_text_get_underline"
-(** Get property: underline *)
+(** Get property: [underline] ([Pango.Underline], default
+    [PANGO_UNDERLINE_NONE]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline.html}upstream
+     docs}. *)
 
 external set_underline : t -> Ocpango_enums.underline -> unit
   = "ml_gtk_cell_renderer_text_set_underline"
-(** Set property: underline *)
+(** Set property: [underline] ([Pango.Underline], default
+    [PANGO_UNDERLINE_NONE]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline.html}upstream
+     docs}. *)
 
 external get_underline_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_underline_set"
-(** Get property: underline-set *)
+(** Get property: [underline-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline-set.html}upstream
+     docs}. *)
 
 external set_underline_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_underline_set"
-(** Set property: underline-set *)
+(** Set property: [underline-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline-set.html}upstream
+     docs}. *)
 
 external get_variant : t -> Ocpango_enums.variant
   = "ml_gtk_cell_renderer_text_get_variant"
-(** Get property: variant *)
+(** Get property: [variant] ([Pango.Variant], default [PANGO_VARIANT_NORMAL]).
+    See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant.html}upstream
+     docs}. *)
 
 external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_gtk_cell_renderer_text_set_variant"
-(** Set property: variant *)
+(** Set property: [variant] ([Pango.Variant], default [PANGO_VARIANT_NORMAL]).
+    See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant.html}upstream
+     docs}. *)
 
 external get_variant_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_variant_set"
-(** Get property: variant-set *)
+(** Get property: [variant-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant-set.html}upstream
+     docs}. *)
 
 external set_variant_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_variant_set"
-(** Set property: variant-set *)
+(** Set property: [variant-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant-set.html}upstream
+     docs}. *)
 
 external get_weight : t -> int = "ml_gtk_cell_renderer_text_get_weight"
-(** Get property: weight *)
+(** Get property: [weight] ([gint], default [400]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight.html}upstream
+     docs}. *)
 
 external set_weight : t -> int -> unit = "ml_gtk_cell_renderer_text_set_weight"
-(** Set property: weight *)
+(** Set property: [weight] ([gint], default [400]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight.html}upstream
+     docs}. *)
 
 external get_weight_set : t -> bool = "ml_gtk_cell_renderer_text_get_weight_set"
-(** Get property: weight-set *)
+(** Get property: [weight-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight-set.html}upstream
+     docs}. *)
 
 external set_weight_set : t -> bool -> unit
   = "ml_gtk_cell_renderer_text_set_weight_set"
-(** Set property: weight-set *)
+(** Set property: [weight-set] ([gboolean], default [false]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight-set.html}upstream
+     docs}. *)
 
 external get_width_chars : t -> int
   = "ml_gtk_cell_renderer_text_get_width_chars"

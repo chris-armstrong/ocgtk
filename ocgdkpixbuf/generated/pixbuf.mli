@@ -294,7 +294,9 @@ class type pixbuf_t = object
   (** {2:properties Properties} *)
 
   method pixel_bytes : Glib_bytes.t
-  (** Get property: pixel-bytes *)
+  (** Get property: [pixel-bytes] ([GLib.Bytes]). Construct-only. See
+      {{:https://docs.gtk.org/gdk-pixbuf/property.Pixbuf.pixel-bytes.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 

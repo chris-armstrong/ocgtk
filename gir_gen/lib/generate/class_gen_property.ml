@@ -78,7 +78,7 @@ let generate_property_methods ~ctx ~module_name ~current_layer2_module
   in
   generate_property_code ~generate_getter ~generate_setter accessors
 
-let generate_property_signatures ~ctx ~current_layer2_module
+let generate_property_signatures ~ctx ~class_name ~current_layer2_module
     ~same_cluster_classes (accessors : Emitted_members.accessors) =
   let prop = accessors.prop in
   let generate_getter _prop _prop_snake =
@@ -95,7 +95,7 @@ let generate_property_signatures ~ctx ~current_layer2_module
     Doc_emit.around
       (Entity_doc.property
          ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
-         ~accessor:Entity_doc.Getter prop)
+         ~class_name ~accessor:Entity_doc.Getter prop)
       (Fmt.str "    method %s : %s\n" method_name ocaml_type)
   in
   let generate_setter _prop _prop_snake =
@@ -115,7 +115,7 @@ let generate_property_signatures ~ctx ~current_layer2_module
     Doc_emit.around
       (Entity_doc.property
          ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
-         ~accessor:Entity_doc.Setter prop)
+         ~class_name ~accessor:Entity_doc.Setter prop)
       (Fmt.str "    method %s : %s -> unit\n" method_name ocaml_type)
   in
   generate_property_code ~generate_getter ~generate_setter accessors

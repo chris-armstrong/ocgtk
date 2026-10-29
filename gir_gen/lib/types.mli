@@ -111,6 +111,7 @@ type gir_property = {
   writable : bool;
   construct_only : bool;
   prop_doc : string option;
+  prop_default : string option;  (** GIR [default-value=], a C value. *)
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;

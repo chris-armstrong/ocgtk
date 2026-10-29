@@ -51,10 +51,14 @@ class type cell_renderer_text_t = object
   (** {2:properties Properties} *)
 
   method align_set : bool
-  (** Get property: align-set *)
+  (** Get property: [align-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.align-set.html}upstream
+       docs}. *)
 
   method set_align_set : bool -> unit
-  (** Set property: align-set *)
+  (** Set property: [align-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.align-set.html}upstream
+       docs}. *)
 
   method alignment : Ocpango.Enums.alignment
   [@@ocaml.doc
@@ -65,13 +69,19 @@ class type cell_renderer_text_t = object
      on the other hand, sets the horizontal alignment of the whole text."]
 
   method attributes : Ocpango.Attr_list.attr_list_t
-  (** Get property: attributes *)
+  (** Get property: [attributes] ([Pango.AttrList]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.attributes.html}upstream
+       docs}. *)
 
   method set_attributes : Ocpango.Attr_list.attr_list_t -> unit
-  (** Set property: attributes *)
+  (** Set property: [attributes] ([Pango.AttrList]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.attributes.html}upstream
+       docs}. *)
 
   method set_background : string -> unit
-  (** Set property: background *)
+  (** Set property: [background] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.background.html}upstream
+       docs}. *)
 
   method background_rgba : Ocgdk.Rgb_a.rgb_a_t
   (** Background color as a [GdkRGBA] *)
@@ -80,22 +90,34 @@ class type cell_renderer_text_t = object
   (** Background color as a [GdkRGBA] *)
 
   method background_set : bool
-  (** Get property: background-set *)
+  (** Get property: [background-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.background-set.html}upstream
+       docs}. *)
 
   method set_background_set : bool -> unit
-  (** Set property: background-set *)
+  (** Set property: [background-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.background-set.html}upstream
+       docs}. *)
 
   method editable : bool
-  (** Get property: editable *)
+  (** Get property: [editable] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable.html}upstream
+       docs}. *)
 
   method set_editable : bool -> unit
-  (** Set property: editable *)
+  (** Set property: [editable] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable.html}upstream
+       docs}. *)
 
   method editable_set : bool
-  (** Get property: editable-set *)
+  (** Get property: [editable-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable-set.html}upstream
+       docs}. *)
 
   method set_editable_set : bool -> unit
-  (** Set property: editable-set *)
+  (** Set property: [editable-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.editable-set.html}upstream
+       docs}. *)
 
   method ellipsize : Ocpango.Enums.ellipsizemode
   (** Specifies the preferred place to ellipsize the string, if the cell
@@ -110,37 +132,59 @@ class type cell_renderer_text_t = object
       property for another way of making the text fit into a given width. *)
 
   method ellipsize_set : bool
-  (** Get property: ellipsize-set *)
+  (** Get property: [ellipsize-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.ellipsize-set.html}upstream
+       docs}. *)
 
   method set_ellipsize_set : bool -> unit
-  (** Set property: ellipsize-set *)
+  (** Set property: [ellipsize-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.ellipsize-set.html}upstream
+       docs}. *)
 
   method family : string
-  (** Get property: family *)
+  (** Get property: [family] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.family.html}upstream
+       docs}. *)
 
   method set_family : string -> unit
-  (** Set property: family *)
+  (** Set property: [family] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.family.html}upstream
+       docs}. *)
 
   method family_set : bool
-  (** Get property: family-set *)
+  (** Get property: [family-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.family-set.html}upstream
+       docs}. *)
 
   method set_family_set : bool -> unit
-  (** Set property: family-set *)
+  (** Set property: [family-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.family-set.html}upstream
+       docs}. *)
 
   method font : string
-  (** Get property: font *)
+  (** Get property: [font] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.font.html}upstream
+       docs}. *)
 
   method set_font : string -> unit
-  (** Set property: font *)
+  (** Set property: [font] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.font.html}upstream
+       docs}. *)
 
   method font_desc : Ocpango.Font_description.font_description_t
-  (** Get property: font-desc *)
+  (** Get property: [font-desc] ([Pango.FontDescription]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.font-desc.html}upstream
+       docs}. *)
 
   method set_font_desc : Ocpango.Font_description.font_description_t -> unit
-  (** Set property: font-desc *)
+  (** Set property: [font-desc] ([Pango.FontDescription]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.font-desc.html}upstream
+       docs}. *)
 
   method set_foreground : string -> unit
-  (** Set property: foreground *)
+  (** Set property: [foreground] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground.html}upstream
+       docs}. *)
 
   method foreground_rgba : Ocgdk.Rgb_a.rgb_a_t
   (** Foreground color as a [GdkRGBA] *)
@@ -149,25 +193,39 @@ class type cell_renderer_text_t = object
   (** Foreground color as a [GdkRGBA] *)
 
   method foreground_set : bool
-  (** Get property: foreground-set *)
+  (** Get property: [foreground-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground-set.html}upstream
+       docs}. *)
 
   method set_foreground_set : bool -> unit
-  (** Set property: foreground-set *)
+  (** Set property: [foreground-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.foreground-set.html}upstream
+       docs}. *)
 
   method language : string
-  (** Get property: language *)
+  (** Get property: [language] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.language.html}upstream
+       docs}. *)
 
   method set_language : string -> unit
-  (** Set property: language *)
+  (** Set property: [language] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.language.html}upstream
+       docs}. *)
 
   method language_set : bool
-  (** Get property: language-set *)
+  (** Get property: [language-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.language-set.html}upstream
+       docs}. *)
 
   method set_language_set : bool -> unit
-  (** Set property: language-set *)
+  (** Set property: [language-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.language-set.html}upstream
+       docs}. *)
 
   method set_markup : string -> unit
-  (** Set property: markup *)
+  (** Set property: [markup] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.markup.html}upstream
+       docs}. *)
 
   method max_width_chars : int
   (** The desired maximum width of the cell, in characters. If this property is
@@ -196,130 +254,220 @@ class type cell_renderer_text_t = object
       [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
   method rise : int
-  (** Get property: rise *)
+  (** Get property: [rise] ([gint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise.html}upstream
+       docs}. *)
 
   method set_rise : int -> unit
-  (** Set property: rise *)
+  (** Set property: [rise] ([gint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise.html}upstream
+       docs}. *)
 
   method rise_set : bool
-  (** Get property: rise-set *)
+  (** Get property: [rise-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise-set.html}upstream
+       docs}. *)
 
   method set_rise_set : bool -> unit
-  (** Set property: rise-set *)
+  (** Set property: [rise-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.rise-set.html}upstream
+       docs}. *)
 
   method scale : float
-  (** Get property: scale *)
+  (** Get property: [scale] ([gdouble], default [1.000000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale.html}upstream
+       docs}. *)
 
   method set_scale : float -> unit
-  (** Set property: scale *)
+  (** Set property: [scale] ([gdouble], default [1.000000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale.html}upstream
+       docs}. *)
 
   method scale_set : bool
-  (** Get property: scale-set *)
+  (** Get property: [scale-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale-set.html}upstream
+       docs}. *)
 
   method set_scale_set : bool -> unit
-  (** Set property: scale-set *)
+  (** Set property: [scale-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.scale-set.html}upstream
+       docs}. *)
 
   method single_paragraph_mode : bool
-  (** Get property: single-paragraph-mode *)
+  (** Get property: [single-paragraph-mode] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.single-paragraph-mode.html}upstream
+       docs}. *)
 
   method set_single_paragraph_mode : bool -> unit
-  (** Set property: single-paragraph-mode *)
+  (** Set property: [single-paragraph-mode] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.single-paragraph-mode.html}upstream
+       docs}. *)
 
   method size : int
-  (** Get property: size *)
+  (** Get property: [size] ([gint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size.html}upstream
+       docs}. *)
 
   method set_size : int -> unit
-  (** Set property: size *)
+  (** Set property: [size] ([gint], default [0]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size.html}upstream
+       docs}. *)
 
   method size_points : float
-  (** Get property: size-points *)
+  (** Get property: [size-points] ([gdouble], default [0.000000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-points.html}upstream
+       docs}. *)
 
   method set_size_points : float -> unit
-  (** Set property: size-points *)
+  (** Set property: [size-points] ([gdouble], default [0.000000]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-points.html}upstream
+       docs}. *)
 
   method size_set : bool
-  (** Get property: size-set *)
+  (** Get property: [size-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-set.html}upstream
+       docs}. *)
 
   method set_size_set : bool -> unit
-  (** Set property: size-set *)
+  (** Set property: [size-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.size-set.html}upstream
+       docs}. *)
 
   method stretch : Ocpango.Enums.stretch
-  (** Get property: stretch *)
+  (** Get property: [stretch] ([Pango.Stretch], default [PANGO_STRETCH_NORMAL]).
+      See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch.html}upstream
+       docs}. *)
 
   method set_stretch : Ocpango.Enums.stretch -> unit
-  (** Set property: stretch *)
+  (** Set property: [stretch] ([Pango.Stretch], default [PANGO_STRETCH_NORMAL]).
+      See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch.html}upstream
+       docs}. *)
 
   method stretch_set : bool
-  (** Get property: stretch-set *)
+  (** Get property: [stretch-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch-set.html}upstream
+       docs}. *)
 
   method set_stretch_set : bool -> unit
-  (** Set property: stretch-set *)
+  (** Set property: [stretch-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.stretch-set.html}upstream
+       docs}. *)
 
   method strikethrough : bool
-  (** Get property: strikethrough *)
+  (** Get property: [strikethrough] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough.html}upstream
+       docs}. *)
 
   method set_strikethrough : bool -> unit
-  (** Set property: strikethrough *)
+  (** Set property: [strikethrough] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough.html}upstream
+       docs}. *)
 
   method strikethrough_set : bool
-  (** Get property: strikethrough-set *)
+  (** Get property: [strikethrough-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough-set.html}upstream
+       docs}. *)
 
   method set_strikethrough_set : bool -> unit
-  (** Set property: strikethrough-set *)
+  (** Set property: [strikethrough-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.strikethrough-set.html}upstream
+       docs}. *)
 
   method style : Ocpango.Enums.style
-  (** Get property: style *)
+  (** Get property: [style] ([Pango.Style], default [PANGO_STYLE_NORMAL]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.style.html}upstream
+       docs}. *)
 
   method set_style : Ocpango.Enums.style -> unit
-  (** Set property: style *)
+  (** Set property: [style] ([Pango.Style], default [PANGO_STYLE_NORMAL]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.style.html}upstream
+       docs}. *)
 
   method style_set : bool
-  (** Get property: style-set *)
+  (** Get property: [style-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.style-set.html}upstream
+       docs}. *)
 
   method set_style_set : bool -> unit
-  (** Set property: style-set *)
+  (** Set property: [style-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.style-set.html}upstream
+       docs}. *)
 
   method text : string
-  (** Get property: text *)
+  (** Get property: [text] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.text.html}upstream
+       docs}. *)
 
   method set_text : string -> unit
-  (** Set property: text *)
+  (** Set property: [text] ([utf8], default [None]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.text.html}upstream
+       docs}. *)
 
   method underline : Ocpango.Enums.underline
-  (** Get property: underline *)
+  (** Get property: [underline] ([Pango.Underline], default
+      [PANGO_UNDERLINE_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline.html}upstream
+       docs}. *)
 
   method set_underline : Ocpango.Enums.underline -> unit
-  (** Set property: underline *)
+  (** Set property: [underline] ([Pango.Underline], default
+      [PANGO_UNDERLINE_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline.html}upstream
+       docs}. *)
 
   method underline_set : bool
-  (** Get property: underline-set *)
+  (** Get property: [underline-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline-set.html}upstream
+       docs}. *)
 
   method set_underline_set : bool -> unit
-  (** Set property: underline-set *)
+  (** Set property: [underline-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.underline-set.html}upstream
+       docs}. *)
 
   method variant : Ocpango.Enums.variant
-  (** Get property: variant *)
+  (** Get property: [variant] ([Pango.Variant], default [PANGO_VARIANT_NORMAL]).
+      See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant.html}upstream
+       docs}. *)
 
   method set_variant : Ocpango.Enums.variant -> unit
-  (** Set property: variant *)
+  (** Set property: [variant] ([Pango.Variant], default [PANGO_VARIANT_NORMAL]).
+      See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant.html}upstream
+       docs}. *)
 
   method variant_set : bool
-  (** Get property: variant-set *)
+  (** Get property: [variant-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant-set.html}upstream
+       docs}. *)
 
   method set_variant_set : bool -> unit
-  (** Set property: variant-set *)
+  (** Set property: [variant-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.variant-set.html}upstream
+       docs}. *)
 
   method weight : int
-  (** Get property: weight *)
+  (** Get property: [weight] ([gint], default [400]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight.html}upstream
+       docs}. *)
 
   method set_weight : int -> unit
-  (** Set property: weight *)
+  (** Set property: [weight] ([gint], default [400]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight.html}upstream
+       docs}. *)
 
   method weight_set : bool
-  (** Get property: weight-set *)
+  (** Get property: [weight-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight-set.html}upstream
+       docs}. *)
 
   method set_weight_set : bool -> unit
-  (** Set property: weight-set *)
+  (** Set property: [weight-set] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererText.weight-set.html}upstream
+       docs}. *)
 
   method width_chars : int
   (** The desired width of the cell, in characters. If this property is set to

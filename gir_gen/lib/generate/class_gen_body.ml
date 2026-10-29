@@ -303,7 +303,7 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
     (String.concat ~sep:""
        (List.map members.l2_properties
           ~f:
-            (Class_gen_property.generate_property_signatures ~ctx
+            (Class_gen_property.generate_property_signatures ~ctx ~class_name
                ~current_layer2_module ~same_cluster_classes)));
 
   (* Converter methods — skip if parent already provides the same accessor *)

@@ -69,28 +69,42 @@ external set_icon_size : t -> Ocgtk_enums.iconsize -> unit
 
 external set_pixbuf : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf"
-(** Set property: pixbuf *)
+(** Set property: [pixbuf] ([GdkPixbuf.Pixbuf]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf.html}upstream
+     docs}. *)
 
 external get_pixbuf_expander_closed : t -> Ocgdkpixbuf_raw.Pixbuf.t
   = "ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_closed"
-(** Get property: pixbuf-expander-closed *)
+(** Get property: [pixbuf-expander-closed] ([GdkPixbuf.Pixbuf]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-closed.html}upstream
+     docs}. *)
 
 external set_pixbuf_expander_closed : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_closed"
-(** Set property: pixbuf-expander-closed *)
+(** Set property: [pixbuf-expander-closed] ([GdkPixbuf.Pixbuf]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-closed.html}upstream
+     docs}. *)
 
 external get_pixbuf_expander_open : t -> Ocgdkpixbuf_raw.Pixbuf.t
   = "ml_gtk_cell_renderer_pixbuf_get_pixbuf_expander_open"
-(** Get property: pixbuf-expander-open *)
+(** Get property: [pixbuf-expander-open] ([GdkPixbuf.Pixbuf]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-open.html}upstream
+     docs}. *)
 
 external set_pixbuf_expander_open : t -> Ocgdkpixbuf_raw.Pixbuf.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_pixbuf_expander_open"
-(** Set property: pixbuf-expander-open *)
+(** Set property: [pixbuf-expander-open] ([GdkPixbuf.Pixbuf]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.pixbuf-expander-open.html}upstream
+     docs}. *)
 
 external get_texture : t -> Ocgdk_raw.Texture.t
   = "ml_gtk_cell_renderer_pixbuf_get_texture"
-(** Get property: texture *)
+(** Get property: [texture] ([Gdk.Texture]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.texture.html}upstream
+     docs}. *)
 
 external set_texture : t -> Ocgdk_raw.Texture.t -> unit
   = "ml_gtk_cell_renderer_pixbuf_set_texture"
-(** Set property: texture *)
+(** Set property: [texture] ([Gdk.Texture]). See
+    {{:https://docs.gtk.org/gtk4/property.CellRendererPixbuf.texture.html}upstream
+     docs}. *)

@@ -191,7 +191,7 @@ let test_parse_class_with_properties () =
     wrap_namespace
       {|
     <class name="Button" c:type="GtkButton" parent="Widget">
-      <property name="label" writable="1" readable="1">
+      <property name="label" writable="1" readable="1" default-value="NULL">
         <doc>The button label</doc>
         <type name="utf8" c:type="gchar*"/>
       </property>
@@ -219,12 +219,16 @@ let test_parse_class_with_properties () =
   Alcotest.(check string) "Property type" "utf8" label_prop.prop_type.name;
   Alcotest.(check (option string))
     "Property doc is parsed" (Some "The button label") label_prop.prop_doc;
+  Alcotest.(check (option string))
+    "default-value= is parsed" (Some "NULL") label_prop.prop_default;
 
   let underline_prop =
     List.find (fun p -> p.prop_name = "use-underline") button.properties
   in
   Alcotest.(check bool)
-    "Property is construct-only" true underline_prop.construct_only
+    "Property is construct-only" true underline_prop.construct_only;
+  Alcotest.(check (option string))
+    "no default-value= attribute" None underline_prop.prop_default
 
 let signal_run_when_to_string : signal_run_when option -> string = function
   | None -> "none"

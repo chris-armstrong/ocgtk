@@ -51,6 +51,7 @@ val generate_property_methods :
 
 val generate_property_signatures :
   ctx:Types.generation_context ->
+  class_name:string ->
   current_layer2_module:StdLabels.String.t ->
   same_cluster_classes:'a ->
   Emitted_members.accessors ->

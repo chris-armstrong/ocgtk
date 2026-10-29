@@ -28,16 +28,24 @@ class type icon_paintable_t = object
   (** {2:properties Properties} *)
 
   method scale : int
-  (** Get property: scale *)
+  (** Get property: [scale] ([gint], default [1]). See
+      {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+       docs}. *)
 
   method set_scale : int -> unit
-  (** Set property: scale *)
+  (** Set property: [scale] ([gint], default [1]). See
+      {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+       docs}. *)
 
   method size : int
-  (** Get property: size *)
+  (** Get property: [size] ([gint], default [16]). See
+      {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream
+       docs}. *)
 
   method set_size : int -> unit
-  (** Set property: size *)
+  (** Set property: [size] ([gint], default [16]). See
+      {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 

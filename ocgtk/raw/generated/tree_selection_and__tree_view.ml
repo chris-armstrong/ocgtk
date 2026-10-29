@@ -706,11 +706,17 @@ and Tree_view : sig
 
   external get_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_enable_grid_lines"
-  (** Get property: enable-grid-lines *)
+  (** Get property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   external set_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
-  (** Set property: enable-grid-lines *)
+  (** Set property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   val on_columns_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -1315,11 +1321,17 @@ end = struct
 
   external get_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines
     = "ml_gtk_tree_view_get_enable_grid_lines"
-  (** Get property: enable-grid-lines *)
+  (** Get property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   external set_enable_grid_lines : t -> Ocgtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
-  (** Set property: enable-grid-lines *)
+  (** Set property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   let on_columns_changed ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"columns-changed" ~callback

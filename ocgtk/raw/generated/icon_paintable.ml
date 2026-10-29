@@ -47,13 +47,21 @@ external get_file : t -> Ocgio_raw.File.t option
 (* Properties *)
 
 external get_scale : t -> int = "ml_gtk_icon_paintable_get_scale"
-(** Get property: scale *)
+(** Get property: [scale] ([gint], default [1]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+     docs}. *)
 
 external set_scale : t -> int -> unit = "ml_gtk_icon_paintable_set_scale"
-(** Set property: scale *)
+(** Set property: [scale] ([gint], default [1]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+     docs}. *)
 
 external get_size : t -> int = "ml_gtk_icon_paintable_get_size"
-(** Get property: size *)
+(** Get property: [size] ([gint], default [16]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream docs}.
+*)
 
 external set_size : t -> int -> unit = "ml_gtk_icon_paintable_set_size"
-(** Set property: size *)
+(** Set property: [size] ([gint], default [16]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream docs}.
+*)

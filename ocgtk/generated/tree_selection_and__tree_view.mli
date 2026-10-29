@@ -525,10 +525,16 @@ and tree_view_t = object
   (** {2:properties Properties} *)
 
   method enable_grid_lines : Enums.treeviewgridlines
-  (** Get property: enable-grid-lines *)
+  (** Get property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   method set_enable_grid_lines : Enums.treeviewgridlines -> unit
-  (** Set property: enable-grid-lines *)
+  (** Set property: [enable-grid-lines] ([TreeViewGridLines], default
+      [GTK_TREE_VIEW_GRID_LINES_NONE]). See
+      {{:https://docs.gtk.org/gtk4/property.TreeView.enable-grid-lines.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 

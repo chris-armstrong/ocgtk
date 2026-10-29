@@ -44,10 +44,14 @@ class type cell_renderer_toggle_t = object
   (** {2:properties Properties} *)
 
   method inconsistent : bool
-  (** Get property: inconsistent *)
+  (** Get property: [inconsistent] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererToggle.inconsistent.html}upstream
+       docs}. *)
 
   method set_inconsistent : bool -> unit
-  (** Set property: inconsistent *)
+  (** Set property: [inconsistent] ([gboolean], default [false]). See
+      {{:https://docs.gtk.org/gtk4/property.CellRendererToggle.inconsistent.html}upstream
+       docs}. *)
 
   (** {2:conversions Conversions} *)
 
