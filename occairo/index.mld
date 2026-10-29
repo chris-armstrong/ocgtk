@@ -4,6 +4,8 @@ The {b occairo} package provides OCaml bindings for the GObject types of
 Cairo, the 2D vector graphics library: drawing contexts, paths, patterns and
 surfaces. They are generated from Cairo's GObject introspection data.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 The library is reached as {!Occairo}, with one module per class, interface or

@@ -4,6 +4,8 @@ The {b ocpango} package provides OCaml bindings for Pango: text layout and
 internationalized font rendering. They are generated from Pango's GObject
 introspection data.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 The library is reached as {!Ocpango}, with one module per class, interface or

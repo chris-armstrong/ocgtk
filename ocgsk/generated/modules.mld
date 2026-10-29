@@ -1,6 +1,6 @@
 {0 Gsk classes and records}
 
-{!Ocgsk} has one module for each Gsk class and record. The externals they are built on are in {!Ocgsk.Raw}.
+{!Ocgsk} has one module for each Gsk class and record, with the externals they are built on in {!Ocgsk.Raw} and the enumerations and bitfields in {!Ocgsk.Enums}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
 
 {1 Classes}
 

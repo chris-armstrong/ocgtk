@@ -4,6 +4,8 @@ The {b ocpangocairo} package provides OCaml bindings for PangoCairo, the glue
 between Pango text layout and Cairo rendering. They are generated from
 PangoCairo's GObject introspection data.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 The library is reached as {!Ocpangocairo}, with one module per class, interface or

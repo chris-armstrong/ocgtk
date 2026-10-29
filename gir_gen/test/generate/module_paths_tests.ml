@@ -233,12 +233,18 @@ let test_modules_page () =
   in
   let text =
     Library_module.generate_modules_page ~namespace:"Graphene" ~entities
+      ~has_constants:true
   in
   Alcotest.(check string)
     "classes, then records, sorted; no interfaces section"
     "{0 Graphene classes and records}\n\n\
-     {!Ocgraphene} has one module for each Graphene class and record. The \
-     externals they are built on are in {!Ocgraphene.Raw}.\n\n\
+     {!Ocgraphene} has one module for each Graphene class and record, with the \
+     externals they are built on in {!Ocgraphene.Raw}, the enumerations and \
+     bitfields in {!Ocgraphene.Enums} and the constants in \
+     {!Ocgraphene.Constants}. See {%html:<a \
+     href=\"../ocgtk/conventions.html\">the conventions page</a>%} for how the \
+     bindings are organised: the two layers, the anatomy of a class module, \
+     and how names, types, signals and properties are mapped.\n\n\
      {1 Classes}\n\n\
      {!modules:\n\
     \  Ocgraphene.Box\n\
@@ -249,6 +255,39 @@ let test_modules_page () =
     \  Ocgraphene.Point\n\
      }\n"
     text
+
+let modules_page_intro ~namespace ~has_constants =
+  let entities =
+    [
+      entity_of_class
+        (Type_factory.make_gir_class ~class_name:"Box" ~c_type:"Box" ());
+    ]
+  in
+  Library_module.generate_modules_page ~namespace ~entities ~has_constants
+  |> String.split_on_char '\n'
+  |> function
+  | _title :: _blank :: intro :: _ -> intro
+  | _ -> Alcotest.fail "modules page has no intro"
+
+let test_modules_page_no_constants () =
+  let intro = modules_page_intro ~namespace:"Gsk" ~has_constants:false in
+  Alcotest.(check bool)
+    "names Raw and Enums" true
+    (Helpers.string_contains intro
+       "the externals they are built on in {!Ocgsk.Raw} and the enumerations \
+        and bitfields in {!Ocgsk.Enums}.");
+  Alcotest.(check bool)
+    "no Constants" false
+    (Helpers.string_contains intro "Constants")
+
+let test_modules_page_conventions_link () =
+  let gtk = modules_page_intro ~namespace:"Gtk" ~has_constants:true in
+  Alcotest.(check bool)
+    "same package: page reference" true
+    (Helpers.string_contains gtk "See {{!page-conventions}the conventions page}");
+  Alcotest.(check bool)
+    "same package: no raw HTML" false
+    (Helpers.string_contains gtk "{%html:")
 
 (* ---------- dune stanzas ------------------------------------------------ *)
 
@@ -368,6 +407,10 @@ let tests =
       `Quick,
       test_main_dune_documents_modules_page );
     ("modules page lists modules by kind", `Quick, test_modules_page);
+    ("modules page without constants", `Quick, test_modules_page_no_constants);
+    ( "modules page links conventions in ocgtk",
+      `Quick,
+      test_modules_page_conventions_link );
     ("raw stubs library stanza", `Quick, test_raw_dune_inc_stubs_library);
     ( "dune.inc copies the headers for install",
       `Quick,

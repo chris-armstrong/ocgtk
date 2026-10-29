@@ -5,6 +5,8 @@ lightweight 3D transform and geometry types (vectors, matrices, rectangles)
 used by Gsk and Gtk. They are generated from Graphene's GObject
 introspection data.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 The library is reached as {!Ocgraphene}, with one module per class, interface or

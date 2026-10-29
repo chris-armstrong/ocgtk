@@ -29,7 +29,10 @@ val modules_page_name : string
 (** Name of the page {!generate_modules_page} writes: [modules], so the
     package's [index.mld] links it as [{!page-modules}]. *)
 
-val generate_modules_page : namespace:string -> entities:entity list -> string
-(** Content of [modules.mld]: one [{!modules: ...}] list each for the classes,
+val generate_modules_page :
+  namespace:string -> entities:entity list -> has_constants:bool -> string
+(** Content of [modules.mld]: an intro naming the main module's submodules
+    ([Raw], [Enums], and [Constants] when [has_constants]) and linking the
+    conventions page, then one [{!modules: ...}] list each for the classes,
     interfaces and records in [entities], sorted, leaving out empty ones. The
     title names the kinds listed, e.g. "Gtk classes, interfaces and records". *)

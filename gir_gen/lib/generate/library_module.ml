@@ -40,11 +40,33 @@ let generate_enums_module ~namespace =
 
 (* The main module is dune's, so it carries no docs and its page shows each
    module as a bare [sig ... end]. The package's hand-written [index.mld]
-   links this page instead, which lists the modules by kind. *)
+   links this page instead, which lists the modules by kind under a short
+   intro to the namespace. *)
 
 let modules_page_name = "modules"
 
-let generate_modules_page ~namespace ~entities =
+(* The conventions page lives in ocgtk's page tree. odoc cannot resolve a page
+   reference across packages, so the other packages link its HTML file, which
+   [dune build @doc] writes beside their own: [_html/<pkg>/modules.html] and
+   [_html/ocgtk/conventions.html]. *)
+let conventions_package = "ocgtk"
+let conventions_text = "the conventions page"
+
+let conventions_link ~namespace =
+  if String.equal (Module_paths.package_name namespace) conventions_package then
+    Fmt.str "{{!page-conventions}%s}" conventions_text
+  else
+    Fmt.str "{%%html:<a href=\"../%s/conventions.html\">%s</a>%%}"
+      conventions_package conventions_text
+
+(* "a", "a and b", "a, b and c" *)
+let listing words =
+  match List.rev words with
+  | [] -> ""
+  | [ w ] -> w
+  | last :: rest -> String.concat ~sep:", " (List.rev rest) ^ " and " ^ last
+
+let generate_modules_page ~namespace ~entities ~has_constants =
   let main_module = Module_paths.main_module namespace in
   let classes, interfaces, records =
     List.fold_left entities ~init:([], [], [])
@@ -70,17 +92,21 @@ let generate_modules_page ~namespace ~entities =
          (List.map (List.sort ~cmp:String.compare names) ~f:(fun m ->
               Fmt.str "  %s.%s\n" main_module m)))
   in
-  (* "a", "a and b", "a, b and c" *)
-  let listing words =
-    match List.rev words with
-    | [] -> ""
-    | [ w ] -> w
-    | last :: rest -> String.concat ~sep:", " (List.rev rest) ^ " and " ^ last
+  let submodule (contents, name) =
+    Fmt.str "%s in {!%s.%s}" contents main_module name
+  in
+  let submodules =
+    ("the externals they are built on", Module_paths.raw_alias_module)
+    :: ("the enumerations and bitfields", Module_paths.enums_alias_module)
+    ::
+    (if has_constants then [ ("the constants", Module_paths.constants_module) ]
+     else [])
   in
   Fmt.str
     "{0 %s %s}\n\n\
-     {!%s} has one module for each %s %s. The externals they are built on are \
-     in {!%s.Raw}.\n\n\
+     {!%s} has one module for each %s %s, with %s. See %s for how the bindings \
+     are organised: the two layers, the anatomy of a class module, and how \
+     names, types, signals and properties are mapped.\n\n\
      %s"
     namespace
     (listing
@@ -88,5 +114,6 @@ let generate_modules_page ~namespace ~entities =
             String.lowercase_ascii heading)))
     main_module namespace
     (listing (List.map kinds ~f:(fun (_, singular, _) -> singular)))
-    main_module
+    (listing (List.map ~f:submodule submodules))
+    (conventions_link ~namespace)
     (String.concat ~sep:"\n" (List.map ~f:section kinds))
