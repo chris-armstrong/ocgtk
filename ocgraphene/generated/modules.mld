@@ -1,6 +1,6 @@
 {0 Graphene records}
 
-{!Ocgraphene} has one module for each Graphene record. The externals they are built on are in {!Ocgraphene.Raw}.
+{!Ocgraphene} has one module for each Graphene record, with the externals they are built on in {!Ocgraphene.Raw}, the enumerations and bitfields in {!Ocgraphene.Enums} and the constants in {!Ocgraphene.Constants}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
 
 {1 Records}
 

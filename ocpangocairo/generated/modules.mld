@@ -1,6 +1,6 @@
 {0 PangoCairo interfaces}
 
-{!Ocpangocairo} has one module for each PangoCairo interface. The externals they are built on are in {!Ocpangocairo.Raw}.
+{!Ocpangocairo} has one module for each PangoCairo interface, with the externals they are built on in {!Ocpangocairo.Raw} and the enumerations and bitfields in {!Ocpangocairo.Enums}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
 
 {1 Interfaces}
 

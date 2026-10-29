@@ -5,6 +5,8 @@ GObject, and the C runtime support that the generated bindings in the other
 packages share. Its library is wrapped: modules are reached as
 [Ocglib.Gobject], [Ocglib.UInt8], and so on.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 {ul

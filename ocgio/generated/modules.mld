@@ -1,6 +1,6 @@
 {0 Gio classes, interfaces and records}
 
-{!Ocgio} has one module for each Gio class, interface and record. The externals they are built on are in {!Ocgio.Raw}.
+{!Ocgio} has one module for each Gio class, interface and record, with the externals they are built on in {!Ocgio.Raw}, the enumerations and bitfields in {!Ocgio.Enums} and the constants in {!Ocgio.Constants}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
 
 {1 Classes}
 

@@ -1432,7 +1432,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
          (Gir_gen_lib.Generate.Library_module.modules_page_name ^ ".mld"))
     ~content:
       (Gir_gen_lib.Generate.Library_module.generate_modules_page
-         ~namespace:ns_name ~entities);
+         ~namespace:ns_name ~entities
+         ~has_constants:(not (List.is_empty ctx.constants)));
 
   (* ==== BUILD CONFIGURATION ==== *)
   Fmt.pr "\n";

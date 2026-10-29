@@ -1,6 +1,6 @@
 {0 Pango classes and records}
 
-{!Ocpango} has one module for each Pango class and record. The externals they are built on are in {!Ocpango.Raw}.
+{!Ocpango} has one module for each Pango class and record, with the externals they are built on in {!Ocpango.Raw}, the enumerations and bitfields in {!Ocpango.Enums} and the constants in {!Ocpango.Constants}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
 
 {1 Classes}
 

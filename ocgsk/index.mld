@@ -4,6 +4,8 @@ The {b ocgsk} package provides OCaml bindings for GSK 4, the GTK scene graph:
 render nodes and transforms for drawing widgets. They are generated from
 GSK's GObject introspection data.
 
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
 {1 Modules}
 
 The library is reached as {!Ocgsk}, with one module per class, interface or
