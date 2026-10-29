@@ -183,8 +183,11 @@ dune build
 
 ### Generate Cross-Namespace References
 ```bash
-# Generate reference list for type validation (from repo root)
+# Generate reference list for type validation (from repo root). Pass the
+# reference files of the namespace's dependencies with -r, as for generate:
+# the list holds only what generate emits, which depends on them.
 dune exec gir_gen -- references \
+  -r cairo-references.sexp -r pango-references.sexp ... \
   gir/Gdk-4.0.gir gdk-references.sexp
 
 # Use references when generating bindings

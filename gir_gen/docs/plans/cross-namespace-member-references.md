@@ -1,6 +1,7 @@
 # Cross-namespace member references in generated docs
 
-**Status: planned, not started (2026-10-29).** Follows the odoc leg
+**Status: Phase 1 done (2026-10-29); Phases 2 and 3 not started.** Branch
+`cross-ns-member-refs`. Follows the odoc leg
 ([m3-odoc-emission-and-artifacts](m3-odoc-emission-and-artifacts.md)), whose
 decision 11 links members only within the doc's own namespace, and lists
 "cross-namespace member references" as out of scope.
@@ -104,6 +105,20 @@ trustworthy.
 
 *Acceptance:* every references file is byte-identical to before; the
 regeneration diff is empty; tests pass.
+
+*Done.* The shared loader is `Namespace_loader` (`lib/namespace_loader.ml`):
+`load` parses, applies overrides, reads the references files and builds the
+context, returning load failures as a `Result` instead of exiting.
+`generate` and `references` both call it; `generate`'s back half is
+`generate_namespace`. The signal corpus uses
+`Namespace_loader.load_reference_files` instead of its copy, but keeps its
+own minimal context, since its baseline was recorded without overrides. All
+nine references files came out byte-identical with and without `-r`, and the
+regeneration diff was empty.
+
+Loading a namespace logs every skipped member to stderr (`Exclude_list`), so
+the `references` command is now as noisy as `generate`. The corpus rules send
+both of its output streams to `%{null}`.
 
 ### Phase 2 — Member tables in the references files
 

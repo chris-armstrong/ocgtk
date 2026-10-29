@@ -19,13 +19,6 @@ type signal_coverage = {
 }
 [@@deriving sexp]
 
-val load_reference_files :
-  string list ->
-  Gir_gen_lib.Types.generation_context_namespace_cross_references
-  Gir_gen_lib.Types.StringMap.t
-(** Parse a list of [*-references.sexp] files (produced by [gir_gen references])
-    into the [cross_references] map shape consumed by [generation_context]. *)
-
 val classify_signals_of_file :
   ?reference_files:string list -> string -> classification_outcome list
 (** [reference_files] supplies cross-namespace knowledge so types from other

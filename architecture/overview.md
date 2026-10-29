@@ -454,8 +454,9 @@ Key points:
   type, the appropriate `<ns>_decls.h` is included.
 
 - **`scripts/generate-bindings.sh`** orchestrates the two-phase process: first
-  generate reference files for all namespaces, then generate bindings with those
-  references available.
+  generate reference files for all namespaces in dependency order, each with its
+  dependencies' reference files (what a namespace emits depends on them), then
+  generate bindings with those references available.
 
 ---
 
