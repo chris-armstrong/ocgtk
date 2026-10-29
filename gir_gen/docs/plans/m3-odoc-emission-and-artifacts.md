@@ -1192,6 +1192,20 @@ Departures from the plan below:
   property accessor docs resolve with `Doc_resolve.class_member`, which
   links nothing, and their references stay code. The first build without
   it had 0 warnings but over 400 unresolved links, all in such docs.
+  *Root cause* (odoc 3.2.1 source; `master` is the same): compiling a
+  class or class type builds an `expansion`, a copy of its class signature
+  with the method docs (`src/xref2/compile.ml`), and the HTML page is
+  rendered from that copy (`src/document/generator.ml`). The link step
+  (`class_type` and `class_` in `src/xref2/link.ml`) links the declared
+  signature and the top doc but never the expansion, so the rendered
+  method docs are unlinked. Warnings come from linking the declared
+  signature, which is why a missing target warns but a valid one is still
+  shown unresolved. Linking the expansion too (one line in each function)
+  fixes it: a locally built odoc with that change renders the links, and
+  reports a missing target twice. A bare `{!method-m}` naming a method of
+  the same class type still fails, a separate limitation that full paths
+  avoid. When odoc links the expansion, the three `class_member` sites can
+  pass the normal refs.
   **Phase 12 is affected:** member links can be made from L1 docs and from
   L2 module, class type, enum and constant docs, but not from L2 member
   docs, until odoc resolves them.
