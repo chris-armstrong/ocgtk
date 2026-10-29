@@ -54,13 +54,17 @@ end
      the application give them a more\n\
      semantic meaning.\n\n\
      Buttons and sensors are not constrained to triggering a single action,\n\
-     some [GDK_SOURCE_TABLET_PAD] devices feature multiple \"modes\". All these\n\
+     some \
+     {{!Ocgdk.Enums.type-inputsource.constructor-TABLET_PAD}[GDK_SOURCE_TABLET_PAD]} \
+     devices feature multiple \"modes\". All these\n\
      input elements have one current mode, which may determine the final action\n\
      being triggered.\n\n\
      Pad devices often divide buttons and sensors into groups. All elements\n\
      in a group share the same current mode, but different groups may have\n\
-     different modes. See [Gdk.DevicePad.get_n_groups] and\n\
-     [Gdk.DevicePad.get_group_n_modes].\n\n\
+     different modes. See \
+     {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_groups}[Gdk.DevicePad.get_n_groups]} \
+     and\n\
+     {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_group_n_modes}[Gdk.DevicePad.get_group_n_modes]}.\n\n\
      Each of the actions that a given button/strip/ring performs for a given \
      mode\n\
      is defined by a \
@@ -117,13 +121,17 @@ class pad_controller : Raw.Pad_controller.t -> pad_controller_t
  application give them a more\n\
  semantic meaning.\n\n\
  Buttons and sensors are not constrained to triggering a single action,\n\
- some [GDK_SOURCE_TABLET_PAD] devices feature multiple \"modes\". All these\n\
+ some \
+ {{!Ocgdk.Enums.type-inputsource.constructor-TABLET_PAD}[GDK_SOURCE_TABLET_PAD]} \
+ devices feature multiple \"modes\". All these\n\
  input elements have one current mode, which may determine the final action\n\
  being triggered.\n\n\
  Pad devices often divide buttons and sensors into groups. All elements\n\
  in a group share the same current mode, but different groups may have\n\
- different modes. See [Gdk.DevicePad.get_n_groups] and\n\
- [Gdk.DevicePad.get_group_n_modes].\n\n\
+ different modes. See \
+ {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_n_groups}[Gdk.DevicePad.get_n_groups]} \
+ and\n\
+ {{!Ocgdk.Device_pad.class-type-device_pad_t.method-get_group_n_modes}[Gdk.DevicePad.get_group_n_modes]}.\n\n\
  Each of the actions that a given button/strip/ring performs for a given mode\n\
  is defined by a \
  {{!Ocgtk.Pad_action_entry.class-type-pad_action_entry_t}[Gtk.PadActionEntry]}. \

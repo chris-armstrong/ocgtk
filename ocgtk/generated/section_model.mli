@@ -26,8 +26,9 @@
      [Gtk.SectionModel::sections-changed]} signal by calling the
     {{!Ocgtk.Section_model.class-type-section_model_t.method-sections_changed}[Gtk.SectionModel.sections_changed]}
     function. All sections in the given range then need to be queried again. The
-    [Gio.ListModel::items-changed] signal has the same effect, all sections in
-    that range are invalidated, too. *)
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    signal has the same effect, all sections in that range are invalidated, too.
+*)
 class type section_model_t = object
   (** {2:signals Signals} *)
 
@@ -89,8 +90,9 @@ class section_model : Raw.Section_model.t -> section_model_t
      [Gtk.SectionModel::sections-changed]} signal by calling the
     {{!Ocgtk.Section_model.class-type-section_model_t.method-sections_changed}[Gtk.SectionModel.sections_changed]}
     function. All sections in the given range then need to be queried again. The
-    [Gio.ListModel::items-changed] signal has the same effect, all sections in
-    that range are invalidated, too. *)
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    signal has the same effect, all sections in that range are invalidated, too.
+*)
 
 (** {1:constructors Constructors} *)
 

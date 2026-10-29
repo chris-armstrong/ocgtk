@@ -17,9 +17,10 @@
     A selection model that allows selecting a single item.
 
     Note that the selection is {i persistent} -- if the selected item is removed
-    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
-    selected. In particular, this means that changing the sort order of an
-    underlying sort model will preserve the selection. *)
+    and re-added in the same
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    emission, it stays selected. In particular, this means that changing the
+    sort order of an underlying sort model will preserve the selection. *)
 class type single_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
@@ -99,9 +100,10 @@ class single_selection : Raw.Single_selection.t -> single_selection_t
     A selection model that allows selecting a single item.
 
     Note that the selection is {i persistent} -- if the selected item is removed
-    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
-    selected. In particular, this means that changing the sort order of an
-    underlying sort model will preserve the selection. *)
+    and re-added in the same
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    emission, it stays selected. In particular, this means that changing the
+    sort order of an underlying sort model will preserve the selection. *)
 
 (** {1:constructors Constructors} *)
 

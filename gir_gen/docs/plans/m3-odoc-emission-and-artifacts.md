@@ -214,11 +214,13 @@ auto-managed `gh-pages` branch and in local build directories.
     - **Types and constants link in every generated namespace** (current
       namespace from the generation context, others from the references
       files). **Members** (methods, constructors, signals, properties, enum
-      members) **link only within the current namespace**, where the
-      generator knows what it emitted. Cross-namespace member references
-      are about 4% of Gtk's member fragments (about 100 of 2,449, to Gdk,
-      Gio, Gsk and Pango) and stay code; a references-file member table is
-      out of scope.
+      members) **linked only within the current namespace** in this leg,
+      where the generator knows what it emitted. Cross-namespace member
+      references, about 4% of Gtk's member fragments (about 100 of 2,449, to
+      Gdk, Gio, Gsk and Pango), stayed code. *Since 2026-10-30* they link
+      too: each references file lists its namespace's emitted members
+      ([cross-namespace-member-references](cross-namespace-member-references.md)),
+      so the rule above still holds.
     - **Link text is unchanged.** A resolved reference renders as
       `{{!path}[endpoint]}`: the code span readers see today, now a link.
       The HTML diff of the resolver phases is therefore links only.
@@ -1685,7 +1687,7 @@ closing checklist on top of them:
 - `@param`/`@return`/`@deprecated` tag emission; generalised `@since`.
 - Cross-namespace member references (about 100 in Gtk): need a member
   table in the references files (the PRD §7.7 emitted-symbol map). They
-  stay code (decision 11). Planned in
+  stayed code in this leg (decision 11). Done since in
   [cross-namespace-member-references](cross-namespace-member-references.md).
 - References to functions, callbacks, vfuncs, aliases and error domains,
   which are not generated, and to GLib and GObject types, which have no

@@ -305,7 +305,8 @@ module rec Text_buffer : sig
   (** Get a content provider for this buffer.
 
       It can be used to make the content of [buffer] available in a
-      [GdkClipboard], see [Gdk.Clipboard.set_content]. *)
+      [GdkClipboard], see
+      {{!Ocgdk.Raw.Clipboard.val-set_content}[Gdk.Clipboard.set_content]}. *)
 
   external get_selection_bounds : t -> bool * Text_iter.t * Text_iter.t
     = "ml_gtk_text_buffer_get_selection_bounds"
@@ -1056,7 +1057,8 @@ end = struct
   (** Get a content provider for this buffer.
 
       It can be used to make the content of [buffer] available in a
-      [GdkClipboard], see [Gdk.Clipboard.set_content]. *)
+      [GdkClipboard], see
+      {{!Ocgdk.Raw.Clipboard.val-set_content}[Gdk.Clipboard.set_content]}. *)
 
   external get_selection_bounds : t -> bool * Text_iter.t * Text_iter.t
     = "ml_gtk_text_buffer_get_selection_bounds"

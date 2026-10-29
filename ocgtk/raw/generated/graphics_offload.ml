@@ -26,7 +26,8 @@
     - Clipping, such as rounded corners that cause the video content to not be
       rectangular
 
-    - Unsupported dmabuf formats (see [Gdk.Display.get_dmabuf_formats])
+    - Unsupported dmabuf formats (see
+      {{!Ocgdk.Raw.Display.val-get_dmabuf_formats}[Gdk.Display.get_dmabuf_formats]})
 
     - Translucent video content (content with an alpha channel, even if it isn't
       used)

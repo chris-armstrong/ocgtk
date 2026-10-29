@@ -13,9 +13,10 @@
    bitfields and constants have one home, [Enums] and [Constants], whatever
    the layer.
 
-   Members link only within the doc's own namespace, the only one whose
-   emitted members the index lists, and only to a member the type emits at
-   the doc's layer. From a layer 1 doc, a method, constructor, signal or
+   Members link in every namespace in the index, and only to a member the
+   type emits at the doc's layer: another namespace's references file lists
+   what that namespace emits, from the same code that drives its emitters.
+   From a layer 1 doc, a method, constructor, signal or
    property links to the layer 1 value ([Ocgtk.Raw.Button.val-get_label]);
    from a layer 2 doc, a constructor links to the module's value
    ([Ocgtk.Button.val-new_]) and the others to the class type's method
@@ -26,10 +27,10 @@
    Legacy sigils and C calls name C symbols and follow the same rules: a
    [#CType] sigil links like a type, and [#CType:prop] and [#CType::sig] like
    a member; a [%CONSTANT] sigil links to the constant, in any namespace, and
-   otherwise to the enumeration or bitfield member of the current namespace
-   with that C identifier; a C call ([gtk_widget_show()]) and an
-   [[id@symbol]] fragment link to the method or constructor of the current
-   namespace with that C identifier. A resolved C call keeps its [" ()"]. *)
+   otherwise to the enumeration or bitfield member with that C identifier; a
+   C call ([gtk_widget_show()]) and an [[id@symbol]] fragment link to the
+   method or constructor with that C identifier. A C name is looked up in the
+   current namespace first, then in the others. A resolved C call keeps its [" ()"]. *)
 
 type env = {
   namespace : string;  (** The namespace the doc belongs to. *)
@@ -61,9 +62,9 @@ type miss_reason =
   | Unknown_target
       (** The namespace is indexed but does not generate the target, or the type
           does not emit the member at the doc's layer. *)
-  | Member_in_other_namespace
-      (** A member of a type of another namespace: only members of the current
-          namespace can be checked. *)
+  | Members_not_listed
+      (** A member of a namespace whose references file has no member tables, as
+          an older file has none: its members can't be checked. *)
   | Kind_not_generated
       (** Functions, callbacks, virtual functions, aliases and error domains:
           never generated. *)

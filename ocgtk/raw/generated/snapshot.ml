@@ -93,15 +93,16 @@ external rotate_3d : t -> float -> Ocgraphene_raw.Vec3.t -> unit
   = "ml_gtk_snapshot_rotate_3d"
 (** Rotates [snapshot]'s coordinate system by [angle] degrees around [axis].
 
-    For a rotation in 2D space, use [Gsk.Transform.rotate]. *)
+    For a rotation in 2D space, use
+    {{!Ocgsk.Raw.Transform.val-rotate}[Gsk.Transform.rotate]}. *)
 
 external rotate : t -> float -> unit = "ml_gtk_snapshot_rotate"
 (** Rotates \@[snapshot]'s coordinate system by [angle] degrees in 2D space - or
     in 3D speak, rotates around the Z axis. The rotation happens around the
     origin point of (0, 0) in the [snapshot]'s current coordinate system.
 
-    To rotate around axes other than the Z axis, use [Gsk.Transform.rotate_3d].
-*)
+    To rotate around axes other than the Z axis, use
+    {{!Ocgsk.Raw.Transform.val-rotate_3d}[Gsk.Transform.rotate_3d]}. *)
 
 external restore : t -> unit = "ml_gtk_snapshot_restore"
 (** Restores [snapshot] to the state saved by a preceding call to
@@ -224,11 +225,12 @@ external push_gl_shader :
 
     If the renderer doesn't support GL shaders, or if there is any problem when
     compiling the shader, then the node will draw pink. You should use
-    [Gsk.GLShader.compile] to ensure the [shader] will work for the renderer
-    before using it.
+    {{!Ocgsk.Raw.Gl_shader.val-compile}[Gsk.GLShader.compile]} to ensure the
+    [shader] will work for the renderer before using it.
 
-    If the shader requires textures (see [Gsk.GLShader.get_n_textures]), then it
-    is expected that you call
+    If the shader requires textures (see
+    {{!Ocgsk.Raw.Gl_shader.val-get_n_textures}[Gsk.GLShader.get_n_textures]}),
+    then it is expected that you call
     {{!Ocgtk.Raw.Snapshot.val-gl_shader_pop_texture}[Gtk.Snapshot.gl_shader_pop_texture]}
     the number of times that are required. Each of these calls will generate a
     node that is added as a child to the [GskGLShaderNode], which in turn will
@@ -336,7 +338,8 @@ external pop : t -> unit = "ml_gtk_snapshot_pop"
 external perspective : t -> float -> unit = "ml_gtk_snapshot_perspective"
 (** Applies a perspective projection transform.
 
-    See [Gsk.Transform.perspective] for a discussion on the details. *)
+    See {{!Ocgsk.Raw.Transform.val-perspective}[Gsk.Transform.perspective]} for
+    a discussion on the details. *)
 
 external gl_shader_pop_texture : t -> unit
   = "ml_gtk_snapshot_gl_shader_pop_texture"

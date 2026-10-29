@@ -19,7 +19,7 @@
  The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
  attribute set to the [GFile] they refer to. This way you can get at the file\n\
  that is referred to in the same way you would via \
- [g_file_enumerator_get_child ()].\n\
+ {{!Ocgio.Raw.File_enumerator.val-get_child}[g_file_enumerator_get_child ()]}.\n\
  This means you do not need access to the [GtkDirectoryList], but can access\n\
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
  or similar.\n\n\
@@ -111,7 +111,9 @@ external get_attributes : t -> string option
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_directory_list_get_item_type"
-(** The type of items. See [Gio.ListModel.get_item_type]. *)
+(** The type of items. See
+    {{!Ocgio.Raw.List_model.val-get_item_type}[Gio.ListModel.get_item_type]}. *)
 
 external get_n_items : t -> int = "ml_gtk_directory_list_get_n_items"
-(** The number of items. See [Gio.ListModel.get_n_items]. *)
+(** The number of items. See
+    {{!Ocgio.Raw.List_model.val-get_n_items}[Gio.ListModel.get_n_items]}. *)

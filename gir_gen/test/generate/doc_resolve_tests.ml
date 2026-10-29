@@ -1,27 +1,89 @@
 (* Unit tests for Doc_resolve (gir_gen/lib/generate/doc_resolve.ml): each
    type-level and member fragment linked from both layers, endpoint forms
-   (relative, anchored, backticked), cross-package targets, and every miss
-   reason. The index is built by Doc_index from the Member_fixture Gtk
-   namespace and a Gdk references file. *)
+   (relative, anchored, backticked), cross-package targets and members, and every
+   miss reason. The index is built by Doc_index from the Member_fixture Gtk
+   namespace and Gdk and Pango references files. *)
 
 open Gir_gen_lib
 open Gir_gen_lib.Generate
 open Type_factory
 
+let entities entries =
+  List.fold_left
+    (fun acc (entity : Types.cross_reference_entity) ->
+      Types.StringMap.add entity.cr_name entity acc)
+    Types.StringMap.empty entries
+
+let layer ?(methods = []) ?(constructors = []) ?(signals = [])
+    ?(properties = []) () : Types.cross_reference_layer_members =
+  {
+    crl_methods = methods;
+    crl_constructors = constructors;
+    crl_signals = signals;
+    crl_properties = properties;
+  }
+
+(* Gdk's references file, with member tables. [Surface.get_scale] is emitted at
+   layer 1 only. *)
 let gdk_refs =
   Helpers.make_ncr "Gdk"
-    (List.fold_left
-       (fun acc (cr_name, cr_c_type, cr_type) ->
-         Types.StringMap.add cr_name
-           (make_cross_reference_entity ~cr_name ~cr_c_type ~cr_type ())
-           acc)
-       Types.StringMap.empty
+    (entities
        [
-         ("Texture", "GdkTexture", make_cross_reference_type `Class);
-         ( "PaintableFlags",
-           "GdkPaintableFlags",
-           make_cross_reference_type `Bitfield );
-         ("KEY_a", "GDK_KEY_a", make_cross_reference_type `Constant);
+         make_cross_reference_entity ~cr_name:"Texture" ~cr_c_type:"GdkTexture"
+           ~cr_type:(make_cross_reference_type `Class)
+           ();
+         make_cross_reference_entity ~cr_name:"Surface" ~cr_c_type:"GdkSurface"
+           ~cr_type:(make_cross_reference_type `Class)
+           ~cr_members:
+             {
+               crm_l1 =
+                 layer
+                   ~methods:[ ("beep", "beep"); ("get_scale", "get_scale") ]
+                   ~constructors:[ ("new_popup", "new_popup") ]
+                   ~signals:[ ("layout", "on_layout") ]
+                   ~properties:[ ("mapped", "get_mapped") ]
+                   ();
+               crm_l2 =
+                 layer
+                   ~methods:[ ("beep", "beep") ]
+                   ~constructors:[ ("new_popup", "new_popup") ]
+                   ~signals:[ ("layout", "on_layout") ]
+                   ~properties:[ ("mapped", "mapped") ]
+                   ();
+               crm_c_methods =
+                 [
+                   ("beep", "gdk_surface_beep");
+                   ("get_scale", "gdk_surface_get_scale");
+                 ];
+               crm_c_constructors = [ ("new_popup", "gdk_surface_new_popup") ];
+             }
+           ();
+         make_cross_reference_entity ~cr_name:"Gravity" ~cr_c_type:"GdkGravity"
+           ~cr_type:(make_cross_reference_type `Enum)
+           ~cr_enum_members:[ ("north_west", "GDK_GRAVITY_NORTH_WEST") ]
+           ();
+         make_cross_reference_entity ~cr_name:"PaintableFlags"
+           ~cr_c_type:"GdkPaintableFlags"
+           ~cr_type:(make_cross_reference_type `Bitfield)
+           ~cr_enum_members:[ ("static_size", "GDK_PAINTABLE_STATIC_SIZE") ]
+           ();
+         make_cross_reference_entity ~cr_name:"KEY_a" ~cr_c_type:"GDK_KEY_a"
+           ~cr_type:(make_cross_reference_type `Constant)
+           ();
+       ])
+
+(* A references file with no member tables, as an older file has none. *)
+let pango_refs =
+  Helpers.make_ncr "Pango"
+    (entities
+       [
+         make_cross_reference_entity ~cr_name:"Layout" ~cr_c_type:"PangoLayout"
+           ~cr_type:(make_cross_reference_type `Class)
+           ();
+         make_cross_reference_entity ~cr_name:"WrapMode"
+           ~cr_c_type:"PangoWrapMode"
+           ~cr_type:(make_cross_reference_type `Enum)
+           ();
        ])
 
 let index =
@@ -39,7 +101,7 @@ let index =
         make_gir_constant ~constant_name:"ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE"
           ~constant_c_type:"GTK_ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE" ();
       ]
-    ~cross_references:(make_cross_reference_map [ gdk_refs ])
+    ~cross_references:(make_cross_reference_map [ gdk_refs; pango_refs ])
     ()
 
 let env layer : Doc_resolve.env = { namespace = "Gtk"; layer; index }
@@ -249,10 +311,65 @@ let test_unknown_target () =
   check_miss "a class fragment naming a member" "[class@Gtk.Button.label]"
     Unknown_target
 
-let test_member_in_other_namespace () =
-  check_miss "method" "[method@Gdk.Texture.get_width]" Member_in_other_namespace;
-  check_miss "enum member" "[flags@Gdk.PaintableFlags.SIZE]"
-    Member_in_other_namespace
+let test_member_of_other_namespace () =
+  check_links ~refs:l2 "a method, layer 2" "[method@Gdk.Surface.beep]"
+    "{{!Ocgdk.Surface.class-type-surface_t.method-beep}[Gdk.Surface.beep]}";
+  check_links ~refs:l1 "a method, layer 1" "[method@Gdk.Surface.beep]"
+    "{{!Ocgdk.Raw.Surface.val-beep}[Gdk.Surface.beep]}";
+  check_links ~refs:l2 "a constructor, layer 2" "[ctor@Gdk.Surface.new_popup]"
+    "{{!Ocgdk.Surface.val-new_popup}[Gdk.Surface.new_popup]}";
+  check_links ~refs:l1 "a constructor, layer 1" "[ctor@Gdk.Surface.new_popup]"
+    "{{!Ocgdk.Raw.Surface.val-new_popup}[Gdk.Surface.new_popup]}";
+  check_links ~refs:l2 "a signal" "[signal@Gdk.Surface::layout]"
+    "{{!Ocgdk.Surface.class-type-surface_t.method-on_layout}[Gdk.Surface::layout]}";
+  check_links ~refs:l2 "a property, layer 2" "[property@Gdk.Surface:mapped]"
+    "{{!Ocgdk.Surface.class-type-surface_t.method-mapped}[Gdk.Surface:mapped]}";
+  check_links ~refs:l1 "a property, layer 1" "[property@Gdk.Surface:mapped]"
+    "{{!Ocgdk.Raw.Surface.val-get_mapped}[Gdk.Surface:mapped]}";
+  check_links ~refs:l2 "a signal by C type" "#GdkSurface::layout"
+    "{{!Ocgdk.Surface.class-type-surface_t.method-on_layout}[GdkSurface::layout]}"
+
+let test_enum_member_of_other_namespace () =
+  List.iter
+    (fun refs ->
+      check_links ~refs "an enumeration member" "[enum@Gdk.Gravity.NORTH_WEST]"
+        "{{!Ocgdk.Enums.type-gravity.constructor-NORTH_WEST}[Gdk.Gravity.NORTH_WEST]}";
+      check_links ~refs "a bitfield member"
+        "[flags@Gdk.PaintableFlags.static-size]"
+        "{{!Ocgdk.Enums.type-paintableflags_flag.constructor-STATIC_SIZE}[Gdk.PaintableFlags.static-size]}")
+    [ l1; l2 ]
+
+let test_member_misses_in_other_namespace () =
+  check_miss "emitted at layer 1 only" "[method@Gdk.Surface.get_scale]"
+    Unknown_target;
+  check_links ~refs:l1 "which layer 1 links" "[method@Gdk.Surface.get_scale]"
+    "{{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]}";
+  check_miss "a class with no member tables" "[method@Gdk.Texture.get_width]"
+    Unknown_target;
+  check_miss "an unknown enumeration member" "[enum@Gdk.Gravity.EAST]"
+    Unknown_target
+
+let test_c_symbol_of_other_namespace () =
+  check_links ~refs:l2 "a C call, layer 2" "gdk_surface_beep()"
+    "{{!Ocgdk.Surface.class-type-surface_t.method-beep}[gdk_surface_beep ()]}";
+  check_links ~refs:l1 "a C call, layer 1" "gdk_surface_beep()"
+    "{{!Ocgdk.Raw.Surface.val-beep}[gdk_surface_beep ()]}";
+  check_links ~refs:l2 "a constructor" "[id@gdk_surface_new_popup]"
+    "{{!Ocgdk.Surface.val-new_popup}[gdk_surface_new_popup]}";
+  check_miss "a C call emitted at layer 1 only" "gdk_surface_get_scale()"
+    Unknown_target;
+  check_links ~refs:l2 "an enumeration member" "%GDK_GRAVITY_NORTH_WEST"
+    "{{!Ocgdk.Enums.type-gravity.constructor-NORTH_WEST}[GDK_GRAVITY_NORTH_WEST]}";
+  check_links ~refs:l2 "a bitfield member" "%GDK_PAINTABLE_STATIC_SIZE"
+    "{{!Ocgdk.Enums.type-paintableflags_flag.constructor-STATIC_SIZE}[GDK_PAINTABLE_STATIC_SIZE]}"
+
+let test_members_not_listed () =
+  check_miss "a method" "[method@Pango.Layout.get_text]" Members_not_listed;
+  check_miss "an enumeration member" "[enum@Pango.WrapMode.WORD]"
+    Members_not_listed;
+  check_miss "a signal by C type" "#PangoLayout::changed" Members_not_listed;
+  check_links ~refs:l2 "its types still link" "[class@Pango.Layout]"
+    "{{!Ocpango.Layout.class-type-layout_t}[Pango.Layout]}"
 
 let test_kind_not_generated () =
   List.iter
@@ -341,11 +458,10 @@ let test_id_fragment () =
 
 let test_sigil_misses () =
   check_miss "a C type that is not generated" "#GObject" Unknown_target;
-  check_miss "a member of another namespace" "#GdkTexture::changed"
-    Member_in_other_namespace;
-  check_miss "an unknown constant" "%GDK_KEY_b" Unknown_target;
-  check_miss "a C call of another namespace" "gdk_texture_get_width()"
+  check_miss "an unknown member of another namespace" "#GdkTexture::changed"
     Unknown_target;
+  check_miss "an unknown constant" "%GDK_KEY_b" Unknown_target;
+  check_miss "an unknown C call" "gdk_texture_get_width()" Unknown_target;
   check_miss "a filtered method" "gtk_button_get_private()" Unknown_target;
   check_miss "a C call naming an enumeration member" "[id@GTK_DIR_TAB_FORWARD]"
     Unknown_target
@@ -422,7 +538,15 @@ let tests =
     ("C call", `Quick, test_c_call);
     ("id fragment", `Quick, test_id_fragment);
     ("sigil misses", `Quick, test_sigil_misses);
-    ("member in other namespace", `Quick, test_member_in_other_namespace);
+    ("member of another namespace", `Quick, test_member_of_other_namespace);
+    ( "enum member of another namespace",
+      `Quick,
+      test_enum_member_of_other_namespace );
+    ( "member misses in another namespace",
+      `Quick,
+      test_member_misses_in_other_namespace );
+    ("C symbol of another namespace", `Quick, test_c_symbol_of_other_namespace);
+    ("members not listed", `Quick, test_members_not_listed);
     ("kind not generated", `Quick, test_kind_not_generated);
     ("empty index links nothing", `Quick, test_no_links);
     ("class member docs link nothing", `Quick, test_class_member_links_nothing);

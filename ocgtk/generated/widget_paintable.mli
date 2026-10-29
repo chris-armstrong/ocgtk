@@ -20,9 +20,12 @@
     that case.
 
     Of course, [GtkWidgetPaintable] allows you to monitor widgets for size
-    changes by emitting the [Gdk.Paintable::invalidate-size] signal whenever the
-    size of the widget changes as well as for visual changes by emitting the
-    [Gdk.Paintable::invalidate-contents] signal whenever the widget changes.
+    changes by emitting the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal whenever the size of the widget changes as well as for visual changes
+    by emitting the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal whenever the widget changes.
 
     You can use a [GtkWidgetPaintable] everywhere a [GdkPaintable] is allowed,
     including using it on a [GtkPicture] (or one of its parents) that it was set
@@ -63,9 +66,12 @@ class widget_paintable : Raw.Widget_paintable.t -> widget_paintable_t
     that case.
 
     Of course, [GtkWidgetPaintable] allows you to monitor widgets for size
-    changes by emitting the [Gdk.Paintable::invalidate-size] signal whenever the
-    size of the widget changes as well as for visual changes by emitting the
-    [Gdk.Paintable::invalidate-contents] signal whenever the widget changes.
+    changes by emitting the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_size}[Gdk.Paintable::invalidate-size]}
+    signal whenever the size of the widget changes as well as for visual changes
+    by emitting the
+    {{!Ocgdk.Paintable.class-type-paintable_t.method-on_invalidate_contents}[Gdk.Paintable::invalidate-contents]}
+    signal whenever the widget changes.
 
     You can use a [GtkWidgetPaintable] everywhere a [GdkPaintable] is allowed,
     including using it on a [GtkPicture] (or one of its parents) that it was set

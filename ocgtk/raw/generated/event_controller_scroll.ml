@@ -69,7 +69,9 @@ external get_unit : t -> Ocgdk_enums.scrollunit
     {{!Ocgtk.Raw.Event_controller_scroll.val-on_scroll}[Gtk.EventControllerScroll::scroll]}
     signal received.
 
-    Always returns [GDK_SCROLL_UNIT_WHEEL] if the
+    Always returns
+    {{!Ocgdk.Enums.type-scrollunit.constructor-WHEEL}[GDK_SCROLL_UNIT_WHEEL]} if
+    the
     {{!Ocgtk.Enums.type-eventcontrollerscrollflags_flag.constructor-DISCRETE}[GTK_EVENT_CONTROLLER_SCROLL_DISCRETE]}
     flag is set. *)
 

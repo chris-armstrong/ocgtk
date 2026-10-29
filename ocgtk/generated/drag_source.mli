@@ -182,7 +182,8 @@ end
      can be used to obtain updates about the status of the operation,\n\
      but it is not normally necessary to connect to any signals,\n\
      except for one case: when the supported actions include\n\
-     [GDK_ACTION_MOVE], you need to listen for the\n\
+     {{!Ocgdk.Enums.type-dragaction_flag.constructor-MOVE}[GDK_ACTION_MOVE]}, \
+     you need to listen for the\n\
      {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_end}[Gtk.DragSource::drag-end]} \
      signal and delete the\n\
      data after it has been transferred."]
@@ -261,7 +262,8 @@ class drag_source : Raw.Drag_source.t -> drag_source_t
  can be used to obtain updates about the status of the operation,\n\
  but it is not normally necessary to connect to any signals,\n\
  except for one case: when the supported actions include\n\
- [GDK_ACTION_MOVE], you need to listen for the\n\
+ {{!Ocgdk.Enums.type-dragaction_flag.constructor-MOVE}[GDK_ACTION_MOVE]}, you \
+ need to listen for the\n\
  {{!Ocgtk.Drag_source.class-type-drag_source_t.method-on_drag_end}[Gtk.DragSource::drag-end]} \
  signal and delete the\n\
  data after it has been transferred."]

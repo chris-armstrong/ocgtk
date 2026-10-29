@@ -20,14 +20,14 @@ let class_member env = { env with index = StringMap.empty }
 type miss_reason =
   | Namespace_not_generated
   | Unknown_target
-  | Member_in_other_namespace
+  | Members_not_listed
   | Kind_not_generated
 [@@deriving eq]
 
 let miss_reason_name = function
   | Namespace_not_generated -> "namespace-not-generated"
   | Unknown_target -> "unknown-target"
-  | Member_in_other_namespace -> "member-in-other-namespace"
+  | Members_not_listed -> "members-not-listed"
   | Kind_not_generated -> "kind-not-generated"
 
 type outcome = {
@@ -118,9 +118,12 @@ let resolve_constant ~env ~namespace rest =
 
 let ( let* ) = Result.bind
 
-let in_current_namespace ~env ~namespace =
-  if String.equal namespace env.namespace then Ok ()
-  else Error Member_in_other_namespace
+(* An indexed namespace whose member tables are empty because its references
+   file has none: its members can't be checked. *)
+let members_listed ~env ~namespace =
+  match StringMap.find_opt namespace env.index with
+  | Some { di_members_listed = false; _ } -> Error Members_not_listed
+  | Some { di_members_listed = true; _ } | None -> Ok ()
 
 let drop_prefix ~prefix s =
   if String.starts_with ~prefix s then
@@ -187,7 +190,7 @@ let member_path ~env ~namespace (kind : Doc_ast.sym_kind) type_name name =
         name
 
 let resolve_member ~env ~namespace kind rest =
-  let* () = in_current_namespace ~env ~namespace in
+  let* () = members_listed ~env ~namespace in
   let* type_name, member = split_member kind rest in
   let* members =
     lookup ~env ~namespace ~table:(fun ns -> ns.di_members) type_name
@@ -202,7 +205,7 @@ let resolve_member ~env ~namespace kind rest =
   |> Result.map (member_path ~env ~namespace kind type_name)
 
 let resolve_enum_member ~env ~namespace rest =
-  let* () = in_current_namespace ~env ~namespace in
+  let* () = members_listed ~env ~namespace in
   let* type_name, member = split_member Enum rest in
   let* kind = lookup ~env ~namespace ~table:(fun ns -> ns.di_types) type_name in
   let* variants =
@@ -239,11 +242,10 @@ let find_by_c_name ~env ~table key =
       |> Seq.find_map (fun (namespace, _) -> in_namespace namespace)
       |> Option.to_result ~none:Unknown_target
 
-(* A C identifier of the current namespace that names one of [kinds]. *)
+(* A C identifier, of any namespace, that names one of [kinds]. *)
 let resolve_c_symbol ~env ~kinds c_identifier =
-  let namespace = env.namespace in
-  let* { dc_kind; dc_type; dc_member } =
-    lookup ~env ~namespace ~table:(fun ns -> ns.di_c_symbols) c_identifier
+  let* namespace, { dc_kind; dc_type; dc_member } =
+    find_by_c_name ~env ~table:(fun ns -> ns.di_c_symbols) c_identifier
   in
   let rest = dc_type ^ "." ^ dc_member in
   if not (List.mem dc_kind ~set:kinds) then Error Unknown_target
@@ -266,7 +268,7 @@ let resolve_hash ~env endpoint =
     in
     resolve_member ~env ~namespace kind (name ^ member)
 
-(* [%CONSTANT], in any namespace, or [%ENUM_MEMBER] of the current one. *)
+(* [%CONSTANT] or [%ENUM_MEMBER], in any namespace. *)
 let resolve_percent ~env endpoint =
   match find_by_c_name ~env ~table:(fun ns -> ns.di_c_constants) endpoint with
   | Ok (namespace, name) -> resolve_constant ~env ~namespace name

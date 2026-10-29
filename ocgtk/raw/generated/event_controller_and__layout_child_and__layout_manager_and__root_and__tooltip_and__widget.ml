@@ -696,8 +696,9 @@ and Widget : sig
       Opacity works on both toplevel widgets and child widgets, although there
       are some limitations: For toplevel widgets, applying opacity depends on
       the capabilities of the windowing system. On X11, this has any effect only
-      on X displays with a compositing manager, see [Gdk.Display.is_composited].
-      On Windows and Wayland it will always work, although setting a window’s
+      on X displays with a compositing manager, see
+      {{!Ocgdk.Raw.Display.val-is_composited}[Gdk.Display.is_composited]}. On
+      Windows and Wayland it will always work, although setting a window’s
       opacity after the window has been shown may cause some flicker.
 
       Note that the opacity is inherited through inclusion — if you set a
@@ -871,7 +872,8 @@ and Widget : sig
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
       This is a utility function that creates a cursor via
-      [Gdk.Cursor.new_from_name] and then sets it on [widget] with
+      {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} and then
+      sets it on [widget] with
       {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]}. See those
       functions for details.
 
@@ -1433,12 +1435,14 @@ and Widget : sig
       On traditional systems this is 1, on high density outputs, it can be a
       higher value (typically 2).
 
-      See [Gdk.Surface.get_scale_factor].
+      See
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}.
 
       Note that modern systems may support {i fractional} scaling, where the
       scale factor is not an integer. On such systems, this function will return
       the next higher integer value, but you probably want to use
-      [Gdk.Surface.get_scale] to get the fractional scale value. *)
+      {{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]} to get the
+      fractional scale value. *)
 
   external get_root : t -> Root.t option = "ml_gtk_widget_get_root"
   (** Returns the [GtkRoot] widget of the widget.
@@ -1642,15 +1646,18 @@ and Widget : sig
 
       The frame clock is a global “ticker” that can be used to drive animations
       and repaints. The most common reason to get the frame clock is to call
-      [Gdk.FrameClock.get_frame_time], in order to get a time to use for
-      animating. For example you might record the start of the animation with an
-      initial value from [Gdk.FrameClock.get_frame_time], and then update the
-      animation by calling [Gdk.FrameClock.get_frame_time] again during each
-      repaint.
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]},
+      in order to get a time to use for animating. For example you might record
+      the start of the animation with an initial value from
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]},
+      and then update the animation by calling
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+      again during each repaint.
 
-      [Gdk.FrameClock.request_phase] will result in a new frame on the clock,
-      but won’t necessarily repaint any widgets. To repaint a widget, you have
-      to use {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
+      {{!Ocgdk.Raw.Frame_clock.val-request_phase}[Gdk.FrameClock.request_phase]}
+      will result in a new frame on the clock, but won’t necessarily repaint any
+      widgets. To repaint a widget, you have to use
+      {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
       invalidates the widget (thus scheduling it to receive a draw on the next
       frame). {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} will
       also end up requesting a frame on the appropriate frame clock.
@@ -1803,11 +1810,13 @@ and Widget : sig
 
       If the
       {{!Ocgtk.Raw.Settings.val-get_gtk_error_bell}[Gtk.Settings:gtk-error-bell]}
-      setting is true, it calls [Gdk.Surface.beep], otherwise it does nothing.
+      setting is true, it calls
+      {{!Ocgdk.Raw.Surface.val-beep}[Gdk.Surface.beep]}, otherwise it does
+      nothing.
 
-      Note that the effect of [Gdk.Surface.beep] can be configured in many ways,
-      depending on the windowing backend and the desktop environment or window
-      manager that is used. *)
+      Note that the effect of {{!Ocgdk.Raw.Surface.val-beep}[Gdk.Surface.beep]}
+      can be configured in many ways, depending on the windowing backend and the
+      desktop environment or window manager that is used. *)
 
   external drag_check_threshold : t -> int -> int -> int -> int -> bool
     = "ml_gtk_drag_check_threshold"
@@ -2016,7 +2025,9 @@ and Widget : sig
       the group was inserted.
 
       The arguments must match the actions expected parameter type, as returned
-      by [Gio.Action.get_parameter_type]. *)
+      by
+      {{!Ocgio.Raw.Action.val-get_parameter_type}[Gio.Action.get_parameter_type]}.
+  *)
 
   external activate : t -> bool = "ml_gtk_widget_activate"
   (** Activates the widget.
@@ -2415,8 +2426,9 @@ end = struct
       Opacity works on both toplevel widgets and child widgets, although there
       are some limitations: For toplevel widgets, applying opacity depends on
       the capabilities of the windowing system. On X11, this has any effect only
-      on X displays with a compositing manager, see [Gdk.Display.is_composited].
-      On Windows and Wayland it will always work, although setting a window’s
+      on X displays with a compositing manager, see
+      {{!Ocgdk.Raw.Display.val-is_composited}[Gdk.Display.is_composited]}. On
+      Windows and Wayland it will always work, although setting a window’s
       opacity after the window has been shown may cause some flicker.
 
       Note that the opacity is inherited through inclusion — if you set a
@@ -2590,7 +2602,8 @@ end = struct
   (** Sets the cursor to be shown when the pointer hovers over the widget.
 
       This is a utility function that creates a cursor via
-      [Gdk.Cursor.new_from_name] and then sets it on [widget] with
+      {{!Ocgdk.Raw.Cursor.val-new_from_name}[Gdk.Cursor.new_from_name]} and then
+      sets it on [widget] with
       {{!Ocgtk.Raw.Widget.val-set_cursor}[Gtk.Widget.set_cursor]}. See those
       functions for details.
 
@@ -3152,12 +3165,14 @@ end = struct
       On traditional systems this is 1, on high density outputs, it can be a
       higher value (typically 2).
 
-      See [Gdk.Surface.get_scale_factor].
+      See
+      {{!Ocgdk.Raw.Surface.val-get_scale_factor}[Gdk.Surface.get_scale_factor]}.
 
       Note that modern systems may support {i fractional} scaling, where the
       scale factor is not an integer. On such systems, this function will return
       the next higher integer value, but you probably want to use
-      [Gdk.Surface.get_scale] to get the fractional scale value. *)
+      {{!Ocgdk.Raw.Surface.val-get_scale}[Gdk.Surface.get_scale]} to get the
+      fractional scale value. *)
 
   external get_root : t -> Root.t option = "ml_gtk_widget_get_root"
   (** Returns the [GtkRoot] widget of the widget.
@@ -3361,15 +3376,18 @@ end = struct
 
       The frame clock is a global “ticker” that can be used to drive animations
       and repaints. The most common reason to get the frame clock is to call
-      [Gdk.FrameClock.get_frame_time], in order to get a time to use for
-      animating. For example you might record the start of the animation with an
-      initial value from [Gdk.FrameClock.get_frame_time], and then update the
-      animation by calling [Gdk.FrameClock.get_frame_time] again during each
-      repaint.
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]},
+      in order to get a time to use for animating. For example you might record
+      the start of the animation with an initial value from
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]},
+      and then update the animation by calling
+      {{!Ocgdk.Raw.Frame_clock.val-get_frame_time}[Gdk.FrameClock.get_frame_time]}
+      again during each repaint.
 
-      [Gdk.FrameClock.request_phase] will result in a new frame on the clock,
-      but won’t necessarily repaint any widgets. To repaint a widget, you have
-      to use {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
+      {{!Ocgdk.Raw.Frame_clock.val-request_phase}[Gdk.FrameClock.request_phase]}
+      will result in a new frame on the clock, but won’t necessarily repaint any
+      widgets. To repaint a widget, you have to use
+      {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} which
       invalidates the widget (thus scheduling it to receive a draw on the next
       frame). {{!Ocgtk.Raw.Widget.val-queue_draw}[Gtk.Widget.queue_draw]} will
       also end up requesting a frame on the appropriate frame clock.
@@ -3522,11 +3540,13 @@ end = struct
 
       If the
       {{!Ocgtk.Raw.Settings.val-get_gtk_error_bell}[Gtk.Settings:gtk-error-bell]}
-      setting is true, it calls [Gdk.Surface.beep], otherwise it does nothing.
+      setting is true, it calls
+      {{!Ocgdk.Raw.Surface.val-beep}[Gdk.Surface.beep]}, otherwise it does
+      nothing.
 
-      Note that the effect of [Gdk.Surface.beep] can be configured in many ways,
-      depending on the windowing backend and the desktop environment or window
-      manager that is used. *)
+      Note that the effect of {{!Ocgdk.Raw.Surface.val-beep}[Gdk.Surface.beep]}
+      can be configured in many ways, depending on the windowing backend and the
+      desktop environment or window manager that is used. *)
 
   external drag_check_threshold : t -> int -> int -> int -> int -> bool
     = "ml_gtk_drag_check_threshold"
@@ -3735,7 +3755,9 @@ end = struct
       the group was inserted.
 
       The arguments must match the actions expected parameter type, as returned
-      by [Gio.Action.get_parameter_type]. *)
+      by
+      {{!Ocgio.Raw.Action.val-get_parameter_type}[Gio.Action.get_parameter_type]}.
+  *)
 
   external activate : t -> bool = "ml_gtk_widget_activate"
   (** Activates the widget.

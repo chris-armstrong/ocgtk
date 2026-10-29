@@ -1,6 +1,6 @@
 # Cross-namespace member references in generated docs
 
-**Status: Phases 1 and 2 done (2026-10-29); Phase 3 not started.** Branch
+**Status: done (Phases 1 and 2 2026-10-29, Phase 3 2026-10-30).** Branch
 `cross-ns-member-refs`. Follows the odoc leg
 ([m3-odoc-emission-and-artifacts](m3-odoc-emission-and-artifacts.md)), whose
 decision 11 links members only within the doc's own namespace, and lists
@@ -205,6 +205,27 @@ link; `doc_diff` against the base shows only code spans becoming links. In
 the preview, `[method@Gdk.FrameClock.get_frame_time]` in a Gtk doc links to
 `Ocgdk/Frame_clock/class-type-frame_clock_t/#method-get_frame_time` from L2
 docs and `Ocgdk_raw/Frame_clock/#val-get_frame_time` from L1 docs.
+
+*Done.* The resolver checks a member against the tables of the namespace
+its endpoint names, and looks a C identifier up in every namespace, current
+first. Each `doc_index_namespace` carries `di_members_listed`: true for the
+current namespace and for a references file with any member table, so a
+stale file gives `Members_not_listed` instead of `Unknown_target`.
+`doc_resolve_tests` has Gdk (with tables) and Pango (without) fixtures.
+
+Linked references, before and after: Gtk 2,985 → 3,097 of 3,681; Gdk 329 →
+330; Gsk 79 → 80; the rest unchanged. No namespace reports
+`member-in-other-namespace` or `members-not-listed`. In Gtk, 19 distinct
+dependency C symbols now link (`%GDK_TOUCH_BEGIN`, `%PANGO_WRAP_CHAR`,
+`gdk_surface_beep()`, `g_application_hold()`, …). The dependency references
+that stay code name GLib and GObject, macros and functions
+(`%GDK_TYPE_RGBA`, `pango_get_log_attrs()`), or members their namespace
+doesn't emit (`g_list_model_get_item()`, `Gio.File.mount_mountable`, async
+methods, `Pango.TabArray.free`).
+`dune build @doc` has 0 odoc warnings, so the cyclic-group risk below did not
+materialise. `doc_diff` against the Phase 2 commit: 82 changed lines in
+the bindings' HTML (67 Gtk pages, 2 Gsk), 156 more links, identical text,
+no link lost; the only text changes are gir_gen's own API docs.
 
 *Risk:* a member of a class in another namespace's cyclic group is reached
 through that class's own module re-export (`[method@Gdk.Surface.beep]`:

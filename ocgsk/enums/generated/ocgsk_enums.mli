@@ -334,8 +334,10 @@ type transformcategory =
         column) has the values (0, 0, 0, 1). *)
   | `V2D
     (** The matrix is a 2D matrix. This is equivalent to
-        [graphene_matrix_is_2d ()] returning [true]. In particular, this means
-        that Cairo can deal with the matrix. *)
+        {{!Ocgraphene.Matrix.class-type-matrix_t.method-is_2d}[graphene_matrix_is_2d
+                                                               ()]} returning
+        [true]. In particular, this means that Cairo can deal with the matrix.
+    *)
   | `V2D_AFFINE
     (** The matrix is a combination of 2D scale and 2D translation operations.
         In particular, this means that any rectangle can be transformed exactly

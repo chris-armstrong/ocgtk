@@ -4,9 +4,10 @@
 (** A selection model that allows selecting a single item.
 
     Note that the selection is {i persistent} -- if the selected item is removed
-    and re-added in the same [Gio.ListModel::items-changed] emission, it stays
-    selected. In particular, this means that changing the sort order of an
-    underlying sort model will preserve the selection.
+    and re-added in the same
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    emission, it stays selected. In particular, this means that changing the
+    sort order of an underlying sort model will preserve the selection.
 
     The class built on this module is in {!Ocgtk.Single_selection}. *)
 
@@ -92,7 +93,9 @@ external get_autoselect : t -> bool = "ml_gtk_single_selection_get_autoselect"
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_single_selection_get_item_type"
-(** The type of items. See [Gio.ListModel.get_item_type]. *)
+(** The type of items. See
+    {{!Ocgio.Raw.List_model.val-get_item_type}[Gio.ListModel.get_item_type]}. *)
 
 external get_n_items : t -> int = "ml_gtk_single_selection_get_n_items"
-(** The number of items. See [Gio.ListModel.get_n_items]. *)
+(** The number of items. See
+    {{!Ocgio.Raw.List_model.val-get_n_items}[Gio.ListModel.get_n_items]}. *)

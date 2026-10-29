@@ -21,11 +21,13 @@
     {{!Ocgtk.Raw.Selection_model.val-selection_changed}[Gtk.SelectionModel.selection_changed]}
     function. The positions given in that signal may have their selection state
     changed, though that is not a requirement. If new items added to the model
-    via the [Gio.ListModel::items-changed] signal are selected or not is up to
-    the implementation.
+    via the
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    signal are selected or not is up to the implementation.
 
-    Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no
+    Note that items added via
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    may already be selected and no
     {{!Ocgtk.Raw.Selection_model.val-on_selection_changed}[Gtk.SelectionModel::selection-changed]}
     will be emitted for them. So to track which items are selected, it is
     necessary to listen to both signals.

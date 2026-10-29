@@ -119,7 +119,9 @@ external get_incremental : t -> bool = "ml_gtk_sort_list_model_get_incremental"
 
 external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_sort_list_model_get_item_type"
-(** The type of items. See [Gio.ListModel.get_item_type]. *)
+(** The type of items. See
+    {{!Ocgio.Raw.List_model.val-get_item_type}[Gio.ListModel.get_item_type]}. *)
 
 external get_n_items : t -> int = "ml_gtk_sort_list_model_get_n_items"
-(** The number of items. See [Gio.ListModel.get_n_items]. *)
+(** The number of items. See
+    {{!Ocgio.Raw.List_model.val-get_n_items}[Gio.ListModel.get_n_items]}. *)

@@ -34,7 +34,8 @@
     The ::drag-enter and ::drag-motion handler return a [GdkDragAction] to
     update the status of the ongoing operation. The ::drop handler should decide
     if it ultimately accepts the drop and if it does, it should initiate the
-    data transfer and finish the operation by calling [Gdk.Drop.finish].
+    data transfer and finish the operation by calling
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]}.
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
     drop target, and will receive the
@@ -146,9 +147,11 @@ val on_drop :
     processing is necessary.
 
     Otherwise, the handler returns [true]. In this case, this handler will
-    accept the drop. The handler must ensure that [Gdk.Drop.finish] is called to
-    let the source know that the drop is done. The call to [Gdk.Drop.finish]
-    must only be done when all data has been received.
+    accept the drop. The handler must ensure that
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]} is called to let the source
+    know that the drop is done. The call to
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]} must only be done when all
+    data has been received.
 
     To receive the data, use one of the read functions provided by
     {{!Ocgdk.Raw.Drop}[Gdk.Drop]} such as [Gdk.Drop.read_async] or

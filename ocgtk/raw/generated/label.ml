@@ -237,7 +237,9 @@ external set_wrap_mode : t -> Ocpango_enums.wrapmode -> unit
     This only affects the label if line wrapping is on. (See
     {{!Ocgtk.Raw.Label.val-set_wrap}[Gtk.Label.set_wrap]})
 
-    The default is [Pango.WrapMode.word], which means wrap on word boundaries.
+    The default is
+    {{!Ocpango.Enums.type-wrapmode.constructor-WORD}[Pango.WrapMode.word]},
+    which means wrap on word boundaries.
 
     For sizing behavior, also consider the
     {{!Ocgtk.Raw.Label.val-get_natural_wrap_mode}[Gtk.Label:natural-wrap-mode]}

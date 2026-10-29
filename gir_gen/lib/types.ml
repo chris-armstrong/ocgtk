@@ -585,6 +585,11 @@ type doc_index_namespace = {
       (** C identifier to GIR constant name. *)
   di_c_symbols : doc_c_symbol StringMap.t;
       (** By C identifier. Likewise for another namespace. *)
+  di_members_listed : bool;
+      (** Whether the member tables are filled: always for the current
+          namespace, and for another one when its references file lists members.
+          An older file has no member tables, so its members can't be checked.
+      *)
 }
 (** What a doc reference into one namespace can link to: its generated types,
     constants and members, keyed by GIR name and by C name (see [Doc_index]). *)

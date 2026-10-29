@@ -14,6 +14,7 @@ let empty_namespace =
     di_c_types = StringMap.empty;
     di_c_constants = StringMap.empty;
     di_c_symbols = StringMap.empty;
+    di_members_listed = false;
   }
 
 let add_all ~f items map =
@@ -116,7 +117,14 @@ let current_namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
       constants StringMap.empty
   in
   let ns =
-    { empty_namespace with di_types; di_constants; di_c_types; di_c_constants }
+    {
+      empty_namespace with
+      di_types;
+      di_constants;
+      di_c_types;
+      di_c_constants;
+      di_members_listed = true;
+    }
   in
   let ns =
     List.fold_left enums ~init:ns ~f:(fun ns (e : gir_enum) ->
@@ -146,6 +154,14 @@ let add_cross_reference_members ~type_name (m : cross_reference_members) ns =
     ~members:
       { dm_l1 = names_of_layer m.crm_l1; dm_l2 = names_of_layer m.crm_l2 }
     ~methods:m.crm_c_methods ~constructors:m.crm_c_constructors ns
+
+(* A file lists member tables for every enumeration and bitfield, so one with
+   no tables at all is a file from before they were written. *)
+let lists_members (ncr : generation_context_namespace_cross_references) =
+  StringMap.exists
+    (fun _ (entity : cross_reference_entity) ->
+      Option.is_some entity.cr_members || Option.is_some entity.cr_enum_members)
+    ncr.ncr_entities
 
 let of_cross_references (ncr : generation_context_namespace_cross_references) =
   StringMap.fold
@@ -185,7 +201,8 @@ let of_cross_references (ncr : generation_context_namespace_cross_references) =
             di_c_constants =
               StringMap.add entity.cr_c_type type_name acc.di_c_constants;
           })
-    ncr.ncr_entities empty_namespace
+    ncr.ncr_entities
+    { empty_namespace with di_members_listed = lists_members ncr }
 
 let build ~namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
     ~cross_references =
